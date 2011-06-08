@@ -1,0 +1,126 @@
+#table_action_header
+{
+	position:relative;
+	width:100%;
+	background-color:#EEEEEE;
+	background-image:url(../images/checkbox_arrow.gif);
+	height:20px;
+	border-top:1px solid #CCCCCC;	
+	background-position:5px 10px;
+	background-repeat:no-repeat;	
+	padding:3px 0px 3px 0px;
+}
+
+#table_action_header ul
+{
+	list-style:none;
+	padding:0px;
+	margin:0px;
+	margin-left:15px;
+}
+
+#table_action_header ul li
+{
+	margin-left:8px;
+	margin-right:4px;
+	
+}
+
+#table_action_header ul li span
+{
+	background-color:#0a6184;
+	border:2px solid #DDDDDD;
+	font-size:14px;
+	padding:2px 5px 2px 5px;
+	
+}
+
+#table_action_header a
+{
+	text-decoration:none;
+	color:#FFF;	
+}
+
+#table_holder
+{
+	position:relative;
+	margin-bottom:50px;
+}
+
+table.tablesorter 
+{
+	position:relative;
+	width:100%;
+	border-top:3px solid #0a6184;
+	border-collapse:collapse;
+}
+
+table.tablesorter thead tr th, table.tablesorter tfoot tr th 
+{
+	color:#FFFFFF;
+	text-align:left;
+	background-color:#4386a1;
+	padding: 0px 5px 0px 5px;
+}
+
+table.tablesorter thead tr .header 
+{
+	background-image: url(../images/tables/bg.gif);
+	background-repeat: no-repeat;
+	background-position: center right;
+	cursor: pointer;
+}
+
+table.tablesorter tbody td 
+{
+	color: #3D3D3D;
+	background-color: #FFF;
+	vertical-align: top;
+	padding: 0px 5px 0px 5px;
+	
+}
+
+table.tablesorter tbody td 
+{
+	border-bottom:1px solid #DDDDDD;
+}
+
+table.tablesorter tbody td.over
+{
+	background-color:#CCCCCC;
+}
+
+table.tablesorter tbody td.selected
+{
+	background-color:#BBBBBB;
+}
+
+table.tablesorter thead tr .headerSortUp 
+{
+	background-image: url(../images/tables/asc.gif);
+}
+
+table.tablesorter thead tr .headerSortDown 
+{
+	background-image: url(../images/tables/desc.gif);
+}
+
+table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp 
+{
+	background-color: #8dbdd8;
+}
+
+table.innertable
+{
+	display: none;
+}
+
+table.innertable thead tr th 
+{
+	background-color: #0a6184;
+}
+
+table.innertable tbody tr td 
+{
+	background-color: #DDD;
+}

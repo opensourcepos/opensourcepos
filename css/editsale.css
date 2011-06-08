@@ -1,0 +1,11 @@
+#edit_sale_wrapper
+{
+	margin: 0 auto;
+	padding-bottom: 50px;
+	width: 60%;
+}
+
+#edit_sale_wrapper h1
+{
+	text-align: center;
+}
