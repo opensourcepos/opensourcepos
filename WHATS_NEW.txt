@@ -1,0 +1,5 @@
+* E-Mail Receipt support
+* Currency Symbol support
+* Fixed a bug where comment would disappear after typing it and then doing something different in a sale.
+* Fixed bug where Low Inventory items wouldn't display correct items
+* Fixed bug where an item couldn't be imported with a location
