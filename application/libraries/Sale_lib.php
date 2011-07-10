@@ -349,7 +349,7 @@ class Sale_lib
 		$sale_id = $pieces[1];
 
 		$this->empty_cart();
-		$this->delete_customer();
+		$this->remove_customer();
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
@@ -373,7 +373,7 @@ class Sale_lib
 	function copy_entire_sale($sale_id)
 	{
 		$this->empty_cart();
-		$this->delete_customer();
+		$this->remove_customer();
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
@@ -390,7 +390,7 @@ class Sale_lib
 	function copy_entire_suspended_sale($sale_id)
 	{
 		$this->empty_cart();
-		$this->delete_customer();
+		$this->remove_customer();
 
 		foreach($this->CI->Sale_suspended->get_sale_items($sale_id)->result() as $row)
 		{
@@ -416,7 +416,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('cart');
 	}
 
-	function delete_customer()
+	function remove_customer()
 	{
 		$this->CI->session->unset_userdata('customer');
 	}
@@ -433,7 +433,7 @@ class Sale_lib
 		$this->clear_comment();
 		$this->clear_email_receipt();
 		$this->empty_payments();
-		$this->delete_customer();
+		$this->remove_customer();
 	}
 
 	function get_taxes()

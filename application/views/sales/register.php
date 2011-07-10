@@ -185,7 +185,7 @@ else
 	if(isset($customer))
 	{
 		echo $this->lang->line("sales_customer").': <b>'.$customer. '</b><br />';
-		echo anchor("sales/delete_customer",'['.$this->lang->line('common_delete').' '.$this->lang->line('customers_customer').']');
+		echo anchor("sales/remove_customer",'['.$this->lang->line('common_remove').' '.$this->lang->line('customers_customer').']');
 	}
 	else
 	{

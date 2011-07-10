@@ -20,6 +20,7 @@ $lang['common_comments']='Comments';
 $lang['common_edit']='edit';
 $lang['common_search']='Search';
 $lang['common_delete']='Delete';
+$lang['common_remove']='Remove';
 $lang['common_view_recent_sales']='View Recent Sales';
 $lang['common_you_are_using_ospos']='You are using Open Source Point Of Sale Version';
 $lang['common_please_visit_my']='Please visit my';

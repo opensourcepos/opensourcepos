@@ -171,9 +171,9 @@ class Sales extends Secure_area
 		$this->_reload();
 	}
 
-	function delete_customer()
+	function remove_customer()
 	{
-		$this->sale_lib->delete_customer();
+		$this->sale_lib->remove_customer();
 		$this->_reload();
 	}
 
