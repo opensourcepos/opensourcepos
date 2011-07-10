@@ -14,7 +14,7 @@ $(document).ready(function()
 </script>
 </head>
 <body>
-<h1>Open Source Point Of Sale 1.0</h1>
+<h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
 <?php
 if ($_SERVER['HTTP_HOST'] == 'ospos.pappastech.com')
 {
