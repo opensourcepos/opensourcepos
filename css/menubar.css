@@ -1,0 +1,93 @@
+#menubar
+{
+	position:relative;
+	margin:0px;
+	padding:0px;
+	background-image: url("../images/menubar/menubar_bg.gif"); 
+	background-repeat: repeat-x;
+	width:100%;
+	height:100px;
+	color:#FFFFFF;
+	text-align:left;
+	text-align:center;
+}
+
+#menubar_container
+{
+	position:relative;
+	margin:0 auto;
+	width:875px;
+	text-align:left;
+}
+
+.menu_item
+{
+	float:left;
+	width:65px;
+	height:100%;
+	text-align:center;	
+}
+
+
+#menubar a:link, #menubar a:visited, #menubar a
+{
+	color:#FFFFFF;
+	text-decoration:underline;
+}
+
+#menubar a:hover
+{
+	color:#CCCCCC;
+	text-decoration:underline;	
+}
+
+.menu_item
+{
+	font-size:8pt;
+}
+
+#menubar_company_info
+{
+	position:absolute;
+	left:0px;
+	top:18px;
+	width:250px;
+	height:55%;
+}
+
+#company_title
+{
+	font-size:14pt;
+	font-weight:bold;
+}
+
+#menubar_navigation
+{
+	position:relative;
+	width:75%;
+	left:200px;
+	top:8px;
+	height:45%;
+}
+
+#menubar_footer
+{
+	position:absolute;
+	top:80px;
+	left:0px;
+	height:17%;
+	padding-top:3px;
+	font-size:8pt;
+	font-weight:bold;
+}
+
+#menubar_date
+{
+	position:absolute;
+	top:80px;
+	right:0px;
+	height:17%;
+	padding-top:3px;
+	font-size:8pt;
+	font-weight:bold;
+}
