@@ -81,7 +81,6 @@
 // Startup code
 //-----------------------------------------------------------------------------
 
-
 if(isset($_GET["text"])) $text=$_GET["text"];
 if(isset($_GET["format"])) $format=$_GET["format"];
 if(isset($_GET["quality"])) $quality=$_GET["quality"];
@@ -89,9 +88,6 @@ if(isset($_GET["width"])) $width=$_GET["width"];
 if(isset($_GET["height"])) $height=$_GET["height"];
 if(isset($_GET["type"])) $type=$_GET["type"];
 if(isset($_GET["barcode"])) $barcode=$_GET["barcode"];
-
-
-
 
 if (!isset ($text)) $text = '';
 if (!isset ($type)) $type = 1;
@@ -101,7 +97,6 @@ if (empty ($height)) $height = 80;
 if (!empty ($format)) $format = strtoupper ($format);
         else $format="PNG";
 
-
 switch ($type)
 {
         default:
@@ -110,7 +105,6 @@ switch ($type)
                 Barcode39 ($barcode, $width, $height, $quality, $format, $text);
                 break;          
 }
-
 
 //-----------------------------------------------------------------------------
 // Generate a Code 3 of 9 barcode
@@ -215,7 +209,6 @@ function Barcode39 ($barcode, $width, $height, $quality, $format, $text)
         OutputImage ($im, $format, $quality);
 }
 
-
 //-----------------------------------------------------------------------------
 // Output an image to the browser
 //-----------------------------------------------------------------------------
@@ -234,7 +227,6 @@ function OutputImage ($im, $format, $quality)
                         break;
         }
 }
-
 
 //-----------------------------------------------------------------------------
 // Returns the Code 3 of 9 value for a given ASCII character
