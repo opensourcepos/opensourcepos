@@ -116,7 +116,7 @@ class Items extends Secure_area implements iData_controller
 	{
 		$result = array();
 
-		$item_ids = explode(',', $item_ids);
+		$item_ids = explode(':', $item_ids);
 		foreach ($item_ids as $item_id)
 		{
 			$item_info = $this->Item->get_info($item_id);

@@ -18,7 +18,7 @@ $(document).ready(function()
     		return false;
     	}
 
-    	$(this).attr('href','index.php/item_kits/generate_barcodes/'+selected.join(','));
+    	$(this).attr('href','index.php/item_kits/generate_barcodes/'+selected.join(':'));
     });
     
 });

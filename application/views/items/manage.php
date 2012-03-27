@@ -19,7 +19,7 @@ $(document).ready(function()
     		return false;
     	}
 
-    	$(this).attr('href','index.php/items/generate_barcodes/'+selected.join(','));
+    	$(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
     });
 
     $("#low_inventory").click(function()
