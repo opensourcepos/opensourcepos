@@ -530,7 +530,7 @@ CREATE TABLE `ospos_sales_suspended_payments` (
 CREATE TABLE `ospos_sessions` (
   `session_id` varchar(40) NOT NULL DEFAULT '0',
   `ip_address` varchar(16) NOT NULL DEFAULT '0',
-  `user_agent` varchar(50) NOT NULL,
+  `user_agent` varchar(120) NOT NULL,
   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
   `user_data` text,
   PRIMARY KEY (`session_id`)
