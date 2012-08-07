@@ -100,9 +100,9 @@ class Sales extends Secure_area
 	}
 
 	//Alain Multiple Payments
-	function delete_payment($payment_id)
+	function delete_payment( $payment_id )
 	{
-		$this->sale_lib->delete_payment($payment_id);
+		$this->sale_lib->delete_payment( $payment_id );
 		$this->_reload();
 	}
 

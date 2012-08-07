@@ -24,8 +24,8 @@ class Sale_lib
 	//Alain Multiple Payments
 	function get_payments()
 	{
-		if(!$this->CI->session->userdata('payments'))
-			$this->set_payments(array());
+		if( !$this->CI->session->userdata( 'payments' ) )
+			$this->set_payments( array( ) );
 
 		return $this->CI->session->userdata('payments');
 	}
@@ -107,11 +107,11 @@ class Sale_lib
 	}
 
 	//Alain Multiple Payments
-	function delete_payment($payment_id)
+	function delete_payment( $payment_id )
 	{
-		$payments=$this->get_payments();
-		unset($payments[$payment_id]);
-		$this->set_payments($payments);
+		$payments = $this->get_payments();
+		unset( $payments[urldecode( $payment_id )] );
+		$this->set_payments( $payments );
 	}
 
 	//Alain Multiple Payments
