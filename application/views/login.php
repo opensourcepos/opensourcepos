@@ -15,14 +15,7 @@ $(document).ready(function()
 </head>
 <body>
 <h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
-<?php
-if ($_SERVER['HTTP_HOST'] == 'ospos.pappastech.com')
-{
-?>
-<h2>Press login to continue</h2>
-<?php
-}
-?>
+
 <?php echo form_open('login') ?>
 <div id="container">
 <?php echo validation_errors(); ?>
@@ -38,7 +31,6 @@ if ($_SERVER['HTTP_HOST'] == 'ospos.pappastech.com')
 		<div class="form_field">
 		<?php echo form_input(array(
 		'name'=>'username', 
-		'value'=> $_SERVER['HTTP_HOST'] == 'ospos.pappastech.com' ? 'admin' : '',
 		'size'=>'20')); ?>
 		</div>
 
@@ -46,7 +38,6 @@ if ($_SERVER['HTTP_HOST'] == 'ospos.pappastech.com')
 		<div class="form_field">
 		<?php echo form_password(array(
 		'name'=>'password', 
-		'value'=>$_SERVER['HTTP_HOST'] == 'ospos.pappastech.com' ? 'pointofsale' : '',
 		'size'=>'20')); ?>
 		
 		</div>

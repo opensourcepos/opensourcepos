@@ -83,13 +83,7 @@ class Employees extends Person_controller
 			$employee_data=array('username'=>$this->input->post('username'));
 		}
 		
-		if ($_SERVER['HTTP_HOST'] == 'ospos.pappastech.com' && $employee_id == 1)
-		{
-			//failure
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('employees_error_updating_demo_admin').' '.
-			$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>-1));
-		}
-		elseif($this->Employee->save($person_data,$employee_data,$permission_data,$employee_id))
+		if($this->Employee->save($person_data,$employee_data,$permission_data,$employee_id))
 		{
 			//New employee
 			if($employee_id==-1)
@@ -117,12 +111,7 @@ class Employees extends Person_controller
 	{
 		$employees_to_delete=$this->input->post('ids');
 		
-		if ($_SERVER['HTTP_HOST'] == 'ospos.pappastech.com' && in_array(1,$employees_to_delete))
-		{
-			//failure
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('employees_error_deleting_demo_admin')));
-		}
-		elseif($this->Employee->delete_list($employees_to_delete))
+		if($this->Employee->delete_list($employees_to_delete))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('employees_successful_deleted').' '.
 			count($employees_to_delete).' '.$this->lang->line('employees_one_or_multiple')));

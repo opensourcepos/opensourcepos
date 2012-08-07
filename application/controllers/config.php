@@ -32,14 +32,9 @@ class Config extends Secure_area
 		'print_after_sale'=>$this->input->post('print_after_sale')	
 		);
 		
-		if($_SERVER['HTTP_HOST'] !='ospos.pappastech.com' && $this->Appconfig->batch_save($batch_save_data))
+		if( $this->Appconfig->batch_save( $batch_save_data ) )
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
-		}
-		else
-		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('config_saved_unsuccessfully')));
-	
 		}
 	}
 }
