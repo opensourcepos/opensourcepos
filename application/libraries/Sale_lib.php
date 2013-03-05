@@ -66,28 +66,28 @@ class Sale_lib
 		$this->CI->session->unset_userdata('email_receipt');
 	}
 
-	function add_payment($payment_id,$payment_amount)
+	function add_payment( $payment_id, $payment_amount )
 	{
-		$payments=$this->get_payments();
-		$payment = array($payment_id=>
+		$payments = $this->get_payments();
+		$payment = array( $payment_id=>
 		array(
-			'payment_type'=>$payment_id,
-			'payment_amount'=>$payment_amount
+			'payment_type' => $payment_id,
+			'payment_amount' => $payment_amount
 			)
 		);
 
 		//payment_method already exists, add to payment_amount
-		if(isset($payments[$payment_id]))
+		if( isset( $payments[$payment_id] ) )
 		{
-			$payments[$payment_id]['payment_amount']+=$payment_amount;
+			$payments[$payment_id]['payment_amount'] += $payment_amount;
 		}
 		else
 		{
 			//add to existing array
-			$payments+=$payment;
+			$payments += $payment;
 		}
 
-		$this->set_payments($payments);
+		$this->set_payments( $payments );
 		return true;
 
 	}
@@ -484,7 +484,7 @@ class Sale_lib
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-            $total+=($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100);
+            $total += ( $item['price'] * $item['quantity'] - $item['price'] * $item['quantity'] * $item['discount'] / 100);
 		}
 
 		foreach($this->get_taxes() as $tax)

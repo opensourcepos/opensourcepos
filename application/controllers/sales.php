@@ -53,42 +53,43 @@ class Sales extends Secure_area
 	//Alain Multiple Payments
 	function add_payment()
 	{		
-		$data=array();
-		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'numeric');
+		$data = array();
+		$this->form_validation->set_rules( 'amount_tendered', 'lang:sales_amount_tendered', 'numeric' );
 		
-		if ($this->form_validation->run() == FALSE)
+		if ( $this->form_validation->run() == FALSE )
 		{
-			if ( $this->input->post('payment_type') == $this->lang->line('sales_gift_card') )
+			if ( $this->input->post( 'payment_type' ) == $this->lang->line( 'sales_gift_card' ) )
 				$data['error']=$this->lang->line('sales_must_enter_numeric_giftcard');
 			else
 				$data['error']=$this->lang->line('sales_must_enter_numeric');
 				
- 			$this->_reload($data);
+ 			$this->_reload( $data );
  			return;
 		}
 		
-		$payment_type=$this->input->post('payment_type');
-		if ( $payment_type == $this->lang->line('sales_giftcard') )
+		$payment_type = $this->input->post( 'payment_type' );
+		if ( $payment_type == $this->lang->line( 'sales_giftcard' ) )
 		{
 			$payments = $this->sale_lib->get_payments();
-			$payment_type=$this->input->post('payment_type').':'.$payment_amount=$this->input->post('amount_tendered');
-			$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-			$cur_giftcard_value = $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) - $current_payments_with_giftcard;
+			$payment_type = $this->input->post( 'payment_type' ) . ':' . $payment_amount = $this->input->post( 'amount_tendered' );
+			$current_payments_with_giftcard = isset( $payments[$payment_type] ) ? $payments[$payment_type]['payment_amount'] : 0;
+			$cur_giftcard_value = $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) - $current_payments_with_giftcard;
+			
 			if ( $cur_giftcard_value <= 0 )
 			{
-				$data['error']='Giftcard balance is '.to_currency( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) ).' !';
-				$this->_reload($data);
+				$data['error'] = 'Giftcard balance is ' . to_currency( $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) ) . ' !';
+				$this->_reload( $data );
 				return;
 			}
-			elseif ( ( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) - $this->sale_lib->get_total() ) > 0 )
-			{
-				$data['warning']='Giftcard balance is '.to_currency( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) - $this->sale_lib->get_total() ).' !';
-			}
-			$payment_amount=min( $this->sale_lib->get_total(), $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) );
+
+			$new_giftcard_value = $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) - $this->sale_lib->get_amount_due( );
+			$new_giftcard_value = ( $new_giftcard_value >= 0 ) ? $new_giftcard_value : 0;
+			$data['warning'] = 'Giftcard ' . $this->input->post( 'amount_tendered' ) . ' balance is ' . to_currency( $new_giftcard_value ) . ' !';
+			$payment_amount = min( $this->sale_lib->get_amount_due( ), $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) );
 		}
 		else
 		{
-			$payment_amount=$this->input->post('amount_tendered');
+			$payment_amount = $this->input->post( 'amount_tendered' );
 		}
 		
 		if( !$this->sale_lib->add_payment( $payment_type, $payment_amount ) )
