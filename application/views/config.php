@@ -74,16 +74,27 @@ echo form_open('config/save/',array('id'=>'config_form'));
 		'value'=>$this->config->item('default_tax_2_rate')));?>%
 	</div>
 </div>
-
+<!-- GARRISON MODIFIED 4/13/2013 -->
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_currency_symbol').':', 'currency_symbol',array('class'=>'wide')); ?>
+	<?php echo form_label($this->lang->line('config_currency_symbol').':', 'currency_symbol',array('class'=>'wide')); ?>
 	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'currency_symbol',
-		'id'=>'currency_symbol',
-		'value'=>$this->config->item('currency_symbol')));?>
+		<?php echo form_input(array(
+				'name'=>'currency_symbol',
+				'id'=>'currency_symbol',
+				'value'=>$this->config->item('currency_symbol')));?>
+	</div>
+
+	<?php echo form_label($this->lang->line('config_currency_side').':', 'currency_side',array('class'=>''));?>
+	<div class='form_field'>
+		<?php 
+			echo form_checkbox(array(
+				'name'=>'currency_side',
+				'id'=>'currency_side',
+				'value'=>'currency_side',
+				'checked'=>$this->config->item('currency_side')));?>
 	</div>
 </div>
+<!-- END MODIFIED -->
 
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('common_email').':', 'email',array('class'=>'wide')); ?>
@@ -132,9 +143,13 @@ echo form_open('config/save/',array('id'=>'config_form'));
 <?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide required')); ?>
 	<div class='form_field'>
 	<?php echo form_dropdown('language', array(
-		'english'  => 'English',
-		'indonesia'    => 'Indonesia',
-		'spanish'   => 'Spanish'), $this->config->item('language'));
+			'Azərbaycanca'		=> 'Azərbaycanca',
+			'Bahasa Indonesia'	=> 'Bahasa Indonesia',
+			'English'			=> 'English',
+			'Español'			=> 'Español',
+			'Русский'			=> 'Русский'
+			), 
+		$this->config->item('language'));
 		?>
 	</div>
 </div>
@@ -203,7 +218,8 @@ echo form_open('config/save/',array('id'=>'config_form'));
 		'Asia/Dubai'=>'(GMT+04:00) Abu Dhabi, Muscat',
 		'Asia/Yerevan'=>'(GMT+04:00) Yerevan',
 		'Asia/Kabul'=>'(GMT+04:30) Kabul',
-		'Asia/Yekaterinburg'=>'(GMT+05:00) Ekaterinburg',
+	 	'Asia/Baku'=>'(GMT+05:00) Baku',/*GARRISON ADDED 4/20/2013*/
+	 	'Asia/Yekaterinburg'=>'(GMT+05:00) Ekaterinburg',
 		'Asia/Tashkent'=>'(GMT+05:00) Tashkent',
 		'Asia/Kolkata'=>'(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi',
 		'Asia/Katmandu'=>'(GMT+05:45) Kathmandu',
@@ -250,6 +266,105 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom1').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom1_name',
+		'id'=>'custom1_name',
+		'value'=>$this->config->item('custom1_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom2').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom2_name',
+		'id'=>'custom2_name',
+		'value'=>$this->config->item('custom2_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom3').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom3_name',
+		'id'=>'custom3_name',
+		'value'=>$this->config->item('custom3_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom4').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom4_name',
+		'id'=>'custom4_name',
+		'value'=>$this->config->item('custom4_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom5').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom5_name',
+		'id'=>'custom5_name',
+		'value'=>$this->config->item('custom5_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom6').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom6_name',
+		'id'=>'custom6_name',
+		'value'=>$this->config->item('custom6_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom7').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom7_name',
+		'id'=>'custom7_name',
+		'value'=>$this->config->item('custom7_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom8').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom8_name',
+		'id'=>'custom8_name',
+		'value'=>$this->config->item('custom8_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom9').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom9_name',
+		'id'=>'custom9_name',
+		'value'=>$this->config->item('custom9_name')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_custom10').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'custom10_name',
+		'id'=>'custom10_name',
+		'value'=>$this->config->item('custom10_name')));?>
+	</div>
+</div>
 
 <?php 
 echo form_submit(array(
