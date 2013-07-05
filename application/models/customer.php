@@ -183,7 +183,6 @@ class Customer extends Person
 			$suggestions = array_slice($suggestions, 0,$limit);
 		}
 		return $suggestions;
-	
 	}
 	
 	/*

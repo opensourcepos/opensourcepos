@@ -33,7 +33,7 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	function get_all_filtered($low_inventory=0,$is_serialized=0,$no_description)
+	function get_all_filtered($low_inventory=0,$is_serialized=0,$no_description,$search_custom)/**GARRISON MODIFIED 4/21/2013**/
 	{
 		$this->db->from('items');
 		if ($low_inventory !=0 )
@@ -48,6 +48,22 @@ class Item extends CI_Model
 		{
 			$this->db->where('description','');
 		}
+/**GARRISON SECTION ADDED 4/21/2013**/
+/**
+		if ($search_custom!=0 )
+		{
+			$this->db->like('custom1',$search);
+			$this->db->or_like('custom2',$search);
+			$this->db->or_like('custom3',$search);
+			$this->db->or_like('custom4',$search);
+			$this->db->or_like('custom5',$search);
+			$this->db->or_like('custom6',$search);
+			$this->db->or_like('custom7',$search);
+			$this->db->or_like('custom8',$search);
+			$this->db->or_like('custom9',$search);
+			$this->db->or_like('custom10',$search);
+		}
+**/		
 		$this->db->where('deleted',0);
 		$this->db->order_by("name", "asc");
 		return $this->db->get();
@@ -197,9 +213,42 @@ class Item extends CI_Model
 		{
 			$suggestions[]=$row->item_number;
 		}
+/** GARRISON ADDED 4/21/2013 **/
+	//Search by description
+		$this->db->from('items');
+		$this->db->like('description', $search);
+		$this->db->where('deleted',0);
+		$this->db->order_by("description", "asc");
+		$by_name = $this->db->get();
+		foreach($by_name->result() as $row)
+		{
+			$suggestions[]=$row->name;
+		}
+/** END GARRISON ADDED **/
 
-
-		//only return $limit suggestions
+/** GARRISON ADDED 4/22/2013 **/
+	//Search by custom fields
+		$this->db->from('items');
+		$this->db->like('custom1', $search);
+		$this->db->or_like('custom2', $search);
+		$this->db->or_like('custom3', $search);
+		$this->db->or_like('custom4', $search);
+		$this->db->or_like('custom5', $search);
+		$this->db->or_like('custom6', $search);
+		$this->db->or_like('custom7', $search);
+		$this->db->or_like('custom8', $search);
+		$this->db->or_like('custom9', $search);
+		$this->db->or_like('custom10', $search);
+		$this->db->where('deleted',0);
+		$this->db->order_by("name", "asc");
+		$by_name = $this->db->get();
+		foreach($by_name->result() as $row)
+		{
+			$suggestions[]=$row->name;
+		}
+/** END GARRISON ADDED **/		
+		
+	//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
 			$suggestions = array_slice($suggestions, 0,$limit);
@@ -231,14 +280,46 @@ class Item extends CI_Model
 		{
 			$suggestions[]=$row->item_id.'|'.$row->item_number;
 		}
-
+/** GARRISON ADDED 4/21/2013 **/
+	//Search by description
+		$this->db->from('items');
+		$this->db->where('deleted',0);
+		$this->db->like('description', $search);
+		$this->db->order_by("description", "asc");
+		$by_description = $this->db->get();
+		foreach($by_description->result() as $row)
+		{
+			$suggestions[]=$row->item_id.'|'.$row->name;
+		}
+/** END GARRISON ADDED **/	
+		/** GARRISON ADDED 4/22/2013 **/		
+	//Search by custom fields
+		$this->db->from('items');
+		$this->db->where('deleted',0);
+		$this->db->like('custom1', $search);
+		$this->db->or_like('custom2', $search);
+		$this->db->or_like('custom3', $search);
+		$this->db->or_like('custom4', $search);
+		$this->db->or_like('custom5', $search);
+		$this->db->or_like('custom6', $search);
+		$this->db->or_like('custom7', $search);
+		$this->db->or_like('custom8', $search);
+		$this->db->or_like('custom9', $search);
+		$this->db->or_like('custom10', $search);
+		$this->db->order_by("name", "asc");
+		$by_description = $this->db->get();
+		foreach($by_description->result() as $row)
+		{
+			$suggestions[]=$row->item_id.'|'.$row->name;
+		}
+		/** END GARRISON ADDED **/
+		
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
 			$suggestions = array_slice($suggestions, 0,$limit);
 		}
 		return $suggestions;
-
 	}
 
 	function get_category_suggestions($search)
@@ -259,15 +340,227 @@ class Item extends CI_Model
 		return $suggestions;
 	}
 
+/** GARRISON ADDED 5/18/2013 **/	
+	function get_location_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('location');
+		$this->db->from('items');
+		$this->db->like('location', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("location", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->location;
+		}
+	
+		return $suggestions;
+	}
+
+	function get_custom1_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom1');
+		$this->db->from('items');
+		$this->db->like('custom1', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom1", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom1;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom2_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom2');
+		$this->db->from('items');
+		$this->db->like('custom2', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom2", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom2;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom3_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom3');
+		$this->db->from('items');
+		$this->db->like('custom3', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom3", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom3;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom4_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom4');
+		$this->db->from('items');
+		$this->db->like('custom4', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom4", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom4;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom5_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom5');
+		$this->db->from('items');
+		$this->db->like('custom5', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom5", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom5;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom6_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom6');
+		$this->db->from('items');
+		$this->db->like('custom6', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom6", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom6;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom7_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom7');
+		$this->db->from('items');
+		$this->db->like('custom7', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom7", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom7;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom8_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom8');
+		$this->db->from('items');
+		$this->db->like('custom8', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom8", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom8;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom9_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom9');
+		$this->db->from('items');
+		$this->db->like('custom9', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom9", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom9;
+		}
+	
+		return $suggestions;
+	}
+	
+	function get_custom10_suggestions($search)
+	{
+		$suggestions = array();
+		$this->db->distinct();
+		$this->db->select('custom10');
+		$this->db->from('items');
+		$this->db->like('custom10', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("custom10", "asc");
+		$by_category = $this->db->get();
+		foreach($by_category->result() as $row)
+		{
+			$suggestions[]=$row->custom10;
+		}
+	
+		return $suggestions;
+	}
+/** END GARRISON ADDED **/	
 	/*
 	Preform a search on items
 	*/
 	function search($search)
 	{
 		$this->db->from('items');
-		$this->db->where("(name LIKE '%".$this->db->escape_like_str($search)."%' or 
-		item_number LIKE '%".$this->db->escape_like_str($search)."%' or 
-		category LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");
+		$this->db->where("(
+				name LIKE '%".$this->db->escape_like_str($search)."%' or 
+				item_number LIKE '%".$this->db->escape_like_str($search)."%' or 
+				description LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/21/2013**/
+				custom1 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom2 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom3 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom4 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom5 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom6 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom7 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom8 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom9 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				custom10 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
+				category LIKE '%".$this->db->escape_like_str($search)."%') and 
+				deleted=0");
 		$this->db->order_by("name", "asc");
 		return $this->db->get();	
 	}

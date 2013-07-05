@@ -84,6 +84,38 @@ class Person extends CI_Model
 		$this->db->where('person_id', $person_id);
 		return $this->db->update('people',$person_data);
 	}
+/** GARRISON ADDED 4/25/2013 IN PROGRESS **/
+	/*
+	 Get search suggestions to find customers
+	*/
+	function get_search_suggestions($search,$limit=25)
+	{
+		$suggestions = array();
+	
+//		$this->db->select("person_id");
+//		$this->db->from('people');
+//		$this->db->where('deleted',0);
+//		$this->db->where('person_id',$this->db->escape($search));
+//		$this->db->like('first_name',$this->db->escape_like_str($search));
+//		$this->db->or_like('last_name',$this->db->escape_like_str($search));
+//		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
+//		$this->db->or_like('email',$search);
+//		$this->db->or_like('phone_number',$search);
+//		$this->db->order_by('last_name', "asc");
+		$by_person_id = $this->db->get();
+
+		foreach($by_person_id->result() as $row)
+		{
+			$suggestions[]=$row->person_id;
+		}
+	
+		//only return $limit suggestions
+		if(count($suggestions > $limit))
+		{
+			$suggestions = array_slice($suggestions, 0,$limit);
+		}
+		return $suggestions;
+	}
 	
 	/*
 	Deletes one Person (doesn't actually do anything)
