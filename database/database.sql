@@ -21,7 +21,7 @@ CREATE TABLE `ospos_app_config` (
   `key` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_app_config`
@@ -51,7 +51,7 @@ CREATE TABLE `ospos_customers` (
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
   KEY `person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_customers`
@@ -71,7 +71,7 @@ CREATE TABLE `ospos_employees` (
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `username` (`username`),
   KEY `person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_employees`
@@ -116,7 +116,7 @@ CREATE TABLE `ospos_inventory` (
   PRIMARY KEY (`trans_id`),
   KEY `ospos_inventory_ibfk_1` (`trans_items`),
   KEY `ospos_inventory_ibfk_2` (`trans_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_inventory`
@@ -147,7 +147,7 @@ CREATE TABLE `ospos_items` (
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `item_number` (`item_number`),
   KEY `ospos_items_ibfk_1` (`supplier_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_items`
@@ -165,7 +165,7 @@ CREATE TABLE `ospos_items_taxes` (
   `name` varchar(255) NOT NULL,
   `percent` double(15,3) NOT NULL,
   PRIMARY KEY (`item_id`,`name`,`percent`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_items_taxes`
@@ -183,7 +183,7 @@ CREATE TABLE `ospos_item_kits` (
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`item_kit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_item_kits`
@@ -202,7 +202,7 @@ CREATE TABLE `ospos_item_kit_items` (
   `quantity` double(15,2) NOT NULL,
   PRIMARY KEY (`item_kit_id`,`item_id`,`quantity`),
   KEY `ospos_item_kit_items_ibfk_2` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_item_kit_items`
@@ -223,7 +223,7 @@ CREATE TABLE `ospos_modules` (
   PRIMARY KEY (`module_id`),
   UNIQUE KEY `desc_lang_key` (`desc_lang_key`),
   UNIQUE KEY `name_lang_key` (`name_lang_key`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_modules`
@@ -261,7 +261,7 @@ CREATE TABLE `ospos_people` (
   `comments` text NOT NULL,
   `person_id` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`person_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ospos_people`
@@ -281,7 +281,7 @@ CREATE TABLE `ospos_permissions` (
   `person_id` int(10) NOT NULL,
   PRIMARY KEY (`module_id`,`person_id`),
   KEY `person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_permissions`
@@ -315,7 +315,7 @@ CREATE TABLE `ospos_receivings` (
   PRIMARY KEY (`receiving_id`),
   KEY `supplier_id` (`supplier_id`),
   KEY `employee_id` (`employee_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_receivings`
@@ -340,7 +340,7 @@ CREATE TABLE `ospos_receivings_items` (
   `discount_percent` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_receivings_items`
@@ -363,7 +363,7 @@ CREATE TABLE `ospos_sales` (
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_sales`
@@ -388,7 +388,7 @@ CREATE TABLE `ospos_sales_items` (
   `discount_percent` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_items`
@@ -409,7 +409,7 @@ CREATE TABLE `ospos_sales_items_taxes` (
   `percent` double(15,3) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_items_taxes`
@@ -427,7 +427,7 @@ CREATE TABLE `ospos_sales_payments` (
   `payment_type` varchar(40) NOT NULL,
   `payment_amount` decimal(15,2) NOT NULL,
   PRIMARY KEY (`sale_id`,`payment_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_payments`
@@ -450,7 +450,7 @@ CREATE TABLE `ospos_sales_suspended` (
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_sales_suspended`
@@ -475,7 +475,7 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `discount_percent` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_suspended_items`
@@ -496,7 +496,7 @@ CREATE TABLE `ospos_sales_suspended_items_taxes` (
   `percent` double(15,3) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_suspended_items_taxes`
@@ -514,7 +514,7 @@ CREATE TABLE `ospos_sales_suspended_payments` (
   `payment_type` varchar(40) NOT NULL,
   `payment_amount` decimal(15,2) NOT NULL,
   PRIMARY KEY (`sale_id`,`payment_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_suspended_payments`
@@ -534,7 +534,7 @@ CREATE TABLE `ospos_sessions` (
   `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
   `user_data` text,
   PRIMARY KEY (`session_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sessions`
@@ -554,7 +554,7 @@ CREATE TABLE `ospos_suppliers` (
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
   KEY `person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_suppliers`
