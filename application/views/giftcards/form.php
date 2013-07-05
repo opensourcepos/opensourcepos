@@ -6,6 +6,19 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 <fieldset id="giftcard_basic_info" style="padding: 5px;">
 <legend><?php echo $this->lang->line("giftcards_basic_information"); ?></legend>
 
+<!-- GARRISON ADDED 4/22/2013 -->
+<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'required wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'person_id',
+		'id'=>'person_id',
+		'value'=>$giftcard_info->person_id)
+	);?>
+	</div>
+</div>
+<!-- END GARRISON ADDED -->
+
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('giftcards_giftcard_number').':', 'name',array('class'=>'required wide')); ?>
 	<div class='form_field'>
@@ -45,6 +58,10 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+	$("#person_id").autocomplete("<?php echo site_url('giftcards/suggest_person');?>",{max:100,minChars:0,delay:10});
+    $("#person_id").result(function(event, data, formatted){});
+	$("#person_id").search();
+	
 	$('#giftcard_form').validate({
 		submitHandler:function(form)
 		{
