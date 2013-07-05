@@ -37,7 +37,16 @@ class Giftcards extends Secure_area implements iData_controller
 		$suggestions = $this->Giftcard->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
-
+/** GARRISON ADDED 5/3/2013 **/
+	/*
+	 Gives search suggestions for person_id based on what is being searched for
+	*/
+	function suggest_person()
+	{
+		$suggestions = $this->Giftcard->get_person_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		echo implode("\n",$suggestions);
+	}
+/** END GARRISON ADDED **/
 	function get_row()
 	{
 		$giftcard_id = $this->input->post('row_id');
@@ -56,7 +65,8 @@ class Giftcards extends Secure_area implements iData_controller
 	{
 		$giftcard_data = array(
 		'giftcard_number'=>$this->input->post('giftcard_number'),
-		'value'=>$this->input->post('value')
+		'value'=>$this->input->post('value'),
+		'person_id'=>$this->input->post('person_id')/**GARRISON ADDED 4/22/2013**/		
 		);
 
 		if( $this->Giftcard->save( $giftcard_data, $giftcard_id ) )
@@ -79,7 +89,6 @@ class Giftcards extends Secure_area implements iData_controller
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('giftcards_error_adding_updating').' '.
 			$giftcard_data['giftcard_number'],'giftcard_id'=>-1));
 		}
-
 	}
 
 	function delete()

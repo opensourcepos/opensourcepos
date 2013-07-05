@@ -27,14 +27,16 @@ class Items extends Secure_area implements iData_controller
 		$low_inventory=$this->input->post('low_inventory');
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
+		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
 
 		$data['search_section_state']=$this->input->post('search_section_state');
 		$data['low_inventory']=$this->input->post('low_inventory');
 		$data['is_serialized']=$this->input->post('is_serialized');
 		$data['no_description']=$this->input->post('no_description');
+		$data['search_custom']=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
 		$data['controller_name']=strtolower(get_class());
-		$data['form_width']=$this->get_form_width();
-		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description),$this);
+		$data['form_width']=$this->get_form_width(); 
+		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description,$search_custom),$this);//GARRISON MODIFIED 4/13/2013
 		$this->load->view('items/manage',$data);
 	}
 
@@ -75,6 +77,107 @@ class Items extends Secure_area implements iData_controller
 		echo implode("\n",$suggestions);
 	}
 
+/**GARRISON ADDED 5/18/2013**/	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_location()
+	{
+		$suggestions = $this->Item->get_location_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom1()
+	{
+		$suggestions = $this->Item->get_custom1_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom2()
+	{
+		$suggestions = $this->Item->get_custom2_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom3()
+	{
+		$suggestions = $this->Item->get_custom3_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom4()
+	{
+		$suggestions = $this->Item->get_custom4_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom5()
+	{
+		$suggestions = $this->Item->get_custom5_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom6()
+	{
+		$suggestions = $this->Item->get_custom6_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom7()
+	{
+		$suggestions = $this->Item->get_custom7_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom8()
+	{
+		$suggestions = $this->Item->get_custom8_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom9()
+	{
+		$suggestions = $this->Item->get_custom9_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest_custom10()
+	{
+		$suggestions = $this->Item->get_custom10_suggestions($this->input->post('q'));
+		echo implode("\n",$suggestions);
+	}
+/**END GARRISON ADDED**/
+		
 	function get_row()
 	{
 		$item_id = $this->input->post('row_id');
@@ -163,7 +266,17 @@ class Items extends Secure_area implements iData_controller
 		'reorder_level'=>$this->input->post('reorder_level'),
 		'location'=>$this->input->post('location'),
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
-		'is_serialized'=>$this->input->post('is_serialized')
+		'is_serialized'=>$this->input->post('is_serialized'),
+		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
+		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
+		'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/
+		'custom4'=>$this->input->post('custom4'),/**GARRISON ADDED 4/21/2013**/
+		'custom5'=>$this->input->post('custom5'),/**GARRISON ADDED 4/21/2013**/
+		'custom6'=>$this->input->post('custom6'),/**GARRISON ADDED 4/21/2013**/
+		'custom7'=>$this->input->post('custom7'),/**GARRISON ADDED 4/21/2013**/
+		'custom8'=>$this->input->post('custom8'),/**GARRISON ADDED 4/21/2013**/
+		'custom9'=>$this->input->post('custom9'),/**GARRISON ADDED 4/21/2013**/
+		'custom10'=>$this->input->post('custom10')/**GARRISON ADDED 4/21/2013**/
 		);
 		
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
@@ -332,7 +445,7 @@ class Items extends Secure_area implements iData_controller
 				fgetcsv($handle);
 				
 				$i=1;
-				while (($data = fgetcsv($handle)) !== FALSE) 
+				while (($data = fgetcsv($handle)) !== FALSE)
 				{
 					$item_data = array(
 					'name'			=>	$data[1],
@@ -344,8 +457,18 @@ class Items extends Secure_area implements iData_controller
 					'quantity'		=>	$data[10],
 					'reorder_level'	=>	$data[11],
 					'supplier_id'	=>  $this->Supplier->exists($data[3]) ? $data[3] : null,
-					'allow_alt_description'=> $data[14] != '' ? '1' : '0',
-					'is_serialized'=>$data[15] != '' ? '1' : '0'
+					'allow_alt_description'	=>	$data[14] != '' ? '1' : '0',
+					'is_serialized'	=>	$data[15] != '' ? '1' : '0',
+					'custom1'		=>	$data[16],	/** GARRISON ADDED 5/6/2013 **/
+					'custom2'		=>	$data[17],	/** GARRISON ADDED 5/6/2013 **/
+					'custom3'		=>	$data[18],	/** GARRISON ADDED 5/6/2013 **/
+					'custom4'		=>	$data[19],	/** GARRISON ADDED 5/6/2013 **/
+					'custom5'		=>	$data[20],	/** GARRISON ADDED 5/6/2013 **/
+					'custom6'		=>	$data[21],	/** GARRISON ADDED 5/6/2013 **/
+					'custom7'		=>	$data[22],	/** GARRISON ADDED 5/6/2013 **/
+					'custom8'		=>	$data[23],	/** GARRISON ADDED 5/6/2013 **/
+					'custom9'		=>	$data[24],	/** GARRISON ADDED 5/6/2013 **/
+					'custom10'		=>	$data[25]	/** GARRISON ADDED 5/6/2013 **/
 					);
 					$item_number = $data[0];
 					

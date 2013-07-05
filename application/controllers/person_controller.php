@@ -30,7 +30,16 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 		}
 		echo '#';
 	}
-	
+/** GARRISON ADDED 4/25/2013 IN PROGRESS **/	
+	/*
+	 Gives search suggestions based on what is being searched for
+	*/
+	function suggest()
+	{
+		$suggestions = $this->Person->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		echo implode("\n",$suggestions);
+	}
+		
 	/*
 	Gets one row for a person manage table. This is called using AJAX to update one row.
 	*/
