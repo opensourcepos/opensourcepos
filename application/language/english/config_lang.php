@@ -21,4 +21,15 @@ $lang['config_print_after_sale']='Print receipt after sale';
 $lang['config_language'] = 'Language';
 $lang['config_timezone'] = 'Timezone';
 $lang['config_currency_symbol'] = 'Currency Symbol';
+$lang['config_currency_side'] = 'Right side'; //GARRISON ADDED 4/20/2013
+$lang['config_custom1'] = 'Custom Field 1'; //GARRISON ADDED 4/21/2013
+$lang['config_custom2'] = 'Custom Field 2'; //GARRISON ADDED 4/21/2013
+$lang['config_custom3'] = 'Custom Field 3'; //GARRISON ADDED 4/21/2013
+$lang['config_custom4'] = 'Custom Field 4'; //GARRISON ADDED 4/21/2013
+$lang['config_custom5'] = 'Custom Field 5'; //GARRISON ADDED 4/21/2013
+$lang['config_custom6'] = 'Custom Field 6'; //GARRISON ADDED 4/21/2013
+$lang['config_custom7'] = 'Custom Field 7'; //GARRISON ADDED 4/21/2013
+$lang['config_custom8'] = 'Custom Field 8'; //GARRISON ADDED 4/21/2013
+$lang['config_custom9'] = 'Custom Field 9'; //GARRISON ADDED 4/21/2013
+$lang['config_custom10'] = 'Custom Field 10'; //GARRISON ADDED 4/21/2013
 ?>
