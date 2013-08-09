@@ -1,17 +1,17 @@
 <?php
-$lang['suppliers_new']='New Supplier';
-$lang['suppliers_supplier']='Supplier';
-$lang['suppliers_update']='Update Supplier';
-$lang['suppliers_confirm_delete']='Are you sure you want to delete the selected suppliers?';
-$lang['suppliers_none_selected']='You have not selected any suppliers to delete';
-$lang['suppliers_error_adding_updating'] = 'Error adding/updating supplier';
-$lang['suppliers_successful_adding']='You have successfully added supplier';
-$lang['suppliers_successful_updating']='You have successfully updated supplier';
-$lang['suppliers_successful_deleted']='You have successfully deleted';
-$lang['suppliers_one_or_multiple']='supplier(s)';
-$lang['suppliers_cannot_be_deleted']='Could not deleted selected suppliers, one or more of the selected suppliers has sales.';
-$lang['suppliers_basic_information']='Supplier Information';
-$lang['suppliers_account_number']='Account #';
-$lang['suppliers_company_name']='Company Name';
-$lang['suppliers_company_name_required'] = 'Company Name is a required field';
+$lang['suppliers_new']='Новый поставщик';
+$lang['suppliers_supplier']='поставщик';
+$lang['suppliers_update']='Обновить поставщика';
+$lang['suppliers_confirm_delete']='Вы уверены, что хотите удалить выбранных поставщиков?';
+$lang['suppliers_none_selected']='Вы не выбрали ни поставщики удалить';
+$lang['suppliers_error_adding_updating'] = 'Ошибка при добавлении/обновлении поставщиком';
+$lang['suppliers_successful_adding']='Вы успешно добавили поставщиком';
+$lang['suppliers_successful_updating']='Вы успешно обновляли поставщиком';
+$lang['suppliers_successful_deleted']='Вы успешно удален';
+$lang['suppliers_one_or_multiple']='поставщик (а)';
+$lang['suppliers_cannot_be_deleted']='Не удалось удалить выбранные поставщиков, один или более из выбранных поставщиков имеет продаж.';
+$lang['suppliers_basic_information']='Информация о поставщике';
+$lang['suppliers_account_number']='№ счета';
+$lang['suppliers_company_name']='Название компании';
+$lang['suppliers_company_name_required'] = 'Название компании является обязательным полем';
 ?>
