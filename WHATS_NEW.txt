@@ -1,8 +1,6 @@
 * Ver. 2.1.0
 + Various upgrades, too numerous to list here.
-+ Removed dependancy on ofc upload library due to vulnerability found. See
-  http://packetstormsecurity.com/files/123661/PHP-Point-Of-Sale-10.x-11.x-12.x
-  -Remote-Code-Execution.html for more information.
++ Removed dependancy on ofc upload library due to vulnerability found.
 -------------------------------------------------------------------------------
 * Ver. 2.0.2
 + Fixed multiple giftcards issue per Bug #4 reported on Sourceforge where a
