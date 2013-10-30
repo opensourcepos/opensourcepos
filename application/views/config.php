@@ -143,11 +143,11 @@ echo form_open('config/save/',array('id'=>'config_form'));
 <?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide required')); ?>
 	<div class='form_field'>
 	<?php echo form_dropdown('language', array(
-			'Azərbaycanca'		=> 'Azərbaycanca',
-			'Bahasa Indonesia'	=> 'Bahasa Indonesia',
-			'English'			=> 'English',
-			'Español'			=> 'Español',
-			'Русский'			=> 'Русский'
+			'Azerbaijan'		=> 'Azerbaijan',
+			'BahasaIndonesia'	=> 'BahasaIndonesia',
+			'english'			=> 'English',
+			'Spanish'			=> 'Spanish',
+			'Russian'			=> 'Russian'
 			), 
 		$this->config->item('language'));
 		?>
