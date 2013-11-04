@@ -113,6 +113,7 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 table.innertable
 {
 	display: none;
+	width: 100%;
 }
 
 table.innertable thead tr th 

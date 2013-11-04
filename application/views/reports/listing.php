@@ -36,6 +36,7 @@
 			<li><a href="<?php echo site_url('reports/detailed_sales');?>"><?php echo $this->lang->line('reports_sales'); ?></a></li>
 			<li><a href="<?php echo site_url('reports/detailed_receivings');?>"><?php echo $this->lang->line('reports_receivings'); ?></a></li>
 			<li><a href="<?php echo site_url('reports/specific_customer');?>"><?php echo $this->lang->line('reports_customer'); ?></a></li>
+			<li><a href="<?php echo site_url('reports/specific_discount');?>"><?php echo $this->lang->line('reports_discount'); ?></a></li>
 			<li><a href="<?php echo site_url('reports/specific_employee');?>"><?php echo $this->lang->line('reports_employee'); ?></a></li>
 		</ul>
 	
@@ -56,8 +57,3 @@ if(isset($error))
 ?>
 <?php $this->load->view("partial/footer"); ?>
 
-<script type="text/javascript" language="javascript">
-$(document).ready(function()
-{
-});
-</script>
