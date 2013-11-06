@@ -91,7 +91,7 @@ CREATE TABLE `ospos_giftcards` (
   `giftcard_number` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `value` double(15,2) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
-  `person_id` INT NOT NULL
+  `person_id` INT NOT NULL,
   PRIMARY KEY (`giftcard_id`),
   UNIQUE KEY `giftcard_number` (`giftcard_number`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=48 ;
