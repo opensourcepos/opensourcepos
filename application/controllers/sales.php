@@ -269,8 +269,10 @@ class Sales extends Secure_area
 			$data['employees'][$employee->person_id] = $employee->first_name . ' '. $employee->last_name;
 		}
 
-		$data['sale_info'] = $this->Sale->get_info($sale_id)->row_array();
-				
+		$sale_info = $this->Sale->get_info($sale_id)->row_array();
+		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
+		$data['selected_customer'] = !empty($sale_info['customer_id']) ? $sale_info['customer_id'] . "|" . $person_name : "";
+		$data['sale_info'] = $sale_info;
 		
 		$this->load->view('sales/edit', $data);
 	}

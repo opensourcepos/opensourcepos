@@ -22,7 +22,7 @@
 	<div class="field_row clearfix">
 	<?php echo form_label($this->lang->line('sales_customer').':', 'customer'); ?>
 		<div class='form_field'>
-			<?php echo form_dropdown('customer_id', $customers, $sale_info['customer_id'], 'id="customer_id"');?>
+			<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id'));?>
 		</div>
 	</div>
 	
@@ -75,16 +75,32 @@ $(document).ready(function()
 			return false;
 		}
 	});
+
+	var formatItem = function(row) {
+    	return [row[0], "|", row[1]].join("");
+	};
+	var autoCompleter = $("#customer_id").autocomplete('<?php echo site_url("sales/customer_search"); ?>', {
+    	minChars:0,
+    	delay:15, 
+    	max:100,
+       	cacheLength: 1,
+        formatItem: formatItem,
+        formatResult : formatItem
+    });
 	
 	$('#sales_edit_form').validate({
 		submitHandler:function(form)
 		{
+			var selectedCustomer = autoCompleter.val();
+			var selectedCustomerId = selectedCustomer.replace(/(\w)\|.*/, "$1");
+			selectedCustomerId && autoCompleter.val(selectedCustomerId);
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
 				if(response.success)
 				{
 					set_feedback(response.message,'success_message',false);
+					autoCompleter.val(selectedCustomer);	
 				}
 				else
 				{

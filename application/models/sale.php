@@ -3,7 +3,10 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
+		$this->db->select('sales.*', FALSE);
+		$this->db->select('people.*', FALSE);
 		$this->db->from('sales');
+		$this->db->join('people', 'people.person_id = sales.customer_id', 'LEFT');
 		$this->db->where('sale_id',$sale_id);
 		return $this->db->get();
 	}
