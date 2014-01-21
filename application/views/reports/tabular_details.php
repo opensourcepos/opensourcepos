@@ -13,7 +13,7 @@ if($export_excel == 1){
 	<table class="tablesorter report" id="sortable_table">
 		<thead>
 			<tr>
-				<th>+</th>
+				<th><a href="#" class="expand_all">+</a></th>
 				<?php foreach ($headers['summary'] as $header) { ?>
 				<th><?php echo $header; ?></th>
 				<?php } ?>
@@ -80,6 +80,22 @@ if($export_excel == 1){
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {
+	$(".tablesorter a.expand_all").click(function(event)
+	{
+		var $inner_elements = $(".tablesorter .innertable");
+		if ($inner_elements.is(":visible")) 
+		{
+			$inner_elements.hide();
+			$("a.expand, a.expand_all").text('+');
+		} 
+		else 
+		{
+			$inner_elements.show();
+			$("a.expand, a.expand_all").text('-');
+		} 
+		return false;
+	});
+	
 	$(".tablesorter a.expand").click(function(event)
 	{
 		$(event.target).parent().parent().next().find('.innertable').toggle();
