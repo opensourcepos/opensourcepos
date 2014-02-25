@@ -1,0 +1,60 @@
+#receipt_wrapper
+{
+	font-family:Arial;
+	width:100%;	
+}
+
+#receipt_header
+{
+	text-align:center;
+}
+
+#company_name
+{
+	font-size:150%;
+	font-weight:bold;
+}
+
+#company_phone
+{
+	margin-bottom:15px;
+
+}
+
+#sale_time
+{
+	margin-bottom:5px;
+}
+
+#receipt_items
+{
+	position:relative;
+	border-collapse:collapse;
+	margin-top:15px;
+	margin-bottom:15px;
+	width:100%;
+}
+
+#receipt_items td
+{
+	position:relative;
+	padding:3px;	
+}
+
+.short_name
+{
+	display:none;
+}
+
+#sale_return_policy
+{
+	width:80%;
+	margin:0 auto;
+	text-align:center;
+}
+
+#barcode
+{
+	margin-top:10px;
+	text-align:center;
+}

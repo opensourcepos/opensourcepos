@@ -1,0 +1,99 @@
+#required_fields_message
+{
+	width: 100%;
+	text-align: center;
+	margin-bottom: 3px;
+	font-style: italic;
+}
+
+#customer_basic_info,#item_basic_info,#item_number_info,#supplier_basic_info
+{
+	padding: 5px;
+}
+
+#scan_item_number.loading
+{
+	background-image: url(../images/spinner_small.gif);
+	background-position:center right;
+	background-repeat:no-repeat;	
+}
+
+#info_provided_by
+{
+	display:none;
+	font-weight:bold;
+}
+
+#employee_basic_info
+{
+	float:left;
+	width:47%;
+	padding:5px;
+}
+
+#employee_login_info
+{
+	float:left;
+	width:47%;
+	margin-left:5px;
+	padding:5px;
+}
+
+#permission_list
+{
+	list-style:none;
+}
+
+#permission_list li
+{
+	padding:5px;	
+}
+
+#permission_list input
+{
+	top:3px;
+}
+
+#employee_permission_info
+{
+	float:left;
+	width:47%;
+	margin-left:5px;
+	padding:5px;
+}
+#employee_permission_info p
+{
+	font-weight:bold;
+}
+
+#employee_permission_info span.small
+{
+	font-style:italic;
+	font-size:80%;
+}
+
+#error_message_box
+{
+	margin-bottom:7px;
+	margin-left:20px;
+	color:red;	
+}
+#item_kit_items_title
+{
+	text-align: center;
+}
+#item_kit_items
+{
+	width: 100%;
+}
+
+#item_kit_items th
+{
+	text-align: center;
+	font-weight: bold;
+}
+
+#item_kit_items td
+{
+	text-align: center;
+}

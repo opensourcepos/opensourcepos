@@ -1,0 +1,35 @@
+<?php
+$lang['config_info']='информация о магазин конфигурация';
+$lang['config_company']='Название Компании';
+$lang['config_address']='Адрес Компании';
+$lang['config_phone']='Телефон Компании';
+$lang['config_website']='Веб-сайт';
+$lang['config_fax']='Факс';
+$lang['config_default_tax_rate']='Обычный ставка налога %';
+$lang['config_default_tax_rate_1']='ставка налога 1';
+$lang['config_default_tax_rate_2']='ставка налога 2';
+$lang['config_company_required']='Имя Компании обязательный пробел';
+$lang['config_address_required']='Адрес Компании обязательный пробел';
+$lang['config_phone_required']='Телефон Компании обязательный пробел';
+$lang['config_default_tax_rate_required']='Обычный ставка налога обязательный пробел';
+$lang['config_default_tax_rate_number']='Обычный ставка налога должен быть цифра';
+$lang['config_company_website_url']='Веб-сайт Компании не является допустимым URL (http://...)';
+$lang['config_saved_successfully']='Конфигурация успешно сохранена';
+$lang['config_saved_unsuccessfully']='Конфигурация сохраненная безуспешно';
+$lang['config_return_policy_required']='Возвратний полис обязательный пробел';
+$lang['config_print_after_sale']='Распечатать квитанцию ​​после продажи';
+$lang['config_language'] = 'Язик';
+$lang['config_timezone'] = 'Часовой пояс';
+$lang['config_currency_symbol'] = 'Символ валюты';
+$lang['config_currency_side'] = 'Правая сторона'; //GARRISON ADDED 4/20/2013
+$lang['config_custom1'] = 'Изготовленный пробел 1'; //GARRISON ADDED 4/21/2013
+$lang['config_custom2'] = 'Изготовленный пробел 2'; //GARRISON ADDED 4/21/2013
+$lang['config_custom3'] = 'Изготовленный пробел 3'; //GARRISON ADDED 4/21/2013
+$lang['config_custom4'] = 'Изготовленный пробел 4'; //GARRISON ADDED 4/21/2013
+$lang['config_custom5'] = 'Изготовленный пробел 5'; //GARRISON ADDED 4/21/2013
+$lang['config_custom6'] = 'Изготовленный пробел 6'; //GARRISON ADDED 4/21/2013
+$lang['config_custom7'] = 'Изготовленный пробел 7'; //GARRISON ADDED 4/21/2013
+$lang['config_custom8'] = 'Изготовленный пробел 8'; //GARRISON ADDED 4/21/2013
+$lang['config_custom9'] = 'Изготовленный пробел 9'; //GARRISON ADDED 4/21/2013
+$lang['config_custom10'] = 'Изготовленный пробел 10'; //GARRISON ADDED 4/21/2013
+?>

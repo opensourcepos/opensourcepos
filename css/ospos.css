@@ -1,0 +1,149 @@
+@import url(autocomplete.css);
+@import url(menubar.css);
+@import url(general.css);
+@import url(popupbox.css);
+@import url(register.css);
+@import url(receipt.css);
+@import url(reports.css);
+@import url(tables.css);
+@import url(thickbox.css);
+@import url(datepicker.css);
+@import url(editsale.css);
+
+body
+{
+	margin:0px;
+	padding:0px;
+	background-color:#f7f7f7;
+}
+
+a.none
+{
+	text-decoration:none;
+}
+
+
+#content_area_wrapper
+{
+	position:relative;
+	width:100%;
+	background-color:#FFFFFF;	
+	margin:0px;
+	padding:0px;
+	border-bottom:1px solid #CCCCCC;
+	text-align:center;	
+
+}
+
+#content_area
+{
+	position:relative;
+	margin:0 auto;
+	width:875px;
+	text-align:left;
+	
+}
+
+#title_bar
+{
+	position:relative;
+	margin-top:10px;
+	margin-bottom:10px;
+	width:100%;
+	height:50px;
+}
+
+#title
+{
+	position:absolute;
+	bottom:0px;
+	left:0px;
+	font-size:30px;
+	font-weight:bold;
+	color:#000000;
+}	
+
+#page_title
+{
+	margin-top:8px;
+	font-size:30px;
+	font-weight:bold;
+	color:#000000;
+	text-align:center;
+
+}
+
+#page_subtitle
+{
+	margin-top:8px;
+	font-size:16px;
+	font-weight:bold;
+	color:#000000;
+	text-align:center;
+}
+
+#new_button
+{
+	position:absolute;
+	bottom:-5px;
+	right:0px;
+}
+
+#spinner
+{
+	position:absolute;
+	display:none;
+	right:21%;
+	top:5px;
+}
+
+#feedback_bar
+{
+	position:fixed;
+	bottom:0;
+	left:0;
+	width:100%;
+	height:55px;	
+	position:fixed;
+	opacity: 0;
+	filter: alpha(opacity=0);
+	z-index:1;
+	line-height:3.3;
+}
+
+#home_module_list
+{
+	position: relative;
+}
+
+.module_item
+{
+	padding: 10px;
+}
+
+#config_wrapper
+{
+	text-align:center;
+}
+
+#config_info
+{
+	width:70%;
+	margin:0 auto;
+	padding:10px;
+	margin-bottom:30px;
+	margin-top:10px;
+	text-align:left;
+}
+
+#footer
+{
+	position:relative;
+	margin-top:25px;
+	margin-bottom:15px;	
+	text-align:center;
+	font-size:11px;
+	color:#777777;
+	clear:both;
+	
+}

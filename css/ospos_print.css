@@ -1,0 +1,41 @@
+body
+{
+	background-color:#FFFFFF;
+	font-size:75%;	
+}
+
+#menubar,#footer
+{
+	display:none;
+}
+
+#content_area
+{
+	width:100%;
+}
+
+#content_area_wrapper
+{
+	border:0px;
+}
+
+#sale_return_policy
+{
+	width:100%;
+	text-align:center;
+}
+
+.long_name
+{
+	display:none;
+}
+
+.short_name
+{
+	display:inline;
+}
+
+#receipt_items td
+{
+	white-space:nowrap;
+}
