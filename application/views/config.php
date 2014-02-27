@@ -146,6 +146,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 			'Azerbaijan'		=> 'Azerbaijan',
 			'BahasaIndonesia'	=> 'BahasaIndonesia',
 			'english'			=> 'English',
+			'dutch'				=> 'dutch',
 			'Spanish'			=> 'Spanish',
 			'Russian'			=> 'Russian'
 			), 
