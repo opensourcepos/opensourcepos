@@ -703,6 +703,56 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/tabular_details",$data);
 	}
+
+	function specific_discount_input()
+	{
+		$data = $this->_get_common_report_data();
+		$data['specific_input_name'] = $this->lang->line('reports_discount');
+	
+		$discounts = array();
+		for($i = 0; $i <= 100; $i += 10)
+		{
+			$discounts[$i] = $i . '%';
+		}
+		$data['specific_input_data'] = $discounts;
+		$this->load->view("reports/specific_input",$data);
+	}
+	
+	function specific_discount($start_date, $end_date, $discount, $sale_type, $export_excel = 0) 
+	{
+		$this->load->model('reports/Specific_discount');
+		$model = $this->Specific_discount;
+		
+		$headers = $model->getDataColumns();
+		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'discount' =>$discount, 'sale_type' => $sale_type));
+		
+		$summary_data = array();
+		$details_data = array();
+		
+		foreach($report_data['summary'] as $key=>$row)
+		{
+			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),/*to_currency($row['profit']),*/ $row['payment_type'], $row['comment']);
+				
+			foreach($report_data['details'][$key] as $drow)
+			{
+				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['description'], $drow['quantity_purchased'], to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
+			}
+		}
+		
+		$data = array(
+					"title" => $discount. '% '.$this->lang->line('reports_discount') . ' ' . $this->lang->line('reports_report'),
+					"subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
+					"headers" => $headers,
+					"summary_data" => $summary_data,
+					"details_data" => $details_data,
+					"header_width" => intval(100 / count($headers['summary'])),
+					"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'discount' =>$discount, 'sale_type' => $sale_type)),
+					"export_excel" => $export_excel
+		);
+		
+		$this->load->view("reports/tabular_details",$data);
+		
+	}
 	
 	function detailed_sales($start_date, $end_date, $sale_type, $export_excel=0)
 	{
@@ -737,7 +787,7 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/tabular_details",$data);
 	}
-	
+
 	function detailed_receivings($start_date, $end_date, $sale_type, $export_excel=0)
 	{
 		$this->load->model('reports/Detailed_receivings');
