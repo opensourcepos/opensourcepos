@@ -28,9 +28,7 @@ $lang['reports_total'] = 'Total';
 $lang['reports_tax'] = 'Tax';
 $lang['reports_profit'] = 'Profit';
 $lang['reports_report_input'] = 'Report Input';
-$lang['reports_discount'] = 'Discount';
 $lang['reports_type'] = 'Type';
-$lang['reports_discount'] = 'A discount greater than ';
 $lang['reports_date_range'] = 'Date Range';
 $lang['reports_today'] = 'Today';
 $lang['reports_yesterday'] = 'Yesterday';
@@ -86,4 +84,5 @@ $lang['reports_detailed_receivings_report'] = 'Detailed Receivings Report';
 $lang['reports_sale_type'] = 'Sale Type';
 $lang['reports_all'] = 'All';
 $lang['reports_returns'] = 'Returns';
+$lang['reports_discount'] = 'A discount greater than ';
 ?>

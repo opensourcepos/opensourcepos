@@ -131,9 +131,9 @@ echo form_open('items/bulk_update/',array('id'=>'item_form'));
 
 <div class="field_row clearfix">
 
-<?php echo form_label($this->lang->line('items_allow_alt_desciption').':', 'allow_alt_description',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('items_allow_alt_description').':', 'allow_alt_description',array('class'=>'wide')); ?>
 	<div class='form_field'>
-	<?php echo form_dropdown('allow_alt_description', $allow_alt_desciption_choices);?>
+	<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices);?>
 
 	</div>
 
