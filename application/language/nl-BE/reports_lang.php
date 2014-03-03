@@ -73,9 +73,16 @@ $lang['reports_reorder_level'] = 'Reorder Level';
 $lang['reports_low_inventory_report'] = 'Rapport Herbevoorrading';
 $lang['reports_item_name'] = 'Product Naam';
 $lang['reports_inventory_summary_report'] = 'Rapport Overzicht Vooraad';
+$lang['reports_payment_type'] = 'Payment Type';
 $lang['reports_payments_summary_report'] = 'Overzicht Betalingen';
 $lang['reports_payments'] = 'Betalingen';
 $lang['reports_sale_type'] = 'Type';
+$lang['reports_receivings'] = 'Orders';
+$lang['reports_received_by'] = 'Ontvangen door';
+$lang['reports_supplied_by'] = 'Geleverd door';
+$lang['reports_items_received'] = 'Items Ontvangen';
+$lang['reports_detailed_receivings_report'] = 'Gedetailleerd Raport Orders';
 $lang['reports_all'] = 'Alle';
 $lang['reports_returns'] = 'Retour';
+$lang['reports_discount'] = 'Kortingen';
 ?>

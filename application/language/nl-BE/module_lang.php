@@ -28,7 +28,7 @@ $lang['module_receivings_desc'] = 'Verwerk binnenkomende orders';
 $lang['module_giftcards'] = 'Cadeaubons';
 $lang['module_giftcards_desc'] = 'Zoek, bewerk, verwijder en voeg cadeaubons toe';
 
-$lang['module_item_kits'] = 'Item Kits';
-$lang['module_item_kits_desc'] = 'Zoek, bewerk, verwijder en voeg item kits toe';
+$lang['module_item_kits'] = 'Productsets';
+$lang['module_item_kits_desc'] = 'Zoek, bewerk, verwijder en voeg productsets toe';
 
 ?>

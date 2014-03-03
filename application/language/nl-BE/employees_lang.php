@@ -1,6 +1,6 @@
 <?php
 $lang['employees_employee']='Werknemer';
-$lang['employees_new']='Nieuwe Werknemer';
+$lang['employees_new']='N. Werknemer';
 $lang['employees_update']='Update Werknemer';
 $lang['employees_confirm_delete']='Bent u zeker dat u de geselecteerde werknemers wil verwijderen?';
 $lang['employees_none_selected']='U hebt geen werknemers geselecteerd';

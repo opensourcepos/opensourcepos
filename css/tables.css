@@ -8,7 +8,7 @@
 	border-top:1px solid #CCCCCC;	
 	background-position:5px 10px;
 	background-repeat:no-repeat;	
-	padding:3px 0px 3px 0px;
+	padding:5px 0px 5px 0px;
 }
 
 #table_action_header ul
@@ -30,7 +30,6 @@
 {
 	background-color:#0a6184;
 	border:2px solid #DDDDDD;
-	font-size:14px;
 	padding:2px 5px 2px 5px;
 	
 }
@@ -61,6 +60,7 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th
 	text-align:left;
 	background-color:#4386a1;
 	padding: 0px 5px 0px 5px;
+	
 }
 
 table.tablesorter thead tr .header 
@@ -77,7 +77,6 @@ table.tablesorter tbody td
 	background-color: #FFF;
 	vertical-align: top;
 	padding: 0px 5px 0px 5px;
-	
 }
 
 table.tablesorter tbody td 

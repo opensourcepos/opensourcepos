@@ -178,6 +178,7 @@ class Items extends Secure_area implements iData_controller
 		$suggestions = $this->Item->get_custom10_suggestions($this->input->post('q'));
 		echo implode("\n",$suggestions);
 	}
+
 /**END GARRISON ADDED**/
 		
 	function get_row()
@@ -270,6 +271,7 @@ class Items extends Secure_area implements iData_controller
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
 		'is_serialized'=>$this->input->post('is_serialized'),
 		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
+
 		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
 		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
 		'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/

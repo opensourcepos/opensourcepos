@@ -15,6 +15,8 @@ body
 	margin:0px;
 	padding:0px;
 	background-color:#f7f7f7;
+	font-family: "Lucida Grande", "Trebuchet MS", Tahoma, Verdana, sans-serif;
+	font-size: 0.9em;
 }
 
 a.none
@@ -93,8 +95,6 @@ a.none
 {
 	position:absolute;
 	display:none;
-	right:21%;
-	top:5px;
 }
 
 #feedback_bar

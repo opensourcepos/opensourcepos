@@ -66,7 +66,6 @@ $autoload['libraries'] = array('database','form_validation','session','user_agen
 
 $autoload['helper'] = array('form','url','table','text','currency', 'html', 'download', 'directory');
 
-
 /*
 | -------------------------------------------------------------------
 |  Auto-load Config files

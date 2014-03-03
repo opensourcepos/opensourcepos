@@ -1,5 +1,5 @@
 <?php
-$lang['suppliers_new']='Maak Leverancier';
+$lang['suppliers_new']='N. Leverancier';
 $lang['suppliers_supplier']='Leverancier';
 $lang['suppliers_update']='Bewerk Leverancier';
 $lang['suppliers_confirm_delete']='Bent u zeker dat u de geselecteerde leveranciers wil verwijderen?';
