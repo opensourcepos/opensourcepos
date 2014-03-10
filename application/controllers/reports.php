@@ -787,7 +787,7 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/tabular_details",$data);
 	}
-	
+
 	function detailed_receivings($start_date, $end_date, $sale_type, $export_excel=0)
 	{
 		$this->load->model('reports/Detailed_receivings');
