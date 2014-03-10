@@ -160,7 +160,7 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 </div>
 
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_allow_alt_desciption').':', 'allow_alt_description',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('items_allow_alt_description').':', 'allow_alt_description',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(
 		'name'=>'allow_alt_description',

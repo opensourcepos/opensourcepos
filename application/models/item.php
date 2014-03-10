@@ -33,7 +33,7 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	function get_all_filtered($low_inventory=0,$is_serialized=0,$no_description,$search_custom)/**GARRISON MODIFIED 4/21/2013**/
+	function get_all_filtered($low_inventory=0,$is_serialized=0,$no_description,$search_custom,$is_deleted)/**GARRISON MODIFIED 4/21/2013, Parq 131215 **/
 	{
 		$this->db->from('items');
 		if ($low_inventory !=0 )
@@ -64,7 +64,14 @@ class Item extends CI_Model
 			$this->db->or_like('custom10',$search);
 		}
 **/		
-		$this->db->where('deleted',0);
+/* Parq 131215 start*/
+		if ($is_deleted !=0 )
+		{
+			$this->db->where('deleted',1);
+		} else {
+			$this->db->where('deleted',0);
+		}
+/* Parq 131215 end*/
 		$this->db->order_by("name", "asc");
 		return $this->db->get();
 	}
@@ -107,6 +114,7 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where('item_number',$item_number);
+		$this->db->where('deleted',0); // Parq 131226
 
 		$query = $this->db->get();
 

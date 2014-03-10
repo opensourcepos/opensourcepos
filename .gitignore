@@ -1,0 +1,4 @@
+application/config/database.php
+*.patch
+patches/
+git-svn-diff.py

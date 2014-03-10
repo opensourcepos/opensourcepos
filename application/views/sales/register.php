@@ -273,11 +273,11 @@ else
 
 
     <table width="100%"><tr>
-    <td style="width:55%; "><div class="float_left"><?php echo 'Payments Total:' ?></div></td>
+    <td style="width:55%; "><div class="float_left"><?php echo $this->lang->line('sales_payments_total').':';?></div></td>
     <td style="width:45%; text-align:right;"><div class="float_left" style="text-align:right;font-weight:bold;"><?php echo to_currency($payments_total); ?></div></td>
 	</tr>
 	<tr>
-	<td style="width:55%; "><div class="float_left" ><?php echo 'Amount Due:' ?></div></td>
+	<td style="width:55%; "><div class="float_left" ><?php echo $this->lang->line('sales_amount_due').':';?></div></td>
 	<td style="width:45%; text-align:right; "><div class="float_left" style="text-align:right;font-weight:bold;"><?php echo to_currency($amount_due); ?></div></td>
 	</tr></table>
 

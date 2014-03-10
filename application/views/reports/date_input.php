@@ -14,6 +14,7 @@ if(isset($error))
 	
 	<div id='report_date_range_complex'>
 		<input type="radio" name="report_type" id="complex_radio" value='complex' />
+		<span>
 		<?php echo form_dropdown('start_month',$months, $selected_month, 'id="start_month"'); ?>
 		<?php echo form_dropdown('start_day',$days, $selected_day, 'id="start_day"'); ?>
 		<?php echo form_dropdown('start_year',$years, $selected_year, 'id="start_year"'); ?>
@@ -21,11 +22,22 @@ if(isset($error))
 		<?php echo form_dropdown('end_month',$months, $selected_month, 'id="end_month"'); ?>
 		<?php echo form_dropdown('end_day',$days, $selected_day, 'id="end_day"'); ?>
 		<?php echo form_dropdown('end_year',$years, $selected_year, 'id="end_year"'); ?>
-	</div>
-	
-	<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required')); ?>
-	<div id='report_sale_type'>
-		<?php echo form_dropdown('sale_type',array('all' => $this->lang->line('reports_all'), 'sales' => $this->lang->line('reports_sales'), 'returns' => $this->lang->line('reports_returns')), 'all', 'id="sale_type"'); ?>
+		</span>
+		<?php 
+		if (isset($discount_input)) {
+			?>
+			<div>
+				<span>
+				<?php echo $this->lang->line('reports_discount_prefix') .'&nbsp;' .form_input(array(
+					'name'=>'selected_discount',
+					'id'=>'selected_discount',
+					'value'=>'0')). '&nbsp;'. $this->lang->line('reports_discount_suffix')
+				?>
+				</span>
+			</div>
+			<?php
+		}
+		?>
 	</div>
 <?php
 echo form_button(array(

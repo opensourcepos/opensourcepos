@@ -28,15 +28,17 @@ class Items extends Secure_area implements iData_controller
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
 		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
+		$is_deleted=$this->input->post('is_deleted'); // Parq 131215
 
 		$data['search_section_state']=$this->input->post('search_section_state');
 		$data['low_inventory']=$this->input->post('low_inventory');
 		$data['is_serialized']=$this->input->post('is_serialized');
 		$data['no_description']=$this->input->post('no_description');
 		$data['search_custom']=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
+		$data['is_deleted']=$this->input->post('is_deleted'); // Parq 131215
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width(); 
-		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description,$search_custom),$this);//GARRISON MODIFIED 4/13/2013
+		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
 		$this->load->view('items/manage',$data);
 	}
 
@@ -176,6 +178,7 @@ class Items extends Secure_area implements iData_controller
 		$suggestions = $this->Item->get_custom10_suggestions($this->input->post('q'));
 		echo implode("\n",$suggestions);
 	}
+
 /**END GARRISON ADDED**/
 		
 	function get_row()
@@ -240,7 +243,7 @@ class Items extends Secure_area implements iData_controller
 			$suppliers[$row['person_id']] = $row['first_name'] .' '. $row['last_name'];
 		}
 		$data['suppliers'] = $suppliers;
-		$data['allow_alt_desciption_choices'] = array(
+		$data['allow_alt_description_choices'] = array(
 			''=>$this->lang->line('items_do_nothing'), 
 			1 =>$this->lang->line('items_change_all_to_allow_alt_desc'),
 			0 =>$this->lang->line('items_change_all_to_not_allow_allow_desc'));
@@ -267,6 +270,8 @@ class Items extends Secure_area implements iData_controller
 		'location'=>$this->input->post('location'),
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
 		'is_serialized'=>$this->input->post('is_serialized'),
+		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
+
 		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
 		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
 		'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/
