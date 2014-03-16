@@ -115,7 +115,7 @@ function enable_delete(confirm_message,none_selected_message)
 		{
 			if(confirm(confirm_message))
 			{
-				do_delete($("#delete").attr('href'));
+				do_delete($(this).attr('href'));
 			}
 		}
 		else
@@ -150,6 +150,11 @@ function do_delete(url)
 					
 				});
 			});	
+			// update rows that were affected by this delete
+			for(index in response.ids) {
+				update_row(response.ids[index],url.replace(/[^\/]+$/,'get_row'));
+			}
+			
 			set_feedback(response.message,'success_message',false);	
 		}
 		else
@@ -268,12 +273,21 @@ function update_sortable_table()
 	}
 }
 
+function get_table_row(id) {
+	id = id || $("input[name='sale_id']").val();
+	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
+	if ($element.index() === -1) {
+		$element = $("#sortable_table tbody a[href*='" + id + "']");
+	}
+	return $element;
+}
+
 function update_row(row_id,url)
 {
 	$.post(url, { 'row_id': row_id },function(response)
 	{
 		//Replace previous row
-		var row_to_update = $("#sortable_table tbody tr :checkbox[value="+row_id+"]").parent().parent();
+		var row_to_update = get_table_row(row_id).parent().parent();
 		row_to_update.replaceWith(response);	
 		reinit_row(row_id);
 		hightlight_row(row_id);
@@ -292,14 +306,20 @@ function reinit_row(checkbox_id)
 	new_checkbox.click(checkbox_click);	
 }
 
+function animate_row(row,color)
+{
+	color = color || "#e1ffdd";
+	row.find("td").css("backgroundColor", "#ffffff").animate({backgroundColor:color},"slow","linear")
+		.animate({backgroundColor:color},5000)
+		.animate({backgroundColor:"#ffffff"},"slow","linear");
+}
+
 function hightlight_row(checkbox_id)
 {
 	var new_checkbox = $("#sortable_table tbody tr :checkbox[value="+checkbox_id+"]");
 	var new_row = new_checkbox.parent().parent();
-
-	new_row.find("td").animate({backgroundColor:"#e1ffdd"},"slow","linear")
-		.animate({backgroundColor:"#e1ffdd"},5000)
-		.animate({backgroundColor:"#ffffff"},"slow","linear");
+	
+	animate_row(new_row);
 }
 
 function get_selected_values()

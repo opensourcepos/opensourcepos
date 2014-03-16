@@ -138,8 +138,8 @@ else
         		}
         		else
         		{
-        			echo 'None';
-        			echo form_hidden('description','');
+        		    echo $this->lang->line('sales_no_description');
+           			echo form_hidden('description','');
         		}
         	}
 		?>
@@ -319,8 +319,8 @@ else
 	    	<thead>
 			<tr>
 			<th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
-			<th style="width:60%;"><?php echo 'Type'; ?></th>
-			<th style="width:18%;"><?php echo 'Amount'; ?></th>
+			<th style="width:60%;"><?php echo $this->lang->line('sales_payment_type'); ?></th>
+			<th style="width:18%;"><?php echo $this->lang->line('sales_payment_amount'); ?></th>
 
 
 			</tr>

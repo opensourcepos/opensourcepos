@@ -80,4 +80,6 @@ $lang["sales_discount_included"]='% Korting';
 $lang['sales_sale_time']='Datum';
 $lang['sales_payments_total'] = 'Betaald bedrag';
 $lang['sales_amount_due'] = 'Te betalen';
+$lang['sales_payment_type'] = "Type";
+$lang['sales_payment_amount'] = "Bedrag";
 ?>

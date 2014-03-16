@@ -79,4 +79,6 @@ $lang["sales_discount_included"]='% Descuento';
 $lang['sales_sale_time']='Hora';
 $lang['sales_payments_total'] = 'Pagado';
 $lang['sales_amount_due'] = 'Debe';
+$lang['sales_payment_type'] = "Tipo";
+$lang['sales_payment_amount'] = "Cantidad";
 ?>

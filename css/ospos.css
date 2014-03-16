@@ -93,7 +93,7 @@ a.none
 
 #spinner
 {
-	position:absolute;
+        float:right;	
 	display:none;
 }
 
