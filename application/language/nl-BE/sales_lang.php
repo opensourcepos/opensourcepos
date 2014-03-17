@@ -32,6 +32,7 @@ $lang['sales_error_editing_item']='Fout bij bewerken';
 $lang['sales_complete_sale']='Bevestig';
 $lang['sales_cancel_sale']='Annuleer';
 $lang['sales_add_payment']='Betaal';
+$lang['sales_receipt']='Ticket #';
 $lang['sales_receipt_number']='Ticket #';
 $lang['sales_id']='Nummer Verkoop ';
 $lang['sales_sale']='Verkoop';
@@ -82,4 +83,8 @@ $lang['sales_payments_total'] = 'Betaald bedrag';
 $lang['sales_amount_due'] = 'Te betalen';
 $lang['sales_payment_type'] = "Type";
 $lang['sales_payment_amount'] = "Bedrag";
+<<<<<<< HEAD
+=======
+$lang['sales_basic_information']='Ticket informatie';
+>>>>>>> master
 ?>

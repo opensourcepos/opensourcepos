@@ -61,6 +61,11 @@ if($export_excel == 1){
 	<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
 <?php }?>
 </div>
+
+<?php if (isset($editable)): ?>
+<div id="feedback_bar"></div>
+<?php endif; ?>
+
 <?php 
 if($export_excel == 1){
 	$this->load->view("partial/footer_excel");
@@ -78,8 +83,55 @@ if($export_excel == 1){
 	$this->load->view("partial/footer"); 
 ?>
 <script type="text/javascript" language="javascript">
+
+<?php if (isset($editable)): ?>
+
+function post_form_submit(response, row_id)
+{
+	if(!response.success)
+	{
+		set_feedback(response.message,'error_message',true);
+	}
+	else
+	{
+		var sale_id = response.id
+		$.get('<?php echo site_url("reports/get_detailed_sales_row")?>/'+sale_id, function(response)
+		{
+			//Replace previous row
+			var row = get_table_row(sale_id).parent().parent();
+			var sign = row.find("a.expand").text();
+			row.replaceWith(response);	
+			row = get_table_row(sale_id).parent().parent();
+			update_sortable_table();
+			animate_row(row);
+			row.find("a.expand").click(expand_handler).text(sign);
+			tb_init(row.find("a.thickbox"));
+		});
+		set_feedback(response.message,'success_message',false);
+	}
+}
+
+<?php endif; ?>
+
+function expand_handler(event)
+{
+	$(event.target).parent().parent().next().find('.innertable').toggle();
+
+	if ($(event.target).text() == '+')
+	{
+		
+		$(event.target).text('-');
+	}
+	else
+	{
+		$(event.target).text('+');
+	}
+	return false;
+};
+
 $(document).ready(function()
 {
+	
 	$(".tablesorter a.expand_all").click(function(event)
 	{
 		var $inner_elements = $(".tablesorter .innertable");
@@ -96,20 +148,7 @@ $(document).ready(function()
 		return false;
 	});
 	
-	$(".tablesorter a.expand").click(function(event)
-	{
-		$(event.target).parent().parent().next().find('.innertable').toggle();
-		
-		if ($(event.target).text() == '+')
-		{
-			$(event.target).text('-');
-		}
-		else
-		{
-			$(event.target).text('+');
-		}
-		return false;
-	});
+	$(".tablesorter a.expand").click(expand_handler);
 	
 });
 </script>

@@ -1,6 +1,9 @@
 <?php
 require_once ("secure_area.php");
 require_once (APPPATH."libraries/ofc-library/open-flash-chart.php");
+
+define("FORM_WIDTH", "400");
+
 class Reports extends Secure_area 
 {	
 	function __construct()
@@ -34,6 +37,41 @@ class Reports extends Secure_area
 	{
 		$data = $this->_get_common_report_data();
 		$this->load->view("reports/date_input_excel_export",$data);	
+	}
+	
+ 	function get_detailed_sales_row($sale_id, $sale_type=1)
+	{
+		$this->load->model('reports/Detailed_sales');
+		$model = $this->Detailed_sales;
+		
+		$report_data = $model->getDataBySaleId($sale_id, $sale_type);
+		
+		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'] . '/width:'.FORM_WIDTH, 
+				'POS '.$report_data['sale_id'], 
+				array('class' => 'thickbox')), 
+				$report_data['sale_date'], 
+				$report_data['items_purchased'], 
+				$report_data['employee_name'], 
+				$report_data['customer_name'], 
+				to_currency($report_data['subtotal']), 
+				to_currency($report_data['total']), 
+				to_currency($report_data['tax']),
+				to_currency($report_data['profit']), 
+				$report_data['payment_type'], 
+				$report_data['comment']);
+		echo get_detailed_sales_data_row($summary_data, $this);
+	}
+	
+	function get_summary_data($start_date, $end_date = NULL, $sale_type=0) 
+	{
+		$end_date = $end_date ?: $start_date;
+		$this->load->model('reports/Summary_sales');
+		$model = $this->Summary_sales;
+		$summary = $model->getSummaryData(array(
+				'start_date'=>$start_date, 
+				'end_date'=>$end_date, 
+				'sale_type' => $sale_type));
+		echo get_sales_summary_totals($summary, $this);
 	}
 	
 	//Summary sales report
@@ -767,7 +805,7 @@ class Reports extends Secure_area
 		
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'] . '/width:'.FORM_WIDTH, 'POS '.$row['sale_id'], array('class' => 'thickbox')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),to_currency($row['profit']), $row['payment_type'], $row['comment']);
 			
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -779,8 +817,10 @@ class Reports extends Secure_area
 			"title" =>$this->lang->line('reports_detailed_sales_report'),
 			"subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
+			"editable" => true,	
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
+			"header_width" => intval(100 / count($headers['summary'])),	
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type)),
 			"export_excel" => $export_excel
 		);

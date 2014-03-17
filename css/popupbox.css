@@ -6,7 +6,7 @@
 	font-style: italic;
 }
 
-#customer_basic_info,#item_basic_info,#item_number_info,#supplier_basic_info
+#customer_basic_info,#item_basic_info,#item_number_info,#supplier_basic_info,#sale_basic_info
 {
 	padding: 5px;
 }

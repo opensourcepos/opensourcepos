@@ -137,18 +137,47 @@ class Sale extends CI_Model
 		return $sale_id;
 	}
 	
-	function delete($sale_id)
-	{
-		//Run these queries as a transaction, we want to make sure we do all or nothing
+	function delete_list($sale_ids, $employee_id,$update_inventory=TRUE) {
+		$result = TRUE;
+		foreach($sale_ids as $sale_id) {
+			$result &= $this->delete($sale_id, $employee_id, $update_inventory);
+		}
+		return $result;
+	}
+	
+	function delete($sale_id,$employee_id,$update_inventory=TRUE) {
+		// start a transaction to assure data integrity
 		$this->db->trans_start();
-		
-		$this->db->delete('sales_payments', array('sale_id' => $sale_id)); 
-		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id)); 
-		$this->db->delete('sales_items', array('sale_id' => $sale_id)); 
-		$this->db->delete('sales', array('sale_id' => $sale_id)); 
-		
+		// first delete all payments
+		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
+		// then delete all taxes on items
+		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
+		if ($update_inventory) {
+			// defect, not all item deletions will be undone??
+			// get array with all the items involved in the sale to update the inventory tracking
+			$items = $this->get_sale_items($sale_id)->result_array();
+			foreach($items as $item) {
+				// create query to update inventory tracking
+				$inv_data = array
+				(
+						'trans_date'=>date('Y-m-d H:i:s'),
+						'trans_items'=>$item['item_id'],
+						'trans_user'=>$employee_id,
+						'trans_comment'=>'Deleting sale ' . $sale_id,
+						'trans_inventory'=>$item['quantity_purchased']
+	
+				);
+				// update inventory
+				$this->Inventory->insert($inv_data);
+			}
+		}
+		// delete all items
+		$this->db->delete('sales_items', array('sale_id' => $sale_id));
+		// delete sale itself
+		$this->db->delete('sales', array('sale_id' => $sale_id));
+		// execute transaction
 		$this->db->trans_complete();
-				
+	
 		return $this->db->trans_status();
 	}
 

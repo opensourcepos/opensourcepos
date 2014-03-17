@@ -64,6 +64,20 @@ function get_person_data_row($person,$controller)
 	return $table_data_row;
 }
 
+function get_detailed_sales_data_row($sale, $controller)
+{
+	$table_data_row='<tr>';
+	$table_data_row.='<td><a href="#" class="expand">+</a></td>';
+	foreach($sale as $cell)
+	{
+		$table_data_row.='<td>';
+		$table_data_row.=$cell;
+		$table_data_row.='</td>';
+	}
+	$table_data_row.='</tr>';
+	return $table_data_row;
+}
+
 /*
 Gets the html table to manage suppliers.
 */

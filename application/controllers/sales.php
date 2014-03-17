@@ -274,24 +274,22 @@ class Sales extends Secure_area
 		$data['selected_customer'] = !empty($sale_info['customer_id']) ? $sale_info['customer_id'] . "|" . $person_name : "";
 		$data['sale_info'] = $sale_info;
 		
-		$this->load->view('sales/edit', $data);
+		$this->load->view('sales/form', $data);
 	}
 	
-	function delete($sale_id)
-	{
-		$data = array();
-		
-		if ($this->Sale->delete($sale_id))
+	function delete($sale_id = -1, $update_inventory=TRUE) {
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		$sale_ids= $sale_id == -1 ? $this->input->post('ids') : array($sale_id);
+
+		if($this->Sale->delete_list($sale_ids, $employee_id, $update_inventory))
 		{
-			$data['success'] = true;
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('sales_delete_successful').' '.
+			count($sale_ids).' '.$this->lang->line('sales_one_or_multiple'),'ids'=>$sale_ids));
 		}
 		else
 		{
-			$data['success'] = false;
+			echo json_encode(array('success'=>false,'message'=>$this->lang->line('sales_delete_unsuccessful')));
 		}
-		
-		$this->load->view('sales/delete', $data);
-		
 	}
 	
 	function save($sale_id)
@@ -305,11 +303,19 @@ class Sales extends Secure_area
 		
 		if ($this->Sale->update($sale_data, $sale_id))
 		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('sales_successfully_updated')));
+			echo json_encode(array(
+				'success'=>true,
+				'message'=>$this->lang->line('sales_successfully_updated'),
+				'id'=>$sale_id)
+			);
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('sales_unsuccessfully_updated')));
+			echo json_encode(array(
+				'success'=>false,
+				'message'=>$this->lang->line('sales_unsuccessfully_updated'),
+				'id'=>$sale_id)
+			);
 		}
 	}
 	
