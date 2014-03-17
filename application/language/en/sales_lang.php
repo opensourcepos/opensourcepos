@@ -33,6 +33,7 @@ $lang['sales_complete_sale'] = 'Complete Sale';
 $lang['sales_cancel_sale'] = 'Cancel Sale';
 $lang['sales_add_payment'] = 'Add Payment';
 $lang['sales_receipt'] = 'Sales Receipt';
+$lang['sales_receipt_number']='POS #';
 $lang['sales_id'] = 'Sale ID';
 $lang['sales_sale'] = 'Sale';
 $lang['sales_return'] = 'Return';

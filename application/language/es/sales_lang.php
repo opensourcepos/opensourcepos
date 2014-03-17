@@ -33,6 +33,7 @@ $lang['sales_complete_sale'] = 'Completar Venta';
 $lang['sales_cancel_sale'] = 'Cancelar Venta';
 $lang['sales_add_payment'] = 'Agregar Pago';
 $lang['sales_receipt'] = 'Recibo de Venta';
+$lang['sales_receipt_number']='POS #';
 $lang['sales_id'] = 'ID de Venta';
 $lang['sales_sale'] = 'Venta';
 $lang['sales_return'] = 'Devolución';
@@ -81,8 +82,5 @@ $lang['sales_payments_total'] = 'Pagado';
 $lang['sales_amount_due'] = 'Debe';
 $lang['sales_payment_type'] = "Tipo";
 $lang['sales_payment_amount'] = "Cantidad";
-<<<<<<< HEAD
-=======
 $lang['sales_basic_information'] = "información sobre las entradas";
->>>>>>> master
 ?>

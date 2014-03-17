@@ -33,6 +33,7 @@ $lang['sales_complete_sale'] = 'Завершить продажу';
 $lang['sales_cancel_sale'] = 'Отменить продажу';
 $lang['sales_add_payment'] = 'Добавить оплаты';
 $lang['sales_receipt'] = 'товарный чек';
+$lang['sales_receipt_number']='POS #';
 $lang['sales_id'] = 'Номер Продажы';
 $lang['sales_sale'] = 'Продажа';
 $lang['sales_return'] = 'возвращать';
@@ -81,8 +82,5 @@ $lang['sales_payments_total'] = 'Payments Total';
 $lang['sales_amount_due'] = 'Amount Due';
 $lang['sales_payment_type'] = "тип";
 $lang['sales_payment_amount'] = "количество";
-<<<<<<< HEAD
-=======
 $lang['sales_basic_information'] = "информацию о билетах";
->>>>>>> master
 ?>

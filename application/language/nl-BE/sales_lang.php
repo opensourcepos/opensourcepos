@@ -83,8 +83,5 @@ $lang['sales_payments_total'] = 'Betaald bedrag';
 $lang['sales_amount_due'] = 'Te betalen';
 $lang['sales_payment_type'] = "Type";
 $lang['sales_payment_amount'] = "Bedrag";
-<<<<<<< HEAD
-=======
 $lang['sales_basic_information']='Ticket informatie';
->>>>>>> master
 ?>

@@ -33,6 +33,7 @@ $lang['sales_complete_sale'] = '完成銷售';
 $lang['sales_cancel_sale'] = '取消銷售';
 $lang['sales_add_payment'] = '新增付款';
 $lang['sales_receipt'] = '銷貨單';
+$lang['sales_receipt_number']='POS #';
 $lang['sales_id'] = '銷售編號';
 $lang['sales_sale'] = '銷售';
 $lang['sales_return'] = '退貨';
