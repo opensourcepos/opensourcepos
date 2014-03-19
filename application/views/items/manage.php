@@ -22,30 +22,10 @@ $(document).ready(function()
     	$(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
     });
 
-    $("#low_inventory").click(function()
+    $("#low_inventory, #is_serialized, #no_description, #search_custom, #is_deleted").click(function()
     {
     	$('#items_filter_form').submit();
     });
-
-    $("#is_serialized").click(function()
-    {
-    	$('#items_filter_form').submit();
-    });
-
-    $("#no_description").click(function()
-    {
-    	$('#items_filter_form').submit();
-    });
-//GARRISON ADDED 4/21/2013
-    $("#search_custom").click(function()
-    	    {
-    	    	$('#items_filter_form').submit();
-    	    });
-    	    //END GARRISON ADDED
-    $("#is_deleted").click(function()
-    {
-    	$('#items_filter_form').submit();
-    }); // Parq 131215
 });
 
 
