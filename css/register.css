@@ -9,7 +9,7 @@
 {
 	position:relative;
 	background-color:#DDD;
-	padding: 8px 0px 8px 0px;
+	padding: 8px 5px 8px 5px;
 }
 
 #show_suspended_sales_button
@@ -123,14 +123,9 @@
 	margin-top:5px;
 	clear:both;
 }
-#suspended_sales_table th
+#suspended_sales_table
 {
-	text-align:center;
-}
-
-#suspended_sales_table td
-{
-	padding: 7px;
+	width:100%;
 }
 
 #credit_card_form fieldset 
