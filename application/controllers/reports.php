@@ -302,9 +302,24 @@ class Reports extends Secure_area
 	function date_input()
 	{
 		$data = $this->_get_common_report_data();
+        $data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);	
 	}
 	
+    function date_input_recv()
+    {
+        $data = $this->_get_common_report_data();
+        $data['mode'] = 'receiving';
+        $this->load->view("reports/date_input",$data);  
+    }
+    
+    function date_input_reqs()
+    {
+        $data = $this->_get_common_report_data();
+        $data['mode'] = 'requisition';
+        $this->load->view("reports/date_input",$data);  
+    }
+    
 	//Graphical summary sales report
 	function graphical_summary_sales($start_date, $end_date, $sale_type)
 	{
@@ -827,14 +842,14 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/tabular_details",$data);
 	}
-
-	function detailed_receivings($start_date, $end_date, $sale_type, $export_excel=0)
+	
+	function detailed_receivings($start_date, $end_date, $receiving_type, $export_excel=0)
 	{
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 		
 		$headers = $model->getDataColumns();
-		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type));
+		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type));
 		
 		$summary_data = array();
 		$details_data = array();
@@ -855,13 +870,46 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type)),
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type)),
 			"export_excel" => $export_excel
 		);
 
 		$this->load->view("reports/tabular_details",$data);
 	}
-			
+    
+    function detailed_requisition($start_date, $end_date , $export_excel=0)
+    {
+        $this->load->model('reports/Detailed_requisition');
+        $model = $this->Detailed_requisition;
+        $report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date));
+        
+        $summary_data = array();
+        $details_data = array();
+        
+        foreach($report_data['summary'] as $key=>$row)
+        {
+            $summary_data[] = array(anchor('receivings/requisition_receipt/'.$row['requisition_id'], 'REQS '.$row['requisition_id'], array('target' => '_blank')), $row['requisition_date'], $row['employee_name'], $row['comment']);
+            
+            foreach($report_data['details'][$key] as $drow)
+            {
+                $details_data[$key][] = array($drow['name'], $drow['requisition_quantity'], 
+                                                $drow['related_item_id'], $drow['related_item_quantity'],
+                                                $drow['related_item_total_quantity']);
+            }
+        }
+             
+        $data = array(
+            "title" =>$this->lang->line('reports_detailed_requisition_report'),
+            "subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
+            "headers" => $model->getDataColumns(),
+            "summary_data" => $summary_data,
+            "details_data" => $details_data,
+            "overall_summary_data" => '',
+            "export_excel" => $export_excel
+        );
+        $this->load->view("reports/tabular_details",$data);
+    }
+    
 	function excel_export()
 	{
 		$this->load->view("reports/excel_export",array());		

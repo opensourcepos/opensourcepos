@@ -14,6 +14,7 @@ abstract class Report extends CI_Model
 		//Create our temp tables to work with the data in our report
 		$this->Sale->create_sales_items_temp_table();
 		$this->Receiving->create_receivings_items_temp_table();
+        $this->Receiving->create_requisition_items_temp_table();
 	}
 	
 	//Returns the column names used for the report

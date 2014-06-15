@@ -15,7 +15,7 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'),'warehouse');
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
 		echo implode("\n",$suggestions);
 	}
@@ -37,6 +37,7 @@ class Receivings extends Secure_area
 	{
 		$mode = $this->input->post("mode");
 		$this->receiving_lib->set_mode($mode);
+        $this->receiving_lib->empty_cart();        
 		$this->_reload();
 	}
 
@@ -45,7 +46,7 @@ class Receivings extends Secure_area
 		$data=array();
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
-		$quantity = $mode=="receive" ? 1:-1;
+		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
 
 		if($this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
 		{
@@ -55,9 +56,19 @@ class Receivings extends Secure_area
 		{
 			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt);
 		}
-		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity))
+		else
 		{
-			$data['error']=$this->lang->line('recvs_unable_to_add_item');
+		    if($mode == 'requisition')
+            {
+                if(!$this->receiving_lib->add_item_unit($item_id_or_number_or_item_kit_or_receipt))
+                     $data['error']=$this->lang->line('reqs_unable_to_add_item');
+            }
+            else
+            {
+                if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity))
+                    $data['error']=$this->lang->line('recvs_unable_to_add_item');
+            }
+		   
 		}
 		$this->_reload($data);
 	}
@@ -87,6 +98,26 @@ class Receivings extends Secure_area
 
 		$this->_reload($data);
 	}
+
+    function edit_item_unit($item_id)
+    {
+        $data= array();
+
+        $this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|integer'); 
+        $quantity = $this->input->post("quantity");
+        
+
+        if ($this->form_validation->run() != FALSE)
+        {
+            $this->receiving_lib->edit_item_unit($item_id,$description,$quantity,0,0);
+        }
+        else
+        {
+            $data['error']=$this->lang->line('recvs_error_editing_item');
+        }
+
+        $this->_reload($data);
+    }
 
 	function delete_item($item_number)
 	{
@@ -138,6 +169,48 @@ class Receivings extends Secure_area
 		$this->receiving_lib->clear_all();
 	}
 
+    function requisition_complete()
+    {
+        $data['cart']=$this->receiving_lib->get_cart();
+        $data['receipt_title']=$this->lang->line('reqs_receipt');
+        $data['transaction_time']= date('m/d/Y h:i:s a');
+
+        $employee_id=$this->Employee->get_logged_in_employee_info()->person_id;   
+        $emp_info=$this->Employee->get_info($employee_id);
+        $data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
+         
+        $comment = $this->input->post('comment');
+        
+        //SAVE requisition to database
+        $data['requisition_id']='REQS '.$this->Receiving->save_requisition($data['cart'],$employee_id,$comment);
+        
+        if ($data['requisition_id'] == 'REQS -1')
+        {
+            $data['error_message'] = $this->lang->line('reqs_transaction_failed');
+        }
+
+        $this->load->view("receivings/requisition_receipt",$data);
+        $this->receiving_lib->clear_all();
+    }
+    
+    function requisition_receipt($requisition_id)
+    {
+    	$requisition_info = $this->Receiving->get_requisition_info($requisition_id)->row_array();
+    	$this->receiving_lib->copy_entire_requisition($requisition_id);
+
+    	$data['cart']=$this->receiving_lib->get_cart();
+    	$data['receipt_title']=$this->lang->line('reqs_receipt');
+    	$data['transaction_time']= date('m/d/Y h:i:s a');
+    	
+    	$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+    	$emp_info=$this->Employee->get_info($employee_id);
+    	$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
+    	
+    	$data['requisition_id']='REQS '.$requisition_id;
+    	$this->load->view("receivings/requisition_receipt",$data);
+    	$this->receiving_lib->clear_all();
+    }
+
 	function receipt($receiving_id)
 	{
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
@@ -167,7 +240,7 @@ class Receivings extends Secure_area
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart']=$this->receiving_lib->get_cart();
-		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'));
+		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'), 'requisition'=>$this->lang->line('recvs_requisition'));
 		$data['mode']=$this->receiving_lib->get_mode();
 		$data['total']=$this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->Employee->has_permission('items', $person_info->person_id);

@@ -27,18 +27,20 @@ class Items extends Secure_area implements iData_controller
 		$low_inventory=$this->input->post('low_inventory');
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
-		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
-		$is_deleted=$this->input->post('is_deleted'); // Parq 131215
-
+		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013    
+        $is_deleted=$this->input->post('is_deleted'); // Parq 131215
+		$stock_type=$this->input->post('stock_type');
+        
 		$data['search_section_state']=$this->input->post('search_section_state');
 		$data['low_inventory']=$this->input->post('low_inventory');
 		$data['is_serialized']=$this->input->post('is_serialized');
 		$data['no_description']=$this->input->post('no_description');
 		$data['search_custom']=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
 		$data['is_deleted']=$this->input->post('is_deleted'); // Parq 131215
+		$data['stock_type']=$this->input->post('stock_type');
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width(); 
-		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
+		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted,$stock_type),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
 		$this->load->view('items/manage',$data);
 	}
 
@@ -66,7 +68,7 @@ class Items extends Secure_area implements iData_controller
 	
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'),'warehouse');
 		echo implode("\n",$suggestions);
 	}
 	
@@ -202,6 +204,9 @@ class Items extends Secure_area implements iData_controller
 		$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
 		$data['default_tax_1_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
 		$data['default_tax_2_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
+        $data['stock_type'] = $data['item_info']->stock_type;
+        
+        $data['item_unit_info']=$this->Item_unit->get_info($item_id);
 		$this->load->view("items/form",$data);
 	}
 	
@@ -271,7 +276,7 @@ class Items extends Secure_area implements iData_controller
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
 		'is_serialized'=>$this->input->post('is_serialized'),
 		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
-
+		'stock_type'=>$this->input->post('stock_type'),
 		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
 		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
 		'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/
@@ -323,6 +328,16 @@ class Items extends Secure_area implements iData_controller
 				}
 			}
 			$this->Item_taxes->save($items_taxes_data, $item_id);
+            
+            $items_unit_data = array(
+            'item_id'=>$item_id,
+            'unit_quantity'=>$this->input->post('unit_quantity'),
+            'related_number'=>$this->input->post('related_number'));
+            if($items_unit_data['related_number'] == null)
+            {
+                $items_unit_data['related_number'] = $item_data['item_number'];
+            }
+            $this->Item_unit->save($items_unit_data, $item_id);
 		}
 		else//failure
 		{
@@ -552,5 +567,10 @@ class Items extends Secure_area implements iData_controller
 	{
 		return 360;
 	}
+    
+    function is_sale_store_item($item_number)
+    {  
+        echo $this->Item->is_sale_store_item_exist($item_number);        
+    }
 }
 ?>

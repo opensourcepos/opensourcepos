@@ -18,14 +18,20 @@ class Summary_payments extends Report
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
 		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
-		if ($inputs['sale_type'] == 'sales')
-		{
-			$this->db->where('payment_amount > 0');
-		}
-		elseif ($inputs['sale_type'] == 'returns')
-		{
-			$this->db->where('payment_amount < 0');
-		}
+		if ($inputs['sale_type'] == 'sales_retail')
+        {
+            $this->db->where('quantity_purchased > 0');
+            $this->db->where('sale_type', 'sale_stock');
+        }
+        elseif($inputs['sale_type'] == 'sales_wholesale')
+        {
+            $this->db->where('quantity_purchased > 0');
+            $this->db->where('sale_type', 'warehouse');
+        }
+        elseif ($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }       
 		$this->db->group_by("payment_type");
 		return $this->db->get()->result_array();
 	}
@@ -36,14 +42,20 @@ class Summary_payments extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
 		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
-		if ($inputs['sale_type'] == 'sales')
-		{
-			$this->db->where('quantity_purchased > 0');
-		}
-		elseif ($inputs['sale_type'] == 'returns')
-		{
-			$this->db->where('quantity_purchased < 0');
-		}
+		if ($inputs['sale_type'] == 'sales_retail')
+        {
+            $this->db->where('quantity_purchased > 0');
+            $this->db->where('sale_type = \'sale_stock\'');
+        }
+        elseif($inputs['sale_type'] == 'sales_wholesale')
+        {
+            $this->db->where('quantity_purchased > 0');
+            $this->db->where('sale_type = \'warehouse\'');
+        }
+        elseif ($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }       
 		return $this->db->get()->row_array();
 	}
 }

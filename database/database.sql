@@ -145,6 +145,7 @@ CREATE TABLE `ospos_items` (
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
+  `stock_type` enum('sale_stock','warehouse') NOT NULL DEFAULT 'warehouse',
   `custom1` VARCHAR(25) NOT NULL,
   `custom2` VARCHAR(25) NOT NULL,
   `custom3` VARCHAR(25) NOT NULL,
@@ -219,6 +220,64 @@ CREATE TABLE `ospos_item_kit_items` (
 -- Dumping data for table `ospos_item_kit_items`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_item_unit`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_item_unit` (
+  `item_id` int(11) NOT NULL,
+  `unit_quantity` int(11) NOT NULL,
+  `related_number` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ospos_item_unit`
+--
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_requisitions`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_requisitions` (
+  `requisition_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `employee_id` int(11) NOT NULL DEFAULT '0',
+  `comment` text NOT NULL,
+  `requisition_id` int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`requisition_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=111 ;
+
+--
+-- Dumping data for table `ospos_requisitions`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_requisitions_items`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_requisitions_items` (
+  `requisition_id` int(10) NOT NULL DEFAULT '0',
+  `item_id` int(11) NOT NULL DEFAULT '0',
+  `line` int(3) NOT NULL,
+  `requisition_quantity` int(10) NOT NULL DEFAULT '0',
+  `related_item_id` int(10) NOT NULL DEFAULT '0',
+  `related_item_quantity` int(11) NOT NULL,
+  `related_item_total_quantity` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`requisition_id`,`item_id`,`line`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ospos_requisitions_items`
+--
 
 -- --------------------------------------------------------
 
@@ -647,20 +706,20 @@ ALTER TABLE `ospos_sales`
 --
 ALTER TABLE `ospos_sales_items`
   ADD CONSTRAINT `ospos_sales_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_sales_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`);
+  ADD CONSTRAINT `ospos_sales_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ospos_sales_items_taxes`
 --
 ALTER TABLE `ospos_sales_items_taxes`
-  ADD CONSTRAINT `ospos_sales_items_taxes_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_items` (`sale_id`),
+  ADD CONSTRAINT `ospos_sales_items_taxes_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_items` (`sale_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `ospos_sales_items_taxes_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`);
 
 --
 -- Constraints for table `ospos_sales_payments`
 --
 ALTER TABLE `ospos_sales_payments`
-  ADD CONSTRAINT `ospos_sales_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`);
+  ADD CONSTRAINT `ospos_sales_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ospos_sales_suspended`
@@ -674,20 +733,32 @@ ALTER TABLE `ospos_sales_suspended`
 --
 ALTER TABLE `ospos_sales_suspended_items`
   ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`);
+  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ospos_sales_suspended_items_taxes`
 --
 ALTER TABLE `ospos_sales_suspended_items_taxes`
-  ADD CONSTRAINT `ospos_sales_suspended_items_taxes_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended_items` (`sale_id`),
+  ADD CONSTRAINT `ospos_sales_suspended_items_taxes_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended_items` (`sale_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `ospos_sales_suspended_items_taxes_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`);
 
 --
 -- Constraints for table `ospos_sales_suspended_payments`
 --
 ALTER TABLE `ospos_sales_suspended_payments`
-  ADD CONSTRAINT `ospos_sales_suspended_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`);
+  ADD CONSTRAINT `ospos_sales_suspended_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `ospos_requisitions_items
+ALTER TABLE `ospos_requisitions_items`
+  ADD CONSTRAINT `ospos_requisitions_items_ibfk_1` FOREIGN KEY (`requisition_id`) REFERENCES `ospos_requisitions` (`requisition_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ospos_requisitions_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`);
+  
+--
+-- Constraints for table `ospos_item_unit`
+--
+ALTER TABLE `ospos_item_unit`
+  ADD CONSTRAINT `ospos_item_unit_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ospos_suppliers`
