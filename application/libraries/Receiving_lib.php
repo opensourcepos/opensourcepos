@@ -319,7 +319,7 @@ class Receiving_lib
 	
 		foreach($this->CI->Receiving->get_requisition_items($requisition_id)->result() as $row)
 		{
-			$this->add_item_unit($row->item_id,$row->quantity_purchased,$row->description);
+			$this->add_item_unit($row->item_id,$row->requisition_quantity,$row->description);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($requisition_id)->person_id);
 	
