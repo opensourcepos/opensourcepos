@@ -5,11 +5,11 @@
  * An open source application development framework for PHP 5.1.6 or newer
  *
  * @package		CodeIgniter
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
  * @author		EllisLab Dev Team
  * @link		http://codeigniter.com
- * @since		Version 2.1.0
+ * @since		Version 2.1.2
  * @filesource
  */
 
@@ -36,7 +36,7 @@ class CI_DB_pdo_driver extends CI_DB {
 	var $_escape_char = '';
 	var $_like_escape_str;
 	var $_like_escape_chr;
-	
+
 
 	/**
 	 * The syntax to count rows is slightly different across different
@@ -45,29 +45,29 @@ class CI_DB_pdo_driver extends CI_DB {
 	 */
 	var $_count_string = "SELECT COUNT(*) AS ";
 	var $_random_keyword;
-	
+
 	var $options = array();
 
 	function __construct($params)
 	{
 		parent::__construct($params);
-		
+
 		// clause and character used for LIKE escape sequences
 		if (strpos($this->hostname, 'mysql') !== FALSE)
 		{
 			$this->_like_escape_str = '';
 			$this->_like_escape_chr = '';
-			
+
 			//Prior to this version, the charset can't be set in the dsn
 			if(is_php('5.3.6'))
 			{
 				$this->hostname .= ";charset={$this->char_set}";
 			}
-			
+
 			//Set the charset with the connection options
 			$this->options['PDO::MYSQL_ATTR_INIT_COMMAND'] = "SET NAMES {$this->char_set}";
 		}
-		else if (strpos($this->hostname, 'odbc') !== FALSE)
+		elseif (strpos($this->hostname, 'odbc') !== FALSE)
 		{
 			$this->_like_escape_str = " {escape '%s'} ";
 			$this->_like_escape_chr = '!';
@@ -77,9 +77,9 @@ class CI_DB_pdo_driver extends CI_DB {
 			$this->_like_escape_str = " ESCAPE '%s' ";
 			$this->_like_escape_chr = '!';
 		}
-		
-		$this->hostname .= ";dbname=".$this->database;
-		
+
+		empty($this->database) OR $this->hostname .= ';dbname='.$this->database;
+
 		$this->trans_enabled = FALSE;
 
 		$this->_random_keyword = ' RND('.time().')'; // database specific random keyword
@@ -94,7 +94,7 @@ class CI_DB_pdo_driver extends CI_DB {
 	function db_connect()
 	{
 		$this->options['PDO::ATTR_ERRMODE'] = PDO::ERRMODE_SILENT;
-		
+
 		return new PDO($this->hostname, $this->username, $this->password, $this->options);
 	}
 
@@ -189,18 +189,26 @@ class CI_DB_pdo_driver extends CI_DB {
 	function _execute($sql)
 	{
 		$sql = $this->_prep_query($sql);
-		$result_id = $this->conn_id->query($sql);
-		
-		if (is_object($result_id))
+		$result_id = $this->conn_id->prepare($sql);
+
+		if (is_object($result_id) && ($result = $result_id->execute()))
 		{
-			$this->affect_rows = $result_id->rowCount();
+			if (is_numeric(stripos($sql, 'SELECT')))
+			{
+				$this->affect_rows = count($result_id->fetchAll());
+			}
+			else
+			{
+				$this->affect_rows = $result_id->rowCount();
+			}
 		}
 		else
 		{
 			$this->affect_rows = 0;
+			$result = FALSE;
 		}
-		
-		return $result_id;
+
+		return $result;
 	}
 
 	// --------------------------------------------------------------------
