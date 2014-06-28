@@ -148,6 +148,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 			'ru'    => 'Russian',
 			'nl-BE'    => 'Dutch',
 			'zh'    => 'Chinese',
+			'fr'	=> 'French',
                         'id'    => 'Indonesia'
 			), 
 		$this->config->item('language'));
