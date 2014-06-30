@@ -6,7 +6,7 @@
  *
  * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -506,7 +506,7 @@ class CI_Profiler {
 
 		foreach ($this->CI->session->all_userdata() as $key => $val)
 		{
-			if (is_array($val))
+			if (is_array($val) OR is_object($val))
 			{
 				$val = print_r($val, TRUE);
 			}

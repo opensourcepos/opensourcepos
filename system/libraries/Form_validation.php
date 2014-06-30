@@ -6,7 +6,7 @@
  *
  * @package		CodeIgniter
  * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2011, EllisLab, Inc.
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc.
  * @license		http://codeigniter.com/user_guide/license.html
  * @link		http://codeigniter.com
  * @since		Version 1.0
@@ -1079,11 +1079,12 @@ class CI_Form_validation {
 	 *
 	 * @access	public
 	 * @param	string
+	 * @param	string "ipv4" or "ipv6" to validate a specific ip format
 	 * @return	string
 	 */
-	public function valid_ip($ip)
+	public function valid_ip($ip, $which = '')
 	{
-		return $this->CI->input->valid_ip($ip);
+		return $this->CI->input->valid_ip($ip, $which);
 	}
 
 	// --------------------------------------------------------------------
