@@ -183,6 +183,22 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 	</div>
 </div>
 
+<!-- Parq 131215 Start -->
+<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('items_is_deleted').':', 'is_deleted',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'is_deleted',
+		'id'=>'is_deleted',
+		'value'=>1,
+		'checked'=>($item_info->deleted)? 1 : 0)
+	);?>
+	</div>
+</div>
+<!-- Parq End -->
+
+
+
 <!--  GARRISON ADDED 4/21/2013 -->
 <div class="field_row clearfix">	
 <?php
