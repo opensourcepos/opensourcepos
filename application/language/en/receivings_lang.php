@@ -32,4 +32,8 @@ $lang['reqs_related_item_quantity']='Related item qty.';
 $lang['reqs_receipt']='Requisition Receipt';
 $lang['reqs_transaction_failed'] = 'Requisition Transactions Failed';
 $lang['reqs_unable_to_add_item']='Unable to add item to requisition';
+
+$lang['recvs_stock_source']='Stock source';
+$lang['recvs_stock_destination']='Stock destination';
+$lang['recvs_stock_locaiton']='Stock location';
 ?>

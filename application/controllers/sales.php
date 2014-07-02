@@ -15,16 +15,7 @@ class Sales extends Secure_area
 
 	function item_search()
 	{
-	    $stock_type;
-	    if($this->sale_lib->get_mode()=='sale_wholesale')
-        {
-            $stock_type = 'warehouse';
-        }
-        else 
-        {
-           $stock_type = 'sale_stock';
-        }
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'),$stock_type);
+		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
 		echo implode("\n",$suggestions);
 	}
@@ -46,7 +37,10 @@ class Sales extends Secure_area
 	{
 	    $this->sale_lib->clear_all();
 		$mode = $this->input->post("mode");
-		$this->sale_lib->set_mode($mode);        
+		$this->sale_lib->set_mode($mode);     
+
+		$stock_location = $this->input->post("stock_location");  
+        $this->sale_lib->set_sale_location($stock_location);
 		$this->_reload();
 	}
 	
@@ -122,7 +116,7 @@ class Sales extends Secure_area
 		$data=array();
 		$mode = $this->sale_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
-		$quantity = (($mode=="sale_wholesale") or ($mode=="sale_retail"))? 1:-1;
+		$quantity = ($mode=="return")? -1:1;
 
 		if($this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
 		{
@@ -203,7 +197,8 @@ class Sales extends Secure_area
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
-
+        $data['stock_location']=$this->sale_lib->get_sale_location();
+        
 		if($customer_id!=-1)
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
@@ -211,7 +206,7 @@ class Sales extends Secure_area
 		}
 
 		//SAVE sale to database
-		$data['sale_id']='POS '.$this->Sale->save($data['cart'], $customer_id,$employee_id,$comment,$data['payments']);
+		$data['sale_id']='POS '.$this->Sale->save($data['cart'], $customer_id,$employee_id,$comment,$data['payments'], $data['stock_location']);
 		if ($data['sale_id'] == 'POS -1')
 		{
 			$data['error_message'] = $this->lang->line('sales_transaction_failed');
@@ -351,8 +346,19 @@ class Sales extends Secure_area
 	function _reload($data=array())
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
-		$data['cart']=$this->sale_lib->get_cart();
-		$data['modes']=array('sale_retail'=>$this->lang->line('sales_sale_retail'),'sale_wholesale'=>$this->lang->line('sales_wholesale'),'return'=>$this->lang->line('sales_return'));
+		$data['cart']=$this->sale_lib->get_cart();	 
+        $data['modes']['return']=$this->lang->line('sales_return');
+        $data['mode']=$this->sale_lib->get_mode();
+                     
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
+        foreach($stock_locations as $location_data)
+        {            
+            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+        }       		
+        $data['stock_location']=$this->sale_lib->get_sale_location();
+        
+		$data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
 		$data['mode']=$this->sale_lib->get_mode();
 		$data['subtotal']=$this->sale_lib->get_subtotal();
 		$data['taxes']=$this->sale_lib->get_taxes();

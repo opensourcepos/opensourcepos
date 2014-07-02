@@ -20,6 +20,8 @@ if (isset($success))
 <?php echo form_open("sales/change_mode",array('id'=>'mode_form')); ?>
 	<span><?php echo $this->lang->line('sales_mode') ?></span>
 <?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
+<span><?php echo $this->lang->line('sales_stock_location') ?></span>
+<?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'onchange="$(\'#mode_form\').submit();"'); ?>
 <div id="show_suspended_sales_button">
 	<?php echo anchor("sales/suspended/width:425",
 	"<div class='small_button'><span style='font-size:73%;'>".$this->lang->line('sales_suspended_sales')."</span></div>",
@@ -86,7 +88,10 @@ else
 		<tr>
 		<td><?php echo anchor("sales/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
 		<td><?php echo $item['item_number']; ?></td>
-		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $cur_item_info->quantity; ?> in stock]</td>
+		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php 
+		                                                                      $item_quantity = $this->Item_quantitys->get_item_quantity($item['item_id'], $this->sale_lib->get_location_id_from_stock_location($stock_location));
+		                                                                      echo $item_quantity->quantity; 
+		                                                              ?> in stock]</td>
 
 
 

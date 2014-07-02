@@ -88,8 +88,7 @@ $lang['reports_receiving_type'] = 'Receiving Type';
 $lang['reports_all'] = 'All';
 $lang['reports_returns'] = 'Returns';
 $lang['reports_discount'] = 'Discounts';
-$lang['reports_sales_retail'] = 'Sales retail';
-$lang['reports_sales_wholesale'] = 'Sales wholesale';
+$lang['reports_sales'] = 'Sales';
 $lang['reports_requisition'] = 'Requisition';
 $lang['reports_receiving_id'] = 'Receiving ID';
 $lang['reports_requisition_id'] = 'Requisition ID';
@@ -100,4 +99,6 @@ $lang['reports_requisition_related_item'] = 'Related item';
 $lang['reports_requisition_related_item_unit_quantity'] = 'Unit qty.';
 $lang['reports_requisition_related_item_total_quantity'] = 'Total qty.';
 $lang['reports_detailed_requisition_report'] = 'Detailed Requisitions Report';
+
+$lang['reports_stock_location'] = 'Stock location';
 ?>

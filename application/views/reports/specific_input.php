@@ -32,8 +32,7 @@ if(isset($error))
 	<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required')); ?>
 	<div id='report_sale_type'>
 		<?php echo form_dropdown('sale_type',array('all' => $this->lang->line('reports_all'), 
-		  'sales_retail' => $this->lang->line('reports_sales_retail'), 
-		  'sales_wholesale' => $this->lang->line('reports_sales_wholesale'),
+		  'sales' => $this->lang->line('reports_sales'), 	  
 		  'returns' => $this->lang->line('reports_returns')) , 'all', 'id="sale_type"'); ?>
 	</div>
 	

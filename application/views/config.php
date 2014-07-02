@@ -258,6 +258,16 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_stock_location').':', 'stock_location',array('class'=>'required wide')); ?>
+    <div class='form_field'>
+    <?php echo form_input(array(
+        'name'=>'stock_location',
+        'id'=>'stock_location',
+        'value'=>$this->config->item('stock_location')));?>
+    </div>
+</div>
+
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_print_after_sale').':', 'print_after_sale',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -420,7 +430,9 @@ $(document).ready(function()
     			number:true
     		},
     		email:"email",
-    		return_policy: "required"    		
+    		return_policy: "required",
+    		stock_location_number:"required"
+    	 		
    		},
 		messages: 
 		{
@@ -433,7 +445,8 @@ $(document).ready(function()
     			number:"<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
     		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>"
+     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
+     		stock_location_number:"<?php echo $this->lang->line('config_stock_location_required'); ?>"         
 	
 		}
 	});

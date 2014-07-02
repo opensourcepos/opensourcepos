@@ -32,4 +32,7 @@ $lang['config_custom7'] = 'Custom Field 7'; //GARRISON ADDED 4/21/2013
 $lang['config_custom8'] = 'Custom Field 8'; //GARRISON ADDED 4/21/2013
 $lang['config_custom9'] = 'Custom Field 9'; //GARRISON ADDED 4/21/2013
 $lang['config_custom10'] = 'Custom Field 10'; //GARRISON ADDED 4/21/2013
+
+$lang['config_stock_location'] = 'Stock location';
+$lang['config_stock_location_required'] = 'Stock location number is a required field';
 ?>

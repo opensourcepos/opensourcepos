@@ -46,7 +46,44 @@ class Receiving_lib
 	{
 		$this->CI->session->set_userdata('recv_mode',$mode);
 	}
+    
+    function get_stock_source()
+    {
+        if(!$this->CI->session->userdata('recv_stock_source'))
+        {
+             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
+             $location_name = 'stock_'.$stock_locations[0]['location_id'];
+             $this->set_stock_source($location_name);
+        }
+        return $this->CI->session->userdata('recv_stock_source');
+    }
 
+    function set_stock_source($stock_source)
+    {
+        $this->CI->session->set_userdata('recv_stock_source',$stock_source);
+    }
+    
+    function get_stock_destination()
+    {
+        if(!$this->CI->session->userdata('recv_stock_destination'))
+        {
+             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
+             $location_name = 'stock_'.$stock_locations[0]['location_id'];
+             $this->set_stock_destination($location_name);
+        }
+        return $this->CI->session->userdata('recv_stock_destination');
+    }
+
+    function set_stock_destination($stock_destination)
+    {
+        $this->CI->session->set_userdata('recv_stock_destination',$stock_destination);
+    }
+    
+    function get_location_id_from_stock_location($location)
+    {
+        return substr($location, 6);
+    }
+    
 	function add_item($item_id,$quantity=1,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists in database.

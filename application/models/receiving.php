@@ -24,7 +24,7 @@ class Receiving extends CI_Model
 		return ($query->num_rows()==1);
 	}
 
-	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false)
+	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$stock_location,$receiving_id=false)
 	{
 		if(count($items)==0)
 			return -1;
@@ -63,8 +63,11 @@ class Receiving extends CI_Model
 			$this->db->insert('receivings_items',$receivings_items_data);
 
 			//Update stock quantity
-			$item_data = array('quantity'=>$cur_item_info->quantity + $item['quantity']);
-			$this->Item->save($item_data,$item['item_id']);
+			$item_quantity = $this->Item_quantitys->get_item_quantity($item['item_id'], $this->receiving_lib->get_location_id_from_stock_location($stock_location));		
+            $this->Item_quantitys->save(array('quantity'=>$item_quantity->quantity + $item['quantity'],
+                                              'item_id'=>$item['item_id'],
+                                              'location_id'=>$this->receiving_lib->get_location_id_from_stock_location($stock_location)), $item_quantity->item_quantity_id);
+			
 			
 			$qty_recv = $item['quantity'];
 			$recv_remarks ='RECV '.$receiving_id;
@@ -73,6 +76,7 @@ class Receiving extends CI_Model
 				'trans_date'=>date('Y-m-d H:i:s'),
 				'trans_items'=>$item['item_id'],
 				'trans_user'=>$employee_id,
+				'location_id'=>$this->receiving_lib->get_location_id_from_stock_location($stock_location),
 				'trans_comment'=>$recv_remarks,
 				'trans_inventory'=>$qty_recv
 			);

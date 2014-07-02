@@ -34,8 +34,6 @@ $lang['sales_cancel_sale']='Cancel Sale';
 $lang['sales_add_payment']='Add Payment';
 $lang['sales_receipt']='Sales Receipt';
 $lang['sales_id']='Sale ID';
-$lang['sales_sale_retail']='Sale retail';
-$lang['sales_wholesale']='Sale wholesale';
 $lang['sales_return']='Return';
 $lang['sales_confirm_finish_sale'] = 'Are you sure you want to submit this sale? This cannot be undone.';
 $lang['sales_confirm_cancel_sale'] = 'Are you sure you want to clear this sale? All items will cleared.';
@@ -85,4 +83,7 @@ $lang['sales_amount_due'] = 'Amount Due';
 $lang['sales_payment_type'] = "Type";
 $lang['sales_payment_amount'] = "Amount";
 $lang['sales_basic_information']='Sale information';
+
+$lang['sales_stock_location']='Stock location';
+$lang['sales_sale']='Sale';
 ?>

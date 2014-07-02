@@ -33,13 +33,9 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	function get_all_filtered($low_inventory=0,$is_serialized=0,$no_description,$search_custom,$is_deleted,$stock_type)/**GARRISON MODIFIED 4/21/2013, Parq 131215 **/
+	function get_all_filtered($is_serialized=0,$no_description,$search_custom,$is_deleted)/**GARRISON MODIFIED 4/21/2013, Parq 131215 **/
 	{
 		$this->db->from('items');
-		if ($low_inventory !=0 )
-		{
-			$this->db->where('quantity <=','reorder_level', false);
-		}
 		if ($is_serialized !=0 )
 		{
 			$this->db->where('is_serialized',1);
@@ -47,12 +43,7 @@ class Item extends CI_Model
 		if ($no_description!=0 )
 		{
 			$this->db->where('description','');
-		}
-        
-        if($stock_type!='all')
-        {
-            $this->db->where('stock_type',$stock_type);
-        }
+		}        
         
         
 /**GARRISON SECTION ADDED 4/21/2013**/
@@ -273,13 +264,12 @@ class Item extends CI_Model
 
 	}
 
-	function get_item_search_suggestions($search,$limit=25,$stock_type='warehouse')
+	function get_item_search_suggestions($search,$limit=25)
 	{
 		$suggestions = array();
 
 		$this->db->from('items');
 		$this->db->where('deleted',0);
-        $this->db->where('stock_type',$stock_type);
 		$this->db->like('name', $search);
 		$this->db->order_by("name", "asc");
 		$by_name = $this->db->get();
@@ -290,7 +280,6 @@ class Item extends CI_Model
 
 		$this->db->from('items');
 		$this->db->where('deleted',0);
-        $this->db->where('stock_type',$stock_type);
 		$this->db->like('item_number', $search);
 		$this->db->order_by("item_number", "asc");
 		$by_item_number = $this->db->get();
@@ -302,7 +291,6 @@ class Item extends CI_Model
 	//Search by description
 		$this->db->from('items');
 		$this->db->where('deleted',0);
-        $this->db->where('stock_type',$stock_type);
 		$this->db->like('description', $search);
 		$this->db->order_by("description", "asc");
 		$by_description = $this->db->get();

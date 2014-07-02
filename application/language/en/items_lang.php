@@ -58,7 +58,6 @@ $lang['items_must_select_item_for_barcode'] = 'You must select at least 1 item t
 $lang['items_excel_import_failed'] = 'Excel import failed';
 $lang['items_allow_alt_description'] = 'Allow Alt Description';
 $lang['items_is_serialized'] = 'Item has Serial Number';
-$lang['items_low_inventory_items'] = 'Low Inventory Items';
 $lang['items_serialized_items'] = 'Serialized Items';
 $lang['items_no_description_items'] = 'No Description Items';
 $lang['items_search_custom_items'] = 'Search Custom Fields';//GARRISON ADDED
@@ -80,7 +79,8 @@ $lang['items_location'] = 'Location';
 $lang['items_is_deleted'] = 'Deleted';// Parq 131215
 $lang['items_stock_type_sale'] = 'Sale stock';
 $lang['items_stock_type_warehouse'] = 'Warehouse stock';
-$lang['items_stock_type'] = 'Stock type';
 $lang['items_unit_quantity'] = 'Unit quantity';
 $lang['items_related_number'] = 'Related item number';
+
+$lang['items_stock_location']='Stock location';
 ?>

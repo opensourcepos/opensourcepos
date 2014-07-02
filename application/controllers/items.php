@@ -24,23 +24,19 @@ class Items extends Secure_area implements iData_controller
 
 	function refresh()
 	{
-		$low_inventory=$this->input->post('low_inventory');
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
 		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013    
-        $is_deleted=$this->input->post('is_deleted'); // Parq 131215
-		$stock_type=$this->input->post('stock_type');
+        $is_deleted=$this->input->post('is_deleted'); // Parq 131215	
         
 		$data['search_section_state']=$this->input->post('search_section_state');
-		$data['low_inventory']=$this->input->post('low_inventory');
 		$data['is_serialized']=$this->input->post('is_serialized');
 		$data['no_description']=$this->input->post('no_description');
 		$data['search_custom']=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
 		$data['is_deleted']=$this->input->post('is_deleted'); // Parq 131215
-		$data['stock_type']=$this->input->post('stock_type');
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width(); 
-		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted,$stock_type),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
+		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
 		$this->load->view('items/manage',$data);
 	}
 
@@ -206,20 +202,48 @@ class Items extends Secure_area implements iData_controller
 		$data['default_tax_2_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
         $data['stock_type'] = $data['item_info']->stock_type;
         
+        $locations_data = $this->Stock_locations->get_undeleted_all()->result_array();
+        $location_array;
+        foreach($locations_data as $location)
+        {
+           $location_array['stock_'.$location['location_id']] =  array('location_name'=>$location['location_name'],
+                                                                       'quantity'=>($item_id == -1)?null:$this->Item_quantitys->get_item_quantity($item_id, $location['location_id'])->quantity);
+        }
+        $data['stock_locations']= $location_array;
+        
         $data['item_unit_info']=$this->Item_unit->get_info($item_id);
 		$this->load->view("items/form",$data);
 	}
-	
+
+    
 	//Ramel Inventory Tracking
 	function inventory($item_id=-1)
 	{
 		$data['item_info']=$this->Item->get_info($item_id);
+        
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
+        foreach($stock_locations as $location_data)
+        {            
+            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+            $data['item_quantitys']['stock_'.$location_data['location_id']] = $this->Item_quantitys->get_item_quantity($item_id,$location_data['location_id'])->quantity;
+        }     
+        
 		$this->load->view("items/inventory",$data);
 	}
 	
 	function count_details($item_id=-1)
 	{
 		$data['item_info']=$this->Item->get_info($item_id);
+        
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
+        foreach($stock_locations as $location_data)
+        {            
+            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+            $data['item_quantitys']['stock_'.$location_data['location_id']] = $this->Item_quantitys->get_item_quantity($item_id,$location_data['location_id'])->quantity;
+        }     
+                
 		$this->load->view("items/count_details",$data);
 	} //------------------------------------------- Ramel
 
@@ -262,6 +286,7 @@ class Items extends Secure_area implements iData_controller
 
 	function save($item_id=-1)
 	{
+        //Save item data
 		$item_data = array(
 		'name'=>$this->input->post('name'),
 		'description'=>$this->input->post('description'),
@@ -270,7 +295,6 @@ class Items extends Secure_area implements iData_controller
 		'item_number'=>$this->input->post('item_number')=='' ? null:$this->input->post('item_number'),
 		'cost_price'=>$this->input->post('cost_price'),
 		'unit_price'=>$this->input->post('unit_price'),
-		'quantity'=>$this->input->post('quantity'),
 		'reorder_level'=>$this->input->post('reorder_level'),
 		'location'=>$this->input->post('location'),
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
@@ -308,15 +332,6 @@ class Items extends Secure_area implements iData_controller
 				$item_data['name'],'item_id'=>$item_id));
 			}
 			
-			$inv_data = array
-			(
-				'trans_date'=>date('Y-m-d H:i:s'),
-				'trans_items'=>$item_id,
-				'trans_user'=>$employee_id,
-				'trans_comment'=>$this->lang->line('items_manually_editing_of_quantity'),
-				'trans_inventory'=>$cur_item_info ? $this->input->post('quantity') - $cur_item_info->quantity : $this->input->post('quantity')
-			);
-			$this->Inventory->insert($inv_data);
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
@@ -328,16 +343,31 @@ class Items extends Secure_area implements iData_controller
 				}
 			}
 			$this->Item_taxes->save($items_taxes_data, $item_id);
+
             
-            $items_unit_data = array(
-            'item_id'=>$item_id,
-            'unit_quantity'=>$this->input->post('unit_quantity'),
-            'related_number'=>$this->input->post('related_number'));
-            if($items_unit_data['related_number'] == null)
+            //Save item quantity
+            $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
+            foreach($stock_locations as $location_data)
             {
-                $items_unit_data['related_number'] = $item_data['item_number'];
-            }
-            $this->Item_unit->save($items_unit_data, $item_id);
+                $updated_quantity = $this->input->post('stock_'.$location_data['location_id'].'_quantity');
+                $location_detail = array('item_id'=>$item_id,
+                                        'location_id'=>$location_data['location_id'],
+                                        'quantity'=>$updated_quantity);  
+                
+                $item_quantity = $this->Item_quantitys->get_item_quantity($item_id, $location_data['location_id']);              
+                $this->Item_quantitys->save($location_detail, $item_quantity->item_quantity_id);
+                
+                $inv_data = array
+                (
+                    'trans_date'=>date('Y-m-d H:i:s'),
+                    'trans_items'=>$item_id,
+                    'trans_user'=>$employee_id,
+                    'location_id'=>$location_data['location_id'],
+                    'trans_comment'=>$this->lang->line('items_manually_editing_of_quantity'),
+                    'trans_inventory'=>$item_quantity->item_quantity_id ? $updated_quantity - $item_quantity->quantity : $updated_quantity
+                );
+                $this->Inventory->insert($inv_data);                                                   
+            }        
 		}
 		else//failure
 		{
@@ -352,21 +382,27 @@ class Items extends Secure_area implements iData_controller
 	{	
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
+        $location_id = $this->get_location_id_from_stock_location($this->input->post('stock_location'));
 		$inv_data = array
 		(
 			'trans_date'=>date('Y-m-d H:i:s'),
 			'trans_items'=>$item_id,
 			'trans_user'=>$employee_id,
+			'location_id'=>$location_id,
 			'trans_comment'=>$this->input->post('trans_comment'),
 			'trans_inventory'=>$this->input->post('newquantity')
 		);
 		$this->Inventory->insert($inv_data);
 		
 		//Update stock quantity
-		$item_data = array(
-		'quantity'=>$cur_item_info->quantity + $this->input->post('newquantity')
+		
+		$item_quantity= $this->Item_quantitys->get_item_quantity($item_id,$location_id);
+		$item_quantity_data = array(
+		'item_id'=>$item_id,
+		'location_id'=>$location_id,
+		'quantity'=>$item_quantity->quantity + $this->input->post('newquantity')
 		);
-		if($this->Item->save($item_data,$item_id))
+		if($this->Item_quantitys->save($item_quantity_data,$item_quantity->item_quantity_id))
 		{			
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_updating').' '.
 			$cur_item_info->name,'item_id'=>$item_id));
@@ -571,6 +607,11 @@ class Items extends Secure_area implements iData_controller
     function is_sale_store_item($item_number)
     {  
         echo $this->Item->is_sale_store_item_exist($item_number);        
+    }
+    
+    function get_location_id_from_stock_location($location)
+    {
+        return substr($location, 6);
     }
 }
 ?>

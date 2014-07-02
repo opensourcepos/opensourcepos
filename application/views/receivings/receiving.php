@@ -13,8 +13,28 @@ if(isset($error))
 
 <div id="register_wrapper">
 	<?php echo form_open("receivings/change_mode",array('id'=>'mode_form')); ?>
-		<span><?php echo $this->lang->line('recvs_mode') ?></span>
+    <span><?php echo $this->lang->line('recvs_mode') ?></span>
 	<?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
+    
+    <?php
+    if($mode == 'requisition')
+    {
+    ?>   
+        <span><?php echo $this->lang->line('recvs_stock_source') ?></span>
+        <?php echo form_dropdown('stock_source',$stock_locations,$stock_source,'onchange="$(\'#mode_form\').submit();"'); ?>
+        <span><?php echo $this->lang->line('recvs_stock_destination') ?></span>
+        <?php echo form_dropdown('stock_destination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();"'); ?>        
+    <?php
+    }
+    else 
+    {
+    ?>
+        <span><?php echo $this->lang->line('recvs_stock_locaiton') ?></span>
+        <?php echo form_dropdown('stock_source',$stock_locations,$stock_source,'onchange="$(\'#mode_form\').submit();"'); ?>
+    <?php   
+    }
+    ?>
+    
 	</form>
 	<?php echo form_open("receivings/add",array('id'=>'add_item_form')); ?>
 	<label id="item_label" for="item">

@@ -15,7 +15,7 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'),'warehouse');
+		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
 		echo implode("\n",$suggestions);
 	}
@@ -37,6 +37,12 @@ class Receivings extends Secure_area
 	{
 		$mode = $this->input->post("mode");
 		$this->receiving_lib->set_mode($mode);
+        
+        $stock_source = $this->input->post("stock_source");
+        $this->receiving_lib->set_stock_source($stock_source);
+        
+        $stock_deatination = $this->input->post("stock_deatination");
+        $this->receiving_lib->set_stock_destination($stock_deatination);
         $this->receiving_lib->empty_cart();        
 		$this->_reload();
 	}
@@ -143,6 +149,7 @@ class Receivings extends Secure_area
 		$emp_info=$this->Employee->get_info($employee_id);
 		$payment_type = $this->input->post('payment_type');
 		$data['payment_type']=$this->input->post('payment_type');
+        $data['stock_location']=$this->receiving_lib->get_stock_source();
 
 		if ($this->input->post('amount_tendered'))
 		{
@@ -158,7 +165,7 @@ class Receivings extends Secure_area
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$payment_type);
+		$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$payment_type,$data['stock_location']);
 		
 		if ($data['receiving_id'] == 'RECV -1')
 		{
@@ -242,6 +249,17 @@ class Receivings extends Secure_area
 		$data['cart']=$this->receiving_lib->get_cart();
 		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'), 'requisition'=>$this->lang->line('recvs_requisition'));
 		$data['mode']=$this->receiving_lib->get_mode();
+        
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
+        foreach($stock_locations as $location_data)
+        {            
+            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+        }     
+        
+        $data['stock_source']=$this->receiving_lib->get_stock_source();
+        $data['stock_destination']=$this->receiving_lib->get_stock_destination();
+        
 		$data['total']=$this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->Employee->has_permission('items', $person_info->person_id);
 		$data['payment_options']=array(
