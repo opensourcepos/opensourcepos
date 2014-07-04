@@ -4,6 +4,7 @@ patches/
 git-svn-diff.py
 *.bash
 *.sh
+*.swp
 .buildpath
 .project
 .settings/*
