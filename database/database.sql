@@ -89,7 +89,7 @@ INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`) V
 CREATE TABLE `ospos_giftcards` (
   `giftcard_id` int(11) NOT NULL AUTO_INCREMENT,
   `giftcard_number` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
-  `value` double(15,2) NOT NULL,
+  `value` decimal(15,2) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `person_id` INT NOT NULL,
   PRIMARY KEY (`giftcard_id`),
@@ -136,10 +136,10 @@ CREATE TABLE `ospos_items` (
   `supplier_id` int(11) DEFAULT NULL,
   `item_number` varchar(255) DEFAULT NULL,
   `description` varchar(255) NOT NULL,
-  `cost_price` double(15,2) NOT NULL,
-  `unit_price` double(15,2) NOT NULL,
-  `quantity` double(15,2) NOT NULL DEFAULT '0.00',
-  `reorder_level` double(15,2) NOT NULL DEFAULT '0.00',
+  `cost_price` decimal(15,2) NOT NULL,
+  `unit_price` decimal(15,2) NOT NULL,
+  `quantity` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `reorder_level` decimal(15,2) NOT NULL DEFAULT '0.00',
   `location` varchar(255) NOT NULL,
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `allow_alt_description` tinyint(1) NOT NULL,
@@ -174,7 +174,7 @@ CREATE TABLE `ospos_items` (
 CREATE TABLE `ospos_items_taxes` (
   `item_id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `percent` double(15,3) NOT NULL,
+  `percent` decimal(15,2) NOT NULL,
   PRIMARY KEY (`item_id`,`name`,`percent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -210,7 +210,7 @@ CREATE TABLE `ospos_item_kits` (
 CREATE TABLE `ospos_item_kit_items` (
   `item_kit_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `quantity` double(15,2) NOT NULL,
+  `quantity` decimal(15,2) NOT NULL,
   PRIMARY KEY (`item_kit_id`,`item_id`,`quantity`),
   KEY `ospos_item_kit_items_ibfk_2` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -345,10 +345,10 @@ CREATE TABLE `ospos_receivings_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL,
-  `quantity_purchased` int(10) NOT NULL DEFAULT '0',
+  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
-  `item_unit_price` double(15,2) NOT NULL,
-  `discount_percent` int(11) NOT NULL DEFAULT '0',
+  `item_unit_price` decimal(15,2) NOT NULL,
+  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -393,10 +393,10 @@ CREATE TABLE `ospos_sales_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` double(15,2) NOT NULL DEFAULT '0.00',
+  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
   `item_cost_price` decimal(15,2) NOT NULL,
-  `item_unit_price` double(15,2) NOT NULL,
-  `discount_percent` int(11) NOT NULL DEFAULT '0',
+  `item_unit_price` decimal(15,2) NOT NULL,
+  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -417,7 +417,7 @@ CREATE TABLE `ospos_sales_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` double(15,3) NOT NULL,
+  `percent` decimal(15,2) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -480,10 +480,10 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` double(15,2) NOT NULL DEFAULT '0.00',
+  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
   `item_cost_price` decimal(15,2) NOT NULL,
-  `item_unit_price` double(15,2) NOT NULL,
-  `discount_percent` int(11) NOT NULL DEFAULT '0',
+  `item_unit_price` decimal(15,2) NOT NULL,
+  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -504,7 +504,7 @@ CREATE TABLE `ospos_sales_suspended_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` double(15,3) NOT NULL,
+  `percent` decimal(15,2) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
