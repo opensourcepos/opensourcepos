@@ -223,6 +223,7 @@ class Sales extends Secure_area
 		}
 		$this->load->view("sales/receipt",$data);
 		$this->sale_lib->clear_all();
+		$this->_remove_duplicate_cookies();
 	}
 	
 	function receipt($sale_id)
@@ -250,7 +251,7 @@ class Sales extends Secure_area
 		$data['sale_id']='POS '.$sale_id;
 		$this->load->view("sales/receipt",$data);
 		$this->sale_lib->clear_all();
-
+		$this->_remove_duplicate_cookies();
 	}
 	
 	function edit($sale_id)
@@ -369,6 +370,7 @@ class Sales extends Secure_area
 		}
 		$data['payments_cover_total'] = $this->_payments_cover_total();
 		$this->load->view("sales/register",$data);
+		$this->_remove_duplicate_cookies();
 	}
 
     function cancel_sale()

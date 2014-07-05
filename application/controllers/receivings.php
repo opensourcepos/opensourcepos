@@ -136,6 +136,7 @@ class Receivings extends Secure_area
 
 		$this->load->view("receivings/receipt",$data);
 		$this->receiving_lib->clear_all();
+		$this->_remove_duplicate_cookies();
 	}
 
 	function receipt($receiving_id)
@@ -160,7 +161,7 @@ class Receivings extends Secure_area
 		$data['receiving_id']='RECV '.$receiving_id;
 		$this->load->view("receivings/receipt",$data);
 		$this->receiving_lib->clear_all();
-
+		$this->_remove_duplicate_cookies();
 	}
 
 	function _reload($data=array())
@@ -185,6 +186,7 @@ class Receivings extends Secure_area
 			$data['supplier']=$info->first_name.' '.$info->last_name;
 		}
 		$this->load->view("receivings/receiving",$data);
+		$this->_remove_duplicate_cookies();
 	}
 
     function cancel_receiving()
