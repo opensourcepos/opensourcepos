@@ -502,11 +502,6 @@ $(document).ready(function()
 				required:true,
 				number:true
 			},
-			quantity:
-			{
-				required:true,
-				number:true
-			},
 			reorder_level:
 			{
 				required:true,
@@ -532,11 +527,6 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('items_tax_percent_required'); ?>",
 				number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
-			},
-			quantity:
-			{
-				required:"<?php echo $this->lang->line('items_quantity_required'); ?>",
-				number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
 			},
 			reorder_level:
 			{
