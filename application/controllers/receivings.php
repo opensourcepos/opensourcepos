@@ -245,20 +245,27 @@ class Receivings extends Secure_area
 
 	function _reload($data=array())
 	{
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$show_stock_locations = count($stock_locations) > 1;		
+
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart']=$this->receiving_lib->get_cart();
-		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'), 'requisition'=>$this->lang->line('recvs_requisition'));
+		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'));
+		
 		$data['mode']=$this->receiving_lib->get_mode();
         
-        $data['stock_locations'] = array();
-        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
-        foreach($stock_locations as $location_data)
-        {            
-            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
-        }     
-        
-        $data['stock_source']=$this->receiving_lib->get_stock_source();
-        $data['stock_destination']=$this->receiving_lib->get_stock_destination();
+        if ($show_stock_locations) {
+        	$data['modes']['requisition'] = $this->lang->line('recvs_requisition');
+	        foreach($stock_locations as $location_data)
+	        {            
+	            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+	        }     
+	        
+	        $data['stock_source']=$this->receiving_lib->get_stock_source();
+        	$data['stock_destination']=$this->receiving_lib->get_stock_destination();
+        }    
+        $data['show_stock_locations'] = $show_stock_locations;
         
 		$data['total']=$this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->Employee->has_permission('items', $person_info->person_id);

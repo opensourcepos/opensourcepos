@@ -214,7 +214,11 @@ function get_item_data_row($item,$controller)
     $locations_data = $CI->Stock_locations->get_undeleted_all()->result_array();
     foreach($locations_data as $location)
     {
-        $item_quantity .= $location['location_name'].': '.$CI->Item_quantitys->get_item_quantity($item->item_id, $location['location_id'])->quantity . '<br/>';
+	    if (count($locations_data) > 1) 
+	    {
+        	$item_quantity .= $location['location_name'].': ';
+	    }
+	    $item_quantity .= $CI->Item_quantities->get_item_quantity($item->item_id, $location['location_id'])->quantity . '<br/>';
     }
     
 	$table_data_row='<tr>';

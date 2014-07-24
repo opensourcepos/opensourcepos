@@ -1,7 +1,7 @@
 <?php
 class Stock_locations extends CI_Model
 {
-    function exists($location_name)
+    function exists($location_name='')
     {
         $this->db->from('stock_locations');  
         $this->db->where('location_name',$location_name);
@@ -16,6 +16,14 @@ class Stock_locations extends CI_Model
         $this->db->limit($limit);
         $this->db->offset($offset);
         return $this->db->get();
+    }
+    
+    function get_location_names() 
+    {
+    	$this->db->select('location_name');
+    	$this->db->from('stock_locations');
+    	$this->db->where('deleted', 0);
+    	return $this->db->get();
     }
     
     function get_undeleted_all($limit=10000, $offset=0)

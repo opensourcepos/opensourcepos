@@ -15,12 +15,12 @@ class Inventory_low extends Report
     public function getData(array $inputs)
     {
         $this->db->from('items');
-        $this->db->join('item_quantitys','items.item_id=item_quantitys.item_id');
-        $this->db->join('stock_locations','item_quantitys.location_id=stock_locations.location_id');
+        $this->db->join('item_quantities','items.item_id=item_quantities.item_id');
+        $this->db->join('stock_locations','item_quantities.location_id=stock_locations.location_id');
         
-        $this->db->select('name, item_number, reorder_level, item_quantitys.quantity,description,location_name');     
+        $this->db->select('name, item_number, reorder_level, item_quantities.quantity,description,location_name');     
 
-        $this->db->where('item_quantitys.quantity <= reorder_level');
+        $this->db->where('item_quantities.quantity <= reorder_level');
         $this->db->where('items.deleted = 0');
         
         $this->db->order_by('name');

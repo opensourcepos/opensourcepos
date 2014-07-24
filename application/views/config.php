@@ -264,7 +264,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
     <?php echo form_input(array(
         'name'=>'stock_location',
         'id'=>'stock_location',
-        'value'=>$this->config->item('stock_location')));?>
+        'value'=>$location_names)); ?>
     </div>
 </div>
 

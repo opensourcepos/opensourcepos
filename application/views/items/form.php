@@ -143,17 +143,6 @@ foreach($stock_locations as $key=>$location_detail)
 	</div>
 </div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_location').':', 'location',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'location',
-		'id'=>'location',
-		'value'=>$item_info->location)
-	);?>
-	</div>
-</div>
-
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_description').':', 'description',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -167,37 +156,8 @@ foreach($stock_locations as $key=>$location_detail)
 	</div>
 </div>
 
-<div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('items_unit_quantity').':', 'unit_quantity',array('class'=>'wide')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-        'name'=>'unit_quantity',
-        'id'=>'unit_quantity',
-        'value'=>($item_unit_info->unit_quantity) ? $item_unit_info->unit_quantity : 1)
-    );?>
-    </div>
-</div>
-
-<div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('items_related_number').':', 'related_number',array('class'=>'wide')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-        'name'=>'related_number',
-        'id'=>'related_number',
-        'value'=>$item_unit_info->related_number)
-    );?>
-    </div>
-</div>
-
-<div class='form_field'>
-<?php 
-      echo form_hidden('stock_type',$stock_type==null ? 'warehouse' : $stock_type);
-?>
-</div>
-
-
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_allow_alt_desciption').':', 'allow_alt_description',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('items_allow_alt_description').':', 'allow_alt_description',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(
 		'name'=>'allow_alt_description',
@@ -440,28 +400,6 @@ $(document).ready(function()
 	$("#custom10").search();
 /** END GARRISON ADDED **/
 	
-	//custom function. I leave this function as an example for creating JS custom function
-	//Please note that this function is not used
-    $.validator.addMethod(
-    "relatedItemNumber",
-    function(value)
-    {    
-        var site_url = "<?php echo site_url('items/is_sale_store_item');?>";
-        var ajax_return_result;
-        jQuery.ajax({
-                        mode: "abort",
-                        url:    site_url+"/"+value,
-                        type: "get",
-                        success: function(result) {                                                
-                                                        ajax_return_result = result;
-                                                  },
-                        async:   false
-        });
-        
-        return ajax_return_result;            
-    }, 
-    "relatedItemNumber failed");
-
 	$('#item_form').validate({
 		submitHandler:function(form)
 		{
