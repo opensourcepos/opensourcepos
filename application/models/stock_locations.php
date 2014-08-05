@@ -43,6 +43,14 @@ class Stock_locations extends CI_Model
         return $this->db->get()->row()->location_id;
     }
     
+    function get_location_name($location_id) 
+    {
+    	$this->db->from('stock_locations');
+    	$this->db->where('deleted',0);
+    	$this->db->where('location_id',$location_id);
+    	return $this->db->get()->row()->location_name;
+    }
+    
     function array_save($stock_locations)
     {
         $location_db = $this->get_all()->result_array();     

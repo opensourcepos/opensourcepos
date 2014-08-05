@@ -63,7 +63,7 @@ echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_for
 </td>
 <td>
     <?php 
-            echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="display_stock(this.value)"'); 
+        echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="display_stock(this.value)"');
     ?> 
 </td>
 </tr>
@@ -120,12 +120,11 @@ $(document).ready(function()
     display_stock(<?php echo json_encode(key($stock_locations)); ?>);
 });
 
-function display_stock(stock)
+function display_stock(location_id)
 {
     var item_quantities= <?php echo json_encode($item_quantities ); ?>;
-    document.getElementById("quantity").value = item_quantities[stock];
+    document.getElementById("quantity").value = item_quantities[location_id];
     
-    var location_id = stock.substring(6);
     var inventory_data = <?php echo json_encode($inventory_array); ?>;
     var employee_data = <?php echo json_encode($employee_name); ?>;
     
@@ -141,7 +140,7 @@ function display_stock(stock)
     for (var index = 0; index < inventory_data.length; index++) 
     {                
         var data = inventory_data[index];
-        if(data['location_id'] == location_id)
+        if(data['trans_location'] == location_id)
         {
             var tr = document.createElement('TR');
             tr.setAttribute("bgColor","#CCCCCC");

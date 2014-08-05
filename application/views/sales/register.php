@@ -55,7 +55,6 @@ else
 		?>
 	</div>
 -->
-
 	</form>
 	<table id="register">
 		<thead>
@@ -93,17 +92,16 @@ else
 		<tr>
 				<td><?php echo anchor("sales/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
 				<td><?php echo $item['item_number']; ?></td>
-				<td style="align: center;"><?php echo $item['name']; ?><br /> [<?php 
-		                                                                      $item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $this->sale_lib->get_location_id_from_stock_location($stock_location));
-		                                                                      echo $item_quantity->quantity; 
-		                                                              ?> in stock]</td>
-
+				<td style="align: center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock'] ?> in <?php echo $item['stock_name']; ?>]
+				<?php echo form_hidden('location', $item['item_location']); ?>
+				</td>
 
 
 		<?php if ($items_module_allowed)
 		{
 		?>
 			<td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
+
 		<?php
 		}
 		else
@@ -482,7 +480,8 @@ function post_item_form_submit(response)
 {
 	if(response.success)
 	{
-		$("#item").attr("value",response.item_id);
+        var $stock_location = $("select[name='stock_location']").val();
+        $("#item_location").val($stock_location);
 		$("#add_item_form").submit();
 	}
 }

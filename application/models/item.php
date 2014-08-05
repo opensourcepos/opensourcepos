@@ -108,12 +108,11 @@ class Item extends CI_Model
 	/*
 	Get an item id given an item number
 	*/
-	function get_item_id($item_number, $stock_type='warehouse')
+	function get_item_id($item_number)
 	{
 		$this->db->from('items');
 		$this->db->where('item_number',$item_number);
         $this->db->where('deleted',0); // Parq 131226
-		$this->db->where('stock_type',$stock_type);
         
 		$query = $this->db->get();
 

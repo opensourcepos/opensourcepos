@@ -1,28 +1,29 @@
 <?php
 class Item_quantities extends CI_Model
 {
-    function exists($item_quantity_id)
+    function exists($item_id,$location_id)
     {
         $this->db->from('item_quantities');
-        $this->db->where('item_quantity_id',$item_quantity_id);
+        $this->db->where('item_id',$item_id);
+        $this->db->where('location_id',$location_id);
         $query = $this->db->get();
 
         return ($query->num_rows()==1);
     }
     
-    function save($location_detail, $item_quantity_id=false)
+    function save($location_detail, $item_id, $location_id)
     {
-        if (!$item_quantity_id or !$this->exists($item_quantity_id))
+        if (!($item_id && $location_id) or !$this->exists($item_id,$location_id))
         {
             if($this->db->insert('item_quantities',$location_detail))
             {
-                $location_detail['item_quantity_id']=$this->db->insert_id();
                 return true;
             }
             return false;
         }
 
-        $this->db->where('item_quantity_id', $item_quantity_id);
+        $this->db->where('item_id', $item_id);
+        $this->db->where('location_id', $location_id);
         return $this->db->update('item_quantities',$location_detail);
     }
     

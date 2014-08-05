@@ -28,7 +28,7 @@ class Sale extends CI_Model
 		return $success;
 	}
 	
-	function save ($items,$customer_id,$employee_id,$comment,$payments,$stock_location, $sale_id=false)
+	function save ($items,$customer_id,$employee_id,$comment,$payments,$sale_id=false)
 	{
 		if(count($items)==0)
 			return -1;
@@ -88,16 +88,17 @@ class Sale extends CI_Model
 				'quantity_purchased'=>$item['quantity'],
 				'discount_percent'=>$item['discount'],
 				'item_cost_price' => $cur_item_info->cost_price,
-				'item_unit_price'=>$item['price']
+				'item_unit_price'=>$item['price'],
+				'item_location'=>$item['item_location']
 			);
 
 			$this->db->insert('sales_items',$sales_items_data);
 
 			//Update stock quantity
-			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $this->sale_lib->get_location_id_from_stock_location($this->sale_lib->get_sale_location()));       
+			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);       
             $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
                                               'item_id'=>$item['item_id'],
-                                              'location_id'=>$this->sale_lib->get_location_id_from_stock_location($stock_location)), $item_quantity->item_quantity_id);
+                                              'location_id'=>$item['item_location']), $item_quantity->item_quantity_id);
 	
 			
 			//Ramel Inventory Tracking
@@ -109,7 +110,7 @@ class Sale extends CI_Model
 				'trans_date'=>date('Y-m-d H:i:s'),
 				'trans_items'=>$item['item_id'],
 				'trans_user'=>$employee_id,
-				'location_id'=>$this->sale_lib->get_location_id_from_stock_location($stock_location),
+				'trans_location'=>$item['item_location'],
 				'trans_comment'=>$sale_remarks,
 				'trans_inventory'=>$qty_buy
 			);

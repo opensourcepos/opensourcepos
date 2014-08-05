@@ -12,7 +12,7 @@ class Inventory extends CI_Model
 		$this->db->where('trans_items',$item_id);
         if($location_id != false)
         {
-            $this->db->where('location_id',$location_id);
+            $this->db->where('trans_location',$location_id);
         }
 		$this->db->order_by("trans_date", "desc");
 		return $this->db->get();		

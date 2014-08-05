@@ -16,19 +16,21 @@ if(isset($error))
     <span><?php echo $this->lang->line('recvs_mode') ?></span>
 	<?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
     
-	<?php if ($show_stock_locations): ?>
+	<?php 
+	if ($show_stock_locations) 
+	{
+	?>
     <span><?php echo $this->lang->line('recvs_stock_source') ?></span>
     <?php echo form_dropdown('stock_source',$stock_locations,$stock_source,'onchange="$(\'#mode_form\').submit();"'); ?>
     <?php 
-        $opacity_style='';
-        if($mode!='requisition')
-        {
-            $opacity_style = 'style="opacity:0.0;"';
-        }
+    if($mode=='requisition')
+    {
     ?>
-    <span <?php echo $opacity_style; ?> > <?php echo $this->lang->line('recvs_stock_destination') ?></span>
-    <?php echo form_dropdown('stock_deatination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();" '.$opacity_style); ?>        
-	<?php endif; ?>    
+    <span><?php echo $this->lang->line('recvs_stock_destination') ?></span>
+	<?php echo form_dropdown('stock_destination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();"');        
+    }
+	}
+	?>    
 	</form>
 	<?php echo form_open("receivings/add",array('id'=>'add_item_form')); ?>
 	<label id="item_label" for="item">
@@ -59,32 +61,27 @@ if(isset($error))
 <table id="register">
 <thead>
 <tr>
-    <?php
-    if($mode=='requisition')
-    {
-    ?>
         <th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
         <th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
-        <th style="width:11%;"><?php echo $this->lang->line('reqs_quantity'); ?></th>        
-        <th style="width:25%;"><?php echo $this->lang->line('reqs_related_item'); ?></th>
-        <th style="width:11%;"><?php echo $this->lang->line('reqs_unit_quantity'); ?></th>
-        <th style="width:15%;"><?php echo $this->lang->line('reqs_unit_quantity_total'); ?></th>
-        <th style="width:11%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
-    <?php
-    }
-    else
-    {
-    ?>
-        <th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
-        <th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
+		<?php 
+		if($mode!='requisition')
+		{ 
+		?>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
+		<?php 
+		}
+		?>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
+        <?php
+        if($mode!='requisition')
+		{ 
+		?>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
+        <?php 
+		}
+		?>
         <th style="width:15%;"><?php echo $this->lang->line('recvs_total'); ?></th>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
-    <?php
-    }
-    ?>
 </tr>
 </thead>
 <tbody id="cart_contents">
@@ -107,12 +104,15 @@ else
 ?>     
             <tr>
             <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-            <td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $this->Item->get_info($item['item_id'])->quantity; ?> in stock]</td>
+            <td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+            <?php echo form_hidden('location', $item['item_location']); ?>
+            </td>
 
             <td>
 <?php
             echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
 ?>
+
             </td>
             <td><?php echo $item['related_item']; ?></td>
             <td><?php echo $item['unit_quantity']; ?></td>        
@@ -129,7 +129,8 @@ else
 ?>
 		    <tr>
 		    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-		    <td style="align:center;"><?php echo $item['name']; ?><br />
+			<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]</td>
+            <?php echo form_hidden('location', $item['item_location']); ?>
 
 <?php
 			echo $item['description'];
