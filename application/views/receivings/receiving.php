@@ -63,23 +63,9 @@ if(isset($error))
 <tr>
         <th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
         <th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
-		<?php 
-		if($mode!='requisition')
-		{ 
-		?>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
-		<?php 
-		}
-		?>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
-        <?php
-        if($mode!='requisition')
-		{ 
-		?>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
-        <?php 
-		}
-		?>
         <th style="width:15%;"><?php echo $this->lang->line('recvs_total'); ?></th>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
 </tr>
@@ -98,72 +84,58 @@ else
 {
 	foreach(array_reverse($cart, true) as $line=>$item)
 	{
-	    if($mode == 'requisition')
-        {
-            echo form_open("receivings/edit_item_unit/$line");
-?>     
-            <tr>
-            <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-            <td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
-            <?php echo form_hidden('location', $item['item_location']); ?>
-            </td>
-
-            <td>
-<?php
-            echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
-?>
-
-            </td>
-            <td><?php echo $item['related_item']; ?></td>
-            <td><?php echo $item['unit_quantity']; ?></td>        
-            <td><?php echo $item['unit_quantity']*$item['quantity']; ?></td>
-            <td><?php echo form_submit("edit_item_unit", $this->lang->line('sales_edit_item'));?></td>
-            </tr>
-            </form>
-<?php 
-        }
-        else 
-        {
-            echo form_open("receivings/edit_item/$line");
+        echo form_open("receivings/edit_item/$line");
 		
 ?>
-		    <tr>
-		    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-			<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]</td>
+	    <tr>
+	    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
+		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]</td>
             <?php echo form_hidden('location', $item['item_location']); ?>
 
 <?php
 			echo $item['description'];
       		echo form_hidden('description',$item['description']);
 ?>
-		    <br />
 
-<?php       if ($items_module_allowed)
+<?php       if ($items_module_allowed && !$mode=='requisition')
 		    {
 ?>
-			     <td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
+		     <td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
 <?php
 		    }
 		    else
 		    {
 ?>
-			     <td><?php echo $item['price']; ?></td>
-			     <?php echo form_hidden('price',$item['price']); ?>
+		     <td><?php echo $item['price']; ?></td>
+		     <?php echo form_hidden('price',$item['price']); ?>
 <?php
 		    }
 ?>
-		    <td>
+	    <td>
 <?php
             echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
 ?>
-		    </td>
+	    </td>
+	    
+<?php       if ($items_module_allowed && !$mode=='requisition')
+		    {
+?>
 		    <td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
-		    <td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-		    <td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
-		    </tr>
-		    </form>
 <?php
-        }	
+		    }
+		    else
+		    {
+?>
+		     <td><?php echo $item['discount']; ?></td>
+		     <?php echo form_hidden('discount',$item['discount']); ?>
+<?php
+		    }
+?>
+	    <td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
+	    <td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
+	    </tr>
+	    </form>
+<?php
     }
 }
 ?>

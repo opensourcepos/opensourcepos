@@ -36,4 +36,5 @@ $lang['reqs_unable_to_add_item']='Unable to add item to requisition';
 $lang['recvs_stock_source']='Stock source';
 $lang['recvs_stock_destination']='Stock destination';
 $lang['recvs_stock_locaiton']='Stock location';
+$lang['recvs_error_requisition']='Unable to move inventory from and to the same stock location';
 ?>

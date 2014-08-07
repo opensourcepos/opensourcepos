@@ -98,7 +98,7 @@ class Sale extends CI_Model
 			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);       
             $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
                                               'item_id'=>$item['item_id'],
-                                              'location_id'=>$item['item_location']), $item_quantity->item_quantity_id);
+                                              'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
 	
 			
 			//Ramel Inventory Tracking

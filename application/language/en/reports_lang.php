@@ -89,16 +89,7 @@ $lang['reports_all'] = 'All';
 $lang['reports_returns'] = 'Returns';
 $lang['reports_discount'] = 'Discounts';
 $lang['reports_sales'] = 'Sales';
-$lang['reports_requisition'] = 'Requisition';
+$lang['reports_requisitions'] = 'Requisitions';
 $lang['reports_receiving_id'] = 'Receiving ID';
-$lang['reports_requisition_id'] = 'Requisition ID';
-$lang['reports_requisition_by'] = 'Requisition by';
-$lang['reports_requisition_item'] = 'Name';
-$lang['reports_requisition_item_quantity'] = 'Requisition qty.';
-$lang['reports_requisition_related_item'] = 'Related item';
-$lang['reports_requisition_related_item_unit_quantity'] = 'Unit qty.';
-$lang['reports_requisition_related_item_total_quantity'] = 'Total qty.';
-$lang['reports_detailed_requisition_report'] = 'Detailed Requisitions Report';
-
 $lang['reports_stock_location'] = 'Stock location';
 ?>
