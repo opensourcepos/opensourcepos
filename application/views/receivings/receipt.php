@@ -41,7 +41,10 @@ if (isset($error_message))
 		<tr>
 		<td><span class='long_name'><?php echo $item['name']; ?></span><span class='short_name'><?php echo character_limiter($item['name'],10); ?></span></td>
 		<td><?php echo to_currency($item['price']); ?></td>
-		<td style='text-align:center;'><?php echo $item['quantity']; ?></td>
+		<td style='text-align:center;'>
+		<?php 
+			echo $item['quantity']; 
+		?></td>
 		<td style='text-align:center;'><?php echo $item['discount']; ?></td>
 		<td style='text-align:right;'><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 		</tr>
