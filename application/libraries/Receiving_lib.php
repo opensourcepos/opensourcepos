@@ -63,6 +63,11 @@ class Receiving_lib
         $this->CI->session->set_userdata('recv_stock_source',$stock_source);
     }
     
+    function clear_stock_source()
+    {
+    	$this->CI->session->unset_userdata('recv_stock_source');
+    }
+    
     function get_stock_destination()
     {
         if(!$this->CI->session->userdata('recv_stock_destination'))
@@ -77,6 +82,11 @@ class Receiving_lib
     function set_stock_destination($stock_destination)
     {
         $this->CI->session->set_userdata('recv_stock_destination',$stock_destination);
+    }
+    
+    function clear_stock_destination()
+    {
+    	$this->CI->session->unset_userdata('recv_stock_destination');
     }
     
 	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)

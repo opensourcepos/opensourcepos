@@ -56,6 +56,18 @@ class Config extends Secure_area
         {
             array_push($stock_locations_trimmed, trim($location, ' '));
         }        
+        $current_locations = $this->Stock_locations->concat_location_names()->location_names;
+        if ($this->input->post('stock_locations') != $current_locations) 
+        {
+        	$this->load->library('sale_lib');
+			$this->sale_lib->clear_sale_location();
+			$this->sale_lib->clear_all();
+			$this->load->library('receiving_lib');
+			$this->receiving_lib->clear_stock_source();
+			$this->receiving_lib->clear_stock_destination();
+			$this->receiving_lib->clear_all();
+        }
+        
 		if( $this->Appconfig->batch_save( $batch_save_data ) && $this->Stock_locations->array_save($stock_locations_trimmed))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
