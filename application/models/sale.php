@@ -88,14 +88,18 @@ class Sale extends CI_Model
 				'quantity_purchased'=>$item['quantity'],
 				'discount_percent'=>$item['discount'],
 				'item_cost_price' => $cur_item_info->cost_price,
-				'item_unit_price'=>$item['price']
+				'item_unit_price'=>$item['price'],
+				'item_location'=>$item['item_location']
 			);
 
 			$this->db->insert('sales_items',$sales_items_data);
 
 			//Update stock quantity
-			$item_data = array('quantity'=>$cur_item_info->quantity - $item['quantity']);
-			$this->Item->save($item_data,$item['item_id']);
+			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);       
+            $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
+                                              'item_id'=>$item['item_id'],
+                                              'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
+	
 			
 			//Ramel Inventory Tracking
 			//Inventory Count Details
@@ -106,6 +110,7 @@ class Sale extends CI_Model
 				'trans_date'=>date('Y-m-d H:i:s'),
 				'trans_items'=>$item['item_id'],
 				'trans_user'=>$employee_id,
+				'trans_location'=>$item['item_location'],
 				'trans_comment'=>$sale_remarks,
 				'trans_inventory'=>$qty_buy
 			);

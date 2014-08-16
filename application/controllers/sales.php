@@ -35,8 +35,17 @@ class Sales extends Secure_area
 
 	function change_mode()
 	{
-		$mode = $this->input->post("mode");
-		$this->sale_lib->set_mode($mode);
+		$stock_location = $this->input->post("stock_location");
+		if (!$stock_location || $stock_location == $this->sale_lib->get_sale_location()) 
+		{
+			$this->sale_lib->clear_all();
+			$mode = $this->input->post("mode");
+			$this->sale_lib->set_mode($mode);
+		} 
+		else
+		{
+			$this->sale_lib->set_sale_location($stock_location);
+		}
 		$this->_reload();
 	}
 	
@@ -112,7 +121,8 @@ class Sales extends Secure_area
 		$data=array();
 		$mode = $this->sale_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
-		$quantity = $mode=="sale" ? 1:-1;
+		$quantity = ($mode=="return")? -1:1;
+		$item_location = $this->sale_lib->get_sale_location();
 
 		if($this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
 		{
@@ -120,14 +130,14 @@ class Sales extends Secure_area
 		}
 		elseif($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt);
+			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt,$item_location);
 		}
-		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity))
+		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location))
 		{
 			$data['error']=$this->lang->line('sales_unable_to_add_item');
 		}
 		
-		if($this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt))
+		if($this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt,$item_location))
 		{
 			$data['warning'] = $this->lang->line('sales_quantity_less_than_zero');
 		}
@@ -146,6 +156,7 @@ class Sales extends Secure_area
 		$price = $this->input->post("price");
 		$quantity = $this->input->post("quantity");
 		$discount = $this->input->post("discount");
+		$item_location = $this->input->post("location");
 
 
 		if ($this->form_validation->run() != FALSE)
@@ -157,7 +168,7 @@ class Sales extends Secure_area
 			$data['error']=$this->lang->line('sales_error_editing_item');
 		}
 		
-		if($this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line)))
+		if($this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line),$item_location))
 		{
 			$data['warning'] = $this->lang->line('sales_quantity_less_than_zero');
 		}
@@ -186,6 +197,8 @@ class Sales extends Secure_area
 		$data['total']=$this->sale_lib->get_total();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
+		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$data['show_stock_locations'] = count($stock_locations) > 1;
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->sale_lib->get_comment();
@@ -193,7 +206,7 @@ class Sales extends Secure_area
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
-
+        
 		if($customer_id!=-1)
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
@@ -230,6 +243,8 @@ class Sales extends Secure_area
 	{
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
+		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$data['show_stock_locations'] = count($stock_locations) > 1;
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['subtotal']=$this->sale_lib->get_subtotal();
@@ -330,7 +345,8 @@ class Sales extends Secure_area
 		}
 
 		/* Changed the conditional to account for floating point rounding */
-		if ( ( $this->sale_lib->get_mode() == 'sale' ) && ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
+		if ( ($this->sale_lib->get_mode() == 'sale') && 
+		      ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
 		{
 			return false;
 		}
@@ -341,9 +357,22 @@ class Sales extends Secure_area
 	function _reload($data=array())
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
-		$data['cart']=$this->sale_lib->get_cart();
-		$data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
-		$data['mode']=$this->sale_lib->get_mode();
+		$data['cart']=$this->sale_lib->get_cart();	 
+        $data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
+        $data['mode']=$this->sale_lib->get_mode();
+                     
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+        $show_stock_locations = count($stock_locations) > 1;
+        if ($show_stock_locations) {
+	        foreach($stock_locations as $location_data)
+	        {            
+	            $data['stock_locations'][$location_data['location_id']] = $location_data['location_name'];
+	        }       		
+	        $data['stock_location']=$this->sale_lib->get_sale_location();
+        }
+        $data['show_stock_locations'] = $show_stock_locations;
+        
 		$data['subtotal']=$this->sale_lib->get_subtotal();
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();

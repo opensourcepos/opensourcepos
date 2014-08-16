@@ -167,18 +167,34 @@ class Sale_lib
 		$this->CI->session->set_userdata('sale_mode',$mode);
 	}
 
-	function add_item($item_id,$quantity=1,$discount=0,$price=null,$description=null,$serialnumber=null)
+    function get_sale_location()
+    {
+        if(!$this->CI->session->userdata('sale_location'))
+        {
+             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
+             $location_name = $stock_locations[0]['location_id'];
+             $this->set_sale_location($location_name);
+        }
+        return $this->CI->session->userdata('sale_location');
+    }
+
+    function set_sale_location($location)
+    {
+        $this->CI->session->set_userdata('sale_location',$location);
+    }
+    
+    function clear_sale_location()
+    {
+    	$this->CI->session->unset_userdata('sale_location');
+    }
+    
+	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
-		//make sure item exists
-		if(!$this->CI->Item->exists($item_id))
-		{
-			//try to get item id given an item_number
-			$item_id = $this->CI->Item->get_item_id($item_id);
-
-			if(!$item_id)
-				return false;
-		}
-
+		//make sure item exists	     
+		if($this->validate_item($item_id) == false)
+        {
+            return false;
+        }
 
 		//Alain Serialization and Description
 
@@ -205,7 +221,7 @@ class Sale_lib
 				$maxkey = $item['line'];
 			}
 
-			if($item['item_id']==$item_id)
+			if($item['item_id']==$item_id && $item['item_location']==$item_location)
 			{
 				$itemalreadyinsale=TRUE;
 				$updatekey=$item['line'];
@@ -213,26 +229,29 @@ class Sale_lib
 		}
 
 		$insertkey=$maxkey+1;
-
+		$item_info=$this->CI->Item->get_info($item_id);
 		//array/cart records are identified by $insertkey and item_id is just another field.
 		$item = array(($insertkey)=>
 		array(
 			'item_id'=>$item_id,
+			'item_location'=>$item_location,
+			'stock_name'=>$this->CI->Stock_locations->get_location_name($item_location),
 			'line'=>$insertkey,
-			'name'=>$this->CI->Item->get_info($item_id)->name,
-			'item_number'=>$this->CI->Item->get_info($item_id)->item_number,
-			'description'=>$description!=null ? $description: $this->CI->Item->get_info($item_id)->description,
+			'name'=>$item_info->name,
+			'item_number'=>$item_info->item_number,
+			'description'=>$description!=null ? $description: $item_info->description,
 			'serialnumber'=>$serialnumber!=null ? $serialnumber: '',
-			'allow_alt_description'=>$this->CI->Item->get_info($item_id)->allow_alt_description,
-			'is_serialized'=>$this->CI->Item->get_info($item_id)->is_serialized,
+			'allow_alt_description'=>$item_info->allow_alt_description,
+			'is_serialized'=>$item_info->is_serialized,
 			'quantity'=>$quantity,
             'discount'=>$discount,
-			'price'=>$price!=null ? $price: $this->CI->Item->get_info($item_id)->unit_price
+			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
+			'price'=>$price!=null ? $price: $item_info->unit_price
 			)
 		);
 
 		//Item already exists and is not serialized, add to quantity
-		if($itemalreadyinsale && ($this->CI->Item->get_info($item_id)->is_serialized ==0) )
+		if($itemalreadyinsale && ($item_info->is_serialized ==0) )
 		{
 			$items[$updatekey]['quantity']+=$quantity;
 		}
@@ -247,22 +266,20 @@ class Sale_lib
 
 	}
 	
-	function out_of_stock($item_id)
+	function out_of_stock($item_id,$item_location)
 	{
 		//make sure item exists
-		if(!$this->CI->Item->exists($item_id))
-		{
-			//try to get item id given an item_number
-			$item_id = $this->CI->Item->get_item_id($item_id);
+		if($this->validate_item($item_id) == false)
+        {
+            return false;
+        }
 
-			if(!$item_id)
-				return false;
-		}
 		
-		$item = $this->CI->Item->get_info($item_id);
-		$quanity_added = $this->get_quantity_already_added($item_id);
+		//$item = $this->CI->Item->get_info($item_id);
+		$item_quantity = $this->CI->Item_quantities->get_item_quantity($item_id,$item_location)->quantity; 
+		$quanity_added = $this->get_quantity_already_added($item_id,$item_location);
 		
-		if ($item->quantity - $quanity_added < 0)
+		if ($item_quantity - $quanity_added < 0)
 		{
 			return true;
 		}
@@ -270,13 +287,13 @@ class Sale_lib
 		return false;
 	}
 	
-	function get_quantity_already_added($item_id)
+	function get_quantity_already_added($item_id,$item_location)
 	{
 		$items = $this->get_cart();
 		$quanity_already_added = 0;
 		foreach ($items as $item)
 		{
-			if($item['item_id']==$item_id)
+			if($item['item_id']==$item_id && $item['item_location']==$item_location)
 			{
 				$quanity_already_added+=$item['quantity'];
 			}
@@ -353,12 +370,12 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,-$row->quantity_purchased,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,-$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
-	function add_item_kit($external_item_kit_id)
+	function add_item_kit($external_item_kit_id,$item_location)
 	{
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
@@ -366,7 +383,7 @@ class Sale_lib
 		
 		foreach ($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity']);
+			$this->add_item($item_kit_item['item_id'],$item_kit_item['quantity'],$item_location);
 		}
 	}
 
@@ -377,7 +394,7 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,$row->quantity_purchased,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
 		{
@@ -394,7 +411,7 @@ class Sale_lib
 
 		foreach($this->CI->Sale_suspended->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,$row->quantity_purchased,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		foreach($this->CI->Sale_suspended->get_sale_payments($sale_id)->result() as $row)
 		{
@@ -494,5 +511,20 @@ class Sale_lib
 
 		return to_currency_no_money($total);
 	}
+    
+    function validate_item(&$item_id)
+    {
+        //make sure item exists
+        if(!$this->CI->Item->exists($item_id))
+        {
+            //try to get item id given an item_number
+            $mode = $this->get_mode();
+            $item_id = $this->CI->Item->get_item_id($item_id);
+
+            if(!$item_id)
+                return false;
+        }
+        return true;
+    }
 }
 ?>

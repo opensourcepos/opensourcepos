@@ -40,13 +40,14 @@ class Detailed_sales extends Report
 		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
 		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
 		if ($inputs['sale_type'] == 'sales')
-		{
-			$this->db->where('quantity_purchased > 0');
-		}
-		elseif ($inputs['sale_type'] == 'returns')
-		{
-			$this->db->where('quantity_purchased < 0');
-		}
+        {
+            $this->db->where('quantity_purchased > 0');
+            $this->db->where('sale_type', 'sale_stock');
+        }
+        elseif ($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }       
 		$this->db->group_by('sale_id');
 		$this->db->order_by('sale_date');
 
@@ -72,13 +73,13 @@ class Detailed_sales extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
 		if ($inputs['sale_type'] == 'sales')
-		{
-			$this->db->where('quantity_purchased > 0');
-		}
-		elseif ($inputs['sale_type'] == 'returns')
-		{
-			$this->db->where('quantity_purchased < 0');
-		}
+        {
+            $this->db->where('quantity_purchased > 0');
+        }
+        elseif ($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }   
 		
 		return $this->db->get()->row_array();
 	}

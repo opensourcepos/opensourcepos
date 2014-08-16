@@ -112,17 +112,25 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 	</div>
 </div>
 
-
-<div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_quantity').':', 'quantity',array('class'=>'required wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'quantity',
-		'id'=>'quantity',
-		'value'=>$item_info->quantity)
-	);?>
-	</div>
-</div>
+<?php
+foreach($stock_locations as $key=>$location_detail)
+{
+?>
+    <div class="field_row clearfix">
+    <?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] .':', 
+                            $key.'_quantity',
+                            array('class'=>'required wide')); ?>
+    	<div class='form_field'>
+    	<?php echo form_input(array(
+    		'name'=>$key.'_quantity',
+    		'id'=>$key.'_quantity',
+    		'value'=>$location_detail['quantity'])
+    	);?>
+    	</div>
+    </div>
+<?php
+}
+?>
 
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'required wide')); ?>
@@ -131,17 +139,6 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 		'name'=>'reorder_level',
 		'id'=>'reorder_level',
 		'value'=>$item_info->reorder_level)
-	);?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_location').':', 'location',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'location',
-		'id'=>'location',
-		'value'=>$item_info->location)
 	);?>
 	</div>
 </div>
@@ -373,11 +370,6 @@ $(document).ready(function()
     $("#category").result(function(event, data, formatted){});
 	$("#category").search();
 
-/** GARRISON ADDED 5/18/2013 **/	
-	$("#location").autocomplete("<?php echo site_url('items/suggest_location');?>",{max:100,minChars:0,delay:10});
-    $("#location").result(function(event, data, formatted){});
-	$("#location").search();
-
 	$("#custom1").autocomplete("<?php echo site_url('items/suggest_custom1');?>",{max:100,minChars:0,delay:10});
     $("#custom1").result(function(event, data, formatted){});
 	$("#custom1").search();
@@ -419,7 +411,6 @@ $(document).ready(function()
 	$("#custom10").search();
 /** END GARRISON ADDED **/
 	
-	
 	$('#item_form').validate({
 		submitHandler:function(form)
 		{
@@ -460,16 +451,12 @@ $(document).ready(function()
 				required:true,
 				number:true
 			},
-			quantity:
-			{
-				required:true,
-				number:true
-			},
 			reorder_level:
 			{
 				required:true,
 				number:true
 			}
+			
    		},
 		messages:
 		{
@@ -489,11 +476,6 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('items_tax_percent_required'); ?>",
 				number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
-			},
-			quantity:
-			{
-				required:"<?php echo $this->lang->line('items_quantity_required'); ?>",
-				number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
 			},
 			reorder_level:
 			{

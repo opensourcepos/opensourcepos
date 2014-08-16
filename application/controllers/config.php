@@ -9,7 +9,14 @@ class Config extends Secure_area
 	
 	function index()
 	{
-		$this->load->view("config");
+		$location_names = array();
+		$locations = $this->Stock_locations->get_location_names();
+		foreach($locations->result_array() as $array) 
+		{
+			array_push($location_names, $array['location_name']);
+		}
+		$data['location_names'] = implode(',', $location_names);
+		$this->load->view("config", $data);
 	}
 		
 	function save()
@@ -43,7 +50,25 @@ class Config extends Secure_area
 		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
 		);
 		
-		if( $this->Appconfig->batch_save( $batch_save_data ) )
+		$stock_locations = explode( ',', $this->input->post('stock_location'));
+        $stock_locations_trimmed=array();
+        foreach($stock_locations as $location)
+        {
+            array_push($stock_locations_trimmed, trim($location, ' '));
+        }        
+        $current_locations = $this->Stock_locations->concat_location_names()->location_names;
+        if ($this->input->post('stock_locations') != $current_locations) 
+        {
+        	$this->load->library('sale_lib');
+			$this->sale_lib->clear_sale_location();
+			$this->sale_lib->clear_all();
+			$this->load->library('receiving_lib');
+			$this->receiving_lib->clear_stock_source();
+			$this->receiving_lib->clear_stock_destination();
+			$this->receiving_lib->clear_all();
+        }
+        
+		if( $this->Appconfig->batch_save( $batch_save_data ) && $this->Stock_locations->array_save($stock_locations_trimmed))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
 		}

@@ -46,8 +46,50 @@ class Receiving_lib
 	{
 		$this->CI->session->set_userdata('recv_mode',$mode);
 	}
+    
+    function get_stock_source()
+    {
+        if(!$this->CI->session->userdata('recv_stock_source'))
+        {
+             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
+             $location_name = $stock_locations[0]['location_id'];
+             $this->set_stock_source($location_name);
+        }
+        return $this->CI->session->userdata('recv_stock_source');
+    }
 
-	function add_item($item_id,$quantity=1,$discount=0,$price=null,$description=null,$serialnumber=null)
+    function set_stock_source($stock_source)
+    {
+        $this->CI->session->set_userdata('recv_stock_source',$stock_source);
+    }
+    
+    function clear_stock_source()
+    {
+    	$this->CI->session->unset_userdata('recv_stock_source');
+    }
+    
+    function get_stock_destination()
+    {
+        if(!$this->CI->session->userdata('recv_stock_destination'))
+        {
+             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
+             $location_name = $stock_locations[0]['location_id'];
+             $this->set_stock_destination($location_name);
+        }
+        return $this->CI->session->userdata('recv_stock_destination');
+    }
+
+    function set_stock_destination($stock_destination)
+    {
+        $this->CI->session->set_userdata('recv_stock_destination',$stock_destination);
+    }
+    
+    function clear_stock_destination()
+    {
+    	$this->CI->session->unset_userdata('recv_stock_destination');
+    }
+    
+	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists in database.
 		if(!$this->CI->Item->exists($item_id))
@@ -84,7 +126,7 @@ class Receiving_lib
 				$maxkey = $item['line'];
 			}
 
-			if($item['item_id']==$item_id)
+			if($item['item_id']==$item_id && $item['item_location']==$item_location)
 			{
 				$itemalreadyinsale=TRUE;
 				$updatekey=$item['line'];
@@ -92,20 +134,23 @@ class Receiving_lib
 		}
 
 		$insertkey=$maxkey+1;
-
+		$item_info=$this->CI->Item->get_info($item_id);
 		//array records are identified by $insertkey and item_id is just another field.
 		$item = array(($insertkey)=>
 		array(
 			'item_id'=>$item_id,
+			'item_location'=>$item_location,
+			'stock_name'=>$this->CI->Stock_locations->get_location_name($item_location), 	
 			'line'=>$insertkey,
-			'name'=>$this->CI->Item->get_info($item_id)->name,
-			'description'=>$description!=null ? $description: $this->CI->Item->get_info($item_id)->description,
+			'name'=>$item_info->name,
+			'description'=>$description!=null ? $description: $item_info->description,
 			'serialnumber'=>$serialnumber!=null ? $serialnumber: '',
-			'allow_alt_description'=>$this->CI->Item->get_info($item_id)->allow_alt_description,
-			'is_serialized'=>$this->CI->Item->get_info($item_id)->is_serialized,
+			'allow_alt_description'=>$item_info->allow_alt_description,
+			'is_serialized'=>$item_info->is_serialized,
 			'quantity'=>$quantity,
             'discount'=>$discount,
-			'price'=>$price!=null ? $price: $this->CI->Item->get_info($item_id)->cost_price
+			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
+			'price'=>$price!=null ? $price: $item_info->cost_price
 			)
 		);
 
@@ -140,7 +185,7 @@ class Receiving_lib
 
 		return false;
 	}
-
+    
 	function is_valid_receipt($receipt_receiving_id)
 	{
 		//RECV #
@@ -178,12 +223,12 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,-$row->quantity_purchased,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,-$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 	}
 	
-	function add_item_kit($external_item_kit_id)
+	function add_item_kit($external_item_kit_id,$item_location)
 	{
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
@@ -191,7 +236,7 @@ class Receiving_lib
 		
 		foreach ($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity']);
+			$this->add_item($item_kit_item['item_id'],$item_kit_item['quantity'],$item_location);
 		}
 	}
 
@@ -202,10 +247,23 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,$row->quantity_purchased,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 
+	}
+	
+	function copy_entire_requisition($requisition_id,$item_location)
+	{
+		$this->empty_cart();
+		$this->delete_supplier();
+	
+		foreach($this->CI->Receiving->get_requisition_items($requisition_id)->result() as $row)
+		{
+			$this->add_item_unit($row->item_id,$row->requisition_quantity,$item_location,$row->description);
+		}
+		$this->set_supplier($this->CI->Receiving->get_supplier($requisition_id)->person_id);
+	
 	}
 
 	function delete_item($line)

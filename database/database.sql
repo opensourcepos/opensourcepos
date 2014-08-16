@@ -113,10 +113,12 @@ CREATE TABLE `ospos_inventory` (
   `trans_user` int(11) NOT NULL DEFAULT '0',
   `trans_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `trans_comment` text NOT NULL,
+  `trans_location` int(11) NOT NULL,
   `trans_inventory` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`trans_id`),
-  KEY `ospos_inventory_ibfk_1` (`trans_items`),
-  KEY `ospos_inventory_ibfk_2` (`trans_user`)
+  KEY `trans_items` (`trans_items`),
+  KEY `trans_user` (`trans_user`),
+  KEY `trans_location` (`trans_location`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -219,6 +221,20 @@ CREATE TABLE `ospos_item_kit_items` (
 -- Dumping data for table `ospos_item_kit_items`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_item_quantities`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
+  `item_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`item_id`,`location_id`),
+  KEY `item_id` (`item_id`),
+  KEY `location_id` (`location_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 -- --------------------------------------------------------
 
@@ -349,6 +365,7 @@ CREATE TABLE `ospos_receivings_items` (
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `item_location` int(11) NOT NULL,
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -397,8 +414,11 @@ CREATE TABLE `ospos_sales_items` (
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `item_location` int(11) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
-  KEY `item_id` (`item_id`)
+  KEY `sale_id` (`sale_id`),
+  KEY `item_id` (`item_id`),
+  KEY `item_location` (`item_location`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -419,6 +439,7 @@ CREATE TABLE `ospos_sales_items_taxes` (
   `name` varchar(255) NOT NULL,
   `percent` decimal(15,2) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
+  KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -437,7 +458,8 @@ CREATE TABLE `ospos_sales_payments` (
   `sale_id` int(10) NOT NULL,
   `payment_type` varchar(40) NOT NULL,
   `payment_amount` decimal(15,2) NOT NULL,
-  PRIMARY KEY (`sale_id`,`payment_type`)
+  PRIMARY KEY (`sale_id`,`payment_type`),
+  KEY `sale_id` (`sale_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -484,7 +506,9 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `item_location` int(11) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
+  KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -551,6 +575,25 @@ CREATE TABLE `ospos_sessions` (
 -- Dumping data for table `ospos_sessions`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_stock_locations`
+--
+
+CREATE TABLE `ospos_stock_locations` (
+  `location_id` int(11) NOT NULL AUTO_INCREMENT,
+  `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`location_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
+
+
+--
+-- Dumping data for table `ospos_stock_locations`
+--
+
+INSERT INTO `ospos_stock_locations` ( `deleted` ) VALUES ('0');
 
 -- --------------------------------------------------------
 
@@ -647,7 +690,8 @@ ALTER TABLE `ospos_sales`
 --
 ALTER TABLE `ospos_sales_items`
   ADD CONSTRAINT `ospos_sales_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_sales_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`);
+  ADD CONSTRAINT `ospos_sales_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`),
+  ADD CONSTRAINT `ospos_sales_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 --
 -- Constraints for table `ospos_sales_items_taxes`
@@ -674,7 +718,8 @@ ALTER TABLE `ospos_sales_suspended`
 --
 ALTER TABLE `ospos_sales_suspended_items`
   ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`);
+  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`),
+  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 --
 -- Constraints for table `ospos_sales_suspended_items_taxes`
@@ -688,6 +733,13 @@ ALTER TABLE `ospos_sales_suspended_items_taxes`
 --
 ALTER TABLE `ospos_sales_suspended_payments`
   ADD CONSTRAINT `ospos_sales_suspended_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`);
+
+--
+-- Constraints for table `ospos_item_quantities`
+--
+ALTER TABLE `ospos_item_quantities`
+  ADD CONSTRAINT `ospos_item_quantities_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
+  ADD CONSTRAINT `ospos_item_quantities_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 --
 -- Constraints for table `ospos_suppliers`

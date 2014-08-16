@@ -8,3 +8,6 @@ git-svn-diff.py
 .buildpath
 .project
 .settings/*
+*.swp
+*.rej
+*.orig

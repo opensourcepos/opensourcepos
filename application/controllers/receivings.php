@@ -35,8 +35,20 @@ class Receivings extends Secure_area
 
 	function change_mode()
 	{
-		$mode = $this->input->post("mode");
-		$this->receiving_lib->set_mode($mode);
+		$stock_destination = $this->input->post('stock_destination');
+		$stock_source = $this->input->post("stock_source");
+		if ((!$stock_source || $stock_source == $this->receiving_lib->get_stock_source()) &&
+			(!$stock_destination || $stock_destination == $this->receiving_lib->get_stock_destination()))
+		{
+			$this->receiving_lib->empty_cart();
+			$mode = $this->input->post("mode");
+			$this->receiving_lib->set_mode($mode);
+		}
+		else
+		{
+			$this->receiving_lib->set_stock_source($stock_source);
+			$this->receiving_lib->set_stock_destination($stock_destination);
+		}
 		$this->_reload();
 	}
 
@@ -45,19 +57,20 @@ class Receivings extends Secure_area
 		$data=array();
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
-		$quantity = $mode=="receive" ? 1:-1;
-
+		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
+		$item_location = $this->receiving_lib->get_stock_source();
 		if($this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
 		{
-			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
+			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt,$item_location);
 		}
 		elseif($this->receiving_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt);
+			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt,$item_location);
 		}
-		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity))
+		else
 		{
-			$data['error']=$this->lang->line('recvs_unable_to_add_item');
+            if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location))
+                   $data['error']=$this->lang->line('recvs_unable_to_add_item');
 		}
 		$this->_reload($data);
 	}
@@ -75,6 +88,7 @@ class Receivings extends Secure_area
 		$price = $this->input->post("price");
 		$quantity = $this->input->post("quantity");
 		$discount = $this->input->post("discount");
+		$item_location = $this->input->post("location");
 
 		if ($this->form_validation->run() != FALSE)
 		{
@@ -87,6 +101,26 @@ class Receivings extends Secure_area
 
 		$this->_reload($data);
 	}
+
+    function edit_item_unit($item_id)
+    {
+        $data= array();
+
+        $this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|integer'); 
+        $quantity = $this->input->post("quantity");
+        
+
+        if ($this->form_validation->run() != FALSE)
+        {
+            $this->receiving_lib->edit_item_unit($item_id,$description,$quantity,0,0);
+        }
+        else
+        {
+            $data['error']=$this->lang->line('recvs_error_editing_item');
+        }
+
+        $this->_reload($data);
+    }
 
 	function delete_item($item_number)
 	{
@@ -106,12 +140,16 @@ class Receivings extends Secure_area
 		$data['total']=$this->receiving_lib->get_total();
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
+		$data['mode']=$this->receiving_lib->get_mode();
+		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$data['show_stock_locations'] = count($stock_locations) > 1;
 		$supplier_id=$this->receiving_lib->get_supplier();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->input->post('comment');
 		$emp_info=$this->Employee->get_info($employee_id);
 		$payment_type = $this->input->post('payment_type');
 		$data['payment_type']=$this->input->post('payment_type');
+        $data['stock_location']=$this->receiving_lib->get_stock_source();
 
 		if ($this->input->post('amount_tendered'))
 		{
@@ -127,7 +165,7 @@ class Receivings extends Secure_area
 		}
 
 		//SAVE receiving to database
-		$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$payment_type);
+		$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$payment_type,$data['stock_location']);
 		
 		if ($data['receiving_id'] == 'RECV -1')
 		{
@@ -139,14 +177,37 @@ class Receivings extends Secure_area
 		$this->_remove_duplicate_cookies();
 	}
 
+    function requisition_complete()
+    {
+    	if ($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) 
+    	{
+    		foreach($this->receiving_lib->get_cart() as $item)
+    		{
+    			$this->receiving_lib->delete_item($item['line']);
+    			$this->receiving_lib->add_item($item['item_id'],$item['quantity'],$this->receiving_lib->get_stock_destination());
+    			$this->receiving_lib->add_item($item['item_id'],-$item['quantity'],$this->receiving_lib->get_stock_source());
+    		}
+    		
+			$this->complete();
+    	}
+    	else 
+    	{
+    		$data['error']=$this->lang->line('recvs_error_requisition');
+    		$this->_reload($data);	
+    	}
+    }
+    
 	function receipt($receiving_id)
 	{
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
 		$data['cart']=$this->receiving_lib->get_cart();
 		$data['total']=$this->receiving_lib->get_total();
+		$data['mode']=$this->receiving_lib->get_mode();
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a', strtotime($receiving_info['receiving_time']));
+		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$data['show_stock_locations'] = count($stock_locations) > 1;
 		$supplier_id=$this->receiving_lib->get_supplier();
 		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);
 		$data['payment_type']=$receiving_info['payment_type'];
@@ -166,10 +227,28 @@ class Receivings extends Secure_area
 
 	function _reload($data=array())
 	{
+        $data['stock_locations'] = array();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$show_stock_locations = count($stock_locations) > 1;		
+
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart']=$this->receiving_lib->get_cart();
 		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'));
+		
 		$data['mode']=$this->receiving_lib->get_mode();
+        
+        if ($show_stock_locations) {
+        	$data['modes']['requisition'] = $this->lang->line('recvs_requisition');
+	        foreach($stock_locations as $location_data)
+	        {            
+	            $data['stock_locations'][$location_data['location_id']] = $location_data['location_name'];
+	        }     
+	        
+	        $data['stock_source']=$this->receiving_lib->get_stock_source();
+        	$data['stock_destination']=$this->receiving_lib->get_stock_destination();
+        }    
+        $data['show_stock_locations'] = $show_stock_locations;
+        
 		$data['total']=$this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->Employee->has_permission('items', $person_info->person_id);
 		$data['payment_options']=array(
