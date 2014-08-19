@@ -431,7 +431,7 @@ $(document).ready(function()
     		},
     		email:"email",
     		return_policy: "required",
-    		stock_location_number:"required"
+    		stock_location:"required"
     	 		
    		},
 		messages: 
@@ -446,7 +446,7 @@ $(document).ready(function()
     		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
      		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
-     		stock_location_number:"<?php echo $this->lang->line('config_stock_location_required'); ?>"         
+     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>"         
 	
 		}
 	});

@@ -31,7 +31,19 @@ class Item_quantitys extends CI_Model
         $this->db->from('item_quantitys');
         $this->db->where('item_id',$item_id);
         $this->db->where('location_id',$location_id);
-        return $this->db->get()->row();
+        $result = $this->db->get()->row();
+        if(empty($result) == true)
+        {
+            //Get empty base parent object, as $item_id is NOT an item
+            $result=new stdClass();
+            //Get all the fields from items table
+            $fields = $this->db->list_fields('item_quantitys');
+            foreach ($fields as $field)
+            {
+                $result->$field='';
+            }
+        }          
+        return $result;   
     }
 }
 ?>
