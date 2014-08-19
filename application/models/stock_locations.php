@@ -100,4 +100,3 @@ class Stock_locations extends CI_Model
     }
 }
 ?>
-    
