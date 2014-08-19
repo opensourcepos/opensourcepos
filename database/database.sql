@@ -142,7 +142,6 @@ CREATE TABLE `ospos_items` (
   `unit_price` decimal(15,2) NOT NULL,
   `quantity` decimal(15,2) NOT NULL DEFAULT '0.00',
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `location` varchar(255) NOT NULL,
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
@@ -587,7 +586,6 @@ CREATE TABLE `ospos_stock_locations` (
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
-
 
 --
 -- Dumping data for table `ospos_stock_locations`
