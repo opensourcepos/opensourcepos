@@ -125,6 +125,98 @@ class Receiving_lib
 
 	}
 
+    function add_item_unit($item_id,$quantity=1, $description=null)
+    {
+        //make sure item exists in database.
+        if(!$this->CI->Item->exists($item_id))
+        {
+            //try to get item id given an item_number
+            $item_id = $this->CI->Item->get_item_id($item_id);
+            
+            if(!$item_id)
+                return false;
+        }
+        
+        $related_item_number = $this->CI->Item_unit->get_info($item_id)->related_number;
+        if($related_item_number!= null && !$this->CI->Item->is_warehouse_item_exist($related_item_number))
+            {
+                return false;
+            }  
+            
+        //Get items in the requisition so far.
+        $items = $this->get_cart();
+
+        //We need to loop through all items in the cart.
+        //If the item is already there, get it's key($updatekey).
+        //We also need to get the next key that we are going to use in case we need to add the
+        //item to the list. Since items can be deleted, we can't use a count. we use the highest key + 1.
+
+        $maxkey=0;                       //Highest key so far
+        $itemalreadyinsale=FALSE;        //We did not find the item yet.
+        $insertkey=0;                    //Key to use for new entry.
+        $updatekey=0;                    //Key to use to update(quantity)
+
+        foreach ($items as $item)
+        {
+            //We primed the loop so maxkey is 0 the first time.
+            //Also, we have stored the key in the element itself so we can compare.
+            //There is an array function to get the associated key for an element, but I like it better
+            //like that!
+
+            if($maxkey <= $item['line'])
+            {
+                $maxkey = $item['line'];
+            }
+
+            if($item['item_id']==$item_id)
+            {
+                $itemalreadyinsale=TRUE;
+                $updatekey=$item['line'];
+            }
+        }
+
+        $insertkey=$maxkey+1;
+                                
+
+        //array records are identified by $insertkey and item_id is just another field.
+        $item = array(($insertkey)=>
+        array(
+            'item_id'=>$item_id,
+            'line'=>$insertkey,
+            'name'=>$this->CI->Item->get_info($item_id)->name,
+            'description'=>$description!=null ? $description: $this->CI->Item->get_info($item_id)->description,
+            'quantity'=>$quantity
+            )
+        );
+        
+        $item[$insertkey]['unit_quantity']= $this->CI->Item_unit->get_info($item_id)->unit_quantity;
+        $related_item_id = $this->CI->Item->get_item_id($related_item_number,'warehouse');
+        if($related_item_id == null)
+        {
+            $related_item_id = $this->CI->Item->get_item_id($related_item_number,'sale_stock');
+            if($related_item_id == null)
+            {
+                return false;
+            }
+        }
+        $item[$insertkey]['related_item'] = $this->CI->Item->get_info($related_item_id)->name;
+
+        //Item already exists
+        if($itemalreadyinsale)
+        {
+            $items[$updatekey]['quantity']+=$quantity;
+        }
+        else
+        {
+            //add to existing array
+            $items+=$item;
+        }
+
+        $this->set_cart($items);
+        return true;
+
+    }
+
 	function edit_item($line,$description,$serialnumber,$quantity,$discount,$price)
 	{
 		$items = $this->get_cart();
@@ -140,6 +232,18 @@ class Receiving_lib
 
 		return false;
 	}
+    
+    function edit_item_unit($line,$description,$quantity,$unit_quantity,$related_item)
+    {
+        $items = $this->get_cart();
+        if(isset($items[$line]))
+        {          
+            $items[$line]['quantity'] = $quantity;
+            $this->set_cart($items);
+        }
+
+        return false;
+    }
 
 	function is_valid_receipt($receipt_receiving_id)
 	{
@@ -206,6 +310,19 @@ class Receiving_lib
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 
+	}
+	
+	function copy_entire_requisition($requisition_id)
+	{
+		$this->empty_cart();
+		$this->delete_supplier();
+	
+		foreach($this->CI->Receiving->get_requisition_items($requisition_id)->result() as $row)
+		{
+			$this->add_item_unit($row->item_id,$row->quantity_purchased,$row->description);
+		}
+		$this->set_supplier($this->CI->Receiving->get_supplier($requisition_id)->person_id);
+	
 	}
 
 	function delete_item($line)

@@ -143,8 +143,10 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 	<?php echo form_checkbox(array('name'=>'no_description','id'=>'no_description','value'=>1,'checked'=> isset($no_description)?  ( ($no_description)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_search_custom_items').' '.':', 'search_custom');//GARRISON ADDED 4/21/2013?>
 	<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0)).' | ';//GARRISON ADDED 4/21/2013?>
-	<?php echo form_label($this->lang->line('items_is_deleted').' '.':', 'is_deleted');// Parq 131215?> 
-	<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0)).' | ';// Parq 131215?>
+	<?php echo form_label($this->lang->line('items_stock_type').' '.':', 'stock_type');?>
+    <?php   $stock_type_array = array('all'=>'All','sale_stock'=>$this->lang->line('items_stock_type_sale'),'warehouse'=>$this->lang->line('items_stock_type_warehouse'));
+            echo form_dropdown('stock_type',$stock_type_array,$stock_type,'onchange="$(\'#items_filter_form\').submit();"'); ?>
+    </form>
 	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
 	</form>
 </div>
@@ -163,7 +165,7 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 	</ul>
 </div>
 
-<div id="table_holder">
+<div id="table_holder" style="font-size:14px">
 <?php echo $manage_table; ?>
 </div>
 <div id="feedback_bar"></div>

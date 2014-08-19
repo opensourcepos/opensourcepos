@@ -31,7 +31,7 @@ if (isset($success))
 <label id="item_label" for="item">
 
 <?php
-if($mode=='sale')
+if($mode=='sale_retail' or $mode=='sale_wholesale')
 {
 	echo $this->lang->line('sales_find_or_scan_item');
 }
@@ -41,13 +41,16 @@ else
 }
 ?>
 </label>
+
 <?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));?>
+<!-- no need the new item button in sale page
 <div id="new_item_button_register" >
 		<?php echo anchor("items/view/-1/width:360",
 		"<div class='small_button'><span>".$this->lang->line('sales_new_item')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
 		?>
 	</div>
+-->
 
 </form>
 <table id="register">
