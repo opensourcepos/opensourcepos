@@ -45,9 +45,12 @@ class Stock_locations extends CI_Model
         {
             array_push($location_ids,$db['location_id']);            
         }
-        $this->db->where_in('location_id', $location_ids);
-        $this->db->update('stock_locations',array('deleted'=>1));
-        $this->db->trans_complete();
+        if (sizeof($location_ids) > 0) 
+        {
+	        $this->db->where_in('location_id', $location_ids);
+	        $this->db->update('stock_locations',array('deleted'=>1));
+	        $this->db->trans_complete();
+        }
         
         $location_db = $this->get_all()->result_array();
         //Update the stock location
