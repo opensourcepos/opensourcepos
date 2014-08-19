@@ -84,7 +84,8 @@ class Sale_suspended extends CI_Model
 				'quantity_purchased'=>$item['quantity'],
 				'discount_percent'=>$item['discount'],
 				'item_cost_price' => $cur_item_info->cost_price,
-				'item_unit_price'=>$item['price']
+				'item_unit_price'=>$item['price'],
+				'item_location'=>$item['item_location']
 			);
 
 			$this->db->insert('sales_suspended_items',$sales_items_data);

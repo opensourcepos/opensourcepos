@@ -58,11 +58,17 @@ if (isset($error_message))
 	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
 	<td colspan="2" style='text-align:right'><?php echo to_currency($total); ?></td>
 	</tr>
-
+	<?php 
+    if($mode=='requisition')
+    {
+    ?>
 	<tr>
 	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
 	<td colspan="2" style='text-align:right'><?php echo $payment_type; ?></td>
 	</tr>
+	<?php 
+    }
+    ?>
 
 	<?php if(isset($amount_change))
 	{

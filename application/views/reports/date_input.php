@@ -59,7 +59,8 @@ if(isset($error))
         <div id='report_receiving_type'>
         <?php echo form_dropdown('receiving_type',array('all' => $this->lang->line('reports_all'), 
         'receiving' => $this->lang->line('reports_receivings'), 
-        'returns' => $this->lang->line('reports_returns')), 'all', 'id="input_type"'); ?>
+        'returns' => $this->lang->line('reports_returns'),
+        'requisitions' => $this->lang->line('reports_requisitions')), 'all', 'id="input_type"'); ?>
         </div>
     <?php
     }

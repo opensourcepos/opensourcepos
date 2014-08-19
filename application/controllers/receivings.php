@@ -69,18 +69,8 @@ class Receivings extends Secure_area
 		}
 		else
 		{
-		    if($mode == 'requisition')
-            {
-            	// FIXME need to review this part
-                if(!$this->receiving_lib->add_item_unit($item_id_or_number_or_item_kit_or_receipt,$item_location))
-                     $data['error']=$this->lang->line('reqs_unable_to_add_item');
-            }
-            else
-            {
-                if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location))
-                    $data['error']=$this->lang->line('recvs_unable_to_add_item');
-            }
-		   
+            if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location))
+                   $data['error']=$this->lang->line('recvs_unable_to_add_item');
 		}
 		$this->_reload($data);
 	}
@@ -186,52 +176,31 @@ class Receivings extends Secure_area
 
     function requisition_complete()
     {
-        $data['cart']=$this->receiving_lib->get_cart();
-        $data['receipt_title']=$this->lang->line('reqs_receipt');
-        $data['transaction_time']= date('m/d/Y h:i:s a');
-
-        $employee_id=$this->Employee->get_logged_in_employee_info()->person_id;   
-        $emp_info=$this->Employee->get_info($employee_id);
-        $data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
-         
-        $comment = $this->input->post('comment');
-        
-        //SAVE requisition to database
-        $data['requisition_id']='REQS '.$this->Receiving->save_requisition($data['cart'],$employee_id,$comment);
-        
-        if ($data['requisition_id'] == 'REQS -1')
-        {
-            $data['error_message'] = $this->lang->line('reqs_transaction_failed');
-        }
-
-        $this->load->view("receivings/requisition_receipt",$data);
-        $this->receiving_lib->clear_all();
+    	if ($this->receiving_lib->get_stock_source() != $this->receiving_lib->get_stock_destination()) 
+    	{
+    		foreach($this->receiving_lib->get_cart() as $item)
+    		{
+    			$this->receiving_lib->delete_item($item['line']);
+    			$this->receiving_lib->add_item($item['item_id'],$item['quantity'],$this->receiving_lib->get_stock_destination());
+    			$this->receiving_lib->add_item($item['item_id'],-$item['quantity'],$this->receiving_lib->get_stock_source());
+    		}
+    		
+			$this->complete();
+    	}
+    	else 
+    	{
+    		$data['error']=$this->lang->line('recvs_error_requisition');
+    		$this->_reload($data);	
+    	}
     }
     
-    function requisition_receipt($requisition_id)
-    {
-    	$requisition_info = $this->Receiving->get_requisition_info($requisition_id)->row_array();
-    	$this->receiving_lib->copy_entire_requisition($requisition_id);
-
-    	$data['cart']=$this->receiving_lib->get_cart();
-    	$data['receipt_title']=$this->lang->line('reqs_receipt');
-    	$data['transaction_time']= date('m/d/Y h:i:s a');
-    	
-    	$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
-    	$emp_info=$this->Employee->get_info($employee_id);
-    	$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
-    	
-    	$data['requisition_id']='REQS '.$requisition_id;
-    	$this->load->view("receivings/requisition_receipt",$data);
-    	$this->receiving_lib->clear_all();
-    }
-
 	function receipt($receiving_id)
 	{
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
 		$data['cart']=$this->receiving_lib->get_cart();
 		$data['total']=$this->receiving_lib->get_total();
+		$data['mode']=$this->receiving_lib->get_mode();
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a', strtotime($receiving_info['receiving_time']));
 		$supplier_id=$this->receiving_lib->get_supplier();
