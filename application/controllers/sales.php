@@ -352,12 +352,16 @@ class Sales extends Secure_area
         $data['mode']=$this->sale_lib->get_mode();
                      
         $data['stock_locations'] = array();
-        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();          
-        foreach($stock_locations as $location_data)
-        {            
-            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
-        }       		
-        $data['stock_location']=$this->sale_lib->get_sale_location();
+        $stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+        $show_stock_locations = count($stock_locations) > 1;
+        if ($show_stock_locations) {
+	        foreach($stock_locations as $location_data)
+	        {            
+	            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+	        }       		
+	        $data['stock_location']=$this->sale_lib->get_sale_location();
+        }
+        $data['show_stock_locations'] = $show_stock_locations;
         
 		$data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
 		$data['mode']=$this->sale_lib->get_mode();

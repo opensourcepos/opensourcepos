@@ -94,8 +94,8 @@ class Sale extends CI_Model
 			$this->db->insert('sales_items',$sales_items_data);
 
 			//Update stock quantity
-			$item_quantity = $this->Item_quantitys->get_item_quantity($item['item_id'], $this->sale_lib->get_location_id_from_stock_location($this->sale_lib->get_sale_location()));       
-            $this->Item_quantitys->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
+			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $this->sale_lib->get_location_id_from_stock_location($this->sale_lib->get_sale_location()));       
+            $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
                                               'item_id'=>$item['item_id'],
                                               'location_id'=>$this->sale_lib->get_location_id_from_stock_location($stock_location)), $item_quantity->item_quantity_id);
 	

@@ -79,7 +79,7 @@ echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_for
 	
 		'name'=>'quantity',
 		'id'=>'quantity',
-		'value'=>current($item_quantitys),
+		'value'=>current($item_quantities),
 		'style'       => 'border:none',
 		'readonly' => 'readonly'
 		);
@@ -168,7 +168,7 @@ $(document).ready(function()
 
 function fill_quantity(val) 
 {   
-    var item_quantitys= <?php echo json_encode($item_quantitys ); ?>;
-    document.getElementById("quantity").value = item_quantitys[val];
+    var item_quantities= <?php echo json_encode($item_quantities ); ?>;
+    document.getElementById("quantity").value = item_quantities[val];
 }
 </script>

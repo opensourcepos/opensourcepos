@@ -35,7 +35,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('fax', ''),
 ('phone', '555-555-5555'),
 ('return_policy', 'Test'),
-('stock_location', 'stockD,stockE,stockA'),
 ('timezone', 'America/New_York'),
 ('website', '');
 
@@ -114,10 +113,12 @@ CREATE TABLE `ospos_inventory` (
   `trans_user` int(11) NOT NULL DEFAULT '0',
   `trans_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `trans_comment` text NOT NULL,
+  `trans_location` int(11) NOT NULL,
   `trans_inventory` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`trans_id`),
-  KEY `ospos_inventory_ibfk_1` (`trans_items`),
-  KEY `ospos_inventory_ibfk_2` (`trans_user`)
+  KEY `trans_items` (`trans_items`),
+  KEY `trans_user` (`trans_user`),
+  KEY `trans_location` (`trans_location`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -141,7 +142,6 @@ CREATE TABLE `ospos_items` (
   `unit_price` decimal(15,2) NOT NULL,
   `quantity` decimal(15,2) NOT NULL DEFAULT '0.00',
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `location` varchar(255) NOT NULL,
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
@@ -227,16 +227,18 @@ CREATE TABLE `ospos_item_kit_items` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ospos_item_quantitys`
+-- Table structure for table `ospos_item_quantities`
 --
 
-CREATE TABLE IF NOT EXISTS `ospos_item_quantitys` (
+CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   `item_quantity_id` int(11) NOT NULL AUTO_INCREMENT,
   `item_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  PRIMARY KEY (`item_quantity_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=69 ;
+  PRIMARY KEY (`item_quantity_id`),
+  KEY `item_id` (`item_id`),
+  KEY `location_id` (`location_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 -- --------------------------------------------------------
 >>>>>>> Added empty check in stock_locations config
@@ -623,6 +625,13 @@ CREATE TABLE `ospos_stock_locations` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
 >>>>>>> Added empty check in stock_locations config
 
+
+--
+-- Dumping data for table `ospos_stock_locations`
+--
+
+INSERT INTO `ospos_stock_locations` ( `deleted` ) VALUES ('0');
+
 -- --------------------------------------------------------
 
 --
@@ -763,6 +772,13 @@ ALTER TABLE `ospos_sales_suspended_items_taxes`
 --
 ALTER TABLE `ospos_sales_suspended_payments`
   ADD CONSTRAINT `ospos_sales_suspended_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`);
+
+--
+-- Constraints for table `ospos_item_quantities`
+--
+ALTER TABLE `ospos_item_quantities`
+  ADD CONSTRAINT `ospos_item_quantities_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
+  ADD CONSTRAINT `ospos_item_quantities_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 --
 -- Constraints for table `ospos_suppliers`

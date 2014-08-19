@@ -274,7 +274,7 @@ class Sale_lib
 		
 		//$item = $this->CI->Item->get_info($item_id);
 		$location_id = $this->get_location_id_from_stock_location($this->get_sale_location());
-		$item_quantity = $this->CI->Item_quantitys->get_item_quantity($item_id, $location_id)->quantity; 
+		$item_quantity = $this->CI->Item_quantities->get_item_quantity($item_id, $location_id)->quantity; 
 		$quanity_added = $this->get_quantity_already_added($item_id);
 		
 		if ($item_quantity - $quanity_added < 0)

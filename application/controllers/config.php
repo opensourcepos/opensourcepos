@@ -9,7 +9,14 @@ class Config extends Secure_area
 	
 	function index()
 	{
-		$this->load->view("config");
+		$location_names = array();
+		$locations = $this->Stock_locations->get_location_names();
+		foreach($locations->result_array() as $array) 
+		{
+			array_push($location_names, $array['location_name']);
+		}
+		$data['location_names'] = implode(',', $location_names);
+		$this->load->view("config", $data);
 	}
 		
 	function save()
@@ -30,7 +37,6 @@ class Config extends Secure_area
 		'return_policy'=>$this->input->post('return_policy'),
 		'language'=>$this->input->post('language'),
 		'timezone'=>$this->input->post('timezone'),
-		'stock_location'=>$this->input->post('stock_location'),
 		'print_after_sale'=>$this->input->post('print_after_sale'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
