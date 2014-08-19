@@ -26,6 +26,14 @@ class Stock_locations extends CI_Model
     	return $this->db->get();
     }
     
+    function concat_location_names() 
+    {
+    	$this->db->select('GROUP_CONCAT(location_name SEPARATOR\',\') AS location_names', FALSE);
+    	$this->db->from('stock_locations');
+    	$this->db->where('deleted', 0);
+    	return $this->db->get()->row();
+    }
+    
     function get_undeleted_all($limit=10000, $offset=0)
     {
         $this->db->from('stock_locations');

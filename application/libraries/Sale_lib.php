@@ -183,6 +183,11 @@ class Sale_lib
         $this->CI->session->set_userdata('sale_location',$location);
     }
     
+    function clear_sale_location()
+    {
+    	$this->CI->session->unset_userdata('sale_location');
+    }
+    
 	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists	     
