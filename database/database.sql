@@ -220,9 +220,6 @@ CREATE TABLE `ospos_item_kit_items` (
 -- Dumping data for table `ospos_item_kit_items`
 --
 
-<<<<<<< HEAD
--- ------------------------------------------------------
-=======
 -- --------------------------------------------------------
 
 --
@@ -239,7 +236,6 @@ CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 -- --------------------------------------------------------
->>>>>>> Added empty check in stock_locations config
 
 --
 -- Table structure for table `ospos_modules`
@@ -367,8 +363,8 @@ CREATE TABLE `ospos_receivings_items` (
   `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
-  `item_location` int(11) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `item_location` int(11) NOT NULL,
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -377,38 +373,6 @@ CREATE TABLE `ospos_receivings_items` (
 -- Dumping data for table `ospos_receivings_items`
 --
 
-<<<<<<< HEAD
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ospos_requisitions_items`
---
-
-CREATE TABLE IF NOT EXISTS `ospos_requisitions_items` (
-  `requisition_id` int(10) NOT NULL DEFAULT '0',
-  `item_id` int(11) NOT NULL DEFAULT '0',
-  `line` int(3) NOT NULL,
-  `requisition_quantity` int(10) NOT NULL DEFAULT '0',
-  `related_item_id` int(10) NOT NULL DEFAULT '0',
-  `related_item_quantity` int(11) NOT NULL,
-  `related_item_total_quantity` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`requisition_id`,`item_id`,`line`),
-  KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_requisitions_items`
---
-
-INSERT INTO `ospos_requisitions_items` (`requisition_id`, `item_id`, `line`, `requisition_quantity`, `related_item_id`, `related_item_quantity`, `related_item_total_quantity`) VALUES
-(7, 2, 1, 2, 12, 12, 24),
-(8, 1, 2, 10, 12, 1, 10),
-(8, 2, 1, 1, 12, 12, 12),
-(9, 1, 1, 4, 12, 1, 4),
-(10, 1, 1, 1, 12, 1, 1);
-=======
->>>>>>> Added empty check in stock_locations config
 
 -- --------------------------------------------------------
 
@@ -448,8 +412,8 @@ CREATE TABLE `ospos_sales_items` (
   `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
-  `item_location` int(11) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `item_location` int(11) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`),
@@ -460,10 +424,7 @@ CREATE TABLE `ospos_sales_items` (
 -- Dumping data for table `ospos_sales_items`
 --
 
-<<<<<<< HEAD
-=======
 
->>>>>>> Added empty check in stock_locations config
 -- --------------------------------------------------------
 
 --
@@ -543,8 +504,8 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
-  `item_location` int(11) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `item_location` int(11) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)
@@ -615,7 +576,6 @@ CREATE TABLE `ospos_sessions` (
 
 -- --------------------------------------------------------
 
-
 --
 -- Table structure for table `ospos_stock_locations`
 --
@@ -625,12 +585,7 @@ CREATE TABLE `ospos_stock_locations` (
   `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
-<<<<<<< HEAD
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
-=======
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
->>>>>>> Added empty check in stock_locations config
-
 
 --
 -- Dumping data for table `ospos_stock_locations`
@@ -698,11 +653,7 @@ ALTER TABLE `ospos_items_taxes`
 --
 ALTER TABLE `ospos_item_kit_items`
   ADD CONSTRAINT `ospos_item_kit_items_ibfk_1` FOREIGN KEY (`item_kit_id`) REFERENCES `ospos_item_kits` (`item_kit_id`) ON DELETE CASCADE,
-<<<<<<< HEAD
-  ADD CONSTRAINT `ospos_item_kit_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`) ON DELETE CASCADE;
-=======
   ADD CONSTRAINT `ospos_item_kit_items_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`)  ON DELETE CASCADE;
->>>>>>> Added empty check in stock_locations config
 
 --
 -- Constraints for table `ospos_permissions`
