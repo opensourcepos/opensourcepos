@@ -30,6 +30,7 @@ class Config extends Secure_area
 		'return_policy'=>$this->input->post('return_policy'),
 		'language'=>$this->input->post('language'),
 		'timezone'=>$this->input->post('timezone'),
+		'stock_location'=>$this->input->post('stock_location'),
 		'print_after_sale'=>$this->input->post('print_after_sale'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
@@ -43,7 +44,13 @@ class Config extends Secure_area
 		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
 		);
 		
-		if( $this->Appconfig->batch_save( $batch_save_data ) )
+		$stock_locations = explode( ',', $this->input->post('stock_location'));
+        $stock_locations_trimmed=array();
+        foreach($stock_locations as $location)
+        {
+            array_push($stock_locations_trimmed, trim($location, ' '));
+        }        
+		if( $this->Appconfig->batch_save( $batch_save_data ) && $this->Stock_locations->array_save($stock_locations_trimmed))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
 		}

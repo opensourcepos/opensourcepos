@@ -112,17 +112,25 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 	</div>
 </div>
 
-
-<div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_quantity').':', 'quantity',array('class'=>'required wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'quantity',
-		'id'=>'quantity',
-		'value'=>$item_info->quantity)
-	);?>
-	</div>
-</div>
+<?php
+foreach($stock_locations as $key=>$location_detail)
+{
+?>
+    <div class="field_row clearfix">
+    <?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] .':', 
+                            $key.'_quantity',
+                            array('class'=>'required wide')); ?>
+    	<div class='form_field'>
+    	<?php echo form_input(array(
+    		'name'=>$key.'_quantity',
+    		'id'=>$key.'_quantity',
+    		'value'=>$location_detail['quantity'])
+    	);?>
+    	</div>
+    </div>
+<?php
+}
+?>
 
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'required wide')); ?>

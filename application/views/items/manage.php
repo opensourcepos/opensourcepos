@@ -22,7 +22,7 @@ $(document).ready(function()
     	$(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
     });
 
-    $("#low_inventory, #is_serialized, #no_description, #search_custom, #is_deleted").click(function()
+    $("#is_serialized, #no_description, #search_custom, #is_deleted").click(function()
     {
     	$('#items_filter_form').submit();
     });
@@ -135,18 +135,12 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 
 <div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>;background-color:#EEEEEE;">
 	<?php echo form_open("$controller_name/refresh",array('id'=>'items_filter_form')); ?>
-	<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
-	<?php echo form_checkbox(array('name'=>'low_inventory','id'=>'low_inventory','value'=>1,'checked'=> isset($low_inventory)?  ( ($low_inventory)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_serialized_items').' '.':', 'is_serialized');?>
 	<?php echo form_checkbox(array('name'=>'is_serialized','id'=>'is_serialized','value'=>1,'checked'=> isset($is_serialized)?  ( ($is_serialized)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_no_description_items').' '.':', 'no_description');?>
 	<?php echo form_checkbox(array('name'=>'no_description','id'=>'no_description','value'=>1,'checked'=> isset($no_description)?  ( ($no_description)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_search_custom_items').' '.':', 'search_custom');//GARRISON ADDED 4/21/2013?>
-	<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0)).' | ';//GARRISON ADDED 4/21/2013?>
-	<?php echo form_label($this->lang->line('items_stock_type').' '.':', 'stock_type');?>
-    <?php   $stock_type_array = array('all'=>'All','sale_stock'=>$this->lang->line('items_stock_type_sale'),'warehouse'=>$this->lang->line('items_stock_type_warehouse'));
-            echo form_dropdown('stock_type',$stock_type_array,$stock_type,'onchange="$(\'#items_filter_form\').submit();"'); ?>
-    </form>
+	<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0));//GARRISON ADDED 4/21/2013?>  
 	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
 	</form>
 </div>

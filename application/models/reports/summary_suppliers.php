@@ -19,20 +19,14 @@ class Summary_suppliers extends Report
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
-		if ($inputs['sale_type'] == 'sales_retail')
+		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
-            $this->db->where('sale_type', 'sale_stock');
-        }
-        elseif($inputs['sale_type'] == 'sales_wholesale')
-        {
-            $this->db->where('quantity_purchased > 0');
-            $this->db->where('sale_type', 'warehouse');
         }
         elseif ($inputs['sale_type'] == 'returns')
         {
             $this->db->where('quantity_purchased < 0');
-        }       
+        }    
 		$this->db->group_by('supplier_id');
 		$this->db->order_by('last_name');
 		
@@ -46,20 +40,14 @@ class Summary_suppliers extends Report
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
-		if ($inputs['sale_type'] == 'sales_retail')
+		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
-            $this->db->where('sale_type = \'sale_stock\'');
-        }
-        elseif($inputs['sale_type'] == 'sales_wholesale')
-        {
-            $this->db->where('quantity_purchased > 0');
-            $this->db->where('sale_type = \'warehouse\'');
         }
         elseif ($inputs['sale_type'] == 'returns')
         {
             $this->db->where('quantity_purchased < 0');
-        }       
+        }      
 		return $this->db->get()->row_array();
 	}
 }

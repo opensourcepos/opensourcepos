@@ -157,7 +157,7 @@ class Sale_lib
 	function get_mode()
 	{
 		if(!$this->CI->session->userdata('sale_mode'))
-			$this->set_mode('sale_retail');
+			$this->set_mode('sale');
 
 		return $this->CI->session->userdata('sale_mode');
 	}
@@ -167,6 +167,22 @@ class Sale_lib
 		$this->CI->session->set_userdata('sale_mode',$mode);
 	}
 
+    function get_sale_location()
+    {
+        if(!$this->CI->session->userdata('sale_location'))
+        {
+             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
+             $location_name = 'stock_'.$stock_locations[0]['location_id'];
+             $this->set_sale_location($location_name);
+        }
+        return $this->CI->session->userdata('sale_location');
+    }
+
+    function set_sale_location($location)
+    {
+        $this->CI->session->set_userdata('sale_location',$location);
+    }
+    
 	function add_item($item_id,$quantity=1,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists	     
@@ -242,6 +258,11 @@ class Sale_lib
 
 	}
 	
+    function get_location_id_from_stock_location($location)
+    {
+        return substr($location, 6);
+    }
+    
 	function out_of_stock($item_id)
 	{
 		//make sure item exists
@@ -251,10 +272,12 @@ class Sale_lib
         }
 
 		
-		$item = $this->CI->Item->get_info($item_id);
+		//$item = $this->CI->Item->get_info($item_id);
+		$location_id = $this->get_location_id_from_stock_location($this->get_sale_location());
+		$item_quantity = $this->CI->Item_quantitys->get_item_quantity($item_id, $location_id)->quantity; 
 		$quanity_added = $this->get_quantity_already_added($item_id);
 		
-		if ($item->quantity - $quanity_added < 0)
+		if ($item_quantity - $quanity_added < 0)
 		{
 			return true;
 		}
