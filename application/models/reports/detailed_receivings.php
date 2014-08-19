@@ -29,9 +29,9 @@ class Detailed_receivings extends Report
 		{
 			$this->db->where('quantity_purchased < 0');
 		}
-		elseif ($inputs['receiving_type'] == 'requisition')
+		elseif ($inputs['receiving_type'] == 'requisitions')
 		{
-			$this->db->where('quantity_purchased = 0');
+			$this->db->having('items_purchased = 0');
 		}
 		$this->db->group_by('receiving_id');
 		$this->db->order_by('receiving_date');
@@ -64,6 +64,10 @@ class Detailed_receivings extends Report
 		elseif ($inputs['receiving_type'] == 'returns')
 		{
 			$this->db->where('quantity_purchased < 0');
+		}
+		elseif ($inputs['receiving_type'] == 'requisitions')
+		{
+			$this->db->where('quantity_purchased = 0');
 		}
 		return $this->db->get()->row_array();
 	}
