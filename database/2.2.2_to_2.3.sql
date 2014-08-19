@@ -21,7 +21,7 @@ ALTER TABLE ospos_inventory
 
 ALTER TABLE ospos_items DROP COLUMN location;
 
-INSERT INTO `ospos_stock_locations` ( `deleted` ) VALUES ('0');
+INSERT INTO `ospos_stock_locations` ( `deleted`, `location_name` ) VALUES ('0', 'stock');
 
 ALTER TABLE ospos_receivings_items
  ADD COLUMN item_location int(11) NOT NULL,
@@ -33,7 +33,6 @@ ALTER TABLE ospos_sales_items
  ADD COLUMN item_location int(11) NOT NULL,
  ADD KEY `item_location` (`item_location`),
  ADD KEY `sale_id` (`sale_id`),
- ADD CONSTRAINT `ospos_sales_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`),
  ADD CONSTRAINT `ospos_sales_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 ALTER TABLE ospos_sales_items_taxes
@@ -46,7 +45,6 @@ ALTER TABLE ospos_sales_suspended_items
  ADD COLUMN item_location int(11) NOT NULL,
  ADD KEY `item_location` (`item_location`),
  ADD KEY `sale_id` (`sale_id`),
- ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`),
  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 ALTER TABLE `ospos_item_quantities`
