@@ -370,11 +370,6 @@ $(document).ready(function()
     $("#category").result(function(event, data, formatted){});
 	$("#category").search();
 
-/** GARRISON ADDED 5/18/2013 **/	
-	$("#location").autocomplete("<?php echo site_url('items/suggest_location');?>",{max:100,minChars:0,delay:10});
-    $("#location").result(function(event, data, formatted){});
-	$("#location").search();
-
 	$("#custom1").autocomplete("<?php echo site_url('items/suggest_custom1');?>",{max:100,minChars:0,delay:10});
     $("#custom1").result(function(event, data, formatted){});
 	$("#custom1").search();

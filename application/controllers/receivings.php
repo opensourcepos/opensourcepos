@@ -35,15 +35,20 @@ class Receivings extends Secure_area
 
 	function change_mode()
 	{
-		$mode = $this->input->post("mode");
-		$this->receiving_lib->set_mode($mode);
-        
-        $stock_source = $this->input->post("stock_source");
-        $this->receiving_lib->set_stock_source($stock_source);
-        
-        $stock_deatination = $this->input->post("stock_deatination");
-        $this->receiving_lib->set_stock_destination($stock_deatination);
-        $this->receiving_lib->empty_cart();        
+		$stock_destination = $this->input->post('stock_destination');
+		$stock_source = $this->input->post("stock_source");
+		if ((!$stock_source || $stock_source == $this->receiving_lib->get_stock_source()) &&
+			(!$stock_destination || $stock_destination == $this->receiving_lib->get_stock_destination()))
+		{
+			$this->receiving_lib->empty_cart();
+			$mode = $this->input->post("mode");
+			$this->receiving_lib->set_mode($mode);
+		}
+		else
+		{
+			$this->receiving_lib->set_stock_source($stock_source);
+			$this->receiving_lib->set_stock_destination($stock_destination);
+		}
 		$this->_reload();
 	}
 
@@ -53,25 +58,26 @@ class Receivings extends Secure_area
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
 		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
-
+		$item_location = $this->receiving_lib->get_stock_source();
 		if($this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
 		{
-			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
+			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt,$item_location);
 		}
 		elseif($this->receiving_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt);
+			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt,$item_location);
 		}
 		else
 		{
 		    if($mode == 'requisition')
             {
-                if(!$this->receiving_lib->add_item_unit($item_id_or_number_or_item_kit_or_receipt))
+            	// FIXME need to review this part
+                if(!$this->receiving_lib->add_item_unit($item_id_or_number_or_item_kit_or_receipt,$item_location))
                      $data['error']=$this->lang->line('reqs_unable_to_add_item');
             }
             else
             {
-                if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity))
+                if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location))
                     $data['error']=$this->lang->line('recvs_unable_to_add_item');
             }
 		   
@@ -92,6 +98,7 @@ class Receivings extends Secure_area
 		$price = $this->input->post("price");
 		$quantity = $this->input->post("quantity");
 		$discount = $this->input->post("discount");
+		$item_location = $this->input->post("location");
 
 		if ($this->form_validation->run() != FALSE)
 		{
@@ -260,7 +267,7 @@ class Receivings extends Secure_area
         	$data['modes']['requisition'] = $this->lang->line('recvs_requisition');
 	        foreach($stock_locations as $location_data)
 	        {            
-	            $data['stock_locations']['stock_'.$location_data['location_id']] = $location_data['location_name'];
+	            $data['stock_locations'][$location_data['location_id']] = $location_data['location_name'];
 	        }     
 	        
 	        $data['stock_source']=$this->receiving_lib->get_stock_source();

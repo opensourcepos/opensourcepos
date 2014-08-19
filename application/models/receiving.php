@@ -24,7 +24,7 @@ class Receiving extends CI_Model
 		return ($query->num_rows()==1);
 	}
 
-	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$stock_location,$receiving_id=false)
+	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false)
 	{
 		if(count($items)==0)
 			return -1;
@@ -63,10 +63,10 @@ class Receiving extends CI_Model
 			$this->db->insert('receivings_items',$receivings_items_data);
 
 			//Update stock quantity
-			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $this->receiving_lib->get_location_id_from_stock_location($stock_location));		
+			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);		
             $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity + $item['quantity'],
                                               'item_id'=>$item['item_id'],
-                                              'location_id'=>$this->receiving_lib->get_location_id_from_stock_location($stock_location)), $item_quantity->item_quantity_id);
+                                              'location_id'=>$item['item_location']), $item_quantity->item_quantity_id);
 			
 			
 			$qty_recv = $item['quantity'];
@@ -76,7 +76,7 @@ class Receiving extends CI_Model
 				'trans_date'=>date('Y-m-d H:i:s'),
 				'trans_items'=>$item['item_id'],
 				'trans_user'=>$employee_id,
-				'location_id'=>$this->receiving_lib->get_location_id_from_stock_location($stock_location),
+				'trans_location'=>$item['item_location'],
 				'trans_comment'=>$recv_remarks,
 				'trans_inventory'=>$qty_recv
 			);
@@ -115,7 +115,6 @@ class Receiving extends CI_Model
         foreach($items as $line=>$item)
         {
             $cur_item_info = $this->Item->get_info($item['item_id']);
-            $related_item_number = $this->Item_unit->get_info($item['item_id'])->related_number;
             $related_item_unit_quantity = $this->Item_unit->get_info($item['item_id'])->unit_quantity;         
             $related_item_total_quantity = $item['quantity']*$related_item_unit_quantity;
             $related_item_id;
@@ -141,10 +140,8 @@ class Receiving extends CI_Model
                                     'unit_price'=>$cur_item_info->unit_price,
                                     'quantity'=>$related_item_total_quantity,
                                     'reorder_level'=>$cur_item_info->reorder_level,
-                                    'location'=>$cur_item_info->location,
                                     'allow_alt_description'=>$cur_item_info->allow_alt_description,
                                     'is_serialized'=>$cur_item_info->is_serialized,
-                                    'stock_type'=>'sale_stock',
                                     'custom1'=>$cur_item_info->custom1,   /**GARRISON ADDED 4/21/2013**/          
                                     'custom2'=>$cur_item_info->custom2,/**GARRISON ADDED 4/21/2013**/
                                     'custom3'=>$cur_item_info->custom3,/**GARRISON ADDED 4/21/2013**/
@@ -184,7 +181,6 @@ class Receiving extends CI_Model
                                     'location'=>$item_data_temp->location,
                                     'allow_alt_description'=>$item_data_temp->allow_alt_description,
                                     'is_serialized'=>$item_data_temp->is_serialized,
-                                    'stock_type'=>'sale_stock',
                                     'custom1'=>$item_data_temp->custom1,   /**GARRISON ADDED 4/21/2013**/          
                                     'custom2'=>$item_data_temp->custom2,/**GARRISON ADDED 4/21/2013**/
                                     'custom3'=>$item_data_temp->custom3,/**GARRISON ADDED 4/21/2013**/
