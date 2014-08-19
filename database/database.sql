@@ -636,7 +636,7 @@ CREATE TABLE `ospos_stock_locations` (
 -- Dumping data for table `ospos_stock_locations`
 --
 
-INSERT INTO `ospos_stock_locations` ( `deleted` ) VALUES ('0');
+INSERT INTO `ospos_stock_locations` ( `deleted`, `location_name` ) VALUES ('0', 'stock');
 
 -- --------------------------------------------------------
 
