@@ -1,12 +1,33 @@
-* Ver. 2.1.0
+Version 2.2.2
+-------------
++ French language added
++ Thai language added
++ Upgrade to CodeIgniter 2.2 (contains several security fixes)
++ Database types for amounts all changed to decimal types (this will fix rounding errors in the sales and receivings reports) the rest of the application
++ Fix duplicated session cookies in http headers (this broke the application when running on nginx)
+
+Version 2.1.1
+-------------
++ Barcodes on the order receipt weren't generated correctly
++ Sales edit screen for detailed sales reports is now available with thickbox as in the rest of the application
++ Indonesian language files updated (Oktafianus)
++ Default language set to 'en' in config.php
++ Fix some css bugs in suspended sales section
++ Default cookie sess_time_expire set to 86400 (24h)
+
+Version 2.1.0
+-------------
 + Various upgrades, too numerous to list here.
 + Removed dependancy on ofc upload library due to vulnerability found.
--------------------------------------------------------------------------------
-* Ver. 2.0.2
+
+Version 2.0.2
+-------------
 + Fixed multiple giftcards issue per Bug #4 reported on Sourceforge where a
   second giftcard added would have its balance set to $0 even if the sale did
   not require the total of the second giftcard to pay the remaining amount due.
 + Small code cleanup
--------------------------------------------------------------------------------
+
+Version 2.1.0
+-------------
 * Upgrade to CodeIgniter 2.1.0
 * Various small improvements
