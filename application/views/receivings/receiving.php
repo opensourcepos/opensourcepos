@@ -117,7 +117,7 @@ else
 ?>
 	    </td>
 	    
-<?php       if ($items_module_allowed && !$mode=='requisition')
+<?php       if ($items_module_allowed && $mode!='requisition')
 		    {
 ?>
 		    <td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
