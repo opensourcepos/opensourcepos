@@ -1,4 +1,6 @@
 <?php
+define("PRECISION", 3);
+
 class Sale_lib
 {
 	var $CI;
@@ -452,14 +454,20 @@ class Sale_lib
 		$this->empty_payments();
 		$this->remove_customer();
 	}
-
-	function get_taxes()
+	
+	function is_customer_taxable()
 	{
 		$customer_id = $this->get_customer();
 		$customer = $this->CI->Customer->get_info($customer_id);
-
+		
 		//Do not charge sales tax if we have a customer that is not taxable
-		if (!$customer->taxable and $customer_id!=-1)
+		return $customer->taxable or $customer_id==-1;
+	}
+
+	function get_taxes()
+	{
+		//Do not charge sales tax if we have a customer that is not taxable
+		if (!$this->is_customer_taxable())
 		{
 		   return array();
 		}
@@ -472,14 +480,14 @@ class Sale_lib
 			foreach($tax_info as $tax)
 			{
 				$name = $tax['percent'].'% ' . $tax['name'];
-				$tax_amount=($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100)*(($tax['percent'])/100);
-
+				$tax_percentage = $tax_info[0]['percent'];
+				$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax_percentage);
 
 				if (!isset($taxes[$name]))
 				{
 					$taxes[$name] = 0;
 				}
-				$taxes[$name] += $tax_amount;
+				$taxes[$name] = bcadd($taxes[$name], $tax_amount, PRECISION);
 			}
 		}
 
@@ -488,25 +496,81 @@ class Sale_lib
 
 	function get_subtotal()
 	{
+		$subtotal = $this->calculate_subtotal();		
+		return to_currency_no_money($subtotal);
+	}
+	
+	function get_item_total_tax_exclusive($quantity, $price, $discount_percentage) 
+	{
+		$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+		$item_price = $this->get_item_total($quantity, $price, $discount_percentage);
+		// only additive tax here
+		foreach($tax_info as $tax)
+		{
+			$tax_percentage = $tax_info[0]['percent'];
+			$item_price =- $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage);
+		}
+		
+		return $item_price;
+	}
+	
+	function get_item_total($quantity, $price, $discount_percentage)  
+	{
+		$total = bcmul($quantity, $price, PRECISION);
+		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
+		$discount_amount =  bcmul($total, $discount_fraction, PRECISION);
+		return bcsub($total, $discount_amount, PRECISION);
+	}
+	
+	function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
+	{
+		$price = $this->get_item_total($quantity, $price, $discount_percentage);
+
+		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
+		if ($this->CI->config->config['tax_included'])
+		{
+			$tax_fraction = bcadd(1, $tax_fraction, PRECISION);
+			$tax_fraction = bcdiv(1, $tax_fraction, PRECISION);
+			$price_tax_excl = bcmul($price, $tax_fraction, PRECISION);
+			return bcsub($price, $price_tax_excl, PRECISION);
+		}
+		return bcmul($price, $tax_fraction, PRECISION);
+	}
+
+	function calculate_subtotal() 
+	{
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
-		    $subtotal+=($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100);
+			if ($this->is_customer_taxable())
+			{
+				$subtotal =+ $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
+			}
+			else
+			{
+				if ($CI->config->config['tax_included'])
+				{
+					$subtotal =+ $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
+				}
+				else 
+				{
+					$subtotal =+ $this->get_item_total_tax_exclusive($item['quantity'], $item['price'], $item['discount']);
+				}
+			}
 		}
-		return to_currency_no_money($subtotal);
+		return $subtotal;
 	}
 
 	function get_total()
 	{
-		$total = 0;
-		foreach($this->get_cart() as $item)
+		$total = $this->calculate_subtotal();		
+		
+		if (!$this->CI->config->config['tax_included'])
 		{
-            $total += ( $item['price'] * $item['quantity'] - $item['price'] * $item['quantity'] * $item['discount'] / 100);
-		}
-
-		foreach($this->get_taxes() as $tax)
-		{
-			$total+=$tax;
+			foreach($this->get_taxes() as $tax)
+			{
+				$total = bcadd($total, $tax, 4);
+			}
 		}
 
 		return to_currency_no_money($total);

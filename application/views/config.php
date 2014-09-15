@@ -280,6 +280,17 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_tax_included').':', 'tax_included',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'tax_included',
+		'id'=>'tax_included',
+		'value'=>'tax_included',
+		'checked'=>$this->config->item('tax_included')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_custom1').':', 'website',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(

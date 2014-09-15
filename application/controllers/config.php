@@ -38,6 +38,7 @@ class Config extends Secure_area
 		'language'=>$this->input->post('language'),
 		'timezone'=>$this->input->post('timezone'),
 		'print_after_sale'=>$this->input->post('print_after_sale'),
+        'tax_included'=>$this->input->post('tax_included'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom3_name'=>$this->input->post('custom3_name'),/**GARRISON ADDED 4/20/2013**/

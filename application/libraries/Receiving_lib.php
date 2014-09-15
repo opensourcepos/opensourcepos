@@ -1,4 +1,5 @@
 <?php
+
 class Receiving_lib
 {
 	var $CI;
@@ -294,13 +295,21 @@ class Receiving_lib
 		$this->empty_cart();
 		$this->delete_supplier();
 	}
+	
+	function get_item_total($quantity, $price, $discount_percentage)
+	{
+		$total = bcmul($quantity, $price, PRECISION);
+		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
+		$discount_amount =  bcmul($total, $discount_fraction, PRECISION);
+		return bcsub($total, $discount_amount, PRECISION);
+	}
 
 	function get_total()
 	{
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-            $total+=($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100);
+			$total =+ $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
 		}
 		
 		return $total;

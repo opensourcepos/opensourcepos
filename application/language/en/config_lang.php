@@ -35,4 +35,5 @@ $lang['config_custom10'] = 'Custom Field 10'; //GARRISON ADDED 4/21/2013
 
 $lang['config_stock_location'] = 'Stock location';
 $lang['config_stock_location_required'] = 'Stock location number is a required field';
+$lang['config_tax_included'] = 'Tax Included';
 ?>
