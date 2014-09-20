@@ -22,6 +22,7 @@ class Secure_area extends CI_Controller
 		//load up global data
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 		$data['allowed_modules']=$this->Module->get_allowed_modules($logged_in_employee_info->person_id);
+		// TODO check access for at least one submodule (if available)
 		$data['user_info']=$logged_in_employee_info;
 		$this->load->vars($data);
 	}

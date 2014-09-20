@@ -49,6 +49,13 @@
 	padding:5px;	
 }
 
+#permission_list ul li
+{
+	padding-left:20px;
+	padding-bottom: 0px;
+	list-style:none;
+}
+
 #permission_list input
 {
 	top:3px;

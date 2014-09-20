@@ -13,6 +13,9 @@ class Stock_locations extends CI_Model
     function get_all($limit=10000, $offset=0)
     {
         $this->db->from('stock_locations');
+        $this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
+        $this->db->join('permissions', 'permissions.module_id=modules.module_id');
+        $this->db->where('person_id', $this->session->userdata('person_id'));
         $this->db->limit($limit);
         $this->db->offset($offset);
         return $this->db->get();
@@ -22,6 +25,9 @@ class Stock_locations extends CI_Model
     {
     	$this->db->select('location_name');
     	$this->db->from('stock_locations');
+    	$this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
+    	$this->db->join('permissions', 'permissions.module_id=modules.module_id');
+    	$this->db->where('person_id', $this->session->userdata('person_id'));
     	$this->db->where('deleted', 0);
     	return $this->db->get();
     }
@@ -37,18 +43,13 @@ class Stock_locations extends CI_Model
     function get_undeleted_all($limit=10000, $offset=0)
     {
         $this->db->from('stock_locations');
+        $this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
+        $this->db->join('permissions', 'permissions.module_id=modules.module_id');
+        $this->db->where('person_id', $this->session->userdata('person_id'));
         $this->db->where('deleted',0);
         $this->db->limit($limit);
         $this->db->offset($offset);
         return $this->db->get();
-    }
-    
-    function get_location_id($location_name)
-    {
-        $this->db->from('stock_locations');
-        $this->db->where('deleted',0);
-        $this->db->where('location_name',$location_name);
-        return $this->db->get()->row()->location_id;
     }
     
     function get_location_name($location_id) 
@@ -91,6 +92,8 @@ class Stock_locations extends CI_Model
                         $this->db->where('location_id', $db['location_id']);
                         
                         $this->db->update('stock_locations',array('location_name'=>$db['location_name'],'deleted'=>0));
+						// remmove module (and permissions) for stock location 
+                        $this->db->delete('modules', array('module_id' => 'items_stock'.$db['location_id']));
                     }
                     $to_create = false;
                     break;
@@ -101,6 +104,18 @@ class Stock_locations extends CI_Model
             {
                 $location_data = array('location_name'=>$location,'deleted'=>0);
                 $this->db->insert('stock_locations',$location_data);
+                // insert new module for stock location
+                $module_id = 'items_stock'.$this->db->insert_id();
+                $module_name = 'module_'.$module_id;
+                $module_data = array('name_lang_key' => $module_name, 'desc_lang_key' => $module_name.'_desc', 'module_id' => $module_id);
+                $this->db->insert('modules', $module_data);
+                // insert permissions for stock location
+                $employees = $this->Employee->get_all();
+                foreach ($employees->result_array() as $employee)
+                {
+	                $permission_data = array('module_id' => $module_id, 'person_id' => $employee['person_id']);
+	                $this->db->insert('permissions', $permission_data);
+                }
             }
         }
         $this->db->trans_complete();

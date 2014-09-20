@@ -54,15 +54,35 @@ $password_label_attributes = $person_info->person_id == "" ? array('class'=>'req
 <?php
 foreach($all_modules->result() as $module)
 {
+	if (sizeof(explode('_', $module->module_id)) == 1)
+	{
 ?>
 <li>	
 <?php echo form_checkbox("permissions[]",$module->module_id,$this->Employee->has_permission($module->module_id,$person_info->person_id)); ?>
 <span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 <span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
-</li>
 <?php
+		foreach($all_modules->result() as $submodule)
+		{
+			$exploded_submodule_id = explode('_', $submodule->module_id);
+			if (sizeof($exploded_submodule_id) > 1 && $exploded_submodule_id[0] == $module->module_id)
+			{
+				$lang_line = $this->lang->line('reports_'.$exploded_submodule_id[1]);
+				$lang_line = empty($lang_line) ? $exploded_submodule_id[1] : $lang_line;
+				?>
+			<ul>
+				<li>
+				<?php echo form_checkbox("permissions[]",$submodule->module_id,$this->Employee->has_permission($submodule->module_id,$person_info->person_id)); ?>
+				<span class="medium"><?php echo $lang_line ?></span>
+				</li>
+			</ul>
+				<?php 
+			}
+		}
+	}
 }
 ?>
+</li>
 </ul>
 <?php
 echo form_submit(array(

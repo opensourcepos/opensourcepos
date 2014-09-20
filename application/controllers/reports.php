@@ -6,6 +6,7 @@ define("FORM_WIDTH", "400");
 
 class Reports extends Secure_area 
 {	
+
 	function __construct()
 	{
 		parent::__construct('reports');
@@ -927,7 +928,7 @@ class Reports extends Secure_area
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_low_inventory_report'),
+			"title" => $this->lang->line('reports_inventory_low_report'),
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,

@@ -85,3 +85,23 @@ function random_color()
     }
     return $c;
 }
+
+function show_report_if_allowed($allowed_modules, $report_prefix, $report_name, $permission='')
+{
+	$CI =& get_instance();
+	$lang_line = 'reports_' .$report_name;
+	$report_label = $CI->lang->line($lang_line);
+	$permission = empty($permission) ? $report_name : $permission;
+	if (!empty($report_label))
+	{
+		foreach($allowed_modules->result() as $module) 
+		{
+			if ($module->module_id == 'reports_'. $permission)
+			{
+			?>
+				<li><a href="<?php echo site_url('reports/' . (empty($report_prefix) ? '' : $report_prefix . '_') . $report_name);?>"><?php echo $report_label; ?></a></li>
+			<?php 
+			}
+		}
+	}
+}
