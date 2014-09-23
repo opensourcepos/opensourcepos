@@ -5,7 +5,7 @@ class Secure_area extends CI_Controller
 	Controllers that are considered secure extend Secure_area, optionally a $module_id can
 	be set to also check if a user can access a particular module in the system.
 	*/
-	function __construct($module_id=null)
+	function __construct($module_id=null,$submodule_id=null)
 	{
 		parent::__construct();	
 		$this->load->model('Employee');
@@ -13,8 +13,9 @@ class Secure_area extends CI_Controller
 		{
 			redirect('login');
 		}
-		
-		if(!$this->Employee->has_permission($module_id,$this->Employee->get_logged_in_employee_info()->person_id))
+		$submodule_id = empty($submodule_id) ? $module_id : $submodule_id;
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		if(!$this->Employee->has_permission($module_id,$employee_id) || !$this->Employee->has_subpermission($submodule_id,$employee_id))
 		{
 			redirect('no_access/'.$module_id);
 		}
@@ -22,7 +23,6 @@ class Secure_area extends CI_Controller
 		//load up global data
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 		$data['allowed_modules']=$this->Module->get_allowed_modules($logged_in_employee_info->person_id);
-		// TODO check access for at least one submodule (if available)
 		$data['user_info']=$logged_in_employee_info;
 		$this->load->vars($data);
 	}

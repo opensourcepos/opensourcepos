@@ -21,4 +21,4 @@ INSERT INTO `ospos_permissions` (`module_id`, `person_id`) SELECT 'reports_suppl
 INSERT INTO `ospos_permissions` (`module_id`, `person_id`) SELECT 'reports_sales', person_id from ospos_employees;
 
 -- add config options for tax inclusive sales
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('tax_included', 'false');
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('tax_included', '0');

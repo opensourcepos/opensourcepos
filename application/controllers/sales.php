@@ -4,7 +4,7 @@ class Sales extends Secure_area
 {
 	function __construct()
 	{
-		parent::__construct('sales');
+		parent::__construct('sales','items');
 		$this->load->library('sale_lib');
 	}
 

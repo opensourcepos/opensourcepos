@@ -37,7 +37,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('return_policy', 'Test'),
 ('timezone', 'America/New_York'),
 ('website', ''),
-('tax_included', 'false');
+('tax_included', '0');
 
 -- --------------------------------------------------------
 
@@ -95,7 +95,7 @@ CREATE TABLE `ospos_giftcards` (
   `person_id` INT NOT NULL,
   PRIMARY KEY (`giftcard_id`),
   UNIQUE KEY `giftcard_number` (`giftcard_number`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=48 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 --
 -- Dumping data for table `ospos_giftcards`
@@ -329,7 +329,8 @@ INSERT INTO `ospos_permissions` (`module_id`, `person_id`) VALUES
 ('reports_inventory', 1),
 ('reports_employees', 1),
 ('reports_suppliers', 1),
-('reports_sales', 1), 
+('reports_sales', 1),
+('items_stock0', 1),  
 ('customers', 1),
 ('employees', 1),
 ('giftcards', 1),
