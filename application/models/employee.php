@@ -309,12 +309,13 @@ class Employee extends Person
 	function has_subpermission($submodule_id,$person_id)
 	{
 		$this->db->from('modules');
-		$this->db->where('module_id like concat("' . $submodule_id . '", "_%")');
+		$this->db->where('module_id like "' . $submodule_id . '_%"');
+		// has no submodules
 		$result = $this->db->get();
 		if ($result->num_rows() > 0)
 		{
 			$this->db->from('permissions');
-			$this->db->where('permissions.module_id like concat("' . $submodule_id . '", "_%")');
+			$this->db->where('permissions.module_id like "' . $submodule_id . '_%"');
 			$this->db->where("permissions.person_id",$person_id);
 			$result = $this->db->get();
 			return $result->num_rows() > 0;
