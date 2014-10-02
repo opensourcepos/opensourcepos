@@ -1,5 +1,4 @@
 <?php
-define("PRECISION", 3);
 
 class Receiving_lib
 {

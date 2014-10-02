@@ -22,3 +22,12 @@ INSERT INTO `ospos_permissions` (`module_id`, `person_id`) SELECT 'reports_sales
 
 -- add config options for tax inclusive sales
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('tax_included', '0');
+
+-- add cascading deletes on modules
+ALTER TABLE `ospos_permissions` DROP FOREIGN KEY `ospos_permissions_ibfk_1`; 
+ALTER TABLE `ospos_permissions` ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos`.`ospos_employee`(`person_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+ALTER TABLE `ospos_permissions` DROP FOREIGN KEY `ospos_permissions_ibfk_2`; 
+ALTER TABLE `ospos_permissions` ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `ospos`.`ospos_modules`(`module_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
+
+

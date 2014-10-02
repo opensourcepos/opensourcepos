@@ -1,5 +1,4 @@
 <?php
-define("PRECISION", 3);
 
 class Sale_lib
 {
