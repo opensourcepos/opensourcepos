@@ -68,7 +68,7 @@ foreach($all_modules->result() as $module)
 			if (sizeof($exploded_submodule_id) > 1 && $exploded_submodule_id[0] == $module->module_id)
 			{
 				$lang_line = $this->lang->line('reports_'.$exploded_submodule_id[1]);
-				$lang_line = empty($lang_line) ? $exploded_submodule_id[1] : $lang_line;
+				$lang_line = empty($lang_line) ? $this->Stock_locations->get_location_name(substr($exploded_submodule_id[1], -1)) : $lang_line;
 				?>
 			<ul>
 				<li>
