@@ -152,6 +152,12 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 		<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit/width:$form_width",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
 		<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
+		<?php if (count($stock_locations) > 1): ?>
+		<li class="float_left"><span>
+		<?php echo form_open("$controller_name/refresh",array('id'=>'stock_filter_form')); ?>
+		<?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'id="stock_location" onchange="$(\'#stock_filter_form\').submit();"'); ?>
+		</form></span></li>
+		<?php endif; ?>
 		<li class="float_right">
 		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 		<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>

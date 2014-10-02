@@ -1,4 +1,5 @@
 <?php
+define("PRECISION", 3);
 
 class Receiving_lib
 {
@@ -135,7 +136,7 @@ class Receiving_lib
 		}
 
 		$insertkey=$maxkey+1;
-		$item_info=$this->CI->Item->get_info($item_id);
+		$item_info=$this->CI->Item->get_info($item_id,$item_location);
 		//array records are identified by $insertkey and item_id is just another field.
 		$item = array(($insertkey)=>
 		array(

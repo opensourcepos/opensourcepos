@@ -16,11 +16,13 @@ class Item extends CI_Model
 	/*
 	Returns all the items
 	*/
-	function get_all($limit=10000, $offset=0)
+	function get_all($stock_location_id,$limit=10000,$offset=0)
 	{
 		$this->db->from('items');
+		$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
 		$this->db->where('deleted',0);
-		$this->db->order_by("name", "asc");
+		$this->db->where('location_id',$stock_location_id);
+		$this->db->order_by("name","asc");
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		return $this->db->get();
@@ -33,9 +35,11 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	function get_all_filtered($is_serialized=0,$no_description,$search_custom,$is_deleted)/**GARRISON MODIFIED 4/21/2013, Parq 131215 **/
+	function get_all_filtered($stock_location_id,$is_serialized=0,$no_description,$search_custom,$is_deleted)/**GARRISON MODIFIED 4/21/2013, Parq 131215 **/
 	{
 		$this->db->from('items');
+		$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+		$this->db->where('location_id',$stock_location_id);
 		if ($is_serialized !=0 )
 		{
 			$this->db->where('is_serialized',1);
@@ -62,14 +66,7 @@ class Item extends CI_Model
 			$this->db->or_like('custom10',$search);
 		}
 **/		
-/* Parq 131215 start*/
-		if ($is_deleted !=0 )
-		{
-			$this->db->where('deleted',1);
-		} else {
-			$this->db->where('deleted',0);
-		}
-/* Parq 131215 end*/
+		$this->db->where('deleted',$is_deleted);
 		$this->db->order_by("name", "asc");
 		return $this->db->get();
 	}
@@ -77,10 +74,15 @@ class Item extends CI_Model
 	/*
 	Gets information about a particular item
 	*/
-	function get_info($item_id)
+	function get_info($item_id,$stock_location_id=0)
 	{
 		$this->db->from('items');
-		$this->db->where('item_id',$item_id);
+		$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+		if ($stock_location_id > 0)
+		{
+			$this->db->where('location_id',$stock_location_id);
+		}
+		$this->db->where('items.item_id',$item_id);
 		
 		$query = $this->db->get();
 
