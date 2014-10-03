@@ -211,7 +211,7 @@ function get_item_data_row($item,$controller)
 	$width = $controller->get_form_width();
 
     $item_quantity='';
-    $locations_data = $CI->Stock_locations->get_undeleted_all()->result_array();
+    /* $locations_data = $CI->Stock_locations->get_allowed_locations()->result_array();
     foreach($locations_data as $location)
     {
 	    if (count($locations_data) > 1) 
@@ -219,7 +219,7 @@ function get_item_data_row($item,$controller)
         	$item_quantity .= $location['location_name'].': ';
 	    }
 	    $item_quantity .= $CI->Item_quantities->get_item_quantity($item->item_id, $location['location_id'])->quantity . '<br/>';
-    }
+    } */
     
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='3%'><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/></td>";
@@ -228,7 +228,7 @@ function get_item_data_row($item,$controller)
 	$table_data_row.='<td width="14%">'.$item->category.'</td>';
 	$table_data_row.='<td width="14%">'.to_currency($item->cost_price).'</td>';
 	$table_data_row.='<td width="14%">'.to_currency($item->unit_price).'</td>';
-    $table_data_row.='<td width="14%">'.$item_quantity.'</td>';
+    $table_data_row.='<td width="14%">'.$item->quantity.'</td>';
 	$table_data_row.='<td width="14%">'.$tax_percents.'</td>';	
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
 	

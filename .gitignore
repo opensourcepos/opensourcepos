@@ -11,3 +11,4 @@ git-svn-diff.py
 *.swp
 *.rej
 *.orig
+*~

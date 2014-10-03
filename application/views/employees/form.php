@@ -54,15 +54,35 @@ $password_label_attributes = $person_info->person_id == "" ? array('class'=>'req
 <?php
 foreach($all_modules->result() as $module)
 {
+	if (sizeof(explode('_', $module->module_id)) == 1)
+	{
 ?>
 <li>	
 <?php echo form_checkbox("permissions[]",$module->module_id,$this->Employee->has_permission($module->module_id,$person_info->person_id)); ?>
 <span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 <span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
-</li>
 <?php
+		foreach($all_modules->result() as $submodule)
+		{
+			$exploded_submodule_id = explode('_', $submodule->module_id);
+			if (sizeof($exploded_submodule_id) > 1 && $exploded_submodule_id[0] == $module->module_id)
+			{
+				$lang_line = $this->lang->line('reports_'.$exploded_submodule_id[1]);
+				$lang_line = empty($lang_line) ? $this->Stock_locations->get_location_name(substr($exploded_submodule_id[1], -1)) : $lang_line;
+				?>
+			<ul>
+				<li>
+				<?php echo form_checkbox("permissions[]",$submodule->module_id,$this->Employee->has_permission($submodule->module_id,$person_info->person_id)); ?>
+				<span class="medium"><?php echo $lang_line ?></span>
+				</li>
+			</ul>
+				<?php 
+			}
+		}
+	}
 }
 ?>
+</li>
 </ul>
 <?php
 echo form_submit(array(
@@ -82,6 +102,27 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+	$("ul#permission_list > li > input[name='permissions[]']").each(function() 
+	{
+	    var $this = $(this);
+	    $("ul > li > input", $this.parent()).each(function() 
+	    {
+		    var $that = $(this);
+	        var updateCheckboxes = function (checked) 
+	        {
+	            if (checked) {
+	                $that.removeAttr("disabled");
+	            } else {
+	                $that.attr("disabled", "disabled");
+	                $that.removeAttr("checked", "");
+	             }
+	        }
+	       $this.change(function() {
+	            updateCheckboxes($this.is(":checked"));
+	        });
+	    });
+	});
+	
 	$('#employee_form').validate({
 		submitHandler:function(form)
 		{
@@ -123,7 +164,30 @@ $(document).ready(function()
 			{
  				equalTo: "#password"
 			},
-    		email: "email"
+    		email: "email", "permissions[]" : {
+        		required : function(element) {
+					var checked = false;
+            		$("ul#permission_list > li > input:checkbox").each(function() 
+                    {
+						if ($(this).is(":checked")) {
+							var has_children = false;
+						    $("ul > li > input:checkbox", $(this).parent()).each(function() 
+						    {
+							    has_children = true;
+							    checked |= $(this).is(":checked");
+			            		console.log("checking.. "  + $(this).val() + "  required " + checked);
+						    });
+						    if (has_children && !checked) 
+							{
+								return false;
+							}
+						}
+            		});
+            		console.log("returning " + !checked);
+					return !checked; 
+        		},
+        		minlength: 1
+		    }
    		},
 		messages: 
 		{
@@ -151,7 +215,8 @@ $(document).ready(function()
 			{
 				equalTo: "<?php echo $this->lang->line('employees_password_must_match'); ?>"
      		},
-     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
+     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
+     		"permissions[]": "fill in correctly!!"
 		}
 	});
 });

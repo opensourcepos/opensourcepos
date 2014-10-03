@@ -145,6 +145,11 @@ input#search
 	padding: 0px;
 }
 
+select#stock_location
+{
+	border: none;
+}
+
 #select_customer_form input, #select_supplier_form input
 {
 	width: 95%;

@@ -36,7 +36,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('phone', '555-555-5555'),
 ('return_policy', 'Test'),
 ('timezone', 'America/New_York'),
-('website', '');
+('website', ''),
+('tax_included', '0');
 
 -- --------------------------------------------------------
 
@@ -94,7 +95,7 @@ CREATE TABLE `ospos_giftcards` (
   `person_id` INT NOT NULL,
   PRIMARY KEY (`giftcard_id`),
   UNIQUE KEY `giftcard_number` (`giftcard_number`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=48 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 --
 -- Dumping data for table `ospos_giftcards`
@@ -142,7 +143,6 @@ CREATE TABLE `ospos_items` (
   `unit_price` decimal(15,2) NOT NULL,
   `quantity` decimal(15,2) NOT NULL DEFAULT '0.00',
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `location` varchar(255) NOT NULL,
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
@@ -262,9 +262,17 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 ('module_employees', 'module_employees_desc', 80, 'employees'),
 ('module_giftcards', 'module_giftcards_desc', 90, 'giftcards'),
 ('module_items', 'module_items_desc', 20, 'items'),
+('module_items_stock0', 'module_items_stock0_desc', 20, 'items_stock0'),
 ('module_item_kits', 'module_item_kits_desc', 30, 'item_kits'),
 ('module_receivings', 'module_receivings_desc', 60, 'receivings'),
 ('module_reports', 'module_reports_desc', 50, 'reports'),
+('module_reports_sales', 'module_reports_sales_desc', 51, 'reports_sales'),
+('module_reports_receivings', 'module_reports_receivings_desc', 52, 'reports_receivings'),
+('module_reports_items', 'module_reports_items_desc', 54, 'reports_items'),
+('module_reports_inventory', 'module_reports_inventory_desc', 55, 'reports_inventory'),
+('module_reports_customers', 'module_reports_customers_desc', 56, 'reports_customers'),
+('module_reports_employees', 'module_reports_employees_desc', 57, 'reports_employees'),
+('module_reports_suppliers', 'module_reports_suppliers_desc', 57, 'reports_suppliers'),
 ('module_sales', 'module_sales_desc', 70, 'sales'),
 ('module_suppliers', 'module_suppliers_desc', 40, 'suppliers');
 
@@ -315,7 +323,14 @@ CREATE TABLE `ospos_permissions` (
 --
 
 INSERT INTO `ospos_permissions` (`module_id`, `person_id`) VALUES
-('config', 1),
+('reports_customers', 1),
+('reports_receivings', 1),
+('reports_items', 1),
+('reports_inventory', 1),
+('reports_employees', 1),
+('reports_suppliers', 1),
+('reports_sales', 1),
+('items_stock0', 1),  
 ('customers', 1),
 ('employees', 1),
 ('giftcards', 1),
@@ -586,8 +601,7 @@ CREATE TABLE `ospos_stock_locations` (
   `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
-
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 --
 -- Dumping data for table `ospos_stock_locations`
@@ -661,8 +675,8 @@ ALTER TABLE `ospos_item_kit_items`
 -- Constraints for table `ospos_permissions`
 --
 ALTER TABLE `ospos_permissions`
-  ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_employees` (`person_id`),
-  ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `ospos_modules` (`module_id`);
+  ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_employees` (`person_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `ospos_modules` (`module_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ospos_receivings`

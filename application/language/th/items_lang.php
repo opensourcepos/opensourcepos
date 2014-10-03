@@ -77,9 +77,6 @@ $lang['items_use_inventory_menu'] = 'ใช้สินค้าคงเหล�
 $lang['items_manually_editing_of_quantity'] = 'แก้ไขจำนวน';
 $lang['items_inventory'] = 'สินค้าคงเหลือ';
 $lang['items_location'] = 'ที่ตั้ง';
-$lang['items_unit_quantity'] = 'จำนวนหน่วย';
-$lang['items_related_number'] = 'สินค้าที่เกี่ยวข้อง';
 
-$lang['items_stock_type_warehouse'] = 'สินค้าหลังร้าน';
 $lang['items_stock_type'] = 'ชนิดของสินค้า';
 ?>

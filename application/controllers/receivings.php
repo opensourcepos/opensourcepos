@@ -4,7 +4,7 @@ class Receivings extends Secure_area
 {
 	function __construct()
 	{
-		parent::__construct('receivings');
+		parent::__construct('receivings','items');
 		$this->load->library('receiving_lib');
 	}
 

@@ -77,10 +77,6 @@ $lang['items_manually_editing_of_quantity'] = 'Manual Edit of Quantity';
 $lang['items_inventory'] = 'Inventory';
 $lang['items_location'] = 'Location';
 $lang['items_is_deleted'] = 'Deleted';// Parq 131215
-$lang['items_stock_type_sale'] = 'Sale stock';
-$lang['items_stock_type_warehouse'] = 'Warehouse stock';
-$lang['items_unit_quantity'] = 'Unit quantity';
-$lang['items_related_number'] = 'Related item number';
 
 $lang['items_stock_location']='Stock location';
 ?>

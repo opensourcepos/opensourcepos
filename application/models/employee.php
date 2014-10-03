@@ -304,6 +304,26 @@ class Employee extends Person
 	}
 	
 	/*
+	 * Determines whether the employee has access to at least one submodule
+	 */
+	function has_subpermission($submodule_id,$person_id)
+	{
+		$this->db->from('modules');
+		$this->db->where('module_id like "' . $submodule_id . '_%"');
+		// has no submodules
+		$result = $this->db->get();
+		if ($result->num_rows() > 0)
+		{
+			$this->db->from('permissions');
+			$this->db->where('permissions.module_id like "' . $submodule_id . '_%"');
+			$this->db->where("permissions.person_id",$person_id);
+			$result = $this->db->get();
+			return $result->num_rows() > 0;
+		}
+		return true;
+	}
+	
+	/*
 	Determins whether the employee specified employee has access the specific module.
 	*/
 	function has_permission($module_id,$person_id)
@@ -315,10 +335,7 @@ class Employee extends Person
 		}
 		
 		$query = $this->db->get_where('permissions', array('person_id' => $person_id,'module_id'=>$module_id), 1);
-		return $query->num_rows() == 1;
-		
-		
-		return false;
+		return ($query->num_rows() == 1); 
 	}
 
 }

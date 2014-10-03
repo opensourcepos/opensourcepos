@@ -6,6 +6,7 @@ class Items extends Secure_area implements iData_controller
 	function __construct()
 	{
 		parent::__construct('items');
+		$this->load->library('item_lib');
 	}
 
 	function index()
@@ -16,9 +17,14 @@ class Items extends Secure_area implements iData_controller
 		$config['uri_segment'] = 3;
 		$this->pagination->initialize($config);
 		
+		$stock_location=$this->item_lib->get_item_location();
+		$stock_locations=$this->Stock_locations->get_allowed_locations();
+		$data['stock_location']=$this->item_lib->get_item_location();
+		$data['stock_locations']=$stock_locations;
+		
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width();
-		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
+		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $stock_location, $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
 		$this->load->view('items/manage',$data);
 	}
 
@@ -27,7 +33,13 @@ class Items extends Secure_area implements iData_controller
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
 		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013    
-        $is_deleted=$this->input->post('is_deleted'); // Parq 131215	
+        $is_deleted=$this->input->post('is_deleted'); // Parq 131215
+        $this->item_lib->set_item_location($this->input->post('stock_location'));
+        
+       	$stock_location=$this->input->post('stock_location');
+		$stock_locations=$this->Stock_locations->get_allowed_locations();
+		$data['stock_location']=$this->item_lib->get_item_location();
+		$data['stock_locations']=$stock_locations;
         
 		$data['search_section_state']=$this->input->post('search_section_state');
 		$data['is_serialized']=$this->input->post('is_serialized');
@@ -36,7 +48,7 @@ class Items extends Secure_area implements iData_controller
 		$data['is_deleted']=$this->input->post('is_deleted'); // Parq 131215
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width(); 
-		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
+		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($stock_location,$is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
 		$this->load->view('items/manage',$data);
 	}
 
@@ -182,13 +194,15 @@ class Items extends Secure_area implements iData_controller
 	function get_row()
 	{
 		$item_id = $this->input->post('row_id');
-		$data_row=get_item_data_row($this->Item->get_info($item_id),$this);
+		$stock_location_id=$this->item_lib->get_item_location();
+		$data_row=get_item_data_row($this->Item->get_info($item_id,$stock_location_id),$this);
 		echo $data_row;
 	}
 
 	function view($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
+		$stock_location_id=$this->item_lib->get_item_location();
+		$data['item_info']=$this->Item->get_info($item_id,$stock_location_id);
 		$data['item_tax_info']=$this->Item_taxes->get_info($item_id);
 		$suppliers = array('' => $this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
@@ -197,20 +211,19 @@ class Items extends Secure_area implements iData_controller
 		}
 
 		$data['suppliers']=$suppliers;
-		$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
+		$data['selected_supplier'] = $this->Item->get_info($item_id,$stock_location_id)->supplier_id;
 		$data['default_tax_1_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
 		$data['default_tax_2_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
         
         $locations_data = $this->Stock_locations->get_undeleted_all()->result_array();
-        $location_array;
         foreach($locations_data as $location)
         {
            $quantity = $this->Item_quantities->get_item_quantity($item_id, $location['location_id'])->quantity;
            $quantity = ($item_id == -1) ? null: $quantity;
            $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'],
                                                                        'quantity'=>$quantity);
+           $data['stock_locations']= $location_array;
         }
-        $data['stock_locations']= $location_array;
 		$this->load->view("items/form",$data);
 	}
 

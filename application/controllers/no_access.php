@@ -6,7 +6,7 @@ class No_Access extends CI_Controller
 		parent::__construct();
 	}
 	
-	function index($module_id='')
+	function index($module_id='',$submodule_id='')
 	{
 		$data['module_name']=$this->Module->get_module_name($module_id);
 		$this->load->view('no_access',$data);
