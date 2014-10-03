@@ -13,8 +13,9 @@ class Item_lib
     {
         if(!$this->CI->session->userdata('item_location'))
         {
-             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
-             $location_name = $stock_locations[0]['location_id'];
+             $stock_locations = $this->CI->Stock_locations->get_allowed_locations();
+			 $key=current(array_keys($stock_locations));
+             $location_name = $stock_locations[$key]['location_id'];
              $this->set_item_location($location_name);
         }
         return $this->CI->session->userdata('item_location');
