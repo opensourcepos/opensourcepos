@@ -102,26 +102,6 @@ class Receivings extends Secure_area
 		$this->_reload($data);
 	}
 
-    function edit_item_unit($item_id)
-    {
-        $data= array();
-
-        $this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|integer'); 
-        $quantity = $this->input->post("quantity");
-        
-
-        if ($this->form_validation->run() != FALSE)
-        {
-            $this->receiving_lib->edit_item_unit($item_id,$description,$quantity,0,0);
-        }
-        else
-        {
-            $data['error']=$this->lang->line('recvs_error_editing_item');
-        }
-
-        $this->_reload($data);
-    }
-
 	function delete_item($item_number)
 	{
 		$this->receiving_lib->delete_item($item_number);
