@@ -196,7 +196,7 @@ else
         <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_sale_form')); ?>
         <br />
         <label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-        <?php echo form_textarea(array('name'=>'comment','value'=>'','rows'=>'4','cols'=>'23'));?>
+        <?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
         <br /><br />
         
         <?php echo "<div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'><span>".$this->lang->line('recvs_complete_receiving')."</span></div>";
@@ -218,7 +218,7 @@ else
 		<?php echo form_open("receivings/complete",array('id'=>'finish_sale_form')); ?>
 		<br />
 		<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-		<?php echo form_textarea(array('name'=>'comment','value'=>'','rows'=>'4','cols'=>'23'));?>
+		<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 		<br /><br />
 		<table width="100%"><tr><td>
 		<?php
@@ -316,6 +316,11 @@ $(document).ready(function()
     {
     	$(this).attr('value',"<?php echo $this->lang->line('recvs_start_typing_supplier_name'); ?>");
     });
+
+	$('#comment').change(function() 
+	{
+		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
+	});
 
     $("#finish_sale_button").click(function()
     {
