@@ -17,7 +17,7 @@ class Receiving extends CI_Model
 		return ($query->num_rows()==1);
 	}
 
-	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false)
+	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false,$invoice_number=null)
 	{
 		if(count($items)==0)
 			return -1;
@@ -26,7 +26,8 @@ class Receiving extends CI_Model
 		'supplier_id'=> $this->Supplier->exists($supplier_id) ? $supplier_id : null,
 		'employee_id'=>$employee_id,
 		'payment_type'=>$payment_type,
-		'comment'=>$comment
+		'comment'=>$comment,
+		'invoice_number'=>$invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing

@@ -199,13 +199,13 @@ else
         <?php echo form_textarea(array('name'=>'comment','value'=>'','rows'=>'4','cols'=>'23'));?>
         <br /><br />
         
-        <?php echo "<div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'><span>".$this->lang->line('recvs_complete_receiving')."</span></div>";
-        ?>
+        <div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'>
+        	<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
         </div>
         </form>    
         <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_sale_form')); ?>
         <div class='small_button' id='cancel_sale_button' style='float:left;margin-top:5px;'>
-        <span>Cancel </span>
+        <span><?php echo $this->lang->line('recvs_cancel_receving')?></span>
         </div>
         </form>
      </div>
@@ -220,12 +220,21 @@ else
 		<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 		<?php echo form_textarea(array('name'=>'comment','value'=>'','rows'=>'4','cols'=>'23'));?>
 		<br /><br />
-		<table width="100%"><tr><td>
-		<?php
-			echo $this->lang->line('sales_payment').':   ';?>
-		</td><td>
-		<?php
-		    echo form_dropdown('payment_type',$payment_options);?>
+		<table width="100%">
+		<tr>
+		<td>
+		<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
+		</td>
+		<td>
+		<?php echo form_input(array('name'=>'invoice_number','value'=>$invoice_number,'size'=>10));?>
+		</td>
+		</tr>
+		<tr>
+		<td>
+		<?php echo $this->lang->line('sales_payment').':   ';?>
+		</td>
+		<td>
+		<?php echo form_dropdown('payment_type',$payment_options);?>
         </td>
         </tr>
 
@@ -242,15 +251,15 @@ else
 
         </table>
         <br />
-		<?php echo "<div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'><span>".$this->lang->line('recvs_complete_receiving')."</span></div>";
-		?>
+		<div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'>
+			<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		</div>
 
 		</form>
 
 	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_sale_form')); ?>
 			    <div class='small_button' id='cancel_sale_button' style='float:left;margin-top:5px;'>
-					<span>Cancel </span>
+					<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
 				</div>
         </form>
 	</div>

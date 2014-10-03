@@ -16,6 +16,7 @@ $lang['recvs_unable_to_add_item']='Unable to add item to receiving';
 $lang['recvs_error_editing_item']='Error editing item';
 $lang['recvs_receipt']='Receivings Receipt';
 $lang['recvs_complete_receiving']='Finish';
+$lang['recvs_cancel_receiving']='Cancel';
 $lang['recvs_confirm_finish_receiving'] = 'Are you sure you want to submit this receiving? This cannot be undone.';
 $lang['recvs_confirm_cancel_receiving'] = 'Are you sure you want to clear this receiving? All items will cleared.';
 $lang['recvs_find_or_scan_item']='Find/Scan Item';
@@ -37,4 +38,5 @@ $lang['recvs_stock_source']='Stock source';
 $lang['recvs_stock_destination']='Stock destination';
 $lang['recvs_stock_locaiton']='Stock location';
 $lang['recvs_error_requisition']='Unable to move inventory from and to the same stock location';
+$lang['recvs_invoice_number']='Invoice #';
 ?>

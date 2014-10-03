@@ -30,4 +30,8 @@ ALTER TABLE `ospos_permissions` ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIG
 ALTER TABLE `ospos_permissions` DROP FOREIGN KEY `ospos_permissions_ibfk_2`; 
 ALTER TABLE `ospos_permissions` ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `ospos`.`ospos_modules`(`module_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
+-- add invoice_number column to receivings table
+ALTER TABLE `ospos_receivings` ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL;
+
+
 
