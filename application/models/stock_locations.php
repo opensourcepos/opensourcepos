@@ -61,7 +61,7 @@ class Stock_locations extends CI_Model
     	return $stock_locations;
     }
     
-    function get_default_location_name()
+    function get_default_location_id()
     {
     	$this->db->from('stock_locations');
     	// TODO replace with extra join on ospos_grants
@@ -70,7 +70,7 @@ class Stock_locations extends CI_Model
     	$this->db->where('person_id', $this->session->userdata('person_id'));
     	$this->db->where('deleted',0);
     	$this->db->limit(1);
-    	return $this->db->get()->row()->location_name;
+    	return $this->db->get()->row()->location_id;
     }
     
     function get_location_name($location_id) 

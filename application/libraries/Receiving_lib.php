@@ -52,7 +52,7 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_source'))
         {
-             $location_name = $this->Stock_locations->get_default_location();
+             $location_name = $this->CI->Stock_locations->get_default_location_id();
              $this->set_stock_source($location_name);
         }
         return $this->CI->session->userdata('recv_stock_source');
@@ -87,9 +87,8 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_destination'))
         {
-             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
-             $location_name = $stock_locations[0]['location_id'];
-             $this->set_stock_destination($location_name);
+        	$location_name = $this->CI->Stock_locations->get_default_location_id();
+        	$this->set_stock_destination($location_name);
         }
         return $this->CI->session->userdata('recv_stock_destination');
     }

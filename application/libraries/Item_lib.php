@@ -13,7 +13,7 @@ class Item_lib
     {
         if(!$this->CI->session->userdata('item_location'))
         {
-        	 $location_name = $this->Stock_locations->get_default_location();
+        	 $location_name = $this->CI->Stock_locations->get_default_location_id();
              $this->set_item_location($location_name);
         }
         return $this->CI->session->userdata('item_location');

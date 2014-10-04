@@ -19,7 +19,7 @@ class Items extends Secure_area implements iData_controller
 		
 		$stock_location=$this->item_lib->get_item_location();
 		$stock_locations=$this->Stock_locations->get_allowed_locations();
-		$data['stock_location']=$this->item_lib->get_item_location();
+		$data['stock_location']=$stock_location;
 		$data['stock_locations']=$stock_locations;
 		
 		$data['controller_name']=strtolower(get_class());
