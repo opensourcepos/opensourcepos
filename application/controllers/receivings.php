@@ -51,6 +51,11 @@ class Receivings extends Secure_area
 		}
 		$this->_reload();
 	}
+	
+	function set_comment()
+	{
+		$this->receiving_lib->set_comment($this->input->post('comment'));
+	}
 
 	function add()
 	{
@@ -226,6 +231,7 @@ class Receivings extends Secure_area
         
 		$data['total']=$this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->Employee->has_permission('items', $person_info->person_id);
+		$data['comment']=$this->receiving_lib->get_comment();
 		$data['payment_options']=array(
 			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
 			$this->lang->line('sales_check') => $this->lang->line('sales_check'),

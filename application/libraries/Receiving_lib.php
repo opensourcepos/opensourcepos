@@ -52,11 +52,25 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_source'))
         {
-             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
-             $location_name = $stock_locations[0]['location_id'];
+             $location_name = $this->CI->Stock_locations->get_default_location_id();
              $this->set_stock_source($location_name);
         }
         return $this->CI->session->userdata('recv_stock_source');
+    }
+    
+    function get_comment()
+    {
+    	return $this->CI->session->userdata('comment');
+    }
+    
+    function set_comment($comment)
+    {
+    	$this->CI->session->set_userdata('comment', $comment);
+    }
+    
+    function clear_comment()
+    {
+    	$this->CI->session->unset_userdata('comment');
     }
 
     function set_stock_source($stock_source)
@@ -73,9 +87,8 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_destination'))
         {
-             $stock_locations = $this->CI->Stock_locations->get_undeleted_all()->result_array();
-             $location_name = $stock_locations[0]['location_id'];
-             $this->set_stock_destination($location_name);
+        	$location_name = $this->CI->Stock_locations->get_default_location_id();
+        	$this->set_stock_destination($location_name);
         }
         return $this->CI->session->userdata('recv_stock_destination');
     }
@@ -294,6 +307,7 @@ class Receiving_lib
 		$this->clear_mode();
 		$this->empty_cart();
 		$this->delete_supplier();
+		$this->clear_comment();
 	}
 	
 	function get_item_total($quantity, $price, $discount_percentage)
