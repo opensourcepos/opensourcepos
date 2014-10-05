@@ -230,7 +230,7 @@ CREATE TABLE `ospos_item_kit_items` (
 CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   `item_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
@@ -357,7 +357,8 @@ CREATE TABLE `ospos_receivings` (
   `invoice_number` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`receiving_id`),
   KEY `supplier_id` (`supplier_id`),
-  KEY `employee_id` (`employee_id`)
+  KEY `employee_id` (`employee_id`),
+  UNIQUE KEY `invoice_number` (`invoice_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --

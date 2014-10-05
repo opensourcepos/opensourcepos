@@ -16,12 +16,15 @@ class Item extends CI_Model
 	/*
 	Returns all the items
 	*/
-	function get_all($stock_location_id,$limit=10000,$offset=0)
+	function get_all($stock_location_id=-1,$limit=10000,$offset=0)
 	{
 		$this->db->from('items');
-		$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+		if ($stock_location_id > -1)
+		{
+			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+			$this->db->where('location_id',$stock_location_id);
+		}
 		$this->db->where('deleted',0);
-		$this->db->where('location_id',$stock_location_id);
 		$this->db->order_by("name","asc");
 		$this->db->limit($limit);
 		$this->db->offset($offset);
@@ -74,15 +77,10 @@ class Item extends CI_Model
 	/*
 	Gets information about a particular item
 	*/
-	function get_info($item_id,$stock_location_id=0)
+	function get_info($item_id)
 	{
 		$this->db->from('items');
-		$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
-		if ($stock_location_id > 0)
-		{
-			$this->db->where('location_id',$stock_location_id);
-		}
-		$this->db->where('items.item_id',$item_id);
+		$this->db->where('item_id',$item_id);
 		
 		$query = $this->db->get();
 
@@ -554,6 +552,7 @@ class Item extends CI_Model
 	function search($search)
 	{
 		$this->db->from('items');
+		
 		$this->db->where("(
 				name LIKE '%".$this->db->escape_like_str($search)."%' or 
 				item_number LIKE '%".$this->db->escape_like_str($search)."%' or 
@@ -585,26 +584,5 @@ class Item extends CI_Model
 		return $this->db->get();
 	}
     
-    function is_sale_store_item_exist($item_number)
-    {
-        $this->db->from('items');
-        $this->db->where('item_number',$item_number);
-        $this->db->where('stock_type','sale_stock');
-        $this->db->where('deleted',0);
-
-        $query = $this->db->get();
-        return ($query->num_rows()==1);
-    }
-    
-    function is_warehouse_item_exist($item_number)
-    {
-        $this->db->from('items');
-        $this->db->where('item_number',$item_number);
-        $this->db->where('stock_type','warehouse');
-        $this->db->where('deleted',0);
-
-        $query = $this->db->get();
-        return ($query->num_rows()==1);
-    }
 }
 ?>

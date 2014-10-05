@@ -56,7 +56,12 @@ class Receivings extends Secure_area
 	{
 		$this->receiving_lib->set_comment($this->input->post('comment'));
 	}
-
+	
+	function set_invoice_number()
+	{
+		$this->receiving_lib->set_invoice_number($this->input->post('recv_invoice_number'));
+	}
+	
 	function add()
 	{
 		$data=array();
@@ -66,7 +71,7 @@ class Receivings extends Secure_area
 		$item_location = $this->receiving_lib->get_stock_source();
 		if($this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
 		{
-			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt,$item_location);
+			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
 		}
 		elseif($this->receiving_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -132,11 +137,11 @@ class Receivings extends Secure_area
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->input->post('comment');
 		$emp_info=$this->Employee->get_info($employee_id);
-		$payment_type = $this->input->post('payment_type');
+		$payment_type=$this->input->post('payment_type');
+		$invoice_number=$this->receiving_lib->get_invoice_number();
 		$data['payment_type']=$this->input->post('payment_type');
-		$data['invoice_number']=$this->input->post('invoice_number');
+		$data['invoice_number']=$invoice_number;
         $data['stock_location']=$this->receiving_lib->get_stock_source();
-
 		if ($this->input->post('amount_tendered'))
 		{
 			$data['amount_tendered'] = $this->input->post('amount_tendered');
@@ -197,6 +202,7 @@ class Receivings extends Secure_area
 		$supplier_id=$this->receiving_lib->get_supplier();
 		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);
 		$data['payment_type']=$receiving_info['payment_type'];
+		$data['invoice_number']=$this->receiving_lib->get_invoice_number();
 
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 
@@ -219,18 +225,17 @@ class Receivings extends Secure_area
 		$data['mode']=$this->receiving_lib->get_mode();
 		
 		$data['stock_locations']=$this->Stock_locations->get_allowed_locations();
-		$show_stock_locations = count($data['stock_locations']);
-        if ($show_stock_locations > 0) {
+		$show_stock_locations = count($data['stock_locations']) > 1;
+        if ($show_stock_locations) 
+        {
         	$data['modes']['requisition'] = $this->lang->line('recvs_requisition');
 	        $data['stock_source']=$this->receiving_lib->get_stock_source();
         	$data['stock_destination']=$this->receiving_lib->get_stock_destination();
         }    
-        $data['show_stock_locations'] = $show_stock_locations;
-        
-        $data['invoice_number']=$this->CI->config->config['invoice_number_format'];
+        $data['show_stock_locations']=$show_stock_locations;
         
 		$data['total']=$this->receiving_lib->get_total();
-		$data['items_module_allowed'] = $this->Employee->has_permission('items', $person_info->person_id);
+		$data['items_module_allowed']=$this->Employee->has_permission('items',$person_info->person_id);
 		$data['comment']=$this->receiving_lib->get_comment();
 		$data['payment_options']=array(
 			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
@@ -238,13 +243,31 @@ class Receivings extends Secure_area
 			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
 			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
 		);
-
+		
+		$invoice_number=$this->receiving_lib->get_invoice_number();
+		if (empty($invoice_number))
+		{
+			$invoice_number=$this->config->config['recv_invoice_format'];
+		}
+		$invoice_count=$this->Receiving->get_invoice_count();
+		$invoice_number=str_replace('$CO',$invoice_count,$invoice_number);
+		$invoice_number=strftime($invoice_number);
+		
 		$supplier_id=$this->receiving_lib->get_supplier();
 		if($supplier_id!=-1)
 		{
 			$info=$this->Supplier->get_info($supplier_id);
+			$invoice_number=str_replace('$SU',$info->company_name,$invoice_number);
 			$data['supplier']=$info->first_name.' '.$info->last_name;
+			$words = preg_split("/\s+/", $info->company_name);
+			$acronym = "";
+			foreach ($words as $w) {
+				$acronym .= $w[0];
+			}
+			$invoice_number=str_replace('$SI',$acronym,$invoice_number);
 		}
+		$data['invoice_number']=$invoice_number;
+		
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();
 	}

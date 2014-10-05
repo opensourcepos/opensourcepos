@@ -97,7 +97,6 @@ class Stock_locations extends CI_Model
 	        $this->db->trans_complete();
         }
         
-        $location_db = $this->get_all()->result_array();
         //Update the stock location
         $this->db->trans_start();
         foreach ($stock_locations as $location)
@@ -113,7 +112,7 @@ class Stock_locations extends CI_Model
                         
                         $this->db->update('stock_locations',array('location_name'=>$db['location_name'],'deleted'=>0));
 						// remmove module (and permissions) for stock location 
-                        $this->db->delete('modules', array('module_id' => 'items_stock'.$db['location_id']));
+                        //$this->db->delete('modules', array('module_id' => 'items_stock'.$db['location_id']));
                     }
                     $to_create = false;
                     break;
@@ -125,7 +124,8 @@ class Stock_locations extends CI_Model
                 $location_data = array('location_name'=>$location,'deleted'=>0);
                 $this->db->insert('stock_locations',$location_data);
                 // insert new module for stock location
-                $module_id = 'items_stock'.$this->db->insert_id();
+                $location_id = $this->db->insert_id();
+                $module_id = 'items_stock'.$location_id;
                 $module_name = 'module_'.$module_id;
                 $module_data = array('name_lang_key' => $module_name, 'desc_lang_key' => $module_name.'_desc', 'module_id' => $module_id);
                 $this->db->insert('modules', $module_data);
@@ -135,6 +135,13 @@ class Stock_locations extends CI_Model
                 {
 	                $permission_data = array('module_id' => $module_id, 'person_id' => $employee['person_id']);
 	                $this->db->insert('permissions', $permission_data);
+                }
+                // insert quantities for existing items
+                $items = $this->Item->get_all();
+                foreach ($items->result_array() as $item)
+                {
+                	$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
+                	$this->db->insert('item_quantities', $quantity_data);
                 }
             }
         }

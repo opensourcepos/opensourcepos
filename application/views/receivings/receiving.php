@@ -221,14 +221,20 @@ else
 		<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 		<br /><br />
 		<table width="100%">
+		<?php if ($mode == "receive") 
+		{
+		?>
 		<tr>
 		<td>
 		<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
 		</td>
 		<td>
-		<?php echo form_input(array('name'=>'invoice_number','value'=>$invoice_number,'size'=>10));?>
+		<?php echo form_input(array('name'=>'recv_invoice_number','id'=>'recv_invoice_number','value'=>$invoice_number,'size'=>10));?>
 		</td>
 		</tr>
+		<?php 
+		}
+		?>
 		<tr>
 		<td>
 		<?php echo $this->lang->line('sales_payment').':   ';?>
@@ -329,6 +335,11 @@ $(document).ready(function()
 	$('#comment').change(function() 
 	{
 		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
+	});
+
+	$('#recv_invoice_number').change(function() 
+	{
+		$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
 	});
 
     $("#finish_sale_button").click(function()

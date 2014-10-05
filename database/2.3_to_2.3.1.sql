@@ -32,6 +32,7 @@ ALTER TABLE `ospos_permissions` ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIG
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL;
+ALTER TABLE `ospos_receivings` ADD UNIQUE `invoice_number` (`invoice_number`);
 
 
 

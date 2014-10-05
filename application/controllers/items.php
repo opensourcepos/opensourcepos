@@ -21,7 +21,7 @@ class Items extends Secure_area implements iData_controller
 		$stock_locations=$this->Stock_locations->get_allowed_locations();
 		$data['stock_location']=$stock_location;
 		$data['stock_locations']=$stock_locations;
-		
+		var_dump($stock_location);
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width();
 		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $stock_location, $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
@@ -194,15 +194,13 @@ class Items extends Secure_area implements iData_controller
 	function get_row()
 	{
 		$item_id = $this->input->post('row_id');
-		$stock_location_id=$this->item_lib->get_item_location();
-		$data_row=get_item_data_row($this->Item->get_info($item_id,$stock_location_id),$this);
+		$data_row=get_item_data_row($this->Item->get_info($item_id),$this);
 		echo $data_row;
 	}
 
 	function view($item_id=-1)
 	{
-		$stock_location_id=$this->item_lib->get_item_location();
-		$data['item_info']=$this->Item->get_info($item_id,$stock_location_id);
+		$data['item_info']=$this->Item->get_info($item_id);
 		$data['item_tax_info']=$this->Item_taxes->get_info($item_id);
 		$suppliers = array('' => $this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
@@ -211,14 +209,14 @@ class Items extends Secure_area implements iData_controller
 		}
 
 		$data['suppliers']=$suppliers;
-		$data['selected_supplier'] = $this->Item->get_info($item_id,$stock_location_id)->supplier_id;
+		$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
 		$data['default_tax_1_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
 		$data['default_tax_2_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
         
         $locations_data = $this->Stock_locations->get_undeleted_all()->result_array();
         foreach($locations_data as $location)
         {
-           $quantity = $this->Item_quantities->get_item_quantity($item_id, $location['location_id'])->quantity;
+           $quantity = $this->Item_quantities->get_item_quantity($item_id,$location['location_id'])->quantity;
            $quantity = ($item_id == -1) ? null: $quantity;
            $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'],
                                                                        'quantity'=>$quantity);

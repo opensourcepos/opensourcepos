@@ -9,14 +9,14 @@ class Detailed_receivings extends Report
 	
 	public function getDataColumns()
 	{
-		return array('summary' => array($this->lang->line('reports_receiving_id'), $this->lang->line('reports_date'), $this->lang->line('reports_items_received'), $this->lang->line('reports_received_by'), $this->lang->line('reports_supplied_by'), $this->lang->line('reports_total'), $this->lang->line('reports_payment_type'), $this->lang->line('reports_comments')),
+		return array('summary' => array($this->lang->line('reports_receiving_id'), $this->lang->line('reports_date'), $this->lang->line('reports_items_received'), $this->lang->line('reports_received_by'), $this->lang->line('reports_supplied_by'), $this->lang->line('reports_total'), $this->lang->line('reports_payment_type'), $this->lang->line('recvs_invoice_number'), $this->lang->line('reports_comments')),
 					'details' => array($this->lang->line('reports_name'), $this->lang->line('reports_category'), $this->lang->line('reports_quantity_purchased'), $this->lang->line('reports_total'), $this->lang->line('reports_discount'))
 		);		
 	}
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, receiving_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(supplier.first_name," ",supplier.last_name) as supplier_name, sum(total) as total, sum(profit) as profit, payment_type, comment', false);
+		$this->db->select('receiving_id, receiving_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(supplier.first_name," ",supplier.last_name) as supplier_name, sum(total) as total, sum(profit) as profit, payment_type, comment, invoice_number', false);
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people as employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('people as supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');

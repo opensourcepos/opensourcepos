@@ -52,8 +52,8 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_source'))
         {
-             $location_name = $this->CI->Stock_locations->get_default_location_id();
-             $this->set_stock_source($location_name);
+             $location_id = $this->CI->Stock_locations->get_default_location_id();
+             $this->set_stock_source($location_id);
         }
         return $this->CI->session->userdata('recv_stock_source');
     }
@@ -72,6 +72,21 @@ class Receiving_lib
     {
     	$this->CI->session->unset_userdata('comment');
     }
+   
+	function get_invoice_number()
+    {
+    	return $this->CI->session->userdata('recv_invoice_number');
+    }
+    
+    function set_invoice_number($invoice_number)
+    {
+    	$this->CI->session->set_userdata('recv_invoice_number', $invoice_number);
+    }
+    
+    function clear_invoice_number()
+    {
+    	$this->CI->session->unset_userdata('recv_invoice_number');
+    }
 
     function set_stock_source($stock_source)
     {
@@ -87,8 +102,8 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_destination'))
         {
-        	$location_name = $this->CI->Stock_locations->get_default_location_id();
-        	$this->set_stock_destination($location_name);
+        	$location_id = $this->CI->Stock_locations->get_default_location_id();
+        	$this->set_stock_destination($location_id);
         }
         return $this->CI->session->userdata('recv_stock_destination');
     }
@@ -209,6 +224,10 @@ class Receiving_lib
 		{
 			return $this->CI->Receiving->exists($pieces[1]);
 		}
+		else 
+		{
+			return $this->CI->Receiving->get_receiving_by_invoice_number($receipt_receiving_id)->num_rows() > 0;
+		}
 
 		return false;
 	}
@@ -230,10 +249,19 @@ class Receiving_lib
 	{
 		//POS #
 		$pieces = explode(' ',$receipt_receiving_id);
-		$receiving_id = $pieces[1];
+		if ($pieces[0] == "RECV")
+		{
+			$receiving_id = $pieces[1];
+		} 
+		else 
+		{
+			$receiving = $this->CI->Receiving->get_receiving_by_invoice_number($receipt_receiving_id)->row();
+			$receiving_id = $receiving->receiving_id;
+		}
 
 		$this->empty_cart();
 		$this->delete_supplier();
+		$this->clear_comment();
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
@@ -264,7 +292,8 @@ class Receiving_lib
 			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
-
+		$receiving_info=$this->CI->Receiving->get_info($receiving_id);
+		//$this->set_invoice_number($receiving_info->row()->invoice_number);
 	}
 	
 	function copy_entire_requisition($requisition_id,$item_location)
@@ -277,7 +306,8 @@ class Receiving_lib
 			$this->add_item_unit($row->item_id,$row->requisition_quantity,$item_location,$row->description);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($requisition_id)->person_id);
-	
+		$receiving_info=$this->CI->Receiving->get_info($receiving_id);
+		//$this->set_invoice_number($receiving_info->row()->invoice_number);
 	}
 
 	function delete_item($line)
@@ -308,6 +338,7 @@ class Receiving_lib
 		$this->empty_cart();
 		$this->delete_supplier();
 		$this->clear_comment();
+		$this->clear_invoice_number();
 	}
 	
 	function get_item_total($quantity, $price, $discount_percentage)

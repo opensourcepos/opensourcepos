@@ -172,8 +172,8 @@ class Sale_lib
     {
         if(!$this->CI->session->userdata('sale_location'))
         {
-             $location_name = $this->CI->Stock_locations->get_default_location_id();
-             $this->set_sale_location($location_name);
+             $location_id = $this->CI->Stock_locations->get_default_location_id();
+             $this->set_sale_location($location_id);
         }
         return $this->CI->session->userdata('sale_location');
     }

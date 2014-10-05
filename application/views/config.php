@@ -268,6 +268,16 @@ echo form_open('config/save/',array('id'=>'config_form'));
     </div>
 </div>
 
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_recv_invoice_format').':', 'recv_invoice_format',array('class'=>'wide')); ?>
+    <div class='form_field'>
+    <?php echo form_input(array(
+        'name'=>'recv_invoice_format',
+        'id'=>'recv_invoice_format',
+        'value'=>$this->config->item('recv_invoice_format'))); ?>
+    </div>
+</div>
+
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_print_after_sale').':', 'print_after_sale',array('class'=>'wide')); ?>
 	<div class='form_field'>
