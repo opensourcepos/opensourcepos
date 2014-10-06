@@ -13,7 +13,7 @@ class Item_quantities extends CI_Model
     
     function save($location_detail, $item_id, $location_id)
     {
-        if (!($item_id && $location_id) or !$this->exists($item_id,$location_id))
+        if (!$this->exists($item_id,$location_id))
         {
             if($this->db->insert('item_quantities',$location_detail))
             {

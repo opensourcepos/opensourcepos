@@ -15,7 +15,7 @@ class Secure_area extends CI_Controller
 		}
 		$submodule_id = empty($submodule_id) ? $module_id : $submodule_id;
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
-		if(!$this->Employee->has_permission($module_id,$employee_id) || !$this->Employee->has_subpermission($submodule_id,$employee_id))
+		if(!$this->Employee->has_module_permission($module_id,$employee_id))
 		{
 			redirect('no_access/'.$module_id);
 		}
@@ -23,6 +23,7 @@ class Secure_area extends CI_Controller
 		//load up global data
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 		$data['allowed_modules']=$this->Module->get_allowed_modules($logged_in_employee_info->person_id);
+		$data['grants']=$this->Module->get_employee_grants($logged_in_employee_info->person_id);
 		$data['user_info']=$logged_in_employee_info;
 		$this->load->vars($data);
 	}

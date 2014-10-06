@@ -13,9 +13,7 @@ class Stock_locations extends CI_Model
     function get_all($limit=10000, $offset=0)
     {
         $this->db->from('stock_locations');
-        $this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
-        $this->db->join('permissions', 'permissions.module_id=modules.module_id');
-        $this->db->where('person_id', $this->session->userdata('person_id'));
+		$this->db->where('deleted', 0);        
         $this->db->limit($limit);
         $this->db->offset($offset);
         return $this->db->get();
@@ -25,8 +23,8 @@ class Stock_locations extends CI_Model
     {
     	$this->db->select('location_name');
     	$this->db->from('stock_locations');
-    	$this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
-    	$this->db->join('permissions', 'permissions.module_id=modules.module_id');
+        $this->db->join('permissions','permissions.location_id=stock_locations.location_id');
+		$this->db->join('grants','grants.permission_id=permissions.permission_id');;
     	$this->db->where('person_id', $this->session->userdata('person_id'));
     	$this->db->where('deleted', 0);
     	return $this->db->get();
@@ -43,8 +41,8 @@ class Stock_locations extends CI_Model
     function get_undeleted_all()
     {
         $this->db->from('stock_locations');
-        $this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
-        $this->db->join('permissions', 'permissions.module_id=modules.module_id');
+        $this->db->join('permissions','permissions.location_id=stock_locations.location_id');
+		$this->db->join('grants','grants.permission_id=permissions.permission_id');
         $this->db->where('person_id', $this->session->userdata('person_id'));
         $this->db->where('deleted',0);
         return $this->db->get();
@@ -64,9 +62,8 @@ class Stock_locations extends CI_Model
     function get_default_location_id()
     {
     	$this->db->from('stock_locations');
-    	// TODO replace with extra join on ospos_grants
-    	$this->db->join('modules', 'modules.module_id=concat(\'items_stock\', location_id)');
-    	$this->db->join('permissions', 'permissions.module_id=modules.module_id');
+    	$this->db->join('permissions','permissions.location_id=stock_locations.location_id');
+		$this->db->join('grants','grants.permission_id=permissions.permission_id');
     	$this->db->where('person_id', $this->session->userdata('person_id'));
     	$this->db->where('deleted',0);
     	$this->db->limit(1);
@@ -123,19 +120,21 @@ class Stock_locations extends CI_Model
             {
                 $location_data = array('location_name'=>$location,'deleted'=>0);
                 $this->db->insert('stock_locations',$location_data);
-                // insert new module for stock location
                 $location_id = $this->db->insert_id();
-                $module_id = 'items_stock'.$location_id;
-                $module_name = 'module_'.$module_id;
-                $module_data = array('name_lang_key' => $module_name, 'desc_lang_key' => $module_name.'_desc', 'module_id' => $module_id);
-                $this->db->insert('modules', $module_data);
-                // insert permissions for stock location
+                
+                // insert new permission for stock location
+                $permission_id = 'items_'.$location;
+				$permission_data = array('permission_id'=>$permission_id,'module_id'=>'items','location_id' => $location_id);
+				$this->db->insert('permissions', $permission_data);
+				
+                // insert grants for new permission
                 $employees = $this->Employee->get_all();
                 foreach ($employees->result_array() as $employee)
                 {
-	                $permission_data = array('module_id' => $module_id, 'person_id' => $employee['person_id']);
-	                $this->db->insert('permissions', $permission_data);
+	                $grants_data = array('permission_id' => $permission_id, 'person_id' => $employee['person_id']);
+	                $this->db->insert('grants', $grants_data);
                 }
+                
                 // insert quantities for existing items
                 $items = $this->Item->get_all();
                 foreach ($items->result_array() as $item)

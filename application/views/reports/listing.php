@@ -6,13 +6,13 @@
 	<li><h3><?php echo $this->lang->line('reports_graphical_reports'); ?></h3>
 		<ul>
 			<?php 
-			foreach($allowed_modules->result() as $module) 
+			foreach($grants->result() as $grant) 
 			{
-				show_report_if_allowed($allowed_modules, 'graphical_summary', $module->module_id);
+				show_report_if_allowed($grants, 'graphical_summary', $grant->permission_id);
 			}
 			foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
 			{
-				show_report_if_allowed($allowed_modules, 'graphical_summary', $sales_category, 'sales');
+				show_report_if_allowed($grants, 'graphical_summary', $sales_category, 'sales');
 			}
 			?>
 		</ul>
@@ -21,13 +21,13 @@
 	<li><h3><?php echo $this->lang->line('reports_summary_reports'); ?></h3>
 		<ul>
 			<?php 
-			foreach($allowed_modules->result() as $module) 
+			foreach($grants->result() as $grant) 
 			{
-				show_report_if_allowed($allowed_modules, 'summary', $module->module_id);
+				show_report_if_allowed($grants, 'summary', $grant->permission_id);
 			}
 			foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
 			{
-				show_report_if_allowed($allowed_modules, 'summary', $sales_category, 'sales');
+				show_report_if_allowed($grants, 'summary', $sales_category, 'sales');
 			}
 			?>
 		</ul>
@@ -36,11 +36,11 @@
 	<li><h3><?php echo $this->lang->line('reports_detailed_reports'); ?></h3>
 		<ul>
 		<?php 			
-			show_report_if_allowed($allowed_modules, 'detailed', 'sales');
-			show_report_if_allowed($allowed_modules, 'detailed', 'receivings');
-			show_report_if_allowed($allowed_modules, 'specific', 'customer', 'customers');
-			show_report_if_allowed($allowed_modules, 'specific', 'discount', 'sales');
-			show_report_if_allowed($allowed_modules, 'specific', 'employee', 'employees');
+			show_report_if_allowed($grants, 'detailed', 'sales');
+			show_report_if_allowed($grants, 'detailed', 'receivings');
+			show_report_if_allowed($grants, 'specific', 'customer', 'customers');
+			show_report_if_allowed($grants, 'specific', 'discount', 'sales');
+			show_report_if_allowed($grants, 'specific', 'employee', 'employees');
 		?>
 		</ul>
 	</li>
@@ -51,8 +51,8 @@
 	<li><h3><?php echo $this->lang->line('reports_inventory_reports'); ?></h3>
 		<ul>
 		<?php 
-			show_report_if_allowed($allowed_modules, '', 'inventory_low', 'inventory');	
-			show_report_if_allowed($allowed_modules, '', 'inventory_summary', 'inventory');
+			show_report_if_allowed($grants, '', 'inventory_low', 'inventory');	
+			show_report_if_allowed($grants, '', 'inventory_summary', 'inventory');
 		?>
 		</ul>
 	</li>
