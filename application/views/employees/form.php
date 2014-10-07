@@ -99,7 +99,7 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	$("ul#permission_list > li > input[name='permissions[]']").each(function() 
+	$("ul#permission_list > li > input[name='grants[]']").each(function() 
 	{
 	    var $this = $(this);
 	    $("ul > li > input", $this.parent()).each(function() 
@@ -161,7 +161,7 @@ $(document).ready(function()
 			{
  				equalTo: "#password"
 			},
-    		email: "email", "permissions[]" : {
+    		email: "email", "grants[]" : {
         		required : function(element) {
 					var checked = false;
             		$("ul#permission_list > li > input:checkbox").each(function() 
@@ -213,7 +213,7 @@ $(document).ready(function()
 				equalTo: "<?php echo $this->lang->line('employees_password_must_match'); ?>"
      		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		"permissions[]": "fill in correctly!!"
+     		"grants[]": "fill in correctly!!"
 		}
 	});
 });

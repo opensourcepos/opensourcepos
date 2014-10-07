@@ -63,12 +63,5 @@ class Module extends CI_Model
 		return $this->db->get();		
 	}
 	
-	function get_employee_grants($person_id)
-	{
-		$this->db->from('grants');
-		$this->db->where('person_id',$person_id);
-		return $this->db->get();
-	}
-	
 }
 ?>

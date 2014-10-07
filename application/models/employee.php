@@ -342,6 +342,13 @@ class Employee extends Person
 		$query = $this->db->get_where('grants', array('person_id'=>$person_id,'permission_id'=>$permission_id), 1);
 		return ($query->num_rows() == 1); 
 	}
+	
+	function get_employee_grants($person_id)
+	{
+		$this->db->from('grants');
+		$this->db->where('person_id',$person_id);
+		return $this->db->get();
+	}
 
 }
 ?>

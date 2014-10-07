@@ -1,4 +1,3 @@
-
 <?php $this->load->view("partial/header"); ?>
 <div id="page_title" style="margin-bottom:8px;"><?php echo $this->lang->line('reports_reports'); ?></div>
 <div id="welcome_message"><?php echo $this->lang->line('reports_welcome_message'); ?>

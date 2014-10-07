@@ -21,7 +21,6 @@ class Items extends Secure_area implements iData_controller
 		$stock_locations=$this->Stock_locations->get_allowed_locations();
 		$data['stock_location']=$stock_location;
 		$data['stock_locations']=$stock_locations;
-		var_dump($stock_location);
 		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width();
 		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $stock_location, $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );

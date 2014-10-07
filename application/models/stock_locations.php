@@ -13,7 +13,6 @@ class Stock_locations extends CI_Model
     function get_all($limit=10000, $offset=0)
     {
         $this->db->from('stock_locations');
-		$this->db->where('deleted', 0);        
         $this->db->limit($limit);
         $this->db->offset($offset);
         return $this->db->get();
@@ -23,9 +22,6 @@ class Stock_locations extends CI_Model
     {
     	$this->db->select('location_name');
     	$this->db->from('stock_locations');
-        $this->db->join('permissions','permissions.location_id=stock_locations.location_id');
-		$this->db->join('grants','grants.permission_id=permissions.permission_id');;
-    	$this->db->where('person_id', $this->session->userdata('person_id'));
     	$this->db->where('deleted', 0);
     	return $this->db->get();
     }

@@ -25,7 +25,8 @@ class Reports extends Secure_area
 	//Initial report listing screen
 	function index()
 	{
-		$this->load->view("reports/listing",array());	
+		$data['grants']=$this->Employee->get_employee_grants($this->session->userdata('person_id'));
+		$this->load->view("reports/listing",$data);	
 	}
 	
 	function _get_common_report_data()
