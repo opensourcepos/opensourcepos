@@ -37,7 +37,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('return_policy', 'Test'),
 ('timezone', 'America/New_York'),
 ('website', ''),
-('tax_included', '0');
+('tax_included', '0'),
+('recv_invoice_format', '');
+
 
 -- --------------------------------------------------------
 

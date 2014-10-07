@@ -112,7 +112,7 @@ class Stock_locations extends CI_Model
                         
                         $this->db->update('stock_locations',array('location_name'=>$db['location_name'],'deleted'=>0));
 						// remmove module (and permissions) for stock location 
-                        //$this->db->delete('modules', array('module_id' => 'items_stock'.$db['location_id']));
+                        $this->db->delete('permissions', array('module_id' => 'items_'.$db['location_name']));
                     }
                     $to_create = false;
                     break;
