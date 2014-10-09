@@ -347,7 +347,23 @@ class Employee extends Person
 	{
 		$this->db->from('grants');
 		$this->db->where('person_id',$person_id);
-		return $this->db->get();
+		$results = $this->db->get()->result_array();
+		return $this->add_sales_categories($results, $person_id);
+	}
+	
+	function add_sales_categories($results, $person_id)
+	{
+		foreach($results as $result)
+		{
+			if ($result['permission_id'] == 'reports_sales')
+			{
+				foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
+				{
+					$results[] = array('permission_id' => 'reports_'.$sales_category, 'person_id' => $person_id);
+				}
+			}
+		}
+		return $results;
 	}
 
 }

@@ -4,14 +4,10 @@
 <ul id="report_list">
 	<li><h3><?php echo $this->lang->line('reports_graphical_reports'); ?></h3>
 		<ul>
-			<?php 
-			foreach($grants->result() as $grant) 
+			<?php
+			foreach($grants as $grant) 
 			{
-				show_report_if_allowed($grants, 'graphical_summary', $grant->permission_id);
-			}
-			foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
-			{
-				show_report_if_allowed($grants, 'graphical_summary', $sales_category, 'sales');
+				show_report_if_allowed($grant, 'graphical_summary');
 			}
 			?>
 		</ul>
@@ -20,13 +16,9 @@
 	<li><h3><?php echo $this->lang->line('reports_summary_reports'); ?></h3>
 		<ul>
 			<?php 
-			foreach($grants->result() as $grant) 
+			foreach($grants as $grant) 
 			{
-				show_report_if_allowed($grants, 'summary', $grant->permission_id);
-			}
-			foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
-			{
-				show_report_if_allowed($grants, 'summary', $sales_category, 'sales');
+				show_report_if_allowed($grant, 'summary');
 			}
 			?>
 		</ul>
