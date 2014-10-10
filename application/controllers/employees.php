@@ -47,6 +47,7 @@ class Employees extends Person_controller
 	{
 		$data['person_info']=$this->Employee->get_info($employee_id);
 		$data['all_modules']=$this->Module->get_all_modules();
+		$data['all_subpermissions']=$this->Module->get_all_subpermissions();
 		$this->load->view("employees/form",$data);
 	}
 	
@@ -68,7 +69,7 @@ class Employees extends Person_controller
 		'country'=>$this->input->post('country'),
 		'comments'=>$this->input->post('comments')
 		);
-		$permission_data = $this->input->post("permissions")!=false ? $this->input->post("permissions"):array();
+		$grants_data = $this->input->post("grants")!=false ? $this->input->post("grants"):array();
 		
 		//Password has been changed OR first time password set
 		if($this->input->post('password')!='')
@@ -83,7 +84,7 @@ class Employees extends Person_controller
 			$employee_data=array('username'=>$this->input->post('username'));
 		}
 		
-		if($this->Employee->save($person_data,$employee_data,$permission_data,$employee_id))
+		if($this->Employee->save($person_data,$employee_data,$grants_data,$employee_id))
 		{
 			//New employee
 			if($employee_id==-1)

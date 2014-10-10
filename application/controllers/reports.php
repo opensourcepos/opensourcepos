@@ -6,26 +6,18 @@ define("FORM_WIDTH", "400");
 
 class Reports extends Secure_area 
 {	
-
+	
 	function __construct()
 	{
 		parent::__construct('reports');
-		$method_name = $this->uri->segment(2);
-		$exploder = explode('_', $method_name);
-		$submodule_id = preg_match("/([^_.]*)(?:_graph)?$/", $method_name, $matches);
-		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
-		// check access to report submodule
-		/* if (sizeof($exploder) > 1 && !$this->Employee->has_permission('reports_'.$matches[1],$employee_id))
-		{
-			redirect('no_access/'.$submodule_id);
-		} */
 		$this->load->helper('report');		
 	}
 	
 	//Initial report listing screen
 	function index()
 	{
-		$this->load->view("reports/listing",array());	
+		$data['grants']=$this->Employee->get_employee_grants($this->session->userdata('person_id'));
+		$this->load->view("reports/listing",$data);	
 	}
 	
 	function _get_common_report_data()

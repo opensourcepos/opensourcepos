@@ -120,6 +120,7 @@ class Receivings extends Secure_area
 
 	function delete_supplier()
 	{
+		$this->receiving_lib->clear_invoice_number();
 		$this->receiving_lib->delete_supplier();
 		$this->_reload();
 	}
@@ -246,7 +247,7 @@ class Receivings extends Secure_area
 		
 		$invoice_number=$this->receiving_lib->get_invoice_number();
 		if (empty($invoice_number))
-		{
+		{ 	
 			$invoice_number=$this->config->config['recv_invoice_format'];
 		}
 		$invoice_count=$this->Receiving->get_invoice_count();
@@ -266,7 +267,9 @@ class Receivings extends Secure_area
 			}
 			$invoice_number=str_replace('$SI',$acronym,$invoice_number);
 		}
+		$this->receiving_lib->set_invoice_number($invoice_number);
 		$data['invoice_number']=$invoice_number;
+		
 		
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();

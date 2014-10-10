@@ -31,6 +31,21 @@ class Module extends CI_Model
 		return $this->lang->line('error_unknown');	
 	}
 	
+	function get_all_permissions()
+	{
+		$this->db->from('permissions');
+		return $this->db->get();
+	}
+	
+	function get_all_subpermissions()
+	{
+		$this->db->from('permissions');
+		$this->db->join('modules', 'modules.module_id=permissions.module_id');
+		// can't quote the parameters correctly when using different operators..
+		$this->db->where($this->db->dbprefix('modules').'.module_id!=', 'permission_id', FALSE);
+		return $this->db->get();
+	}
+	
 	function get_all_modules()
 	{
 		$this->db->from('modules');
@@ -41,8 +56,9 @@ class Module extends CI_Model
 	function get_allowed_modules($person_id)
 	{
 		$this->db->from('modules');
-		$this->db->join('permissions','permissions.module_id=modules.module_id');
-		$this->db->where("permissions.person_id",$person_id);
+		$this->db->join('permissions','permissions.permission_id=modules.module_id');
+		$this->db->join('grants','permissions.permission_id=grants.permission_id');
+		$this->db->where("person_id",$person_id);
 		$this->db->order_by("sort", "asc");
 		return $this->db->get();		
 	}

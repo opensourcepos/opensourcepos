@@ -82,7 +82,7 @@ class Employee extends Person
 	/*
 	Inserts or updates an employee
 	*/
-	function save(&$person_data, &$employee_data,&$permission_data,$employee_id=false)
+	function save(&$person_data, &$employee_data,&$grants_data,$employee_id=false)
 	{
 		$success=false;
 		
@@ -105,17 +105,17 @@ class Employee extends Person
 			//We have either inserted or updated a new employee, now lets set permissions. 
 			if($success)
 			{
-				//First lets clear out any permissions the employee currently has.
-				$success=$this->db->delete('permissions', array('person_id' => $employee_id));
+				//First lets clear out any grants the employee currently has.
+				$success=$this->db->delete('grants', array('person_id' => $employee_id));
 				
-				//Now insert the new permissions
+				//Now insert the new grants
 				if($success)
 				{
-					foreach($permission_data as $allowed_module)
+					foreach($grants_data as $permission_id)
 					{
-						$success = $this->db->insert('permissions',
+						$success = $this->db->insert('grants',
 						array(
-						'module_id'=>$allowed_module,
+						'permission_id'=>$permission_id,
 						'person_id'=>$employee_id));
 					}
 				}
@@ -142,7 +142,7 @@ class Employee extends Person
 		$this->db->trans_start();
 		
 		//Delete permissions
-		if($this->db->delete('permissions', array('person_id' => $employee_id)))
+		if($this->db->delete('grants', array('person_id' => $employee_id)))
 		{	
 			$this->db->where('person_id', $employee_id);
 			$success = $this->db->update('employees', array('deleted' => 1));
@@ -167,7 +167,7 @@ class Employee extends Person
 
 		$this->db->where_in('person_id',$employee_ids);
 		//Delete permissions
-		if ($this->db->delete('permissions'))
+		if ($this->db->delete('grants'))
 		{
 			//delete from employee table
 			$this->db->where_in('person_id',$employee_ids);
@@ -306,36 +306,64 @@ class Employee extends Person
 	/*
 	 * Determines whether the employee has access to at least one submodule
 	 */
-	function has_subpermission($submodule_id,$person_id)
+	function has_module_permission($submodule_id,$person_id)
 	{
-		$this->db->from('modules');
-		$this->db->where('module_id like "' . $submodule_id . '_%"');
-		// has no submodules
+		$this->db->from('grants');
+		$this->db->where('permission_id like "' . $submodule_id . '%"');
+		$this->db->where('person_id',$person_id);
 		$result = $this->db->get();
-		if ($result->num_rows() > 0)
+		$result_count = $result->num_rows();
+		if ($result_count != 1)
 		{
-			$this->db->from('permissions');
-			$this->db->where('permissions.module_id like "' . $submodule_id . '_%"');
-			$this->db->where("permissions.person_id",$person_id);
-			$result = $this->db->get();
-			return $result->num_rows() > 0;
+			return $result_count != 0;
 		}
-		return true;
+		return $this->has_submodules($submodule_id);
+	}
+	
+	function has_submodules($submodule_id)
+	{
+		$this->db->from('permissions');
+		$this->db->where('permission_id like "' . $submodule_id . '_%"');
+		$result = $this->db->get();
+		return $result->num_rows() == 0;
 	}
 	
 	/*
-	Determins whether the employee specified employee has access the specific module.
+	Determines whether the employee specified employee has access the specific module.
 	*/
-	function has_permission($module_id,$person_id)
+	function has_permission($permission_id,$person_id)
 	{
 		//if no module_id is null, allow access
-		if($module_id==null)
+		if($permission_id==null)
 		{
 			return true;
 		}
 		
-		$query = $this->db->get_where('permissions', array('person_id' => $person_id,'module_id'=>$module_id), 1);
+		$query = $this->db->get_where('grants', array('person_id'=>$person_id,'permission_id'=>$permission_id), 1);
 		return ($query->num_rows() == 1); 
+	}
+	
+	function get_employee_grants($person_id)
+	{
+		$this->db->from('grants');
+		$this->db->where('person_id',$person_id);
+		$results = $this->db->get()->result_array();
+		return $this->add_sales_categories($results, $person_id);
+	}
+	
+	function add_sales_categories($results, $person_id)
+	{
+		foreach($results as $result)
+		{
+			if ($result['permission_id'] == 'reports_sales')
+			{
+				foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
+				{
+					$results[] = array('permission_id' => 'reports_'.$sales_category, 'person_id' => $person_id);
+				}
+			}
+		}
+		return $results;
 	}
 
 }
