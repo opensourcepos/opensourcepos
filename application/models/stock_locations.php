@@ -75,72 +75,56 @@ class Stock_locations extends CI_Model
     
     function array_save($stock_locations)
     {
-        $location_db = $this->get_all()->result_array();     
-        //Delete all in db
-        $this->db->trans_start();
-        $location_ids=array();
-        foreach($location_db as $db)
+    	$allowed_locations = $this->get_allowed_locations();
+    	// check for insertion
+        foreach ($stock_locations as $location_name)
         {
-            array_push($location_ids,$db['location_id']);            
-        }
-        if (sizeof($location_ids) > 0) 
-        {
-	        $this->db->where_in('location_id', $location_ids);
-	        $this->db->update('stock_locations',array('deleted'=>1));
-	        $this->db->trans_complete();
-        }
-        
-        //Update the stock location
-        $this->db->trans_start();
-        foreach ($stock_locations as $location)
-        {
-            $to_create = true;
-            foreach($location_db as $db)
+        	if(!$this->exists($location_name)) 
             {
-                if($db['location_name'] == $location)
-                {
-                    if($db['deleted'] == 1)
-                    {
-                        $this->db->where('location_id', $db['location_id']);
-                        
-                        $this->db->update('stock_locations',array('location_name'=>$db['location_name'],'deleted'=>0));
-						// remmove module (and permissions) for stock location 
-                        $this->db->delete('permissions', array('module_id' => 'items_'.$db['location_name']));
-                    }
-                    $to_create = false;
-                    break;
-                }
-            }
-            
-            if($to_create)
-            {
-                $location_data = array('location_name'=>$location,'deleted'=>0);
+            	$this->db->trans_start();
+            	$location_data = array('location_name'=>$location_name,'deleted'=>0);
                 $this->db->insert('stock_locations',$location_data);
                 $location_id = $this->db->insert_id();
-                
+                	
                 // insert new permission for stock location
-                $permission_id = 'items_'.$location;
-				$permission_data = array('permission_id'=>$permission_id,'module_id'=>'items','location_id' => $location_id);
-				$this->db->insert('permissions', $permission_data);
-				
+                $permission_id = 'items_'.$location_name;
+                $permission_data = array('permission_id'=>$permission_id,'module_id'=>'items','location_id' => $location_id);
+                $this->db->insert('permissions', $permission_data);
+                
                 // insert grants for new permission
                 $employees = $this->Employee->get_all();
                 foreach ($employees->result_array() as $employee)
                 {
-	                $grants_data = array('permission_id' => $permission_id, 'person_id' => $employee['person_id']);
-	                $this->db->insert('grants', $grants_data);
+                	$grants_data = array('permission_id' => $permission_id, 'person_id' => $employee['person_id']);
+                	$this->db->insert('grants', $grants_data);
                 }
-                
+                	
                 // insert quantities for existing items
                 $items = $this->Item->get_all();
                 foreach ($items->result_array() as $item)
                 {
                 	$quantity_data = array('item_id' => $item['item_id'], 'location_id' => $location_id, 'quantity' => 0);
                 	$this->db->insert('item_quantities', $quantity_data);
-                }
+                }        	
+		        $this->db->trans_complete();
+            }
+            else if (!in_array($location_name, array_values($allowed_locations))) 
+            {
+            	$this->db->where('location_name', $location_name);
+            	$this->db->update('stock_locations', array('deleted' => 0));
             }
         }
-        $this->db->trans_complete();
+         
+        // check for deletion
+       	foreach ($allowed_locations as $location_id => $location_name)
+       	{
+       		if (!in_array($location_name, $stock_locations))
+       		{
+       			$this->db->where('location_id', $location_id);
+       			$this->db->update('stock_locations', array('deleted' => 1));
+       		}
+       	}
+        
         return true;            
     }
 }

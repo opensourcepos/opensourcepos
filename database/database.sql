@@ -335,6 +335,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('receivings', 'receivings'),
 ('reports', 'reports'),
 ('sales', 'sales'),
+('config', 'config'),
 ('suppliers', 'suppliers');
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
@@ -377,6 +378,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('receivings', 1),
 ('reports', 1),
 ('sales', 1),
+('config', 1),
 ('suppliers', 1);
 
 --
