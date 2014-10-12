@@ -332,12 +332,12 @@ $(document).ready(function()
     	$(this).attr('value',"<?php echo $this->lang->line('recvs_start_typing_supplier_name'); ?>");
     });
 
-	$('#comment').change(function() 
+	$('#comment').keyup(function() 
 	{
 		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	$('#recv_invoice_number').change(function() 
+	$('#recv_invoice_number').keyup(function() 
 	{
 		$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
 	});
