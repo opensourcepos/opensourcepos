@@ -379,6 +379,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('reports', 1),
 ('sales', 1),
 ('config', 1),
+('items_stock', 1),
 ('suppliers', 1);
 
 --
