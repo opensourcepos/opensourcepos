@@ -86,18 +86,25 @@ function random_color()
     return $c;
 }
 
-function show_report_if_allowed($grant, $report_prefix, $report_name='')
+function show_report_if_allowed($report_prefix, $report_name, $person_id, $permission_id='')
 {
 	$CI =& get_instance();
-	$report_name = empty($report_name) ? $grant['permission_id'] : $report_name;
-	$lang_line = 'reports_' .$report_name;
-	$report_label = $CI->lang->line($lang_line);
+	if ($CI->Employee->has_grant($permission_id, $person_id))
+	{
+		show_report($report_prefix, $report_name, $permission_id);
+	}
+}
+
+function show_report($report_prefix, $report_name, $lang_key='')
+{
+	$CI =& get_instance();
+	$report_label = $CI->lang->line(empty($lang_key) ? $report_name : $lang_key);
 	$report_prefix = empty($report_prefix) ? '' : $report_prefix . '_';
 	// no summary nor detailed reports for receivings
-	if (!empty($report_label) && !(preg_match('/.*summary_?$/', $report_prefix) && $report_name === "receivings"))
+	if (!empty($report_label))
 	{
 		?>
-			<li><a href="<?php echo site_url('reports/' . $report_prefix . $report_name);?>"><?php echo $report_label; ?></a></li>
+			<li><a href="<?php echo site_url('reports/' . $report_prefix . preg_replace('/reports_(.*)/', '$1', $report_name));?>"><?php echo $report_label; ?></a></li>
 		<?php 
 	}
 }

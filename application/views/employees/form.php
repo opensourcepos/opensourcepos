@@ -56,7 +56,7 @@ foreach($all_modules->result() as $module)
 {
 ?>
 <li>	
-<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_permission($module->module_id,$person_info->person_id)); ?>
+<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id)); ?>
 <span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 <span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
 <?php
@@ -70,7 +70,7 @@ foreach($all_modules->result() as $module)
 			?>
 		<ul>
 			<li>
-			<?php echo form_checkbox("grants[]",$permission->permission_id,$this->Employee->has_permission($permission->permission_id,$person_info->person_id)); ?>
+			<?php echo form_checkbox("grants[]",$permission->permission_id,$this->Employee->has_grant($permission->permission_id,$person_info->person_id)); ?>
 			<span class="medium"><?php echo $lang_line ?></span>
 			</li>
 		</ul>

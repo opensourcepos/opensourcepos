@@ -306,10 +306,10 @@ class Employee extends Person
 	/*
 	 * Determines whether the employee has access to at least one submodule
 	 */
-	function has_module_permission($submodule_id,$person_id)
+	function has_module_grant($permission_id,$person_id)
 	{
 		$this->db->from('grants');
-		$this->db->where('permission_id like "' . $submodule_id . '%"');
+		$this->db->like('permission_id', $permission_id, 'after');
 		$this->db->where('person_id',$person_id);
 		$result = $this->db->get();
 		$result_count = $result->num_rows();
@@ -317,13 +317,13 @@ class Employee extends Person
 		{
 			return $result_count != 0;
 		}
-		return $this->has_submodules($submodule_id);
+		return $this->has_subpermissions($permission_id);
 	}
 	
-	function has_submodules($submodule_id)
+	function has_subpermissions($permission_id)
 	{
 		$this->db->from('permissions');
-		$this->db->where('permission_id like "' . $submodule_id . '_%"');
+		$this->db->like('permission_id', $permission_id.'_', 'after');
 		$result = $this->db->get();
 		return $result->num_rows() == 0;
 	}
@@ -331,7 +331,7 @@ class Employee extends Person
 	/*
 	Determines whether the employee specified employee has access the specific module.
 	*/
-	function has_permission($permission_id,$person_id)
+	function has_grant($permission_id,$person_id)
 	{
 		//if no module_id is null, allow access
 		if($permission_id==null)
@@ -347,24 +347,8 @@ class Employee extends Person
 	{
 		$this->db->from('grants');
 		$this->db->where('person_id',$person_id);
-		$results = $this->db->get()->result_array();
-		return $this->add_sales_categories($results, $person_id);
+		return $this->db->get()->result_array();
 	}
 	
-	function add_sales_categories($results, $person_id)
-	{
-		foreach($results as $result)
-		{
-			if ($result['permission_id'] == 'reports_sales')
-			{
-				foreach(array('categories', 'taxes', 'discounts', 'payments') as $sales_category)
-				{
-					$results[] = array('permission_id' => 'reports_'.$sales_category, 'person_id' => $person_id);
-				}
-			}
-		}
-		return $results;
-	}
-
 }
 ?>

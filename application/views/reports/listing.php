@@ -7,7 +7,10 @@
 			<?php
 			foreach($grants as $grant) 
 			{
-				show_report_if_allowed($grant, 'graphical_summary');
+				if (!preg_match('/reports_(inventory|receivings)/', $grant['permission_id']))
+				{
+					show_report('graphical_summary',$grant['permission_id']);
+				}
 			}
 			?>
 		</ul>
@@ -18,7 +21,10 @@
 			<?php 
 			foreach($grants as $grant) 
 			{
-				show_report_if_allowed($grant, 'summary');
+				if (!preg_match('/reports_(inventory|receivings)/', $grant['permission_id']))
+				{
+					show_report('summary',$grant['permission_id']);
+				}
 			}
 			?>
 		</ul>
@@ -27,23 +33,24 @@
 	<li><h3><?php echo $this->lang->line('reports_detailed_reports'); ?></h3>
 		<ul>
 		<?php 			
-			show_report_if_allowed($grants, 'detailed', 'sales');
-			show_report_if_allowed($grants, 'detailed', 'receivings');
-			show_report_if_allowed($grants, 'specific', 'customer', 'customers');
-			show_report_if_allowed($grants, 'specific', 'discount', 'sales');
-			show_report_if_allowed($grants, 'specific', 'employee', 'employees');
+			$person_id = $this->session->userdata('person_id');
+			show_report_if_allowed('detailed', 'sales', $person_id);
+			show_report_if_allowed('detailed', 'receivings', $person_id);
+			show_report_if_allowed('specific', 'customer', $person_id, 'reports_customers');
+			show_report_if_allowed('specific', 'discount', $person_id, 'reports_discounts');
+			show_report_if_allowed('specific', 'employee', $person_id, 'reports_employees');
 		?>
 		</ul>
 	</li>
 	<?php 
-	if ($this->Employee->has_permission('reports_inventory', $this->session->userdata('person_id')))
+	if ($this->Employee->has_grant('reports_inventory', $this->session->userdata('person_id')))
 	{
 	?>
 	<li><h3><?php echo $this->lang->line('reports_inventory_reports'); ?></h3>
 		<ul>
 		<?php 
-			show_report_if_allowed($grants, '', 'inventory_low', 'inventory');	
-			show_report_if_allowed($grants, '', 'inventory_summary', 'inventory');
+			show_report('', 'reports_inventory_low');	
+			show_report('', 'reports_inventory_summary');
 		?>
 		</ul>
 	</li>
