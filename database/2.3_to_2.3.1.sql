@@ -1,48 +1,88 @@
--- add granular report permissions
-INSERT INTO ospos_permissions (permission_id, module_id, location_id) VALUES 
-('reports_sales', 'reports', NULL),
-('reports_receivings', 'reports', NULL),
-('reports_items', 'reports', NULL),
-('reports_inventory', 'reports', NULL),
-('reports_customers', 'reports', NULL),
-('reports_employees', 'reports', NULL),
-('reports_suppliers', 'reports', NULL),
-('reports_taxes', 'reports', NULL),
-('reports_discounts', 'reports', NULL),
-('reports_payments', 'reports', NULL),
-('reports_categories', 'reports', NULL);
+-- alter permissions table
+DROP TABLE `ospos_permissions`;
 
--- add modules for existing stock locations
-INSERT INTO ospos_modules (name_lang_key, desc_lang_key, sort, module_id) (SELECT CONCAT('module_items_stock', location_id), CONCAT('module_items_stock', location_id, '_desc'), (SELECT MAX(sort)+1 FROM ospos_modules WHERE module_id LIKE 'items_stock%' OR module_id = 'items'), CONCAT('items_stock', location_id) from ospos_stock_locations);
+CREATE TABLE `ospos_permissions` (
+  `permission_id` varchar(255) NOT NULL,
+  `module_id` varchar(255) NOT NULL,
+  `location_id` int(10) DEFAULT NULL,
+  PRIMARY KEY (`permission_id`),
+  KEY `module_id` (`module_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- add permissions for all employees
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_customers', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_receivings', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_items', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_inventory', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_employees', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_suppliers', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_sales', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_discounts', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_taxes', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_categories', person_id from ospos_employees;
-INSERT INTO `ospos_grants` (`permssion_id`, `person_id`) SELECT 'reports_payments', person_id from ospos_employees;
+ALTER TABLE `ospos_permissions`
+  ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `ospos_modules` (`module_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `ospos_stock_locations` (`location_id`) ON DELETE CASCADE;
+
+INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+('reports_customers', 'reports'),
+('reports_receivings', 'reports'),
+('reports_items', 'reports'),
+('reports_employees', 'reports'),
+('reports_suppliers', 'reports'),
+('reports_sales', 'reports'),
+('reports_discounts', 'reports'),
+('reports_taxes', 'reports'),
+('reports_inventory', 'reports'),
+('reports_categories', 'reports'),
+('reports_payments', 'reports'),
+('customers', 'customers'),
+('employees', 'employees'),
+('giftcards', 'giftcards'),
+('items', 'items'),
+('item_kits', 'item_kits'),
+('receivings', 'receivings'),
+('reports', 'reports'),
+('sales', 'sales'),
+('config', 'config'),
+('suppliers', 'suppliers');
+
+-- add permissions for existing stock locations
+INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) (SELECT CONCAT('items_', location_name), 'items', location_id FROM ospos_stock_locations);
+
+CREATE TABLE `ospos_grants` (
+  `permission_id` varchar(255) NOT NULL,
+  `person_id` int(10) NOT NULL,
+  PRIMARY KEY (`permission_id`,`person_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `ospos_grants`
+  ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ospos_grants_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `ospos`.`ospos_permissions`(`permission_id`) ON DELETE CASCADE; 
+
+-- add grants for all employees
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
+('reports_customers', 1),
+('reports_receivings', 1), 
+('reports_items', 1),
+('reports_inventory', 1),
+('reports_employees', 1),
+('reports_suppliers', 1),
+('reports_sales', 1),
+('reports_discounts', 1),
+('reports_taxes', 1),
+('reports_categories', 1),
+('reports_payments', 1),    
+('customers', 1),
+('employees', 1),
+('giftcards', 1),
+('items', 1),
+('item_kits', 1),
+('receivings', 1),
+('reports', 1),
+('sales', 1),
+('config', 1),
+('items_stock', 1),
+('suppliers', 1);
 
 -- add config options for tax inclusive sales
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
 ('tax_included', '0'),
 ('recv_invoice_format', '');
 
--- add cascading deletes on modules
-ALTER TABLE `ospos_permissions` DROP FOREIGN KEY `ospos_permissions_ibfk_1`; 
-ALTER TABLE `ospos_permissions` ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`location_id`) REFERENCES `ospos`.`ospos_stock_locations`(`location_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
-
-ALTER TABLE `ospos_grants` DROP FOREIGN KEY `ospos_grants_ibfk_1`; 
-ALTER TABLE `ospos_grants` ADD CONSTRAINT `ospos_grants_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `ospos`.`ospos_permissions`(`permission_id`) ON DELETE CASCADE ON UPDATE RESTRICT;
-
 -- add invoice_number column to receivings table
-ALTER TABLE `ospos_receivings` ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL;
-ALTER TABLE `ospos_receivings` ADD UNIQUE `invoice_number` (`invoice_number`);
+ALTER TABLE `ospos_receivings` 
+   ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
+   ADD UNIQUE `invoice_number` (`invoice_number`);
 
 
 

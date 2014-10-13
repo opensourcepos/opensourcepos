@@ -36,9 +36,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('phone', '555-555-5555'),
 ('return_policy', 'Test'),
 ('timezone', 'America/New_York'),
-('website', ''),
-('recv_invoice_format', ''),
-('tax_included', '0');
+('website', '');
 
 -- --------------------------------------------------------
 
@@ -96,7 +94,7 @@ CREATE TABLE `ospos_giftcards` (
   `person_id` INT NOT NULL,
   PRIMARY KEY (`giftcard_id`),
   UNIQUE KEY `giftcard_number` (`giftcard_number`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=48 ;
 
 --
 -- Dumping data for table `ospos_giftcards`
@@ -231,7 +229,7 @@ CREATE TABLE `ospos_item_kit_items` (
 CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   `item_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL DEFAULT '0',
+  `quantity` int(11) NOT NULL,
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
@@ -289,7 +287,7 @@ CREATE TABLE `ospos_people` (
   `comments` text NOT NULL,
   `person_id` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`person_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `ospos_people`
@@ -305,73 +303,18 @@ INSERT INTO `ospos_people` (`first_name`, `last_name`, `phone_number`, `email`, 
 --
 
 CREATE TABLE `ospos_permissions` (
-  `permission_id` varchar(255) NOT NULL,
   `module_id` varchar(255) NOT NULL,
-  `location_id` int(10) DEFAULT NULL,
-  PRIMARY KEY (`permission_id`),
-  KEY `module_id` (`module_id`)
+  `person_id` int(10) NOT NULL,
+  PRIMARY KEY (`module_id`,`person_id`),
+  KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_permissions`
 --
 
-INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
-('reports_customers', 'reports'),
-('reports_receivings', 'reports'),
-('reports_items', 'reports'),
-('reports_employees', 'reports'),
-('reports_suppliers', 'reports'),
-('reports_sales', 'reports'),
-('reports_discounts', 'reports'),
-('reports_taxes', 'reports'),
-('reports_inventory', 'reports'),
-('reports_categories', 'reports'),
-('reports_payments', 'reports'),
-('customers', 'customers'),
-('employees', 'employees'),
-('giftcards', 'giftcards'),
-('items', 'items'),
-('item_kits', 'item_kits'),
-('receivings', 'receivings'),
-('reports', 'reports'),
-('sales', 'sales'),
-('config', 'config'),
-('suppliers', 'suppliers');
-
-INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
-('items_stock', 'items', 1);
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ospos_grants`
---
-
-CREATE TABLE `ospos_grants` (
-  `permission_id` varchar(255) NOT NULL,
-  `person_id` int(10) NOT NULL,
-  PRIMARY KEY (`permission_id`,`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_grants`
---
--- --------------------------------------------------------
-
-INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
-('reports_customers', 1),
-('reports_receivings', 1), 
-('reports_items', 1),
-('reports_inventory', 1),
-('reports_employees', 1),
-('reports_suppliers', 1),
-('reports_sales', 1),
-('reports_discounts', 1),
-('reports_taxes', 1),
-('reports_categories', 1),
-('reports_payments', 1),    
+INSERT INTO `ospos_permissions` (`module_id`, `person_id`) VALUES
+('config', 1),
 ('customers', 1),
 ('employees', 1),
 ('giftcards', 1),
@@ -380,9 +323,9 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('receivings', 1),
 ('reports', 1),
 ('sales', 1),
-('config', 1),
-('items_stock', 1),
 ('suppliers', 1);
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `ospos_receivings`
@@ -395,11 +338,9 @@ CREATE TABLE `ospos_receivings` (
   `comment` text NOT NULL,
   `receiving_id` int(10) NOT NULL AUTO_INCREMENT,
   `payment_type` varchar(20) DEFAULT NULL,
-  `invoice_number` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`receiving_id`),
   KEY `supplier_id` (`supplier_id`),
-  KEY `employee_id` (`employee_id`),
-  UNIQUE KEY `invoice_number` (`invoice_number`)
+  KEY `employee_id` (`employee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -644,7 +585,7 @@ CREATE TABLE `ospos_stock_locations` (
   `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8;
 
 --
 -- Dumping data for table `ospos_stock_locations`
@@ -718,15 +659,8 @@ ALTER TABLE `ospos_item_kit_items`
 -- Constraints for table `ospos_permissions`
 --
 ALTER TABLE `ospos_permissions`
-  ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`module_id`) REFERENCES `ospos_modules` (`module_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `ospos_stock_locations` (`location_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `ospos_grants`
---
-ALTER TABLE `ospos_grants`
-  ADD CONSTRAINT `ospos_grants_ibfk_1` foreign key (`permission_id`) references `ospos_permissions` (`permission_id`),
-  ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`);
+  ADD CONSTRAINT `ospos_permissions_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_employees` (`person_id`),
+  ADD CONSTRAINT `ospos_permissions_ibfk_2` FOREIGN KEY (`module_id`) REFERENCES `ospos_modules` (`module_id`);
 
 --
 -- Constraints for table `ospos_receivings`
