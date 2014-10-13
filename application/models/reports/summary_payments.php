@@ -20,12 +20,12 @@ class Summary_payments extends Report
 		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
 		if ($inputs['sale_type'] == 'sales')
         {
-            $this->db->where('quantity_purchased > 0');
+			$this->db->where('payment_amount > 0');
         }
         elseif ($inputs['sale_type'] == 'returns')
         {
-            $this->db->where('quantity_purchased < 0');
-        }      
+			$this->db->where('payment_amount < 0');
+       	}      
 		$this->db->group_by("payment_type");
 		return $this->db->get()->result_array();
 	}

@@ -139,9 +139,6 @@ class Receivings extends Secure_area
 		$comment = $this->input->post('comment');
 		$emp_info=$this->Employee->get_info($employee_id);
 		$payment_type=$this->input->post('payment_type');
-		$invoice_number=$this->receiving_lib->get_invoice_number();
-		$data['payment_type']=$this->input->post('payment_type');
-		$data['invoice_number']=$invoice_number;
         $data['stock_location']=$this->receiving_lib->get_stock_source();
 		if ($this->input->post('amount_tendered'))
 		{
@@ -155,7 +152,9 @@ class Receivings extends Secure_area
 			$suppl_info=$this->Supplier->get_info($supplier_id);
 			$data['supplier']=$suppl_info->first_name.' '.$suppl_info->last_name;
 		}
-
+		$invoice_number=$this->_substitute_invoice_number($suppl_info);
+		$data['invoice_number']=$invoice_number;
+		$data['payment_type']=$this->input->post('payment_type');
 		//SAVE receiving to database
 		$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$payment_type,$data['stock_location'],$invoice_number);
 		
@@ -167,6 +166,32 @@ class Receivings extends Secure_area
 		$this->load->view("receivings/receipt",$data);
 		$this->receiving_lib->clear_all();
 		$this->_remove_duplicate_cookies();
+	}
+	
+	function _substitute_invoice_number($supplier_info='')
+	{
+		$invoice_number=$this->receiving_lib->get_invoice_number();
+		if (empty($invoice_number))
+		{
+			$invoice_number=$this->config->config['recv_invoice_format'];
+		}
+		$invoice_count=$this->Receiving->get_invoice_count();
+		$invoice_number=str_replace('$CO',$invoice_count,$invoice_number);
+		$invoice_number=strftime($invoice_number);
+		
+		$supplier_id=$this->receiving_lib->get_supplier();
+		if($supplier_id!=-1)
+		{
+			$invoice_number=str_replace('$SU',$supplier_info->company_name,$invoice_number);
+			$words = preg_split("/\s+/", $supplier_info->company_name);
+			$acronym = "";
+			foreach ($words as $w) {
+				$acronym .= $w[0];
+			}
+			$invoice_number=str_replace('$SI',$acronym,$invoice_number);
+		}
+		$this->receiving_lib->set_invoice_number($invoice_number);
+		return $invoice_number;
 	}
 
     function requisition_complete()
@@ -245,31 +270,14 @@ class Receivings extends Secure_area
 			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
 		);
 		
-		$invoice_number=$this->receiving_lib->get_invoice_number();
-		if (empty($invoice_number))
-		{ 	
-			$invoice_number=$this->config->config['recv_invoice_format'];
-		}
-		$invoice_count=$this->Receiving->get_invoice_count();
-		$invoice_number=str_replace('$CO',$invoice_count,$invoice_number);
-		$invoice_number=strftime($invoice_number);
-		
 		$supplier_id=$this->receiving_lib->get_supplier();
+		$info='';
 		if($supplier_id!=-1)
 		{
 			$info=$this->Supplier->get_info($supplier_id);
-			$invoice_number=str_replace('$SU',$info->company_name,$invoice_number);
 			$data['supplier']=$info->first_name.' '.$info->last_name;
-			$words = preg_split("/\s+/", $info->company_name);
-			$acronym = "";
-			foreach ($words as $w) {
-				$acronym .= $w[0];
-			}
-			$invoice_number=str_replace('$SI',$acronym,$invoice_number);
 		}
-		$this->receiving_lib->set_invoice_number($invoice_number);
-		$data['invoice_number']=$invoice_number;
-		
+		$data['invoice_number']=$this->_substitute_invoice_number($info);
 		
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();
