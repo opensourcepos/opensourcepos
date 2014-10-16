@@ -10,6 +10,17 @@ class Reports extends Secure_area
 	function __construct()
 	{
 		parent::__construct('reports');
+		$method_name = $this->uri->segment(2);
+		$exploder = explode('_', $method_name);
+		$submodule_id = preg_match("/^(inventory)|([^_.]+)(?:_graph)?$/", $method_name, $matches);
+		var_dump($matches);
+		$submodule_id = preg_replace("/^(.*?)s?$/", "$1s", $matches[1]);
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		// check access to report submodule
+		if (sizeof($exploder) > 1 && !$this->Employee->has_grant('reports_'.$submodule_id,$employee_id))
+		{
+			//redirect('no_access/'.$submodule_id.'/reports_' . $submodule_id);
+		}
 		$this->load->helper('report');		
 	}
 	

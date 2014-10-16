@@ -432,7 +432,7 @@ $(document).ready(function()
     	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
     });
 	
-	$('#comment').change(function() 
+	$('#comment').keyup(function() 
 	{
 		$.post('<?php echo site_url("sales/set_comment");?>', {comment: $('#comment').val()});
 	});

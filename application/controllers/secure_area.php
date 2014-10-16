@@ -17,7 +17,7 @@ class Secure_area extends CI_Controller
 		if(!$this->Employee->has_module_grant($module_id,$employee_id) || 
 			(isset($submodule_id) && !$this->Employee->has_module_grant($submodule_id,$employee_id)))
 		{
-			redirect('no_access/'.$module_id);
+			redirect('no_access/'.$module_id.'/'.$submodule_id);
 		}
 		
 		//load up global data
