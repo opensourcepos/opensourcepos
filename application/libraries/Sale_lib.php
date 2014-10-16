@@ -542,17 +542,17 @@ class Sale_lib
 		{
 			if ($this->is_customer_taxable())
 			{
-				$subtotal =+ $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
+				$subtotal += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
 			}
 			else
 			{
 				if ($CI->config->config['tax_included'])
 				{
-					$subtotal =+ $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
+					$subtotal += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
 				}
 				else 
 				{
-					$subtotal =+ $this->get_item_total_tax_exclusive($item['quantity'], $item['price'], $item['discount']);
+					$subtotal += $this->get_item_total_tax_exclusive($item['quantity'], $item['price'], $item['discount']);
 				}
 			}
 		}
