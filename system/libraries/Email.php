@@ -610,6 +610,10 @@ class CI_Email {
 	 */
 	protected function _get_message_id()
 	{
+		$from = $this->_headers['Return-Path'];
+		$from = str_replace(">", "", $from);
+		$from = str_replace("<", "", $from);
+
 		return  "<".uniqid('').strstr($from, '@').">";
 	}
 
