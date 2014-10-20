@@ -354,7 +354,7 @@ class Receiving_lib
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-			$total =+ $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
+			$total += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
 		}
 		
 		return $total;
