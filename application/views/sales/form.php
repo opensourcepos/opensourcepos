@@ -7,7 +7,7 @@
 	<legend><?php echo $this->lang->line("sales_basic_information"); ?></legend>
 	
 	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('sales_receipt').':', 'customer'); ?>
+	<?php echo form_label($this->lang->line('sales_receipt_number').':', 'customer'); ?>
 		<div class='form_field'>
 			<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], $this->lang->line('sales_receipt_number') .$sale_info['sale_id'], array('target' => '_blank'));?>
 		</div>

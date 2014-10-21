@@ -64,11 +64,11 @@ function get_person_data_row($person,$controller)
 	return $table_data_row;
 }
 
-function get_detailed_sales_data_row($sale, $controller)
+function get_detailed_data_row($row, $controller)
 {
 	$table_data_row='<tr>';
 	$table_data_row.='<td><a href="#" class="expand">+</a></td>';
-	foreach($sale as $cell)
+	foreach($row as $cell)
 	{
 		$table_data_row.='<td>';
 		$table_data_row.=$cell;

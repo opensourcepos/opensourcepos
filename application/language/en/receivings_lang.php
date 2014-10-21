@@ -39,4 +39,19 @@ $lang['recvs_stock_destination']='Stock destination';
 $lang['recvs_stock_locaiton']='Stock location';
 $lang['recvs_error_requisition']='Unable to move inventory from and to the same stock location';
 $lang['recvs_invoice_number']='Invoice #';
+$lang['recvs_receipt_number']='Receiving #';
+
+$lang['recvs_date'] = 'Receiving Date';
+$lang['recvs_successfully_updated'] = 'Receiving successfully updated';
+$lang['recvs_unsuccessfully_updated'] = 'Receiving unsuccessfully updated';
+$lang['recvs_edit_sale'] = 'Edit Receiving';
+$lang['recvs_successfully_deleted'] = 'Receiving successfully deleted';
+$lang['recvs_unsuccessfully_deleted'] = 'Receiving unsuccessfully deleted';
+$lang['recvs_delete_entire_sale'] = 'Delete entire sale';
+$lang['recvs_comments'] = 'Comments';
+$lang['recvs_basic_information']='Receiving information';
+$lang['recvs_employee']='Employee';
+$lang['recvs_receipt']='Receivings Receipt';
+$lang['recvs_date_required']='A correct date needs to be filled in';
+$lang['recvs_date_type']='Date field is required';
 ?>

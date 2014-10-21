@@ -94,14 +94,14 @@ function post_form_submit(response, row_id)
 	}
 	else
 	{
-		var sale_id = response.id
-		$.get('<?php echo site_url("reports/get_detailed_sales_row")?>/'+sale_id, function(response)
+		var row_id = response.id
+		$.get('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>/'+row_id, function(response)
 		{
 			//Replace previous row
-			var row = get_table_row(sale_id).parent().parent();
+			var row = get_table_row(row_id).parent().parent();
 			var sign = row.find("a.expand").text();
 			row.replaceWith(response);	
-			row = get_table_row(sale_id).parent().parent();
+			row = get_table_row(row_id).parent().parent();
 			update_sortable_table();
 			animate_row(row);
 			row.find("a.expand").click(expand_handler).text(sign);

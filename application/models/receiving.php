@@ -4,6 +4,7 @@ class Receiving extends CI_Model
 	function get_info($receiving_id)
 	{
 		$this->db->from('receivings');
+		$this->db->join('people', 'people.person_id = receivings.supplier_id', 'LEFT');
 		$this->db->where('receiving_id',$receiving_id);
 		return $this->db->get();
 	}
@@ -29,6 +30,14 @@ class Receiving extends CI_Model
 		$query = $this->db->get();
 
 		return ($query->num_rows()==1);
+	}
+	
+	function update($receiving_data, $receiving_id)
+	{
+		$this->db->where('receiving_id', $receiving_id);
+		$success = $this->db->update('receivings',$receiving_data);
+	
+		return $success;
 	}
 
 	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false,$invoice_number=null)
@@ -101,6 +110,48 @@ class Receiving extends CI_Model
 		}
 
 		return $receiving_id;
+	}
+	
+	function delete_list($receiving_ids,$employee_id,$update_inventory=TRUE)
+	{
+		$result = TRUE;
+		foreach($receiving_ids as $receiving_id) {
+			$result &= $this->delete($receiving_id,$employee_id,$update_inventory);
+		}
+		return $result;
+	}
+	
+	function delete($receiving_id,$employee_id,$update_inventory=TRUE)
+	{
+		// start a transaction to assure data integrity
+		$this->db->trans_start();
+		if ($update_inventory) {
+			// defect, not all item deletions will be undone??
+			// get array with all the items involved in the sale to update the inventory tracking
+			$items = $this->get_receiving_items($receiving_id)->result_array();
+			foreach($items as $item) {
+				// create query to update inventory tracking
+				$inv_data = array
+				(
+						'trans_date'=>date('Y-m-d H:i:s'),
+						'trans_items'=>$item['item_id'],
+						'trans_user'=>$employee_id,
+						'trans_comment'=>'Deleting sale ' . $receiving_id,
+						'trans_inventory'=>$item['quantity_purchased']
+	
+				);
+				// update inventory
+				$this->Inventory->insert($inv_data);
+			}
+		}
+		// delete all items
+		$this->db->delete('receivings_items', array('receiving_id' => $receiving_id));
+		// delete sale itself
+		$this->db->delete('receivings', array('receiving_id' => $receiving_id));
+		// execute transaction
+		$this->db->trans_complete();
+	
+		return $this->db->trans_status();
 	}
 
 	function get_receiving_items($receiving_id)

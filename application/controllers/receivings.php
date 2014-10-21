@@ -111,11 +111,51 @@ class Receivings extends Secure_area
 
 		$this->_reload($data);
 	}
+	
+	function edit($receiving_id)
+	{
+		$data = array();
+	
+		$data['suppliers'] = array('' => 'No Supplier');
+		foreach ($this->Supplier->get_all()->result() as $supplier)
+		{
+			$data['suppliers'][$supplier->person_id] = $supplier->first_name . ' ' . $supplier->last_name;
+		}
+	
+		$data['employees'] = array();
+		foreach ($this->Employee->get_all()->result() as $employee)
+		{
+			$data['employees'][$employee->person_id] = $employee->first_name . ' '. $employee->last_name;
+		}
+	
+		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
+		$person_name = $receiving_info['first_name'] . " " . $receiving_info['last_name'];
+		$data['selected_supplier'] = !empty($receiving_info['supplier_id']) ? $receiving_info['supplier_id'] . "|" . $person_name : "";
+		$data['receiving_info'] = $receiving_info;
+	
+		$this->load->view('receivings/form', $data);
+	}
 
 	function delete_item($item_number)
 	{
 		$this->receiving_lib->delete_item($item_number);
 		$this->_reload();
+	}
+	
+	function delete($receiving_id = -1, $update_inventory=TRUE) 
+	{
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		$receiving_ids=$receiving_id == -1 ? $this->input->post('ids') : array($receiving_id);
+	
+		if($this->Receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
+		{
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('recvs_delete_successful').' '.
+					count($receiving_ids).' '.$this->lang->line('recvs_one_or_multiple'),'ids'=>$receiving_ids));
+		}
+		else
+		{
+			echo json_encode(array('success'=>false,'message'=>$this->lang->line('recvs_delete_unsuccessful')));
+		}
 	}
 
 	function delete_supplier()
@@ -281,6 +321,34 @@ class Receivings extends Secure_area
 		
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();
+	}
+	
+	function save($receiving_id)
+	{
+		$receiving_data = array(
+				'receiving_time' => date('Y-m-d', strtotime($this->input->post('date'))),
+				'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
+				'employee_id' => $this->input->post('employee_id'),
+				'comment' => $this->input->post('comment'),
+				'invoice_number' => $this->input->post('invoice_number')
+		);
+	
+		if ($this->Receiving->update($receiving_data, $receiving_id))
+		{
+			echo json_encode(array(
+					'success'=>true,
+					'message'=>$this->lang->line('recvs_successfully_updated'),
+					'id'=>$receiving_id)
+			);
+		}
+		else
+		{
+			echo json_encode(array(
+					'success'=>false,
+					'message'=>$this->lang->line('recvs_unsuccessfully_updated'),
+					'id'=>$receiving_id)
+			);
+		}
 	}
 
     function cancel_receiving()

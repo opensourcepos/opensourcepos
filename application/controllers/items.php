@@ -612,10 +612,15 @@ class Items extends Secure_area implements iData_controller
 		return 360;
 	}
     
-    function is_sale_store_item($item_number)
-    {  
-        echo $this->Item->is_sale_store_item_exist($item_number);        
-    }
+	function item_number_check($item_number)
+	{
+		if ($this->Item->get_item_id($item_number) != FALSE)
+		{
+			$this->form_validation->set_message('item_number_check', $this->lang->line('items_item_number_exists'));
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_adding'));
+		}
+		echo json_encode(array('success'=>false,'message'=>$this->lang->line('items_error_adding'));
+	}
     
 }
 ?>
