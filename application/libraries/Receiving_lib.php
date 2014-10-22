@@ -326,8 +326,8 @@ class Receiving_lib
 	{
 		$this->CI->session->unset_userdata('supplier');
 	}
-
-	function clear_mode()
+    
+    function clear_mode()
 	{
 		$this->CI->session->unset_userdata('receiving_mode');
 	}
