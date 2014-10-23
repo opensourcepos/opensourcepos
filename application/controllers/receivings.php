@@ -186,11 +186,11 @@ class Receivings extends Secure_area
 			$data['amount_change'] = to_currency($data['amount_tendered'] - round($data['total'], 2));
 		}
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
-
+		$suppl_info	='';
 		if($supplier_id!=-1)
 		{
 			$suppl_info=$this->Supplier->get_info($supplier_id);
-			$data['supplier']=$suppl_info->first_name.' '.$suppl_info->last_name;
+			$data['supplier']=$suppl_info->company_name;  //   first_name.' '.$suppl_info->last_name;
 		}
 		$invoice_number=$this->_substitute_invoice_number($suppl_info);
 		if ($this->Receiving->invoice_number_exists($invoice_number))
@@ -319,13 +319,13 @@ class Receivings extends Secure_area
 		);
 		
 		$supplier_id=$this->receiving_lib->get_supplier();
-		$info='';
+		$suppl_info='';
 		if($supplier_id!=-1)
 		{
-			$info=$this->Supplier->get_info($supplier_id);
-			$data['supplier']=$info->first_name.' '.$info->last_name;
+			$suppl_info=$this->Supplier->get_info($supplier_id);
+			$data['supplier']=$suppl_info->company_name;  // first_name.' '.$info->last_name;
 		}
-		$data['invoice_number']=$this->_substitute_invoice_number($info);
+		$data['invoice_number']=$this->_substitute_invoice_number($suppl_info);
 		
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();
