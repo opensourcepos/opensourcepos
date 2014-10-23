@@ -76,7 +76,8 @@ $(document).ready(function()
 		}
 	});
 	
-	var format_item = function(row) {
+	var format_item = function(row) 
+	{
     	var result = [row[0], "|", row[1]].join("");
     	// if more than one occurence
     	if (row[2] > 1 && row[3] && row[3].toString().trim()) {
@@ -85,7 +86,8 @@ $(document).ready(function()
     	}
 		return result;
 	};
-	var autocompleter = $("#customer_id").autocomplete('<?php echo site_url("sales/customer_search"); ?>', {
+	var autocompleter = $("#customer_id").autocomplete('<?php echo site_url("sales/customer_search"); ?>', 
+	{
     	minChars:0,
     	delay:15, 
     	max:100,
@@ -95,21 +97,25 @@ $(document).ready(function()
     });
 
 	// declare submitHandler as an object.. will be reused
-	var submit_form = function(selected_customer) { 
-		$(this).ajaxSubmit({
+	var submit_form = function(selected_customer) 
+	{ 
+		$(this).ajaxSubmit(
+		{
 			success:function(response)
 			{
 				tb_remove();
 				post_form_submit(response);
 			},
-			error: function(jqXHR, textStatus, errorThrown) {
+			error: function(jqXHR, textStatus, errorThrown) 
+			{
 				selected_customer && autocompleter.val(selected_customer);
 				post_form_submit({message: errorThrown});
 			},
 			dataType:'json'
 		});
 	};
-	$('#sales_edit_form').validate({
+	$('#sales_edit_form').validate(
+	{
 		submitHandler : function(form)
 		{
 			var selected_customer = autocompleter.val();
@@ -121,20 +127,23 @@ $(document).ready(function()
 		wrapper: "li",
 		rules: 
 		{
-			date: {
+			date: 
+			{
 				required:true,
 				date:true
 			}
 		},
 		messages: 
 		{
-			date: {
+			date: 
+			{
 				required: "<?= $this->lang->line('sales_date_required'); ?>",
 				date: "<?= $this->lang->line('sales_date_type'); ?>"
 			}
 		}
 	});
-	$('#sales_delete_form').submit(function() {
+	$('#sales_delete_form').submit(function() 
+	{
 		var id = $("input[name='sale_id']").val();
 		$(this).ajaxSubmit({
 			success:function(response)

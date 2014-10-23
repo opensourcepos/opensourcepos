@@ -168,6 +168,18 @@ class Receiving extends CI_Model
 		return $this->Supplier->get_info($this->db->get()->row()->supplier_id);
 	}
 	
+	function invoice_number_exists($invoice_number,$receiving_id='')
+	{
+		$this->db->from('receivings');
+		$this->db->where('invoice_number', $invoice_number);
+		if (!empty($receiving_id))
+		{
+			$this->db->where('receiving_id !=', $receiving_id);
+		}
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
+	}
+	
 	//We create a temp table that allows us to do easy report/receiving queries
 	public function create_receivings_items_temp_table()
 	{

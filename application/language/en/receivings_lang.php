@@ -55,4 +55,5 @@ $lang['recvs_receipt']='Receivings Receipt';
 $lang['recvs_date_required']='A correct date needs to be filled in';
 $lang['recvs_date_type']='Date field is required';
 $lang['recvs_delete_confirmation'] = 'Are you sure you want to delete this receiving, this action cannot be undone';
+$lang['recvs_invoice_number_duplicate'] = 'Please enter an unique invoice number';
 ?>

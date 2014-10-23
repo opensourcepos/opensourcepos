@@ -617,9 +617,9 @@ class Items extends Secure_area implements iData_controller
 		if ($this->Item->get_item_id($item_number) != FALSE)
 		{
 			$this->form_validation->set_message('item_number_check', $this->lang->line('items_item_number_exists'));
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_adding'));
+			echo json_encode(array('success'=>false,'message'=>$this->lang->line('items_error_adding')));
 		}
-		echo json_encode(array('success'=>false,'message'=>$this->lang->line('items_error_adding'));
+		echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_adding')));
 	}
     
 }
