@@ -195,7 +195,7 @@ class Receivings extends Secure_area
 		$invoice_number=$this->_substitute_invoice_number($suppl_info);
 		if ($this->Receiving->invoice_number_exists($invoice_number))
 		{
-			$data['error']=$this->lang->line('recvs_invoice_number_constraint');
+			$data['error']=$this->lang->line('recvs_invoice_number_duplicate');
 			$this->_reload($data);
 		}
 		else
