@@ -1,14 +1,14 @@
 <?php
-$lang['items_item_number']='โค๊ด';
+$lang['items_item_number']='รหัสบาร์โค๊ด';
 $lang['items_retrive_item_info']='รับข้อมูลสินค้า';
 $lang['items_description']='รายละเอียด';
 $lang['items_amazon']='Amazon';
-$lang['items_upc_database']='UPC ฐานข้อมูล';
+$lang['items_upc_database']='ฐานข้อมูล UPC';
 $lang['items_cannot_find_item']='ไม่พบข้อมูลของสินค้า';
 $lang['items_info_provided_by']='จัดเตรียมข้อมูลโดย';
 $lang['items_basic_information']='ข้อมูลสินค้ส';
 $lang['items_number_information']='หมายเลขสินค้า';
-$lang['items_new']='สินค้าใหม่';
+$lang['items_new']='เพิ่มรายการสินค้า';
 $lang['items_update']='ปรับแต่งสินค้า';
 $lang['items_item']='สินค้า';
 $lang['items_edit_multiple_items']='แก้ใขสินค้าต่างๆ';
@@ -56,8 +56,8 @@ $lang['items_supplier'] = 'ผู้ผลิต';
 $lang['items_generate_barcodes'] = 'สร้างบาร์โค๊ด';
 $lang['items_must_select_item_for_barcode'] = 'คุต้องเลือกสินค้าอย่างน้อยหนึ่งอย่างเพื่อจะสร้างบาร์โค๊ด';
 $lang['items_excel_import_failed'] = 'นำเข้าข้อมูล Excel ล้มเหลว';
-$lang['items_allow_alt_desciption'] = 'Allow Alt Description';
-$lang['items_is_serialized'] = 'สินค้ามีซีเรียวนัมเบอร์';
+$lang['items_allow_alt_description'] = 'มีคำอธิบายเพิ่มเติม';
+$lang['items_is_serialized'] = 'สินค้ามีซีเรียลนัมเบอร์';
 $lang['items_low_inventory_items'] = 'สินค้าคงเหลือน้อย';
 $lang['items_serialized_items'] = 'รหัสสินค้า';
 $lang['items_no_description_items'] = 'สินค้าที่ไม่มีคำอธิบายหรือวิธีการใช้';
@@ -71,12 +71,13 @@ $lang['items_quantity_required']='จำนวนต้องกรอก. ก�
 $lang['items_do_nothing'] = 'ไม่ต้องทำอะไร';
 $lang['items_change_all_to_serialized'] = 'เปลี่ยนแปลงรหัสสินค้าทั้งหมด';
 $lang['items_change_all_to_unserialized'] = 'ลบรหัสสินค้าทั้งหมด';
-$lang['items_change_all_to_allow_alt_desc'] = ' Allow Alt Desc For All';
-$lang['items_change_all_to_not_allow_allow_desc'] = 'Not Allow Alt Desc For All';
+$lang['items_change_all_to_allow_alt_desc'] = 'คำอธิบายเพิ่มเติมทั้งหมด';
+$lang['items_change_all_to_not_allow_allow_desc'] = 'ไม่มีคำอธิบายเพิ่มเติมทั้งหมด';
 $lang['items_use_inventory_menu'] = 'ใช้สินค้าคงเหลือเมนู';
 $lang['items_manually_editing_of_quantity'] = 'แก้ไขจำนวน';
 $lang['items_inventory'] = 'สินค้าคงเหลือ';
 $lang['items_location'] = 'ที่ตั้ง';
-
+$lang['items_is_deleted'] = 'ถูกลบบัญชี';// Parq 131215
 $lang['items_stock_type'] = 'ชนิดของสินค้า';
+$lang['items_stock_location']='ที่เก็บสินค้า';
 ?>

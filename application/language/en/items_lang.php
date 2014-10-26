@@ -58,6 +58,7 @@ $lang['items_must_select_item_for_barcode'] = 'You must select at least 1 item t
 $lang['items_excel_import_failed'] = 'Excel import failed';
 $lang['items_allow_alt_description'] = 'Allow Alt Description';
 $lang['items_is_serialized'] = 'Item has Serial Number';
+$lang['items_low_inventory_items'] = 'สินค้าคงเหลือน้อย';
 $lang['items_serialized_items'] = 'Serialized Items';
 $lang['items_no_description_items'] = 'No Description Items';
 $lang['items_search_custom_items'] = 'Search Custom Fields';//GARRISON ADDED
