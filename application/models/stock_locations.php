@@ -79,6 +79,7 @@ class Stock_locations extends CI_Model
     	// check for insertion
         foreach ($stock_locations as $location_name)
         {
+        	$index=0;
         	if(!$this->exists($location_name)) 
             {
             	$this->db->trans_start();

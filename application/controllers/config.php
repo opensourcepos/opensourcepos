@@ -10,12 +10,8 @@ class Config extends Secure_area
 	function index()
 	{
 		$location_names = array();
-		$locations = $this->Stock_locations->get_location_names();
-		foreach($locations->result_array() as $array) 
-		{
-			array_push($location_names, $array['location_name']);
-		}
-		$data['location_names'] = implode(',', $location_names);
+		$allowed_locations = $this->Stock_locations->get_allowed_locations();
+		$data['allowed_locations'] = $allowed_locations;
 		$this->load->view("config", $data);
 	}
 		
@@ -59,6 +55,13 @@ class Config extends Secure_area
             array_push($stock_locations_trimmed, trim($location, ' '));
         }        
         $current_locations = $this->Stock_locations->concat_location_names()->location_names;
+        foreach($this->input->post() as $key => $value) 
+        {
+        	if (strstr($key, 'stock_location'))
+        	{
+        		// save or update
+        	}
+        }
         if ($this->input->post('stock_locations') != $current_locations) 
         {
         	$this->load->library('sale_lib');

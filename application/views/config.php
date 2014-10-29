@@ -258,15 +258,20 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
+<?php $i = 0; ?>
+<?php foreach($allowed_locations as $location_id => $location_name ) { ?>
 <div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('config_stock_location').':', 'stock_location',array('class'=>'required wide')); ?>
+<?php echo form_label($this->lang->line('config_stock_location').' ' .++$i. ':', 'stock_location_'.$i ,array('class'=>'required wide')); ?>
     <div class='form_field'>
     <?php echo form_input(array(
-        'name'=>'stock_location',
-        'id'=>'stock_location',
-        'value'=>$location_names)); ?>
+        'name'=>'stock_location_'.$location_id,
+        'id'=>'stock_location_'.$location_id,
+        'value'=>$location_name)); ?>
     </div>
+    <img class="add_stock_location" src="<?php echo base_url('images/plus.png'); ?>" />
+    <img class="remove_stock_location" src="<?php echo base_url('images/minus.png'); ?>" />
 </div>
+<?php } ?>
 
 <div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_recv_invoice_format').':', 'recv_invoice_format',array('class'=>'wide')); ?>
@@ -419,6 +424,45 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+	var location_count = <?php echo sizeof($allowed_locations); ?>;
+
+	var hide_show_remove = function() 
+	{
+		if ($("input[name*='stock_location']").length > 1)
+		{
+			$(".remove_stock_location").show();
+		} 
+		else
+		{
+			$(".remove_stock_location").hide();
+		}
+	};
+
+	hide_show_remove();
+
+	var add_stock_location = function() 
+	{
+		var id = $(this).parent().find('input').attr('id');
+		id = id.replace(/.*?_(\d+)$/g, "$1");
+		var block = $(this).parent().clone(true);
+		var new_block = block.insertAfter($(this).parent());
+		var new_block_id = 'stock_location_' + ++id;
+		$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count + ": ").attr('for', new_block_id);
+		$(new_block).find('input').attr('id', new_block_id).attr('name', new_block_id);
+		$('.add_stock_location', new_block).click(add_stock_location);
+		$('.remove_stock_location', new_block).click(remove_stock_location);
+		hide_show_remove();
+	};
+
+	var remove_stock_location = function() 
+	{
+		$(this).parent().remove();
+		hide_show_remove();
+	};
+	
+	$('.add_stock_location').click(add_stock_location);
+	$('.remove_stock_location').click(remove_stock_location);
+	
 	$('#config_form').validate({
 		submitHandler:function(form)
 		{
