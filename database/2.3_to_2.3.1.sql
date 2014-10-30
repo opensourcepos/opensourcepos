@@ -62,6 +62,10 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('reports_taxes', 1),
 ('reports_categories', 1),
 ('reports_payments', 1),    
+('reports_discounts', 1),    
+('reports_categories', 1),    
+('reports_payments', 1),    
+('reports_taxes', 1),    
 ('customers', 1),
 ('employees', 1),
 ('giftcards', 1),
@@ -77,12 +81,20 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 -- add config options for tax inclusive sales
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
 ('tax_included', '0'),
-('recv_invoice_format', '');
+('recv_invoice_format', ''),
+('sales_invoice_format', '');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 
    ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
    ADD UNIQUE `invoice_number` (`invoice_number`);
 
+-- add invoice_number column to sales table
+ALTER TABLE `ospos_sales` 
+   ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
+   ADD UNIQUE `invoice_number` (`invoice_number`);
 
-
+-- add invoice_number column to suspended sales table
+ALTER TABLE `ospos_sales_suspended` 
+   ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
+   ADD UNIQUE `invoice_number` (`invoice_number`);

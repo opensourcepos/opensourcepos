@@ -211,15 +211,6 @@ function get_item_data_row($item,$controller)
 	$width = $controller->get_form_width();
 
     $item_quantity='';
-    /* $locations_data = $CI->Stock_locations->get_allowed_locations()->result_array();
-    foreach($locations_data as $location)
-    {
-	    if (count($locations_data) > 1) 
-	    {
-        	$item_quantity .= $location['location_name'].': ';
-	    }
-	    $item_quantity .= $CI->Item_quantities->get_item_quantity($item->item_id, $location['location_id'])->quantity . '<br/>';
-    } */
     
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='3%'><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/></td>";

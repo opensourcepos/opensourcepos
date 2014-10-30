@@ -69,7 +69,7 @@ class Receivings extends Secure_area
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
 		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
 		$item_location = $this->receiving_lib->get_stock_source();
-		if($this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
+		if($mode=='return' && $this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
 		}

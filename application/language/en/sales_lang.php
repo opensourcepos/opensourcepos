@@ -87,6 +87,8 @@ $lang['sales_basic_information']='Sale information';
 $lang['sales_stock_location']='Stock location';
 $lang['sales_sale']='Sale';
 $lang['sales_receipt_number']='Sale #';
+$lang['sales_invoice_number']='Invoice #';
 $lang['sales_date_required']='A correct date needs to be filled in';
 $lang['sales_date_type']='Date field is required';
+$lang['sales_invoice_number_duplicate'] = 'Please enter an unique invoice number';
 ?>

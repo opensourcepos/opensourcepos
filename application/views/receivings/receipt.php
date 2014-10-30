@@ -18,7 +18,7 @@ if (isset($error_message))
 		<?php if(isset($supplier))
 		{
 		?>
-			<div id="customer"><?php echo $this->lang->line('suppliers_supplier').": ".$supplier; ?></div>
+		<div id="customer"><?php echo $this->lang->line('suppliers_supplier').": ".$supplier; ?></div>
 		<?php
 		}
 		?>

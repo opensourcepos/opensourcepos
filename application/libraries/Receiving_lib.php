@@ -117,7 +117,7 @@ class Receiving_lib
     {
     	$this->CI->session->unset_userdata('recv_stock_destination');
     }
-    
+
 	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists in database.
@@ -292,8 +292,6 @@ class Receiving_lib
 			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
-		$receiving_info=$this->CI->Receiving->get_info($receiving_id);
-		//$this->set_invoice_number($receiving_info->row()->invoice_number);
 	}
 	
 	function copy_entire_requisition($requisition_id,$item_location)
