@@ -124,6 +124,7 @@ foreach($stock_locations as $key=>$location_detail)
     	<?php echo form_input(array(
     		'name'=>$key.'_quantity',
     		'id'=>$key.'_quantity',
+    		'size'=>'8',
     		'value'=>$location_detail['quantity'])
     	);?>
     	</div>
@@ -133,11 +134,24 @@ foreach($stock_locations as $key=>$location_detail)
 ?>
 
 <div class="field_row clearfix">
+<?php echo form_label($this->lang->line('items_receiving_quantity').':', 'receiving_quantity',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'receiving_quantity',
+		'id'=>'receiving_quantity',
+		'size'=>'8',
+		'value'=>$item_info->receiving_quantity)
+	);?>
+	</div>
+</div>
+
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'required wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'reorder_level',
 		'id'=>'reorder_level',
+		'size'=>'8',
 		'value'=>$item_info->reorder_level)
 	);?>
 	</div>

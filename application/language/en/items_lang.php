@@ -79,4 +79,5 @@ $lang['items_location'] = 'Location';
 $lang['items_is_deleted'] = 'Deleted';// Parq 131215
 
 $lang['items_stock_location']='Stock location';
+$lang['items_receiving_quantity'] = 'Receiving quantity';
 ?>
