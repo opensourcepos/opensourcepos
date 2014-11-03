@@ -101,5 +101,4 @@ ALTER TABLE `ospos_sales_suspended`
    
    -- add invoice_number column to receivings table
 ALTER TABLE `ospos_items` 
-   ADD COLUMN `receivings_quantity` int(11) DEFAULT '0',
-   ADD UNIQUE `invoice_number` (`invoice_number`);
+   ADD COLUMN `receiving_quantity` int(11) DEFAULT '1';

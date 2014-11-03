@@ -305,6 +305,7 @@ class Items extends Secure_area implements iData_controller
 		'cost_price'=>$this->input->post('cost_price'),
 		'unit_price'=>$this->input->post('unit_price'),
 		'reorder_level'=>$this->input->post('reorder_level'),
+		'receiving_quantity'=>$this->input->post('receiving_quantity'),
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
 		'is_serialized'=>$this->input->post('is_serialized'),
 		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
