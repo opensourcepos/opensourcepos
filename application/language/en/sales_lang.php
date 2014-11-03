@@ -57,8 +57,8 @@ $lang['sales_successfully_updated'] = 'Sale successfully updated';
 $lang['sales_unsuccessfully_updated'] = 'Sale unsuccessfully updated';
 $lang['sales_edit_sale'] = 'Edit Sale';
 $lang['sales_employee'] = 'Employee';
-$lang['sales_successfully_deleted'] = 'Sale successfully deleted';
-$lang['sales_unsuccessfully_deleted'] = 'Sale unsuccessfully deleted';
+$lang['sales_successfully_deleted'] = 'You have successfully deleted';
+$lang['sales_cannot_be_deleted'] = 'Sale(s) could not be deleted';
 $lang['sales_delete_entire_sale'] = 'Delete entire sale';
 $lang['sales_delete_confirmation'] = 'Are you sure you want to delete this sale, this action cannot be undone';
 $lang['sales_date'] = 'Sale Date';
@@ -91,4 +91,5 @@ $lang['sales_invoice_number']='Invoice #';
 $lang['sales_date_required']='A correct date needs to be filled in';
 $lang['sales_date_type']='Date field is required';
 $lang['sales_invoice_number_duplicate'] = 'Please enter an unique invoice number';
+$lang['sales_one_or_multiple']='sale(s)';
 ?>

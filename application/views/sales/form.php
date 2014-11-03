@@ -21,6 +21,13 @@
 	</div>
 	
 	<div class="field_row clearfix">
+	<?php echo form_label($this->lang->line('sales_invoice_number').':', 'invoice_number'); ?>
+		<div class='form_field'>
+			<?php echo form_input(array('name' => 'invoice_number', 'value' => $sale_info['invoice_number'], 'id' => 'invoice_number'));?>
+		</div>
+	</div>
+	
+	<div class="field_row clearfix">
 	<?php echo form_label($this->lang->line('sales_customer').':', 'customer'); ?>
 		<div class='form_field'>
 			<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id'));?>
@@ -67,6 +74,25 @@
 
 $(document).ready(function()
 {	
+
+	$.validator.addMethod("invoice_number", function(value, element) 
+	{
+		var id = $("input[name='sale_id']").val();
+
+		return JSON.parse($.ajax(
+		{
+			  type: 'POST',
+			  url: '<?php echo site_url($controller_name . "/check_invoice_number")?>',
+			  data: {'sale_id' : id, 'invoice_number' : $(element).val() },
+			  success: function(response) 
+			  {
+				  success=response.success;
+			  },
+			  async:false,
+			  dataType: 'json'
+        }).response).success;
+    }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
+    
 	$('#date').datePicker({startDate: '01/01/1970'});
 	$("#sales_delete_form").submit(function()
 	{
@@ -131,6 +157,9 @@ $(document).ready(function()
 			{
 				required:true,
 				date:true
+			},
+			invoice_number: {
+				invoice_number: true
 			}
 		},
 		messages: 

@@ -351,12 +351,12 @@ class Sales extends Secure_area
 
 		if($this->Sale->delete_list($sale_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('sales_delete_successful').' '.
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('sales_successfully_deleted').' '.
 			count($sale_ids).' '.$this->lang->line('sales_one_or_multiple'),'ids'=>$sale_ids));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('sales_delete_unsuccessful')));
+			echo json_encode(array('success'=>false,'message'=>$this->lang->line('sales_unsuccessfully_deleted')));
 		}
 	}
 	

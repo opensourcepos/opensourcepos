@@ -149,12 +149,12 @@ class Receivings extends Secure_area
 	
 		if($this->Receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('recvs_delete_successful').' '.
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('recvs_successfully_deleted').' '.
 					count($receiving_ids).' '.$this->lang->line('recvs_one_or_multiple'),'ids'=>$receiving_ids));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('recvs_delete_unsuccessful')));
+			echo json_encode(array('success'=>false,'message'=>$this->lang->line('recvs_cannot_be_deleted')));
 		}
 	}
 
