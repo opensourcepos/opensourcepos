@@ -25,8 +25,8 @@ $lang['module_config_desc']='ปรับแต่งร้านค้า';
 $lang['module_receivings']='สินค้าเข้า';
 $lang['module_receivings_desc']='สินค้าเข้า';
 
-$lang['module_giftcards']='กิ๊บการ์ด';
-$lang['module_giftcards_desc']='เพิ่ม, อัพเดท, ลบ, และค้นหา กิ๊บการ์ด';
+$lang['module_giftcards']='บัตรกำนัล';
+$lang['module_giftcards_desc']='เพิ่ม, อัพเดท, ลบ, และค้นหา บัตรกำนัล';
 
 $lang['module_item_kits']='สินค้าหมู่';
 $lang['module_item_kits_desc']='เพิ่ม, อัพเดท, ลบ, และค้นหา สินค้าหมู่';
@@ -59,8 +59,8 @@ $lang['module_config_desc']='ปรับแต่งร้านค้า';
 $lang['module_receivings']='สินค้าเข้า';
 $lang['module_receivings_desc']='สินค้าเข้า';
 
-$lang['module_giftcards']='กิ๊บการ์ด';
-$lang['module_giftcards_desc']='เพิ่ม, อัพเดท, ลบ, และค้นหา กิ๊บการ์ด';
+$lang['module_giftcards']='บัตรกำนัล';
+$lang['module_giftcards_desc']='เพิ่ม, อัพเดท, ลบ, และค้นหา บัตรกำนัล';
 
 $lang['module_item_kits']='สินค้าหมู่';
 $lang['module_item_kits_desc']='เพิ่ม, อัพเดท, ลบ, และค้นหา สินค้าหมู่';
