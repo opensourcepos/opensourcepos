@@ -40,7 +40,7 @@ class Receiving extends CI_Model
 		return $success;
 	}
 
-	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false,$invoice_number=NULL)
+	function save ($items,$supplier_id,$employee_id,$comment,$invoice_number,$payment_type,$receiving_id=false)
 	{
 		if(count($items)==0)
 			return -1;
