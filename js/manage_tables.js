@@ -277,7 +277,11 @@ function get_table_row(id) {
 	id = id || $("input[name='sale_id']").val();
 	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
 	if ($element.index() === -1) {
-		$element = $("#sortable_table tbody a[href*='" + id + "']");
+		// parse link
+		var row_id = $("#sortable_table tbody a").each(function(index, element) {
+			var result = $(element).attr("href").match(/\/(\d+)\//);
+			$element = result && result[1] == id ? $(element) : $element;
+		});
 	}
 	return $element;
 }
