@@ -144,7 +144,7 @@ CREATE TABLE `ospos_items` (
   `unit_price` decimal(15,2) NOT NULL,
   `quantity` decimal(15,2) NOT NULL DEFAULT '0',
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0',
-  `receivings_quantity` int(11) NOT NULL DEFAULT '1',
+  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
