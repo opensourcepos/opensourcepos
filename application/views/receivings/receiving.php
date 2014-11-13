@@ -226,6 +226,15 @@ else
 		?>
 		<tr>
 		<td>
+		<?php echo $this->lang->line('recvs_invoice_enable'); ?>
+		</td>
+		<td>
+		<?php echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10,'checked'=>$this->config->item('recv_invoice_enable')));?>
+		</td>
+		</tr>
+		
+		<tr>
+		<td>
 		<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
 		</td>
 		<td>
@@ -341,6 +350,22 @@ $(document).ready(function()
 	{
 		$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
 	});
+
+	var enable_invoice_number = function() 
+	{
+		if ($("#recv_invoice_enable").is(":checked"))
+		{
+			$("#recv_invoice_number").removeAttr("disabled").parents('tr').show();
+		}
+		else
+		{
+			$("#recv_invoice_number").attr("disabled", "disabled").parents('tr').hide();
+		}
+	}
+
+	enable_invoice_number();
+
+	$("#recv_invoice_enable").change(enable_invoice_number);
 
     $("#finish_sale_button").click(function()
     {

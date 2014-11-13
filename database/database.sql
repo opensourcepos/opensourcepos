@@ -39,7 +39,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('website', ''),
 ('recv_invoice_format', ''),
 ('sales_invoice_format', ''),
-('tax_included', '0');
+('tax_included', '0'),
+('recv_invoice_enable', '1'),
+('sales_invoice_enable', '1');
+
 
 -- --------------------------------------------------------
 

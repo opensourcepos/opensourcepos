@@ -82,7 +82,9 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
 ('tax_included', '0'),
 ('recv_invoice_format', ''),
-('sales_invoice_format', '');
+('sales_invoice_format', ''),
+('sales_invoice_enable', '1'),
+('recv_invoice_enable', '1');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 

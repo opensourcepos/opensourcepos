@@ -92,4 +92,5 @@ $lang['sales_date_required']='A correct date needs to be filled in';
 $lang['sales_date_type']='Date field is required';
 $lang['sales_invoice_number_duplicate'] = 'Please enter an unique invoice number';
 $lang['sales_one_or_multiple']='sale(s)';
+$lang['sales_invoice_enable']='Create Invoice';
 ?>

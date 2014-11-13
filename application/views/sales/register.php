@@ -302,6 +302,14 @@ else
 				?>
 				<tr>
 					<td>
+						<?php echo $this->lang->line('sales_invoice_enable'); ?>
+					</td>
+					<td>
+						<?php echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10,'checked'=>$this->config->item('sales_invoice_enable')));?>
+					</td>
+				</tr>
+				<tr>
+					<td>
 						<?php echo $this->lang->line('sales_invoice_number').':   ';?>
 					</td>
 					<td>
@@ -447,6 +455,22 @@ $(document).ready(function()
 	{
 		$.post('<?php echo site_url("sales/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
 	});
+
+	var enable_invoice_number = function() 
+	{
+		if ($("#sales_invoice_enable").is(":checked"))
+		{
+			$("#sales_invoice_number").removeAttr("disabled").parents('tr').show();
+		}
+		else
+		{
+			$("#sales_invoice_number").attr("disabled", "disabled").parents('tr').hide();
+		}
+	}
+
+	enable_invoice_number();
+	
+	$("#sales_invoice_enable").change(enable_invoice_number);
 	
 	$('#email_receipt').change(function() 
 	{

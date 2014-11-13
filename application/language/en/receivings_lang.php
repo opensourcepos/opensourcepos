@@ -59,4 +59,5 @@ $lang['recvs_delete_confirmation'] = 'Are you sure you want to delete this recei
 $lang['recvs_invoice_number_duplicate'] = 'Please enter an unique invoice number';
 $lang['recvs_one_or_multiple']='receiving(s)';
 $lang['recvs_cannot_be_deleted'] = 'Receiving(s) could not be deleted';
+$lang['recvs_invoice_enable']='Create Invoice';
 ?>
