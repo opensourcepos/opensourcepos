@@ -86,7 +86,6 @@ else
 {
 	foreach(array_reverse($cart, true) as $line=>$item)
 	{
-		$cur_item_info = $this->Item->get_info($item['item_id']);
 		echo form_open("sales/edit_item/$line");
 	?>
 		<tr>
@@ -407,7 +406,7 @@ $(document).ready(function()
     	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
     });
 
-	$('#item,#customer').click(function()
+	$('#item,#customer').focus(function()
     {
     	$(this).attr('value','');
     });
