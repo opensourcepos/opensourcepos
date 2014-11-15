@@ -1,5 +1,5 @@
 <?php
-$lang['config_info']='องค์ประกอบร้านค้า';
+$lang['config_info']='ข้อมูลร้านค้า';
 $lang['config_company']='ชื่อร้านค้า';
 $lang['config_address']='ที่อยู่';
 $lang['config_phone']='เบอร์โทรศัพท์';
@@ -14,9 +14,9 @@ $lang['config_phone_required']='เบอร์โทรต้องกรอก
 $lang['config_default_tax_rate_required']='อัตราภาษีเริ่มต้นต้องกรอก';
 $lang['config_default_tax_rate_number']='อัตราภาษีเริ่มต้นต้องเป็นตัวเลข';
 $lang['config_company_website_url']='เว็บไซต์ร้านค้าไม่ถูกต้อง';
-$lang['config_saved_successfully']='องค์ประกอบร้านค้าบันทึกเรียบร้อย';
-$lang['config_saved_unsuccessfully']='องค์ประกอบร้านค้าบันทึกล้มเหลว';
-$lang['config_return_policy_required']='กฎการคืนของต้องกรอก';
+$lang['config_saved_successfully']='บันทึกข้อมูลร้านค้าเรียบร้อยแล้ว';
+$lang['config_saved_unsuccessfully']='บันทึกข้อมูลร้านค้าไม่สำเร็จ';
+$lang['config_return_policy_required']='ต้องกรอกเงื่อนไขการคืนสินค้า';
 $lang['config_print_after_sale']='พิมพ์บิลหลังการขาย';
 $lang['config_language'] = 'ภาษา';
 $lang['config_timezone'] = 'Timezone';
