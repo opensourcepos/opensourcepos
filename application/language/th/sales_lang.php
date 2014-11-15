@@ -1,7 +1,7 @@
 <?php
 $lang['sales_giftcard_number']='เลขที่บัตรกำนัล';
 $lang['sales_giftcard']='บัตรกำนัล';
-$lang['sales_register']='ลงทะเบียนขาย';
+$lang['sales_register']='ขายสินค้า';
 $lang['sales_mode']='รูปแบบการลงทะเบียน';
 $lang['sales_new_item'] = 'เพิ่มรายการสินค้า';
 $lang['sales_item_name'] = 'ชื่อสินค้า';
