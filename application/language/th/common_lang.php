@@ -1,6 +1,6 @@
 <?php
 $lang['common_common']='ธรรมดา';
-$lang['common_submit']='ยอมรับ';
+$lang['common_submit']='ส่งข้อมูล';
 $lang['common_or']='หรือ';
 $lang['common_powered_by']='สนับสนุนโดย';
 $lang['common_welcome']='ยินดีต้อนรับ';
