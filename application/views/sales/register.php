@@ -86,7 +86,6 @@ else
 {
 	foreach(array_reverse($cart, true) as $line=>$item)
 	{
-		$cur_item_info = $this->Item->get_info($item['item_id']);
 		echo form_open("sales/edit_item/$line");
 	?>
 		<tr>
@@ -402,14 +401,17 @@ $(document).ready(function()
 
 	$('#item').focus();
 
-	$('#item').blur(function()
+    $('#item').blur(function()
     {
-    	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
+        $(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
     });
 
-	$('#item,#customer').click(function()
+    $('#item, #customer').focus(function()
     {
-    	$(this).attr('value','');
+        if ($(this).val() == "<?php echo $this->lang->line('sales_start_typing_item_name'); ?>")
+        {
+            $(this).val('');
+        }
     });
 
     $("#customer").autocomplete('<?php echo site_url("sales/customer_search"); ?>',
@@ -429,7 +431,7 @@ $(document).ready(function()
 
     $('#customer').blur(function()
     {
-    	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
+    	$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
     });
 	
 	$('#comment').keyup(function() 
@@ -490,7 +492,7 @@ function post_person_form_submit(response)
 {
 	if(response.success)
 	{
-		$("#customer").attr("value",response.person_id);
+		$("#customer").val(response.person_id);
 		$("#select_customer_form").submit();
 	}
 }
