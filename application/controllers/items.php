@@ -513,27 +513,27 @@ class Items extends Secure_area implements iData_controller
 				$i=1;
 				while (($data = fgetcsv($handle)) !== FALSE)
 				{
+                                    
 					$item_data = array(
 					'name'			=>	$data[1],
-					'description'	=>	$data[13],
+					'description'	=>	$data[11],
 					'category'		=>	$data[2],
 					'cost_price'	=>	$data[4],
 					'unit_price'	=>	$data[5],
-					'quantity'		=>	$data[10],
-					'reorder_level'	=>	$data[11],
+					'reorder_level'	=>	$data[10],
 					'supplier_id'	=>  $this->Supplier->exists($data[3]) ? $data[3] : null,
-					'allow_alt_description'	=>	$data[14] != '' ? '1' : '0',
-					'is_serialized'	=>	$data[15] != '' ? '1' : '0',
-					'custom1'		=>	$data[16],	/** GARRISON ADDED 5/6/2013 **/
-					'custom2'		=>	$data[17],	/** GARRISON ADDED 5/6/2013 **/
-					'custom3'		=>	$data[18],	/** GARRISON ADDED 5/6/2013 **/
-					'custom4'		=>	$data[19],	/** GARRISON ADDED 5/6/2013 **/
-					'custom5'		=>	$data[20],	/** GARRISON ADDED 5/6/2013 **/
-					'custom6'		=>	$data[21],	/** GARRISON ADDED 5/6/2013 **/
-					'custom7'		=>	$data[22],	/** GARRISON ADDED 5/6/2013 **/
-					'custom8'		=>	$data[23],	/** GARRISON ADDED 5/6/2013 **/
-					'custom9'		=>	$data[24],	/** GARRISON ADDED 5/6/2013 **/
-					'custom10'		=>	$data[25]	/** GARRISON ADDED 5/6/2013 **/
+					'allow_alt_description'	=>	$data[12] != '' ? '1' : '0',
+					'is_serialized'	=>	$data[13] != '' ? '1' : '0',
+					'custom1'		=>	$data[14],	/** GARRISON ADDED 5/6/2013 **/
+					'custom2'		=>	$data[15],	/** GARRISON ADDED 5/6/2013 **/
+					'custom3'		=>	$data[16],	/** GARRISON ADDED 5/6/2013 **/
+					'custom4'		=>	$data[17],	/** GARRISON ADDED 5/6/2013 **/
+					'custom5'		=>	$data[18],	/** GARRISON ADDED 5/6/2013 **/
+					'custom6'		=>	$data[19],	/** GARRISON ADDED 5/6/2013 **/
+					'custom7'		=>	$data[20],	/** GARRISON ADDED 5/6/2013 **/
+					'custom8'		=>	$data[21],	/** GARRISON ADDED 5/6/2013 **/
+					'custom9'		=>	$data[22],	/** GARRISON ADDED 5/6/2013 **/
+					'custom10'		=>	$data[23]	/** GARRISON ADDED 5/6/2013 **/
 					);
 					$item_number = $data[0];
 					
@@ -562,6 +562,23 @@ class Items extends Secure_area implements iData_controller
 						{
 							$this->Item_taxes->save($items_taxes_data, $item_data['item_id']);
 						}
+                                                
+                                                // quantities                                                
+                                                $cols = count($data);
+                                                for ($col = 24; $col < $cols; $col = $col + 2)
+                                                {
+                                                    $item_quantity_data = array(
+                                                        'item_id' => $item_data['item_id'],
+                                                        'location_id' => $data[$col],
+                                                        'quantity' => $data[$col + 1],
+                                                    );
+                                                    $this->Item_quantities->save($item_quantity_data, $data[$col], $data[$col + 1]);
+                                                }
+
+
+
+                                                // Inventory Info
+                                                
 						
 							$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 							$emp_info=$this->Employee->get_info($employee_id);
