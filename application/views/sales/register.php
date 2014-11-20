@@ -106,7 +106,7 @@ else
 		else
 		{
 		?>
-			<td><?php echo $item['price']; ?></td>
+			<td><?php echo to_currency($item['price']); ?></td>
 			<?php echo form_hidden('price',$item['price']); ?>
 		<?php
 		}
