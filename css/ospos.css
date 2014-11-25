@@ -127,12 +127,17 @@ a.none
 
 #config_info
 {
-	width:70%;
+	width:80%;
 	margin:0 auto;
 	padding:10px;
 	margin-bottom:30px;
 	margin-top:10px;
 	text-align:left;
+}
+
+#config_info .wide
+{
+	width: 30%;
 }
 
 #footer
