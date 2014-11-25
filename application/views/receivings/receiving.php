@@ -64,7 +64,8 @@ if(isset($error))
         <th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
         <th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
-        <th style="width:11%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
+        <th style="width:7%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
+        <th style="width:4%;"></th>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
         <th style="width:15%;"><?php echo $this->lang->line('recvs_total'); ?></th>
         <th style="width:11%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
@@ -114,8 +115,21 @@ else
 	    <td>
 <?php
             echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
+            if ($item['receiving_quantity'] > 1) 
+			{
+?>
+           	<td>x <?php echo $item['receiving_quantity']; ?></td>	
+<?php 
+			}
+			else
+			{
+?>
+			<td></td>
+<?php 
+			}
 ?>
 	    </td>
+	    
 	    
 <?php       if ($items_module_allowed && $mode!='requisition')
 		    {
@@ -131,7 +145,7 @@ else
 <?php
 		    }
 ?>
-	    <td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
+	    <td><?php echo to_currency($item['price']*$item['quantity']*$item['receiving_quantity']-$item['price']*$item['quantity']*$item['receiving_quantity']*$item['discount']/100); ?></td>
 	    <td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
 	    </tr>
 	    </form>
