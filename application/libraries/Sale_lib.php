@@ -70,21 +70,21 @@ class Sale_lib
 	function add_payment( $payment_id, $payment_amount )
 	{
 		$payments = $this->get_payments();
-		$payment = array( $payment_id=>
-		array(
-			'payment_type' => $payment_id,
-			'payment_amount' => $payment_amount
-			)
-		);
-
-		//payment_method already exists, add to payment_amount
 		if( isset( $payments[$payment_id] ) )
 		{
+			//payment_method already exists, add to payment_amount
 			$payments[$payment_id]['payment_amount'] += $payment_amount;
 		}
 		else
 		{
 			//add to existing array
+			$payment = array( $payment_id=>
+			array(
+				'payment_type' => $payment_id,
+				'payment_amount' => $payment_amount
+				)
+			);
+			
 			$payments += $payment;
 		}
 
@@ -101,7 +101,7 @@ class Sale_lib
 		{
 			$payments[$payment_id]['payment_type'] = $payment_id;
 			$payments[$payment_id]['payment_amount'] = $payment_amount;
-			$this->set_payments($payment_id);
+			$this->set_payments($payments);
 		}
 
 		return false;
