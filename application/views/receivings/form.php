@@ -88,7 +88,7 @@ $(document).ready(function()
 				  success=response.success;
 			  },
 			  async:false,
-			    dataType: 'json'
+			  dataType: 'json'
         }).response).success;
     }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
 	

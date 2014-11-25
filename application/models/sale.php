@@ -8,6 +8,20 @@ class Sale extends CI_Model
 		$this->db->where('sale_id',$sale_id);
 		return $this->db->get();
 	}
+	
+	function get_invoice_count()
+	{
+		$this->db->from('sales');
+		$this->db->where('invoice_number is not null');
+		return $this->db->count_all_results();
+	}
+	
+	function get_sale_by_invoice_number($invoice_number)
+	{
+		$this->db->from('sales');
+		$this->db->where('invoice_number', $invoice_number);
+		return $this->db->get();
+	}
 
 	function exists($sale_id)
 	{
@@ -26,7 +40,7 @@ class Sale extends CI_Model
 		return $success;
 	}
 	
-	function save ($items,$customer_id,$employee_id,$comment,$payments,$sale_id=false)
+	function save ($items,$customer_id,$employee_id,$comment,$payments,$sale_id=false,$invoice_number=NULL)
 	{
 		if(count($items)==0)
 			return -1;
@@ -44,7 +58,8 @@ class Sale extends CI_Model
 			'customer_id'=> $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'=>$employee_id,
 			'payment_type'=>$payment_types,
-			'comment'=>$comment
+			'comment'=>$comment,
+			'invoice_number'=>empty($invoice_number) ? NULL : $invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -205,6 +220,18 @@ class Sale extends CI_Model
 		$this->db->from('sales');
 		$this->db->where('sale_id',$sale_id);
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
+	}
+	
+	function invoice_number_exists($invoice_number,$sale_id='')
+	{
+		$this->db->from('sales');
+		$this->db->where('invoice_number', $invoice_number);
+		if (!empty($sale_id))
+		{
+			$this->db->where('sale_id !=', $sale_id);
+		}
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
 	}
 
 	//We create a temp table that allows us to do easy report/sales queries

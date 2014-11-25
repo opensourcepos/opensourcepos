@@ -549,9 +549,11 @@ class Item extends CI_Model
 	/*
 	Preform a search on items
 	*/
-	function search($search)
+	function search($search,$stock_location_id)
 	{
 		$this->db->from('items');
+		$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+		$this->db->where('location_id',$stock_location_id);
 		
 		$this->db->where("(
 				name LIKE '%".$this->db->escape_like_str($search)."%' or 

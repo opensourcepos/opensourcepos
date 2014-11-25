@@ -40,7 +40,7 @@ class Receiving extends CI_Model
 		return $success;
 	}
 
-	function save ($items,$supplier_id,$employee_id,$comment,$payment_type,$receiving_id=false,$invoice_number=null)
+	function save ($items,$supplier_id,$employee_id,$comment,$invoice_number,$payment_type,$receiving_id=false)
 	{
 		if(count($items)==0)
 			return -1;
@@ -50,7 +50,7 @@ class Receiving extends CI_Model
 		'employee_id'=>$employee_id,
 		'payment_type'=>$payment_type,
 		'comment'=>$comment,
-		'invoice_number'=>empty($invoice_number) ? null : $invoice_number
+		'invoice_number'=>empty($invoice_number) ? NULL : $invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing

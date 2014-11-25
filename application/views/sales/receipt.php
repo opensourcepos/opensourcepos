@@ -18,11 +18,18 @@ if (isset($error_message))
 		<?php if(isset($customer))
 		{
 		?>
-			<div id="customer"><?php echo $this->lang->line('customers_customer').": ".$customer; ?></div>
+		<div id="customer"><?php echo $this->lang->line('customers_customer').": ".$customer; ?></div>
 		<?php
 		}
 		?>
 		<div id="sale_id"><?php echo $this->lang->line('sales_id').": ".$sale_id; ?></div>
+		<?php if (!empty($invoice_number))
+		{
+		?>
+		<div id="invoice_number"><?php echo $this->lang->line('recvs_invoice_number').": ".$invoice_number; ?></div>	
+		<?php 
+		}
+		?>
 		<div id="employee"><?php echo $this->lang->line('employees_employee').": ".$employee; ?></div>
 	</div>
 

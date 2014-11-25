@@ -268,6 +268,38 @@ echo form_open('config/save/',array('id'=>'config_form'));
     </div>
 </div>
 
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_sales_invoice_enable').':', 'sales_invoice_enable',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'sales_invoice_enable',
+		'id'=>'sales_invoice_enable',
+		'value'=>'sales_invoice_enable',
+		'checked'=>$this->config->item('sales_invoice_enable')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_sales_invoice_format').':', 'sales_invoice_format',array('class'=>'wide')); ?>
+    <div class='form_field'>
+    <?php echo form_input(array(
+        'name'=>'sales_invoice_format',
+        'id'=>'sales_invoice_format',
+        'value'=>$this->config->item('sales_invoice_format'))); ?>
+    </div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_recv_invoice_enable').':', 'recv_invoice_enable',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'recv_invoice_enable',
+		'id'=>'recv_invoice_enable',
+		'value'=>'recv_invoice_enable',
+		'checked'=>$this->config->item('recv_invoice_enable')));?>
+	</div>
+</div>
+
 <div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_recv_invoice_format').':', 'recv_invoice_format',array('class'=>'wide')); ?>
     <div class='form_field'>

@@ -69,7 +69,7 @@ class Receivings extends Secure_area
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
 		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
 		$item_location = $this->receiving_lib->get_stock_source();
-		if($this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt) && $mode=='return')
+		if($mode=='return' && $this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
 		}
@@ -149,12 +149,12 @@ class Receivings extends Secure_area
 	
 		if($this->Receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('recvs_delete_successful').' '.
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('recvs_successfully_deleted').' '.
 					count($receiving_ids).' '.$this->lang->line('recvs_one_or_multiple'),'ids'=>$receiving_ids));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('recvs_delete_unsuccessful')));
+			echo json_encode(array('success'=>false,'message'=>$this->lang->line('recvs_cannot_be_deleted')));
 		}
 	}
 
@@ -203,7 +203,7 @@ class Receivings extends Secure_area
 			$data['invoice_number']=$invoice_number;
 			$data['payment_type']=$this->input->post('payment_type');
 			//SAVE receiving to database
-			$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$payment_type,$data['stock_location'],$invoice_number);
+			$data['receiving_id']='RECV '.$this->Receiving->save($data['cart'], $supplier_id,$employee_id,$comment,$invoice_number,$payment_type,$data['stock_location']);
 			
 			if ($data['receiving_id'] == 'RECV -1')
 			{

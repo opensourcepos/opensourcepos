@@ -82,7 +82,9 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
 ('tax_included', '0'),
 ('recv_invoice_format', ''),
-('sales_invoice_format', '');
+('sales_invoice_format', ''),
+('sales_invoice_enable', '1'),
+('recv_invoice_enable', '1');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 
@@ -99,6 +101,6 @@ ALTER TABLE `ospos_sales_suspended`
    ADD COLUMN `invoice_number` varchar(32) DEFAULT NULL,
    ADD UNIQUE `invoice_number` (`invoice_number`);
    
-   -- add invoice_number column to receivings table
+-- add invoice_number column to receivings table
 ALTER TABLE `ospos_items` 
    ADD COLUMN `receiving_quantity` int(11) DEFAULT '1';

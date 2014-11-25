@@ -38,7 +38,11 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('timezone', 'America/New_York'),
 ('website', ''),
 ('recv_invoice_format', ''),
-('tax_included', '0');
+('sales_invoice_format', ''),
+('tax_included', '0'),
+('recv_invoice_enable', '1'),
+('sales_invoice_enable', '1');
+
 
 -- --------------------------------------------------------
 
@@ -445,11 +449,13 @@ CREATE TABLE `ospos_sales` (
   `customer_id` int(10) DEFAULT NULL,
   `employee_id` int(10) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
+  `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
   `payment_type` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
-  KEY `employee_id` (`employee_id`)
+  KEY `employee_id` (`employee_id`),
+  UNIQUE KEY `invoice_number` (`invoice_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
@@ -537,11 +543,13 @@ CREATE TABLE `ospos_sales_suspended` (
   `customer_id` int(10) DEFAULT NULL,
   `employee_id` int(10) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
+  `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
   `payment_type` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
-  KEY `employee_id` (`employee_id`)
+  KEY `employee_id` (`employee_id`),
+  UNIQUE KEY `invoice_number` (`invoice_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --

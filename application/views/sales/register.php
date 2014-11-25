@@ -35,26 +35,17 @@ if (isset($success))
 <label id="item_label" for="item">
 
 <?php
-if($mode=='sale_retail' or $mode=='sale_wholesale')
-{
-	echo $this->lang->line('sales_find_or_scan_item');
-}
-else
-{
-	echo $this->lang->line('sales_find_or_scan_item_or_receipt');
-}
+echo $this->lang->line('sales_find_or_scan_item_or_receipt');
 ?>
 </label>
 
 <?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));?>
-<!-- no need the new item button in sale page
 <div id="new_item_button_register" >
 		<?php echo anchor("items/view/-1/width:360",
 		"<div class='small_button'><span>".$this->lang->line('sales_new_item')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
 		?>
 	</div>
--->
 	</form>
 	<table id="register">
 		<thead>
@@ -211,6 +202,7 @@ else
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_customer')));
 		?>
 		</div>
+		
 	<div class="clearfix">&nbsp;</div>
 		<?php
 	}
@@ -304,13 +296,35 @@ else
 
 			<?php echo form_open("sales/add_payment",array('id'=>'add_payment_form')); ?>
 			<table width="100%">
+				<?php if ($mode == "sale") 
+				{
+				?>
 				<tr>
 					<td>
-				<?php echo $this->lang->line('sales_payment').':   ';?>
-			</td>
+						<?php echo $this->lang->line('sales_invoice_enable'); ?>
+					</td>
 					<td>
-				<?php echo form_dropdown( 'payment_type', $payment_options, array(), 'id="payment_types"' ); ?>
-			</td>
+						<?php echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10,'checked'=>$this->config->item('sales_invoice_enable')));?>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<?php echo $this->lang->line('sales_invoice_number').':   ';?>
+					</td>
+					<td>
+						<?php echo form_input(array('name'=>'sales_invoice_number','id'=>'sales_invoice_number','value'=>$invoice_number,'size'=>10));?>
+					</td>
+				</tr>
+				<?php 
+				}
+				?>
+				<tr>
+					<td>
+					<?php echo $this->lang->line('sales_payment').':   ';?>
+					</td>
+					<td>
+					<?php echo form_dropdown( 'payment_type', $payment_options, array(), 'id="payment_types"' ); ?>
+					</td>
 				</tr>
 				<tr>
 					<td><span id="amount_tendered_label"><?php echo $this->lang->line( 'sales_amount_tendered' ).': '; ?></span>
@@ -438,6 +452,27 @@ $(document).ready(function()
 	{
 		$.post('<?php echo site_url("sales/set_comment");?>', {comment: $('#comment').val()});
 	});
+
+	$('#sales_invoice_number').keyup(function() 
+	{
+		$.post('<?php echo site_url("sales/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
+	});
+
+	var enable_invoice_number = function() 
+	{
+		if ($("#sales_invoice_enable").is(":checked"))
+		{
+			$("#sales_invoice_number").removeAttr("disabled").parents('tr').show();
+		}
+		else
+		{
+			$("#sales_invoice_number").attr("disabled", "disabled").parents('tr').hide();
+		}
+	}
+
+	enable_invoice_number();
+	
+	$("#sales_invoice_enable").change(enable_invoice_number);
 	
 	$('#email_receipt').change(function() 
 	{
@@ -454,7 +489,7 @@ $(document).ready(function()
     });
 
 	$("#suspend_sale_button").click(function()
-	{
+	{ 	
 		if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
     	{
 			$('#finish_sale_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');

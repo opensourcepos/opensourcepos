@@ -60,7 +60,8 @@ class Items extends Secure_area implements iData_controller
 	function search()
 	{
 		$search=$this->input->post('search');
-		$data_rows=get_items_manage_table_data_rows($this->Item->search($search),$this);
+		$stock_location=$this->item_lib->get_item_location();
+		$data_rows=get_items_manage_table_data_rows($this->Item->search($search,$stock_location),$this);
 		echo $data_rows;
 	}
 

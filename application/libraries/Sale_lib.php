@@ -52,6 +52,21 @@ class Sale_lib
 		$this->CI->session->unset_userdata('comment');
 	}
 	
+	function get_invoice_number()
+	{
+		return $this->CI->session->userdata('sales_invoice_number');
+	}
+	
+	function set_invoice_number($invoice_number)
+	{
+		$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
+	}
+	
+	function clear_invoice_number()
+	{
+		$this->CI->session->unset_userdata('sales_invoice_number');
+	}
+	
 	function get_email_receipt() 
 	{
 		return $this->CI->session->userdata('email_receipt');
@@ -342,6 +357,10 @@ class Sale_lib
 		{
 			return $this->CI->Sale->exists($pieces[1]);
 		}
+		else 
+		{
+			return $this->CI->Sale->get_sale_by_invoice_number($receipt_sale_id)->num_rows() > 0;
+		}
 
 		return false;
 	}
@@ -394,14 +413,13 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber,$row->invoice_number);
 		}
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
 		{
 			$this->add_payment($row->payment_type,$row->payment_amount);
 		}
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
-
 	}
 	
 	function copy_entire_suspended_sale($sale_id)
@@ -417,8 +435,10 @@ class Sale_lib
 		{
 			$this->add_payment($row->payment_type,$row->payment_amount);
 		}
-		$this->set_customer($this->CI->Sale_suspended->get_customer($sale_id)->person_id);
-		$this->set_comment($this->CI->Sale_suspended->get_comment($sale_id));
+		$suspended_sale_info=$this->CI->Sale_suspended->get_info($sale_id)->row();
+		$this->set_customer($suspended_sale_info->person_id);
+		$this->set_comment($suspended_sale_info->comment);
+		$this->set_invoice_number($suspended_sale_info->invoice_number);
 	}
 
 	function delete_item($line)
@@ -449,6 +469,7 @@ class Sale_lib
 		$this->empty_cart();
 		$this->clear_comment();
 		$this->clear_email_receipt();
+		$this->clear_invoice_number();
 		$this->empty_payments();
 		$this->remove_customer();
 	}
