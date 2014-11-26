@@ -179,7 +179,8 @@ class Receiving_lib
 			'quantity'=>$quantity,
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
-			'price'=>$price!=null ? $price: $item_info->cost_price
+			'price'=>$price!=null ? $price: $item_info->cost_price,
+			'receiving_quantity'=>$item_info->receiving_quantity
 			)
 		);
 

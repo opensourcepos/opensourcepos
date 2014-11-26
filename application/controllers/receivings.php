@@ -302,7 +302,7 @@ class Receivings extends Secure_area
 		$show_stock_locations = count($data['stock_locations']) > 1;
         if ($show_stock_locations) 
         {
-        	$data['modes']['requisition'] = $this->lang->line('recvs_requisition');
+        	$data['modes']['requisition']=$this->lang->line('recvs_requisition');
 	        $data['stock_source']=$this->receiving_lib->get_stock_source();
         	$data['stock_destination']=$this->receiving_lib->get_stock_destination();
         }    

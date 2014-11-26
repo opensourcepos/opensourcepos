@@ -37,8 +37,8 @@ $lang['config_stock_location'] = 'Stock location';
 $lang['config_stock_location_required'] = 'Stock location number is a required field';
 $lang['config_tax_included'] = 'Tax Included';
 $lang['config_recv_invoice_enable'] = 'Enable Orders Invoice#';
-$lang['config_recv_invoice_format'] = 'Receivings Invoice';
+$lang['config_recv_invoice_format'] = 'Receivings Invoice Format';
 $lang['config_sales_invoice_enable'] = 'Enable Sales Invoice#';
-$lang['config_sales_invoice_format'] = 'Sales Invoice';
+$lang['config_sales_invoice_format'] = 'Sales Invoice Format';
 
 ?>
