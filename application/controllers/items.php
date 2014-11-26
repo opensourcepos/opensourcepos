@@ -194,7 +194,12 @@ class Items extends Secure_area implements iData_controller
 	function get_row()
 	{
 		$item_id = $this->input->post('row_id');
-		$data_row=get_item_data_row($this->Item->get_info($item_id),$this);
+		$item_info = $this->Item->get_info($item_id);
+		$stock_location = $this->item_lib->get_item_location();
+		$item_quantity = $this->Item_quantities->get_item_quantity($item_id,$stock_location);
+		$item_info->quantity = $item_quantity->quantity; 
+		$data_row=get_item_data_row($item_info,$this);
+		
 		echo $data_row;
 	}
 
