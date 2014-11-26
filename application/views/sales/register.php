@@ -422,7 +422,8 @@ $(document).ready(function()
 
     $('#item, #customer').focus(function()
     {
-        if ($(this).val() == "<?php echo $this->lang->line('sales_start_typing_item_name'); ?>")
+        if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . 
+        	$this->lang->line('sales_start_typing_customer_name'); ?>"))
         {
             $(this).val('');
         }
