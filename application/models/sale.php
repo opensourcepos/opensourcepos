@@ -40,7 +40,7 @@ class Sale extends CI_Model
 		return $success;
 	}
 	
-	function save ($items,$customer_id,$employee_id,$comment,$payments,$sale_id=false,$invoice_number=NULL)
+	function save ($items,$customer_id,$employee_id,$comment,$invoice_number,$payments,$sale_id=false)
 	{
 		if(count($items)==0)
 			return -1;

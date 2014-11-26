@@ -235,7 +235,7 @@ class Sales extends Secure_area
 		{
 			$data['invoice_number']=$invoice_number;
 			//SAVE sale to database
-			$data['sale_id']='POS '.$this->Sale->save($data['cart'], $customer_id,$employee_id,$comment,$data['payments'],$invoice_number);
+			$data['sale_id']='POS '.$this->Sale->save($data['cart'], $customer_id,$employee_id,$comment,$invoice_number,$data['payments']);
 			if ($data['sale_id'] == 'POS -1')
 			{
 				$data['error_message'] = $this->lang->line('sales_transaction_failed');
