@@ -364,10 +364,10 @@ class Sales extends Secure_area
 	{
 		$sale_data = array(
 			'sale_time' => date('Y-m-d', strtotime($this->input->post('date'))),
-			'customer_id' => $this->input->post('customer_id') ? $this->input->post('customer_id') : null,
+			'customer_id' => $this->input->post('customer_id') ? $this->input->post('customer_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number')
+			'invoice_number' => $this->input->post('invoice_number') ? $this->input->post('invoice_number') : NULL
 		);
 		
 		if ($this->Sale->update($sale_data, $sale_id))
