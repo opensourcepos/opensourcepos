@@ -306,7 +306,7 @@ class Sales extends Secure_area
 		$customer_id=$this->sale_lib->get_customer();
 		$emp_info=$this->Employee->get_info($sale_info['employee_id']);
 		$data['payment_type']=$sale_info['payment_type'];
-		$data['invoice_number']=$this->sale_lib->get_invoice_number();
+		$data['invoice_number']=$sale_info['invoice_number'];
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 
