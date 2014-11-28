@@ -58,12 +58,8 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('reports_employees', 1),
 ('reports_suppliers', 1),
 ('reports_sales', 1),
-('reports_discounts', 1),
-('reports_taxes', 1),
 ('reports_categories', 1),
-('reports_payments', 1),    
 ('reports_discounts', 1),    
-('reports_categories', 1),    
 ('reports_payments', 1),    
 ('reports_taxes', 1),    
 ('customers', 1),
@@ -81,10 +77,10 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 -- add config options for tax inclusive sales
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
 ('tax_included', '0'),
-('recv_invoice_format', ''),
-('sales_invoice_format', ''),
-('sales_invoice_enable', '1'),
-('recv_invoice_enable', '1');
+('recv_invoice_format', '$CO'),
+('sales_invoice_format', '$CO'),
+('sales_invoice_enable', '0'),
+('recv_invoice_enable', '0');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 

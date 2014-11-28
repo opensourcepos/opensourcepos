@@ -118,7 +118,7 @@ class Receiving_lib
     	$this->CI->session->unset_userdata('recv_stock_destination');
     }
 
-	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
+	function add_item($item_id,$quantity=1,$item_location=null,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists in database.
 		if(!$this->CI->Item->exists($item_id))

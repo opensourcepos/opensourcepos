@@ -37,11 +37,11 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('return_policy', 'Test'),
 ('timezone', 'America/New_York'),
 ('website', ''),
-('recv_invoice_format', ''),
-('sales_invoice_format', ''),
+('recv_invoice_format', '$CO'),
+('sales_invoice_format', '$CO'),
 ('tax_included', '0'),
-('recv_invoice_enable', '1'),
-('sales_invoice_enable', '1');
+('recv_invoice_enable', '0'),
+('sales_invoice_enable', '0');
 
 
 -- --------------------------------------------------------
@@ -147,7 +147,6 @@ CREATE TABLE `ospos_items` (
   `description` varchar(255) NOT NULL,
   `cost_price` decimal(15,2) NOT NULL,
   `unit_price` decimal(15,2) NOT NULL,
-  `quantity` decimal(15,2) NOT NULL DEFAULT '0',
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0',
   `receiving_quantity` int(11) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
