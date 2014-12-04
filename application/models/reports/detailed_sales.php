@@ -42,7 +42,6 @@ class Detailed_sales extends Report
 		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
-            $this->db->where('sale_type', 'sale_stock');
         }
         elseif ($inputs['sale_type'] == 'returns')
         {
