@@ -67,6 +67,23 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_invoice_number');
 	}
 	
+	function is_invoice_number_enabled() 
+	{
+		return $this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
+			$this->CI->session->userdata('sales_invoice_number_enabled') == '1';
+	}
+	
+	function set_invoice_number_enabled($invoice_number_enabled)
+	{
+		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
+	}
+	
+	function clear_invoice_number_enabled()
+	{
+		$enable = $this->CI->config->config['sales_invoice_enable'];
+		$this->set_invoice_number_enabled($enable);		
+	}
+	
 	function get_email_receipt() 
 	{
 		return $this->CI->session->userdata('email_receipt');
@@ -470,6 +487,7 @@ class Sale_lib
 		$this->clear_comment();
 		$this->clear_email_receipt();
 		$this->clear_invoice_number();
+		$this->clear_invoice_number_enabled();
 		$this->empty_payments();
 		$this->remove_customer();
 	}

@@ -59,6 +59,11 @@ class Sales extends Secure_area
 		$this->sale_lib->set_invoice_number($this->input->post('sales_invoice_number'));
 	}
 	
+	function set_invoice_number_enabled()
+	{
+		$this->sale_lib->set_invoice_number_enabled($this->input->post('sales_invoice_number_enabled'));
+	}
+	
 	function set_email_receipt()
 	{
  	  $this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
@@ -210,11 +215,11 @@ class Sales extends Secure_area
 		$data['total']=$this->sale_lib->get_total();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
-		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
-		$data['show_stock_locations'] = count($stock_locations) > 1;
+		$stock_locations=$this->Stock_locations->get_undeleted_all()->result_array();
+		$data['show_stock_locations']=count($stock_locations) > 1;
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
-		$comment = $this->sale_lib->get_comment();
+		$comment=$this->sale_lib->get_comment();
 		$emp_info=$this->Employee->get_info($employee_id);
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
@@ -226,15 +231,15 @@ class Sales extends Secure_area
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
 		}
 		$invoice_number=$this->_substitute_invoice_number($cust_info);
-		if ($this->Sale->invoice_number_exists($invoice_number))
+		if ($this->sale_lib->is_invoice_number_enabled() && $this->Sale->invoice_number_exists($invoice_number))
 		{
 			$data['error']=$this->lang->line('sales_invoice_number_duplicate');
 			$this->_reload($data);
 		}
 		else 
 		{
+			$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : NULL;
 			$data['invoice_number']=$invoice_number;
-			//SAVE sale to database
 			$data['sale_id']='POS '.$this->Sale->save($data['cart'], $customer_id,$employee_id,$comment,$invoice_number,$data['payments']);
 			if ($data['sale_id'] == 'POS -1')
 			{
@@ -443,7 +448,8 @@ class Sales extends Secure_area
 			$data['customer_email']=$cust_info->email;
 		}
 		$data['invoice_number']=$this->_substitute_invoice_number($cust_info);
-		$data['payments_cover_total'] = $this->_payments_cover_total();
+		$data['invoice_number_enabled']=$this->sale_lib->is_invoice_number_enabled();
+		$data['payments_cover_total']=$this->_payments_cover_total();
 		$this->load->view("sales/register",$data);
 		$this->_remove_duplicate_cookies();
 	}

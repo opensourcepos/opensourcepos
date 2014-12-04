@@ -13,30 +13,14 @@ if(isset($error))
 
 <div id="register_wrapper">
 	<?php echo form_open("receivings/change_mode",array('id'=>'mode_form')); ?>
-    <span><?php echo $this->lang->line('recvs_mode') ?></span>
+		<span><?php echo $this->lang->line('recvs_mode') ?></span>
 	<?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
-    
-	<?php 
-	if ($show_stock_locations) 
-	{
-	?>
-    <span><?php echo $this->lang->line('recvs_stock_source') ?></span>
-    <?php echo form_dropdown('stock_source',$stock_locations,$stock_source,'onchange="$(\'#mode_form\').submit();"'); ?>
-    <?php 
-    if($mode=='requisition')
-    {
-    ?>
-    <span><?php echo $this->lang->line('recvs_stock_destination') ?></span>
-	<?php echo form_dropdown('stock_destination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();"');        
-    }
-	}
-	?>    
 	</form>
 	<?php echo form_open("receivings/add",array('id'=>'add_item_form')); ?>
 	<label id="item_label" for="item">
 
 	<?php
-	if($mode=='receive' or $mode=='requisition')
+	if($mode=='receive')
 	{
 		echo $this->lang->line('recvs_find_or_scan_item');
 	}
@@ -61,14 +45,14 @@ if(isset($error))
 <table id="register">
 <thead>
 <tr>
-        <th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
-        <th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
-        <th style="width:11%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
-        <th style="width:5%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
-        <th style="width:6%;"></th>
-        <th style="width:11%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
-        <th style="width:15%;"><?php echo $this->lang->line('recvs_total'); ?></th>
-        <th style="width:11%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
+<th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
+
+<th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
+<th style="width:11%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
+<th style="width:11%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
+<th style="width:11%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
+<th style="width:15%;"><?php echo $this->lang->line('recvs_total'); ?></th>
+<th style="width:11%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
 </tr>
 </thead>
 <tbody id="cart_contents">
@@ -76,7 +60,7 @@ if(isset($error))
 if(count($cart)==0)
 {
 ?>
-<tr><td colspan='8'>
+<tr><td colspan='7'>
 <div class='warning_message' style='padding:7px;'><?php echo $this->lang->line('sales_no_items_in_cart'); ?></div>
 </tr></tr>
 <?php
@@ -90,67 +74,70 @@ else
 ?>
 	    <tr>
 	    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]</td>
-            <?php echo form_hidden('location', $item['item_location']); ?>
+		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+            <?php echo form_hidden('location', $item['item_location']); ?></td>
 
-<?php
-			echo $item['description'];
-      		echo form_hidden('description',$item['description']);
-?>
+		<?php if ($items_module_allowed)
+		{
+		?>
+			<td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
+		<?php
+		}
+		else
+		{
+		?>
+			<td><?php echo $item['price']; ?></td>
+			<?php echo form_hidden('price',$item['price']); ?>
+		<?php
+		}
+		?>
+		<td>
+		<?php
+        	echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
+		?>
+		</td>
 
-<?php       if ($items_module_allowed && !$mode=='requisition')
-		    {
-?>
-		     <td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
-<?php
-		    }
-		    else
-		    {
-?>
-		     <td><?php echo $item['price']; ?></td>
-		     <?php echo form_hidden('price',$item['price']); ?>
-<?php
-		    }
-?>
-	    <td>
-<?php
-            echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
-            if ($item['receiving_quantity'] > 1) 
+
+		<td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
+		<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
+		<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
+		</tr>
+		<tr>
+		<?php 
+			if($item['allow_alt_description']==1)
 			{
-?>
-           	<td>x <?php echo $item['receiving_quantity']; ?></td>	
-<?php 
-			}
-			else
-			{
-?>
-			<td></td>
-<?php 
-			}
-?>
-	    </td>
-	    
-	    
-<?php       if ($items_module_allowed && $mode!='requisition')
-		    {
-?>
-		    <td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
-<?php
-		    }
-		    else
-		    {
-?>
-		     <td><?php echo $item['discount']; ?></td>
-		     <?php echo form_hidden('discount',$item['discount']); ?>
-<?php
-		    }
-?>
-	    <td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['receiving_quantity']*$item['discount']/100); ?></td>
-	    <td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
-	    </tr>
-	    </form>
-<?php
-    }
+			?>
+			<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
+			<?php 
+			} 
+			?>
+			<td colspan=2 style="text-align: left;">
+		
+			<?php
+	        	if($item['allow_alt_description']==1)
+	        	{
+	        		echo form_input(array('name'=>'description','value'=>$item['description'],'size'=>'20'));
+	        	}
+	        	else
+	        	{
+					if ($item['description']!='')
+					{
+						echo $item['description'];
+	        			echo form_hidden('description',$item['description']);
+	        		}
+	        		else
+	        		{
+	        		    echo $this->lang->line('sales_no_description');
+	           			echo form_hidden('description','');
+	        		}
+	        	}
+			?>
+			</td>
+			<td colspan="4"></td>
+		</tr>
+		</form>
+	<?php
+	}
 }
 ?>
 </tbody>
@@ -184,86 +171,26 @@ else
 	}
 	?>
 
-    <?php
-        if($mode != 'requisition')
-        {
-            
-      ?>
 	<div id='sale_details'>
 		<div class="float_left" style='width:55%;'><?php echo $this->lang->line('sales_total'); ?>:</div>
 		<div class="float_left" style="width:45%;font-weight:bold;"><?php echo to_currency($total); ?></div>
 	</div>
-	
-	<?php
-    }
-    ?>
-    
 	<?php
 	if(count($cart) > 0)
 	{
-	    if($mode == 'requisition')
-        {
-    ?>
-    
-    <div  style='border-top:2px solid #000;' />
-    <div id="finish_sale">
-        <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_sale_form')); ?>
-        <br />
-        <label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-        <?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
-        <br /><br />
-        
-        <div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'>
-        	<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
-        </div>
-        </form>    
-        <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_sale_form')); ?>
-        <div class='small_button' id='cancel_sale_button' style='float:left;margin-top:5px;'>
-        <span><?php echo $this->lang->line('recvs_cancel_receving')?></span>
-        </div>
-        </form>
-     </div>
-    <?php
-        }
-        else
-        {
 	?>
 	<div id="finish_sale">
 		<?php echo form_open("receivings/complete",array('id'=>'finish_sale_form')); ?>
 		<br />
 		<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-		<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
+		<?php echo form_textarea(array('name'=>'comment','value'=>'','rows'=>'4','cols'=>'23'));?>
 		<br /><br />
-		<table width="100%">
-		<?php if ($mode == "receive") 
-		{
-		?>
-		<tr>
-		<td>
-		<?php echo $this->lang->line('recvs_invoice_enable'); ?>
-		</td>
-		<td>
-		<?php echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10,'checked'=>$this->config->item('recv_invoice_enable')));?>
-		</td>
-		</tr>
-		
-		<tr>
-		<td>
-		<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
-		</td>
-		<td>
-		<?php echo form_input(array('name'=>'recv_invoice_number','id'=>'recv_invoice_number','value'=>$invoice_number,'size'=>10));?>
-		</td>
-		</tr>
-		<?php 
-		}
-		?>
-		<tr>
-		<td>
-		<?php echo $this->lang->line('sales_payment').':   ';?>
-		</td>
-		<td>
-		<?php echo form_dropdown('payment_type',$payment_options);?>
+		<table width="100%"><tr><td>
+		<?php
+			echo $this->lang->line('sales_payment').':   ';?>
+		</td><td>
+		<?php
+		    echo form_dropdown('payment_type',$payment_options);?>
         </td>
         </tr>
 
@@ -280,29 +207,21 @@ else
 
         </table>
         <br />
-		<div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'>
-			<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
-		</div>
-
+		<div class="small_button" id="finish_sale_button" style="float:right;margin-top:5px;"><span><?php echo $this->lang->line('recvs_complete_receiving');?></span></div>
 		</form>
 
 	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_sale_form')); ?>
 			    <div class='small_button' id='cancel_sale_button' style='float:left;margin-top:5px;'>
-					<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
+					<span>Cancel </span>
 				</div>
         </form>
 	</div>
 	<?php
 	}
-}
 	?>
 
 </div>
 <div class="clearfix" style="margin-bottom:30px;">&nbsp;</div>
-
-
-<?php $this->load->view("partial/footer"); ?>
-
 
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
@@ -322,8 +241,6 @@ $(document).ready(function()
     {
 		$("#add_item_form").submit();
     });
-
-	$('#item').focus();
 
 	$('#item').blur(function()
     {
@@ -354,32 +271,6 @@ $(document).ready(function()
     {
     	$(this).attr('value',"<?php echo $this->lang->line('recvs_start_typing_supplier_name'); ?>");
     });
-
-	$('#comment').keyup(function() 
-	{
-		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
-	});
-
-	$('#recv_invoice_number').keyup(function() 
-	{
-		$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
-	});
-
-	var enable_invoice_number = function() 
-	{
-		if ($("#recv_invoice_enable").is(":checked"))
-		{
-			$("#recv_invoice_number").removeAttr("disabled").parents('tr').show();
-		}
-		else
-		{
-			$("#recv_invoice_number").attr("disabled", "disabled").parents('tr').hide();
-		}
-	}
-
-	enable_invoice_number();
-
-	$("#recv_invoice_enable").change(enable_invoice_number);
 
     $("#finish_sale_button").click(function()
     {
@@ -419,3 +310,4 @@ function post_person_form_submit(response)
 }
 
 </script>
+<?php $this->load->view("partial/footer"); ?>

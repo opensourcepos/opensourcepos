@@ -116,62 +116,66 @@ else
 		?>
 		</td>
 
-				<td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
-				<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-				<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
-			</tr>
-			<tr>
-				<td style="color: #2F4F4F";><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
-				<td colspan=2 style="text-align: left;">
-
-		<?php
-        	if($item['allow_alt_description']==1)
-        	{
-        		echo form_input(array('name'=>'description','value'=>$item['description'],'size'=>'20'));
-        	}
-        	else
-        	{
-				if ($item['description']!='')
-				{
-					echo $item['description'];
-        			echo form_hidden('description',$item['description']);
-        		}
-        		else
-        		{
-        		    echo $this->lang->line('sales_no_description');
-           			echo form_hidden('description','');
-        		}
-        	}
-		?>
-		</td>
-				<td>&nbsp;</td>
-				<td style="color: #2F4F4F";>
-		<?php
-        	if($item['is_serialized']==1)
-        	{
-				echo $this->lang->line('sales_serial').':';
-			}
-		?>
-		</td>
-				<td colspan=3 style="text-align: left;">
-		<?php
-        	if($item['is_serialized']==1)
-        	{
-        		echo form_input(array('name'=>'serialnumber','value'=>$item['serialnumber'],'size'=>'20'));
-			}
-			else
+			<td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
+			<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
+			<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
+		</tr>
+		<tr>
+			<?php 
+			if($item['allow_alt_description']==1)
 			{
-				echo form_hidden('serialnumber', '');
+			?>
+			<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
+			<?php 
 			}
-		?>
-		</td>
-
-
-			</tr>
-			<tr style="height: 3px">
-				<td colspan=8 style="background-color: white"></td>
-			</tr>
-			</form>
+			?>
+			<td colspan=2 style="text-align: left;">
+			<?php
+	        	if($item['allow_alt_description']==1)
+	        	{
+	        		echo form_input(array('name'=>'description','value'=>$item['description'],'size'=>'20'));
+	        	}
+	        	else
+	        	{
+					if ($item['description']!='')
+					{
+						echo $item['description'];
+	        			echo form_hidden('description',$item['description']);
+	        		}
+	        		else
+	        		{
+	        		    echo $this->lang->line('sales_no_description');
+	           			echo form_hidden('description','');
+	        		}
+	        	}
+			?>
+			</td>
+			<td>&nbsp;</td>
+			<td style="color: #2F4F4F;">
+			<?php
+	        	if($item['is_serialized']==1)
+	        	{
+					echo $this->lang->line('sales_serial').':';
+				}
+			?>
+			</td>
+			<td colspan="4" style="text-align: left;">
+			<?php
+	        	if($item['is_serialized']==1)
+	        	{
+	        		echo form_input(array('name'=>'serialnumber','value'=>$item['serialnumber'],'size'=>'20'));
+				}
+				else
+				{
+					echo form_hidden('serialnumber', '');
+				}
+			?>
+			</td>
+		</tr>
+		<tr style="height: 3px">
+			<td colspan=8 style="background-color: white"></td>
+		</tr>
+	</form>
 	<?php
 	}
 }
@@ -289,9 +293,9 @@ else
 		</tr>
 	</table>
 
-	<div id="Payment_Types">
+	<div id="payment_details">
 
-		<div style="height: 100px;">
+		<div>
 
 			<?php echo form_open("sales/add_payment",array('id'=>'add_payment_form')); ?>
 			<table width="100%">
@@ -303,7 +307,15 @@ else
 						<?php echo $this->lang->line('sales_invoice_enable'); ?>
 					</td>
 					<td>
-						<?php echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10,'checked'=>$this->config->item('sales_invoice_enable')));?>
+						<?php if ($invoice_number_enabled)
+						{
+							echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10,'checked'=>'checked'));
+						}
+						else
+						{
+							echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10));
+						}
+						?>
 					</td>
 				</tr>
 				<tr>
@@ -337,8 +349,8 @@ else
 				style='float: left; margin-top: 5px;'>
 				<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
 			</div>
-		</div>
 		</form>
+		</div>
 
 		<?php
 		// Only show this part if there is at least one payment entered.
@@ -390,9 +402,6 @@ else
 </div>
 <div class="clearfix" style="margin-bottom: 30px;">&nbsp;</div>
 
-
-<?php $this->load->view("partial/footer"); ?>
-
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {
@@ -411,8 +420,6 @@ $(document).ready(function()
     {
 		$("#add_item_form").submit();
     });
-
-	$('#item').focus();
 
     $('#item').blur(function()
     {
@@ -460,7 +467,8 @@ $(document).ready(function()
 
 	var enable_invoice_number = function() 
 	{
-		if ($("#sales_invoice_enable").is(":checked"))
+		var enabled = $("#sales_invoice_enable").is(":checked");
+		if (enabled)
 		{
 			$("#sales_invoice_number").removeAttr("disabled").parents('tr').show();
 		}
@@ -468,11 +476,15 @@ $(document).ready(function()
 		{
 			$("#sales_invoice_number").attr("disabled", "disabled").parents('tr').hide();
 		}
+		return enabled;
 	}
 
 	enable_invoice_number();
 	
-	$("#sales_invoice_enable").change(enable_invoice_number);
+	$("#sales_invoice_enable").change(function() {
+		var enabled = enable_invoice_number();
+		$.post('<?php echo site_url("sales/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
+	});
 	
 	$('#email_receipt').change(function() 
 	{
@@ -510,7 +522,7 @@ $(document).ready(function()
 	   $('#add_payment_form').submit();
     });
 
-	$("#payment_types").change(checkPaymentTypeGiftcard).ready(checkPaymentTypeGiftcard)
+	$("#payment_types").change(check_payment_type_gifcard).ready(check_payment_type_gifcard)
 });
 
 function post_item_form_submit(response)
@@ -532,7 +544,7 @@ function post_person_form_submit(response)
 	}
 }
 
-function checkPaymentTypeGiftcard()
+function check_payment_type_gifcard()
 {
 	if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
 	{
@@ -547,3 +559,4 @@ function checkPaymentTypeGiftcard()
 }
 
 </script>
+<?php $this->load->view("partial/footer"); ?>
