@@ -57,6 +57,11 @@ class Receivings extends Secure_area
 		$this->receiving_lib->set_comment($this->input->post('comment'));
 	}
 	
+	function set_invoice_number_enabled()
+	{
+		$this->receiving_lib->set_invoice_number_enabled($this->input->post('recv_invoice_number_enabled'));
+	}
+	
 	function set_invoice_number()
 	{
 		$this->receiving_lib->set_invoice_number($this->input->post('recv_invoice_number'));
@@ -193,13 +198,14 @@ class Receivings extends Secure_area
 			$data['supplier']=$suppl_info->company_name;  //   first_name.' '.$suppl_info->last_name;
 		}
 		$invoice_number=$this->_substitute_invoice_number($suppl_info);
-		if ($this->Receiving->invoice_number_exists($invoice_number))
+		if ($this->receiving_lib->is_invoice_number_enabled() && $this->Receiving->invoice_number_exists($invoice_number))
 		{
 			$data['error']=$this->lang->line('recvs_invoice_number_duplicate');
 			$this->_reload($data);
 		}
 		else
 		{
+			$invoice_number = $this->receiving_lib->is_invoice_number_enabled() ? $invoice_number : NULL;
 			$data['invoice_number']=$invoice_number;
 			$data['payment_type']=$this->input->post('payment_type');
 			//SAVE receiving to database
@@ -326,7 +332,7 @@ class Receivings extends Secure_area
 			$data['supplier']=$suppl_info->company_name;  // first_name.' '.$info->last_name;
 		}
 		$data['invoice_number']=$this->_substitute_invoice_number($suppl_info);
-		
+		$data['invoice_number_enabled']=$this->receiving_lib->is_invoice_number_enabled();
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();
 	}

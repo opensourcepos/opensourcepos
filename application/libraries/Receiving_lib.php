@@ -87,6 +87,23 @@ class Receiving_lib
     {
     	$this->CI->session->unset_userdata('recv_invoice_number');
     }
+    
+    function is_invoice_number_enabled()
+    {
+    	return $this->CI->session->userdata('recv_invoice_number_enabled') == 'true' ||
+    	$this->CI->session->userdata('recv_invoice_number_enabled') == '1';
+    }
+    
+    function set_invoice_number_enabled($invoice_number_enabled)
+    {
+    	return $this->CI->session->set_userdata('recv_invoice_number_enabled', $invoice_number_enabled);
+    }
+    
+    function clear_invoice_number_enabled()
+    {
+    	$enable = $this->CI->config->config['recv_invoice_enable'];
+    	$this->set_invoice_number_enabled($enable);
+    }
 
     function set_stock_source($stock_source)
     {

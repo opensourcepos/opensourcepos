@@ -233,19 +233,19 @@ else
 		    
 		    <div  style='border-top:2px solid #000;' />
 		    <div id="finish_sale">
-		        <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_sale_form')); ?>
+		        <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_receiving_form')); ?>
 		        <br />
 		        <label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 		        <?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 		        <br /><br />
 		        
-		        <div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'>
+		        <div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
 		        	<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		        </div>
 		        </form>    
-		        <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_sale_form')); ?>
-		        <div class='small_button' id='cancel_sale_button' style='float:left;margin-top:5px;'>
-		        <span><?php echo $this->lang->line('recvs_cancel_receving')?></span>
+		        <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
+		        <div class='small_button' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
+		        <span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
 		        </div>
 		        </form>
 		     </div>
@@ -255,7 +255,7 @@ else
 	        {
 	?>
 	<div id="finish_sale">
-		<?php echo form_open("receivings/complete",array('id'=>'finish_sale_form')); ?>
+		<?php echo form_open("receivings/complete",array('id'=>'finish_receiving_form')); ?>
 		<br />
 		<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 		<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
@@ -269,7 +269,15 @@ else
 		<?php echo $this->lang->line('recvs_invoice_enable'); ?>
 		</td>
 		<td>
-		<?php echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10,'checked'=>$this->config->item('recv_invoice_enable')));?>
+		<?php if ($invoice_number_enabled)
+		{
+			echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10,'checked'=>'checked'));
+		}
+		else
+		{
+			echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10));
+		}
+		?>
 		</td>
 		</tr>
 		
@@ -306,14 +314,14 @@ else
 
         </table>
         <br />
-		<div class='small_button' id='finish_sale_button' style='float:right;margin-top:5px;'>
+		<div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
 			<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		</div>
         
 		</form>
 
-	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_sale_form')); ?>
-			    <div class='small_button' id='cancel_sale_button' style='float:left;margin-top:5px;'>
+	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
+			    <div class='small_button' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
 					<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
 				</div>
         </form>
@@ -362,7 +370,8 @@ $(document).ready(function()
 
 	var enable_invoice_number = function() 
 	{
-		if ($("#recv_invoice_enable").is(":checked"))
+		var enabled = $("#recv_invoice_enable").is(":checked");
+		if (enabled)
 		{
 			$("#recv_invoice_number").removeAttr("disabled").parents('tr').show();
 		}
@@ -370,11 +379,16 @@ $(document).ready(function()
 		{
 			$("#recv_invoice_number").attr("disabled", "disabled").parents('tr').hide();
 		}
+		return enabled;
 	}
 
 	enable_invoice_number();
 
-	$("#recv_invoice_enable").change(enable_invoice_number);
+	$("#recv_invoice_enable").change(function() {
+		var enabled = enable_invoice_number();
+		$.post('<?php echo site_url("receivings/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
+		
+	});
 
 	$('#item,#supplier').click(function()
     {
@@ -401,19 +415,19 @@ $(document).ready(function()
     	$(this).attr('value',"<?php echo $this->lang->line('recvs_start_typing_supplier_name'); ?>");
     });
 
-    $("#finish_sale_button").click(function()
+    $("#finish_receiving_button").click(function()
     {
     	if (confirm('<?php echo $this->lang->line("recvs_confirm_finish_receiving"); ?>'))
     	{
-    		$('#finish_sale_form').submit();
+    		$('#finish_receiving_form').submit();
     	}
     });
 
-    $("#cancel_sale_button").click(function()
+    $("#cancel_receiving_button").click(function()
     {
     	if (confirm('<?php echo $this->lang->line("recvs_confirm_cancel_receiving"); ?>'))
     	{
-    		$('#cancel_sale_form').submit();
+    		$('#cancel_receiving_form').submit();
     	}
     });
 
