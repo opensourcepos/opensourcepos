@@ -1,9 +1,20 @@
 <?php
 /*===========================================================================*/
 /*      PHP Barcode Image Generator v1.0 [9/28/2000]
-        Copyright (C)2000 by Charles J. Scheffold - cs@wsia.fm
-		Modified by Chris Muench [11/9/08] to work with codeignitor application framework
+        Copyright (C)2000 by Charles J. Scheffold - cs@sid6581.net
 
+		UPDATE 15/11/2014 by J.Peelaerts
+		Show text only if content is not empty
+		---
+		UPDATE 2/9/2013 by C.Scheffold
+        Now compatible with POST requests when register_globals is off
+		---
+		UPDATE 5/10/2005 by C.Scheffold
+		Changed FontHeight to -2 if no text is to be displayed (this eliminates
+		the whitespace at the bottom of the image)
+		---
+		UPDATE 03/12/2005 by C.Scheffold
+		Added '-' character to translation table
         ---
         UPDATE 09/21/2002 by Laurent NAVARRO - ln@altidev.com - http://www.altidev.com
         Updated to be compatible with register_globals = off and on
@@ -48,8 +59,7 @@
         $quality        = (default=100) For JPEG only: ranges from 0-100
 
 
-        $text           = (default='') 0 Enter any string to be displayed
-        
+        $text           = (default=1) 0 to disable text below barcode, >=1 to enable
 
 
         NOTE: You must have GD-1.8 or higher compiled into PHP
@@ -67,10 +77,10 @@
         -----------------------------------------------
 
 
-        <IMG SRC="index.php?c=barcode&barcode=HELLO&quality=75">
+        <IMG SRC="barcode.php?barcode=HELLO&quality=75">
 
 
-        <IMG SRC="index.php?c=barcode&barcode=123456&width=320&height=200">
+        <IMG SRC="barcode.php?barcode=123456&width=320&height=200">
                 
         
 */
@@ -81,6 +91,7 @@
 // Startup code
 //-----------------------------------------------------------------------------
 
+
 if(isset($_GET["text"])) $text=$_GET["text"];
 if(isset($_GET["format"])) $format=$_GET["format"];
 if(isset($_GET["quality"])) $quality=$_GET["quality"];
@@ -89,13 +100,24 @@ if(isset($_GET["height"])) $height=$_GET["height"];
 if(isset($_GET["type"])) $type=$_GET["type"];
 if(isset($_GET["barcode"])) $barcode=$_GET["barcode"];
 
-if (!isset ($text)) $text = '';
+
+if(isset($_POST["text"])) $text=$_POST["text"];
+if(isset($_POST["format"])) $format=$_POST["format"];
+if(isset($_POST["quality"])) $quality=$_POST["quality"];
+if(isset($_POST["width"])) $width=$_POST["width"];
+if(isset($_POST["height"])) $height=$_POST["height"];
+if(isset($_POST["type"])) $type=$_POST["type"];
+if(isset($_POST["barcode"])) $barcode=$_POST["barcode"];
+
+
+if (!isset ($text)) $text = 1;
 if (!isset ($type)) $type = 1;
 if (empty ($quality)) $quality = 100;
 if (empty ($width)) $width = 160;
 if (empty ($height)) $height = 80;
 if (!empty ($format)) $format = strtoupper ($format);
         else $format="PNG";
+
 
 switch ($type)
 {
@@ -105,6 +127,7 @@ switch ($type)
                 Barcode39 ($barcode, $width, $height, $quality, $format, $text);
                 break;          
 }
+
 
 //-----------------------------------------------------------------------------
 // Generate a Code 3 of 9 barcode
@@ -165,13 +188,16 @@ function Barcode39 ($barcode, $width, $height, $quality, $format, $text)
         $FontNum = 3;
         $FontHeight = ImageFontHeight ($FontNum);
         $FontWidth = ImageFontWidth ($FontNum);
-        
-        if ($text != '')
+        if (!empty($text))
         {
                 $CenterLoc = (int)(($width) / 2) - (int)(($FontWidth * strlen($text)) / 2);
                 ImageString ($im, $FontNum, $CenterLoc, $height-$FontHeight, "$text", $Black);
         }
-        
+		else
+		{
+			$FontHeight=-2;
+		}
+
 
         for ($i=0; $i<strlen($BarcodeFull); $i++)
         {
@@ -209,6 +235,7 @@ function Barcode39 ($barcode, $width, $height, $quality, $format, $text)
         OutputImage ($im, $format, $quality);
 }
 
+
 //-----------------------------------------------------------------------------
 // Output an image to the browser
 //-----------------------------------------------------------------------------
@@ -227,6 +254,7 @@ function OutputImage ($im, $format, $quality)
                         break;
         }
 }
+
 
 //-----------------------------------------------------------------------------
 // Returns the Code 3 of 9 value for a given ASCII character
@@ -251,6 +279,8 @@ function Code39 ($Asc)
                         return "110000100"; 
                 case '/':
                         return "010100010"; 
+				case '-':
+						return "010000101";
                 case '0':
                         return "000110100"; 
                 case '1':
