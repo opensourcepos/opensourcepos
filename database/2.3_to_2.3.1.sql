@@ -78,9 +78,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES 
 ('tax_included', '0'),
 ('recv_invoice_format', '$CO'),
-('sales_invoice_format', '$CO'),
-('sales_invoice_enable', '0'),
-('recv_invoice_enable', '0');
+('sales_invoice_format', '$CO');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 
@@ -101,3 +99,7 @@ ALTER TABLE `ospos_sales_suspended`
 ALTER TABLE `ospos_items` 
    ADD COLUMN `receiving_quantity` int(11) DEFAULT '1',
    DROP COLUMN `quantity`;
+
+-- add foreign key to giftcards table
+ALTER TABLE `ospos_giftcards`
+  ADD CONSTRAINT `ospos_giftcards_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);

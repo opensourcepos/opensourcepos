@@ -39,9 +39,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('website', ''),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
-('tax_included', '0'),
-('recv_invoice_enable', '0'),
-('sales_invoice_enable', '0');
+('tax_included', '0');
 
 
 -- --------------------------------------------------------
@@ -819,3 +817,9 @@ ALTER TABLE `ospos_item_quantities`
 --
 ALTER TABLE `ospos_suppliers`
   ADD CONSTRAINT `ospos_suppliers_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);
+  
+--
+-- Constraints for table `ospos_giftcards`
+--
+ALTER TABLE `ospos_giftcards`
+  ADD CONSTRAINT `ospos_giftcards_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);

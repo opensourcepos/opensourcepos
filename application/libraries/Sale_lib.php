@@ -80,8 +80,7 @@ class Sale_lib
 	
 	function clear_invoice_number_enabled()
 	{
-		$enable = $this->CI->config->config['sales_invoice_enable'];
-		$this->set_invoice_number_enabled($enable);		
+		$this->set_invoice_number_enabled(FALSE);		
 	}
 	
 	function get_email_receipt() 
@@ -537,15 +536,15 @@ class Sale_lib
 		return to_currency_no_money($subtotal);
 	}
 	
-	function get_item_total_tax_exclusive($quantity, $price, $discount_percentage) 
+	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage) 
 	{
-		$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+		$tax_info = $this->CI->Item_taxes->get_info($item_id);
 		$item_price = $this->get_item_total($quantity, $price, $discount_percentage);
 		// only additive tax here
 		foreach($tax_info as $tax)
 		{
 			$tax_percentage = $tax_info[0]['percent'];
-			$item_price =- $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage);
+			$item_price -= $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage);
 		}
 		
 		return $item_price;
@@ -585,13 +584,13 @@ class Sale_lib
 			}
 			else
 			{
-				if ($CI->config->config['tax_included'])
+				if ($this->CI->config->config['tax_included'])
 				{
 					$subtotal += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
 				}
 				else 
 				{
-					$subtotal += $this->get_item_total_tax_exclusive($item['quantity'], $item['price'], $item['discount']);
+					$subtotal += $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount']);
 				}
 			}
 		}

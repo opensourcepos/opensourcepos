@@ -41,6 +41,7 @@ class Giftcard extends CI_Model
 	function get_info($giftcard_id)
 	{
 		$this->db->from('giftcards');
+		$this->db->join('people', 'people.person_id = giftcards.person_id', 'LEFT');
 		$this->db->where('giftcard_id',$giftcard_id);
 		$this->db->where('deleted',0);
 		

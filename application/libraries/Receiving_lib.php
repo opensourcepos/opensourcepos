@@ -101,8 +101,7 @@ class Receiving_lib
     
     function clear_invoice_number_enabled()
     {
-    	$enable = $this->CI->config->config['recv_invoice_enable'];
-    	$this->set_invoice_number_enabled($enable);
+    	$this->set_invoice_number_enabled(FALSE);
     }
 
     function set_stock_source($stock_source)

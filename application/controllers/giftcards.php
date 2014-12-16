@@ -41,9 +41,9 @@ class Giftcards extends Secure_area implements iData_controller
 	/*
 	 Gives search suggestions for person_id based on what is being searched for
 	*/
-	function suggest_person()
+	function person_search()
 	{
-		$suggestions = $this->Giftcard->get_person_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
 /** END GARRISON ADDED **/
@@ -56,8 +56,10 @@ class Giftcards extends Secure_area implements iData_controller
 
 	function view($giftcard_id=-1)
 	{
-		$data['giftcard_info']=$this->Giftcard->get_info($giftcard_id);
-
+		$giftcard_info=$this->Giftcard->get_info($giftcard_id);
+		$person_name=$giftcard_info->first_name . ' ' . $giftcard_info->last_name;
+		$data['selected_person'] = $giftcard_id > 0 ? $giftcard_info->person_id . "|" . $person_name : "";
+		$data['giftcard_info']=$giftcard_info;
 		$this->load->view("giftcards/form",$data);
 	}
 	
