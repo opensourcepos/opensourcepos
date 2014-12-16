@@ -99,11 +99,6 @@ class Receiving_lib
     	return $this->CI->session->set_userdata('recv_invoice_number_enabled', $invoice_number_enabled);
     }
     
-    function clear_invoice_number_enabled()
-    {
-    	$this->set_invoice_number_enabled(FALSE);
-    }
-
     function set_stock_source($stock_source)
     {
         $this->CI->session->set_userdata('recv_stock_source',$stock_source);
