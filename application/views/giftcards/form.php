@@ -25,7 +25,7 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 	<?php echo form_input(array(
 		'name'=>'giftcard_number',
 		'id'=>'giftcard_number',
-		'value'=>$giftcard_info->giftcard_number)
+		'value'=>$giftcard_number)
 	);?>
 	</div>
 </div>

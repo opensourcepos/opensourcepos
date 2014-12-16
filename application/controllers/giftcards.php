@@ -56,10 +56,11 @@ class Giftcards extends Secure_area implements iData_controller
 
 	function view($giftcard_id=-1)
 	{
-		$giftcard_info=$this->Giftcard->get_info($giftcard_id);
-		$person_name=$giftcard_info->first_name . ' ' . $giftcard_info->last_name;
+		$giftcard_info = $this->Giftcard->get_info($giftcard_id);
+		$person_name=$giftcard_id > 0? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
 		$data['selected_person'] = $giftcard_id > 0 ? $giftcard_info->person_id . "|" . $person_name : "";
-		$data['giftcard_info']=$giftcard_info;
+		$data['giftcard_number']= $giftcard_id > 0 ? $giftcard_info->giftcard_id : $this->Giftcard->get_max_number()->giftcard_number + 1;
+		$data['giftcard_info'] = $giftcard_info;
 		$this->load->view("giftcards/form",$data);
 	}
 	

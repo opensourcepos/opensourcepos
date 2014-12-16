@@ -13,6 +13,13 @@ class Giftcard extends CI_Model
 
 		return ($query->num_rows()==1);
 	}
+	
+	function get_max_number ( )
+	{
+		$this->db->select_max('giftcard_number');
+		$query = $this->db->get('giftcards');
+		return $query->row();
+	}
 
 	/*
 	Returns all the giftcards
