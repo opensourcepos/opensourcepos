@@ -37,7 +37,8 @@ if (isset($error_message))
 	<tr>
 	<th style="width:50%;"><?php echo $this->lang->line('items_item'); ?></th>
 	<th style="width:17%;"><?php echo $this->lang->line('common_price'); ?></th>
-	<th style="width:16%;text-align:center;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+	<th style="width:10%;text-align:center;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+	<th style="width:6%;"></th>
 	<th style="width:16%;text-align:center;"><?php echo $this->lang->line('sales_discount'); ?></th>
 	<th style="width:17%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
 	</tr>
@@ -51,29 +52,30 @@ if (isset($error_message))
 		<td style='text-align:center;'><?php 
 			echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 		?></td>
+        <td>x <?php echo $item['receiving_quantity']; ?></td>	
 		<td style='text-align:center;'><?php echo $item['discount']; ?></td>
 		<td style='text-align:right;'><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 		</tr>
 	    <tr>
 
 	    <td colspan="2" align="center"><?php echo $item['description']; ?></td>
-		<td colspan="2" ><?php echo $item['serialnumber']; ?></td>
-		<td colspan="1"><?php echo '---'; ?></td>
+		<td colspan="3	" ><?php echo $item['serialnumber']; ?></td>
+		<td colspan="1"><?php echo '---------'; ?></td>
 	    </tr>
 	<?php
 	}
 	?>	
 	<tr>
-	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
-	<td colspan="2" style='text-align:right'><?php echo to_currency($total); ?></td>
+	<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
+	<td colspan="3" style='text-align:right'><?php echo to_currency($total); ?></td>
 	</tr>
 	<?php 
     if($mode!='requisition')
     {
     ?>
 	<tr>
-	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
-	<td colspan="2" style='text-align:right'><?php echo $payment_type; ?></td>
+	<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
+	<td colspan="3" style='text-align:right'><?php echo $payment_type; ?></td>
 	</tr>
 	
 
@@ -81,13 +83,13 @@ if (isset($error_message))
 	{
 	?>
 		<tr>
-		<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
-		<td colspan="2" style='text-align:right'><?php echo to_currency($amount_tendered); ?></td>
+		<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
+		<td colspan="3" style='text-align:right'><?php echo to_currency($amount_tendered); ?></td>
 		</tr>
 
 		<tr>
-		<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></td>
-		<td colspan="2" style='text-align:right'><?php echo $amount_change; ?></td>
+		<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></td>
+		<td colspan="3" style='text-align:right'><?php echo $amount_change; ?></td>
 		</tr>
 	<?php
 	}

@@ -50,7 +50,7 @@ class Receiving extends CI_Model
 		'employee_id'=>$employee_id,
 		'payment_type'=>$payment_type,
 		'comment'=>$comment,
-		'invoice_number'=>empty($invoice_number) ? NULL : $invoice_number
+		'invoice_number'=>$invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -81,13 +81,13 @@ class Receiving extends CI_Model
 			$this->db->insert('receivings_items',$receivings_items_data);
 
 			//Update stock quantity
-			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);		
-            $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity + $item['quantity'],
+			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);	
+			$items_received = $item['quantity'] * $item['receiving_quantity'];	
+            $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity + $items_received,
                                               'item_id'=>$item['item_id'],
                                               'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
 			
 			
-			$qty_recv = $item['quantity'];
 			$recv_remarks ='RECV '.$receiving_id;
 			$inv_data = array
 			(
@@ -96,7 +96,7 @@ class Receiving extends CI_Model
 				'trans_user'=>$employee_id,
 				'trans_location'=>$item['item_location'],
 				'trans_comment'=>$recv_remarks,
-				'trans_inventory'=>$qty_recv
+				'trans_inventory'=>$items_received
 			);
 			$this->Inventory->insert($inv_data);
 

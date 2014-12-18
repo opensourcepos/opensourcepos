@@ -59,7 +59,7 @@ class Sale extends CI_Model
 			'employee_id'=>$employee_id,
 			'payment_type'=>$payment_types,
 			'comment'=>$comment,
-			'invoice_number'=>empty($invoice_number) ? NULL : $invoice_number
+			'invoice_number'=>$invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing

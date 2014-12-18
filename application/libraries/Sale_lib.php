@@ -501,7 +501,7 @@ class Sale_lib
 		{
 		   return array();
 		}
-
+		
 		$taxes = array();
 		foreach($this->get_cart() as $line=>$item)
 		{
@@ -572,20 +572,13 @@ class Sale_lib
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
-			if ($this->is_customer_taxable())
+			if ($this->CI->config->config['tax_included'])
+			{
+				$subtotal += $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount']);
+			}
+			else 
 			{
 				$subtotal += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
-			}
-			else
-			{
-				if ($this->CI->config->config['tax_included'])
-				{
-					$subtotal += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
-				}
-				else 
-				{
-					$subtotal += $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount']);
-				}
 			}
 		}
 		return $subtotal;
@@ -595,12 +588,9 @@ class Sale_lib
 	{
 		$total = $this->calculate_subtotal();		
 		
-		if (!$this->CI->config->config['tax_included'])
+		foreach($this->get_taxes() as $tax)
 		{
-			foreach($this->get_taxes() as $tax)
-			{
-				$total = bcadd($total, $tax, 4);
-			}
+			$total = bcadd($total, $tax, 4);
 		}
 
 		return to_currency_no_money($total);
