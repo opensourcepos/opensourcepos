@@ -531,6 +531,7 @@ function post_item_form_submit(response)
 	{
         var $stock_location = $("select[name='stock_location']").val();
         $("#item_location").val($stock_location);
+		$("#item").val(response.item_id);
 		$("#add_item_form").submit();
 	}
 }
