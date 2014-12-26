@@ -52,7 +52,7 @@ if (isset($error_message))
 		<td style='text-align:center;'><?php 
 			echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 		?></td>
-        <td>x <?php echo $item['receiving_quantity']; ?></td>	
+        <td>x <?php echo $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1; ?></td>	
 		<td style='text-align:center;'><?php echo $item['discount']; ?></td>
 		<td style='text-align:right;'><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 		</tr>

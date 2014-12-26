@@ -82,7 +82,7 @@ class Receiving extends CI_Model
 
 			//Update stock quantity
 			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);	
-			$items_received = $item['quantity'] * $item['receiving_quantity'];	
+			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];	
             $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity + $items_received,
                                               'item_id'=>$item['item_id'],
                                               'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
