@@ -47,7 +47,7 @@ CREATE TABLE `ospos_grants` (
 
 ALTER TABLE `ospos_grants`
   ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ospos_grants_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `ospos`.`ospos_permissions`(`permission_id`) ON DELETE CASCADE; 
+  ADD CONSTRAINT `ospos_grants_ibfk_1` FOREIGN KEY (`permission_id`) REFERENCES `ospos_permissions`(`permission_id`) ON DELETE CASCADE; 
 
 -- add grants for all employees
 INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
