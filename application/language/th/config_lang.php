@@ -20,7 +20,7 @@ $lang['config_return_policy_required']='กฎการคืนของต้�
 $lang['config_print_after_sale']='พิมพ์บิลหลังการขาย';
 $lang['config_language'] = 'ภาษา';
 $lang['config_timezone'] = 'โซนเวลา';
-$lang['config_currency_symbol'] = 'ลัญลักษณ์ค่าเงิน';
+$lang['config_currency_symbol'] = 'ลัญลักษณ์สกุลเงิน';
 $lang['config_currency_side'] = 'ด้านขวา'; //GARRISON ADDED 4/20/2013
 $lang['config_custom1'] = 'พื้นที่เพิ่มเติม 1'; //GARRISON ADDED 4/21/2013
 $lang['config_custom2'] = 'พื้นที่เพิ่มเติม 2'; //GARRISON ADDED 4/21/2013
@@ -36,7 +36,10 @@ $lang['config_custom10'] = 'พื้นที่เพิ่มเติม 10'
 $lang['config_stock_location'] = 'สถานที่เก็บ';
 $lang['config_stock_location_required'] = 'จำเป็นต้องระบุสถานที่เก็บ';
 $lang['config_tax_included'] = 'รวมภาษีแล้ว';
-$lang['config_recv_invoice_format'] = 'ใบส่งของ';
+$lang['config_recv_invoice_enable'] = 'หมายเลขใบแจ้งหนี้';
+$lang['config_recv_invoice_format'] = 'รหัสใบแจ้งหนี้';
+$lang['config_sales_invoice_enable'] = 'หมายเลขใบแจ้งหนี้';
+$lang['config_sales_invoice_format'] = 'รหัสใบเสร็จ';
 
 
 ?>
