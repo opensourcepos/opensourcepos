@@ -27,6 +27,7 @@ $lang["sales_delete_successful"] = "Suppréssion réussie";
 $lang["sales_delete_unsuccessful"] = "Échec de suppression";
 $lang["sales_description_abbrv"] = "Desc";
 $lang["sales_discount"] = "% Remise";
+$lang["sales_discount_included"] = "";
 $lang["sales_discount_short"] = "%";
 $lang["sales_edit"] = "Éditer";
 $lang["sales_edit_item"] = "Éditer Item";

@@ -27,6 +27,7 @@ $lang["sales_delete_successful"] = "Has borrado satisfactoriamente una venta";
 $lang["sales_delete_unsuccessful"] = "No he podido borrar la venta satisfactoriamente";
 $lang["sales_description_abbrv"] = "Desc";
 $lang["sales_discount"] = "Desc %";
+$lang["sales_discount_included"] = "";
 $lang["sales_discount_short"] = "%";
 $lang["sales_edit"] = "Editar";
 $lang["sales_edit_item"] = "Editar Artículo";

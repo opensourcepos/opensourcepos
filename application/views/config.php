@@ -150,7 +150,8 @@ echo form_open('config/save/',array('id'=>'config_form'));
 			'zh'    => 'Chinese',
 			'id'    => 'Indonesian',
 			'fr'	=> 'French',
-			'th'	=> 'Thai'
+			'th'	=> 'Thai',
+			'tr'	=> 'Turkish'
 			), 
 		$this->config->item('language'));
 		?>

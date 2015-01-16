@@ -27,6 +27,7 @@ $lang["sales_delete_successful"] = "คุณลบการขายสำเ�
 $lang["sales_delete_unsuccessful"] = "คุณลบการขายไม่สำเร็จ";
 $lang["sales_description_abbrv"] = "Desc";
 $lang["sales_discount"] = "ส่วนลด %";
+$lang["sales_discount_included"] = "";
 $lang["sales_discount_short"] = "";
 $lang["sales_edit"] = "แก้ไข";
 $lang["sales_edit_item"] = "แก้ไขสินค้า";
