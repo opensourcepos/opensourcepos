@@ -40,7 +40,6 @@ $lang["sales_find_or_scan_item_or_receipt"] = "Find/Scan Item OR Receipt";
 $lang["sales_giftcard"] = "Gift Card";
 $lang["sales_giftcard_number"] = "Gift Card Number";
 $lang["sales_id"] = "Sale ID";
-$lang["sales_invoice_enable"] = "Create Invoice";
 $lang["sales_invoice_number"] = "Invoice #";
 $lang["sales_invoice_number_duplicate"] = "Please enter an unique invoice number";
 $lang["sales_item_insufficient_of_stock"] = "Item is Insufficient of Stock";

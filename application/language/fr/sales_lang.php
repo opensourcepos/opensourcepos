@@ -40,7 +40,6 @@ $lang["sales_find_or_scan_item_or_receipt"] = "Trouver/Scanner Item OU Recu";
 $lang["sales_giftcard"] = "Carte Cadeau";
 $lang["sales_giftcard_number"] = "Numéro de Carte cadeau";
 $lang["sales_id"] = "ID Vente";
-$lang["sales_invoice_enable"] = "";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "";
 $lang["sales_item_insufficient_of_stock"] = "Stock top faible";

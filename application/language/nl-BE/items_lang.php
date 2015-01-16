@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Corrigatie hoeveelheid";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "Productinformatie";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "Stock";
 $lang["items_quantity_number"] = "Hoeveelheid moet een cijfer zijn";
 $lang["items_quantity_required"] = "Hoeveelheid moet ingevuld worden";
 $lang["items_receiving_quantity"] = "";
-$lang["items_related_number"] = "";
 $lang["items_reorder_level"] = "Reorder Level";
 $lang["items_reorder_level_number"] = "Reorder level moet een cijfer zijn";
 $lang["items_reorder_level_required"] = "Reorder level moet ingevuld worden";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "VAT 2";
 $lang["items_search_custom_items"] = "Doorzoek Tags";
 $lang["items_serialized_items"] = "Optelbare producten";
 $lang["items_stock_location"] = "";
-$lang["items_stock_type_sale"] = "";
-$lang["items_stock_type_warehouse"] = "";
 $lang["items_successful_adding"] = "Product succesvol toegevoegd";
 $lang["items_successful_bulk_edit"] = "Producten werden succesvol bewaard";
 $lang["items_successful_deleted"] = "Er werd(en)";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "VAT";
 $lang["items_unit_price"] = "Verkoopprijs";
 $lang["items_unit_price_number"] = "Verkoopprijs moet een cijfer zijn";
 $lang["items_unit_price_required"] = "Verkoopprijs moet ingevuld worden";
-$lang["items_unit_quantity"] = "";
 $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "Bewerk Product";
 $lang["items_use_inventory_menu"] = "Use Inv. Menu";

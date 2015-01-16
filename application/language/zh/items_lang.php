@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "增/減庫存";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "允許ALT描述";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "產品訊息";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "數量";
 $lang["items_quantity_number"] = "數量必需是數值";
 $lang["items_quantity_required"] = "數量為必填欄位";
 $lang["items_receiving_quantity"] = "";
-$lang["items_related_number"] = "";
 $lang["items_reorder_level"] = "補貨點";
 $lang["items_reorder_level_number"] = "補貨點必需是數值";
 $lang["items_reorder_level_required"] = "補貨點為必填欄位";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "營業稅 2";
 $lang["items_search_custom_items"] = "Search Custom Fields";
 $lang["items_serialized_items"] = "序列化產品";
 $lang["items_stock_location"] = "";
-$lang["items_stock_type_sale"] = "";
-$lang["items_stock_type_warehouse"] = "";
 $lang["items_successful_adding"] = "已成功新增產品";
 $lang["items_successful_bulk_edit"] = "您已成功更新所選產品";
 $lang["items_successful_deleted"] = "刪除成功";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "稅率 %";
 $lang["items_unit_price"] = "單價";
 $lang["items_unit_price_number"] = "單價必需是數值";
 $lang["items_unit_price_required"] = "單價為必填欄位";
-$lang["items_unit_quantity"] = "";
 $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "更新產品";
 $lang["items_use_inventory_menu"] = "使用庫存清單";

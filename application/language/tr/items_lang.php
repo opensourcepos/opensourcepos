@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "Ürün Bilgisi";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "Adet";
 $lang["items_quantity_number"] = "Adet sayı olmalıdır";
 $lang["items_quantity_required"] = "Adet zorunlu alandır";
 $lang["items_receiving_quantity"] = "";
-$lang["items_related_number"] = "İlgili ürün numarası";
 $lang["items_reorder_level"] = "Düşük Stok";
 $lang["items_reorder_level_number"] = "Düşük stok sayı olmalıdır";
 $lang["items_reorder_level_required"] = "Düşük Stok zorunlu alandır";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "Satış Vergisi 2";
 $lang["items_search_custom_items"] = "Özel Alanları Ara";
 $lang["items_serialized_items"] = "Seri Numaralı Ürünler";
 $lang["items_stock_location"] = "Mağaza Yeri";
-$lang["items_stock_type_sale"] = "Satış stoğu";
-$lang["items_stock_type_warehouse"] = "Depo stoğu";
 $lang["items_successful_adding"] = "Ürün ekleme başarılı";
 $lang["items_successful_bulk_edit"] = "Seçili ürün düzenlendi";
 $lang["items_successful_deleted"] = "Silme başarılı";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "Vergi Yüzdesi";
 $lang["items_unit_price"] = "Satış Fiyatı";
 $lang["items_unit_price_number"] = "Fiyat sayı olmalıdır (9.90)";
 $lang["items_unit_price_required"] = "Satış Fiyatı zorunlu alandır";
-$lang["items_unit_quantity"] = "Birim miktarı";
 $lang["items_upc_database"] = "UPC Veritabanı";
 $lang["items_update"] = "Ürün Güncelle";
 $lang["items_use_inventory_menu"] = "Stok Menüsünü Kullan";

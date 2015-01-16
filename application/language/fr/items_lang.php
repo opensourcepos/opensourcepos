@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Ajoujer/Soustraire à l\'Inventaire";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Autoriser Description Alt";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "Informations sur l\'Item";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "Quantité";
 $lang["items_quantity_number"] = "La Quantité doit etre un nombre";
 $lang["items_quantity_required"] = "La Quantité est requise";
 $lang["items_receiving_quantity"] = "";
-$lang["items_related_number"] = "";
 $lang["items_reorder_level"] = "Niveau de Réapprovisionnement";
 $lang["items_reorder_level_number"] = "Le Niveaux de Réapprovisionnement doit etre un nombre";
 $lang["items_reorder_level_required"] = "Le Niveaux de Réapprovisionnement est requis";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "Taxe Vente 2";
 $lang["items_search_custom_items"] = "Rechercher dans les Champs Choisis";
 $lang["items_serialized_items"] = "Items Serialisés";
 $lang["items_stock_location"] = "";
-$lang["items_stock_type_sale"] = "";
-$lang["items_stock_type_warehouse"] = "";
 $lang["items_successful_adding"] = "Ajout enregistré";
 $lang["items_successful_bulk_edit"] = "Édition réussie";
 $lang["items_successful_deleted"] = "Suppréssion réussie";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "Pourcents(s) de taxes";
 $lang["items_unit_price"] = "Prix au Détail";
 $lang["items_unit_price_number"] = "Le Prix unitaire doit etre un nombre";
 $lang["items_unit_price_required"] = "Le Prix de revente est requis";
-$lang["items_unit_quantity"] = "";
 $lang["items_upc_database"] = "Base de Données UPC";
 $lang["items_update"] = "Éditer Item";
 $lang["items_use_inventory_menu"] = "Utiliser Menu Inv.";

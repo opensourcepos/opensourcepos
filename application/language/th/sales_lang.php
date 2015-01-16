@@ -40,7 +40,6 @@ $lang["sales_find_or_scan_item_or_receipt"] = "ค้นหาสินค้า
 $lang["sales_giftcard"] = "Gift Card";
 $lang["sales_giftcard_number"] = "เลขที่ Gift Card";
 $lang["sales_id"] = "เลขที่ขาย";
-$lang["sales_invoice_enable"] = "";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "";
 $lang["sales_item_insufficient_of_stock"] = "จำนวนสินค้าไม่เพียงพอ";

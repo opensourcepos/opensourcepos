@@ -1,8 +1,7 @@
 <?php 
 
 $lang["items_add_minus"] = "เพิ่ม/ลบ จำนวนสินค้าคงคลัง";
-$lang["items_allow_alt_desciption"] = "มีรายละเอียดเพิ่มเติม";
-$lang["items_allow_alt_description"] = "";
+$lang["items_allow_alt_description"] = "มีรายละเอียดเพิ่มเติม";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "ข้อมูลสินค้ส";
 $lang["items_bulk_edit"] = "แก้ไขความจุ";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "จำนวน";
 $lang["items_quantity_number"] = "จำนวนต้องเป็นตัวเลข";
 $lang["items_quantity_required"] = "จำนวนต้องกรอก";
 $lang["items_receiving_quantity"] = "ยอดรับมา";
-$lang["items_related_number"] = "";
 $lang["items_reorder_level"] = "ระดับการสั่งใหม่";
 $lang["items_reorder_level_number"] = "ระดับการสั่งใหม่ต้องเป็นตัวเลข";
 $lang["items_reorder_level_required"] = "ระดับการสั่งไหม่ต้องกรอก";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "ภาษีขาย 2";
 $lang["items_search_custom_items"] = "ค้นหาในฟิลด์เสริม";
 $lang["items_serialized_items"] = "รหัสสินค้า";
 $lang["items_stock_location"] = "ที่เก็บ";
-$lang["items_stock_type_sale"] = "";
-$lang["items_stock_type_warehouse"] = "";
 $lang["items_successful_adding"] = "เพิ่มสินค้าสำเร็จ";
 $lang["items_successful_bulk_edit"] = "ปรับแต่งสินค้าสำเร็จ";
 $lang["items_successful_deleted"] = "ลบสินค้าสำเร็จ";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "ภาษี(%)";
 $lang["items_unit_price"] = "ราคาขาย";
 $lang["items_unit_price_number"] = "ราคาต่อหน่วยต้องเป็นตัวเลข";
 $lang["items_unit_price_required"] = "ราคาต่อหน่วยต้องกรอก";
-$lang["items_unit_quantity"] = "";
 $lang["items_upc_database"] = "UPC ฐานข้อมูล";
 $lang["items_update"] = "ปรับแต่งสินค้า";
 $lang["items_use_inventory_menu"] = "ใช้เมนูสินค้าคงเหลือ";

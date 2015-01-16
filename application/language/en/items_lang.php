@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Inventory to add/subtract";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Allow Alt Description";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "Item Information";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "Quantity";
 $lang["items_quantity_number"] = "Quantity must be a number";
 $lang["items_quantity_required"] = "Quantity is a required field";
 $lang["items_receiving_quantity"] = "Receiving quantity";
-$lang["items_related_number"] = "";
 $lang["items_reorder_level"] = "Reorder Level";
 $lang["items_reorder_level_number"] = "Reorder level must be a number";
 $lang["items_reorder_level_required"] = "Reorder level is a required field";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "Sales Tax 2";
 $lang["items_search_custom_items"] = "Search Custom Fields";
 $lang["items_serialized_items"] = "Serialized Items";
 $lang["items_stock_location"] = "Stock location";
-$lang["items_stock_type_sale"] = "";
-$lang["items_stock_type_warehouse"] = "";
 $lang["items_successful_adding"] = "You have successfully added item";
 $lang["items_successful_bulk_edit"] = "You have successfully updated the selected items";
 $lang["items_successful_deleted"] = "You have successfully deleted";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "Tax Percent(s)";
 $lang["items_unit_price"] = "Retail Price";
 $lang["items_unit_price_number"] = "Unit price must be a number";
 $lang["items_unit_price_required"] = "Retail Price is a required field";
-$lang["items_unit_quantity"] = "";
 $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "Update Item";
 $lang["items_use_inventory_menu"] = "Use Inv. Menu";

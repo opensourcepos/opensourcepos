@@ -40,7 +40,6 @@ $lang["sales_find_or_scan_item_or_receipt"] = "Encontrar/Escanear Artículo o En
 $lang["sales_giftcard"] = "Tarjeta de Regalo";
 $lang["sales_giftcard_number"] = "Número de Tarjeta de Regalo";
 $lang["sales_id"] = "ID de Venta";
-$lang["sales_invoice_enable"] = "";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "";
 $lang["sales_item_insufficient_of_stock"] = "Hay un número insuficiente de Artículos en existencia";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Penyesuaian Inventori TAMBAH / KURANG (-)";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["items_amazon"] = "Amazon";
 $lang["items_basic_information"] = "Informasi Item";
@@ -55,7 +54,6 @@ $lang["items_quantity"] = "Jumlah";
 $lang["items_quantity_number"] = "Jumlah harus angka";
 $lang["items_quantity_required"] = "Jumlah wajib diisi";
 $lang["items_receiving_quantity"] = "";
-$lang["items_related_number"] = "";
 $lang["items_reorder_level"] = "Batas pesan ulang";
 $lang["items_reorder_level_number"] = "Batas pesan ulang harus angka";
 $lang["items_reorder_level_required"] = "Batas pesan ulang wajib diisi";
@@ -65,8 +63,6 @@ $lang["items_sales_tax_2"] = "Pajak Penjualan2";
 $lang["items_search_custom_items"] = "Cari secara manual";
 $lang["items_serialized_items"] = "Serial Item";
 $lang["items_stock_location"] = "";
-$lang["items_stock_type_sale"] = "";
-$lang["items_stock_type_warehouse"] = "";
 $lang["items_successful_adding"] = "Item Barang telah berhasil ditambahkan";
 $lang["items_successful_bulk_edit"] = "Anda telah berhasil memperbarui item yang dipilih";
 $lang["items_successful_deleted"] = "Item Barang telah berhasil dihapus";
@@ -80,7 +76,6 @@ $lang["items_tax_percents"] = "Tarif Pajak";
 $lang["items_unit_price"] = "Harga Jual";
 $lang["items_unit_price_number"] = "Harga satuan harus angka";
 $lang["items_unit_price_required"] = "Harga Jual wajib diisi";
-$lang["items_unit_quantity"] = "";
 $lang["items_upc_database"] = "Database UPC";
 $lang["items_update"] = "Ubah";
 $lang["items_use_inventory_menu"] = "Gunakan Inv. Menu";
