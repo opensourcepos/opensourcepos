@@ -421,19 +421,23 @@ $(document).ready(function()
 		$("#add_item_form").submit();
     });
 
+	$('#item').focus();
+
     $('#item').blur(function()
     {
         $(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
     });
 
-    $('#item, #customer').focus(function()
+    var clear_fields = function()
     {
         if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . 
         	$this->lang->line('sales_start_typing_customer_name'); ?>"))
         {
             $(this).val('');
         }
-    });
+    };
+
+    $('#item, #customer').focus(clear_fields).click(clear_fields);
 
     $("#customer").autocomplete('<?php echo site_url("sales/customer_search"); ?>',
     {
@@ -523,6 +527,12 @@ $(document).ready(function()
     });
 
 	$("#payment_types").change(check_payment_type_gifcard).ready(check_payment_type_gifcard)
+
+	$("#amount_tendered").keyup(function(event){
+		if(event.which == 13) {
+			$('#add_payment_form').submit();
+		}
+	});
 });
 
 function post_item_form_submit(response)
