@@ -1,3 +1,18 @@
+Version 2.3.1
+-------------
+
++ Extra report permissions (this includes a refactoring of the database model - new grants table)
++ Tax inclusive/exclusive pricing
++ Receivings amount multiplication (can be configured in items section)
++ Customizable sale and receiving numbering
++ Giftcard improvements
++ Fix item import through csv
++ Bug fixes for reports
+
+Version 2.3
+-----------
++ Support for multiple stock locations
+
 Version 2.2.2
 -------------
 + French language added
