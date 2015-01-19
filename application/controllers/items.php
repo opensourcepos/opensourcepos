@@ -330,7 +330,7 @@ class Items extends Secure_area implements iData_controller
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
 
-
+		$new_item = FALSE;
 		if($this->Item->save($item_data,$item_id))
 		{
 			//New item
@@ -339,6 +339,7 @@ class Items extends Secure_area implements iData_controller
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_adding').' '.
 				$item_data['name'],'item_id'=>$item_data['item_id']));
 				$item_id = $item_data['item_id'];
+				$new_item = TRUE;
 			}
 			else //previous item
 			{
@@ -368,7 +369,7 @@ class Items extends Secure_area implements iData_controller
                                         'location_id'=>$location_data['location_id'],
                                         'quantity'=>$updated_quantity);  
                 $item_quantity = $this->Item_quantities->get_item_quantity($item_id, $location_data['location_id']);
-                if ($item_quantity->quantity != $updated_quantity) 
+                if ($item_quantity->quantity != $updated_quantity || $new_item) 
                 {              
 	                $this->Item_quantities->save($location_detail, $item_id, $location_data['location_id']);
 	                
