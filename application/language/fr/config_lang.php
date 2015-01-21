@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "";
 $lang["config_timezone"] = "Fuseau Horaire";
 $lang["config_website"] = "Site-web";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "";
+$lang["config_barcode_text"] = "";

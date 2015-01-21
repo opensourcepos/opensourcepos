@@ -271,7 +271,7 @@ class Items extends Secure_area implements iData_controller
 		{
 			$item_info = $this->Item->get_info($item_id);
 
-			$result[] = array('name' =>$item_info->name, 'id'=> $item_id);
+			$result[] = array('name' =>$item_info->name, 'id'=> $item_id, 'item_number'=> $item_info->item_number);
 		}
 
 		$data['items'] = $result;

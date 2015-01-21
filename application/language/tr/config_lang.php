@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "Mağaza Yeri numarası zorunlu aland�
 $lang["config_tax_included"] = "";
 $lang["config_timezone"] = "Saat Dilimi";
 $lang["config_website"] = "Website";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "";
+$lang["config_barcode_text"] = "";

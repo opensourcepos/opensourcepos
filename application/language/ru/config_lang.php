@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "Часовой пояс";
 $lang["config_website"] = "Веб-сайт";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "";
+$lang["config_barcode_text"] = "";

@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "Stock location number is a required f
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "Timezone";
 $lang["config_website"] = "Website";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "Item Name";
+$lang["config_barcode_text"] = "Barcode Content";

@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "VAT Ingebgrepen";
 $lang["config_timezone"] = "Tijdzone";
 $lang["config_website"] = "Website";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "Productnaam";
+$lang["config_barcode_text"] = "Inhoud Barcode";

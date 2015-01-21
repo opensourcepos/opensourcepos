@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "時區";
 $lang["config_website"] = "網站";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "";
+$lang["config_barcode_text"] = "";

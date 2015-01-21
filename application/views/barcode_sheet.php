@@ -12,7 +12,7 @@ $count = 0;
 foreach($items as $item)
 {
 	$barcode = $item['id'];
-	$text = $item['name'];
+	$text = $this->config->item('barcode_text') === "name" ? $item['name'] : $item['item_number'];
 	
 	if ($count % 2 ==0 and $count!=0)
 	{

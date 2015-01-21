@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "จำเป็นต้องระ�
 $lang["config_tax_included"] = "รวมภาษีแล้ว";
 $lang["config_timezone"] = "โซนเวลา";
 $lang["config_website"] = "เว็บไซต์";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "";
+$lang["config_barcode_text"] = "";

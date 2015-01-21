@@ -40,3 +40,6 @@ $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "Dikenakan Pajak";
 $lang["config_timezone"] = "Zona Waktu";
 $lang["config_website"] = "Situs Perusahaan";
+$lang["config_barcode_number"] = "UPC/EAN/ISBN";
+$lang["config_barcode_name"] = "";
+$lang["config_barcode_text"] = "";
