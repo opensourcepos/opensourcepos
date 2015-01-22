@@ -570,8 +570,19 @@ class Items extends Secure_area implements iData_controller
 							$this->Item_taxes->save($items_taxes_data, $item_data['item_id']);
 						}
                                                 
-                                                // quantities                                                
+                                                // quantities   & inventory Info
+                                                $employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+												$emp_info=$this->Employee->get_info($employee_id);
+                                                $comment ='Qty CSV Imported';
+                                                                                             
                                                 $cols = count($data);
+												
+												// array to store information if location got a quantity
+												$quantity_added_to_location = array();
+												foreach($this->Stock_locations->get_location_ids_as_array() as $loction_id)
+												{
+													$quantity_added_to_location[$location_id] = false;
+												}
                                                 for ($col = 24; $col < $cols; $col = $col + 2)
                                                 {
                                                     $item_quantity_data = array(
@@ -579,26 +590,48 @@ class Items extends Secure_area implements iData_controller
                                                         'location_id' => $data[$col],
                                                         'quantity' => $data[$col + 1],
                                                     );
-                                                    $this->Item_quantities->save($item_quantity_data, $data[$col], $data[$col + 1]);
+                                                    $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
+													
+													$excel_data = array
+																	(
+																	'trans_items'=>$item_data['item_id'],
+																	'trans_user'=>$employee_id,
+																	'trans_comment'=>$comment,
+																	'trans_location'=>$data[$col],
+																	'trans_inventory'=>$data[$col + 1]
+																	);
+													$this->db->insert('inventory',$excel_data);
+
+													$quantity_added_to_location[$data[$col]] = true;
                                                 }
 
-
-
-                                                // Inventory Info
-                                                
-						
-							$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
-							$emp_info=$this->Employee->get_info($employee_id);
-							$comment ='Qty CSV Imported';
-							$excel_data = array
-								(
-								'trans_items'=>$item_data['item_id'],
-								'trans_user'=>$employee_id,
-								'trans_comment'=>$comment,
-								'trans_inventory'=>$data[10]
-								);
-								$this->db->insert('inventory',$excel_data);
-						//------------------------------------------------Ramel
+												/*
+												 * now iterate through the array and check for which location_id no entry into item_quantities was made yet
+												 * those get an entry with quantity as 0.
+												 * unfortunately a bit duplicate code from above...
+												 */
+												foreach($quantity_added_to_location as $location_id => $added)
+												{
+													if($added === false)
+													{
+														$item_quantity_data = array(
+	                                                        'item_id' => $item_data['item_id'],
+	                                                        'location_id' => $location_id,
+	                                                        'quantity' => 0,
+	                                                    );
+	                                                    $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
+														
+														$excel_data = array
+																		(
+																		'trans_items'=>$item_data['item_id'],
+																		'trans_user'=>$employee_id,
+																		'trans_comment'=>$comment,
+																		'trans_location'=>$location_id,
+																		'trans_inventory'=>0
+																		);
+														$this->db->insert('inventory',$excel_data);
+													}
+												}
 					}
 					else//insert or update item failure
 					{
