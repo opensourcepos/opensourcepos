@@ -290,19 +290,19 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('config_barcode_text').':', 'barcode_text',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_barcode_content').':', 'barcode_content',array('class'=>'wide')); ?>
     <div class='form_field'>
     <?php echo form_radio(array(
-				'name'=>'barcode_text',
+				'name'=>'barcode_content',
 				'type'=>'radio',
-				'value'=>'name',
-				'checked'=>$this->config->item('barcode_text') === "name")); ?>
-	<?php echo $this->lang->line('config_barcode_name'); ?>
+				'value'=>'id',
+				'checked'=>$this->config->item('barcode_content') === "id")); ?>
+	<?php echo $this->lang->line('config_barcode_id'); ?>
     <?php echo form_radio(array(
-				'name'=>'barcode_text',
+				'name'=>'barcode_content',
 				'type'=>'radio',
 				'value'=>'number',
-				'checked'=>$this->config->item('barcode_text') === "number")); ?>
+				'checked'=>$this->config->item('barcode_content') === "number")); ?>
 	<?php echo $this->lang->line('config_barcode_number'); ?>
     </div>
 </div>

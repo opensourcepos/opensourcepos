@@ -41,5 +41,5 @@ $lang["config_tax_included"] = "Dikenakan Pajak";
 $lang["config_timezone"] = "Zona Waktu";
 $lang["config_website"] = "Situs Perusahaan";
 $lang["config_barcode_number"] = "UPC/EAN/ISBN";
-$lang["config_barcode_name"] = "";
-$lang["config_barcode_text"] = "";
+$lang["config_barcode_id"] = "Item Id/Name";
+$lang["config_barcode_content"] = "Barcode Content";

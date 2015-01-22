@@ -41,7 +41,7 @@ class Config extends Secure_area
         'tax_included'=>$this->input->post('tax_included'),
 		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
-		'barcode_text'=>$this->input->post('barcode_text'),
+		'barcode_content'=>$this->input->post('barcode_content'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom3_name'=>$this->input->post('custom3_name'),/**GARRISON ADDED 4/20/2013**/

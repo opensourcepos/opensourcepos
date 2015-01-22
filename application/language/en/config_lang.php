@@ -41,5 +41,5 @@ $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "Timezone";
 $lang["config_website"] = "Website";
 $lang["config_barcode_number"] = "UPC/EAN/ISBN";
-$lang["config_barcode_name"] = "Item Name";
-$lang["config_barcode_text"] = "Barcode Content";
+$lang["config_barcode_id"] = "Item Id/Name";
+$lang["config_barcode_content"] = "Barcode Content";

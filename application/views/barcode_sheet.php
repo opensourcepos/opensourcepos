@@ -11,8 +11,8 @@
 $count = 0;
 foreach($items as $item)
 {
-	$barcode = $item['id'];
-	$text = $this->config->item('barcode_text') === "name" ? $item['name'] : $item['item_number'];
+	$barcode = $this->config->item('barcode_content') === "id" ? $item['id'] : $item['item_number'];
+	$text = $this->config->item('barcode_content') === "id" ? $item['name'] : $item['item_number'];
 	
 	if ($count % 2 ==0 and $count!=0)
 	{

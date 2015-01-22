@@ -40,7 +40,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
 ('tax_included', '0'),
-('barcode_content', 'name');
+('barcode_content', 'id');
 
 
 -- --------------------------------------------------------
