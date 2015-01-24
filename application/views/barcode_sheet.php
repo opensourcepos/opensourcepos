@@ -36,7 +36,7 @@ foreach($items as $item)
 	}
 	if (strstr($this->config->item('barcode_labels'), 'name'))
 	{
-		echo ": " . $item['name']; 
+		echo " " . $item['name']; 
 	}
 	echo "</td>";
 	$count++;

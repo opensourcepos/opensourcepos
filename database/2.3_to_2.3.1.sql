@@ -79,7 +79,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('tax_included', '0'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
-('barcode_content', 'id');
+('barcode_content', 'id'),
+('barcode_labels', '');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 
