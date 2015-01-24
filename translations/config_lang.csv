@@ -42,3 +42,7 @@ config_website,Website,Sitio Web,Website,Site-web,網站,Веб-сайт,เว�
 config_barcode_number,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN
 config_barcode_id,Product id/naam,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name
 config_barcode_content,Inhoud Barcode,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content
+config_barcode_labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels
+config_barcode_name,Productnaam,Name,Name,Name,Name,Name,Name,Name,Name
+config_barcode_price,Prijs,Price,Price,Price,Price,Price,Price,Price,Price
+config_barcode_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan

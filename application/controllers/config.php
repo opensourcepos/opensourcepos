@@ -21,6 +21,11 @@ class Config extends Secure_area
 		
 	function save()
 	{
+		$barcode_labels = preg_replace('/^_|barcode_label_|_$/', '', implode('_', array(
+				$this->input->post('barcode_label_name'), 
+				$this->input->post('barcode_label_price'), 
+				$this->input->post('barcode_label_company')
+		)));
 		$batch_save_data=array(
 		'company'=>$this->input->post('company'),
 		'address'=>$this->input->post('address'),
@@ -41,6 +46,7 @@ class Config extends Secure_area
         'tax_included'=>$this->input->post('tax_included'),
 		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
+		'barcode_labels'=>$barcode_labels,
 		'barcode_content'=>$this->input->post('barcode_content'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
@@ -61,21 +67,26 @@ class Config extends Secure_area
             array_push($stock_locations_trimmed, trim($location, ' '));
         }        
         $current_locations = $this->Stock_locations->concat_location_names()->location_names;
-        if ($this->input->post('stock_locations') != $current_locations) 
+        if ($this->input->post('stock_locations') != $current_locations)
         {
-        	$this->load->library('sale_lib');
-			$this->sale_lib->clear_sale_location();
-			$this->sale_lib->clear_all();
-			$this->load->library('receiving_lib');
-			$this->receiving_lib->clear_stock_source();
-			$this->receiving_lib->clear_stock_destination();
-			$this->receiving_lib->clear_all();
+	        $this->_clear_session_state();
         }
         
 		if( $this->Appconfig->batch_save( $batch_save_data ) && $this->Stock_locations->array_save($stock_locations_trimmed))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
 		}
+	}
+	
+	function _clear_session_state()
+	{
+		$this->load->library('sale_lib');
+		$this->sale_lib->clear_sale_location();
+		$this->sale_lib->clear_all();
+		$this->load->library('receiving_lib');
+		$this->receiving_lib->clear_stock_source();
+		$this->receiving_lib->clear_stock_destination();
+		$this->receiving_lib->clear_all();
 	}
 }
 ?>

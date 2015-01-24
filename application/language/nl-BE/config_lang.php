@@ -43,3 +43,7 @@ $lang["config_website"] = "Website";
 $lang["config_barcode_number"] = "UPC/EAN/ISBN";
 $lang["config_barcode_id"] = "Product id/naam";
 $lang["config_barcode_content"] = "Inhoud Barcode";
+$lang["config_barcode_labels"] = "Barcode Labels";
+$lang["config_barcode_name"] = "Productnaam";
+$lang["config_barcode_price"] = "Prijs";
+$lang["config_barcode_company"] = "Bedrijfsnaam";

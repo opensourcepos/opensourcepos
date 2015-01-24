@@ -294,16 +294,35 @@ echo form_open('config/save/',array('id'=>'config_form'));
     <div class='form_field'>
     <?php echo form_radio(array(
 				'name'=>'barcode_content',
-				'type'=>'radio',
 				'value'=>'id',
 				'checked'=>$this->config->item('barcode_content') === "id")); ?>
 	<?php echo $this->lang->line('config_barcode_id'); ?>
     <?php echo form_radio(array(
 				'name'=>'barcode_content',
-				'type'=>'radio',
 				'value'=>'number',
 				'checked'=>$this->config->item('barcode_content') === "number")); ?>
 	<?php echo $this->lang->line('config_barcode_number'); ?>
+    </div>
+</div>
+
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_barcode_labels').':', 'barcode_labels',array('class'=>'wide')); ?>
+    <div class='form_field'>
+     <?php echo form_checkbox(array(
+				'name'=>'barcode_label_company',
+     			'value'=>'barcode_label_company',
+				'checked'=>strstr($this->config->item('barcode_labels'), 'company'))); ?>
+	<?php echo $this->lang->line('config_barcode_company'); ?>
+    <?php echo form_checkbox(array(
+				'name'=>'barcode_label_name',
+    			'value'=>'barcode_label_name',
+				'checked'=>strstr($this->config->item('barcode_labels'), 'name'))); ?>
+	<?php echo $this->lang->line('config_barcode_name'); ?>
+    <?php echo form_checkbox(array(
+				'name'=>'barcode_label_price',
+    			'value'=>'barcode_label_price',
+				'checked'=>strstr($this->config->item('barcode_labels'), 'price'))); ?>
+	<?php echo $this->lang->line('config_barcode_price'); ?>
     </div>
 </div>
 
