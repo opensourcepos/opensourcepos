@@ -47,5 +47,20 @@ class Item_quantities extends CI_Model
         }          
         return $result;   
     }
+	
+	/*
+	 * changes to quantity of an item according to the given amount.
+	 * if $quantity_change is negative, it will be subtracted,
+	 * if it is positive, it will be added to the current quantity
+	 */
+	function change_quantity($item_id, $location_id, $quantity_change)
+	{
+		$quantity_old = $this->get_item_quantity($item_id, $location_id);
+		$quantity_new = $quantity_old->quantity + intval($quantity_change);
+		$location_detail = array('item_id'=>$item_id,
+									'location_id'=>$location_id,
+									'quantity'=>$quantity_new);
+		return $this->save($location_detail,$item_id,$location_id);
+	}
 }
 ?>
