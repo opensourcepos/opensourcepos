@@ -65,6 +65,7 @@ class Items extends Secure_area implements iData_controller
 		$stock_location=$this->item_lib->get_item_location();
 		$data_rows=get_items_manage_table_data_rows($this->Item->search($search,$stock_location),$this);
 		echo $data_rows;
+		$this->_remove_duplicate_cookies();
 	}
 
 	/*
@@ -203,6 +204,7 @@ class Items extends Secure_area implements iData_controller
 		$data_row=get_item_data_row($item_info,$this);
 		
 		echo $data_row;
+		$this->_remove_duplicate_cookies();
 	}
 
 	function view($item_id=-1)
