@@ -585,6 +585,41 @@ class Item extends CI_Model
 
 		return $this->db->get();
 	}
+	
+	/*
+	 * changes the cost price of a given item
+	 * calculates the average price between received items and items on stock
+	 * $item_id : the item which price should be changed
+	 * $items_received : the amount of new items received
+	 * $new_price : the cost-price for the newly received items
+	 * $old_price (optional) : the current-cost-price
+	 * 
+	 * used in receiving-process to update cost-price if changed
+	 * caution: must be used there before item_quantities gets updated, otherwise average price is wrong!
+	 * 
+	 */
+	function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
+	{
+		if($old_price === null)
+		{
+			$item_info = $this->get_info($item['item_id']);
+			$old_price = $item_info->cost_price;
+		}
+
+		$this->db->from('item_quantities');
+		$this->db->select_sum('quantity');
+        $this->db->where('item_id',$item_id);
+		$this->db->join('stock_locations','stock_locations.location_id=item_quantities.location_id');
+        $this->db->where('stock_locations.deleted',0);
+		$old_total_quantity = $this->db->get()->row()->quantity;
+
+		$total_quantity = $old_total_quantity + $items_received;
+		$average_price = ($items_received * $new_price + $old_total_quantity * $old_price)/$total_quantity;
+
+		$data = array('cost_price' => $average_price);
+		
+		return $this->save($data, $item_id);
+	}
     
 }
 ?>
