@@ -345,8 +345,9 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('suppliers', 'suppliers');
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
-('items_stock', 'items', 1);
-
+('items_stock', 'items', 1),
+('sales_stock', 'sales', 1),
+('receivings_stock', 'receivings', 1);
 
 -- --------------------------------------------------------
 
@@ -387,6 +388,8 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('sales', 1),
 ('config', 1),
 ('items_stock', 1),
+('sales_stock', 1),
+('receivings_stock', 1),
 ('suppliers', 1);
 
 --

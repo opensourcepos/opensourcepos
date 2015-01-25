@@ -37,7 +37,14 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('suppliers', 'suppliers');
 
 -- add permissions for existing stock locations
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) (SELECT CONCAT('items_', location_name), 'items', location_id FROM ospos_stock_locations);
+INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
+(SELECT CONCAT('items_', location_name), 'items', location_id FROM ospos_stock_locations);
+
+INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
+(SELECT CONCAT('sales_', location_name), 'sales', location_id FROM ospos_stock_locations);
+
+INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
+(SELECT CONCAT('receivings_', location_name), 'receivings', location_id FROM ospos_stock_locations);
 
 CREATE TABLE `ospos_grants` (
   `permission_id` varchar(255) NOT NULL,
@@ -72,6 +79,8 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('sales', 1),
 ('config', 1),
 ('items_stock', 1),
+('sales_stock', 1),
+('receivings_stock', 1),
 ('suppliers', 1);
 
 -- add config options for tax inclusive sales

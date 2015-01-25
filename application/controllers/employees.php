@@ -69,7 +69,7 @@ class Employees extends Person_controller
 		'country'=>$this->input->post('country'),
 		'comments'=>$this->input->post('comments')
 		);
-		$grants_data = $this->input->post("grants")!=false ? $this->input->post("grants"):array();
+		$grants_data = $this->input->post("grants")!=FALSE ? $this->input->post("grants"):array();
 		
 		//Password has been changed OR first time password set
 		if($this->input->post('password')!='')
