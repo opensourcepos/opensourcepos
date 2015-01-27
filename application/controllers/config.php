@@ -10,13 +10,8 @@ class Config extends Secure_area
 	function index()
 	{
 		$location_names = array();
-		$locations = $this->Stock_locations->get_location_names();
-		foreach($locations->result_array() as $array) 
-		{
-			array_push($location_names, $array['location_name']);
-		}
-		$data['location_names'] = implode(',', $location_names);
-		$this->load->view("config", $data);
+		$stock_locations = $this->Stock_locations->get_all()->result_array();
+		$this->load->view("config", array('stock_locations' => $stock_locations));
 	}
 		
 	function save()
@@ -60,23 +55,39 @@ class Config extends Secure_area
 		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
 		);
 		
-		$stock_locations = explode( ',', $this->input->post('stock_location'));
-        $stock_locations_trimmed=array();
-        foreach($stock_locations as $location)
+		$deleted_locations = $this->Stock_locations->get_allowed_locations();
+		foreach($this->input->post() as $key => $value) 
+		{
+        	if (strstr($key, 'stock_location'))
+        	{
+      			$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+      			unset($deleted_locations[$location_id]);
+        		// save or update
+      			$location_data = array('location_name' => $value);
+        		if ($this->Stock_locations->save($location_data, $location_id))
+        		{
+        			$this->_clear_session_state();
+        		}
+        	}
+		}
+        // all locations not available in post will be deleted now
+        foreach ($deleted_locations as $location_id => $location_name)
         {
-            array_push($stock_locations_trimmed, trim($location, ' '));
-        }        
-        $current_locations = $this->Stock_locations->concat_location_names()->location_names;
-        if ($this->input->post('stock_locations') != $current_locations)
-        {
-	        $this->_clear_session_state();
+        	$this->Stock_locations->delete($location_id);
         }
         
-		if( $this->Appconfig->batch_save( $batch_save_data ) && $this->Stock_locations->array_save($stock_locations_trimmed))
+		if( $this->Appconfig->batch_save( $batch_save_data ))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
 		}
+		$this->_remove_duplicate_cookies();	
 	}
+	
+	function stock_locations() 
+	{
+		$stock_locations = $this->Stock_locations->get_all()->result_array();
+		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
+	} 
 	
 	function _clear_session_state()
 	{
