@@ -258,20 +258,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
-<?php $i = 0; ?>
-<?php foreach($allowed_locations as $location_id => $location_name ) { ?>
-<div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('config_stock_location').' ' .++$i. ':', 'stock_location_'.$i ,array('class'=>'required wide')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-        'name'=>'stock_location_'.$location_id,
-        'id'=>'stock_location_'.$location_id,
-        'value'=>$location_name)); ?>
-    </div>
-    <img class="add_stock_location" src="<?php echo base_url('images/plus.png'); ?>" />
-    <img class="remove_stock_location" src="<?php echo base_url('images/minus.png'); ?>" />
-</div>
-<?php } ?>
+<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
 
 <div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_recv_invoice_format').':', 'recv_invoice_format',array('class'=>'wide')); ?>
@@ -424,7 +411,7 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	var location_count = <?php echo sizeof($allowed_locations); ?>;
+	var location_count = <?php echo sizeof($stock_locations); ?>;
 
 	var hide_show_remove = function() 
 	{
@@ -448,7 +435,7 @@ $(document).ready(function()
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'stock_location_' + ++id;
 		$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count + ": ").attr('for', new_block_id);
-		$(new_block).find('input').attr('id', new_block_id).attr('name', new_block_id);
+		$(new_block).find('input').attr('id', new_block_id).attr('name', new_block_id).attr('class', new_block_id).val('');
 		$('.add_stock_location', new_block).click(add_stock_location);
 		$('.remove_stock_location', new_block).click(remove_stock_location);
 		hide_show_remove();
@@ -459,9 +446,27 @@ $(document).ready(function()
 		$(this).parent().remove();
 		hide_show_remove();
 	};
+
+	var init_add_remove_locations = function() 
+	{
+		$('.add_stock_location').click(add_stock_location);
+		$('.remove_stock_location').click(remove_stock_location);
+	};
+	init_add_remove_locations();
 	
-	$('.add_stock_location').click(add_stock_location);
-	$('.remove_stock_location').click(remove_stock_location);
+	// run validator once for all fields
+	var validator_name = $("input[name*='stock_location']:first").attr('class');
+	$.validator.addMethod(validator_name , function(value, element) 
+	{
+		var result = true;
+		var locations = {};
+		$("input[name*='stock_location']").each(function() {
+			var content = $(this).val();
+			result &= content && !locations[content];
+			locations[content] = content;
+		});
+		return result;
+    }, "<?php echo $this->lang->line('config_stock_location_required'); ?>");
 	
 	$('#config_form').validate({
 		submitHandler:function(form)
@@ -477,6 +482,7 @@ $(document).ready(function()
 				{
 					set_feedback(response.message,'error_message',true);		
 				}
+				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
 			},
 			dataType:'json'
 		});
@@ -496,8 +502,9 @@ $(document).ready(function()
     		},
     		email:"email",
     		return_policy: "required",
-    		stock_location:"required"
-    	 		
+    		stock_location: {
+				stock_location: true
+    		}
    		},
 		messages: 
 		{
@@ -510,9 +517,7 @@ $(document).ready(function()
     			number:"<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
     		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
-     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>"         
-	
+     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>"	
 		}
 	});
 });
