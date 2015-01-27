@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "รหัสใบเสร็จ";
 $lang["config_saved_successfully"] = "องค์ประกอบร้านค้าบันทึกเรียบร้อย";
 $lang["config_saved_unsuccessfully"] = "องค์ประกอบร้านค้าบันทึกล้มเหลว";
 $lang["config_stock_location"] = "สถานที่เก็บ";
+$lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_required"] = "จำเป็นต้องระบุสถานที่เก็บ";
 $lang["config_tax_included"] = "รวมภาษีแล้ว";
 $lang["config_timezone"] = "โซนเวลา";

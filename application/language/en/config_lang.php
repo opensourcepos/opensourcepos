@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "Sales Invoice Format";
 $lang["config_saved_successfully"] = "Configuration saved successfully";
 $lang["config_saved_unsuccessfully"] = "Configuration saved unsuccessfully";
 $lang["config_stock_location"] = "Stock location";
+$lang["config_stock_location_duplicate"] = "Please use an unique location name";
 $lang["config_stock_location_required"] = "Stock location number is a required field";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "Timezone";

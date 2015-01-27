@@ -34,8 +34,9 @@ config_sales_invoice_enable,,,Enable Sales Invoice#,,,,หมายเลขใ�
 config_sales_invoice_format,,,Sales Invoice Format,,,,รหัสใบเสร็จ,,
 config_saved_successfully,Configuratie werd bewaard,Configuración guardada satisfactoriamente,Configuration saved successfully,Configuration sauvegardée,組態設置儲存成功,Конфигурация успешно сохранена,องค์ประกอบร้านค้าบันทึกเรียบร้อย,Yapılandırma kaydedildi,Konfigurasi berhasil disimpan
 config_saved_unsuccessfully,Configuratie kon niet worden bewaard,Configuración no guardada,Configuration saved unsuccessfully,Échec de sauvegarde de configuration,組態設置儲存失敗,Конфигурация сохраненная безуспешно,องค์ประกอบร้านค้าบันทึกล้มเหลว,Yapılandırma kaydedilemedi,Konfigurasi tidak berhasil disimpan
-config_stock_location,,,Stock location,,,,สถานที่เก็บ,Mağaza Yeri,
-config_stock_location_required,,,Stock location number is a required field,,,,จำเป็นต้องระบุสถานที่เก็บ,Mağaza Yeri numarası zorunlu alandır,
+config_stock_location,Stock locatie,,Stock location,,,,สถานที่เก็บ,Mağaza Yeri,
+config_stock_location_duplicate,Vul een unieke naam in,,Please use an unique location name,,,,,,
+config_stock_location_required,Naam van de stock locatie is een verplicht veld,,Stock location number is a required field,,,,จำเป็นต้องระบุสถานที่เก็บ,Mağaza Yeri numarası zorunlu alandır,
 config_tax_included,VAT Ingebgrepen,Impuestos incluidos,Tax Included,,Tax Included,Tax Included,รวมภาษีแล้ว,,Dikenakan Pajak
 config_timezone,Tijdzone,Zona Horaria,Timezone,Fuseau Horaire,時區,Часовой пояс,โซนเวลา,Saat Dilimi,Zona Waktu
 config_website,Website,Sitio Web,Website,Site-web,網站,Веб-сайт,เว็บไซต์,Website,Situs Perusahaan

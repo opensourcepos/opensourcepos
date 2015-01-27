@@ -9,7 +9,7 @@
 	    <?php echo form_input(array(
 	        'name'=>'stock_location_'.$location_id,
 	        'id'=>'stock_location_'.$location_id,
-	    	'class'=>'stock_location_'.$location_id,
+	    	'class'=>'stock_location required',
 	        'value'=>$location_name)); ?>
 	    </div>
 	    <img class="add_stock_location" src="<?php echo base_url('images/plus.png'); ?>" />

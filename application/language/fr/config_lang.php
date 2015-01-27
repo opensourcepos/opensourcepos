@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "";
 $lang["config_saved_successfully"] = "Configuration sauvegardée";
 $lang["config_saved_unsuccessfully"] = "Échec de sauvegarde de configuration";
 $lang["config_stock_location"] = "";
+$lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "";
 $lang["config_timezone"] = "Fuseau Horaire";

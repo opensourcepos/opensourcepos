@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "";
 $lang["config_saved_successfully"] = "Конфигурация успешно сохранена";
 $lang["config_saved_unsuccessfully"] = "Конфигурация сохраненная безуспешно";
 $lang["config_stock_location"] = "";
+$lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "Часовой пояс";

@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "";
 $lang["config_saved_successfully"] = "組態設置儲存成功";
 $lang["config_saved_unsuccessfully"] = "組態設置儲存失敗";
 $lang["config_stock_location"] = "";
+$lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_timezone"] = "時區";

@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "";
 $lang["config_saved_successfully"] = "Konfigurasi berhasil disimpan";
 $lang["config_saved_unsuccessfully"] = "Konfigurasi tidak berhasil disimpan";
 $lang["config_stock_location"] = "";
+$lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_required"] = "";
 $lang["config_tax_included"] = "Dikenakan Pajak";
 $lang["config_timezone"] = "Zona Waktu";

@@ -36,6 +36,7 @@ $lang["config_sales_invoice_format"] = "";
 $lang["config_saved_successfully"] = "Yapılandırma kaydedildi";
 $lang["config_saved_unsuccessfully"] = "Yapılandırma kaydedilemedi";
 $lang["config_stock_location"] = "Mağaza Yeri";
+$lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_required"] = "Mağaza Yeri numarası zorunlu alandır";
 $lang["config_tax_included"] = "";
 $lang["config_timezone"] = "Saat Dilimi";

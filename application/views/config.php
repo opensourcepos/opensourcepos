@@ -483,7 +483,7 @@ $(document).ready(function()
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'stock_location_' + ++id;
 		$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count + ": ").attr('for', new_block_id);
-		$(new_block).find('input').attr('id', new_block_id).attr('name', new_block_id).attr('class', new_block_id).val('');
+		$(new_block).find('input').attr('id', new_block_id).attr('name', new_block_id).val('');
 		$('.add_stock_location', new_block).click(add_stock_location);
 		$('.remove_stock_location', new_block).click(remove_stock_location);
 		hide_show_remove();
@@ -501,20 +501,17 @@ $(document).ready(function()
 		$('.remove_stock_location').click(remove_stock_location);
 	};
 	init_add_remove_locations();
-	
+
+	var duplicate_found = false;
 	// run validator once for all fields
-	var validator_name = $("input[name*='stock_location']:first").attr('class');
-	$.validator.addMethod(validator_name , function(value, element) 
+	$.validator.addMethod('stock_location' , function(value, element) 
 	{
-		var result = true;
-		var locations = {};
+		var value_count = 0;
 		$("input[name*='stock_location']").each(function() {
-			var content = $(this).val();
-			result &= content && !locations[content];
-			locations[content] = content;
+			value_count = $(this).val() == value ? value_count + 1 : value_count; 
 		});
-		return result;
-    }, "<?php echo $this->lang->line('config_stock_location_required'); ?>");
+		return value_count < 2;
+    }, "<?php echo $this->lang->line('config_stock_location_duplicate'); ?>");
 	
 	$('#config_form').validate({
 		submitHandler:function(form)
@@ -551,6 +548,7 @@ $(document).ready(function()
     		email:"email",
     		return_policy: "required",
     		stock_location: {
+        		required:true,
 				stock_location: true
     		}
    		},
@@ -565,7 +563,8 @@ $(document).ready(function()
     			number:"<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
     		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>"	
+     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
+     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>" 
 		}
 	});
 });
