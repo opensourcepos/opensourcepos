@@ -20,3 +20,5 @@ If you like the project, and you are making money out of it on a daily basis, th
 
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
+
+Or send some coins to **19kwPpAwrUTxbNEs5D6cRR1k4mf5HNa4v2**
