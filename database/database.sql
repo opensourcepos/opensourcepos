@@ -737,8 +737,8 @@ ALTER TABLE `ospos_permissions`
 -- Constraints for table `ospos_grants`
 --
 ALTER TABLE `ospos_grants`
-  ADD CONSTRAINT `ospos_grants_ibfk_1` foreign key (`permission_id`) references `ospos_permissions` (`permission_id`),
-  ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`);
+  ADD CONSTRAINT `ospos_grants_ibfk_1` foreign key (`permission_id`) references `ospos_permissions` (`permission_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `ospos_receivings`

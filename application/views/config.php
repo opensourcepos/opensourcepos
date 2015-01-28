@@ -259,7 +259,9 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
-<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
+<div id="stock_locations">
+	<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
+</div>
 
 <div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_sales_invoice_format').':', 'sales_invoice_format',array('class'=>'wide')); ?>
