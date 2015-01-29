@@ -161,7 +161,8 @@ $(document).ready(function()
 			{
  				equalTo: "#password"
 			},
-    		email: "email", "grants[]" : {
+    		email: "email", 
+    		"grants[]" : {
         		required : function(element) {
 					var checked = false;
             		$("ul#permission_list > li > input:checkbox").each(function() 

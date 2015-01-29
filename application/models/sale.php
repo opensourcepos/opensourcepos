@@ -185,7 +185,7 @@ class Sale extends CI_Model
 						'trans_user'=>$employee_id,
 						'trans_comment'=>'Deleting sale ' . $sale_id,
 						'trans_location'=>$item['item_location'],
-						'trans_inventory'=>$item['quantity_purchased']*-1
+						'trans_inventory'=>$item['quantity_purchased']
 	
 				);
 				// update inventory
@@ -194,7 +194,7 @@ class Sale extends CI_Model
 				// update quantities
 				$this->Item_quantities->change_quantity($item['item_id'],
 														$item['item_location'],
-														$item['quantity_purchased']*-1);
+														$item['quantity_purchased']);
 			}
 		}
 		// delete all items

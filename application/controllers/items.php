@@ -25,6 +25,7 @@ class Items extends Secure_area implements iData_controller
 		$data['form_width']=$this->get_form_width();
 		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $stock_location, $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
 		$this->load->view('items/manage',$data);
+		$this->_remove_duplicate_cookies();
 	}
 
 	function refresh()
@@ -49,6 +50,7 @@ class Items extends Secure_area implements iData_controller
 		$data['form_width']=$this->get_form_width(); 
 		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($stock_location,$is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
 		$this->load->view('items/manage',$data);
+		$this->_remove_duplicate_cookies();
 	}
 
 	function find_item_info()
@@ -63,6 +65,7 @@ class Items extends Secure_area implements iData_controller
 		$stock_location=$this->item_lib->get_item_location();
 		$data_rows=get_items_manage_table_data_rows($this->Item->search($search,$stock_location),$this);
 		echo $data_rows;
+		$this->_remove_duplicate_cookies();
 	}
 
 	/*
@@ -201,6 +204,7 @@ class Items extends Secure_area implements iData_controller
 		$data_row=get_item_data_row($item_info,$this);
 		
 		echo $data_row;
+		$this->_remove_duplicate_cookies();
 	}
 
 	function view($item_id=-1)
@@ -271,7 +275,7 @@ class Items extends Secure_area implements iData_controller
 		{
 			$item_info = $this->Item->get_info($item_id);
 
-			$result[] = array('name' =>$item_info->name, 'id'=> $item_id);
+			$result[] = array('name' =>$item_info->name, 'id'=> $item_id, 'item_number'=> $item_info->item_number, 'unit_price'=>$item_info->unit_price);
 		}
 
 		$data['items'] = $result;

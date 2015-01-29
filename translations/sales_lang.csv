@@ -4,7 +4,6 @@ sales_amount_due,Te betalen,Debe,Amount Due,Somme Due,Amount Due,Amount Due,,Kal
 sales_amount_tendered,Ontvangen bedrag,Cantidad Recibida,Amount Tendered,Somme,已收帳款,предложенная сумма,จำนวนประมูล,Ödenen Tutar,Nilai Pembayaran
 sales_basic_information,Ticket informatie,información sobre las entradas,Sale information,Information de Vente,Sale information,информацию о билетах,,Satış bilgisi,Sale information
 sales_cancel_sale,Annuleer,Cancelar Venta,Cancel Sale,Annuler la Vente,取消銷售,Отменить продажу,ยกเลิกการขาย,İptal Et,Batal Jual
-sales_cannot_be_deleted,,,Sale(s) could not be deleted,,,,,,
 sales_cash,Contant,Efectivo,Cash,Cash,現金,наличные деньги,เงินสด,Nakit,Tunai
 sales_change_due,Wisselgeld terug,Cambio,Change Due,Reste,更改到期日,сдача должное,เงินทอน,Para Üstü,Kembalian Uang
 sales_check,Waardebon,Cheque,Check,Cheque,支票,банковский чек,เช็ก,Çek,Cek
@@ -26,7 +25,6 @@ sales_delete_successful,De geselecteerde aanko(o)p(en) werden verwijderd,Has bor
 sales_delete_unsuccessful,De geselecteerde aankopen konden niet worden verwijderd.,No he podido borrar la venta satisfactoriamente,You have unsuccessfully deleted a sale,Échec de suppression,銷售資料刪除失敗,Вы безуспешно удален продаже,คุณลบการขายไม่สำเร็จ,Satışı silemediniz,Transaksi Penjualan tidak berhasil dihapus
 sales_description_abbrv,Omschr.,Desc,Desc,Desc,倒序,описание,Desc,Tanım,Deskripsi
 sales_discount,%,Desc %,Disc %,% Remise,折扣 %,скидка %,ส่วนลด %,İndirim %,Diskon %
-sales_discount_included,,,,,,,,% İndirim,
 sales_discount_short,%,%,%,%,%,%,,%,%
 sales_edit,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
 sales_edit_item,Bewaar,Editar Artículo,Edit Item,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
@@ -39,10 +37,9 @@ sales_find_or_scan_item_or_receipt,Zoek/Scan Product of Ticket,Encontrar/Escanea
 sales_giftcard,Cadeaubon,Tarjeta de Regalo,Gift Card,Carte Cadeau,禮金券,Подарочная карта,Gift Card,Hediye Çeki,Gift Card
 sales_giftcard_number,Cadeaubon nummer,Número de Tarjeta de Regalo,Gift Card Number,Numéro de Carte cadeau,禮金券編號,Номер подарочных карт,เลขที่ Gift Card,Hediye Çeki No,Nomor Gift Card
 sales_id,Nummer Verkoop ,ID de Venta,Sale ID,ID Vente,銷售編號,Номер Продажы,เลขที่ขาย,Satış No,ID Penjualan
-sales_invoice_number,,,Invoice #,,,,,,
-sales_invoice_number_duplicate,,,Please enter an unique invoice number,,,,,,
-sales_item_insufficient_of_stock,,Hay un número insuficiente de Artículos en existencia,Item is Insufficient of Stock,Stock top faible,產品庫存不足,Товар недостаточно на складе,จำนวนสินค้าไม่เพียงพอ,Ürün Stoğu Yetersiz,Stok Item tidak mencukupi
-sales_item_insufficient_of_stockfi,Product is niet meer in voorraad,,,,,,,,
+sales_invoice_number,,Invoice #,Invoice #,Invoice #,,,,,
+sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique invoice number,Please enter an unique invoice number,,,,,,
+sales_item_insufficient_of_stock,Product is niet meer in voorraad,Hay un número insuficiente de Artículos en existencia,Item is Insufficient of Stock,Stock top faible,產品庫存不足,Товар недостаточно на складе,จำนวนสินค้าไม่เพียงพอ,Ürün Stoğu Yetersiz,Stok Item tidak mencukupi
 sales_item_name,Naam,Nombre del Artículo,Item Name,Nom,產品名稱,Название товара,ชื่อสินค้า,Ürün Adı,Nama Item 
 sales_item_number,Product #,UPC/EAN/ISBN,Item #,# Item,產品 #,Номер товара,สินค้า #,Ürün No,Item #
 sales_item_out_of_stock,Product is niet meer in voorraad,El artículo está agotado,Item is Out of Stock,Stock épuisé,產品缺貨,Товар распродано,สินค้าจำหน่ายหมด,Ürün Stokta Yok,Item tidak ada stok
@@ -52,7 +49,7 @@ sales_must_enter_numeric_giftcard,Er moet een geldige code worden ingevuld voor 
 sales_new_customer,Nieuwe klant,Cliente Nuevo,New Customer,Nouveau Client,新客戶,Новый клиент,ลูกค้าใหม่,Yeni Müşteri,Pelanggan Baru
 sales_new_item,Nieuw Product,Artículo Nuevo,New Item,Nouvel Élément,新增產品,Новый Товар,สินค้าใหม่,Yeni Ürün,Item Baru
 sales_no_items_in_cart,Er zijn geen aankopen geselecteerd,No hay artículos en el carrito,There are no items in the cart,Il n\'y a rien dans votre panier,購物車中沒有任何產品,Там нет товаров в корзине,ไม่พบสินค้าในตระกร้า,Sepette Ürün Yok,Tidak ada Item dalam Keranjang Belanja
-sales_one_or_multiple,,,sale(s),,,,,,
+sales_one_or_multiple,aankopen verwijderd,,sale(s),,,,,,
 sales_payment,Betaalmethode,Tipo de Pago,Payment Type,Type Paiement,付款方式,Вид оплаты,รูปแบบชำระเงิน,Ödeme Türü,Type Pembayaran
 sales_payment_amount,Bedrag,Cantidad,Amount,Somme,Amount,количество,,Tutar,Amount
 sales_payment_not_cover_total,Betaalde hoeveelheid is onvoldoende,La Cantidad Recibida no cubre el pago total,Payment Amount does not cover Total,Le Paiement ne couvre pas le Total,付款金額不足,оплачиваемая сумма недостаточно, ปริมาณการจ่ายที่ไม่เพียงพอกะยอดรวม,Ödemeler toplam tutarı karşılamıyor,Jumlah pembayaran tidak mencakup Total
@@ -73,9 +70,9 @@ sales_select_customer,Selecteer Klant (Optioneel),Seleccionar Cliente (Opcional)
 sales_serial,Nummer,Serial,Serial,Serie,序號,серийный номер,Serial,Seri,Serial
 sales_start_typing_customer_name,Typ naam klant...,Empieza a escribir el cliente...,Start Typing customer\'s name...,Commencez à saisir le nom du client...,開始輸入客戶的名字,Начните печатать название клиента...,เริ่มต้นพิมพ์ชื่อลูกค้า...,Müşteri Adı...,Ketik Nama Pelanggan...
 sales_start_typing_item_name,Typ naam product of barcode...,Empieza a escribir o escanea el código de barras...,Start Typing item\'s name or scan barcode...,Commencez à saisir le nom de l\'item ou scannez le code-barre...,開始輸入產品名或掃描條碼...,Начните печатать название товара или сканировайте штрих-кода...,เริ่มต้นพิมพ์ชื่อสินค้า หรือ สแกนบาร์โค๊ด...,Ürün adı yazın yada barkod okutun...,Ketik Nama Barang atau Scan Barcode...
-sales_stock_location,,,Stock location,,,,,Stok yeri,
+sales_stock_location,Stock locatie,,Stock location,,,,,Stok yeri,
 sales_sub_total,Subtotaal excl. VAT,Subtotal,Sub Total,Sous-Total,小計,промежуточный итог,ยอดรวมหักภาษี ,Ara Toplam,Sub Total
-sales_successfully_deleted,,La Venta ha sido borrada satisfactoriamente,You have successfully deleted,Vente supprimée,銷售資料成功刪除,продажи успешно удален,ลบการขายสมยูรณ์,Satış silindi,Transaksi Penjualan berhasil dihapus
+sales_successfully_deleted,Uw aankoop werd verwijded,La Venta ha sido borrada satisfactoriamente,You have successfully deleted,Vente supprimée,銷售資料成功刪除,продажи успешно удален,ลบการขายสมยูรณ์,Satış silindi,Transaksi Penjualan berhasil dihapus
 sales_successfully_suspended_sale,Uw aankoop werd met sucess bewaard,La venta ha sido suspendida satisfactoriamente,Your sale has been successfully suspended,Vente suspendue,本銷售資料已經成功暫停,Ваши продажи успешно приостановлена,การขายของคุณถูกระงับเรียบร้อย,Satış askıya alındı,Penjualan anda telah berhasil ditangguhkan
 sales_successfully_updated,Wijzigingen bewaard voor ticket,La venta ha sido actualizada satisfactoriamente,Sale successfully updated,Vente éditée,銷售資料成功更新,Продажа успешно обновлен,อัพเดทการขายสมบูรณ์,Satış düzenlendi,Penjualan berhasil diperbarui
 sales_suspend_sale,Bewaar aankoop,Suspender Venta,Suspend Sale,Suspendre la Vente,暫停銷售,Приостановить продажи,ระงับการขายชั่วคราว,Satışı Askıya Al,Tangguhkan
@@ -86,7 +83,7 @@ sales_tax_percent,VAT %,% de Impuesto,Tax %,% Taxe,稅率 %,Налоговые %
 sales_total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
 sales_transaction_failed,Transactie mislukt,La transacción de venta falló,Sales Transaction Failed,Échec de Transaction de vente,銷售交易失敗,Транзакция не удалось,การดำเนินการขายล้มเหลว,Satış işlemi hatası,Transaksi Penjualan Salah
 sales_unable_to_add_item,Onmogelijk om product toe te voegen,No se puede agregar el artículo a la venta,Unable to add item to sale,Erreur d\'ajout à la vente,無法增加出售產品,Невозможно добавить товар продажи,ไม่สามารถเพิ่มสินค้าได้,Ürün satışa eklenemedi,Tidak dapat menambahkan item dengan penjualan
-sales_unsuccessfully_deleted,,Ha fallado la eliminación de la Venta,,Échec de suppression,銷售資料刪除失敗,продажи безуспешно удален,ลบการขายไม่สมยูรณ์,Satış silinemedi,Transaksi Penjualan tidak berhasil dihapus
+sales_unsuccessfully_deleted,De aankoop kon niet verwijderd worden,Ha fallado la eliminación de la Venta,Sale(s) could not be deleted,Échec de suppression,銷售資料刪除失敗,продажи безуспешно удален,ลบการขายไม่สมยูรณ์,Satış silinemedi,Transaksi Penjualan tidak berhasil dihapus
 sales_unsuccessfully_updated,Fout bij het bewaren van ticket,Ha fallado la actualización de la venta,Sale unsuccessfully updated,Échec d\'édition,銷售資料更新失敗,Продажа безуспешно обновлен,อัพเดทการขายไม่สมบูรณ์,Satış düzenlenemedi,Penjualan tidak berhasil diperbarui
 sales_unsuspend,Hervat,Retomar,Unsuspend,Débloquer,取消暫停銷售,Разблокировать,ยกเลิกการระงับ,Satışa Al,Batal Penangguhan
 sales_unsuspend_and_delete,,Retomar y Borrar,,,取消暫停銷售並刪除,Разблокировать и удалить,ยกเลิกการระงับ และ ลบ,,Batalkan dan hapus penangguhan

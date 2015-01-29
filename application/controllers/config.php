@@ -10,17 +10,17 @@ class Config extends Secure_area
 	function index()
 	{
 		$location_names = array();
-		$locations = $this->Stock_locations->get_location_names();
-		foreach($locations->result_array() as $array) 
-		{
-			array_push($location_names, $array['location_name']);
-		}
-		$data['location_names'] = implode(',', $location_names);
-		$this->load->view("config", $data);
+		$stock_locations = $this->Stock_locations->get_all()->result_array();
+		$this->load->view("config", array('stock_locations' => $stock_locations));
 	}
 		
 	function save()
 	{
+		$barcode_labels = preg_replace('/^_|barcode_label_|_$/', '', implode('_', array(
+				$this->input->post('barcode_label_name'), 
+				$this->input->post('barcode_label_price'), 
+				$this->input->post('barcode_label_company')
+		)));
 		$batch_save_data=array(
 		'company'=>$this->input->post('company'),
 		'address'=>$this->input->post('address'),
@@ -41,6 +41,8 @@ class Config extends Secure_area
         'tax_included'=>$this->input->post('tax_included'),
 		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
+		'barcode_labels'=>$barcode_labels,
+		'barcode_content'=>$this->input->post('barcode_content'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom3_name'=>$this->input->post('custom3_name'),/**GARRISON ADDED 4/20/2013**/
@@ -53,28 +55,49 @@ class Config extends Secure_area
 		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
 		);
 		
-		$stock_locations = explode( ',', $this->input->post('stock_location'));
-        $stock_locations_trimmed=array();
-        foreach($stock_locations as $location)
+		$deleted_locations = $this->Stock_locations->get_allowed_locations();
+		foreach($this->input->post() as $key => $value) 
+		{
+        	if (strstr($key, 'stock_location'))
+        	{
+      			$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+      			unset($deleted_locations[$location_id]);
+        		// save or update
+      			$location_data = array('location_name' => $value);
+        		if ($this->Stock_locations->save($location_data, $location_id))
+        		{
+        			$this->_clear_session_state();
+        		}
+        	}
+		}
+        // all locations not available in post will be deleted now
+        foreach ($deleted_locations as $location_id => $location_name)
         {
-            array_push($stock_locations_trimmed, trim($location, ' '));
-        }        
-        $current_locations = $this->Stock_locations->concat_location_names()->location_names;
-        if ($this->input->post('stock_locations') != $current_locations) 
-        {
-        	$this->load->library('sale_lib');
-			$this->sale_lib->clear_sale_location();
-			$this->sale_lib->clear_all();
-			$this->load->library('receiving_lib');
-			$this->receiving_lib->clear_stock_source();
-			$this->receiving_lib->clear_stock_destination();
-			$this->receiving_lib->clear_all();
+        	$this->Stock_locations->delete($location_id);
         }
         
-		if( $this->Appconfig->batch_save( $batch_save_data ) && $this->Stock_locations->array_save($stock_locations_trimmed))
+		if( $this->Appconfig->batch_save( $batch_save_data ))
 		{
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
 		}
+		$this->_remove_duplicate_cookies();	
+	}
+	
+	function stock_locations() 
+	{
+		$stock_locations = $this->Stock_locations->get_all()->result_array();
+		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
+	} 
+	
+	function _clear_session_state()
+	{
+		$this->load->library('sale_lib');
+		$this->sale_lib->clear_sale_location();
+		$this->sale_lib->clear_all();
+		$this->load->library('receiving_lib');
+		$this->receiving_lib->clear_stock_source();
+		$this->receiving_lib->clear_stock_destination();
+		$this->receiving_lib->clear_all();
 	}
 }
 ?>

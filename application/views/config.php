@@ -259,14 +259,8 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
-<div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('config_stock_location').':', 'stock_location',array('class'=>'required wide')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-        'name'=>'stock_location',
-        'id'=>'stock_location',
-        'value'=>$location_names)); ?>
-    </div>
+<div id="stock_locations">
+	<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
 </div>
 
 <div class="field_row clearfix">    
@@ -286,6 +280,43 @@ echo form_open('config/save/',array('id'=>'config_form'));
         'name'=>'recv_invoice_format',
         'id'=>'recv_invoice_format',
         'value'=>$this->config->item('recv_invoice_format'))); ?>
+    </div>
+</div>
+
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_barcode_content').':', 'barcode_content',array('class'=>'wide')); ?>
+    <div class='form_field'>
+    <?php echo form_radio(array(
+				'name'=>'barcode_content',
+				'value'=>'id',
+				'checked'=>$this->config->item('barcode_content') === "id")); ?>
+	<?php echo $this->lang->line('config_barcode_id'); ?>
+    <?php echo form_radio(array(
+				'name'=>'barcode_content',
+				'value'=>'number',
+				'checked'=>$this->config->item('barcode_content') === "number")); ?>
+	<?php echo $this->lang->line('config_barcode_number'); ?>
+    </div>
+</div>
+
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_barcode_labels').':', 'barcode_labels',array('class'=>'wide')); ?>
+    <div class='form_field'>
+     <?php echo form_checkbox(array(
+				'name'=>'barcode_label_company',
+     			'value'=>'barcode_label_company',
+				'checked'=>strstr($this->config->item('barcode_labels'), 'company'))); ?>
+	<?php echo $this->lang->line('config_barcode_company'); ?>
+    <?php echo form_checkbox(array(
+				'name'=>'barcode_label_name',
+    			'value'=>'barcode_label_name',
+				'checked'=>strstr($this->config->item('barcode_labels'), 'name'))); ?>
+	<?php echo $this->lang->line('config_barcode_name'); ?>
+    <?php echo form_checkbox(array(
+				'name'=>'barcode_label_price',
+    			'value'=>'barcode_label_price',
+				'checked'=>strstr($this->config->item('barcode_labels'), 'price'))); ?>
+	<?php echo $this->lang->line('config_barcode_price'); ?>
     </div>
 </div>
 
@@ -430,6 +461,60 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+	var location_count = <?php echo sizeof($stock_locations); ?>;
+
+	var hide_show_remove = function() 
+	{
+		if ($("input[name*='stock_location']").length > 1)
+		{
+			$(".remove_stock_location").show();
+		} 
+		else
+		{
+			$(".remove_stock_location").hide();
+		}
+	};
+
+	hide_show_remove();
+
+	var add_stock_location = function() 
+	{
+		var id = $(this).parent().find('input').attr('id');
+		id = id.replace(/.*?_(\d+)$/g, "$1");
+		var block = $(this).parent().clone(true);
+		var new_block = block.insertAfter($(this).parent());
+		var new_block_id = 'stock_location_' + ++id;
+		$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count + ": ").attr('for', new_block_id);
+		$(new_block).find('input').attr('id', new_block_id).attr('name', new_block_id).val('');
+		$('.add_stock_location', new_block).click(add_stock_location);
+		$('.remove_stock_location', new_block).click(remove_stock_location);
+		hide_show_remove();
+	};
+
+	var remove_stock_location = function() 
+	{
+		$(this).parent().remove();
+		hide_show_remove();
+	};
+
+	var init_add_remove_locations = function() 
+	{
+		$('.add_stock_location').click(add_stock_location);
+		$('.remove_stock_location').click(remove_stock_location);
+	};
+	init_add_remove_locations();
+
+	var duplicate_found = false;
+	// run validator once for all fields
+	$.validator.addMethod('stock_location' , function(value, element) 
+	{
+		var value_count = 0;
+		$("input[name*='stock_location']").each(function() {
+			value_count = $(this).val() == value ? value_count + 1 : value_count; 
+		});
+		return value_count < 2;
+    }, "<?php echo $this->lang->line('config_stock_location_duplicate'); ?>");
+	
 	$('#config_form').validate({
 		submitHandler:function(form)
 		{
@@ -444,6 +529,7 @@ $(document).ready(function()
 				{
 					set_feedback(response.message,'error_message',true);		
 				}
+				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
 			},
 			dataType:'json'
 		});
@@ -463,8 +549,10 @@ $(document).ready(function()
     		},
     		email:"email",
     		return_policy: "required",
-    		stock_location:"required"
-    	 		
+    		stock_location: {
+        		required:true,
+				stock_location: true
+    		}
    		},
 		messages: 
 		{
@@ -478,8 +566,7 @@ $(document).ready(function()
     		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
      		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
-     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>"         
-	
+     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>" 
 		}
 	});
 });
