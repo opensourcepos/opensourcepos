@@ -614,7 +614,7 @@ class Item extends CI_Model
 		$old_total_quantity = $this->db->get()->row()->quantity;
 
 		$total_quantity = $old_total_quantity + $items_received;
-		$average_price = ($items_received * $new_price + $old_total_quantity * $old_price)/$total_quantity;
+		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
 
 		$data = array('cost_price' => $average_price);
 		
