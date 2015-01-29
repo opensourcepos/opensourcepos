@@ -344,7 +344,7 @@ class Receivings extends Secure_area
 				'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
 				'employee_id' => $this->input->post('employee_id'),
 				'comment' => $this->input->post('comment'),
-				'invoice_number' => $this->input->post('invoice_number')
+				'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
 		);
 	
 		if ($this->Receiving->update($receiving_data, $receiving_id))
