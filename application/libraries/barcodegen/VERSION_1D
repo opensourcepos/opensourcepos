@@ -1,0 +1,412 @@
+v5.2.0      26 may 2014     Fix potential break in PNG writter.
+                            Fix BCGColor. Deprecated usage of string character reference.
+                            Rotation of text or barcode is now CLOCKWISE.
+                            Fix Code11. Incorrect size when using a scale bigger than 1.
+                            Fix Code128. Potential incorrect table lookup.
+                            Fix IntelligentMail user interface not accepting correct serial number.
+                            Improve speed by setting some methods static.
+                            Fix OtherCode. It now checks for incorrect input.
+                            Use ISO-8859-1 when generating a barcode with the user interface.
+                            Usage of quotes and double quotes was not working properly with the user interface.
+v5.1.0      4  oct 2012     Files moved to support 1D and 2D barcodes together
+                            Whiskers has been removed from writing a small line in scale 1 (bug in PHP)
+                            Add alignDefaultLabel for EAN-13 and UPC-A
+                            Versioning is now per file
+                            BoxFix can now be overriden
+                            Fix some references
+v5.0.1      18 apr 2012     Fix Navigation support
+v5.0.0      18 apr 2012     HTML5 support. Fix some exception file inclusion bugs.
+                            Using space instead of tabs! Added support to change the boxfix.
+                            Added support to Intelligent Mail. Better support for Postnet. Following standard for printing.
+                            Added getters in GS1-128.
+v4.1.0      3  aug 2011     Support for transparent background
+v4.0.0      15 apr 2011     Brand new version which includes some breaking changes.
+                            Now supports the possibility to add labels around the barcode really easily thanks to the method addLabel()
+                            You can also specify the alignment of the label, rotation, etc.
+                            If the label is bigger than the barcode itself, the image will get bigger to avoid text clipping.
+                            Add the setRatio method for I25 barcodes
+                            Fix EAN-13 and ISBN
+v3.0.2      4  apr 2011     Fixing the test.php
+v3.0.1      26 mar 2011     Minor fixes for IE9
+v3.0.0      21 mar 2011     Better support for failure instead of writing the error on the UI, an exception is being thrown.
+v2.2.0      13 feb 2010     Added the support for GS1-128 (EAN-128).
+                            Fix ISBN text support to be the right font.
+                            Make sure the /html files are formatted.
+v2.1.0      8  nov 2009     Added a way to change the DPI before saving (BCGDrawing::setDPI()). Set the value to null if you want to improve the performance and still have 72dpi.
+                            But you can set it to 300 if you wish to print it.
+                            You do not need an additional DLL for this.
+                            Added a way to rotate in degree the barcode before saving (BCGDrawing::setRotationAngle()).
+                            Added a verification if you have GD installed... So that way you know it before contacting support :)
+                            Fix HTML display for Code 93 and Code 39 Extended buttons
+                            You can now specify a specific table for Code 128. For instance, if you want to force to use the table B, you would write the following to parse
+                            array(CODE128_B, 'The Text To Encode')
+                            The default table selection for Code 128 is automatically chosen.
+                            Fix many PHP4 errors.
+v2.0.1Fix   28 jul 2009     Change UPC-E encoding from UTF-8 to ANSI
+v2.0.1      21 may 2009     Fix the Code 128C, Fix EAN-8, EAN-13, UPC-A, UPC-E and Postnet padding, MSI checksum can be 1 or 2
+                            Fix JoinDraw class
+                            Added GIF and WBMP support
+                            Fix the Checksum Text displayed for ISBN
+                            Fix padding for ISBN with setOffsetY
+                            Fix Button in /html for IE8
+v2.0.0      23 apr 2008     The new version has been released... All the codes have been revamped to fit with
+                            common file for 2D barcodes. Instead of using "setText()" method, the method
+                            parse() is used.
+                            Thickness is modified by the scale.
+                            Code 128: it has been modified completely, no need to specify which encoding you want to
+                            use, it will select it for you automatically and try to get the shortest barcode.
+                            Codabar: you can't only put one letter as a barcode.
+                            Code 93: supports now the extended full ASCII 0 to 127
+                            Code 39 extended has been added in a separate file since the extended
+                            version of Code 39 is totally optional.
+                            Codabar has been fixed for B and C letter
+                            We got our real nice domain: http://www.barcodephp.com
+v1.3.0      13 apr 2007     Remove ISBN from EAN-13 and a new file has been created to handle
+                            ISBN-10 and ISBN-13.
+v1.2.4      1  feb 2007     Fix Code128. There were some errors dealing with C table
+v1.2.3pl1   11 mar 2006     Correct the EAN-13/ISBN file. There was a problem with displaying correctly an ISBN.
+v1.2.3      8  feb 2006     Int for font is no longer deprecated and can be used.
+                            Correct many labels' positions : ean8, ean13, upca, upce
+                            Correct getWidth of Font.
+v1.2.3b     5  jan 2006     Add separate checksum method to calculate and get this special number created and a way to display it with the label.
+                            Correct code for PHP5.1 compatibility. Selecting a char by { } is now deprecated. Using of [ ] is used instead.
+                            Correct checksum for Code11. In some case, the checksum was bad.
+                            Correct problem displaying label with text under the baseline (letters such as p, g...).
+                            SIZE_SPACING_FONT_END has been suppressed since the previous bug has been fixed.
+                            Correct label if two barcode were generated with the same font. The font is now cloned immediately before using.
+                            The FDrawing has new methods now, use setBarcode and draw instead of add_barcode and draw_all. Only one barcode per FDrawing is possible now.
+                            Correct errors of othercode if no text font has been selected.
+                            othercode was not working for PHP4 due to the lack of the str_split function. Now the function is emulated.
+                            New file : JoinDraw allows you to join 2 graphic and align each of them. (Useful for UCPExt). PHP5 only
+                            Currently Working on UPC-A label
+v1.2.2      23 jul 2005     Correct checksum for i25 and s25 barcode (thanks to Gerald Pienkowski (Germany))
+                            Enhance rapidity for some barcode
+                            Change almost all comment in files : the update 1.2.1 was in 2005, not in 2004 ;)
+v1.2.1      27 jun 2005     The php code is now cleaner :)
+                            Increase rapidity of execution
+                            Type verifications in conditions
+                            NEW support of exterior font (Arial, Courier, etc.) with a size that you can specify
+                            Use PHP fonts is deprecated and they will be deleted in further versions.
+                            Remove the "alt" text on the image (IE displays it as a tooltip)
+                            Color class has been enhanced and accept new parameter for constructor
+                            Now you don't have to provide a specific size of the image, it will be calculated automatically for barcodes and errors
+                            Added the version number at the bottom of the script html.
+                            Correcting code 128 to output code correctly when passing from code C to another code
+v1.05       27 jun 2005     UPCext2 has been corrected. It could display a wrong barcode.
+                            Correcting UPC-A, bad output when writting text
+v1.04       2  apr 2005     Correcting some bugs and makes available for commercial usage : purchase it on http://www.barcodephp.com
+v1.03       28 mar 2005     Correcting DrawChar
+v1.02       8  mar 2005     Transforming PHPDOC and converting to XHTML1.0 Transitionnal
+                            And adding a special option that check if you have PHP5 installed
+                            Because to many people are writing to me that saying the script doesn't work (because they have PHP4).
+v1.01       7  jul 2004     Correcting code39.barcode.php
+v1.00       17 jun 2004     New :)
+v5.2.0      26 may 2014     Fix potential break in PNG writter.
+                            Fix BCGColor. Deprecated usage of string character reference.
+                            Rotation of text or barcode is now CLOCKWISE.
+                            Fix Code11. Incorrect size when using a scale bigger than 1.
+                            Fix Code128. Potential incorrect table lookup.
+                            Fix IntelligentMail user interface not accepting correct serial number.
+                            Improve speed by setting some methods static.
+                            Fix OtherCode. It now checks for incorrect input.
+                            Use ISO-8859-1 when generating a barcode with the user interface.
+                            Usage of quotes and double quotes was not working properly with the user interface.
+v5.1.0      4  oct 2012     Files moved to support 1D and 2D barcodes together
+                            Whiskers has been removed from writing a small line in scale 1 (bug in PHP)
+                            Add alignDefaultLabel for EAN-13 and UPC-A
+                            Versioning is now per file
+                            BoxFix can now be overriden
+                            Fix some references
+v5.0.1      18 apr 2012     Fix Navigation support
+v5.0.0      18 apr 2012     HTML5 support. Fix some exception file inclusion bugs.
+                            Using space instead of tabs! Added support to change the boxfix.
+                            Added support to Intelligent Mail. Better support for Postnet. Following standard for printing.
+                            Added getters in GS1-128.
+v4.1.0      3  aug 2011     Support for transparent background
+v4.0.0      15 apr 2011     Brand new version which includes some breaking changes.
+                            Now supports the possibility to add labels around the barcode really easily thanks to the method addLabel()
+                            You can also specify the alignment of the label, rotation, etc.
+                            If the label is bigger than the barcode itself, the image will get bigger to avoid text clipping.
+                            Add the setRatio method for I25 barcodes
+                            Fix EAN-13 and ISBN
+v3.0.2      4  apr 2011     Fixing the test.php
+v3.0.1      26 mar 2011     Minor fixes for IE9
+v3.0.0      21 mar 2011     Better support for failure instead of writing the error on the UI, an exception is being thrown.
+v2.2.0      13 feb 2010     Added the support for GS1-128 (EAN-128).
+                            Fix ISBN text support to be the right font.
+                            Make sure the /html files are formatted.
+v2.1.0      8  nov 2009     Added a way to change the DPI before saving (BCGDrawing::setDPI()). Set the value to null if you want to improve the performance and still have 72dpi.
+                            But you can set it to 300 if you wish to print it.
+                            You do not need an additional DLL for this.
+                            Added a way to rotate in degree the barcode before saving (BCGDrawing::setRotationAngle()).
+                            Added a verification if you have GD installed... So that way you know it before contacting support :)
+                            Fix HTML display for Code 93 and Code 39 Extended buttons
+                            You can now specify a specific table for Code 128. For instance, if you want to force to use the table B, you would write the following to parse
+                            array(CODE128_B, 'The Text To Encode')
+                            The default table selection for Code 128 is automatically chosen.
+                            Fix many PHP4 errors.
+v2.0.1Fix   28 jul 2009     Change UPC-E encoding from UTF-8 to ANSI
+v2.0.1      21 may 2009     Fix the Code 128C, Fix EAN-8, EAN-13, UPC-A, UPC-E and Postnet padding, MSI checksum can be 1 or 2
+                            Fix JoinDraw class
+                            Added GIF and WBMP support
+                            Fix the Checksum Text displayed for ISBN
+                            Fix padding for ISBN with setOffsetY
+                            Fix Button in /html for IE8
+v2.0.0      23 apr 2008     The new version has been released... All the codes have been revamped to fit with
+                            common file for 2D barcodes. Instead of using "setText()" method, the method
+                            parse() is used.
+                            Thickness is modified by the scale.
+                            Code 128: it has been modified completely, no need to specify which encoding you want to
+                            use, it will select it for you automatically and try to get the shortest barcode.
+                            Codabar: you can't only put one letter as a barcode.
+                            Code 93: supports now the extended full ASCII 0 to 127
+                            Code 39 extended has been added in a separate file since the extended
+                            version of Code 39 is totally optional.
+                            Codabar has been fixed for B and C letter
+                            We got our real nice domain: http://www.barcodephp.com
+v1.3.0      13 apr 2007     Remove ISBN from EAN-13 and a new file has been created to handle
+                            ISBN-10 and ISBN-13.
+v1.2.4      1  feb 2007     Fix Code128. There were some errors dealing with C table
+v1.2.3pl1   11 mar 2006     Correct the EAN-13/ISBN file. There was a problem with displaying correctly an ISBN.
+v1.2.3      8  feb 2006     Int for font is no longer deprecated and can be used.
+                            Correct many labels' positions : ean8, ean13, upca, upce
+                            Correct getWidth of Font.
+v1.2.3b     5  jan 2006     Add separate checksum method to calculate and get this special number created and a way to display it with the label.
+                            Correct code for PHP5.1 compatibility. Selecting a char by { } is now deprecated. Using of [ ] is used instead.
+                            Correct checksum for Code11. In some case, the checksum was bad.
+                            Correct problem displaying label with text under the baseline (letters such as p, g...).
+                            SIZE_SPACING_FONT_END has been suppressed since the previous bug has been fixed.
+                            Correct label if two barcode were generated with the same font. The font is now cloned immediately before using.
+                            The FDrawing has new methods now, use setBarcode and draw instead of add_barcode and draw_all. Only one barcode per FDrawing is possible now.
+                            Correct errors of othercode if no text font has been selected.
+                            othercode was not working for PHP4 due to the lack of the str_split function. Now the function is emulated.
+                            New file : JoinDraw allows you to join 2 graphic and align each of them. (Useful for UCPExt). PHP5 only
+                            Currently Working on UPC-A label
+v1.2.2      23 jul 2005     Correct checksum for i25 and s25 barcode (thanks to Gerald Pienkowski (Germany))
+                            Enhance rapidity for some barcode
+                            Change almost all comment in files : the update 1.2.1 was in 2005, not in 2004 ;)
+v1.2.1      27 jun 2005     The php code is now cleaner :)
+                            Increase rapidity of execution
+                            Type verifications in conditions
+                            NEW support of exterior font (Arial, Courier, etc.) with a size that you can specify
+                            Use PHP fonts is deprecated and they will be deleted in further versions.
+                            Remove the "alt" text on the image (IE displays it as a tooltip)
+                            Color class has been enhanced and accept new parameter for constructor
+                            Now you don't have to provide a specific size of the image, it will be calculated automatically for barcodes and errors
+                            Added the version number at the bottom of the script html.
+                            Correcting code 128 to output code correctly when passing from code C to another code
+v1.05       27 jun 2005     UPCext2 has been corrected. It could display a wrong barcode.
+                            Correcting UPC-A, bad output when writting text
+v1.04       2  apr 2005     Correcting some bugs and makes available for commercial usage : purchase it on http://www.barcodephp.com
+v1.03       28 mar 2005     Correcting DrawChar
+v1.02       8  mar 2005     Transforming PHPDOC and converting to XHTML1.0 Transitionnal
+                            And adding a special option that check if you have PHP5 installed
+                            Because to many people are writing to me that saying the script doesn't work (because they have PHP4).
+v1.01       7  jul 2004     Correcting code39.barcode.php
+v1.00       17 jun 2004     New :)
+v5.2.0      26 may 2014     Fix potential break in PNG writter.
+                            Fix BCGColor. Deprecated usage of string character reference.
+                            Rotation of text or barcode is now CLOCKWISE.
+                            Fix Code11. Incorrect size when using a scale bigger than 1.
+                            Fix Code128. Potential incorrect table lookup.
+                            Fix IntelligentMail user interface not accepting correct serial number.
+                            Improve speed by setting some methods static.
+                            Fix OtherCode. It now checks for incorrect input.
+                            Use ISO-8859-1 when generating a barcode with the user interface.
+                            Usage of quotes and double quotes was not working properly with the user interface.
+v5.1.0      4  oct 2012     Files moved to support 1D and 2D barcodes together
+                            Whiskers has been removed from writing a small line in scale 1 (bug in PHP)
+                            Add alignDefaultLabel for EAN-13 and UPC-A
+                            Versioning is now per file
+                            BoxFix can now be overriden
+                            Fix some references
+v5.0.1      18 apr 2012     Fix Navigation support
+v5.0.0      18 apr 2012     HTML5 support. Fix some exception file inclusion bugs.
+                            Using space instead of tabs! Added support to change the boxfix.
+                            Added support to Intelligent Mail. Better support for Postnet. Following standard for printing.
+                            Added getters in GS1-128.
+v4.1.0      3  aug 2011     Support for transparent background
+v4.0.0      15 apr 2011     Brand new version which includes some breaking changes.
+                            Now supports the possibility to add labels around the barcode really easily thanks to the method addLabel()
+                            You can also specify the alignment of the label, rotation, etc.
+                            If the label is bigger than the barcode itself, the image will get bigger to avoid text clipping.
+                            Add the setRatio method for I25 barcodes
+                            Fix EAN-13 and ISBN
+v3.0.2      4  apr 2011     Fixing the test.php
+v3.0.1      26 mar 2011     Minor fixes for IE9
+v3.0.0      21 mar 2011     Better support for failure instead of writing the error on the UI, an exception is being thrown.
+v2.2.0      13 feb 2010     Added the support for GS1-128 (EAN-128).
+                            Fix ISBN text support to be the right font.
+                            Make sure the /html files are formatted.
+v2.1.0      8  nov 2009     Added a way to change the DPI before saving (BCGDrawing::setDPI()). Set the value to null if you want to improve the performance and still have 72dpi.
+                            But you can set it to 300 if you wish to print it.
+                            You do not need an additional DLL for this.
+                            Added a way to rotate in degree the barcode before saving (BCGDrawing::setRotationAngle()).
+                            Added a verification if you have GD installed... So that way you know it before contacting support :)
+                            Fix HTML display for Code 93 and Code 39 Extended buttons
+                            You can now specify a specific table for Code 128. For instance, if you want to force to use the table B, you would write the following to parse
+                            array(CODE128_B, 'The Text To Encode')
+                            The default table selection for Code 128 is automatically chosen.
+                            Fix many PHP4 errors.
+v2.0.1Fix   28 jul 2009     Change UPC-E encoding from UTF-8 to ANSI
+v2.0.1      21 may 2009     Fix the Code 128C, Fix EAN-8, EAN-13, UPC-A, UPC-E and Postnet padding, MSI checksum can be 1 or 2
+                            Fix JoinDraw class
+                            Added GIF and WBMP support
+                            Fix the Checksum Text displayed for ISBN
+                            Fix padding for ISBN with setOffsetY
+                            Fix Button in /html for IE8
+v2.0.0      23 apr 2008     The new version has been released... All the codes have been revamped to fit with
+                            common file for 2D barcodes. Instead of using "setText()" method, the method
+                            parse() is used.
+                            Thickness is modified by the scale.
+                            Code 128: it has been modified completely, no need to specify which encoding you want to
+                            use, it will select it for you automatically and try to get the shortest barcode.
+                            Codabar: you can't only put one letter as a barcode.
+                            Code 93: supports now the extended full ASCII 0 to 127
+                            Code 39 extended has been added in a separate file since the extended
+                            version of Code 39 is totally optional.
+                            Codabar has been fixed for B and C letter
+                            We got our real nice domain: http://www.barcodephp.com
+v1.3.0      13 apr 2007     Remove ISBN from EAN-13 and a new file has been created to handle
+                            ISBN-10 and ISBN-13.
+v1.2.4      1  feb 2007     Fix Code128. There were some errors dealing with C table
+v1.2.3pl1   11 mar 2006     Correct the EAN-13/ISBN file. There was a problem with displaying correctly an ISBN.
+v1.2.3      8  feb 2006     Int for font is no longer deprecated and can be used.
+                            Correct many labels' positions : ean8, ean13, upca, upce
+                            Correct getWidth of Font.
+v1.2.3b     5  jan 2006     Add separate checksum method to calculate and get this special number created and a way to display it with the label.
+                            Correct code for PHP5.1 compatibility. Selecting a char by { } is now deprecated. Using of [ ] is used instead.
+                            Correct checksum for Code11. In some case, the checksum was bad.
+                            Correct problem displaying label with text under the baseline (letters such as p, g...).
+                            SIZE_SPACING_FONT_END has been suppressed since the previous bug has been fixed.
+                            Correct label if two barcode were generated with the same font. The font is now cloned immediately before using.
+                            The FDrawing has new methods now, use setBarcode and draw instead of add_barcode and draw_all. Only one barcode per FDrawing is possible now.
+                            Correct errors of othercode if no text font has been selected.
+                            othercode was not working for PHP4 due to the lack of the str_split function. Now the function is emulated.
+                            New file : JoinDraw allows you to join 2 graphic and align each of them. (Useful for UCPExt). PHP5 only
+                            Currently Working on UPC-A label
+v1.2.2      23 jul 2005     Correct checksum for i25 and s25 barcode (thanks to Gerald Pienkowski (Germany))
+                            Enhance rapidity for some barcode
+                            Change almost all comment in files : the update 1.2.1 was in 2005, not in 2004 ;)
+v1.2.1      27 jun 2005     The php code is now cleaner :)
+                            Increase rapidity of execution
+                            Type verifications in conditions
+                            NEW support of exterior font (Arial, Courier, etc.) with a size that you can specify
+                            Use PHP fonts is deprecated and they will be deleted in further versions.
+                            Remove the "alt" text on the image (IE displays it as a tooltip)
+                            Color class has been enhanced and accept new parameter for constructor
+                            Now you don't have to provide a specific size of the image, it will be calculated automatically for barcodes and errors
+                            Added the version number at the bottom of the script html.
+                            Correcting code 128 to output code correctly when passing from code C to another code
+v1.05       27 jun 2005     UPCext2 has been corrected. It could display a wrong barcode.
+                            Correcting UPC-A, bad output when writting text
+v1.04       2  apr 2005     Correcting some bugs and makes available for commercial usage : purchase it on http://www.barcodephp.com
+v1.03       28 mar 2005     Correcting DrawChar
+v1.02       8  mar 2005     Transforming PHPDOC and converting to XHTML1.0 Transitionnal
+                            And adding a special option that check if you have PHP5 installed
+                            Because to many people are writing to me that saying the script doesn't work (because they have PHP4).
+v1.01       7  jul 2004     Correcting code39.barcode.php
+v1.00       17 jun 2004     New :)
+v5.2.0      26 may 2014     Fix potential break in PNG writter.
+                            Fix BCGColor. Deprecated usage of string character reference.
+                            Rotation of text or barcode is now CLOCKWISE.
+                            Fix Code11. Incorrect size when using a scale bigger than 1.
+                            Fix Code128. Potential incorrect table lookup.
+                            Fix IntelligentMail user interface not accepting correct serial number.
+                            Improve speed by setting some methods static.
+                            Fix OtherCode. It now checks for incorrect input.
+                            Use ISO-8859-1 when generating a barcode with the user interface.
+                            Usage of quotes and double quotes was not working properly with the user interface.
+v5.1.0      4  oct 2012     Files moved to support 1D and 2D barcodes together
+                            Whiskers has been removed from writing a small line in scale 1 (bug in PHP)
+                            Add alignDefaultLabel for EAN-13 and UPC-A
+                            Versioning is now per file
+                            BoxFix can now be overriden
+                            Fix some references
+v5.0.1      18 apr 2012     Fix Navigation support
+v5.0.0      18 apr 2012     HTML5 support. Fix some exception file inclusion bugs.
+                            Using space instead of tabs! Added support to change the boxfix.
+                            Added support to Intelligent Mail. Better support for Postnet. Following standard for printing.
+                            Added getters in GS1-128.
+v4.1.0      3  aug 2011     Support for transparent background
+v4.0.0      15 apr 2011     Brand new version which includes some breaking changes.
+                            Now supports the possibility to add labels around the barcode really easily thanks to the method addLabel()
+                            You can also specify the alignment of the label, rotation, etc.
+                            If the label is bigger than the barcode itself, the image will get bigger to avoid text clipping.
+                            Add the setRatio method for I25 barcodes
+                            Fix EAN-13 and ISBN
+v3.0.2      4  apr 2011     Fixing the test.php
+v3.0.1      26 mar 2011     Minor fixes for IE9
+v3.0.0      21 mar 2011     Better support for failure instead of writing the error on the UI, an exception is being thrown.
+v2.2.0      13 feb 2010     Added the support for GS1-128 (EAN-128).
+                            Fix ISBN text support to be the right font.
+                            Make sure the /html files are formatted.
+v2.1.0      8  nov 2009     Added a way to change the DPI before saving (BCGDrawing::setDPI()). Set the value to null if you want to improve the performance and still have 72dpi.
+                            But you can set it to 300 if you wish to print it.
+                            You do not need an additional DLL for this.
+                            Added a way to rotate in degree the barcode before saving (BCGDrawing::setRotationAngle()).
+                            Added a verification if you have GD installed... So that way you know it before contacting support :)
+                            Fix HTML display for Code 93 and Code 39 Extended buttons
+                            You can now specify a specific table for Code 128. For instance, if you want to force to use the table B, you would write the following to parse
+                            array(CODE128_B, 'The Text To Encode')
+                            The default table selection for Code 128 is automatically chosen.
+                            Fix many PHP4 errors.
+v2.0.1Fix   28 jul 2009     Change UPC-E encoding from UTF-8 to ANSI
+v2.0.1      21 may 2009     Fix the Code 128C, Fix EAN-8, EAN-13, UPC-A, UPC-E and Postnet padding, MSI checksum can be 1 or 2
+                            Fix JoinDraw class
+                            Added GIF and WBMP support
+                            Fix the Checksum Text displayed for ISBN
+                            Fix padding for ISBN with setOffsetY
+                            Fix Button in /html for IE8
+v2.0.0      23 apr 2008     The new version has been released... All the codes have been revamped to fit with
+                            common file for 2D barcodes. Instead of using "setText()" method, the method
+                            parse() is used.
+                            Thickness is modified by the scale.
+                            Code 128: it has been modified completely, no need to specify which encoding you want to
+                            use, it will select it for you automatically and try to get the shortest barcode.
+                            Codabar: you can't only put one letter as a barcode.
+                            Code 93: supports now the extended full ASCII 0 to 127
+                            Code 39 extended has been added in a separate file since the extended
+                            version of Code 39 is totally optional.
+                            Codabar has been fixed for B and C letter
+                            We got our real nice domain: http://www.barcodephp.com
+v1.3.0      13 apr 2007     Remove ISBN from EAN-13 and a new file has been created to handle
+                            ISBN-10 and ISBN-13.
+v1.2.4      1  feb 2007     Fix Code128. There were some errors dealing with C table
+v1.2.3pl1   11 mar 2006     Correct the EAN-13/ISBN file. There was a problem with displaying correctly an ISBN.
+v1.2.3      8  feb 2006     Int for font is no longer deprecated and can be used.
+                            Correct many labels' positions : ean8, ean13, upca, upce
+                            Correct getWidth of Font.
+v1.2.3b     5  jan 2006     Add separate checksum method to calculate and get this special number created and a way to display it with the label.
+                            Correct code for PHP5.1 compatibility. Selecting a char by { } is now deprecated. Using of [ ] is used instead.
+                            Correct checksum for Code11. In some case, the checksum was bad.
+                            Correct problem displaying label with text under the baseline (letters such as p, g...).
+                            SIZE_SPACING_FONT_END has been suppressed since the previous bug has been fixed.
+                            Correct label if two barcode were generated with the same font. The font is now cloned immediately before using.
+                            The FDrawing has new methods now, use setBarcode and draw instead of add_barcode and draw_all. Only one barcode per FDrawing is possible now.
+                            Correct errors of othercode if no text font has been selected.
+                            othercode was not working for PHP4 due to the lack of the str_split function. Now the function is emulated.
+                            New file : JoinDraw allows you to join 2 graphic and align each of them. (Useful for UCPExt). PHP5 only
+                            Currently Working on UPC-A label
+v1.2.2      23 jul 2005     Correct checksum for i25 and s25 barcode (thanks to Gerald Pienkowski (Germany))
+                            Enhance rapidity for some barcode
+                            Change almost all comment in files : the update 1.2.1 was in 2005, not in 2004 ;)
+v1.2.1      27 jun 2005     The php code is now cleaner :)
+                            Increase rapidity of execution
+                            Type verifications in conditions
+                            NEW support of exterior font (Arial, Courier, etc.) with a size that you can specify
+                            Use PHP fonts is deprecated and they will be deleted in further versions.
+                            Remove the "alt" text on the image (IE displays it as a tooltip)
+                            Color class has been enhanced and accept new parameter for constructor
+                            Now you don't have to provide a specific size of the image, it will be calculated automatically for barcodes and errors
+                            Added the version number at the bottom of the script html.
+                            Correcting code 128 to output code correctly when passing from code C to another code
+v1.05       27 jun 2005     UPCext2 has been corrected. It could display a wrong barcode.
+                            Correcting UPC-A, bad output when writting text
+v1.04       2  apr 2005     Correcting some bugs and makes available for commercial usage : purchase it on http://www.barcodephp.com
+v1.03       28 mar 2005     Correcting DrawChar
+v1.02       8  mar 2005     Transforming PHPDOC and converting to XHTML1.0 Transitionnal
+                            And adding a special option that check if you have PHP5 installed
+                            Because to many people are writing to me that saying the script doesn't work (because they have PHP4).
+v1.01       7  jul 2004     Correcting code39.barcode.php
+v1.00       17 jun 2004     New :)

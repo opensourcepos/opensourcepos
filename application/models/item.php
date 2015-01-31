@@ -131,7 +131,7 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where_in('item_id',$item_ids);
-		$this->db->order_by("item", "asc");
+		$this->db->order_by('item_id', 'asc');
 		return $this->db->get();
 	}
 

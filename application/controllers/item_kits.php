@@ -123,6 +123,9 @@ class Item_kits extends Secure_area implements iData_controller
 		}
 
 		$data['items'] = $result;
+		$this->load->library('barcode_lib');
+        $data['configs'] = $this->Appconfig->get_all();
+        $data['barcode_config'] = $this->Barcode_lib->get_barcode_config();
 		$this->load->view("barcode_sheet", $data);
 	}
 	

@@ -5,13 +5,15 @@ class Config extends Secure_area
 	function __construct()
 	{
 		parent::__construct('config');
+		$this->load->library('barcode_lib');
 	}
 	
 	function index()
 	{
 		$location_names = array();
-		$stock_locations = $this->Stock_locations->get_all()->result_array();
-		$this->load->view("config", array('stock_locations' => $stock_locations));
+		$data['stock_locations'] = $this->Stock_locations->get_all()->result_array();
+		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
+		$this->load->view("configs/manage", $data);
 	}
 		
 	function save()
@@ -99,5 +101,31 @@ class Config extends Secure_area
 		$this->receiving_lib->clear_stock_destination();
 		$this->receiving_lib->clear_all();
 	}
+
+    function save_barcode()
+    {
+        $batch_save_data=array(
+        'barcode_type'=>$this->input->post('barcode_type'),
+        'barcode_dpi'=>$this->input->post('barcode_dpi'),
+        'barcode_thickness'=>$this->input->post('barcode_thickness'),
+        'barcode_scale'=>$this->input->post('barcode_scale'),
+        'barcode_rotation'=>$this->input->post('barcode_rotation'),
+        'barcode_font'=>$this->input->post('barcode_font'),
+        'barcode_font_size'=>$this->input->post('barcode_font_size'),
+        'barcode_checksum'=>$this->input->post('barcode_checksum'),
+        'barcode_first_row'=>$this->input->post('barcode_first_row'),
+        'barcode_second_row'=>$this->input->post('barcode_second_row'),
+        'barcode_third_row'=>$this->input->post('barcode_third_row'),
+        'barcode_num_in_row'=>$this->input->post('barcode_num_in_row'),
+        'barcode_page_width'=>$this->input->post('barcode_page_width'),
+        'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing')
+        );
+        
+        if( $this->Appconfig->batch_save( $batch_save_data ) )
+        {
+            echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
+        }
+        
+    }
 }
 ?>

@@ -268,17 +268,14 @@ class Items extends Secure_area implements iData_controller
 
 	function generate_barcodes($item_ids)
 	{
+		$this->load->library('barcode_lib');
 		$result = array();
 
 		$item_ids = explode(':', $item_ids);
-		foreach ($item_ids as $item_id)
-		{
-			$item_info = $this->Item->get_info($item_id);
-
-			$result[] = array('name' =>$item_info->name, 'id'=> $item_id, 'item_number'=> $item_info->item_number, 'unit_price'=>$item_info->unit_price);
-		}
+		$result = $this->Item->get_multiple_info($item_ids)->result_array();
 
 		$data['items'] = $result;
+		$data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 		$this->load->view("barcode_sheet", $data);
 	}
 

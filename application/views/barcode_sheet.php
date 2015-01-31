@@ -1,8 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-        "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php echo $this->lang->line('items_generate_barcodes'); ?></title>
+	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/barcode_font.css" />
 	<style type="text/css" >
 		* 
 		{ 
@@ -10,36 +13,21 @@
 		}
 	</style>
 </head>
-<body>
-<table width='50%' align='center' cellpadding='20'>
+
+<body class=<?php  echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?> 
+      style="font-size:<?php echo $barcode_config['barcode_font_size'] + 5; //5 is size offset for font in display label?>px">
+<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing']; ?> width=<?php echo $barcode_config['barcode_page_width']."%"; ?> >
 <tr>
-<?php 
+<?php
 $count = 0;
 foreach($items as $item)
 {
-	$barcode = $this->config->item('barcode_content') === "id" ? $item['id'] : $item['item_number'];
-	$text = $this->config->item('barcode_content') === "id" ? $item['name'] : $item['item_number'];
-	
-	if ($count % 2 ==0 and $count!=0)
+	if ($count % $barcode_config['barcode_num_in_row'] ==0 and $count!=0)
 	{
 		echo '</tr><tr>';
 	}
-	echo "<td align='center'>";
-	if (strstr($this->config->item('barcode_labels'), 'company')) 
-	{
-		echo $this->config->item('company');
-	}
-	echo "<br><img src='".site_url()."/barcode?barcode=$barcode&text=$text&width=256' /><br>";
-	if (strstr($this->config->item('barcode_labels'), 'price'))
-	{
-		echo to_currency($item['unit_price']);
-	}
-	if (strstr($this->config->item('barcode_labels'), 'name'))
-	{
-		echo " " . $item['name']; 
-	}
-	echo "</td>";
-	$count++;
+	echo "<td>". $this->barcode_lib->create_display_barcode($item,$barcode_config)."</td>";
+    $count++;
 }
 ?>
 </tr>

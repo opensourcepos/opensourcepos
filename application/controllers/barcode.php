@@ -1,5 +1,6 @@
 <?php
-class Barcode extends CI_Controller 
+require_once ("secure_area.php");
+class Barcode extends Secure_area 
 {
 	function __construct()
 	{

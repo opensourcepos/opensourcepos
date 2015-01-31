@@ -1,0 +1,204 @@
+body {
+    font-family: Segoe UI, Calibri, Arial, Helvetica;
+    font-size: 12px;
+    color: #111;
+    margin: 8px;
+}
+
+.footer {
+    text-align: center;
+    margin-top: 40px;
+}
+
+form, .header {
+    display: block;
+    margin: auto;
+    width: 60%;
+    min-width: 600px;
+    max-width: 700px;
+    position: relative;
+}
+
+input, select {
+    margin: 0;
+}
+
+input[type=text], input[type=number], select {
+    border: 1px solid #ababab;
+    padding: 2px;
+}
+
+select {
+    padding-top: 1px;
+    padding-bottom: 1px;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+section {
+    margin-bottom: 24px;
+}
+
+h1 {
+    display: none;
+}
+
+h2 {
+    margin: 14px 0 8px 0;
+    font-weight: normal;
+    font-size: 20px;
+}
+
+h3 {
+    font-size: 16px;
+    font-weight: normal;
+    font-style: italic;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #c8c8c8;
+    margin: 0 0 14px 0;
+}
+
+.logo {
+    margin-top: 8px;
+}
+
+nav {
+    float: right;
+    position: absolute;
+    top: 34px;
+    right: 0;
+}
+
+nav label {
+    display: block;
+}
+
+nav select {
+    margin: 2px 0;
+    margin-left: 0;
+}
+
+table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table td {
+    padding: 3px 25px 1px 4px;
+    vertical-align: top;
+    height: 26px; /* This act as a min-height */
+    line-height: 30px;
+}
+
+table tr.odd {
+    background-color: #eee;
+}
+
+table tr.even {
+}
+
+table .col1 {
+    width: 180px;
+}
+
+table .info {
+    position: absolute;
+    dtop: 0;
+    dright: 5px;
+    line-height: 34px;
+}
+
+.info img {
+    border: 0;
+    vertical-align: text-bottom;
+}
+
+.generate {
+    float: left;
+}
+
+.possiblechars {
+    float: right;
+    position: relative;
+}
+
+#dpiUnavailable {
+    display: none;
+    padding-left: 8px;
+}
+
+div.configurations select {
+    min-width: 70px;
+}
+
+div.configurations input[type=number] {
+    width: 70px;
+}
+
+/* Moved section by script */
+#explanation, #dpiExplain, #validCharacters {
+    display: none;
+    max-width: 450px;
+}
+
+#explanation ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+#specificOptions {
+    display: none;
+}
+
+#validCharacters input[type=button] {
+    width: 25px;
+    padding: 1px 6px;
+}
+
+.BCGcode128 #validCharacters input[type=button],
+.BCGcode39extended #validCharacters input[type=button],
+.BCGcode93 #validCharacters input[type=button],
+.BCGgs1128 #validCharacters input[type=button],
+.BCGaztec #validCharacters input[type=button],
+.BCGdatamatrix #validCharacters input[type=button],
+.BCGmaxicode #validCharacters input[type=button],
+.BCGqrcode #validCharacters input[type=button],
+.BCGpdf417 #validCharacters input[type=button] {
+    width: 39px;
+}
+
+.bubble {
+    display: none;
+}
+
+.bubble.visible {
+    display: block !important;
+    position: absolute;
+    background-color: #f8f8f8;
+    border: 2px solid #ddd;
+    padding: 16px;
+}
+
+.gs1128_id {
+    width: 40px;
+    text-align: center;
+}
+
+.gs1128_value {
+    width: 295px;
+}
+
+.gs1128_delete img {
+    border: 0;
+    margin-left: 5px;
+    vertical-align: text-bottom;
+}
+
+#identifierContainer {
+    margin-top: 4px;
+}

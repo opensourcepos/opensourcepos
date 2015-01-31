@@ -7,7 +7,7 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 <legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'required wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'item_number',
@@ -447,6 +447,7 @@ $(document).ready(function()
  		wrapper: "li",
 		rules:
 		{
+		    item_number:"required",
 			name:"required",
 			category:"required",
 			cost_price:
@@ -474,6 +475,7 @@ $(document).ready(function()
    		},
 		messages:
 		{
+		    item_number:"<?php echo $this->lang->line('items_number_required'); ?>",
 			name:"<?php echo $this->lang->line('items_name_required'); ?>",
 			category:"<?php echo $this->lang->line('items_category_required'); ?>",
 			cost_price:
