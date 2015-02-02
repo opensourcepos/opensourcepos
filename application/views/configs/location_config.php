@@ -36,7 +36,7 @@ $(document).ready(function()
 
 	var hide_show_remove = function() 
 	{
-		if ($("input[name*='stock_location']").length > 1)
+		if ($("input[name*='stock_location']:enabled").length > 1)
 		{
 			$(".remove_stock_location").show();
 		} 
@@ -45,8 +45,6 @@ $(document).ready(function()
 			$(".remove_stock_location").hide();
 		}
 	};
-
-	hide_show_remove();
 
 	var add_stock_location = function() 
 	{
@@ -72,6 +70,7 @@ $(document).ready(function()
 	{
 		$('.add_stock_location').click(add_stock_location);
 		$('.remove_stock_location').click(remove_stock_location);
+		hide_show_remove();
 	};
 	init_add_remove_locations();
 
@@ -100,10 +99,7 @@ $(document).ready(function()
 				{
 					set_feedback(response.message,'error_message',true);		
 				}
-				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', function() {
-					init_add_remove_locations();
-					hide_show_remove();
-				});
+				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
 			},
 			dataType:'json'
 		});

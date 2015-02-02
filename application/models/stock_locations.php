@@ -133,7 +133,6 @@ class Stock_locations extends CI_Model
     	$this->db->where('location_id', $location_id);
     	$this->db->update('stock_locations', array('deleted' => 1));
     	
-    	// should delete permissions and grants as well?
     	$this->db->where('location_id', $location_id);
     	$this->db->delete('permissions');
     	$this->db->trans_complete();
