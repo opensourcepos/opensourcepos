@@ -48,3 +48,4 @@ $lang["config_barcode_labels"] = "Barcode Labels";
 $lang["config_barcode_name"] = "Name";
 $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_company"] = "Nama Perusahaan";
+$lang["config_receiving_calculate_average_price"] = "Calc avg. Price (Receiving)";
