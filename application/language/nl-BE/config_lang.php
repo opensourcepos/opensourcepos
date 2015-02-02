@@ -48,3 +48,7 @@ $lang["config_barcode_labels"] = "Barcode Labels";
 $lang["config_barcode_name"] = "Productnaam";
 $lang["config_barcode_price"] = "Prijs";
 $lang["config_barcode_company"] = "Bedrijfsnaam";
+$lang["config_receiving_calculate_average_price"] = "Calc avg. Price (Receiving)";
+$lang["config_number_format"] = "Number Format";
+$lang["config_thousands_separator"] = "Thousands Separator";
+$lang["config_decimal_point"] = "Decimal Point";

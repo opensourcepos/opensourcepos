@@ -49,3 +49,6 @@ $lang["config_barcode_name"] = "Name";
 $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_company"] = "Company Name";
 $lang["config_receiving_calculate_average_price"] = "Calc avg. Price (Receiving)";
+$lang["config_number_format"] = "Number Format";
+$lang["config_thousands_separator"] = "Thousands Separator";
+$lang["config_decimal_point"] = "Decimal Point";

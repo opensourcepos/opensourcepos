@@ -16,8 +16,8 @@ sales_confirm_suspend_sale,Bent u zeker dat u deze aankoop wil bewaren?,¿Estás
 sales_credit,Kredietkaart,Tarjeta de Crédito,Credit Card,Carte de Crédit,信用卡,кредитная карта,เครดิทการ์ด,Kredi Kartı,Kartu Credit
 sales_customer,Klant,cliente,Customer,Client,客戶,клиент,ลูกค้า,Müşteri,Pelanggan
 sales_date,Datum,Fecha,Sale Date,Date de Vente,日期,Число,วันที่ขาย,Satış Tarihi,Tanggal
-sales_date_required,,,A correct date needs to be filled in,,,,,,
-sales_date_type,,,Date field is required,,,,,,
+sales_date_required,,,A correct date needs to be filled in,,,,,,Permintaan Data
+sales_date_type,,,Date field is required,,,,,,Jenis Data
 sales_debit,Bancontact,Tarjeta de Débito,Debit Card,Carte Débit,簽帳卡,Дебетовая карта,เดบิทการ์ด,Banka Kartı,Kartu Debit
 sales_delete_confirmation,Bent u zeker dat u deze aankoop wil verwijderen?,¿Estás seguro(a) de querer borrar esta venta? Esta acción no se puede deshacer.,"Are you sure you want to delete this sale, this action cannot be undone",Etes vous sûr(e) de vouloir supprimer cette vente? Cette opération est irréversible.,你確定要刪除此銷售資料，這個動作不能撤消,"Вы уверены, что хотите удалить эту продажу, это действие не может быть отменено","แน่ใจหรือไม่ที่จะลบรายการขายนี้, ลบแล้วไม่สามารถเรียกกลับคืนใด้","Satışı silmek istediğinize emin misiniz, bu işlem geri alınamaz","Apakah anda yakin ingin menghapus transaksi penjualan ini, Pilihan ini tidak dapat dibatalkan"
 sales_delete_entire_sale,Verwijder,Borrar la venta completa,Delete entire sale,Supprimer Vente,刪除全部銷售資料,Удалить всего продажи,ลบการขายทั้งหมด,Satışın tamamını sil,Hapus Transaksi Penjualan
@@ -37,8 +37,8 @@ sales_find_or_scan_item_or_receipt,Zoek/Scan Product of Ticket,Encontrar/Escanea
 sales_giftcard,Cadeaubon,Tarjeta de Regalo,Gift Card,Carte Cadeau,禮金券,Подарочная карта,Gift Card,Hediye Çeki,Gift Card
 sales_giftcard_number,Cadeaubon nummer,Número de Tarjeta de Regalo,Gift Card Number,Numéro de Carte cadeau,禮金券編號,Номер подарочных карт,เลขที่ Gift Card,Hediye Çeki No,Nomor Gift Card
 sales_id,Nummer Verkoop ,ID de Venta,Sale ID,ID Vente,銷售編號,Номер Продажы,เลขที่ขาย,Satış No,ID Penjualan
-sales_invoice_number,,Invoice #,Invoice #,Invoice #,,,,,
-sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique invoice number,Please enter an unique invoice number,,,,,,
+sales_invoice_number,,Invoice #,Invoice #,Invoice #,,,,,Nomor Nota
+sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique invoice number,Please enter an unique invoice number,,,,,,Nomor Nota Double
 sales_item_insufficient_of_stock,Product is niet meer in voorraad,Hay un número insuficiente de Artículos en existencia,Item is Insufficient of Stock,Stock top faible,產品庫存不足,Товар недостаточно на складе,จำนวนสินค้าไม่เพียงพอ,Ürün Stoğu Yetersiz,Stok Item tidak mencukupi
 sales_item_name,Naam,Nombre del Artículo,Item Name,Nom,產品名稱,Название товара,ชื่อสินค้า,Ürün Adı,Nama Item 
 sales_item_number,Product #,UPC/EAN/ISBN,Item #,# Item,產品 #,Номер товара,สินค้า #,Ürün No,Item #
@@ -49,7 +49,7 @@ sales_must_enter_numeric_giftcard,Er moet een geldige code worden ingevuld voor 
 sales_new_customer,Nieuwe klant,Cliente Nuevo,New Customer,Nouveau Client,新客戶,Новый клиент,ลูกค้าใหม่,Yeni Müşteri,Pelanggan Baru
 sales_new_item,Nieuw Product,Artículo Nuevo,New Item,Nouvel Élément,新增產品,Новый Товар,สินค้าใหม่,Yeni Ürün,Item Baru
 sales_no_items_in_cart,Er zijn geen aankopen geselecteerd,No hay artículos en el carrito,There are no items in the cart,Il n\'y a rien dans votre panier,購物車中沒有任何產品,Там нет товаров в корзине,ไม่พบสินค้าในตระกร้า,Sepette Ürün Yok,Tidak ada Item dalam Keranjang Belanja
-sales_one_or_multiple,aankopen verwijderd,,sale(s),,,,,,
+sales_one_or_multiple,aankopen verwijderd,,sale(s),,,,,,Satu atau Double
 sales_payment,Betaalmethode,Tipo de Pago,Payment Type,Type Paiement,付款方式,Вид оплаты,รูปแบบชำระเงิน,Ödeme Türü,Type Pembayaran
 sales_payment_amount,Bedrag,Cantidad,Amount,Somme,Amount,количество,,Tutar,Amount
 sales_payment_not_cover_total,Betaalde hoeveelheid is onvoldoende,La Cantidad Recibida no cubre el pago total,Payment Amount does not cover Total,Le Paiement ne couvre pas le Total,付款金額不足,оплачиваемая сумма недостаточно, ปริมาณการจ่ายที่ไม่เพียงพอกะยอดรวม,Ödemeler toplam tutarı karşılamıyor,Jumlah pembayaran tidak mencakup Total
@@ -70,7 +70,7 @@ sales_select_customer,Selecteer Klant (Optioneel),Seleccionar Cliente (Opcional)
 sales_serial,Nummer,Serial,Serial,Serie,序號,серийный номер,Serial,Seri,Serial
 sales_start_typing_customer_name,Typ naam klant...,Empieza a escribir el cliente...,Start Typing customer\'s name...,Commencez à saisir le nom du client...,開始輸入客戶的名字,Начните печатать название клиента...,เริ่มต้นพิมพ์ชื่อลูกค้า...,Müşteri Adı...,Ketik Nama Pelanggan...
 sales_start_typing_item_name,Typ naam product of barcode...,Empieza a escribir o escanea el código de barras...,Start Typing item\'s name or scan barcode...,Commencez à saisir le nom de l\'item ou scannez le code-barre...,開始輸入產品名或掃描條碼...,Начните печатать название товара или сканировайте штрих-кода...,เริ่มต้นพิมพ์ชื่อสินค้า หรือ สแกนบาร์โค๊ด...,Ürün adı yazın yada barkod okutun...,Ketik Nama Barang atau Scan Barcode...
-sales_stock_location,Stock locatie,,Stock location,,,,,Stok yeri,
+sales_stock_location,Stock locatie,,Stock location,,,,,Stok yeri,Lokasi Stock
 sales_sub_total,Subtotaal excl. VAT,Subtotal,Sub Total,Sous-Total,小計,промежуточный итог,ยอดรวมหักภาษี ,Ara Toplam,Sub Total
 sales_successfully_deleted,Uw aankoop werd verwijded,La Venta ha sido borrada satisfactoriamente,You have successfully deleted,Vente supprimée,銷售資料成功刪除,продажи успешно удален,ลบการขายสมยูรณ์,Satış silindi,Transaksi Penjualan berhasil dihapus
 sales_successfully_suspended_sale,Uw aankoop werd met sucess bewaard,La venta ha sido suspendida satisfactoriamente,Your sale has been successfully suspended,Vente suspendue,本銷售資料已經成功暫停,Ваши продажи успешно приостановлена,การขายของคุณถูกระงับเรียบร้อย,Satış askıya alındı,Penjualan anda telah berhasil ditangguhkan
