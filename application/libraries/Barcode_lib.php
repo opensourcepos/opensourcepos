@@ -65,7 +65,8 @@ class Barcode_lib
     
     private function manage_display_layout($layout_type, $item, $barcode_config)
     {
-        $result;
+        $result = '';
+        
         if($layout_type == 'item_code')
         {
             $result = "<img src='".site_url()."/barcode?filetype=PNG&dpi=".$barcode_config['barcode_dpi'].
@@ -73,7 +74,7 @@ class Barcode_lib
                                    "&rotation=".$barcode_config['barcode_rotation'].
                                    "&font_family=".$barcode_config['barcode_font'].
                                    "&font_size=".$barcode_config['barcode_font_size'].
-                                   "&text=".$item['item_number'].
+                                   "&text=".($this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number']).
                                    "&thickness=".$barcode_config['barcode_thickness'].
                                    "&checksum=".$barcode_config['barcode_checksum'].
                                    "&code=".$this->CI->Appconfig->get('barcode_type').

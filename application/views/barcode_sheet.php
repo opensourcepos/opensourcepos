@@ -22,6 +22,7 @@
 $count = 0;
 foreach($items as $item)
 {
+
 	if ($count % $barcode_config['barcode_num_in_row'] ==0 and $count!=0)
 	{
 		echo '</tr><tr>';

@@ -100,7 +100,10 @@ $(document).ready(function()
 				{
 					set_feedback(response.message,'error_message',true);		
 				}
-				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
+				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', function() {
+					init_add_remove_locations();
+					hide_show_remove();
+				});
 			},
 			dataType:'json'
 		});
