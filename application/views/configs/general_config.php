@@ -1,11 +1,11 @@
-<div id="page_title"><?php echo $this->lang->line('config_general_config'); ?></div>
+<div id="page_title"><?php echo $this->lang->line('config_general_configuration'); ?></div>
 <?php
 echo form_open('config/save/',array('id'=>'config_form'));
 ?>
 <div id="config_wrapper">
 <fieldset id="config_info">
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <legend><?php echo $this->lang->line("config_info"); ?></legend>
 
 <div class="field_row clearfix">	
@@ -138,17 +138,20 @@ echo form_open('config/save/',array('id'=>'config_form'));
 	</div>
 </div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide required')); ?>
+<div class="field_row clearfix">
+	<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide required')); ?>
 	<div class='form_field'>
-	<?php echo form_dropdown('language', array(
-			'Azerbaijan'		=> 'Azerbaijan',
-			'BahasaIndonesia'	=> 'BahasaIndonesia',
-			'english'			=> 'English',
-			'Spanish'			=> 'Spanish',
-			'Russian'			=> 'Russian',
-			'Thai'              => 'Thai'
-			), 
+		<?php echo form_dropdown('language', array(
+		'en' => 'English',
+		'es' => 'Spanish',
+		'ru' => 'Russian',
+		'nl-BE' => 'Dutch',
+		'zh' => 'Chinese',
+		'id' => 'Indonesian',
+		'fr'	=> 'French',
+		'th'	=> 'Thai',
+		'tr'	=> 'Turkish'
+		),
 		$this->config->item('language'));
 		?>
 	</div>

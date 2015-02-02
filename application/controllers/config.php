@@ -18,11 +18,6 @@ class Config extends Secure_area
 		
 	function save()
 	{
-		$barcode_labels = preg_replace('/^_|barcode_label_|_$/', '', implode('_', array(
-				$this->input->post('barcode_label_name'), 
-				$this->input->post('barcode_label_price'), 
-				$this->input->post('barcode_label_company')
-		)));
 		$batch_save_data=array(
 		'company'=>$this->input->post('company'),
 		'address'=>$this->input->post('address'),
@@ -43,8 +38,6 @@ class Config extends Secure_area
         'tax_included'=>$this->input->post('tax_included'),
 		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
-		'barcode_labels'=>$barcode_labels,
-		'barcode_content'=>$this->input->post('barcode_content'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom3_name'=>$this->input->post('custom3_name'),/**GARRISON ADDED 4/20/2013**/
@@ -57,31 +50,9 @@ class Config extends Secure_area
 		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
 		);
 		
-		$deleted_locations = $this->Stock_locations->get_allowed_locations();
-		foreach($this->input->post() as $key => $value) 
-		{
-        	if (strstr($key, 'stock_location'))
-        	{
-      			$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-      			unset($deleted_locations[$location_id]);
-        		// save or update
-      			$location_data = array('location_name' => $value);
-        		if ($this->Stock_locations->save($location_data, $location_id))
-        		{
-        			$this->_clear_session_state();
-        		}
-        	}
-		}
-        // all locations not available in post will be deleted now
-        foreach ($deleted_locations as $location_id => $location_name)
-        {
-        	$this->Stock_locations->delete($location_id);
-        }
-        
-		if( $this->Appconfig->batch_save( $batch_save_data ))
-		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
-		}
+		$result = $this->Appconfig->batch_save( $batch_save_data );
+		$success = $result ? true : false;
+		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 		$this->_remove_duplicate_cookies();	
 	}
 	
@@ -101,6 +72,35 @@ class Config extends Secure_area
 		$this->receiving_lib->clear_stock_destination();
 		$this->receiving_lib->clear_all();
 	}
+	
+	function save_locations() 
+	{
+		$this->db->trans_start();
+		
+		$deleted_locations = $this->Stock_locations->get_allowed_locations();
+		foreach($this->input->post() as $key => $value)
+		{
+			if (strstr($key, 'stock_location'))
+			{
+				$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+				unset($deleted_locations[$location_id]);
+				// save or update
+				$location_data = array('location_name' => $value);
+				if ($this->Stock_locations->save($location_data, $location_id))
+				{
+					$this->_clear_session_state();
+				}
+			}
+		}
+		// all locations not available in post will be deleted now
+		foreach ($deleted_locations as $location_id => $location_name)
+		{
+			$this->Stock_locations->delete($location_id);
+		}
+		$success = $this->db->trans_complete();
+		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		$this->_remove_duplicate_cookies();
+	}
 
     function save_barcode()
     {
@@ -118,13 +118,13 @@ class Config extends Secure_area
         'barcode_third_row'=>$this->input->post('barcode_third_row'),
         'barcode_num_in_row'=>$this->input->post('barcode_num_in_row'),
         'barcode_page_width'=>$this->input->post('barcode_page_width'),
-        'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing')
+        'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing'),
+        'barcode_content'=>$this->input->post('barcode_content'),
         );
         
-        if( $this->Appconfig->batch_save( $batch_save_data ) )
-        {
-            echo json_encode(array('success'=>true,'message'=>$this->lang->line('config_saved_successfully')));
-        }
+        $result = $this->Appconfig->batch_save( $batch_save_data );
+        $success = $result ? true : false;
+        echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
         
     }
 }

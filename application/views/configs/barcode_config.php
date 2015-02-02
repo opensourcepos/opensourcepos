@@ -11,7 +11,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-            <ul id="error_message_box"></ul>
+            <ul id="barcode_error_message_box" class="error_message_box"></ul>
             <legend><?php echo $this->lang->line("config_barcode_info"); ?></legend>
             
             <div class="field_row clearfix">    
@@ -103,6 +103,22 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                     'checked'=>$this->config->item('barcode_checksum')));?>
                 </div>
             </div>
+            
+			<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('config_barcode_content').':', 'barcode_content',array('class'=>'wide')); ?>
+				<div class='form_field'>
+					<?php echo form_radio(array(
+						'name'=>'barcode_content',
+						'value'=>'id',
+						'checked'=>$this->config->item('barcode_content') === "id")); ?>
+					<?php echo $this->lang->line('config_barcode_id'); ?>
+					<?php echo form_radio(array(
+						'name'=>'barcode_content',
+						'value'=>'number',
+						'checked'=>$this->config->item('barcode_content') === "number")); ?>
+					<?php echo $this->lang->line('config_barcode_number'); ?>
+				</div>
+			</div>
 
             <div class="field_row clearfix">    
             <?php echo form_label($this->lang->line('config_barcode_layout').':', 'barcode_layout',array('class'=>'wide')); ?>
@@ -214,7 +230,7 @@ $(document).ready(function()
         });
 
         },
-        errorLabelContainer: "#error_message_box",
+        errorLabelContainer: "#barcode_error_message_box",
         wrapper: "li",
         rules: 
         {

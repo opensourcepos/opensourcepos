@@ -1,28 +1,27 @@
 label,nl-BE,es,en,fr,zh,ru,th,tr,id
 config_address,Adres,Dirección del Comercio,Company Address,Addresse,公司地址,Адрес Компании,ที่อยู่,Şirket Adresi,Alamat Perusahaan
 config_address_required,Het adres van het bedrijf moet ingevuld worden,Dirección del Comercio es requerida,Company address is a required field,L\'adresse est requise,公司地址為必填,Адрес Компании обязательный пробел,ที่อยู่ต้องกรอก,Şirket Adresi zorunlu alandır,Alamat Perusahaan wajib diisi
-config_barcode_checksum,,,Checksum,,,,,,
+config_barcode_checksum,Checksum,,Checksum,,,,,,
 config_barcode_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
 config_barcode_content,Inhoud Barcode,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content
-config_barcode_dpi,,,DPI,,,,,,
-config_barcode_first_row,,,Row 1,,,,,,
-config_barcode_font,,,Font,,,,,,
+config_barcode_dpi,DPI,,DPI,,,,,,
+config_barcode_first_row,Rij 1,,Row 1,,,,,,
+config_barcode_font,Lettertype,,Font,,,,,,
 config_barcode_id,Product id/naam,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name
-config_barcode_info,,,Barcode Configuration Information,,,,,,
-config_barcode_labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Labels
-config_barcode_layout,,,Barcode layout,,,,,,
+config_barcode_info,Barcode instellingen,,Barcode Configuration Information,,,,,,
+config_barcode_layout,Barcode Layout,,Barcode layout,,,,,,
 config_barcode_name,Productnaam,Name,Name,Name,Name,Name,Name,Name,Name
 config_barcode_number,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN,UPC/EAN/ISBN
-config_barcode_number_in_row,,,Number in row,,,,,,
-config_barcode_page_cellspacing,,,Display page cellspacing,,,,,,
-config_barcode_page_width,,,Display page width,,,,,,
+config_barcode_number_in_row,Aantal per rij,,Number in row,,,,,,
+config_barcode_page_cellspacing,Toon cellspatiëring,,Display page cellspacing,,,,,,
+config_barcode_page_width,Toon paginabreedte,,Display page width,,,,,,
 config_barcode_price,Prijs,Price,Price,Price,Price,Price,Price,Price,Price
-config_barcode_rotation,,,Rotation,,,,,,
-config_barcode_scale,,,Scale,,,,,,
-config_barcode_second_row,,,Row 2,,,,,,
-config_barcode_thickness,,,Thickness,,,,,,
-config_barcode_third_row,,,Row 3,,,,,,
-config_barcode_type,,,Barcode Type,,,,,,
+config_barcode_rotation,Rotatie,,Rotation,,,,,,
+config_barcode_scale,Schaal,,Scale,,,,,,
+config_barcode_second_row,Rij 2,,Row 2,,,,,,
+config_barcode_thickness,Dikte,,Thickness,,,,,,
+config_barcode_third_row,Rij 3,,Row 3,,,,,,
+config_barcode_type,Barcode Type,,Barcode Type,,,,,,
 config_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
 config_company_required,De bedrijfsnaam moet ingevuld worden,Nombre del Comercio es requerido,Company name is a required field,Le nom d\'entreprise est requis,公司名稱為必填,Имя Компании обязательный пробел,ชื่อร้านค้าต้องกรอก,Şirket Adı zorunlu alandır,Nama Perusahaan wajib diisi
 config_company_website_url,De website van het bedrijf is geen geldige URL (http://...),Sitio Web no es una URL estándard (http://...),Company website is not a valid URL (http://...),Le site web de l\'entreprise n\'est pas une URL valide (http://...),公司網址格式錯誤 (http://...),Веб-сайт Компании не является допустимым URL (http://...),เว็บไซต์ร้านค้าไม่ถูกต้อง,website adresi yanlış (http://...),Situs Perusahaan bukan URL yang benar(http://...)
@@ -58,21 +57,19 @@ config_default_tax_rate_2,VAT 2 %,Impuesto 2,Tax 2 Rate,Taux d\'Imposition 2,稅
 config_default_tax_rate_number,Het percentage VAT moet een nummer zijn,El Impuesto Predeterminado debe ser un número,The default tax rate must be a number,Le taux d\'imposition doit etre un nombre,預設稅率必需為數字,Обычный ставка налога должен быть цифра,อัตราภาษีเริ่มต้นต้องเป็นตัวเลข,Varsayılan Vergi Oranı sayı olmalıdır,Tarif Pajak Biasa harus angka
 config_default_tax_rate_required,Het percentage VAT moet ingevuld worden,El Impuesto Predeterminado es requerido,The default tax rate is a required field,Le taux d\'imposition par défaut est requis,預設稅率為必填,Обычный ставка налога обязательный пробел,อัตราภาษีเริ่มต้นต้องกรอก,Varsayılan Vergi Oranı zorunlu alandır,Tarif Pajak Biasa wajib diisi
 config_fax,Fax,Fax,Fax,Fax,傳真,Факс,แฟ็กซ์,Faks,Fax
-config_general_config,,,General Configuration,,,,,,
-config_info,Configuratie Informatie,Información del Comercio,Store Configuration Information,Çonfiguration de l\'Entreprise,儲存組態,информация о магазин конфигурация,ข้อมูลร้านค้า,Mağaza yapılandırma bilgisi,Informasi Konfigurasi Toko
+config_general_configuration,Algemene Instellingen,,General Configuration,,,,,,
+config_info,Systeeminstellingen,Información del Comercio,Store Configuration Information,Çonfiguration de l\'Entreprise,儲存組態,информация о магазин конфигурация,ข้อมูลร้านค้า,Mağaza yapılandırma bilgisi,Informasi Konfigurasi Toko
 config_language,Taal,Idioma,Language,Langue,語言,Язик,ภาษา,Dil,Bahasa
 config_phone,Telefoon,Teléfono del Comercio,Company Phone,Téléphone,電話,Телефон Компании,เบอร์โทรศัพท์,Şirket Telefonu,Telepon Perusahaan
 config_phone_required,De telefoonnummer van het bedrijf moet ingevuld worden,Teléfono del Comercio es requerido,Company phone is a required field,Le numéro de téléphone est requis,公司電話為必填,Телефон Компании обязательный пробел,เบอร์โทรต้องกรอก,Şirket Telefonu zorunlu alandır,Telepon Perusahaan wajib diisi
 config_print_after_sale,Druk ticket na verkoop,Imprimir recibo después de una venta,Print receipt after sale,Imprimer un recu après vente,出貨時打印收據,Распечатать квитанцию ​​после продажи,พิมพ์บิลหลังการขาย,Satıştan sonra yazdır,Cetak Faktur setelah penjualan
-config_recv_invoice_enable,,,Enable Orders Invoice#,,,,หมายเลขใบแจ้งหนี้,,
-config_recv_invoice_format,,,Receivings Invoice Format,,,,รหัสใบแจ้งหนี้,,
+config_recv_invoice_format,Formaat Ordernummer,,Receivings Invoice Format,,,,รหัสใบแจ้งหนี้,,
 config_return_policy_required,De retourvoorwaarden moeten ingevuld worden,Política de Devolución es requerida,Return policy is a required field,Le Message est un champ requis,退換貨政策為必填,Возвратний полис обязательный пробел,กฎการคืนของต้องกรอก,İade Politikası zorunlu alandır,Kebijakan retur wajib diisi
-config_sales_invoice_enable,,,Enable Sales Invoice#,,,,หมายเลขใบแจ้งหนี้,,
-config_sales_invoice_format,,,Sales Invoice Format,,,,รหัสใบเสร็จ,,
+config_sales_invoice_format,Formaat Factuurnummer,,Sales Invoice Format,,,,รหัสใบเสร็จ,,
 config_saved_successfully,Configuratie werd bewaard,Configuración guardada satisfactoriamente,Configuration saved successfully,Configuration sauvegardée,組態設置儲存成功,Конфигурация успешно сохранена,องค์ประกอบร้านค้าบันทึกเรียบร้อย,Yapılandırma kaydedildi,Konfigurasi berhasil disimpan
 config_saved_unsuccessfully,Configuratie kon niet worden bewaard,Configuración no guardada,Configuration saved unsuccessfully,Échec de sauvegarde de configuration,組態設置儲存失敗,Конфигурация сохраненная безуспешно,องค์ประกอบร้านค้าบันทึกล้มเหลว,Yapılandırma kaydedilemedi,Konfigurasi tidak berhasil disimpan
 config_stock_location,Stock locatie,,Stock location,,,,สถานที่เก็บ,Mağaza Yeri,
-config_stock_location_duplicate,Vul een unieke naam in,,Please use an unique location name,,,,,,
+config_stock_location_duplicate,Vul een unieke naam in, ,Please use an unique location name,,,,,,
 config_stock_location_required,Naam van de stock locatie is een verplicht veld,,Stock location number is a required field,,,,จำเป็นต้องระบุสถานที่เก็บ,Mağaza Yeri numarası zorunlu alandır,
 config_tax_included,VAT Ingebgrepen,Impuestos incluidos,Tax Included,,Tax Included,Tax Included,รวมภาษีแล้ว,,Dikenakan Pajak
 config_timezone,Tijdzone,Zona Horaria,Timezone,Fuseau Horaire,時區,Часовой пояс,โซนเวลา,Saat Dilimi,Zona Waktu
@@ -85,3 +82,5 @@ config_barcode_labels,Barcode Labels,Barcode Labels,Barcode Labels,Barcode Label
 config_barcode_name,Productnaam,Name,Name,Name,Name,Name,Name,Name,Name
 config_barcode_price,Prijs,Price,Price,Price,Price,Price,Price,Price,Price
 config_barcode_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
+config_location_configuration,Stock Locaties,,Stock Locations,,,,,,
+config_location_info,Instellingen Locatie,,Location Configuration Information,,,,,,
