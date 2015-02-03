@@ -11,5 +11,10 @@ class Barcode extends Secure_area
 	{		
 		$this->load->view('barcode');
 	}	
+	
+	function receipt()
+	{
+		$this->load->view('receipt_barcode');
+	}
 }
 ?>
