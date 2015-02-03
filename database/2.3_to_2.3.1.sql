@@ -40,12 +40,6 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
 (SELECT CONCAT('items_', location_name), 'items', location_id FROM ospos_stock_locations);
 
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
-(SELECT CONCAT('sales_', location_name), 'sales', location_id FROM ospos_stock_locations);
-
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
-(SELECT CONCAT('receivings_', location_name), 'receivings', location_id FROM ospos_stock_locations);
-
 CREATE TABLE `ospos_grants` (
   `permission_id` varchar(255) NOT NULL,
   `person_id` int(10) NOT NULL,
@@ -88,8 +82,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('tax_included', '0'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
-('barcode_content', 'id'),
-('barcode_labels', '');
 
 -- add invoice_number column to receivings table
 ALTER TABLE `ospos_receivings` 

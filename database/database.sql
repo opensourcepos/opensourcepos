@@ -41,7 +41,12 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('sales_invoice_format', '$CO'),
 ('tax_included', '0'),
 ('barcode_content', 'id'),
-('barcode_labels', '');
+('barcode_first_row', 'category'),
+('barcode_second_row', 'item_code'),
+('barcode_third_row', 'cost_price'),
+('barcode_num_in_row', '2'),
+('barcode_page_width', '100'),      
+('barcode_page_cellspacing', '20');
 
 
 -- --------------------------------------------------------
