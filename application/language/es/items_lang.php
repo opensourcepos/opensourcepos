@@ -79,3 +79,4 @@ $lang["items_unit_price_required"] = "Precio de Venta es requerido";
 $lang["items_upc_database"] = "Base de datos UPC";
 $lang["items_update"] = "Actualizar Artículo";
 $lang["items_use_inventory_menu"] = "Usar Menú de Inventario";
+$lang["items_image"] = "";

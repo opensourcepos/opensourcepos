@@ -305,6 +305,8 @@ class Items extends Secure_area implements iData_controller
 
 	function save($item_id=-1)
 	{
+		$upload_success = $this->_handle_image_upload();
+		$upload_data = $this->upload->data();
         //Save item data
 		$item_data = array(
 		'name'=>$this->input->post('name'),
@@ -318,6 +320,7 @@ class Items extends Secure_area implements iData_controller
 		'receiving_quantity'=>$this->input->post('receiving_quantity'),
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
 		'is_serialized'=>$this->input->post('is_serialized'),
+		'pic_id'=>$upload_data['raw_name'],
 		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
 		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
 		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
@@ -334,21 +337,15 @@ class Items extends Secure_area implements iData_controller
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
 
-		$new_item = FALSE;
 		if($this->Item->save($item_data,$item_id))
 		{
+			$success = TRUE;
+			$new_item = FALSE;
 			//New item
 			if($item_id==-1)
 			{
-				echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_adding').' '.
-				$item_data['name'],'item_id'=>$item_data['item_id']));
 				$item_id = $item_data['item_id'];
 				$new_item = TRUE;
-			}
-			else //previous item
-			{
-				echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_updating').' '.
-				$item_data['name'],'item_id'=>$item_id));
 			}
 			
 			$items_taxes_data = array();
@@ -361,7 +358,7 @@ class Items extends Secure_area implements iData_controller
 					$items_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k] );
 				}
 			}
-			$this->Item_taxes->save($items_taxes_data, $item_id);
+			$success &= $this->Item_taxes->save($items_taxes_data, $item_id);
 
             
             //Save item quantity
@@ -375,7 +372,7 @@ class Items extends Secure_area implements iData_controller
                 $item_quantity = $this->Item_quantities->get_item_quantity($item_id, $location_data['location_id']);
                 if ($item_quantity->quantity != $updated_quantity || $new_item) 
                 {              
-	                $this->Item_quantities->save($location_detail, $item_id, $location_data['location_id']);
+	                $success &= $this->Item_quantities->save($location_detail, $item_id, $location_data['location_id']);
 	                
 	                $inv_data = array
 	                (
@@ -386,16 +383,48 @@ class Items extends Secure_area implements iData_controller
 	                    'trans_comment'=>$this->lang->line('items_manually_editing_of_quantity'),
 	                    'trans_inventory'=>$updated_quantity - $item_quantity->quantity
 	                );
-	                $this->Inventory->insert($inv_data);       
+	                $success &= $this->Inventory->insert($inv_data);       
                 }                                            
             }        
+            
+            if ($success && $upload_success) 
+            {
+            	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
+            	echo json_encode(array('success'=>true,'message'=>$success_message,'item_id'=>$item_id));
+            }
+            else
+            {
+            	$error_message = $upload_success ? 
+	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
+    	        	$this->upload->display_errors(); 
+            	echo json_encode(array('success'=>false,'message'=>$error_message,'item_id'=>$item_id)); 
+            }
+            
 		}
 		else//failure
 		{
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('items_error_adding_updating').' '.
-			$item_data['name'],'item_id'=>-1));
+				$item_data['name'],'item_id'=>-1));
 		}
 
+	}
+	
+	function _handle_image_upload()
+	{
+		$this->load->helper('directory');
+		$map = directory_map('./uploads/item_pics/', 1);
+		// load upload library
+		$config = array('upload_path' => './uploads/item_pics/',
+				'allowed_types' => 'gif|jpg|png',
+				'max_size' => '100',
+				'max_width' => '1024',
+				'max_height' => '768',
+				'file_name' => sizeof($map));
+		$this->load->library('upload', $config);
+		$this->upload->do_upload('item_image');            
+		return strlen($this->upload->display_errors()) == 0 || 
+            	!strcmp($this->upload->display_errors(), 
+            		'<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
 	
 	//Ramel Inventory Tracking
@@ -671,7 +700,7 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function get_form_width()
 	{
-		return 360;
+		return 400;
 	}
     
 	function item_number_check($item_number)

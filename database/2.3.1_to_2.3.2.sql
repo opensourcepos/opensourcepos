@@ -13,3 +13,7 @@ INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
 INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
 (SELECT CONCAT('receivings_', location_name), 'receivings', location_id FROM ospos_stock_locations);
 
+-- add item_pic column to items table
+ALTER TABLE `ospos_items` 
+   ADD COLUMN `item_pic` int(10) DEFAULT NULL;
+

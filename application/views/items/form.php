@@ -1,7 +1,7 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 <ul id="error_message_box"></ul>
 <?php
-echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
+echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'enctype'=>'multipart/form-data'));
 ?>
 <fieldset id="item_basic_info">
 <legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
@@ -168,6 +168,13 @@ foreach($stock_locations as $key=>$location_detail)
 		'cols'=>'17')
 	);?>
 	</div>
+</div>
+
+<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('items_image').':', 'item_image',array('class'=>'wide')); ?>
+    <div class='form_field'>
+        <?php echo form_upload('item_image');?>
+    </div>
 </div>
 
 <div class="field_row clearfix">
@@ -365,8 +372,8 @@ if($this->config->item('custom10_name') != NULL)
 
 <?php
 echo form_submit(array(
-	'name'=>'submit',
-	'id'=>'submit',
+	'name'=>'submit_form',
+	'id'=>'submit_form',
 	'value'=>$this->lang->line('common_submit'),
 	'class'=>'submit_button float_right')
 );

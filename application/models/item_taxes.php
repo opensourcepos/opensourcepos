@@ -21,15 +21,15 @@ class Item_taxes extends CI_Model
 		$this->db->trans_start();
 
 		$this->delete($item_id);
-		
+		$result = TRUE;
 		foreach ($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$this->db->insert('items_taxes',$row);		
+			$result &= $this->db->insert('items_taxes',$row);		
 		}
 		
 		$this->db->trans_complete();
-		return true;
+		return $result;
 	}
 	
 	function save_multiple(&$items_taxes_data, $item_ids)
