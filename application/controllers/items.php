@@ -320,7 +320,6 @@ class Items extends Secure_area implements iData_controller
 		'receiving_quantity'=>$this->input->post('receiving_quantity'),
 		'allow_alt_description'=>$this->input->post('allow_alt_description'),
 		'is_serialized'=>$this->input->post('is_serialized'),
-		'pic_id'=>$upload_data['raw_name'],
 		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
 		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
 		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
@@ -333,6 +332,11 @@ class Items extends Secure_area implements iData_controller
 		'custom9'=>$this->input->post('custom9'),/**GARRISON ADDED 4/21/2013**/
 		'custom10'=>$this->input->post('custom10')/**GARRISON ADDED 4/21/2013**/
 		);
+		
+		if (!empty($upload_data['raw_name']))
+		{
+			$item_data['pic_id'] = $upload_data['raw_name'];
+		}
 		
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
@@ -417,8 +421,8 @@ class Items extends Secure_area implements iData_controller
 		$config = array('upload_path' => './uploads/item_pics/',
 				'allowed_types' => 'gif|jpg|png',
 				'max_size' => '100',
-				'max_width' => '1024',
-				'max_height' => '768',
+				'max_width' => '640',
+				'max_height' => '480',
 				'file_name' => sizeof($map));
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');            

@@ -282,7 +282,7 @@ function get_table_row(id) {
 	return $element;
 }
 
-function update_row(row_id,url)
+function update_row(row_id,url,callback)
 {
 	$.post(url, { 'row_id': row_id },function(response)
 	{
@@ -291,6 +291,7 @@ function update_row(row_id,url)
 		row_to_update.replaceWith(response);	
 		reinit_row(row_id);
 		hightlight_row(row_id);
+		callback && typeof(callback) == "function" && callback(); 
 	});
 }
 
