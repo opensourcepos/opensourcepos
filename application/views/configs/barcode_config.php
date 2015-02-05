@@ -1,9 +1,3 @@
-<?php
-define('IN_CB', true);
-include_once(APPPATH."libraries/barcodegen/html/include/function.php");
-?>
-
-
 <div id="page_title"><?php echo $this->lang->line('config_barcode_configuration'); ?></div>
 <?php
 echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
@@ -22,64 +16,50 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
             </div>
             
             <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_dpi').':', 'barcode_dpi',array('class'=>'wide required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_quality').':', 'barcode_quality',array('class'=>'wide required')); ?>
                 <div class='form_field'>
                 <?php echo form_input(array(
-                    'max'=>'300',
-                    'min'=>'72',
+                    'max'=>'100',
+                    'min'=>'10',
                     'type'=>'number',
-                    'name'=>'barcode_dpi',
-                    'id'=>'barcode_dpi',
-                    'value'=>$this->config->item('barcode_dpi')));?>
+                    'name'=>'barcode_quality',
+                    'id'=>'barcode_quality',
+                    'value'=>$this->config->item('barcode_quality')));?>
                 </div>
             </div>
             
             <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_thickness').':', 'barcode_thickness',array('class'=>'wide required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_width').':', 'barcode_width',array('class'=>'wide required')); ?>
                 <div class='form_field'>
                 <?php echo form_input(array(
                     'step'=>'5',
-                    'max'=>'90',
-                    'min'=>'20',
+                    'max'=>'350',
+                    'min'=>'120',
                     'type'=>'number',
-                    'name'=>'barcode_thickness',
-                    'id'=>'barcode_thickness',
-                    'value'=>$this->config->item('barcode_thickness')));?>
+                    'name'=>'barcode_width',
+                    'id'=>'barcode_width',
+                    'value'=>$this->config->item('barcode_width')));?>
                 </div>
             </div>
 
             <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_scale').':', 'barcode_scale',array('class'=>'wide required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_height').':', 'barcode_height',array('class'=>'wide required')); ?>
                 <div class='form_field'>
                 <?php echo form_input(array(
                     'type' => 'number',
-                    'min' => 1,
-                    'max' => 4,
-                    'name'=>'barcode_scale',
-                    'id'=>'barcode_scale',
-                    'value'=>$this->config->item('barcode_scale')));?>
+                    'min' => 40,
+                    'max' => 120,
+                    'name'=>'barcode_height',
+                    'id'=>'barcode_height',
+                    'value'=>$this->config->item('barcode_height')));?>
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_rotation').':', 'barcode_rotation',array('class'=>'wide')); ?>
-                <div class='form_field'>
-                <?php echo form_dropdown('barcode_rotation', array(
-                        'no_rotation'        => 'No rotation',
-                        '90'   => '90&deg; clockwise',
-                        '180'           => '180&deg; clockwise',
-                        '270'           => '270&deg; clockwise'
-                        ), 
-                    $this->config->item('barcode_rotation'));
-                    ?>
-                </div>
-            </div>
-
             <div class="field_row clearfix">    
             <?php echo form_label($this->lang->line('config_barcode_font').':', 'barcode_font',array('class'=>'wide required')); ?>
                 <div class='form_field'>
                 <?php echo form_dropdown('barcode_font', 
-                   listfonts("application/libraries/barcodegen/font"), 
+                   $this->barcode_lib->listfonts("font"), 
                     $this->config->item('barcode_font'));
                     ?>
                     
@@ -90,17 +70,6 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                     'name'=>'barcode_font_size',
                     'id'=>'barcode_font_size',
                     'value'=>$this->config->item('barcode_font_size')));?>
-                </div>
-            </div>
-                       
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_checksum').':', 'barcode_checksum',array('class'=>'wide')); ?>
-                <div class='form_field'>
-                <?php echo form_checkbox(array(
-                    'name'=>'barcode_checksum',
-                    'id'=>'barcode_checksum',
-                    'value'=>'barcode_checksum',
-                    'checked'=>$this->config->item('barcode_checksum')));?>
                 </div>
             </div>
             
@@ -187,7 +156,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                     'name'=>'barcode_page_cellspacing',
                     'id'=>'barcode_page_cellspacing',
                     'value'=>$this->config->item('barcode_page_cellspacing')));?>
-                pixl
+                px
                 </div>
             </div>
             
@@ -234,17 +203,17 @@ $(document).ready(function()
         wrapper: "li",
         rules: 
         {
-            barcode_dpi: 
+            barcode_width: 
             {
                 required:true,
                 number:true
             },
-            barcode_thickness: 
+            barcode_height: 
             {
                 required:true,
                 number:true
             },
-            barcode_scale: 
+            barcode_quality: 
             {
                 required:true,
                 number:true
@@ -272,20 +241,20 @@ $(document).ready(function()
         },
         messages: 
         {
-            barcode_dpi:
+            barcode_width:
             {
-                required:"<?php echo $this->lang->line('config_default_barcode_dpi_required'); ?>",
-                number:"<?php echo $this->lang->line('config_default_barcode_dpi_number'); ?>"
+                required:"<?php echo $this->lang->line('config_default_barcode_width_required'); ?>",
+                number:"<?php echo $this->lang->line('config_default_barcode_width_number'); ?>"
             },
-            barcode_thickness:
+            barcode_height:
             {
-                required:"<?php echo $this->lang->line('config_default_barcode_thickness_required'); ?>",
-                number:"<?php echo $this->lang->line('config_default_barcode_thickness_number'); ?>"
+                required:"<?php echo $this->lang->line('config_default_barcode_height_required'); ?>",
+                number:"<?php echo $this->lang->line('config_default_barcode_height_number'); ?>"
             },
-            barcode_scale:
+            barcode_quality:
             {
-                required:"<?php echo $this->lang->line('config_default_barcode_scale_required'); ?>",
-                number:"<?php echo $this->lang->line('config_default_barcode_scale_number'); ?>"
+                required:"<?php echo $this->lang->line('config_default_barcode_quality_required'); ?>",
+                number:"<?php echo $this->lang->line('config_default_barcode_quality_number'); ?>"
             },
             barcode_font_size:
             {

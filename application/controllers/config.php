@@ -106,13 +106,11 @@ class Config extends Secure_area
     {
         $batch_save_data=array(
         'barcode_type'=>$this->input->post('barcode_type'),
-        'barcode_dpi'=>$this->input->post('barcode_dpi'),
-        'barcode_thickness'=>$this->input->post('barcode_thickness'),
-        'barcode_scale'=>$this->input->post('barcode_scale'),
-        'barcode_rotation'=>$this->input->post('barcode_rotation'),
+        'barcode_quality'=>$this->input->post('barcode_quality'),
+        'barcode_width'=>$this->input->post('barcode_width'),
+        'barcode_height'=>$this->input->post('barcode_height'),
         'barcode_font'=>$this->input->post('barcode_font'),
         'barcode_font_size'=>$this->input->post('barcode_font_size'),
-        'barcode_checksum'=>$this->input->post('barcode_checksum'),
         'barcode_first_row'=>$this->input->post('barcode_first_row'),
         'barcode_second_row'=>$this->input->post('barcode_second_row'),
         'barcode_third_row'=>$this->input->post('barcode_third_row'),

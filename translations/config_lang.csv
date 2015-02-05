@@ -4,7 +4,7 @@ config_address_required,Het adres van het bedrijf moet ingevuld worden,Direcció
 config_barcode_checksum,Checksum,,Checksum,,,,,,
 config_barcode_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
 config_barcode_content,Inhoud Barcode,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content,Barcode Content
-config_barcode_dpi,DPI,,DPI,,,,,,
+config_barcode_width,Breedte (px),,Width (px),,,,,,
 config_barcode_first_row,Rij 1,,Row 1,,,,,,
 config_barcode_font,Lettertype,,Font,,,,,,
 config_barcode_id,Product id/naam,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name,Item Id/Name
@@ -16,10 +16,9 @@ config_barcode_number_in_row,Aantal per rij,,Number in row,,,,,,
 config_barcode_page_cellspacing,Toon cellspatiëring,,Display page cellspacing,,,,,,
 config_barcode_page_width,Toon paginabreedte,,Display page width,,,,,,
 config_barcode_price,Prijs,Price,Price,Price,Price,Price,Price,Price,Price
-config_barcode_rotation,Rotatie,,Rotation,,,,,,
-config_barcode_scale,Schaal,,Scale,,,,,,
+config_barcode_height,Hoogte (px),,Height (px),,,,,,
 config_barcode_second_row,Rij 2,,Row 2,,,,,,
-config_barcode_thickness,Dikte,,Thickness,,,,,,
+config_barcode_quality,Kwaliteit (1-100),,Quality (1-100),,,,,,
 config_barcode_third_row,Rij 3,,Row 3,,,,,,
 config_barcode_type,Barcode Type,,Barcode Type,,,,,,
 config_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
@@ -37,8 +36,8 @@ config_custom6,Custom Veld 6,Campo Libre 6,Custom Field 6,Champ Personnalisé 6,
 config_custom7,Custom Veld 7,Campo Libre 7,Custom Field 7,Champ Personnalisé 7,Custom Field 7,Изготовленный пробел 7,พื้นที่เพิ่มเติม 7,Özel Alan 7,Custom Field 7
 config_custom8,Custom Veld 8,Campo Libre 8,Custom Field 8,Champ Personnalisé 8,Custom Field 8,Изготовленный пробел 8,พื้นที่เพิ่มเติม 8,Özel Alan 8,Custom Field 8
 config_custom9,Custom Veld 9,Campo Libre 9,Custom Field 9,Champ Personnalisé 9,Custom Field 9,Изготовленный пробел 9,พื้นที่เพิ่มเติม 9,Özel Alan 9,Custom Field 9
-config_default_barcode_dpi_number,,,The default barcode dpi must be a number,,,,,,
-config_default_barcode_dpi_required,,,The default barcode dpi is a required field,,,,,,
+config_default_barcode_width_number,,,The default barcode width must be a number,,,,,,
+config_default_barcode_width_required,,,The default barcode width is a required field,,,,,,
 config_default_barcode_font_size_number,,,The default barcode font size must be a number,,,,,,
 config_default_barcode_font_size_required,,,The default barcode font size is a required field,,,,,,
 config_default_barcode_num_in_row_number,,,The default barcode num in row must be a number,,,,,,
@@ -47,10 +46,10 @@ config_default_barcode_page_cellspacing_number,,,The default barcode page cellsp
 config_default_barcode_page_cellspacing_required,,,The default barcode page cellspacing is a required field,,,,,,
 config_default_barcode_page_width_number,,,The default barcode page width must be a number,,,,,,
 config_default_barcode_page_width_required,,,The default barcode page width is a required field,,,,,,
-config_default_barcode_scale_number,,,The default barcode scale must be a number,,,,,,
-config_default_barcode_scale_required,,,The default barcode scale is a required field,,,,,,
-config_default_barcode_thickness_number,,,The default barcode thickness must be a number,,,,,,
-config_default_barcode_thickness_required,,,The default barcode thickness is a required field,,,,,,
+config_default_barcode_height_number,,,The default barcode height  must be a number,,,,,,
+config_default_barcode_height_required,,,The default barcode height is a required field,,,,,,
+config_default_barcode_quality_number,,,The default barcode quality must be a number,,,,,,
+config_default_barcode_quality_required,,,The default barcode quality is a required field,,,,,,
 config_default_tax_rate,Standaard VAT %,% de Impuestos Predeterminada,Default Tax Rate %,Taux d\'Imposition par Défaut,預設稅率 %,Обычный ставка налога %,อัตราภาษีโดยปริยาย %,Varsayılan Vergi Oranı %,Tarif Pajak Biasa%
 config_default_tax_rate_1,VAT 1 %,Impuesto 1,Tax 1 Rate,Taux d\'Imposition 1,稅率 1,ставка налога 1,อัตราภาษี 1,Vergi Oranı 1,Tarif Pajak 1
 config_default_tax_rate_2,VAT 2 %,Impuesto 2,Tax 2 Rate,Taux d\'Imposition 2,稅率 2,ставка налога 2,อัตราภาษี 2,Vergi Oranı 2,Tarif Pajak 2
