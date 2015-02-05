@@ -387,49 +387,39 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10});
-    $("#category").result(function(event, data, formatted){});
-	$("#category").search();
+	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom1").autocomplete("<?php echo site_url('items/suggest_custom1');?>",{max:100,minChars:0,delay:10});
-    $("#custom1").result(function(event, data, formatted){});
-	$("#custom1").search();
+	$("#custom1").autocomplete("<?php echo site_url('items/suggest_custom1');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom2").autocomplete("<?php echo site_url('items/suggest_custom2');?>",{max:100,minChars:0,delay:10});
-    $("#custom2").result(function(event, data, formatted){});
-	$("#custom2").search();
+	$("#custom2").autocomplete("<?php echo site_url('items/suggest_custom2');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom3").autocomplete("<?php echo site_url('items/suggest_custom3');?>",{max:100,minChars:0,delay:10});
-    $("#custom3").result(function(event, data, formatted){});
-	$("#custom3").search();
+	$("#custom3").autocomplete("<?php echo site_url('items/suggest_custom3');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom4").autocomplete("<?php echo site_url('items/suggest_custom4');?>",{max:100,minChars:0,delay:10});
-    $("#custom4").result(function(event, data, formatted){});
-	$("#custom4").search();
+	$("#custom4").autocomplete("<?php echo site_url('items/suggest_custom4');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
+	
+	$("#custom5").autocomplete("<?php echo site_url('items/suggest_custom5');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom5").autocomplete("<?php echo site_url('items/suggest_custom5');?>",{max:100,minChars:0,delay:10});
-    $("#custom5").result(function(event, data, formatted){});
-	$("#custom5").search();
+	$("#custom6").autocomplete("<?php echo site_url('items/suggest_custom6');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom6").autocomplete("<?php echo site_url('items/suggest_custom6');?>",{max:100,minChars:0,delay:10});
-    $("#custom6").result(function(event, data, formatted){});
-	$("#custom6").search();
+	$("#custom7").autocomplete("<?php echo site_url('items/suggest_custom7');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
-	$("#custom7").autocomplete("<?php echo site_url('items/suggest_custom7');?>",{max:100,minChars:0,delay:10});
-    $("#custom7").result(function(event, data, formatted){});
-	$("#custom7").search();
-
-	$("#custom8").autocomplete("<?php echo site_url('items/suggest_custom8');?>",{max:100,minChars:0,delay:10});
-    $("#custom8").result(function(event, data, formatted){});
-	$("#custom8").search();
+	$("#custom8").autocomplete("<?php echo site_url('items/suggest_custom8');?>",{max:100,minChars:0,delay:10})
+	.result(function(event, data, formatted){}).search();
 
 	$("#custom9").autocomplete("<?php echo site_url('items/suggest_custom9');?>",{max:100,minChars:0,delay:10});
-    $("#custom9").result(function(event, data, formatted){});
-	$("#custom9").search();
+	.result(function(event, data, formatted){}).search();
 
 	$("#custom10").autocomplete("<?php echo site_url('items/suggest_custom10');?>",{max:100,minChars:0,delay:10});
-    $("#custom10").result(function(event, data, formatted){});
-	$("#custom10").search();
+	.result(function(event, data, formatted){}).search();
+	
 /** END GARRISON ADDED **/
 	
 	$('#item_form').validate({
