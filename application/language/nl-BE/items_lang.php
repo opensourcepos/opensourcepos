@@ -79,3 +79,4 @@ $lang["items_unit_price_required"] = "Verkoopprijs moet ingevuld worden";
 $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "Bewerk Product";
 $lang["items_use_inventory_menu"] = "Use Inv. Menu";
+$lang["items_image"] = "Afbeelding";

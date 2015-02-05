@@ -47,14 +47,12 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_quality', '100'),
 ('barcode_font', 'Arial'),
 ('barcode_font_size', '10'),
-('barcode_checksum', '0'),
 ('barcode_first_row', 'category'),
 ('barcode_second_row', 'item_code'),
 ('barcode_third_row', 'cost_price'),
 ('barcode_num_in_row', '2'),
 ('barcode_page_width', '100'),      
 ('barcode_page_cellspacing', '20');
-
 
 -- --------------------------------------------------------
 
@@ -162,6 +160,7 @@ CREATE TABLE `ospos_items` (
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0',
   `receiving_quantity` int(11) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
+  `pic_id` int(10) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',

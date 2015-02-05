@@ -79,3 +79,4 @@ $lang["items_unit_price_required"] = "Розничная цена обязате
 $lang["items_upc_database"] = "UPC база данных";
 $lang["items_update"] = "Обновить Товар";
 $lang["items_use_inventory_menu"] = "Используйте меню инвентаря";
+$lang["items_image"] = "";

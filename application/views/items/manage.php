@@ -22,11 +22,44 @@ $(document).ready(function()
     	$(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
     });
 
-    $("#is_serialized, #no_description, #search_custom, #is_deleted").click(function()
+    $('#is_serialized, #no_description, #search_custom, #is_deleted').click(function()
     {
     	$('#items_filter_form').submit();
     });
+
+    resize_thumbs();
 });
+
+function resize_thumbs()
+{
+    $('a.rollover').imgPreview();
+    $('a.rollover img').each(function() 
+   	{
+	    var maxWidth = 52; // Max width for the image
+	    var maxHeight = 32;    // Max height for the image
+	    var ratio = 0;  // Used for aspect ratio
+	    var width = $(this).width();    // Current image width
+	    var height = $(this).height();  // Current image height
+	
+	    // Check if the current width is larger than the max
+	    if(width > maxWidth){
+	        ratio = maxWidth / width;   // get ratio for scaling image
+	        $(this).css("width", maxWidth); // Set new width
+	        $(this).css("height", height * ratio);  // Scale height based on ratio
+	        height = height * ratio;    // Reset height to match scaled image
+	        width = width * ratio;    // Reset width to match scaled image
+	    }
+	
+	    // Check if current height is larger than max
+	    if(height > maxHeight){
+	        ratio = maxHeight / height; // get ratio for scaling image
+	        $(this).css("height", maxHeight);   // Set new height
+	        $(this).css("width", width * ratio);    // Scale width based on ratio
+	        width = width * ratio;    // Reset width to match scaled image
+	        height = height * ratio;    // Reset height to match scaled image
+	    }
+	});
+}
 
 
 function init_table_sorting()
@@ -59,9 +92,8 @@ function post_item_form_submit(response)
 		//This is an update, just update one row
 		if(jQuery.inArray(response.item_id,get_visible_checkbox_ids()) != -1)
 		{
-			update_row(response.item_id,'<?php echo site_url("$controller_name/get_row")?>');
+			update_row(response.item_id,'<?php echo site_url("$controller_name/get_row")?>',resize_thumbs);
 			set_feedback(response.message,'success_message',false);
-
 		}
 		else //refresh entire table
 		{
@@ -86,7 +118,7 @@ function post_bulk_form_submit(response)
 		var selected_item_ids=get_selected_values();
 		for(k=0;k<selected_item_ids.length;k++)
 		{
-			update_row(selected_item_ids[k],'<?php echo site_url("$controller_name/get_row")?>');
+			update_row(selected_item_ids[k],'<?php echo site_url("$controller_name/get_row")?>',resize_thumbs);
 		}
 		set_feedback(response.message,'success_message',false);
 	}
