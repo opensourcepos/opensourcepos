@@ -137,6 +137,20 @@ $(document).ready(function()
 
 	var create_parser = function(field_name, parse_format)
 	{
+		var parse_field = function(format, address) 
+		{
+			var fields = [];
+			$.each(format.split("|"), function(key, value)
+           	{
+                if (address[value] && fields.length < 2 && $.inArray(address[value], fields) === -1)
+                {
+	                fields.push(address[value]);
+                }
+       	    });
+       	    return fields[0] + (fields[1] ? ' (' + fields[1] + ')' : '');
+       	    //return field;
+		};
+		
 		return function(data)
 		{
             var parsed = [];
@@ -144,9 +158,9 @@ $(document).ready(function()
             {
                 var address = value.address;
                 var row = [];
-                $.each(parse_format, function(key, value)
+                $.each(parse_format, function(key, format)
                 {
-                    row.push(address[value]);
+                    row.push(parse_field(format, address));
                 });
                 parsed[index] = {
         	        data: row,
@@ -158,22 +172,23 @@ $(document).ready(function()
 		};
 	};
 
-	var request_params = function() 
+	var request_params = function(element, element_name) 
 	{
-		return {
-			 format: 'json',
-             limit: 5,
-		     street: $("#address_1").val(),
-		     city: $("#city").val(),
-		     postalcode: $("#postcode").val(),
-		     addressdetails: 1,
-		     country: 'Belgium',
-		     state: $("#state").val()
-		};
+		return function() {
+			var result = {
+				 format: 'json',
+	             limit: 5,
+			     addressdetails: 1,
+			     country: 'Belgium',
+			};			
+			result[element_name || $(element).attr('id')] = $(element).val();
+			return result;
+		}
+
 	};
 
 	var url = 'http://nominatim.openstreetmap.org/search';
-	
+	// city disctrict + town or .. 
 	var handle_city_completion = handle_auto_completion(["postcode", "city", "state", "country"]);
 	$("#postcode").autocomplete(url,{
 		max:100,
@@ -182,34 +197,31 @@ $(document).ready(function()
 		formatItem: set_field_values,
 		type: 'GET',
 		dataType:'json',
-		extraParams: request_params,
-		parse: create_parser('postcode', ["postcode", "city", "state", "country"])
+		extraParams: request_params($("#postcode"), "postalcode"),
+		parse: create_parser('postcode', ["postcode", "city_district|town|city", "state", "country"])
 	});
     $("#postcode").result(handle_city_completion);
 
 	$("#city").autocomplete(url,{
 		max:100,
-		minChars:5,
+		minChars:4,
 		delay:500,
 		formatItem: set_field_values,
 		type: 'GET',
 		dataType:'json',
 		extraParams: request_params,
-		parse: create_parser('city', ["postcode", "city", "state", "country"])
+		parse: create_parser('city', ["postcode", "city_district|town|city", "state", "country"])
 	});
    	$("#city").result(handle_city_completion);
 
 	$("#state").autocomplete(url, {
 		max:100, 
-		minChars:0, 
+		minChars:3, 
 		delay:500,
 		type: 'GET',
 		dataType:'json',
 		extraParams: request_params,
 		parse: create_parser('state', ["state", "country"]),
-		formatItem: function(results) {
-			return results[1] + ' - ' + results[3];
-		}
 	});
 	$("#state").result(handle_auto_completion(["state", "country"]));
 
@@ -221,9 +233,6 @@ $(document).ready(function()
 		dataType:'json',
 		extraParams: request_params,
 		parse: create_parser('country', ["country"]), 
-		formatItem: function(results) {
-			return results[1];
-		}
 	});
 	$("#country").result(handle_auto_completion(["country"]));
 
