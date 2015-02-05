@@ -55,17 +55,21 @@
         
         // Re-usable means to add prefix (from setting):
         function addPrefix(src) {
-            return src.replace(/(\/?)([^\/]+)$/,'$1' + s.thumbPrefix + '$2');
+            return src && src.replace(/(\/?)([^\/]+)$/,'$1' + s.thumbPrefix + '$2');
         }
         
         if (s.preloadImages) {
             (function(i){
                 var tempIMG = new Image(),
                     callee = arguments.callee;
-                tempIMG.src = addPrefix($($collection[i]).attr(s.srcAttr));
-                tempIMG.onload = function(){
-                    $collection[i + 1] && callee(i + 1);
-                };
+                var src = $($collection[i]).attr(s.srcAttr)
+                if (src)
+                {
+                	tempIMG.src = addPrefix(src);
+                    tempIMG.onload = function(){
+                        $collection[i + 1] && callee(i + 1);
+                    };
+                }
             })(0);
         }
         
