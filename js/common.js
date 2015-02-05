@@ -41,42 +41,8 @@ function set_feedback(text, classname, keep_displayed)
 }
 
 //keylisteners
-
-$(window).jkey('f1',function(){
-window.location = BASE_URL + '/customers/index';
-});
-
-
-$(window).jkey('f2',function(){
-window.location = BASE_URL + '/items/index';
-});
-
-
-$(window).jkey('f3',function(){
-window.location = BASE_URL + '/reports/index';
-});
-
-$(window).jkey('f4',function(){
-window.location = BASE_URL + '/suppliers/index';
-});
-
-$(window).jkey('f5',function(){
-window.location = BASE_URL + '/receivings/index';
-});
-
-
-$(window).jkey('f6',function(){
-window.location = BASE_URL + '/sales/index';
-});
-
-$(window).jkey('f7',function(){
-window.location = BASE_URL + '/employees/index';
-});
-
-$(window).jkey('f8',function(){
-window.location = BASE_URL + '/config/index';
-});
-
-$(window).jkey('f9',function(){
-window.location = BASE_URL + '/giftcards/index';
+$.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'config', 'giftcards'], function(key, value) {
+	$(window).jkey('f' + (key+1), function(){
+		window.location = BASE_URL + '/' + value + ' /index';
+	});	
 });

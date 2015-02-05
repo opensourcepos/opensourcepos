@@ -85,7 +85,7 @@
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'zip',
-		'id'=>'zip',
+		'id'=>'postcode',
 		'value'=>$person_info->zip));?>
 	</div>
 </div>
@@ -112,3 +112,120 @@
 	);?>
 	</div>
 </div>
+
+<script type='text/javascript' language="javascript">
+//validation and submit handling
+$(document).ready(function()
+{
+		
+	var handle_auto_completion = function(fields) {
+		return function(event, results, formatted) {
+			if (results != null && results.length > 0) {
+				// handle auto completion
+				for(var i in fields) {
+					$("#" + fields[i]).val(results[i]);
+				}
+		        return false;
+			}
+			return true;
+		};
+	};
+
+	var set_field_values = function(results) {
+		return results[0] + ' - ' + results[1];
+	};
+
+	var create_parser = function(field_name, parse_format)
+	{
+		return function(data)
+		{
+            var parsed = [];
+            $.each(data, function(index, value)
+            {
+                var address = value.address;
+                var row = [];
+                $.each(parse_format, function(key, value)
+                {
+                    row.push(address[value]);
+                });
+                parsed[index] = {
+        	        data: row,
+    	            value: address[field_name],
+    	            result: address[field_name]
+                };
+            });
+            return parsed;
+		};
+	};
+
+	var request_params = function() 
+	{
+		return {
+			 format: 'json',
+             limit: 5,
+		     street: $("#address_1").val(),
+		     city: $("#city").val(),
+		     postalcode: $("#postcode").val(),
+		     addressdetails: 1,
+		     country: 'Belgium',
+		     state: $("#state").val()
+		};
+	};
+
+	var url = 'http://nominatim.openstreetmap.org/search';
+	
+	var handle_city_completion = handle_auto_completion(["postcode", "city", "state", "country"]);
+	$("#postcode").autocomplete(url,{
+		max:100,
+		minChars:3,
+		delay:500,
+		formatItem: set_field_values,
+		type: 'GET',
+		dataType:'json',
+		extraParams: request_params,
+		parse: create_parser('postcode', ["postcode", "city", "state", "country"])
+	});
+    $("#postcode").result(handle_city_completion);
+
+	$("#city").autocomplete(url,{
+		max:100,
+		minChars:5,
+		delay:500,
+		formatItem: set_field_values,
+		type: 'GET',
+		dataType:'json',
+		extraParams: request_params,
+		parse: create_parser('city', ["postcode", "city", "state", "country"])
+	});
+   	$("#city").result(handle_city_completion);
+
+	$("#state").autocomplete(url, {
+		max:100, 
+		minChars:0, 
+		delay:500,
+		type: 'GET',
+		dataType:'json',
+		extraParams: request_params,
+		parse: create_parser('state', ["state", "country"]),
+		formatItem: function(results) {
+			return results[1] + ' - ' + results[3];
+		}
+	});
+	$("#state").result(handle_auto_completion(["state", "country"]));
+
+	$("#country").autocomplete(url,{
+		max:100,
+		minChars:3,
+		delay:500,
+		type: 'GET',
+		dataType:'json',
+		extraParams: request_params,
+		parse: create_parser('country', ["country"]), 
+		formatItem: function(results) {
+			return results[1];
+		}
+	});
+	$("#country").result(handle_auto_completion(["country"]));
+
+});
+</script>

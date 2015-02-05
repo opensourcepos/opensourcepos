@@ -338,6 +338,13 @@ $.Autocompleter = function(input, options) {
 				extraParams[key] = typeof param == "function" ? param() : param;
 			});
 			
+			// don't add q parameter (won't work for nomantim)
+			var data = typeof options.extraParams == "function" ? 
+			    $.extend({}, options.extraParams()) : $.extend({
+				    q: lastWord(term),
+				    limit: options.max
+			    }, extraParams);
+			
 			$.ajax({
 				// try to leverage ajaxQueue plugin to abort previous requests
 				mode: "abort",
@@ -345,11 +352,8 @@ $.Autocompleter = function(input, options) {
 				port: "autocomplete" + input.name,
 				dataType: options.dataType,
 				url: options.url,
-				type:"POST",
-				data: $.extend({
-					q: lastWord(term),
-					limit: options.max
-				}, extraParams),
+				type: options.type || "POST",
+				data: data,
 				success: function(data) {
 					var parsed = options.parse && options.parse(data) || parse(data);
 					cache.add(term, parsed);
