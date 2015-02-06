@@ -148,7 +148,6 @@ $(document).ready(function()
                 }
        	    });
        	    return fields[0] + (fields[1] ? ' (' + fields[1] + ')' : '');
-       	    //return field;
 		};
 		
 		return function(data)
@@ -172,23 +171,22 @@ $(document).ready(function()
 		};
 	};
 
-	var request_params = function(element, element_name) 
+	var request_params = function(id, key) 
 	{
 		return function() {
 			var result = {
 				 format: 'json',
 	             limit: 5,
 			     addressdetails: 1,
-			     country: 'Belgium',
+			     country: window['sessionStorage'] ? sessionStorage['country'] : ''
 			};			
-			result[element_name || $(element).attr('id')] = $(element).val();
+			result[key || id] = $("#"+id).val();
 			return result;
 		}
 
 	};
-
-	var url = 'http://nominatim.openstreetmap.org/search';
-	// city disctrict + town or .. 
+	// TODO make endpoint configurable
+	var url = http_s('nominatim.openstreetmap.org/search');
 	var handle_city_completion = handle_auto_completion(["postcode", "city", "state", "country"]);
 	$("#postcode").autocomplete(url,{
 		max:100,
@@ -197,41 +195,41 @@ $(document).ready(function()
 		formatItem: set_field_values,
 		type: 'GET',
 		dataType:'json',
-		extraParams: request_params($("#postcode"), "postalcode"),
+		extraParams: request_params("postcode", "postalcode"),
 		parse: create_parser('postcode', ["postcode", "city_district|town|city", "state", "country"])
 	});
     $("#postcode").result(handle_city_completion);
 
 	$("#city").autocomplete(url,{
 		max:100,
-		minChars:4,
+		minChars:2,
 		delay:500,
 		formatItem: set_field_values,
 		type: 'GET',
 		dataType:'json',
-		extraParams: request_params,
+		extraParams: request_params("city"),
 		parse: create_parser('city', ["postcode", "city_district|town|city", "state", "country"])
 	});
    	$("#city").result(handle_city_completion);
 
 	$("#state").autocomplete(url, {
 		max:100, 
-		minChars:3, 
+		minChars:2, 
 		delay:500,
 		type: 'GET',
 		dataType:'json',
-		extraParams: request_params,
+		extraParams: request_params("state"),
 		parse: create_parser('state', ["state", "country"]),
 	});
 	$("#state").result(handle_auto_completion(["state", "country"]));
 
 	$("#country").autocomplete(url,{
 		max:100,
-		minChars:3,
+		minChars:2,
 		delay:500,
 		type: 'GET',
 		dataType:'json',
-		extraParams: request_params,
+		extraParams: request_params("country"),
 		parse: create_parser('country', ["country"]), 
 	});
 	$("#country").result(handle_auto_completion(["country"]));

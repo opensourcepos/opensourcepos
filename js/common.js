@@ -40,6 +40,11 @@ function set_feedback(text, classname, keep_displayed)
 	}
 }
 
+function http_s(url)
+{
+	return document.location.protocol + '//' + url;
+}
+
 //keylisteners
 $.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'config', 'giftcards'], function(key, value) {
 	$(window).jkey('f' + (key+1), function(){
