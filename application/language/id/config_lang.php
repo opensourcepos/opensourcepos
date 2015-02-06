@@ -83,3 +83,6 @@ $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_company"] = "Nama Perusahaan";
 $lang["config_location_configuration"] = "";
 $lang["config_location_info"] = "";
+$lang["config_logout"] = "";
+$lang["config_backup_database"] = "";
+$lang["config_backup_button"] = "Backup";

@@ -19,18 +19,32 @@
 	<script src="<?php echo base_url();?>js/jquery.validate.min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/jquery.jkey-1.1.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/imgpreview.full.jquery.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/thickbox.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
+ 	<script src="<?php echo base_url();?>js/thickbox.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/common.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/manage_tables.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/swfobject.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/date.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 	<script src="<?php echo base_url();?>js/datepicker.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	
+	<script type="text/javascript">
+		function logout(logout)
+		{
+			logout = logout && <?php $r=FALSE;foreach($allowed_modules->result_array()as$module){$r|=$module['module_id']==='config';}echo $r;?>;
+			if (logout && confirm("<?php echo $this->lang->line('config_logout'); ?>"))
+			{
+				window.location = "<?php echo site_url('config/backup_db'); ?>";
+			}
+			else
+			{
+				window.location = "<?php echo site_url('home/logout'); ?>";
+			}
+		}
+	</script>	
 <style type="text/css">
 html {
     overflow: auto;
 }
 </style>
+
 
 </head>
 <body>
@@ -55,17 +69,18 @@ html {
 			}
 			?>
 		</div>
-
+		
 		<div id="menubar_footer">
-		<?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
-		<?php echo anchor("home/logout",$this->lang->line("common_logout")); ?>
+		    <?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
+		    <a href="javascript:logout(true);"><?php echo $this->lang->line("common_logout"); ?></a> 
 		</div>
-
+		
 		<div id="menubar_date">
-		<?php echo date('F d, Y h:i a') ?>
+		    <?php echo date('F d, Y h:i a') ?>
 		</div>
 
 	</div>
 </div>
 <div id="content_area_wrapper">
 <div id="content_area">
+ 

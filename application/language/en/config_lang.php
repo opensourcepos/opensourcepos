@@ -83,3 +83,6 @@ $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_company"] = "Company Name";
 $lang["config_location_configuration"] = "Stock Locations";
 $lang["config_location_info"] = "Location Configuration Information";
+$lang["config_logout"] = "Don't you want to make a backup before logging out?";
+$lang["config_backup_database"] = "Backup Database";
+$lang["config_backup_button"] = "Backup";

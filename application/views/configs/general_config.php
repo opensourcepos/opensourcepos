@@ -270,7 +270,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom1').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom1').':', 'config_custom1',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom1_name',
@@ -280,7 +280,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom2').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom2').':', 'config_custom2',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom2_name',
@@ -290,7 +290,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom3').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom3').':', 'config_custom3',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom3_name',
@@ -300,7 +300,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom4').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom4').':', 'config_custom4',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom4_name',
@@ -310,7 +310,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom5').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom5').':', 'config_custom5',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom5_name',
@@ -320,7 +320,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom6').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom6').':', 'config_custom6',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom6_name',
@@ -330,7 +330,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom7').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom7').':', 'config_custom7',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom7_name',
@@ -340,7 +340,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom8').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom8').':', 'config_custom8',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom8_name',
@@ -350,7 +350,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom9').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom9').':', 'config_custom9',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom9_name',
@@ -360,7 +360,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_custom10').':', 'website',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_custom10').':', 'config_custom10',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'custom10_name',
@@ -368,6 +368,19 @@ echo form_open('config/save/',array('id'=>'config_form'));
 		'value'=>$this->config->item('custom10_name')));?>
 	</div>
 </div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_backup_database').':', 'config_backup_database',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_submit(array(
+		'name'=>'config_backup_database',
+		'id'=>'config_backup_database',
+		'onClick'=>'javascript:window.location=\'' . site_url('config/backup_db'). '\';return false;',
+		'class'=>'submit_button float_right',
+		'value'=>$this->lang->line('config_backup_button')));?>
+	</div>
+</div>
+
 
 <?php 
 echo form_submit(array(

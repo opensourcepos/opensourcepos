@@ -125,5 +125,33 @@ class Config extends Secure_area
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
         
     }
+    
+    function backup_db()
+    {
+    	$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+    	if($this->Employee->has_module_grant('config',$employee_id))
+    	{
+    		$this->load->dbutil();
+    		$prefs = array(
+    				'format'      => 'zip',
+    				'filename'    => 'ospos.sql'
+    		);
+    		 
+    		$backup =& $this->dbutil->backup($prefs);
+    		 
+    		$file_name =  'ospos-' . date("Y-m-d-H-i-s") .'.zip';
+    		$save = 'uploads/'.$file_name;
+    		 
+    		$this->load->helper('file');
+    		write_file($save, $backup);
+    		 
+    		$this->load->helper('download');
+    		force_download($file_name, $backup);
+    	}
+    	else 
+    	{
+    		redirect('no_access/config');
+    	}
+    }
 }
-?>
+?> 

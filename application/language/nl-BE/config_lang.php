@@ -83,3 +83,6 @@ $lang["config_barcode_price"] = "Prijs";
 $lang["config_barcode_company"] = "Bedrijfsnaam";
 $lang["config_location_configuration"] = "Stock Locaties";
 $lang["config_location_info"] = "Instellingen Locatie";
+$lang["config_logout"] = "Wilt u een backup maken alvorens uit te loggen?";
+$lang["config_backup_database"] = "Backup Database";
+$lang["config_backup_button"] = "Backup";
