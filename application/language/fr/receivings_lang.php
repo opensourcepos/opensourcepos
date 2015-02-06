@@ -47,3 +47,4 @@ $lang["recvs_supplier"] = "Fournisseur";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Impossible d\'ajouter l\'item aux arrivages";
 $lang["recvs_unsuccessfully_updated"] = "";
+$lang["recvs_invoice_enable"] = "";

@@ -47,3 +47,4 @@ $lang["recvs_supplier"] = "поставщик";
 $lang["recvs_total"] = "сумма";
 $lang["recvs_unable_to_add_item"] = "Невозможно добавить товар на получение";
 $lang["recvs_unsuccessfully_updated"] = "";
+$lang["recvs_invoice_enable"] = "";

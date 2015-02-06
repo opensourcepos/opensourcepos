@@ -38,6 +38,7 @@ $lang["sales_find_or_scan_item_or_receipt"] = "Cari/Scan Item ATAU Faktur";
 $lang["sales_giftcard"] = "Gift Card";
 $lang["sales_giftcard_number"] = "Nomor Gift Card";
 $lang["sales_id"] = "ID Penjualan";
+$lang["sales_invoice_enable"] = "";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "";
 $lang["sales_item_insufficient_of_stock"] = "Stok Item tidak mencukupi";

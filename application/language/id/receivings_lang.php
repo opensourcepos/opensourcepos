@@ -47,3 +47,4 @@ $lang["recvs_supplier"] = "Pemasok";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Item tidak dapat ditambahkan ke penerimaan barang masuk";
 $lang["recvs_unsuccessfully_updated"] = "";
+$lang["recvs_invoice_enable"] = "";

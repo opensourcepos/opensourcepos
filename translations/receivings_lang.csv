@@ -46,3 +46,4 @@
 "recvs_total","Totaal","Total","Total","Total","總數量","сумма","รวม","Toplam","Total"
 "recvs_unable_to_add_item","Onmogelijk om product aan order toe te voegen","No se puede agregar el artículo a la entrada","Unable to add item to receiving","Impossible d\'ajouter l\'item aux arrivages","無法新增進貨資料","Невозможно добавить товар на получение","ไม่สามารถเพิ่มสินค้าได้","Ürünler alıma eklenemedi","Item tidak dapat ditambahkan ke penerimaan barang masuk"
 "recvs_unsuccessfully_updated","","","Receiving unsuccessfully updated","","","","","",""
+"recvs_invoice_enable","Maak Factuur","","Create Invoice","","","","","",""

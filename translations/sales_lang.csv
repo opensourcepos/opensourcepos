@@ -37,6 +37,7 @@
 "sales_giftcard","Cadeaubon","Tarjeta de Regalo","Gift Card","Carte Cadeau","禮金券","Подарочная карта","Gift Card","Hediye Çeki","Gift Card"
 "sales_giftcard_number","Cadeaubon nummer","Número de Tarjeta de Regalo","Gift Card Number","Numéro de Carte cadeau","禮金券編號","Номер подарочных карт","เลขที่ Gift Card","Hediye Çeki No","Nomor Gift Card"
 "sales_id","Nummer Verkoop ","ID de Venta","Sale ID","ID Vente","銷售編號","Номер Продажы","เลขที่ขาย","Satış No","ID Penjualan"
+"sales_invoice_enable","Maak Factuur","","Create Invoice","","","","","",""
 "sales_invoice_number","","Invoice #","Invoice #","Invoice #","","","","",""
 "sales_invoice_number_duplicate","Vul een unieke nummer in","Please enter an unique invoice number","Please enter an unique invoice number","","","","","",""
 "sales_item_insufficient_of_stock","Product is niet meer in voorraad","Hay un número insuficiente de Artículos en existencia","Item is Insufficient of Stock","Stock top faible","產品庫存不足","Товар недостаточно на складе","จำนวนสินค้าไม่เพียงพอ","Ürün Stoğu Yetersiz","Stok Item tidak mencukupi"
