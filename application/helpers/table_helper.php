@@ -228,7 +228,7 @@ function get_item_data_row($item,$controller)
 		$images = glob ("uploads/item_pics/" . $item->pic_id . ".*");
 		if (sizeof($images) > 0)
 		{
-			$image.='<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.base_url($images[0]).'"></a>';
+			$image.='<a class="rollover" href="'. base_url($images[0]) .'"><img src="#" alt="'.base_url($images[0]).'"></a>';
 		}
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';

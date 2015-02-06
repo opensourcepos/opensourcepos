@@ -387,40 +387,17 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
+	var no_op = function(event, data, formatted){};
+	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10}).result(no_op).search();
 
-	$("#custom1").autocomplete("<?php echo site_url('items/suggest_custom1');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
+	<?php for ($i = 0; $i < 11; $i++) 
+	{ 
+	?>
+	$("#custom"+<?php echo $i; ?>).autocomplete("<?php echo site_url('items/suggest_custom'.$i);?>",{max:100,minChars:0,delay:10}).result(no_op).search();
+	<?php 
+	}
+	?>
 
-	$("#custom2").autocomplete("<?php echo site_url('items/suggest_custom2');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom3").autocomplete("<?php echo site_url('items/suggest_custom3');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom4").autocomplete("<?php echo site_url('items/suggest_custom4');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-	
-	$("#custom5").autocomplete("<?php echo site_url('items/suggest_custom5');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom6").autocomplete("<?php echo site_url('items/suggest_custom6');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom7").autocomplete("<?php echo site_url('items/suggest_custom7');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom8").autocomplete("<?php echo site_url('items/suggest_custom8');?>",{max:100,minChars:0,delay:10})
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom9").autocomplete("<?php echo site_url('items/suggest_custom9');?>",{max:100,minChars:0,delay:10});
-	.result(function(event, data, formatted){}).search();
-
-	$("#custom10").autocomplete("<?php echo site_url('items/suggest_custom10');?>",{max:100,minChars:0,delay:10});
-	.result(function(event, data, formatted){}).search();
-	
-/** END GARRISON ADDED **/
 	
 	$('#item_form').validate({
 		submitHandler:function(form)
