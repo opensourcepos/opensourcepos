@@ -67,6 +67,34 @@ class Items extends Secure_area implements iData_controller
 		echo $data_rows;
 		$this->_remove_duplicate_cookies();
 	}
+	
+	function pic_thumb($pic_id)
+	{
+		$this->load->helper('file');
+		$this->load->library('image_lib');
+		$base_path = "uploads/item_pics/" . $pic_id ;
+		$images = glob ($base_path. "*");
+		if (sizeof($images) > 0)
+		{
+			$image_path = $images[0];
+			$ext = pathinfo($image_path, PATHINFO_EXTENSION);
+			$thumb_path = $base_path . $this->image_lib->thumb_marker.'.'.$ext;
+			if (sizeof($images) < 2)
+			{
+				$config['image_library'] = 'gd2';
+				$config['source_image']  = $image_path;
+				$config['maintain_ratio'] = TRUE;
+				$config['create_thumb'] = TRUE;
+				$config['width'] = 52;
+				$config['height'] = 32;
+ 				$this->image_lib->initialize($config);
+ 				$image = $this->image_lib->resize();
+				$thumb_path = $this->image_lib->full_dst_path;
+			}
+			$this->output->set_content_type(get_mime_by_extension($thumb_path));
+			$this->output->set_output(file_get_contents($thumb_path));
+		}
+	}
 
 	/*
 	Gives search suggestions based on what is being searched for
