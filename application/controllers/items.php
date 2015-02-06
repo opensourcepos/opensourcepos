@@ -330,7 +330,7 @@ class Items extends Secure_area implements iData_controller
 		'custom10'=>$this->input->post('custom10')/**GARRISON ADDED 4/21/2013**/
 		);
 		
-		if (!empty($upload_data['raw_name']))
+		if (!empty($upload_data['orig_name']))
 		{
 			$item_data['pic_id'] = $upload_data['raw_name'];
 		}

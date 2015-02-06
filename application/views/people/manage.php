@@ -8,7 +8,18 @@ $(document).ready(function()
     enable_search('<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>');
     enable_email('<?php echo site_url("$controller_name/mailto")?>');
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
-}); 
+});
+
+if (window.sessionStorage && !sessionStorage['country'])
+{
+	jQuery.ajax({
+		type: "GET",
+		url: http_s('ipinfo.io/json'),
+		success: function(response) {
+			sessionStorage['country'] = response.country;
+		}, dataType: 'jsonp'
+	});
+}
 
 function init_table_sorting()
 {
