@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "Deleted";
 $lang["items_is_serialized"] = "Item has Serial Number";
 $lang["items_item"] = "Item";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
+$lang["items_number_required"] = "UPC/EAN/ISBN is a required field";
 $lang["items_location"] = "Location";
 $lang["items_low_inventory_items"] = "";
 $lang["items_manually_editing_of_quantity"] = "Manual Edit of Quantity";

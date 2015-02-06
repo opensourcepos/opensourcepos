@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "Silinmiş";
 $lang["items_is_serialized"] = "Seri Numaralı Ürün";
 $lang["items_item"] = "Ürün";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
+$lang["items_number_required"] = "UPC/EAN/ISBN is a required field";
 $lang["items_location"] = "Yer";
 $lang["items_low_inventory_items"] = "";
 $lang["items_manually_editing_of_quantity"] = "Elle adet düzeltme";

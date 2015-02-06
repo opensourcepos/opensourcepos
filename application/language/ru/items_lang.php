@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "Deleted";
 $lang["items_is_serialized"] = "Товар имеет серийный номер";
 $lang["items_item"] = "Товар";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
+$lang["items_number_required"] = "UPC/EAN/ISBN is a required field";
 $lang["items_location"] = "место";
 $lang["items_low_inventory_items"] = "Низкий инвентаризации товары";
 $lang["items_manually_editing_of_quantity"] = "Руководство Изменить количество";

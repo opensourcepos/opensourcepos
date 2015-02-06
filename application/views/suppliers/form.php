@@ -2,7 +2,7 @@
 echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_form'));
 ?>
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <fieldset id="supplier_basic_info">
 <legend><?php echo $this->lang->line("suppliers_basic_information"); ?></legend>
 

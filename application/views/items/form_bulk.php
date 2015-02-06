@@ -1,5 +1,5 @@
 <div id="required_fields_message"><?php echo $this->lang->line('items_edit_fields_you_want_to_update'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <?php
 echo form_open('items/bulk_update/',array('id'=>'item_form'));
 ?>

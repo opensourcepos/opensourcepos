@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "Item dihapus";
 $lang["items_is_serialized"] = "Item Memiliki Nomor Serial";
 $lang["items_item"] = "Item";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
+$lang["items_number_required"] = "UPC/EAN/ISBN is a required field";
 $lang["items_location"] = "Lokasi Barang";
 $lang["items_low_inventory_items"] = "Item Inventori Rendah";
 $lang["items_manually_editing_of_quantity"] = "Perubahan jumlah Stok secara manual";

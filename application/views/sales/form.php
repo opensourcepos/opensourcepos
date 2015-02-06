@@ -1,6 +1,6 @@
 <div id="edit_sale_wrapper">
 	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-	<ul id="error_message_box"></ul>
+	<ul id="error_message_box" class="error_message_box"></ul>
 	
 	<fieldset id="sale_basic_info">
 	<?php echo form_open("sales/save/".$sale_info['sale_id'],array('id'=>'sales_edit_form')); ?>

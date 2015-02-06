@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "ถูกลบแล้ว";
 $lang["items_is_serialized"] = "สินค้ามีซีเรียลนัมเบอร์";
 $lang["items_item"] = "สินค้า";
 $lang["items_item_number"] = "โค๊ด";
+$lang["items_number_required"] = "UPC/EAN/ISBN is a required field";
 $lang["items_location"] = "ที่ตั้ง";
 $lang["items_low_inventory_items"] = "";
 $lang["items_manually_editing_of_quantity"] = "แก้ไขจำนวน";

@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "Verwijderd";
 $lang["items_is_serialized"] = "Optelbaar";
 $lang["items_item"] = "Product";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
+$lang["items_number_required"] = "UPC/EAN/ISBN moet ingevuld worden";
 $lang["items_location"] = "Locatie";
 $lang["items_low_inventory_items"] = "Producten niet in stock";
 $lang["items_manually_editing_of_quantity"] = "Manuele aanpassing hoeveelheid";

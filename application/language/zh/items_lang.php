@@ -37,6 +37,7 @@ $lang["items_is_deleted"] = "Deleted";
 $lang["items_is_serialized"] = "產品有序號";
 $lang["items_item"] = "產品";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
+$lang["items_number_required"] = "UPC/EAN/ISBN is a required field";
 $lang["items_location"] = "位置";
 $lang["items_low_inventory_items"] = "低庫存產品";
 $lang["items_manually_editing_of_quantity"] = "手動編輯數量";
