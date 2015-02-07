@@ -7,7 +7,7 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'encty
 <legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'required wide')); ?>
+<?php echo form_label($this->lang->line('items_item_number').':', 'item_number',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'item_number',
@@ -402,11 +402,6 @@ $(document).ready(function()
 	$('#item_form').validate({
 		submitHandler:function(form)
 		{
-			/*
-			make sure the hidden field #item_number gets set
-			to the visible scan_item_number value
-			*/
-			$('#item_number').val($('#scan_item_number').val());
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
@@ -421,7 +416,6 @@ $(document).ready(function()
  		wrapper: "li",
 		rules:
 		{
-		    item_number:"required",
 			name:"required",
 			category:"required",
 			cost_price:
@@ -449,7 +443,6 @@ $(document).ready(function()
    		},
 		messages:
 		{
-		    item_number:"<?php echo $this->lang->line('items_number_required'); ?>",
 			name:"<?php echo $this->lang->line('items_name_required'); ?>",
 			category:"<?php echo $this->lang->line('items_category_required'); ?>",
 			cost_price:
