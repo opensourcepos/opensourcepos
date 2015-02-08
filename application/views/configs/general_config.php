@@ -95,6 +95,26 @@ echo form_open('config/save/',array('id'=>'config_form'));
 </div>
 <!-- END MODIFIED -->
 
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_sales_invoice_format').':', 'sales_invoice_format',array('class'=>'wide')); ?>
+    <div class='form_field'>
+    <?php echo form_input(array(
+        'name'=>'sales_invoice_format',
+        'id'=>'sales_invoice_format',
+        'value'=>$this->config->item('sales_invoice_format'))); ?>
+    </div>
+</div>
+
+<div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_recv_invoice_format').':', 'recv_invoice_format',array('class'=>'wide')); ?>
+    <div class='form_field'>
+    <?php echo form_input(array(
+        'name'=>'recv_invoice_format',
+        'id'=>'recv_invoice_format',
+        'value'=>$this->config->item('recv_invoice_format'))); ?>
+    </div>
+</div>
+
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('common_email').':', 'email',array('class'=>'wide')); ?>
 	<div class='form_field'>
