@@ -54,17 +54,25 @@ class Barcode_lib
                                    "&type=".$this->CI->Appconfig->get('barcode_type').
                                    "' onerror=\"(function(pThis){pThis.onerror = null;  pThis.src = pThis.src;})(this)\" />";
         }
-        else if($layout_type == 'name'){
+        else if($layout_type == 'name')
+        {
             $result = $this->CI->lang->line('items_name') . " " . $item['name'];
         }
-        else if($layout_type == 'category'){
+        else if($layout_type == 'category')
+        {
             $result = $this->CI->lang->line('items_category') . " " . $item['category'];
         }
-        else if($layout_type == 'cost_price'){
+        else if($layout_type == 'cost_price')
+        {
             $result = $this->CI->lang->line('items_cost_price') . " " . to_currency($item['cost_price']);
         }
-        else if($layout_type == 'unit_price'){
+        else if($layout_type == 'unit_price')
+        {
             $result = $this->CI->lang->line('items_unit_price') . " " . to_currency($item['unit_price']);
+        }
+        else if($layout_type == 'company_name')
+        {
+        	$result = $this->CI->Appconfig->get('company');
         }
         return $result;
     }
