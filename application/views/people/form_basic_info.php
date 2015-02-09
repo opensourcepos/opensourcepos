@@ -196,7 +196,7 @@ $(document).ready(function()
 		type: 'GET',
 		dataType:'json',
 		extraParams: request_params("postcode", "postalcode"),
-		parse: create_parser('postcode', ["postcode", "city_district|town|city", "state", "country"])
+		parse: create_parser('postcode', ["postcode", "village|city_district|town|hamlet|city|county", "state", "country"])
 	});
     $("#postcode").result(handle_city_completion);
 
@@ -208,7 +208,7 @@ $(document).ready(function()
 		type: 'GET',
 		dataType:'json',
 		extraParams: request_params("city"),
-		parse: create_parser('city', ["postcode", "city_district|town|city", "state", "country"])
+		parse: create_parser('city', ["postcode", "village|city_district|town|hamlet|city|county", "state", "country"])
 	});
    	$("#city").result(handle_city_completion);
 
