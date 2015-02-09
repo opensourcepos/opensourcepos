@@ -92,6 +92,10 @@ class Barcode_lib
         {
         	$result = $this->CI->Appconfig->get('company');
         }
+        else if($layout_type == 'item_code')
+        {
+        	$result = $this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number'];
+        }
         return $result;
     }
     

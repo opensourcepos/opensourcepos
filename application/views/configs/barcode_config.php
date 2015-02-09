@@ -110,6 +110,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                         'category'   => 'Category',
                         'cost_price'           => 'Cost price',
                         'unit_price'           => 'Unit price',
+                		'item_code'            => 'Item code',
                 		'company_name'         => 'Company Name'
                         ), 
                     $this->config->item('barcode_second_row'));
@@ -121,6 +122,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                         'category'   => 'Category',
                         'cost_price'           => 'Cost price',
                         'unit_price'           => 'Unit price',
+                		'item_code'            => 'Item code',
                 		'company_name'         => 'Company Name'
                         ), 
                     $this->config->item('barcode_third_row'));
