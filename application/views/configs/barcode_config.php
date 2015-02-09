@@ -34,7 +34,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                 <?php echo form_input(array(
                     'step'=>'5',
                     'max'=>'350',
-                    'min'=>'120',
+                    'min'=>'60',
                     'type'=>'number',
                     'name'=>'barcode_width',
                     'id'=>'barcode_width',
@@ -47,7 +47,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                 <div class='form_field'>
                 <?php echo form_input(array(
                     'type' => 'number',
-                    'min' => 40,
+                    'min' => 10,
                     'max' => 120,
                     'name'=>'barcode_height',
                     'id'=>'barcode_height',
