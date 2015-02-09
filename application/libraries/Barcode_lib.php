@@ -34,6 +34,13 @@ class Barcode_lib
     {
         $display_table = "<table>";
         $display_table .= "<tr><td align='center'>". $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config)."</td></tr>";
+        $display_table .= "<tr><td align='center'><img src='".site_url()."/barcode?".
+                                   "&width=".$barcode_config['barcode_width'].
+                                   "&height=".$barcode_config['barcode_height'].
+                                   "&barcode=".($this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number']).
+                                   "&quality=".$barcode_config['barcode_quality'].
+                                   "&type=".$this->CI->Appconfig->get('barcode_type').
+                                   "' onerror=\"(function(pThis){pThis.onerror = null;  pThis.src = pThis.src;})(this)\" /></td></tr>";
         $display_table .= "<tr><td align='center'>". $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config)."</td></tr>";
         $display_table .= "<tr><td align='center'>". $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config)."</td></tr>";
         $display_table .= "</table>";
@@ -44,17 +51,7 @@ class Barcode_lib
     {
         $result = '';
         
-        if($layout_type == 'item_code')
-        {
-            $result = "<img src='".site_url()."/barcode?".
-                                   "&width=".$barcode_config['barcode_width'].
-                                   "&height=".$barcode_config['barcode_height'].
-                                   "&barcode=".($this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number']).
-                                   "&quality=".$barcode_config['barcode_quality'].
-                                   "&type=".$this->CI->Appconfig->get('barcode_type').
-                                   "' onerror=\"(function(pThis){pThis.onerror = null;  pThis.src = pThis.src;})(this)\" />";
-        }
-        else if($layout_type == 'name')
+        if($layout_type == 'name')
         {
             $result = $this->CI->lang->line('items_name') . " " . $item['name'];
         }
