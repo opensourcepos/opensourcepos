@@ -135,7 +135,7 @@ class Item_kits extends Secure_area implements iData_controller
 	*/
 	function get_form_width()
 	{
-		return 360;
+		return 400;
 	}
 }
 ?>

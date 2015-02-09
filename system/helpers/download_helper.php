@@ -97,7 +97,7 @@ if ( ! function_exists('force_download'))
 			header('Pragma: no-cache');
 			header("Content-Length: ".strlen($data));
 		}
-
+		ob_clean();
 		exit($data);
 	}
 }
