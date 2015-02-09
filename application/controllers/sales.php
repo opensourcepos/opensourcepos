@@ -5,7 +5,8 @@ class Sales extends Secure_area
 	function __construct()
 	{
 		parent::__construct('sales');
-		$this->load->library('sale_lib');       
+		$this->load->library('sale_lib');
+		$this->load->library('barcode_lib');
 	}
 
 	function index()
@@ -260,6 +261,8 @@ class Sales extends Secure_area
 					$this->email->send();
 				}
 			}
+			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
+			$data['barcode']=$this->barcode_lib->generate_barcode($sale_id,$barcode_config);
 			$this->load->view("sales/receipt",$data);
 			$this->sale_lib->clear_all();
 		}
@@ -297,7 +300,6 @@ class Sales extends Secure_area
 	
 	function receipt($sale_id)
 	{
-		$this->load->library('barcode_lib');
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
 		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();

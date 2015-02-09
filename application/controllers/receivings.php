@@ -6,6 +6,7 @@ class Receivings extends Secure_area
 	{
 		parent::__construct('receivings');
 		$this->load->library('receiving_lib');
+		$this->load->library('barcode_lib');
 	}
 
 	function index()
@@ -215,7 +216,8 @@ class Receivings extends Secure_area
 			{
 				$data['error_message'] = $this->lang->line('receivings_transaction_failed');
 			}
-	
+			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
+			$data['barcode']=$this->barcode_lib->generate_barcode($receiving_id,$barcode_config);
 			$this->load->view("receivings/receipt",$data);
 			$this->receiving_lib->clear_all();
 		}
@@ -270,7 +272,6 @@ class Receivings extends Secure_area
     
 	function receipt($receiving_id)
 	{
-		$this->load->library('barcode_lib');
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
 		$data['cart']=$this->receiving_lib->get_cart();
