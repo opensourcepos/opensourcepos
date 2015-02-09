@@ -39,19 +39,27 @@ class Barcode_lib
     
     function generate_barcode($barcode_content, $barcode_config)
     {
-    	if ($barcode_config['barcode_type'] == '1')
+    	try
     	{
-    		$barcode = new emberlabs\Barcode\Code39();
-    	}
-    	else
+	    	if ($barcode_config['barcode_type'] == '1')
+	    	{
+	    		$barcode = new emberlabs\Barcode\Code39();
+	    	}
+	    	else
+	    	{
+	    		$barcode = new emberlabs\Barcode\Code128();
+	    	}
+    		$barcode->setData($barcode_content);
+    		$barcode->setQuality($barcode_config['barcode_quality']);
+    		$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
+    		$barcode->draw();
+    		return $barcode->base64();
+    		return "";
+    	} 
+    	catch(Exception $e)
     	{
-    		$barcode = new emberlabs\Barcode\Code128();
+    		echo 'Caught exception: ',  $e->getMessage(), "\n";    	
     	}
-    	$barcode->setData($barcode_content);
-    	$barcode->setQuality($barcode_config['barcode_quality']);
-    	$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
-    	$barcode->draw();
-    	return $barcode->base64();
     }
     
     function create_display_barcode($item, $barcode_config)
