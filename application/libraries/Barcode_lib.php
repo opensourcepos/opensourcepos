@@ -37,7 +37,7 @@ class Barcode_lib
         return $data;
     }
     
-    private function generate_barcode($item, $barcode_config)
+    function generate_barcode($barcode_content, $barcode_config)
     {
     	if ($barcode_config['barcode_type'] == '1')
     	{
@@ -47,8 +47,8 @@ class Barcode_lib
     	{
     		$barcode = new emberlabs\Barcode\Code128();
     	}
-    	$barcode_content = $this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number'];
     	$barcode->setData($barcode_content);
+    	$barcode->setQuality($barcode_config['barcode_quality']);
     	$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
     	$barcode->draw();
     	return $barcode->base64();
@@ -59,7 +59,8 @@ class Barcode_lib
     	
         $display_table = "<table>";
         $display_table .= "<tr><td align='center'>". $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config)."</td></tr>";
-        $barcode = $this->generate_barcode($item,$barcode_config);
+        $barcode_content=$this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number'];
+        $barcode = $this->generate_barcode($barcode_content,$barcode_config);
         $display_table .= "<tr><td align='center'><img src='data:image/png;base64,$barcode' /></td></tr>";
         $display_table .= "<tr><td align='center'>". $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config)."</td></tr>";
         $display_table .= "<tr><td align='center'>". $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config)."</td></tr>";

@@ -270,6 +270,7 @@ class Receivings extends Secure_area
     
 	function receipt($receiving_id)
 	{
+		$this->load->library('barcode_lib');
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
 		$this->receiving_lib->copy_entire_receiving($receiving_id);
 		$data['cart']=$this->receiving_lib->get_cart();
@@ -283,7 +284,8 @@ class Receivings extends Secure_area
 		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);
 		$data['payment_type']=$receiving_info['payment_type'];
 		$data['invoice_number']=$this->receiving_lib->get_invoice_number();
-
+		$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
+		$data['barcode']=$this->barcode_lib->generate_barcode($receiving_id,$barcode_config);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 
 		if($supplier_id!=-1)

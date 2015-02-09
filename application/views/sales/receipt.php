@@ -110,7 +110,8 @@ if (isset($error_message))
 	<?php echo nl2br($this->config->item('return_policy')); ?>
 	</div>
 	<div id='barcode'>
-	<?php echo "<img src='index.php/barcode?barcode=$sale_id&text=$sale_id&width=250&height=50' />"; ?>
+	<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
+	<?php echo $sale_id; ?>
 	</div>
 </div>
 <?php $this->load->view("partial/footer"); ?>
