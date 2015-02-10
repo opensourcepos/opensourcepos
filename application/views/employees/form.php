@@ -173,7 +173,6 @@ $(document).ready(function()
 						    {
 							    has_children = true;
 							    checked |= $(this).is(":checked");
-			            		console.log("checking.. "  + $(this).val() + "  required " + checked);
 						    });
 						    if (has_children && !checked) 
 							{
@@ -181,7 +180,6 @@ $(document).ready(function()
 							}
 						}
             		});
-            		console.log("returning " + !checked);
 					return !checked; 
         		},
         		minlength: 1

@@ -8,7 +8,7 @@
     <?php $form_data = array(
         'name'=>'stock_location_'.$location_id,
         'id'=>'stock_location_'.$location_id,
-    	'class'=>'stock_location required',
+    	'class'=>'stock_location valid_chars required',
         'value'=>$location_name); 
     	$location_data['deleted'] && $form_data['disabled'] = 'disabled';
     	echo form_input($form_data);

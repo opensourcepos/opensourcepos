@@ -84,6 +84,11 @@ $(document).ready(function()
 		});
 		return value_count < 2;
     }, "<?php echo $this->lang->line('config_stock_location_duplicate'); ?>");
+
+    $.validator.addMethod('valid_chars', function(value, element)
+	{
+		return value.indexOf('_') === -1;
+    }, "<?php echo $this->lang->line('config_stock_location_invalid_chars'); ?>");
 	
 	$('#location_config_form').validate({
 		submitHandler:function(form)
@@ -111,12 +116,13 @@ $(document).ready(function()
 		{
     		stock_location: {
         		required:true,
-				stock_location: true
+				stock_location: true,
+				valid_chars: true
     		}
    		},
 		messages: 
 		{
-     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>" 
+     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>"
 		}
 	});
 });
