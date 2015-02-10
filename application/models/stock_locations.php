@@ -18,19 +18,20 @@ class Stock_locations extends CI_Model
         return $this->db->get();
     }
     
-    function get_undeleted_all()
+    function get_undeleted_all($module_id='items')
     {
         $this->db->from('stock_locations');
         $this->db->join('permissions','permissions.location_id=stock_locations.location_id');
 		$this->db->join('grants','grants.permission_id=permissions.permission_id');
         $this->db->where('person_id', $this->session->userdata('person_id'));
+        $this->db->like('permissions.permission_id', $module_id, 'after');
         $this->db->where('deleted',0);
         return $this->db->get();
     }
     
-    function get_allowed_locations()
+    function get_allowed_locations($module_id='items')
     {
-    	$stock = $this->get_undeleted_all()->result_array();
+    	$stock = $this->get_undeleted_all($module_id)->result_array();
     	$stock_locations = array();
     	foreach($stock as $location_data)
     	{

@@ -216,7 +216,7 @@ class Sales extends Secure_area
 		$data['total']=$this->sale_lib->get_total();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
-		$stock_locations=$this->Stock_locations->get_undeleted_all()->result_array();
+		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
 		$data['show_stock_locations']=count($stock_locations) > 1;
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
@@ -302,7 +302,7 @@ class Sales extends Secure_area
 	{
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
-		$stock_locations = $this->Stock_locations->get_undeleted_all()->result_array();
+		$stock_locations = $this->Stock_locations->get_undeleted_all('sales')->result_array();
 		$data['show_stock_locations'] = count($stock_locations) > 1;
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['payments']=$this->sale_lib->get_payments();
@@ -424,7 +424,7 @@ class Sales extends Secure_area
         $data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
         $data['mode']=$this->sale_lib->get_mode();
                      
-        $data['stock_locations']=$this->Stock_locations->get_allowed_locations();
+        $data['stock_locations']=$this->Stock_locations->get_allowed_locations('sales');
         $data['stock_location']=$this->sale_lib->get_sale_location();
         
 		$data['subtotal']=$this->sale_lib->get_subtotal();
