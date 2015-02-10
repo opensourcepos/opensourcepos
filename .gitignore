@@ -13,4 +13,3 @@ git-svn-diff.py
 *.orig
 *~
 *.~
-uploads/
