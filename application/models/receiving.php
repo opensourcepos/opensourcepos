@@ -84,7 +84,7 @@ class Receiving extends CI_Model
 
 			// update cost price, if changed AND is set in config as wanted
 			if($cur_item_info->cost_price != $item['price']
-					AND	$CI->config->item('receiving_calculate_average_price') == 'receiving_calculate_average_price')
+					AND	$this->config->item('receiving_calculate_average_price') == 'receiving_calculate_average_price')
 			{
 				$this->Item->change_cost_price($item['item_id'],
 												$items_received,
