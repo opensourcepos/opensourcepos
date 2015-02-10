@@ -18,25 +18,6 @@ class Stock_locations extends CI_Model
         return $this->db->get();
     }
     
-	/*
-	 * returns all location-ids in a simple array like array (location_id, location_id, ...)
-	 * used in items-controller::do_excel_import
-	 * @since 22.1.15
-	 */
-    function get_location_ids_as_array() 
-    {
-    	$this->db->select('location_id');
-    	$this->db->from('stock_locations');
-    	$this->db->where('deleted', 0);
-		$query = $this->db->get();
-		$ids_array = array();
-		foreach($query->result() as $row)
-		{
-			$ids_array[] = $row->location_id;
-		}
-    	return $ids_array;
-    }
-    
     function get_undeleted_all()
     {
         $this->db->from('stock_locations');

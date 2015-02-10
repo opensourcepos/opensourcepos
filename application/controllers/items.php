@@ -631,8 +631,9 @@ class Items extends Secure_area implements iData_controller
                     {
                         $item_data['item_number'] = $item_number;
                     }
-
-                    if($this->Item->save($item_data)) 
+					$validated = $this->item_number_check($item_number);
+					
+                    if($validated && $this->Item->save($item_data)) 
                     {
                         $items_taxes_data = null;
                         //tax 1
@@ -661,17 +662,42 @@ class Items extends Secure_area implements iData_controller
                         $cols = count($data);
 
                         // array to store information if location got a quantity
-                        $quantity_added_to_location = array();
-                        foreach($this->Stock_locations->get_location_ids_as_array() as $loction_id)
-                        {
-                            $quantity_added_to_location[$location_id] = false;
-                        }
+                        $allowed_locations = $this->Stock_locations->get_allowed_locations();
                         for ($col = 24; $col < $cols; $col = $col + 2)
+                        {
+                            $location_id = $data[$col];
+                            if (array_key_exists($location_id, $allowed_locations))
+                            {
+                                $item_quantity_data = array (
+                                    'item_id' => $item_data['item_id'],
+                                    'location_id' => $location_id,
+                                    'quantity' => $data[$col + 1],
+                                );
+                                $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
+
+                                $excel_data = array (
+                                    'trans_items'=>$item_data['item_id'],
+                                    'trans_user'=>$employee_id,
+                                    'trans_comment'=>$comment,
+                                    'trans_location'=>$data[$col],
+                                    'trans_inventory'=>$data[$col + 1]
+                                );
+                                $this->Inventory->insert($excel_data);
+                                unset($allowed_locations[$location_id]);
+                            }
+                        }
+
+                        /*
+                         * now iterate through the array and check for which location_id no entry into item_quantities was made yet
+                         * those get an entry with quantity as 0.
+                         * unfortunately a bit duplicate code from above...
+                         */
+                        foreach($allowed_locations as $location_id => $location_name)
                         {
                             $item_quantity_data = array(
                                 'item_id' => $item_data['item_id'],
-                                'location_id' => $data[$col],
-                                'quantity' => $data[$col + 1],
+                                'location_id' => $location_id,
+                                'quantity' => 0,
                             );
                             $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
 
@@ -680,40 +706,10 @@ class Items extends Secure_area implements iData_controller
                                     'trans_items'=>$item_data['item_id'],
                                     'trans_user'=>$employee_id,
                                     'trans_comment'=>$comment,
-                                    'trans_location'=>$data[$col],
-                                    'trans_inventory'=>$data[$col + 1]
+                                    'trans_location'=>$location_id,
+                                    'trans_inventory'=>0
                                 );
                             $this->db->insert('inventory',$excel_data);
-
-                            $quantity_added_to_location[$data[$col]] = true;
-                        }
-
-                        /*
-                         * now iterate through the array and check for which location_id no entry into item_quantities was made yet
-                         * those get an entry with quantity as 0.
-                         * unfortunately a bit duplicate code from above...
-                         */
-                        foreach($quantity_added_to_location as $location_id => $added)
-                        {
-                            if($added === false)
-                            {
-                                $item_quantity_data = array(
-                                    'item_id' => $item_data['item_id'],
-                                    'location_id' => $location_id,
-                                    'quantity' => 0,
-                                );
-                                $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
-
-                                $excel_data = array
-                                    (
-                                        'trans_items'=>$item_data['item_id'],
-                                        'trans_user'=>$employee_id,
-                                        'trans_comment'=>$comment,
-                                        'trans_location'=>$location_id,
-                                        'trans_inventory'=>0
-                                    );
-                                $this->db->insert('inventory',$excel_data);
-                            }
                         }
                     }
                     else//insert or update item failure
@@ -721,7 +717,6 @@ class Items extends Secure_area implements iData_controller
                         $failCodes[] = $i;
                     }
                 }
-
                 $i++;
             }
             else 
@@ -732,7 +727,7 @@ class Items extends Secure_area implements iData_controller
         }
 
 		$success = true;
-		if(count($failCodes) > 1)
+		if(count($failCodes) > 0)
 		{
 			$msg = "Most items imported. But some were not, here is list of their CODE (" .count($failCodes) ."): ".implode(", ", $failCodes);
 			$success = false;
