@@ -62,7 +62,7 @@ items_sales_tax_1,VAT,Impuesto de Ventas 1,Sales Tax,Taxe Vente,營業稅,Нал
 items_sales_tax_2,VAT 2,Impuesto de Ventas 2,Sales Tax 2,Taxe Vente 2,營業稅 2,Налог на покупку 2,ภาษีขาย 2,Satış Vergisi 2,Pajak Penjualan2
 items_search_custom_items,Doorzoek Tags,Buscar en campos personalizados,Search Custom Fields,Rechercher dans les Champs Choisis,Search Custom Fields,Искать в дополнительных товарях,ค้นหาในฟิลด์เสริม,Özel Alanları Ara,Cari secara manual
 items_serialized_items,Optelbare producten,Artículos Serializados,Serialized Items,Items Serialisés,序列化產品,Сериализованные товары,รหัสสินค้า,Seri Numaralı Ürünler,Serial Item
-items_stock_location,,,Stock location,,,,ที่เก็บ,Mağaza Yeri,
+items_stock_location,Stock locatie,Stock location,Stock location,Stock location,Stock location,Stock location,ที่เก็บ,Mağaza Yeri,Stock location
 items_successful_adding,Product succesvol toegevoegd,Has agregado satisfactoriamente un artículo,You have successfully added item,Ajout enregistré,已成功新增產品,Вы успешно добавлен товар,เพิ่มสินค้าสำเร็จ,Ürün ekleme başarılı,Item Barang telah berhasil ditambahkan
 items_successful_bulk_edit,Producten werden succesvol bewaard,Has actualizado satisfactoriamente los artículos seleccionados,You have successfully updated the selected items,Édition réussie,您已成功更新所選產品,Вы успешно обновили выбранных товаров,ปรับแต่งสินค้าสำเร็จ,Seçili ürün düzenlendi,Anda telah berhasil memperbarui item yang dipilih
 items_successful_deleted,Er werd(en),Has borrado satisfactoriamente,You have successfully deleted,Suppréssion réussie,刪除成功,Вы успешно удалили,ลบสินค้าสำเร็จ,Silme başarılı,Item Barang telah berhasil dihapus
@@ -79,4 +79,5 @@ items_unit_price_required,Verkoopprijs moet ingevuld worden,Precio de Venta es r
 items_upc_database,UPC Database,Base de datos UPC,UPC Database,Base de Données UPC,UPC Database,UPC база данных,UPC ฐานข้อมูล,UPC Veritabanı,Database UPC
 items_update,Bewerk Product,Actualizar Artículo,Update Item,Éditer Item,更新產品,Обновить Товар,ปรับแต่งสินค้า,Ürün Güncelle,Ubah
 items_use_inventory_menu,Use Inv. Menu,Usar Menú de Inventario,Use Inv. Menu,Utiliser Menu Inv.,使用庫存清單,Используйте меню инвентаря,ใช้เมนูสินค้าคงเหลือ,Stok Menüsünü Kullan,Gunakan Inv. Menu
-items_image,Afbeelding,,Avatar,,,,,,
+items_image,Afbeelding,Avatar,Avatar,Avatar,Avatar,Avatar,Avatar,Avatar,Avatar
+items_item_number_exists,De barcode nummer is reeds aanwezig in de database,The item number is already present in the database,The item number is already present in the database,The item number is already present in the database,The item number is already present in the database,The item number is already present in the database,The item number is already present in the database,The item number is already present in the database,The item number is already present in the database

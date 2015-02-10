@@ -21,17 +21,13 @@ function get_dimensions()
 
 function set_feedback(text, classname, keep_displayed)
 {
-	if(text!='')
+	if(text)
 	{
-		$('#feedback_bar').removeClass();
-		$('#feedback_bar').addClass(classname);
-		$('#feedback_bar').text(text);
-		$('#feedback_bar').css('opacity','1');
+		$('#feedback_bar').removeClass().addClass(classname).text(text).css('opacity','1');
 
 		if(!keep_displayed)
 		{
-			$('#feedback_bar').fadeTo(5000, 1);
-			$('#feedback_bar').fadeTo("fast",0);
+			$('#feedback_bar').fadeTo(5000, 1).fadeTo("fast",0);
 		}
 	}
 	else
@@ -51,3 +47,21 @@ $.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'co
 		window.location = BASE_URL + '/' + value + ' /index';
 	});	
 });
+
+function handle_validation(response) 
+{
+	if (!response.success && !response.validated) 
+	{
+		var error_message_box = '.error_message_box';
+		// server side validation failed.. record won't be saved
+		$(error_message_box).empty();
+		for(var index in response.error_messages) 
+		{
+			// get validation messages from array and show those to the user
+			var message = response.error_messages[index];
+			$(error_message_box).append("<li>" + message +  "</li>").css("display", "");
+		}
+		return false;
+	}
+	return true;
+}

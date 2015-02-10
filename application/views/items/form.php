@@ -403,13 +403,16 @@ $(document).ready(function()
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				tb_remove();
-				post_item_form_submit(response);
-			},
-			dataType:'json'
-		});
+				success:function(response)
+				{
+					if (handle_validation(response))
+					{
+						tb_remove();
+						post_item_form_submit(response);	
+					}
+				},
+				dataType:'json'
+			});
 
 		},
 		errorLabelContainer: "#error_message_box",

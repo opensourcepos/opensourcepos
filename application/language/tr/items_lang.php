@@ -80,4 +80,5 @@ $lang["items_unit_price_required"] = "Satış Fiyatı zorunlu alandır";
 $lang["items_upc_database"] = "UPC Veritabanı";
 $lang["items_update"] = "Ürün Güncelle";
 $lang["items_use_inventory_menu"] = "Stok Menüsünü Kullan";
-$lang["items_image"] = "";
+$lang["items_image"] = "Avatar";
+$lang["items_item_number_exists"] = "The item number is already present in the database";

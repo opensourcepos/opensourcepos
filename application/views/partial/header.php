@@ -29,7 +29,7 @@
 	<script type="text/javascript">
 		function logout(logout)
 		{
-			logout = logout && <?php $r=FALSE;foreach($allowed_modules->result_array()as$module){$r|=$module['module_id']==='config';}echo $r;?>;
+			logout = logout && <?php echo $backup_allowed;?>;
 			if (logout && confirm("<?php echo $this->lang->line('config_logout'); ?>"))
 			{
 				window.location = "<?php echo site_url('config/backup_db'); ?>";
@@ -63,7 +63,7 @@ html {
 			?>
 			<div class="menu_item">
 				<a href="<?php echo site_url("$module->module_id");?>">
-				<img src="<?php echo base_url().'images/menubar/'.$module->module_id.'.png';?>" border="0" alt="Menubar Image" /></a><br />
+				<img src="<?php echo base_url().'images/menubar/'.$module->module_id.'.png';?>" border="0" alt="Menubar Image"></a><br />
 				<a href="<?php echo site_url("$module->module_id");?>"><?php echo $this->lang->line("module_".$module->module_id) ?></a>
 			</div>
 			<?php

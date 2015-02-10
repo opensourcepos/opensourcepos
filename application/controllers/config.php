@@ -133,13 +133,13 @@ class Config extends Secure_area
     	{
     		$this->load->dbutil();
     		$prefs = array(
-    				'format'      => 'zip',
+    				'format'      => 'gzip',
     				'filename'    => 'ospos.sql'
     		);
     		 
-    		$backup =& $this->dbutil->backup($prefs);
+    		$backup = $this->dbutil->backup($prefs);
     		 
-    		$file_name =  'ospos-' . date("Y-m-d-H-i-s") .'.zip';
+    		$file_name =  'ospos-' . date("Y-m-d-H-i-s") .'.gz';
     		$save = 'uploads/'.$file_name;
     		 
     		$this->load->helper('file');

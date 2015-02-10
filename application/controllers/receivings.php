@@ -217,7 +217,7 @@ class Receivings extends Secure_area
 				$data['error_message'] = $this->lang->line('receivings_transaction_failed');
 			}
 			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
-			$data['barcode']=$this->barcode_lib->generate_barcode($receiving_id,$barcode_config);
+			$data['barcode']=$this->barcode_lib->generate_barcode($data['receiving_id'],$barcode_config);
 			$this->load->view("receivings/receipt",$data);
 			$this->receiving_lib->clear_all();
 		}

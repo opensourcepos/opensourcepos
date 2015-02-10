@@ -23,6 +23,11 @@ class Secure_area extends CI_Controller
 		//load up global data
 		$logged_in_employee_info=$this->Employee->get_logged_in_employee_info();
 		$data['allowed_modules']=$this->Module->get_allowed_modules($logged_in_employee_info->person_id);
+		$data['backup_allowed']=false;
+		foreach($data['allowed_modules']->result_array() as $module) 
+		{
+			$data['backup_allowed']|=$module['module_id']==='config';
+		}
 		$data['user_info']=$logged_in_employee_info;
 		$data['controller_name']=$module_id;
 		$this->load->vars($data);
