@@ -40,3 +40,6 @@ $lang["common_welcome"] = "Welkom";
 $lang["common_welcome_message"] = "Welkom in PHP Point Of Sale, klik beneden een module aan om te beginnen!";
 $lang["common_you_are_using_ospos"] = "You are using Open Source Point Of Sale Version";
 $lang["common_zip"] = "Postcode";
+$lang["common_gender"] = "Geslacht";
+$lang["common_gender_male"] = "M";
+$lang["common_gender_female"] = "V";

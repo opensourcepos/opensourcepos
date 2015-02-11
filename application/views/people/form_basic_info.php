@@ -20,6 +20,30 @@
 </div>
 
 <div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('common_gender').':', 'gender',
+!empty($basic_version) ? array('class'=>'required') : array()); ?>
+	<div class='form_field'>
+	<?php echo form_radio(array(
+		'name'=>'gender',
+		'type'=>'radio',
+		'id'=>'gender',
+		'value'=>1,
+		'checked'=>$person_info->gender === '1')
+	);
+	echo '&nbsp;' . $this->lang->line('common_gender_male') . '&nbsp;';
+	echo form_radio(array(
+		'name'=>'gender',
+		'type'=>'radio',
+		'id'=>'gender',
+		'value'=>0,
+		'checked'=>$person_info->gender === '0')
+	);
+	echo '&nbsp;' . $this->lang->line('common_gender_female');
+	?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('common_email').':', 'email'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(

@@ -40,3 +40,6 @@ $lang["common_welcome"] = "歡迎";
 $lang["common_welcome_message"] = "歡迎使用Open Source Point of Sale，請點擊下面的模組以開始使用！";
 $lang["common_you_are_using_ospos"] = "您正在使用 Open Source Point of Sale 版本";
 $lang["common_zip"] = "郵遞區號";
+$lang["common_gender"] = "Gender";
+$lang["common_gender_male"] = "M";
+$lang["common_gender_female"] = "V";

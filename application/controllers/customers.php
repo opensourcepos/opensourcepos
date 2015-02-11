@@ -57,6 +57,7 @@ class Customers extends Person_controller
 		$person_data = array(
 		'first_name'=>$this->input->post('first_name'),
 		'last_name'=>$this->input->post('last_name'),
+		'gender'=>$this->input->post('gender'),
 		'email'=>$this->input->post('email'),
 		'phone_number'=>$this->input->post('phone_number'),
 		'address_1'=>$this->input->post('address_1'),
@@ -145,20 +146,21 @@ class Customers extends Person_controller
 					$person_data = array(
 					'first_name'=>$data[0],
 					'last_name'=>$data[1],
-					'email'=>$data[2],
-					'phone_number'=>$data[3],
-					'address_1'=>$data[4],
-					'address_2'=>$data[5],
-					'city'=>$data[6],
-					'state'=>$data[7],
-					'zip'=>$data[8],
-					'country'=>$data[9],
-					'comments'=>$data[10]
+					'gender'=>$data[2],
+					'email'=>$data[3],
+					'phone_number'=>$data[4],
+					'address_1'=>$data[5],
+					'address_2'=>$data[6],
+					'city'=>$data[7],
+					'state'=>$data[8],
+					'zip'=>$data[9],
+					'country'=>$data[10],
+					'comments'=>$data[11]
 					);
 					
 					$customer_data=array(
-					'account_number'=>$data[11]=='' ? null:$data[11],
-					'taxable'=>$data[12]=='' ? 0:1,
+					'account_number'=>$data[12]=='' ? null:$data[12],
+					'taxable'=>$data[13]=='' ? 0:1,
 					);
 					
 					if(!$this->Customer->save($person_data,$customer_data))
@@ -195,7 +197,7 @@ class Customers extends Person_controller
 	*/
 	function get_form_width()
 	{			
-		return 350;
+		return 400;
 	}
 }
 ?>

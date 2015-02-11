@@ -294,6 +294,7 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 CREATE TABLE `ospos_people` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
+  `gender` int(1) DEFAULT NULL,
   `phone_number` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `address_1` varchar(255) NOT NULL,

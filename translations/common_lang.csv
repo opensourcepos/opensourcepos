@@ -1,41 +1,44 @@
-"label","nl-BE","es","en","fr","zh","ru","th","tr","id"
-"common_address_1","Adres 1","Dirección 1","Address 1","Addresse 1","地址 1","Адрес 1","ที่อยู่ที่ 1","Adres 1","Alamat 1"
-"common_address_2","Adres 2","Dirección 2","Address 2","Addresse 2","地址 2","Адрес 2","ที่อยู่ที่ 2","Adres 2","Alamat 2"
-"common_city","Stad","Ciudad","City","Ville","城市","Город","เมือง","Şehir","Kota"
-"common_comments","Commentaar","Comentarios","Comments","Commentaires","評論","Комментарии","หมายเหตุ","Yorumlar","Catatan"
-"common_common","algemeen","común","common","commun","一般","общественно","ธรรมดา","genel","Biasa"
-"common_confirm_search","U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?","Has seleccionado una o más filas. Éstas no estarán seleccionadas después de tu búsqueda. ¿Seguro(a) que quieres hacer esta búsqueda?","You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?","Vous avez sélectionné une ou plusieurs ligne(s). Elles ne seront plus selectionnées apres cette recherche. Voulez-vous lancer cette recherche?","您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？","Вы выбрали одну или несколько строк, это больше не будет быть выбрано после поиска. Вы уверены, что хотите, чтобы представить этот поиск?","คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?","Birden fazla satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?","Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?"
-"common_country","Land","País","Country","Pays","國家","Страна","ประเทศ","Ülke","Negara"
-"common_delete","Verwijder","Borrar","Delete","Effacer","刪除","Удалить","ลบ","Sil","Hapus"
-"common_det","details","detalles","details","détails","更多","детали","สรุป","Detaylar","Detail"
-"common_edit","bewerk","editar","edit","éditer","編輯","редактировать","แก้ไข","düzenle","Ubah"
-"common_email","Email","E-Mail","E-Mail","E-Mail","E-Mail","Электронная почта","E-Mail","E-Posta","E-Mail"
-"common_email_invalid_format","Je moet een geldig email adres invullen.","El e-mail no está en el formato requerido","The e-mail address is not in the proper format","Le format de l\'adresse électronique est incorrect","E-mail格式錯誤","Это электронная почта не в нужный формат","e-mail address ไม่เหมาะสม","E-Posta adresi doğru formatta değil","Format alamat e-mail tidak benar"
-"common_fields_required_message","Velden met een * moeten ingevuld worden","Los campos en rojo son requeridos","Fields in red are required","Les champs en rouge sont requis","紅色欄位為必填","Красные пробела обязательно","ช่องสีแดงต้องกรอก","Kırmızı alanlar zorunludur","Bagian yang ditandai warna merah wajib diisi"
-"common_first_name","Voornaam","Nombre","First Name","Prénom","名","Имя","ชื่อ","İsim","Nama Depan"
-"common_first_name_required","De voornaam moet ingevuld worden.","Nombre es un campo requerido","The first name is a required field.","Le prénom est requis.","名為必填","Имя обязательный пробел","ชื่อต้องกรอก","İsim zorunlu alandır","Nama depan wajib diisi."
-"common_inv","stock","inv","inv","inv","庫存","инв","ยอด","Stok","Inv"
-"common_last_name","Achternaam","Apellidos","Last Name","Nom","姓","Фамилия","นามสกุล","Soy İsim","Nama Belakang"
-"common_last_name_required","De achternaam moet ingevuld worden.","Apellidos es un campo requerido","The last name is a required field","Le nom est requis","姓氏為必填","Фамилия обязательный пробел","นามสกุลต้องกรอก","Soy isim zorunlu alandır.","Nama belakang wajib diisi."
-"common_learn_about_project","om de laatste informatie te verkrijgen over het project","para leer la información más reciente acerca del proyecto","to learn the lastest information about the project","pour les dernières informations sur le projet","了解系統開展進度",", чтобы узнать самую последнюю информацию о проекте","to learn the lastest information about the project"," ","Untuk belajar informasi terbaru tentang proyek ini"
-"common_list_of","Lijst van","Lista de","List of","Liste de","列表","Список","รายชื่อ","Liste","Daftar"
-"common_logout","Logout","Salir","Logout","Déconnexion","登出","Выход","ลงชื่อออก","Çıkış","Keluar"
-"common_no_persons_to_display","Er werden geen personen gevonden","No hay gente que mostrar","There are no people to display","Il n\'y a personne à afficher","沒有使用者資料可以顯示","Там нет людей, чтобы отобразить","ไม่พบข้อมูลตัวบุคคล","Gösterecek kişi yok","Tidak ada orang untuk ditampilkan"
-"common_or","Of","Ó","OR","OU","或","ИЛИ","หรือ","Yada","ATAU"
-"common_phone_number","Telefoon","Teléfono","Phone Number","Téléphone","電話","Номер телефона","โทรศัพท์","Telefon","Telepon"
-"common_phone_number_required","","","","Le numéro de téléphone est requis.","","","","",""
-"common_please_visit_my","Bezoek mijn","Por favor, visita mi","Please visit my","SVP visitez le","請造訪","пожалуйста, посетите","เยี่ยมชมที่","ziyaret edin","Silahkan kunjungi"
-"common_powered_by","Powered by","Potenciado por","Powered by","Animé par","Powered by","самоходные из","สนับสนุนโดย","Powered by","Diberdayakan oleh"
-"common_price","Prijs","Precio","Price","Prix","價值","Цена","ราคา","Fiyat","Harga"
-"common_remove","Verwijder","Eliminar","Remove","Enlever","移除","Снимать","ลบ","Kaldır","Hapus"
-"common_return_policy","Retourvoorwaarden","Política de Devolución","Return Policy","Politique de Reprise","退貨政策","Возвратний полис","กฏการคืน","İade Politikası","Kebijakan Retur"
-"common_search","Zoek","Buscar","Search","Recherche","搜尋","Пойск","ค้นหา","Arama","Cari"
-"common_searched_for","Gezocht op","Buscaste","Searched for","Recherché","查找","Искали за","ค้นหาสำหรับ","Ara","Mencari untuk"
-"common_state","Provincie","Estado","State","État","州","Штат","ประเทศ","Bölge","Provinsi"
-"common_submit","Verzend","Enviar","Submit","Envoyer","送出","Подавать","ยอมรับ","Onayla","Kirim"
-"common_view_recent_sales","Bekijk recente verkoop","Ver Ventas Recientes","View Recent Sales","Voir Ventes Récentes","最新的消售資訊","Посмотреть Недавние Продажи","สำรวจการขายเมื่อเร็วๆนี้","Yeni satışları göster","Lihat Penjualan Terkini"
-"common_website","website","sitio","website","site-web","網站","веб-сайт","website","website","Situs"
-"common_welcome","Welkom","Bienvenido(a)","Welcome","Bienvenue","歡迎","Добро пожаловать","ยินดีต้อนรับ","Hoşgeldiniz","Selamat Datang"
-"common_welcome_message","Welkom in PHP Point Of Sale, klik beneden een module aan om te beginnen!","Bienvenido(a) a Open Source Point Of Sale. ¡Haz click en algún módulo debajo, para empezar!","Welcome to Open Source Point Of Sale, click a module below to get started!","Bienvenue à Open Source Point Of Sale, choisissez un module ci-dessous!","歡迎使用Open Source Point of Sale，請點擊下面的模組以開始使用！","Добро пожаловать в Open Source Point Of Sale, нажмите модуля ниже, чтобы начать!","ยินดีต้อนรับเข้าสู่โปรแกรมขายหน้าร้านขั้นเทบ!","Hoşgeldiniz, devam etmek için aşağıdan bir modül seçiniz!","Selamat Datang, klik modul di bawah ini untuk memulai"
-"common_you_are_using_ospos","You are using Open Source Point Of Sale Version","Estás usando Open Source Point Of Sale Versión","You are using Open Source Point Of Sale Version","Vous utilisez Open Source Point Of Sale Version","您正在使用 Open Source Point of Sale 版本","Вы использоваете Open Source Point Of Sale Версия","คุณกำลังใช้ Point of Sales รุ่น","Kullandığınız sürüm","Anda menggunakan Open Source Point Of Sale Versi"
-"common_zip","Postcode","C.P.","Zip","Zip","郵遞區號","Почтовый индекс","Zip","Şehir Kodu","Kode POS"
+label,nl-BE,es,en,fr,zh,ru,th,tr,id
+common_address_1,Adres 1,Dirección 1,Address 1,Addresse 1,地址 1,Адрес 1,ที่อยู่ที่ 1,Adres 1,Alamat 1
+common_address_2,Adres 2,Dirección 2,Address 2,Addresse 2,地址 2,Адрес 2,ที่อยู่ที่ 2,Adres 2,Alamat 2
+common_city,Stad,Ciudad,City,Ville,城市,Город,เมือง,Şehir,Kota
+common_comments,Commentaar,Comentarios,Comments,Commentaires,評論,Комментарии,หมายเหตุ,Yorumlar,Catatan
+common_common,algemeen,común,common,commun,一般,общественно,ธรรมดา,genel,Biasa
+common_confirm_search,"U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?",Has seleccionado una o más filas. Éstas no estarán seleccionadas después de tu búsqueda. ¿Seguro(a) que quieres hacer esta búsqueda?,"You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?",Vous avez sélectionné une ou plusieurs ligne(s). Elles ne seront plus selectionnées apres cette recherche. Voulez-vous lancer cette recherche?,您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？,"Вы выбрали одну или несколько строк, это больше не будет быть выбрано после поиска. Вы уверены, что хотите, чтобы представить этот поиск?","คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?","Birden fazla satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?","Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?"
+common_country,Land,País,Country,Pays,國家,Страна,ประเทศ,Ülke,Negara
+common_delete,Verwijder,Borrar,Delete,Effacer,刪除,Удалить,ลบ,Sil,Hapus
+common_det,details,detalles,details,détails,更多,детали,สรุป,Detaylar,Detail
+common_edit,bewerk,editar,edit,éditer,編輯,редактировать,แก้ไข,düzenle,Ubah
+common_email,Email,E-Mail,E-Mail,E-Mail,E-Mail,Электронная почта,E-Mail,E-Posta,E-Mail
+common_email_invalid_format,Je moet een geldig email adres invullen.,El e-mail no está en el formato requerido,The e-mail address is not in the proper format,Le format de l\'adresse électronique est incorrect,E-mail格式錯誤,Это электронная почта не в нужный формат,e-mail address ไม่เหมาะสม,E-Posta adresi doğru formatta değil,Format alamat e-mail tidak benar
+common_fields_required_message,Velden met een * moeten ingevuld worden,Los campos en rojo son requeridos,Fields in red are required,Les champs en rouge sont requis,紅色欄位為必填,Красные пробела обязательно,ช่องสีแดงต้องกรอก,Kırmızı alanlar zorunludur,Bagian yang ditandai warna merah wajib diisi
+common_first_name,Voornaam,Nombre,First Name,Prénom,名,Имя,ชื่อ,İsim,Nama Depan
+common_first_name_required,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prénom est requis.,名為必填,Имя обязательный пробел,ชื่อต้องกรอก,İsim zorunlu alandır,Nama depan wajib diisi.
+common_inv,stock,inv,inv,inv,庫存,инв,ยอด,Stok,Inv
+common_last_name,Achternaam,Apellidos,Last Name,Nom,姓,Фамилия,นามสกุล,Soy İsim,Nama Belakang
+common_last_name_required,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,姓氏為必填,Фамилия обязательный пробел,นามสกุลต้องกรอก,Soy isim zorunlu alandır.,Nama belakang wajib diisi.
+common_learn_about_project,om de laatste informatie te verkrijgen over het project,para leer la información más reciente acerca del proyecto,to learn the lastest information about the project,pour les dernières informations sur le projet,了解系統開展進度,", чтобы узнать самую последнюю информацию о проекте",to learn the lastest information about the project, ,Untuk belajar informasi terbaru tentang proyek ini
+common_list_of,Lijst van,Lista de,List of,Liste de,列表,Список,รายชื่อ,Liste,Daftar
+common_logout,Logout,Salir,Logout,Déconnexion,登出,Выход,ลงชื่อออก,Çıkış,Keluar
+common_no_persons_to_display,Er werden geen personen gevonden,No hay gente que mostrar,There are no people to display,Il n\'y a personne à afficher,沒有使用者資料可以顯示,"Там нет людей, чтобы отобразить",ไม่พบข้อมูลตัวบุคคล,Gösterecek kişi yok,Tidak ada orang untuk ditampilkan
+common_or,Of,Ó,OR,OU,或,ИЛИ,หรือ,Yada,ATAU
+common_phone_number,Telefoon,Teléfono,Phone Number,Téléphone,電話,Номер телефона,โทรศัพท์,Telefon,Telepon
+common_phone_number_required,,,,Le numéro de téléphone est requis.,,,,,
+common_please_visit_my,Bezoek mijn,"Por favor, visita mi",Please visit my,SVP visitez le,請造訪,"пожалуйста, посетите",เยี่ยมชมที่,ziyaret edin,Silahkan kunjungi
+common_powered_by,Powered by,Potenciado por,Powered by,Animé par,Powered by,самоходные из,สนับสนุนโดย,Powered by,Diberdayakan oleh
+common_price,Prijs,Precio,Price,Prix,價值,Цена,ราคา,Fiyat,Harga
+common_remove,Verwijder,Eliminar,Remove,Enlever,移除,Снимать,ลบ,Kaldır,Hapus
+common_return_policy,Retourvoorwaarden,Política de Devolución,Return Policy,Politique de Reprise,退貨政策,Возвратний полис,กฏการคืน,İade Politikası,Kebijakan Retur
+common_search,Zoek,Buscar,Search,Recherche,搜尋,Пойск,ค้นหา,Arama,Cari
+common_searched_for,Gezocht op,Buscaste,Searched for,Recherché,查找,Искали за,ค้นหาสำหรับ,Ara,Mencari untuk
+common_state,Provincie,Estado,State,État,州,Штат,ประเทศ,Bölge,Provinsi
+common_submit,Verzend,Enviar,Submit,Envoyer,送出,Подавать,ยอมรับ,Onayla,Kirim
+common_view_recent_sales,Bekijk recente verkoop,Ver Ventas Recientes,View Recent Sales,Voir Ventes Récentes,最新的消售資訊,Посмотреть Недавние Продажи,สำรวจการขายเมื่อเร็วๆนี้,Yeni satışları göster,Lihat Penjualan Terkini
+common_website,website,sitio,website,site-web,網站,веб-сайт,website,website,Situs
+common_welcome,Welkom,Bienvenido(a),Welcome,Bienvenue,歡迎,Добро пожаловать,ยินดีต้อนรับ,Hoşgeldiniz,Selamat Datang
+common_welcome_message,"Welkom in PHP Point Of Sale, klik beneden een module aan om te beginnen!","Bienvenido(a) a Open Source Point Of Sale. ¡Haz click en algún módulo debajo, para empezar!","Welcome to Open Source Point Of Sale, click a module below to get started!","Bienvenue à Open Source Point Of Sale, choisissez un module ci-dessous!",歡迎使用Open Source Point of Sale，請點擊下面的模組以開始使用！,"Добро пожаловать в Open Source Point Of Sale, нажмите модуля ниже, чтобы начать!",ยินดีต้อนรับเข้าสู่โปรแกรมขายหน้าร้านขั้นเทบ!,"Hoşgeldiniz, devam etmek için aşağıdan bir modül seçiniz!","Selamat Datang, klik modul di bawah ini untuk memulai"
+common_you_are_using_ospos,You are using Open Source Point Of Sale Version,Estás usando Open Source Point Of Sale Versión,You are using Open Source Point Of Sale Version,Vous utilisez Open Source Point Of Sale Version,您正在使用 Open Source Point of Sale 版本,Вы использоваете Open Source Point Of Sale Версия,คุณกำลังใช้ Point of Sales รุ่น,Kullandığınız sürüm,Anda menggunakan Open Source Point Of Sale Versi
+common_zip,Postcode,C.P.,Zip,Zip,郵遞區號,Почтовый индекс,Zip,Şehir Kodu,Kode POS
+common_gender,Geslacht,Gender,Gender,Gender,Gender,Gender,Gender,Gender,Gender
+common_gender_male,M,M,M,M,M,M,M,M,M
+common_gender_female,V,V,V,V,V,V,V,V,V

@@ -40,3 +40,6 @@ $lang["common_welcome"] = "Добро пожаловать";
 $lang["common_welcome_message"] = "Добро пожаловать в Open Source Point Of Sale, нажмите модуля ниже, чтобы начать!";
 $lang["common_you_are_using_ospos"] = "Вы использоваете Open Source Point Of Sale Версия";
 $lang["common_zip"] = "Почтовый индекс";
+$lang["common_gender"] = "Gender";
+$lang["common_gender_male"] = "M";
+$lang["common_gender_female"] = "V";
