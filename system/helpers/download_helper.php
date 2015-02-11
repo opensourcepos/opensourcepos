@@ -86,7 +86,6 @@ if ( ! function_exists('force_download'))
 			header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 			header("Content-Transfer-Encoding: binary");
 			header('Pragma: public');
-			header("Content-Length: ".strlen($data));
 		}
 		else
 		{
@@ -95,7 +94,6 @@ if ( ! function_exists('force_download'))
 			header("Content-Transfer-Encoding: binary");
 			header('Expires: 0');
 			header('Pragma: no-cache');
-			header("Content-Length: ".strlen($data));
 		}
 		exit($data);
 	}
