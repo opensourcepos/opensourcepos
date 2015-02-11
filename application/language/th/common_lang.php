@@ -40,3 +40,6 @@ $lang["common_welcome"] = "ยินดีต้อนรับ";
 $lang["common_welcome_message"] = "ยินดีต้อนรับเข้าสู่โปรแกรมขายหน้าร้านขั้นเทบ!";
 $lang["common_you_are_using_ospos"] = "คุณกำลังใช้ Point of Sales รุ่น";
 $lang["common_zip"] = "Zip";
+$lang["common_gender"] = "Gender";
+$lang["common_gender_male"] = "M";
+$lang["common_gender_female"] = "V";

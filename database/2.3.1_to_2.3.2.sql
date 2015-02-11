@@ -17,3 +17,6 @@ INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
 ALTER TABLE `ospos_items` 
    ADD COLUMN `item_pic` int(10) DEFAULT NULL;
 
+ALTER TABLE `ospos_people` 
+   ADD COLUMN `gender` int(1) DEFAULT NULL;
+

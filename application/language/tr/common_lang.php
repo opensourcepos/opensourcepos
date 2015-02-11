@@ -40,3 +40,6 @@ $lang["common_welcome"] = "Hoşgeldiniz";
 $lang["common_welcome_message"] = "Hoşgeldiniz, devam etmek için aşağıdan bir modül seçiniz!";
 $lang["common_you_are_using_ospos"] = "Kullandığınız sürüm";
 $lang["common_zip"] = "Şehir Kodu";
+$lang["common_gender"] = "Gender";
+$lang["common_gender_male"] = "M";
+$lang["common_gender_female"] = "V";
