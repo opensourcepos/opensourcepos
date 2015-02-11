@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Échec d\'opération d\'arrivage";
+$lang["receivings_transaction_failed"] = "Échec d'opération d'arrivage";
 $lang["recvs_basic_information"] = "";
 $lang["recvs_cancel_receiving"] = "";
 $lang["recvs_cannot_be_deleted"] = "";
@@ -18,14 +18,14 @@ $lang["recvs_discount"] = "Remise %";
 $lang["recvs_edit"] = "Éditer";
 $lang["recvs_edit_sale"] = "";
 $lang["recvs_employee"] = "";
-$lang["recvs_error_editing_item"] = "Erreur d\'édition";
+$lang["recvs_error_editing_item"] = "Erreur d'édition";
 $lang["recvs_error_requisition"] = "";
 $lang["recvs_find_or_scan_item"] = "Chercher/Scanner Élément";
 $lang["recvs_find_or_scan_item_or_receipt"] = "Chercher Elément OU Recu";
 $lang["recvs_id"] = "ID Arrivage";
 $lang["recvs_invoice_number"] = "";
 $lang["recvs_invoice_number_duplicate"] = "";
-$lang["recvs_item_name"] = "Nom d\'Élément";
+$lang["recvs_item_name"] = "Nom d'Élément";
 $lang["recvs_mode"] = "Receiving Mode";
 $lang["recvs_new_supplier"] = "Nouveau Fournisseur";
 $lang["recvs_one_or_multiple"] = "";
@@ -45,6 +45,6 @@ $lang["recvs_successfully_deleted"] = "";
 $lang["recvs_successfully_updated"] = "";
 $lang["recvs_supplier"] = "Fournisseur";
 $lang["recvs_total"] = "Total";
-$lang["recvs_unable_to_add_item"] = "Impossible d\'ajouter l\'item aux arrivages";
+$lang["recvs_unable_to_add_item"] = "Impossible d'ajouter l'item aux arrivages";
 $lang["recvs_unsuccessfully_updated"] = "";
 $lang["recvs_invoice_enable"] = "";
