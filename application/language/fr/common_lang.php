@@ -42,4 +42,4 @@ $lang["common_you_are_using_ospos"] = "Vous utilisez Open Source Point Of Sale V
 $lang["common_zip"] = "Zip";
 $lang["common_gender"] = "Gender";
 $lang["common_gender_male"] = "M";
-$lang["common_gender_female"] = "V";
+$lang["common_gender_female"] = "F";
