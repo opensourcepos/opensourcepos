@@ -112,6 +112,7 @@ class Item_kits extends Secure_area implements iData_controller
 	
 	function generate_barcodes($item_kit_ids)
 	{
+		$this->load->library('barcode_lib');
 		$result = array();
 
 		$item_kit_ids = explode(':', $item_kit_ids);
@@ -119,13 +120,12 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			$item_kit_info = $this->Item_kit->get_info($item_kid_id);
 
-			$result[] = array('name' =>$item_kit_info->name, 'id'=> 'KIT '.$item_kid_id);
+			$result[] = array('name' =>$item_kit_info->name, 'item_id'=> 'KIT '.$item_kid_id);
 		}
 
 		$data['items'] = $result;
-		$this->load->library('barcode_lib');
         $data['configs'] = $this->Appconfig->get_all();
-        $data['barcode_config'] = $this->Barcode_lib->get_barcode_config();
+        $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 		$this->load->view("barcode_sheet", $data);
 	}
 	
