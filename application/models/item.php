@@ -12,6 +12,15 @@ class Item extends CI_Model
 
 		return ($query->num_rows()==1);
 	}
+	
+	function item_number_exists($item_number, $item_id)
+	{
+		$this->db->from('items');
+		$this->db->where('item_number', $item_number);
+		$this->db->where('item_id !=', $item_id);
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
+	}	
 
 	/*
 	Returns all the items

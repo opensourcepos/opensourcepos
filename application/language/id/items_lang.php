@@ -81,4 +81,4 @@ $lang["items_upc_database"] = "Database UPC";
 $lang["items_update"] = "Ubah";
 $lang["items_use_inventory_menu"] = "Gunakan Inv. Menu";
 $lang["items_image"] = "Avatar";
-$lang["items_item_number_exists"] = "The item number is already present in the database";
+$lang["items_item_number_duplicate"] = "The item number is already present in the database";

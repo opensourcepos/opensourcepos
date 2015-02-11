@@ -77,20 +77,18 @@ $(document).ready(function()
 
 	$.validator.addMethod("invoice_number", function(value, element) 
 	{
-		var id = $("input[name='sale_id']").val();
-
 		return JSON.parse($.ajax(
 		{
 			  type: 'POST',
 			  url: '<?php echo site_url($controller_name . "/check_invoice_number")?>',
-			  data: {'sale_id' : id, 'invoice_number' : $(element).val() },
+			  data: {'sale_id' : <?php echo $sale_info['sale_id']; ?>, 'invoice_number' : $(element).val() },
 			  success: function(response) 
 			  {
 				  success=response.success;
 			  },
 			  async:false,
 			  dataType: 'json'
-        }).response).success;
+        }).responseText).success;
     }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
     
 	$('#date').datePicker({startDate: '01/01/1970'});

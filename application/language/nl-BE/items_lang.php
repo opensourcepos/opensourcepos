@@ -81,4 +81,4 @@ $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "Bewerk Product";
 $lang["items_use_inventory_menu"] = "Use Inv. Menu";
 $lang["items_image"] = "Afbeelding";
-$lang["items_item_number_exists"] = "De barcode nummer is reeds aanwezig in de database";
+$lang["items_item_number_duplicate"] = "De barcode nummer is reeds aanwezig in de database";

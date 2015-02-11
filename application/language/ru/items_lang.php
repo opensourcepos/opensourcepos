@@ -81,4 +81,4 @@ $lang["items_upc_database"] = "UPC база данных";
 $lang["items_update"] = "Обновить Товар";
 $lang["items_use_inventory_menu"] = "Используйте меню инвентаря";
 $lang["items_image"] = "Avatar";
-$lang["items_item_number_exists"] = "The item number is already present in the database";
+$lang["items_item_number_duplicate"] = "The item number is already present in the database";

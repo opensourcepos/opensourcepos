@@ -366,8 +366,7 @@ class Items extends Secure_area implements iData_controller
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
 		
-		$validated = $this->validate_item() || $item_id != -1;
-		if($validated && $this->Item->save($item_data,$item_id))
+		if($this->Item->save($item_data,$item_id))
 		{
 			$success = TRUE;
 			$new_item = FALSE;
@@ -428,37 +427,23 @@ class Items extends Secure_area implements iData_controller
 	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
     	        	$this->upload->display_errors(); 
             	echo json_encode(array('success'=>false,
-            			'error_messages'=>array($this->upload->display_errors()),
             			'message'=>$error_message,'item_id'=>$item_id)); 
             }
             
 		}
 		else//failure
 		{
-			$error_messages = $this->form_validation->get_error_messages();
 			echo json_encode(array('success'=>false,
-					'error_messages'=>$error_messages,
 					'message'=>$this->lang->line('items_error_adding_updating').' '
 					.$item_data['name'],'item_id'=>-1));
 		}
 
 	}
 	
-	function validate_item()
+	function check_item_number()
 	{
-		$this->load->library('form_validation');
-		$this->form_validation->set_rules('item_number', 'lang:items_item_number', 'callback_item_number_check');
-		return $this->form_validation->run();
-	}
-	
-	function item_number_check($item_number)
-	{
-		if ($this->Item->get_item_id($item_number) != FALSE)
-		{
-			$this->form_validation->set_message('item_number_check', $this->lang->line('items_item_number_exists'));
-			return FALSE;
-		}
-		return TRUE;
+		$exists = $this->Item->item_number_exists($this->input->post('item_number'),$this->input->post('item_id'));
+		echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('items_item_number_duplicate')));
 	}
 	
 	function _handle_image_upload()

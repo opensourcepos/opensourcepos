@@ -81,4 +81,4 @@ $lang["items_upc_database"] = "UPC ฐานข้อมูล";
 $lang["items_update"] = "ปรับแต่งสินค้า";
 $lang["items_use_inventory_menu"] = "ใช้เมนูสินค้าคงเหลือ";
 $lang["items_image"] = "Avatar";
-$lang["items_item_number_exists"] = "The item number is already present in the database";
+$lang["items_item_number_duplicate"] = "The item number is already present in the database";
