@@ -50,7 +50,7 @@ $.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'co
 
 function handle_validation(response) 
 {
-	if (!response.success && !response.validated) 
+	if (!response.success) 
 	{
 		var error_message_box = '.error_message_box';
 		// server side validation failed.. record won't be saved

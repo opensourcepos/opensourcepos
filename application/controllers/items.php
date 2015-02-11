@@ -427,7 +427,9 @@ class Items extends Secure_area implements iData_controller
             	$error_message = $upload_success ? 
 	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
     	        	$this->upload->display_errors(); 
-            	echo json_encode(array('success'=>false,'message'=>$error_message,'item_id'=>$item_id)); 
+            	echo json_encode(array('success'=>false,
+            			'error_messages'=>array($this->upload->display_errors()),
+            			'message'=>$error_message,'item_id'=>$item_id)); 
             }
             
 		}
