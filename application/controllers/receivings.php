@@ -239,7 +239,7 @@ class Receivings extends Secure_area
 		if($supplier_id!=-1)
 		{
 			$invoice_number=str_replace('$SU',$supplier_info->company_name,$invoice_number);
-			$words = preg_split("/\s+/", $supplier_info->company_name);
+			$words = preg_split("/\s+/", trim($supplier_info->company_name));
 			$acronym = "";
 			foreach ($words as $w) {
 				$acronym .= $w[0];
