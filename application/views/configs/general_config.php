@@ -96,6 +96,27 @@ echo form_open('config/save/',array('id'=>'config_form'));
 <!-- END MODIFIED -->
 
 <div class="field_row clearfix">    
+<?php echo form_label($this->lang->line('config_number_format').':', 'number_format',array('class'=>'wide required')); ?>
+	<div class='form_field'>
+	<?php echo $this->lang->line('config_thousands_separator'); ?>
+	<?php echo form_dropdown('thousands_separator', array(
+			','    => ', (komma)',
+			'.'    => '. (dot)',
+			''    => '(none)'
+			), 
+		$this->config->item('thousands_separator'));
+		?>
+	<?php echo $this->lang->line('config_decimal_point'); ?>
+	<?php echo form_dropdown('decimal_point', array(
+			'.'    => '. (dot)',
+			','    => ', (komma)'
+			), 
+		$this->config->item('decimal_point'));
+		?>
+	</div>
+</div>
+
+<div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_sales_invoice_format').':', 'sales_invoice_format',array('class'=>'wide')); ?>
     <div class='form_field'>
     <?php echo form_input(array(
@@ -115,6 +136,7 @@ echo form_open('config/save/',array('id'=>'config_form'));
     </div>
 </div>
 
+<div class="field_row clearfix">	
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('common_email').':', 'email',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -286,6 +308,17 @@ echo form_open('config/save/',array('id'=>'config_form'));
 		'id'=>'print_after_sale',
 		'value'=>'print_after_sale',
 		'checked'=>$this->config->item('print_after_sale')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_receiving_calculate_average_price').':', 'receiving_calculate_average_price',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'receiving_calculate_average_price',
+		'id'=>'receiving_calculate_average_price',
+		'value'=>'receiving_calculate_average_price',
+		'checked'=>$this->config->item('receiving_calculate_average_price')));?>
 	</div>
 </div>
 

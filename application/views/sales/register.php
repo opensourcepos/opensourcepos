@@ -41,7 +41,7 @@ echo $this->lang->line('sales_find_or_scan_item_or_receipt');
 
 <?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));?>
 <div id="new_item_button_register" >
-		<?php echo anchor("items/view/-1/width:360",
+		<?php echo anchor("items/view/-1/width:400",
 		"<div class='small_button'><span>".$this->lang->line('sales_new_item')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
 		?>
@@ -200,7 +200,7 @@ else
 		</form>
 	<div style="margin-top: 5px; text-align: center;">
 		<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
-		<?php echo anchor("customers/view/-1/width:350",
+		<?php echo anchor("customers/view/-1/width:400",
 		"<div class='small_button' style='margin:0 auto;'><span>".$this->lang->line('sales_new_customer')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_customer')));
 		?>
@@ -437,7 +437,7 @@ $(document).ready(function()
         }
     };
 
-    $('#item, #customer').focus(clear_fields).click(clear_fields);
+    $('#item, #customer').click(clear_fields);
 
     $("#customer").autocomplete('<?php echo site_url("sales/customer_search"); ?>',
     {
@@ -560,8 +560,7 @@ function check_payment_type_gifcard()
 	if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
 	{
 		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
-		$("#amount_tendered").val('');
-		$("#amount_tendered").focus();
+		$("#amount_tendered").val('').focus();
 	}
 	else
 	{

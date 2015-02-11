@@ -14,7 +14,7 @@ common_email_invalid_format,Je moet een geldig email adres invullen.,El e-mail n
 common_fields_required_message,Velden met een * moeten ingevuld worden,Los campos en rojo son requeridos,Fields in red are required,Les champs en rouge sont requis,紅色欄位為必填,Красные пробела обязательно,ช่องสีแดงต้องกรอก,Kırmızı alanlar zorunludur,Bagian yang ditandai warna merah wajib diisi
 common_first_name,Voornaam,Nombre,First Name,Prénom,名,Имя,ชื่อ,İsim,Nama Depan
 common_first_name_required,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prénom est requis.,名為必填,Имя обязательный пробел,ชื่อต้องกรอก,İsim zorunlu alandır,Nama depan wajib diisi.
-common_inv,stock,inv,inv,inv,庫存,инв,ยอด,Stok,Inv
+"common_inv","stock","inv","inv","inv","庫存","инв","ยอด","Stok","Persediaan"
 common_last_name,Achternaam,Apellidos,Last Name,Nom,姓,Фамилия,นามสกุล,Soy İsim,Nama Belakang
 common_last_name_required,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,姓氏為必填,Фамилия обязательный пробел,นามสกุลต้องกรอก,Soy isim zorunlu alandır.,Nama belakang wajib diisi.
 common_learn_about_project,om de laatste informatie te verkrijgen over het project,para leer la información más reciente acerca del proyecto,to learn the lastest information about the project,pour les dernières informations sur le projet,了解系統開展進度,", чтобы узнать самую последнюю информацию о проекте",to learn the lastest information about the project, ,Untuk belajar informasi terbaru tentang proyek ini
@@ -23,7 +23,7 @@ common_logout,Logout,Salir,Logout,Déconnexion,登出,Выход,ลงชื่
 common_no_persons_to_display,Er werden geen personen gevonden,No hay gente que mostrar,There are no people to display,Il n\'y a personne à afficher,沒有使用者資料可以顯示,"Там нет людей, чтобы отобразить",ไม่พบข้อมูลตัวบุคคล,Gösterecek kişi yok,Tidak ada orang untuk ditampilkan
 common_or,Of,Ó,OR,OU,或,ИЛИ,หรือ,Yada,ATAU
 common_phone_number,Telefoon,Teléfono,Phone Number,Téléphone,電話,Номер телефона,โทรศัพท์,Telefon,Telepon
-common_phone_number_required,,,,Le numéro de téléphone est requis.,,,,,
+"common_phone_number_required","","","","Le numéro de téléphone est requis.","","","","","Nomer Telepon Wajib Diisi"
 common_please_visit_my,Bezoek mijn,"Por favor, visita mi",Please visit my,SVP visitez le,請造訪,"пожалуйста, посетите",เยี่ยมชมที่,ziyaret edin,Silahkan kunjungi
 common_powered_by,Powered by,Potenciado por,Powered by,Animé par,Powered by,самоходные из,สนับสนุนโดย,Powered by,Diberdayakan oleh
 common_price,Prijs,Precio,Price,Prix,價值,Цена,ราคา,Fiyat,Harga

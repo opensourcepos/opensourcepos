@@ -590,37 +590,40 @@ class Items extends Secure_area implements iData_controller
                 $i=1;
                 while (($data = fgetcsv($handle)) !== FALSE)
                 {
-
-                    $item_data = array(
-                        'name'			=>	$data[1],
-                        'description'	=>	$data[11],
-                        'category'		=>	$data[2],
-                        'cost_price'	=>	$data[4],
-                        'unit_price'	=>	$data[5],
-                        'reorder_level'	=>	$data[10],
-                        'supplier_id'	=>  $this->Supplier->exists($data[3]) ? $data[3] : null,
-                        'allow_alt_description'	=>	$data[12] != '' ? '1' : '0',
-                        'is_serialized'	=>	$data[13] != '' ? '1' : '0',
-                        'custom1'		=>	$data[14],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom2'		=>	$data[15],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom3'		=>	$data[16],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom4'		=>	$data[17],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom5'		=>	$data[18],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom6'		=>	$data[19],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom7'		=>	$data[20],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom8'		=>	$data[21],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom9'		=>	$data[22],	/** GARRISON ADDED 5/6/2013 **/
-                        'custom10'		=>	$data[23]	/** GARRISON ADDED 5/6/2013 **/
-                    );
-                    $item_number = $data[0];
-
-                    if ($item_number != "")
-                    {
-                        $item_data['item_number'] = $item_number;
-                    }
-					$validated = $this->item_number_check($item_number);
-					
-                    if($validated && $this->Item->save($item_data)) 
+					if (sizeof($data) >= 23) {
+	                    $item_data = array(
+	                        'name'			=>	$data[1],
+	                        'description'	=>	$data[11],
+	                        'category'		=>	$data[2],
+	                        'cost_price'	=>	$data[4],
+	                        'unit_price'	=>	$data[5],
+	                        'reorder_level'	=>	$data[10],
+	                        'supplier_id'	=>  $this->Supplier->exists($data[3]) ? $data[3] : null,
+	                        'allow_alt_description'	=>	$data[12] != '' ? '1' : '0',
+	                        'is_serialized'	=>	$data[13] != '' ? '1' : '0',
+	                        'custom1'		=>	$data[14],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom2'		=>	$data[15],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom3'		=>	$data[16],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom4'		=>	$data[17],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom5'		=>	$data[18],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom6'		=>	$data[19],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom7'		=>	$data[20],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom8'		=>	$data[21],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom9'		=>	$data[22],	/** GARRISON ADDED 5/6/2013 **/
+	                        'custom10'		=>	$data[23]	/** GARRISON ADDED 5/6/2013 **/
+	                    );
+	                    $item_number = $data[0];
+	                    if ($item_number != "")
+	                    {
+	                    	$item_data['item_number'] = $item_number;
+	                    }
+	                    $invalidated = $this->Item->item_number_exists($item_number);
+					}
+					else 
+					{
+						$invalidated = true;
+					}
+                    if(!$invalidated && $this->Item->save($item_data)) 
                     {
                         $items_taxes_data = null;
                         //tax 1
