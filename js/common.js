@@ -44,6 +44,6 @@ function http_s(url)
 //keylisteners
 $.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'config', 'giftcards'], function(key, value) {
 	$(window).jkey('f' + (key+1), function(){
-		window.location = BASE_URL + '/' + value + ' /index';
+		window.location = BASE_URL + '/' + value + '/index';
 	});	
 });
