@@ -39,7 +39,6 @@ sales_date_type,,,Date field is required,,,,,,Jenis Data
 "sales_id","Nummer Verkoop ","ID de Venta","Sale ID","ID Vente","銷售編號","Номер Продажы","เลขที่ขาย","Satış No","ID Penjualan"
 sales_invoice_number,,Invoice #,Invoice #,Invoice #,,,,,Nomor Nota
 sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique invoice number,Please enter an unique invoice number,,,,,,Nomor Nota Double
-"sales_invoice_number_duplicate","Vul een unieke nummer in","Please enter an unique invoice number","Please enter an unique invoice number","","","","","",""
 "sales_item_insufficient_of_stock","Product is niet meer in voorraad","Hay un número insuficiente de Artículos en existencia","Item is Insufficient of Stock","Stock top faible","產品庫存不足","Товар недостаточно на складе","จำนวนสินค้าไม่เพียงพอ","Ürün Stoğu Yetersiz","Stok Item tidak mencukupi"
 "sales_item_name","Naam","Nombre del Artículo","Item Name","Nom","產品名稱","Название товара","ชื่อสินค้า","Ürün Adı","Nama Item "
 "sales_item_number","Product #","UPC/EAN/ISBN","Item #","# Item","產品 #","Номер товара","สินค้า #","Ürün No","Item #"
@@ -70,8 +69,8 @@ sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique i
 "sales_select_customer","Selecteer Klant (Optioneel)","Seleccionar Cliente (Opcional)","Select Customer (Optional)","Choisir Client (Facultatif)","選擇客戶 (Optional)","Выберите клиента (необязательно)","เลือกลูกค้า (Optional)","Müşteri Seç (İsteğe Bağlı)","Pilih Pelanggan (Opsional)"
 "sales_serial","Nummer","Serial","Serial","Serie","序號","серийный номер","Serial","Seri","Serial"
 "sales_start_typing_customer_name","Typ naam klant...","Empieza a escribir el cliente...","Start Typing customer's name...","Commencez à saisir le nom du client...","開始輸入客戶的名字","Начните печатать название клиента...","เริ่มต้นพิมพ์ชื่อลูกค้า...","Müşteri Adı...","Ketik Nama Pelanggan..."
+"sales_start_typing_item_name","Typ naam product of barcode...","Empieza a escribir o escanea el código de barras...","Start Typing item's name or scan barcode...","Commencez à saisir le nom de l\'item ou scannez le code-barre...","開始輸入產品名或掃描條碼...","Начните печатать название товара или сканировайте штрих-кода...","เริ่มต้นพิมพ์ชื่อสินค้า หรือ สแกนบาร์โค๊ด...","Ürün adı yazın yada barkod okutun...","Ketik Nama Barang atau Scan Barcode..."
 sales_stock_location,Stock locatie,,Stock location,,,,,Stok yeri,Lokasi Stock
-"sales_stock_location","Stock locatie","","Stock location","","","","","Stok yeri",""
 "sales_sub_total","Subtotaal excl. VAT","Subtotal","Sub Total","Sous-Total","小計","промежуточный итог","ยอดรวมหักภาษี ","Ara Toplam","Sub Total"
 "sales_successfully_deleted","Uw aankoop werd verwijded","La Venta ha sido borrada satisfactoriamente","You have successfully deleted","Vente supprimée","銷售資料成功刪除","продажи успешно удален","ลบการขายสมยูรณ์","Satış silindi","Transaksi Penjualan berhasil dihapus"
 "sales_successfully_suspended_sale","Uw aankoop werd met sucess bewaard","La venta ha sido suspendida satisfactoriamente","Your sale has been successfully suspended","Vente suspendue","本銷售資料已經成功暫停","Ваши продажи успешно приостановлена","การขายของคุณถูกระงับเรียบร้อย","Satış askıya alındı","Penjualan anda telah berhasil ditangguhkan"

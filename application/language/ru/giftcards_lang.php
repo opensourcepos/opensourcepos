@@ -1,7 +1,6 @@
 <?php 
 
 $lang["giftcards_add_minus"] = "Инвентарь для сложения/вычитания";
-$lang["giftcards_allow_alt_desciption"] = "";
 $lang["giftcards_allow_alt_description"] = "Разрешить альтернативные Описание";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_basic_information"] = "информация Подарочную карту";

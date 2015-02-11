@@ -1,7 +1,6 @@
 <?php 
 
 $lang["giftcards_add_minus"] = "Inventario a agregar/substraer";
-$lang["giftcards_allow_alt_desciption"] = "";
 $lang["giftcards_allow_alt_description"] = "Permitir Descripción Alternativa";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_basic_information"] = "Información de Tarjeta de Regalo";
