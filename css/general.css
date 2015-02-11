@@ -96,7 +96,7 @@ label.required
 	width:100%;
 	top:35%;
 	color:#FFF;
-	font-size:0.8em;
+	font-size:0.9em;
 	font-weight:bold;
 	text-align:center;
 }
@@ -136,7 +136,6 @@ label.required
 
 input
 {
-	font-family:arial;
 	padding: 3px;
 }
 

@@ -391,13 +391,8 @@ echo form_open('config/save/',array('id'=>'config_form'));
 
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_backup_database').':', 'config_backup_database',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_submit(array(
-		'name'=>'config_backup_database',
-		'id'=>'config_backup_database',
-		'onClick'=>'javascript:window.location=\'' . site_url('config/backup_db'). '\';return false;',
-		'class'=>'submit_button float_right',
-		'value'=>$this->lang->line('config_backup_button')));?>
+	<div id="backup_db" class="form_field small_button" style="background-color:transparent;">
+		<span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
 	</div>
 </div>
 
@@ -421,6 +416,10 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+	$("#backup_db").click(function() {
+		window.location='<?php echo site_url('config/backup_db') ?>';
+	});
+	
 	$('#config_form').validate({
 		submitHandler:function(form)
 		{
