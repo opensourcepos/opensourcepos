@@ -38,6 +38,7 @@ $lang["sales_find_or_scan_item_or_receipt"] = "Zoek/Scan Product of Ticket";
 $lang["sales_giftcard"] = "Cadeaubon";
 $lang["sales_giftcard_number"] = "Cadeaubon nummer";
 $lang["sales_id"] = "Nummer Verkoop ";
+$lang["sales_invoice_enable"] = "Maak Factuur";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "Vul een unieke nummer in";
 $lang["sales_item_insufficient_of_stock"] = "Product is niet meer in voorraad";

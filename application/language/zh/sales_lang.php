@@ -38,6 +38,7 @@ $lang["sales_find_or_scan_item_or_receipt"] = "查找/掃描產品或收貨單";
 $lang["sales_giftcard"] = "禮金券";
 $lang["sales_giftcard_number"] = "禮金券編號";
 $lang["sales_id"] = "銷售編號";
+$lang["sales_invoice_enable"] = "";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "";
 $lang["sales_item_insufficient_of_stock"] = "產品庫存不足";

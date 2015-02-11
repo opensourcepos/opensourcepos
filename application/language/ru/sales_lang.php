@@ -38,6 +38,7 @@ $lang["sales_find_or_scan_item_or_receipt"] = "Найти/Сканировать
 $lang["sales_giftcard"] = "Подарочная карта";
 $lang["sales_giftcard_number"] = "Номер подарочных карт";
 $lang["sales_id"] = "Номер Продажы";
+$lang["sales_invoice_enable"] = "";
 $lang["sales_invoice_number"] = "";
 $lang["sales_invoice_number_duplicate"] = "";
 $lang["sales_item_insufficient_of_stock"] = "Товар недостаточно на складе";
