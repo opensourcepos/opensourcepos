@@ -132,7 +132,7 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 	</div>
 </div>
 
-<div id="titleTextImg" style="background-color:#EEEEEE;height:20px;position:relative;">
+<div id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
 	<div style="float:left;vertical-align:text-top;">Search Options :</div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="
