@@ -4,6 +4,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_second_row', 'item_code'),
 ('barcode_third_row', 'cost_price'),
 ('barcode_num_in_row', '2'),
+('company_logo', ''),
 ('barcode_page_width', '100'),      
 ('barcode_page_cellspacing', '20');
 

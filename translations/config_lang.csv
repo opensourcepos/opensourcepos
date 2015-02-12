@@ -89,3 +89,4 @@ config_thousands_separator,Thousands Separator, Thousands Separator,Thousands Se
 config_decimal_point,Decimal Point, Decimal Point,Decimal Point, Decimal Point,Decimal Point, Decimal Point,Decimal Point, Decimal Point,Titik Desimal
 config_backup_button,Backup,Backup,Backup,Backup,Backup,Backup,Backup,Backup,Backup
 config_stock_location_invalid_chars,De bedrijfsnaam moet ingevuld worden,The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_'
+config_company_logo,Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo

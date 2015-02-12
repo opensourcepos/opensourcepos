@@ -18,6 +18,9 @@ class Config extends Secure_area
 		
 	function save()
 	{
+		$upload_success = $this->_handle_logo_upload();
+		$upload_data = $this->upload->data();
+		
 		$batch_save_data=array(
 		'company'=>$this->input->post('company'),
 		'address'=>$this->input->post('address'),
@@ -53,9 +56,16 @@ class Config extends Secure_area
 		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
 		);
 		
+		if (!empty($upload_data['orig_name']))
+		{
+			$batch_save_data['company_logo'] = $upload_data['raw_name'];
+		}
+		
 		$result = $this->Appconfig->batch_save( $batch_save_data );
-		$success = $result ? true : false;
-		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		$success = $upload_success && $result ? true : false;
+		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
+		$message = $upload_success ? $message : $this->upload->display_errors();
+		echo json_encode(array('success'=>$success,'message'=>$message));
 		$this->_remove_duplicate_cookies();	
 	}
 	
@@ -127,6 +137,23 @@ class Config extends Secure_area
         $success = $result ? true : false;
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
         
+    }
+    
+    function _handle_logo_upload()
+    {
+    	$this->load->helper('directory');
+    	// load upload library
+    	$config = array('upload_path' => './uploads/',
+    			'allowed_types' => 'gif|jpg|png',
+    			'max_size' => '100',
+    			'max_width' => '640',
+    			'max_height' => '480',
+    			'file_name' => 'company_logo');
+    	$this->load->library('upload', $config);
+    	$this->upload->do_upload('company_logo');
+    	return strlen($this->upload->display_errors()) == 0 ||
+    	!strcmp($this->upload->display_errors(),
+    			'<p>'.$this->lang->line('upload_no_file_selected').'</p>');
     }
     
     function backup_db()

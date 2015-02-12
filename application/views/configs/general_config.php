@@ -1,6 +1,6 @@
 <div id="page_title"><?php echo $this->lang->line('config_general_configuration'); ?></div>
 <?php
-echo form_open('config/save/',array('id'=>'config_form'));
+echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/form-data'));
 ?>
 <div id="config_wrapper">
 <fieldset id="config_info">
@@ -11,10 +11,18 @@ echo form_open('config/save/',array('id'=>'config_form'));
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_company').':', 'company',array('class'=>'wide required')); ?>
 	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'company',
-		'id'=>'company',
-		'value'=>$this->config->item('company')));?>
+		<?php echo form_input(array(
+			'name'=>'company',
+			'id'=>'company',
+			'value'=>$this->config->item('company')));?>
+		
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_company_logo').':', 'company_logo',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	    <?php echo form_upload('company_logo');?>
 	</div>
 </div>
 
@@ -443,8 +451,8 @@ echo form_open('config/save/',array('id'=>'config_form'));
 
 <?php 
 echo form_submit(array(
-	'name'=>'submit',
-	'id'=>'submit',
+	'name'=>'submit_form',
+	'id'=>'submit_form',
 	'value'=>$this->lang->line('common_submit'),
 	'class'=>'submit_button float_right')
 );

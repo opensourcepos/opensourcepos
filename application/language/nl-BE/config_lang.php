@@ -90,3 +90,4 @@ $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_decimal_point"] = "Decimal Point";
 $lang["config_backup_button"] = "Backup";
 $lang["config_stock_location_invalid_chars"] = "De bedrijfsnaam moet ingevuld worden";
+$lang["config_company_logo"] = "Logo";

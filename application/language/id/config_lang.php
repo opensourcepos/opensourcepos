@@ -90,3 +90,4 @@ $lang["config_thousands_separator"] = "Pemisah Ribuan";
 $lang["config_decimal_point"] = "Titik Desimal";
 $lang["config_backup_button"] = "Backup";
 $lang["config_stock_location_invalid_chars"] = "The stock location name can not contain '_'";
+$lang["config_company_logo"] = "Company Logo";
