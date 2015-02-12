@@ -325,7 +325,7 @@ class Sales extends Secure_area
 		}
 		$data['sale_id']='POS '.$sale_id;
 		$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
-		$data['barcode']=$this->barcode_lib->generate_barcode($sale_id,$barcode_config);
+		$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
 		$this->load->view("sales/receipt",$data);
 		$this->sale_lib->clear_all();
 		$this->_remove_duplicate_cookies();
