@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "Ha fallado la eliminación de la Venta"
 $lang["sales_unsuccessfully_updated"] = "Ha fallado la actualización de la venta";
 $lang["sales_unsuspend"] = "Retomar";
 $lang["sales_unsuspend_and_delete"] = "Retomar y Borrar";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";

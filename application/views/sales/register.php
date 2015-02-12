@@ -564,7 +564,8 @@ function check_payment_type_gifcard()
 	}
 	else
 	{
-		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");		
+		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+		$("#amount_tendered").val('<?php echo $amount_due; ?>');
 	}
 }
 

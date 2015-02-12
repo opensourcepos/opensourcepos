@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "Sale(s) could not be deleted";
 $lang["sales_unsuccessfully_updated"] = "Sale unsuccessfully updated";
 $lang["sales_unsuspend"] = "Unsuspend";
 $lang["sales_unsuspend_and_delete"] = "";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";

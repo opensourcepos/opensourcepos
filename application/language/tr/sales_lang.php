@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "Satış silinemedi";
 $lang["sales_unsuccessfully_updated"] = "Satış düzenlenemedi";
 $lang["sales_unsuspend"] = "Satışa Al";
 $lang["sales_unsuspend_and_delete"] = "";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";

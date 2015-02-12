@@ -74,7 +74,7 @@ class Sales extends Secure_area
 	function add_payment()
 	{		
 		$data = array();
-		$this->form_validation->set_rules( 'amount_tendered', 'lang:sales_amount_tendered', 'numeric' );
+		$this->form_validation->set_rules( 'amount_tendered', 'lang:sales_amount_tendered', 'trim|required|numeric' );
 		
 		if ( $this->form_validation->run() == FALSE )
 		{
@@ -104,6 +104,7 @@ class Sales extends Secure_area
 
 			$new_giftcard_value = $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) - $this->sale_lib->get_amount_due( );
 			$new_giftcard_value = ( $new_giftcard_value >= 0 ) ? $new_giftcard_value : 0;
+			$this->sale_lib->set_giftcard_remainder($cur_giftcard_value);
 			$data['warning'] = 'Giftcard ' . $this->input->post( 'amount_tendered' ) . ' balance is ' . to_currency( $new_giftcard_value ) . ' !';
 			$payment_amount = min( $this->sale_lib->get_amount_due( ), $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) );
 		}
@@ -203,6 +204,7 @@ class Sales extends Secure_area
 
 	function remove_customer()
 	{
+		$this->sale_lib->clear_giftcard_remainder();
 		$this->sale_lib->clear_invoice_number();
 		$this->sale_lib->remove_customer();
 		$this->_reload();
@@ -263,6 +265,7 @@ class Sales extends Secure_area
 			}
 			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
 			$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
+			$data['cur_giftcard_value']=$this->sale_lib->get_giftcard_remainder();
 			$this->load->view("sales/receipt",$data);
 			$this->sale_lib->clear_all();
 		}

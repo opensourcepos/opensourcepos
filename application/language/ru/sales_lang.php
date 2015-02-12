@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "продажи безуспешно у�
 $lang["sales_unsuccessfully_updated"] = "Продажа безуспешно обновлен";
 $lang["sales_unsuspend"] = "Разблокировать";
 $lang["sales_unsuspend_and_delete"] = "Разблокировать и удалить";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";

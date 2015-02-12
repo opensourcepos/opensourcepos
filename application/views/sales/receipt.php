@@ -99,9 +99,20 @@ if (isset($error_message))
 
     <tr><td colspan="6">&nbsp;</td></tr>
 
+    <?php 
+	    if (isset($cur_giftcard_value))
+	    {
+	    ?>
+	    <tr>
+			<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
+	    	<td colspan="2" style='text-align:right'><?php echo to_currency($cur_giftcard_value); ?></td>
+	    </tr>
+	    <?php 
+	    }
+    ?>
 	<tr>
 		<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_change_due'); ?></td>
-		<td colspan="2" style='text-align:right'><?php echo  $amount_change; ?></td>
+		<td colspan="2" style='text-align:right'><?php echo $amount_change; ?></td>
 	</tr>
 
 	</table>

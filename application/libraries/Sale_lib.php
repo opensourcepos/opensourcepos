@@ -214,6 +214,21 @@ class Sale_lib
     	$this->CI->session->unset_userdata('sale_location');
     }
     
+    function set_giftcard_remainder($value)
+    {
+    	$this->CI->session->set_userdata('giftcard_remainder',$value);
+    }
+    
+    function get_giftcard_remainder()
+    {
+    	return $this->CI->session->userdata('giftcard_remainder');
+    }
+    
+    function clear_giftcard_remainder()
+    {
+    	$this->CI->session->unset_userdata('giftcard_remainder');
+    }
+    
 	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
 	{
 		//make sure item exists	     
@@ -481,6 +496,7 @@ class Sale_lib
 		$this->clear_comment();
 		$this->clear_email_receipt();
 		$this->clear_invoice_number();
+		$this->clear_giftcard_remainder();
 		$this->empty_payments();
 		$this->remove_customer();
 	}

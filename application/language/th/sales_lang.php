@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "ลบการขายไม่สม
 $lang["sales_unsuccessfully_updated"] = "อัพเดทการขายไม่สมบูรณ์";
 $lang["sales_unsuspend"] = "ยกเลิกการระงับ";
 $lang["sales_unsuspend_and_delete"] = "ยกเลิกการระงับ และ ลบ";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";

@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "Échec de suppression";
 $lang["sales_unsuccessfully_updated"] = "Échec d\'édition";
 $lang["sales_unsuspend"] = "Débloquer";
 $lang["sales_unsuspend_and_delete"] = "";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";

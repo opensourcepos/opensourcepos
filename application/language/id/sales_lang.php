@@ -89,3 +89,4 @@ $lang["sales_unsuccessfully_deleted"] = "Transaksi Penjualan tidak berhasil diha
 $lang["sales_unsuccessfully_updated"] = "Penjualan tidak berhasil diperbarui";
 $lang["sales_unsuspend"] = "Batal Penangguhan";
 $lang["sales_unsuspend_and_delete"] = "Batalkan dan hapus penangguhan";
+$lang["sales_giftcard_balance"] = "Giftcard Balance";
