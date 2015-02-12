@@ -99,7 +99,7 @@ class Sale_lib
 		if( isset( $payments[$payment_id] ) )
 		{
 			//payment_method already exists, add to payment_amount
-			$payments[$payment_id]['payment_amount'] += $payment_amount;
+			$payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount, PRECISION);
 		}
 		else
 		{
@@ -153,7 +153,7 @@ class Sale_lib
 		$subtotal = 0;
 		foreach($this->get_payments() as $payments)
 		{
-		    $subtotal+=$payments['payment_amount'];
+		    $subtotal = bcadd($payments['payment_amount'], $subtotal, PRECISION);
 		}
 		return to_currency_no_money($subtotal);
 	}
@@ -526,7 +526,7 @@ class Sale_lib
 			foreach($tax_info as $tax)
 			{
 				$name = $tax['percent'].'% ' . $tax['name'];
-				$tax_percentage = $tax_info[0]['percent'];
+				$tax_percentage = $tax['percent'];
 				$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax_percentage);
 
 				if (!isset($taxes[$name]))
@@ -553,8 +553,8 @@ class Sale_lib
 		// only additive tax here
 		foreach($tax_info as $tax)
 		{
-			$tax_percentage = $tax_info[0]['percent'];
-			$item_price -= $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage);
+			$tax_percentage = $tax['percent'];
+			$item_price = bcsub($item_price, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage), PRECISION);
 		}
 		
 		return $item_price;
@@ -590,11 +590,11 @@ class Sale_lib
 		{
 			if ($this->CI->config->config['tax_included'])
 			{
-				$subtotal += $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount']);
+				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount']), PRECISION);
 			}
 			else 
 			{
-				$subtotal += $this->get_item_total($item['quantity'], $item['price'], $item['discount']);
+				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount']), PRECISION);
 			}
 		}
 		return $subtotal;
@@ -606,7 +606,7 @@ class Sale_lib
 		
 		foreach($this->get_taxes() as $tax)
 		{
-			$total = bcadd($total, $tax, 4);
+			$total = bcadd($total, $tax, PRECISION);
 		}
 
 		return to_currency_no_money($total);
