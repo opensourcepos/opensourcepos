@@ -279,11 +279,18 @@ class Sales extends Secure_area
 		if (empty($invoice_number))
 		{
 			$invoice_number=$this->config->config['sales_invoice_format'];
+			// don't query if this variable isn't used
+			if (strstr($invoice_number,'$YCO'))
+			{
+				$invoice_number_year=$this->Sale->get_invoice_number_for_year(date('Y'));
+				$invoice_number=str_replace('$YCO',$invoice_number_year,$invoice_number);
+			}
 		}
 		$invoice_count=$this->Sale->get_invoice_count();
 		$invoice_number=str_replace('$CO',$invoice_count,$invoice_number);
 		$invoice_count=$this->Sale_suspended->get_invoice_count();
 		$invoice_number=str_replace('$SCO',$invoice_count,$invoice_number);
+		
 		$invoice_number=strftime($invoice_number);
 	
 		$customer_id=$this->sale_lib->get_customer();

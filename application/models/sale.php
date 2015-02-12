@@ -22,6 +22,16 @@ class Sale extends CI_Model
 		$this->db->where('invoice_number', $invoice_number);
 		return $this->db->get();
 	}
+	
+	function get_invoice_number_for_year($year, $start_from = 0) 
+	{
+		$this->db->select("COUNT( 1 ) AS invoice_number_year", FALSE);
+		$this->db->from('sales');
+		$this->db->where("DATE_FORMAT(sale_time, '%Y' ) = ", $year, FALSE);
+		$this->db->where("invoice_number IS NOT ", "NULL", FALSE);
+		$result = $this->db->get()->row_array();
+		return ($start_from + $result[ 'invoice_number_year' ] + 1);
+	}
 
 	function exists($sale_id)
 	{
