@@ -292,7 +292,7 @@ function update_row(row_id,url,callback)
 		reinit_row(row_id);
 		hightlight_row(row_id);
 		callback && typeof(callback) == "function" && callback(); 
-	});
+	}, 'html');
 }
 
 function reinit_row(checkbox_id)

@@ -12,6 +12,7 @@ echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_f
 	<?php echo form_input(array(
 		'name'=>'account_number',
 		'id'=>'account_number',
+		'class'=>'account_number',
 		'value'=>$person_info->account_number)
 	);?>
 	</div>
@@ -41,6 +42,24 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+
+	$.validator.addMethod("account_number", function(value, element) 
+	{
+		return JSON.parse($.ajax(
+		{
+			  type: 'POST',
+			  url: '<?php echo site_url($controller_name . "/check_account_number")?>',
+			  data: {'person_id' : '<?php echo $person_info->person_id; ?>', 'account_number' : $(element).val() },
+			  success: function(response) 
+			  {
+				  success=response.success;
+			  },
+			  async:false,
+			  dataType: 'json'
+        }).responseText).success;
+        
+    }, '<?php echo $this->lang->line("customers_account_number_duplicate"); ?>');
+
 	$('#customer_form').validate({
 		submitHandler:function(form)
 		{
@@ -60,7 +79,8 @@ $(document).ready(function()
 		{
 			first_name: "required",
 			last_name: "required",
-    		email: "email"
+    		email: "email",
+    		account_number: { account_number: true }
    		},
 		messages: 
 		{

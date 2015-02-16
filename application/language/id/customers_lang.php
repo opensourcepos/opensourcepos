@@ -14,3 +14,4 @@ $lang["customers_successful_deleted"] = "Anda telah berhasil menghapus pelanggan
 $lang["customers_successful_updating"] = "Anda telah berhasil memperbarui pelanggan";
 $lang["customers_taxable"] = "Dapat dikenakan pajak";
 $lang["customers_update"] = "Ubah Pelanggan";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
