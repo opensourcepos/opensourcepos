@@ -664,7 +664,7 @@ class Items extends Secure_area implements iData_controller
                                     'location_id' => $location_id,
                                     'quantity' => $data[$col + 1],
                                 );
-                                $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
+                                $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $location_id);
 
                                 $excel_data = array (
                                     'trans_items'=>$item_data['item_id'],
