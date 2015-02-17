@@ -39,7 +39,7 @@ $(window).load(function()
 		var printers = jsPrintSetup.getPrintersList().split(',');
 		// get right printer here..
 		for(var index in printers) {
-			var default_ticket_printer = '<?=$this->Appconfig->get('receipt_printer')?>';
+			var default_ticket_printer = '<? echo $this->Appconfig->get('receipt_printer')?>';
 			var selected_printer = printers[index];
 			if (selected_printer == default_ticket_printer) {
 				// select epson label printer
@@ -158,7 +158,7 @@ if (isset($error_message))
 	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
 	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 	</tr>
-	<?php if ($this->Appconfig->get('receipt_show_taxes') == ''): ?> 
+	<?php if (!$this->Appconfig->get('receipt_show_taxes')): ?> 
 	<?php foreach($taxes as $name=>$value) { ?>
 		<tr>
 			<td colspan="3" style='text-align:right;'><?php echo $name; ?>:</td>

@@ -11,11 +11,11 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_receipt_show_taxes').':', 'config_receipt_show_taxes',array('class'=>'wide')); ?>
 	<div class='form_field'>
-		<?php 
-			echo form_checkbox(array(
-				'name'=>'receipt_show_taxes',
-				'id'=>'receipt_show_taxes',
-				'checked'=>$this->config->item('receipt_show_taxes')));?>
+	<?php echo form_checkbox(array(
+		'name'=>'receipt_show_taxes',
+		'value'=>'receipt_show_taxes',
+		'id'=>'receipt_show_taxes',
+		'checked'=>$this->config->item('receipt_show_taxes')));?>
 	</div>
 </div>
 
@@ -76,56 +76,56 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 <div class="field_row clearfix">    
  	<?php echo form_label($this->lang->line('config_print_top_margin').':', 'print_top_margin',array('class'=>'wide required')); ?>
     <div class='form_field'>
-        <?php echo form_input(array(
-        	'type'=>'number',
-        	'min'=>'0',
-        	'max'=>'20',
-            'name'=>'print_top_margin',
-            'id'=>'print_top_margin',
-            'value'=>$this->config->item('print_top_margin')));?>
-            px
+    <?php echo form_input(array(
+     	'type'=>'number',
+      	'min'=>'0',
+      	'max'=>'20',
+        'name'=>'print_top_margin',
+        'id'=>'print_top_margin',
+        'value'=>$this->config->item('print_top_margin')));?>
+         px
     </div>
 </div>
 
 <div class="field_row clearfix">    
  	<?php echo form_label($this->lang->line('config_print_left_margin').':', 'print_left_margin',array('class'=>'wide required')); ?>
     <div class='form_field'>
-        <?php echo form_input(array(
-        	'type'=>'number',
-        	'min'=>'0',
-        	'max'=>'20',
-            'name'=>'print_left_margin',
-            'id'=>'print_left_margin',
-            'value'=>$this->config->item('print_left_margin')));?>
-            px
+    <?php echo form_input(array(
+     	'type'=>'number',
+      	'min'=>'0',
+       	'max'=>'20',
+        'name'=>'print_left_margin',
+        'id'=>'print_left_margin',
+        'value'=>$this->config->item('print_left_margin')));?>
+         px
     </div>
 </div>
 
 <div class="field_row clearfix">    
  	<?php echo form_label($this->lang->line('config_print_bottom_margin').':', 'print_bottom_margin',array('class'=>'wide required')); ?>
     <div class='form_field'>
-        <?php echo form_input(array(
-        	'type'=>'number',
-        	'min'=>'0',
-        	'max'=>'20',
-            'name'=>'print_bottom_margin',
-            'id'=>'print_bottom_margin',
-            'value'=>$this->config->item('print_bottom_margin')));?>
-            px
+    <?php echo form_input(array(
+        'type'=>'number',
+        'min'=>'0',
+        'max'=>'20',
+        'name'=>'print_bottom_margin',
+        'id'=>'print_bottom_margin',
+        'value'=>$this->config->item('print_bottom_margin')));?>
+                px
     </div>
 </div>
 
 <div class="field_row clearfix">    
  	<?php echo form_label($this->lang->line('config_print_right_margin').':', 'print_right_margin',array('class'=>'wide required')); ?>
     <div class='form_field'>
-        <?php echo form_input(array(
-        	'type'=>'number',
-        	'min'=>'0',
-        	'max'=>'20',
-            'name'=>'print_right_margin',
-            'id'=>'print_right_margin',
-            'value'=>$this->config->item('print_right_margin')));?>
-            px
+    <?php echo form_input(array(
+        'type'=>'number',
+        'min'=>'0',
+        'max'=>'20',
+        'name'=>'print_right_margin',
+        'id'=>'print_right_margin',
+        'value'=>$this->config->item('print_right_margin')));?>
+                px
     </div>
 </div>
 
@@ -149,14 +149,18 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	var printers = window.jsPrintSetup ? jsPrintSetup.getPrintersList().split(',') : [];
+	var printers = (window.jsPrintSetup && jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
 	$.each(printers, function(key, value) 
 	{   
 	     $('#receipt_printer').append($('<option>', { value : value }).text(value)); 
 	});
-
-	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup);
-	$('#receipt_printer option[value="<?php echo $this->config->item('receipt_printer'); ?>"]').attr('selected', 'selected');
+	var print_after_sale = $("#print_after_sale").is(":checked");
+	$("#print_after_sale").change(function() 
+	{
+		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !$(this).is(":checked"));
+	});
+	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup || !print_after_sale);
+	$('#receipt_printer option[value="<?php echo $this->config->item('receipt_printer'); ?>"]').prop('selected', true);
 
 	var dialog_confirmed = window.jsPrintSetup;
 	$.validator.addMethod("addon_installed", function(value, element) 
