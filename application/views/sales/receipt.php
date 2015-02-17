@@ -24,8 +24,7 @@ $(window).load(function()
 		jsPrintSetup.setOption('headerStrRight', '');
 		<?php 
 		}
-		?>
-		<?php if (!$this->Appconfig->get('print_footer'))
+		if (!$this->Appconfig->get('print_footer'))
 		{
 		?>
 		// set empty page footer
@@ -39,7 +38,7 @@ $(window).load(function()
 		var printers = jsPrintSetup.getPrintersList().split(',');
 		// get right printer here..
 		for(var index in printers) {
-			var default_ticket_printer = '<? echo $this->Appconfig->get('receipt_printer')?>';
+			var default_ticket_printer = '<?php echo $this->Appconfig->get('receipt_printer'); ?>';
 			var selected_printer = printers[index];
 			if (selected_printer == default_ticket_printer) {
 				// select epson label printer
@@ -47,7 +46,7 @@ $(window).load(function()
 				// clears user preferences always silent print value
 				// to enable using 'printSilent' option
 				jsPrintSetup.clearSilentPrint();
-				<? if (!$this->Appconfig->get('print_silently')) 
+				<?php if (!$this->Appconfig->get('print_silently')) 
 				{
 				?>
 				// Suppress print dialog (for this context only)
