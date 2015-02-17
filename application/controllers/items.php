@@ -613,11 +613,12 @@ class Items extends Secure_area implements iData_controller
 	                        'custom10'		=>	$data[23]	/** GARRISON ADDED 5/6/2013 **/
 	                    );
 	                    $item_number = $data[0];
+	                    $invalidated = false;
 	                    if ($item_number != "")
 	                    {
 	                    	$item_data['item_number'] = $item_number;
+		                    $invalidated = $this->Item->item_number_exists($item_number);
 	                    }
-	                    $invalidated = $this->Item->item_number_exists($item_number);
 					}
 					else 
 					{
