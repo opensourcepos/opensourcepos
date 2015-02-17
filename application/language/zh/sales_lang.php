@@ -90,3 +90,4 @@ $lang["sales_unsuccessfully_updated"] = "銷售資料更新失敗";
 $lang["sales_unsuspend"] = "取消暫停銷售";
 $lang["sales_unsuspend_and_delete"] = "取消暫停銷售並刪除";
 $lang["sales_giftcard_balance"] = "Giftcard Balance";
+$lang["sales_discount_included"] = "% discount included";

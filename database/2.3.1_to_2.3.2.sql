@@ -6,7 +6,16 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_num_in_row', '2'),
 ('company_logo', ''),
 ('barcode_page_width', '100'),      
-('barcode_page_cellspacing', '20');
+('barcode_page_cellspacing', '20'),
+('receipt_printer', ''),
+('receipt_show_taxes', '0'),
+('print_silently', '1'),
+('print_header', '0'),
+('print_footer', '0'),
+('print_top_margin', '0'),
+('print_left_margin', '0'),
+('print_bottom_margin', '0'),
+('print_right_margin', '0');
 
 INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
 (SELECT CONCAT('sales_', location_name), 'sales', location_id FROM ospos_stock_locations);

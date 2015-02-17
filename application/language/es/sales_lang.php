@@ -90,3 +90,4 @@ $lang["sales_unsuccessfully_updated"] = "Ha fallado la actualización de la vent
 $lang["sales_unsuspend"] = "Retomar";
 $lang["sales_unsuspend_and_delete"] = "Retomar y Borrar";
 $lang["sales_giftcard_balance"] = "Giftcard Balance";
+$lang["sales_discount_included"] = "% discount included";

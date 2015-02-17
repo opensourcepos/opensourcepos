@@ -1,4 +1,75 @@
 <?php $this->load->view("partial/header"); ?>
+
+<?php if ($this->Appconfig->get('print_after_sale'))
+{
+?>
+<script type="text/javascript">
+$(window).load(function()
+{
+	// install firefox addon in order to use this plugin
+	if (window.jsPrintSetup) 
+	{
+		// set top margins in millimeters
+		jsPrintSetup.setOption('marginTop', <?php echo $this->Appconfig->get('print_top_margin'); ?>);
+		jsPrintSetup.setOption('marginLeft', <?php echo $this->Appconfig->get('print_left_margin'); ?>);
+		jsPrintSetup.setOption('marginBottom', <?php echo $this->Appconfig->get('print_bottom_margin'); ?>);
+		jsPrintSetup.setOption('marginRight', <?php echo $this->Appconfig->get('print_right_margin'); ?>);
+
+		<?php if (!$this->Appconfig->get('print_header'))
+		{
+		?>
+		// set page header
+		jsPrintSetup.setOption('headerStrLeft', '');
+		jsPrintSetup.setOption('headerStrCenter', '');
+		jsPrintSetup.setOption('headerStrRight', '');
+		<?php 
+		}
+		?>
+		<?php if (!$this->Appconfig->get('print_footer'))
+		{
+		?>
+		// set empty page footer
+		jsPrintSetup.setOption('footerStrLeft', '');
+		jsPrintSetup.setOption('footerStrCenter', '');
+		jsPrintSetup.setOption('footerStrRight', '');
+		<?php 
+		} 
+		?>
+		
+		var printers = jsPrintSetup.getPrintersList().split(',');
+		// get right printer here..
+		for(var index in printers) {
+			var default_ticket_printer = '<?=$this->Appconfig->get('receipt_printer')?>';
+			var selected_printer = printers[index];
+			if (selected_printer == default_ticket_printer) {
+				// select epson label printer
+				jsPrintSetup.setPrinter(selected_printer);
+				// clears user preferences always silent print value
+				// to enable using 'printSilent' option
+				jsPrintSetup.clearSilentPrint();
+				<? if (!$this->Appconfig->get('print_silently')) 
+				{
+				?>
+				// Suppress print dialog (for this context only)
+				jsPrintSetup.setOption('printSilent', 1);
+				<?php 
+				}
+				?>
+				// Do Print 
+				// When print is submitted it is executed asynchronous and
+				// script flow continues after print independently of completetion of print process! 
+				jsPrintSetup.print();
+			}
+		}
+	
+	}
+		
+});
+</script>
+<?php
+}
+?>
+
 <?php
 if (isset($error_message))
 {
@@ -61,40 +132,40 @@ if (isset($error_message))
 		
 		
 			<td><?php echo to_currency($item['price']); ?></td>
-			<td style='text-align:center;'><?php 
+			<td><?php 
 				echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 			?></td>
-			<td><div class="total-value"><?php echo to_currency($item['total']); ?></td>
+			<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
 		</tr>
 	    <tr>
-	    <td colspan="2" align="center"><?php echo $item['description']; ?></td>
-		<td colspan="2" ><?php echo $item['serialnumber']; ?></td>
+	    <td colspan="3" align="center"><?php echo $item['description']; ?></td>
+		<td ><?php echo $item['serialnumber']; ?></td>
 	    </tr>
 	    <?php if ($item['discount'] > 0 ) : ?>
 		<tr>
-			<td colspan="2" style="font-weight: bold;"> <?php echo $item['discount'] . " " . $this->lang->line("sales_discount_included")?> </td>
+			<td colspan="3" style="font-weight: bold;"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td>
 		</tr>
 		<?php endif; ?>
 
 	<?php
 	}
 	?>
-	<!-- only show if setting enabled in conf!g -->
+	
 	<tr>
-	<td colspan="2" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	<td colspan="2" style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
+	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
+	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 	</tr>
-
+	<?php if ($this->Appconfig->get('receipt_show_taxes') == ''): ?> 
 	<?php foreach($taxes as $name=>$value) { ?>
 		<tr>
-			<td colspan="2" style='text-align:right;'><?php echo $name; ?>:</td>
-			<td colspan="2" style='text-align:right;'><?php echo to_currency($value); ?></td>
+			<td colspan="3" style='text-align:right;'><?php echo $name; ?>:</td>
+			<td style='text-align:right;'><?php echo to_currency($value); ?></td>
 		</tr>
 	<?php }; ?>
-<!-- END CONDITION -->
+	<?php endif; ?>
 	<tr>
-	<td colspan="2" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
-	<td colspan="2" style='text-align:right'><?php echo to_currency($total); ?></td>
+	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
+	<td style='text-align:right'><?php echo to_currency($total); ?></td>
 	</tr>
 
     <tr><td colspan="4">&nbsp;</td></tr>
@@ -108,8 +179,8 @@ if (isset($error_message))
 		$show_gifcard_remainder &= $payment[ 'payment_type' ] == $this->lang->line('sales_giftcard');
   		?>
 		<tr>
-		<td colspan="2" style="text-align:right;"><?php $splitpayment=explode(':',$payment['payment_type']); echo $splitpayment[0]; ?> </td>
-		<td colspan="2" style="text-align:right"><div class="total-value"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></div></td>
+		<td colspan="3" style="text-align:right;"><?php $splitpayment=explode(':',$payment['payment_type']); echo $splitpayment[0]; ?> </td>
+		<td style="text-align:right"><div class="total-value"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></div></td>
 	    </tr>
 	<?php
 	}
@@ -122,15 +193,15 @@ if (isset($error_message))
 	    {
 	    ?>
 	    <tr>
-			<td colspan="2" style='text-align:right;'><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
-	    	<td colspan="2" style='text-align:right'><?php echo to_currency($cur_giftcard_value); ?></td>
+			<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
+	    	<td style='text-align:right'><?php echo to_currency($cur_giftcard_value); ?></td>
 	    </tr>
 	    <?php 
 	    }
     ?>
 	<tr>
-		<td colspan="2" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_due' : 'sales_change_due') : 'sales_invoice_amount_due') ; ?> </td>
-		<td colspan="2" style='text-align:right'><?php echo $amount_change; ?></td>
+		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_due' : 'sales_change_due') : 'sales_invoice_amount_due') ; ?> </td>
+		<td style='text-align:right'><?php echo $amount_change; ?></td>
 	</tr>
 
 	</table>
@@ -145,15 +216,3 @@ if (isset($error_message))
 </div>
 <?php $this->load->view("partial/footer"); ?>
 
-<?php if ($this->Appconfig->get('print_after_sale'))
-{
-?>
-<script type="text/javascript">
-$(window).load(function()
-{
-	window.print();
-});
-</script>
-<?php
-}
-?>

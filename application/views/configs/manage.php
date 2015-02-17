@@ -9,6 +9,7 @@
     <li><a href="#general_config">General</a></li>
     <li><a href="#barcode_config">Barcode</a></li>
     <li><a href="#location_config">Locations</a></li>
+    <li><a href="#receipt_config">Receipt</a></li>
 </ul>
 
 <div class="tabcontents">
@@ -20,6 +21,9 @@
     </div>
     <div id="location_config">
         <?php $this->load->view("configs/location_config"); ?>
+    </div>
+    <div id="receipt_config">
+        <?php $this->load->view("configs/receipt_config"); ?>
     </div>
 </div>
 <div id="feedback_bar"></div>

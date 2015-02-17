@@ -89,3 +89,4 @@ sales_unsuccessfully_updated,Fout bij het bewaren van ticket,Ha fallado la actua
 sales_unsuspend,Hervat,Retomar,Unsuspend,Débloquer,取消暫停銷售,Разблокировать,ยกเลิกการระงับ,Satışa Al,Batal Penangguhan
 sales_unsuspend_and_delete,,Retomar y Borrar,,,取消暫停銷售並刪除,Разблокировать и удалить,ยกเลิกการระงับ และ ลบ,,Batalkan dan hapus penangguhan
 sales_giftcard_balance,Waardebon Resterend,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance
+sales_discount_included,% korting inbegrepen,% discount included,% discount included,% discount included,% discount included,% discount included,% discount included,% discount included,% discount included

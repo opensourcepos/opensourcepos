@@ -309,17 +309,6 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_print_after_sale').':', 'print_after_sale',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'print_after_sale',
-		'id'=>'print_after_sale',
-		'value'=>'print_after_sale',
-		'checked'=>$this->config->item('print_after_sale')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_receiving_calculate_average_price').':', 'receiving_calculate_average_price',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(

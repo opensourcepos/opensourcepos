@@ -272,6 +272,7 @@ class Sale_lib
 		$insertkey=$maxkey+1;
 		$item_info=$this->CI->Item->get_info($item_id,$item_location);
 		//array/cart records are identified by $insertkey and item_id is just another field.
+		$price = $price!=null ? $price: $item_info->unit_price;
 		$item = array(($insertkey)=>
 		array(
 			'item_id'=>$item_id,
@@ -287,7 +288,10 @@ class Sale_lib
 			'quantity'=>$quantity,
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
-			'price'=>$price!=null ? $price: $item_info->unit_price
+			'price'=>$price,
+			'total'=>$this->CI->config->config['tax_included'] ? 
+				$this->get_item_total_tax_exclusive($item_id, $quantity, $price, $discount) :
+				$this->get_item_total($quantity, $price, $discount)
 			)
 		);
 

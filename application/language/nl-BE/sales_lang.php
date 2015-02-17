@@ -90,3 +90,4 @@ $lang["sales_unsuccessfully_updated"] = "Fout bij het bewaren van ticket";
 $lang["sales_unsuspend"] = "Hervat";
 $lang["sales_unsuspend_and_delete"] = "";
 $lang["sales_giftcard_balance"] = "Waardebon Resterend";
+$lang["sales_discount_included"] = "% korting inbegrepen";

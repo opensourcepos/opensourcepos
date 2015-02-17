@@ -37,7 +37,6 @@ class Config extends Secure_area
 		'return_policy'=>$this->input->post('return_policy'),
 		'language'=>$this->input->post('language'),
 		'timezone'=>$this->input->post('timezone'),
-		'print_after_sale'=>$this->input->post('print_after_sale'),
         'tax_included'=>$this->input->post('tax_included'),
 		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
@@ -137,6 +136,25 @@ class Config extends Secure_area
         $success = $result ? true : false;
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
         
+    }
+    
+    function save_receipt()
+    {
+    	$batch_save_data=array(
+    			'print_after_sale'=>$this->input->post('print_after_sale'),
+    			'receipt_printer'=>$this->input->post('receipt_printer'),
+    			'receipt_show_taxes'=>$this->input->post('receipt_show_taxes'),
+    			'print_silently'=>$this->input->post('print_silently'),
+    			'print_header'=>$this->input->post('print_header'),
+    			'print_footer'=>$this->input->post('print_footer'),
+    			'print_top_margin'=>$this->input->post('print_top_margin'),
+    			'print_left_margin'=>$this->input->post('print_left_margin'),
+    			'print_bottom_margin'=>$this->input->post('print_bottom_margin'),
+    			'print_right_margin'=>$this->input->post('print_right_margin')
+    	);
+    	$result = $this->Appconfig->batch_save( $batch_save_data );
+    	$success = $result ? true : false;
+    	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
     
     function _handle_logo_upload()

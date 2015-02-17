@@ -37,7 +37,8 @@
 #receipt_items td
 {
 	position:relative;
-	padding:3px;	
+	padding:3px;
+	margin-bottom:5px;	
 }
 
 .short_name
@@ -56,4 +57,9 @@
 {
 	margin-top:10px;
 	text-align:center;
+}
+
+.total-value 
+{
+	text-align: right;		
 }
