@@ -613,11 +613,12 @@ class Items extends Secure_area implements iData_controller
 	                        'custom10'		=>	$data[23]	/** GARRISON ADDED 5/6/2013 **/
 	                    );
 	                    $item_number = $data[0];
+	                    $invalidated = false;
 	                    if ($item_number != "")
 	                    {
 	                    	$item_data['item_number'] = $item_number;
+		                    $invalidated = $this->Item->item_number_exists($item_number);
 	                    }
-	                    $invalidated = $this->Item->item_number_exists($item_number);
 					}
 					else 
 					{
@@ -663,7 +664,7 @@ class Items extends Secure_area implements iData_controller
                                     'location_id' => $location_id,
                                     'quantity' => $data[$col + 1],
                                 );
-                                $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $data[$col]);
+                                $this->Item_quantities->save($item_quantity_data, $item_data['item_id'], $location_id);
 
                                 $excel_data = array (
                                     'trans_items'=>$item_data['item_id'],

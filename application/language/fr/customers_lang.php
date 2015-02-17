@@ -14,3 +14,4 @@ $lang["customers_successful_deleted"] = "Suppréssion réussie";
 $lang["customers_successful_updating"] = "Édition client réussie";
 $lang["customers_taxable"] = "Imposable";
 $lang["customers_update"] = "Éditer Client";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";

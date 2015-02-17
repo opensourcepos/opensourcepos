@@ -93,6 +93,12 @@ class Customers extends Person_controller
 		}
 	}
 	
+	function check_account_number()
+	{
+		$exists = $this->Customer->account_number_exists($this->input->post('account_number'),$this->input->post('person_id'));
+		echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('customers_account_number_duplicate')));
+	}
+	
 	/*
 	This deletes customers from the customers table
 	*/
@@ -159,11 +165,18 @@ class Customers extends Person_controller
 					);
 					
 					$customer_data=array(
-					'account_number'=>$data[12]=='' ? null:$data[12],
-					'taxable'=>$data[13]=='' ? 0:1,
+					'taxable'=>$data[13]=='' ? 0:1
 					);
 					
-					if(!$this->Customer->save($person_data,$customer_data))
+					$account_number = $data[12];
+					$invalidated = false;
+					if ($account_number != "") 
+					{
+						$customer_data['account_number'] = $account_number;
+						$invalidated = $this->Customer->account_number_exists($account_number);
+					}
+					
+					if($invalidated || !$this->Customer->save($person_data,$customer_data))
 					{	
 						$failCodes[] = $i;
 					}
@@ -179,7 +192,7 @@ class Customers extends Person_controller
 		}
 
 		$success = true;
-		if(count($failCodes) > 1)
+		if(count($failCodes) > 0)
 		{
 			$msg = "Most customers imported. But some were not, here is list of their CODE (" .count($failCodes) ."): ".implode(", ", $failCodes);
 			$success = false;

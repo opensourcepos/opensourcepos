@@ -47,9 +47,9 @@ if (isset($error_message))
 
 	<table id="receipt_items">
 	<tr>
-	<th style="width:40%;"><?php echo $this->lang->line('sales_item_name_short'); ?></th>
-	<th style="width:20%;"><?php echo $this->lang->line('sales_taxed_price_short'); ?></th>
-	<th style="width:20%;"><?php echo $this->lang->line('sales_quantity_short'); ?></th>
+	<th style="width:40%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
+	<th style="width:20%;"><?php echo $this->lang->line('sales_price'); ?></th>
+	<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
 	<th style="width:20%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
 	</tr>
 	<?php
@@ -64,7 +64,7 @@ if (isset($error_message))
 			<td style='text-align:center;'><?php 
 				echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 			?></td>
-			<td><div class="total-value"><?php echo to_currency($item['taxed_total']); ?></td>
+			<td><div class="total-value"><?php echo to_currency($item['total']); ?></td>
 		</tr>
 	    <tr>
 	    <td colspan="2" align="center"><?php echo $item['description']; ?></td>
@@ -101,10 +101,11 @@ if (isset($error_message))
 
 	<?php
 	$only_sale_check = TRUE;
-	
+	$show_gifcard_remainder = FALSE;
 	foreach($payments as $payment_id=>$payment)
 	{ 
-		$only_sale_check &= $payment[ SALE_PAYMENT_PAYMENT_TYPE ] == $this->lang->line('sales_check');
+		$only_sale_check &= $payment[ 'payment_type' ] == $this->lang->line('sales_check');
+		$show_gifcard_remainder &= $payment[ 'payment_type' ] == $this->lang->line('sales_giftcard');
   		?>
 		<tr>
 		<td colspan="2" style="text-align:right;"><?php $splitpayment=explode(':',$payment['payment_type']); echo $splitpayment[0]; ?> </td>
@@ -117,7 +118,7 @@ if (isset($error_message))
     <tr><td colspan="4">&nbsp;</td></tr>
 
     <?php 
-	    if (isset($cur_giftcard_value))
+	    if (isset($cur_giftcard_value) && $show_gifcard_remainder)
 	    {
 	    ?>
 	    <tr>

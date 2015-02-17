@@ -14,3 +14,4 @@ $lang["customers_successful_deleted"] = "Silme başarılı";
 $lang["customers_successful_updating"] = "Müşteri güncellendi";
 $lang["customers_taxable"] = "Vergilendirilebilir";
 $lang["customers_update"] = "Müşteri Güncelle";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";

@@ -14,3 +14,4 @@ $lang["customers_successful_deleted"] = "You have successfully deleted";
 $lang["customers_successful_updating"] = "You have successfully updated customer";
 $lang["customers_taxable"] = "Taxable";
 $lang["customers_update"] = "Update Customer";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";

@@ -14,3 +14,4 @@ $lang["customers_successful_deleted"] = "Has borrado satisfactoriamente a";
 $lang["customers_successful_updating"] = "No se ha podido agregar el cliente";
 $lang["customers_taxable"] = "Gravable";
 $lang["customers_update"] = "Actualizar Cliente";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";

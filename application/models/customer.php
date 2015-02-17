@@ -14,6 +14,19 @@ class Customer extends Person
 		return ($query->num_rows()==1);
 	}
 	
+	function account_number_exists($account_number,$person_id='')
+	{
+		$this->db->from('customers');
+		$this->db->where('account_number', $account_number);
+		if (!empty($person_id))
+		{
+			$this->db->where('person_id !=', $person_id);
+		}
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
+	}	
+	
+	
 	/*
 	Returns all the customers
 	*/
