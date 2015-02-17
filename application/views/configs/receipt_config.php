@@ -154,14 +154,15 @@ $(document).ready(function()
 	{   
 	     $('#receipt_printer').append($('<option>', { value : value }).text(value)); 
 	});
-	
+
+	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup);
 	$('#receipt_printer option[value="<?php echo $this->config->item('receipt_printer'); ?>"]').attr('selected', 'selected');
 
 	var dialog_confirmed = window.jsPrintSetup;
 	$.validator.addMethod("addon_installed", function(value, element) 
 	{
 		dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>'); 
- 		return true; 
+ 		return dialog_confirmed; 
 	}, '<?php echo $this->lang->line("config_jsprintsetup_required"); ?>');
 			
 	$('#receipt_config_form').validate({
@@ -187,6 +188,10 @@ $(document).ready(function()
  		wrapper: "li",
 		rules: 
 		{
+			print_after_sale: 
+			{
+				addon_installed: true
+			},
 			print_top_margin:
     		{
     			required:true,
@@ -206,12 +211,7 @@ $(document).ready(function()
     		{
     			required:true,
     			number:true
-    		},
-     		receipt_printer:
-     		{
-        		addon_installed: true
-     		}
-    		
+    		}    		
    		},
 		messages: 
 		{

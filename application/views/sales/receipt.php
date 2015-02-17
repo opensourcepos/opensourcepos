@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 
-<?php if ($this->Appconfig->get('print_after_sale'))
+<?php if ($print_receipt)
 {
 ?>
 <script type="text/javascript">
@@ -63,7 +63,10 @@ $(window).load(function()
 		}
 	
 	}
-		
+	else
+	{
+		window.print();
+	}
 });
 </script>
 <?php

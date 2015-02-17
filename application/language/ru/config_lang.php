@@ -110,4 +110,4 @@ $lang["config_print_bottom_margin_required"] = "The default bottom margin is a r
 $lang["config_print_bottom_margin_number"] = "The default bottom margin must be a number";
 $lang["config_print_right_margin_required"] = "The default right margin is a required field";
 $lang["config_print_right_margin_number"] = "The default right margin must be a number";
-$lang["config_jsprintsetup_required"] = "Warning! This functionality will only work if you have the FireFox jsPrintSetup addon installed. Save anyway?";
+$lang["config_jsprintsetup_required"] = "Warning! This disabled functionality will only work if you have the FireFox jsPrintSetup addon installed. Save anyway?";

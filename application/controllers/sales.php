@@ -266,6 +266,7 @@ class Sales extends Secure_area
 			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
 			$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
 			$data['cur_giftcard_value']=$this->sale_lib->get_giftcard_remainder();
+			$data['print_receipt'] = $this->Appconfig->get('print_after_sale');
 			$this->load->view("sales/receipt",$data);
 			$this->sale_lib->clear_all();
 		}
@@ -334,6 +335,7 @@ class Sales extends Secure_area
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
 		}
 		$data['sale_id']='POS '.$sale_id;
+		$data['print_receipt'] = FALSE;
 		$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
 		$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
 		$this->load->view("sales/receipt",$data);

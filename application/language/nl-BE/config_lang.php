@@ -110,4 +110,4 @@ $lang["config_print_bottom_margin_required"] = "The default bottom margin is a r
 $lang["config_print_bottom_margin_number"] = "The default bottom margin must be a number";
 $lang["config_print_right_margin_required"] = "The default right margin is a required field";
 $lang["config_print_right_margin_number"] = "The default right margin must be a number";
-$lang["config_jsprintsetup_required"] = "Opgelet! Deze functionaliteit werkt enkel met de jsPrintSetup addon in Firefox.";
+$lang["config_jsprintsetup_required"] = "Opgelet! De uitgeschakelde functionaliteit werkt enkel met de jsPrintSetup addon in Firefox.";
