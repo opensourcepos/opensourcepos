@@ -84,7 +84,7 @@ if (isset($error_message))
 		<?php if ($this->Appconfig->get('company_logo') == '') 
         { 
         ?>
-        <div id="company_name"><?php echo $this->config->item('company_logo'); ?></div>
+        <div id="company_name"><?php echo $this->config->item('company'); ?></div>
 		<?php 
 		}
 		else 
