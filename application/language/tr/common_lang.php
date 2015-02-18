@@ -43,3 +43,4 @@ $lang["common_zip"] = "Şehir Kodu";
 $lang["common_gender"] = "Gender";
 $lang["common_gender_male"] = "M";
 $lang["common_gender_female"] = "V";
+$lang["common_date"] = "Date";

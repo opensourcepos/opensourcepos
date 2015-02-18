@@ -9,7 +9,42 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 <legend><?php echo $this->lang->line("config_receipt_info"); ?></legend>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_receipt_show_taxes').':', 'config_receipt_show_taxes',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('config_use_invoice_template').':', 'use_invoice_template',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'use_invoice_template',
+		'value'=>'use_invoice_template',
+		'id'=>'use_invoice_template',
+		'checked'=>$this->config->item('use_invoice_template')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_invoice_default_comments').':', 'invoice_default_comments',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_textarea(array(
+		'name'=>'invoice_default_comments',
+		'id'=>'invoice_default_comments',
+		'rows'=>4,
+		'cols'=>25,
+		'value'=>$this->config->item('invoice_default_comments')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_invoice_email_message').':', 'invoice_email_message',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_textarea(array(
+		'name'=>'invoice_email_message',
+		'id'=>'invoice_email_message',
+		'rows'=>4,
+		'cols'=>25,
+		'value'=>$this->config->item('invoice_email_message')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_receipt_show_taxes').':', 'receipt_show_taxes',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(
 		'name'=>'receipt_show_taxes',
@@ -69,7 +104,7 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 		<?php echo form_dropdown(
 			'receipt_printer',
 			array(),
-			$this->config->item('receipt_printer'),'class="addon_installed" id="receipt_printer"');?>
+			$this->config->item('receipt_printer'),'id="receipt_printer"');?>
 	</div>
 </div>
 
@@ -160,14 +195,17 @@ $(document).ready(function()
 		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !$(this).is(":checked"));
 	});
 	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup || !print_after_sale);
+
+	var use_invoice_template = $("#use_invoice_template").is(":checked");
+	$("#use_invoice_template").change(function()
+	{
+		$("#invoice_default_comments, #invoice_email_message").prop('disabled', !$(this).is(":checked"));
+	});
+	$("#invoice_default_comments, #invoice_email_message").prop('disabled', !use_invoice_template);
+	
 	$('#receipt_printer option[value="<?php echo $this->config->item('receipt_printer'); ?>"]').prop('selected', true);
 
 	var dialog_confirmed = window.jsPrintSetup;
-	$.validator.addMethod("addon_installed", function(value, element) 
-	{
-		dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>'); 
- 		return dialog_confirmed; 
-	}, '<?php echo $this->lang->line("config_jsprintsetup_required"); ?>');
 			
 	$('#receipt_config_form').validate({
 		submitHandler:function(form)
@@ -188,14 +226,14 @@ $(document).ready(function()
 		});
 
 		},
+		beforeSubmit: function(arr, $form, options) {
+			dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>');
+			$("input [disabled]").prop("disabled", false); 
+		},
 		errorLabelContainer: "#receipt_error_message_box",
  		wrapper: "li",
 		rules: 
 		{
-			print_after_sale: 
-			{
-				addon_installed: true
-			},
 			print_top_margin:
     		{
     			required:true,

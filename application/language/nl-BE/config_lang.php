@@ -111,3 +111,6 @@ $lang["config_print_bottom_margin_number"] = "The default bottom margin must be 
 $lang["config_print_right_margin_required"] = "The default right margin is a required field";
 $lang["config_print_right_margin_number"] = "The default right margin must be a number";
 $lang["config_jsprintsetup_required"] = "Opgelet! De uitgeschakelde functionaliteit werkt enkel met de jsPrintSetup addon in Firefox.";
+$lang["config_use_invoice_template"] = "Gebruik template voor facturen";
+$lang["config_invoice_email_message"] = "Invoice Email Template";
+$lang["config_invoice_default_comments"] = "Factuur Mededeling";

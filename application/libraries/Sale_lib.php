@@ -289,9 +289,8 @@ class Sale_lib
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
 			'price'=>$price,
-			'total'=>$this->CI->config->config['tax_included'] ? 
-				$this->get_item_total_tax_exclusive($item_id, $quantity, $price, $discount) :
-				$this->get_item_total($quantity, $price, $discount)
+			'total_tax_exclusive'=>$this->get_item_total_tax_exclusive($item_id, $quantity, $price, $discount),
+			'total'=>$this->get_item_total($quantity, $price, $discount)
 			)
 		);
 

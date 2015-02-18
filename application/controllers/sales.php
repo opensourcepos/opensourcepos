@@ -218,6 +218,7 @@ class Sales extends Secure_area
 		$data['total']=$this->sale_lib->get_total();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
+		$data['transaction_date']= date('d/m/Y', strtotime($data['transaction_time']));
 		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
 		$data['show_stock_locations']=count($stock_locations) > 1;
 		$customer_id=$this->sale_lib->get_customer();
@@ -227,11 +228,25 @@ class Sales extends Secure_area
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
+		$data['company_info'] = implode("\n", array(
+				$this->config->item('address'),
+				$this->config->item('phone'),
+				$this->config->item('account_number')
+		));
         $cust_info='';
 		if($customer_id!=-1)
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+			$data['customer_address'] = $cust_info->address_1;
+			$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;
+			$data['account_number'] = $cust_info->account_number;
+			$data['customer_info'] = implode("\n", array(
+					$data['customer'],
+					$data['customer_address'],
+					$data['customer_location'],
+					$data['account_number']
+			));
 		}
 		$invoice_number=$this->_substitute_invoice_number($cust_info);
 		if ($this->sale_lib->is_invoice_number_enabled() && $this->Sale->invoice_number_exists($invoice_number))
@@ -250,6 +265,7 @@ class Sales extends Secure_area
 			}
 			else
 			{
+				// if we want to email. .. just attach the pdf in there?
 				if ($this->sale_lib->get_email_receipt() && !empty($cust_info->email))
 				{
 					$this->load->library('email');
@@ -259,7 +275,19 @@ class Sales extends Secure_area
 					$this->email->to($cust_info->email); 
 	
 					$this->email->subject($this->lang->line('sales_receipt'));
-					$this->email->message($this->load->view("sales/receipt_email",$data, true));	
+					if ($this->config->item('use_invoice_template') && $this->sale_lib->is_invoice_number_enabled())
+					{
+						$data['image_prefix']="";
+						$filename = $this->_invoice_email_pdf($data);
+						$this->email->attach($filename);
+						$message = $this->config->item('invoice_email_message');
+						$message = $this->_substitute_variables($message);
+						$this->email->message($message);
+					}
+					else
+					{
+						$this->email->message($this->load->view("sales/receipt_email",$data, true));	
+					}
 					$this->email->send();
 				}
 			}
@@ -267,78 +295,196 @@ class Sales extends Secure_area
 			$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
 			$data['cur_giftcard_value']=$this->sale_lib->get_giftcard_remainder();
 			$data['print_receipt'] = $this->Appconfig->get('print_after_sale');
-			$this->load->view("sales/receipt",$data);
+			if ($this->sale_lib->is_invoice_number_enabled() && $this->config->item('use_invoice_template'))
+			{
+				$data['customer_info'] = nl2br(implode("\n", array(
+						$data['customer'],
+						$data['customer_address'],
+						$data['customer_location'],
+						$data['account_number']
+				)));
+				
+				$this->load->view("sales/invoice",$data);
+			}
+			else
+			{
+				$this->load->view("sales/receipt",$data);
+			}
 			$this->sale_lib->clear_all();
 		}
 
 		$this->_remove_duplicate_cookies();
 	}
 	
-	function _substitute_invoice_number($customer_info='')
+	function _invoice_email_pdf($data)
+	{
+		$data['image_prefix'] = "";
+		$html = $this->load->view('sales/invoice_email', $data, true);
+		// load pdf helper
+		$this->load->helper(array('dompdf', 'file'));
+		$file_content  = pdf_create($html, '', false);
+		$filename = sys_get_temp_dir() . '/invoice-' . str_replace('/', '-' , $data["invoice_number"]) . '.pdf';
+		write_file($filename, $file_content);
+		return $filename;
+	}
+	
+	function invoice_email($sale_id) {
+		$sale_data = $this->_load_sale_data($sale_id);
+		$sale_data['company_info'] = nl2br($sale_data['company_info']);
+		if (isset($sale_data['customer_info']) && !empty($sale_data['customer_info'])) {
+			$sale_data['customer_info'] = nl2br($sale_data['customer_info']);
+		}
+		// all images should use this prefix in their path
+		$sale_data['image_prefix'] = base_url();
+		$this->load->view('sales/invoice_email', $sale_data);
+		$this->sale_lib->clear_all();
+		$this->_remove_duplicate_cookies();
+	}
+	
+	function send_invoice($sale_id) {
+		$sale_data = $this->_load_sale_data($sale_id);
+		$message = $this->config->item('config_invoice_email_message');
+		$message = str_replace('$CO', $sale_data['invoice_number'], $message);
+		$message = $this->_substitute_customer($message,$sale_data['customer_first_name'],
+				$sale_data['customer_last_name']);
+		$result = FALSE;
+		$message = $this->lang->line('sales_invoice_no_email');
+		if (isset($sale_data["customer_email"]) && !empty( $sale_data["customer_email"])) {
+			$this->load->library('email');
+			$this->email->from($this->config->item('email'), $this->config->item('company'));
+			$this->email->to($sale_data['customer_email']);
+			$this->email->subject($this->lang->line('sales_invoice') . ' ' . $sale_data['invoice_number']);
+			$filename = $this->_invoice_email_pdf($sale_data);
+			$this->email->attach($filename);
+			$result = $this->email->send();
+			$message = $this->lang->line($result ? 'sales_invoice_sent' : 'sales_invoice_unsent') . ' ' . $sale_data["customer_email"];
+		}
+		echo json_encode(array(
+				'success'=>$result,
+				'message'=>$message,
+				'id'=>$sale_id)
+		);
+		$this->sale_lib->clear_all();
+		$this->_remove_duplicate_cookies();
+	}
+	
+	function _substitute_variable($text, $variable, $object, $function)
+	{
+		// don't query if this variable isn't used
+		if (strstr($text, $variable))
+		{
+			$value = call_user_func(array($object, $function));
+			$text = str_replace($variable, $value, $text);
+		}
+		return $text;
+	}
+	
+	function _substitute_customer($text, $first_name, $last_name)
+	{
+		// substitute customer info
+		$customer_id=$this->sale_lib->get_customer();
+		if($customer_id!=-1)
+		{
+			$text=str_replace('$CU',$first_name . ' ' . $last_name,$text);
+			$words = preg_split("/\s+/", trim($first_name . ' ' . $last_name));
+			$acronym = "";
+			foreach ($words as $w) {
+				$acronym .= $w[0];
+			}
+			$text=str_replace('$CI',$acronym,$text);
+		}
+		return $text;
+	}
+	
+	function _substitute_variables($text, $first_name, $last_name)
+	{
+		$text=$this->_substitute_variable($text, '$YCO', $this->Sale, 'get_invoice_number_for_year');
+		$text=$this->_substitute_variable($text, '$CO', $this->Sale , 'get_invoice_count');
+		$text=$this->_substitute_variable($text, '$SCO', $this->Sale_suspended, 'get_invoice_count');
+		$text=strftime($text);
+		$text=$this->_substitute_customer($text, $first_name, $last_name);
+		return $text;
+	}
+	
+	function _substitute_invoice_number($first_name,$last_name)
 	{
 		$invoice_number=$this->sale_lib->get_invoice_number();
 		if (empty($invoice_number))
 		{
 			$invoice_number=$this->config->config['sales_invoice_format'];
-			// don't query if this variable isn't used
-			if (strstr($invoice_number,'$YCO'))
-			{
-				$invoice_number_year=$this->Sale->get_invoice_number_for_year(date('Y'));
-				$invoice_number=str_replace('$YCO',$invoice_number_year,$invoice_number);
-			}
 		}
-		$invoice_count=$this->Sale->get_invoice_count();
-		$invoice_number=str_replace('$CO',$invoice_count,$invoice_number);
-		$invoice_count=$this->Sale_suspended->get_invoice_count();
-		$invoice_number=str_replace('$SCO',$invoice_count,$invoice_number);
-		
-		$invoice_number=strftime($invoice_number);
-	
-		$customer_id=$this->sale_lib->get_customer();
-		if($customer_id!=-1)
-		{
-			$invoice_number=str_replace('$CU',$customer_info->first_name . ' ' . $customer_info->last_name,$invoice_number);
-			$words = preg_split("/\s+/", $customer_info->first_name . ' ' . $customer_info->last_name);
-			$acronym = "";
-			foreach ($words as $w) {
-				$acronym .= $w[0];
-			}
-			$invoice_number=str_replace('$CI',$acronym,$invoice_number);
-		}
+		$invoice_number = $this->_substitute_variables($invoice_number,$first_name,$last_name);		
 		$this->sale_lib->set_invoice_number($invoice_number);
 		return $invoice_number;
 	}
 	
-	function receipt($sale_id)
-	{
+	function _load_sale_data($sale_id) {
+		$this->sale_lib->clear_all();
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
-		$stock_locations = $this->Stock_locations->get_undeleted_all('sales')->result_array();
-		$data['show_stock_locations'] = count($stock_locations) > 1;
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['subtotal']=$this->sale_lib->get_subtotal();
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
-		$data['transaction_time']= date('m/d/Y h:i:s a', strtotime($sale_info['sale_time']));
+		$data['transaction_time']= date('d/m/Y H:i:s', strtotime($sale_info['sale_time']));
+		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
+		$data['show_stock_locations']=count($stock_locations) > 1;
+		$data['transaction_date']= date('d/m/Y', strtotime($sale_info['sale_time']));
 		$customer_id=$this->sale_lib->get_customer();
-		$emp_info=$this->Employee->get_info($sale_info['employee_id']);
-		$data['payment_type']=$sale_info['payment_type'];
-		$data['invoice_number']=$sale_info['invoice_number'];
-		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		$emp_info=$this->Employee->get_info($employee_id);
+		$data['amount_change']=$this->sale_lib->get_amount_due() * -1;
+		$data['amount_due']=$this->sale_lib->get_amount_due();
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
-
+	
 		if($customer_id!=-1)
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+			$data['customer_first_name']=$cust_info->first_name;
+			$data['customer_last_name']=$cust_info->last_name;
+			$data['customer_address'] = $cust_info->address_1;
+			$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;
+			$data['customer_email'] = $cust_info->email;
+			$data['account_number'] = $cust_info->account_number;
+			$data['customer_info'] = implode("\n", array(
+					$data['customer'],
+					$data['customer_address'],
+					$data['customer_location'],
+					$data['account_number']
+			));
 		}
 		$data['sale_id']='POS '.$sale_id;
-		$data['print_receipt'] = FALSE;
+		$data['comments'] = $sale_info[ 'comments' ];
+		$data['invoice_number'] = $sale_info['invoice_number'];
+		$data['company_info'] = implode("\n", array(
+				$this->config->item('address'),
+				$this->config->item('phone'),
+				$this->config->item('account_number')
+		));
+		// static barcode config for receipts + invoices 
 		$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
 		$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
+		return $data;
+	}
+	
+	function receipt($sale_id)
+	{
+		$data = $this->_load_sale_data($sale_id);	
+		$data['print_receipt'] = FALSE;
 		$this->load->view("sales/receipt",$data);
+		$this->sale_lib->clear_all();
+		$this->_remove_duplicate_cookies();
+	}
+	
+	function invoice($sale_id, $sale_info='')
+	{
+		if ($sale_info == '') {
+			$sale_info = $this->_load_sale_data($sale_id);
+		}
+		$this->load->view("sales/invoice",$sale_info);
 		$this->sale_lib->clear_all();
 		$this->_remove_duplicate_cookies();
 	}
@@ -464,7 +610,7 @@ class Sales extends Secure_area
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
 			$data['customer_email']=$cust_info->email;
 		}
-		$data['invoice_number']=$this->_substitute_invoice_number($cust_info);
+		$data['invoice_number']=$this->_substitute_invoice_number($cust_info->first_name, $cust_info->last_name);
 		$data['invoice_number_enabled']=$this->sale_lib->is_invoice_number_enabled();
 		$data['payments_cover_total']=$this->_payments_cover_total();
 		$this->load->view("sales/register",$data);
