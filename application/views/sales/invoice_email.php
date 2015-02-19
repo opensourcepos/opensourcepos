@@ -1,8 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+            "http://www.w3.org/TR/html4/loose.dtd"> 
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/invoice_email.css"/>
+	<script src="<?php echo base_url();?>js/jquery-1.4.4.min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 </head>
 <body>
 <?php
@@ -33,15 +35,17 @@ if (isset($error_message))
 				?>
 			</td>
 			<td id="customer-title">
+				<pre>
 				<?php if(isset($customer))
 				{
 					echo $customer_info;
 				}
 				?>
+				</pre>
 			</td>
 		</tr>
 		<tr>
-	       	<td id="company-title"><?php echo $company_info; ?></td>
+	       	<td id="company-title"><pre><?php echo $company_info; ?></pre></td>
 	        <td id="meta">
 	        	<table align="right">
 	            <tr>

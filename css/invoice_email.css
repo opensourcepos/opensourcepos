@@ -6,16 +6,17 @@
 #menubar, #footer { display: none; }
 * { margin: 0; padding: 0; }
 body { font-family: Helvetica; font-size: 13px; }
-#page-wrap { width: 800px; margin: 0 auto; }
+#page-wrap { width: 750px; margin: 0 auto; }
+pre { font-family: Helvetica; font-size: 13px; }
 
 #page-wrap { font-family: Helvetica; }
 #page-wrap table { border-collapse: collapse; }
 #page-wrap table#items td { padding: 10px; }
 #page-wrap #meta table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
-#header { height: 30px; width: 100%; margin: 20px 0; background: #222222; text-align: center; color: white; font: bold 26px Helvetica; text-decoration: uppercase; letter-spacing: 4px; padding: 8px 0px; }
+#header { height: 30px; width: 100%; margin: 20px 0; background-color: #222222; text-align: center; color: white; font-weight: bold; font-size: 26px; letter-spacing: 4px; padding: 8px 0px; text-transform: uppercase; }
 
 /* first row */
-#info { width: 100%; height: 130px; margin: 10px 0 20px 0; }
+#info { width: 100%; margin: 10px 0 30px 0; }
 #logo { width: 50%; text-align: left; border: 1px solid #ffffff; overflow: hidden; }
 #image { height: 120px; width: 163px; }
 #logoctr { display: none; }
@@ -25,7 +26,7 @@ body { font-family: Helvetica; font-size: 13px; }
 .edit #logohelp { display: block; }
 .edit #save-logo, .edit #cancel-logo { display: inline; }
 .edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
-#customer-title { width: 50%; text-align: right; }
+#customer-title { text-align: right; }
 #terms div { width: 100%; text-align: center; margin-bottom: 10px;}
 
 /* second row */
@@ -39,7 +40,7 @@ body { font-family: Helvetica; font-size: 13px; }
 #items td.description { width: 300px; }
 #items td.item-name { width: 175px; }
 #items td.total-line { text-align: right; border-width: 1px 0 1px 1px; border-style: solid; }
-#items td.total-value { border-width: 1px 0px 1px 0; border-style: solid; }
+#items td.total-value { text-align: right; border-width: 1px 0px 1px 0; border-style: solid; }
 #items td.centered-value { text-align: center; }
 #items td.balance { background: #eeeee; }
 #items td.blank { border: 0; }

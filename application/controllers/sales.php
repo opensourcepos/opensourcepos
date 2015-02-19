@@ -330,11 +330,6 @@ class Sales extends Secure_area
 	
 	function invoice_email($sale_id) {
 		$sale_data = $this->_load_sale_data($sale_id);
-		$sale_data['company_info'] = nl2br($sale_data['company_info']);
-		if (isset($sale_data['customer_info']) && !empty($sale_data['customer_info'])) {
-			$sale_data['customer_info'] = nl2br($sale_data['customer_info']);
-		}
-		// all images should use this prefix in their path
 		$sale_data['image_prefix'] = base_url();
 		$this->load->view('sales/invoice_email', $sale_data);
 		$this->sale_lib->clear_all();
@@ -343,10 +338,9 @@ class Sales extends Secure_area
 	
 	function send_invoice($sale_id) {
 		$sale_data = $this->_load_sale_data($sale_id);
-		$message = $this->config->item('config_invoice_email_message');
-		$message = str_replace('$CO', $sale_data['invoice_number'], $message);
-		$message = $this->_substitute_customer($message,$sale_data['customer_first_name'],
-				$sale_data['customer_last_name']);
+		$text = $this->config->item('invoice_email_message');
+		$text = str_replace('$CO', $sale_data['invoice_number'], $text);
+		$text = $this->_substitute_customer($text,(object) $sale_data);
 		$result = FALSE;
 		$message = $this->lang->line('sales_invoice_no_email');
 		if (isset($sale_data["customer_email"]) && !empty( $sale_data["customer_email"])) {
@@ -354,6 +348,7 @@ class Sales extends Secure_area
 			$this->email->from($this->config->item('email'), $this->config->item('company'));
 			$this->email->to($sale_data['customer_email']);
 			$this->email->subject($this->lang->line('sales_invoice') . ' ' . $sale_data['invoice_number']);
+			$this->email->message($text);
 			$filename = $this->_invoice_email_pdf($sale_data);
 			$this->email->attach($filename);
 			$result = $this->email->send();
@@ -379,14 +374,14 @@ class Sales extends Secure_area
 		return $text;
 	}
 	
-	function _substitute_customer($text, $first_name, $last_name)
+	function _substitute_customer($text, $cust_info)
 	{
 		// substitute customer info
 		$customer_id=$this->sale_lib->get_customer();
-		if($customer_id!=-1)
+		if($customer_id!=-1 && $cust_info!='')
 		{
-			$text=str_replace('$CU',$first_name . ' ' . $last_name,$text);
-			$words = preg_split("/\s+/", trim($first_name . ' ' . $last_name));
+			$text=str_replace('$CU',$cust_info->first_name . ' ' . $cust_info->last_name,$text);
+			$words = preg_split("/\s+/", trim($cust_info->first_name . ' ' . $cust_info->last_name));
 			$acronym = "";
 			foreach ($words as $w) {
 				$acronym .= $w[0];
@@ -396,24 +391,24 @@ class Sales extends Secure_area
 		return $text;
 	}
 	
-	function _substitute_variables($text, $first_name, $last_name)
+	function _substitute_variables($text, $cust_info)
 	{
 		$text=$this->_substitute_variable($text, '$YCO', $this->Sale, 'get_invoice_number_for_year');
 		$text=$this->_substitute_variable($text, '$CO', $this->Sale , 'get_invoice_count');
 		$text=$this->_substitute_variable($text, '$SCO', $this->Sale_suspended, 'get_invoice_count');
 		$text=strftime($text);
-		$text=$this->_substitute_customer($text, $first_name, $last_name);
+		$text=$this->_substitute_customer($text, $cust_info);
 		return $text;
 	}
 	
-	function _substitute_invoice_number($first_name,$last_name)
+	function _substitute_invoice_number($cust_info)
 	{
 		$invoice_number=$this->sale_lib->get_invoice_number();
 		if (empty($invoice_number))
 		{
 			$invoice_number=$this->config->config['sales_invoice_format'];
 		}
-		$invoice_number = $this->_substitute_variables($invoice_number,$first_name,$last_name);		
+		$invoice_number = $this->_substitute_variables($invoice_number, $cust_info);
 		$this->sale_lib->set_invoice_number($invoice_number);
 		return $invoice_number;
 	}
@@ -443,8 +438,8 @@ class Sales extends Secure_area
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
-			$data['customer_first_name']=$cust_info->first_name;
-			$data['customer_last_name']=$cust_info->last_name;
+			$data['first_name']=$cust_info->first_name;
+			$data['last_name']=$cust_info->last_name;
 			$data['customer_address'] = $cust_info->address_1;
 			$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;
 			$data['customer_email'] = $cust_info->email;
@@ -610,7 +605,7 @@ class Sales extends Secure_area
 			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
 			$data['customer_email']=$cust_info->email;
 		}
-		$data['invoice_number']=$this->_substitute_invoice_number($cust_info->first_name, $cust_info->last_name);
+		$data['invoice_number']=$this->_substitute_invoice_number($cust_info);
 		$data['invoice_number_enabled']=$this->sale_lib->is_invoice_number_enabled();
 		$data['payments_cover_total']=$this->_payments_cover_total();
 		$this->load->view("sales/register",$data);

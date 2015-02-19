@@ -167,9 +167,9 @@ class Config extends Secure_area
     	// load upload library
     	$config = array('upload_path' => './uploads/',
     			'allowed_types' => 'gif|jpg|png',
-    			'max_size' => '100',
-    			'max_width' => '640',
-    			'max_height' => '480',
+    			'max_size' => '1024',
+    			'max_width' => '800',
+    			'max_height' => '680',
     			'file_name' => 'company_logo');
     	$this->load->library('upload', $config);
     	$this->upload->do_upload('company_logo');

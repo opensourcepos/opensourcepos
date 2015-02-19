@@ -203,7 +203,7 @@ def("DOMPDF_DEFAULT_PAPER_SIZE", "letter");
  * Used if no suitable fonts can be found. This must exist in the font folder.
  * @var string
  */
-def("DOMPDF_DEFAULT_FONT", "serif");
+def("DOMPDF_DEFAULT_FONT", "Helvetica");
 
 /**
  * Image DPI setting
@@ -300,7 +300,7 @@ def("DOMPDF_FONT_HEIGHT_RATIO", 1.1);
  * Allows people to disabled CSS float support
  * @var bool
  */
-def("DOMPDF_ENABLE_CSS_FLOAT", false);
+def("DOMPDF_ENABLE_CSS_FLOAT", true);
 
 /**
  * Enable the built in DOMPDF autoloader

@@ -23,7 +23,13 @@
 	<div class="field_row clearfix">
 	<?php echo form_label($this->lang->line('sales_invoice_number').':', 'invoice_number'); ?>
 		<div class='form_field'>
-			<?php echo form_input(array('name' => 'invoice_number', 'value' => $sale_info['invoice_number'], 'id' => 'invoice_number'));?>
+			<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
+				isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
+				<?php echo form_input(array('name'=>'invoice_number','size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
+				<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
+			<?php else: ?>
+				<?php echo form_input(array('name'=>'invoice_number','value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
+			<?php endif; ?>
 		</div>
 	</div>
 	
@@ -74,7 +80,19 @@
 
 $(document).ready(function()
 {	
-
+	<?php if (isset($sale_info['email'])): ?>
+	$("#send_invoice").click(function(event) {
+		if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
+			$.get('<?=site_url() . "/sales/send_invoice/" . $sale_info['sale_id']?>',
+					function(response) {
+						tb_remove();
+						post_form_submit(response);
+					}, "json"
+			);	
+		}
+	});
+	<?php endif; ?>
+	
 	$.validator.addMethod("invoice_number", function(value, element) 
 	{
 		return JSON.parse($.ajax(

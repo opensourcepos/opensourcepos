@@ -310,7 +310,7 @@ function reinit_row(checkbox_id)
 function animate_row(row,color)
 {
 	color = color || "#e1ffdd";
-	row.find("td").css("backgroundColor", "#ffffff").animate({backgroundColor:color},"slow","linear")
+	row.find("td").animate({backgroundColor:color},"slow","linear")
 		.animate({backgroundColor:color},5000)
 		.animate({backgroundColor:"#ffffff"},"slow","linear");
 }

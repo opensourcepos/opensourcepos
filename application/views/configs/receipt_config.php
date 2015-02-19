@@ -189,19 +189,22 @@ $(document).ready(function()
 	{   
 	     $('#receipt_printer').append($('<option>', { value : value }).text(value)); 
 	});
-	var print_after_sale = $("#print_after_sale").is(":checked");
-	$("#print_after_sale").change(function() 
+	
+	var enable_disable_print_settings = (function()
 	{
-		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !$(this).is(":checked"));
-	});
-	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup || !print_after_sale);
+		var print_after_sale = $("#print_after_sale").is(":checked");
+		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup || !print_after_sale);
+		return arguments.callee;
+	})();
+	$("#print_after_sale").change(enable_disable_print_settings);
 
-	var use_invoice_template = $("#use_invoice_template").is(":checked");
-	$("#use_invoice_template").change(function()
+	var enable_disable_use_invoice_template = (function() 
 	{
-		$("#invoice_default_comments, #invoice_email_message").prop('disabled', !$(this).is(":checked"));
-	});
-	$("#invoice_default_comments, #invoice_email_message").prop('disabled', !use_invoice_template);
+		var use_invoice_template = $("#use_invoice_template").is(":checked");
+		$("#invoice_default_comments, #invoice_email_message").prop('disabled', !use_invoice_template);
+		return arguments.callee;
+	})();
+	$("#use_invoice_template").change(enable_disable_use_invoice_template);
 	
 	$('#receipt_printer option[value="<?php echo $this->config->item('receipt_printer'); ?>"]').prop('selected', true);
 
@@ -211,6 +214,11 @@ $(document).ready(function()
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
+			beforeSerialize: function(arr, $form, options) {
+				dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>');
+				$("input:disabled, textarea:disabled").prop("disabled", false); 
+				return dialog_confirmed;
+			},
 			success:function(response)
 			{
 				if(response.success)
@@ -221,14 +229,13 @@ $(document).ready(function()
 				{
 					set_feedback(response.message,'error_message',true);		
 				}
+				// set back disabled state
+				enable_disable_use_invoice_template();
+				enable_disable_print_settings();
 			},
 			dataType:'json'
 		});
 
-		},
-		beforeSubmit: function(arr, $form, options) {
-			dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>');
-			$("input [disabled]").prop("disabled", false); 
 		},
 		errorLabelContainer: "#receipt_error_message_box",
  		wrapper: "li",
