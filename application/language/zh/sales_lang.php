@@ -91,6 +91,7 @@ $lang["sales_unsuspend"] = "取消暫停銷售";
 $lang["sales_unsuspend_and_delete"] = "取消暫停銷售並刪除";
 $lang["sales_giftcard_balance"] = "Giftcard Balance";
 $lang["sales_discount_included"] = "% discount included";
+$lang["sales_print_after_sale"] = "出貨時打印收據";
 $lang["sales_invoice"] = "Invoice";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_send_invoice"] = "Send Invoice";

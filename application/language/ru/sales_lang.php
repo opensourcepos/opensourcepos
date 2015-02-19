@@ -91,6 +91,7 @@ $lang["sales_unsuspend"] = "Разблокировать";
 $lang["sales_unsuspend_and_delete"] = "Разблокировать и удалить";
 $lang["sales_giftcard_balance"] = "Giftcard Balance";
 $lang["sales_discount_included"] = "% discount included";
+$lang["sales_print_after_sale"] = "Распечатать квитанцию ​​после продажи";
 $lang["sales_invoice"] = "Invoice";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_send_invoice"] = "Send Invoice";

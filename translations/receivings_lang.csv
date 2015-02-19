@@ -1,49 +1,50 @@
-"label","nl-BE","es","en","fr","zh","ru","th","tr","id"
-"receivings_transaction_failed","Order transactie mislukt","Las Transacciones de Entrada Fallaron","Receivings Transactions Failed","Échec d'opération d'arrivage","進貨交易失敗","Ошибка Получение транзакции","ดำเนินการรับสินค้าล้มเหลว","Alım İşlemi Hatası","Transaksi Penerimaan Salah"
-recvs_basic_information,,,Receiving information,,,,,,Informasi Penerimaan Barang
-recvs_cancel_receiving,,,Cancel,,,,,,Batal
-recvs_cannot_be_deleted,,,Receiving(s) could not be deleted,,,,,,Tidak bisa dihapus
-recvs_comments,,,Comments,,,,,,Keterangan
-"recvs_complete_receiving","Bevestig","Terminar","Finish","Fin","完成","заканчивать","เสร็จสิ้น","Tamamla","Selesai"
-"recvs_confirm_cancel_receiving","Bent u zeker dat u dit order wil wissen?","¿Estás seguro(a) de querer limpiar esta entrada? Todos los artículos serán limpiados.","Are you sure you want to clear this receiving? All items will cleared.","Etes vous sûr(e) de vouloir annuler cet arrivage?","您確定要刪除此進貨資料嗎？本資料中所有的產品資料也將會被清空。","Вы уверены, что хотите удалить это получение? Все детали будут очищены.","แน่ใจหรือไม่ที่จะล้างรายการสินค้าเข้า? ถ้าตกลงไม่สามารถย้อนกลับใด้.","Bu alımı iptal etmek istiyor musunuz? Tüm ürünler çıkarılacak.","Apakah anda yakin untuk menghapus Penerimaan Barang masuk ini? Semua item Akan dihapus."
-"recvs_confirm_finish_receiving","Bent u zeker dat u dit order wil ingeven? Dit kan niet ongedaan gemaakt worden.","¿Estás seguro(a) de querer procesar esta entrada? Ésto no puede ser deshecho.","Are you sure you want to submit this receiving? This cannot be undone.","Etes vous sûr(e) de vouloir valider cet arrivage (Irréversible)?","您確定要提交此進貨資料嗎？一旦送出將不能撤消。","Вы уверены, что хотите представить это получение? Это не может быть отменено.","แน่ใจหรือไม่ที่จะส่งรายการสินค้าเข้า? ถ้าตกลงไม่สามารถย้อนกลับใด้.","Alımı tamamlamak istediğinize emin misiniz? İşlem geri alınamaz.","Apakah anda yakin untuk memproses Penerimaan Barang masuk ini? Proses ini tidak dapat dibatalkan."
-"recvs_cost","Kost","Costo","Cost","Cout","成本","стоимость","ราคา","Ücret","Harga"
-recvs_date,,,Receiving Date,,,,,,Tanggal
-recvs_date_required,,,A correct date needs to be filled in,,,,,,Tanngalnya harus diisi
-recvs_date_type,,,Date field is required,,,,,,Model Tanggal
-recvs_delete_confirmation,,,"Are you sure you want to delete this receiving, this action cannot be undone",,,,,,Konfirmasi Hapus
-recvs_delete_entire_sale,,,Delete entire sale,,,,,,Hapus Semua Penjualan
-"recvs_discount","Korting %","Descuento %","Disc %","Remise %","折古 %","Скидка %","ส่วนลด %","İndirim %","Diskon %"
-"recvs_edit","Bewerk","Editar","Edit","Éditer","編輯","редактировать","แก้ไข","Düzenle","Ubah"
-recvs_edit_sale,,,Edit Receiving,,,,,,Ubah Penerimaan
-recvs_employee,,,Employee,,,,,,Karyawan
-"recvs_error_editing_item","Fout bij het bewerken product","Error al editar artículo","Error editing item","Erreur d'édition","產品編輯錯誤","Ошибка редактирования товар","แก้ไขสินค้าล้มเหลว","Ürün düzenleme hatası","Pengubahan Item Salah"
-recvs_error_requisition,,,Unable to move inventory from and to the same stock location,,,,,Ürün aynı yere taşınamaz,Kesalahan Daftar Permintaan
-"recvs_find_or_scan_item","Zoek/Scan Product","Encontrar/Escanear Artículo","Find/Scan Item","Chercher/Scanner Élément","查找 / 掃描產品","Найти/Сканировать товар","ค้นหาสินค้า","Ürün Bul/Oku","Cari/Scan Item"
-"recvs_find_or_scan_item_or_receipt","Zoek/Scan Product OF Tickets","Encontrar/Escanear Artículo o Entrada","Find/Scan Item OR Receipt","Chercher Elément OU Recu","查找 / 掃描產品或收據","Найти/Сканировать товар ИЛИ квитанция","ค้นหาสินค้าหรือบิล","Ürün yada Fatura Bul/Oku","Cari/Scan Item ATAU Faktur"
-"recvs_id","Ordernummer","ID de Entrada","Receiving ID","ID Arrivage","進貨編號","получение ID","รายการสินค้าเข้า ID","Alım No","ID Penerimaan"
-recvs_invoice_number,,,Invoice #,,,,,,Nomer Nota
-recvs_invoice_number_duplicate,,,Please enter an unique invoice number,,,,,,Nomer Nota Double
-"recvs_item_name","Productnaam","Nombre del Artículo","Item Name","Nom d'Élément","產品名稱","Название товара","ชื่อสินคัา","Ürün Adı","Nama Item"
-"recvs_mode","Order type","Modo de Entradas","Receiving Mode","Receiving Mode","進貨模式","получая режим","วิธีการรับสินค้า","Alım Türü","Jenis Penerimaan"
-"recvs_new_supplier","N. Leverancier","Nuevo Proveedor","New Supplier","Nouveau Fournisseur","新供應商","Новый поставщик","ผู้ผลิตรายใหม่","Yeni Sağlayıcı","Pemasok Baru"
-recvs_one_or_multiple,,,receiving(s),,,,,,Satu Atau Double
-"recvs_quantity","Aantal","Cant.","Qty.","Qté.","數量.","Кол-во.","จำนวน.","Adet","Jumlah"
-"recvs_receipt","Ontvangstbewijs","Recibo de Entrada","Receivings Receipt","Recu des Arrivages","收貨憑證","квитанция о получении","บิลสินค้าเข้า","Alım Faturası","Faktur Penerimaan"
-recvs_receipt_number,,,Receiving #,,,,,,No. Faktur Penerimaan
-"recvs_receiving","Inkoop","Recibir","Receive","Receive","收貨","получать","รับ","Alım","Barang Masuk"
-"recvs_register","Orders","Entrada de Artículos","Items Receiving","Items Receiving","產品進貨","Получение товаров","รับสินค้า","Ürün Alımları","Penerimaan Barang Masuk"
-recvs_requisition,,,Requisition,,,,เบิกสินค้า,Talepler,Mutasi Antar Gudang
-"recvs_return","Teruggave","Devolver","Return","Return","退貨","возвращать","คืน","İade","Retur"
-"recvs_select_supplier","Selecteer Leverancier (Optioneel)","Seleccionar Proveedor (Opcional)","Select Supplier (Optional)","Choisir Fournisseur (Facultatif)","選擇供應商 (Optional)","Выберите поставщика (необязательно)","เลือกผู้ผลิต (ทางเลือก)","Sağlayıcı Seç (İsteğe Bağlı)","Pilih Pemasok (Opsional)"
-"recvs_start_typing_supplier_name","Typ naam leverancier..","Empieza a escribir el nombre del proveedor...","Start Typing supplier's name...","Commencez à saisir le nom du fournisseur...","開始輸入供應商名稱...","Начните вводить название поставщика...","เริ่มต้นพิมพ์ชื่อผู้ผลิต...","Sağlayıcı Adı...","Ketik nama pemasok ..."
-recvs_stock_destination,,,Stock destination,,,,,Stok hedefi,Tujuan Stok
-recvs_stock_locaiton,,,Stock location,,,,,Stok yeri,Lokasi Stok
-recvs_stock_source,,,Stock source,,,,,Stok kaynağı,Asal Stok
-recvs_successfully_deleted,,,You have successfully deleted,,,,,,Berhasil Dihapus
-recvs_successfully_updated,,,Receiving successfully updated,,,,,,Berhasil Diperbaharui
-"recvs_supplier","Leverancier","Proveedor","Supplier","Fournisseur","供應商","поставщик","ผู้ผลิต","Sağlayıcı","Pemasok"
-"recvs_total","Totaal","Total","Total","Total","總數量","сумма","รวม","Toplam","Total"
-"recvs_unable_to_add_item","Onmogelijk om product aan order toe te voegen","No se puede agregar el artículo a la entrada","Unable to add item to receiving","Impossible d'ajouter l'item aux arrivages","無法新增進貨資料","Невозможно добавить товар на получение","ไม่สามารถเพิ่มสินค้าได้","Ürünler alıma eklenemedi","Item tidak dapat ditambahkan ke penerimaan barang masuk"
-recvs_unsuccessfully_updated,,,Receiving unsuccessfully updated,,,,,,Tidak Berhasil Diperbaharui
-"recvs_invoice_enable","Maak Factuur","","Create Invoice","","","","","",""
+label,nl-BE,es,en,fr,zh,ru,th,tr,id
+receivings_transaction_failed,Order transactie mislukt,Las Transacciones de Entrada Fallaron,Receivings Transactions Failed,Échec d'opération d'arrivage,進貨交易失敗,Ошибка Получение транзакции,ดำเนินการรับสินค้าล้มเหลว,Alım İşlemi Hatası,Transaksi Penerimaan Salah
+recvs_basic_information,Order informatie,,Receiving information,,,,,,Informasi Penerimaan Barang
+recvs_cancel_receiving,Annuleer,,Cancel,,,,,,Batal
+recvs_cannot_be_deleted,Order(s) konden niet verwijderd worden,,Receiving(s) could not be deleted,,,,,,Tidak bisa dihapus
+recvs_comments,Commentaar,,Comments,,,,,,Keterangan
+recvs_complete_receiving,Bevestig,Terminar,Finish,Fin,完成,заканчивать,เสร็จสิ้น,Tamamla,Selesai
+recvs_confirm_cancel_receiving,Bent u zeker dat u dit order wil wissen?,¿Estás seguro(a) de querer limpiar esta entrada? Todos los artículos serán limpiados.,Are you sure you want to clear this receiving? All items will cleared.,Etes vous sûr(e) de vouloir annuler cet arrivage?,您確定要刪除此進貨資料嗎？本資料中所有的產品資料也將會被清空。,"Вы уверены, что хотите удалить это получение? Все детали будут очищены.",แน่ใจหรือไม่ที่จะล้างรายการสินค้าเข้า? ถ้าตกลงไม่สามารถย้อนกลับใด้.,Bu alımı iptal etmek istiyor musunuz? Tüm ürünler çıkarılacak.,Apakah anda yakin untuk menghapus Penerimaan Barang masuk ini? Semua item Akan dihapus.
+recvs_confirm_finish_receiving,Bent u zeker dat u dit order wil ingeven? Dit kan niet ongedaan gemaakt worden.,¿Estás seguro(a) de querer procesar esta entrada? Ésto no puede ser deshecho.,Are you sure you want to submit this receiving? This cannot be undone.,Etes vous sûr(e) de vouloir valider cet arrivage (Irréversible)?,您確定要提交此進貨資料嗎？一旦送出將不能撤消。,"Вы уверены, что хотите представить это получение? Это не может быть отменено.",แน่ใจหรือไม่ที่จะส่งรายการสินค้าเข้า? ถ้าตกลงไม่สามารถย้อนกลับใด้.,Alımı tamamlamak istediğinize emin misiniz? İşlem geri alınamaz.,Apakah anda yakin untuk memproses Penerimaan Barang masuk ini? Proses ini tidak dapat dibatalkan.
+recvs_cost,Kost,Costo,Cost,Cout,成本,стоимость,ราคา,Ücret,Harga
+recvs_date,Order Datum,,Receiving Date,,,,,,Tanggal
+recvs_date_required,Er moet een correcte datum ingevuld worden,,A correct date needs to be filled in,,,,,,Tanngalnya harus diisi
+recvs_date_type,Datum is vereist,,Date field is required,,,,,,Model Tanggal
+recvs_delete_confirmation,Bent u zeker dat u dit order wil verwijderen? Dit kan niet ongedaan gemaakt worden.,,"Are you sure you want to delete this receiving, this action cannot be undone",,,,,,Konfirmasi Hapus
+recvs_delete_entire_sale,Verwijder,Delete entire sale,Delete entire sale,Delete entire sale,Delete entire sale,Delete entire sale,Delete entire sale,Delete entire sale,Hapus Semua Penjualan
+recvs_discount,Korting %,Descuento %,Disc %,Remise %,折古 %,Скидка %,ส่วนลด %,İndirim %,Diskon %
+recvs_edit,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
+recvs_edit_sale,Bewerk,Edit Receiving,Edit Receiving,Edit Receiving,Edit Receiving,Edit Receiving,Edit Receiving,Edit Receiving,Ubah Penerimaan
+recvs_employee,Werknemer,Employee,Employee,Employee,Employee,Employee,Employee,Employee,Karyawan
+recvs_error_editing_item,Fout tijdens updaten product,Error al editar artículo,Error editing item,Erreur d'édition,產品編輯錯誤,Ошибка редактирования товар,แก้ไขสินค้าล้มเหลว,Ürün düzenleme hatası,Pengubahan Item Salah
+recvs_error_requisition,Kon de stock transfer niet vervolledigen,,Unable to move inventory from and to the same stock location,,,,,Ürün aynı yere taşınamaz,Kesalahan Daftar Permintaan
+recvs_find_or_scan_item,Zoek/Scan Product,Encontrar/Escanear Artículo,Find/Scan Item,Chercher/Scanner Élément,查找 / 掃描產品,Найти/Сканировать товар,ค้นหาสินค้า,Ürün Bul/Oku,Cari/Scan Item
+recvs_find_or_scan_item_or_receipt,Zoek/Scan Product OF Tickets,Encontrar/Escanear Artículo o Entrada,Find/Scan Item OR Receipt,Chercher Elément OU Recu,查找 / 掃描產品或收據,Найти/Сканировать товар ИЛИ квитанция,ค้นหาสินค้าหรือบิล,Ürün yada Fatura Bul/Oku,Cari/Scan Item ATAU Faktur
+recvs_id,Ordernummer,ID de Entrada,Receiving ID,ID Arrivage,進貨編號,получение ID,รายการสินค้าเข้า ID,Alım No,ID Penerimaan
+recvs_invoice_number,Factuur #,,Invoice #,,,,,,Nomer Nota
+recvs_invoice_number_duplicate,Gelieve een uniek factuurnummer in te voeren,,Please enter an unique invoice number,,,,,,Nomer Nota Double
+recvs_item_name,Productnaam,Nombre del Artículo,Item Name,Nom d'Élément,產品名稱,Название товара,ชื่อสินคัา,Ürün Adı,Nama Item
+recvs_mode,Order type,Modo de Entradas,Receiving Mode,Receiving Mode,進貨模式,получая режим,วิธีการรับสินค้า,Alım Türü,Jenis Penerimaan
+recvs_new_supplier,N. Leverancier,Nuevo Proveedor,New Supplier,Nouveau Fournisseur,新供應商,Новый поставщик,ผู้ผลิตรายใหม่,Yeni Sağlayıcı,Pemasok Baru
+recvs_one_or_multiple,order(s),receiving(s),receiving(s),,,,,,Satu Atau Double
+recvs_quantity,Aantal,Cant.,Qty.,Qté.,數量.,Кол-во.,จำนวน.,Adet,Jumlah
+recvs_receipt,Ontvangstbewijs,Recibo de Entrada,Receivings Receipt,Recu des Arrivages,收貨憑證,квитанция о получении,บิลสินค้าเข้า,Alım Faturası,Faktur Penerimaan
+recvs_receipt_number,Order #,,Receiving #,,,,,,No. Faktur Penerimaan
+recvs_receiving,Inkoop,Recibir,Receive,Receive,收貨,получать,รับ,Alım,Barang Masuk
+recvs_register,Orders,Entrada de Artículos,Items Receiving,Items Receiving,產品進貨,Получение товаров,รับสินค้า,Ürün Alımları,Penerimaan Barang Masuk
+recvs_requisition,Transfer,,Requisition,,,,เบิกสินค้า,Talepler,Mutasi Antar Gudang
+recvs_return,Teruggave,Devolver,Return,Return,退貨,возвращать,คืน,İade,Retur
+recvs_select_supplier,Selecteer Leverancier (Optioneel),Seleccionar Proveedor (Opcional),Select Supplier (Optional),Choisir Fournisseur (Facultatif),選擇供應商 (Optional),Выберите поставщика (необязательно),เลือกผู้ผลิต (ทางเลือก),Sağlayıcı Seç (İsteğe Bağlı),Pilih Pemasok (Opsional)
+recvs_start_typing_supplier_name,Typ naam leverancier..,Empieza a escribir el nombre del proveedor...,Start Typing supplier's name...,Commencez à saisir le nom du fournisseur...,開始輸入供應商名稱...,Начните вводить название поставщика...,เริ่มต้นพิมพ์ชื่อผู้ผลิต...,Sağlayıcı Adı...,Ketik nama pemasok ...
+recvs_stock_destination,Stock bestemming,Stock destination,Stock destination,Stock destination,Stock destination,Stock destination,Stock destination,Stok hedefi,Tujuan Stok
+recvs_stock_locaiton,Stock locatie,Stock destination,Stock location,Stock location,Stock location,Stock location,Stock location,Stok yeri,Lokasi Stok
+recvs_stock_source,Stock bron,Stock destination,Stock source,Stock source,Stock source,Stock source,Stock source,Stok kaynağı,Asal Stok
+recvs_successfully_deleted,Er werd(en),You have successfully deleted,You have successfully deleted,You have successfully deleted,You have successfully deleted,You have successfully deleted,You have successfully deleted,You have successfully deleted,Berhasil Dihapus
+recvs_successfully_updated,Order werd geupdatet,Receiving successfully updated,Receiving successfully updated,Receiving successfully updated,Receiving successfully updated,Receiving successfully updated,Receiving successfully updated,Receiving successfully updated,Berhasil Diperbaharui
+recvs_supplier,Leverancier,Proveedor,Supplier,Fournisseur,供應商,поставщик,ผู้ผลิต,Sağlayıcı,Pemasok
+recvs_total,Totaal,Total,Total,Total,總數量,сумма,รวม,Toplam,Total
+recvs_unable_to_add_item,Onmogelijk om product aan order toe te voegen,No se puede agregar el artículo a la entrada,Unable to add item to receiving,Impossible d'ajouter l'item aux arrivages,無法新增進貨資料,Невозможно добавить товар на получение,ไม่สามารถเพิ่มสินค้าได้,Ürünler alıma eklenemedi,Item tidak dapat ditambahkan ke penerimaan barang masuk
+recvs_unsuccessfully_updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Receiving unsuccessfully updated,Tidak Berhasil Diperbaharui
+recvs_invoice_enable,Maak Factuur,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice
+recvs_print_after_sale,Print Ticket,Imprimir recibo después de una venta,Print after sale,Imprimer un recu après vente,出貨時打印收據,Распечатать квитанцию ​​после продажи,พิมพ์บิลหลังการขาย,Satıştan sonra yazdır,Cetak Faktur setelah penjualan

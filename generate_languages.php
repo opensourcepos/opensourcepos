@@ -59,6 +59,8 @@ $dir = new DirectoryIterator(__DIR__ . "/translations");
 foreach ($dir as $fileinfo) {
     if (!$fileinfo->isDot()) {
         $file = $fileinfo->getFilename();
+        // temporary skip validation file (should be inside the system/language folder)
+        if (strstr($file, 'form_validation_lang.csv')) continue;
         print_r("generating $file...\n");
         $fh = fopen ( __DIR__ . "/translations/" . $file, 'r' );
         $language_files = array ();

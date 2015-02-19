@@ -91,6 +91,7 @@ $lang["sales_unsuspend"] = "Retomar";
 $lang["sales_unsuspend_and_delete"] = "Retomar y Borrar";
 $lang["sales_giftcard_balance"] = "Giftcard Balance";
 $lang["sales_discount_included"] = "% discount included";
+$lang["sales_print_after_sale"] = "Imprimir recibo después de una venta";
 $lang["sales_invoice"] = "Invoice";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_send_invoice"] = "Send Invoice";

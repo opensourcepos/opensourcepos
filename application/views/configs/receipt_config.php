@@ -55,17 +55,6 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_print_after_sale').':', 'print_after_sale',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'print_after_sale',
-		'id'=>'print_after_sale',
-		'value'=>'print_after_sale',
-		'checked'=>$this->config->item('print_after_sale')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_print_silently').':', 'print_silently',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(
@@ -104,7 +93,14 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 		<?php echo form_dropdown(
 			'receipt_printer',
 			array(),
-			$this->config->item('receipt_printer'),'id="receipt_printer"');?>
+			'','id="receipt_printer"');?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_invoice_printer').':', 'config_invoice_printer',array('class'=>'wide')); ?>
+	<div class='form_field'>
+		<?php echo form_dropdown('invoice_printer', array(), ' ','id="invoice_printer"');?>
 	</div>
 </div>
 
@@ -184,19 +180,7 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	var printers = (window.jsPrintSetup && jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
-	$.each(printers, function(key, value) 
-	{   
-	     $('#receipt_printer').append($('<option>', { value : value }).text(value)); 
-	});
-	
-	var enable_disable_print_settings = (function()
-	{
-		var print_after_sale = $("#print_after_sale").is(":checked");
-		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup || !print_after_sale);
-		return arguments.callee;
-	})();
-	$("#print_after_sale").change(enable_disable_print_settings);
+	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup);
 
 	var enable_disable_use_invoice_template = (function() 
 	{
@@ -205,8 +189,28 @@ $(document).ready(function()
 		return arguments.callee;
 	})();
 	$("#use_invoice_template").change(enable_disable_use_invoice_template);
-	
-	$('#receipt_printer option[value="<?php echo $this->config->item('receipt_printer'); ?>"]').prop('selected', true);
+
+	if (window.localStorage && window.jsPrintSetup) 
+	{
+		var printers = (jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
+		$('#receipt_printer, #invoice_printer').each(function() 
+		{
+			var $this = $(this)
+			$(printers).each(function(key, value) 
+			{   
+			     $this.append($('<option>', { value : value }).text(value));
+  	 		});
+			$("option[value='" + localStorage[$(this).attr('id')] + "']", this).prop('selected', true);
+			$(this).change(function()
+			{
+				localStorage[$(this).attr('id')] = $(this).val();		
+			});
+		});
+	}
+	else
+	{
+		//$("#receipt_printer").prop('disabled', true).append($('<option>', {'N/A' : 'N/A'})).text('N/A');
+	}
 
 	var dialog_confirmed = window.jsPrintSetup;
 			
@@ -231,7 +235,6 @@ $(document).ready(function()
 				}
 				// set back disabled state
 				enable_disable_use_invoice_template();
-				enable_disable_print_settings();
 			},
 			dataType:'json'
 		});

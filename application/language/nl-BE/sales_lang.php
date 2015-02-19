@@ -91,6 +91,7 @@ $lang["sales_unsuspend"] = "Hervat";
 $lang["sales_unsuspend_and_delete"] = "";
 $lang["sales_giftcard_balance"] = "Waardebon Resterend";
 $lang["sales_discount_included"] = "% korting inbegrepen";
+$lang["sales_print_after_sale"] = "Print Ticket";
 $lang["sales_invoice"] = "Factuur";
 $lang["sales_total_tax_exclusive"] = "Totaal";
 $lang["sales_send_invoice"] = "Vestuur Factuur";

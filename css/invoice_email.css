@@ -18,6 +18,7 @@ pre { font-family: Helvetica; font-size: 13px; }
 /* first row */
 #info { width: 100%; margin: 10px 0 30px 0; }
 #logo { width: 50%; text-align: left; border: 1px solid #ffffff; overflow: hidden; }
+
 #image { height: 120px; width: 163px; }
 #logoctr { display: none; }
 #logo:hover #logoctr, #logo.edit #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }

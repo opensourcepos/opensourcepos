@@ -16,6 +16,7 @@
 
 /* first row */
 #logo { text-align: right; margin-top: 15px; float: left; position: relative; border: 1px solid #fff; max-width: 150px; max-height: 150px; overflow: hidden; }
+#logo img { max-height: 150px; max-width: 150px; }
 /*#logo:hover, #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }*/
 #logoctr { display: none; }
 #logo:hover #logoctr, #logo.edit #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }

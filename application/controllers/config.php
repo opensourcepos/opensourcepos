@@ -145,8 +145,6 @@ class Config extends Secure_area
 		'use_invoice_template' => $this->input->post ( 'use_invoice_template' ),
 		'invoice_default_comments' => $this->input->post ( 'invoice_default_comments' ),
 		'invoice_email_message' => $this->input->post ( 'invoice_email_message' ),
-		'print_after_sale' => $this->input->post ( 'print_after_sale' ),
-		'receipt_printer' => $this->input->post ( 'receipt_printer' ),
 		'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ),
 		'print_silently' => $this->input->post ( 'print_silently' ),
 		'print_header' => $this->input->post ( 'print_header' ),

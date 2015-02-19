@@ -99,6 +99,17 @@ class Receiving_lib
     	return $this->CI->session->set_userdata('recv_invoice_number_enabled', $invoice_number_enabled);
     }
     
+    function is_print_after_sale()
+    {
+    	return $this->CI->session->userdata('recv_print_after_sale') == 'true' ||
+    	$this->CI->session->userdata('recv_print_after_sale') == '1';
+    }
+    
+    function set_print_after_sale($print_after_sale)
+    {
+    	return $this->CI->session->set_userdata('recv_print_after_sale', $print_after_sale);
+    }
+    
     function set_stock_source($stock_source)
     {
         $this->CI->session->set_userdata('recv_stock_source',$stock_source);
@@ -176,6 +187,7 @@ class Receiving_lib
 		$insertkey=$maxkey+1;
 		$item_info=$this->CI->Item->get_info($item_id,$item_location);
 		//array records are identified by $insertkey and item_id is just another field.
+		$price=$price!=null ? $price: $item_info->cost_price;
 		$item = array(($insertkey)=>
 		array(
 			'item_id'=>$item_id,
@@ -190,8 +202,9 @@ class Receiving_lib
 			'quantity'=>$quantity,
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
-			'price'=>$price!=null ? $price: $item_info->cost_price,
-			'receiving_quantity'=>$item_info->receiving_quantity
+			'price'=>$price,
+			'receiving_quantity'=>$item_info->receiving_quantity,
+			'total'=>$this->get_item_total($quantity, $price, $discount)
 			)
 		);
 

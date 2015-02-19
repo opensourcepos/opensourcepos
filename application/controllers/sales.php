@@ -65,6 +65,11 @@ class Sales extends Secure_area
 		$this->sale_lib->set_invoice_number_enabled($this->input->post('sales_invoice_number_enabled'));
 	}
 	
+	function set_print_after_sale()
+	{
+		$this->sale_lib->set_print_after_sale($this->input->post('sales_print_after_sale'));
+	}
+	
 	function set_email_receipt()
 	{
  	  $this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
@@ -227,6 +232,7 @@ class Sales extends Secure_area
 		$emp_info=$this->Employee->get_info($employee_id);
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
+		$data['amount_due']=$this->sale_lib->get_amount_due();
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 		$data['company_info'] = implode("\n", array(
 				$this->config->item('address'),
@@ -265,6 +271,8 @@ class Sales extends Secure_area
 			}
 			else
 			{
+				$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
+				$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
 				// if we want to email. .. just attach the pdf in there?
 				if ($this->sale_lib->get_email_receipt() && !empty($cust_info->email))
 				{
@@ -281,7 +289,7 @@ class Sales extends Secure_area
 						$filename = $this->_invoice_email_pdf($data);
 						$this->email->attach($filename);
 						$message = $this->config->item('invoice_email_message');
-						$message = $this->_substitute_variables($message);
+						$message = $this->_substitute_variables($message, $cust_info);
 						$this->email->message($message);
 					}
 					else
@@ -291,19 +299,10 @@ class Sales extends Secure_area
 					$this->email->send();
 				}
 			}
-			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
-			$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
 			$data['cur_giftcard_value']=$this->sale_lib->get_giftcard_remainder();
-			$data['print_receipt'] = $this->Appconfig->get('print_after_sale');
+			$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 			if ($this->sale_lib->is_invoice_number_enabled() && $this->config->item('use_invoice_template'))
 			{
-				$data['customer_info'] = nl2br(implode("\n", array(
-						$data['customer'],
-						$data['customer_address'],
-						$data['customer_location'],
-						$data['account_number']
-				)));
-				
 				$this->load->view("sales/invoice",$data);
 			}
 			else
@@ -462,13 +461,13 @@ class Sales extends Secure_area
 		// static barcode config for receipts + invoices 
 		$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
 		$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
+		$data['print_after_sale'] = FALSE;
 		return $data;
 	}
 	
 	function receipt($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);	
-		$data['print_receipt'] = FALSE;
 		$this->load->view("sales/receipt",$data);
 		$this->sale_lib->clear_all();
 		$this->_remove_duplicate_cookies();
@@ -607,6 +606,7 @@ class Sales extends Secure_area
 		}
 		$data['invoice_number']=$this->_substitute_invoice_number($cust_info);
 		$data['invoice_number_enabled']=$this->sale_lib->is_invoice_number_enabled();
+		$data['print_after_sale']=$this->sale_lib->is_print_after_sale();
 		$data['payments_cover_total']=$this->_payments_cover_total();
 		$this->load->view("sales/register",$data);
 		$this->_remove_duplicate_cookies();

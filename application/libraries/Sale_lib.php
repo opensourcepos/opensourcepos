@@ -78,6 +78,17 @@ class Sale_lib
 		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
 	}
 	
+	function is_print_after_sale() 
+	{
+		return $this->CI->session->userdata('sales_print_after_sale') == 'true' ||
+			$this->CI->session->userdata('sales_print_after_sale') == '1';
+	}
+	
+	function set_print_after_sale($print_after_sale)
+	{
+		return $this->CI->session->set_userdata('sales_print_after_sale', $print_after_sale);
+	}
+	
 	function get_email_receipt() 
 	{
 		return $this->CI->session->userdata('email_receipt');

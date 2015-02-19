@@ -23,6 +23,17 @@ class Receiving extends CI_Model
 		return $this->db->get();
 	}
 	
+	function get_invoice_number_for_year($year='', $start_from = 0)
+	{
+		$year = $year == '' ? date('Y') : $year;
+		$this->db->select("COUNT( 1 ) AS invoice_number_year", FALSE);
+		$this->db->from('receivings');
+		$this->db->where("DATE_FORMAT(receiving_time, '%Y' ) = ", $year, FALSE);
+		$this->db->where("invoice_number IS NOT ", "NULL", FALSE);
+		$result = $this->db->get()->row_array();
+		return ($start_from + $result[ 'invoice_number_year' ] + 1);
+	}
+	
 	function exists($receiving_id)
 	{
 		$this->db->from('receivings');

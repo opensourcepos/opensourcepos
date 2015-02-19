@@ -7,7 +7,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('company_logo', ''),
 ('barcode_page_width', '100'),      
 ('barcode_page_cellspacing', '20'),
-('receipt_printer', ''),
 ('receipt_show_taxes', '0'),
 ('use_invoice_template', '1'),
 ('invoice_default_comments', 'This is a default comment'),

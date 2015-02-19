@@ -60,7 +60,6 @@ config_info,Systeeminstellingen,Información del Comercio,Store Configuration In
 config_language,Taal,Idioma,Language,Langue,語言,Язик,ภาษา,Dil,Bahasa
 config_phone,Telefoon,Teléfono del Comercio,Company Phone,Téléphone,電話,Телефон Компании,เบอร์โทรศัพท์,Şirket Telefonu,Telepon Perusahaan
 config_phone_required,De telefoonnummer van het bedrijf moet ingevuld worden,Teléfono del Comercio es requerido,Company phone is a required field,Le numéro de téléphone est requis,公司電話為必填,Телефон Компании обязательный пробел,เบอร์โทรต้องกรอก,Şirket Telefonu zorunlu alandır,Telepon Perusahaan wajib diisi
-config_print_after_sale,Druk ticket na verkoop,Imprimir recibo después de una venta,Print receipt after sale,Imprimer un recu après vente,出貨時打印收據,Распечатать квитанцию ​​после продажи,พิมพ์บิลหลังการขาย,Satıştan sonra yazdır,Cetak Faktur setelah penjualan
 config_recv_invoice_format,,,Receivings Invoice Format,,,,รหัสใบแจ้งหนี้,,Format Nota
 config_return_policy_required,De retourvoorwaarden moeten ingevuld worden,Política de Devolución es requerida,Return policy is a required field,Le Message est un champ requis,退換貨政策為必填,Возвратний полис обязательный пробел,กฎการคืนของต้องกรอก,İade Politikası zorunlu alandır,Kebijakan retur wajib diisi
 config_sales_invoice_format,,,Sales Invoice Format,,,,รหัสใบเสร็จ,,Format Nota
@@ -90,10 +89,11 @@ config_decimal_point,Decimal Point, Decimal Point,Decimal Point, Decimal Point,D
 config_backup_button,Backup,Backup,Backup,Backup,Backup,Backup,Backup,Backup,Backup
 config_stock_location_invalid_chars,De bedrijfsnaam moet ingevuld worden,The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_',The stock location name can not contain '_'
 config_company_logo,Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo,Company Logo
+config_invoice_printer,Factuur Printer,Invoice Printer,Invoice Printer,Invoice Printer,Invoice Printer,Invoice Printer,Invoice Printer,Invoice Printer,Invoice Printer
 config_receipt_printer,Ticket Printer,Ticket Printer,Ticket Printer,Ticket Printer,Ticket Printer,Ticket Printer,Ticket Printer,Ticket Printer,Ticket Printer
 config_receipt_show_taxes,Toon VAT,Show Taxes,Show Taxes,Show Taxes,Show Taxes,Show Taxes,Show Taxes,Show Taxes,Show Taxes
 config_receipt_info,Ticket Instellingen,Receipt Configuration Information,Receipt Configuration Information,Receipt Configuration Information,Receipt Configuration Information,Receipt Configuration Information,Receipt Configuration Information,Receipt Configuration Information,Receipt Configuration Information
-config_receipt_configuration,Ticket Configuratie,Ticket Configuration,Ticket Configuration,Ticket Configuration,Ticket Configuration,Ticket Configuration,Ticket Configuration,Ticket Configuration,Ticket Configuration
+config_receipt_configuration,Print Instellingen,Print Settings,Print Settings,Print Settings,Print Settings,Print Settings,Print Settings,Print Settings,Print Settings
 config_print_footer,Print Browser Footer,Print Browser Footer,Print Browser Footer,Print Browser Footer,Print Browser Footer,Print Browser Footer,Print Browser Footer,Print Browser Footer,Print Browser Footer
 config_print_header,Print Browser Header,Print Browser Header,Print Browser Header,Print Browser Header,Print Browser Header,Print Browser Header,Print Browser Header,Print Browser Header,Print Browser Header
 config_print_silently,Marge Boven,Top Margin,Show Print Dialog,Show Print Dialog,Show Print Dialog,Show Print Dialog,Show Print Dialog,Show Print Dialog,Show Print Dialog

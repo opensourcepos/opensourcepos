@@ -63,6 +63,11 @@ class Receivings extends Secure_area
 		$this->receiving_lib->set_invoice_number_enabled($this->input->post('recv_invoice_number_enabled'));
 	}
 	
+	function set_print_after_sale()
+	{
+		$this->receiving_lib->set_print_after_sale($this->input->post('recv_print_after_sale'));
+	}
+	
 	function set_invoice_number()
 	{
 		$this->receiving_lib->set_invoice_number($this->input->post('recv_invoice_number'));
@@ -218,10 +223,48 @@ class Receivings extends Secure_area
 			}
 			$barcode_config=array('barcode_type'=>1,'barcode_width'=>180, 'barcode_height'=>30, 'barcode_quality'=>100);
 			$data['barcode']=$this->barcode_lib->generate_barcode($data['receiving_id'],$barcode_config);
+			$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 			$this->load->view("receivings/receipt",$data);
 			$this->receiving_lib->clear_all();
 		}
 		$this->_remove_duplicate_cookies();
+	}
+	
+	function _substitute_variable($text, $variable, $object, $function)
+	{
+		// don't query if this variable isn't used
+		if (strstr($text, $variable))
+		{
+			$value = call_user_func(array($object, $function));
+			$text = str_replace($variable, $value, $text);
+		}
+		return $text;
+	}
+	
+	function _substitute_variables($text,$supplier_info)
+	{
+		$text=$this->_substitute_variable($text, '$YCO', $this->Receiving, 'get_invoice_number_for_year');
+		$text=$this->_substitute_variable($text, '$CO', $this->Receiving , 'get_invoice_count');
+		$text=strftime($text);
+		$text=$this->_substitute_supplier($text, $supplier_info);
+		return $text;
+	}
+	
+
+	function _substitute_supplier($text,$supplier_info)
+	{
+		$supplier_id=$this->receiving_lib->get_supplier();
+		if($supplier_id!=-1)
+		{
+			$text=str_replace('$SU',$supplier_info->company_name,$text);
+			$words = preg_split("/\s+/", trim($supplier_info->company_name));
+			$acronym = "";
+			foreach ($words as $w) {
+				$acronym .= $w[0];
+			}
+			$text=str_replace('$SI',$acronym,$text);
+		}
+		return $text;
 	}
 	
 	function _substitute_invoice_number($supplier_info='')
@@ -231,21 +274,7 @@ class Receivings extends Secure_area
 		{
 			$invoice_number=$this->config->config['recv_invoice_format'];
 		}
-		$invoice_count=$this->Receiving->get_invoice_count();
-		$invoice_number=str_replace('$CO',$invoice_count,$invoice_number);
-		$invoice_number=strftime($invoice_number);
-		
-		$supplier_id=$this->receiving_lib->get_supplier();
-		if($supplier_id!=-1)
-		{
-			$invoice_number=str_replace('$SU',$supplier_info->company_name,$invoice_number);
-			$words = preg_split("/\s+/", trim($supplier_info->company_name));
-			$acronym = "";
-			foreach ($words as $w) {
-				$acronym .= $w[0];
-			}
-			$invoice_number=str_replace('$SI',$acronym,$invoice_number);
-		}
+		$invoice_number = $this->_substitute_variables($invoice_number,$supplier_info);
 		$this->receiving_lib->set_invoice_number($invoice_number);
 		return $invoice_number;
 	}
@@ -295,6 +324,7 @@ class Receivings extends Secure_area
 			$supplier_info=$this->Supplier->get_info($supplier_id);
 			$data['supplier']=$supplier_info->first_name.' '.$supplier_info->last_name;
 		}
+		$data['print_after_sale'] = FALSE;
 		$this->load->view("receivings/receipt",$data);
 		$this->receiving_lib->clear_all();
 		$this->_remove_duplicate_cookies();
@@ -336,6 +366,7 @@ class Receivings extends Secure_area
 		}
 		$data['invoice_number']=$this->_substitute_invoice_number($suppl_info);
 		$data['invoice_number_enabled']=$this->receiving_lib->is_invoice_number_enabled();
+		$data['print_after_sale']=$this->receiving_lib->is_print_after_sale();
 		$this->load->view("receivings/receiving",$data);
 		$this->_remove_duplicate_cookies();
 	}

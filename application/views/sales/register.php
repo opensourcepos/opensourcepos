@@ -299,6 +299,22 @@ else
 
 			<?php echo form_open("sales/add_payment",array('id'=>'add_payment_form')); ?>
 			<table width="100%">
+				<tr>
+					<td>
+						<?php echo $this->lang->line('sales_print_after_sale'); ?>
+					</td>
+					<td>
+						<?php if ($print_after_sale)
+						{
+							echo form_checkbox(array('name'=>'sales_print_after_sale','id'=>'sales_print_after_sale','checked'=>'checked'));
+						}
+						else
+						{
+							echo form_checkbox(array('name'=>'sales_print_after_sale','id'=>'sales_print_after_sale'));
+						}
+						?>
+					</td>
+				</tr>
 				<?php if ($mode == "sale") 
 				{
 				?>
@@ -309,11 +325,11 @@ else
 					<td>
 						<?php if ($invoice_number_enabled)
 						{
-							echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10,'checked'=>'checked'));
+							echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','checked'=>'checked'));
 						}
 						else
 						{
-							echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','size'=>10));
+							echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable'));
 						}
 						?>
 					</td>
@@ -472,18 +488,15 @@ $(document).ready(function()
 	var enable_invoice_number = function() 
 	{
 		var enabled = $("#sales_invoice_enable").is(":checked");
-		if (enabled)
-		{
-			$("#sales_invoice_number").removeAttr("disabled").parents('tr').show();
-		}
-		else
-		{
-			$("#sales_invoice_number").attr("disabled", "disabled").parents('tr').hide();
-		}
+		$("#sales_invoice_number").prop("disabled", enabled).parents('tr').show();
 		return enabled;
 	}
 
 	enable_invoice_number();
+
+	$("#sales_print_after_sale").change(function() {
+		$.post('<?php echo site_url("sales/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
+	});
 	
 	$("#sales_invoice_enable").change(function() {
 		var enabled = enable_invoice_number();

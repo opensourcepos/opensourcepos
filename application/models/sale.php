@@ -25,7 +25,7 @@ class Sale extends CI_Model
 	
 	function get_invoice_number_for_year($year='', $start_from = 0) 
 	{
-		$year = $year = '' ? date('Y') : $year;
+		$year = $year == '' ? date('Y') : $year;
 		$this->db->select("COUNT( 1 ) AS invoice_number_year", FALSE);
 		$this->db->from('sales');
 		$this->db->where("DATE_FORMAT(sale_time, '%Y' ) = ", $year, FALSE);

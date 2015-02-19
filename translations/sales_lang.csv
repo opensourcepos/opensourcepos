@@ -90,6 +90,7 @@ sales_unsuspend,Hervat,Retomar,Unsuspend,Débloquer,取消暫停銷售,Разб�
 sales_unsuspend_and_delete,,Retomar y Borrar,,,取消暫停銷售並刪除,Разблокировать и удалить,ยกเลิกการระงับ และ ลบ,,Batalkan dan hapus penangguhan
 sales_giftcard_balance,Waardebon Resterend,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance
 sales_discount_included,% korting inbegrepen,% discount included,% discount included,% discount included,% discount included,% discount included,% discount included,% discount included,% discount included
+sales_print_after_sale,Print Ticket,Imprimir recibo después de una venta,Print after sale,Imprimer un recu après vente,出貨時打印收據,Распечатать квитанцию ​​после продажи,พิมพ์บิลหลังการขาย,Satıştan sonra yazdır,Cetak Faktur setelah penjualan
 sales_invoice,Factuur,Invoice,Invoice,Invoice,Invoice,Invoice,Invoice,Invoice,Invoice
 sales_total_tax_exclusive,Totaal,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded
 sales_send_invoice,Vestuur Factuur,Send Invoice,Send Invoice,Send Invoice,Send Invoice,Send Invoice,Send Invoice,Send Invoice,Send Invoice

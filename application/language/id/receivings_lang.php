@@ -47,4 +47,5 @@ $lang["recvs_supplier"] = "Pemasok";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Item tidak dapat ditambahkan ke penerimaan barang masuk";
 $lang["recvs_unsuccessfully_updated"] = "Tidak Berhasil Diperbaharui";
-$lang["recvs_invoice_enable"] = "";
+$lang["recvs_invoice_enable"] = "Create Invoice";
+$lang["recvs_print_after_sale"] = "Cetak Faktur setelah penjualan";

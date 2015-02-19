@@ -48,3 +48,4 @@ $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Unable to add item to receiving";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
 $lang["recvs_invoice_enable"] = "Create Invoice";
+$lang["recvs_print_after_sale"] = "Print after sale";

@@ -7,6 +7,9 @@ if (isset($error_message))
 }
 ?>
 
+<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 
+		'selected_printer' => 'invoice_printer')); ?>
+
 <div id="page-wrap">
 	<div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
 	<div id="block1">
