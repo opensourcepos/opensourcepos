@@ -1,3 +1,4 @@
+
 <?php $this->load->view("partial/header"); ?>
 <div id="page_title" style="margin-bottom: 8px;"><?php echo $this->lang->line('sales_register'); ?></div>
 <?php
@@ -488,7 +489,7 @@ $(document).ready(function()
 	var enable_invoice_number = function() 
 	{
 		var enabled = $("#sales_invoice_enable").is(":checked");
-		$("#sales_invoice_number").prop("disabled", enabled).parents('tr').show();
+		$("#sales_invoice_number").prop("disabled", !enabled).parents('tr').show();
 		return enabled;
 	}
 
