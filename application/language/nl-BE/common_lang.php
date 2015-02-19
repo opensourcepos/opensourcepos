@@ -43,3 +43,4 @@ $lang["common_zip"] = "Postcode";
 $lang["common_gender"] = "Geslacht";
 $lang["common_gender_male"] = "M";
 $lang["common_gender_female"] = "V";
+$lang["common_date"] = "Datum";

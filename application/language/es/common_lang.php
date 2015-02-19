@@ -43,3 +43,4 @@ $lang["common_zip"] = "C.P.";
 $lang["common_gender"] = "Gender";
 $lang["common_gender_male"] = "M";
 $lang["common_gender_female"] = "F";
+$lang["common_date"] = "Date";

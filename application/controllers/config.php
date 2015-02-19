@@ -14,6 +14,7 @@ class Config extends Secure_area
 		$data['stock_locations'] = $this->Stock_locations->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$this->load->view("configs/manage", $data);
+		$this->_remove_duplicate_cookies();
 	}
 		
 	function save()
@@ -140,18 +141,21 @@ class Config extends Secure_area
     
     function save_receipt()
     {
-    	$batch_save_data=array(
-    			'print_after_sale'=>$this->input->post('print_after_sale'),
-    			'receipt_printer'=>$this->input->post('receipt_printer'),
-    			'receipt_show_taxes'=>$this->input->post('receipt_show_taxes'),
-    			'print_silently'=>$this->input->post('print_silently'),
-    			'print_header'=>$this->input->post('print_header'),
-    			'print_footer'=>$this->input->post('print_footer'),
-    			'print_top_margin'=>$this->input->post('print_top_margin'),
-    			'print_left_margin'=>$this->input->post('print_left_margin'),
-    			'print_bottom_margin'=>$this->input->post('print_bottom_margin'),
-    			'print_right_margin'=>$this->input->post('print_right_margin')
-    	);
+    	$batch_save_data = array (
+		'use_invoice_template' => $this->input->post ( 'use_invoice_template' ),
+		'invoice_default_comments' => $this->input->post ( 'invoice_default_comments' ),
+		'invoice_email_message' => $this->input->post ( 'invoice_email_message' ),
+		'print_after_sale' => $this->input->post ( 'print_after_sale' ),
+		'receipt_printer' => $this->input->post ( 'receipt_printer' ),
+		'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ),
+		'print_silently' => $this->input->post ( 'print_silently' ),
+		'print_header' => $this->input->post ( 'print_header' ),
+		'print_footer' => $this->input->post ( 'print_footer' ),
+		'print_top_margin' => $this->input->post ( 'print_top_margin' ),
+		'print_left_margin' => $this->input->post ( 'print_left_margin' ),
+		'print_bottom_margin' => $this->input->post ( 'print_bottom_margin' ),
+		'print_right_margin' => $this->input->post ( 'print_right_margin' ) 
+		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;
     	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
@@ -163,9 +167,9 @@ class Config extends Secure_area
     	// load upload library
     	$config = array('upload_path' => './uploads/',
     			'allowed_types' => 'gif|jpg|png',
-    			'max_size' => '100',
-    			'max_width' => '640',
-    			'max_height' => '480',
+    			'max_size' => '1024',
+    			'max_width' => '800',
+    			'max_height' => '680',
     			'file_name' => 'company_logo');
     	$this->load->library('upload', $config);
     	$this->upload->do_upload('company_logo');
