@@ -5,7 +5,7 @@
 $(window).load(function()
 {
 	// receipt layout sanity check
-	if ( $("#receipt_items").length > 0) 
+	if ( $("#receipt_items, #items").length > 0) 
 	{
 		// install firefox addon in order to use this plugin
 		if (window.jsPrintSetup) 
