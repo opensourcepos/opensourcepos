@@ -180,8 +180,6 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #print_silently").prop('disabled', !window.jsPrintSetup);
-
 	var enable_disable_use_invoice_template = (function() 
 	{
 		var use_invoice_template = $("#use_invoice_template").is(":checked");
@@ -209,7 +207,11 @@ $(document).ready(function()
 	}
 	else
 	{
-		//$("#receipt_printer").prop('disabled', true).append($('<option>', {'N/A' : 'N/A'})).text('N/A');
+		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #invoice_printer, #print_silently").prop('disabled', true);
+		$("#receipt_printer, #invoice_printer").each(function() 
+		{
+			$(this).append($('<option>', {value : 'na'}).text('N/A'));
+		});
 	}
 
 	var dialog_confirmed = window.jsPrintSetup;
