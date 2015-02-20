@@ -9,15 +9,12 @@ class Suppliers extends Person_controller
 	
 	function index()
 	{
-		$config['base_url'] = site_url('/suppliers/index');
-		$config['total_rows'] = $this->Supplier->count_all();
-		$config['per_page'] = '20';
-		$config['uri_segment'] = 3;
-		$this->pagination->initialize($config);
-		
-		$data['controller_name']=strtolower(get_class());
+		$data['controller_name']=$this->get_controller_name();
 		$data['form_width']=$this->get_form_width();
-		$data['manage_table']=get_supplier_manage_table( $this->Supplier->get_all( $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$suppliers = $this->Supplier->get_all($lines_per_page);
+		$data['links'] = $this->_initialize_pagination($this->Supplier,$lines_per_page);
+		$data['manage_table']=get_suppliers_manage_table($suppliers,$this);
 		$this->load->view('suppliers/manage',$data);
 	}
 	
@@ -26,9 +23,14 @@ class Suppliers extends Person_controller
 	*/
 	function search()
 	{
-		$search=$this->input->post('search');
-		$data_rows=get_supplier_manage_table_data_rows($this->Supplier->search($search),$this);
-		echo $data_rows;
+		$search = $this->input->post('search');
+		$limit_from = $this->input->post('limit_from');
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$suppliers = $this->Supplier->search($search, $lines_per_page, $limit_from);
+		$total_rows = $this->Supplier->get_found_rows($search);
+		$links = $this->_initialize_pagination($lines_per_page, $limit_from, $total_rows);
+		$data_rows=get_suppliers_manage_table_data_rows($suppliers,$this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	
 	/*

@@ -16,8 +16,8 @@ sales_confirm_suspend_sale,Bent u zeker dat u deze aankoop wil bewaren?,¿Estás
 sales_credit,Kredietkaart,Tarjeta de Crédito,Credit Card,Carte de Crédit,信用卡,кредитная карта,เครดิทการ์ด,Kredi Kartı,Kartu Credit
 sales_customer,Klant,cliente,Customer,Client,客戶,клиент,ลูกค้า,Müşteri,Pelanggan
 sales_date,Datum,Fecha,Sale Date,Date de Vente,日期,Число,วันที่ขาย,Satış Tarihi,Tanggal
-sales_date_required,,,A correct date needs to be filled in,,,,,,Permintaan Data
-sales_date_type,,,Date field is required,,,,,,Jenis Data
+sales_date_required,Gelieve een correcte datum in te vullen,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,Permintaan Data
+sales_date_type,Er moet een correcte datum ingevuld worden,,Date field is required,Date field is required,Date field is required,Date field is required,Date field is required,Date field is required,Jenis Data
 sales_debit,Bancontact,Tarjeta de Débito,Debit Card,Carte Débit,簽帳卡,Дебетовая карта,เดบิทการ์ด,Banka Kartı,Kartu Debit
 sales_delete_confirmation,Bent u zeker dat u deze aankoop wil verwijderen?,¿Estás seguro(a) de querer borrar esta venta? Esta acción no se puede deshacer.,"Are you sure you want to delete this sale, this action cannot be undone",Etes vous sûr(e) de vouloir supprimer cette vente? Cette opération est irréversible.,你確定要刪除此銷售資料，這個動作不能撤消,"Вы уверены, что хотите удалить эту продажу, это действие не может быть отменено","แน่ใจหรือไม่ที่จะลบรายการขายนี้, ลบแล้วไม่สามารถเรียกกลับคืนใด้","Satışı silmek istediğinize emin misiniz, bu işlem geri alınamaz","Apakah anda yakin ingin menghapus transaksi penjualan ini, Pilihan ini tidak dapat dibatalkan"
 sales_delete_entire_sale,Verwijder,Borrar la venta completa,Delete entire sale,Supprimer Vente,刪除全部銷售資料,Удалить всего продажи,ลบการขายทั้งหมด,Satışın tamamını sil,Hapus Transaksi Penjualan
@@ -37,9 +37,9 @@ sales_find_or_scan_item_or_receipt,Zoek/Scan Product of Ticket,Encontrar/Escanea
 sales_giftcard,Cadeaubon,Tarjeta de Regalo,Gift Card,Carte Cadeau,禮金券,Подарочная карта,Gift Card,Hediye Çeki,Gift Card
 sales_giftcard_number,Cadeaubon nummer,Número de Tarjeta de Regalo,Gift Card Number,Numéro de Carte cadeau,禮金券編號,Номер подарочных карт,เลขที่ Gift Card,Hediye Çeki No,Nomor Gift Card
 sales_id,Nummer Verkoop ,ID de Venta,Sale ID,ID Vente,銷售編號,Номер Продажы,เลขที่ขาย,Satış No,ID Penjualan
-sales_invoice_enable,Maak Factuur,,Create Invoice,,,,,,
-sales_invoice_number,,Invoice #,Invoice #,Invoice #,,,,,Nomor Nota
-sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique invoice number,Please enter an unique invoice number,,,,,,Nomor Nota Double
+sales_invoice_enable,Maak Factuur,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice
+sales_invoice_number,Factuur #,Invoice #,Invoice #,Invoice #,Invoice #,Invoice #,Invoice #,Invoice #,Nomor Nota
+sales_invoice_number_duplicate,Vul een unieke nummer in,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Nomor Nota Double
 sales_item_insufficient_of_stock,Product is niet meer in voorraad,Hay un número insuficiente de Artículos en existencia,Item is Insufficient of Stock,Stock top faible,產品庫存不足,Товар недостаточно на складе,จำนวนสินค้าไม่เพียงพอ,Ürün Stoğu Yetersiz,Stok Item tidak mencukupi
 sales_item_name,Naam,Nombre del Artículo,Item Name,Nom,產品名稱,Название товара,ชื่อสินค้า,Ürün Adı,Nama Item 
 sales_item_number,Product #,UPC/EAN/ISBN,Item #,# Item,產品 #,Номер товара,สินค้า #,Ürün No,Item #
@@ -107,3 +107,4 @@ sales_invoice_filter,Filter tickets op ,Filter sales for ,Filter sales for ,Filt
 sales_overview,Overzicht,Overview,Overview,Overview,Overview,Overview,Overview,Overview,Overview
 sales_update,Bewerk Ticket,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale
 sales_confirm_delete,Bent u zeker dat u de geselecteerde aankopen wil verwijderen?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?
+sales_no_description,Geen,None,None,None,None,None,None,None,None

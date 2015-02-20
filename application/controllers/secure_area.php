@@ -41,6 +41,24 @@ class Secure_area extends CI_Controller
 		return strtolower($this->controller_name);
 	}
 	
+	function _initialize_pagination($object, $lines_per_page, $limit_from = 0, $total_rows = -1)
+	{
+		$this->load->library('pagination');
+		$config['base_url'] = site_url($this->get_controller_name() . '/index/');
+		$config['total_rows'] = $total_rows > -1 ? $total_rows : call_user_func(array($object, 'get_total_rows'));
+		$config['per_page'] = $lines_per_page;
+		$config['num_links'] = 2;
+		$config['last_link'] = $this->lang->line('common_last_page');
+		$config['first_link'] = $this->lang->line('common_first_page');
+		// page is calculated here instead of in pagination lib
+		$config['cur_page'] = $limit_from > 0  ? $limit_from : 0;
+		$config['page_query_string'] = FALSE;
+		$config['uri_segment'] = 0;
+		$this->pagination->initialize($config);
+		return $this->pagination->create_links();
+	}
+	
+	
 	function _remove_duplicate_cookies ()
 	{
 		//php < 5.3 doesn't have header remove so this function will fatal error otherwise

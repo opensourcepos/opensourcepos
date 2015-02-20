@@ -7,28 +7,30 @@ class Customers extends Person_controller
 		parent::__construct('customers');
 	}
 	
-	function index()
+	function index($limit_from=0)
 	{
-		$config['base_url'] = site_url('/customers/index');
-		$config['total_rows'] = $this->Customer->count_all();
-		$config['per_page'] = '20';
-		$config['uri_segment'] = 3;
-		$this->pagination->initialize($config);
-		
-		$data['controller_name']=strtolower(get_class());
+		$data['controller_name']=$this->get_controller_name();
 		$data['form_width']=$this->get_form_width();
-		$data['manage_table']=get_people_manage_table( $this->Customer->get_all( $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$customers = $this->Customer->get_all($lines_per_page,$limit_from);
+		$data['links'] = $this->_initialize_pagination($this->Customer,$lines_per_page,$limit_from);
+		$data['manage_table']=get_people_manage_table($customers,$this);
 		$this->load->view('people/manage',$data);
 	}
 	
 	/*
-	Returns customer table data rows. This will be called with AJAX.
+	 Returns customer table data rows. This will be called with AJAX.
 	*/
 	function search()
 	{
-		$search=$this->input->post('search');
-		$data_rows=get_people_manage_table_data_rows($this->Customer->search($search),$this);
-		echo $data_rows;
+		$search = $this->input->post('search');
+		$limit_from = $this->input->post('limit_from');
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$customers = $this->Customer->search($search, $lines_per_page, $limit_from);
+		$total_rows = $this->Customer->get_found_rows($search);
+		$links = $this->_initialize_pagination($this->Customer,$lines_per_page, $limit_from, $total_rows);
+		$data_rows=get_people_manage_table_data_rows($customers,$this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	
 	/*

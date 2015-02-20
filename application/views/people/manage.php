@@ -82,7 +82,7 @@ function post_person_form_submit(response)
 		<?php } ?>
 	</div>
 </div>
-<?php echo $this->pagination->create_links();?>
+<div id="pagination"><?= $links ?></div>
 <div id="table_action_header">
 	<ul>
 		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>

@@ -108,3 +108,4 @@ $lang["sales_invoice_filter"] = "Filter sales for ";
 $lang["sales_overview"] = "Overview";
 $lang["sales_update"] = "Edit Sale";
 $lang["sales_confirm_delete"] = "Are you sure you want to delete the selected sales?";
+$lang["sales_no_description"] = "None";

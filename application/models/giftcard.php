@@ -20,7 +20,11 @@ class Giftcard extends CI_Model
 		$query = $this->db->get('giftcards');
 		return $query->row();
 	}
-
+	
+	function get_total_rows()
+	{
+		return $this->db->count_all('giftcards');
+	}
 	/*
 	Returns all the giftcards
 	*/
@@ -230,7 +234,7 @@ class Giftcard extends CI_Model
 	/*
 	Preform a search on giftcards
 	*/
-	function search($search)
+	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('giftcards');
 		$this->db->join('people','giftcards.person_id=people.person_id');
@@ -241,7 +245,23 @@ class Giftcard extends CI_Model
 		$this->db->or_like("giftcards.person_id",$this->db->escape_like_str($search));
 		$this->db->where('deleted',$this->db->escape('0'));
 		$this->db->order_by("giftcard_number", "asc");
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();
+	}
+	
+	function get_found_rows($search)
+	{
+		$this->db->from('giftcards');
+		$this->db->join('people','giftcards.person_id=people.person_id');
+		$this->db->like("first_name",$this->db->escape_like_str($search));
+		$this->db->or_like("last_name",$this->db->escape_like_str($search));
+		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
+		$this->db->or_like("giftcard_number",$this->db->escape_like_str($search));
+		$this->db->or_like("giftcards.person_id",$this->db->escape_like_str($search));
+		$this->db->where('deleted',$this->db->escape('0'));
+		return $this->db->get()->num_rows();
 	}
 	
 	public function get_giftcard_value( $giftcard_number )

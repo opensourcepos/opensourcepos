@@ -60,9 +60,9 @@ config_info,Systeeminstellingen,Información del Comercio,Store Configuration In
 config_language,Taal,Idioma,Language,Langue,語言,Язик,ภาษา,Dil,Bahasa
 config_phone,Telefoon,Teléfono del Comercio,Company Phone,Téléphone,電話,Телефон Компании,เบอร์โทรศัพท์,Şirket Telefonu,Telepon Perusahaan
 config_phone_required,De telefoonnummer van het bedrijf moet ingevuld worden,Teléfono del Comercio es requerido,Company phone is a required field,Le numéro de téléphone est requis,公司電話為必填,Телефон Компании обязательный пробел,เบอร์โทรต้องกรอก,Şirket Telefonu zorunlu alandır,Telepon Perusahaan wajib diisi
-config_recv_invoice_format,,,Receivings Invoice Format,,,,รหัสใบแจ้งหนี้,,Format Nota
+config_recv_invoice_format,Formattering Order #,,Receivings Invoice Format,,,,รหัสใบแจ้งหนี้,,Format Nota
 config_return_policy_required,De retourvoorwaarden moeten ingevuld worden,Política de Devolución es requerida,Return policy is a required field,Le Message est un champ requis,退換貨政策為必填,Возвратний полис обязательный пробел,กฎการคืนของต้องกรอก,İade Politikası zorunlu alandır,Kebijakan retur wajib diisi
-config_sales_invoice_format,,,Sales Invoice Format,,,,รหัสใบเสร็จ,,Format Nota
+config_sales_invoice_format,Formattering Aankoop #,,Sales Invoice Format,,,,รหัสใบเสร็จ,,Format Nota
 config_saved_successfully,Configuratie werd bewaard,Configuración guardada satisfactoriamente,Configuration saved successfully,Configuration sauvegardée,組態設置儲存成功,Конфигурация успешно сохранена,องค์ประกอบร้านค้าบันทึกเรียบร้อย,Yapılandırma kaydedildi,Konfigurasi berhasil disimpan
 config_saved_unsuccessfully,Configuratie kon niet worden bewaard,Configuración no guardada,Configuration saved unsuccessfully,Échec de sauvegarde de configuration,組態設置儲存失敗,Конфигурация сохраненная безуспешно,องค์ประกอบร้านค้าบันทึกล้มเหลว,Yapılandırma kaydedilemedi,Konfigurasi tidak berhasil disimpan
 config_stock_location,Stock locatie,Stock location,Stock location,Stock location,Stock location,Stock location,สถานที่เก็บ,Mağaza Yeri,Lokasi Stock
