@@ -133,7 +133,7 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 </div>
 
 <div id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
-	<div style="float:left;vertical-align:text-top;">Search Options :</div>
+	<div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'); ?> :</div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="
 	<?php echo isset($search_section_state)?  ( ($search_section_state)? base_url().'images/minus.png' : base_url().'images/plus.png') : base_url().'images/plus.png';?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>

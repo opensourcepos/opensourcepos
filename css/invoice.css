@@ -12,7 +12,7 @@
 #page-wrap table { border-collapse: collapse; }
 #page-wrap table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
 
-#header { height: 30px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: bold 26px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 4px; padding: 8px 0px; }
+#header { height: 30px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: bold 26px Helvetica, Sans-Serif; text-transform: uppercase; letter-spacing: 4px; padding: 8px 0px; }
 
 /* first row */
 #logo { text-align: right; margin-top: 15px; float: left; position: relative; border: 1px solid #fff; max-width: 150px; max-height: 150px; overflow: hidden; }

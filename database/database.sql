@@ -478,10 +478,10 @@ CREATE TABLE `ospos_sales` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
-  `payment_type` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
+  KEY `sale_time` (`sale_time`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -572,7 +572,6 @@ CREATE TABLE `ospos_sales_suspended` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
-  `payment_type` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),

@@ -25,6 +25,9 @@ if (isset($success))
 <span><?php echo $this->lang->line('sales_stock_location') ?></span>
 <?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'onchange="$(\'#mode_form\').submit();"'); ?>
 <?php endif; ?>
+<div id="sales_overview" class="small_button"><a href="<?=site_url($controller_name . '/manage')?>">
+	<span><?php echo $this->lang->line('sales_overview'); ?><span></a>
+</div>
 <div id="show_suspended_sales_button">
 	<?php echo anchor("sales/suspended/width:425",
 	"<div class='small_button'><span style='font-size:73%;'>".$this->lang->line('sales_suspended_sales')."</span></div>",

@@ -13,6 +13,72 @@ class Sales extends Secure_area
 	{
 		$this->_reload();
 	}
+	
+	function manage($payment_type = 0, $limit_from = 0)
+	{
+		$data['controller_name']=strtolower($this->uri->segment(1));
+		$data['payment_types'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
+		$data['search_section_state']=$this->input->post('search_section_state');
+	
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$sales = $this->Sale->get_all($payment_type,$lines_per_page,$limit_from);
+		$total_rows = $this->Sale->get_found_rows($payment_type);
+		$data['payment_type'] = $payment_type;
+		$data['links'] = $this->_initialize_pagination($payment_type, $lines_per_page, $limit_from, $total_rows);
+	
+		$data['manage_table']=get_sales_manage_table($sales,$this);
+		$this->load->view($data['controller_name'] . '/manage',$data);
+		$this->_remove_duplicate_cookies();
+	}
+	
+	function get_row()
+	{
+		$sale_id = $this->input->post('row_id');
+		$sale_info = $this->Sale->get_info($sale_id)->result_array();
+		$data_row=get_sale_data_row($sale_info[0],$this);
+		echo $data_row;
+	}
+	
+	function _initialize_pagination($payment_type, $lines_per_page, $limit_from = 0, $total_rows = 0)
+	{
+		$this->load->library('pagination');
+		$config['base_url'] = site_url($this->get_controller_name() . '/manage/' . $payment_type);
+		$config['total_rows'] = $total_rows;
+		$config['per_page'] = $lines_per_page;
+		$config['num_links'] = 2;
+		$config['last_link'] = $this->lang->line('common_last_page');
+		$config['first_link'] = $this->lang->line('common_first_page');
+		// page is calculated here instead of in pagination lib
+		$config['cur_page'] = $limit_from > 0  ? $limit_from : 0;
+		$config['page_query_string'] = FALSE;
+		$config['uri_segment'] = 0;
+		$this->pagination->initialize($config);
+		return $this->pagination->create_links();
+	}
+	
+	/**
+	 *
+	 * Get the width for the add/edit form.
+	 * @return number The form width
+	 */
+	function get_form_width()
+	{
+		return 400;
+	}
+	
+	function search()
+	{
+		$payment_type = $this->input->post('payment_type', TRUE);
+		$limit_from = $this->input->post('limit_from', TRUE);
+		$search = $this->input->post('search', TRUE);
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$sales = $this->Sale->search($search, $payment_type, $lines_per_page, $limit_from, $search);
+		$total_rows = $this->Sale->get_found_rows($search);
+		$links = $this->_initialize_pagination($payment_type, $lines_per_page, $limit_from, $total_rows);
+		$data_rows=get_sales_manage_table_data_rows($sales,$this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$this->_remove_duplicate_cookies();
+	}
 
 	function item_search()
 	{
@@ -24,6 +90,14 @@ class Sales extends Secure_area
 	function customer_search()
 	{
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		echo implode("\n",$suggestions);
+	}
+	
+	function suggest()
+	{
+		$search = $this->input->post('q', TRUE);
+		$limit = $this->input->post('limit', TRUE);
+		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
 		echo implode("\n",$suggestions);
 	}
 
@@ -486,12 +560,6 @@ class Sales extends Secure_area
 	function edit($sale_id)
 	{
 		$data = array();
-
-		$data['customers'] = array('' => 'No Customer');
-		foreach ($this->Customer->get_all()->result() as $customer)
-		{
-			$data['customers'][$customer->person_id] = $customer->first_name . ' '. $customer->last_name;
-		}
 
 		$data['employees'] = array();
 		foreach ($this->Employee->get_all()->result() as $employee)

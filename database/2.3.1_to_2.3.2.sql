@@ -31,4 +31,8 @@ ALTER TABLE `ospos_items`
 
 ALTER TABLE `ospos_people` 
    ADD COLUMN `gender` int(1) DEFAULT NULL;
-
+   
+-- drop redundant payment_type column in sales, add index to sale_time to speed up sorting
+ALTER TABLE `ospos_sales`
+    DROP COLUMN `payment_type`,
+    ADD INDEX `sale_time` (`sale_time`);

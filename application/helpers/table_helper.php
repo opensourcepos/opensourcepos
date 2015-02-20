@@ -1,4 +1,77 @@
 <?php
+
+function get_sales_manage_table($sales,$controller)
+{
+	$CI =& get_instance();
+	$table='<table class="tablesorter" id="sortable_table">';
+
+	$headers = array('&nbsp;',
+	$CI->lang->line('sales_sale_time'),
+	$CI->lang->line('customers_customer'),
+	$CI->lang->line('sales_amount_tendered'),
+	$CI->lang->line('sales_amount_due'),
+	$CI->lang->line('sales_receipt_number'),
+	$CI->lang->line('sales_invoice_number'),
+	'&nbsp');
+
+	$table.='<thead><tr>';
+	foreach($headers as $header)
+	{
+		$table.="<th>$header</th>";
+	}
+	$table.='</tr></thead><tbody>';
+	$table.=get_sales_manage_table_data_rows($sales,$controller);
+	$table.='</tbody></table>';
+	return $table;
+}
+
+/*
+ Gets the html data rows for the people.
+ */
+function get_sales_manage_table_data_rows($sales,$controller)
+{
+	$CI =& get_instance();
+	$table_data_rows='';
+
+	foreach($sales->result_array() as $sale)
+	{
+		$table_data_rows.=get_sale_data_row($sale,$controller);
+	}
+
+	if($sales->num_rows()==0)
+	{
+		$table_data_rows.="<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('sales_no_sales_to_display')."</div></tr></tr>";
+	}
+
+	return $table_data_rows;
+}
+
+function get_sale_data_row($sale,$controller)
+{
+	$CI =& get_instance();
+	$controller_name=$CI->uri->segment(1);
+	$width = $controller->get_form_width();
+
+	$table_data_row='<tr>';
+	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_"' . $sale[ 'sale_id' ] . ' value="' . $sale[ 'sale_id' ]. '" /></td>';
+	$table_data_row.='<td width="17%">'.date('d/m/Y H:i' , strtotime($sale[ 'sale_time' ])).'</td>';
+	$table_data_row.='<td width="23%">'.character_limiter( $sale[ 'last_name' ] . " " . $sale[ 'first_name' ] ,25).'</td>';
+	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_tendered' ] ).'</td>';
+	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_due' ] ).'</td>';
+	$table_data_row.='<td width="15%">'.'Ticket ' . $sale[ 'sale_id' ]. '</td>';
+	$table_data_row.='<td width="10%">'.$sale[ 'invoice_number' ].'</td>';
+	$table_data_row.='<td width="12%">';
+	$table_data_row.=anchor($controller_name."/edit/" . $sale[ 'sale_id' ] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
+	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
+	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale[ 'sale_id' ]) . '">' . $CI->lang->line('sales_show_receipt') .  '</a>';
+	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
+	$table_data_row.='<a href="'.site_url($controller_name. "/invoice/" . $sale[ 'sale_id' ]) . '">' . $CI->lang->line('sales_show_invoice') .  '</a>';
+	$table_data_row.='</td>';
+	$table_data_row.='</tr>';
+
+	return $table_data_row;
+}
+
 /*
 Gets the html table to manage people.
 */

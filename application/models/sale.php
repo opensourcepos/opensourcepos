@@ -3,10 +3,137 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
+		$this->db->select('first_name, last_name, email, comment, invoice_number, amount_tendered, ' .
+				 'sale_time, employee_id, customer_id, comments');
+		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
+		$this->db->select("sales.sale_id AS sale_id");
+		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
 		$this->db->from('sales');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'LEFT');
-		$this->db->where('sale_id',$sale_id);
+		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
+		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
+		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
+				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" .
+				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
+				"payments.sale_id = sales.sale_id", 'left');
+		$this->db->where('sales.sale_id',$sale_id);
+		$this->db->order_by('sale_time', 'desc');
+		$this->db->group_by('sale_id');
 		return $this->db->get();
+	}
+	
+	function get_all($only_invoices = 0, $rows = 0, $limit_from = 0)
+	{
+		$this->db->select('first_name, last_name, invoice_number, amount_tendered, sale_time');
+		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
+		$this->db->select("sales.sale_id AS sale_id");	
+		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
+		$this->db->from('sales');
+		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
+		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
+		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
+				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" . 
+				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
+				"payments.sale_id = sales.sale_id", 'left');
+		$this->db->order_by('sale_time', 'desc');
+		$this->db->group_by('sale_id');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+		if ($only_invoices != 0) {
+			$this->db->where('invoice_number <> ', 'NULL');
+		}
+		return $this->db->get();
+	}
+	
+	function search($search, $only_invoices = FALSE, $rows = 0, $limit_from = 0) 
+	{
+		$valid_receipt = $this->sale_lib->is_valid_receipt($search);
+		$this->db->select('first_name, last_name, invoice_number, amount_tendered, sale_time');
+		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
+		$this->db->select("sales.sale_id AS sale_id");
+		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
+		$this->db->from('sales');
+		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
+		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
+		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
+				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" . 
+				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
+				"payments.sale_id = sales.sale_id", 'left');
+		$this->db->group_by('sale_id');
+		if (!empty($search)) {
+			// if barcode scanned, explode and search for second term which will be the id
+			if ($valid_receipt) {
+				$pieces = explode(' ',$search);
+				$this->db->where('sales.sale_id', $pieces[1]);
+			} else {
+				// open parentheses
+				$this->db->where("( last_name LIKE '%" . $search . "%' OR ".
+						"first_name LIKE '%" . $search . "%' OR " .
+						"CONCAT( first_name,' ',last_name ) LIKE '%" . $search . "%')");
+				// close parentheses
+			}
+		}
+		if ($only_invoices != 0) {
+			$this->db->where('invoice_number <> ', 'NULL');
+		}
+		$this->db->order_by('sale_time DESC');
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+		return $this->db->get();
+	}
+	
+	function get_search_suggestions($search,$limit=25)
+	{
+		$suggestions = array();
+	
+		if (!$this->sale_lib->is_valid_receipt($search)) {
+			$this->db->distinct();
+			$this->db->select('first_name, last_name, invoice_number, sale_time');
+			$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
+			$this->db->select("sales.sale_id AS sale_id");
+			$this->db->from('sales');
+			$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
+			$this->db->where("( last_name LIKE '%" . $search . "%' OR ".
+					"first_name LIKE '%" . $search . "%' OR " .
+					"CONCAT( first_name, last_name ))");
+			$this->db->order_by('last_name', "asc");
+	
+			foreach($this->db->get()->result_array() as $result)
+			{
+				$suggestions[]=$result[ 'first_name' ].' '.$result[ 'last_name' ];
+			}
+	
+		} else {
+			$suggestions[]=$search;
+		}
+		return $suggestions;
+	}
+	
+	function get_found_rows($search, $only_invoices = FALSE)
+	{
+		$valid_receipt = $this->sale_lib->is_valid_receipt($search);
+		$this->db->from('sales');
+		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
+		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
+		$this->db->group_by('sales.sale_id');
+		if (!empty($search)) {
+			// if barcode scanned, explode and search for second term which will be the id
+			if ($valid_receipt) {
+				$pieces = explode(' ',$search);
+				$this->db->where('sales.sale_id', $pieces[1]);
+			} else {
+				// open parentheses
+				$this->db->where("( last_name LIKE '%" . $search . "%' OR ".
+						"first_name LIKE '%" . $search . "%' OR " .
+						"CONCAT( first_name,' ',last_name ) LIKE '%" . $search . "%')");
+				// close parentheses
+			}
+		}
+		if ($only_invoices != 0) {
+			$this->db->where('invoice_number <> ', 'NULL');
+		}
+		return $this->db->get()->num_rows();
 	}
 	
 	function get_invoice_count()
@@ -56,19 +183,10 @@ class Sale extends CI_Model
 		if(count($items)==0)
 			return -1;
 
-		//Alain Multiple payments
-		//Build payment types string
-		$payment_types='';
-		foreach($payments as $payment_id=>$payment)
-		{
-			$payment_types=$payment_types.$payment['payment_type'].': '.to_currency($payment['payment_amount']).'<br />';
-		}
-
 		$sales_data = array(
 			'sale_time' => date('Y-m-d H:i:s'),
 			'customer_id'=> $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'=>$employee_id,
-			'payment_type'=>$payment_types,
 			'comment'=>$comment,
 			'invoice_number'=>$invoice_number
 		);
@@ -183,6 +301,10 @@ class Sale extends CI_Model
 		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
 		// then delete all taxes on items
 		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
+		// delete all items
+		$this->db->delete('sales_items', array('sale_id' => $sale_id));
+		// delete sale itself
+		$this->db->delete('sales', array('sale_id' => $sale_id));
 		if ($update_inventory) {
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
@@ -208,10 +330,6 @@ class Sale extends CI_Model
 														$item['quantity_purchased']);
 			}
 		}
-		// delete all items
-		$this->db->delete('sales_items', array('sale_id' => $sale_id));
-		// delete sale itself
-		$this->db->delete('sales', array('sale_id' => $sale_id));
 		// execute transaction
 		$this->db->trans_complete();
 	
@@ -254,7 +372,6 @@ class Sale extends CI_Model
 	//We create a temp table that allows us to do easy report/sales queries
 	public function create_sales_items_temp_table()
 	{
-		$this->db->query("DROP TABLE IF EXISTS phppos_sales_items_temp");
 		$this->db->query("CREATE TEMPORARY TABLE ".$this->db->dbprefix('sales_items_temp')."
 		(SELECT date(sale_time) as sale_date, sale_time, ".$this->db->dbprefix('sales_items').".sale_id, comment,payments.payment_type, customer_id, employee_id, 
 		".$this->db->dbprefix('items').".item_id, supplier_id, quantity_purchased, item_cost_price, item_unit_price, SUM(percent) as item_tax_percent,

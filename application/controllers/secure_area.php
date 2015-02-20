@@ -1,6 +1,9 @@
 <?php
 class Secure_area extends CI_Controller 
 {
+	
+	private $controller_name;
+	
 	/*
 	Controllers that are considered secure extend Secure_area, optionally a $module_id can
 	be set to also check if a user can access a particular module in the system.
@@ -30,7 +33,12 @@ class Secure_area extends CI_Controller
 		}
 		$data['user_info']=$logged_in_employee_info;
 		$data['controller_name']=$module_id;
+		$this->controller_name=$module_id;
 		$this->load->vars($data);
+	}
+	
+	function get_controller_name() {
+		return strtolower($this->controller_name);
 	}
 	
 	function _remove_duplicate_cookies ()

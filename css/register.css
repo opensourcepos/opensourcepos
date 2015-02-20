@@ -156,3 +156,9 @@
 	margin: 0 4px 8px 0;
 }
 
+#sales_overview
+{
+	position:absolute;
+	top:3px;
+	right:99px;
+}
