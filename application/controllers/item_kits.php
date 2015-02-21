@@ -122,7 +122,7 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			$item_kit_info = $this->Item_kit->get_info($item_kid_id);
 
-			$result[] = array('name' =>$item_kit_info->name, 'item_id'=> 'KIT '.$item_kid_id);
+			$result[] = array('name' =>$item_kit_info->name, 'item_id'=> 'KIT '.$item_kid_id, 'item_number'=>'KIT '.$item_kid_id);
 		}
 
 		$data['items'] = $result;
