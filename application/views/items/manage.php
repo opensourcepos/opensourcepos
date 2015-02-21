@@ -134,13 +134,13 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 	</div>
 </div>
 
+<div id="pagination"><?= $links ?></div>
 <div id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
 	<div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'); ?> :</div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="
 	<?php echo isset($search_section_state)?  ( ($search_section_state)? base_url().'images/minus.png' : base_url().'images/plus.png') : base_url().'images/plus.png';?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
-
 <?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
 <div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>;background-color:#EEEEEE;">
 	<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
@@ -155,7 +155,6 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 	<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0));// Parq 131215?>  
 	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
 </div>
-<div id="pagination"><?= $links ?></div>
 <div id="table_action_header">
 	<ul>
 		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>

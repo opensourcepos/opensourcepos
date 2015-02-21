@@ -44,3 +44,5 @@ common_gender_male,M,M,M,M,M,M,M,M,M
 common_gender_female,V,F,F,F,V,V,V,V,V
 common_date,Datum,Date,Date,Date,Date,Date,Date,Date,Date
 common_search_options,Zoek criteria,Search options,Search options,Search options,Search options,Search options,Search options,Search options,Search options
+common_first_page,Eerste,First,First,First,First,First,First,First,First
+common_last_page,Laatste,Last,Last,Last,Last,Last,Last,Last,Last

@@ -45,3 +45,5 @@ $lang["common_gender_male"] = "M";
 $lang["common_gender_female"] = "V";
 $lang["common_date"] = "Date";
 $lang["common_search_options"] = "Search options";
+$lang["common_first_page"] = "First";
+$lang["common_last_page"] = "Last";

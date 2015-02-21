@@ -11,14 +11,15 @@ class Items extends Secure_area implements iData_controller
 	
 	function index($limit_from=0)
 	{
+		$stock_location=$this->item_lib->get_item_location();
+		$stock_locations=$this->Stock_locations->get_allowed_locations();
+		
 		$data['controller_name']=$this->get_controller_name();
 		$data['form_width']=$this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->get_all($lines_per_page,$limit_from);
+		$items = $this->Item->get_all($stock_location,$lines_per_page,$limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Item,$lines_per_page,$limit_from);
 		
-		$stock_location=$this->item_lib->get_item_location();
-		$stock_locations=$this->Stock_locations->get_allowed_locations();
 		$data['stock_location']=$stock_location;
 		$data['stock_locations']=$stock_locations;
 		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $stock_location, $lines_per_page, $limit_from), $this );
