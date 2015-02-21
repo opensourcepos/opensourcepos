@@ -28,15 +28,10 @@ class Item_kit extends CI_Model
 	
 	function get_total_rows()
 	{
-		return $this->db->count_all('item_kits');
-	}
-	
-	function count_all()
-	{
 		$this->db->from('item_kits');
 		return $this->db->count_all_results();
 	}
-
+	
 	/*
 	Gets information about a particular item kit
 	*/

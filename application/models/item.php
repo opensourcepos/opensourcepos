@@ -27,7 +27,9 @@ class Item extends CI_Model
 	
 	function get_total_rows()
 	{
-		return $this->db->count_all('items');
+		$this->db->from('items');
+		$this->db->where('deleted',0);
+		return $this->db->count_all_results();
 	}
 	
 	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description,$is_deleted=0)
@@ -80,13 +82,6 @@ class Item extends CI_Model
 		return $this->db->get();
 	}
 	
-	function count_all()
-	{
-		$this->db->from('items');
-		$this->db->where('deleted',0);
-		return $this->db->count_all_results();
-	}
-
 	/*
 	Gets information about a particular item
 	*/
@@ -571,12 +566,16 @@ class Item extends CI_Model
 			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
 			$this->db->where('location_id',$stock_location_id);
 		}
-		// open parentheses
-		$this->db->where("(name LIKE '%" . $search . "%' OR " .
-				"item_number LIKE '" . $search . "%' OR " .
-				$this->db->dbprefix("items").".item_id LIKE '" . $search . "%' OR " .
-				"category LIKE '%" . $search . "%')");
-		// close parentheses
+		if (!empty($search))
+		{
+			// open parentheses
+			$this->db->where("(name LIKE '%" . $search . "%' OR " .
+					"item_number LIKE '" . $search . "%' OR " .
+					$this->db->dbprefix("items").".item_id LIKE '" . $search . "%' OR " .
+					"category LIKE '%" . $search . "%')");
+			// close parentheses
+		}
+		
 		$this->db->where('deleted', $deleted);
 		if ($low_inventory !=0 )
 		{

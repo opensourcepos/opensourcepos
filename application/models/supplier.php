@@ -16,7 +16,9 @@ class Supplier extends Person
 	
 	function get_total_rows()
 	{
-		return $this->db->count_all('suppliers');
+		$this->db->from('suppliers');
+		$this->db->where('deleted',0);
+		return $this->db->count_all_results();
 	}
 	
 	/*

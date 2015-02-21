@@ -16,7 +16,9 @@ class Employee extends Person
 	
 	function get_total_rows()
 	{
-		return $this->db->count_all('customers');
+		$this->db->from('employees');
+		$this->db->where('deleted',0);
+		return $this->db->count_all_results();
 	}
 	/*
 	Returns all the employees
@@ -30,13 +32,6 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		return $this->db->get();		
-	}
-	
-	function count_all()
-	{
-		$this->db->from('employees');
-		$this->db->where('deleted',0);
-		return $this->db->count_all_results();
 	}
 	
 	/*

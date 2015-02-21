@@ -28,7 +28,9 @@ class Customer extends Person
 	
 	function get_total_rows()
 	{
-		return $this->db->count_all('customers');
+		$this->db->from('customers');
+		$this->db->where('deleted',0);
+		return $this->db->count_all_results();
 	}
 	
 	/*
@@ -44,13 +46,6 @@ class Customer extends Person
 			$this->db->limit($rows, $limit_from);
 		}
 		return $this->db->get();		
-	}
-	
-	function count_all()
-	{
-		$this->db->from('customers');
-		$this->db->where('deleted',0);
-		return $this->db->count_all_results();
 	}
 	
 	/*
