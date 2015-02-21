@@ -230,7 +230,7 @@ class Sales extends Secure_area
 		{
 			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt,$item_location);
 		}
-		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location))
+		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location,$this->config->item('default_sales_discount')))
 		{
 			$data['error']=$this->lang->line('sales_unable_to_add_item');
 		}

@@ -331,6 +331,32 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 </div>
 
 <div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_lines_per_page').':', 'lines_per_page',array('class'=>'wide required')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'lines_per_page',
+		'id'=>'lines_per_page',
+		'type'=>'number',
+		'min'=>10,
+		'max'=>50,
+		'value'=>$this->config->item('lines_per_page')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_default_sales_discount').':', 'default_sales_discount',array('class'=>'wide required')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'default_sales_discount',
+		'id'=>'default_sales_discount',
+		'type'=>'number',
+		'min'=>0,
+		'max'=>100,
+		'value'=>$this->config->item('default_sales_discount')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_custom1').':', 'config_custom1',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -493,7 +519,17 @@ $(document).ready(function()
     			number:true
     		},
     		email:"email",
-    		return_policy: "required"    		
+    		return_policy: "required",
+    		lines_per_page:
+    		{
+        		required: true,
+        		number: true
+    		},
+    		default_sales_discount: 
+        	{
+        		required: true,
+        		number: true
+    		}  		
    		},
 		messages: 
 		{
@@ -506,8 +542,17 @@ $(document).ready(function()
     			number:"<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
     		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>"
-	
+     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
+     		default_sales_discount:
+         	{
+             	required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
+             	number :"<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
+         	},
+     		lines_per_page: 
+         	{
+            	required: "<?php echo $this->lang->line('config_lines_per_page_required'); ?>",
+                number: "<?php echo $this->lang->line('config_lines_per_page_number'); ?>"
+            }
 		}
 	});
 });

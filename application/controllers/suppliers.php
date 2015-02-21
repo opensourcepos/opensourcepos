@@ -14,7 +14,7 @@ class Suppliers extends Person_controller
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$suppliers = $this->Supplier->get_all($lines_per_page);
 		$data['links'] = $this->_initialize_pagination($this->Supplier,$lines_per_page);
-		$data['manage_table']=get_suppliers_manage_table($suppliers,$this);
+		$data['manage_table']=get_supplier_manage_table($suppliers,$this);
 		$this->load->view('suppliers/manage',$data);
 	}
 	
@@ -28,8 +28,8 @@ class Suppliers extends Person_controller
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$suppliers = $this->Supplier->search($search, $lines_per_page, $limit_from);
 		$total_rows = $this->Supplier->get_found_rows($search);
-		$links = $this->_initialize_pagination($lines_per_page, $limit_from, $total_rows);
-		$data_rows=get_suppliers_manage_table_data_rows($suppliers,$this);
+		$links = $this->_initialize_pagination($this->Supplier, $lines_per_page, $limit_from, $total_rows);
+		$data_rows=get_supplier_manage_table_data_rows($suppliers,$this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	

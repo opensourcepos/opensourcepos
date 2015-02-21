@@ -119,8 +119,8 @@ class Sale extends CI_Model
 		$this->db->group_by('sales.sale_id');
 		if (!empty($search)) {
 			// if barcode scanned, explode and search for second term which will be the id
-			if ($valid_receipt) {
-				$pieces = explode(' ',$search);
+			$pieces = explode(' ',$search);
+			if ($valid_receipt && count($pieces) == 2) {
 				$this->db->where('sales.sale_id', $pieces[1]);
 			} else {
 				// open parentheses

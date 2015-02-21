@@ -44,6 +44,8 @@ class Config extends Secure_area
 		'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price'),
 		'thousands_separator'=>$this->input->post('thousands_separator'),
 		'decimal_point'=>$this->input->post('decimal_point'),
+		'lines_per_page'=>$this->input->post('lines_per_page'),
+		'default_sales_discount'=>$this->input->post('default_sales_discount'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
 		'custom3_name'=>$this->input->post('custom3_name'),/**GARRISON ADDED 4/20/2013**/

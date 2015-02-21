@@ -14,6 +14,11 @@ class Supplier extends Person
 		return ($query->num_rows()==1);
 	}
 	
+	function get_total_rows()
+	{
+		return $this->db->count_all('suppliers');
+	}
+	
 	/*
 	Returns all the suppliers
 	*/
