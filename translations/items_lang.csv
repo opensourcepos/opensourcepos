@@ -53,7 +53,7 @@ items_one_or_multiple,product(en) verwijderd,articulo(s),item(s),item(s),產品,
 items_quantity,Stock,Cantidad en Stock,Quantity,Quantité,數量,Количество,จำนวน,Adet,Jumlah
 items_quantity_number,Hoeveelheid moet een cijfer zijn,Cantidad debe ser número,Quantity must be a number,La Quantité doit etre un nombre,數量必需是數值,Количество должно быть число,จำนวนต้องเป็นตัวเลข,Adet sayı olmalıdır,Jumlah harus angka
 items_quantity_required,Hoeveelheid moet ingevuld worden,Cantidad es requerido,Quantity is a required field,La Quantité est requise,數量為必填欄位,Количество обязательное пробелья,จำนวนต้องกรอก,Adet zorunlu alandır,Jumlah wajib diisi
-items_receiving_quantity,,,Receiving quantity,,,,ยอดรับมา,,
+items_receiving_quantity,Aantal per lijn,Receiving quantity,Receiving quantity,Receiving quantity,Receiving quantity,Receiving quantity,ยอดรับมา,Receiving quantity,Receiving quantity
 items_reorder_level,Reorder Level,Cantidad Mínima,Reorder Level,Niveau de Réapprovisionnement,補貨點,Минимальный уровень перед заказом,ระดับการสั่งใหม่,Düşük Stok,Batas pesan ulang
 items_reorder_level_number,Reorder level moet een cijfer zijn,Cantidad Mínima debe ser número,Reorder level must be a number,Le Niveaux de Réapprovisionnement doit etre un nombre,補貨點必需是數值,Минимальный уровень перед заказом должно быть число,ระดับการสั่งใหม่ต้องเป็นตัวเลข,Düşük stok sayı olmalıdır,Batas pesan ulang harus angka
 items_reorder_level_required,Reorder level moet ingevuld worden,Cantidad Mínima es requerido,Reorder level is a required field,Le Niveaux de Réapprovisionnement est requis,補貨點為必填欄位,Минимальный уровень перед заказом обязательное пробелья,ระดับการสั่งไหม่ต้องกรอก,Düşük Stok zorunlu alandır,Batas pesan ulang wajib diisi
@@ -61,7 +61,7 @@ items_retrive_item_info,Haal productinformatie op,Obtener Info de Artículo,Retr
 items_sales_tax_1,VAT,Impuesto de Ventas 1,Sales Tax,Taxe Vente,營業稅,Налог на покупку,ถาษีขาย,Satış Vergisi,Pajak Penjualan1
 items_sales_tax_2,VAT 2,Impuesto de Ventas 2,Sales Tax 2,Taxe Vente 2,營業稅 2,Налог на покупку 2,ภาษีขาย 2,Satış Vergisi 2,Pajak Penjualan2
 items_search_custom_items,Doorzoek Tags,Buscar en campos personalizados,Search Custom Fields,Rechercher dans les Champs Choisis,Search Custom Fields,Искать в дополнительных товарях,ค้นหาในฟิลด์เสริม,Özel Alanları Ara,Cari secara manual
-items_serialized_items,Optelbare producten,Artículos Serializados,Serialized Items,Items Serialisés,序列化產品,Сериализованные товары,รหัสสินค้า,Seri Numaralı Ürünler,Serial Item
+items_serialized_items,Serialized Items,Artículos Serializados,Serialized Items,Items Serialisés,序列化產品,Сериализованные товары,รหัสสินค้า,Seri Numaralı Ürünler,Serial Item
 items_stock_location,Stock locatie,Stock location,Stock location,Stock location,Stock location,Stock location,ที่เก็บ,Mağaza Yeri,Stock location
 items_successful_adding,Product succesvol toegevoegd,Has agregado satisfactoriamente un artículo,You have successfully added item,Ajout enregistré,已成功新增產品,Вы успешно добавлен товар,เพิ่มสินค้าสำเร็จ,Ürün ekleme başarılı,Item Barang telah berhasil ditambahkan
 items_successful_bulk_edit,Producten werden succesvol bewaard,Has actualizado satisfactoriamente los artículos seleccionados,You have successfully updated the selected items,Édition réussie,您已成功更新所選產品,Вы успешно обновили выбранных товаров,ปรับแต่งสินค้าสำเร็จ,Seçili ürün düzenlendi,Anda telah berhasil memperbarui item yang dipilih

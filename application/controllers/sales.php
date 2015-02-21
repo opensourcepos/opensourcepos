@@ -305,7 +305,7 @@ class Sales extends Secure_area
 		$comment=$this->sale_lib->get_comment();
 		$emp_info=$this->Employee->get_info($employee_id);
 		$data['payments']=$this->sale_lib->get_payments();
-		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
+		$data['amount_change']=$this->sale_lib->get_amount_due() * -1;
 		$data['amount_due']=$this->sale_lib->get_amount_due();
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 		$data['company_info'] = implode("\n", array(

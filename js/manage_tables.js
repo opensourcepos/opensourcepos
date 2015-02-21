@@ -90,8 +90,11 @@ function do_search(show_feedback,on_complete)
 			$('#pagination').html(response.pagination);
 			$('#sortable_table tbody :checkbox').click(checkbox_click);
 			$("#select_all").attr('checked',false);
-			update_sortable_table();	
-			enable_row_selection();	
+			if (response.total_rows > 0)
+			{
+				update_sortable_table();	
+				enable_row_selection();	
+			}
 		    attach_search_listener();
 		}, "json"
 	);
@@ -176,7 +179,7 @@ function do_delete(url)
 				{
 					$(this).remove();
 					//Re-init sortable table as we removed a row
-					update_sortable_table();
+					$("#sortable_table tbody tr").length > 0 && update_sortable_table();
 					
 				});
 			});	
@@ -294,7 +297,6 @@ function update_sortable_table()
 {
 	//let tablesorter know we changed <tbody> and then triger a resort
 	$("#sortable_table").trigger("update");
-	
 	if(typeof $("#sortable_table")[0].config!="undefined")
 	{
 		var sorting = $("#sortable_table")[0].config.sortList; 		

@@ -26,31 +26,6 @@ class Items extends Secure_area implements iData_controller
 		$this->_remove_duplicate_cookies();
 	}
 
-	function refresh()
-	{
-		$is_serialized=$this->input->post('is_serialized');
-		$no_description=$this->input->post('no_description');
-		$search_custom=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013    
-        $is_deleted=$this->input->post('is_deleted'); // Parq 131215
-        $this->item_lib->set_item_location($this->input->post('stock_location'));
-        
-       	$stock_location=$this->input->post('stock_location');
-		$stock_locations=$this->Stock_locations->get_allowed_locations();
-		$data['stock_location']=$this->item_lib->get_item_location();
-		$data['stock_locations']=$stock_locations;
-        
-		$data['search_section_state']=$this->input->post('search_section_state');
-		$data['is_serialized']=$this->input->post('is_serialized');
-		$data['no_description']=$this->input->post('no_description');
-		$data['search_custom']=$this->input->post('search_custom');//GARRISON ADDED 4/13/2013
-		$data['is_deleted']=$this->input->post('is_deleted'); // Parq 131215
-		$data['controller_name']=strtolower(get_class());
-		$data['form_width']=$this->get_form_width(); 
-		$data['manage_table']=get_items_manage_table($this->Item->get_all_filtered($stock_location,$is_serialized,$no_description,$search_custom,$is_deleted),$this);//GARRISON MODIFIED 4/13/2013, Parq 131215
-		$this->load->view('items/manage',$data);
-		$this->_remove_duplicate_cookies();
-	}
-
 	function find_item_info()
 	{
 		$item_number=$this->input->post('scan_item_number');
@@ -65,11 +40,12 @@ class Items extends Secure_area implements iData_controller
 		$low_inventory=$this->input->post('low_inventory');
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
+		$is_deleted=$this->input->post('is_deleted'); // Parq 131215
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->search($search,$stock_location,$low_inventory,$is_serialized,$no_description,$lines_per_page,$limit_from);
+		$items = $this->Item->search($search,$stock_location,$low_inventory,$is_serialized,$no_description,$is_deleted,$lines_per_page,$limit_from);
 		$data_rows=get_items_manage_table_data_rows($items,$this);
-		$total_rows = $this->Item->get_found_rows($search,$stock_location,$low_inventory,$is_serialized,$no_description);
+		$total_rows = $this->Item->get_found_rows($search,$stock_location,$low_inventory,$is_serialized,$no_description,$is_deleted);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows);
 		$data_rows=get_items_manage_table_data_rows($items,$this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));

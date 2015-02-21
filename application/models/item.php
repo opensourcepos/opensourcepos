@@ -30,7 +30,7 @@ class Item extends CI_Model
 		return $this->db->count_all('items');
 	}
 	
-	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description)
+	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description,$is_deleted=0)
 	{
 		
 		$this->db->from("items");
@@ -45,14 +45,14 @@ class Item extends CI_Model
 				$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
 				"category LIKE '%" . $search . "%')");
 		// close parentheses
-		$this->db->where('deleted', 0);
+		$this->db->where('deleted', $is_deleted);
 		if ($low_inventory !=0 )
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
 		if ($is_serialized !=0 )
 		{
-			$this->db->where('serialized', 1);
+			$this->db->where('is_serialized', 1);
 		}
 		if ($no_description!=0 )
 		{
@@ -563,7 +563,7 @@ class Item extends CI_Model
 	/*
 	 Persform a search on items
 	*/
-	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description,$rows = 0,$limit_from = 0)
+	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$deleted=0,$rows = 0,$limit_from = 0)
 	{
 		$this->db->from("items");
 		if ($stock_location_id > -1)
@@ -577,14 +577,14 @@ class Item extends CI_Model
 				$this->db->dbprefix("items").".item_id LIKE '" . $search . "%' OR " .
 				"category LIKE '%" . $search . "%')");
 		// close parentheses
-		$this->db->where('deleted', 0);
+		$this->db->where('deleted', $deleted);
 		if ($low_inventory !=0 )
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
 		if ($is_serialized !=0 )
 		{
-			$this->db->where('serialized', 1);
+			$this->db->where('is_serialized', 1);
 		}
 		if ($no_description!=0 )
 		{

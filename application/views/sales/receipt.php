@@ -71,7 +71,7 @@ if (isset($error_message))
 			<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
 		</tr>
 	    <tr>
-	    <td colspan="2" align="center"><?php echo $item['description']; ?></td>
+	    <td colspan="2"><?php echo $item['description']; ?></td>
 		<td ><?php echo $item['serialnumber']; ?></td>
 	    </tr>
 	    <?php if ($item['discount'] > 0 ) : ?>

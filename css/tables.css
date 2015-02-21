@@ -94,14 +94,18 @@ table.tablesorter tbody td.selected
 	background-color:#BBBBBB;
 }
 
-table.tablesorter thead tr .headerSortUp 
+table.tablesorter thead tr .tablesorter-headerAsc 
 {
 	background-image: url(../images/tables/asc.gif);
+	background-repeat:no-repeat;
+	background-position: right; 
 }
 
-table.tablesorter thead tr .headerSortDown 
+table.tablesorter thead .tablesorter-headerDesc 
 {
 	background-image: url(../images/tables/desc.gif);
+	background-repeat:no-repeat;
+	background-position: right; 
 }
 
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp 
