@@ -74,6 +74,7 @@ function post_giftcard_form_submit(response)
 		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 		<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
 		<input type="text" name ='search' id='search'/>
+		<input type="hidden" name ='limit_from' id='limit_from'/>
 		</form>
 		</li>
 	</ul>
