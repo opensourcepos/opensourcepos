@@ -735,6 +735,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
+			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type' => $sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -784,6 +785,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
+			"header_width" => intval(100 / count($headers)),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type' => $sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -905,6 +907,7 @@ class Reports extends Secure_area
 			"editable" => "receivings",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
+			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type)),
 			"export_excel" => $export_excel
 		);
