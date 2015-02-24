@@ -45,6 +45,11 @@
 	position:relative;
 	padding:3px;
 	margin-bottom:5px;	
+	
+}
+
+#receipt_items tr {
+	margin-bottom:5px;	
 }
 
 .short_name

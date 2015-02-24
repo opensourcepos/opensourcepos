@@ -175,7 +175,7 @@ class Sale_lib
 		$amount_due=0;
 		$payment_total = $this->get_payments_total();
 		$sales_total=$this->get_total();
-		$amount_due=to_currency_no_money($sales_total - $payment_total);
+		$amount_due=to_currency_no_money(bcsub($sales_total, $payment_total, PRECISION));
 		return $amount_due;
 	}
 
@@ -377,11 +377,14 @@ class Sale_lib
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
-			$items[$line]['description'] = $description;
-			$items[$line]['serialnumber'] = $serialnumber;
-			$items[$line]['quantity'] = $quantity;
-			$items[$line]['discount'] = $discount;
-			$items[$line]['price'] = $price;
+			$line = &$items[$line];
+			$line['description'] = $description;
+			$line['serialnumber'] = $serialnumber;
+			$line['quantity'] = $quantity;
+			$line['discount'] = $discount;
+			$line['price'] = $price;
+			$line['total'] = $this->get_item_total($quantity, $price, $discount);
+			$line['total_tax_exclusive'] = $this->get_item_total_tax_exclusive($line['item_id'], $quantity, $price, $discount);
 			$this->set_cart($items);
 		}
 

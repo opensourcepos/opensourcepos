@@ -229,11 +229,13 @@ class Receiving_lib
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
-			$items[$line]['description'] = $description;
-			$items[$line]['serialnumber'] = $serialnumber;
-			$items[$line]['quantity'] = $quantity;
-			$items[$line]['discount'] = $discount;
-			$items[$line]['price'] = $price;
+			$line = &$items[$line];
+			$line['description'] = $description;
+			$line['serialnumber'] = $serialnumber;
+			$line['quantity'] = $quantity;
+			$line['discount'] = $discount;
+			$line['price'] = $price;
+			$line['total'] = $this->get_item_total($quantity, $price, $discount); 
 			$this->set_cart($items);
 		}
 
