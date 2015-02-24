@@ -52,19 +52,10 @@ class Sale_suspended extends CI_Model
 		if(count($items)==0)
 			return -1;
 
-		//Alain Multiple payments
-		//Build payment types string
-		$payment_types='';
-		foreach($payments as $payment_id=>$payment)
-		{
-			$payment_types=$payment_types.$payment['payment_type'].': '.to_currency($payment['payment_amount']).'<br />';
-		}
-
 		$sales_data = array(
 			'sale_time' => date('Y-m-d H:i:s'),
 			'customer_id'=> $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'=>$employee_id,
-			'payment_type'=>$payment_types,
 			'comment'=>$comment,
 			'invoice_number'=>$invoice_number
 		);

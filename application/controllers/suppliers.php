@@ -60,6 +60,7 @@ class Suppliers extends Person_controller
 		$person_data = array(
 		'first_name'=>$this->input->post('first_name'),
 		'last_name'=>$this->input->post('last_name'),
+		'gender'=>$this->input->post('gender'),
 		'email'=>$this->input->post('email'),
 		'phone_number'=>$this->input->post('phone_number'),
 		'address_1'=>$this->input->post('address_1'),

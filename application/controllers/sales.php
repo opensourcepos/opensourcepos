@@ -723,7 +723,7 @@ class Sales extends Secure_area
 	
 			foreach($data['payments'] as $payment)
 			{
-				$total_payments += $payment['payment_amount'];
+				$total_payments = bcadd($total_payments, $payment['payment_amount'], PRECISION);
 			}
 	
 			//SAVE sale to database
