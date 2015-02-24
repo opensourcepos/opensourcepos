@@ -14,7 +14,7 @@ class Detailed_receivings extends Report
 		);		
 	}
 	
-	public function getDataByReceivingId($receiving_id, $sale_type)
+	public function getDataByReceivingId($receiving_id)
 	{
 		$this->db->select('receiving_id, DATE_FORMAT(receiving_date, "%d-%m-%Y") AS receiving_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, suppliers.company_name as supplier_name, sum(subtotal) as subtotal, sum(total) as total, sum(profit) as profit, payment_type, comment, invoice_number', false);
 		$this->db->from('receivings_items_temp');

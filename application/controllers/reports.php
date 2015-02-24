@@ -52,12 +52,12 @@ class Reports extends Secure_area
 		$this->load->view("reports/date_input_excel_export",$data);	
 	}
 	
- 	function get_detailed_sales_row($sale_id, $sale_type=1)
+ 	function get_detailed_sales_row($sale_id)
 	{
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 		
-		$report_data = $model->getDataBySaleId($sale_id, $sale_type);
+		$report_data = $model->getDataBySaleId($sale_id);
 		
 		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'] . '/width:'.FORM_WIDTH, 
 				'POS '.$report_data['sale_id'], 
@@ -75,12 +75,12 @@ class Reports extends Secure_area
 		echo get_detailed_data_row($summary_data, $this);
 	}
 	
-	function get_detailed_receivings_row($receiving_id, $receiving_type=1)
+	function get_detailed_receivings_row($receiving_id)
 	{
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 	
-		$report_data = $model->getDataByReceivingId($receiving_id, $receiving_type);
+		$report_data = $model->getDataByReceivingId($receiving_id);
 	
 		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'] . '/width:'.FORM_WIDTH,
 				'RECV '.$report_data['receiving_id'],
