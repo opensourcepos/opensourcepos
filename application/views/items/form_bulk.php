@@ -63,7 +63,7 @@ echo form_open('items/bulk_update/',array('id'=>'item_form'));
 		'name'=>'tax_names[]',
 		'id'=>'tax_name_1',
 		'size'=>'8',
-		'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->lang->line('items_sales_tax'))
+		'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->lang->line('items_sales_tax_1'))
 	);?>
 	</div>
 	<div class='form_field'>
@@ -84,7 +84,7 @@ echo form_open('items/bulk_update/',array('id'=>'item_form'));
 		'name'=>'tax_names[]',
 		'id'=>'tax_name_2',
 		'size'=>'8',
-		'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : '')
+		'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->lang->line('items_sales_tax_2'))
 	);?>
 	</div>
 	<div class='form_field'>

@@ -499,7 +499,7 @@ class Items extends Secure_area implements iData_controller
 			{
 				$item_data["$key"]=$value == '' ? null : $value;
 			}
-			elseif($value!='' and !(in_array($key, array('item_ids', 'tax_names', 'tax_percents', 'category'))))
+			elseif($value!='' and !(in_array($key, array('submit', 'item_ids', 'tax_names', 'tax_percents', 'category'))))
 			{
 				$item_data["$key"]=$value;
 			}
