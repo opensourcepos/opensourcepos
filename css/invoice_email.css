@@ -13,7 +13,7 @@ pre { font-family: Helvetica; font-size: 13px; }
 #page-wrap table { border-collapse: collapse; }
 #page-wrap table#items td { padding: 10px; }
 #page-wrap #meta table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
-#header { height: 30px; width: 100%; margin: 20px 0; background-color: #222222; text-align: center; color: white; font-weight: bold; font-size: 26px; letter-spacing: 4px; padding: 8px 0px; text-transform: uppercase; }
+#header { height: 30px; width: 100%; margin: 20px 0; background-color: #222222; text-align: center; color: white; font-weight: bold; font-size: 26px; letter-spacing: 4px; padding: 8px 0px; }
 
 /* first row */
 #info { width: 100%; margin: 10px 0 30px 0; }

@@ -904,6 +904,7 @@ class Reports extends Secure_area
 			"title" =>$this->lang->line('reports_detailed_receivings_report'),
 			"subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
+			"header_width" => intval(100 / count($headers['summary'])),
 			"editable" => "receivings",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
