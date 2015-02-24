@@ -60,13 +60,7 @@ $(document).ready(function()
 {
 	var format_item = function(row) 
 	{
-    	var result = [row[0], "|", row[1]].join("");
-    	// if more than one occurence
-    	if (row[2] > 1 && row[3] && row[3].toString().trim()) {
-			// display zip code
-    		result += ' - ' + row[3];
-    	}
-		return result;
+    	return [row[0], "|", row[1]].join("");
 	};
 	var autocompleter = $("#person_id").autocomplete('<?php echo site_url("giftcards/person_search"); ?>', 
 	{
