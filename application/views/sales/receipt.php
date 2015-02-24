@@ -61,7 +61,7 @@ if (isset($error_message))
 	{
 	?>
 		<tr>
-			<td><span class='long_name'> <?php echo ucfirst(empty($item['description']) ? $item['name'] : $item['description']); ?></span></td>
+			<td><span class='long_name'> <?php echo ucfirst($item['name']); ?></span></td>
 		
 		
 			<td><?php echo to_currency($item['price']); ?></td>
