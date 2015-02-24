@@ -308,7 +308,7 @@ function get_table_row(id) {
 	id = id || $("input[name='sale_id']").val();
 	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
 	if ($element.length === 0) {
-		$element = $("#sortable_table tbody a[href*='" + id + "']");
+		$element = $("#sortable_table tbody a[href*='/" + id + "/']");
 	}
 	return $element;
 }
