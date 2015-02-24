@@ -15,7 +15,7 @@ if($export_excel == 1){
 			<tr>
 				<th><a href="#" class="expand_all">+</a></th>
 				<?php foreach ($headers['summary'] as $header) { ?>
-				<th><?php echo $header; ?></th>
+				<th width="<?=$header_width?>%"><?php echo $header; ?></th>
 				<?php } ?>
 			</tr>
 		</thead>
