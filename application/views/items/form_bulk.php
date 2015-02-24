@@ -108,16 +108,6 @@ echo form_open('items/bulk_update/',array('id'=>'item_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_location').':', 'location',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'location',
-		'id'=>'location')
-	);?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('items_description').':', 'description',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_textarea(array(
