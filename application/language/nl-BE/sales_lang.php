@@ -109,3 +109,4 @@ $lang["sales_overview"] = "Overzicht";
 $lang["sales_update"] = "Bewerk Ticket";
 $lang["sales_confirm_delete"] = "Bent u zeker dat u de geselecteerde aankopen wil verwijderen?";
 $lang["sales_no_description"] = "Geen";
+$lang["sales_invoice_update"] = "Hernummer";

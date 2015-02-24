@@ -24,7 +24,7 @@ class Sales extends Secure_area
 		$sales = $this->Sale->get_all($payment_type,$lines_per_page,$limit_from);
 		$total_rows = $this->Sale->get_found_rows($payment_type);
 		$data['payment_type'] = $payment_type;
-		$data['links'] = $this->_initialize_pagination($payment_type, $lines_per_page, $limit_from, $total_rows);
+		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, -1, $payment_type);
 	
 		$data['manage_table']=get_sales_manage_table($sales,$this);
 		$this->load->view($data['controller_name'] . '/manage',$data);
@@ -37,23 +37,6 @@ class Sales extends Secure_area
 		$sale_info = $this->Sale->get_info($sale_id)->result_array();
 		$data_row=get_sale_data_row($sale_info[0],$this);
 		echo $data_row;
-	}
-	
-	function _initialize_pagination($payment_type, $lines_per_page, $limit_from = 0, $total_rows = 0)
-	{
-		$this->load->library('pagination');
-		$config['base_url'] = site_url($this->get_controller_name() . '/manage/' . $payment_type);
-		$config['total_rows'] = $total_rows;
-		$config['per_page'] = $lines_per_page;
-		$config['num_links'] = 2;
-		$config['last_link'] = $this->lang->line('common_last_page');
-		$config['first_link'] = $this->lang->line('common_first_page');
-		// page is calculated here instead of in pagination lib
-		$config['cur_page'] = $limit_from > 0  ? $limit_from : 0;
-		$config['page_query_string'] = FALSE;
-		$config['uri_segment'] = 0;
-		$this->pagination->initialize($config);
-		return $this->pagination->create_links();
 	}
 	
 	/**
@@ -74,7 +57,7 @@ class Sales extends Secure_area
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$sales = $this->Sale->search($search, $payment_type, $lines_per_page, $limit_from, $search);
 		$total_rows = $this->Sale->get_found_rows($search);
-		$links = $this->_initialize_pagination($payment_type, $lines_per_page, $limit_from, $total_rows);
+		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,$payment_type);
 		$data_rows=get_sales_manage_table_data_rows($sales,$this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 		$this->_remove_duplicate_cookies();
@@ -82,8 +65,12 @@ class Sales extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
+		if ($this->sale_lib->get_mode() == 'return') {
+			$suggestions = $this->Sale->get_search_suggestions($this->input->post('q'), $this->input->post('limit'));
+		} else {
+			$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+			$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
+		}
 		echo implode("\n",$suggestions);
 	}
 
@@ -760,5 +747,6 @@ class Sales extends Secure_area
 		$exists=!empty($invoice_number) && $this->Sale->invoice_number_exists($invoice_number,$sale_id);
 		echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('sales_invoice_number_duplicate')));
 	}
+	
 }
 ?>

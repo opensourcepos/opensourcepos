@@ -108,3 +108,4 @@ sales_overview,Overzicht,Overview,Overview,Overview,Overview,Overview,Overview,O
 sales_update,Bewerk Ticket,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale
 sales_confirm_delete,Bent u zeker dat u de geselecteerde aankopen wil verwijderen?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?
 sales_no_description,Geen,None,None,None,None,None,None,None,None
+sales_invoice_update,Hernummer,Recount,Recount,Recount,Recount,Recount,Recount,Recount,Recount

@@ -83,6 +83,12 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 	
+	function get_total_rows()
+	{
+		$this->db->from('sales');
+		return $this->db->count_all_results();
+	}
+	
 	function get_search_suggestions($search,$limit=25)
 	{
 		$suggestions = array();
