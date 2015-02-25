@@ -227,7 +227,7 @@ class Items extends Secure_area implements iData_controller
 		$suppliers = array('' => $this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
-			$suppliers[$row['person_id']] = $row['company_name'] .' ('.$row['first_name'] .' '. $row['last_name'].')';
+			$suppliers[$row['person_id']] = $row['company_name'];
 		}
 
 		$data['suppliers']=$suppliers;
