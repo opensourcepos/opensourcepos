@@ -1,6 +1,7 @@
 <?php 
 
 $lang["giftcards_add_minus"] = "Penyesuaian Inventori TAMBAH / KURANG (-)";
+$lang["giftcards_allow_alt_desciption"] = "";
 $lang["giftcards_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_basic_information"] = "Informasi GiftCard";

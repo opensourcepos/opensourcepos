@@ -1,6 +1,7 @@
 <?php 
 
 $lang["customers_account_number"] = "บัญชี #";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_basic_information"] = "ข้อมูลลูกค้า";
 $lang["customers_cannot_be_deleted"] = "ไม่สามารลบลูกค้าที่ถูกเลือก, ลูกค้าที่ถูกเลือกถูขายไปแล้ว.";
 $lang["customers_confirm_delete"] = "ยืนยันลบข้อมูลลูกค้า?";
@@ -14,4 +15,3 @@ $lang["customers_successful_deleted"] = "คุณได้ทำการลบ
 $lang["customers_successful_updating"] = "คุณได้ทำการแก้ไขข้อมูลลูกค้าเรียบร้อยแล้ว";
 $lang["customers_taxable"] = "ต้องเสียภาษี";
 $lang["customers_update"] = "แก้ไขข้อมูลลูกค้า";
-$lang["customers_account_number_duplicate"] = "This account number is already present in the database";

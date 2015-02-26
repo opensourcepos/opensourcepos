@@ -1,6 +1,7 @@
 <?php 
 
 $lang["customers_account_number"] = "# Compte";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_basic_information"] = "Informations Client";
 $lang["customers_cannot_be_deleted"] = "Impossible de supprimer. Un ou plusiers client(s) sélectionné(s) ont des ventes.";
 $lang["customers_confirm_delete"] = "Etes vous sûr(e) de vouloir supprimer ces clients?";
@@ -14,4 +15,3 @@ $lang["customers_successful_deleted"] = "Suppréssion réussie";
 $lang["customers_successful_updating"] = "Édition client réussie";
 $lang["customers_taxable"] = "Imposable";
 $lang["customers_update"] = "Éditer Client";
-$lang["customers_account_number_duplicate"] = "This account number is already present in the database";

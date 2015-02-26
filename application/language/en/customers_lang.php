@@ -1,6 +1,7 @@
 <?php 
 
 $lang["customers_account_number"] = "Account #";
+$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_basic_information"] = "Customer Information";
 $lang["customers_cannot_be_deleted"] = "Could not deleted selected customers, one or more of the selected customers has sales.";
 $lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customers?";
@@ -14,4 +15,3 @@ $lang["customers_successful_deleted"] = "You have successfully deleted";
 $lang["customers_successful_updating"] = "You have successfully updated customer";
 $lang["customers_taxable"] = "Taxable";
 $lang["customers_update"] = "Update Customer";
-$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
