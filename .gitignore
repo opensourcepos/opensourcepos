@@ -4,8 +4,7 @@ application/config/database.php
 patches/
 git-svn-diff.py
 *.bash
-*.sh
-*.swp
+.swp
 .buildpath
 .project
 .settings/*
