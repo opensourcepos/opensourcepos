@@ -32,7 +32,7 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 	
-	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description,$is_deleted=0)
+	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$is_deleted=0)
 	{
 		
 		$this->db->from("items");
@@ -59,6 +59,19 @@ class Item extends CI_Model
 		if ($no_description!=0 )
 		{
 			$this->db->where('description','');
+		}
+		if ($search_custom!=0 )
+		{
+			$this->db->like('custom1',$search);
+			$this->db->or_like('custom2',$search);
+			$this->db->or_like('custom3',$search);
+			$this->db->or_like('custom4',$search);
+			$this->db->or_like('custom5',$search);
+			$this->db->or_like('custom6',$search);
+			$this->db->or_like('custom7',$search);
+			$this->db->or_like('custom8',$search);
+			$this->db->or_like('custom9',$search);
+			$this->db->or_like('custom10',$search);
 		}
 		return $this->db->get()->num_rows();
 	}
@@ -558,7 +571,7 @@ class Item extends CI_Model
 	/*
 	 Persform a search on items
 	*/
-	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$deleted=0,$rows = 0,$limit_from = 0)
+	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$deleted=0,$rows = 0,$limit_from = 0)
 	{
 		$this->db->from("items");
 		if ($stock_location_id > -1)
@@ -588,6 +601,19 @@ class Item extends CI_Model
 		if ($no_description!=0 )
 		{
 			$this->db->where('description','');
+		}
+		if ($search_custom!=0 )
+		{
+			$this->db->like('custom1',$search);
+			$this->db->or_like('custom2',$search);
+			$this->db->or_like('custom3',$search);
+			$this->db->or_like('custom4',$search);
+			$this->db->or_like('custom5',$search);
+			$this->db->or_like('custom6',$search);
+			$this->db->or_like('custom7',$search);
+			$this->db->or_like('custom8',$search);
+			$this->db->or_like('custom9',$search);
+			$this->db->or_like('custom10',$search);
 		}
 		$this->db->order_by('name', "asc");
 		if ($rows > 0) {

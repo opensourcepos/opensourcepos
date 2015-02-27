@@ -41,12 +41,13 @@ class Items extends Secure_area implements iData_controller
 		$low_inventory=$this->input->post('low_inventory');
 		$is_serialized=$this->input->post('is_serialized');
 		$no_description=$this->input->post('no_description');
+		$search_custom=$this->input->post('search_custom');
 		$is_deleted=$this->input->post('is_deleted'); // Parq 131215
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->search($search,$stock_location,$low_inventory,$is_serialized,$no_description,$is_deleted,$lines_per_page,$limit_from);
+		$items = $this->Item->search($search,$stock_location,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted,$lines_per_page,$limit_from);
 		$data_rows=get_items_manage_table_data_rows($items,$this);
-		$total_rows = $this->Item->get_found_rows($search,$stock_location,$low_inventory,$is_serialized,$no_description,$is_deleted);
+		$total_rows = $this->Item->get_found_rows($search,$stock_location,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows);
 		$data_rows=get_items_manage_table_data_rows($items,$this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
