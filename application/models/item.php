@@ -41,12 +41,29 @@ class Item extends CI_Model
 			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
 			$this->db->where('location_id',$stock_location_id);
 		}
-		// open parentheses
-		$this->db->where("(name LIKE '%" . $search . "%' OR " .
+		if (!empty($search)) 
+		{
+			if ($search_custom==0)
+			{
+			$this->db->where("(name LIKE '%" . $search . "%' OR " .
 				"item_number LIKE '" . $search . "%' OR " .
 				$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
 				"category LIKE '%" . $search . "%')");
-		// close parentheses
+			}
+			else
+			{
+				$this->db->or_like('custom1',$search);
+				$this->db->or_like('custom2',$search);
+				$this->db->or_like('custom3',$search);
+				$this->db->or_like('custom4',$search);
+				$this->db->or_like('custom5',$search);
+				$this->db->or_like('custom6',$search);
+				$this->db->or_like('custom7',$search);
+				$this->db->or_like('custom8',$search);
+				$this->db->or_like('custom9',$search);
+				$this->db->or_like('custom10',$search);
+			}
+		}
 		$this->db->where('deleted', $is_deleted);
 		if ($low_inventory !=0 )
 		{
@@ -60,18 +77,21 @@ class Item extends CI_Model
 		{
 			$this->db->where('description','');
 		}
-		if ($search_custom!=0 )
+// 		if ($is_deleted != 0)
+// 		{
+			$this->db->where('items.deleted', 1);
+// 		}
+		if ($low_inventory !=0 )
 		{
-			$this->db->like('custom1',$search);
-			$this->db->or_like('custom2',$search);
-			$this->db->or_like('custom3',$search);
-			$this->db->or_like('custom4',$search);
-			$this->db->or_like('custom5',$search);
-			$this->db->or_like('custom6',$search);
-			$this->db->or_like('custom7',$search);
-			$this->db->or_like('custom8',$search);
-			$this->db->or_like('custom9',$search);
-			$this->db->or_like('custom10',$search);
+			$this->db->where('quantity <=', 'reorder_level');
+		}
+		if ($is_serialized !=0 )
+		{
+			$this->db->where('is_serialized', 1);
+		}
+		if ($no_description!=0 )
+		{
+			$this->db->where('items.description','');
 		}
 		return $this->db->get()->num_rows();
 	}
@@ -255,7 +275,7 @@ class Item extends CI_Model
 
 /** GARRISON ADDED 4/22/2013 **/
 	//Search by custom fields
-		$this->db->from('items');
+/* 		$this->db->from('items');
 		$this->db->like('custom1', $search);
 		$this->db->or_like('custom2', $search);
 		$this->db->or_like('custom3', $search);
@@ -272,7 +292,7 @@ class Item extends CI_Model
 		foreach($by_name->result() as $row)
 		{
 			$suggestions[]=$row->name;
-		}
+		} */
 /** END GARRISON ADDED **/		
 		
 	//only return $limit suggestions
@@ -321,9 +341,8 @@ class Item extends CI_Model
 /** END GARRISON ADDED **/	
 		/** GARRISON ADDED 4/22/2013 **/		
 	//Search by custom fields
-		/*$this->db->from('items');
+		$this->db->from('items');
 		$this->db->where('deleted',0);
-        $this->db->where('stock_type',$stock_type);
 		$this->db->like('custom1', $search);
 		$this->db->or_like('custom2', $search);
 		$this->db->or_like('custom3', $search);
@@ -339,7 +358,7 @@ class Item extends CI_Model
 		foreach($by_description->result() as $row)
 		{
 			$suggestions[]=$row->item_id.'|'.$row->name;
-		}*/
+		}
 		/** END GARRISON ADDED **/
 		
 		//only return $limit suggestions
@@ -579,16 +598,29 @@ class Item extends CI_Model
 			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
 			$this->db->where('location_id',$stock_location_id);
 		}
-		if (!empty($search))
+		if (!empty($search)) 
 		{
-			// open parentheses
-			$this->db->where("(name LIKE '%" . $search . "%' OR " .
+			if ($search_custom==0)
+			{
+				$this->db->where("(name LIKE '%" . $search . "%' OR " .
 					"item_number LIKE '" . $search . "%' OR " .
-					$this->db->dbprefix("items").".item_id LIKE '" . $search . "%' OR " .
-					"category LIKE '%" . $search . "%')");
-			// close parentheses
+					$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
+				        "category LIKE '%" . $search . "%')");
+			}
+			else
+			{
+				$this->db->or_like('custom1',$search);
+				$this->db->or_like('custom2',$search);
+				$this->db->or_like('custom3',$search);
+				$this->db->or_like('custom4',$search);
+				$this->db->or_like('custom5',$search);
+				$this->db->or_like('custom6',$search);
+				$this->db->or_like('custom7',$search);
+				$this->db->or_like('custom8',$search);
+				$this->db->or_like('custom9',$search);
+				$this->db->or_like('custom10',$search);
+			}
 		}
-		
 		$this->db->where('deleted', $deleted);
 		if ($low_inventory !=0 )
 		{
@@ -601,19 +633,6 @@ class Item extends CI_Model
 		if ($no_description!=0 )
 		{
 			$this->db->where('description','');
-		}
-		if ($search_custom!=0 )
-		{
-			$this->db->like('custom1',$search);
-			$this->db->or_like('custom2',$search);
-			$this->db->or_like('custom3',$search);
-			$this->db->or_like('custom4',$search);
-			$this->db->or_like('custom5',$search);
-			$this->db->or_like('custom6',$search);
-			$this->db->or_like('custom7',$search);
-			$this->db->or_like('custom8',$search);
-			$this->db->or_like('custom9',$search);
-			$this->db->or_like('custom10',$search);
 		}
 		$this->db->order_by('name', "asc");
 		if ($rows > 0) {

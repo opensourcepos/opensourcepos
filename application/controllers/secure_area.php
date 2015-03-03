@@ -41,10 +41,10 @@ class Secure_area extends CI_Controller
 		return strtolower($this->controller_name);
 	}
 	
-	function _initialize_pagination($object, $lines_per_page, $limit_from = 0, $total_rows = -1, $filter='')
+	function _initialize_pagination($object, $lines_per_page, $limit_from = 0, $total_rows = -1, $function='index', $filter='')
 	{
 		$this->load->library('pagination');
-		$config['base_url'] = site_url($this->get_controller_name() . '/index/' . $filter);
+		$config['base_url'] = site_url($this->get_controller_name() . "/$function/" . $filter);
 		$config['total_rows'] = $total_rows > -1 ? $total_rows : call_user_func(array($object, 'get_total_rows'));
 		$config['per_page'] = $lines_per_page;
 		$config['num_links'] = 2;

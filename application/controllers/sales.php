@@ -24,7 +24,7 @@ class Sales extends Secure_area
 		$sales = $this->Sale->get_all($payment_type,$lines_per_page,$limit_from);
 		$total_rows = $this->Sale->get_found_rows($payment_type);
 		$data['payment_type'] = $payment_type;
-		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, -1, $payment_type);
+		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, -1, 'manage', $payment_type);
 	
 		$data['manage_table']=get_sales_manage_table($sales,$this);
 		$this->load->view($data['controller_name'] . '/manage',$data);
@@ -57,7 +57,7 @@ class Sales extends Secure_area
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$sales = $this->Sale->search($search, $payment_type, $lines_per_page, $limit_from, $search);
 		$total_rows = $this->Sale->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,$payment_type);
+		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,'search',$payment_type);
 		$data_rows=get_sales_manage_table_data_rows($sales,$this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 		$this->_remove_duplicate_cookies();
