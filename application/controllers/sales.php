@@ -280,8 +280,10 @@ class Sales extends Secure_area
 	{
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['subtotal']=$this->sale_lib->get_subtotal();
+		$data['discounted_subtotal']=$this->sale_lib->get_subtotal(TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
+		$data['discounts']=$this->sale_lib->get_discounts();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
 		$data['transaction_date']= date('d/m/Y', strtotime($data['transaction_time']));
@@ -480,8 +482,10 @@ class Sales extends Secure_area
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['subtotal']=$this->sale_lib->get_subtotal();
+		$data['discounted_subtotal']=$this->sale_lib->get_subtotal(TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
+		$data['discounts']=$this->sale_lib->get_discounts();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('d/m/Y H:i:s', strtotime($sale_info['sale_time']));
 		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
@@ -636,6 +640,7 @@ class Sales extends Secure_area
         
 		$data['subtotal']=$this->sale_lib->get_subtotal();
 		$data['taxes']=$this->sale_lib->get_taxes();
+		$data['discounts']=$this->sale_lib->get_discounts();
 		$data['total']=$this->sale_lib->get_total();
 		$data['items_module_allowed']=$this->Employee->has_grant('items', $person_info->person_id);
 		$data['comment']=$this->sale_lib->get_comment();

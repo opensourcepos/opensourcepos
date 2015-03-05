@@ -54,7 +54,7 @@ if (isset($error_message))
 	<th style="width:40%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
 	<th style="width:20%;"><?php echo $this->lang->line('sales_price'); ?></th>
 	<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-	<th style="width:20%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
+	<th style="width:20%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
 	</tr>
 	<?php
 	foreach(array_reverse($cart, true) as $line=>$item)
@@ -74,9 +74,9 @@ if (isset($error_message))
 	    <td colspan="2"><?php echo $item['description']; ?></td>
 		<td ><?php echo $item['serialnumber']; ?></td>
 	    </tr>
-	    <?php if ($item['discount'] > 0 ) : ?>
+	    <?php if ($item['discount'] > 0) : ?>
 		<tr>
-			<td colspan="3" style="font-weight: bold;"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td>
+			<td colspan="3" class="discount"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td>
 		</tr>
 		<?php endif; ?>
 
@@ -88,14 +88,28 @@ if (isset($error_message))
 	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
 	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 	</tr>
+	<?php if ($this->Appconfig->get('show_total_discount')): ?> 
+	<?php foreach($discounts as $name=>$value) { ?>
+		<tr>
+			<td colspan="3" class="total-value"><?php echo $name . ' ' . $this->lang->line('sales_discount_included'); ?>:</td>
+			<td class="total-value"><?php echo to_currency($value*-1); ?></td>
+		</tr>
+	<?php }; ?>
+	<tr>
+	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
+	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($discounted_subtotal); ?></td>
+	</tr>
+	<?php endif; ?>
 	<?php if ($this->Appconfig->get('receipt_show_taxes')): ?> 
 	<?php foreach($taxes as $name=>$value) { ?>
 		<tr>
-			<td colspan="3" style='text-align:right;'><?php echo $name; ?>:</td>
-			<td style='text-align:right;'><?php echo to_currency($value); ?></td>
+			<td colspan="3" class="total-value"><?php echo $name; ?>:</td>
+			<td class="total-value"><?php echo to_currency($value); ?></td>
 		</tr>
 	<?php }; ?>
 	<?php endif; ?>
+	<tr>
+	</tr>
 	<tr>
 	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
 	<td style='text-align:right'><?php echo to_currency($total); ?></td>
@@ -133,7 +147,7 @@ if (isset($error_message))
 	    }
     ?>
 	<tr>
-		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_due' : 'sales_change_due') : 'sales_invoice_amount_due') ; ?> </td>
+		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_due' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
 		<td style='text-align:right'><?php echo to_currency($amount_change); ?></td>
 	</tr>
 

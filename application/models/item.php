@@ -34,7 +34,6 @@ class Item extends CI_Model
 	
 	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$is_deleted=0)
 	{
-		
 		$this->db->from("items");
 		if ($stock_location_id > -1)
 		{
@@ -45,10 +44,10 @@ class Item extends CI_Model
 		{
 			if ($search_custom==0)
 			{
-			$this->db->where("(name LIKE '%" . $search . "%' OR " .
-				"item_number LIKE '" . $search . "%' OR " .
-				$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
-				"category LIKE '%" . $search . "%')");
+				$this->db->where("(name LIKE '%" . $search . "%' OR " .
+					"item_number LIKE '" . $search . "%' OR " .
+					$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
+					"category LIKE '%" . $search . "%')");
 			}
 			else
 			{
@@ -64,23 +63,7 @@ class Item extends CI_Model
 				$this->db->or_like('custom10',$search);
 			}
 		}
-		$this->db->where('deleted', $is_deleted);
-		if ($low_inventory !=0 )
-		{
-			$this->db->where('quantity <=', 'reorder_level');
-		}
-		if ($is_serialized !=0 )
-		{
-			$this->db->where('is_serialized', 1);
-		}
-		if ($no_description!=0 )
-		{
-			$this->db->where('description','');
-		}
-// 		if ($is_deleted != 0)
-// 		{
-			$this->db->where('items.deleted', 1);
-// 		}
+		$this->db->where('items.deleted', $is_deleted);
 		if ($low_inventory !=0 )
 		{
 			$this->db->where('quantity <=', 'reorder_level');
@@ -621,7 +604,7 @@ class Item extends CI_Model
 				$this->db->or_like('custom10',$search);
 			}
 		}
-		$this->db->where('deleted', $deleted);
+		$this->db->where('items.deleted', $deleted);
 		if ($low_inventory !=0 )
 		{
 			$this->db->where('quantity <=', 'reorder_level');
@@ -632,9 +615,9 @@ class Item extends CI_Model
 		}
 		if ($no_description!=0 )
 		{
-			$this->db->where('description','');
+			$this->db->where('items.description','');
 		}
-		$this->db->order_by('name', "asc");
+		$this->db->order_by('items.name', "asc");
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}

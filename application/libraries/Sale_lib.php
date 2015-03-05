@@ -284,6 +284,7 @@ class Sale_lib
 		$item_info=$this->CI->Item->get_info($item_id,$item_location);
 		//array/cart records are identified by $insertkey and item_id is just another field.
 		$price = $price!=null ? $price: $item_info->unit_price;
+		$include_discount=$this->CI->config->item('discount_included');
 		$item = array(($insertkey)=>
 		array(
 			'item_id'=>$item_id,
@@ -300,8 +301,8 @@ class Sale_lib
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
 			'price'=>$price,
-			'total_tax_exclusive'=>$this->get_item_total_tax_exclusive($item_id, $quantity, $price, $discount),
-			'total'=>$this->get_item_total($quantity, $price, $discount)
+			'total_tax_exclusive'=>$this->get_item_total_tax_exclusive($item_id, $quantity, $price, $discount, $include_discount),
+			'total'=>$this->get_item_total($quantity, $price, $discount, $include_discount)
 			)
 		);
 
@@ -375,7 +376,7 @@ class Sale_lib
 	function edit_item($line,$description,$serialnumber,$quantity,$discount,$price)
 	{
 		$items = $this->get_cart();
-		if(isset($items[$line]))
+		if(isset($items[$line]))	
 		{
 			$line = &$items[$line];
 			$line['description'] = $description;
@@ -556,14 +557,25 @@ class Sale_lib
 
 		return $taxes;
 	}
-
-	function get_subtotal()
+	
+	function get_discounts()
 	{
-		$subtotal = $this->calculate_subtotal();		
+		$discounts = array();
+		foreach($this->get_cart() as $line=>$item)
+		{
+			$name = /*$item['name'] . ' ' . */$item['discount'];
+			$discounts[$name] = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+		}
+		return $discounts;
+	}
+
+	function get_subtotal($include_discount=FALSE)
+	{
+		$subtotal = $this->calculate_subtotal($include_discount);		
 		return to_currency_no_money($subtotal);
 	}
 	
-	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage) 
+	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discounts=TRUE) 
 	{
 		$tax_info = $this->CI->Item_taxes->get_info($item_id);
 		$item_price = $this->get_item_total($quantity, $price, $discount_percentage);
@@ -577,12 +589,22 @@ class Sale_lib
 		return $item_price;
 	}
 	
-	function get_item_total($quantity, $price, $discount_percentage)  
+	function get_item_total($quantity, $price, $discount_percentage, $include_discount=FALSE)  
+	{
+		$total = bcmul($quantity, $price, PRECISION);
+		if ($include_discount)
+		{
+			$discount_amount = $this->get_item_discount($quantity, $price, $discount_percentage);
+			return bcsub($total, $discount_amount, PRECISION);
+		}
+		return $total;
+	}
+	
+	function get_item_discount($quantity, $price, $discount_percentage)
 	{
 		$total = bcmul($quantity, $price, PRECISION);
 		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
-		$discount_amount =  bcmul($total, $discount_fraction, PRECISION);
-		return bcsub($total, $discount_amount, PRECISION);
+		return bcmul($total, $discount_fraction, PRECISION);
 	}
 	
 	function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
@@ -600,30 +622,38 @@ class Sale_lib
 		return bcmul($price, $tax_fraction, PRECISION);
 	}
 
-	function calculate_subtotal() 
+	function calculate_subtotal($include_discount=FALSE) 
 	{
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
 			if ($this->CI->config->config['tax_included'])
 			{
-				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount']), PRECISION);
+				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
 			}
 			else 
 			{
-				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount']), PRECISION);
+				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
 			}
 		}
 		return $subtotal;
 	}
 
-	function get_total()
+	function get_total($discount_included=TRUE)
 	{
 		$total = $this->calculate_subtotal();		
 		
 		foreach($this->get_taxes() as $tax)
 		{
 			$total = bcadd($total, $tax, PRECISION);
+		}
+		// substract discounts if they weren't included
+		if (!$discount_included)
+		{
+			foreach($this->get_discounts() as $discount)
+			{
+				$total = bcsub($total, $discount, PRECISION);
+			}
 		}
 
 		return to_currency_no_money($total);

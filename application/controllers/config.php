@@ -154,7 +154,8 @@ class Config extends Secure_area
 		'print_top_margin' => $this->input->post ( 'print_top_margin' ),
 		'print_left_margin' => $this->input->post ( 'print_left_margin' ),
 		'print_bottom_margin' => $this->input->post ( 'print_bottom_margin' ),
-		'print_right_margin' => $this->input->post ( 'print_right_margin' ) 
+		'print_right_margin' => $this->input->post ( 'print_right_margin' ),
+    	'show_total_discount' => $this->input->post( 'show_total_discount' )
 		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;

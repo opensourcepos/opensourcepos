@@ -55,6 +55,17 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 </div>
 
 <div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_show_total_discount').':', 'show_total_discount',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'show_total_discount',
+		'value'=>'show_total_discount',
+		'id'=>'show_total_discount',
+		'checked'=>$this->config->item('show_total_discount')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_print_silently').':', 'print_silently',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(
