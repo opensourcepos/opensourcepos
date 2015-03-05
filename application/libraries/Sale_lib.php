@@ -575,10 +575,10 @@ class Sale_lib
 		return to_currency_no_money($subtotal);
 	}
 	
-	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discounts=TRUE) 
+	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount=FALSE) 
 	{
 		$tax_info = $this->CI->Item_taxes->get_info($item_id);
-		$item_price = $this->get_item_total($quantity, $price, $discount_percentage);
+		$item_price = $this->get_item_total($quantity, $price, $discount_percentage, $include_discount);
 		// only additive tax here
 		foreach($tax_info as $tax)
 		{
@@ -609,7 +609,7 @@ class Sale_lib
 	
 	function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
 	{
-		$price = $this->get_item_total($quantity, $price, $discount_percentage);
+		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
 
 		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
 		if ($this->CI->config->config['tax_included'])
@@ -639,9 +639,9 @@ class Sale_lib
 		return $subtotal;
 	}
 
-	function get_total($discount_included=TRUE)
+	function get_total($discount_included=FALSE)
 	{
-		$total = $this->calculate_subtotal();		
+		$total = $this->calculate_subtotal($discount_included);		
 		
 		foreach($this->get_taxes() as $tax)
 		{

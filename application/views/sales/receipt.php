@@ -86,7 +86,7 @@ if (isset($error_message))
 	
 	<tr>
 	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
+	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($discounted_subtotal); ?></td>
 	</tr>
 	<?php if ($this->Appconfig->get('show_total_discount')): ?> 
 	<?php foreach($discounts as $name=>$value) { ?>
@@ -97,7 +97,7 @@ if (isset($error_message))
 	<?php }; ?>
 	<tr>
 	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($discounted_subtotal); ?></td>
+	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 	</tr>
 	<?php endif; ?>
 	<?php if ($this->Appconfig->get('receipt_show_taxes')): ?> 
