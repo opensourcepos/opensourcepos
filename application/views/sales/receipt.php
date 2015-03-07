@@ -84,23 +84,23 @@ if (isset($error_message))
 	}
 	?>
 	
+	<?php if ($this->Appconfig->get('show_total_discount')): ?> 
 	<tr>
 	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($discounted_subtotal); ?></td>
+	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 	</tr>
-	<?php if ($this->Appconfig->get('show_total_discount')): ?> 
 	<?php foreach($discounts as $name=>$value) { ?>
 		<tr>
 			<td colspan="3" class="total-value"><?php echo $name . ' ' . $this->lang->line('sales_discount_included'); ?>:</td>
 			<td class="total-value"><?php echo to_currency($value*-1); ?></td>
 		</tr>
 	<?php }; ?>
-	<tr>
-	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
-	</tr>
 	<?php endif; ?>
 	<?php if ($this->Appconfig->get('receipt_show_taxes')): ?> 
+	<tr>
+		<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
+		<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($discounted_subtotal); ?></td>
+	</tr>
 	<?php foreach($taxes as $name=>$value) { ?>
 		<tr>
 			<td colspan="3" class="total-value"><?php echo $name; ?>:</td>

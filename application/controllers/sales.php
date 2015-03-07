@@ -281,6 +281,7 @@ class Sales extends Secure_area
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['subtotal']=$this->sale_lib->get_subtotal();
 		$data['discounted_subtotal']=$this->sale_lib->get_subtotal(TRUE);
+		$data['tax_exclusive_subtotal']=$this->sale_lib->get_subtotal(TRUE, TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
 		$data['discounts']=$this->sale_lib->get_discounts();
@@ -481,8 +482,9 @@ class Sales extends Secure_area
 		$this->sale_lib->copy_entire_sale($sale_id);
 		$data['cart']=$this->sale_lib->get_cart();
 		$data['payments']=$this->sale_lib->get_payments();
-		$data['subtotal']=$this->sale_lib->get_subtotal(TRUE);
-		$data['discounted_subtotal']=$this->sale_lib->get_subtotal();
+		$data['subtotal']=$this->sale_lib->get_subtotal();
+		$data['discounted_subtotal']=$this->sale_lib->get_subtotal(TRUE);
+		$data['tax_exclusive_subtotal']=$this->sale_lib->get_subtotal(TRUE, TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
 		$data['discounts']=$this->sale_lib->get_discounts();

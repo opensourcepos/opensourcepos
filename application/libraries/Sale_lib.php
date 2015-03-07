@@ -283,8 +283,10 @@ class Sale_lib
 		$insertkey=$maxkey+1;
 		$item_info=$this->CI->Item->get_info($item_id,$item_location);
 		//array/cart records are identified by $insertkey and item_id is just another field.
-		$price = $price!=null ? $price: $item_info->unit_price;
-		$include_discount=$this->CI->config->item('discount_included');
+		$price=$price!=null?$price:$item_info->unit_price;
+		$total=$this->get_item_total($quantity, $price, $discount);
+		$include_discount=!$this->CI->config->item('show_total_discount');
+		$tax_included=$this->CI->config->item('tax_included');
 		$item = array(($insertkey)=>
 		array(
 			'item_id'=>$item_id,
@@ -301,8 +303,8 @@ class Sale_lib
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
 			'price'=>$price,
-			'total_tax_exclusive'=>$this->get_item_total_tax_exclusive($item_id, $quantity, $price, $discount, $include_discount),
-			'total'=>$this->get_item_total($quantity, $price, $discount, $include_discount)
+			'total'=>$total,
+			'discounted_total'=>$this->get_item_total($quantity, $price, $discount, TRUE)
 			)
 		);
 
@@ -563,15 +565,18 @@ class Sale_lib
 		$discounts = array();
 		foreach($this->get_cart() as $line=>$item)
 		{
-			$name = /*$item['name'] . ' ' . */$item['discount'];
-			$discounts[$name] = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+			if ($item['discount'] > 0)
+			{
+				$name = $item['discount'];
+				$discounts[$name] = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+			}
 		}
 		return $discounts;
 	}
 
-	function get_subtotal($include_discount=FALSE)
+	function get_subtotal($include_discount=FALSE, $exclude_tax=FALSE)
 	{
-		$subtotal = $this->calculate_subtotal($include_discount);		
+		$subtotal = $this->calculate_subtotal($include_discount, $exclude_tax);		
 		return to_currency_no_money($subtotal);
 	}
 	
@@ -622,12 +627,12 @@ class Sale_lib
 		return bcmul($price, $tax_fraction, PRECISION);
 	}
 
-	function calculate_subtotal($include_discount=FALSE) 
+	function calculate_subtotal($include_discount=FALSE, $exclude_tax=FALSE) 
 	{
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
-			if ($this->CI->config->config['tax_included'])
+			if ($exclude_tax && $this->CI->config->config['tax_included'])
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
 			}
@@ -639,20 +644,14 @@ class Sale_lib
 		return $subtotal;
 	}
 
-	function get_total($discount_included=FALSE)
+	function get_total()
 	{
-		$total = $this->calculate_subtotal($discount_included);		
-		
-		foreach($this->get_taxes() as $tax)
+		$total = $this->calculate_subtotal(TRUE);		
+		if (!$this->CI->config->config['tax_included'])
 		{
-			$total = bcadd($total, $tax, PRECISION);
-		}
-		// substract discounts if they weren't included
-		if (!$discount_included)
-		{
-			foreach($this->get_discounts() as $discount)
+			foreach($this->get_taxes() as $tax)
 			{
-				$total = bcsub($total, $discount, PRECISION);
+				$total = bcadd($total, $tax, PRECISION);
 			}
 		}
 

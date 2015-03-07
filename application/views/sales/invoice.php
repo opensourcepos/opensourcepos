@@ -65,7 +65,6 @@ if (isset($error_message))
 	      <th><?php echo $this->lang->line('sales_item_name'); ?></th>
 	      <th><?php echo $this->lang->line('sales_quantity'); ?></th>
 	      <th><?php echo $this->lang->line('sales_price'); ?></th>
-	      <th><?php echo $this->lang->line('sales_total_tax_exclusive'); ?></th>
 	      <th><?php echo $this->lang->line('sales_discount'); ?></th>
 	      <th><?php echo $this->lang->line('sales_total'); ?></th>
 	  </tr>
@@ -79,9 +78,8 @@ if (isset($error_message))
 				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['quantity']; ?></textarea></td>
 				<td><textarea rows="5" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-				<td><textarea rows="5" cols="6"><?php echo to_currency($item['total_tax_exclusive']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['discount']; ?></textarea></td>
-				<td style='text-align:right;'><textarea rows="5" cols="6"><?php echo to_currency($item['total']); ?></textarea></td>
+				<td style='text-align:right;'><textarea rows="5" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
 			</tr>
 		<?php
 		}
@@ -103,17 +101,17 @@ if (isset($error_message))
 		</tr>
 		     
 	  <tr>
-	      <td colspan="4" class="blank"> </td>
+	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-	      <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
+	      <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($tax_exclusive_subtotal); ?></textarea></td>
 	  </tr>
 	  <tr>
-	      <td colspan="4" class="blank"> </td>
+	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_tax'); ?></textarea></td>
 	      <td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency(array_sum($taxes)); ?></textarea></td>
 	  </tr>
 	  <tr>
-	      <td colspan="4" class="blank"> </td>
+	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
 	      <td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
 	  </tr>

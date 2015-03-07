@@ -78,7 +78,6 @@ if (isset($error_message))
 	      <th><?php echo $this->lang->line('sales_item_name'); ?></th>
 	      <th><?php echo $this->lang->line('sales_quantity'); ?></th>
 	      <th><?php echo $this->lang->line('sales_price'); ?></th>
-	      <th><?php echo $this->lang->line('sales_total_tax_exclusive'); ?></th>
 	      <th><?php echo $this->lang->line('sales_discount'); ?></th>
 	      <th><?php echo $this->lang->line('sales_total'); ?></th>
 	  </tr>
@@ -92,9 +91,8 @@ if (isset($error_message))
 				<td class="item-name long_name"><?php echo !empty($item['description']) ? $item['description'] : $item['name']; ?></td>
 				<td><?php echo $item['quantity']; ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo to_currency($item['total_tax_exclusive']); ?></td>
 				<td><?php echo $item['discount']; ?></td>
-				<td class="total-line"><?php echo to_currency($item['total']); ?></td>
+				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 			</tr>
 		<?php
 		}
@@ -103,30 +101,30 @@ if (isset($error_message))
 			<?php if (!empty($item['description']))
 			{
 			?>
-			<td colspan="7" align="center"><?php echo $item['description']; ?></td>
+			<td colspan="6" align="center"><?php echo $item['description']; ?></td>
 			<?php 
 			}
 			else
 			{
 			?>
-			<td colspan="7" align="center"><?php echo '&nbsp;'; ?></td>
+			<td colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
 			<?php 
 			}
 			?>
 		</tr>
 		     
 	  <tr>
-	      <td colspan="4" class="blank"> </td>
+	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	      <td id="subtotal" class="total-value"><?php echo to_currency($subtotal); ?></td>
+	      <td id="subtotal" class="total-value"><?php echo to_currency($tax_exclusive_subtotal); ?></td>
 	  </tr>
 	  <tr>
-	      <td colspan="4" class="blank"> </td>
+	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_tax'); ?></td>
 	      <td id="taxes" class="total-value"><?php echo to_currency(array_sum($taxes)); ?></td>
 	  </tr>
 	  <tr>
-	      <td colspan="4" class="blank"> </td>
+	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
 	      <td id="total" class="total-value"><?php echo to_currency($total); ?></td>
 	  </tr>
