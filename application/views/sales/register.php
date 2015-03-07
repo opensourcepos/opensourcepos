@@ -432,7 +432,7 @@ $(document).ready(function()
     	selectFirst: false,
        	delay:10,
     	formatItem: function(row) {
-			return row[1];
+			return (row.length > 1 && row[1]) || row[0];
 		}
     });
 

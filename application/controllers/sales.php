@@ -65,8 +65,10 @@ class Sales extends Secure_area
 
 	function item_search()
 	{
-		if ($this->sale_lib->get_mode() == 'return') {
-			$suggestions = $this->Sale->get_search_suggestions($this->input->post('q'), $this->input->post('limit'));
+		$suggestions = array();
+		if ($this->sale_lib->get_mode() == 'return') 
+		{
+			$this->sale_lib->is_valid_receipt($this->input->post('q')) && $suggestions[] = $this->input->post('q');
 		} else {
 			$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 			$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));

@@ -397,7 +397,7 @@ class Sale_lib
 		//POS #
 		$pieces = explode(' ',$receipt_sale_id);
 
-		if(count($pieces)==2)
+		if(count($pieces)==2 && strtolower($pieces[0]) == 'pos')
 		{
 			return $this->CI->Sale->exists($pieces[1]);
 		}
