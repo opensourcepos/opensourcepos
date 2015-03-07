@@ -68,7 +68,7 @@ if (isset($error_message))
 			<td><?php 
 				echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 			?></td>
-			<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
+			<td><div class="total-value"><?php echo to_currency($item[($this->Appconfig->get('show_total_discount') ? 'total' : 'discounted_total')]); ?></div></td>
 		</tr>
 	    <tr>
 	    <td colspan="2"><?php echo $item['description']; ?></td>
@@ -84,7 +84,7 @@ if (isset($error_message))
 	}
 	?>
 	
-	<?php if ($this->Appconfig->get('show_total_discount')): ?> 
+	<?php if ($this->Appconfig->get('show_total_discount') && count($discounts) > 0): ?> 
 	<tr>
 	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
 	<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
@@ -147,7 +147,7 @@ if (isset($error_message))
 	    }
     ?>
 	<tr>
-		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_due' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
+		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_giftcard_balance' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
 		<td style='text-align:right'><?php echo to_currency($amount_change); ?></td>
 	</tr>
 

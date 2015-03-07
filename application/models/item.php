@@ -324,7 +324,7 @@ class Item extends CI_Model
 /** END GARRISON ADDED **/	
 		/** GARRISON ADDED 4/22/2013 **/		
 	//Search by custom fields
-		$this->db->from('items');
+/* 		$this->db->from('items');
 		$this->db->where('deleted',0);
 		$this->db->like('custom1', $search);
 		$this->db->or_like('custom2', $search);
@@ -341,7 +341,7 @@ class Item extends CI_Model
 		foreach($by_description->result() as $row)
 		{
 			$suggestions[]=$row->item_id.'|'.$row->name;
-		}
+		} */
 		/** END GARRISON ADDED **/
 		
 		//only return $limit suggestions

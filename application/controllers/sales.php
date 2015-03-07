@@ -328,7 +328,7 @@ class Sales extends Secure_area
 		{
 			$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : NULL;
 			$data['invoice_number']=$invoice_number;
-			$data['sale_id']='POS '.$this->Sale->save($data['cart'], $customer_id,$employee_id,$comment,$invoice_number,$data['payments']);
+			$data['sale_id']='POS '.$this->Sale->save($data['cart'],$customer_id,$employee_id,$comment,$invoice_number,$data['payments']);
 			if ($data['sale_id'] == 'POS -1')
 			{
 				$data['error_message'] = $this->lang->line('sales_transaction_failed');
@@ -386,7 +386,7 @@ class Sales extends Secure_area
 		// load pdf helper
 		$this->load->helper(array('dompdf', 'file'));
 		$file_content  = pdf_create($html, '', false);
-		$filename = sys_get_temp_dir() . '/invoice-' . str_replace('/', '-' , $data["invoice_number"]) . '.pdf';
+		$filename = sys_get_temp_dir() . '/'. $this->lang->line('sales_invoice') .'-' . str_replace('/', '-' , $data["invoice_number"]) . '.pdf';
 		write_file($filename, $file_content);
 		return $filename;
 	}
