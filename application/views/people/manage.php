@@ -10,17 +10,6 @@ $(document).ready(function()
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 });
 
-if (window.sessionStorage && !sessionStorage['country'])
-{
-	jQuery.ajax({
-		type: "GET",
-		url: http_s('ipinfo.io/json'),
-		success: function(response) {
-			sessionStorage['country'] = response.country;
-		}, dataType: 'jsonp'
-	});
-}
-
 function init_table_sorting()
 {
 	//Only init if there is more than one row
