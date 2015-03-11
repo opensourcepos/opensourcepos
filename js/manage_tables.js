@@ -55,7 +55,7 @@ function attach_search_listener()
 {
 	 // prevent redirecting to link when search enabled
     $("#pagination a").click(function(event) {
-    	  if ($("#search").val()) {
+    	  if ($("#search").val() || $("#search_form input:checked")) {
     		  event.preventDefault();
     		  // set limit_from to value included in the link
     		  var uri_segments = event.currentTarget.href.split('/');
