@@ -1,3 +1,5 @@
+node_modules
+bower_components
 application/config/email.php
 application/config/database.php
 *.patch

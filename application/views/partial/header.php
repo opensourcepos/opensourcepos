@@ -5,28 +5,36 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
-	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/ospos.css" />
-	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/ospos_print.css"  media="print"/>
-	<script>BASE_URL = '<?php echo site_url(); ?>';</script>
-	<script src="<?php echo base_url();?>js/jquery-1.8.3.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/imgpreview.full.jquery.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/datepicker.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.color.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.metadata.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.form-3.51.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.tablesorter.min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.ajax_queue.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.bgiframe.min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.autocomplete.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.validate-1.13.1-min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/jquery.jkey-1.1.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/nominatim.autocomplete.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
- 	<script src="<?php echo base_url();?>js/thickbox.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/common.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/manage_tables.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/swfobject.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/date.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-	<script src="<?php echo base_url();?>js/datepicker.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
+	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
+	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
+	<?php if ($this->input->cookie('debug') == "true" || $this->input->post("debug") == "true") : ?>
+	<!-- start js template tags -->	
+    <script type="text/javascript" src="js/common.js" language="javascript"></script>
+    <script type="text/javascript" src="js/date.js" language="javascript"></script>
+    <script type="text/javascript" src="js/datepicker.js" language="javascript"></script>
+    <script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery-migrate-1.2.1.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.bgiframe.min.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.color.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.form-3.51.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.metadata.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.tablesorter.min.js" language="javascript"></script>
+    <script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
+    <script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
+    <script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
+    <script type="text/javascript" src="js/swfobject.js" language="javascript"></script>
+    <script type="text/javascript" src="js/tabcontent.js" language="javascript"></script>
+    <script type="text/javascript" src="js/thickbox.js" language="javascript"></script>
+    <!-- end js template tags -->
+    <?php else : ?>
+    <!-- start minjs template tags -->
+    <script type="text/javascript" src="dist/opensourcepos.min.js" language="javascript"></script>
+    <!-- end minjs template tags -->       
+    <?php endif; ?>
 	<script type="text/javascript">
 		function logout(logout)
 		{

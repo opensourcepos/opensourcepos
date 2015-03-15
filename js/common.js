@@ -36,9 +36,11 @@ function set_feedback(text, classname, keep_displayed)
 	}
 }
 
-//keylisteners
-$.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'config', 'giftcards'], function(key, value) {
-	$(window).jkey('f' + (key+1), function(){
-		window.location = BASE_URL + '/' + value + '/index';
-	});	
-});
+;(function($){
+	//keylisteners
+	$.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'config', 'giftcards'], function(key, value) {
+		$(window).jkey('f' + (key+1), function(){
+			window.location = BASE_URL + '/' + value + '/index';
+		});	
+	});
+})(jQuery);
