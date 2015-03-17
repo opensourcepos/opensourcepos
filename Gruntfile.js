@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                 absolutePath: true
             },
             src: [
-                'js/*.js',
+                'js/jquery*.js', 'js/*.js',
             ],
             dest: 'application/views/partial/header.php'
        },
@@ -71,6 +71,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-script-link-tags');
 
-  grunt.registerTask('default', ['tags:js', 'tags:css', 'concat', 'uglify', 'tags:minjs']);
+  grunt.registerTask('default', ['tags:js', 'concat', 'uglify', 'tags:minjs']);
 
 };

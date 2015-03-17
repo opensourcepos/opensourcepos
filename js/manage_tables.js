@@ -149,6 +149,8 @@ function enable_delete(confirm_message,none_selected_message)
 			if(confirm(confirm_message))
 			{
 				do_delete($(this).attr('href'));
+			} else {
+				return false;
 			}
 		}
 		else
@@ -182,10 +184,7 @@ function do_delete(url)
 					$("#sortable_table tbody tr").length > 0 && update_sortable_table();
 					
 				});
-			});	
-//			for(index in response.ids) {
-//				update_row(response.ids[index],url.replace(/[^\/]+$/,'get_row'));
-//			}
+			});
 			
 			set_feedback(response.message,'success_message',false);	
 		}

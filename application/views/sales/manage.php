@@ -17,7 +17,7 @@ $(document).ready(function()
 		var value = $("#payment_type").val();
 		var $button = $("#update_invoice_numbers").parents("li");
 		$button.toggle(value === "1");
-	}
+	};
 	
 	$("#payment_type").change(show_renumber);
 	show_renumber();

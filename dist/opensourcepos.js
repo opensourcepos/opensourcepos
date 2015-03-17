@@ -14715,9 +14715,9 @@ function do_delete(url)
 					
 				});
 			});	
-//			for(index in response.ids) {
-//				update_row(response.ids[index],url.replace(/[^\/]+$/,'get_row'));
-//			}
+			for(index in response.ids) {
+				update_row(response.ids[index],url.replace(/[^\/]+$/,'get_row'));
+			}
 			
 			set_feedback(response.message,'success_message',false);	
 		}

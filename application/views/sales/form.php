@@ -110,13 +110,6 @@ $(document).ready(function()
     }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
     
 	$('#date').datePicker({startDate: '01/01/1970'});
-	$("#sales_delete_form").submit(function()
-	{
-		if (!confirm('<?php echo $this->lang->line("sales_delete_confirmation"); ?>'))
-		{
-			return false;
-		}
-	});
 	
 	var format_item = function(row) 
 	{
@@ -189,27 +182,30 @@ $(document).ready(function()
 	});
 	$('#sales_delete_form').submit(function() 
 	{
-		var id = $("input[name='sale_id']").val();
-		$(this).ajaxSubmit({
-			success:function(response)
-			{
-				tb_remove();
-				set_feedback(response.message,'success_message',false);
-				var $element = get_table_row(id).parent().parent();
-				$element.find("td").animate({backgroundColor:"green"},1200,"linear")
-				.end().animate({opacity:0},1200,"linear",function()
+		if (confirm('<?php echo $this->lang->line("sales_delete_confirmation"); ?>'))
+		{
+			var id = $("input[name='sale_id']").val();
+			$(this).ajaxSubmit({
+				success:function(response)
 				{
-					$element.next().remove();
-					$(this).remove();
-					//Re-init sortable table as we removed a row
-					update_sortable_table();
-				});
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				set_feedback(textStatus,'error_message',true);
-			},
-			dataType:'json'
-		});
+					tb_remove();
+					set_feedback(response.message,'success_message',false);
+					var $element = get_table_row(id).parent().parent();
+					$element.find("td").animate({backgroundColor:"green"},1200,"linear")
+					.end().animate({opacity:0},1200,"linear",function()
+					{
+						$element.next().remove();
+						$(this).remove();
+						//Re-init sortable table as we removed a row
+						update_sortable_table();
+					});
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					set_feedback(textStatus,'error_message',true);
+				},
+				dataType:'json'
+			});
+		}
 		return false;
 	});
 });
