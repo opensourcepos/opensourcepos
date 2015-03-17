@@ -57,7 +57,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_page_cellspacing', '20'),
 ('receipt_show_taxes', '0'),
 ('use_invoice_template', '1'),
-('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $CO'),
+('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
 ('print_silently', '1'),
 ('print_header', '0'),
 ('print_footer', '0'),

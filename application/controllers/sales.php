@@ -354,9 +354,11 @@ class Sales extends Secure_area
 						$data['image_prefix']="";
 						$filename = $this->_invoice_email_pdf($data);
 						$this->email->attach($filename);
-						$message = $this->config->item('invoice_email_message');
-						$message = $this->_substitute_variables($message, $cust_info);
-						$this->email->message($message);
+						$text = $this->config->item('invoice_email_message');
+						$text = str_replace('$INV', $sale_data['invoice_number'], $text);
+						$text = str_replace('$CO', $sale_data['sale_id'], $text);
+						$text = $this->_substitute_customer($text, $cust_info);
+						$this->email->message($text);
 					}
 					else
 					{
@@ -404,7 +406,8 @@ class Sales extends Secure_area
 	function send_invoice($sale_id) {
 		$sale_data = $this->_load_sale_data($sale_id);
 		$text = $this->config->item('invoice_email_message');
-		$text = str_replace('$CO', $sale_data['invoice_number'], $text);
+		$text = str_replace('$INV', $sale_data['invoice_number'], $text);
+		$text = str_replace('$CO', $sale_data['sale_id'], $text);
 		$text = $this->_substitute_customer($text,(object) $sale_data);
 		$result = FALSE;
 		$message = $this->lang->line('sales_invoice_no_email');
