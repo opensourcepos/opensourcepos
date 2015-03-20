@@ -59,6 +59,21 @@ module.exports = function(grunt) {
            dest: 'application/views/partial/header.php'
       }
     },
+    mochaSelenium: {
+        options : {
+            reporter: 'spec',
+            timeout: 30e3,
+            usePromises: true,
+            useSystemPhantom: true
+        },
+        phantomjs: {
+            src: ['test/*.js'],
+            options: {
+                // phantomjs must be in the $PATH when invoked
+                browserName: 'phantomjs'
+            }
+        }
+    },
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint']
