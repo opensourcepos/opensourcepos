@@ -201,8 +201,24 @@ class Sales extends Secure_area
 		$data=array();
 		$mode = $this->sale_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
-		$quantity = ($mode=="return")? -1:1;
+		//$quantity = ($mode=="return")? -1:1;
 		$item_location = $this->sale_lib->get_sale_location();
+		
+		//note:add option to prefix quantity on adding item (dvbondoy)
+		//for improvement:add option to change multiplier symbol in app config
+	        //let's look for multiplier symbol '@'
+	        $qty = strstr($item_id_or_number_or_item_kit_or_receipt, '@', true);
+	        
+	        if ($qty != false) {
+	            //we found one, let's exclude the quantity and multiplier '@'
+	            $item_id_or_number_or_item_kit_or_receipt = trim(strstr($item_id_or_number_or_item_kit_or_receipt, '@'), '@');
+	        } else {
+	            //user did not put a quantity, default to 1
+	            $qty = 1;
+	        }
+	        
+		$quantity = ($mode=="return") ? '-'.$qty : $qty;
+	        //note:end of edit (dvbondoy)
 
 		if($mode == 'return' && $this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
