@@ -93,13 +93,6 @@ $(document).ready(function()
     }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
 	
 	$('#date').datePicker({startDate: '<?php echo date("%Y/%M/%d");?>'});
-	$("#recvs_delete_form").submit(function()
-	{
-		if (!confirm('<?php echo $this->lang->line("recvs_delete_confirmation"); ?>'))
-		{
-			return false;
-		}
-	});
 	
 	var format_item = function(row) 
 	{
@@ -173,17 +166,21 @@ $(document).ready(function()
 		{
 			success:function(response)
 			{
-				tb_remove();
-				set_feedback(response.message,'success_message',false);
-				var $element = get_table_row(id).parent().parent();
-				$element.find("td").animate({backgroundColor:"green"},1200,"linear")
-				.end().animate({opacity:0},1200,"linear",function()
+				if (confirm('<?php echo $this->lang->line("recvs_delete_confirmation"); ?>'))
 				{
-					$element.next().remove();
-					$(this).remove();
-					//Re-init sortable table as we removed a row
-					update_sortable_table();
-				});
+					tb_remove();
+					set_feedback(response.message,'success_message',false);
+					var $element = get_table_row(id).parent().parent();
+					$element.find("td").animate({backgroundColor:"green"},1200,"linear")
+					.end().animate({opacity:0},1200,"linear",function()
+					{
+						$element.next().remove();
+						$(this).remove();
+						//Re-init sortable table as we removed a row
+						update_sortable_table();
+					});
+				}
+				return false;
 			},
 			error: function(jqXHR, textStatus, errorThrown) {
 				set_feedback(textStatus,'error_message',true);

@@ -74,6 +74,8 @@ class Receiving extends CI_Model
 		foreach($items as $line=>$item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
+			
+			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			$receivings_items_data = array
 			(
@@ -82,7 +84,7 @@ class Receiving extends CI_Model
 				'line'=>$item['line'],
 				'description'=>$item['description'],
 				'serialnumber'=>$item['serialnumber'],
-				'quantity_purchased'=>$item['quantity'],
+				'quantity_purchased'=>$items_received,
 				'discount_percent'=>$item['discount'],
 				'item_cost_price' => $cur_item_info->cost_price,
 				'item_unit_price'=>$item['price'],
@@ -90,8 +92,6 @@ class Receiving extends CI_Model
 			);
 
 			$this->db->insert('receivings_items',$receivings_items_data);
-
-			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
 			if($cur_item_info->cost_price != $item['price']
@@ -158,7 +158,7 @@ class Receiving extends CI_Model
 						'trans_date'=>date('Y-m-d H:i:s'),
 						'trans_items'=>$item['item_id'],
 						'trans_user'=>$employee_id,
-						'trans_comment'=>'Deleting sale ' . $receiving_id,
+						'trans_comment'=>'Deleting receiving ' . $receiving_id,
 						'trans_location'=>$item['item_location'],
 						'trans_inventory'=>$item['quantity_purchased']*-1
 	
