@@ -1,5 +1,7 @@
 Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.
 
+[![Build Status](https://travis-ci.org/jekkos/opensourcepos.svg?branch=master)](https://travis-ci.org/jekkos/opensourcepos)
+
 How to Install
 --------------
 1. Create/locate a new mysql database to install open source point of sale into
