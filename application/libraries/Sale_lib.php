@@ -565,8 +565,7 @@ class Sale_lib
 		{
 			if ($item['discount'] > 0)
 			{
-				$name = $item['discount'];
-				$discounts[$name] = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+				$discounts[] = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
 			}
 		}
 		return $discounts;

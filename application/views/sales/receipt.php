@@ -91,7 +91,7 @@ if (isset($error_message))
 	</tr>
 	<?php foreach($discounts as $name=>$value) { ?>
 		<tr>
-			<td colspan="3" class="total-value"><?php echo $name . ' ' . $this->lang->line('sales_discount_included'); ?>:</td>
+			<td colspan="3" class="total-value"><?php echo $this->lang->line('sales_discount'); ?>:</td>
 			<td class="total-value"><?php echo to_currency($value*-1); ?></td>
 		</tr>
 	<?php }; ?>

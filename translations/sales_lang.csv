@@ -26,7 +26,8 @@ sales_delete_successful,De geselecteerde aanko(o)p(en) werden verwijderd,Has bor
 sales_delete_unsuccessful,De geselecteerde aankopen konden niet worden verwijderd.,No he podido borrar la venta satisfactoriamente,You have unsuccessfully deleted a sale,Échec de suppression,銷售資料刪除失敗,Вы безуспешно удален продаже,คุณลบการขายไม่สำเร็จ,Satışı silemediniz,Transaksi Penjualan tidak berhasil dihapus
 sales_description_abbrv,Omschr.,Desc,Desc,Desc,倒序,описание,Desc,Tanım,Deskripsi
 sales_discount,%,Desc %,Disc %,% Remise,折扣 %,скидка %,ส่วนลด %,İndirim %,Diskon %
-sales_discount_included,% korting,% discount,% discount,% discount,% discount,% discount,% discount,% discount,% discount
+sales_discount_included,% Korting,% Discount,% Discount,% Discount,% Discount,% Discount,% Discount,% Discount,% Discount
+sales_discount,Korting,Discount,Discount,Discount,Discount,Discount,Discount,Discount,Discount
 sales_discount_short,%,%,%,%,%,%,,%,%
 sales_edit,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
 sales_edit_item,Bewaar,Editar Artículo,Edit Item,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
