@@ -51,8 +51,8 @@ class Items extends Secure_area implements iData_controller
 		$total_rows = $this->Item->get_found_rows($search,$stock_location,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
 		$data_rows=get_items_manage_table_data_rows($items,$this);
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 		$this->_remove_duplicate_cookies();
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	
 	function pic_thumb($pic_id)
