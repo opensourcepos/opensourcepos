@@ -191,7 +191,7 @@ CREATE TABLE `ospos_items` (
   `custom10` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `item_number` (`item_number`),
-  KEY `ospos_items_ibfk_1` (`supplier_id`)
+  KEY `supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
 --
@@ -731,7 +731,8 @@ ALTER TABLE `ospos_employees`
 --
 ALTER TABLE `ospos_inventory`
   ADD CONSTRAINT `ospos_inventory_ibfk_1` FOREIGN KEY (`trans_items`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_inventory_ibfk_2` FOREIGN KEY (`trans_user`) REFERENCES `ospos_employees` (`person_id`);
+  ADD CONSTRAINT `ospos_inventory_ibfk_2` FOREIGN KEY (`trans_user`) REFERENCES `ospos_employees` (`person_id`),
+  ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 --
 -- Constraints for table `ospos_items`
