@@ -59,20 +59,13 @@ module.exports = function(grunt) {
            dest: 'application/views/partial/header.php'
       }
     },
-    mochaSelenium: {
-        options : {
-            reporter: 'spec',
-            timeout: 30e3,
-            usePromises: true,
-            useSystemPhantom: true
-        },
-        phantomjs: {
-            src: ['test/*.js'],
-            options: {
-                // phantomjs must be in the $PATH when invoked
-                browserName: 'phantomjs'
-            }
-        }
+    mochaWebdriver: {
+    	test : {
+    		options: {
+    			usePhantom: true,
+    		},
+    		src: ['test/**/*.js']
+    	}
     },
     watch: {
       files: ['<%= jshint.files %>'],
@@ -85,6 +78,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-script-link-tags');
+  grunt.loadNpmTasks('grunt-mocha-webdriver');
 
   grunt.registerTask('default', ['tags:js', 'concat', 'uglify', 'tags:minjs']);
 
