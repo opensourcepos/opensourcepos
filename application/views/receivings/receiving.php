@@ -369,6 +369,8 @@ $(document).ready(function()
 		$("#add_item_form").submit();
     });
 
+    $('#item').focus();
+
 	$('#item').blur(function()
     {
     	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
