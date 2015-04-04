@@ -9470,527 +9470,6 @@ if ( typeof define === "function" && define.amd && define.amd.jQuery ) {
 }
 
 })( window );
-;/*!
- * jQuery Migrate - v1.2.1 - 2013-05-08
- * https://github.com/jquery/jquery-migrate
- * Copyright 2005, 2013 jQuery Foundation, Inc. and other contributors; Licensed MIT
- */
-(function( jQuery, window, undefined ) {
-// See http://bugs.jquery.com/ticket/13335
-// "use strict";
-
-
-var warnedAbout = {};
-
-// List of warnings already given; public read only
-jQuery.migrateWarnings = [];
-
-// Set to true to prevent console output; migrateWarnings still maintained
-// jQuery.migrateMute = false;
-
-// Show a message on the console so devs know we're active
-if ( !jQuery.migrateMute && window.console && window.console.log ) {
-	window.console.log("JQMIGRATE: Logging is active");
-}
-
-// Set to false to disable traces that appear with warnings
-if ( jQuery.migrateTrace === undefined ) {
-	jQuery.migrateTrace = true;
-}
-
-// Forget any warnings we've already given; public
-jQuery.migrateReset = function() {
-	warnedAbout = {};
-	jQuery.migrateWarnings.length = 0;
-};
-
-function migrateWarn( msg) {
-	var console = window.console;
-	if ( !warnedAbout[ msg ] ) {
-		warnedAbout[ msg ] = true;
-		jQuery.migrateWarnings.push( msg );
-		if ( console && console.warn && !jQuery.migrateMute ) {
-			console.warn( "JQMIGRATE: " + msg );
-			if ( jQuery.migrateTrace && console.trace ) {
-				console.trace();
-			}
-		}
-	}
-}
-
-function migrateWarnProp( obj, prop, value, msg ) {
-	if ( Object.defineProperty ) {
-		// On ES5 browsers (non-oldIE), warn if the code tries to get prop;
-		// allow property to be overwritten in case some other plugin wants it
-		try {
-			Object.defineProperty( obj, prop, {
-				configurable: true,
-				enumerable: true,
-				get: function() {
-					migrateWarn( msg );
-					return value;
-				},
-				set: function( newValue ) {
-					migrateWarn( msg );
-					value = newValue;
-				}
-			});
-			return;
-		} catch( err ) {
-			// IE8 is a dope about Object.defineProperty, can't warn there
-		}
-	}
-
-	// Non-ES5 (or broken) browser; just set the property
-	jQuery._definePropertyBroken = true;
-	obj[ prop ] = value;
-}
-
-if ( document.compatMode === "BackCompat" ) {
-	// jQuery has never supported or tested Quirks Mode
-	migrateWarn( "jQuery is not compatible with Quirks Mode" );
-}
-
-
-var attrFn = jQuery( "<input/>", { size: 1 } ).attr("size") && jQuery.attrFn,
-	oldAttr = jQuery.attr,
-	valueAttrGet = jQuery.attrHooks.value && jQuery.attrHooks.value.get ||
-		function() { return null; },
-	valueAttrSet = jQuery.attrHooks.value && jQuery.attrHooks.value.set ||
-		function() { return undefined; },
-	rnoType = /^(?:input|button)$/i,
-	rnoAttrNodeType = /^[238]$/,
-	rboolean = /^(?:autofocus|autoplay|async|checked|controls|defer|disabled|hidden|loop|multiple|open|readonly|required|scoped|selected)$/i,
-	ruseDefault = /^(?:checked|selected)$/i;
-
-// jQuery.attrFn
-migrateWarnProp( jQuery, "attrFn", attrFn || {}, "jQuery.attrFn is deprecated" );
-
-jQuery.attr = function( elem, name, value, pass ) {
-	var lowerName = name.toLowerCase(),
-		nType = elem && elem.nodeType;
-
-	if ( pass ) {
-		// Since pass is used internally, we only warn for new jQuery
-		// versions where there isn't a pass arg in the formal params
-		if ( oldAttr.length < 4 ) {
-			migrateWarn("jQuery.fn.attr( props, pass ) is deprecated");
-		}
-		if ( elem && !rnoAttrNodeType.test( nType ) &&
-			(attrFn ? name in attrFn : jQuery.isFunction(jQuery.fn[name])) ) {
-			return jQuery( elem )[ name ]( value );
-		}
-	}
-
-	// Warn if user tries to set `type`, since it breaks on IE 6/7/8; by checking
-	// for disconnected elements we don't warn on $( "<button>", { type: "button" } ).
-	if ( name === "type" && value !== undefined && rnoType.test( elem.nodeName ) && elem.parentNode ) {
-		migrateWarn("Can't change the 'type' of an input or button in IE 6/7/8");
-	}
-
-	// Restore boolHook for boolean property/attribute synchronization
-	if ( !jQuery.attrHooks[ lowerName ] && rboolean.test( lowerName ) ) {
-		jQuery.attrHooks[ lowerName ] = {
-			get: function( elem, name ) {
-				// Align boolean attributes with corresponding properties
-				// Fall back to attribute presence where some booleans are not supported
-				var attrNode,
-					property = jQuery.prop( elem, name );
-				return property === true || typeof property !== "boolean" &&
-					( attrNode = elem.getAttributeNode(name) ) && attrNode.nodeValue !== false ?
-
-					name.toLowerCase() :
-					undefined;
-			},
-			set: function( elem, value, name ) {
-				var propName;
-				if ( value === false ) {
-					// Remove boolean attributes when set to false
-					jQuery.removeAttr( elem, name );
-				} else {
-					// value is true since we know at this point it's type boolean and not false
-					// Set boolean attributes to the same name and set the DOM property
-					propName = jQuery.propFix[ name ] || name;
-					if ( propName in elem ) {
-						// Only set the IDL specifically if it already exists on the element
-						elem[ propName ] = true;
-					}
-
-					elem.setAttribute( name, name.toLowerCase() );
-				}
-				return name;
-			}
-		};
-
-		// Warn only for attributes that can remain distinct from their properties post-1.9
-		if ( ruseDefault.test( lowerName ) ) {
-			migrateWarn( "jQuery.fn.attr('" + lowerName + "') may use property instead of attribute" );
-		}
-	}
-
-	return oldAttr.call( jQuery, elem, name, value );
-};
-
-// attrHooks: value
-jQuery.attrHooks.value = {
-	get: function( elem, name ) {
-		var nodeName = ( elem.nodeName || "" ).toLowerCase();
-		if ( nodeName === "button" ) {
-			return valueAttrGet.apply( this, arguments );
-		}
-		if ( nodeName !== "input" && nodeName !== "option" ) {
-			migrateWarn("jQuery.fn.attr('value') no longer gets properties");
-		}
-		return name in elem ?
-			elem.value :
-			null;
-	},
-	set: function( elem, value ) {
-		var nodeName = ( elem.nodeName || "" ).toLowerCase();
-		if ( nodeName === "button" ) {
-			return valueAttrSet.apply( this, arguments );
-		}
-		if ( nodeName !== "input" && nodeName !== "option" ) {
-			migrateWarn("jQuery.fn.attr('value', val) no longer sets properties");
-		}
-		// Does not return so that setAttribute is also used
-		elem.value = value;
-	}
-};
-
-
-var matched, browser,
-	oldInit = jQuery.fn.init,
-	oldParseJSON = jQuery.parseJSON,
-	// Note: XSS check is done below after string is trimmed
-	rquickExpr = /^([^<]*)(<[\w\W]+>)([^>]*)$/;
-
-// $(html) "looks like html" rule change
-jQuery.fn.init = function( selector, context, rootjQuery ) {
-	var match;
-
-	if ( selector && typeof selector === "string" && !jQuery.isPlainObject( context ) &&
-			(match = rquickExpr.exec( jQuery.trim( selector ) )) && match[ 0 ] ) {
-		// This is an HTML string according to the "old" rules; is it still?
-		if ( selector.charAt( 0 ) !== "<" ) {
-			migrateWarn("$(html) HTML strings must start with '<' character");
-		}
-		if ( match[ 3 ] ) {
-			migrateWarn("$(html) HTML text after last tag is ignored");
-		}
-		// Consistently reject any HTML-like string starting with a hash (#9521)
-		// Note that this may break jQuery 1.6.x code that otherwise would work.
-		if ( match[ 0 ].charAt( 0 ) === "#" ) {
-			migrateWarn("HTML string cannot start with a '#' character");
-			jQuery.error("JQMIGRATE: Invalid selector string (XSS)");
-		}
-		// Now process using loose rules; let pre-1.8 play too
-		if ( context && context.context ) {
-			// jQuery object as context; parseHTML expects a DOM object
-			context = context.context;
-		}
-		if ( jQuery.parseHTML ) {
-			return oldInit.call( this, jQuery.parseHTML( match[ 2 ], context, true ),
-					context, rootjQuery );
-		}
-	}
-	return oldInit.apply( this, arguments );
-};
-jQuery.fn.init.prototype = jQuery.fn;
-
-// Let $.parseJSON(falsy_value) return null
-jQuery.parseJSON = function( json ) {
-	if ( !json && json !== null ) {
-		migrateWarn("jQuery.parseJSON requires a valid JSON string");
-		return null;
-	}
-	return oldParseJSON.apply( this, arguments );
-};
-
-jQuery.uaMatch = function( ua ) {
-	ua = ua.toLowerCase();
-
-	var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
-		/(webkit)[ \/]([\w.]+)/.exec( ua ) ||
-		/(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
-		/(msie) ([\w.]+)/.exec( ua ) ||
-		ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
-		[];
-
-	return {
-		browser: match[ 1 ] || "",
-		version: match[ 2 ] || "0"
-	};
-};
-
-// Don't clobber any existing jQuery.browser in case it's different
-if ( !jQuery.browser ) {
-	matched = jQuery.uaMatch( navigator.userAgent );
-	browser = {};
-
-	if ( matched.browser ) {
-		browser[ matched.browser ] = true;
-		browser.version = matched.version;
-	}
-
-	// Chrome is Webkit, but Webkit is also Safari.
-	if ( browser.chrome ) {
-		browser.webkit = true;
-	} else if ( browser.webkit ) {
-		browser.safari = true;
-	}
-
-	jQuery.browser = browser;
-}
-
-// Warn if the code tries to get jQuery.browser
-migrateWarnProp( jQuery, "browser", jQuery.browser, "jQuery.browser is deprecated" );
-
-jQuery.sub = function() {
-	function jQuerySub( selector, context ) {
-		return new jQuerySub.fn.init( selector, context );
-	}
-	jQuery.extend( true, jQuerySub, this );
-	jQuerySub.superclass = this;
-	jQuerySub.fn = jQuerySub.prototype = this();
-	jQuerySub.fn.constructor = jQuerySub;
-	jQuerySub.sub = this.sub;
-	jQuerySub.fn.init = function init( selector, context ) {
-		if ( context && context instanceof jQuery && !(context instanceof jQuerySub) ) {
-			context = jQuerySub( context );
-		}
-
-		return jQuery.fn.init.call( this, selector, context, rootjQuerySub );
-	};
-	jQuerySub.fn.init.prototype = jQuerySub.fn;
-	var rootjQuerySub = jQuerySub(document);
-	migrateWarn( "jQuery.sub() is deprecated" );
-	return jQuerySub;
-};
-
-
-// Ensure that $.ajax gets the new parseJSON defined in core.js
-jQuery.ajaxSetup({
-	converters: {
-		"text json": jQuery.parseJSON
-	}
-});
-
-
-var oldFnData = jQuery.fn.data;
-
-jQuery.fn.data = function( name ) {
-	var ret, evt,
-		elem = this[0];
-
-	// Handles 1.7 which has this behavior and 1.8 which doesn't
-	if ( elem && name === "events" && arguments.length === 1 ) {
-		ret = jQuery.data( elem, name );
-		evt = jQuery._data( elem, name );
-		if ( ( ret === undefined || ret === evt ) && evt !== undefined ) {
-			migrateWarn("Use of jQuery.fn.data('events') is deprecated");
-			return evt;
-		}
-	}
-	return oldFnData.apply( this, arguments );
-};
-
-
-var rscriptType = /\/(java|ecma)script/i,
-	oldSelf = jQuery.fn.andSelf || jQuery.fn.addBack;
-
-jQuery.fn.andSelf = function() {
-	migrateWarn("jQuery.fn.andSelf() replaced by jQuery.fn.addBack()");
-	return oldSelf.apply( this, arguments );
-};
-
-// Since jQuery.clean is used internally on older versions, we only shim if it's missing
-if ( !jQuery.clean ) {
-	jQuery.clean = function( elems, context, fragment, scripts ) {
-		// Set context per 1.8 logic
-		context = context || document;
-		context = !context.nodeType && context[0] || context;
-		context = context.ownerDocument || context;
-
-		migrateWarn("jQuery.clean() is deprecated");
-
-		var i, elem, handleScript, jsTags,
-			ret = [];
-
-		jQuery.merge( ret, jQuery.buildFragment( elems, context ).childNodes );
-
-		// Complex logic lifted directly from jQuery 1.8
-		if ( fragment ) {
-			// Special handling of each script element
-			handleScript = function( elem ) {
-				// Check if we consider it executable
-				if ( !elem.type || rscriptType.test( elem.type ) ) {
-					// Detach the script and store it in the scripts array (if provided) or the fragment
-					// Return truthy to indicate that it has been handled
-					return scripts ?
-						scripts.push( elem.parentNode ? elem.parentNode.removeChild( elem ) : elem ) :
-						fragment.appendChild( elem );
-				}
-			};
-
-			for ( i = 0; (elem = ret[i]) != null; i++ ) {
-				// Check if we're done after handling an executable script
-				if ( !( jQuery.nodeName( elem, "script" ) && handleScript( elem ) ) ) {
-					// Append to fragment and handle embedded scripts
-					fragment.appendChild( elem );
-					if ( typeof elem.getElementsByTagName !== "undefined" ) {
-						// handleScript alters the DOM, so use jQuery.merge to ensure snapshot iteration
-						jsTags = jQuery.grep( jQuery.merge( [], elem.getElementsByTagName("script") ), handleScript );
-
-						// Splice the scripts into ret after their former ancestor and advance our index beyond them
-						ret.splice.apply( ret, [i + 1, 0].concat( jsTags ) );
-						i += jsTags.length;
-					}
-				}
-			}
-		}
-
-		return ret;
-	};
-}
-
-var eventAdd = jQuery.event.add,
-	eventRemove = jQuery.event.remove,
-	eventTrigger = jQuery.event.trigger,
-	oldToggle = jQuery.fn.toggle,
-	oldLive = jQuery.fn.live,
-	oldDie = jQuery.fn.die,
-	ajaxEvents = "ajaxStart|ajaxStop|ajaxSend|ajaxComplete|ajaxError|ajaxSuccess",
-	rajaxEvent = new RegExp( "\\b(?:" + ajaxEvents + ")\\b" ),
-	rhoverHack = /(?:^|\s)hover(\.\S+|)\b/,
-	hoverHack = function( events ) {
-		if ( typeof( events ) !== "string" || jQuery.event.special.hover ) {
-			return events;
-		}
-		if ( rhoverHack.test( events ) ) {
-			migrateWarn("'hover' pseudo-event is deprecated, use 'mouseenter mouseleave'");
-		}
-		return events && events.replace( rhoverHack, "mouseenter$1 mouseleave$1" );
-	};
-
-// Event props removed in 1.9, put them back if needed; no practical way to warn them
-if ( jQuery.event.props && jQuery.event.props[ 0 ] !== "attrChange" ) {
-	jQuery.event.props.unshift( "attrChange", "attrName", "relatedNode", "srcElement" );
-}
-
-// Undocumented jQuery.event.handle was "deprecated" in jQuery 1.7
-if ( jQuery.event.dispatch ) {
-	migrateWarnProp( jQuery.event, "handle", jQuery.event.dispatch, "jQuery.event.handle is undocumented and deprecated" );
-}
-
-// Support for 'hover' pseudo-event and ajax event warnings
-jQuery.event.add = function( elem, types, handler, data, selector ){
-	if ( elem !== document && rajaxEvent.test( types ) ) {
-		migrateWarn( "AJAX events should be attached to document: " + types );
-	}
-	eventAdd.call( this, elem, hoverHack( types || "" ), handler, data, selector );
-};
-jQuery.event.remove = function( elem, types, handler, selector, mappedTypes ){
-	eventRemove.call( this, elem, hoverHack( types ) || "", handler, selector, mappedTypes );
-};
-
-jQuery.fn.error = function() {
-	var args = Array.prototype.slice.call( arguments, 0);
-	migrateWarn("jQuery.fn.error() is deprecated");
-	args.splice( 0, 0, "error" );
-	if ( arguments.length ) {
-		return this.bind.apply( this, args );
-	}
-	// error event should not bubble to window, although it does pre-1.7
-	this.triggerHandler.apply( this, args );
-	return this;
-};
-
-jQuery.fn.toggle = function( fn, fn2 ) {
-
-	// Don't mess with animation or css toggles
-	if ( !jQuery.isFunction( fn ) || !jQuery.isFunction( fn2 ) ) {
-		return oldToggle.apply( this, arguments );
-	}
-	migrateWarn("jQuery.fn.toggle(handler, handler...) is deprecated");
-
-	// Save reference to arguments for access in closure
-	var args = arguments,
-		guid = fn.guid || jQuery.guid++,
-		i = 0,
-		toggler = function( event ) {
-			// Figure out which function to execute
-			var lastToggle = ( jQuery._data( this, "lastToggle" + fn.guid ) || 0 ) % i;
-			jQuery._data( this, "lastToggle" + fn.guid, lastToggle + 1 );
-
-			// Make sure that clicks stop
-			event.preventDefault();
-
-			// and execute the function
-			return args[ lastToggle ].apply( this, arguments ) || false;
-		};
-
-	// link all the functions, so any of them can unbind this click handler
-	toggler.guid = guid;
-	while ( i < args.length ) {
-		args[ i++ ].guid = guid;
-	}
-
-	return this.click( toggler );
-};
-
-jQuery.fn.live = function( types, data, fn ) {
-	migrateWarn("jQuery.fn.live() is deprecated");
-	if ( oldLive ) {
-		return oldLive.apply( this, arguments );
-	}
-	jQuery( this.context ).on( types, this.selector, data, fn );
-	return this;
-};
-
-jQuery.fn.die = function( types, fn ) {
-	migrateWarn("jQuery.fn.die() is deprecated");
-	if ( oldDie ) {
-		return oldDie.apply( this, arguments );
-	}
-	jQuery( this.context ).off( types, this.selector || "**", fn );
-	return this;
-};
-
-// Turn global events into document-triggered events
-jQuery.event.trigger = function( event, data, elem, onlyHandlers  ){
-	if ( !elem && !rajaxEvent.test( event ) ) {
-		migrateWarn( "Global events are undocumented and deprecated" );
-	}
-	return eventTrigger.call( this,  event, data, elem || document, onlyHandlers  );
-};
-jQuery.each( ajaxEvents.split("|"),
-	function( _, name ) {
-		jQuery.event.special[ name ] = {
-			setup: function() {
-				var elem = this;
-
-				// The document needs no shimming; must be !== for oldIE
-				if ( elem !== document ) {
-					jQuery.event.add( document, name + "." + jQuery.guid, function() {
-						jQuery.event.trigger( name, null, elem, true );
-					});
-					jQuery._data( this, name, jQuery.guid++ );
-				}
-				return false;
-			},
-			teardown: function() {
-				if ( this !== document ) {
-					jQuery.event.remove( document, name + "." + jQuery._data( this, name ) );
-				}
-				return false;
-			}
-		};
-	}
-);
-
-
-})( jQuery, window );
 ;/**
  * Ajax Queue Plugin
  * 
@@ -10878,129 +10357,670 @@ $.Autocompleter.Selection = function(field, start, end) {
  *
  * Version 2.1.1
  */
-(function($){$.fn.bgIframe=$.fn.bgiframe=function(s){if($.browser.msie&&/6.0/.test(navigator.userAgent)){s=$.extend({top:'auto',left:'auto',width:'auto',height:'auto',opacity:true,src:'javascript:false;'},s||{});var prop=function(n){return n&&n.constructor==Number?n+'px':n;},html='<iframe class="bgiframe"frameborder="0"tabindex="-1"src="'+s.src+'"'+'style="display:block;position:absolute;z-index:-1;'+(s.opacity!==false?'filter:Alpha(Opacity=\'0\');':'')+'top:'+(s.top=='auto'?'expression(((parseInt(this.parentNode.currentStyle.borderTopWidth)||0)*-1)+\'px\')':prop(s.top))+';'+'left:'+(s.left=='auto'?'expression(((parseInt(this.parentNode.currentStyle.borderLeftWidth)||0)*-1)+\'px\')':prop(s.left))+';'+'width:'+(s.width=='auto'?'expression(this.parentNode.offsetWidth+\'px\')':prop(s.width))+';'+'height:'+(s.height=='auto'?'expression(this.parentNode.offsetHeight+\'px\')':prop(s.height))+';'+'"/>';return this.each(function(){if($('> iframe.bgiframe',this).length==0)this.insertBefore(document.createElement(html),this.firstChild);});}return this;};})(jQuery);;/*
- * jQuery Color Animations
- * Copyright 2007 John Resig
- * Released under the MIT and GPL licenses.
+(function($){$.fn.bgIframe=$.fn.bgiframe=function(s){if($.browser.msie&&/6.0/.test(navigator.userAgent)){s=$.extend({top:'auto',left:'auto',width:'auto',height:'auto',opacity:true,src:'javascript:false;'},s||{});var prop=function(n){return n&&n.constructor==Number?n+'px':n;},html='<iframe class="bgiframe"frameborder="0"tabindex="-1"src="'+s.src+'"'+'style="display:block;position:absolute;z-index:-1;'+(s.opacity!==false?'filter:Alpha(Opacity=\'0\');':'')+'top:'+(s.top=='auto'?'expression(((parseInt(this.parentNode.currentStyle.borderTopWidth)||0)*-1)+\'px\')':prop(s.top))+';'+'left:'+(s.left=='auto'?'expression(((parseInt(this.parentNode.currentStyle.borderLeftWidth)||0)*-1)+\'px\')':prop(s.left))+';'+'width:'+(s.width=='auto'?'expression(this.parentNode.offsetWidth+\'px\')':prop(s.width))+';'+'height:'+(s.height=='auto'?'expression(this.parentNode.offsetHeight+\'px\')':prop(s.height))+';'+'"/>';return this.each(function(){if($('> iframe.bgiframe',this).length==0)this.insertBefore(document.createElement(html),this.firstChild);});}return this;};})(jQuery);;/*!
+ * jQuery Color Animations v@VERSION
+ * https://github.com/jquery/jquery-color
+ *
+ * Copyright jQuery Foundation and other contributors
+ * Released under the MIT license.
+ * http://jquery.org/license
+ *
+ * Date: @DATE
  */
+(function( jQuery, undefined ) {
 
-(function(jQuery){
+	var stepHooks = "backgroundColor borderBottomColor borderLeftColor borderRightColor borderTopColor color columnRuleColor outlineColor textDecorationColor textEmphasisColor",
 
-	// We override the animation for all of these color styles
-	jQuery.each(['backgroundColor', 'borderBottomColor', 'borderLeftColor', 'borderRightColor', 'borderTopColor', 'color', 'outlineColor'], function(i,attr){
-		jQuery.fx.step[attr] = function(fx){
-			if ( fx.state == 0 ) {
-				fx.start = getColor( fx.elem, attr );
-				fx.end = getRGB( fx.end );
+	// plusequals test for += 100 -= 100
+	rplusequals = /^([\-+])=\s*(\d+\.?\d*)/,
+	// a set of RE's that can match strings and generate color tuples.
+	stringParsers = [{
+			re: /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
+			parse: function( execResult ) {
+				return [
+					execResult[ 1 ],
+					execResult[ 2 ],
+					execResult[ 3 ],
+					execResult[ 4 ]
+				];
 			}
+		}, {
+			re: /rgba?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
+			parse: function( execResult ) {
+				return [
+					execResult[ 1 ] * 2.55,
+					execResult[ 2 ] * 2.55,
+					execResult[ 3 ] * 2.55,
+					execResult[ 4 ]
+				];
+			}
+		}, {
+			// this regex ignores A-F because it's compared against an already lowercased string
+			re: /#([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/,
+			parse: function( execResult ) {
+				return [
+					parseInt( execResult[ 1 ], 16 ),
+					parseInt( execResult[ 2 ], 16 ),
+					parseInt( execResult[ 3 ], 16 )
+				];
+			}
+		}, {
+			// this regex ignores A-F because it's compared against an already lowercased string
+			re: /#([a-f0-9])([a-f0-9])([a-f0-9])/,
+			parse: function( execResult ) {
+				return [
+					parseInt( execResult[ 1 ] + execResult[ 1 ], 16 ),
+					parseInt( execResult[ 2 ] + execResult[ 2 ], 16 ),
+					parseInt( execResult[ 3 ] + execResult[ 3 ], 16 )
+				];
+			}
+		}, {
+			re: /hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
+			space: "hsla",
+			parse: function( execResult ) {
+				return [
+					execResult[ 1 ],
+					execResult[ 2 ] / 100,
+					execResult[ 3 ] / 100,
+					execResult[ 4 ]
+				];
+			}
+		}],
 
-			fx.elem.style[attr] = "rgb(" + [
-				Math.max(Math.min( parseInt((fx.pos * (fx.end[0] - fx.start[0])) + fx.start[0]), 255), 0),
-				Math.max(Math.min( parseInt((fx.pos * (fx.end[1] - fx.start[1])) + fx.start[1]), 255), 0),
-				Math.max(Math.min( parseInt((fx.pos * (fx.end[2] - fx.start[2])) + fx.start[2]), 255), 0)
-			].join(",") + ")";
+	// jQuery.Color( )
+	color = jQuery.Color = function( color, green, blue, alpha ) {
+		return new jQuery.Color.fn.parse( color, green, blue, alpha );
+	},
+	spaces = {
+		rgba: {
+			props: {
+				red: {
+					idx: 0,
+					type: "byte"
+				},
+				green: {
+					idx: 1,
+					type: "byte"
+				},
+				blue: {
+					idx: 2,
+					type: "byte"
+				}
+			}
+		},
+
+		hsla: {
+			props: {
+				hue: {
+					idx: 0,
+					type: "degrees"
+				},
+				saturation: {
+					idx: 1,
+					type: "percent"
+				},
+				lightness: {
+					idx: 2,
+					type: "percent"
+				}
+			}
+		}
+	},
+	propTypes = {
+		"byte": {
+			floor: true,
+			max: 255
+		},
+		"percent": {
+			max: 1
+		},
+		"degrees": {
+			mod: 360,
+			floor: true
+		}
+	},
+	support = color.support = {},
+
+	// element for support tests
+	supportElem = jQuery( "<p>" )[ 0 ],
+
+	// colors = jQuery.Color.names
+	colors,
+
+	// local aliases of functions called often
+	each = jQuery.each;
+
+// determine rgba support immediately
+supportElem.style.cssText = "background-color:rgba(1,1,1,.5)";
+support.rgba = supportElem.style.backgroundColor.indexOf( "rgba" ) > -1;
+
+// define cache name and alpha properties
+// for rgba and hsla spaces
+each( spaces, function( spaceName, space ) {
+	space.cache = "_" + spaceName;
+	space.props.alpha = {
+		idx: 3,
+		type: "percent",
+		def: 1
+	};
+});
+
+function clamp( value, prop, allowEmpty ) {
+	var type = propTypes[ prop.type ] || {};
+
+	if ( value == null ) {
+		return (allowEmpty || !prop.def) ? null : prop.def;
+	}
+
+	// ~~ is an short way of doing floor for positive numbers
+	value = type.floor ? ~~value : parseFloat( value );
+
+	// IE will pass in empty strings as value for alpha,
+	// which will hit this case
+	if ( isNaN( value ) ) {
+		return prop.def;
+	}
+
+	if ( type.mod ) {
+		// we add mod before modding to make sure that negatives values
+		// get converted properly: -10 -> 350
+		return (value + type.mod) % type.mod;
+	}
+
+	// for now all property types without mod have min and max
+	return 0 > value ? 0 : type.max < value ? type.max : value;
+}
+
+function stringParse( string ) {
+	var inst = color(),
+		rgba = inst._rgba = [];
+
+	string = string.toLowerCase();
+
+	each( stringParsers, function( i, parser ) {
+		var parsed,
+			match = parser.re.exec( string ),
+			values = match && parser.parse( match ),
+			spaceName = parser.space || "rgba";
+
+		if ( values ) {
+			parsed = inst[ spaceName ]( values );
+
+			// if this was an rgba parse the assignment might happen twice
+			// oh well....
+			inst[ spaces[ spaceName ].cache ] = parsed[ spaces[ spaceName ].cache ];
+			rgba = inst._rgba = parsed._rgba;
+
+			// exit each( stringParsers ) here because we matched
+			return false;
 		}
 	});
 
-	// Color Conversion functions from highlightFade
-	// By Blair Mitchelmore
-	// http://jquery.offput.ca/highlightFade/
+	// Found a stringParser that handled it
+	if ( rgba.length ) {
 
-	// Parse strings looking for color tuples [255,255,255]
-	function getRGB(color) {
-		var result;
-
-		// Check if we're already dealing with an array of colors
-		if ( color && color.constructor == Array && color.length == 3 )
-			return color;
-
-		// Look for rgb(num,num,num)
-		if (result = /rgb\(\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*,\s*([0-9]{1,3})\s*\)/.exec(color))
-			return [parseInt(result[1]), parseInt(result[2]), parseInt(result[3])];
-
-		// Look for rgb(num%,num%,num%)
-		if (result = /rgb\(\s*([0-9]+(?:\.[0-9]+)?)\%\s*,\s*([0-9]+(?:\.[0-9]+)?)\%\s*,\s*([0-9]+(?:\.[0-9]+)?)\%\s*\)/.exec(color))
-			return [parseFloat(result[1])*2.55, parseFloat(result[2])*2.55, parseFloat(result[3])*2.55];
-
-		// Look for #a0b1c2
-		if (result = /#([a-fA-F0-9]{2})([a-fA-F0-9]{2})([a-fA-F0-9]{2})/.exec(color))
-			return [parseInt(result[1],16), parseInt(result[2],16), parseInt(result[3],16)];
-
-		// Look for #fff
-		if (result = /#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])/.exec(color))
-			return [parseInt(result[1]+result[1],16), parseInt(result[2]+result[2],16), parseInt(result[3]+result[3],16)];
-
-		// Otherwise, we're most likely dealing with a named color
-		return colors[jQuery.trim(color).toLowerCase()];
+		// if this came from a parsed string, force "transparent" when alpha is 0
+		// chrome, (and maybe others) return "transparent" as rgba(0,0,0,0)
+		if ( rgba.join() === "0,0,0,0" ) {
+			jQuery.extend( rgba, colors.transparent );
+		}
+		return inst;
 	}
-	
-	function getColor(elem, attr) {
-		var color;
 
-		do {
-			color = jQuery.curCSS(elem, attr);
+	// named colors
+	return colors[ string ];
+}
 
-			// Keep going until we find an element that has color, or we hit the body
-			if ( color != '' && color != 'transparent' || jQuery.nodeName(elem, "body") )
-				break; 
+color.fn = jQuery.extend( color.prototype, {
+	parse: function( red, green, blue, alpha ) {
+		if ( red === undefined ) {
+			this._rgba = [ null, null, null, null ];
+			return this;
+		}
+		if ( red.jquery || red.nodeType ) {
+			red = jQuery( red ).css( green );
+			green = undefined;
+		}
 
-			attr = "backgroundColor";
-		} while ( elem = elem.parentNode );
+		var inst = this,
+			type = jQuery.type( red ),
+			rgba = this._rgba = [];
 
-		return getRGB(color);
+		// more than 1 argument specified - assume ( red, green, blue, alpha )
+		if ( green !== undefined ) {
+			red = [ red, green, blue, alpha ];
+			type = "array";
+		}
+
+		if ( type === "string" ) {
+			return this.parse( stringParse( red ) || colors._default );
+		}
+
+		if ( type === "array" ) {
+			each( spaces.rgba.props, function( key, prop ) {
+				rgba[ prop.idx ] = clamp( red[ prop.idx ], prop );
+			});
+			return this;
+		}
+
+		if ( type === "object" ) {
+			if ( red instanceof color ) {
+				each( spaces, function( spaceName, space ) {
+					if ( red[ space.cache ] ) {
+						inst[ space.cache ] = red[ space.cache ].slice();
+					}
+				});
+			} else {
+				each( spaces, function( spaceName, space ) {
+					var cache = space.cache;
+					each( space.props, function( key, prop ) {
+
+						// if the cache doesn't exist, and we know how to convert
+						if ( !inst[ cache ] && space.to ) {
+
+							// if the value was null, we don't need to copy it
+							// if the key was alpha, we don't need to copy it either
+							if ( key === "alpha" || red[ key ] == null ) {
+								return;
+							}
+							inst[ cache ] = space.to( inst._rgba );
+						}
+
+						// this is the only case where we allow nulls for ALL properties.
+						// call clamp with alwaysAllowEmpty
+						inst[ cache ][ prop.idx ] = clamp( red[ key ], prop, true );
+					});
+
+					// everything defined but alpha?
+					if ( inst[ cache ] && jQuery.inArray( null, inst[ cache ].slice( 0, 3 ) ) < 0 ) {
+						// use the default of 1
+						inst[ cache ][ 3 ] = 1;
+						if ( space.from ) {
+							inst._rgba = space.from( inst[ cache ] );
+						}
+					}
+				});
+			}
+			return this;
+		}
+	},
+	is: function( compare ) {
+		var is = color( compare ),
+			same = true,
+			inst = this;
+
+		each( spaces, function( _, space ) {
+			var localCache,
+				isCache = is[ space.cache ];
+			if (isCache) {
+				localCache = inst[ space.cache ] || space.to && space.to( inst._rgba ) || [];
+				each( space.props, function( _, prop ) {
+					if ( isCache[ prop.idx ] != null ) {
+						same = ( isCache[ prop.idx ] === localCache[ prop.idx ] );
+						return same;
+					}
+				});
+			}
+			return same;
+		});
+		return same;
+	},
+	_space: function() {
+		var used = [],
+			inst = this;
+		each( spaces, function( spaceName, space ) {
+			if ( inst[ space.cache ] ) {
+				used.push( spaceName );
+			}
+		});
+		return used.pop();
+	},
+	transition: function( other, distance ) {
+		var end = color( other ),
+			spaceName = end._space(),
+			space = spaces[ spaceName ],
+			startColor = this.alpha() === 0 ? color( "transparent" ) : this,
+			start = startColor[ space.cache ] || space.to( startColor._rgba ),
+			result = start.slice();
+
+		end = end[ space.cache ];
+		each( space.props, function( key, prop ) {
+			var index = prop.idx,
+				startValue = start[ index ],
+				endValue = end[ index ],
+				type = propTypes[ prop.type ] || {};
+
+			// if null, don't override start value
+			if ( endValue === null ) {
+				return;
+			}
+			// if null - use end
+			if ( startValue === null ) {
+				result[ index ] = endValue;
+			} else {
+				if ( type.mod ) {
+					if ( endValue - startValue > type.mod / 2 ) {
+						startValue += type.mod;
+					} else if ( startValue - endValue > type.mod / 2 ) {
+						startValue -= type.mod;
+					}
+				}
+				result[ index ] = clamp( ( endValue - startValue ) * distance + startValue, prop );
+			}
+		});
+		return this[ spaceName ]( result );
+	},
+	blend: function( opaque ) {
+		// if we are already opaque - return ourself
+		if ( this._rgba[ 3 ] === 1 ) {
+			return this;
+		}
+
+		var rgb = this._rgba.slice(),
+			a = rgb.pop(),
+			blend = color( opaque )._rgba;
+
+		return color( jQuery.map( rgb, function( v, i ) {
+			return ( 1 - a ) * blend[ i ] + a * v;
+		}));
+	},
+	toRgbaString: function() {
+		var prefix = "rgba(",
+			rgba = jQuery.map( this._rgba, function( v, i ) {
+				return v == null ? ( i > 2 ? 1 : 0 ) : v;
+			});
+
+		if ( rgba[ 3 ] === 1 ) {
+			rgba.pop();
+			prefix = "rgb(";
+		}
+
+		return prefix + rgba.join() + ")";
+	},
+	toHslaString: function() {
+		var prefix = "hsla(",
+			hsla = jQuery.map( this.hsla(), function( v, i ) {
+				if ( v == null ) {
+					v = i > 2 ? 1 : 0;
+				}
+
+				// catch 1 and 2
+				if ( i && i < 3 ) {
+					v = Math.round( v * 100 ) + "%";
+				}
+				return v;
+			});
+
+		if ( hsla[ 3 ] === 1 ) {
+			hsla.pop();
+			prefix = "hsl(";
+		}
+		return prefix + hsla.join() + ")";
+	},
+	toHexString: function( includeAlpha ) {
+		var rgba = this._rgba.slice(),
+			alpha = rgba.pop();
+
+		if ( includeAlpha ) {
+			rgba.push( ~~( alpha * 255 ) );
+		}
+
+		return "#" + jQuery.map( rgba, function( v ) {
+
+			// default to 0 when nulls exist
+			v = ( v || 0 ).toString( 16 );
+			return v.length === 1 ? "0" + v : v;
+		}).join("");
+	},
+	toString: function() {
+		return this._rgba[ 3 ] === 0 ? "transparent" : this.toRgbaString();
+	}
+});
+color.fn.parse.prototype = color.fn;
+
+// hsla conversions adapted from:
+// https://code.google.com/p/maashaack/source/browse/packages/graphics/trunk/src/graphics/colors/HUE2RGB.as?r=5021
+
+function hue2rgb( p, q, h ) {
+	h = ( h + 1 ) % 1;
+	if ( h * 6 < 1 ) {
+		return p + (q - p) * h * 6;
+	}
+	if ( h * 2 < 1) {
+		return q;
+	}
+	if ( h * 3 < 2 ) {
+		return p + (q - p) * ((2/3) - h) * 6;
+	}
+	return p;
+}
+
+spaces.hsla.to = function ( rgba ) {
+	if ( rgba[ 0 ] == null || rgba[ 1 ] == null || rgba[ 2 ] == null ) {
+		return [ null, null, null, rgba[ 3 ] ];
+	}
+	var r = rgba[ 0 ] / 255,
+		g = rgba[ 1 ] / 255,
+		b = rgba[ 2 ] / 255,
+		a = rgba[ 3 ],
+		max = Math.max( r, g, b ),
+		min = Math.min( r, g, b ),
+		diff = max - min,
+		add = max + min,
+		l = add * 0.5,
+		h, s;
+
+	if ( min === max ) {
+		h = 0;
+	} else if ( r === max ) {
+		h = ( 60 * ( g - b ) / diff ) + 360;
+	} else if ( g === max ) {
+		h = ( 60 * ( b - r ) / diff ) + 120;
+	} else {
+		h = ( 60 * ( r - g ) / diff ) + 240;
+	}
+
+	// chroma (diff) == 0 means greyscale which, by definition, saturation = 0%
+	// otherwise, saturation is based on the ratio of chroma (diff) to lightness (add)
+	if ( diff === 0 ) {
+		s = 0;
+	} else if ( l <= 0.5 ) {
+		s = diff / add;
+	} else {
+		s = diff / ( 2 - add );
+	}
+	return [ Math.round(h) % 360, s, l, a == null ? 1 : a ];
+};
+
+spaces.hsla.from = function ( hsla ) {
+	if ( hsla[ 0 ] == null || hsla[ 1 ] == null || hsla[ 2 ] == null ) {
+		return [ null, null, null, hsla[ 3 ] ];
+	}
+	var h = hsla[ 0 ] / 360,
+		s = hsla[ 1 ],
+		l = hsla[ 2 ],
+		a = hsla[ 3 ],
+		q = l <= 0.5 ? l * ( 1 + s ) : l + s - l * s,
+		p = 2 * l - q;
+
+	return [
+		Math.round( hue2rgb( p, q, h + ( 1 / 3 ) ) * 255 ),
+		Math.round( hue2rgb( p, q, h ) * 255 ),
+		Math.round( hue2rgb( p, q, h - ( 1 / 3 ) ) * 255 ),
+		a
+	];
+};
+
+
+each( spaces, function( spaceName, space ) {
+	var props = space.props,
+		cache = space.cache,
+		to = space.to,
+		from = space.from;
+
+	// makes rgba() and hsla()
+	color.fn[ spaceName ] = function( value ) {
+
+		// generate a cache for this space if it doesn't exist
+		if ( to && !this[ cache ] ) {
+			this[ cache ] = to( this._rgba );
+		}
+		if ( value === undefined ) {
+			return this[ cache ].slice();
+		}
+
+		var ret,
+			type = jQuery.type( value ),
+			arr = ( type === "array" || type === "object" ) ? value : arguments,
+			local = this[ cache ].slice();
+
+		each( props, function( key, prop ) {
+			var val = arr[ type === "object" ? key : prop.idx ];
+			if ( val == null ) {
+				val = local[ prop.idx ];
+			}
+			local[ prop.idx ] = clamp( val, prop );
+		});
+
+		if ( from ) {
+			ret = color( from( local ) );
+			ret[ cache ] = local;
+			return ret;
+		} else {
+			return color( local );
+		}
 	};
-	
-	// Some named colors to work with
-	// From Interface by Stefan Petre
-	// http://interface.eyecon.ro/
 
-	var colors = {
-		aqua:[0,255,255],
-		azure:[240,255,255],
-		beige:[245,245,220],
-		black:[0,0,0],
-		blue:[0,0,255],
-		brown:[165,42,42],
-		cyan:[0,255,255],
-		darkblue:[0,0,139],
-		darkcyan:[0,139,139],
-		darkgrey:[169,169,169],
-		darkgreen:[0,100,0],
-		darkkhaki:[189,183,107],
-		darkmagenta:[139,0,139],
-		darkolivegreen:[85,107,47],
-		darkorange:[255,140,0],
-		darkorchid:[153,50,204],
-		darkred:[139,0,0],
-		darksalmon:[233,150,122],
-		darkviolet:[148,0,211],
-		fuchsia:[255,0,255],
-		gold:[255,215,0],
-		green:[0,128,0],
-		indigo:[75,0,130],
-		khaki:[240,230,140],
-		lightblue:[173,216,230],
-		lightcyan:[224,255,255],
-		lightgreen:[144,238,144],
-		lightgrey:[211,211,211],
-		lightpink:[255,182,193],
-		lightyellow:[255,255,224],
-		lime:[0,255,0],
-		magenta:[255,0,255],
-		maroon:[128,0,0],
-		navy:[0,0,128],
-		olive:[128,128,0],
-		orange:[255,165,0],
-		pink:[255,192,203],
-		purple:[128,0,128],
-		violet:[128,0,128],
-		red:[255,0,0],
-		silver:[192,192,192],
-		white:[255,255,255],
-		yellow:[255,255,0]
-	};
-	
-})(jQuery);;/*!
+	// makes red() green() blue() alpha() hue() saturation() lightness()
+	each( props, function( key, prop ) {
+		// alpha is included in more than one space
+		if ( color.fn[ key ] ) {
+			return;
+		}
+		color.fn[ key ] = function( value ) {
+			var vtype = jQuery.type( value ),
+				fn = ( key === "alpha" ? ( this._hsla ? "hsla" : "rgba" ) : spaceName ),
+				local = this[ fn ](),
+				cur = local[ prop.idx ],
+				match;
+
+			if ( vtype === "undefined" ) {
+				return cur;
+			}
+
+			if ( vtype === "function" ) {
+				value = value.call( this, cur );
+				vtype = jQuery.type( value );
+			}
+			if ( value == null && prop.empty ) {
+				return this;
+			}
+			if ( vtype === "string" ) {
+				match = rplusequals.exec( value );
+				if ( match ) {
+					value = cur + parseFloat( match[ 2 ] ) * ( match[ 1 ] === "+" ? 1 : -1 );
+				}
+			}
+			local[ prop.idx ] = value;
+			return this[ fn ]( local );
+		};
+	});
+});
+
+// add cssHook and .fx.step function for each named hook.
+// accept a space separated string of properties
+color.hook = function( hook ) {
+	var hooks = hook.split( " " );
+	each( hooks, function( i, hook ) {
+		jQuery.cssHooks[ hook ] = {
+			set: function( elem, value ) {
+				var parsed, curElem,
+					backgroundColor = "";
+
+				if ( value !== "transparent" && ( jQuery.type( value ) !== "string" || ( parsed = stringParse( value ) ) ) ) {
+					value = color( parsed || value );
+					if ( !support.rgba && value._rgba[ 3 ] !== 1 ) {
+						curElem = hook === "backgroundColor" ? elem.parentNode : elem;
+						while (
+							(backgroundColor === "" || backgroundColor === "transparent") &&
+							curElem && curElem.style
+						) {
+							try {
+								backgroundColor = jQuery.css( curElem, "backgroundColor" );
+								curElem = curElem.parentNode;
+							} catch ( e ) {
+							}
+						}
+
+						value = value.blend( backgroundColor && backgroundColor !== "transparent" ?
+							backgroundColor :
+							"_default" );
+					}
+
+					value = value.toRgbaString();
+				}
+				try {
+					elem.style[ hook ] = value;
+				} catch( e ) {
+					// wrapped to prevent IE from throwing errors on "invalid" values like 'auto' or 'inherit'
+				}
+			}
+		};
+		jQuery.fx.step[ hook ] = function( fx ) {
+			if ( !fx.colorInit ) {
+				fx.start = color( fx.elem, hook );
+				fx.end = color( fx.end );
+				fx.colorInit = true;
+			}
+			jQuery.cssHooks[ hook ].set( fx.elem, fx.start.transition( fx.end, fx.pos ) );
+		};
+	});
+
+};
+
+color.hook( stepHooks );
+
+jQuery.cssHooks.borderColor = {
+	expand: function( value ) {
+		var expanded = {};
+
+		each( [ "Top", "Right", "Bottom", "Left" ], function( i, part ) {
+			expanded[ "border" + part + "Color" ] = value;
+		});
+		return expanded;
+	}
+};
+
+// Basic color names only.
+// Usage of any of the other color names requires adding yourself or including
+// jquery.color.svg-names.js.
+colors = jQuery.Color.names = {
+	// 4.1. Basic color keywords
+	aqua: "#00ffff",
+	black: "#000000",
+	blue: "#0000ff",
+	fuchsia: "#ff00ff",
+	gray: "#808080",
+	green: "#008000",
+	lime: "#00ff00",
+	maroon: "#800000",
+	navy: "#000080",
+	olive: "#808000",
+	purple: "#800080",
+	red: "#ff0000",
+	silver: "#c0c0c0",
+	teal: "#008080",
+	white: "#ffffff",
+	yellow: "#ffff00",
+
+	// 4.2.3. "transparent" color keyword
+	transparent: [ null, null, null, 0 ],
+
+	_default: "#ffffff"
+};
+
+}( jQuery ));
+;/*!
  * jQuery Form Plugin
  * version: 3.51.0-2014.06.20
  * Requires jQuery v1.5 or later

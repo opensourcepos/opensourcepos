@@ -10,7 +10,6 @@
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->post("debug") == "true") : ?>
 	<!-- start js template tags -->
 	<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery-migrate-1.2.1.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.bgiframe.min.js" language="javascript"></script>
