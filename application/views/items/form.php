@@ -247,16 +247,16 @@ foreach($stock_locations as $key=>$location_detail)
 
 <?php
 echo form_submit(array(
-		'name'=>'continue',
-		'id'=>'continue',
-		'value'=>$this->lang->line('common_new'),
-		'class'=>'submit_button float_right')
-);
-echo form_submit(array(
 	'name'=>'submit',
 	'id'=>'submit',
 	'value'=>$this->lang->line('common_submit'),
 	'class'=>'submit_button float_right')
+);
+echo form_submit(array(
+		'name'=>'continue',
+		'id'=>'continue',
+		'value'=>$this->lang->line('common_new'),
+		'class'=>'submit_button float_right')
 );
 ?>
 </fieldset>
