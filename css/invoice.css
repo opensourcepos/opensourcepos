@@ -11,6 +11,7 @@
 #page-wrap textarea { border: 0; font: 14px Georgia, Sans-Serif; overflow: hidden; resize: none; }
 #page-wrap table { border-collapse: collapse; }
 #page-wrap table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
+#page-wrap table td { padding: 5px; }
 
 #header { height: 30px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: bold 26px Helvetica, Sans-Serif; letter-spacing: 4px; padding: 8px 0px; }
 
@@ -37,7 +38,7 @@
 #meta td textarea { width: 100%; height: 20px; text-align: right; }
 
 #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
-#items th { background: #eee; }
+#items th { background: #eee; text-align: center; }
 #items textarea { width: 80px; height: 40px; }
 #items tr.item-row td { border: 0; vertical-align: top; }
 #items td.description { width: 300px; }
@@ -49,6 +50,7 @@
 #items td.total-line textarea { height: 20px; width:150px; background: none; }
 #items td.balance { background: #eee; }
 #items td.blank { border: 0; }
+#items td.blank-bottom { border: 1px; }
 
 #terms { text-align: center; margin: 20px 0 0 0; }
 #terms h5 { text-transform: uppercase; font: 13px Helvetica, Sans-Serif; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }

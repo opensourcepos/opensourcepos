@@ -35,13 +35,11 @@ if (isset($error_message))
 				?>
 			</td>
 			<td id="customer-title">
-				<pre>
-				<?php if(isset($customer))
+				<pre><?php if(isset($customer))
 				{
 					echo $customer_info;
 				}
-				?>
-				</pre>
+				?></pre>
 			</td>
 		</tr>
 		<tr>
@@ -91,26 +89,14 @@ if (isset($error_message))
 				<td class="item-name long_name"><?php echo !empty($item['description']) ? $item['description'] : $item['name']; ?></td>
 				<td><?php echo $item['quantity']; ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo $item['discount']; ?></td>
+				<td><?php echo $item['discount'] .'%'; ?></td>
 				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 			</tr>
 		<?php
 		}
 		?>
 		<tr>
-			<?php if (!empty($item['description']))
-			{
-			?>
-			<td colspan="6" align="center"><?php echo $item['description']; ?></td>
-			<?php 
-			}
-			else
-			{
-			?>
 			<td colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
-			<?php 
-			}
-			?>
 		</tr>
 		     
 	  <tr>

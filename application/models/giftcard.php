@@ -28,7 +28,7 @@ class Giftcard extends CI_Model
 	/*
 	Returns all the giftcards
 	*/
-	function get_all($limit=10000, $offset=0)
+	function get_all($offset=0,$limit=10000)
 	{
 		$this->db->from('giftcards');
 		$this->db->join('people','people.person_id=giftcards.person_id');//GARRISON ADDED 4/25/2013
@@ -243,7 +243,7 @@ class Giftcard extends CI_Model
 		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
 		$this->db->or_like("giftcard_number",$this->db->escape_like_str($search));
 		$this->db->or_like("giftcards.person_id",$this->db->escape_like_str($search));
-		$this->db->where('deleted',$this->db->escape('0'));
+		$this->db->where('deleted','0');
 		$this->db->order_by("giftcard_number", "asc");
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);

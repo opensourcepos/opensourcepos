@@ -78,30 +78,18 @@ if (isset($error_message))
 				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['quantity']; ?></textarea></td>
 				<td><textarea rows="5" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['discount']; ?></textarea></td>
-				<td style='text-align:right;'><textarea rows="5" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
+				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>
+				<td style='border-right: solid 1px; text-align:right;'><textarea rows="5" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
 			</tr>
 		<?php
 		}
 		?>
 		<tr>
-			<?php if (!empty($item['description']))
-			{
-			?>
-			<td colspan="7" align="center"><?php echo $item['description']; ?></td>
-			<?php 
-			}
-			else
-			{
-			?>
-			<td colspan="7" align="center"><?php echo '&nbsp;'; ?></td>
-			<?php 
-			}
-			?>
+			<td class="blank" colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
 		</tr>
 		     
 	  <tr>
-	      <td colspan="3" class="blank"> </td>
+	      <td colspan="3" class="blank-bottom"> </td>
 	      <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
 	      <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($tax_exclusive_subtotal); ?></textarea></td>
 	  </tr>
