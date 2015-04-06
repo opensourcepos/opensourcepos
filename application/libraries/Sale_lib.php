@@ -558,17 +558,18 @@ class Sale_lib
 		return $taxes;
 	}
 	
-	function get_discounts()
+	function get_discount()
 	{
-		$discounts = array();
+		$discount = 0;
 		foreach($this->get_cart() as $line=>$item)
 		{
 			if ($item['discount'] > 0)
 			{
-				$discounts[] = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+				$discount = bcadd($discount, $item_discount, PRECISION); 
 			}
 		}
-		return $discounts;
+		return $discount;
 	}
 
 	function get_subtotal($include_discount=FALSE, $exclude_tax=FALSE)

@@ -6,6 +6,17 @@ echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_f
 <fieldset id="customer_basic_info">
 <legend><?php echo $this->lang->line("customers_basic_information"); ?></legend>
 <?php $this->load->view("people/form_basic_info"); ?>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('customers_company_name').':', 'company_name'); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'company_name',
+		'value'=>$person_info->company_name)
+	);?>
+	</div>
+</div>
+
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('customers_account_number').':', 'account_number'); ?>
 	<div class='form_field'>

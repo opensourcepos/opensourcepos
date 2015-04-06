@@ -4,6 +4,7 @@ $lang["customers_account_number"] = "Btwnummer";
 $lang["customers_account_number_duplicate"] = "Deze VAT nummer is reeds aanwezig in de database";
 $lang["customers_basic_information"] = "Klantgegevens";
 $lang["customers_cannot_be_deleted"] = "De geselecteerde klanten konden niet worden verwijderd. Eén of meerdere klanten hebben verkoopsgegevens in de database zitten.";
+$lang["customers_company_name"] = "Bedrijfsnaam";
 $lang["customers_confirm_delete"] = "Bent u zeker dat u de geselecteerde klanten wil verwijderen?";
 $lang["customers_customer"] = "Klant";
 $lang["customers_error_adding_updating"] = "Fout bij het toevoegen/bewerken van een klant";

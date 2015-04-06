@@ -4,6 +4,7 @@ $lang["customers_account_number"] = "Cuenta #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_basic_information"] = "Información de Clientes";
 $lang["customers_cannot_be_deleted"] = "No se pudo borrar los clientes seleccionados. Uno o más de éstos tiene ventas.";
+$lang["customers_company_name"] = "Company Name";
 $lang["customers_confirm_delete"] = "¿Estás seguro(a) de que quieres borrar a los clientes seleccionados?";
 $lang["customers_customer"] = "Cliente";
 $lang["customers_error_adding_updating"] = "Error agregando/actualizando cliente";

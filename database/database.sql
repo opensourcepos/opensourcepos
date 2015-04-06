@@ -77,6 +77,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 
 CREATE TABLE `ospos_customers` (
   `person_id` int(10) NOT NULL,
+  `company_name` varchar(255) NOT NULL,
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
   `deleted` int(1) NOT NULL DEFAULT '0',

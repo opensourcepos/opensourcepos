@@ -4,9 +4,9 @@
 echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'enctype'=>'multipart/form-data'));
 ?>
 <fieldset id="item_basic_info">
-<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
+	<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_item_number').':', 'item_number',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -16,9 +16,9 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'encty
 		'value'=>$item_info->item_number)
 	);?>
 	</div>
-</div>
+	</div>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'required wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(

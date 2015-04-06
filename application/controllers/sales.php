@@ -286,7 +286,7 @@ class Sales extends Secure_area
 		$data['tax_exclusive_subtotal']=$this->sale_lib->get_subtotal(TRUE, TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
-		$data['discounts']=$this->sale_lib->get_discounts();
+		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
 		$data['transaction_date']= date('d/m/Y', strtotime($data['transaction_time']));
@@ -309,7 +309,14 @@ class Sales extends Secure_area
 		if($customer_id!=-1)
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
-			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+			if (isset($cust_info->company_name))
+			{
+				$data['customer']=$cust_info->company_name;
+			}
+			else
+			{
+				$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+			}
 			$data['customer_address'] = $cust_info->address_1;
 			$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;
 			$data['account_number'] = $cust_info->account_number;
@@ -492,7 +499,7 @@ class Sales extends Secure_area
 		$data['tax_exclusive_subtotal']=$this->sale_lib->get_subtotal(TRUE, TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
-		$data['discounts']=$this->sale_lib->get_discounts();
+		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('d/m/Y H:i:s', strtotime($sale_info['sale_time']));
 		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
@@ -508,7 +515,14 @@ class Sales extends Secure_area
 		if($customer_id!=-1)
 		{
 			$cust_info=$this->Customer->get_info($customer_id);
-			$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+			if (isset($cust_info->company_name))
+			{
+				$data['customer']=$cust_info->company_name;
+			}
+			else
+			{
+				$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+			}
 			$data['first_name']=$cust_info->first_name;
 			$data['last_name']=$cust_info->last_name;
 			$data['customer_address'] = $cust_info->address_1;
@@ -647,7 +661,7 @@ class Sales extends Secure_area
         
 		$data['subtotal']=$this->sale_lib->get_subtotal(TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
-		$data['discounts']=$this->sale_lib->get_discounts();
+		$data['discount']=$this->sale_lib->get_discount();
 		$data['total']=$this->sale_lib->get_total();
 		$data['items_module_allowed']=$this->Employee->has_grant('items', $person_info->person_id);
 		$data['comment']=$this->sale_lib->get_comment();
@@ -715,7 +729,14 @@ class Sales extends Secure_area
 			if($customer_id!=-1)
 			{
 				$cust_info=$this->Customer->get_info($customer_id);
-				$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+				if (isset($cust_info->company_name))
+				{
+					$data['customer']=$cust_info->company_name;
+				}
+				else
+				{
+					$data['customer']=$cust_info->first_name.' '.$cust_info->last_name;
+				}
 			}
 	
 			$total_payments = 0;
