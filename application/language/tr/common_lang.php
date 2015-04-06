@@ -27,6 +27,7 @@ $lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = " ";
 $lang["common_list_of"] = "Liste";
 $lang["common_logout"] = "Çıkış";
+$lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "Gösterecek kişi yok";
 $lang["common_or"] = "Yada";
 $lang["common_phone_number"] = "Telefon";

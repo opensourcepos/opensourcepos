@@ -45,7 +45,7 @@ echo $this->lang->line('sales_find_or_scan_item_or_receipt');
 
 <?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));?>
 <div id="new_item_button_register" >
-		<?php echo anchor("items/view/-1/width:400",
+		<?php echo anchor("items/view/-1/width:450",
 		"<div class='small_button'><span>".$this->lang->line('sales_new_item')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
 		?>
@@ -552,14 +552,21 @@ $(document).ready(function()
 	});
 });
 
-function post_item_form_submit(response)
+function post_item_form_submit(response, stay_open)
 {
 	if(response.success)
 	{
         var $stock_location = $("select[name='stock_location']").val();
         $("#item_location").val($stock_location);
 		$("#item").val(response.item_id);
-		$("#add_item_form").submit();
+		if (stay_open)
+		{
+			$("#add_item_form").ajaxSubmit();
+		}
+		else
+		{
+			$("#add_item_form").submit();	
+		}
 	}
 }
 

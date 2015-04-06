@@ -27,6 +27,7 @@ $lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = ", чтобы узнать самую последнюю информацию о проекте";
 $lang["common_list_of"] = "Список";
 $lang["common_logout"] = "Выход";
+$lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "Там нет людей, чтобы отобразить";
 $lang["common_or"] = "ИЛИ";
 $lang["common_phone_number"] = "Номер телефона";

@@ -125,11 +125,12 @@ foreach($stock_locations as $key=>$location_detail)
     	<?php echo form_input(array(
     		'name'=>$key.'_quantity',
     		'id'=>$key.'_quantity',
+    		'class'=>'quantity',
     		'size'=>'8',
-    		'value'=>$location_detail['quantity'])
+    		'value'=>isset($item_info->item_id)?0:$location_detail['quantity'])
     	);?>
     	</div>
-    </div>
+	</div>
 <?php
 }
 ?>
@@ -144,21 +145,21 @@ foreach($stock_locations as $key=>$location_detail)
 		'value'=>$item_info->receiving_quantity)
 	);?>
 	</div>
-</div>
+	</div>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'required wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'reorder_level',
 		'id'=>'reorder_level',
 		'size'=>'8',
-		'value'=>$item_info->reorder_level)
+		'value'=>isset($item_info->item_id)?0:$item_info->reorder_level)
 	);?>
 	</div>
-</div>
+	</div>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_description').':', 'description',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_textarea(array(
@@ -216,165 +217,44 @@ foreach($stock_locations as $key=>$location_detail)
 </div>
 <!-- Parq End -->
 
-
-
-<!--  GARRISON ADDED 4/21/2013 -->
-<div class="field_row clearfix">	
-<?php
-if($this->config->item('custom1_name') != NULL)
-{
-	echo form_label($this->config->item('custom1_name').':', 'custom1',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom1',
-			'id'=>'custom1',
-			'value'=>$item_info->custom1)
-		);?>
+<?php for ($i = 0; $i < 11; $i++) 
+{ 
+?>
+	<?php
+	if($this->config->item('custom'.$i.'_name') != NULL)
+	{
+		$item_arr = (array)$item_info;
+		?>
+		<div class="field_row clearfix">
+			<?php 	
+			echo form_label($this->config->item('custom'.$i.'_name').':', 'custom'.$i,array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'custom'.$i,
+					'id'=>'custom'.$i,
+					'value'=>$item_arr['custom'.$i])
+				);?>
+			</div>
 		</div>
-	</div>
-<?php }//end if?>
+		<?php 
+	}
+}
+?>
 
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom2_name') != NULL)
-{
-	echo form_label($this->config->item('custom2_name').':', 'custom2',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom2',
-			'id'=>'custom2',
-			'value'=>$item_info->custom2)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
 
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom3_name') != NULL)
-{
-	echo form_label($this->config->item('custom3_name').':', 'custom3',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom3',
-			'id'=>'custom3',
-			'value'=>$item_info->custom3)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom4_name') != NULL)
-{
-	echo form_label($this->config->item('custom4_name').':', 'custom4',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom4',
-			'id'=>'custom4',
-			'value'=>$item_info->custom4)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom5_name') != NULL)
-{
-	echo form_label($this->config->item('custom5_name').':', 'custom5',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom5',
-			'id'=>'custom5',
-			'value'=>$item_info->custom5)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom6_name') != NULL)
-{
-	echo form_label($this->config->item('custom6_name').':', 'custom6',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom6',
-			'id'=>'custom6',
-			'value'=>$item_info->custom6)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom7_name') != NULL)
-{
-	echo form_label($this->config->item('custom7_name').':', 'custom7',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom7',
-			'id'=>'custom7',
-			'value'=>$item_info->custom7)
-		);?>
-	</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom8_name') != NULL)
-{
-	echo form_label($this->config->item('custom8_name').':', 'custom8',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom8',
-			'id'=>'custom8',
-			'value'=>$item_info->custom8)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom9_name') != NULL)
-{
-	echo form_label($this->config->item('custom9_name').':', 'custom9',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom9',
-			'id'=>'custom9',
-			'value'=>$item_info->custom9)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom10_name') != NULL)
-{
-	echo form_label($this->config->item('custom10_name').':', 'custom10',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom10',
-			'id'=>'custom10',
-			'value'=>$item_info->custom10)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
 
 <!--   END GARRISON ADDED -->
 
 <?php
 echo form_submit(array(
-	'name'=>'submit_form',
-	'id'=>'submit_form',
+		'name'=>'continue',
+		'id'=>'continue',
+		'value'=>$this->lang->line('common_new'),
+		'class'=>'submit_button float_right')
+);
+echo form_submit(array(
+	'name'=>'submit',
+	'id'=>'submit',
 	'value'=>$this->lang->line('common_submit'),
 	'class'=>'submit_button float_right')
 );
@@ -388,6 +268,16 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+    $("#continue").click(function()
+  	{
+        stay_open = true;
+    });
+    	    
+    $("#submit").click(function()
+    {
+        stay_open = false;
+    });
+	
 	var no_op = function(event, data, formatted){};
 	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10}).result(no_op).search();
 
@@ -422,8 +312,21 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 				success:function(response)
 				{
-					tb_remove();
-					post_item_form_submit(response);
+					if (stay_open) 
+					{
+						// set action of item_form to url without item id, so a new one can be created
+				        $("#item_form").attr("action", "<?php echo site_url("items/save/")?>");
+						// use a whitelist of fields to minimize unintended side effects
+						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' + 
+								'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');  
+						// de-select any checkboxes, radios and drop-down menus
+						$(':input', '#item_form').not('#item_category_id').removeAttr('checked').removeAttr('selected');
+					}
+					else
+					{
+						tb_remove();
+					}
+					post_item_form_submit(response, stay_open);	
 				},
 				dataType:'json'
 			});
