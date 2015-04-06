@@ -4,7 +4,6 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/invoice_email.css"/>
-	<script src="<?php echo base_url();?>js/jquery-1.4.4.min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 </head>
 <body>
 <?php

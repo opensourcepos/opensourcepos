@@ -108,9 +108,10 @@ if (isset($error_message))
 	<?php endif; ?>
 	<tr>
 	</tr>
+	<?php $border = (!$this->Appconfig->get('receipt_show_taxes') && !($this->Appconfig->get('show_total_discount') && $discount > 0)); ?> 
 	<tr>
-	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
-	<td style='text-align:right'><?php echo to_currency($total); ?></td>
+	<td colspan="3" style='<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right;'><?php echo $this->lang->line('sales_total'); ?></td>
+	<td style='<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right'><?php echo to_currency($total); ?></td>
 	</tr>
 
     <tr><td colspan="4">&nbsp;</td></tr>
