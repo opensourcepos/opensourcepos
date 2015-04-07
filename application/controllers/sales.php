@@ -102,7 +102,6 @@ class Sales extends Secure_area
 		$stock_location = $this->input->post("stock_location");
 		if (!$stock_location || $stock_location == $this->sale_lib->get_sale_location()) 
 		{
-			$this->sale_lib->clear_all();
 			$mode = $this->input->post("mode");
 			$this->sale_lib->set_mode($mode);
 		} 
