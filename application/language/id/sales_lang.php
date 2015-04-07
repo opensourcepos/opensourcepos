@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "Batal Jual";
 $lang["sales_cash"] = "Tunai";
 $lang["sales_change_due"] = "Kembalian Uang";
 $lang["sales_check"] = "Cek";
+$lang["sales_check_balance"] = "Check remainder";
 $lang["sales_comment"] = "Catatan";
 $lang["sales_comments"] = "Keterangan";
 $lang["sales_complete_sale"] = "Entri penjualan";

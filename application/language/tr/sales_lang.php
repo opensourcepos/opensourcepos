@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "İptal Et";
 $lang["sales_cash"] = "Nakit";
 $lang["sales_change_due"] = "Para Üstü";
 $lang["sales_check"] = "Çek";
+$lang["sales_check_balance"] = "Check remainder";
 $lang["sales_comment"] = "Yorum";
 $lang["sales_comments"] = "Yorumlar";
 $lang["sales_complete_sale"] = "Satışı Tamamla";

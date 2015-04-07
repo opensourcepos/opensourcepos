@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "Annuleer";
 $lang["sales_cash"] = "Contant";
 $lang["sales_change_due"] = "Wisselgeld terug";
 $lang["sales_check"] = "Waardebon";
+$lang["sales_check_balance"] = "Waardebon terug";
 $lang["sales_comment"] = "Commentaar";
 $lang["sales_comments"] = "Commentaar";
 $lang["sales_complete_sale"] = "Bevestig";

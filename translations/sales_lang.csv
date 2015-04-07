@@ -7,6 +7,7 @@ sales_cancel_sale,Annuleer,Cancelar Venta,Cancel Sale,Annuler la Vente,取消銷
 sales_cash,Contant,Efectivo,Cash,Cash,現金,наличные деньги,เงินสด,Nakit,Tunai
 sales_change_due,Wisselgeld terug,Cambio,Change Due,Reste,更改到期日,сдача должное,เงินทอน,Para Üstü,Kembalian Uang
 sales_check,Waardebon,Cheque,Check,Cheque,支票,банковский чек,เช็ก,Çek,Cek
+sales_check_balance,Waardebon terug,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder
 sales_comment,Commentaar,Comentario,Comment,Commentaire,評論,комментировать,หมายเหตุ,Yorum,Catatan
 sales_comments,Commentaar,Comentarios,Comments,Commentaires,評論,Комментарии,หมายเหตุ,Yorumlar,Keterangan
 sales_complete_sale,Bevestig,Completar Venta,Complete Sale,Finaliser la Vente,完成銷售,Завершить продажу,สำเร็จการขาย,Satışı Tamamla,Entri penjualan

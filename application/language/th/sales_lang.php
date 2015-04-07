@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "ยกเลิกการขาย";
 $lang["sales_cash"] = "เงินสด";
 $lang["sales_change_due"] = "เงินทอน";
 $lang["sales_check"] = "เช็ก";
+$lang["sales_check_balance"] = "Check remainder";
 $lang["sales_comment"] = "หมายเหตุ";
 $lang["sales_comments"] = "หมายเหตุ";
 $lang["sales_complete_sale"] = "สำเร็จการขาย";

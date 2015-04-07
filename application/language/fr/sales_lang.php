@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "Annuler la Vente";
 $lang["sales_cash"] = "Cash";
 $lang["sales_change_due"] = "Reste";
 $lang["sales_check"] = "Cheque";
+$lang["sales_check_balance"] = "Check remainder";
 $lang["sales_comment"] = "Commentaire";
 $lang["sales_comments"] = "Commentaires";
 $lang["sales_complete_sale"] = "Finaliser la Vente";

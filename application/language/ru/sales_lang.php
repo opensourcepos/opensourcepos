@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "Отменить продажу";
 $lang["sales_cash"] = "наличные деньги";
 $lang["sales_change_due"] = "сдача должное";
 $lang["sales_check"] = "банковский чек";
+$lang["sales_check_balance"] = "Check remainder";
 $lang["sales_comment"] = "комментировать";
 $lang["sales_comments"] = "Комментарии";
 $lang["sales_complete_sale"] = "Завершить продажу";

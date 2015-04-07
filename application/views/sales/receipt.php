@@ -147,7 +147,7 @@ if (isset($error_message))
 	    }
     ?>
 	<tr>
-		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? 'sales_change_due' : 'sales_amount_due') ; ?> </td>
+		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
 		<td style='text-align:right'><?php echo to_currency($amount_change); ?></td>
 	</tr>
 

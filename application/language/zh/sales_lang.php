@@ -8,6 +8,7 @@ $lang["sales_cancel_sale"] = "取消銷售";
 $lang["sales_cash"] = "現金";
 $lang["sales_change_due"] = "更改到期日";
 $lang["sales_check"] = "支票";
+$lang["sales_check_balance"] = "Check remainder";
 $lang["sales_comment"] = "評論";
 $lang["sales_comments"] = "評論";
 $lang["sales_complete_sale"] = "完成銷售";
