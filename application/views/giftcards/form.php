@@ -95,7 +95,7 @@ $(document).ready(function()
 		submitHandler:function(form)
 		{
 			var selected_person = autocompleter.val();
-			var selected_person_id = selected_person.replace(/(\w)\|.*/, "$1");
+			var selected_person_id = selected_person && selected_person.replace(/(\w)\|.*/, "$1");
 			selected_person_id && autocompleter.val(selected_person_id);
 			submit_form.call(form, selected_person);
 		},
@@ -107,6 +107,10 @@ $(document).ready(function()
 			{
 				required:true,
 				number:true
+			},
+			person_id: 
+			{
+				required: true
 			},
 			value:
 			{
@@ -125,6 +129,10 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('giftcards_value_required'); ?>",
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
+			},
+			person_id: 
+			{
+				required:"<?php echo $this->lang->line('giftcards_customer_required'); ?>"
 			}
 		}
 	});

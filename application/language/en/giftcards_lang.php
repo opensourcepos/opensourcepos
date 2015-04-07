@@ -1,7 +1,6 @@
 <?php 
 
 $lang["giftcards_add_minus"] = "Inventory to add/subtract";
-$lang["giftcards_allow_alt_desciption"] = "";
 $lang["giftcards_allow_alt_description"] = "Allow Alt Description";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_basic_information"] = "Giftcard Information";
@@ -46,6 +45,7 @@ $lang["giftcards_number_information"] = "Giftcard Number";
 $lang["giftcards_number_required"] = "Giftcard Number is a required field";
 $lang["giftcards_one_or_multiple"] = "giftcard(s)";
 $lang["giftcards_person_id"] = "Customer";
+$lang["giftcards_customer_required"] = "Giftcard customer is a required field";
 $lang["giftcards_quantity"] = "Quantity";
 $lang["giftcards_quantity_required"] = "Quantity is a required field. Please Close ( X ) to cancel";
 $lang["giftcards_reorder_level"] = "Reorder Level";

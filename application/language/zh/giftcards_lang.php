@@ -1,7 +1,6 @@
 <?php 
 
 $lang["giftcards_add_minus"] = "加/減庫存";
-$lang["giftcards_allow_alt_desciption"] = "";
 $lang["giftcards_allow_alt_description"] = "允許使用ALT描述";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_basic_information"] = "禮金券資訊";
@@ -46,6 +45,7 @@ $lang["giftcards_number_information"] = "禮金券編號";
 $lang["giftcards_number_required"] = "請輸入禮金券編號";
 $lang["giftcards_one_or_multiple"] = "禮金券";
 $lang["giftcards_person_id"] = "Customer";
+$lang["giftcards_customer_required"] = "Giftcard customer is a required field";
 $lang["giftcards_quantity"] = "數量";
 $lang["giftcards_quantity_required"] = "數量是必填字段。請按關閉（X）來取消";
 $lang["giftcards_reorder_level"] = "補貨點";

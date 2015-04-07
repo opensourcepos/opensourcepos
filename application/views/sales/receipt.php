@@ -118,14 +118,15 @@ if (isset($error_message))
 
 	<?php
 	$only_sale_check = TRUE;
-	$show_gifcard_remainder = FALSE;
+	$show_giftcard_remainder = FALSE;
 	foreach($payments as $payment_id=>$payment)
 	{ 
-		$only_sale_check &= $payment[ 'payment_type' ] == $this->lang->line('sales_check');
-		$show_gifcard_remainder &= $payment[ 'payment_type' ] == $this->lang->line('sales_giftcard');
+		$only_sale_check &= $payment['payment_type'] == $this->lang->line('sales_check');
+		$splitpayment=explode(':',$payment['payment_type']);
+		$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
   		?>
 		<tr>
-		<td colspan="3" style="text-align:right;"><?php $splitpayment=explode(':',$payment['payment_type']); echo $splitpayment[0]; ?> </td>
+		<td colspan="3" style="text-align:right;"><?php echo $splitpayment[0]; ?> </td>
 		<td><div class="total-value"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></div></td>
 	    </tr>
 	<?php
@@ -135,7 +136,7 @@ if (isset($error_message))
     <tr><td colspan="4">&nbsp;</td></tr>
 
     <?php 
-	    if (isset($cur_giftcard_value) && $show_gifcard_remainder)
+	    if (isset($cur_giftcard_value) && $show_giftcard_remainder)
 	    {
 	    ?>
 	    <tr>
@@ -146,7 +147,7 @@ if (isset($error_message))
 	    }
     ?>
 	<tr>
-		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_giftcard_balance' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
+		<td colspan="3" style='text-align:right;'> <?php echo $this->lang->line($amount_change >= 0 ? 'sales_change_due' : 'sales_amount_due') ; ?> </td>
 		<td style='text-align:right'><?php echo to_currency($amount_change); ?></td>
 	</tr>
 
