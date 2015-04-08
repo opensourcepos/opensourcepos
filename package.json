@@ -23,7 +23,7 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt-mocha-selenium": "~1.0.1",
     "grunt-mocha-webdriver": "^1.1.2",
-    "grunt-script-link-tags": "~1.0.3",
+    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
     "mocha": "^2.2.1",
     "wd": "^0.3.11"
   }
