@@ -31,7 +31,7 @@ class Giftcard extends CI_Model
 	function get_all($rows=0, $limit_from=0)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','people.person_id=giftcards.person_id');//GARRISON ADDED 4/25/2013
+		$this->db->join('people','people.person_id=giftcards.person_id', 'left');//GARRISON ADDED 4/25/2013
 		$this->db->where('deleted',0);
 		$this->db->order_by("giftcard_number");
 		if ($rows > 0) {
@@ -53,7 +53,7 @@ class Giftcard extends CI_Model
 	function get_info($giftcard_id)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people', 'people.person_id = giftcards.person_id');
+		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
 		$this->db->where('giftcard_id',$giftcard_id);
 		$this->db->where('deleted',0);
 		
@@ -177,7 +177,7 @@ class Giftcard extends CI_Model
 
 /** GARRISON MODIFIED 4/24/2013 **/
  		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');
+		$this->db->join('people','customers.person_id=people.person_id', 'left');
 		$this->db->like("first_name",$this->db->escape_like_str($search));
 		$this->db->or_like("last_name",$this->db->escape_like_str($search)); 
 		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
@@ -238,7 +238,7 @@ class Giftcard extends CI_Model
 	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','giftcards.person_id=people.person_id');
+		$this->db->join('people','giftcards.person_id=people.person_id', 'left');
 		$this->db->like("first_name",$this->db->escape_like_str($search));
 		$this->db->or_like("last_name",$this->db->escape_like_str($search));
 		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
@@ -255,7 +255,7 @@ class Giftcard extends CI_Model
 	function get_found_rows($search)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','giftcards.person_id=people.person_id');
+		$this->db->join('people','giftcards.person_id=people.person_id', 'left');
 		$this->db->like("first_name",$this->db->escape_like_str($search));
 		$this->db->or_like("last_name",$this->db->escape_like_str($search));
 		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));

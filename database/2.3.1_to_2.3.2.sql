@@ -42,3 +42,6 @@ ALTER TABLE `ospos_sales`
     
 ALTER TABLE `ospos_customers`
     `company_name` varchar(255) DEFAULT NULL;
+
+ALTER TABLE `ospos_giftcards`
+    `person_id` int(10) DEFAULT NULL;

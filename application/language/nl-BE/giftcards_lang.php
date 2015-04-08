@@ -3,6 +3,7 @@
 $lang["giftcards_add_minus"] = "Corrigatie hoeveelheid";
 $lang["giftcards_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["giftcards_amazon"] = "Amazon";
+$lang["giftcards_remaining_balance"] = "Resterende waarde cadeaubon %1 is %2!";
 $lang["giftcards_basic_information"] = "Cadeaubon Info";
 $lang["giftcards_bulk_edit"] = "Bewerk Selectie";
 $lang["giftcards_cannot_be_deleted"] = "De cadeaubons konden niet worden verwijderd.";
@@ -45,7 +46,6 @@ $lang["giftcards_number_information"] = "Cadeaubon Nummer";
 $lang["giftcards_number_required"] = "Cadeaubon Nummer is een verplicht veld";
 $lang["giftcards_one_or_multiple"] = "cadeaubon(s) verwijderd";
 $lang["giftcards_person_id"] = "Klant";
-$lang["giftcards_customer_required"] = "Klant is een verplicht veld";
 $lang["giftcards_quantity"] = "In stock";
 $lang["giftcards_quantity_required"] = "Hoeveelheid moet ingevuld worden. Druk Sluit ( X ) om te annuleren";
 $lang["giftcards_reorder_level"] = "Reorder Level";

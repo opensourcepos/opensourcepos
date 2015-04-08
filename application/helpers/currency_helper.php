@@ -1,9 +1,10 @@
 <?php
 /** GARRISON MODIFIED 4/20/2013 **/
-function to_currency($number)
+function to_currency($number,$escape=FALSE)
 {
 	$CI =& get_instance();
 	$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
+	$currency_symbol = $currency_symbol == '$' && $escape ? '\$' : '$'; 
 	$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : '';
 	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
 	if($number >= 0)

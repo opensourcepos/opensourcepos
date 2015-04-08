@@ -164,15 +164,14 @@ class Sales extends Secure_area
 			
 			if ( $cur_giftcard_value <= 0 )
 			{
-				$data['error'] = 'Giftcard balance is ' . to_currency( $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) ) . ' !';
+				$data['error'] = $this->lang->line('giftcards_remaining_balance', $this->input->post( 'amount_tendered' ), to_currency( $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ))));
 				$this->_reload( $data );
 				return;
 			}
-
 			$new_giftcard_value = $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) - $this->sale_lib->get_amount_due( );
 			$new_giftcard_value = ( $new_giftcard_value >= 0 ) ? $new_giftcard_value : 0;
 			$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-			$data['warning'] = 'Giftcard ' . $this->input->post( 'amount_tendered' ) . ' balance is ' . to_currency( $new_giftcard_value ) . ' !';
+			$data['warning'] = $this->lang->line('giftcards_remaining_balance', $this->input->post( 'amount_tendered' ), to_currency( $new_giftcard_value, TRUE ));
 			$payment_amount = min( $this->sale_lib->get_amount_due( ), $this->Giftcard->get_giftcard_value( $this->input->post( 'amount_tendered' ) ) );
 		}
 		else

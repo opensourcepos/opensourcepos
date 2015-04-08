@@ -8,7 +8,7 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 
 <!-- GARRISON ADDED 4/22/2013 -->
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'required wide')); ?>
+<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'person_id',
@@ -108,10 +108,6 @@ $(document).ready(function()
 				required:true,
 				number:true
 			},
-			person_id: 
-			{
-				required: true
-			},
 			value:
 			{
 				required:true,
@@ -129,10 +125,6 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('giftcards_value_required'); ?>",
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
-			},
-			person_id: 
-			{
-				required:"<?php echo $this->lang->line('giftcards_customer_required'); ?>"
 			}
 		}
 	});

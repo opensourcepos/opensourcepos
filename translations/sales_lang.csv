@@ -39,7 +39,7 @@ sales_error_editing_item,Fout bij bewerken,Error editando artículo,Error editin
 sales_find_or_scan_item,Zoek/Scan Product,Encontrar/Escanear Artículo,Find/Scan Item,Trouver/Scanner Item,查找/掃描商品,Найти/Сканировать Товара,ค้นหาสินค้า,Ürün Bul/Oku,Cari/Scan Item
 sales_find_or_scan_item_or_receipt,Zoek/Scan Product of Ticket,Encontrar/Escanear Artículo o Entrada,Find/Scan Item OR Receipt,Trouver/Scanner Item OU Recu,查找/掃描產品或收貨單,Найти/Сканировать Товара ИЛИ Квитанция,ค้นหาสินค้า หรือ บิล,Ürün yada Fatura Bul/Oku,Cari/Scan Item ATAU Faktur
 sales_giftcard,Cadeaubon,Tarjeta de Regalo,Gift Card,Carte Cadeau,禮金券,Подарочная карта,Gift Card,Hediye Çeki,Gift Card
-sales_giftcard_balance,Waardebon Resterend,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance
+sales_giftcard_balance,Cadeaubon Resterend,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance
 sales_giftcard_number,Cadeaubon nummer,Número de Tarjeta de Regalo,Gift Card Number,Numéro de Carte cadeau,禮金券編號,Номер подарочных карт,เลขที่ Gift Card,Hediye Çeki No,Nomor Gift Card
 sales_id,Nummer Verkoop ,ID de Venta,Sale ID,ID Vente,銷售編號,Номер Продажы,เลขที่ขาย,Satış No,ID Penjualan
 sales_invoice,Factuur,tarjeta de Crédito,Invoice,Invoice,Invoice,Invoice,Invoice,Invoice,Invoice

@@ -124,9 +124,10 @@ CREATE TABLE `ospos_giftcards` (
   `giftcard_number` varchar(25) NOT NULL,
   `value` decimal(15,2) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
-  `person_id` INT NOT NULL,
+  `person_id` INT(10) DEFAULT NULL,
   PRIMARY KEY (`giftcard_id`),
-  UNIQUE KEY `giftcard_number` (`giftcard_number`)
+  UNIQUE KEY `giftcard_number` (`giftcard_number`),
+  KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 
 --
