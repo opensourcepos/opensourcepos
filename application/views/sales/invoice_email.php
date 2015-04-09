@@ -85,7 +85,7 @@ if (isset($error_message))
 		?>
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name long_name"><?php echo !empty($item['description']) ? $item['description'] : $item['name']; ?></td>
+				<td class="item-name long_name"><?php echo $item['name']; ?></td>
 				<td><?php echo $item['quantity']; ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo $item['discount'] .'%'; ?></td>
@@ -103,11 +103,13 @@ if (isset($error_message))
 	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
 	      <td id="subtotal" class="total-value"><?php echo to_currency($tax_exclusive_subtotal); ?></td>
 	  </tr>
+	  <?php foreach($taxes as $name=>$value) { ?>
 	  <tr>
 	      <td colspan="3" class="blank"> </td>
-	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_tax'); ?></td>
-	      <td id="taxes" class="total-value"><?php echo to_currency(array_sum($taxes)); ?></td>
+	      <td colspan="2" class="total-line"><?php echo $name; ?></td>
+	      <td id="taxes" class="total-value"><?php echo to_currency($value); ?></td>
 	  </tr>
+      <?php }; ?>
 	  <tr>
 	      <td colspan="3" class="blank"> </td>
 	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>

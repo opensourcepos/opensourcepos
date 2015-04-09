@@ -164,7 +164,7 @@ class Sale extends CI_Model
 		$this->db->where("DATE_FORMAT(sale_time, '%Y' ) = ", $year, FALSE);
 		$this->db->where("invoice_number IS NOT ", "NULL", FALSE);
 		$result = $this->db->get()->row_array();
-		return ($start_from + $result[ 'invoice_number_year' ] + 1);
+		return ($start_from + $result[ 'invoice_number_year']);
 	}
 
 	function exists($sale_id)
