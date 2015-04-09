@@ -41,4 +41,4 @@ ALTER TABLE `ospos_sales`
     ADD INDEX `sale_time` (`sale_time`);
     
 ALTER TABLE `ospos_customers`
-    `company_name` varchar(255) NOT NULL;
+    `company_name` varchar(255) DEFAULT NULL;
