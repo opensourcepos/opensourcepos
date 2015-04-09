@@ -65,9 +65,13 @@ foreach($all_modules->result() as $module)
 		$exploded_permission = explode('_', $permission->permission_id);
 		if ($permission->module_id == $module->module_id)
 		{
-			$lang_key = 'reports_'.$exploded_permission[1];
+			$lang_key = $module->module_id.'_'.$exploded_permission[1];
 			$lang_line = $this->lang->line($lang_key);
-			$lang_line = ($lang_key = $lang_line) ? $exploded_permission[1] : $lang_line;
+			$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
+			if (empty($lang_line))
+			{
+				continue;
+			} 
 			?>
 		<ul>
 			<li>

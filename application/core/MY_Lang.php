@@ -72,7 +72,7 @@ class MY_Lang extends CI_Lang
             	else
             	{
             		// just return label name (with TBD)
-            		$line = $line . ' (TBD)';
+            		$line = $this->line_tbd($line);
             		log_message('error', 'Could not find the language line "'.$line.'"');
             	}
             }
@@ -85,6 +85,12 @@ class MY_Lang extends CI_Lang
         
         return $line;
     }
+    
+    function line_tbd($line='')
+    {
+    	return $line . ' (TBD)';
+    }
+    
 }
 
 ?>
