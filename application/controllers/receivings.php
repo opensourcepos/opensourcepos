@@ -41,6 +41,7 @@ class Receivings extends Secure_area
 		if ((!$stock_source || $stock_source == $this->receiving_lib->get_stock_source()) &&
 			(!$stock_destination || $stock_destination == $this->receiving_lib->get_stock_destination()))
 		{
+			$this->receiving_lib->clear_invoice_number();
 			$mode = $this->input->post("mode");
 			$this->receiving_lib->set_mode($mode);
 		}
