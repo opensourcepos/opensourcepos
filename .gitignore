@@ -4,6 +4,7 @@ application/config/email.php
 application/config/database.php
 *.patch
 patches/
+.idea/
 git-svn-diff.py
 *.bash
 .swp
