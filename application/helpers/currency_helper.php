@@ -4,7 +4,7 @@ function to_currency($number,$escape=FALSE)
 {
 	$CI =& get_instance();
 	$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
-	$currency_symbol = $currency_symbol == '$' && $escape ? '\$' : '$'; 
+	$currency_symbol = $currency_symbol == '$' && $escape ? '\$' : $currency_symbol; 
 	$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : '';
 	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
 	if($number >= 0)
