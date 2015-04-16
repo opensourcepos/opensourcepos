@@ -10,7 +10,7 @@ class Detailed_receivings extends Report
 	public function getDataColumns()
 	{
 		return array('summary' => array($this->lang->line('reports_receiving_id'), $this->lang->line('reports_date'), $this->lang->line('reports_items_received'), $this->lang->line('reports_received_by'), $this->lang->line('reports_supplied_by'), $this->lang->line('reports_total'), $this->lang->line('reports_payment_type'), $this->lang->line('recvs_invoice_number'), $this->lang->line('reports_comments')),
-					'details' => array($this->lang->line('reports_name'), $this->lang->line('reports_category'), $this->lang->line('reports_quantity_purchased'), $this->lang->line('reports_total'), $this->lang->line('reports_discount'))
+					'details' => array($this->lang->line('reports_item_number'), $this->lang->line('reports_name'), $this->lang->line('reports_category'), $this->lang->line('reports_quantity_purchased'), $this->lang->line('reports_total'), $this->lang->line('reports_discount'))
 		);		
 	}
 	
@@ -52,7 +52,7 @@ class Detailed_receivings extends Report
 		
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, quantity_purchased, serialnumber,total, discount_percent');
+			$this->db->select('name, item_number, category, quantity_purchased, serialnumber,total, discount_percent');
 			$this->db->from('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
 			$this->db->where('receiving_id = '.$value['receiving_id']);

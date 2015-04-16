@@ -168,7 +168,6 @@ CREATE TABLE `ospos_inventory` (
 
 CREATE TABLE `ospos_items` (
   `name` varchar(255) NOT NULL,
-  `category` varchar(255) NOT NULL,
   `supplier_id` int(11) DEFAULT NULL,
   `item_number` varchar(255) DEFAULT NULL,
   `description` varchar(255) NOT NULL,
