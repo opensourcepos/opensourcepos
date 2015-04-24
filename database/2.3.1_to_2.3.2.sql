@@ -39,9 +39,9 @@ ALTER TABLE `ospos_people`
 ALTER TABLE `ospos_sales`
     DROP COLUMN `payment_type`,
     ADD INDEX `sale_time` (`sale_time`);
-    
+   
 ALTER TABLE `ospos_customers`
-    `company_name` varchar(255) DEFAULT NULL;
+    ADD COLUMN `company_name` varchar(255) DEFAULT NULL;
 
 ALTER TABLE `ospos_giftcards`
-    `person_id` int(10) DEFAULT NULL;
+    MODIFY `person_id` int(10) DEFAULT NULL;
