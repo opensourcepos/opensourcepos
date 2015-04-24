@@ -45,3 +45,7 @@ ALTER TABLE `ospos_customers`
 
 ALTER TABLE `ospos_giftcards`
     MODIFY `person_id` int(10) DEFAULT NULL;
+
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
+('sales_stock', 1),
+('receivings_stock', 1);
