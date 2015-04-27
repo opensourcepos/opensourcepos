@@ -83,3 +83,4 @@ $lang["items_unit_price_required"] = "Retail Price is a required field";
 $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "Update Item";
 $lang["items_use_inventory_menu"] = "Use Inv. Menu";
+$lang["items_import_items_excel"] = "Import items from Excel sheet";

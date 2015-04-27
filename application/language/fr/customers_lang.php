@@ -16,3 +16,4 @@ $lang["customers_successful_deleted"] = "Suppréssion réussie";
 $lang["customers_successful_updating"] = "Édition client réussie";
 $lang["customers_taxable"] = "Imposable";
 $lang["customers_update"] = "Éditer Client";
+$lang["customers_import_items_excel"] = "Import customers from Excel sheet";

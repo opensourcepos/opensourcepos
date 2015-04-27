@@ -16,3 +16,4 @@ $lang["customers_successful_deleted"] = "Silme başarılı";
 $lang["customers_successful_updating"] = "Müşteri güncellendi";
 $lang["customers_taxable"] = "Vergilendirilebilir";
 $lang["customers_update"] = "Müşteri Güncelle";
+$lang["customers_import_items_excel"] = "Import customers from Excel sheet";

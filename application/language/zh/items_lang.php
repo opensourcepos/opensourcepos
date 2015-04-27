@@ -83,3 +83,4 @@ $lang["items_unit_price_required"] = "單價為必填欄位";
 $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "更新產品";
 $lang["items_use_inventory_menu"] = "使用庫存清單";
+$lang["items_import_items_excel"] = "Import items from Excel sheet";
