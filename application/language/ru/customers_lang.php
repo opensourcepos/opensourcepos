@@ -16,3 +16,4 @@ $lang["customers_successful_deleted"] = "Вы успешно удалили";
 $lang["customers_successful_updating"] = "Вы успешно обновили клиент";
 $lang["customers_taxable"] = "облагаемый";
 $lang["customers_update"] = "Обновлять Клиент";
+$lang["customers_import_items_excel"] = "Import customers from Excel sheet";

@@ -16,3 +16,4 @@ $lang["customers_successful_deleted"] = "Er werd(en)";
 $lang["customers_successful_updating"] = "Wijzigingen klantgegevens bewaard voor ";
 $lang["customers_taxable"] = "Belastbaar";
 $lang["customers_update"] = "Bewerk Klant";
+$lang["customers_import_items_excel"] = "Import customers from Excel sheet";

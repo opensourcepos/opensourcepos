@@ -128,7 +128,7 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 		array('class'=>'thickbox none','title'=>$this->lang->line($controller_name.'_new')));
 		?>
 		<?php echo anchor("$controller_name/excel_import/width:$form_width",
-		"<div class='big_button' style='float: left;'><span>Excel Import</span></div>",
+		"<div class='big_button' style='float: left;'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
 		array('class'=>'thickbox none','title'=>'Import Items from Excel'));
 		?>
 	</div>

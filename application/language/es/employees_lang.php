@@ -2,7 +2,7 @@
 
 $lang["employees_basic_information"] = "Información Básica de Empleados";
 $lang["employees_cannot_be_deleted"] = "No se pudieron borrar empleados. Uno o más empleados tiene ventas procesadas o estás tratando de borrarte a tí mismo(a).";
-$lang["employees_confirm_delete"] = "¿Estás seguro(a) que quieres borrar los empleados seleccionados?";
+$lang["employees_confirm_delete"] = "¿Seguro(a) que quieres borrar los empleados seleccionados?";
 $lang["employees_employee"] = "Empleado";
 $lang["employees_error_adding_updating"] = "Error al agregar/actualizar empleado";
 $lang["employees_error_deleting_demo_admin"] = "No puedes borrar el usuario admin del demo";

@@ -127,7 +127,7 @@ foreach($stock_locations as $key=>$location_detail)
     		'id'=>$key.'_quantity',
     		'class'=>'quantity',
     		'size'=>'8',
-    		'value'=>isset($item_info->item_id)?0:$location_detail['quantity'])
+    		'value'=>isset($item_info->item_id)?$location_detail['quantity']:0)
     	);?>
     	</div>
 	</div>
