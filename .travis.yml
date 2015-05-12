@@ -17,5 +17,5 @@ before_script:
       - sudo sed -e "s?%TRAVIS_BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/default
       - sudo service apache2 restart
       - mysql -e "create database IF NOT EXISTS ospos;" -uroot
-      - mysql -e "use ospos; source database/database.sql" -uroot
+      - mysql -e "use ospos; source database/database.sql;" -uroot
 script: grunt mochaWebdriver:test
