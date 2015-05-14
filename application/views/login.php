@@ -33,14 +33,16 @@ $(document).ready(function()
 		<div class="form_field_label"><?php echo $this->lang->line('login_username'); ?>: </div>
 		<div class="form_field">
 		<?php echo form_input(array(
-		'name'=>'username', 
+		'name'=>'username',
+		'id'=>'username',
 		'size'=>'20')); ?>
 		</div>
 
 		<div class="form_field_label"><?php echo $this->lang->line('login_password'); ?>: </div>
 		<div class="form_field">
 		<?php echo form_password(array(
-		'name'=>'password', 
+		'name'=>'password',
+		'id' => 'password',
 		'size'=>'20')); ?>
 		
 		</div>

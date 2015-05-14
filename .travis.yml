@@ -18,4 +18,5 @@ before_script:
       - sudo service apache2 restart
       - mysql -e "create database IF NOT EXISTS ospos;" -uroot
       - mysql -e "use ospos; source database/database.sql;" -uroot
+      - cp application/config/database.php.tmpl application/config/database.php
 script: grunt mochaWebdriver:test
