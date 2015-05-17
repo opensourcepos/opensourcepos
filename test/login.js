@@ -6,7 +6,7 @@ describe("giftcard numbering test", function () {
 
         var searchBox;
         var browser = this.browser;
-        browser.get('http://localhost/pos/index.php?XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14241668456852')
+        browser.get('http://localhost/index.php?XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14241668456852')
             .elementByName('username').type("admin").getValue()
             .then(function(value) {
                 assert.equal(value, "admin");
