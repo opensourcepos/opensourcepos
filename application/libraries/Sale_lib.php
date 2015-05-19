@@ -614,14 +614,14 @@ class Sale_lib
 	{
 		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
 
-		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
 		if ($this->CI->config->config['tax_included'])
 		{
-			$tax_fraction = bcadd(1, $tax_fraction, PRECISION);
-			$tax_fraction = bcdiv(1, $tax_fraction, PRECISION);
-			$price_tax_excl = bcmul($price, $tax_fraction, PRECISION);
+			$tax_fraction = bcadd(100, $tax_percentage, PRECISION);
+			$tax_fraction = bcdiv($tax_fraction, 100, PRECISION);
+			$price_tax_excl = bcdiv($price, $tax_fraction, PRECISION);
 			return bcsub($price, $price_tax_excl, PRECISION);
 		}
+		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
 		return bcmul($price, $tax_fraction, PRECISION);
 	}
 
