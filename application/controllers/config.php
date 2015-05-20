@@ -206,4 +206,4 @@ class Config extends Secure_area
     	}
     }
 }
-?> 
+?>

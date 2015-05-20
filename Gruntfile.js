@@ -60,9 +60,13 @@ module.exports = function(grunt) {
       }
     },
     mochaWebdriver: {
+        options: {
+            timeout: 1000 * 60 * 3
+        },
     	test : {
     		options: {
     			usePhantom: true,
+                usePromises: true
     		},
     		src: ['test/**/*.js']
     	}
