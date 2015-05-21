@@ -121,7 +121,7 @@ INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`) V
 CREATE TABLE `ospos_giftcards` (
   `record_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `giftcard_id` int(11) NOT NULL AUTO_INCREMENT,
-  `giftcard_number` varchar(25) NOT NULL,
+  `giftcard_number` int(10) NOT NULL,
   `value` decimal(15,2) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `person_id` INT(10) DEFAULT NULL,

@@ -26,18 +26,15 @@ describe("giftcard numbering test", function () {
 
     });
 
-    for (var i=1; i < 12; i++) {
-
-        var evaluate = (function(i, browser) {
-          return function() {
-              return this.browser.get(url("/index.php/giftcards")).waitForElementByCss(".big_button").click()
-                  .waitForElementByName("value").type("100")
-                  .elementById("submit").click().waitForElementById("giftcard_" + i, 100, 2000).then(function(value) {
-                      assert.ok(value, "Giftcard failed to be added properly!");
-              });
-        }})(i);
-        it("gitftcard numbering should add up fine " + i, evaluate);
-    }
-
+    it("issue #65: giftcard numbering should add properly", function() {
+        return this.browser.get(url("/index.php/giftcards")).waitForElementByCss(".big_button").click()
+            .waitForElementByName("value").type("100").elementById('giftcard_number').clear().type("10")
+            .elementById("submit").click().waitForElementByXPath("//table/tbody/tr[td/text()='10']/td[4]").text().then(function (value) {
+                assert.ok(value, "giftcard failed to be added properly!");
+            }).elementByCss(".big_button").click().waitForElementByName("value").type("100").elementById("submit").click()
+            .waitForElementByXPath("//table/tbody/tr[td/text()='11']/td[4]").text().then(function (value) {
+                assert.equal(value, "11", "giftcard number not incrementing properly!!");
+            });
+    });
 
 });
