@@ -108,7 +108,7 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 	<div class='form_field'>
 	<?php echo $this->lang->line('config_thousands_separator'); ?>
 	<?php echo form_dropdown('thousands_separator', array(
-			','    => ', (komma)',
+			','    => ', (comma)',
 			'.'    => '. (dot)',
 			''    => '(none)'
 			), 
@@ -117,7 +117,7 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 	<?php echo $this->lang->line('config_decimal_point'); ?>
 	<?php echo form_dropdown('decimal_point', array(
 			'.'    => '. (dot)',
-			','    => ', (komma)'
+			','    => ', (comma)'
 			), 
 		$this->config->item('decimal_point'));
 		?>
