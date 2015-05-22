@@ -392,7 +392,7 @@ class Sale_lib
 		return false;
 	}
 
-	function is_valid_receipt($receipt_sale_id)
+	function is_valid_receipt(&$receipt_sale_id)
 	{
 		//POS #
 		$pieces = explode(' ',$receipt_sale_id);
@@ -403,9 +403,13 @@ class Sale_lib
 		}
 		else 
 		{
-			return $this->CI->Sale->get_sale_by_invoice_number($receipt_sale_id)->num_rows() > 0;
+			$sale_info = $this->CI->Sale->get_sale_by_invoice_number($receipt_sale_id);
+			if ($sale_info->num_rows() > 0)
+			{
+				$receipt_sale_id = 'POS ' . $sale_info->row()->sale_id;
+				return true;
+			}
 		}
-
 		return false;
 	}
 	
