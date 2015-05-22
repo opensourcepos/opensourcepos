@@ -395,10 +395,10 @@ class Sale extends CI_Model
 		$this->db->query("CREATE TEMPORARY TABLE ".$this->db->dbprefix('sales_items_temp')."
 		(SELECT date(sale_time) as sale_date, sale_time, ".$this->db->dbprefix('sales_items').".sale_id, comment,payments.payment_type, customer_id, employee_id, 
 		".$this->db->dbprefix('items').".item_id, supplier_id, quantity_purchased, item_cost_price, item_unit_price, SUM(percent) as item_tax_percent,
-		discount_percent, (item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*" .$subtotal. " as subtotal,
+		discount_percent, (item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$subtotal as subtotal,
 		".$this->db->dbprefix('sales_items').".line as line, serialnumber, ".$this->db->dbprefix('sales_items').".description as description,
-		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*" .$total. " as total,
-		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*" .$tax. " as tax,
+		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$total as total,
+		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$tax as tax,
 		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) - (item_cost_price*quantity_purchased) as profit
 		FROM ".$this->db->dbprefix('sales_items')."
 		INNER JOIN ".$this->db->dbprefix('sales')." ON  ".$this->db->dbprefix('sales_items').'.sale_id='.$this->db->dbprefix('sales').'.sale_id'."
