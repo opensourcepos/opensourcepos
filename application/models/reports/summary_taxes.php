@@ -40,9 +40,9 @@ class Summary_taxes extends Report
 
 		$query = $this->db->query("SELECT percent, SUM(subtotal) as subtotal, sum(total) as total, sum(tax) as tax
 		FROM (SELECT name, CONCAT( percent,  '%' ) AS percent,
-		((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $subtotal) AS subtotal,
-		((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $total) AS total,
-		((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $tax) AS tax
+		ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $subtotal, 2) AS subtotal,
+		ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $total, 2) AS total,
+		ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $tax, 2) AS tax
 		FROM ".$this->db->dbprefix('sales_items_taxes')."
 		JOIN ".$this->db->dbprefix('sales_items')." ON "
 		.$this->db->dbprefix('sales_items').'.sale_id='.$this->db->dbprefix('sales_items_taxes').'.sale_id'." and "

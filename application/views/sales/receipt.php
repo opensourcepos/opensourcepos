@@ -97,7 +97,7 @@ if (isset($error_message))
 	<?php if ($this->Appconfig->get('receipt_show_taxes')): ?> 
 	<tr>
 		<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-		<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($discounted_subtotal); ?></td>
+		<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $discounted_subtotal); ?></td>
 	</tr>
 	<?php foreach($taxes as $name=>$value) { ?>
 		<tr>

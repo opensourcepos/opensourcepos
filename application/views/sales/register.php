@@ -217,7 +217,7 @@ else
 
 	<div id='sale_details'>
 		<div class="float_left" style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?>:</div>
-		<div class="float_left" style="width: 45%; font-weight: bold;"><?php echo to_currency($subtotal); ?></div>
+		<div class="float_left" style="width: 45%; font-weight: bold;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?></div>
 
 		<?php foreach($taxes as $name=>$value) { ?>
 		<div class="float_left" style='width: 55%;'><?php echo $name; ?>:</div>

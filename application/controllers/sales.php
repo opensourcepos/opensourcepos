@@ -657,6 +657,7 @@ class Sales extends Secure_area
         $data['stock_location']=$this->sale_lib->get_sale_location();
         
 		$data['subtotal']=$this->sale_lib->get_subtotal(TRUE);
+		$data['tax_exclusive_subtotal']=$this->sale_lib->get_subtotal(TRUE, TRUE);
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['discount']=$this->sale_lib->get_discount();
 		$data['total']=$this->sale_lib->get_total();
