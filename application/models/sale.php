@@ -307,10 +307,7 @@ class Sale extends CI_Model
 		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
 		// then delete all taxes on items
 		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
-		// delete all items
-		$this->db->delete('sales_items', array('sale_id' => $sale_id));
-		// delete sale itself
-		$this->db->delete('sales', array('sale_id' => $sale_id));
+
 		if ($update_inventory) {
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
@@ -319,23 +316,29 @@ class Sale extends CI_Model
 				// create query to update inventory tracking
 				$inv_data = array
 				(
-						'trans_date'=>date('Y-m-d H:i:s'),
-						'trans_items'=>$item['item_id'],
-						'trans_user'=>$employee_id,
-						'trans_comment'=>'Deleting sale ' . $sale_id,
-						'trans_location'=>$item['item_location'],
-						'trans_inventory'=>$item['quantity_purchased']
-	
+					'trans_date'=>date('Y-m-d H:i:s'),
+					'trans_items'=>$item['item_id'],
+					'trans_user'=>$employee_id,
+					'trans_comment'=>'Deleting sale ' . $sale_id,
+					'trans_location'=>$item['item_location'],
+					'trans_inventory'=>$item['quantity_purchased']
+
 				);
 				// update inventory
 				$this->Inventory->insert($inv_data);
 
 				// update quantities
 				$this->Item_quantities->change_quantity($item['item_id'],
-														$item['item_location'],
-														$item['quantity_purchased']);
+					$item['item_location'],
+					$item['quantity_purchased']);
 			}
 		}
+
+		// delete all items
+		$this->db->delete('sales_items', array('sale_id' => $sale_id));
+		// delete sale itself
+		$this->db->delete('sales', array('sale_id' => $sale_id));
+
 		// execute transaction
 		$this->db->trans_complete();
 	
