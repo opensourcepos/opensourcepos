@@ -1,0 +1,2 @@
+dist/ merge=ours
+application/languages/**/*.php merge=ours
