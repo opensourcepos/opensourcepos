@@ -20,6 +20,30 @@
 </div>
 
 <div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('common_gender').':', 'gender',
+!empty($basic_version) ? array('class'=>'required') : array()); ?>
+	<div class='form_field'>
+	<?php echo form_radio(array(
+		'name'=>'gender',
+		'type'=>'radio',
+		'id'=>'gender',
+		'value'=>1,
+		'checked'=>$person_info->gender === '1')
+	);
+	echo '&nbsp;' . $this->lang->line('common_gender_male') . '&nbsp;';
+	echo form_radio(array(
+		'name'=>'gender',
+		'type'=>'radio',
+		'id'=>'gender',
+		'value'=>0,
+		'checked'=>$person_info->gender === '0')
+	);
+	echo '&nbsp;' . $this->lang->line('common_gender_female');
+	?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('common_email').':', 'email'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -85,7 +109,7 @@
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'zip',
-		'id'=>'zip',
+		'id'=>'postcode',
 		'value'=>$person_info->zip));?>
 	</div>
 </div>
@@ -112,3 +136,39 @@
 	);?>
 	</div>
 </div>
+
+<script type='text/javascript' language="javascript">
+//validation and submit handling
+$(document).ready(function()
+{
+	nominatim.init({
+		fields : {
+			postcode : {  
+				dependencies :  ["postcode", "city", "state", "country"], 
+				response : {  
+					field : 'postalcode', 
+					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"] 
+				}
+			},
+	
+			city : {
+				dependencies :  ["postcode", "city", "state", "country"], 
+				response : {  
+					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"] 
+				}
+			},
+	
+			state : {
+				dependencies :  ["state", "country"]
+			},
+	
+			country : {
+				dependencies :  ["state", "country"] 
+			}
+			
+		},
+		language : '<?php echo $this->config->item('language');?>'
+	});
+
+});
+</script>

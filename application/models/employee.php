@@ -14,6 +14,12 @@ class Employee extends Person
 		return ($query->num_rows()==1);
 	}	
 	
+	function get_total_rows()
+	{
+		$this->db->from('employees');
+		$this->db->where('deleted',0);
+		return $this->db->count_all_results();
+	}
 	/*
 	Returns all the employees
 	*/
@@ -26,13 +32,6 @@ class Employee extends Person
 		$this->db->limit($limit);
 		$this->db->offset($offset);
 		return $this->db->get();		
-	}
-	
-	function count_all()
-	{
-		$this->db->from('employees');
-		$this->db->where('deleted',0);
-		return $this->db->count_all_results();
 	}
 	
 	/*
@@ -82,7 +81,7 @@ class Employee extends Person
 	/*
 	Inserts or updates an employee
 	*/
-	function save(&$person_data, &$employee_data,&$permission_data,$employee_id=false)
+	function save(&$person_data, &$employee_data,&$grants_data,$employee_id=false)
 	{
 		$success=false;
 		
@@ -105,17 +104,17 @@ class Employee extends Person
 			//We have either inserted or updated a new employee, now lets set permissions. 
 			if($success)
 			{
-				//First lets clear out any permissions the employee currently has.
-				$success=$this->db->delete('permissions', array('person_id' => $employee_id));
+				//First lets clear out any grants the employee currently has.
+				$success=$this->db->delete('grants', array('person_id' => $employee_id));
 				
-				//Now insert the new permissions
+				//Now insert the new grants
 				if($success)
 				{
-					foreach($permission_data as $allowed_module)
+					foreach($grants_data as $permission_id)
 					{
-						$success = $this->db->insert('permissions',
+						$success = $this->db->insert('grants',
 						array(
-						'module_id'=>$allowed_module,
+						'permission_id'=>$permission_id,
 						'person_id'=>$employee_id));
 					}
 				}
@@ -142,7 +141,7 @@ class Employee extends Person
 		$this->db->trans_start();
 		
 		//Delete permissions
-		if($this->db->delete('permissions', array('person_id' => $employee_id)))
+		if($this->db->delete('grants', array('person_id' => $employee_id)))
 		{	
 			$this->db->where('person_id', $employee_id);
 			$success = $this->db->update('employees', array('deleted' => 1));
@@ -167,7 +166,7 @@ class Employee extends Person
 
 		$this->db->where_in('person_id',$employee_ids);
 		//Delete permissions
-		if ($this->db->delete('permissions'))
+		if ($this->db->delete('grants'))
 		{
 			//delete from employee table
 			$this->db->where_in('person_id',$employee_ids);
@@ -240,10 +239,23 @@ class Employee extends Person
 	
 	}
 	
+	function get_found_rows($search)
+	{
+		$this->db->from('employees');
+		$this->db->join('people','employees.person_id=people.person_id');
+		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		last_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		email LIKE '%".$this->db->escape_like_str($search)."%' or
+		phone_number LIKE '%".$this->db->escape_like_str($search)."%' or
+		username LIKE '%".$this->db->escape_like_str($search)."%' or
+		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");
+		return $this->db->get()->num_rows();
+	}
+	
 	/*
 	Preform a search on employees
 	*/
-	function search($search)
+	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('employees');
 		$this->db->join('people','employees.person_id=people.person_id');		
@@ -254,7 +266,9 @@ class Employee extends Person
 		username LIKE '%".$this->db->escape_like_str($search)."%' or 
 		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");		
 		$this->db->order_by("last_name", "asc");
-		
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();	
 	}
 	
@@ -304,22 +318,51 @@ class Employee extends Person
 	}
 	
 	/*
-	Determins whether the employee specified employee has access the specific module.
+	 * Determines whether the employee has access to at least one submodule
+	 */
+	function has_module_grant($permission_id,$person_id)
+	{
+		$this->db->from('grants');
+		$this->db->like('permission_id', $permission_id, 'after');
+		$this->db->where('person_id',$person_id);
+		$result = $this->db->get();
+		$result_count = $result->num_rows();
+		if ($result_count != 1)
+		{
+			return $result_count != 0;
+		}
+		return $this->has_subpermissions($permission_id);
+	}
+	
+	function has_subpermissions($permission_id)
+	{
+		$this->db->from('permissions');
+		$this->db->like('permission_id', $permission_id.'_', 'after');
+		$result = $this->db->get();
+		return $result->num_rows() == 0;
+	}
+	
+	/*
+	Determines whether the employee specified employee has access the specific module.
 	*/
-	function has_permission($module_id,$person_id)
+	function has_grant($permission_id,$person_id)
 	{
 		//if no module_id is null, allow access
-		if($module_id==null)
+		if($permission_id==null)
 		{
 			return true;
 		}
 		
-		$query = $this->db->get_where('permissions', array('person_id' => $person_id,'module_id'=>$module_id), 1);
-		return $query->num_rows() == 1;
-		
-		
-		return false;
+		$query = $this->db->get_where('grants', array('person_id'=>$person_id,'permission_id'=>$permission_id), 1);
+		return ($query->num_rows() == 1); 
 	}
-
+	
+	function get_employee_grants($person_id)
+	{
+		$this->db->from('grants');
+		$this->db->where('person_id',$person_id);
+		return $this->db->get()->result_array();
+	}
+	
 }
 ?>

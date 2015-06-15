@@ -8,7 +8,7 @@ $(document).ready(function()
     enable_search('<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>');
     enable_email('<?php echo site_url("$controller_name/mailto")?>');
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
-}); 
+});
 
 function init_table_sorting()
 {
@@ -65,13 +65,13 @@ function post_person_form_submit(response)
 		?>
 		<?php if ($controller_name =='customers') {?>
 			<?php echo anchor("$controller_name/excel_import/width:$form_width",
-			"<div class='big_button' style='float: left;'><span>Excel Import</span></div>",
+			"<div class='big_button' style='float: left;'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
 				array('class'=>'thickbox none','title'=>'Import Items from Excel'));
 			?>	
 		<?php } ?>
 	</div>
 </div>
-<?php echo $this->pagination->create_links();?>
+<div id="pagination"><?= $links ?></div>
 <div id="table_action_header">
 	<ul>
 		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
@@ -80,6 +80,7 @@ function post_person_form_submit(response)
 		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 		<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
 		<input type="text" name ='search' id='search'/>
+		<input type="hidden" name ='limit_from' id='limit_from'/>
 		</form>
 		</li>
 	</ul>

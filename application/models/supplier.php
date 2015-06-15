@@ -14,17 +14,25 @@ class Supplier extends Person
 		return ($query->num_rows()==1);
 	}
 	
+	function get_total_rows()
+	{
+		$this->db->from('suppliers');
+		$this->db->where('deleted',0);
+		return $this->db->count_all_results();
+	}
+	
 	/*
 	Returns all the suppliers
 	*/
-	function get_all($limit=10000, $offset=0)
+	function get_all($limit_from = 0, $rows = 0)
 	{
 		$this->db->from('suppliers');
 		$this->db->join('people','suppliers.person_id=people.person_id');			
 		$this->db->where('deleted', 0);
 		$this->db->order_by("last_name", "asc");
-		$this->db->limit($limit);
-		$this->db->offset($offset);
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();		
 	}
 	
@@ -237,10 +245,25 @@ class Supplier extends Person
 		return $suggestions;
 
 	}
+	
+	function get_found_rows($search)
+	{
+		$this->db->from('suppliers');
+		$this->db->join('people','suppliers.person_id=people.person_id');
+		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		last_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		company_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		email LIKE '%".$this->db->escape_like_str($search)."%' or
+		phone_number LIKE '%".$this->db->escape_like_str($search)."%' or
+		account_number LIKE '%".$this->db->escape_like_str($search)."%' or
+		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");
+		return $this->db->get()->num_rows();
+	}
+	
 	/*
 	Perform a search on suppliers
 	*/
-	function search($search)
+	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('suppliers');
 		$this->db->join('people','suppliers.person_id=people.person_id');
@@ -252,7 +275,9 @@ class Supplier extends Person
 		account_number LIKE '%".$this->db->escape_like_str($search)."%' or 
 		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");		
 		$this->db->order_by("last_name", "asc");
-		
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();	
 	}
 

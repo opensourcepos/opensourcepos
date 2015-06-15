@@ -40,6 +40,9 @@
 
 $route['default_controller'] = "login";
 $route['no_access/(:any)'] = "no_access/index/$1";
+$route['no_access/(:any)/(:any)'] = "no_access/index/$1/$2";
+$route['sales/index/(:any)'] = "sales/manage/$1";
+$route['sales/index/(:any)/(:any)'] = "sales/manage/$1/$2";
 $route['reports/(summary_:any)/(:any)/(:any)'] = "reports/$1/$2/$3";
 $route['reports/summary_:any'] = "reports/date_input_excel_export";
 $route['reports/(graphical_:any)/(:any)/(:any)'] = "reports/$1/$2/$3";
@@ -50,7 +53,7 @@ $route['reports/inventory_:any'] = "reports/excel_export";
 $route['reports/(detailed_sales)/(:any)/(:any)'] = "reports/$1/$2/$3";
 $route['reports/detailed_sales'] = "reports/date_input";
 $route['reports/(detailed_receivings)/(:any)/(:any)'] = "reports/$1/$2/$3";
-$route['reports/detailed_receivings'] = "reports/date_input";
+$route['reports/detailed_receivings'] = "reports/date_input_recv";
 $route['reports/(specific_:any)/(:any)/(:any)/(:any)'] = "reports/$1/$2/$3/$4";
 $route['reports/specific_customer'] = "reports/specific_customer_input";
 $route['reports/specific_employee'] = "reports/specific_employee_input";

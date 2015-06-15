@@ -14,16 +14,22 @@ function load_config()
     if ( $CI->config->item( 'language' ) )
     {
         $CI->config->set_item( 'language', $CI->config->item( 'language' ) );
-        
-        $map = directory_map('./application/language/' . $CI->config->item( 'language' ));
+		// fallback to english if language folder does not exist        
+		$language = $CI->config->item( 'language' );
+        if (!file_exists('./application/language/' . $language)) 
+        {
+        	$language = 'en';
+        }
 
+        $map = directory_map('./application/language/' . $language);
         foreach($map as $file)
         {
             if ( substr(strrchr($file,'.'),1) == "php")
             {
-                $CI->lang->load( str_replace( '_lang.php', '', $file ) );    
+                $CI->lang->load( str_replace( '_lang.php', '', $file ),  $language);    
             }
         }
+        
     }
     
     //Set timezone from config database

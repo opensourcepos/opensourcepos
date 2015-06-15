@@ -12,8 +12,13 @@ function checkbox_click(event)
 	}
 }
 
-function enable_search(suggest_url,confirm_search_message)
+function enable_search(suggest_url,confirm_search_message,format_item)
 {
+	if (!format_item) {
+		format_item = function(results) {
+			return results[0];
+		};
+	}
 	//Keep track of enable_email has been called
 	if(!enable_search.enabled)
 		enable_search.enabled=true;
@@ -23,16 +28,19 @@ function enable_search(suggest_url,confirm_search_message)
     	$(this).attr('value','');
     });
 
-    $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false});
+    $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false, formatItem : format_item});
     $("#search").result(function(event, data, formatted)
     {
 		do_search(true);
     });
     
+    attach_search_listener();
+    
 	$('#search_form').submit(function(event)
 	{
 		event.preventDefault();
-
+        // reset page number when selecting a specific page number
+		$('#limit_from').val(0);
 		if(get_selected_values().length >0)
 		{
 			if(!confirm(confirm_search_message))
@@ -43,6 +51,21 @@ function enable_search(suggest_url,confirm_search_message)
 }
 enable_search.enabled=false;
 
+function attach_search_listener() 
+{
+	 // prevent redirecting to link when search enabled
+    $("#pagination a").click(function(event) {
+    	  if ($("#search").val() || $("#search_form input:checked")) {
+    		  event.preventDefault();
+    		  // set limit_from to value included in the link
+    		  var uri_segments = event.currentTarget.href.split('/');
+    		  var limit_from = uri_segments.pop();
+    		  $('#limit_from').val(limit_from);
+    		  do_search(true);
+    	  }
+    });
+}
+
 function do_search(show_feedback,on_complete)
 {	
 	//If search is not enabled, don't do anything
@@ -50,21 +73,31 @@ function do_search(show_feedback,on_complete)
 		return;
 		
 	if(show_feedback)
-		$('#spinner').show();
+		$('#search').addClass("ac_loading");
 		
-	$('#sortable_table tbody').load($('#search_form').attr('action'),{'search':$('#search').val()},function()
-	{
-		if(typeof on_complete=='function')
-			on_complete();
-				
-		$('#spinner').hide();
-		//re-init elements in new table, as table tbody children were replaced
-		tb_init('#sortable_table a.thickbox');
-		update_sortable_table();	
-		enable_row_selection();		
-		$('#sortable_table tbody :checkbox').click(checkbox_click);
-		$("#select_all").attr('checked',false);
-	});
+	$.post(
+		$('#search_form').attr('action'), 
+		// serialize all the input fields in the form
+		$('#search_form').serialize(),
+		function(response) {
+			$('#sortable_table tbody').html(response.rows);
+			if(typeof on_complete=='function')
+				on_complete();
+			$('#search').removeClass("ac_loading");
+			//$('#spinner').hide();
+			//re-init elements in new table, as table tbody children were replaced
+			tb_init('#sortable_table a.thickbox');
+			$('#pagination').html(response.pagination);
+			$('#sortable_table tbody :checkbox').click(checkbox_click);
+			$("#select_all").attr('checked',false);
+			if (response.total_rows > 0)
+			{
+				update_sortable_table();	
+				enable_row_selection();	
+			}
+		    attach_search_listener();
+		}, "json"
+	);
 }
 
 function enable_email(email_url)
@@ -108,7 +141,7 @@ function enable_delete(confirm_message,none_selected_message)
 	if(!enable_delete.enabled)
 		enable_delete.enabled=true;
 	
-	$('#delete').click(function(event)
+	$("#delete").click(function(event)
 	{
 		event.preventDefault();
 		if($("#sortable_table tbody :checkbox:checked").length >0)
@@ -116,6 +149,8 @@ function enable_delete(confirm_message,none_selected_message)
 			if(confirm(confirm_message))
 			{
 				do_delete($(this).attr('href'));
+			} else {
+				return false;
 			}
 		}
 		else
@@ -146,14 +181,10 @@ function do_delete(url)
 				{
 					$(this).remove();
 					//Re-init sortable table as we removed a row
-					update_sortable_table();
+					$("#sortable_table tbody tr").length > 0 && update_sortable_table();
 					
 				});
-			});	
-			// update rows that were affected by this delete
-			for(index in response.ids) {
-				update_row(response.ids[index],url.replace(/[^\/]+$/,'get_row'));
-			}
+			});
 			
 			set_feedback(response.message,'success_message',false);	
 		}
@@ -265,7 +296,6 @@ function update_sortable_table()
 {
 	//let tablesorter know we changed <tbody> and then triger a resort
 	$("#sortable_table").trigger("update");
-	
 	if(typeof $("#sortable_table")[0].config!="undefined")
 	{
 		var sorting = $("#sortable_table")[0].config.sortList; 		
@@ -276,13 +306,13 @@ function update_sortable_table()
 function get_table_row(id) {
 	id = id || $("input[name='sale_id']").val();
 	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
-	if ($element.index() === -1) {
-		$element = $("#sortable_table tbody a[href*='" + id + "']");
+	if ($element.length === 0) {
+		$element = $("#sortable_table tbody a[href*='/" + id + "/']");
 	}
 	return $element;
 }
 
-function update_row(row_id,url)
+function update_row(row_id,url,callback)
 {
 	$.post(url, { 'row_id': row_id },function(response)
 	{
@@ -291,7 +321,8 @@ function update_row(row_id,url)
 		row_to_update.replaceWith(response);	
 		reinit_row(row_id);
 		hightlight_row(row_id);
-	});
+		callback && typeof(callback) == "function" && callback(); 
+	}, 'html');
 }
 
 function reinit_row(checkbox_id)

@@ -1,14 +1,14 @@
 <?php
 echo form_open_multipart('customers/do_excel_import/',array('id'=>'item_form'));
 ?>
-<div id="required_fields_message">Import customers from Excel sheet</div>
-<ul id="error_message_box"></ul>
-<b><a href="<?php echo site_url('customers/excel'); ?>">Download Import Excel Template (CSV)</a></b>
+<div id="required_fields_message"><?php echo $this->lang->line('customers_import_items_excel'); ?></div>
+<ul id="error_message_box" class="error_message_box"></ul>
+<b><a href="<?php echo site_url('customers/excel'); ?>"><?php echo $this->lang->line('common_download_import_template'); ?></a></b>
 <fieldset id="item_basic_info">
-<legend>Import</legend>
+<legend><?php echo $this->lang->line('common_import'); ?></legend>
 
 <div class="field_row clearfix">	
-<?php echo form_label('File path:', 'name',array('class'=>'wide')); ?>
+<?php echo form_label($this->lang->line('common_import_file_path').':', 'name',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_upload(array(
 		'name'=>'file_path',
@@ -56,7 +56,7 @@ $(document).ready(function()
    		},
 		messages: 
 		{
-   			file_path:"Full path to excel file required"
+   			file_path:"<?php echo $this->lang->line('common_import_full_path'); ?>"
 		}
 	});
 });

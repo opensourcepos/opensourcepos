@@ -39,7 +39,7 @@ class Specific_discount extends Report
 		
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, serialnumber, sales_items_temp.description, quantity_purchased, subtotal,total, tax, profit, discount_percent');
+			$this->db->select('name, serialnumber, category, sales_items_temp.description, quantity_purchased, subtotal,total, tax, profit, discount_percent');
 			$this->db->from('sales_items_temp');
 			$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
 			$this->db->where('sale_id = '.$value['sale_id'] . " AND discount_percent >= " . $inputs['discount']);

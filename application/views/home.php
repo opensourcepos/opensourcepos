@@ -5,6 +5,8 @@
 	<?php
 	foreach($allowed_modules->result() as $module)
 	{
+		if (sizeof(explode('_', $module->module_id)) == 1)
+		{
 	?>
 	<div class="module_item">
 		<a href="<?php echo site_url("$module->module_id");?>">
@@ -13,6 +15,7 @@
 		 - <?php echo $this->lang->line('module_'.$module->module_id.'_desc');?>
 	</div>
 	<?php
+		}
 	}
 	?>
 </div>

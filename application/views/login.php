@@ -5,7 +5,7 @@
 <link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/login.css" />
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 <title>Open Source Point Of Sale <?php echo $this->lang->line('login_login'); ?></title>
-<script src="<?php echo base_url();?>js/jquery-1.2.6.min.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
+<script src="<?php echo base_url();?>js/jquery-1.8.3.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
 <script type="text/javascript">
 $(document).ready(function()
 {
@@ -14,30 +14,35 @@ $(document).ready(function()
 </script>
 </head>
 <body>
-<h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
+
+<div align="center" style="margin-top:10px"><img src=<?php echo base_url();?>/images/logo.gif>
+
+</div>
+
+<div id="login">
+  
+  
 
 <?php echo form_open('login') ?>
 <div id="container">
 <?php echo validation_errors(); ?>
-	<div id="top">
-	<?php echo $this->lang->line('login_login'); ?>
-	</div>
+	
 	<div id="login_form">
-		<div id="welcome_message">
-		<?php echo $this->lang->line('login_welcome_message'); ?>
-		</div>
+
 		
 		<div class="form_field_label"><?php echo $this->lang->line('login_username'); ?>: </div>
 		<div class="form_field">
 		<?php echo form_input(array(
-		'name'=>'username', 
+		'name'=>'username',
+		'id'=>'username',
 		'size'=>'20')); ?>
 		</div>
 
 		<div class="form_field_label"><?php echo $this->lang->line('login_password'); ?>: </div>
 		<div class="form_field">
 		<?php echo form_password(array(
-		'name'=>'password', 
+		'name'=>'password',
+		'id' => 'password',
 		'size'=>'20')); ?>
 		
 		</div>
@@ -45,8 +50,11 @@ $(document).ready(function()
 		<div id="submit_button">
 		<?php echo form_submit('loginButton','Go'); ?>
 		</div>
+		
+		
 	</div>
+	
 </div>
-<?php echo form_close(); ?>
+<?php echo form_close(); ?><h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
 </body>
 </html>

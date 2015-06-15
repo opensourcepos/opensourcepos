@@ -12,70 +12,92 @@ class Item extends CI_Model
 
 		return ($query->num_rows()==1);
 	}
-
-	/*
-	Returns all the items
-	*/
-	function get_all($limit=10000, $offset=0)
+	
+	function item_number_exists($item_number,$item_id='')
 	{
 		$this->db->from('items');
-		$this->db->where('deleted',0);
-		$this->db->order_by("name", "asc");
-		$this->db->limit($limit);
-		$this->db->offset($offset);
-		return $this->db->get();
+		$this->db->where('item_number', $item_number);
+		if (!empty($item_id))
+		{
+			$this->db->where('item_id !=', $item_id);
+		}
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
 	}
 	
-	function count_all()
+	function get_total_rows()
 	{
 		$this->db->from('items');
 		$this->db->where('deleted',0);
 		return $this->db->count_all_results();
 	}
-
-	function get_all_filtered($low_inventory=0,$is_serialized=0,$no_description,$search_custom,$is_deleted)/**GARRISON MODIFIED 4/21/2013, Parq 131215 **/
+	
+	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$is_deleted=0)
 	{
-		$this->db->from('items');
+		$this->db->from("items");
+		if ($stock_location_id > -1)
+		{
+			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+			$this->db->where('location_id',$stock_location_id);
+		}
+		if (!empty($search)) 
+		{
+			if ($search_custom==0)
+			{
+				$this->db->where("(name LIKE '%" . $search . "%' OR " .
+					"item_number LIKE '" . $search . "%' OR " .
+					$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
+					"category LIKE '%" . $search . "%')");
+			}
+			else
+			{
+				$this->db->or_like('custom1',$search);
+				$this->db->or_like('custom2',$search);
+				$this->db->or_like('custom3',$search);
+				$this->db->or_like('custom4',$search);
+				$this->db->or_like('custom5',$search);
+				$this->db->or_like('custom6',$search);
+				$this->db->or_like('custom7',$search);
+				$this->db->or_like('custom8',$search);
+				$this->db->or_like('custom9',$search);
+				$this->db->or_like('custom10',$search);
+			}
+		}
+		$this->db->where('items.deleted', $is_deleted);
 		if ($low_inventory !=0 )
 		{
-			$this->db->where('quantity <=','reorder_level', false);
+			$this->db->where('quantity <=', 'reorder_level');
 		}
 		if ($is_serialized !=0 )
 		{
-			$this->db->where('is_serialized',1);
+			$this->db->where('is_serialized', 1);
 		}
 		if ($no_description!=0 )
 		{
-			$this->db->where('description','');
+			$this->db->where('items.description','');
 		}
-/**GARRISON SECTION ADDED 4/21/2013**/
-/**
-		if ($search_custom!=0 )
-		{
-			$this->db->like('custom1',$search);
-			$this->db->or_like('custom2',$search);
-			$this->db->or_like('custom3',$search);
-			$this->db->or_like('custom4',$search);
-			$this->db->or_like('custom5',$search);
-			$this->db->or_like('custom6',$search);
-			$this->db->or_like('custom7',$search);
-			$this->db->or_like('custom8',$search);
-			$this->db->or_like('custom9',$search);
-			$this->db->or_like('custom10',$search);
-		}
-**/		
-/* Parq 131215 start*/
-		if ($is_deleted !=0 )
-		{
-			$this->db->where('deleted',1);
-		} else {
-			$this->db->where('deleted',0);
-		}
-/* Parq 131215 end*/
-		$this->db->order_by("name", "asc");
-		return $this->db->get();
+		return $this->db->get()->num_rows();
 	}
 
+	/*
+	Returns all the items
+	*/
+	function get_all($stock_location_id=-1, $rows = 0, $limit_from = 0)
+	{
+		$this->db->from('items');
+		if ($stock_location_id > -1)
+		{
+			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+			$this->db->where('location_id',$stock_location_id);
+		}
+		$this->db->where('deleted',0);
+		$this->db->order_by("name","asc");
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+		return $this->db->get();
+	}
+	
 	/*
 	Gets information about a particular item
 	*/
@@ -114,8 +136,8 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where('item_number',$item_number);
-		$this->db->where('deleted',0); // Parq 131226
-
+        $this->db->where('deleted',0); // Parq 131226
+        
 		$query = $this->db->get();
 
 		if($query->num_rows()==1)
@@ -133,7 +155,7 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where_in('item_id',$item_ids);
-		$this->db->order_by("item", "asc");
+		$this->db->order_by('item_id', 'asc');
 		return $this->db->get();
 	}
 
@@ -236,7 +258,7 @@ class Item extends CI_Model
 
 /** GARRISON ADDED 4/22/2013 **/
 	//Search by custom fields
-		$this->db->from('items');
+/* 		$this->db->from('items');
 		$this->db->like('custom1', $search);
 		$this->db->or_like('custom2', $search);
 		$this->db->or_like('custom3', $search);
@@ -253,7 +275,7 @@ class Item extends CI_Model
 		foreach($by_name->result() as $row)
 		{
 			$suggestions[]=$row->name;
-		}
+		} */
 /** END GARRISON ADDED **/		
 		
 	//only return $limit suggestions
@@ -302,7 +324,7 @@ class Item extends CI_Model
 /** END GARRISON ADDED **/	
 		/** GARRISON ADDED 4/22/2013 **/		
 	//Search by custom fields
-		$this->db->from('items');
+/* 		$this->db->from('items');
 		$this->db->where('deleted',0);
 		$this->db->like('custom1', $search);
 		$this->db->or_like('custom2', $search);
@@ -319,7 +341,7 @@ class Item extends CI_Model
 		foreach($by_description->result() as $row)
 		{
 			$suggestions[]=$row->item_id.'|'.$row->name;
-		}
+		} */
 		/** END GARRISON ADDED **/
 		
 		//only return $limit suggestions
@@ -547,30 +569,59 @@ class Item extends CI_Model
 		return $suggestions;
 	}
 /** END GARRISON ADDED **/	
+
 	/*
-	Preform a search on items
+	 Persform a search on items
 	*/
-	function search($search)
+	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$deleted=0,$rows = 0,$limit_from = 0)
 	{
-		$this->db->from('items');
-		$this->db->where("(
-				name LIKE '%".$this->db->escape_like_str($search)."%' or 
-				item_number LIKE '%".$this->db->escape_like_str($search)."%' or 
-				description LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/21/2013**/
-				custom1 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom2 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom3 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom4 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom5 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom6 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom7 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom8 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom9 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				custom10 LIKE '%".$this->db->escape_like_str($search)."%' or/**GARRISON ADDED 4/22/2013**/
-				category LIKE '%".$this->db->escape_like_str($search)."%') and 
-				deleted=0");
-		$this->db->order_by("name", "asc");
-		return $this->db->get();	
+		$this->db->from("items");
+		if ($stock_location_id > -1)
+		{
+			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
+			$this->db->where('location_id',$stock_location_id);
+		}
+		if (!empty($search)) 
+		{
+			if ($search_custom==0)
+			{
+				$this->db->where("(name LIKE '%" . $search . "%' OR " .
+					"item_number LIKE '" . $search . "%' OR " .
+					$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
+				        "category LIKE '%" . $search . "%')");
+			}
+			else
+			{
+				$this->db->or_like('custom1',$search);
+				$this->db->or_like('custom2',$search);
+				$this->db->or_like('custom3',$search);
+				$this->db->or_like('custom4',$search);
+				$this->db->or_like('custom5',$search);
+				$this->db->or_like('custom6',$search);
+				$this->db->or_like('custom7',$search);
+				$this->db->or_like('custom8',$search);
+				$this->db->or_like('custom9',$search);
+				$this->db->or_like('custom10',$search);
+			}
+		}
+		$this->db->where('items.deleted', $deleted);
+		if ($low_inventory !=0 )
+		{
+			$this->db->where('quantity <=', 'reorder_level');
+		}
+		if ($is_serialized !=0 )
+		{
+			$this->db->where('is_serialized', 1);
+		}
+		if ($no_description!=0 )
+		{
+			$this->db->where('items.description','');
+		}
+		$this->db->order_by('items.name', "asc");
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+		return $this->db->get();
 	}
 
 	function get_categories()
@@ -583,5 +634,41 @@ class Item extends CI_Model
 
 		return $this->db->get();
 	}
+	
+	/*
+	 * changes the cost price of a given item
+	 * calculates the average price between received items and items on stock
+	 * $item_id : the item which price should be changed
+	 * $items_received : the amount of new items received
+	 * $new_price : the cost-price for the newly received items
+	 * $old_price (optional) : the current-cost-price
+	 * 
+	 * used in receiving-process to update cost-price if changed
+	 * caution: must be used there before item_quantities gets updated, otherwise average price is wrong!
+	 * 
+	 */
+	function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
+	{
+		if($old_price === null)
+		{
+			$item_info = $this->get_info($item['item_id']);
+			$old_price = $item_info->cost_price;
+		}
+
+		$this->db->from('item_quantities');
+		$this->db->select_sum('quantity');
+        $this->db->where('item_id',$item_id);
+		$this->db->join('stock_locations','stock_locations.location_id=item_quantities.location_id');
+        $this->db->where('stock_locations.deleted',0);
+		$old_total_quantity = $this->db->get()->row()->quantity;
+
+		$total_quantity = $old_total_quantity + $items_received;
+		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
+
+		$data = array('cost_price' => $average_price);
+		
+		return $this->save($data, $item_id);
+	}
+    
 }
 ?>

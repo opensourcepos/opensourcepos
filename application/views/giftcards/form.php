@@ -1,5 +1,5 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <?php
 echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftcard_form'));
 ?>
@@ -8,12 +8,12 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 
 <!-- GARRISON ADDED 4/22/2013 -->
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'required wide')); ?>
+<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'person_id',
 		'id'=>'person_id',
-		'value'=>$giftcard_info->person_id)
+		'value'=>$selected_person)
 	);?>
 	</div>
 </div>
@@ -25,7 +25,7 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 	<?php echo form_input(array(
 		'name'=>'giftcard_number',
 		'id'=>'giftcard_number',
-		'value'=>$giftcard_info->giftcard_number)
+		'value'=>$giftcard_number)
 	);?>
 	</div>
 </div>
@@ -58,22 +58,46 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	$("#person_id").autocomplete("<?php echo site_url('giftcards/suggest_person');?>",{max:100,minChars:0,delay:10});
-    $("#person_id").result(function(event, data, formatted){});
-	$("#person_id").search();
-	
-	$('#giftcard_form').validate({
-		submitHandler:function(form)
+	var format_item = function(row) 
+	{
+    	return [row[0], "|", row[1]].join("");
+	};
+	var autocompleter = $("#person_id").autocomplete('<?php echo site_url("giftcards/person_search"); ?>', 
+	{
+    	minChars:0,
+    	delay:15, 
+    	max:100,
+       	cacheLength: 1,
+        formatItem: format_item,
+        formatResult : format_item
+    });
+
+	// declare submitHandler as an object.. will be reused
+	var submit_form = function(selected_person) 
+	{ 
+		$(this).ajaxSubmit(
 		{
-			$(form).ajaxSubmit({
 			success:function(response)
 			{
 				tb_remove();
 				post_giftcard_form_submit(response);
 			},
+			error: function(jqXHR, textStatus, errorThrown) 
+			{
+				selected_customer && autocompleter.val(selected_person);
+				post_giftcard_form_submit({message: errorThrown});
+			},
 			dataType:'json'
 		});
-
+	};
+	
+	$('#giftcard_form').validate({
+		submitHandler:function(form)
+		{
+			var selected_person = autocompleter.val();
+			var selected_person_id = selected_person && selected_person.replace(/(\w)\|.*/, "$1");
+			selected_person_id && autocompleter.val(selected_person_id);
+			submit_form.call(form, selected_person);
 		},
 		errorLabelContainer: "#error_message_box",
  		wrapper: "li",

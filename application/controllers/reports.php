@@ -6,16 +6,29 @@ define("FORM_WIDTH", "400");
 
 class Reports extends Secure_area 
 {	
+	
 	function __construct()
 	{
 		parent::__construct('reports');
+		$method_name = $this->uri->segment(2);
+		$exploder = explode('_', $method_name);
+		preg_match("/(?:inventory)|([^_.]*)(?:_graph|_row)?$/", $method_name, $matches);
+		preg_match("/^(.*?)([sy])?$/", array_pop($matches), $matches);
+		$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : "s");
+		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+		// check access to report submodule
+		if (sizeof($exploder) > 1 && !$this->Employee->has_grant('reports_'.$submodule_id,$employee_id))
+		{
+			redirect('no_access/reports/reports_' . $submodule_id);
+		}
 		$this->load->helper('report');		
 	}
 	
 	//Initial report listing screen
 	function index()
 	{
-		$this->load->view("reports/listing",array());	
+		$data['grants']=$this->Employee->get_employee_grants($this->session->userdata('person_id'));
+		$this->load->view("reports/listing",$data);	
 	}
 	
 	function _get_common_report_data()
@@ -39,12 +52,12 @@ class Reports extends Secure_area
 		$this->load->view("reports/date_input_excel_export",$data);	
 	}
 	
- 	function get_detailed_sales_row($sale_id, $sale_type=1)
+ 	function get_detailed_sales_row($sale_id)
 	{
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 		
-		$report_data = $model->getDataBySaleId($sale_id, $sale_type);
+		$report_data = $model->getDataBySaleId($sale_id);
 		
 		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'] . '/width:'.FORM_WIDTH, 
 				'POS '.$report_data['sale_id'], 
@@ -59,7 +72,28 @@ class Reports extends Secure_area
 				to_currency($report_data['profit']), 
 				$report_data['payment_type'], 
 				$report_data['comment']);
-		echo get_detailed_sales_data_row($summary_data, $this);
+		echo get_detailed_data_row($summary_data, $this);
+	}
+	
+	function get_detailed_receivings_row($receiving_id)
+	{
+		$this->load->model('reports/Detailed_receivings');
+		$model = $this->Detailed_receivings;
+	
+		$report_data = $model->getDataByReceivingId($receiving_id);
+	
+		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'] . '/width:'.FORM_WIDTH,
+				'RECV '.$report_data['receiving_id'],
+				array('class' => 'thickbox')),
+				$report_data['receiving_date'],
+				$report_data['items_purchased'],
+				$report_data['employee_name'],
+				$report_data['supplier_name'],
+				to_currency($report_data['total']),
+				$report_data['payment_type'],
+				$report_data['invoice_number'],
+				$report_data['comment']);
+		echo get_detailed_data_row($summary_data, $this);
 	}
 	
 	function get_summary_data($start_date, $end_date = NULL, $sale_type=0) 
@@ -302,9 +336,24 @@ class Reports extends Secure_area
 	function date_input()
 	{
 		$data = $this->_get_common_report_data();
+        $data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);	
 	}
 	
+    function date_input_recv()
+    {
+        $data = $this->_get_common_report_data();
+        $data['mode'] = 'receiving';
+        $this->load->view("reports/date_input",$data);  
+    }
+    
+    function date_input_reqs()
+    {
+        $data = $this->_get_common_report_data();
+        $data['mode'] = 'requisition';
+        $this->load->view("reports/date_input",$data);  
+    }
+    
 	//Graphical summary sales report
 	function graphical_summary_sales($start_date, $end_date, $sale_type)
 	{
@@ -671,7 +720,7 @@ class Reports extends Secure_area
 		
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),to_currency($row['profit']), $row['payment_type'], $row['comment']);
 			
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -686,6 +735,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
+			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type' => $sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -720,7 +770,7 @@ class Reports extends Secure_area
 		
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),to_currency($row['profit']), $row['payment_type'], $row['comment']);
 			
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -735,6 +785,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
+			"header_width" => intval(100 / count($headers)),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type' => $sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -773,7 +824,7 @@ class Reports extends Secure_area
 				
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['description'], $drow['quantity_purchased'], to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
+				$details_data[$key][] = array($drow['name'], $drow['description'], $drow['quantity_purchased'], to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
 			}
 		}
 		
@@ -817,7 +868,7 @@ class Reports extends Secure_area
 			"title" =>$this->lang->line('reports_detailed_sales_report'),
 			"subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
-			"editable" => true,	
+			"editable" => "sales",	
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
 			"header_width" => intval(100 / count($headers['summary'])),	
@@ -827,25 +878,25 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/tabular_details",$data);
 	}
-
-	function detailed_receivings($start_date, $end_date, $sale_type, $export_excel=0)
+	
+	function detailed_receivings($start_date, $end_date, $receiving_type, $export_excel=0)
 	{
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 		
 		$headers = $model->getDataColumns();
-		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type));
+		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type));
 		
 		$summary_data = array();
 		$details_data = array();
 		
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('receivings/receipt/'.$row['receiving_id'], 'RECV '.$row['receiving_id'], array('target' => '_blank')), $row['receiving_date'], $row['items_purchased'], $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('receivings/edit/'.$row['receiving_id'].'/width:'.FORM_WIDTH, 'RECV '.$row['receiving_id'], array('class' => 'thickbox')), $row['receiving_date'], $row['items_purchased'], $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['invoice_number'], $row['comment']);
 			
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['quantity_purchased'], to_currency($drow['total']), $drow['discount_percent'].'%');
+				$details_data[$key][] = array($drow['item_number'], $drow['name'], $drow['category'], $drow['quantity_purchased'], to_currency($drow['total']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -853,15 +904,51 @@ class Reports extends Secure_area
 			"title" =>$this->lang->line('reports_detailed_receivings_report'),
 			"subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
+			"header_width" => intval(100 / count($headers['summary'])),
+			"editable" => "receivings",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type)),
+			"header_width" => intval(100 / count($headers['summary'])),
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type)),
 			"export_excel" => $export_excel
 		);
 
 		$this->load->view("reports/tabular_details",$data);
 	}
-			
+    
+    function detailed_requisition($start_date, $end_date , $export_excel=0)
+    {
+        $this->load->model('reports/Detailed_requisition');
+        $model = $this->Detailed_requisition;
+        $report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date));
+        
+        $summary_data = array();
+        $details_data = array();
+        
+        foreach($report_data['summary'] as $key=>$row)
+        {
+            $summary_data[] = array(anchor('receivings/requisition_receipt/'.$row['requisition_id'], 'REQS '.$row['requisition_id'], array('target' => '_blank')), $row['requisition_date'], $row['employee_name'], $row['comment']);
+            
+            foreach($report_data['details'][$key] as $drow)
+            {
+                $details_data[$key][] = array($drow['name'], $drow['requisition_quantity'], 
+                                                $drow['related_item_id'], $drow['related_item_quantity'],
+                                                $drow['related_item_total_quantity']);
+            }
+        }
+             
+        $data = array(
+            "title" =>$this->lang->line('reports_detailed_requisition_report'),
+            "subtitle" => date('m/d/Y', strtotime($start_date)) .'-'.date('m/d/Y', strtotime($end_date)),
+            "headers" => $model->getDataColumns(),
+            "summary_data" => $summary_data,
+            "details_data" => $details_data,
+            "overall_summary_data" => '',
+            "export_excel" => $export_excel
+        );
+        $this->load->view("reports/tabular_details",$data);
+    }
+    
 	function excel_export()
 	{
 		$this->load->view("reports/excel_export",array());		
@@ -875,11 +962,11 @@ class Reports extends Secure_area
 		$report_data = $model->getData(array());
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['name'], $row['item_number'], $row['description'], $row['quantity'], $row['reorder_level']);
+			$tabular_data[] = array($row['name'], $row['item_number'], $row['description'], $row['quantity'], $row['reorder_level'], $row['location_name']);
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_low_inventory_report'),
+			"title" => $this->lang->line('reports_inventory_low_report'),
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
@@ -898,7 +985,7 @@ class Reports extends Secure_area
 		$report_data = $model->getData(array());
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['name'], $row['item_number'], $row['description'], $row['quantity'], $row['reorder_level']);
+			$tabular_data[] = array($row['name'], $row['item_number'], $row['description'], $row['quantity'], $row['reorder_level'],$row['location_name']);
 		}
 
 		$data = array(
