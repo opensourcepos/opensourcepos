@@ -7,7 +7,7 @@
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
 	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
-	<?php if ($this->input->cookie('debug') == "true" || $this->input->post("debug") == "true") : ?>
+	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 	<!-- start js template tags -->
 	<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>

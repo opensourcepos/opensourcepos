@@ -602,7 +602,7 @@ class Sales extends Secure_area
 	function save($sale_id)
 	{
 		$sale_data = array(
-			'sale_time' => date('Y-m-d', strtotime($this->input->post('date'))),
+			'sale_time' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
 			'customer_id' => $this->input->post('customer_id') ? $this->input->post('customer_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),

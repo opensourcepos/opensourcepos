@@ -16,7 +16,7 @@
 	<div class="field_row clearfix">
 	<?php echo form_label($this->lang->line('sales_date').':', 'date', array('class'=>'required')); ?>
 		<div class='form_field'>
-			<?php echo form_input(array('name'=>'date','value'=>date('m/d/Y', strtotime($sale_info['sale_time'])), 'id'=>'date'));?>
+			<?php echo form_input(array('name'=>'date','value'=>date('Y-m-d H:i:s', strtotime($sale_info['sale_time'])), 'id'=>'date'));?>
 		</div>
 	</div>
 	
@@ -93,14 +93,14 @@ $(document).ready(function()
 	});
 	<?php endif; ?>
 	
-	$.validator.addMethod("invoice_number", function(value, element) 
+	$.validator.addMethod("invoice_number", function(value, element)
 	{
 		return JSON.parse($.ajax(
 		{
 			  type: 'POST',
 			  url: '<?php echo site_url($controller_name . "/check_invoice_number")?>',
 			  data: {'sale_id' : <?php echo $sale_info['sale_id']; ?>, 'invoice_number' : $(element).val() },
-			  success: function(response) 
+			  success: function(response)
 			  {
 				  success=response.success;
 			  },
@@ -108,8 +108,16 @@ $(document).ready(function()
 			  dataType: 'json'
         }).responseText).success;
     }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
-    
-	$('#date').datePicker({startDate: '01/01/1970'});
+
+	$.validator.addMethod("time", function (value, element) {
+		var stamp = value.split(" ");
+		var validDate = !/Invalid|NaN/.test(new Date(stamp[0]).toString());
+		var validTime = /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$/i.test(stamp[1]);
+		return this.optional(element) || (validDate && validTime);
+	}, '<?php echo $this->lang->line('sales_date_type'); ?>');
+
+
+	$('#date').datePicker({startDate: '<?php echo date('Y-m-d'); ?>'});
 	
 	var format_item = function(row) 
 	{
@@ -165,7 +173,7 @@ $(document).ready(function()
 			date: 
 			{
 				required:true,
-				date:true
+				time:true
 			},
 			invoice_number: {
 				invoice_number: true
@@ -176,7 +184,7 @@ $(document).ready(function()
 			date: 
 			{
 				required: "<?= $this->lang->line('sales_date_required'); ?>",
-				date: "<?= $this->lang->line('sales_date_type'); ?>"
+				time: "<?= $this->lang->line('sales_date_type'); ?>"
 			}
 		}
 	});
