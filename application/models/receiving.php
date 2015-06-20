@@ -75,7 +75,6 @@ class Receiving extends CI_Model
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 			
-			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			$receivings_items_data = array
 			(
@@ -84,7 +83,8 @@ class Receiving extends CI_Model
 				'line'=>$item['line'],
 				'description'=>$item['description'],
 				'serialnumber'=>$item['serialnumber'],
-				'quantity_purchased'=>$items_received,
+				'quantity_purchased'=>$item['quantity'],
+				'receiving_quantity'=>$item['receiving_quantity'],
 				'discount_percent'=>$item['discount'],
 				'item_cost_price' => $cur_item_info->cost_price,
 				'item_unit_price'=>$item['price'],
@@ -92,6 +92,8 @@ class Receiving extends CI_Model
 			);
 
 			$this->db->insert('receivings_items',$receivings_items_data);
+
+			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted
 			if($cur_item_info->cost_price != $item['price']
@@ -212,9 +214,9 @@ class Receiving extends CI_Model
 	public function create_receivings_items_temp_table()
 	{
 		$this->db->query("CREATE TEMPORARY TABLE ".$this->db->dbprefix('receivings_items_temp')."
-		(SELECT date(receiving_time) as receiving_date, ".$this->db->dbprefix('receivings_items').".receiving_id, comment, invoice_number, payment_type, employee_id, 
-		".$this->db->dbprefix('items').".item_id, ".$this->db->dbprefix('receivings').".supplier_id, quantity_purchased, item_cost_price, item_unit_price,
-		discount_percent, (item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) as subtotal,
+		(SELECT date(receiving_time) as receiving_date, ".$this->db->dbprefix('receivings_items').".receiving_id, comment, invoice_number, payment_type, employee_id,
+		".$this->db->dbprefix('items').".item_id, ".$this->db->dbprefix('receivings').".supplier_id, quantity_purchased, ".$this->db->dbprefix('receivings_items').".receiving_quantity,
+		item_cost_price, item_unit_price, discount_percent, (item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) as subtotal,
 		".$this->db->dbprefix('receivings_items').".line as line, serialnumber, ".$this->db->dbprefix('receivings_items').".description as description,
 		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) as total,
 		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) - (item_cost_price*quantity_purchased) as profit

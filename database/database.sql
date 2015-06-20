@@ -461,6 +461,7 @@ CREATE TABLE `ospos_receivings_items` (
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `item_location` int(11) NOT NULL,
+  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -140,7 +140,7 @@ class Receiving_lib
     	$this->CI->session->unset_userdata('recv_stock_destination');
     }
 
-	function add_item($item_id,$quantity=1,$item_location=null,$discount=0,$price=null,$description=null,$serialnumber=null)
+	function add_item($item_id,$quantity=1,$item_location=null,$discount=0,$price=null,$description=null,$serialnumber=null,$receiving_quantity=null)
 	{
 		//make sure item exists in database.
 		if(!$this->CI->Item->exists($item_id))
@@ -203,7 +203,7 @@ class Receiving_lib
             'discount'=>$discount,
 			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
 			'price'=>$price,
-			'receiving_quantity'=>$item_info->receiving_quantity,
+			'receiving_quantity'=>$receiving_quantity!=null ? $receiving_quantity : $item_info->receiving_quantity,
 			'total'=>$this->get_item_total($quantity, $price, $discount)
 			)
 		);
@@ -292,7 +292,7 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,-$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,-$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber,$row->receiving_quantity);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 	}
@@ -316,27 +316,13 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber);
+			$this->add_item($row->item_id,$row->quantity_purchased,$row->item_location,$row->discount_percent,$row->item_unit_price,$row->description,$row->serialnumber,$row->receiving_quantity);
 		}
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 		$receiving_info=$this->CI->Receiving->get_info($receiving_id);
 		//$this->set_invoice_number($receiving_info->row()->invoice_number);
 	}
 	
-	function copy_entire_requisition($requisition_id,$item_location)
-	{
-		$this->empty_cart();
-		$this->delete_supplier();
-	
-		foreach($this->CI->Receiving->get_requisition_items($requisition_id)->result() as $row)
-		{
-			$this->add_item_unit($row->item_id,$row->requisition_quantity,$item_location,$row->description);
-		}
-		$this->set_supplier($this->CI->Receiving->get_supplier($requisition_id)->person_id);
-		$receiving_info=$this->CI->Receiving->get_info($receiving_id);
-		//$this->set_invoice_number($receiving_info->row()->invoice_number);
-	}
-
 	function delete_item($line)
 	{
 		$items=$this->get_cart();

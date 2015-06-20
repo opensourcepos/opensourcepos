@@ -49,3 +49,6 @@ ALTER TABLE `ospos_giftcards`
 INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('sales_stock', 1),
 ('receivings_stock', 1);
+
+ALTER TABLE `ospos_receivings_items`
+    ADD COLUMN `receiving_quantity` int(11) NOT NULL DEFAULT '1';

@@ -896,7 +896,8 @@ class Reports extends Secure_area
 			
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['item_number'], $drow['name'], $drow['category'], $drow['quantity_purchased'], to_currency($drow['total']), $drow['discount_percent'].'%');
+				$quantity_purchased = $drow['receiving_quantity'] > 1 ? $drow['quantity_purchased'] . ' x ' . $drow['receiving_quantity'] : $drow['quantity_purchased'];
+				$details_data[$key][] = array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%');
 			}
 		}
 
