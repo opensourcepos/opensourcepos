@@ -25,3 +25,4 @@ $lang["employees_update"] = "Обновлять Сотрудник";
 $lang["employees_username"] = "Имя пользователя";
 $lang["employees_username_minlength"] = "Имя пользователя должна быть не менее 5 символов";
 $lang["employees_username_required"] = "Имя пользователи обязательный пробел";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";

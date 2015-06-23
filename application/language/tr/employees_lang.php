@@ -25,3 +25,4 @@ $lang["employees_update"] = "Personeli Güncelle";
 $lang["employees_username"] = "Kullandı Adı";
 $lang["employees_username_minlength"] = "Kullanıcı Adı en az 5 karakter olmalıdır";
 $lang["employees_username_required"] = "Kullanıcı Adı zorunlu alandır";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";

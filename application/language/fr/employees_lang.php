@@ -25,3 +25,4 @@ $lang["employees_update"] = "Éditer Employé";
 $lang["employees_username"] = "Nom d\'utilisateur";
 $lang["employees_username_minlength"] = "Le Nom d\'utilisateur doit etre long d\'au moins 5 caractères";
 $lang["employees_username_required"] = "Le Nom d\'utilisateur est requis";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";

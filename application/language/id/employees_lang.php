@@ -25,3 +25,4 @@ $lang["employees_update"] = "Ubah Karyawan";
 $lang["employees_username"] = "Nama Pengguna";
 $lang["employees_username_minlength"] = "Nama Pengguna minimal 5 huruf";
 $lang["employees_username_required"] = "Nama Pengguna wajib diisi";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";

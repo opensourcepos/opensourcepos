@@ -56,7 +56,7 @@ foreach($all_modules->result() as $module)
 {
 ?>
 <li>	
-<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id)); ?>
+<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id),"class='module'"); ?>
 <span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 <span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
 <?php
@@ -104,6 +104,21 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+
+	$.validator.addMethod("module", function (value, element) {
+		var result = true;
+		$(".module").each(function(index, element)
+		{
+			var parent = $(element).parent();
+			var checked =  $(element).is(":checked");
+			if ($("ul", parent).length > 0 && result)
+			{
+				result &= !checked || (checked && $("ul > li > input:checked", parent).length > 0);
+			}
+		});
+		return result;
+	}, '<?php echo $this->lang->line('employees_subpermission_required'); ?>');
+
 	$("ul#permission_list > li > input[name='grants[]']").each(function() 
 	{
 	    var $this = $(this);
@@ -112,16 +127,13 @@ $(document).ready(function()
 		    var $that = $(this);
 	        var updateCheckboxes = function (checked) 
 	        {
-	            if (checked) {
-	                $that.removeAttr("disabled");
-	            } else {
-	                $that.attr("disabled", "disabled");
-	                $that.removeAttr("checked", "");
-	             }
+				$that.prop("disabled", !checked);
+	         	!checked && $that.prop("checked", false);
 	        }
 	       $this.change(function() {
 	            updateCheckboxes($this.is(":checked"));
 	        });
+			updateCheckboxes($this.is(":checked"));
 	    });
 	});
 	
@@ -166,29 +178,7 @@ $(document).ready(function()
 			{
  				equalTo: "#password"
 			},
-    		email: "email", 
-    		"grants[]" : {
-        		required : function(element) {
-					var checked = false;
-            		$("ul#permission_list > li > input:checkbox").each(function() 
-                    {
-						if ($(this).is(":checked")) {
-							var has_children = false;
-						    $("ul > li > input:checkbox", $(this).parent()).each(function() 
-						    {
-							    has_children = true;
-							    checked |= $(this).is(":checked");
-						    });
-						    if (has_children && !checked) 
-							{
-								return false;
-							}
-						}
-            		});
-					return !checked; 
-        		},
-        		minlength: 1
-		    }
+    		email: "email"
    		},
 		messages: 
 		{
@@ -216,8 +206,7 @@ $(document).ready(function()
 			{
 				equalTo: "<?php echo $this->lang->line('employees_password_must_match'); ?>"
      		},
-     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		"grants[]": "fill in correctly!!"
+     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
 		}
 	});
 });

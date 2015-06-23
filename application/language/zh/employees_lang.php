@@ -25,3 +25,4 @@ $lang["employees_update"] = "更新員工";
 $lang["employees_username"] = "帳號";
 $lang["employees_username_minlength"] = "帳號必需為五個字元以上";
 $lang["employees_username_required"] = "帳號為必填";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";

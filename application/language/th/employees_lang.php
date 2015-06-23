@@ -25,3 +25,4 @@ $lang["employees_update"] = "แก้ไขข้อมูลพนักงา
 $lang["employees_username"] = "Username";
 $lang["employees_username_minlength"] = "ชื่อผู้ใช้งานต้องยาวเกิน 5 อักษร";
 $lang["employees_username_required"] = "จำเป็นต้องกรอกชื่อผู้ใช้งาน";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";

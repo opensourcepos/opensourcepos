@@ -25,3 +25,4 @@ $lang["employees_update"] = "Update Werknemer";
 $lang["employees_username"] = "Gebruikersnaam";
 $lang["employees_username_minlength"] = "Gebruikersnaam moet minstens 5 characters lang zijn";
 $lang["employees_username_required"] = "Gebruikersnaam moet ingevuld worden";
+$lang["employees_subpermission_required"] = "Selecteer minstens ‚‚n permissie voor elke module";

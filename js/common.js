@@ -38,7 +38,7 @@ function set_feedback(text, classname, keep_displayed)
 
 ;(function($){
 	//keylisteners
-	$.each(['customers', 'items', 'reports', 'receivings', 'sales', 'employees', 'config', 'giftcards'], function(key, value) {
+	$.each(['customers', 'items', 'reports', 'receivings', 'sales'], function(key, value) {
 		$(window).jkey('f' + (key+1), function(){
 			window.location = BASE_URL + '/' + value + '/index';
 		});	

@@ -25,3 +25,4 @@ $lang["employees_update"] = "Update Employee";
 $lang["employees_username"] = "Username";
 $lang["employees_username_minlength"] = "The username must be at least 5 characters";
 $lang["employees_username_required"] = "Username is a required field";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";
