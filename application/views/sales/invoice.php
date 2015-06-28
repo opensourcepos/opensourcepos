@@ -75,7 +75,7 @@ if (isset($error_message))
 		?>
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo $item['name']; ?></textarea></td>
+				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo $item['is_serialized'] ? $item['description'] : $item['name']; ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['quantity']; ?></textarea></td>
 				<td><textarea rows="5" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>
