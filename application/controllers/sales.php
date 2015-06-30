@@ -292,6 +292,7 @@ class Sales extends Secure_area
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment=$this->sale_lib->get_comment();
+		$data['comments']=$comment;
 		$emp_info=$this->Employee->get_info($employee_id);
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=$this->sale_lib->get_amount_due() * -1;
@@ -534,7 +535,7 @@ class Sales extends Secure_area
 			));
 		}
 		$data['sale_id']='POS '.$sale_id;
-		$data['comments'] = $sale_info[ 'comments' ];
+		$data['comments'] = $sale_info[ 'comment' ];
 		$data['invoice_number'] = $sale_info['invoice_number'];
 		$data['company_info'] = implode("\n", array(
 				$this->config->item('address'),
