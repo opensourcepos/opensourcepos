@@ -52,7 +52,7 @@ class Detailed_receivings extends Report
 		
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, item_number, category, quantity_purchased, serialnumber,total, discount_percent');
+			$this->db->select('name, item_number, category, quantity_purchased, serialnumber,total, discount_percent, item_location');
 			$this->db->select($this->db->dbprefix('receivings_items_temp').".receiving_quantity");
 			$this->db->from('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');

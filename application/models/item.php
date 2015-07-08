@@ -252,7 +252,10 @@ class Item extends CI_Model
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]=$row->name;
+			if (!in_array($row->name, $suggestions))
+			{
+				$suggestions[]=$row->name;
+			}
 		}
 /** END GARRISON ADDED **/
 
@@ -276,8 +279,8 @@ class Item extends CI_Model
 		{
 			$suggestions[]=$row->name;
 		} */
-/** END GARRISON ADDED **/		
-		
+/** END GARRISON ADDED **/
+
 	//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
@@ -319,10 +322,15 @@ class Item extends CI_Model
 		$by_description = $this->db->get();
 		foreach($by_description->result() as $row)
 		{
-			$suggestions[]=$row->item_id.'|'.$row->name;
+			$entry=$row->item_id.'|'.$row->name;
+			if (!in_array($entry, $suggestions))
+			{
+				$suggestions[]=$entry;
+			}
+
 		}
-/** END GARRISON ADDED **/	
-		/** GARRISON ADDED 4/22/2013 **/		
+/** END GARRISON ADDED **/
+		/** GARRISON ADDED 4/22/2013 **/
 	//Search by custom fields
 /* 		$this->db->from('items');
 		$this->db->where('deleted',0);
@@ -343,7 +351,7 @@ class Item extends CI_Model
 			$suggestions[]=$row->item_id.'|'.$row->name;
 		} */
 		/** END GARRISON ADDED **/
-		
+
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{

@@ -99,12 +99,12 @@ class Sales extends Secure_area
 	function change_mode()
 	{
 		$stock_location = $this->input->post("stock_location");
-		if (!$stock_location || $stock_location == $this->sale_lib->get_sale_location()) 
+		if (!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
 			$mode = $this->input->post("mode");
 			$this->sale_lib->set_mode($mode);
 		} 
-		else
+		else if ($this->Stock_locations->is_allowed_location($stock_location, 'sales'))
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
@@ -234,6 +234,7 @@ class Sales extends Secure_area
 
 		$this->form_validation->set_rules('price', 'lang:items_price', 'required|numeric');
 		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|numeric');
+		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|numeric');
 
         $description = $this->input->post("description");
         $serialnumber = $this->input->post("serialnumber");
@@ -287,8 +288,7 @@ class Sales extends Secure_area
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('m/d/Y h:i:s a');
 		$data['transaction_date']= date('d/m/Y', strtotime($data['transaction_time']));
-		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
-		$data['show_stock_locations']=count($stock_locations) > 1;
+		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment=$this->sale_lib->get_comment();
@@ -500,8 +500,7 @@ class Sales extends Secure_area
 		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date('d/m/Y H:i:s', strtotime($sale_info['sale_time']));
-		$stock_locations=$this->Stock_locations->get_undeleted_all('sales')->result_array();
-		$data['show_stock_locations']=count($stock_locations) > 1;
+		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
 		$data['transaction_date']= date('d/m/Y', strtotime($sale_info['sale_time']));
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
@@ -653,7 +652,7 @@ class Sales extends Secure_area
 		$data['cart']=$this->sale_lib->get_cart();	 
         $data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
         $data['mode']=$this->sale_lib->get_mode();
-                     
+
         $data['stock_locations']=$this->Stock_locations->get_allowed_locations('sales');
         $data['stock_location']=$this->sale_lib->get_sale_location();
         

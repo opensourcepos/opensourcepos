@@ -28,6 +28,17 @@ class Stock_locations extends CI_Model
         $this->db->where('deleted',0);
         return $this->db->get();
     }
+
+	function show_locations($module_id='items')
+	{
+		$stock_locations = $this->get_allowed_locations($module_id);
+		return count($stock_locations) > 1;
+	}
+
+	function multiple_locations()
+	{
+		return $this->get_all()->num_rows() > 1;
+	}
     
     function get_allowed_locations($module_id='items')
     {
@@ -39,6 +50,19 @@ class Stock_locations extends CI_Model
     	}
     	return $stock_locations;
     }
+
+	function is_allowed_location($location_id, $module_id='items')
+	{
+		$this->db->from('stock_locations');
+		$this->db->join('permissions','permissions.location_id=stock_locations.location_id');
+		$this->db->join('grants','grants.permission_id=permissions.permission_id');
+		$this->db->where('person_id', $this->session->userdata('person_id'));
+		$this->db->like('permissions.permission_id', $module_id, 'after');
+		$this->db->where('deleted',0);
+		$this->db->where('stock_locations.location_id', $location_id);
+		$query = $this->db->get();
+		return ($query->num_rows()==1);
+	}
     
     function get_default_location_id()
     {
