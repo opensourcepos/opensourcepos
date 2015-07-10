@@ -50,23 +50,36 @@ if(isset($error))
     		'sales' => $this->lang->line('reports_sales'), 
     		'returns' => $this->lang->line('reports_returns')), 'all', 'id="input_type"'); ?>
     	</div>
-    <?php
+		<?php
+		if (count($stock_locations) > 1) {
+			?>
+			<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class' => 'required')); ?>
+			<div id='report_stock_location'>
+				<?php echo form_dropdown('stock_location', $stock_locations, 'all', 'id="location_id"'); ?>
+			</div>
+			<?php
+		}
     }
     elseif($mode == 'receiving')
     {
     ?>
         <?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required')); ?>
         <div id='report_receiving_type'>
-        <?php echo form_dropdown('receiving_type',array('all' => $this->lang->line('reports_all'), 
+     	   <?php echo form_dropdown('receiving_type',array('all' => $this->lang->line('reports_all'),
         'receiving' => $this->lang->line('reports_receivings'), 
         'returns' => $this->lang->line('reports_returns'),
         'requisitions' => $this->lang->line('reports_requisitions')), 'all', 'id="input_type"'); ?>
         </div>
-    <?php
-    }
-    elseif($mode == 'requisition')
-    {
-        //Do nothing
+		<?php
+		if (count($stock_locations) > 1)
+		{
+			?>
+			<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required')); ?>
+			<div id='report_stock_location'>
+				<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id"'); ?>
+			</div>
+			<?php
+		}
     }
     ?>
 <?php
@@ -86,24 +99,30 @@ $(document).ready(function()
 	$("#generate_report").click(function()
 	{		
 		var input_type = $("#input_type").val();
-		
+		var location_id = $("#location_id").val();
+		var location = window.location;
 		if ($("#simple_radio").attr('checked'))
 		{
-			window.location = window.location+'/'+$("#report_date_range_simple option:selected").val() + '/' + input_type;
+			location += '/'+$("#report_date_range_simple option:selected").val() + '/' + input_type;
 		}
 		else
 		{
 			var start_date = $("#start_year").val()+'-'+$("#start_month").val()+'-'+$('#start_day').val();
 			var end_date = $("#end_year").val()+'-'+$("#end_month").val()+'-'+$('#end_day').val();
-	        if(input_type == null)
+	        if(!input_type)
 	        {
-	            window.location = window.location+'/'+start_date + '/'+ end_date;
+	            location += '/'+start_date + '/'+ end_date;
 	        }
 	        else
 	        {
-			     window.location = window.location+'/'+start_date + '/'+ end_date+ '/' + input_type;
+				location += '/'+start_date + '/'+ end_date+ '/' + input_type;
 			}
 		}
+		if (location_id)
+		{
+			location += '/' + location_id;
+		}
+		window.location = location;
 	});
 	
 	$("#start_month, #start_day, #start_year, #end_month, #end_day, #end_year").click(function()

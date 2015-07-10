@@ -30,7 +30,11 @@ class Detailed_receivings extends Report
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people as employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('people as supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-		$this->db->where('receiving_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
 		if ($inputs['receiving_type'] == 'receiving')
 		{
 			$this->db->where('quantity_purchased > 0');
@@ -67,7 +71,7 @@ class Detailed_receivings extends Report
 	{
 		$this->db->select('sum(total) as total');
 		$this->db->from('receivings_items_temp');
-		$this->db->where('receiving_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
 		if ($inputs['receiving_type'] == 'receiving')
 		{
 			$this->db->where('quantity_purchased > 0');

@@ -416,8 +416,7 @@ class Sale extends CI_Model
 		.$this->db->dbprefix('sales_items').'.line='.$this->db->dbprefix('sales_items_taxes').'.line'."
 		GROUP BY sale_id, item_id, line)");
 
-		//Update null item_tax_percents to be 0 instead of null
-		$this->db->where('item_tax_percent IS NULL');
+		//Update null item_tax_percents to be 0 instead of null$this->db->where('item_tax_percent IS NULL');
 		$this->db->update('sales_items_temp', array('item_tax_percent' => 0));
 
 		//Update null tax to be 0 instead of null

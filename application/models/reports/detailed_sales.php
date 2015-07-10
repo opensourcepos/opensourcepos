@@ -30,7 +30,11 @@ class Detailed_sales extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('people as employee', 'sales_items_temp.employee_id = employee.person_id');
 		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
 		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
@@ -51,7 +55,7 @@ class Detailed_sales extends Report
 			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, sales_items_temp.description, subtotal,total, tax, profit, discount_percent');
 			$this->db->from('sales_items_temp');
 			$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
-			$this->db->where('sale_id = '.$value['sale_id']);
+			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
 		
@@ -62,7 +66,7 @@ class Detailed_sales extends Report
 	{
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
 		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');

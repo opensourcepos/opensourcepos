@@ -39,7 +39,7 @@ class Stock_locations extends CI_Model
 	{
 		return $this->get_all()->num_rows() > 1;
 	}
-    
+
     function get_allowed_locations($module_id='items')
     {
     	$stock = $this->get_undeleted_all($module_id)->result_array();

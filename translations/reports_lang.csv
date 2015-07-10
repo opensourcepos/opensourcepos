@@ -75,7 +75,7 @@ reports_sales_summary_report,Overzicht Verkoop,Reporte de Resumen de Ventas,Sale
 reports_serial_number,Nummer,S/N:,Serial #,# Série,序號 #,серийный номер,Serial #,Seri No,Serial #
 reports_sold_by,Werknemer,Vendido Por,Sold By,Vendu par,銷售人,Продавал через,ขายโดย,Satışı Yapan,Dijual Oleh
 reports_sold_to,Klant,Vendido A,Sold To,Vendu à,購買人,Продано к,ขายไปที่,Satış Yapılan,Dijual Kepada
-reports_stock_location,,Ubicación de Inventario,Stock location,,,,,Stok Yeri,Lokasi Stock
+reports_stock_location,Stock Locatie,Ubicación de Inventario,Stock Location,,,,,Stok Yeri,Lokasi Stock
 reports_subtotal,Subtotaal,Subtotal,Subtotal,Sous-total,小計,Промежуточная сумма,ยอดรวมรอง,Ara Toplam,SubTotal
 reports_summary_reports,Overzicht Rapporten,Reportes Resumidos,Summary Reports,Rapports de Résumés,摘要報表,Сводные отчеты,สรุปรายงาน,Özet Raporları,Ringkasan Laporan
 reports_supplied_by,Geleverd door,Provisto por,Supplied by,Fournit par,付款人,Поставлял за,ผบิตโดย,Sağlayıcı,Pemasok
