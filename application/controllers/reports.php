@@ -337,7 +337,8 @@ class Reports extends Secure_area
 	{
 		$data = $this->_get_common_report_data();
 		$stock_locations = $this->Stock_locations->get_allowed_locations('sales');
-		$data['stock_locations'] = array_merge(array('all' => $this->lang->line('reports_all')), $stock_locations);
+		$stock_locations['all'] =  $this->lang->line('reports_all');
+		$data['stock_locations'] = array_reverse($stock_locations);
         $data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);
 	}
@@ -346,7 +347,8 @@ class Reports extends Secure_area
     {
         $data = $this->_get_common_report_data();
 		$stock_locations = $this->Stock_locations->get_allowed_locations('receivings');
-		$data['stock_locations'] = array_merge(array('all' => $this->lang->line('reports_all')), $stock_locations);
+		$stock_locations['all'] =  $this->lang->line('reports_all');
+		$data['stock_locations'] = array_reverse($stock_locations);
  		$data['mode'] = 'receiving';
         $this->load->view("reports/date_input",$data);
     }
@@ -876,7 +878,7 @@ class Reports extends Secure_area
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
 			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type)),
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type' => $sale_type, 'location_id' => $location_id)),
 			"export_excel" => $export_excel
 		);
 
@@ -920,7 +922,7 @@ class Reports extends Secure_area
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
 			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type)),
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id)),
 			"export_excel" => $export_excel
 		);
 

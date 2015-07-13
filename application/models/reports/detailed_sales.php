@@ -67,6 +67,10 @@ class Detailed_sales extends Report
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
 		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');

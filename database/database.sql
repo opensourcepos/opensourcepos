@@ -39,35 +39,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('website', ''),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
-('tax_included', '0'),
-('invoice_default_comments', 'This is a default comment'),
-('company_logo', ''),
-('barcode_content', 'id'),
-('barcode_type', 'id'),
-('barcode_width', '250'),
-('barcode_height', '50'),
-('barcode_quality', '100'),
-('barcode_font', 'Arial'),
-('barcode_font_size', '10'),
-('barcode_first_row', 'category'),
-('barcode_second_row', 'item_code'),
-('barcode_third_row', 'cost_price'),
-('barcode_num_in_row', '2'),
-('barcode_page_width', '100'),      
-('barcode_page_cellspacing', '20'),
-('receipt_show_taxes', '0'),
-('use_invoice_template', '1'),
-('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
-('print_silently', '1'),
-('print_header', '0'),
-('print_footer', '0'),
-('print_top_margin', '0'),
-('print_left_margin', '0'),
-('print_bottom_margin', '0'),
-('print_right_margin', '0'),
-('default_sales_discount', '0'),
-('lines_per_page', '25'),
-('show_total_discount', '1');
+('tax_included', '0');
+
 
 -- --------------------------------------------------------
 
@@ -77,7 +50,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 
 CREATE TABLE `ospos_customers` (
   `person_id` int(10) NOT NULL,
-  `company_name` varchar(255) DEFAULT NULL,
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
   `deleted` int(1) NOT NULL DEFAULT '0',
@@ -121,14 +93,13 @@ INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`) V
 CREATE TABLE `ospos_giftcards` (
   `record_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `giftcard_id` int(11) NOT NULL AUTO_INCREMENT,
-  `giftcard_number` int(10) NOT NULL,
+  `giftcard_number` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
   `value` decimal(15,2) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
-  `person_id` INT(10) DEFAULT NULL,
+  `person_id` INT NOT NULL,
   PRIMARY KEY (`giftcard_id`),
-  UNIQUE KEY `giftcard_number` (`giftcard_number`),
-  KEY `person_id` (`person_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+  UNIQUE KEY `giftcard_number` (`giftcard_number`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;
 
 --
 -- Dumping data for table `ospos_giftcards`
@@ -153,7 +124,7 @@ CREATE TABLE `ospos_inventory` (
   KEY `trans_items` (`trans_items`),
   KEY `trans_user` (`trans_user`),
   KEY `trans_location` (`trans_location`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_inventory`
@@ -177,7 +148,6 @@ CREATE TABLE `ospos_items` (
   `reorder_level` decimal(15,2) NOT NULL DEFAULT '0',
   `receiving_quantity` int(11) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
-  `pic_id` int(10) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
@@ -193,8 +163,8 @@ CREATE TABLE `ospos_items` (
   `custom10` VARCHAR(25) NOT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `item_number` (`item_number`),
-  KEY `supplier_id` (`supplier_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+  KEY `ospos_items_ibfk_1` (`supplier_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_items`
@@ -230,7 +200,7 @@ CREATE TABLE `ospos_item_kits` (
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`item_kit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_item_kits`
@@ -268,7 +238,7 @@ CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0 ;
 
 -- --------------------------------------------------------
 
@@ -311,7 +281,6 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 CREATE TABLE `ospos_people` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
-  `gender` int(1) DEFAULT NULL,
   `phone_number` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `address_1` varchar(255) NOT NULL,
@@ -323,7 +292,7 @@ CREATE TABLE `ospos_people` (
   `comments` text NOT NULL,
   `person_id` int(10) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`person_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_people`
@@ -374,9 +343,8 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('suppliers', 'suppliers');
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
-('items_stock', 'items', 1),
-('sales_stock', 'sales', 1),
-('receivings_stock', 'receivings', 1);
+('items_stock', 'items', 1);
+
 
 -- --------------------------------------------------------
 
@@ -417,8 +385,6 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('sales', 1),
 ('config', 1),
 ('items_stock', 1),
-('sales_stock', 1),
-('receivings_stock', 1),
 ('suppliers', 1);
 
 --
@@ -437,7 +403,7 @@ CREATE TABLE `ospos_receivings` (
   KEY `supplier_id` (`supplier_id`),
   KEY `employee_id` (`employee_id`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_receivings`
@@ -461,7 +427,6 @@ CREATE TABLE `ospos_receivings_items` (
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `item_location` int(11) NOT NULL,
-  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -484,12 +449,12 @@ CREATE TABLE `ospos_sales` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `payment_type` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
-  KEY `sale_time` (`sale_time`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_sales`
@@ -578,11 +543,12 @@ CREATE TABLE `ospos_sales_suspended` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `payment_type` varchar(512) DEFAULT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Dumping data for table `ospos_sales_suspended`
@@ -682,10 +648,10 @@ CREATE TABLE `ospos_sessions` (
 
 CREATE TABLE `ospos_stock_locations` (
   `location_id` int(11) NOT NULL AUTO_INCREMENT,
-  `location_name` varchar(255) DEFAULT NULL,
+  `location_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=0;
 
 --
 -- Dumping data for table `ospos_stock_locations`
@@ -734,8 +700,7 @@ ALTER TABLE `ospos_employees`
 --
 ALTER TABLE `ospos_inventory`
   ADD CONSTRAINT `ospos_inventory_ibfk_1` FOREIGN KEY (`trans_items`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_inventory_ibfk_2` FOREIGN KEY (`trans_user`) REFERENCES `ospos_employees` (`person_id`),
-  ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`);
+  ADD CONSTRAINT `ospos_inventory_ibfk_2` FOREIGN KEY (`trans_user`) REFERENCES `ospos_employees` (`person_id`);
 
 --
 -- Constraints for table `ospos_items`
@@ -767,8 +732,8 @@ ALTER TABLE `ospos_permissions`
 -- Constraints for table `ospos_grants`
 --
 ALTER TABLE `ospos_grants`
-  ADD CONSTRAINT `ospos_grants_ibfk_1` foreign key (`permission_id`) references `ospos_permissions` (`permission_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `ospos_grants_ibfk_1` foreign key (`permission_id`) references `ospos_permissions` (`permission_id`),
+  ADD CONSTRAINT `ospos_grants_ibfk_2` foreign key (`person_id`) references `ospos_employees` (`person_id`);
 
 --
 -- Constraints for table `ospos_receivings`
