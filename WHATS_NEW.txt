@@ -5,7 +5,7 @@ Version 2.3.2
 + Configurable barcode generation for items
 + Stock location filtering in detailed sales and receivings reports
 + Giftcards bugfixes
-+ Proper pagination support in all modules
++ Proper pagination support for most modules
 + Language updates
 + Bugfix for decimal taxrates
 + Add gender + company name attributes to customer

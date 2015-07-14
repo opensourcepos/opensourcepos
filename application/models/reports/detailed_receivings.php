@@ -75,7 +75,7 @@ class Detailed_receivings extends Report
 		if ($inputs['location_id'] != 'all')
 		{
 			$this->db->where('item_location', $inputs['location_id']);
-		} 	
+		}
 		if ($inputs['receiving_type'] == 'receiving')
 		{
 			$this->db->where('quantity_purchased > 0');
