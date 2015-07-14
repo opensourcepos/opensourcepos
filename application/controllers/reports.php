@@ -338,7 +338,7 @@ class Reports extends Secure_area
 		$data = $this->_get_common_report_data();
 		$stock_locations = $this->Stock_locations->get_allowed_locations('sales');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
-		$data['stock_locations'] = array_reverse($stock_locations);
+		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
         $data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);
 	}
@@ -348,7 +348,7 @@ class Reports extends Secure_area
         $data = $this->_get_common_report_data();
 		$stock_locations = $this->Stock_locations->get_allowed_locations('receivings');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
-		$data['stock_locations'] = array_reverse($stock_locations);
+		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
  		$data['mode'] = 'receiving';
         $this->load->view("reports/date_input",$data);
     }
