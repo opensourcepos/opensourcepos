@@ -114,3 +114,6 @@ config_thousands_separator,Thousands Separator,Separador de miles,Thousands Sepa
 config_timezone,Tijdzone,Zona Horaria,Timezone,Fuseau Horaire,時區,Часовой пояс,Timezone,Saat Dilimi,Zona Waktu
 config_use_invoice_template,Gebruik template voor facturen,Use plantilla de factura,Use invoice template,Use invoice template,Use invoice template,Use invoice template,Use invoice template,Use invoice template,Use invoice template
 config_website,Website,Sitio Web,Website,Site-web,網站,Веб-сайт,เว็บไซต์,Website,Situs Perusahaan
+config_locale_configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration
+config_locale_info,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information
+config_datetimeformat,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format

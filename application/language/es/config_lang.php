@@ -115,3 +115,6 @@ $lang["config_thousands_separator"] = "Separador de miles";
 $lang["config_timezone"] = "Zona Horaria";
 $lang["config_use_invoice_template"] = "Use plantilla de factura";
 $lang["config_website"] = "Sitio Web";
+$lang["config_locale_configuration"] = "Localisation Configuration";
+$lang["config_locale_info"] = "Localisation Configuration Information";
+$lang["config_datetimeformat"] = "Date and Time format";

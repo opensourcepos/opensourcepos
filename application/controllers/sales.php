@@ -286,8 +286,8 @@ class Sales extends Secure_area
 		$data['total']=$this->sale_lib->get_total();
 		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
-		$data['transaction_time']= date('m/d/Y h:i:s a');
-		$data['transaction_date']= date('d/m/Y', strtotime($data['transaction_time']));
+		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
+		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($data['transaction_time']));
 		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
@@ -499,9 +499,9 @@ class Sales extends Secure_area
 		$data['total']=$this->sale_lib->get_total();
 		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
-		$data['transaction_time']= date('d/m/Y H:i:s', strtotime($sale_info['sale_time']));
+		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime($sale_info['sale_time']));
+		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($data['transaction_time']));
 		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
-		$data['transaction_date']= date('d/m/Y', strtotime($sale_info['sale_time']));
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$emp_info=$this->Employee->get_info($employee_id);
@@ -704,7 +704,7 @@ class Sales extends Secure_area
 		$data['taxes']=$this->sale_lib->get_taxes();
 		$data['total']=$this->sale_lib->get_total();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
-		$data['transaction_time']= date('m/d/Y h:i:s a');
+		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->input->post('comment');

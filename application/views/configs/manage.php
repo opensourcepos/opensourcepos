@@ -7,8 +7,9 @@
 </div>
 <ul class="tabs" data-persist="true">
     <li><a href="#general_config">General</a></li>
+    <li><a href="#locale_config">Locale</a></li>
     <li><a href="#barcode_config">Barcode</a></li>
-    <li><a href="#location_config">Locations</a></li>
+    <li><a href="#stock_config">Stock</a></li>
     <li><a href="#receipt_config">Receipt</a></li>
 </ul>
 
@@ -16,11 +17,14 @@
     <div id="general_config">
         <?php $this->load->view("configs/general_config"); ?>
     </div>
+    <div id="locale_config">
+        <?php $this->load->view("configs/locale_config"); ?>
+    </div>
     <div id="barcode_config">
         <?php $this->load->view("configs/barcode_config"); ?>
     </div>
-    <div id="location_config">
-        <?php $this->load->view("configs/location_config"); ?>
+    <div id="stock_config">
+        <?php $this->load->view("configs/stock_config"); ?>
     </div>
     <div id="receipt_config">
         <?php $this->load->view("configs/receipt_config"); ?>

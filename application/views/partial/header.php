@@ -85,7 +85,7 @@ html {
 		</div>
 		
 		<div id="menubar_date">
-		    <?php echo date('F d, Y h:i a') ?>
+		    <?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?>
 		</div>
 
 	</div>
