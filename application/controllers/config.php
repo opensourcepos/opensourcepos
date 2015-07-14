@@ -33,17 +33,11 @@ class Config extends Secure_area
 		'default_tax_1_name'=>$this->input->post('default_tax_1_name'),		
 		'default_tax_2_rate'=>$this->input->post('default_tax_2_rate'),	
 		'default_tax_2_name'=>$this->input->post('default_tax_2_name'),		
-		'currency_symbol'=>$this->input->post('currency_symbol'),
-		'currency_side'=>$this->input->post('currency_side'),/**GARRISON ADDED 4/20/2013**/
 		'return_policy'=>$this->input->post('return_policy'),
-		'language'=>$this->input->post('language'),
-		'timezone'=>$this->input->post('timezone'),
         'tax_included'=>$this->input->post('tax_included'),
 		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
 		'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price'),
-		'thousands_separator'=>$this->input->post('thousands_separator'),
-		'decimal_point'=>$this->input->post('decimal_point'),
 		'lines_per_page'=>$this->input->post('lines_per_page'),
 		'default_sales_discount'=>$this->input->post('default_sales_discount'),
 		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
@@ -70,6 +64,25 @@ class Config extends Secure_area
 		echo json_encode(array('success'=>$success,'message'=>$message));
 		$this->_remove_duplicate_cookies();	
 	}
+	
+	function save_locale() 
+	{
+		$batch_save_data=array(	
+		'currency_symbol'=>$this->input->post('currency_symbol'),
+		'currency_side'=>$this->input->post('currency_side'),/**GARRISON ADDED 4/20/2013**/
+		'language'=>$this->input->post('language'),
+		'timezone'=>$this->input->post('timezone'),
+		'dateformat'=>$this->input->post('dateformat'),
+		'timeformat'=>$this->input->post('timeformat'),
+		'thousands_separator'=>$this->input->post('thousands_separator'),
+		'decimal_point'=>$this->input->post('decimal_point'),
+		);
+	
+        $result = $this->Appconfig->batch_save( $batch_save_data );
+        $success = $result ? true : false;
+        echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		$this->_remove_duplicate_cookies();
+	} 
 	
 	function stock_locations() 
 	{
@@ -138,7 +151,6 @@ class Config extends Secure_area
         $result = $this->Appconfig->batch_save( $batch_save_data );
         $success = $result ? true : false;
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
-        
     }
     
     function save_receipt()

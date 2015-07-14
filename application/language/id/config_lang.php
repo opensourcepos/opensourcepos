@@ -115,3 +115,6 @@ $lang["config_thousands_separator"] = "Pemisah Ribuan";
 $lang["config_timezone"] = "Zona Waktu";
 $lang["config_use_invoice_template"] = "Use invoice template";
 $lang["config_website"] = "Situs Perusahaan";
+$lang["config_locale_configuration"] = "Localisation Configuration";
+$lang["config_locale_info"] = "Localisation Configuration Information";
+$lang["config_datetimeformat"] = "Date and Time format";

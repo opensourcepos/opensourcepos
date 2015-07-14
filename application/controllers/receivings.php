@@ -181,7 +181,7 @@ class Receivings extends Secure_area
 		$data['cart']=$this->receiving_lib->get_cart();
 		$data['total']=$this->receiving_lib->get_total();
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
-		$data['transaction_time']= date('m/d/Y h:i:s a');
+		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
 		$data['mode']=$this->receiving_lib->get_mode();
 		$data['show_stock_locations']=$this->Stock_locations->show_locations('receivings');
 		$supplier_id=$this->receiving_lib->get_supplier();
@@ -306,7 +306,7 @@ class Receivings extends Secure_area
 		$data['total']=$this->receiving_lib->get_total();
 		$data['mode']=$this->receiving_lib->get_mode();
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
-		$data['transaction_time']= date('m/d/Y h:i:s a', strtotime($receiving_info['receiving_time']));
+		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
 		$data['show_stock_locations']=$this->Stock_locations->show_locations('receivings');
 		$supplier_id=$this->receiving_lib->get_supplier();
 		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);

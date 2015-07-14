@@ -54,7 +54,7 @@ function get_sale_data_row($sale,$controller)
 
 	$table_data_row='<tr>';
 	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_"' . $sale[ 'sale_id' ] . ' value="' . $sale[ 'sale_id' ]. '" /></td>';
-	$table_data_row.='<td width="17%">'.date('d/m/Y H:i' , strtotime($sale[ 'sale_time' ])).'</td>';
+	$table_data_row.='<td width="17%">'.date($CI->config->item('dateformat').' '.$CI->config->item('timeformat'), strtotime($sale[ 'sale_time' ])).'</td>';
 	$table_data_row.='<td width="23%">'.character_limiter( $sale[ 'last_name' ] . " " . $sale[ 'first_name' ] ,25).'</td>';
 	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_tendered' ] ).'</td>';
 	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_due' ] ).'</td>';
