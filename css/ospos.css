@@ -168,6 +168,11 @@ select#stock_location
 	width: 95%;
 }
 
+input.quantity, input.discount
+{
+	width: 40px;
+}
+
 a.rollover img
 {
 	padding: 3px;	
