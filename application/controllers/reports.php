@@ -333,6 +333,14 @@ class Reports extends Secure_area
 	}
 
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
+	function date_input()
+	{
+		$data = $this->_get_common_report_data();
+		$data['mode'] = 'sale';
+		$this->load->view("reports/date_input",$data);
+	}
+
+	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	function date_input_sales()
 	{
 		$data = $this->_get_common_report_data();
