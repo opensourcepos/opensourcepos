@@ -31,7 +31,7 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 <!-- END MODIFIED -->
 
 <div class="field_row clearfix">    
-<?php echo form_label($this->lang->line('config_number_format').':', 'number_format',array('class'=>'wide required')); ?>
+<?php echo form_label($this->lang->line('config_number_format').':', 'number_format',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo $this->lang->line('config_thousands_separator'); ?>
 	<?php echo form_dropdown('thousands_separator', array(
@@ -52,7 +52,7 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 </div>
 
 <div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide required')); ?>
+	<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide')); ?>
 	<div class='form_field'>
 		<?php echo form_dropdown('language', array(
 		'en' => 'English',
@@ -71,7 +71,7 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_timezone').':', 'timezone',array('class'=>'wide required')); ?>
+<?php echo form_label($this->lang->line('config_timezone').':', 'timezone',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_dropdown('timezone', 
 	 array(
@@ -186,8 +186,9 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 	</div>
 	<div class='form_field'>
 	<?php echo form_dropdown('timeformat', array(
-		'h:i:s' => 'hh:mm:ss',
-		'h:i:s a' => 'hh:mm:ss am/pm'),
+		'H:i:s' => 'hh:mm:ss (24h)',
+		'h:i:s a' => 'hh:mm:ss am/pm',
+		'h:i:s' => 'hh:mm:ss (12h)'),
 		$this->config->item('timeformat'));
 		?>
 	</div>
