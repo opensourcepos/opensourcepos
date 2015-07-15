@@ -39,12 +39,54 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 </div>
 
 <div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_website').':', 'website',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'website',
+		'id'=>'website',
+		'value'=>$this->config->item('website')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('common_email').':', 'email',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'email',
+		'id'=>'email',
+		'value'=>$this->config->item('email')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_phone').':', 'phone',array('class'=>'wide required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'phone',
 		'id'=>'phone',
 		'value'=>$this->config->item('phone')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_fax').':', 'fax',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'fax',
+		'id'=>'fax',
+		'value'=>$this->config->item('fax')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('common_return_policy').':', 'return_policy',array('class'=>'wide required')); ?>
+	<div class='form_field'>
+	<?php echo form_textarea(array(
+		'name'=>'return_policy',
+		'id'=>'return_policy',
+		'rows'=>'4',
+		'cols'=>'17',
+		'value'=>$this->config->item('return_policy')));?>
 	</div>
 </div>
 
@@ -82,6 +124,30 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 	</div>
 </div>
 
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_tax_included').':', 'tax_included',array('class'=>'wide')); ?>
+	<div class='form_field'>
+	<?php echo form_checkbox(array(
+		'name'=>'tax_included',
+		'id'=>'tax_included',
+		'value'=>'tax_included',
+		'checked'=>$this->config->item('tax_included')));?>
+	</div>
+</div>
+
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('config_default_sales_discount').':', 'default_sales_discount',array('class'=>'wide required')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'default_sales_discount',
+		'id'=>'default_sales_discount',
+		'type'=>'number',
+		'min'=>0,
+		'max'=>100,
+		'value'=>$this->config->item('default_sales_discount')));?>
+	</div>
+</div>
+
 <div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_sales_invoice_format').':', 'sales_invoice_format',array('class'=>'wide')); ?>
     <div class='form_field'>
@@ -103,48 +169,6 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('common_email').':', 'email',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'email',
-		'id'=>'email',
-		'value'=>$this->config->item('email')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_fax').':', 'fax',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'fax',
-		'id'=>'fax',
-		'value'=>$this->config->item('fax')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_website').':', 'website',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'website',
-		'id'=>'website',
-		'value'=>$this->config->item('website')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('common_return_policy').':', 'return_policy',array('class'=>'wide required')); ?>
-	<div class='form_field'>
-	<?php echo form_textarea(array(
-		'name'=>'return_policy',
-		'id'=>'return_policy',
-		'rows'=>'4',
-		'cols'=>'17',
-		'value'=>$this->config->item('return_policy')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_receiving_calculate_average_price').':', 'receiving_calculate_average_price',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox(array(
@@ -156,17 +180,6 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 </div>
 
 <div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_tax_included').':', 'tax_included',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'tax_included',
-		'id'=>'tax_included',
-		'value'=>'tax_included',
-		'checked'=>$this->config->item('tax_included')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_lines_per_page').':', 'lines_per_page',array('class'=>'wide required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -174,21 +187,8 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 		'id'=>'lines_per_page',
 		'type'=>'number',
 		'min'=>10,
-		'max'=>50,
+		'max'=>1000,
 		'value'=>$this->config->item('lines_per_page')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_default_sales_discount').':', 'default_sales_discount',array('class'=>'wide required')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'default_sales_discount',
-		'id'=>'default_sales_discount',
-		'type'=>'number',
-		'min'=>0,
-		'max'=>100,
-		'value'=>$this->config->item('default_sales_discount')));?>
 	</div>
 </div>
 
