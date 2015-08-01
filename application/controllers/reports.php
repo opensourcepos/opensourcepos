@@ -333,20 +333,12 @@ class Reports extends Secure_area
 	}
 
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
-	function date_input()
-	{
-		$data = $this->_get_common_report_data();
-		$data['mode'] = 'sale';
-		$this->load->view("reports/date_input",$data);
-	}
-
-	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	function date_input_sales()
 	{
 		$data = $this->_get_common_report_data();
 		$stock_locations = $this->Stock_locations->get_allowed_locations('sales');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations);
         $data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);
 	}
@@ -356,7 +348,7 @@ class Reports extends Secure_area
         $data = $this->_get_common_report_data();
 		$stock_locations = $this->Stock_locations->get_allowed_locations('receivings');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
-		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['stock_locations'] = array_reverse($stock_locations);
  		$data['mode'] = 'receiving';
         $this->load->view("reports/date_input",$data);
     }

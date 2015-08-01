@@ -51,6 +51,14 @@ if(isset($error))
     		'returns' => $this->lang->line('reports_returns')), 'all', 'id="input_type"'); ?>
     	</div>
 		<?php
+		if (count($stock_locations) > 1) {
+			?>
+			<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class' => 'required')); ?>
+			<div id='report_stock_location'>
+				<?php echo form_dropdown('stock_location', $stock_locations, 'all', 'id="location_id"'); ?>
+			</div>
+			<?php
+		}
     }
     elseif($mode == 'receiving')
     {
@@ -63,16 +71,16 @@ if(isset($error))
         'requisitions' => $this->lang->line('reports_requisitions')), 'all', 'id="input_type"'); ?>
         </div>
 		<?php
+		if (count($stock_locations) > 1)
+		{
+			?>
+			<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required')); ?>
+			<div id='report_stock_location'>
+				<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id"'); ?>
+			</div>
+			<?php
+		}
     }
-	if (!empty($stock_locations) && count($stock_locations) > 1)
-	{
-		?>
-		<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required')); ?>
-		<div id='report_stock_location'>
-			<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id"'); ?>
-		</div>
-		<?php
-	}
     ?>
 <?php
 echo form_button(array(
