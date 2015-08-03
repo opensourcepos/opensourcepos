@@ -28,10 +28,10 @@ describe("giftcard numbering test", function () {
 
     it("issue #65: giftcard numbering should add properly", function() {
         return this.browser.get(url("/index.php/giftcards")).waitForElementByCss(".big_button").click()
-            .waitForElementByName("value", 2000).type("100").elementById('giftcard_number').clear().type("10")
+            .waitForElementByName("value", 4000).type("100").elementById('giftcard_number').clear().type("10")
             .elementById("submit").click().waitForElementByXPath("//table/tbody/tr[td/text()='10']/td[4]", 2000).text().then(function (value) {
                 assert.ok(value, "giftcard failed to be added properly!");
-            }).elementByCss(".big_button").click().waitForElementByName("value", 2000).type("100").elementById("submit").click()
+            }).elementByCss(".big_button").click().waitForElementByName("value", 4000).type("100").elementById("submit").click()
             .waitForElementByXPath("//table/tbody/tr[td/text()='11']/td[4]").text().then(function (value) {
                 assert.equal(value, "11", "giftcard number not incrementing properly!!");
             });
