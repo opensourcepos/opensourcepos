@@ -258,7 +258,6 @@ class Sales extends Secure_area
 			$data['warning'] = $this->lang->line('sales_quantity_less_than_zero');
 		}
 
-
 		$this->_reload($data);
 	}
 
@@ -500,7 +499,7 @@ class Sales extends Secure_area
 		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime($sale_info['sale_time']));
-		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($data['transaction_time']));
+		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
 		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
