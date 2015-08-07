@@ -98,7 +98,7 @@ sales_successfully_suspended_sale,Uw aankoop werd met sucess bewaard,La venta ha
 sales_successfully_updated,Wijzigingen bewaard voor ticket,La venta ha sido actualizada satisfactoriamente,Sale successfully updated,Vente éditée,銷售資料成功更新,Продажа успешно обновлен,อัพเดทการขายสมบูรณ์,Satış düzenlendi,Penjualan berhasil diperbarui
 sales_suspend_sale,Bewaar aankoop,Suspender Venta,Suspend Sale,Suspendre la Vente,暫停銷售,Приостановить продажи,ระงับการขายชั่วคราว,Satışı Askıya Al,Tangguhkan
 sales_suspended_sale_id,ID,ID de Venta Suspendida,ID,ID,暫停銷售編號,приостановила продажи ID,รหัสการขายที่ถูกระงับ,No,ID Penjualan ditangguhkan
-sales_suspended_sales,Bewaarde Aankopen,Ventas Suspendidas,Suspended Sales,Ventes Suspendues,已暫停銷售,приостановила продажи,การขายที่ถูกระงับ,Askıdaki Satışlar,Penangguhan
+sales_suspended_sales,Bewaarde Aankopen,Ventas Suspendidas,Suspended Sales,Ventes Suspendues,已暫停銷售,приостановила продажи,การขายที่พักไว้,Askıdaki Satışlar,Penangguhan
 sales_tax,VAT,Impuesto,Tax,Taxe,稅額,налог,ภาษี,Vergi,Pajak
 sales_tax_percent,VAT %,% de Impuesto,Tax %,% Taxe,稅率 %,Налоговые %,ภาษี %,Vergi %,Pajak %
 sales_total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
