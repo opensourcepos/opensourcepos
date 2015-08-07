@@ -166,6 +166,7 @@ function get_supplier_manage_table($suppliers,$controller)
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
+	$CI->lang->line('suppliers_supplier_id'),
 	'&nbsp');
 	
 	$table.='<thead><tr>';
@@ -214,6 +215,7 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
+	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';		
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
