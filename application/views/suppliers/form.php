@@ -17,6 +17,17 @@ echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_f
 	</div>
 </div>
 
+<div class="field_row clearfix">	
+<?php echo form_label($this->lang->line('suppliers_agency_name').':', 'agency_name'); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'name'=>'agency_name',
+		'id'=>'agency_name_input',
+		'value'=>$person_info->agency_name)
+	);?>
+	</div>
+</div>
+
 <?php $this->load->view("people/form_basic_info"); ?>
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('suppliers_account_number').':', 'account_number'); ?>
@@ -65,13 +76,13 @@ $(document).ready(function()
 			company_name: "required",
 			first_name: "required",
 			last_name: "required",
-    		email: "email"
+			email: "email"
    		},
 		messages: 
 		{
-     		company_name: "<?php echo $this->lang->line('suppliers_company_name_required'); ?>",
-     		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
+			company_name: "<?php echo $this->lang->line('suppliers_company_name_required'); ?>",
+			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
+			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
 		}
 	});
 });
