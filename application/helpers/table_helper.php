@@ -162,11 +162,10 @@ function get_supplier_manage_table($suppliers,$controller)
 	$headers = array('<input type="checkbox" id="select_all" />',
 	$CI->lang->line('suppliers_company_name'),
 	$CI->lang->line('suppliers_agency_name'),
-	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_last_name'),
+	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
-	$CI->lang->line('suppliers_supplier_id'),
 	'&nbsp');
 	
 	$table.='<thead><tr>';
@@ -195,7 +194,7 @@ function get_supplier_manage_table_data_rows($suppliers,$controller)
 	
 	if($suppliers->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='7'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></tr></tr>";
 	}
 	
 	return $table_data_rows;
@@ -211,12 +210,11 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->company_name,13).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->agency_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->last_name,13).'</td>';
+	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
-	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';		
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
