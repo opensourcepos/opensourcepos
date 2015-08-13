@@ -14,7 +14,7 @@ class Summary_suppliers extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(first_name, " ",last_name) as supplier, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,sum(profit) as profit', false);
+		$this->db->select('CONCAT(company_name, " (", first_name, " ",last_name, ")") as supplier, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax,sum(profit) as profit', false);
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
