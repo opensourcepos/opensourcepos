@@ -1,8 +1,8 @@
 <?php 
 
 $lang["sales_add_payment"] = "เพิ่มบิล";
-$lang["sales_amount_due"] = "";
-$lang["sales_amount_tendered"] = "จำนวนประมูล";
+$lang["sales_amount_due"] = "ยอดต้องชำระ";
+$lang["sales_amount_tendered"] = "ชำระเข้ามา";
 $lang["sales_basic_information"] = "";
 $lang["sales_cancel_sale"] = "ยกเลิกการขาย";
 $lang["sales_cash"] = "เงินสด";
@@ -72,7 +72,7 @@ $lang["sales_payment"] = "รูปแบบชำระเงิน";
 $lang["sales_payment_amount"] = "";
 $lang["sales_payment_not_cover_total"] = " ปริมาณการจ่ายที่ไม่เพียงพอกะยอดรวม";
 $lang["sales_payment_type"] = "";
-$lang["sales_payments_total"] = "";
+$lang["sales_payments_total"] = "ยอดชำระแล้ว";
 $lang["sales_price"] = "ราคา";
 $lang["sales_print_after_sale"] = "พิมพ์บิลหลังการขาย";
 $lang["sales_quantity"] = "จำนวน";
@@ -99,7 +99,7 @@ $lang["sales_successfully_suspended_sale"] = "การขายของคุ�
 $lang["sales_successfully_updated"] = "อัพเดทการขายสมบูรณ์";
 $lang["sales_suspend_sale"] = "ระงับการขายชั่วคราว";
 $lang["sales_suspended_sale_id"] = "รหัสการขายที่ถูกระงับ";
-$lang["sales_suspended_sales"] = "การขายที่ถูกระงับ";
+$lang["sales_suspended_sales"] = "การขายที่พักไว้";
 $lang["sales_tax"] = "ภาษี";
 $lang["sales_tax_percent"] = "ภาษี %";
 $lang["sales_total"] = "ยอดรวม";
