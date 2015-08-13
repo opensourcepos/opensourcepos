@@ -19,11 +19,14 @@ CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
 UPDATE `ospos_item_quantities` SET location_id = (SELECT MIN(`location_id`) FROM `ospos_stock_locations`);
 
 ALTER TABLE `ospos_inventory`
- ADD COLUMN trans_location int(11) NOT NULL,
- ADD KEY `trans_location` (`trans_location`),
- ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`); 
+ ADD COLUMN trans_location int(11);
 
 UPDATE `ospos_inventory` SET trans_location = (SELECT MIN(`location_id`) FROM `ospos_stock_locations`);
+
+ALTER TABLE `ospos_inventory`
+ MODIFY COLUMN trans_location int(11) NOT NULL,
+ ADD KEY `trans_location` (`trans_location`),
+ ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`); 
 
 -- ALTER TABLE ospos_items DROP COLUMN location;
 
@@ -33,7 +36,7 @@ ALTER TABLE `ospos_receivings_items`
 UPDATE `ospos_receivings_items` SET item_location = (SELECT MIN(`location_id`) FROM `ospos_stock_locations`);
 
 ALTER TABLE ospos_receivings_items
- MODIFY `item_location` INT(11) NOT NULL,
+ MODIFY COLUMN `item_location` INT(11) NOT NULL,
  ADD KEY `item_location` (`item_location`),
  ADD CONSTRAINT `ospos_receivings_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
  
@@ -66,7 +69,7 @@ ALTER TABLE `ospos_sales_suspended_items`
  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
 
 ALTER TABLE `ospos_item_quantities`
-  MODIFY `item_location` INT(11) NOT NULL,
+  MODIFY COLUMN `location_id` INT(11) NOT NULL,
   ADD CONSTRAINT `ospos_item_quantities_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
   ADD CONSTRAINT `ospos_item_quantities_ibfk_2` FOREIGN KEY (`location_id`) REFERENCES `ospos_stock_locations` (`location_id`);
 
