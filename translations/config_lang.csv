@@ -4,7 +4,7 @@ config_address_required,Het adres van het bedrijf moet ingevuld worden,Direcció
 config_backup_button,Backup,Respaldo,Backup,Backup,Backup,Backup,สำรองข้อมูล,Backup,Backup
 config_backup_database,Backup Database,Respaldo de Base de Datos,Backup Database,Backup Database,Backup Database,Backup Database,สำรองฐานข้อมูล,Backup Database,Backup Database
 config_barcode_company,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
-config_barcode_configuration,Barcode Configuratie,Configuración de Código de Barras,Barcode Configuration,ตั้งค่าระบบบาร์โค้ด,Barcode Configuration,Barcode Configuration,Barcode Configuration,Barcode Configuration,Barcode Configuration
+config_barcode_configuration,Barcode Configuratie,Configuración de Código de Barras,Barcode Configuration,Barcode Configuration,Barcode Configuration,Barcode Configuration,ตั้งค่าระบบบาร์โค้ด,Barcode Configuration,Barcode Configuration
 config_barcode_content,Inhoud Barcode,Contenido de Código de Barras,Barcode Content,Barcode Content,Barcode Content,Barcode Content,รหัสที่พิมพ์,Barcode Content,Barcode Content
 config_barcode_first_row,Rij 1,Fila 1,Row 1,Row 2,Row 3,Row 4,แถว 1,Row 6,Row 7
 config_barcode_font,Lettertype,Fuente,Font,Font,Font,Font,แบบอักษร,Font,Font
@@ -114,6 +114,6 @@ config_thousands_separator,Thousands Separator,Separador de miles,Thousands Sepa
 config_timezone,Tijdzone,Zona Horaria,Timezone,Fuseau Horaire,時區,Часовой пояс,โซนเวลา,Saat Dilimi,Zona Waktu
 config_use_invoice_template,Gebruik template voor facturen,Use plantilla de factura,Use invoice template,Use invoice template,Use invoice template,Use invoice template,Use invoice template,Use invoice template,Use invoice template
 config_website,Website,Sitio Web,Website,Site-web,網站,Веб-сайт,เว็บไซต์,Website,Situs Perusahaan
-config_locale_configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,ตั้งค่าภาษา,Localisation Configuration
+config_locale_configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,Localisation Configuration,ตั้งค่าภาษา,Localisation Configuration,Localisation Configuration
 config_locale_info,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information,Localisation Configuration Information
 config_datetimeformat,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format,Date and Time format,รูปแบบวันเวลา,Date and Time format,Date and Time format

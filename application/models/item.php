@@ -35,6 +35,7 @@ class Item extends CI_Model
 	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$is_deleted=0)
 	{
 		$this->db->from("items");
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		if ($stock_location_id > -1)
 		{
 			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
@@ -47,6 +48,7 @@ class Item extends CI_Model
 				$this->db->where("(name LIKE '%" . $search . "%' OR " .
 					"item_number LIKE '" . $search . "%' OR " .
 					$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
+					"company_name LIKE '" . $search . "%' OR " .
 					"category LIKE '%" . $search . "%')");
 			}
 			else
@@ -85,12 +87,13 @@ class Item extends CI_Model
 	function get_all($stock_location_id=-1, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('items');
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		if ($stock_location_id > -1)
 		{
 			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
 			$this->db->where('location_id',$stock_location_id);
 		}
-		$this->db->where('deleted',0);
+		$this->db->where('items.deleted',0);
 		$this->db->order_by("name","asc");
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
@@ -104,6 +107,7 @@ class Item extends CI_Model
 	function get_info($item_id)
 	{
 		$this->db->from('items');
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_id',$item_id);
 		
 		$query = $this->db->get();
@@ -135,8 +139,9 @@ class Item extends CI_Model
 	function get_item_id($item_number)
 	{
 		$this->db->from('items');
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number',$item_number);
-        $this->db->where('deleted',0); // Parq 131226
+        $this->db->where('items.deleted',0); // Parq 131226
         
 		$query = $this->db->get();
 
@@ -154,6 +159,7 @@ class Item extends CI_Model
 	function get_multiple_info($item_ids)
 	{
 		$this->db->from('items');
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where_in('item_id',$item_ids);
 		$this->db->order_by('item_id', 'asc');
 		return $this->db->get();
@@ -243,6 +249,17 @@ class Item extends CI_Model
 		{
 			$suggestions[]=$row->item_number;
 		}
+
+		$this->db->from('suppliers');
+		$this->db->like('company_name', $search);
+		$this->db->where('deleted', 0);
+		$this->db->order_by("company_name", "asc");
+		$by_company_name = $this->db->get();
+		foreach($by_company_name->result() as $row)
+		{
+			$suggestions[]=$row->company_name;
+		}
+		
 /** GARRISON ADDED 4/21/2013 **/
 	//Search by description
 		$this->db->from('items');
@@ -584,6 +601,7 @@ class Item extends CI_Model
 	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$deleted=0,$rows = 0,$limit_from = 0)
 	{
 		$this->db->from("items");
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		if ($stock_location_id > -1)
 		{
 			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
@@ -596,7 +614,8 @@ class Item extends CI_Model
 				$this->db->where("(name LIKE '%" . $search . "%' OR " .
 					"item_number LIKE '" . $search . "%' OR " .
 					$this->db->dbprefix('items').".item_id LIKE '" . $search . "%' OR " .
-				        "category LIKE '%" . $search . "%')");
+					"company_name LIKE '" . $search . "%' OR " .
+					"category LIKE '%" . $search . "%')");
 			}
 			else
 			{
