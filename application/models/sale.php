@@ -402,7 +402,8 @@ class Sale extends CI_Model
 		".$this->db->dbprefix('sales_items').".line as line, serialnumber, ".$this->db->dbprefix('sales_items').".description as description,
 		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$total, 2) as total,
 		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$tax, 2) as tax,
-		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)- (item_cost_price*quantity_purchased), 2) as profit
+		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)- (item_cost_price*quantity_purchased), 2) as profit,
+		(item_cost_price*quantity_purchased) as cost
 		FROM ".$this->db->dbprefix('sales_items')."
 		INNER JOIN ".$this->db->dbprefix('sales')." ON  ".$this->db->dbprefix('sales_items').'.sale_id='.$this->db->dbprefix('sales').'.sale_id'."
 		INNER JOIN ".$this->db->dbprefix('items')." ON  ".$this->db->dbprefix('sales_items').'.item_id='.$this->db->dbprefix('items').'.item_id'."
@@ -416,7 +417,8 @@ class Sale extends CI_Model
 		.$this->db->dbprefix('sales_items').'.line='.$this->db->dbprefix('sales_items_taxes').'.line'."
 		GROUP BY sale_id, item_id, line)");
 
-		//Update null item_tax_percents to be 0 instead of null$this->db->where('item_tax_percent IS NULL');
+		//Update null item_tax_percents to be 0 instead of null
+		$this->db->where('item_tax_percent IS NULL');
 		$this->db->update('sales_items_temp', array('item_tax_percent' => 0));
 
 		//Update null tax to be 0 instead of null

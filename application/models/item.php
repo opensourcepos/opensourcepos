@@ -141,7 +141,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number',$item_number);
-        $this->db->where('items.deleted',0); // Parq 131226
+        	$this->db->where('items.deleted',0); // Parq 131226
         
 		$query = $this->db->get();
 
@@ -214,13 +214,14 @@ class Item extends CI_Model
  	/*
 	Get search suggestions to find items
 	*/
-	function get_search_suggestions($search,$limit=25)
+	function get_search_suggestions($search, $limit=25, $is_deleted=0)
 	{
 		$suggestions = array();
 
+		$this->db->select('name');
 		$this->db->from('items');
 		$this->db->like('name', $search);
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->order_by("name", "asc");
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
@@ -230,7 +231,7 @@ class Item extends CI_Model
 
 		$this->db->select('category');
 		$this->db->from('items');
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->distinct();
 		$this->db->like('category', $search);
 		$this->db->order_by("category", "asc");
@@ -240,9 +241,10 @@ class Item extends CI_Model
 			$suggestions[]=$row->category;
 		}
 
+		$this->db->select('item_number');
 		$this->db->from('items');
 		$this->db->like('item_number', $search);
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->order_by("item_number", "asc");
 		$by_item_number = $this->db->get();
 		foreach($by_item_number->result() as $row)
@@ -250,9 +252,11 @@ class Item extends CI_Model
 			$suggestions[]=$row->item_number;
 		}
 
+		$this->db->select('company_name');
 		$this->db->from('suppliers');
 		$this->db->like('company_name', $search);
-		$this->db->where('deleted', 0);
+		$this->db->where('deleted', $is_deleted);
+		$this->db->distinct();
 		$this->db->order_by("company_name", "asc");
 		$by_company_name = $this->db->get();
 		foreach($by_company_name->result() as $row)
@@ -264,9 +268,10 @@ class Item extends CI_Model
 		
 /** GARRISON ADDED 4/21/2013 **/
 	//Search by description
+		$this->db->select('name, description');
 		$this->db->from('items');
 		$this->db->like('description', $search);
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->order_by("description", "asc");
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
@@ -291,7 +296,7 @@ class Item extends CI_Model
 		$this->db->or_like('custom8', $search);
 		$this->db->or_like('custom9', $search);
 		$this->db->or_like('custom10', $search);
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->order_by("name", "asc");
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
@@ -303,18 +308,19 @@ class Item extends CI_Model
 	//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
-		return $suggestions;
 
+		return $suggestions;
 	}
 
-	function get_item_search_suggestions($search,$limit=25)
+	function get_item_search_suggestions($search, $limit=25, $is_deleted=0)
 	{
 		$suggestions = array();
 
+		$this->db->select('item_id, name');
 		$this->db->from('items');
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->like('name', $search);
 		$this->db->order_by("name", "asc");
 		$by_name = $this->db->get();
@@ -323,8 +329,9 @@ class Item extends CI_Model
 			$suggestions[]=$row->item_id.'|'.$row->name;
 		}
 
+		$this->db->select('item_id, item_number');
 		$this->db->from('items');
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->like('item_number', $search);
 		$this->db->order_by("item_number", "asc");
 		$by_item_number = $this->db->get();
@@ -334,8 +341,9 @@ class Item extends CI_Model
 		}
 /** GARRISON ADDED 4/21/2013 **/
 	//Search by description
+		$this->db->select('item_id, name, description');
 		$this->db->from('items');
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->like('description', $search);
 		$this->db->order_by("description", "asc");
 		$by_description = $this->db->get();
@@ -352,7 +360,7 @@ class Item extends CI_Model
 		/** GARRISON ADDED 4/22/2013 **/
 	//Search by custom fields
 /* 		$this->db->from('items');
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', $is_deleted);
 		$this->db->like('custom1', $search);
 		$this->db->or_like('custom2', $search);
 		$this->db->or_like('custom3', $search);
@@ -376,6 +384,7 @@ class Item extends CI_Model
 		{
 			$suggestions = array_slice($suggestions, 0,$limit);
 		}
+
 		return $suggestions;
 	}
 

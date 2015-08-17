@@ -9,12 +9,11 @@ class Summary_taxes extends Report
 	
 	public function getDataColumns()
 	{
-		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'));
+		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_count'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'));
 	}
 	
 	public function getData(array $inputs)
 	{
-		
 		$quantity_cond = '';
 		if ($inputs['sale_type'] == 'sales')
 		{
@@ -38,7 +37,7 @@ class Summary_taxes extends Report
 			$subtotal = "1";
 		}
 
-		$query = $this->db->query("SELECT percent, SUM(subtotal) as subtotal, sum(total) as total, sum(tax) as tax
+		$query = $this->db->query("SELECT percent, count(*) as count, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax
 		FROM (SELECT name, CONCAT( percent,  '%' ) AS percent,
 		ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $subtotal, 2) AS subtotal,
 		ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $total, 2) AS total,
@@ -51,12 +50,13 @@ class Summary_taxes extends Report
 		." JOIN ".$this->db->dbprefix('sales')." ON ".$this->db->dbprefix('sales_items_taxes').".sale_id=".$this->db->dbprefix('sales').".sale_id
 		WHERE date(sale_time) BETWEEN '".$inputs['start_date']."' and '".$inputs['end_date']."' $quantity_cond) as temp_taxes
 		GROUP BY percent");
+
 		return $query->result_array();
 	}
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(profit) as profit');
+		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
 		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
@@ -69,8 +69,7 @@ class Summary_taxes extends Report
         {
             $this->db->where('quantity_purchased < 0');
         }
-          
-		
+
 		return $this->db->get()->row_array();
 	}
 }

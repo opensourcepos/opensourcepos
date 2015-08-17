@@ -88,13 +88,13 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit')/*, $this->input->post('is_deleted')*/); // TODO: is_deleted doesn't seem to be effective...
 		echo implode("\n",$suggestions);
 	}
 	
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'),'warehouse');
+		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'), $this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
 

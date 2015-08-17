@@ -48,6 +48,7 @@ $lang["reports_payment_type"] = "付款方式";
 $lang["reports_payments"] = "付款";
 $lang["reports_payments_summary_report"] = "收入報告摘要";
 $lang["reports_profit"] = "利潤";
+$lang["reports_cost"] = "Cost";
 $lang["reports_quantity_purchased"] = "銷售金額";
 $lang["reports_received_by"] = "收款人";
 $lang["reports_receiving_id"] = "";

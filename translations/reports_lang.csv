@@ -47,6 +47,7 @@ reports_payment_type,Betaald,Tipo de Pago,Payment Type,Type Paiement,付款方�
 reports_payments,Betalingen,Pagos,Payments,Paiements,付款,Оплаты,รายจ่าย,Ödemeler,Pembayaran
 reports_payments_summary_report,Overzicht Betalingen,Reporte de Resumen de Pagos,Payments Summary Report,Rapport: Résumé des Paiements,收入報告摘要,Платежей Сводный отчет,รายงานสรุปการจ่าย,Ödeme Özet Raporu,Laporan Ringkasan Pembayaran
 reports_profit,Winst,Ganancia,Profit,Bénéfice,利潤,прибыль,กำไร,Kâr,Keuntungan/Laba
+reports_cost,Cost,Cost,Cost,Cost,Cost,Cost,Cost
 reports_quantity_purchased,Aangekochte Hoeveelheid,Cantidad Comprada,Quantity Purchased,Quantité Achetée,銷售金額,купенный количество,จำนวนการช์้อ,Satın Alınan Adet,Jumlah Dibeli
 reports_received_by,Ontvangen door,Recibido por,Received By,Recu par,收款人,получило за,รับโดย,Alım Yapan,Diterima Oleh
 reports_receiving_id,,ID de Recepción,Receiving ID,,,,IDรับสินค้า,Alım No,Id Penerima
