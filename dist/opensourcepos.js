@@ -14564,7 +14564,7 @@ Date.fullYearStart = '20';
 	}
 }
 
-function enable_search(suggest_url,confirm_search_message,format_item)
+function enable_search(suggest_url,confirm_search_message,format_item,extra_params)
 {
 	if (!format_item) {
 		format_item = function(results) {
@@ -14580,7 +14580,7 @@ function enable_search(suggest_url,confirm_search_message,format_item)
     	$(this).attr('value','');
     });
 
-    $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false, formatItem : format_item});
+    $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false, formatItem : format_item, extraParams: extra_params});
     $("#search").result(function(event, data, formatted)
     {
 		do_search(true);
