@@ -28,7 +28,7 @@ function enable_search(suggest_url,confirm_search_message,format_item,extra_para
     	$(this).attr('value','');
     });
 
-    $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false, formatItem : format_item, extraParams: extra_params});
+    var widget = $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false, formatItem : format_item, extraParams: extra_params});
     $("#search").result(function(event, data, formatted)
     {
 		do_search(true);
@@ -48,6 +48,8 @@ function enable_search(suggest_url,confirm_search_message,format_item,extra_para
 		}
 		do_search(true);
 	});
+
+	return widget;
 }
 enable_search.enabled=false;
 

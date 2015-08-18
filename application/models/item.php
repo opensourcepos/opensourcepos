@@ -106,6 +106,8 @@ class Item extends CI_Model
 	*/
 	function get_info($item_id)
 	{
+		$this->db->select('items.*');
+		$this->db->select('suppliers.company_name');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_id',$item_id);
