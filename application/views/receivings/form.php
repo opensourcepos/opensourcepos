@@ -99,9 +99,7 @@ $(document).ready(function()
         }).responseText).success;
     }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
 	
-	$('#date').datePicker({startDate: '<?php echo date("Y-m-d");?>'});
-	
-	var format_item = function(row) 
+	var format_item = function(row)
 	{
     	var result = [row[0], "|", row[1]].join("");
     	// if more than one occurence

@@ -263,9 +263,7 @@ class Item extends CI_Model
 		$by_company_name = $this->db->get();
 		foreach($by_company_name->result() as $row)
 		{
-			if (!in_array($row->company_name, $suggestions)) {
-				$suggestions[]=$row->company_name;
-			}
+			$suggestions[]=$row->company_name;
 		}
 		
 /** GARRISON ADDED 4/21/2013 **/
