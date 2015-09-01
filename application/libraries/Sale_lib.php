@@ -333,9 +333,9 @@ class Sale_lib
 		
 		//$item = $this->CI->Item->get_info($item_id);
 		$item_quantity = $this->CI->Item_quantities->get_item_quantity($item_id,$item_location)->quantity; 
-		$quanity_added = $this->get_quantity_already_added($item_id,$item_location);
+		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
 		
-		if ($item_quantity - $quanity_added < 0)
+		if ($item_quantity - $quantity_added < 0)
 		{
 			return true;
 		}

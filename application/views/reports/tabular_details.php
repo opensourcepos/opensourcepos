@@ -119,7 +119,6 @@ function expand_handler(event)
 
 	if ($(event.target).text() == '+')
 	{
-		
 		$(event.target).text('-');
 	}
 	else
