@@ -166,7 +166,7 @@ function init_table_sorting()
 </div>
 
 <div id="table_summary">
-<?php echo $payments_summary_data; ?>
+<?php echo $payments_summary; ?>
 </div>
 
 <div id="feedback_bar"></div>

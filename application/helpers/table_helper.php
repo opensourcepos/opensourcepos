@@ -1,6 +1,6 @@
 <?php
 
-function get_sales_manage_table($sales, $payments, $details, $controller)
+function get_sales_manage_table($sales, $controller)
 {
 	$CI =& get_instance();
 	$table='<table class="tablesorter" id="sortable_table">';
@@ -22,7 +22,7 @@ function get_sales_manage_table($sales, $payments, $details, $controller)
 		$table.="<th>$header</th>";
 	}
 	$table.='</tr></thead><tbody>';
-	$table.=get_sales_manage_table_data_rows($sales, $payments, $details, $controller);
+	$table.=get_sales_manage_table_data_rows($sales, $controller);
 	$table.='</tbody></table>';
 
 	return $table;
@@ -31,17 +31,17 @@ function get_sales_manage_table($sales, $payments, $details, $controller)
 /*
  Gets the html data rows for the sales.
  */
-function get_sales_manage_table_data_rows($sales, $payments, $details, $controller)
+function get_sales_manage_table_data_rows($sales, $controller)
 {
 	$CI =& get_instance();
-	$table_data_rows='';
+	$table_data_rows = '';
 	$sum_amount_tendered = 0;
 	$sum_amount_due = 0;
 	$sum_change_due = 0;
 
 	foreach($sales as $key=>$sale)
 	{
-		$table_data_rows.=get_sales_manage_sale_data_row($sale, $payments[$key], $controller);
+		$table_data_rows .= get_sales_manage_sale_data_row($sale, $controller);
 		
 		$sum_amount_tendered += $sale['amount_tendered'];
 		$sum_amount_due += $sale['amount_due'];
@@ -50,66 +50,41 @@ function get_sales_manage_table_data_rows($sales, $payments, $details, $controll
 
 	if($table_data_rows == '')
 	{
-		$table_data_rows.="<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('sales_no_sales_to_display')."</div></tr></tr>";
+		$table_data_rows .= "<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
 	}
 	else
 	{
+		// empty line
+		//$table_data_rows .= "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
 		// show a line in bold with the totals
-		$table_data_rows.="<tr><th>&nbsp;</th><th>".$CI->lang->line('sales_total')."</th><th>&nbsp;</th><th>&nbsp;</th><th>".to_currency($sum_amount_tendered)."</th><th>".to_currency($sum_amount_due)."</th><th>".to_currency($sum_change_due)."</th></tr>";
+		$table_data_rows .= "<tr><th>&nbsp;</th><th>".$CI->lang->line('sales_total')."</th><th>&nbsp;</th><th>&nbsp;</th><th>".to_currency($sum_amount_tendered)."</th><th>".to_currency($sum_amount_due)."</th><th>".to_currency($sum_change_due)."</th></tr>";
 	}
 
 	return $table_data_rows;
 }
 
-function get_sales_manage_sale_data_row($sale, $payments, $controller)
+function get_sales_manage_sale_data_row($sale, $controller)
 {
 	$CI =& get_instance();
 	$controller_name = $CI->uri->segment(1);
 	$width = $controller->get_form_width();
 
-	$payment = '';
-
-	// set in one string all the payments type and amount
-	foreach( $payments as $key=>$row )
-	{
-		$payment.= $row['payment_type'] . " ";
-
-		// the assumption here is that any change due is deducted from the cash amount paid, not from any other form of payment
-		if( $row['payment_type'] == $CI->lang->line('sales_cash') )
-		{
-			$payment.= to_currency($row['payment_amount'] - $sale['change_due']);
-		}
-		else
-		{
-			$payment.= to_currency($row['payment_amount']);
-		}
-
-		$payment.= ", ";
-	}
-
-	// make sure we have something in the string
-	if( $payment != '' )
-	{
-		// remove the last ", " from the string
-		$payment = substr($payment, 0, strlen($payment) - 2 );
-	}
-
 	$table_data_row='<tr>';
-	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_"' . $sale[ 'sale_id' ] . ' value="' . $sale[ 'sale_id' ]. '" /></td>';
-	$table_data_row.='<td width="15%">'.'POS ' . $sale[ 'sale_id' ]. '</td>';
-	$table_data_row.='<td width="17%">'.date($CI->config->item('dateformat').' '.$CI->config->item('timeformat'), strtotime($sale[ 'sale_time' ])).'</td>';
-	$table_data_row.='<td width="23%">'.character_limiter( $sale[ 'customer_name' ], 25).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_tendered' ] ).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_due' ] ).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'change_due' ] ).'</td>';
-	$table_data_row.='<td width="20%">'.$payment.'</td>';
-	$table_data_row.='<td width="10%">'.$sale[ 'invoice_number' ].'</td>';
+	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_"' . $sale['sale_id'] . ' value="' . $sale['sale_id']. '" /></td>';
+	$table_data_row.='<td width="15%">'.'POS ' . $sale['sale_id'] . '</td>';
+	$table_data_row.='<td width="17%">'.date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale['sale_time']) ).'</td>';
+	$table_data_row.='<td width="23%">'.character_limiter( $sale['customer_name'], 25).'</td>';
+	$table_data_row.='<td width="10%">'.to_currency( $sale['amount_tendered'] ).'</td>';
+	$table_data_row.='<td width="10%">'.to_currency( $sale['amount_due'] ).'</td>';
+	$table_data_row.='<td width="10%">'.to_currency( $sale['change_due'] ).'</td>';
+	$table_data_row.='<td width="20%">'.$sale['payment_type'].'</td>';
+	$table_data_row.='<td width="10%">'.$sale['invoice_number'].'</td>';
 	$table_data_row.='<td width="12%">';
-	$table_data_row.=anchor($controller_name."/edit/" . $sale[ 'sale_id' ] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
+	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale[ 'sale_id' ]) . '">' . $CI->lang->line('sales_show_receipt') .  '</a>';
+	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_receipt') . '</a>';
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.='<a href="'.site_url($controller_name. "/invoice/" . $sale[ 'sale_id' ]) . '">' . $CI->lang->line('sales_show_invoice') .  '</a>';
+	$table_data_row.='<a href="'.site_url($controller_name. "/invoice/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_invoice') . '</a>';
 	$table_data_row.='</td>';
 	$table_data_row.='</tr>';
 
@@ -119,11 +94,11 @@ function get_sales_manage_sale_data_row($sale, $payments, $controller)
 /*
 Get the sales payments summary
 */
-function get_sales_manage_payments_summary($payments_summary, $controller)
+function get_sales_manage_payments_summary($payments_summary, $sales, $controller)
 {
 	$CI =& get_instance();
 	$table='<table class="tablesorter" id="sortable_table">';
-	
+
 	$table.='<thead><tr>';
 	$table.='<th>&nbsp;</th>';
 	foreach($payments_summary as $key=>$summary)
@@ -134,7 +109,19 @@ function get_sales_manage_payments_summary($payments_summary, $controller)
 	$table.='<th>'.$CI->lang->line('sales_total').'</th>';	
 	foreach($payments_summary as $key=>$summary)
 	{
-		$table.='<td>'.to_currency( $summary['payment_amount'] ).'</td>';
+		$amount = $summary['payment_amount'];
+	
+		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
+		// therefore we remove from the total cash amount any change due
+		if( $summary['payment_type'] == $CI->lang->line('sales_cash') )
+		{
+			foreach($sales as $key=>$sale)
+			{
+				$amount -= $sale['change_due'];
+			}
+		}
+
+		$table.='<td>'.to_currency( $amount ).'</td>';
 	}	
 	$table.='</tr></tbody></table>';
 
@@ -267,7 +254,7 @@ function get_supplier_manage_table_data_rows($suppliers,$controller)
 	
 	if($suppliers->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -343,7 +330,7 @@ function get_items_manage_table_data_rows($items,$controller)
 	
 	if($items->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='12'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('items_no_items_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='12'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -438,7 +425,7 @@ function get_giftcards_manage_table_data_rows( $giftcards, $controller )
 	
 	if($giftcards->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -505,7 +492,7 @@ function get_item_kits_manage_table_data_rows( $item_kits, $controller )
 	
 	if($item_kits->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;

@@ -23,11 +23,11 @@ class Sale extends CI_Model
 	}
 	
 	// get the sales data for the takings table
-	function get_data($inputs)
+	public function get_data($inputs)
 	{
 		$this->db->select('sale_id, sale_date, sale_time, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, 
 						CONCAT(customer.first_name," ",customer.last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit,
-						sale_payment_amount as amount_tendered, total as amount_due, (sale_payment_amount - total) as change_due, invoice_number', false);
+						sale_payment_amount as amount_tendered, total as amount_due, (sale_payment_amount - total) as change_due, payment_type, invoice_number', false);
 		$this->db->from('sales_items_temp');
 		$this->db->join('people as employee', 'sales_items_temp.employee_id = employee.person_id');
 		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
@@ -61,14 +61,7 @@ class Sale extends CI_Model
 		}
 
 		$data = array();
-		$data['summary'] = $this->db->get()->result_array();
-		$data['details'] = array();
-		$data['payments'] = array();
-		
-		foreach($data['summary'] as $key=>$value)
-		{
-			$data['payments'][$key] = $this->get_sale_payments($value['sale_id'])->result_array();
-		}
+		$data['sales'] = $this->db->get()->result_array();
 
 		// get payment summary
 		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
@@ -92,7 +85,7 @@ class Sale extends CI_Model
 
 		$this->db->group_by("payment_type");
 
-		$data['payments_summary'] = $this->db->get()->result_array();
+		$data['payments'] = $this->db->get()->result_array();
 		
 		return $data;
 	}
@@ -117,7 +110,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 	
-	function get_invoice_number_for_year($year='', $start_from = 0) 
+	function get_invoice_number_for_year($year = '', $start_from = 0) 
 	{
 		$year = $year == '' ? date('Y') : $year;
 		$this->db->select("COUNT( 1 ) AS invoice_number_year", FALSE);
@@ -369,7 +362,7 @@ class Sale extends CI_Model
 		INNER JOIN ".$this->db->dbprefix('sales')." ON  ".$this->db->dbprefix('sales_items').'.sale_id='.$this->db->dbprefix('sales').'.sale_id'."
 		INNER JOIN ".$this->db->dbprefix('items')." ON  ".$this->db->dbprefix('sales_items').'.item_id='.$this->db->dbprefix('items').'.item_id'."
 		INNER JOIN (SELECT sale_id, SUM(payment_amount) AS sale_payment_amount, 
-		GROUP_CONCAT(payment_type SEPARATOR ', ') AS payment_type FROM " .$this->db->dbprefix('sales_payments') . " GROUP BY sale_id) AS payments 
+		GROUP_CONCAT(concat(payment_type,' ',payment_amount) SEPARATOR ', ') AS payment_type FROM " .$this->db->dbprefix('sales_payments') . " GROUP BY sale_id) AS payments 
 		ON " . $this->db->dbprefix('sales_items') . '.sale_id'. "=" . "payments.sale_id		
 		LEFT OUTER JOIN ".$this->db->dbprefix('suppliers')." ON  ".$this->db->dbprefix('items').'.supplier_id='.$this->db->dbprefix('suppliers').'.person_id'."
 		LEFT OUTER JOIN ".$this->db->dbprefix('sales_items_taxes')." ON  "

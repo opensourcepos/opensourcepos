@@ -40,7 +40,6 @@ if($export_excel == 1){
 				
 					<tbody>
 						<?php foreach ($details_data[$key] as $row2) { ?>
-						
 							<tr>
 								<?php foreach ($row2 as $cell) { ?>
 								<td><?php echo $cell; ?></td>
@@ -49,7 +48,6 @@ if($export_excel == 1){
 						<?php } ?>
 					</tbody>
 				</table>
-				
 				</td>
 			</tr>
 			<?php } ?>

@@ -39,15 +39,10 @@ class Sales extends Secure_area
 		$report_data = $model->get_data(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 
 											'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 
-		$sales    			= $report_data['summary'];
-		$payments 			= $report_data['payments'];
-		$details  			= $report_data['details'];
-		$payments_summary	= $report_data['payments_summary'];
-
 		$data['only_invoices'] = $only_invoices;
 		$data['links'] = $this->_initialize_pagination($model, $lines_per_page, $limit_from, -1, 'manage', $only_invoices);
-		$data['manage_table'] = get_sales_manage_table($sales, $payments, $details, $this);
-		$data['payments_summary_data'] = get_sales_manage_payments_summary($payments_summary, $this);
+		$data['manage_table'] = get_sales_manage_table($report_data['sales'], $this);
+		$data['payments_summary'] = get_sales_manage_payments_summary($report_data['payments'], $report_data['sales'], $this);
 		$this->load->view($data['controller_name'] . '/manage', $data);
 		$this->_remove_duplicate_cookies();
 	}
