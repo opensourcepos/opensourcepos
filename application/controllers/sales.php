@@ -27,11 +27,10 @@ class Sales extends Secure_area
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		
 		$today     = date('Y-m-d');
-//		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
-//		$tomorrow  = date('Y-m-d', mktime(0,0,0,date("m"),date("d")+1,date("Y")));
+		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
 		$start_of_time = date('Y-m-d', 0);
 		
-		$start_date  = $start_of_time;
+		$start_date  = $today;
 		$end_date    = $today;
 		$sale_type   = 'sales';
 		$location_id = 'all';
