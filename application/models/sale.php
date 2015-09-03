@@ -15,7 +15,7 @@ class Sale extends CI_Model
 				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" .
 				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
 				"payments.sale_id = sales.sale_id", 'left');
-		$this->db->where('sales.sale_id',$sale_id);
+		$this->db->where('sales.sale_id', $sale_id);
 		$this->db->order_by('sale_time', 'desc');
 		$this->db->group_by('sale_id');
 
@@ -25,13 +25,13 @@ class Sale extends CI_Model
 	// get the sales data for the takings table
 	public function get_data($inputs)
 	{
-		$this->db->select('sale_id, sale_date, sale_time, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, 
-						CONCAT(customer.first_name," ",customer.last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit,
-						sale_payment_amount as amount_tendered, total as amount_due, (sale_payment_amount - total) as change_due, payment_type, invoice_number', false);
+		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, 
+						CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
+						sale_payment_amount AS amount_tendered, total AS amount_due, (sale_payment_amount - total) AS change_due, payment_type, invoice_number', false);
 		$this->db->from('sales_items_temp');
-		$this->db->join('people as employee', 'sales_items_temp.employee_id = employee.person_id');
-		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		$this->db->join('people AS employee', 'sales_items_temp.employee_id = employee.person_id');
+		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -67,7 +67,7 @@ class Sale extends CI_Model
 		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
-		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -85,7 +85,28 @@ class Sale extends CI_Model
 
 		$this->db->group_by("payment_type");
 
-		$data['payments'] = $this->db->get()->result_array();
+		$payments = $this->db->get()->result_array();
+		
+		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
+		$gift_card_count = 0;
+		$gift_card_amount = 0;
+		foreach($payments as $key=>$payment)
+		{		
+			if( strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE )
+			{
+				$gift_card_count  += $payment['count'];
+				$gift_card_amount += $payment['payment_amount'];
+
+				unset($payments[$key]);
+			}
+		}
+
+		if( $gift_card_count > 0 && $gift_card_amount > 0 )
+		{
+			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+		}
+		
+		$data['payments'] = $payments;
 		
 		return $data;
 	}
@@ -362,7 +383,7 @@ class Sale extends CI_Model
 		INNER JOIN ".$this->db->dbprefix('sales')." ON  ".$this->db->dbprefix('sales_items').'.sale_id='.$this->db->dbprefix('sales').'.sale_id'."
 		INNER JOIN ".$this->db->dbprefix('items')." ON  ".$this->db->dbprefix('sales_items').'.item_id='.$this->db->dbprefix('items').'.item_id'."
 		INNER JOIN (SELECT sale_id, SUM(payment_amount) AS sale_payment_amount, 
-		GROUP_CONCAT(concat(payment_type,' ',payment_amount) SEPARATOR ', ') AS payment_type FROM " .$this->db->dbprefix('sales_payments') . " GROUP BY sale_id) AS payments 
+		GROUP_CONCAT(CONCAT(payment_type,' ',payment_amount) SEPARATOR ', ') AS payment_type FROM " . $this->db->dbprefix('sales_payments') . " GROUP BY sale_id) AS payments 
 		ON " . $this->db->dbprefix('sales_items') . '.sale_id'. "=" . "payments.sale_id		
 		LEFT OUTER JOIN ".$this->db->dbprefix('suppliers')." ON  ".$this->db->dbprefix('items').'.supplier_id='.$this->db->dbprefix('suppliers').'.person_id'."
 		LEFT OUTER JOIN ".$this->db->dbprefix('sales_items_taxes')." ON  "
