@@ -12,7 +12,7 @@ function get_sales_manage_table($sales, $controller)
 	$CI->lang->line('sales_amount_tendered'),
 	$CI->lang->line('sales_amount_due'),
 	$CI->lang->line('sales_change_due'),
-	//$CI->lang->line('sales_payment'),
+	$CI->lang->line('sales_payment'),
 	$CI->lang->line('sales_invoice_number'),
 	'&nbsp');
 
@@ -74,7 +74,7 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="10%">'.to_currency( $sale['amount_tendered'] ).'</td>';
 	$table_data_row.='<td width="10%">'.to_currency( $sale['amount_due'] ).'</td>';
 	$table_data_row.='<td width="10%">'.to_currency( $sale['change_due'] ).'</td>';
-	//$table_data_row.='<td width="20%">'.$sale['payment_type'].'</td>';
+	$table_data_row.='<td width="20%">'.$sale['payment_type'].'</td>';
 	$table_data_row.='<td width="10%">'.$sale['invoice_number'].'</td>';
 	$table_data_row.='<td width="12%">';
 	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
