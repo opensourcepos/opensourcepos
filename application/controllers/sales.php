@@ -7,6 +7,7 @@ class Sales extends Secure_area
 		parent::__construct('sales');
 		$this->load->library('sale_lib');
 		$this->load->library('barcode_lib');
+		$this->Sale->create_sales_items_temp_table();
 	}
 
 	function index()
@@ -16,11 +17,6 @@ class Sales extends Secure_area
 	
 	function manage($only_invoices = FALSE, $limit_from = 0)
 	{
-		$model = $this->Sale;
-		
-		// Create the temp tables to work with the data
-		$model->create_sales_items_temp_table();
-
 		$data['controller_name'] = strtolower($this->uri->segment(1));
 		$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
 		$data['search_section_state'] = $this->input->post('search_section_state');
@@ -35,11 +31,11 @@ class Sales extends Secure_area
 		$sale_type   = 'sales';
 		$location_id = 'all';
 
-		$report_data = $model->get_data(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 
+		$report_data = $this->Sale->get_data(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id,
 											'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 
 		$data['only_invoices'] = $only_invoices;
-		$data['links'] = $this->_initialize_pagination($model, $lines_per_page, $limit_from, -1, 'manage', $only_invoices);
+		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, -1, 'manage', $only_invoices);
 		$data['manage_table'] = get_sales_manage_table($report_data['sales'], $this);
 		$data['payments_summary'] = get_sales_manage_payments_summary($report_data['payments'], $report_data['sales'], $this);
 		$this->load->view($data['controller_name'] . '/manage', $data);
@@ -50,7 +46,7 @@ class Sales extends Secure_area
 	{
 		$sale_id = $this->input->post('row_id');
 		$sale_info = $this->Sale->get_info($sale_id)->result_array();
-		$data_row=get_sale_data_row($sale_info[0],$this);
+		$data_row=get_sales_manage_sale_data_row($sale_info[0],$this);
 		echo $data_row;
 	}
 	
@@ -66,7 +62,19 @@ class Sales extends Secure_area
 	
 	function search()
 	{
-		$this->manage($this->input->post('only_invoices', TRUE));
+		$only_invoices = $this->input->post('only_invoices', TRUE);
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$limit_from = $this->input->post('limit_from', TRUE);
+		$sale_type   = 'sales';
+		$location_id = 'all';
+
+		$report_data = $this->Sale->get_data(array('sale_type' => $sale_type, 'location_id' => $location_id,
+			'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
+		$total_rows = count($report_data['sales']);
+		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,'search',$only_invoices);
+		$data_rows=get_sales_manage_table_data_rows($report_data['sales'], $this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$this->_remove_duplicate_cookies();
 	}
 
 	function item_search()

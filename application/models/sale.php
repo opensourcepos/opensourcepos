@@ -31,7 +31,10 @@ class Sale extends CI_Model
 		$this->db->from('sales_items_temp');
 		$this->db->join('people AS employee', 'sales_items_temp.employee_id = employee.person_id');
 		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		if (isset($inputs['start_date']) && isset($inputs['end_date']) )
+		{
+			$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		}
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -67,7 +70,10 @@ class Sale extends CI_Model
 		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
-		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
+		if (isset($inputs['start_date']) && isset($inputs['end_date']) )
+		{
+			$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
+		}
 
 		if ($inputs['sale_type'] == 'sales')
         {

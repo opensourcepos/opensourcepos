@@ -54,10 +54,7 @@ function get_sales_manage_table_data_rows($sales, $controller)
 	}
 	else
 	{
-		// empty line
-		//$table_data_rows .= "<tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>";
-		// show a line in bold with the totals
-		$table_data_rows .= "<tr><th>&nbsp;</th><th>".$CI->lang->line('sales_total')."</th><th>&nbsp;</th><th>&nbsp;</th><th>".to_currency($sum_amount_tendered)."</th><th>".to_currency($sum_amount_due)."</th><th>".to_currency($sum_change_due)."</th></tr>";
+		$table_data_rows .= "<tr><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"3\"></td></tr>";
 	}
 
 	return $table_data_rows;
@@ -97,20 +94,12 @@ Get the sales payments summary
 function get_sales_manage_payments_summary($payments_summary, $sales, $controller)
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<div id="report_summary">';
 
-	$table.='<thead><tr>';
-	$table.='<th>&nbsp;</th>';
-	foreach($payments_summary as $key=>$summary)
-	{
-		$table.='<th>'.$summary['payment_type'].'</th>';
-	}
-	$table.='</tr></thead><tbody><tr>';
-	$table.='<th>'.$CI->lang->line('sales_total').'</th>';	
 	foreach($payments_summary as $key=>$summary)
 	{
 		$amount = $summary['payment_amount'];
-	
+
 		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
 		// therefore we remove from the total cash amount any change due
 		if( $summary['payment_type'] == $CI->lang->line('sales_cash') )
@@ -120,10 +109,8 @@ function get_sales_manage_payments_summary($payments_summary, $sales, $controlle
 				$amount -= $sale['change_due'];
 			}
 		}
-
-		$table.='<td>'.to_currency( $amount ).'</td>';
-	}	
-	$table.='</tr></tbody></table>';
+		$table.='<div class="summary_row">'.$summary['payment_type'].': '.to_currency( $amount );'</div>';
+	}
 
 	return $table;
 }
