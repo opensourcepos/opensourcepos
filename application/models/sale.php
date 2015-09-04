@@ -3,19 +3,15 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
-		$this->db->select('first_name, last_name, email, comment, invoice_number, amount_tendered, ' .
-				 'sale_time, employee_id, customer_id, comments');
-		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
-		$this->db->select("sales.sale_id AS sale_id");
-		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
-		$this->db->from('sales');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
-		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
-		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
-				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" .
-				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
-				"payments.sale_id = sales.sale_id", 'left');
-		$this->db->where('sales.sale_id', $sale_id);
+		$this->db->select('first_name, last_name, email, comment, sale_payment_amount AS amount_tendered, payment_type,
+			invoice_number, sale_time, employee_id, customer_id, comments, sale_id, (sale_payment_amount - total) AS change_due', FALSE);
+		$this->db->select('DATE_FORMAT( sale_time, "%d-%m-%Y" ) AS sale_date', FALSE);
+		$this->db->select('CONCAT(first_name," ",  last_name) AS customer_name', FALSE);
+		$this->db->select('SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due');
+		$this->db->from("sales_items_temp");
+		$this->db->join('people', 'people.person_id = sales_items_temp.customer_id', 'left');
+
+		$this->db->where('sales_items_temp.sale_id', $sale_id);
 		$this->db->order_by('sale_time', 'desc');
 		$this->db->group_by('sale_id');
 
@@ -27,14 +23,11 @@ class Sale extends CI_Model
 	{
 		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, 
 						CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
-						sale_payment_amount AS amount_tendered, total AS amount_due, (sale_payment_amount - total) AS change_due, payment_type, invoice_number', false);
+						sale_payment_amount AS amount_tendered, total AS amount_due, (sale_payment_amount - total) AS change_due, payment_type, invoice_number', FALSE);
 		$this->db->from('sales_items_temp');
 		$this->db->join('people AS employee', 'sales_items_temp.employee_id = employee.person_id');
 		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
-		if (isset($inputs['start_date']) && isset($inputs['end_date']) )
-		{
-			$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
-		}
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -70,10 +63,7 @@ class Sale extends CI_Model
 		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
-		if (isset($inputs['start_date']) && isset($inputs['end_date']) )
-		{
-			$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
-		}
+		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
 
 		if ($inputs['sale_type'] == 'sales')
         {

@@ -161,7 +161,7 @@ function init_table_sorting()
 </div>
 <?php echo form_close(); ?>
 
-<div id="table_holder">
+<div id="table_holder" class="totals">
 <?php echo $manage_table; ?>
 </div>
 

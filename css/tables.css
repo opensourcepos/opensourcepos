@@ -128,3 +128,8 @@ table.innertable tbody tr td
 {
 	background-color: #DDD;
 }
+
+.totals table tr:last-child td
+{
+	font-weight: bold;
+}

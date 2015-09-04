@@ -26,16 +26,14 @@ class Sales extends Secure_area
 		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
 		$start_of_time = date('Y-m-d', 0);
 		
-		$start_date  = $today;
-		$end_date    = $today;
 		$sale_type   = 'sales';
 		$location_id = 'all';
 
-		$report_data = $this->Sale->get_data(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id,
+		$report_data = $this->Sale->get_data(array('start_date' => $yesterday, 'end_date' => $today, 'sale_type' => $sale_type, 'location_id' => $location_id,
 											'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 
 		$data['only_invoices'] = $only_invoices;
-		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, -1, 'manage', $only_invoices);
+		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, count($report_data['sales']), 'manage', $only_invoices);
 		$data['manage_table'] = get_sales_manage_table($report_data['sales'], $this);
 		$data['payments_summary'] = get_sales_manage_payments_summary($report_data['payments'], $report_data['sales'], $this);
 		$this->load->view($data['controller_name'] . '/manage', $data);
@@ -68,8 +66,12 @@ class Sales extends Secure_area
 		$sale_type   = 'sales';
 		$location_id = 'all';
 
+		$today = date('Y-m-d');
+		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+
 		$report_data = $this->Sale->get_data(array('sale_type' => $sale_type, 'location_id' => $location_id,
-			'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
+			'start_date' => $yesterday, 'end_date' => $today, 'only_invoices' => $only_invoices,
+			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 		$total_rows = count($report_data['sales']);
 		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,'search',$only_invoices);
 		$data_rows=get_sales_manage_table_data_rows($report_data['sales'], $this);
