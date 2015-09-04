@@ -183,6 +183,7 @@ function init_table_sorting()
 	<ul>
 		<li class="float_left"><span><?php echo anchor($controller_name . "/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 		<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'),array('id'=>'update_invoice_numbers')); ?></span></li-->
+		<li class="float_left"><span><a href="javascript:window.print()"><?php echo $this->lang->line('common_print'); ?><span></a></li>
 		<li class="float_right">
 		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 		<input type="text" name ='search' id='search'/>
