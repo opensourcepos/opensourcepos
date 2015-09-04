@@ -15,7 +15,7 @@ class Sales extends Secure_area
 		$this->_reload();
 	}
 	
-	function manage($only_invoices = FALSE, $limit_from = 0)
+	function manage($only_invoices = FALSE, $only_cash = FALSE, $limit_from = 0)
 	{
 		$data['controller_name'] = strtolower($this->uri->segment(1));
 		$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
@@ -26,11 +26,13 @@ class Sales extends Secure_area
 		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
 		$start_of_time = date('Y-m-d', 0);
 		
-		$sale_type   = 'sales';
+		$sale_type   = 'all';
 		$location_id = 'all';
 
-		$report_data = $this->Sale->get_data(array('start_date' => $yesterday, 'end_date' => $today, 'sale_type' => $sale_type, 'location_id' => $location_id,
-											'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
+		$report_data = $this->Sale->get_data(array('start_date' => $start_of_time, 'end_date' => $today, 
+											'sale_type' => $sale_type, 'location_id' => $location_id,
+											'only_invoices' => $only_invoices, 'only_cash' => $only_cash, 
+											'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 
 		$data['only_invoices'] = $only_invoices;
 		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, count($report_data['sales']), 'manage', $only_invoices);
@@ -61,20 +63,23 @@ class Sales extends Secure_area
 	function search()
 	{
 		$only_invoices = $this->input->post('only_invoices', TRUE);
+		$only_cash = $this->input->post('only_cash', TRUE);
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$limit_from = $this->input->post('limit_from', TRUE);
-		$sale_type   = 'sales';
+		$sale_type   = 'all';
 		$location_id = 'all';
 
 		$today = date('Y-m-d');
 		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
+		$start_of_time = date('Y-m-d', 0);
 
-		$report_data = $this->Sale->get_data(array('sale_type' => $sale_type, 'location_id' => $location_id,
-			'start_date' => $yesterday, 'end_date' => $today, 'only_invoices' => $only_invoices,
-			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
+		$report_data = $this->Sale->get_data(array('start_date' => $start_of_time, 'end_date' => $today, 
+											'sale_type' => $sale_type, 'location_id' => $location_id,
+											'only_invoices' => $only_invoices, 'only_cash' => $only_cash, 
+											'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 		$total_rows = count($report_data['sales']);
 		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
-		$data_rows=get_sales_manage_table_data_rows($report_data['sales'], $this);
+		$data_rows = get_sales_manage_table_data_rows($report_data['sales'], $this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 		$this->_remove_duplicate_cookies();
 	}

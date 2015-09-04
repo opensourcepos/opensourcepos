@@ -47,6 +47,7 @@ $lang["sales_invoice"] = "tarjeta de Crédito";
 $lang["sales_invoice_confirm"] = "Esta factura sera enviada a";
 $lang["sales_invoice_enable"] = "Crear factura";
 $lang["sales_invoice_filter"] = "Facturas";
+$lang["sales_cash_filter"] = "Efectivo";
 $lang["sales_invoice_no_email"] = "Este cliente no tiene un email válido";
 $lang["sales_invoice_number"] = "Factura #";
 $lang["sales_invoice_number_duplicate"] = "Por favor ingrese un número de factura único";

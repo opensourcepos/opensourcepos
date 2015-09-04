@@ -47,6 +47,7 @@ $lang["sales_invoice"] = "Invoice";
 $lang["sales_invoice_confirm"] = "This invoice will be sent to";
 $lang["sales_invoice_enable"] = "Create Invoice";
 $lang["sales_invoice_filter"] = "Invoices";
+$lang["sales_cash_filter"] = "Cash";
 $lang["sales_invoice_no_email"] = "This customer does not have a valid email address";
 $lang["sales_invoice_number"] = "Nomor Nota";
 $lang["sales_invoice_number_duplicate"] = "Nomor Nota Double";

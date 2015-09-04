@@ -48,6 +48,11 @@ class Sale extends CI_Model
 			$this->db->where('invoice_number <> ', 'NULL');
 		}
 
+		if ($inputs['only_cash'] != FALSE)
+		{
+			$this->db->where('payment_type LIKE ', $this->lang->line('sales_cash') . '%');
+		}
+		
 		$this->db->group_by('sale_id');
 		$this->db->order_by('sale_date', 'desc');
 		
@@ -60,7 +65,7 @@ class Sale extends CI_Model
 		$data['sales'] = $this->db->get()->result_array();
 
 		// get payment summary
-		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
+		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', false);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
 		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
@@ -77,6 +82,11 @@ class Sale extends CI_Model
 		if ($inputs['only_invoices'] != FALSE)
 		{
 			$this->db->where('invoice_number <> ', 'NULL');
+		}
+		
+		if ($inputs['only_cash'] != FALSE)
+		{
+			$this->db->where('sales_payments.payment_type LIKE ', $this->lang->line('sales_cash') . '%');
 		}
 
 		$this->db->group_by("payment_type");

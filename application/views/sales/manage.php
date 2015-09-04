@@ -13,6 +13,11 @@ $(document).ready(function()
 		$('#search_form').submit();
 		return false;
 	});
+	
+	$("#search_filter_section #only_cash").change(function() {
+		$('#search_form').submit();
+		return false;
+	});
 
 	var show_renumber = function() {
 		var value = $("#only_invoices").val();
@@ -149,8 +154,10 @@ function init_table_sorting()
 </div>
 <?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
 <div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>;background-color:#EEEEEE;">
-	<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?> 
+	<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
 	<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0));?>
+	<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
+	<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0));?>
 	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
 </div>
 <div id="table_action_header">
