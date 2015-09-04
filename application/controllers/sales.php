@@ -73,7 +73,7 @@ class Sales extends Secure_area
 			'start_date' => $yesterday, 'end_date' => $today, 'only_invoices' => $only_invoices,
 			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
 		$total_rows = count($report_data['sales']);
-		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,'search',$only_invoices);
+		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
 		$data_rows=get_sales_manage_table_data_rows($report_data['sales'], $this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 		$this->_remove_duplicate_cookies();

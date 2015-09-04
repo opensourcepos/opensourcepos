@@ -66,7 +66,7 @@ sales_no_filter,Alle,Todos,All,All,All,All,All,All,All
 sales_no_items_in_cart,Er zijn geen aankopen geselecteerd,No hay artículos en el carrito,There are no items in the cart,Il n\'y a rien dans votre panier,購物車中沒有任何產品,Там нет товаров в корзине,ไม่พบสินค้าในตระกร้า,Sepette Ürün Yok,Tidak ada Item dalam Keranjang Belanja
 sales_no_sales_to_display,Er werden geen aankopen gevonden,No hay ventas que mostrar,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display
 sales_one_or_multiple,aankopen verwijderd,venta(s),sale(s),,,,,,
-sales_overview,Overzicht,Resumen,Overview,Overview,Overview,Overview,Overview,Overview,Overview
+sales_overview,Overzicht,Resumen,Takings,Takings,Takings,Takings,Takings,Takings,Takings
 sales_payment,Betaalmethode,Tipo de Pago,Payment Type,Type Paiement,付款方式,Вид оплаты,รูปแบบชำระเงิน,Ödeme Türü,Type Pembayaran
 sales_payment_amount,Bedrag,Cantidad,Amount,Somme,Amount,количество,,Tutar,Amount
 sales_payment_not_cover_total,Betaalde hoeveelheid is onvoldoende,La Cantidad Recibida no cubre el pago total,Payment Amount does not cover Total,Le Paiement ne couvre pas le Total,付款金額不足,оплачиваемая сумма недостаточно, ปริมาณการจ่ายที่ไม่เพียงพอกะยอดรวม,Ödemeler toplam tutarı karşılamıyor,Jumlah pembayaran tidak mencakup Total
