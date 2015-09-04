@@ -69,6 +69,7 @@ $lang["sales_no_items_in_cart"] = "購物車中沒有任何產品";
 $lang["sales_no_sales_to_display"] = "No sales to display";
 $lang["sales_one_or_multiple"] = "";
 $lang["sales_takings"] = "Takings";
+$lang["sales_overview"] = "Takings";
 $lang["sales_payment"] = "付款方式";
 $lang["sales_payment_amount"] = "Amount";
 $lang["sales_payment_not_cover_total"] = "付款金額不足";

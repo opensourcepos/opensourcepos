@@ -66,6 +66,11 @@ class Sale extends CI_Model
 			$this->db->where('invoice_number <> ', 'NULL');
 		}
 
+		if ($inputs['only_cash'] != FALSE)
+		{
+			$this->db->where('payment_type LIKE ', $this->lang->line('sales_cash') . '%');
+		}
+		
 		$this->db->group_by('sale_id');
 		$this->db->order_by('sale_date', 'desc');
 		
@@ -80,7 +85,7 @@ class Sale extends CI_Model
 	function get_payments_summary($inputs)
 	{
 		// get payment summary
-		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', FALSE);
+		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', FALSE);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
 		$this->db->join('people', 'people.person_id = sales_items_temp.sale_id', 'left');
@@ -101,7 +106,7 @@ class Sale extends CI_Model
 			{
 				$this->db->like('last_name', $inputs['search']);
 				$this->db->or_like('first_name', $inputs['search']);
-				$this->db->or_like('CONCAT( customer.first_name, " ", last_name)', $inputs['search']);
+				$this->db->or_like('CONCAT( first_name, " ", last_name)', $inputs['search']);
 			}
 		}
 
@@ -118,6 +123,11 @@ class Sale extends CI_Model
 		if ($inputs['only_invoices'] != FALSE)
 		{
 			$this->db->where('invoice_number <> ', 'NULL');
+		}
+		
+		if ($inputs['only_cash'] != FALSE)
+		{
+			$this->db->like('sales_payments.payment_type ', $this->lang->line('sales_cash'), 'after');
 		}
 
 		$this->db->group_by("payment_type");

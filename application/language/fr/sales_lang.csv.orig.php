@@ -69,6 +69,7 @@ $lang["sales_no_items_in_cart"] = "Il n\'y a rien dans votre panier";
 $lang["sales_no_sales_to_display"] = "No sales to display";
 $lang["sales_one_or_multiple"] = "";
 $lang["sales_takings"] = "Takings";
+$lang["sales_overview"] = "Takings";
 $lang["sales_payment"] = "Type Paiement";
 $lang["sales_payment_amount"] = "Somme";
 $lang["sales_payment_not_cover_total"] = "Le Paiement ne couvre pas le Total";

@@ -69,6 +69,7 @@ $lang["sales_no_items_in_cart"] = "Tidak ada Item dalam Keranjang Belanja";
 $lang["sales_no_sales_to_display"] = "No sales to display";
 $lang["sales_one_or_multiple"] = "";
 $lang["sales_takings"] = "Takings";
+$lang["sales_overview"] = "Takings";
 $lang["sales_payment"] = "Type Pembayaran";
 $lang["sales_payment_amount"] = "Amount";
 $lang["sales_payment_not_cover_total"] = "Jumlah pembayaran tidak mencakup Total";

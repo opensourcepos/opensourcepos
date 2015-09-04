@@ -84,7 +84,7 @@ function do_search(show_feedback,on_complete)
 		function(response) {
 			$('#sortable_table tbody').html(response.rows);
 			if(typeof on_complete=='function')
-				on_complete();
+				on_complete(response);
 			$('#search').removeClass("ac_loading");
 			//$('#spinner').hide();
 			//re-init elements in new table, as table tbody children were replaced

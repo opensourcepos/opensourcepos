@@ -43,6 +43,7 @@ $route['no_access/(:any)'] = "no_access/index/$1";
 $route['no_access/(:any)/(:any)'] = "no_access/index/$1/$2";
 $route['sales/index/(:any)'] = "sales/manage/$1";
 $route['sales/index/(:any)/(:any)'] = "sales/manage/$1/$2";
+$route['sales/index/(:any)/(:any)/(:any)'] = "sales/manage/$1/$2/$3";
 $route['reports/(summary_:any)/(:any)/(:any)'] = "reports/$1/$2/$3";
 $route['reports/summary_:any'] = "reports/date_input_excel_export";
 $route['reports/(graphical_:any)/(:any)/(:any)'] = "reports/$1/$2/$3";

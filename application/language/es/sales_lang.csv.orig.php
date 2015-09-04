@@ -69,6 +69,7 @@ $lang["sales_no_items_in_cart"] = "No hay artículos en el carrito";
 $lang["sales_no_sales_to_display"] = "No hay ventas que mostrar";
 $lang["sales_one_or_multiple"] = "venta(s)";
 $lang["sales_takings"] = "Resumen";
+$lang["sales_overview"] = "Resumen";
 $lang["sales_payment"] = "Tipo de Pago";
 $lang["sales_payment_amount"] = "Cantidad";
 $lang["sales_payment_not_cover_total"] = "La Cantidad Recibida no cubre el pago total";

@@ -15,7 +15,7 @@ class Sales extends Secure_area
 		$this->_reload();
 	}
 	
-	function manage($only_invoices = FALSE, $limit_from = 0)
+	function manage($only_invoices = FALSE, $only_cash = FALSE, $limit_from = 0)
 	{
 		$data['controller_name'] = strtolower($this->uri->segment(1));
 		$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
@@ -28,12 +28,12 @@ class Sales extends Secure_area
 		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
-		$sale_type   = 'sales';
+		$sale_type   = 'all';
 		$location_id = 'all';
 
 		$inputs = array('start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
 			'sale_type' => $sale_type, 'location_id' => $location_id, 'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page,
-			'limit_from' => $limit_from);
+			'limit_from' => $limit_from, 'only_cash' => $only_cash);
 		$sales = $this->Sale->get_all($inputs);
 		$payments = $this->Sale->get_payments_summary($inputs);
 		$data['only_invoices'] = $only_invoices;
@@ -67,9 +67,11 @@ class Sales extends Secure_area
 	function search()
 	{
 		$only_invoices = $this->input->post('only_invoices', TRUE);
+		$only_cash = $this->input->post('only_cash', TRUE);
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$limit_from = $this->input->post('limit_from', TRUE);
 		$search = $this->input->post('search', TRUE);
+		$sale_type = 'all';
 		$today = date($this->config->item('dateformat'));
 		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
@@ -77,19 +79,19 @@ class Sales extends Secure_area
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
-		$sale_type   = 'sales';
 		$location_id = 'all';
 
 		$inputs = array('sale_type' => $sale_type, 'location_id' => $location_id,
 			'start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
-			'only_invoices' => $only_invoices, 'search' => $search,
+			'only_invoices' => $only_invoices, 'search' => $search, 'only_cash' => $only_cash,
 			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from, 'is_valid_receipt' => $is_valid_receipt);
 		$sales = $this->Sale->get_all($inputs);
 		$payments = $this->Sale->get_payments_summary($inputs);
 		$total_rows = count($sales);
-		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,'search',$only_invoices);
+		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
 		$sale_rows=get_sales_manage_table_data_rows($sales, $this);
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links));
+		$payment_summary=get_sales_manage_payments_summary($payments, $sales, $this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary'=>$payment_summary));
 		$this->_remove_duplicate_cookies();
 	}
 

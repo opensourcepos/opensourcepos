@@ -69,6 +69,7 @@ $lang["sales_no_items_in_cart"] = "Там нет товаров в корзин�
 $lang["sales_no_sales_to_display"] = "No sales to display";
 $lang["sales_one_or_multiple"] = "";
 $lang["sales_takings"] = "Takings";
+$lang["sales_overview"] = "Takings";
 $lang["sales_payment"] = "Вид оплаты";
 $lang["sales_payment_amount"] = "количество";
 $lang["sales_payment_not_cover_total"] = "оплачиваемая сумма недостаточно";

@@ -91,25 +91,25 @@ function get_sales_manage_sale_data_row($sale, $controller)
 /*
 Get the sales payments summary
 */
-function get_sales_manage_payments_summary($payments_summary, $sales, $controller)
+function get_sales_manage_payments_summary($payments, $sales, $controller)
 {
 	$CI =& get_instance();
 	$table='<div id="report_summary">';
 
-	foreach($payments_summary as $key=>$summary)
+	foreach($payments as $key=>$payment)
 	{
-		$amount = $summary['payment_amount'];
+		$amount = $payment['payment_amount'];
 
 		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
 		// therefore we remove from the total cash amount any change due
-		if( $summary['payment_type'] == $CI->lang->line('sales_cash') )
+		if( $payment['payment_type'] == $CI->lang->line('sales_cash') )
 		{
 			foreach($sales as $key=>$sale)
 			{
 				$amount -= $sale['change_due'];
 			}
 		}
-		$table.='<div class="summary_row">'.$summary['payment_type'].': '.to_currency( $amount );'</div>';
+		$table.='<div class="summary_row">'.$payment['payment_type'].': '.to_currency( $amount );'</div>';
 	}
 
 	return $table;
