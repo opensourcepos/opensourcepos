@@ -109,9 +109,9 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 				$amount -= $sale['change_due'];
 			}
 		}
-		$table.='<div class="summary_row">'.$payment['payment_type'].': '.to_currency( $amount );'</div>';
+		$table.='<div class="summary_row">'.$payment['payment_type'].': '.to_currency( $amount ) . '</div>';
 	}
-
+	$table.='</div>';
 	return $table;
 }
 

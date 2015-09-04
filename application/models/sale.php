@@ -88,7 +88,7 @@ class Sale extends CI_Model
 		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', FALSE);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
-		$this->db->join('people', 'people.person_id = sales_items_temp.sale_id', 'left');
+		$this->db->join('people', 'people.person_id = sales_items_temp.customer_id', 'left');
 
 		if (empty($inputs['search']))
 		{
