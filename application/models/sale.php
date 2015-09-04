@@ -19,15 +19,33 @@ class Sale extends CI_Model
 	}
 	
 	// get the sales data for the takings table
-	public function get_data($inputs)
+	public function get_all($inputs)
 	{
-		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, 
+		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
 						CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
 						sale_payment_amount AS amount_tendered, total AS amount_due, (sale_payment_amount - total) AS change_due, payment_type, invoice_number', FALSE);
 		$this->db->from('sales_items_temp');
-		$this->db->join('people AS employee', 'sales_items_temp.employee_id = employee.person_id');
 		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+
+		if (empty($inputs['search']))
+		{
+			$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			if ($inputs['is_valid_receipt'])
+			{
+				$pieces = explode(' ',$inputs['search']);
+				$this->db->where('sales_items_temp.sale_id', $pieces[1]);
+			}
+
+			else
+			{
+				$this->db->like('last_name', $inputs['search']);
+				$this->db->or_like('first_name', $inputs['search']);
+				$this->db->or_like('CONCAT( customer.first_name, " ", last_name)', $inputs['search']);
+			}
+		}
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -56,23 +74,46 @@ class Sale extends CI_Model
 			$this->db->limit($inputs['lines_per_page'], $inputs['limit_from']);
 		}
 
-		$data = array();
-		$data['sales'] = $this->db->get()->result_array();
+		return $this->db->get()->result_array();
+	}
 
+	function get_payments_summary($inputs)
+	{
 		// get payment summary
-		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
+		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', FALSE);
 		$this->db->from('sales_payments');
 		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
-		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
+		$this->db->join('people', 'people.person_id = sales_items_temp.sale_id', 'left');
+
+		if (empty($inputs['search']))
+		{
+			$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			if ($inputs['is_valid_receipt'])
+			{
+				$pieces = explode(' ',$inputs['search']);
+				$this->db->where('sales_items_temp.sale_id', $pieces[1]);
+			}
+
+			else
+			{
+				$this->db->like('last_name', $inputs['search']);
+				$this->db->or_like('first_name', $inputs['search']);
+				$this->db->or_like('CONCAT( customer.first_name, " ", last_name)', $inputs['search']);
+			}
+		}
+
 
 		if ($inputs['sale_type'] == 'sales')
-        {
+		{
 			$this->db->where('payment_amount > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
+		}
+		elseif ($inputs['sale_type'] == 'returns')
+		{
 			$this->db->where('payment_amount < 0');
-       	}
+		}
 
 		if ($inputs['only_invoices'] != FALSE)
 		{
@@ -82,12 +123,12 @@ class Sale extends CI_Model
 		$this->db->group_by("payment_type");
 
 		$payments = $this->db->get()->result_array();
-		
+
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
 		$gift_card_amount = 0;
 		foreach($payments as $key=>$payment)
-		{		
+		{
 			if( strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE )
 			{
 				$gift_card_count  += $payment['count'];
@@ -101,10 +142,8 @@ class Sale extends CI_Model
 		{
 			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}
-		
-		$data['payments'] = $payments;
-		
-		return $data;
+
+		return $payments;
 	}
 	
 	function get_total_rows()
@@ -112,7 +151,33 @@ class Sale extends CI_Model
 		$this->db->from('sales');
 		return $this->db->count_all_results();
 	}
-	
+
+	function get_search_suggestions($search,$limit=25)
+	{
+		$suggestions = array();
+
+		if (!$this->sale_lib->is_valid_receipt($search)) {
+			$this->db->distinct();
+			$this->db->select('first_name, last_name');
+			$this->db->from('sales');
+			$this->db->join('people', 'people.person_id = sales.customer_id');
+			$this->db->like('last_name', $search);
+			$this->db->or_like('first_name', $search);
+			$this->db->or_like('CONCAT( first_name, " ", last_name)', $search);
+			$this->db->order_by('last_name', "asc");
+
+			foreach($this->db->get()->result_array() as $result)
+			{
+				$suggestions[]=$result[ 'first_name' ].' '.$result[ 'last_name' ];
+			}
+
+		} else {
+			$suggestions[]=$search;
+		}
+		return $suggestions;
+	}
+
+
 	function get_invoice_count()
 	{
 		$this->db->from('sales');

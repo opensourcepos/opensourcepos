@@ -16,7 +16,7 @@
 	<div class="field_row clearfix">
 	<?php echo form_label($this->lang->line('recvs_date').':', 'date', array('class'=>'required')); ?>
 		<div class='form_field'>
-			<?php echo form_input(array('name'=>'date','value'=>date('Y-m-d H:i:s', strtotime($receiving_info['receiving_time'])), 'id'=>'date'));?>
+			<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'class'=>'date'));?>
 		</div>
 	</div>
 	

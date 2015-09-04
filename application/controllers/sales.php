@@ -21,21 +21,27 @@ class Sales extends Secure_area
 		$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
 		$data['search_section_state'] = $this->input->post('search_section_state');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		
-		$today     = date('Y-m-d');
-		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
-		$start_of_time = date('Y-m-d', 0);
-		
+
+		$today = date($this->config->item('dateformat'));
+		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
+		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+
 		$sale_type   = 'sales';
 		$location_id = 'all';
 
-		$report_data = $this->Sale->get_data(array('start_date' => $yesterday, 'end_date' => $today, 'sale_type' => $sale_type, 'location_id' => $location_id,
-											'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
-
+		$inputs = array('start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
+			'sale_type' => $sale_type, 'location_id' => $location_id, 'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page,
+			'limit_from' => $limit_from);
+		$sales = $this->Sale->get_all($inputs);
+		$payments = $this->Sale->get_payments_summary($inputs);
 		$data['only_invoices'] = $only_invoices;
-		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, count($report_data['sales']), 'manage', $only_invoices);
-		$data['manage_table'] = get_sales_manage_table($report_data['sales'], $this);
-		$data['payments_summary'] = get_sales_manage_payments_summary($report_data['payments'], $report_data['sales'], $this);
+		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
+		$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
+		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, count($sales), 'manage', $only_invoices);
+		$data['manage_table'] = get_sales_manage_table($sales, $this);
+		$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
 		$this->load->view($data['controller_name'] . '/manage', $data);
 		$this->_remove_duplicate_cookies();
 	}
@@ -63,19 +69,27 @@ class Sales extends Secure_area
 		$only_invoices = $this->input->post('only_invoices', TRUE);
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$limit_from = $this->input->post('limit_from', TRUE);
+		$search = $this->input->post('search', TRUE);
+		$today = date($this->config->item('dateformat'));
+		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
+		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
+
 		$sale_type   = 'sales';
 		$location_id = 'all';
 
-		$today = date('Y-m-d');
-		$yesterday = date('Y-m-d', mktime(0,0,0,date("m"),date("d")-1,date("Y")));
-
-		$report_data = $this->Sale->get_data(array('sale_type' => $sale_type, 'location_id' => $location_id,
-			'start_date' => $yesterday, 'end_date' => $today, 'only_invoices' => $only_invoices,
-			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from));
-		$total_rows = count($report_data['sales']);
+		$inputs = array('sale_type' => $sale_type, 'location_id' => $location_id,
+			'start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
+			'only_invoices' => $only_invoices, 'search' => $search,
+			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from, 'is_valid_receipt' => $is_valid_receipt);
+		$sales = $this->Sale->get_all($inputs);
+		$payments = $this->Sale->get_payments_summary($inputs);
+		$total_rows = count($sales);
 		$links = $this->_initialize_pagination($this->Sale,$lines_per_page,$limit_from,$total_rows,'search',$only_invoices);
-		$data_rows=get_sales_manage_table_data_rows($report_data['sales'], $this);
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$sale_rows=get_sales_manage_table_data_rows($sales, $this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links));
 		$this->_remove_duplicate_cookies();
 	}
 
@@ -94,6 +108,14 @@ class Sales extends Secure_area
 	function customer_search()
 	{
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		echo implode("\n",$suggestions);
+	}
+
+	function suggest()
+	{
+		$search = $this->input->post('q', TRUE);
+		$limit = $this->input->post('limit', TRUE);
+		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
 		echo implode("\n",$suggestions);
 	}
 
@@ -612,8 +634,10 @@ class Sales extends Secure_area
 	
 	function save($sale_id)
 	{
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date', TRUE));
+
 		$sale_data = array(
-			'sale_time' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),
 			'customer_id' => $this->input->post('customer_id') ? $this->input->post('customer_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),

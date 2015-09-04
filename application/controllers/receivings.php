@@ -371,8 +371,10 @@ class Receivings extends Secure_area
 	
 	function save($receiving_id)
 	{
+		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date', TRUE));
+
 		$receiving_data = array(
-				'receiving_time' => date('Y-m-d H:i:s', strtotime($this->input->post('date'))),
+				'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
 				'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
 				'employee_id' => $this->input->post('employee_id'),
 				'comment' => $this->input->post('comment'),

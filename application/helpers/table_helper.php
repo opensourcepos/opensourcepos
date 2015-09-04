@@ -12,7 +12,7 @@ function get_sales_manage_table($sales, $controller)
 	$CI->lang->line('sales_amount_tendered'),
 	$CI->lang->line('sales_amount_due'),
 	$CI->lang->line('sales_change_due'),
-	//$CI->lang->line('sales_payment'),
+	$CI->lang->line('sales_payment'),
 	$CI->lang->line('sales_invoice_number'),
 	'&nbsp');
 
@@ -71,12 +71,12 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="15%">'.'POS ' . $sale['sale_id'] . '</td>';
 	$table_data_row.='<td width="17%">'.date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale['sale_time']) ).'</td>';
 	$table_data_row.='<td width="23%">'.character_limiter( $sale['customer_name'], 25).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale['amount_tendered'] ).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale['amount_due'] ).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale['change_due'] ).'</td>';
-	//$table_data_row.='<td width="20%">'.$sale['payment_type'].'</td>';
-	$table_data_row.='<td width="10%">'.$sale['invoice_number'].'</td>';
-	$table_data_row.='<td width="12%">';
+	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_tendered'] ).'</td>';
+	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_due'] ).'</td>';
+	$table_data_row.='<td width="8%">'.to_currency( $sale['change_due'] ).'</td>';
+	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
+	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
+	$table_data_row.='<td width="8%">';
 	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
 	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_receipt') . '</a>';

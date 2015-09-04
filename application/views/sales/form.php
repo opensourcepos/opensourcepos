@@ -15,8 +15,7 @@
 	
 	<div class="field_row clearfix">
 	<?php echo form_label($this->lang->line('sales_date').':', 'date', array('class'=>'required')); ?>
-		<div class='form_field'>
-			<?php echo form_input(array('name'=>'date','value'=>date('Y-m-d H:i:s', strtotime($sale_info['sale_time'])), 'id'=>'date'));?>
+		<div class='form_field'><?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'class'=>'date'));?>
 		</div>
 	</div>
 	
