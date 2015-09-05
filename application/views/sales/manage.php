@@ -172,9 +172,9 @@ function init_table_sorting()
 	<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
 	<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
 	<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-	<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'type'=>'date', 'size' => '15'));?>
+	<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size' => '15'));?>
 	<?php echo form_label(' - ', 'end_date');?>
-	<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'type'=>'date', 'size' => '15')) . ' | ';?>
+	<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size' => '15')) . ' | ';?>
 	<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
 	<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0));?>
 	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
