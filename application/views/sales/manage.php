@@ -147,11 +147,13 @@ function init_table_sorting()
 		$("#sortable_table").tablesorter(
 		{
 			sortList: [[1,0]],
-			dateFormat: 'dd-mm-yyyy', 
+			dateFormat: '<?php echo dateformat_jquery($this->config->item('dateformat')); ?>',
 			headers:
 			{
-			    0: { sorter: 'datetime'},
-				8: { sorter: 'invoice_number'}
+			    0: { sorter: false},
+				7: { sorter: 'false'},
+				8: { sorter: 'invoice_number'},
+				9: { sorter: 'false'}
 			}
 		});
 	}
