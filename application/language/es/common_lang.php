@@ -9,6 +9,7 @@ $lang["common_confirm_search"] = "Has seleccionado una o más filas. Éstas no e
 $lang["common_country"] = "País";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "Borrar";
+$lang["common_print"] = "Print";
 $lang["common_det"] = "detalles";
 $lang["common_edit"] = "editar";
 $lang["common_email"] = "E-Mail";
