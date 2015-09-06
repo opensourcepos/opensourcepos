@@ -9,6 +9,7 @@ $lang["common_confirm_search"] = "Anda telah memilih satu atau lebih baris, ini 
 $lang["common_country"] = "Negara";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "Hapus";
+$lang["common_print"] = "Print";
 $lang["common_det"] = "Detail";
 $lang["common_edit"] = "Ubah";
 $lang["common_email"] = "E-Mail";

@@ -10,6 +10,7 @@
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 	<!-- start js template tags -->
 	<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.11.4.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.bgiframe.min.js" language="javascript"></script>
@@ -21,7 +22,6 @@
 	<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
 	<script type="text/javascript" src="js/common.js" language="javascript"></script>
 	<script type="text/javascript" src="js/date.js" language="javascript"></script>
-	<script type="text/javascript" src="js/datepicker.js" language="javascript"></script>
 	<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 	<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
 	<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>

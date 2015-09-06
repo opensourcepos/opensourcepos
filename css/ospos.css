@@ -9,6 +9,8 @@
 @import url(thickbox.css);
 @import url(datepicker.css);
 @import url(invoice.css);
+@import url(jquery-ui.structure.css);
+@import url(jquery-ui.theme.css);
 
 body
 {
@@ -31,7 +33,7 @@ a.none
 	width:100%;
 	background-color:#FFFFFF;	
 	margin:0px;
-	padding:0px;
+	padding-bottom: 10px;
 	border-bottom:1px solid #CCCCCC;
 	text-align:center;	
 

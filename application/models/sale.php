@@ -3,84 +3,157 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
-		$this->db->select('first_name, last_name, email, comment, invoice_number, amount_tendered, ' .
-				 'sale_time, employee_id, customer_id, comments');
-		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
-		$this->db->select("sales.sale_id AS sale_id");
-		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
-		$this->db->from('sales');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
-		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
-		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
-				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" .
-				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
-				"payments.sale_id = sales.sale_id", 'left');
-		$this->db->where('sales.sale_id',$sale_id);
+		$this->db->select('first_name, last_name, email, comment, sale_payment_amount AS amount_tendered, payment_type,
+			invoice_number, sale_time, employee_id, customer_id, comments, sale_id, (sale_payment_amount - total) AS change_due', FALSE);
+		$this->db->select('DATE_FORMAT( sale_time, "%d-%m-%Y" ) AS sale_date', FALSE);
+		$this->db->select('CONCAT(first_name," ",  last_name) AS customer_name', FALSE);
+		$this->db->select('SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due');
+		$this->db->from("sales_items_temp");
+		$this->db->join('people', 'people.person_id = sales_items_temp.customer_id', 'left');
+
+		$this->db->where('sales_items_temp.sale_id', $sale_id);
 		$this->db->order_by('sale_time', 'desc');
 		$this->db->group_by('sale_id');
+
 		return $this->db->get();
 	}
 	
-	function get_all($only_invoices = 0, $rows = 0, $limit_from = 0)
+	// get the sales data for the takings table
+	public function get_all($inputs)
 	{
-		$this->db->select('first_name, last_name, invoice_number, amount_tendered, sale_time');
-		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
-		$this->db->select("sales.sale_id AS sale_id");	
-		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
-		$this->db->from('sales');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
-		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
-		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
-				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" . 
-				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
-				"payments.sale_id = sales.sale_id", 'left');
-		$this->db->order_by('sale_time', 'desc');
-		$this->db->group_by('sale_id');
-		if ($rows > 0) {
-			$this->db->limit($rows, $limit_from);
+		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
+						CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
+						sale_payment_amount AS amount_tendered, total AS amount_due, (sale_payment_amount - total) AS change_due, payment_type, invoice_number', FALSE);
+		$this->db->from('sales_items_temp');
+		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
+
+		if (empty($inputs['search']))
+		{
+			$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 		}
-		if ($only_invoices != 0) {
-			$this->db->where('invoice_number <> ', 'NULL');
-		}
-		return $this->db->get();
-	}
-	
-	function search($search, $only_invoices = FALSE, $rows = 0, $limit_from = 0) 
-	{
-		$valid_receipt = $this->sale_lib->is_valid_receipt($search);
-		$this->db->select('first_name, last_name, invoice_number, amount_tendered, sale_time');
-		$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
-		$this->db->select("sales.sale_id AS sale_id");
-		$this->db->select("SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due");
-		$this->db->from('sales');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
-		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
-		$this->db->join("(SELECT sale_id, SUM(payment_amount) AS amount_tendered " .
-				" FROM " . $this->db->dbprefix('sales_payments') ." WHERE payment_type <> '" . 
-				$this->lang->line('sales_check') . "' GROUP BY sale_id) AS payments",
-				"payments.sale_id = sales.sale_id", 'left');
-		$this->db->group_by('sale_id');
-		if (!empty($search)) {
-			// if barcode scanned, explode and search for second term which will be the id
-			if ($valid_receipt) {
-				$pieces = explode(' ',$search);
-				$this->db->where('sales.sale_id', $pieces[1]);
-			} else {
-				// open parentheses
-				$this->db->where("( last_name LIKE '%" . $search . "%' OR ".
-						"first_name LIKE '%" . $search . "%' OR " .
-						"CONCAT( first_name,' ',last_name ) LIKE '%" . $search . "%')");
-				// close parentheses
+		else
+		{
+			if ($inputs['is_valid_receipt'])
+			{
+				$pieces = explode(' ',$inputs['search']);
+				$this->db->where('sales_items_temp.sale_id', $pieces[1]);
+			}
+
+			else
+			{
+				$this->db->like('last_name', $inputs['search']);
+				$this->db->or_like('first_name', $inputs['search']);
+				$this->db->or_like('CONCAT( customer.first_name, " ", last_name)', $inputs['search']);
 			}
 		}
-		if ($only_invoices != 0) {
+
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
+
+		if ($inputs['sale_type'] == 'sales')
+        {
+            $this->db->where('quantity_purchased > 0');
+        }
+        elseif ($inputs['sale_type'] == 'returns')
+        {
+            $this->db->where('quantity_purchased < 0');
+        }
+		
+		if ($inputs['only_invoices'] != FALSE)
+		{
 			$this->db->where('invoice_number <> ', 'NULL');
 		}
-		$this->db->order_by('sale_time DESC');
-		if ($rows > 0) {
-			$this->db->limit($rows, $limit_from);
+
+		if ($inputs['only_cash'] != FALSE)
+		{
+			$this->db->where('payment_type LIKE ', $this->lang->line('sales_cash') . '%');
 		}
-		return $this->db->get();
+		
+		$this->db->group_by('sale_id');
+		$this->db->order_by('sale_date', 'desc');
+		
+		if ($inputs['lines_per_page'] > 0)
+		{
+			$this->db->limit($inputs['lines_per_page'], $inputs['limit_from']);
+		}
+
+		return $this->db->get()->result_array();
+	}
+
+	function get_payments_summary($inputs)
+	{
+		// get payment summary
+		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', FALSE);
+		$this->db->from('sales_payments');
+		$this->db->join('sales_items_temp', 'sales_items_temp.sale_id=sales_payments.sale_id');
+		$this->db->join('people', 'people.person_id = sales_items_temp.customer_id', 'left');
+
+		if (empty($inputs['search']))
+		{
+			$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			if ($inputs['is_valid_receipt'])
+			{
+				$pieces = explode(' ',$inputs['search']);
+				$this->db->where('sales_items_temp.sale_id', $pieces[1]);
+			}
+
+			else
+			{
+				$this->db->like('last_name', $inputs['search']);
+				$this->db->or_like('first_name', $inputs['search']);
+				$this->db->or_like('CONCAT( first_name, " ", last_name)', $inputs['search']);
+			}
+		}
+
+
+		if ($inputs['sale_type'] == 'sales')
+		{
+			$this->db->where('payment_amount > 0');
+		}
+		elseif ($inputs['sale_type'] == 'returns')
+		{
+			$this->db->where('payment_amount < 0');
+		}
+
+		if ($inputs['only_invoices'] != FALSE)
+		{
+			$this->db->where('invoice_number <> ', 'NULL');
+		}
+		
+		if ($inputs['only_cash'] != FALSE)
+		{
+			$this->db->like('sales_payments.payment_type ', $this->lang->line('sales_cash'), 'after');
+		}
+
+		$this->db->group_by("payment_type");
+
+		$payments = $this->db->get()->result_array();
+
+		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
+		$gift_card_count = 0;
+		$gift_card_amount = 0;
+		foreach($payments as $key=>$payment)
+		{
+			if( strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE )
+			{
+				$gift_card_count  += $payment['count'];
+				$gift_card_amount += $payment['payment_amount'];
+
+				unset($payments[$key]);
+			}
+		}
+
+		if( $gift_card_count > 0 && $gift_card_amount > 0 )
+		{
+			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+		}
+
+		return $payments;
 	}
 	
 	function get_total_rows()
@@ -88,60 +161,33 @@ class Sale extends CI_Model
 		$this->db->from('sales');
 		return $this->db->count_all_results();
 	}
-	
+
 	function get_search_suggestions($search,$limit=25)
 	{
 		$suggestions = array();
-	
+
 		if (!$this->sale_lib->is_valid_receipt($search)) {
 			$this->db->distinct();
-			$this->db->select('first_name, last_name, invoice_number, sale_time');
-			$this->db->select("DATE_FORMAT( sale_time, '%d-%m-%Y' ) AS sale_date", FALSE);
-			$this->db->select("sales.sale_id AS sale_id");
+			$this->db->select('first_name, last_name');
 			$this->db->from('sales');
-			$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
-			$this->db->where("( last_name LIKE '%" . $search . "%' OR ".
-					"first_name LIKE '%" . $search . "%' OR " .
-					"CONCAT( first_name, last_name ))");
+			$this->db->join('people', 'people.person_id = sales.customer_id');
+			$this->db->like('last_name', $search);
+			$this->db->or_like('first_name', $search);
+			$this->db->or_like('CONCAT( first_name, " ", last_name)', $search);
 			$this->db->order_by('last_name', "asc");
-	
+
 			foreach($this->db->get()->result_array() as $result)
 			{
 				$suggestions[]=$result[ 'first_name' ].' '.$result[ 'last_name' ];
 			}
-	
+
 		} else {
 			$suggestions[]=$search;
 		}
 		return $suggestions;
 	}
-	
-	function get_found_rows($search, $only_invoices = FALSE)
-	{
-		$valid_receipt = $this->sale_lib->is_valid_receipt($search);
-		$this->db->from('sales');
-		$this->db->join('sales_items', 'sales_items.sale_id = sales.sale_id');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
-		$this->db->group_by('sales.sale_id');
-		if (!empty($search)) {
-			// if barcode scanned, explode and search for second term which will be the id
-			$pieces = explode(' ',$search);
-			if ($valid_receipt && count($pieces) == 2) {
-				$this->db->where('sales.sale_id', $pieces[1]);
-			} else {
-				// open parentheses
-				$this->db->where("( last_name LIKE '%" . $search . "%' OR ".
-						"first_name LIKE '%" . $search . "%' OR " .
-						"CONCAT( first_name,' ',last_name ) LIKE '%" . $search . "%')");
-				// close parentheses
-			}
-		}
-		if ($only_invoices != 0) {
-			$this->db->where('invoice_number <> ', 'NULL');
-		}
-		return $this->db->get()->num_rows();
-	}
-	
+
+
 	function get_invoice_count()
 	{
 		$this->db->from('sales');
@@ -156,7 +202,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 	
-	function get_invoice_number_for_year($year='', $start_from = 0) 
+	function get_invoice_number_for_year($year = '', $start_from = 0) 
 	{
 		$year = $year == '' ? date('Y') : $year;
 		$this->db->select("COUNT( 1 ) AS invoice_number_year", FALSE);
@@ -184,7 +230,7 @@ class Sale extends CI_Model
 		return $success;
 	}
 	
-	function save ($items,$customer_id,$employee_id,$comment,$invoice_number,$payments,$sale_id=false)
+	function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id=false)
 	{
 		if(count($items)==0)
 			return -1;
@@ -244,7 +290,7 @@ class Sale extends CI_Model
 
 			//Update stock quantity
 			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);       
-            $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
+			$this->Item_quantities->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
                                               'item_id'=>$item['item_id'],
                                               'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
 	
@@ -290,7 +336,7 @@ class Sale extends CI_Model
 		return $sale_id;
 	}
 	
-	function delete_list($sale_ids, $employee_id,$update_inventory=TRUE) 
+	function delete_list($sale_ids, $employee_id, $update_inventory=TRUE) 
 	{
 		$result = TRUE;
 		foreach($sale_ids as $sale_id) {
@@ -299,7 +345,7 @@ class Sale extends CI_Model
 		return $result;
 	}
 	
-	function delete($sale_id,$employee_id,$update_inventory=TRUE) 
+	function delete($sale_id, $employee_id, $update_inventory=TRUE) 
 	{
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
@@ -381,34 +427,34 @@ class Sale extends CI_Model
 	//We create a temp table that allows us to do easy report/sales queries
 	public function create_sales_items_temp_table()
 	{
-
-        if ($this->config->item('tax_included'))
-        {
-            $total = "1";
-            $subtotal = "(1 - (SUM(1 - 100/(100+percent))))";
-            $tax="(SUM(1 - 100/(100+percent)))";
-        }
-        else
-        {
-            $tax = "(SUM(percent)/100)";
-            $total = "(1+(SUM(percent/100)))";
-            $subtotal = "1";
-        }
+		if ($this->config->item('tax_included'))
+		{
+			$total = "1";
+			$subtotal = "(1 - (SUM(1 - 100/(100+percent))))";
+			$tax="(SUM(1 - 100/(100+percent)))";
+		}
+		else
+		{
+			$tax = "(SUM(percent)/100)";
+			$total = "(1+(SUM(percent/100)))";
+			$subtotal = "1";
+		}
 
 		$this->db->query("CREATE TEMPORARY TABLE IF NOT EXISTS ".$this->db->dbprefix('sales_items_temp')."
-		(SELECT date(sale_time) as sale_date, sale_time, ".$this->db->dbprefix('sales_items').".sale_id, comment,payments.payment_type, item_location, customer_id, employee_id,
+		(SELECT date(sale_time) as sale_date, sale_time, ".$this->db->dbprefix('sales_items').".sale_id, comment, payments.payment_type, payments.sale_payment_amount, item_location, customer_id, employee_id,
 		".$this->db->dbprefix('items').".item_id, supplier_id, quantity_purchased, item_cost_price, item_unit_price, SUM(percent) as item_tax_percent,
 		discount_percent, ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$subtotal,2) as subtotal,
 		".$this->db->dbprefix('sales_items').".line as line, serialnumber, ".$this->db->dbprefix('sales_items').".description as description,
 		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$total, 2) as total,
 		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)*$tax, 2) as tax,
 		ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100)- (item_cost_price*quantity_purchased), 2) as profit,
-		(item_cost_price*quantity_purchased) as cost
+		(item_cost_price*quantity_purchased) as cost,
+		invoice_number
 		FROM ".$this->db->dbprefix('sales_items')."
 		INNER JOIN ".$this->db->dbprefix('sales')." ON  ".$this->db->dbprefix('sales_items').'.sale_id='.$this->db->dbprefix('sales').'.sale_id'."
 		INNER JOIN ".$this->db->dbprefix('items')." ON  ".$this->db->dbprefix('sales_items').'.item_id='.$this->db->dbprefix('items').'.item_id'."
 		INNER JOIN (SELECT sale_id, SUM(payment_amount) AS sale_payment_amount, 
-		GROUP_CONCAT(payment_type SEPARATOR ', ') AS payment_type FROM " .$this->db->dbprefix('sales_payments') . " GROUP BY sale_id) AS payments 
+		GROUP_CONCAT(CONCAT(payment_type,' ',payment_amount) SEPARATOR ', ') AS payment_type FROM " . $this->db->dbprefix('sales_payments') . " GROUP BY sale_id) AS payments 
 		ON " . $this->db->dbprefix('sales_items') . '.sale_id'. "=" . "payments.sale_id		
 		LEFT OUTER JOIN ".$this->db->dbprefix('suppliers')." ON  ".$this->db->dbprefix('items').'.supplier_id='.$this->db->dbprefix('suppliers').'.person_id'."
 		LEFT OUTER JOIN ".$this->db->dbprefix('sales_items_taxes')." ON  "

@@ -14,10 +14,10 @@ class Summary_payments extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sales_payments.payment_type, count(*) as count, sum(payment_amount) as payment_amount', false);
+		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', false);
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
-		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('date(sale_time) BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -29,16 +29,37 @@ class Summary_payments extends Report
        	}
 
 		$this->db->group_by("payment_type");
+		
+		$payments = $this->db->get()->result_array();
+		
+		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
+		$gift_card_count = 0;
+		$gift_card_amount = 0;
+		foreach($payments as $key=>$payment)
+		{		
+			if( strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE )
+			{
+				$gift_card_count  += $payment['count'];
+				$gift_card_amount += $payment['payment_amount'];
 
-		return $this->db->get()->result_array();
+				unset($payments[$key]);
+			}
+		}
+
+		if( $gift_card_count > 0 && $gift_card_amount > 0 )
+		{
+			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+		}
+		
+		return $payments;
 	}
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('sum(subtotal) AS subtotal, sum(total) AS total, sum(tax) AS tax, sum(cost) AS cost, sum(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" AND "'. $inputs['end_date'].'"');
 
 		if ($inputs['sale_type'] == 'sales')
         {

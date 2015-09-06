@@ -46,6 +46,7 @@ sales_invoice,Factuur,tarjeta de Crédito,Invoice,Invoice,Invoice,Invoice,Invoic
 sales_invoice_confirm,Deze factuur zal verstuurd worden naar,Esta factura sera enviada a,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to
 sales_invoice_enable,Maak Factuur,Crear factura,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice,Create Invoice
 sales_invoice_filter,Facturen,Facturas,Invoices,Invoices,Invoices,Invoices,Invoices,Invoices,Invoices
+sales_cash_filter,Contant,Efectivo,Cash,Cash,Cash,Cash,Cash,Cash,Cash
 sales_invoice_no_email,Er werd geen email adres gevonden voor deze klant,Este cliente no tiene un email válido,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address
 sales_invoice_number,Factuur #,Factura #,Invoice #,Invoice #,Invoice #,Invoice #,Invoice #,Invoice #,Nomor Nota
 sales_invoice_number_duplicate,Vul een unieke nummer in,Por favor ingrese un número de factura único,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Nomor Nota Double
@@ -66,7 +67,7 @@ sales_no_filter,Alle,Todos,All,All,All,All,All,All,All
 sales_no_items_in_cart,Er zijn geen aankopen geselecteerd,No hay artículos en el carrito,There are no items in the cart,Il n\'y a rien dans votre panier,購物車中沒有任何產品,Там нет товаров в корзине,ไม่พบสินค้าในตระกร้า,Sepette Ürün Yok,Tidak ada Item dalam Keranjang Belanja
 sales_no_sales_to_display,Er werden geen aankopen gevonden,No hay ventas que mostrar,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display
 sales_one_or_multiple,aankopen verwijderd,venta(s),sale(s),,,,,,
-sales_overview,Overzicht,Resumen,Overview,Overview,Overview,Overview,Overview,Overview,Overview
+sales_takings,Overzicht,Resumen,Takings,Takings,Takings,Takings,Takings,Takings,Takings
 sales_payment,Betaalmethode,Tipo de Pago,Payment Type,Type Paiement,付款方式,Вид оплаты,รูปแบบชำระเงิน,Ödeme Türü,Type Pembayaran
 sales_payment_amount,Bedrag,Cantidad,Amount,Somme,Amount,количество,,Tutar,Amount
 sales_payment_not_cover_total,Betaalde hoeveelheid is onvoldoende,La Cantidad Recibida no cubre el pago total,Payment Amount does not cover Total,Le Paiement ne couvre pas le Total,付款金額不足,оплачиваемая сумма недостаточно, ปริมาณการจ่ายที่ไม่เพียงพอกะยอดรวม,Ödemeler toplam tutarı karşılamıyor,Jumlah pembayaran tidak mencakup Total
@@ -110,3 +111,5 @@ sales_unsuccessfully_updated,Fout bij het bewaren van ticket,Ha fallado la actua
 sales_unsuspend,Hervat,Retomar,Unsuspend,Débloquer,取消暫停銷售,Разблокировать,ยกเลิกการระงับ,Satışa Al,Batal Penangguhan
 sales_unsuspend_and_delete,,Retomar y Borrar,,,取消暫停銷售並刪除,Разблокировать и удалить,ยกเลิกการระงับ และ ลบ,,Batalkan dan hapus penangguhan
 sales_update,Bewerk Ticket,Editar Venta,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale,Edit Sale
+sales_date_range,Periode,Rango de Fecha,Date Range,Plage de dates,日期範圍,размах числа,ระหว่างวันที่,Tarih Aralığı,Rentang Tanggal
+sales_none_selected,U hebt geen aankopen geselecteerd,No has seleccionado venta para editar,You have not selected any sales to delete,Vous n\\\'avez sélectionné aucun élément,您還沒有選擇任何產品進行編輯,Вы не выбрали ни одной товари для редактирования,กรุณาเลือสินค้าที่ต้องการแก้ไข,Düzenlemek için ürün seçmediniz,Anda belum memilih item untuk diubah
