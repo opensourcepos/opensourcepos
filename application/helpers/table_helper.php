@@ -54,7 +54,7 @@ function get_sales_manage_table_data_rows($sales, $controller)
 	}
 	else
 	{
-		$table_data_rows .= "<tr><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"3\"></td></tr>";
+		$table_data_rows .= "<tr class='static-last'><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"3\"></td></tr>";
 	}
 
 	return $table_data_rows;

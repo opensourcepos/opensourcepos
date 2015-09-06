@@ -67,7 +67,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('print_right_margin', '0'),
 ('default_sales_discount', '0'),
 ('lines_per_page', '25'),
-('show_total_discount', '1');
+('show_total_discount', '1'),
+('dateformat', 'm-d-Y'),
+('timeformat', 'H:i:s'),
+('currency_symbol', '$');
 
 -- --------------------------------------------------------
 

@@ -154,7 +154,8 @@ function init_table_sorting()
 				7: { sorter: 'false'},
 				8: { sorter: 'invoice_number'},
 				9: { sorter: 'false'}
-			}
+			},
+			widgets: ['staticRow']
 		});
 	}
 }
