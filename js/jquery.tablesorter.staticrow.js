@@ -72,5 +72,10 @@ $.tablesorter.addWidget({
             }
         }
 
+        $('tbody .static-last', table).each(function() {
+            var row = $(this).detach();
+            row.appendTo($('tbody', table));
+        });
+
     }
 });
