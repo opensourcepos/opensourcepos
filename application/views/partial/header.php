@@ -18,7 +18,8 @@
 	<script type="text/javascript" src="js/jquery.form-3.51.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.metadata.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.tablesorter.min.js" language="javascript"></script>
+	<script type="text/javascript" src="js/jquery.tablesorter-2.20.1.js" language="javascript"></script>
+	<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 	<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
 	<script type="text/javascript" src="js/common.js" language="javascript"></script>
 	<script type="text/javascript" src="js/date.js" language="javascript"></script>
