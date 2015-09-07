@@ -6,20 +6,23 @@ $(document).ready(function()
     init_table_sorting();
     enable_checkboxes();
     enable_row_selection();
-    enable_search('<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>');
+
+	var on_complete = function(response) {
+		$("#payment_summary").html(response.payment_summary);
+	};
+
+    enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
+		confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
+		on_complete : on_complete});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
 	$("#search_filter_section #only_invoices").change(function() {
-		do_search(true, function(response) {
-			$("#payment_summary").html(response.payment_summary);
-		});
+		do_search(true, on_complete());
 		return false;
 	});
 	
 	$("#search_filter_section #only_cash").change(function() {
-		do_search(true, function(response) {
-			$("#payment_summary").html(response.payment_summary);
-		});
+		do_search(true, on_complete);
 		return false;
 	});
 

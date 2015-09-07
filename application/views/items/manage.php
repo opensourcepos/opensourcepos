@@ -6,11 +6,13 @@ $(document).ready(function()
     enable_select_all();
     enable_checkboxes();
     enable_row_selection();
-    var widget = enable_search('<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>', undefined, {
-		'is_deleted' : function () {
-			return $("#is_deleted").is(":checked") ? 1 : 0;
-		}
-	});
+    var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
+		confirm_message : '<?php echo $this->lang->line("common_confirm_search")?>',
+		extra_params : {
+			'is_deleted' : function () {
+				return $("#is_deleted").is(":checked") ? 1 : 0;
+			}
+	}});
 	// clear suggestion cache when toggling filter
 	$("#is_deleted").change(function() {
 		widget.flushCache();

@@ -6,7 +6,8 @@ $(document).ready(function()
     enable_select_all();
     enable_checkboxes();
     enable_row_selection();
-    enable_search('<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>');
+    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest")?>',
+		confirm_search_messsage: 'w<?php echo $this->lang->line("common_confirm_search")?>'});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
 });
