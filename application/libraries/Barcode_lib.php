@@ -4,11 +4,12 @@ use emberlabs\Barcode\BarcodeBase;
 require APPPATH.'/views/barcodes/BarcodeBase.php';
 require APPPATH.'/views/barcodes/Code39.php';
 require APPPATH.'/views/barcodes/Code128.php';
+require APPPATH.'/views/barcodes/Ean13.php';
 
 class Barcode_lib
 {
     var $CI;
-    var $supported_barcodes = array(1 => 'Code 39', 2 => 'Code 128');
+    var $supported_barcodes = array(1 => 'Code 39', 2 => 'Code 128', 3 => 'EAN13', );
     
     function __construct()
     {
@@ -45,10 +46,15 @@ class Barcode_lib
 	    	{
 	    		$barcode = new emberlabs\Barcode\Code39();
 	    	}
-	    	else
+	    	else if ($barcode_config['barcode_type'] == '2')
 	    	{
 	    		$barcode = new emberlabs\Barcode\Code128();
 	    	}
+	    	else
+	    	{
+	    		$barcode = new emberlabs\Barcode\Ean13();
+	    	}
+			
     		$barcode->setData($barcode_content);
     		$barcode->setQuality($barcode_config['barcode_quality']);
     		$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
