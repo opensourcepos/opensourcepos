@@ -12,8 +12,8 @@
 namespace emberlabs\Barcode;
 
 /**
- * emberlabs Barcode Creator - Code39
- * 	     Generate Code39 Barcides
+ * emberlabs Barcode Creator - Code128
+ * 	     Generate Code128 Barcodes
  *
  *
  * @license     http://opensource.org/licenses/mit-license.php The MIT License
