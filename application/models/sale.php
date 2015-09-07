@@ -425,7 +425,7 @@ class Sale extends CI_Model
 	}
 
 	//We create a temp table that allows us to do easy report/sales queries
-	public function create_sales_items_temp_table()
+	function create_sales_items_temp_table()
 	{
 		if ($this->config->item('tax_included'))
 		{
@@ -475,7 +475,7 @@ class Sale extends CI_Model
 		$this->db->query('UPDATE '.$this->db->dbprefix('sales_items_temp'). ' SET total=subtotal WHERE total IS NULL');
 	}
 	
-	public function get_giftcard_value( $giftcardNumber )
+	function get_giftcard_value( $giftcardNumber )
 	{
 		if ( !$this->Giftcard->exists( $this->Giftcard->get_giftcard_id($giftcardNumber)))
 			return 0;

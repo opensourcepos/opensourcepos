@@ -7,7 +7,6 @@ class Sales extends Secure_area
 		parent::__construct('sales');
 		$this->load->library('sale_lib');
 		$this->load->library('barcode_lib');
-		$this->Sale->create_sales_items_temp_table();
 	}
 
 	function index()
@@ -17,6 +16,8 @@ class Sales extends Secure_area
 	
 	function manage($only_invoices = FALSE, $only_cash = FALSE, $limit_from = 0)
 	{
+		$this->Sale->create_sales_items_temp_table();
+
 		$data['controller_name'] = strtolower($this->uri->segment(1));
 		$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
 		$data['search_section_state'] = $this->input->post('search_section_state');
@@ -66,6 +67,8 @@ class Sales extends Secure_area
 	
 	function search()
 	{
+		$this->Sale->create_sales_items_temp_table();
+
 		$only_invoices = $this->input->post('only_invoices', TRUE);
 		$only_cash = $this->input->post('only_cash', TRUE);
 		$lines_per_page = $this->Appconfig->get('lines_per_page');

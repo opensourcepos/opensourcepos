@@ -211,7 +211,7 @@ class Receiving extends CI_Model
 	}
 	
 	//We create a temp table that allows us to do easy report/receiving queries
-	public function create_receivings_items_temp_table()
+	function create_receivings_items_temp_table()
 	{
 		$this->db->query("CREATE TEMPORARY TABLE IF NOT EXISTS ".$this->db->dbprefix('receivings_items_temp')."
 		(SELECT date(receiving_time) as receiving_date, ".$this->db->dbprefix('receivings_items').".receiving_id, comment, item_location, invoice_number, payment_type, employee_id,
