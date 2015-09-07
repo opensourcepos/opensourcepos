@@ -9,7 +9,7 @@ require APPPATH.'/views/barcodes/Ean13.php';
 class Barcode_lib
 {
     var $CI;
-    var $supported_barcodes = array(1 => 'Code 39', 2 => 'Code 128', 3 => 'EAN13', );
+    var $supported_barcodes = array(1 => 'Code 39', 2 => 'Code 128', 3 => 'EAN13');
     
     function __construct()
     {
