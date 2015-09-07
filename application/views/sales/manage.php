@@ -17,7 +17,7 @@ $(document).ready(function()
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
 	$("#search_filter_section #only_invoices").change(function() {
-		do_search(true, on_complete());
+		do_search(true, on_complete);
 		return false;
 	});
 	

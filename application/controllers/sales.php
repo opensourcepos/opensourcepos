@@ -49,6 +49,8 @@ class Sales extends Secure_area
 	
 	function get_row()
 	{
+		$this->Sale->create_sales_items_temp_table();
+
 		$sale_id = $this->input->post('row_id');
 		$sale_info = $this->Sale->get_info($sale_id)->result_array();
 		$data_row=get_sales_manage_sale_data_row($sale_info[0],$this);
@@ -524,6 +526,8 @@ class Sales extends Secure_area
 	
 	function _load_sale_data($sale_id)
 	{
+		$this->Sale->create_sales_items_temp_table();
+
 		$this->sale_lib->clear_all();
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
@@ -612,6 +616,7 @@ class Sales extends Secure_area
 		{
 			$data['employees'][$employee->person_id] = $employee->first_name . ' '. $employee->last_name;
 		}
+		$this->Sale->create_sales_items_temp_table();
 
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
