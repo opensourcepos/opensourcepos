@@ -68,7 +68,7 @@ class Sale extends CI_Model
 
 		if ($inputs['only_cash'] != FALSE)
 		{
-			$this->db->where('payment_type LIKE ', $this->lang->line('sales_cash') . '%');
+			$this->db->like('payment_type ', $this->lang->line('sales_cash'), 'after');
 		}
 		
 		$this->db->group_by('sale_id');

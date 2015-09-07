@@ -186,3 +186,4 @@ class Code39 extends BarcodeBase
 		}
 	}
 }
+?>

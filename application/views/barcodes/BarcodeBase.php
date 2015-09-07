@@ -176,3 +176,4 @@ abstract class BarcodeBase
 		return base64_encode(ob_get_clean());
 	}
 }
+?>

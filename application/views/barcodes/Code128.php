@@ -321,3 +321,4 @@ class Code128 extends BarcodeBase
 		}
 	}
 }
+?>
