@@ -23,7 +23,7 @@ class Sale extends CI_Model
 	{
 		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
 						CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
-						sale_payment_amount AS amount_tendered, total AS amount_due, (sale_payment_amount - total) AS change_due, payment_type, invoice_number', FALSE);
+						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, payment_type, invoice_number', FALSE);
 		$this->db->from('sales_items_temp');
 		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
 
