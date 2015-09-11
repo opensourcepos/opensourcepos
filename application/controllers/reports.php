@@ -972,15 +972,38 @@ class Reports extends Secure_area
 		$this->load->view("reports/tabular",$data);
 	}
 
-	function inventory_summary($export_excel=0)
+	function inventory_summary_input()
+	{
+		$data = array();
+
+		$this->load->model('reports/Inventory_Summary');
+		$model = $this->Inventory_Summary;
+		$data['item_count'] = $model->getItemCountDropdownArray();
+
+		$stock_locations = $this->Stock_locations->get_allowed_locations();
+		$stock_locations['all'] =  $this->lang->line('reports_all');
+		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+
+		$this->load->view("reports/inventory_summary_input", $data);
+	}
+
+	function inventory_summary($export_excel=0, $location_id = 'all', $item_count = 'all')
 	{
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
 		$tabular_data = array();
-		$report_data = $model->getData(array());
+		$report_data = $model->getData(array('location_id'=>$location_id,'item_count'=>$item_count));
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['name'], $row['item_number'], $row['description'], $row['quantity'], $row['reorder_level'],$row['location_name']);
+			$tabular_data[] = array($row['name'],
+								$row['item_number'],
+								$row['description'],
+								$row['quantity'],
+								$row['reorder_level'],
+								$row['location_name'],
+								$row['cost_price'],
+								$row['unit_price'],
+								$row['sub_total_value']);
 		}
 
 		$data = array(
@@ -988,7 +1011,7 @@ class Reports extends Secure_area
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array()),
+			"summary_data" => $model->getSummaryData($report_data),
 			"export_excel" => $export_excel
 		);
 
