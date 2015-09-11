@@ -1001,9 +1001,9 @@ class Reports extends Secure_area
 								$row['quantity'],
 								$row['reorder_level'],
 								$row['location_name'],
-								$row['cost_price'],
-								$row['unit_price'],
-								$row['sub_total_value']);
+								to_currency($row['cost_price']),
+								to_currency($row['unit_price']),
+								to_currency($row['sub_total_value']));
 		}
 
 		$data = array(
