@@ -94,10 +94,10 @@ reports_total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Topl
 reports_type,Type,Tipo,Type,Type,類型,тип,ชนิด,Tür,Tipe
 reports_welcome_message,Welkom bij de rapporten. Selecteer hier een rapport.,Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.,Welcome to the reports panel. Please select a report to view.,Bienvenue à la page des rapports. Veuillez sélectionner un rapport à visualiser.,歡迎使用報表系統。請選擇要查看的報表。,"Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.",ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.,Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.,Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.
 reports_yesterday,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin
-reports_item_count,,,Filter Item Count,,,,,Filter Stok Habis/Belum Habis/Minus
+reports_item_count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Stok Habis/Belum Habis/Minus
 reports_cost_price,Aankoopprijs,Precio de Compra,Cost Price,Prix de Gros,成本價,Оптовая Цена,ราคาทุน,Maliyet Fiyatı,Harga Pokok
 reports_unit_price,Verkoopprijs,Precio de Venta,Retail Price,Prix au Détail,單價,Розничная Цена,ราคาขาย,Satış Fiyatı,Harga Jual
 reports_sub_total_value,Subtotaal,Subtotal,Sub Total,Sous-Total,小計,промежуточный итог,ยอดรวมหักภาษี ,Ara Toplam,Sub Total
-reports_total_inventory_value,,,Total Inventory Value,,,,,,Total Nilai Persediaan
-reports_zero_and_less,,,Zero and less,,,,,,Stok habis dan minus
-reports_more_than_zero,,,More than zero,,,,,,Stok belum habis
+reports_total_inventory_value,Totale waarde stock,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Nilai Persediaan
+reports_zero_and_less,Nul en minder,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Stok habis dan minus
+reports_more_than_zero,Meer dan nul,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,Stok belum habis
