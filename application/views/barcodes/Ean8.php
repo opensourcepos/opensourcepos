@@ -10,9 +10,9 @@
  */
  
 /**
- * Image_Barcode2_Driver_Ean13 class
+ * Image_Barcode2_Driver_Ean8 class
  *
- * Renders EAN 13 barcodes
+ * Renders EAN 8 barcodes
  *
  * PHP versions 5
  *
@@ -33,14 +33,14 @@
 namespace emberlabs\Barcode;
 
 /**
- * emberlabs Barcode Creator - Ean13
- * 	     Generate Ean13 Barcodes
+ * emberlabs Barcode Creator - Ean8
+ * 	     Generate Ean8 Barcodes
  *
  *
  * @license     http://opensource.org/licenses/mit-license.php The MIT License
  * @link        https://github.com/samt/barcode
  */
-class Ean13 extends BarcodeBase
+class Ean8 extends BarcodeBase
 {
 	/*
 	 * @var data - to be set
@@ -54,96 +54,108 @@ class Ean13 extends BarcodeBase
     private $_codingmap = array(
         '0' => array(
             'A' => array(0,0,0,1,1,0,1),
-            'B' => array(0,1,0,0,1,1,1),
             'C' => array(1,1,1,0,0,1,0)
         ),
         '1' => array(
             'A' => array(0,0,1,1,0,0,1),
-            'B' => array(0,1,1,0,0,1,1),
             'C' => array(1,1,0,0,1,1,0)
         ),
         '2' => array(
             'A' => array(0,0,1,0,0,1,1),
-            'B' => array(0,0,1,1,0,1,1),
             'C' => array(1,1,0,1,1,0,0)
         ),
         '3' => array(
             'A' => array(0,1,1,1,1,0,1),
-            'B' => array(0,1,0,0,0,0,1),
             'C' => array(1,0,0,0,0,1,0)
         ),
         '4' => array(
             'A' => array(0,1,0,0,0,1,1),
-            'B' => array(0,0,1,1,1,0,1),
             'C' => array(1,0,1,1,1,0,0)
         ),
         '5' => array(
             'A' => array(0,1,1,0,0,0,1),
-            'B' => array(0,1,1,1,0,0,1),
             'C' => array(1,0,0,1,1,1,0)
         ),
         '6' => array(
             'A' => array(0,1,0,1,1,1,1),
-            'B' => array(0,0,0,0,1,0,1),
             'C' => array(1,0,1,0,0,0,0)
         ),
         '7' => array(
             'A' => array(0,1,1,1,0,1,1),
-            'B' => array(0,0,1,0,0,0,1),
             'C' => array(1,0,0,0,1,0,0)
         ),
         '8' => array(
             'A' => array(0,1,1,0,1,1,1),
-            'B' => array(0,0,0,1,0,0,1),
             'C' => array(1,0,0,1,0,0,0)
         ),
         '9' => array(
             'A' => array(0,0,0,1,0,1,1),
-            'B' => array(0,0,1,0,1,1,1),
             'C' => array(1,1,1,0,1,0,0)
         )
     );
 
-    /*
-     * Coding map left
-     * @var array 
-     */
-    private $_codingmapleft = array(
-        '0' => array('A','A','A','A','A','A'),
-        '1' => array('A','A','B','A','B','B'),
-        '2' => array('A','A','B','B','A','B'),
-        '3' => array('A','A','B','B','B','A'),
-        '4' => array('A','B','A','A','B','B'),
-        '5' => array('A','B','B','A','A','B'),
-        '6' => array('A','B','B','B','A','A'),
-        '7' => array('A','B','A','B','A','B'),
-        '8' => array('A','B','A','B','B','A'),
-        '9' => array('A','B','B','A','B','A')
-    );
-
 	/*
-	 * Generate EAN13 code out of a provided number
-	 * Code taken from http://stackoverflow.com/questions/19890144/generate-valid-ean13-in-php (unknown copyright / license claims)
+	 * Calculate EAN8 or EAN13 automatically
+	 * set $len = 8 for EAN8, $len = 13 for EAN13
 	 * 
 	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
 	 * @return string with complete EAN13 code
 	 */
-	private function generateEAN($number)
+	private function generateEAN($number, $len = 8)
 	{
-		$code = '200' . str_pad($number, 9, '0');
-		$weightflag = true;
-		$sum = 0;
-		
-		// Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit. 
-		// loop backwards to make the loop length-agnostic. The same basic functionality 
-		// will work for codes of different lengths.
-		for ($i = strlen($code) - 1; $i >= 0; $i--)
+		$code = null;
+	
+		if($number > -1)
 		{
-			$sum += (int)$code[$i] * ($weightflag?3:1);
-			$weightflag = !$weightflag;
+			$data_len = $len - 1;
+			$code = $number;
+			
+			//Padding
+			$code = str_pad($code, $data_len, '0', STR_PAD_LEFT);
+			$code_len = strlen($code);
+			
+			// calculate check digit
+			$sum_a = 0;
+			for ($i = 1; $i < $data_len; $i += 2)
+			{
+			    $sum_a += $code{$i};
+			}
+			
+			if ($len > 12)
+			{
+			    $sum_a *= 3;
+			}
+			
+			$sum_b = 0;
+			for ($i = 0; $i < $data_len; $i += 2)
+			{
+			    $sum_b += ($code{$i});
+			}
+			
+			if ($len < 13)
+			{
+			    $sum_b *= 3;
+			}
+			
+			$r = ($sum_a + $sum_b) % 10;
+			
+			if($r > 0)
+			{
+			    $r = (10 - $r);
+			}
+			
+			if ($code_len == $data_len)
+			{
+			    // add check digit
+			    $code .= $r;
+			}
+			elseif ($r !== intval($code{$data_len}))
+			{
+			    // wrong checkdigit
+			    $code = null;
+			}
 		}
-		$code .= (10 - ($sum % 10)) % 10;
-		
+
 		return $code;
 	}
 
@@ -227,14 +239,11 @@ class Ean13 extends BarcodeBase
 
         $xpos += $pxPerBar;
 
-        // Draw left $code contents
-        $set_array = $this->_codingmapleft[$key];
-
-        for ($idx = 1; $idx < 7; $idx ++)
+        for ($idx = 0; $idx < 4; $idx ++)
 		{
             $value = substr($code, $idx, 1);
 
-            foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
+            foreach ($this->_codingmap[$value]['A'] as $bar)
 			{
                 if ($bar)
 				{
@@ -287,7 +296,7 @@ class Ean13 extends BarcodeBase
         $xpos += $pxPerBar;
 
         // Draw right $code contents
-        for ($idx = 7; $idx < 13; $idx ++)
+        for ($idx = 4; $idx < 8; $idx ++)
 		{
             $value = substr($code, $idx, 1);
 
