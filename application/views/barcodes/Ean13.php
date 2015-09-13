@@ -166,427 +166,175 @@ class Ean13 extends BarcodeBase
 	 */
 	public function draw()
 	{
-		generateEAN($this->data);
-	
+		$code = generateEAN($this->data);
+
+		// Calc scaling
+		// Bars is in reference to a single, 1-level bar
+		$pxPerBar = 5;
+		
+        // Calculate the barcode width
+        $barcodewidth = (strlen($code)) * (7 * $pxPerBar)
+            + 3 * $pxPerBar  // left
+            + 5 * $pxPerBar  // center
+            + 3 * $pxPerBar  // right
+            ;
+
+		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
+			
 		$this->img = @imagecreate($this->x, $this->y);
+		
+		if (!$this->img)
+		{
+			throw new \RuntimeException("Ean13: Image failed to initialize");
+		}
+		
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
+		
+        // Fill image with white color
+        imagefill($this->img, 0, 0, $white);
 
-/*
-		// Print the code
-		foreach($charAry as $k => $char)
+        // get the first digit which is the key for creating the first 6 bars
+        $key = substr($code, 0, 1);
+
+        // Initiate x position
+        $xpos = 0;
+ 
+        // Draws the left guard pattern (bar-space-bar)
+        // bar
+        imagefilledrectangle(
+            $this->img,
+            $xpos,
+            0,
+            $xpos + $pxPerBar - 1,
+            $this->y, 
+            $black
+        );
+
+        $xpos += $pxPerBar;
+
+        // space
+        $xpos += $pxPerBar;
+
+        // bar
+        imagefilledrectangle(
+            $this->img,
+            $xpos,
+            0,
+            $xpos + $pxPerBar - 1,
+            $this->y,
+            $black
+        );
+
+        $xpos += $pxPerBar;
+
+        // Draw left $code contents
+        $set_array = $this->_codingmapleft[$key];
+
+        for ($idx = 1; $idx < 7; $idx ++)
 		{
-			$code = $this->getBar($char);
-			$checkSumCollector += $this->getKey($char) * $k; // $k will be 0 for our first
+            $value = substr($code, $idx, 1);
 
-			foreach(str_split((string) $code) as $bit)
+            foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
 			{
-				imagefilledrectangle($this->img, $currentX, 0, ($currentX + $pxPerBar), ($this->y - 1), (($bit == '1') ? $black : $white));
-				$currentX += $pxPerBar;
-			}
-		}
+                if ($bar)
+				{
+					imagefilledrectangle(
+						$this->img,
+                        $xpos,
+                        0,
+						$xpos + $pxPerBar - 1,
+						$this->y,
+                        $black
+                    );
+                }
 
-		$ending[] = self::$barMap[$checkSumCollector % 103];
-		$ending[] = self::$barMap[106]; // STOP.
+                $xpos += $pxPerBar;
+            }
+        }
 
-		foreach($ending as $code)
+        // Draws the center pattern (space-bar-space-bar-space)
+        // space
+        $xpos += $pxPerBar;
+
+        // bar
+        imagefilledrectangle(
+            $this->img,
+            $xpos,
+            0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+            $black
+        );
+
+        $xpos += $pxPerBar;
+
+        // space
+        $xpos += $pxPerBar;
+
+        // bar
+        imagefilledrectangle(
+            $this->img,
+            $xpos,
+            0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+            $black
+        );
+
+        $xpos += $pxPerBar;
+
+        // space
+        $xpos += $pxPerBar;
+
+        // Draw right $code contents
+        for ($idx = 7; $idx < 13; $idx ++)
 		{
-			foreach(str_split((string) $code) as $bit)
+            $value = substr($code, $idx, 1);
+
+            foreach ($this->_codingmap[$value]['C'] as $bar)
 			{
-				imagefilledrectangle($this->img, $currentX, 0, ($currentX + $pxPerBar), ($this->y - 1), (($bit == '1') ? $black : $white));
-				$currentX += $pxPerBar;
-			}
-		}
-*/
+                if ($bar)
+				{
+					imagefilledrectangle(
+						$this->img,
+						$xpos,
+						0,
+						$xpos + $pxPerBar - 1,
+						$this->y,
+						$black
+                    );
+                }
+
+                $xpos += $this->pxPerBar;
+            }
+        }
+
+        // Draws the right guard pattern (bar-space-bar)
+        // bar
+        imagefilledrectangle(
+            $this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+			$black
+        );
+
+        $xpos += $pxPerBar;
+
+        // space
+        $xpos += $pxPerBar;
+
+        // bar
+        imagefilledrectangle(
+            $this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+			$black
+        );
 	}
 }
 ?>
-
-
-    /**
-     * Draws a EAN 13 image barcode
-     *
-     * @return resource            The corresponding EAN13 image barcode
-     *
-     * @access public
-     *
-     * @author     Didier Fournout <didier.fournout@nyc.fr>
-     */
-
-     public function draw()
-
-    {
-
-        $text     = $this->getBarcode();
-
-        $writer   = $this->getWriter();
-
-        $fontsize = $this->getFontSize();
-
- 
-
-        // Calculate the barcode width
-
-        $barcodewidth = (strlen($text)) * (7 * $this->getBarcodeWidth())
-
-            + 3 * $this->getBarcodeWidth()  // left
-
-            + 5 * $this->getBarcodeWidth()  // center
-
-            + 3 * $this->getBarcodeWidth() // right
-
-            + $writer->imagefontwidth($fontsize) + 1
-
-            ;
-
- 
-
-        $barcodelongheight = (int)($writer->imagefontheight($fontsize) / 2) + $this->getBarcodeHeight();
-
- 
-
-        // Create the image
-
-        $img = $writer->imagecreate(
-
-            $barcodewidth,
-
-            $barcodelongheight + $writer->imagefontheight($fontsize) + 1
-
-        );
-
- 
-
-        // Alocate the black and white colors
-
-        $black = $writer->imagecolorallocate($img, 0, 0, 0);
-
-        $white = $writer->imagecolorallocate($img, 255, 255, 255);
-
- 
-
-        // Fill image with white color
-
-        $writer->imagefill($img, 0, 0, $white);
-
- 
-
-        // get the first digit which is the key for creating the first 6 bars
-
-        $key = substr($text, 0, 1);
-
- 
-
-        // Initiate x position
-
-        $xpos = 0;
-
- 
-
-        // print first digit
-
-        if ($this->showText) {
-
-            $writer->imagestring(
-
-                $img,
-
-                $fontsize,
-
-                $xpos,
-
-                $this->getBarcodeHeight(),
-
-                $key,
-
-                $black
-
-            );
-
- 
-
-            $xpos = $writer->imagefontwidth($fontsize) + 1;
-
-        };
-
- 
-
- 
-
-        // Draws the left guard pattern (bar-space-bar)
-
-        // bar
-
-        $writer->imagefilledrectangle(
-
-            $img,
-
-            $xpos,
-
-            0,
-
-            $xpos + $this->getBarcodeWidth() - 1,
-
-            $barcodelongheight, 
-
-            $black
-
-        );
-
-        $xpos += $this->getBarcodeWidth();
-
-        // space
-
-        $xpos += $this->getBarcodeWidth();
-
-        // bar
-
-        $writer->imagefilledrectangle(
-
-            $img,
-
-            $xpos,
-
-            0,
-
-            $xpos + $this->getBarcodeWidth() - 1,
-
-            $barcodelongheight, 
-
-            $black
-
-        );
-
-        $xpos += $this->getBarcodeWidth();
-
- 
-
-        // Draw left $text contents
-
-        $set_array = $this->_codingmapleft[$key];
-
-        for ($idx = 1; $idx < 7; $idx ++) {
-
-            $value = substr($text, $idx, 1);
-
- 
-
-            if ($this->showText) {
-
-                $writer->imagestring(
-
-                    $img,
-
-                    $fontsize,
-
-                    $xpos + 1, 
-
-                    $this->getBarcodeHeight(), 
-
-                    $value, 
-
-                    $black
-
-                );
-
-            }
-
- 
-
-            foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar) {
-
-                if ($bar) {
-
-                    $writer->imagefilledrectangle(
-
-                        $img,
-
-                        $xpos,
-
-                        0,
-
-                        $xpos + $this->getBarcodeWidth() - 1,
-
-                        $this->getBarcodeHeight(),
-
-                        $black
-
-                    );
-
-                }
-
-                $xpos += $this->getBarcodeWidth();
-
-            }
-
-        }
-
- 
-
-        // Draws the center pattern (space-bar-space-bar-space)
-
-        // space
-
-        $xpos += $this->getBarcodeWidth();
-
-        // bar
-
-        $writer->imagefilledrectangle(
-
-            $img,
-
-            $xpos,
-
-            0,
-
-            $xpos + $this->getBarcodeWidth() - 1,
-
-            $barcodelongheight,
-
-            $black
-
-        );
-
-        $xpos += $this->getBarcodeWidth();
-
-        // space
-
-        $xpos += $this->getBarcodeWidth();
-
-        // bar
-
-        $writer->imagefilledrectangle(
-
-            $img,
-
-            $xpos,
-
-            0,
-
-            $xpos + $this->getBarcodeWidth() - 1,
-
-            $barcodelongheight,
-
-            $black
-
-        );
-
-        $xpos += $this->getBarcodeWidth();
-
-        // space
-
-        $xpos += $this->getBarcodeWidth();
-
- 
-
- 
-
-        // Draw right $text contents
-
-        for ($idx = 7; $idx < 13; $idx ++) {
-
-            $value = substr($text, $idx, 1);
-
- 
-
-            if ($this->showText) {
-
-                $writer->imagestring(
-
-                    $img,
-
-                    $fontsize,
-
-                    $xpos + 1,
-
-                    $this->getBarcodeHeight(),
-
-                    $value,
-
-                    $black
-
-                );
-
-            }
-
- 
-
-            foreach ($this->_codingmap[$value]['C'] as $bar) {
-
-                if ($bar) {
-
-                    $writer->imagefilledrectangle(
-
-                        $img,
-
-                        $xpos,
-
-                        0,
-
-                        $xpos + $this->getBarcodeWidth() - 1,
-
-                        $this->getBarcodeHeight(),
-
-                        $black
-
-                    );
-
-                }
-
-                $xpos += $this->getBarcodeWidth();
-
-            }
-
-        }
-
- 
-
-        // Draws the right guard pattern (bar-space-bar)
-
-        // bar
-
-        $writer->imagefilledrectangle(
-
-            $img,
-
-            $xpos,
-
-            0,
-
-            $xpos + $this->getBarcodeWidth() - 1,
-
-            $barcodelongheight, 
-
-            $black
-
-        );
-
-        $xpos += $this->getBarcodeWidth();
-
-        // space
-
-        $xpos += $this->getBarcodeWidth();
-
-        // bar
-
-        $writer->imagefilledrectangle(
-
-            $img,
-
-            $xpos,
-
-            0,
-
-            $xpos + $this->getBarcodeWidth() - 1,
-
-            $barcodelongheight, 
-
-            $black
-
-        );
-
- 
-
-        return $img;
-
-    } // function create
