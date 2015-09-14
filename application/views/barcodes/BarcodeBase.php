@@ -28,6 +28,11 @@ abstract class BarcodeBase
 	protected $img = null;
 
 	/*
+	 * @var data - to be set
+	 */
+	protected $data = '';
+	
+	/*
 	 * @var int x (width)
 	 */
 	protected $x = 0;
@@ -58,6 +63,18 @@ abstract class BarcodeBase
 	 */
 	abstract public function setData($data);
 
+	/*
+	 * Get the data
+	 *
+	 * @param mixed data - (int or string) Data to be encoded
+	 * @return instance of \emberlabs\Barcode\BarcodeInterface
+	 * @return throws \OverflowException
+	 */
+	public function getData()
+	{
+		return $this->data;
+	}
+	
 	/*
 	 * (Abstract) Draw the image
 	 *

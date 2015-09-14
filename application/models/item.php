@@ -143,7 +143,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number',$item_number);
-        	$this->db->where('items.deleted',0); // Parq 131226
+		$this->db->where('items.deleted',0); // Parq 131226
         
 		$query = $this->db->get();
 
@@ -162,7 +162,7 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where_in('item_id',$item_ids);
+		$this->db->where_in('item_id', $item_ids);
 		$this->db->order_by('item_id', 'asc');
 		return $this->db->get();
 	}

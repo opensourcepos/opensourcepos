@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @package     Barcode Creator
- * @copyright   (c) 2011 emberlabs.org
- * @license     http://opensource.org/licenses/mit-license.php The MIT License
- * @link        https://github.com/samt/barcode
+ * @package   Barcode Creator
+ * @copyright (c) 2011 emberlabs.org
+ * @license   http://opensource.org/licenses/mit-license.php The MIT License
+ * @link      https://github.com/samt/barcode
  *
  * Minimum Requirement: PHP 5.3.0
  */
@@ -34,92 +34,87 @@ namespace emberlabs\Barcode;
 
 /**
  * emberlabs Barcode Creator - Ean13
- * 	     Generate Ean13 Barcodes
+ *           Generate Ean13 Barcodes
  *
  *
- * @license     http://opensource.org/licenses/mit-license.php The MIT License
- * @link        https://github.com/samt/barcode
+ * @license	 http://opensource.org/licenses/mit-license.php The MIT License
+ * @link		https://github.com/samt/barcode
  */
 class Ean13 extends BarcodeBase
 {
 	/*
-	 * @var data - to be set
+	 * Coding map
+	 * @var array 
 	 */
-	private $data = '';
-	
-    /*
-     * Coding map
-     * @var array 
-     */
-    private $_codingmap = array(
-        '0' => array(
-            'A' => array(0,0,0,1,1,0,1),
-            'B' => array(0,1,0,0,1,1,1),
-            'C' => array(1,1,1,0,0,1,0)
-        ),
-        '1' => array(
-            'A' => array(0,0,1,1,0,0,1),
-            'B' => array(0,1,1,0,0,1,1),
-            'C' => array(1,1,0,0,1,1,0)
-        ),
-        '2' => array(
-            'A' => array(0,0,1,0,0,1,1),
-            'B' => array(0,0,1,1,0,1,1),
-            'C' => array(1,1,0,1,1,0,0)
-        ),
-        '3' => array(
-            'A' => array(0,1,1,1,1,0,1),
-            'B' => array(0,1,0,0,0,0,1),
-            'C' => array(1,0,0,0,0,1,0)
-        ),
-        '4' => array(
-            'A' => array(0,1,0,0,0,1,1),
-            'B' => array(0,0,1,1,1,0,1),
-            'C' => array(1,0,1,1,1,0,0)
-        ),
-        '5' => array(
-            'A' => array(0,1,1,0,0,0,1),
-            'B' => array(0,1,1,1,0,0,1),
-            'C' => array(1,0,0,1,1,1,0)
-        ),
-        '6' => array(
-            'A' => array(0,1,0,1,1,1,1),
-            'B' => array(0,0,0,0,1,0,1),
-            'C' => array(1,0,1,0,0,0,0)
-        ),
-        '7' => array(
-            'A' => array(0,1,1,1,0,1,1),
-            'B' => array(0,0,1,0,0,0,1),
-            'C' => array(1,0,0,0,1,0,0)
-        ),
-        '8' => array(
-            'A' => array(0,1,1,0,1,1,1),
-            'B' => array(0,0,0,1,0,0,1),
-            'C' => array(1,0,0,1,0,0,0)
-        ),
-        '9' => array(
-            'A' => array(0,0,0,1,0,1,1),
-            'B' => array(0,0,1,0,1,1,1),
-            'C' => array(1,1,1,0,1,0,0)
-        )
-    );
+	private $_codingmap = array(
+		'0' => array(
+			'A' => array(0,0,0,1,1,0,1),
+			'B' => array(0,1,0,0,1,1,1),
+			'C' => array(1,1,1,0,0,1,0)
+		),
+		'1' => array(
+			'A' => array(0,0,1,1,0,0,1),
+			'B' => array(0,1,1,0,0,1,1),
+			'C' => array(1,1,0,0,1,1,0)
+		),
+		'2' => array(
+			'A' => array(0,0,1,0,0,1,1),
+			'B' => array(0,0,1,1,0,1,1),
+			'C' => array(1,1,0,1,1,0,0)
+		),
+		'3' => array(
+			'A' => array(0,1,1,1,1,0,1),
+			'B' => array(0,1,0,0,0,0,1),
+			'C' => array(1,0,0,0,0,1,0)
+		),
+		'4' => array(
+			'A' => array(0,1,0,0,0,1,1),
+			'B' => array(0,0,1,1,1,0,1),
+			'C' => array(1,0,1,1,1,0,0)
+		),
+		'5' => array(
+			'A' => array(0,1,1,0,0,0,1),
+			'B' => array(0,1,1,1,0,0,1),
+			'C' => array(1,0,0,1,1,1,0)
+		),
+		'6' => array(
+			'A' => array(0,1,0,1,1,1,1),
+			'B' => array(0,0,0,0,1,0,1),
+			'C' => array(1,0,1,0,0,0,0)
+		),
+		'7' => array(
+			'A' => array(0,1,1,1,0,1,1),
+			'B' => array(0,0,1,0,0,0,1),
+			'C' => array(1,0,0,0,1,0,0)
+		),
+		'8' => array(
+			'A' => array(0,1,1,0,1,1,1),
+			'B' => array(0,0,0,1,0,0,1),
+			'C' => array(1,0,0,1,0,0,0)
+		),
+		'9' => array(
+			'A' => array(0,0,0,1,0,1,1),
+			'B' => array(0,0,1,0,1,1,1),
+			'C' => array(1,1,1,0,1,0,0)
+		)
+	);
 
-    /*
-     * Coding map left
-     * @var array 
-     */
-    private $_codingmapleft = array(
-        '0' => array('A','A','A','A','A','A'),
-        '1' => array('A','A','B','A','B','B'),
-        '2' => array('A','A','B','B','A','B'),
-        '3' => array('A','A','B','B','B','A'),
-        '4' => array('A','B','A','A','B','B'),
-        '5' => array('A','B','B','A','A','B'),
-        '6' => array('A','B','B','B','A','A'),
-        '7' => array('A','B','A','B','A','B'),
-        '8' => array('A','B','A','B','B','A'),
-        '9' => array('A','B','B','A','B','A')
-    );
+	/*
+	 * Coding map left
+	 * @var array 
+	 */
+	private $_codingmapleft = array(
+		'0' => array('A','A','A','A','A','A'),
+		'1' => array('A','A','B','A','B','B'),
+		'2' => array('A','A','B','B','A','B'),
+		'3' => array('A','A','B','B','B','A'),
+		'4' => array('A','B','A','A','B','B'),
+		'5' => array('A','B','B','A','A','B'),
+		'6' => array('A','B','B','B','A','A'),
+		'7' => array('A','B','A','B','A','B'),
+		'8' => array('A','B','A','B','B','A'),
+		'9' => array('A','B','B','A','B','A')
+	);
 
 	/*
 	 * Generate EAN13 code out of a provided number
@@ -130,21 +125,21 @@ class Ean13 extends BarcodeBase
 	 */
 	private function generateEAN($number)
 	{
-		$code = '200' . str_pad($number, 9, '0');
+		$this->data = '200' . str_pad($number, 9, '0');
 		$weightflag = true;
 		$sum = 0;
 		
 		// Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit. 
 		// loop backwards to make the loop length-agnostic. The same basic functionality 
 		// will work for codes of different lengths.
-		for ($i = strlen($code) - 1; $i >= 0; $i--)
+		for ($i = strlen($this->data) - 1; $i >= 0; $i--)
 		{
-			$sum += (int)$code[$i] * ($weightflag?3:1);
+			$sum += (int)$this->data[$i] * ($weightflag?3:1);
 			$weightflag = !$weightflag;
 		}
-		$code .= (10 - ($sum % 10)) % 10;
+		$this->data .= (10 - ($sum % 10)) % 10;
 		
-		return $code;
+		return $this->data;
 	}
 
 	/*
@@ -156,7 +151,7 @@ class Ean13 extends BarcodeBase
 	 */
 	public function setData($data)
 	{
-		$this->data = $data;
+		$this->data = $this->generateEAN($data);
 	}
 
 	/*
@@ -166,17 +161,15 @@ class Ean13 extends BarcodeBase
 	 */
 	public function draw()
 	{
-		$code = $this->generateEAN($this->data);
-
 		// Bars is in reference to a single, 1-level bar
-		$pxPerBar = 2.5;
+		$pxPerBar = 2;
 		
-        // Calculate the barcode width
-        $barcodewidth = (strlen($code)) * (7 * $pxPerBar)
-            + 3 * $pxPerBar  // left
-            + 5 * $pxPerBar  // center
-            + 3 * $pxPerBar  // right
-            ;
+		// Calculate the barcode width
+		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar) 
+			+ 3 * $pxPerBar  // left
+			+ 5 * $pxPerBar  // center
+			+ 3 * $pxPerBar  // right
+			;
 
 		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
 			
@@ -190,110 +183,53 @@ class Ean13 extends BarcodeBase
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
 		
-        // Fill image with white color
-        imagefill($this->img, 0, 0, $white);
+		// Fill image with white color
+		imagefill($this->img, 0, 0, $white);
 
-        // get the first digit which is the key for creating the first 6 bars
-        $key = substr($code, 0, 1);
+		// get the first digit which is the key for creating the first 6 bars
+		$key = substr($this->data, 0, 1);
 
-        // Initiate x position
-        $xpos = 0;
+		// Initiate x position centering the bar
+		$xpos = ($this->x - $barcodewidth) / 2;
  
-        // Draws the left guard pattern (bar-space-bar)
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
-            $xpos + $pxPerBar - 1,
-            $this->y, 
-            $black
-        );
+		// Draws the left guard pattern (bar-space-bar)
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y, 
+			$black
+		);
 
-        $xpos += $pxPerBar;
+		$xpos += $pxPerBar;
 
-        // space
-        $xpos += $pxPerBar;
+		// space
+		$xpos += $pxPerBar;
 
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
-            $xpos + $pxPerBar - 1,
-            $this->y,
-            $black
-        );
-
-        $xpos += $pxPerBar;
-
-        // Draw left $code contents
-        $set_array = $this->_codingmapleft[$key];
-
-        for ($idx = 1; $idx < 7; $idx ++)
-		{
-            $value = substr($code, $idx, 1);
-
-            foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
-			{
-                if ($bar)
-				{
-					imagefilledrectangle(
-						$this->img,
-                        $xpos,
-                        0,
-						$xpos + $pxPerBar - 1,
-						$this->y,
-                        $black
-                    );
-                }
-
-                $xpos += $pxPerBar;
-            }
-        }
-
-        // Draws the center pattern (space-bar-space-bar-space)
-        // space
-        $xpos += $pxPerBar;
-
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
 			$xpos + $pxPerBar - 1,
 			$this->y,
-            $black
-        );
+			$black
+		);
 
-        $xpos += $pxPerBar;
+		$xpos += $pxPerBar;
 
-        // space
-        $xpos += $pxPerBar;
+		// Draw left $this->data contents
+		$set_array = $this->_codingmapleft[$key];
 
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
-			$xpos + $pxPerBar - 1,
-			$this->y,
-            $black
-        );
-
-        $xpos += $pxPerBar;
-
-        // space
-        $xpos += $pxPerBar;
-
-        // Draw right $code contents
-        for ($idx = 7; $idx < 13; $idx ++)
+		for ($idx = 1; $idx < 7; $idx ++)
 		{
-            $value = substr($code, $idx, 1);
+			$value = substr($this->data, $idx, 1);
 
-            foreach ($this->_codingmap[$value]['C'] as $bar)
+			foreach ($this->_codingmap[$value][$set_array[$idx - 1]] as $bar)
 			{
-                if ($bar)
+				if ($bar)
 				{
 					imagefilledrectangle(
 						$this->img,
@@ -302,38 +238,95 @@ class Ean13 extends BarcodeBase
 						$xpos + $pxPerBar - 1,
 						$this->y,
 						$black
-                    );
-                }
+					);
+				}
 
-                $xpos += $pxPerBar;
-            }
-        }
+				$xpos += $pxPerBar;
+			}
+		}
 
-        // Draws the right guard pattern (bar-space-bar)
-        // bar
-        imagefilledrectangle(
-            $this->img,
+		// Draws the center pattern (space-bar-space-bar-space)
+		// space
+		$xpos += $pxPerBar;
+
+		// bar
+		imagefilledrectangle(
+			$this->img,
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
 			$this->y,
 			$black
-        );
+		);
 
-        $xpos += $pxPerBar;
+		$xpos += $pxPerBar;
 
-        // space
-        $xpos += $pxPerBar;
+		// space
+		$xpos += $pxPerBar;
 
-        // bar
-        imagefilledrectangle(
-            $this->img,
+		// bar
+		imagefilledrectangle(
+			$this->img,
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
 			$this->y,
 			$black
-        );
+		);
+
+		$xpos += $pxPerBar;
+
+		// space
+		$xpos += $pxPerBar;
+
+		// Draw right $this->data contents
+		for ($idx = 7; $idx < 13; $idx ++)
+		{
+			$value = substr($this->data, $idx, 1);
+
+			foreach ($this->_codingmap[$value]['C'] as $bar)
+			{
+				if ($bar)
+				{
+					imagefilledrectangle(
+						$this->img,
+						$xpos,
+						0,
+						$xpos + $pxPerBar - 1,
+						$this->y,
+						$black
+					);
+				}
+
+				$xpos += $pxPerBar;
+			}
+		}
+
+		// Draws the right guard pattern (bar-space-bar)
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+			$black
+		);
+
+		$xpos += $pxPerBar;
+
+		// space
+		$xpos += $pxPerBar;
+
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+			$black
+		);
 	}
 }
 ?>

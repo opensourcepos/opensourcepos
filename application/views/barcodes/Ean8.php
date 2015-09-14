@@ -1,10 +1,10 @@
 <?php
 /**
  *
- * @package     Barcode Creator
- * @copyright   (c) 2011 emberlabs.org
- * @license     http://opensource.org/licenses/mit-license.php The MIT License
- * @link        https://github.com/samt/barcode
+ * @package   Barcode Creator
+ * @copyright (c) 2011 emberlabs.org
+ * @license   http://opensource.org/licenses/mit-license.php The MIT License
+ * @link      https://github.com/samt/barcode
  *
  * Minimum Requirement: PHP 5.3.0
  */
@@ -34,129 +34,124 @@ namespace emberlabs\Barcode;
 
 /**
  * emberlabs Barcode Creator - Ean8
- * 	     Generate Ean8 Barcodes
+ *           Generate Ean8 Barcodes
  *
  *
- * @license     http://opensource.org/licenses/mit-license.php The MIT License
- * @link        https://github.com/samt/barcode
+ * @license	 http://opensource.org/licenses/mit-license.php The MIT License
+ * @link		https://github.com/samt/barcode
  */
 class Ean8 extends BarcodeBase
 {
 	/*
-	 * @var data - to be set
+	 * Coding map
+	 * @var array 
 	 */
-	private $data = '';
-	
-    /*
-     * Coding map
-     * @var array 
-     */
-    private $_codingmap = array(
-        '0' => array(
-            'A' => array(0,0,0,1,1,0,1),
-            'C' => array(1,1,1,0,0,1,0)
-        ),
-        '1' => array(
-            'A' => array(0,0,1,1,0,0,1),
-            'C' => array(1,1,0,0,1,1,0)
-        ),
-        '2' => array(
-            'A' => array(0,0,1,0,0,1,1),
-            'C' => array(1,1,0,1,1,0,0)
-        ),
-        '3' => array(
-            'A' => array(0,1,1,1,1,0,1),
-            'C' => array(1,0,0,0,0,1,0)
-        ),
-        '4' => array(
-            'A' => array(0,1,0,0,0,1,1),
-            'C' => array(1,0,1,1,1,0,0)
-        ),
-        '5' => array(
-            'A' => array(0,1,1,0,0,0,1),
-            'C' => array(1,0,0,1,1,1,0)
-        ),
-        '6' => array(
-            'A' => array(0,1,0,1,1,1,1),
-            'C' => array(1,0,1,0,0,0,0)
-        ),
-        '7' => array(
-            'A' => array(0,1,1,1,0,1,1),
-            'C' => array(1,0,0,0,1,0,0)
-        ),
-        '8' => array(
-            'A' => array(0,1,1,0,1,1,1),
-            'C' => array(1,0,0,1,0,0,0)
-        ),
-        '9' => array(
-            'A' => array(0,0,0,1,0,1,1),
-            'C' => array(1,1,1,0,1,0,0)
-        )
-    );
+	private $_codingmap = array(
+		'0' => array(
+			'A' => array(0,0,0,1,1,0,1),
+			'C' => array(1,1,1,0,0,1,0)
+		),
+		'1' => array(
+			'A' => array(0,0,1,1,0,0,1),
+			'C' => array(1,1,0,0,1,1,0)
+		),
+		'2' => array(
+			'A' => array(0,0,1,0,0,1,1),
+			'C' => array(1,1,0,1,1,0,0)
+		),
+		'3' => array(
+			'A' => array(0,1,1,1,1,0,1),
+			'C' => array(1,0,0,0,0,1,0)
+		),
+		'4' => array(
+			'A' => array(0,1,0,0,0,1,1),
+			'C' => array(1,0,1,1,1,0,0)
+		),
+		'5' => array(
+			'A' => array(0,1,1,0,0,0,1),
+			'C' => array(1,0,0,1,1,1,0)
+		),
+		'6' => array(
+			'A' => array(0,1,0,1,1,1,1),
+			'C' => array(1,0,1,0,0,0,0)
+		),
+		'7' => array(
+			'A' => array(0,1,1,1,0,1,1),
+			'C' => array(1,0,0,0,1,0,0)
+		),
+		'8' => array(
+			'A' => array(0,1,1,0,1,1,1),
+			'C' => array(1,0,0,1,0,0,0)
+		),
+		'9' => array(
+			'A' => array(0,0,0,1,0,1,1),
+			'C' => array(1,1,1,0,1,0,0)
+		)
+	);
 
 	/*
 	 * Calculate EAN8 or EAN13 automatically
 	 * set $len = 8 for EAN8, $len = 13 for EAN13
 	 * 
 	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
-	 * @return string with complete EAN13 code
+	 * @return string with complete EAN code
 	 */
 	private function generateEAN($number, $len = 8)
 	{
-		$code = null;
+		$this->data = null;
 	
 		if($number > -1)
 		{
 			$data_len = $len - 1;
-			$code = $number;
+			$this->data = $number;
 			
 			//Padding
-			$code = str_pad($code, $data_len, '0', STR_PAD_LEFT);
-			$code_len = strlen($code);
+			$this->data = str_pad($this->data, $data_len, '0', STR_PAD_LEFT);
+			$this->data_len = strlen($this->data);
 			
 			// calculate check digit
 			$sum_a = 0;
 			for ($i = 1; $i < $data_len; $i += 2)
 			{
-			    $sum_a += $code{$i};
+				$sum_a += $this->data{$i};
 			}
 			
 			if ($len > 12)
 			{
-			    $sum_a *= 3;
+				$sum_a *= 3;
 			}
 			
 			$sum_b = 0;
 			for ($i = 0; $i < $data_len; $i += 2)
 			{
-			    $sum_b += ($code{$i});
+				$sum_b += ($this->data{$i});
 			}
 			
 			if ($len < 13)
 			{
-			    $sum_b *= 3;
+				$sum_b *= 3;
 			}
 			
 			$r = ($sum_a + $sum_b) % 10;
 			
 			if($r > 0)
 			{
-			    $r = (10 - $r);
+				$r = (10 - $r);
 			}
 			
-			if ($code_len == $data_len)
+			if ($this->data_len == $data_len)
 			{
-			    // add check digit
-			    $code .= $r;
+				// add check digit
+				$this->data .= $r;
 			}
-			elseif ($r !== intval($code{$data_len}))
+			elseif ($r !== intval($this->data{$data_len}))
 			{
-			    // wrong checkdigit
-			    $code = null;
+				// wrong checkdigit
+				$this->data = null;
 			}
 		}
 
-		return $code;
+		return $this->data;
 	}
 
 	/*
@@ -168,7 +163,7 @@ class Ean8 extends BarcodeBase
 	 */
 	public function setData($data)
 	{
-		$this->data = $data;
+		$this->data = $this->generateEAN($data);
 	}
 
 	/*
@@ -178,17 +173,15 @@ class Ean8 extends BarcodeBase
 	 */
 	public function draw()
 	{
-		$code = $this->generateEAN($this->data);
-
 		// Bars is in reference to a single, 1-level bar
-		$pxPerBar = 2.5;
+		$pxPerBar = 2;
 		
-        // Calculate the barcode width
-        $barcodewidth = (strlen($code)) * (7 * $pxPerBar)
-            + 3 * $pxPerBar  // left
-            + 5 * $pxPerBar  // center
-            + 3 * $pxPerBar  // right
-            ;
+		// Calculate the barcode width
+		$barcodewidth = (strlen($this->data)) * (7 * $pxPerBar)
+			+ 3 * $pxPerBar  // left
+			+ 5 * $pxPerBar  // center
+			+ 3 * $pxPerBar  // right
+			;
 
 		$this->x = ($this->x == 0) ? $barcodewidth : $this->x;
 			
@@ -196,113 +189,56 @@ class Ean8 extends BarcodeBase
 		
 		if (!$this->img)
 		{
-			throw new \RuntimeException("Ean13: Image failed to initialize");
+			throw new \RuntimeException("Ean8: Image failed to initialize");
 		}
 		
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
 		
-        // Fill image with white color
-        imagefill($this->img, 0, 0, $white);
+		// Fill image with white color
+		imagefill($this->img, 0, 0, $white);
 
-        // get the first digit which is the key for creating the first 6 bars
-        $key = substr($code, 0, 1);
+		// get the first digit which is the key for creating the first 6 bars
+		$key = substr($this->data, 0, 1);
 
-        // Initiate x position
-        $xpos = 0;
+		// Initiate x position centering the bar
+		$xpos = ($this->x - $barcodewidth) / 2;
  
-        // Draws the left guard pattern (bar-space-bar)
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
-            $xpos + $pxPerBar - 1,
-            $this->y, 
-            $black
-        );
+		// Draws the left guard pattern (bar-space-bar)
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y, 
+			$black
+		);
 
-        $xpos += $pxPerBar;
+		$xpos += $pxPerBar;
 
-        // space
-        $xpos += $pxPerBar;
+		// space
+		$xpos += $pxPerBar;
 
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
-            $xpos + $pxPerBar - 1,
-            $this->y,
-            $black
-        );
-
-        $xpos += $pxPerBar;
-
-        for ($idx = 0; $idx < 4; $idx ++)
-		{
-            $value = substr($code, $idx, 1);
-
-            foreach ($this->_codingmap[$value]['A'] as $bar)
-			{
-                if ($bar)
-				{
-					imagefilledrectangle(
-						$this->img,
-                        $xpos,
-                        0,
-						$xpos + $pxPerBar - 1,
-						$this->y,
-                        $black
-                    );
-                }
-
-                $xpos += $pxPerBar;
-            }
-        }
-
-        // Draws the center pattern (space-bar-space-bar-space)
-        // space
-        $xpos += $pxPerBar;
-
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
 			$xpos + $pxPerBar - 1,
 			$this->y,
-            $black
-        );
+			$black
+		);
 
-        $xpos += $pxPerBar;
+		$xpos += $pxPerBar;
 
-        // space
-        $xpos += $pxPerBar;
-
-        // bar
-        imagefilledrectangle(
-            $this->img,
-            $xpos,
-            0,
-			$xpos + $pxPerBar - 1,
-			$this->y,
-            $black
-        );
-
-        $xpos += $pxPerBar;
-
-        // space
-        $xpos += $pxPerBar;
-
-        // Draw right $code contents
-        for ($idx = 4; $idx < 8; $idx ++)
+		for ($idx = 0; $idx < 4; $idx ++)
 		{
-            $value = substr($code, $idx, 1);
+			$value = substr($this->data, $idx, 1);
 
-            foreach ($this->_codingmap[$value]['C'] as $bar)
+			foreach ($this->_codingmap[$value]['A'] as $bar)
 			{
-                if ($bar)
+				if ($bar)
 				{
 					imagefilledrectangle(
 						$this->img,
@@ -311,38 +247,95 @@ class Ean8 extends BarcodeBase
 						$xpos + $pxPerBar - 1,
 						$this->y,
 						$black
-                    );
-                }
+					);
+				}
 
-                $xpos += $pxPerBar;
-            }
-        }
+				$xpos += $pxPerBar;
+			}
+		}
 
-        // Draws the right guard pattern (bar-space-bar)
-        // bar
-        imagefilledrectangle(
-            $this->img,
+		// Draws the center pattern (space-bar-space-bar-space)
+		// space
+		$xpos += $pxPerBar;
+
+		// bar
+		imagefilledrectangle(
+			$this->img,
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
 			$this->y,
 			$black
-        );
+		);
 
-        $xpos += $pxPerBar;
+		$xpos += $pxPerBar;
 
-        // space
-        $xpos += $pxPerBar;
+		// space
+		$xpos += $pxPerBar;
 
-        // bar
-        imagefilledrectangle(
-            $this->img,
+		// bar
+		imagefilledrectangle(
+			$this->img,
 			$xpos,
 			0,
 			$xpos + $pxPerBar - 1,
 			$this->y,
 			$black
-        );
+		);
+
+		$xpos += $pxPerBar;
+
+		// space
+		$xpos += $pxPerBar;
+
+		// Draw right $this->data contents
+		for ($idx = 4; $idx < 8; $idx ++)
+		{
+			$value = substr($this->data, $idx, 1);
+
+			foreach ($this->_codingmap[$value]['C'] as $bar)
+			{
+				if ($bar)
+				{
+					imagefilledrectangle(
+						$this->img,
+						$xpos,
+						0,
+						$xpos + $pxPerBar - 1,
+						$this->y,
+						$black
+					);
+				}
+
+				$xpos += $pxPerBar;
+			}
+		}
+
+		// Draws the right guard pattern (bar-space-bar)
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+			$black
+		);
+
+		$xpos += $pxPerBar;
+
+		// space
+		$xpos += $pxPerBar;
+
+		// bar
+		imagefilledrectangle(
+			$this->img,
+			$xpos,
+			0,
+			$xpos + $pxPerBar - 1,
+			$this->y,
+			$black
+		);
 	}
 }
 ?>
