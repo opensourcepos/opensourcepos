@@ -18143,6 +18143,10 @@ function update_sortable_table()
 		var sorting = $("#sortable_table")[0].config.sortList; 		
 		$("#sortable_table").trigger("sorton",[sorting]);
 	}
+	else
+	{
+		window['init_table_sorting'] && init_table_sorting();
+	}
 }
 
 function get_table_row(id) {
