@@ -313,21 +313,6 @@ class Items extends Secure_area implements iData_controller
 				
 				// update the item in the database in order to save the UPC/EAN/ISBN field
 				$this->Item->save($item, $item['item_id']);
-
-				/* A nice to have: a pop up with confirmation using ajax, it's a TODO	
-				if( $this->Item->save($item, $item['item_id']) )
-				{
-					echo json_encode(array('success'=>true,
-							'message'=>$this->lang->line('items_successful_updating') . ' ' . $item['name'],
-							'item_id'=>$item['item_id']));
-				}
-				else//failure
-				{
-					echo json_encode(array('success'=>false,
-							'message'=>$this->lang->line('items_error_adding_updating') . ' ' . $item['name'],
-							'item_id'=>$item['item_id']));
-				}
-				*/
 			}
 		}
 	}

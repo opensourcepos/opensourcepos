@@ -24,7 +24,6 @@ $lang["common_gender_male"] = "M";
 $lang["common_inv"] = "Stok";
 $lang["common_last_name"] = "Soy İsim";
 $lang["common_last_name_required"] = "Soy isim zorunlu alandır.";
-$lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = " ";
 $lang["common_list_of"] = "Liste";
 $lang["common_logout"] = "Çıkış";

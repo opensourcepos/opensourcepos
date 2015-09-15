@@ -24,7 +24,6 @@ $lang["common_gender_male"] = "M";
 $lang["common_inv"] = "inv";
 $lang["common_last_name"] = "Nom";
 $lang["common_last_name_required"] = "Le nom est requis";
-$lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "pour les dernières informations sur le projet";
 $lang["common_list_of"] = "Liste de";
 $lang["common_logout"] = "Déconnexion";

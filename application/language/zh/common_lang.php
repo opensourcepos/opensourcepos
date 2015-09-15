@@ -24,7 +24,6 @@ $lang["common_gender_male"] = "M";
 $lang["common_inv"] = "庫存";
 $lang["common_last_name"] = "姓";
 $lang["common_last_name_required"] = "姓氏為必填";
-$lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "了解系統開展進度";
 $lang["common_list_of"] = "列表";
 $lang["common_logout"] = "登出";
