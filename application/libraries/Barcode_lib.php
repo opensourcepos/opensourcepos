@@ -42,7 +42,7 @@ class Barcode_lib
 		return $data;
 	}
 	
-	private function _get_barcode_instance($barcode_type)
+	private function get_barcode_instance($barcode_type)
 	{
 		switch($barcode_type)
 		{
@@ -69,7 +69,7 @@ class Barcode_lib
 	{
 		try
 		{
-			$barcode = $this->_get_barcode_instance($barcode_config['barcode_type']);
+			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
 			
 			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 			$barcode->setData($barcode_content);
@@ -90,12 +90,20 @@ class Barcode_lib
 	{
 		try
 		{
-			$barcode = $this->_get_barcode_instance($barcode_config['barcode_type']);
+			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
 			
 			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 			$barcode->setData($barcode_content);
 			
-			return $barcode->getData();
+			$code = $barcode->getData();
+			
+			// in case no new code is generated like in Code39 and Code128 return an empty string because we don't want to override it with a pure item_id
+			if( $code == $item['item_id'] )
+			{
+				$code = null;
+			}
+			
+			return $code;
 		} 
 		catch(Exception $e)
 		{

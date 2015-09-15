@@ -41,6 +41,7 @@ $lang["items_item"] = "Ürün";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
 $lang["items_item_number_duplicate"] = "The item number is already present in the database";
 $lang["items_location"] = "Yer";
+$lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "";
 $lang["items_manually_editing_of_quantity"] = "Elle adet düzeltme";
 $lang["items_must_select_item_for_barcode"] = "Barkod üretmek için en az bir ürün seçmelisiniz";

@@ -41,6 +41,7 @@ $lang["items_item"] = "Item";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
 $lang["items_item_number_duplicate"] = "The item number is already present in the database";
 $lang["items_location"] = "Location";
+$lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "Items à Stock Faible";
 $lang["items_manually_editing_of_quantity"] = "Édition Manuelle de Quantité";
 $lang["items_must_select_item_for_barcode"] = "Vous devez sélectionner au moins un item";

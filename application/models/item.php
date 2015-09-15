@@ -7,13 +7,13 @@ class Item extends CI_Model
 	function exists($item_id)
 	{
 		$this->db->from('items');
-		$this->db->where('item_id',$item_id);
+		$this->db->where('item_id', $item_id);
 		$query = $this->db->get();
 
 		return ($query->num_rows()==1);
 	}
 	
-	function item_number_exists($item_number,$item_id='')
+	function item_number_exists($item_number, $item_id='')
 	{
 		$this->db->from('items');
 		$this->db->where('item_number', $item_number);
@@ -32,7 +32,7 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 	
-	function get_found_rows($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$is_deleted=0)
+	function get_found_rows($search, $stock_location_id=-1, $empty_upc=0, $low_inventory=0, $is_serialized=0, $no_description=0, $search_custom=0, $is_deleted=0)
 	{
 		$this->db->from("items");
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -66,17 +66,21 @@ class Item extends CI_Model
 			}
 		}
 		$this->db->where('items.deleted', $is_deleted);
-		if ($low_inventory !=0 )
+		if ($empty_upc !=0)
+		{
+			$this->db->where('item_number', null);
+		}
+		if ($low_inventory !=0)
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
-		if ($is_serialized !=0 )
+		if ($is_serialized !=0)
 		{
 			$this->db->where('is_serialized', 1);
 		}
-		if ($no_description!=0 )
+		if ($no_description!=0)
 		{
-			$this->db->where('items.description','');
+			$this->db->where('items.description', '');
 		}
 		return $this->db->get()->num_rows();
 	}
@@ -110,7 +114,7 @@ class Item extends CI_Model
 		$this->db->select('suppliers.company_name');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where('item_id',$item_id);
+		$this->db->where('item_id', $item_id);
 		
 		$query = $this->db->get();
 
@@ -142,8 +146,8 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where('item_number',$item_number);
-		$this->db->where('items.deleted',0); // Parq 131226
+		$this->db->where('item_number', $item_number);
+		$this->db->where('items.deleted', 0); // Parq 131226
         
 		$query = $this->db->get();
 
@@ -611,14 +615,14 @@ class Item extends CI_Model
 	/*
 	 Persform a search on items
 	*/
-	function search($search,$stock_location_id=-1,$low_inventory=0,$is_serialized=0,$no_description=0,$search_custom=0,$deleted=0,$rows = 0,$limit_from = 0)
+	function search($search, $stock_location_id=-1, $empty_upc=0, $low_inventory=0, $is_serialized=0, $no_description=0, $search_custom=0, $deleted=0, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from("items");
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		if ($stock_location_id > -1)
 		{
-			$this->db->join('item_quantities','item_quantities.item_id=items.item_id');
-			$this->db->where('location_id',$stock_location_id);
+			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
+			$this->db->where('location_id', $stock_location_id);
 		}
 		if (!empty($search)) 
 		{
@@ -645,17 +649,21 @@ class Item extends CI_Model
 			}
 		}
 		$this->db->where('items.deleted', $deleted);
-		if ($low_inventory !=0 )
+		if ($empty_upc !=0)
+		{
+			$this->db->where('item_number', null);
+		}
+		if ($low_inventory !=0)
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
-		if ($is_serialized !=0 )
+		if ($is_serialized !=0)
 		{
 			$this->db->where('is_serialized', 1);
 		}
-		if ($no_description!=0 )
+		if ($no_description!=0)
 		{
-			$this->db->where('items.description','');
+			$this->db->where('items.description', '');
 		}
 		$this->db->order_by('items.name', "asc");
 		if ($rows > 0) {

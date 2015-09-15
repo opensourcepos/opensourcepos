@@ -41,6 +41,7 @@ $lang["items_item"] = "Товар";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
 $lang["items_item_number_duplicate"] = "The item number is already present in the database";
 $lang["items_location"] = "место";
+$lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "Низкий инвентаризации товары";
 $lang["items_manually_editing_of_quantity"] = "Руководство Изменить количество";
 $lang["items_must_select_item_for_barcode"] = "Вы должны выбрать хотя бы 1 товар для создания штрих-кодов";

@@ -153,6 +153,8 @@ function show_hide_search_filter(search_filter_section, switchImgTag) {
 </div>
 <?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
 <div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>;background-color:#EEEEEE;">
+	<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
+	<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
 	<?php echo form_checkbox(array('name'=>'low_inventory','id'=>'low_inventory','value'=>1,'checked'=> isset($low_inventory)?  ( ($low_inventory)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_serialized_items').' '.':', 'is_serialized');?>

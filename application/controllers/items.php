@@ -37,20 +37,21 @@ class Items extends Secure_area implements iData_controller
 	{
 		$search = $this->input->post('search');
 		$this->item_lib->set_item_location($this->input->post('stock_location'));
-		$stock_location=$this->item_lib->get_item_location();
+		$stock_location = $this->item_lib->get_item_location();
 		$data['search_section_state'] = $this->input->post('search_section_state');
-		$low_inventory=$this->input->post('low_inventory');
-		$is_serialized=$this->input->post('is_serialized');
-		$no_description=$this->input->post('no_description');
-		$search_custom=$this->input->post('search_custom');
-		$is_deleted=$this->input->post('is_deleted'); // Parq 131215
+		$empty_upc = $this->input->post('empty_upc');
+		$low_inventory = $this->input->post('low_inventory');
+		$is_serialized = $this->input->post('is_serialized');
+		$no_description = $this->input->post('no_description');
+		$search_custom = $this->input->post('search_custom');
+		$is_deleted = $this->input->post('is_deleted'); // Parq 131215
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->search($search,$stock_location,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted,$lines_per_page,$limit_from);
-		$data_rows=get_items_manage_table_data_rows($items,$this);
-		$total_rows = $this->Item->get_found_rows($search,$stock_location,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted);
+		$items = $this->Item->search($search,$stock_location,$empty_upc,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted,$lines_per_page,$limit_from);
+		$data_rows = get_items_manage_table_data_rows($items,$this);
+		$total_rows = $this->Item->get_found_rows($search,$stock_location,$empty_upc,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
-		$data_rows=get_items_manage_table_data_rows($items,$this);
+		$data_rows = get_items_manage_table_data_rows($items,$this);
 		$this->_remove_duplicate_cookies();
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
@@ -242,8 +243,7 @@ class Items extends Secure_area implements iData_controller
         {
            $quantity = $this->Item_quantities->get_item_quantity($item_id,$location['location_id'])->quantity;
            $quantity = ($item_id == -1) ? null: $quantity;
-           $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'],
-                                                                       'quantity'=>$quantity);
+           $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
            $data['stock_locations']= $location_array;
         }
 		$this->load->view("items/form",$data);
@@ -298,8 +298,8 @@ class Items extends Secure_area implements iData_controller
 		// check the list of items to see if any item_number field is empty
 		foreach($result as $item)
 		{
-			// update the UPC/EAN/ISBN field if empty with the newly generated barcode
-			if ($item['item_number'] == '')
+			// update the UPC/EAN/ISBN field if empty / null with the newly generated barcode
+			if ($item['item_number'] == '' || $item['item_number'] == null)
 			{
 				// get the newly generated barcode
 				$item['item_number'] = $this->barcode_lib->get_barcode($item, $config);
@@ -371,7 +371,7 @@ class Items extends Secure_area implements iData_controller
 			'allow_alt_description'=>$this->input->post('allow_alt_description'),
 			'is_serialized'=>$this->input->post('is_serialized'),
 			'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
-			'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
+			'custom1'=>$this->input->post('custom1'),/**GARRISON ADDED 4/21/2013**/			
 			'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
 			'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/
 			'custom4'=>$this->input->post('custom4'),/**GARRISON ADDED 4/21/2013**/
