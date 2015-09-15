@@ -170,7 +170,7 @@ class Item extends CI_Model
 	/*
 	Inserts or updates a item
 	*/
-	function save(&$item_data,$item_id=false)
+	function save(&$item_data, $item_id=false)
 	{
 		if (!$item_id or !$this->exists($item_id))
 		{
@@ -183,15 +183,17 @@ class Item extends CI_Model
 		}
 
 		$this->db->where('item_id', $item_id);
-		return $this->db->update('items',$item_data);
+
+		return $this->db->update('items', $item_data);
 	}
 
 	/*
 	Updates multiple items at once
 	*/
-	function update_multiple($item_data,$item_ids)
+	function update_multiple($item_data, $item_ids)
 	{
 		$this->db->where_in('item_id',$item_ids);
+
 		return $this->db->update('items',$item_data);
 	}
 

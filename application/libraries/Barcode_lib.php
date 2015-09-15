@@ -24,6 +24,8 @@ class Barcode_lib
 	
 	public function get_barcode_config()
 	{
+		$data['company'] = $this->CI->Appconfig->get('company');
+		$data['barcode_content'] = $this->CI->Appconfig->get('barcode_content');
 		$data['barcode_type'] = $this->CI->Appconfig->get('barcode_type');
 		$data['barcode_font'] = $this->CI->Appconfig->get('barcode_font');
 		$data['barcode_font_size'] = $this->CI->Appconfig->get('barcode_font_size');
@@ -40,33 +42,40 @@ class Barcode_lib
 		return $data;
 	}
 	
-	public function generate_barcode($barcode_content, $barcode_config)
+	private function _get_barcode_instance($barcode_type)
+	{
+		switch($barcode_type)
+		{
+			case '1':
+				return new emberlabs\Barcode\Code39();
+				break;
+				
+			case '2':
+			default:
+				return new emberlabs\Barcode\Code128();
+				break;
+				
+			case '3':
+				return new emberlabs\Barcode\Ean8();
+				break;
+				
+			case '4':
+				return new emberlabs\Barcode\Ean13();
+				break;
+		}
+	}
+	
+	private function generate_barcode($item, $barcode_config)
 	{
 		try
 		{
-			switch($barcode_config['barcode_type'])
-			{
-				case '1':
-					$barcode = new emberlabs\Barcode\Code39();
-					break;
-					
-				case '2':
-					$barcode = new emberlabs\Barcode\Code128();
-					break;
-					
-				case '3':
-					$barcode = new emberlabs\Barcode\Ean8();
-					break;
-					
-				case '4':
-				default:
-					$barcode = new emberlabs\Barcode\Ean13();
-					break;
-			}
+			$barcode = $this->_get_barcode_instance($barcode_config['barcode_type']);
 			
+			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 			$barcode->setData($barcode_content);
 			$barcode->setQuality($barcode_config['barcode_quality']);
 			$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
+
 			$barcode->draw();
 			
 			return $barcode->base64();
@@ -77,12 +86,28 @@ class Barcode_lib
 		}
 	}
 	
+	public function get_barcode($item, $barcode_config)
+	{
+		try
+		{
+			$barcode = $this->_get_barcode_instance($barcode_config['barcode_type']);
+			
+			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
+			$barcode->setData($barcode_content);
+			
+			return $barcode->getData();
+		} 
+		catch(Exception $e)
+		{
+			echo 'Caught exception: ',  $e->getMessage(), "\n";		
+		}
+	}
+
 	public function create_display_barcode($item, $barcode_config)
 	{
 		$display_table = "<table>";
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</td></tr>";
-		$barcode_content = $this->CI->Appconfig->get('barcode_content') === "id" ? $item['item_id'] : $item['item_number'];
-		$barcode = $this->generate_barcode($barcode_content, $barcode_config);
+		$barcode = $this->generate_barcode($item, $barcode_config);
 		$display_table .= "<tr><td align='center'><img src='data:image/png;base64,$barcode' /></td></tr>";
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</td></tr>";
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</td></tr>";
@@ -113,11 +138,11 @@ class Barcode_lib
 		}
 		else if($layout_type == 'company_name')
 		{
-			$result = $this->CI->Appconfig->get('company');
+			$result = $barcode_config['company'];
 		}
 		else if($layout_type == 'item_code')
 		{
-			$result = $this->CI->Appconfig->get('barcode_content') !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
+			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 		}
 
 		return $result;

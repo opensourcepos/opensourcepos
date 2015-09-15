@@ -248,7 +248,6 @@ class Items extends Secure_area implements iData_controller
         }
 		$this->load->view("items/form",$data);
 	}
-
     
 	//Ramel Inventory Tracking
 	function inventory($item_id=-1)
@@ -288,10 +287,49 @@ class Items extends Secure_area implements iData_controller
 
 		$item_ids = explode(':', $item_ids);
 		$result = $this->Item->get_multiple_info($item_ids)->result_array();
+		$config = $this->barcode_lib->get_barcode_config();
 
 		$data['items'] = $result;
-		$data['barcode_config'] = $this->barcode_lib->get_barcode_config();
+		$data['barcode_config'] = $config;
+		
+		// display barcodes
 		$this->load->view("barcode_sheet", $data);
+		
+		// check the list of items to see if any item_number field is empty
+		foreach($result as $item)
+		{
+			// update the UPC/EAN/ISBN field if empty with the newly generated barcode
+			if ($item['item_number'] == '')
+			{
+				// get the newly generated barcode
+				$item['item_number'] = $this->barcode_lib->get_barcode($item, $config);
+				
+				// remove from item any suppliers table info to avoid save failure because of unknown fields
+				// WARNING: if suppliers table is changed this list needs to be upgraded, which makes the matter a bit tricky to maintain
+				unset($item['person_id']);
+				unset($item['company_name']);
+				unset($item['account_number']);
+				unset($item['agency_name']);
+				
+				// update the item in the database in order to save the UPC/EAN/ISBN field
+				$this->Item->save($item, $item['item_id']);
+
+				/* A nice to have: a pop up with confirmation using ajax, it's a TODO	
+				if( $this->Item->save($item, $item['item_id']) )
+				{
+					echo json_encode(array('success'=>true,
+							'message'=>$this->lang->line('items_successful_updating') . ' ' . $item['name'],
+							'item_id'=>$item['item_id']));
+				}
+				else//failure
+				{
+					echo json_encode(array('success'=>false,
+							'message'=>$this->lang->line('items_error_adding_updating') . ' ' . $item['name'],
+							'item_id'=>$item['item_id']));
+				}
+				*/
+			}
+		}
 	}
 
 	function bulk_edit()
@@ -321,28 +359,28 @@ class Items extends Secure_area implements iData_controller
 		$upload_data = $this->upload->data();
         //Save item data
 		$item_data = array(
-		'name'=>$this->input->post('name'),
-		'description'=>$this->input->post('description'),
-		'category'=>$this->input->post('category'),
-		'supplier_id'=>$this->input->post('supplier_id')=='' ? null:$this->input->post('supplier_id'),
-		'item_number'=>$this->input->post('item_number')=='' ? null:$this->input->post('item_number'),
-		'cost_price'=>$this->input->post('cost_price'),
-		'unit_price'=>$this->input->post('unit_price'),
-		'reorder_level'=>$this->input->post('reorder_level'),
-		'receiving_quantity'=>$this->input->post('receiving_quantity'),
-		'allow_alt_description'=>$this->input->post('allow_alt_description'),
-		'is_serialized'=>$this->input->post('is_serialized'),
-		'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
-		'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
-		'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
-		'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/
-		'custom4'=>$this->input->post('custom4'),/**GARRISON ADDED 4/21/2013**/
-		'custom5'=>$this->input->post('custom5'),/**GARRISON ADDED 4/21/2013**/
-		'custom6'=>$this->input->post('custom6'),/**GARRISON ADDED 4/21/2013**/
-		'custom7'=>$this->input->post('custom7'),/**GARRISON ADDED 4/21/2013**/
-		'custom8'=>$this->input->post('custom8'),/**GARRISON ADDED 4/21/2013**/
-		'custom9'=>$this->input->post('custom9'),/**GARRISON ADDED 4/21/2013**/
-		'custom10'=>$this->input->post('custom10')/**GARRISON ADDED 4/21/2013**/
+			'name'=>$this->input->post('name'),
+			'description'=>$this->input->post('description'),
+			'category'=>$this->input->post('category'),
+			'supplier_id'=>$this->input->post('supplier_id')=='' ? null:$this->input->post('supplier_id'),
+			'item_number'=>$this->input->post('item_number')=='' ? null:$this->input->post('item_number'),
+			'cost_price'=>$this->input->post('cost_price'),
+			'unit_price'=>$this->input->post('unit_price'),
+			'reorder_level'=>$this->input->post('reorder_level'),
+			'receiving_quantity'=>$this->input->post('receiving_quantity'),
+			'allow_alt_description'=>$this->input->post('allow_alt_description'),
+			'is_serialized'=>$this->input->post('is_serialized'),
+			'deleted'=>$this->input->post('is_deleted'),  /** Parq 131215 **/
+			'custom1'=>$this->input->post('custom1'),	/**GARRISON ADDED 4/21/2013**/			
+			'custom2'=>$this->input->post('custom2'),/**GARRISON ADDED 4/21/2013**/
+			'custom3'=>$this->input->post('custom3'),/**GARRISON ADDED 4/21/2013**/
+			'custom4'=>$this->input->post('custom4'),/**GARRISON ADDED 4/21/2013**/
+			'custom5'=>$this->input->post('custom5'),/**GARRISON ADDED 4/21/2013**/
+			'custom6'=>$this->input->post('custom6'),/**GARRISON ADDED 4/21/2013**/
+			'custom7'=>$this->input->post('custom7'),/**GARRISON ADDED 4/21/2013**/
+			'custom8'=>$this->input->post('custom8'),/**GARRISON ADDED 4/21/2013**/
+			'custom9'=>$this->input->post('custom9'),/**GARRISON ADDED 4/21/2013**/
+			'custom10'=>$this->input->post('custom10')/**GARRISON ADDED 4/21/2013**/
 		);
 		
 		if (!empty($upload_data['orig_name']))
@@ -424,7 +462,6 @@ class Items extends Secure_area implements iData_controller
 					'message'=>$this->lang->line('items_error_adding_updating').' '
 					.$item_data['name'],'item_id'=>-1));
 		}
-
 	}
 	
 	function check_item_number()
