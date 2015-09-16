@@ -24,6 +24,7 @@ $lang["common_gender_male"] = "M";
 $lang["common_inv"] = "stock";
 $lang["common_last_name"] = "Achternaam";
 $lang["common_last_name_required"] = "De achternaam moet ingevuld worden.";
+$lang["common_last_page"] = "Laatste";
 $lang["common_learn_about_project"] = "om de laatste informatie te verkrijgen over het project";
 $lang["common_list_of"] = "Lijst van";
 $lang["common_logout"] = "Logout";

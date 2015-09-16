@@ -24,6 +24,7 @@ $lang["common_gender_male"] = "M";
 $lang["common_inv"] = "инв";
 $lang["common_last_name"] = "Фамилия";
 $lang["common_last_name_required"] = "Фамилия обязательный пробел";
+$lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = ", чтобы узнать самую последнюю информацию о проекте";
 $lang["common_list_of"] = "Список";
 $lang["common_logout"] = "Выход";

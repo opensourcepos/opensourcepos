@@ -23,6 +23,7 @@ common_gender_male,M,M,M,M,M,M,ชาย,M,M
 common_inv,stock,inv,inv,inv,庫存,инв,ยอด,Stok,Persediaan
 common_last_name,Achternaam,Apellidos,Last Name,Nom,姓,Фамилия,นามสกุล,Soy İsim,Nama Belakang
 common_last_name_required,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,姓氏為必填,Фамилия обязательный пробел,นามสกุลต้องกรอก,Soy isim zorunlu alandır.,Nama belakang wajib diisi.common_last_page,Laatste,Última,Last,Last,Last,Last,สุดท้าย,Last,Last
+common_last_page,Laatste,�ltima,Last,Last,Last,Last,Last,Last,Last
 common_learn_about_project,om de laatste informatie te verkrijgen over het project,para leer la información más reciente acerca del proyecto,to learn the lastest information about the project,pour les dernières informations sur le projet,了解系統開展進度,", чтобы узнать самую последнюю информацию о проекте",เพื่อศึกษาข้อมูลล่าสุดของโครงการ, ,Untuk belajar informasi terbaru tentang proyek ini
 common_list_of,Lijst van,Lista de,List of,Liste de,列表,Список,รายการ,Liste,Daftar
 common_logout,Logout,Salir,Logout,Déconnexion,登出,Выход,ออกจากระบบ,Çıkış,Keluar

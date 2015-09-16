@@ -24,6 +24,7 @@ $lang["common_gender_male"] = "ชาย";
 $lang["common_inv"] = "ยอด";
 $lang["common_last_name"] = "นามสกุล";
 $lang["common_last_name_required"] = "นามสกุลต้องกรอก";
+$lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "เพื่อศึกษาข้อมูลล่าสุดของโครงการ";
 $lang["common_list_of"] = "รายการ";
 $lang["common_logout"] = "ออกจากระบบ";
