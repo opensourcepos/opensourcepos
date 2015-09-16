@@ -378,8 +378,7 @@ class Sales extends Secure_area
 			}
 			else
 			{
-				$barcode_config=array('barcode_type'=>2,'barcode_width'=>200, 'barcode_height'=>30, 'barcode_quality'=>100);
-				$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
+				$data['barcode']=$this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 				// if we want to email. .. just attach the pdf in there?
 				if ($this->sale_lib->get_email_receipt() && !empty($cust_info->email))
 				{
@@ -582,9 +581,7 @@ class Sales extends Secure_area
 			$this->config->item('phone'),
 			$this->config->item('account_number')
 		));
-		// static barcode config for receipts + invoices 
-		$barcode_config=array('barcode_type'=>2,'barcode_width'=>200, 'barcode_height'=>30, 'barcode_quality'=>100);
-		$data['barcode']=$this->barcode_lib->generate_barcode($data['sale_id'],$barcode_config);
+		$data['barcode']=$this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 		$data['print_after_sale'] = FALSE;
 		return $data;
 	}

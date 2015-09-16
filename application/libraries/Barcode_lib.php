@@ -82,10 +82,32 @@ class Barcode_lib
 		}
 	}
 
-	public function generate_item_barcode($item, $barcode_config)
+	public function generate_receipt_barcode($barcode_content)
 	{
-		$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
-		return $this->generate_barcode($barcode_content, $barcode_config);
+		try
+		{
+			// Code128 is used for the receipts
+			
+			$barcode = $this->get_barcode_instance(2);
+
+			// set the receipt number to generate the barcode for
+			$barcode->setData($barcode_content);
+			
+			// image quality 100
+			$barcode->setQuality(100);
+			
+			// width: 200, height: 30
+			$barcode->setDimensions(200, 30);
+
+			// draw the image
+			$barcode->draw();
+			
+			return $barcode->base64();
+		} 
+		catch(Exception $e)
+		{
+			echo 'Caught exception: ',  $e->getMessage(), "\n";		
+		}
 	}
 	
 	public function get_barcode($item, $barcode_config)

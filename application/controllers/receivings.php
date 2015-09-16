@@ -220,8 +220,7 @@ class Receivings extends Secure_area
 			{
 				$data['error_message'] = $this->lang->line('receivings_transaction_failed');
 			}
-			$barcode_config=array('barcode_type'=>2,'barcode_width'=>200, 'barcode_height'=>30, 'barcode_quality'=>100);
-			$data['barcode']=$this->barcode_lib->generate_barcode($data['receiving_id'],$barcode_config);
+			$data['barcode']=$this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
 			$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 			$this->load->view("receivings/receipt",$data);
 			$this->receiving_lib->clear_all();
@@ -313,8 +312,7 @@ class Receivings extends Secure_area
 		$data['payment_type']=$receiving_info['payment_type'];
 		$data['invoice_number']=$this->receiving_lib->get_invoice_number();
 		$data['receiving_id']='RECV '.$receiving_id;
-		$barcode_config=array('barcode_type'=>2,'barcode_width'=>200, 'barcode_height'=>30, 'barcode_quality'=>100);
-		$data['barcode']=$this->barcode_lib->generate_barcode($data['receiving_id'],$barcode_config);
+		$data['barcode']=$this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 
 		if($supplier_id!=-1)
