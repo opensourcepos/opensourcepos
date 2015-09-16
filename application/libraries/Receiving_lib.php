@@ -52,7 +52,7 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_source'))
         {
-             $location_id = $this->CI->Stock_locations->get_default_location_id();
+             $location_id = $this->CI->Stock_location->get_default_location_id();
              $this->set_stock_source($location_id);
         }
         return $this->CI->session->userdata('recv_stock_source');
@@ -124,7 +124,7 @@ class Receiving_lib
     {
         if(!$this->CI->session->userdata('recv_stock_destination'))
         {
-        	$location_id = $this->CI->Stock_locations->get_default_location_id();
+        	$location_id = $this->CI->Stock_location->get_default_location_id();
         	$this->set_stock_destination($location_id);
         }
         return $this->CI->session->userdata('recv_stock_destination');
@@ -192,7 +192,7 @@ class Receiving_lib
 		array(
 			'item_id'=>$item_id,
 			'item_location'=>$item_location,
-			'stock_name'=>$this->CI->Stock_locations->get_location_name($item_location), 	
+			'stock_name'=>$this->CI->Stock_location->get_location_name($item_location),
 			'line'=>$insertkey,
 			'name'=>$item_info->name,
 			'description'=>$description!=null ? $description: $item_info->description,
@@ -201,7 +201,7 @@ class Receiving_lib
 			'is_serialized'=>$item_info->is_serialized,
 			'quantity'=>$quantity,
             'discount'=>$discount,
-			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
+			'in_stock'=>$this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 			'price'=>$price,
 			'receiving_quantity'=>$receiving_quantity!=null ? $receiving_quantity : $item_info->receiving_quantity,
 			'total'=>$this->get_item_total($quantity, $price, $discount)

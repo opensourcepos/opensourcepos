@@ -346,7 +346,7 @@ class Reports extends Secure_area
 	function date_input_sales()
 	{
 		$data = $this->_get_common_report_data();
-		$stock_locations = $this->Stock_locations->get_allowed_locations('sales');
+		$stock_locations = $this->Stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
         $data['mode'] = 'sale';
@@ -356,7 +356,7 @@ class Reports extends Secure_area
     function date_input_recv()
     {
         $data = $this->_get_common_report_data();
-		$stock_locations = $this->Stock_locations->get_allowed_locations('receivings');
+		$stock_locations = $this->Stock_location->get_allowed_locations('receivings');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
  		$data['mode'] = 'receiving';
@@ -868,7 +868,7 @@ class Reports extends Secure_area
 		$summary_data = array();
 		$details_data = array();
 
-		$show_locations = $this->Stock_locations->multiple_locations();
+		$show_locations = $this->Stock_location->multiple_locations();
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
@@ -879,7 +879,7 @@ class Reports extends Secure_area
 				$quantity_purchased = $drow['quantity_purchased'];
 				if ($show_locations)
 				{
-					$quantity_purchased .= ' [' . $this->Stock_locations->get_location_name($drow['item_location']) . ']';
+					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
 				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
@@ -911,7 +911,7 @@ class Reports extends Secure_area
 		$summary_data = array();
 		$details_data = array();
 
-		$show_locations = $this->Stock_locations->multiple_locations();
+		$show_locations = $this->Stock_location->multiple_locations();
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
@@ -922,7 +922,7 @@ class Reports extends Secure_area
 				$quantity_purchased = $drow['receiving_quantity'] > 1 ? $drow['quantity_purchased'] . ' x ' . $drow['receiving_quantity'] : $drow['quantity_purchased'];
 				if ($show_locations)
 				{
-					$quantity_purchased .= ' [' . $this->Stock_locations->get_location_name($drow['item_location']) . ']';
+					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
 				$details_data[$key][] = array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%');
 			}
@@ -980,7 +980,7 @@ class Reports extends Secure_area
 		$model = $this->Inventory_Summary;
 		$data['item_count'] = $model->getItemCountDropdownArray();
 
-		$stock_locations = $this->Stock_locations->get_allowed_locations();
+		$stock_locations = $this->Stock_location->get_allowed_locations();
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 

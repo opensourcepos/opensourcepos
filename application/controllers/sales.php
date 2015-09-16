@@ -141,7 +141,7 @@ class Sales extends Secure_area
 			$mode = $this->input->post("mode");
 			$this->sale_lib->set_mode($mode);
 		} 
-		else if ($this->Stock_locations->is_allowed_location($stock_location, 'sales'))
+		else if ($this->Stock_location->is_allowed_location($stock_location, 'sales'))
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
@@ -324,7 +324,7 @@ class Sales extends Secure_area
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
 		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($data['transaction_time']));
-		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
+		$data['show_stock_locations']=$this->Stock_location->show_locations('sales');
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment=$this->sale_lib->get_comment();
@@ -542,7 +542,7 @@ class Sales extends Secure_area
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime($sale_info['sale_time']));
 		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
-		$data['show_stock_locations']=$this->Stock_locations->show_locations('sales');
+		$data['show_stock_locations']=$this->Stock_location->show_locations('sales');
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$emp_info=$this->Employee->get_info($employee_id);
@@ -698,7 +698,7 @@ class Sales extends Secure_area
         $data['modes']=array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
         $data['mode']=$this->sale_lib->get_mode();
 
-        $data['stock_locations']=$this->Stock_locations->get_allowed_locations('sales');
+        $data['stock_locations']=$this->Stock_location->get_allowed_locations('sales');
         $data['stock_location']=$this->sale_lib->get_sale_location();
         
 		$data['subtotal']=$this->sale_lib->get_subtotal(TRUE);

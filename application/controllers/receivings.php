@@ -45,7 +45,7 @@ class Receivings extends Secure_area
 			$mode = $this->input->post("mode");
 			$this->receiving_lib->set_mode($mode);
 		}
-		else if ($this->Stock_locations->is_allowed_location($stock_source, 'receivings'))
+		else if ($this->Stock_location->is_allowed_location($stock_source, 'receivings'))
 		{
 			$this->receiving_lib->set_stock_source($stock_source);
 			$this->receiving_lib->set_stock_destination($stock_destination);
@@ -183,7 +183,7 @@ class Receivings extends Secure_area
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
 		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
 		$data['mode']=$this->receiving_lib->get_mode();
-		$data['show_stock_locations']=$this->Stock_locations->show_locations('receivings');
+		$data['show_stock_locations']=$this->Stock_location->show_locations('receivings');
 		$supplier_id=$this->receiving_lib->get_supplier();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->input->post('comment');
@@ -307,7 +307,7 @@ class Receivings extends Secure_area
 		$data['mode']=$this->receiving_lib->get_mode();
 		$data['receipt_title']=$this->lang->line('recvs_receipt');
 		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
-		$data['show_stock_locations']=$this->Stock_locations->show_locations('receivings');
+		$data['show_stock_locations']=$this->Stock_location->show_locations('receivings');
 		$supplier_id=$this->receiving_lib->get_supplier();
 		$emp_info=$this->Employee->get_info($receiving_info['employee_id']);
 		$data['payment_type']=$receiving_info['payment_type'];
@@ -335,7 +335,7 @@ class Receivings extends Secure_area
 		$data['modes']=array('receive'=>$this->lang->line('recvs_receiving'),'return'=>$this->lang->line('recvs_return'));
 		$data['mode']=$this->receiving_lib->get_mode();
 
-		$data['stock_locations']=$this->Stock_locations->get_allowed_locations('receivings');
+		$data['stock_locations']=$this->Stock_location->get_allowed_locations('receivings');
 		$show_stock_locations = count($data['stock_locations']) > 1;
         if ($show_stock_locations) 
         {

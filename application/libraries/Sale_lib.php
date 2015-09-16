@@ -209,7 +209,7 @@ class Sale_lib
     {
         if(!$this->CI->session->userdata('sale_location'))
         {
-             $location_id = $this->CI->Stock_locations->get_default_location_id();
+             $location_id = $this->CI->Stock_location->get_default_location_id();
              $this->set_sale_location($location_id);
         }
         return $this->CI->session->userdata('sale_location');
@@ -289,7 +289,7 @@ class Sale_lib
 		array(
 			'item_id'=>$item_id,
 			'item_location'=>$item_location,
-			'stock_name'=>$this->CI->Stock_locations->get_location_name($item_location),
+			'stock_name'=>$this->CI->Stock_location->get_location_name($item_location),
 			'line'=>$insertkey,
 			'name'=>$item_info->name,
 			'item_number'=>$item_info->item_number,
@@ -299,7 +299,7 @@ class Sale_lib
 			'is_serialized'=>$item_info->is_serialized,
 			'quantity'=>$quantity,
             'discount'=>$discount,
-			'in_stock'=>$this->CI->Item_quantities->get_item_quantity($item_id, $item_location)->quantity,
+			'in_stock'=>$this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 			'price'=>$price,
 			'total'=>$total,
 			'discounted_total'=>$this->get_item_total($quantity, $price, $discount, TRUE)
@@ -332,7 +332,7 @@ class Sale_lib
 
 		
 		//$item = $this->CI->Item->get_info($item_id);
-		$item_quantity = $this->CI->Item_quantities->get_item_quantity($item_id,$item_location)->quantity; 
+		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id,$item_location)->quantity;
 		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
 		
 		if ($item_quantity - $quantity_added < 0)

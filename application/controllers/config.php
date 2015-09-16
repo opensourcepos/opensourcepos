@@ -11,7 +11,7 @@ class Config extends Secure_area
 	function index()
 	{
 		$location_names = array();
-		$data['stock_locations'] = $this->Stock_locations->get_all()->result_array();
+		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$this->load->view("configs/manage", $data);
 		$this->_remove_duplicate_cookies();
@@ -86,7 +86,7 @@ class Config extends Secure_area
 	
 	function stock_locations() 
 	{
-		$stock_locations = $this->Stock_locations->get_all()->result_array();
+		$stock_locations = $this->Stock_location->get_all()->result_array();
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
 	} 
 	
@@ -105,7 +105,7 @@ class Config extends Secure_area
 	{
 		$this->db->trans_start();
 		
-		$deleted_locations = $this->Stock_locations->get_allowed_locations();
+		$deleted_locations = $this->Stock_location->get_allowed_locations();
 		foreach($this->input->post() as $key => $value)
 		{
 			if (strstr($key, 'stock_location'))
@@ -114,7 +114,7 @@ class Config extends Secure_area
 				unset($deleted_locations[$location_id]);
 				// save or update
 				$location_data = array('location_name' => $value);
-				if ($this->Stock_locations->save($location_data, $location_id))
+				if ($this->Stock_location->save($location_data, $location_id))
 				{
 					$this->_clear_session_state();
 				}
@@ -123,7 +123,7 @@ class Config extends Secure_area
 		// all locations not available in post will be deleted now
 		foreach ($deleted_locations as $location_id => $location_name)
 		{
-			$this->Stock_locations->delete($location_id);
+			$this->Stock_location->delete($location_id);
 		}
 		$success = $this->db->trans_complete();
 		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));

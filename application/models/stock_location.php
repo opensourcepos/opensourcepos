@@ -1,5 +1,5 @@
 <?php
-class Stock_locations extends CI_Model
+class Stock_location extends CI_Model
 {
     function exists($location_id='')
     {
