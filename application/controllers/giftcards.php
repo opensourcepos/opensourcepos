@@ -39,7 +39,7 @@ class Giftcards extends Secure_area implements iData_controller
 		$suggestions = $this->Giftcard->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
-/** GARRISON ADDED 5/3/2013 **/
+
 	/*
 	 Gives search suggestions for person_id based on what is being searched for
 	*/
@@ -48,7 +48,7 @@ class Giftcards extends Secure_area implements iData_controller
 		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
-/** END GARRISON ADDED **/
+
 	function get_row()
 	{
 		$giftcard_id = $this->input->post('row_id');

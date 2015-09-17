@@ -293,9 +293,7 @@ class Sale extends CI_Model
 			$this->Item_quantity->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
                                               'item_id'=>$item['item_id'],
                                               'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
-	
-			
-			//Ramel Inventory Tracking
+
 			//Inventory Count Details
 			$qty_buy = -$item['quantity'];
 			$sale_remarks ='POS '.$sale_id;
@@ -309,7 +307,6 @@ class Sale extends CI_Model
 				'trans_inventory'=>$qty_buy
 			);
 			$this->Inventory->insert($inv_data);
-			//------------------------------------Ramel
 
 			$customer = $this->Customer->get_info($customer_id);
  			if ($customer_id == -1 or $customer->taxable)

@@ -359,8 +359,7 @@ function get_item_data_row($item,$controller)
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
-	
-	//Ramel Inventory Tracking
+
 	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id/width:$width", $CI->lang->line('common_inv'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count	
 	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id/width:$width", $CI->lang->line('common_det'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details	
 	
@@ -418,7 +417,6 @@ function get_giftcards_manage_table_data_rows( $giftcards, $controller )
 	return $table_data_rows;
 }
 
-/** GARRISON MODIFIED 4/25/2013 **/
 function get_giftcard_data_row($giftcard,$controller)
 {
 	$CI =& get_instance();
@@ -436,7 +434,6 @@ function get_giftcard_data_row($giftcard,$controller)
 
 	return $table_data_row;
 }
-/** END GARRISON MODIFIED **/
 
 /*
 Gets the html table to manage item kits.

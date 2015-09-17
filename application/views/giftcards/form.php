@@ -6,7 +6,6 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 <fieldset id="giftcard_basic_info" style="padding: 5px;">
 <legend><?php echo $this->lang->line("giftcards_basic_information"); ?></legend>
 
-<!-- GARRISON ADDED 4/22/2013 -->
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -17,7 +16,6 @@ echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftca
 	);?>
 	</div>
 </div>
-<!-- END GARRISON ADDED -->
 
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('giftcards_giftcard_number').':', 'name',array('class'=>'required wide')); ?>

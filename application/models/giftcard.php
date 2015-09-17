@@ -31,7 +31,7 @@ class Giftcard extends CI_Model
 	function get_all($rows=0, $limit_from=0)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','people.person_id=giftcards.person_id', 'left');//GARRISON ADDED 4/25/2013
+		$this->db->join('people','people.person_id=giftcards.person_id', 'left');
 		$this->db->where('deleted',0);
 		$this->db->order_by("giftcard_number");
 		if ($rows > 0) {
@@ -175,7 +175,6 @@ class Giftcard extends CI_Model
 			$suggestions[]=$row->giftcard_number;
 		}
 
-/** GARRISON MODIFIED 4/24/2013 **/
  		$this->db->from('customers');
 		$this->db->join('people','customers.person_id=people.person_id', 'left');
 		$this->db->like("first_name",$this->db->escape_like_str($search));
@@ -188,10 +187,9 @@ class Giftcard extends CI_Model
 		foreach($by_name->result() as $row)
 		{
 			$suggestions[]=$row->first_name.' '.$row->last_name;
-		}
-/** END GARRISON MODIFIED **/				
+		}			
 
-	//only return $limit suggestions
+		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
 			$suggestions = array_slice($suggestions, 0,$limit);
@@ -199,7 +197,6 @@ class Giftcard extends CI_Model
 		return $suggestions;
 	}
 	
-	/** GARRISON ADDED 5/3/2013 **/
 	/*
 	 Get search suggestions to find customers
 	*/
@@ -230,8 +227,7 @@ class Giftcard extends CI_Model
 		}
 		return $suggestions;
 	}	
-	
-/** GARRISON MODIFIED 4/24/2013 **/	
+
 	/*
 	Preform a search on giftcards
 	*/
