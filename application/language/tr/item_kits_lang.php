@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "Ürün seti ekleme/güncelleme hatas
 $lang["item_kits_info"] = "Ürün Seti Bilgisi";
 $lang["item_kits_item"] = "Ürün";
 $lang["item_kits_items"] = "Ürünler";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Ürün Seti İsmi";
 $lang["item_kits_new"] = "Yeni Ürün Seti";
 $lang["item_kits_no_item_kits_to_display"] = "Gösterecek ürün seti yok";

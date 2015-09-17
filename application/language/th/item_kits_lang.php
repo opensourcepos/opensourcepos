@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "เพิ่ม/ปรับปร�
 $lang["item_kits_info"] = "ข้อมูลสินค้าหมู่";
 $lang["item_kits_item"] = "สินค้า";
 $lang["item_kits_items"] = "สินค้า";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "ชื่อสินค้าหมู่";
 $lang["item_kits_new"] = "สร้างสินค้าหมู่";
 $lang["item_kits_no_item_kits_to_display"] = "ไม่มีสินค้าแสดง";

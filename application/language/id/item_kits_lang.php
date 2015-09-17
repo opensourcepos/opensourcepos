@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "Tambah/Ubah Item Paket tidak berhasi
 $lang["item_kits_info"] = "Item Paket Info";
 $lang["item_kits_item"] = "Item Barang";
 $lang["item_kits_items"] = "Item Barang";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Nama Item Paket";
 $lang["item_kits_new"] = "Item Paket Baru";
 $lang["item_kits_no_item_kits_to_display"] = "Tidak ada Item Paket yang ditampilkan";
