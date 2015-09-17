@@ -30,7 +30,7 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 		}
 		echo '#';
 	}
-/** GARRISON ADDED 4/25/2013 IN PROGRESS **/	
+	
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
@@ -49,6 +49,5 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 		$data_row=get_person_data_row($this->Person->get_info($person_id),$this);
 		echo $data_row;
 	}
-		
 }
 ?>

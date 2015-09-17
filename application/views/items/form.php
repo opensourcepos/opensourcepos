@@ -203,7 +203,6 @@ foreach($stock_locations as $key=>$location_detail)
 	</div>
 </div>
 
-<!-- Parq 131215 Start -->
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_is_deleted').':', 'is_deleted',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -215,7 +214,6 @@ foreach($stock_locations as $key=>$location_detail)
 	);?>
 	</div>
 </div>
-<!-- Parq End -->
 
 <?php for ($i = 0; $i < 11; $i++) 
 { 
@@ -240,10 +238,6 @@ foreach($stock_locations as $key=>$location_detail)
 	}
 }
 ?>
-
-
-
-<!--   END GARRISON ADDED -->
 
 <?php
 echo form_submit(array(

@@ -151,7 +151,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number', $item_number);
-		$this->db->where('items.deleted', 0); // Parq 131226
+		$this->db->where('items.deleted', 0);
         
 		$query = $this->db->get();
 
@@ -276,7 +276,6 @@ class Item extends CI_Model
 			$suggestions[] = $row->company_name;
 		}
 		
-/** GARRISON ADDED 4/21/2013 **/
 		//Search by description
 		$this->db->select('name, description');
 		$this->db->from('items');
@@ -291,9 +290,7 @@ class Item extends CI_Model
 				$suggestions[] = $row->name;
 			}
 		}
-/** END GARRISON ADDED **/
 
-/** GARRISON ADDED 4/22/2013 **/
 		//Search by custom fields
 /* 		$this->db->from('items');
 		$this->db->like('custom1', $search);
@@ -313,9 +310,8 @@ class Item extends CI_Model
 		{
 			$suggestions[]=$row->name;
 		} */
-/** END GARRISON ADDED **/
 
-	//only return $limit suggestions
+		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
 			$suggestions = array_slice($suggestions, 0, $limit);
@@ -349,7 +345,7 @@ class Item extends CI_Model
 		{
 			$suggestions[] = $row->item_id.'|'.$row->item_number;
 		}
-/** GARRISON ADDED 4/21/2013 **/
+
 		//Search by description
 		$this->db->select('item_id, name, description');
 		$this->db->from('items');
@@ -365,9 +361,7 @@ class Item extends CI_Model
 				$suggestions[] = $entry;
 			}
 		}
-/** END GARRISON ADDED **/
 
-/** GARRISON ADDED 4/22/2013 **/
 		//Search by custom fields
 /* 		$this->db->from('items');
 		$this->db->where('deleted', $is_deleted);
@@ -387,7 +381,6 @@ class Item extends CI_Model
 		{
 			$suggestions[] = $row->item_id.'|'.$row->name;
 		} */
-/** END GARRISON ADDED **/
 
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
@@ -415,8 +408,7 @@ class Item extends CI_Model
 
 		return $suggestions;
 	}
-
-/** GARRISON ADDED 5/18/2013 **/	
+	
 	function get_location_suggestions($search)
 	{
 		$suggestions = array();
@@ -614,7 +606,6 @@ class Item extends CI_Model
 	
 		return $suggestions;
 	}
-/** END GARRISON ADDED **/	
 
 	/*
 	 Persform a search on items

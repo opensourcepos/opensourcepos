@@ -1,5 +1,4 @@
 <?php
-/** GARRISON MODIFIED 4/20/2013 **/
 function to_currency($number,$escape=FALSE)
 {
 	$CI =& get_instance();
@@ -22,7 +21,6 @@ function to_currency($number,$escape=FALSE)
     		return '-'.number_format(abs($number), 2, $decimal_point, $thousands_separator).$currency_symbol;
     }
 }
-/** END MODIFIED **/
 
 function to_currency_no_money($number)
 {

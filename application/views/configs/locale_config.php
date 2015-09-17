@@ -8,7 +8,6 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 <ul id="error_message_box" class="error_message_box"></ul>
 <legend><?php echo $this->lang->line("config_locale_info"); ?></legend>
 
-<!-- GARRISON MODIFIED 4/13/2013 -->
 <div class="field_row clearfix">	
 	<?php echo form_label($this->lang->line('config_currency_symbol').':', 'currency_symbol',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -28,7 +27,6 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 				'checked'=>$this->config->item('currency_side')));?>
 	</div>
 </div>
-<!-- END MODIFIED -->
 
 <div class="field_row clearfix">    
 <?php echo form_label($this->lang->line('config_number_format').':', 'number_format',array('class'=>'wide')); ?>
@@ -134,7 +132,7 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 		'Asia/Dubai'=>'(GMT+04:00) Abu Dhabi, Muscat',
 		'Asia/Yerevan'=>'(GMT+04:00) Yerevan',
 		'Asia/Kabul'=>'(GMT+04:30) Kabul',
-	 	'Asia/Baku'=>'(GMT+05:00) Baku',/*GARRISON ADDED 4/20/2013*/
+	 	'Asia/Baku'=>'(GMT+05:00) Baku',
 	 	'Asia/Yekaterinburg'=>'(GMT+05:00) Ekaterinburg',
 		'Asia/Tashkent'=>'(GMT+05:00) Tashkent',
 		'Asia/Kolkata'=>'(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi',
