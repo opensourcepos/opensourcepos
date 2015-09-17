@@ -447,6 +447,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$table='<table class="tablesorter" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
+	$CI->lang->line('item_kits_kit'),
 	$CI->lang->line('item_kits_name'),
 	$CI->lang->line('item_kits_description'),
 	'&nbsp', 
@@ -493,6 +494,7 @@ function get_item_kit_data_row($item_kit,$controller)
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='3%'><input type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/></td>";
+	$table_data_row.='<td width="15%">'.'KIT '.$item_kit->item_kit_id.'</td>';
 	$table_data_row.='<td width="15%">'.$item_kit->name.'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($item_kit->description, 25).'</td>';
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';

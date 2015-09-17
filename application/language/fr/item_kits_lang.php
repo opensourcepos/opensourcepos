@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "Érreur d\'ajout/édition de Kit";
 $lang["item_kits_info"] = "Détails du Kit";
 $lang["item_kits_item"] = "Item";
 $lang["item_kits_items"] = "Items";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Nom du Kit";
 $lang["item_kits_new"] = "Nouveau Kit";
 $lang["item_kits_no_item_kits_to_display"] = "Aucun kit à afficher";

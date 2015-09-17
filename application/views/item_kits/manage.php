@@ -1,4 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
+
 <script type="text/javascript">
 $(document).ready(function()
 {
@@ -6,10 +7,12 @@ $(document).ready(function()
     enable_select_all();
     enable_checkboxes();
     enable_row_selection();
-    enable_search(suggest_url: '<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>');
+    var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
+		confirm_message : '<?php echo $this->lang->line("common_confirm_search")?>'
+	});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
-	
-	$('#generate_barcodes').click(function()
+
+    $('#generate_barcodes').click(function()
     {
     	var selected = get_selected_values();
     	if (selected.length == 0)
@@ -20,7 +23,6 @@ $(document).ready(function()
 
     	$(this).attr('href','index.php/item_kits/generate_barcodes/'+selected.join(':'));
     });
-    
 });
 
 function init_table_sorting()
@@ -34,7 +36,7 @@ function init_table_sorting()
 			headers:
 			{
 				0: { sorter: false},
-				3: { sorter: false}
+				4: { sorter: false}
 			}
 		});
 	}
@@ -78,23 +80,26 @@ function post_item_kit_form_submit(response)
 	</div>
 </div>
 
-<?php echo $this->pagination->create_links();?>
+<div id="pagination"><?= $links ?></div>
+<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
 <div id="table_action_header">
 	<ul>
 		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 		<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
 		<li class="float_right">
-		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
-		<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
-		<input type="text" name ='search' id='search'/>
-		<input type="hidden" name ='limit_from' id='limit_from'/>
-		</form>
+			<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
+			<input type="text" name ='search' id='search'/>
+			<input type="hidden" name ='limit_from' id='limit_from'/>
 		</li>
 	</ul>
 </div>
 
+<?php echo form_close(); ?>
+
 <div id="table_holder">
-<?php echo $manage_table; ?>
+	<?php echo $manage_table; ?>
 </div>
+
 <div id="feedback_bar"></div>
+
 <?php $this->load->view("partial/footer"); ?>
