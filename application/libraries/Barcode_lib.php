@@ -75,32 +75,7 @@ class Barcode_lib
 			$barcode->setData($barcode_content);
 			$barcode->setQuality($barcode_config['barcode_quality']);
 			$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
-			$barcode->draw();
-			return $barcode->base64();
-		} 
-		catch(Exception $e)
-		{
-			echo 'Caught exception: ',  $e->getMessage(), "\n";		
-		}
-	}
 
-	public function generate_receipt_barcode($barcode_content)
-	{
-		try
-		{
-			// Code128 is used for the receipts
-			$barcode = $this->get_barcode_instance(2);
-
-			// set the receipt number to generate the barcode for
-			$barcode->setData($barcode_content);
-			
-			// image quality 100
-			$barcode->setQuality(100);
-			
-			// width: 200, height: 30
-			$barcode->setDimensions(200, 30);
-
-			// draw the image
 			$barcode->draw();
 			
 			return $barcode->base64();
@@ -116,7 +91,6 @@ class Barcode_lib
 		try
 		{
 			// Code128 is used for the receipts
-			
 			$barcode = $this->get_barcode_instance(2);
 
 			// set the receipt number to generate the barcode for
