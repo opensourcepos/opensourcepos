@@ -84,7 +84,7 @@ class Person extends CI_Model
 		$this->db->where('person_id', $person_id);
 		return $this->db->update('people',$person_data);
 	}
-/** GARRISON ADDED 4/25/2013 IN PROGRESS **/
+
 	/*
 	 Get search suggestions to find customers
 	*/
@@ -114,6 +114,7 @@ class Person extends CI_Model
 		{
 			$suggestions = array_slice($suggestions, 0,$limit);
 		}
+
 		return $suggestions;
 	}
 	
@@ -122,7 +123,7 @@ class Person extends CI_Model
 	*/
 	function delete($person_id)
 	{
-		return true;; 
+		return true;
 	}
 	
 	/*

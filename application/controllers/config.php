@@ -24,32 +24,32 @@ class Config extends Secure_area
 		
 		$batch_save_data=array(
 		'company'=>$this->input->post('company'),
-		'address'=>$this->input->post('address'),
-		'phone'=>$this->input->post('phone'),
-		'email'=>$this->input->post('email'),
-		'fax'=>$this->input->post('fax'),
-		'website'=>$this->input->post('website'),
-		'default_tax_1_rate'=>$this->input->post('default_tax_1_rate'),		
-		'default_tax_1_name'=>$this->input->post('default_tax_1_name'),		
-		'default_tax_2_rate'=>$this->input->post('default_tax_2_rate'),	
-		'default_tax_2_name'=>$this->input->post('default_tax_2_name'),		
-		'return_policy'=>$this->input->post('return_policy'),
-        'tax_included'=>$this->input->post('tax_included'),
-		'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
-		'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
-		'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price'),
-		'lines_per_page'=>$this->input->post('lines_per_page'),
-		'default_sales_discount'=>$this->input->post('default_sales_discount'),
-		'custom1_name'=>$this->input->post('custom1_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom2_name'=>$this->input->post('custom2_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom3_name'=>$this->input->post('custom3_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom4_name'=>$this->input->post('custom4_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom5_name'=>$this->input->post('custom5_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom6_name'=>$this->input->post('custom6_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom7_name'=>$this->input->post('custom7_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom8_name'=>$this->input->post('custom8_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom9_name'=>$this->input->post('custom9_name'),/**GARRISON ADDED 4/20/2013**/
-		'custom10_name'=>$this->input->post('custom10_name')/**GARRISON ADDED 4/20/2013**/
+			'address'=>$this->input->post('address'),
+			'phone'=>$this->input->post('phone'),
+			'email'=>$this->input->post('email'),
+			'fax'=>$this->input->post('fax'),
+			'website'=>$this->input->post('website'),
+			'default_tax_1_rate'=>$this->input->post('default_tax_1_rate'),		
+			'default_tax_1_name'=>$this->input->post('default_tax_1_name'),		
+			'default_tax_2_rate'=>$this->input->post('default_tax_2_rate'),	
+			'default_tax_2_name'=>$this->input->post('default_tax_2_name'),		
+			'return_policy'=>$this->input->post('return_policy'),
+			'tax_included'=>$this->input->post('tax_included'),
+			'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
+			'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
+			'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price'),
+			'lines_per_page'=>$this->input->post('lines_per_page'),
+			'default_sales_discount'=>$this->input->post('default_sales_discount'),
+			'custom1_name'=>$this->input->post('custom1_name'),
+			'custom2_name'=>$this->input->post('custom2_name'),
+			'custom3_name'=>$this->input->post('custom3_name'),
+			'custom4_name'=>$this->input->post('custom4_name'),
+			'custom5_name'=>$this->input->post('custom5_name'),
+			'custom6_name'=>$this->input->post('custom6_name'),
+			'custom7_name'=>$this->input->post('custom7_name'),
+			'custom8_name'=>$this->input->post('custom8_name'),
+			'custom9_name'=>$this->input->post('custom9_name'),
+			'custom10_name'=>$this->input->post('custom10_name')
 		);
 		
 		if (!empty($upload_data['orig_name']))
@@ -68,14 +68,14 @@ class Config extends Secure_area
 	function save_locale() 
 	{
 		$batch_save_data=array(	
-		'currency_symbol'=>$this->input->post('currency_symbol'),
-		'currency_side'=>$this->input->post('currency_side'),/**GARRISON ADDED 4/20/2013**/
-		'language'=>$this->input->post('language'),
-		'timezone'=>$this->input->post('timezone'),
-		'dateformat'=>$this->input->post('dateformat'),
-		'timeformat'=>$this->input->post('timeformat'),
-		'thousands_separator'=>$this->input->post('thousands_separator'),
-		'decimal_point'=>$this->input->post('decimal_point'),
+			'currency_symbol'=>$this->input->post('currency_symbol'),
+			'currency_side'=>$this->input->post('currency_side'),
+			'language'=>$this->input->post('language'),
+			'timezone'=>$this->input->post('timezone'),
+			'dateformat'=>$this->input->post('dateformat'),
+			'timeformat'=>$this->input->post('timeformat'),
+			'thousands_separator'=>$this->input->post('thousands_separator'),
+			'decimal_point'=>$this->input->post('decimal_point')
 		);
 	
         $result = $this->Appconfig->batch_save( $batch_save_data );
@@ -133,19 +133,19 @@ class Config extends Secure_area
     function save_barcode()
     {
         $batch_save_data=array(
-        'barcode_type'=>$this->input->post('barcode_type'),
-        'barcode_quality'=>$this->input->post('barcode_quality'),
-        'barcode_width'=>$this->input->post('barcode_width'),
-        'barcode_height'=>$this->input->post('barcode_height'),
-        'barcode_font'=>$this->input->post('barcode_font'),
-        'barcode_font_size'=>$this->input->post('barcode_font_size'),
-        'barcode_first_row'=>$this->input->post('barcode_first_row'),
-        'barcode_second_row'=>$this->input->post('barcode_second_row'),
-        'barcode_third_row'=>$this->input->post('barcode_third_row'),
-        'barcode_num_in_row'=>$this->input->post('barcode_num_in_row'),
-        'barcode_page_width'=>$this->input->post('barcode_page_width'),
-        'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing'),
-        'barcode_content'=>$this->input->post('barcode_content'),
+			'barcode_type'=>$this->input->post('barcode_type'),
+			'barcode_quality'=>$this->input->post('barcode_quality'),
+			'barcode_width'=>$this->input->post('barcode_width'),
+			'barcode_height'=>$this->input->post('barcode_height'),
+			'barcode_font'=>$this->input->post('barcode_font'),
+			'barcode_font_size'=>$this->input->post('barcode_font_size'),
+			'barcode_first_row'=>$this->input->post('barcode_first_row'),
+			'barcode_second_row'=>$this->input->post('barcode_second_row'),
+			'barcode_third_row'=>$this->input->post('barcode_third_row'),
+			'barcode_num_in_row'=>$this->input->post('barcode_num_in_row'),
+			'barcode_page_width'=>$this->input->post('barcode_page_width'),
+			'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing'),
+			'barcode_content'=>$this->input->post('barcode_content')
         );
         
         $result = $this->Appconfig->batch_save( $batch_save_data );
@@ -156,18 +156,18 @@ class Config extends Secure_area
     function save_receipt()
     {
     	$batch_save_data = array (
-		'use_invoice_template' => $this->input->post ( 'use_invoice_template' ),
-		'invoice_default_comments' => $this->input->post ( 'invoice_default_comments' ),
-		'invoice_email_message' => $this->input->post ( 'invoice_email_message' ),
-		'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ),
-		'print_silently' => $this->input->post ( 'print_silently' ),
-		'print_header' => $this->input->post ( 'print_header' ),
-		'print_footer' => $this->input->post ( 'print_footer' ),
-		'print_top_margin' => $this->input->post ( 'print_top_margin' ),
-		'print_left_margin' => $this->input->post ( 'print_left_margin' ),
-		'print_bottom_margin' => $this->input->post ( 'print_bottom_margin' ),
-		'print_right_margin' => $this->input->post ( 'print_right_margin' ),
-    	'show_total_discount' => $this->input->post( 'show_total_discount' )
+			'use_invoice_template' => $this->input->post ( 'use_invoice_template' ),
+			'invoice_default_comments' => $this->input->post ( 'invoice_default_comments' ),
+			'invoice_email_message' => $this->input->post ( 'invoice_email_message' ),
+			'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ),
+			'print_silently' => $this->input->post ( 'print_silently' ),
+			'print_header' => $this->input->post ( 'print_header' ),
+			'print_footer' => $this->input->post ( 'print_footer' ),
+			'print_top_margin' => $this->input->post ( 'print_top_margin' ),
+			'print_left_margin' => $this->input->post ( 'print_left_margin' ),
+			'print_bottom_margin' => $this->input->post ( 'print_bottom_margin' ),
+			'print_right_margin' => $this->input->post ( 'print_right_margin' ),
+			'show_total_discount' => $this->input->post( 'show_total_discount' )
 		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;
@@ -198,13 +198,13 @@ class Config extends Secure_area
     	{
     		$this->load->dbutil();
     		$prefs = array(
-    				'format'      => 'zip',
-    				'filename'    => 'ospos.sql'
+				'format'      => 'zip',
+				'filename'    => 'ospos.sql'
     		);
     		 
     		$backup =& $this->dbutil->backup($prefs);
     		 
-			$file_name =  'ospos-' . date("Y-m-d-H-i-s") .'.zip';
+			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
     		$save = 'uploads/'.$file_name;
     		$this->load->helper('download');
     		while (ob_get_level()) {

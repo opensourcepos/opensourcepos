@@ -10,13 +10,13 @@ class Item_kits extends Secure_area implements iData_controller
 	
 	function index($limit_from=0)
 	{
-		$data['controller_name']=$this->get_controller_name();
-		$data['form_width']=$this->get_form_width();
+		$data['controller_name'] = $this->get_controller_name();
+		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$item_kits = $this->Item_kit->get_all($lines_per_page,$limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Item_kit,$lines_per_page,$limit_from);
-		$data['manage_table']=get_item_kits_manage_table($item_kits,$this);
-		$this->load->view('item_kits/manage',$data);
+		$item_kits = $this->Item_kit->get_all($lines_per_page, $limit_from);
+		$data['links'] = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from);
+		$data['manage_table'] = get_item_kits_manage_table($item_kits, $this);
+		$this->load->view('item_kits/manage', $data);
 	}
 	
 	function search()
@@ -26,8 +26,8 @@ class Item_kits extends Secure_area implements iData_controller
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$customers = $this->Item_kit->search($search, $lines_per_page, $limit_from);
 		$total_rows = $this->Item_kit->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Item_kit,$lines_per_page, $limit_from, $total_rows);
-		$data_rows=get_item_kits_manage_table_data_rows($customers,$this);
+		$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from, $total_rows, 'search');
+		$data_rows = get_item_kits_manage_table_data_rows($customers, $this);
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 
@@ -36,43 +36,45 @@ class Item_kits extends Secure_area implements iData_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('q'), $this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
 
 	function get_row()
 	{
 		$item_kit_id = $this->input->post('row_id');
-		$data_row=get_item_kit_data_row($this->Item_kit->get_info($item_kit_id),$this);
+		$data_row = get_item_kit_data_row($this->Item_kit->get_info($item_kit_id), $this);
 		echo $data_row;
 	}
 
 	function view($item_kit_id=-1)
 	{
-		$data['item_kit_info']=$this->Item_kit->get_info($item_kit_id);
-		$this->load->view("item_kits/form",$data);
+		$data['item_kit_info'] = $this->Item_kit->get_info($item_kit_id);
+		$this->load->view("item_kits/form", $data);
 	}
 	
 	function save($item_kit_id=-1)
 	{
 		$item_kit_data = array(
-		'name'=>$this->input->post('name'),
-		'description'=>$this->input->post('description')
+			'name'=>$this->input->post('name'),
+			'description'=>$this->input->post('description')
 		);
 		
-		if($this->Item_kit->save($item_kit_data,$item_kit_id))
+		if ($this->Item_kit->save($item_kit_data, $item_kit_id))
 		{
 			//New item kit
-			if($item_kit_id==-1)
+			if ($item_kit_id==-1)
 			{
-				echo json_encode(array('success'=>true,'message'=>$this->lang->line('item_kits_successful_adding').' '.
-				$item_kit_data['name'],'item_kit_id'=>$item_kit_data['item_kit_id']));
+				echo json_encode(array('success'=>true,
+									'message'=>$this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'],
+									'item_kit_id'=>$item_kit_data['item_kit_id']));
 				$item_kit_id = $item_kit_data['item_kit_id'];
 			}
 			else //previous item
 			{
-				echo json_encode(array('success'=>true,'message'=>$this->lang->line('item_kits_successful_updating').' '.
-				$item_kit_data['name'],'item_kit_id'=>$item_kit_id));
+				echo json_encode(array('success'=>true, 
+									'message'=>$this->lang->line('item_kits_successful_updating').' '.$item_kit_data['name'],
+									'item_kit_id'=>$item_kit_id));
 			}
 			
 			if ($this->input->post('item_kit_item'))
@@ -91,24 +93,25 @@ class Item_kits extends Secure_area implements iData_controller
 		}
 		else//failure
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('item_kits_error_adding_updating').' '.
-			$item_kit_data['name'],'item_kit_id'=>-1));
+			echo json_encode(array('success'=>false, 
+								'message'=>$this->lang->line('item_kits_error_adding_updating').' '.$item_kit_data['name'],
+								'item_kit_id'=>-1));
 		}
-
 	}
 	
 	function delete()
 	{
-		$item_kits_to_delete=$this->input->post('ids');
+		$item_kits_to_delete = $this->input->post('ids');
 
-		if($this->Item_kit->delete_list($item_kits_to_delete))
+		if ($this->Item_kit->delete_list($item_kits_to_delete))
 		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('item_kits_successful_deleted').' '.
-			count($item_kits_to_delete).' '.$this->lang->line('item_kits_one_or_multiple')));
+			echo json_encode(array('success'=>true,
+								'message'=>$this->lang->line('item_kits_successful_deleted').' '.count($item_kits_to_delete).' '.$this->lang->line('item_kits_one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('item_kits_cannot_be_deleted')));
+			echo json_encode(array('success'=>false,
+								'message'=>$this->lang->line('item_kits_cannot_be_deleted')));
 		}
 	}
 	
@@ -122,16 +125,21 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			$item_kit_info = $this->Item_kit->get_info($item_kid_id);
 
-			$result[] = array('name' =>$item_kit_info->name, 'item_id'=> 'KIT '.$item_kid_id, 'item_number'=>'KIT '.$item_kid_id);
+			$result[] = array('name'=>$item_kit_info->name, 'item_id'=>'KIT '.$item_kid_id, 'item_number'=>'KIT '.$item_kid_id);
 		}
 
 		$data['items'] = $result;
-        $data['configs'] = $this->Appconfig->get_all();
-        $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
+        $barcode_config = $this->barcode_lib->get_barcode_config();
+		// in case the selected barcode type is not Code39 or Code128 we set by default Code128
+		// the rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
+		if($barcode_config['barcode_type'] != '1' && $barcode_config['barcode_type'] != '2')
+		{
+			$barcode_config['barcode_type'] = '2';
+		}
+		$data['barcode_config'] = $barcode_config;
 		$this->load->view("barcode_sheet", $data);
 	}
-	
-	
+
 	/*
 	get the width for the add/edit form
 	*/

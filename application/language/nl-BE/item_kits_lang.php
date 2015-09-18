@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "Fout bij het toevoegen/aanpassen van
 $lang["item_kits_info"] = "Product Set Info";
 $lang["item_kits_item"] = "Product";
 $lang["item_kits_items"] = "Producten";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Naam";
 $lang["item_kits_new"] = "Nieuwe Set";
 $lang["item_kits_no_item_kits_to_display"] = "Geen sets gevonden";
