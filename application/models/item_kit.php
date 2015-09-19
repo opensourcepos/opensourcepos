@@ -155,7 +155,8 @@ class Item_kit extends CI_Model
 
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]='KIT ' . $row->item_kit_id . ' | ' . $row->name;
+			// do not touch the '|' otherwise the sale search will not fetch the kit
+			$suggestions[]='KIT ' . $row->item_kit_id . '|' . $row->name;
 		}
 
 		//only return $limit suggestions
