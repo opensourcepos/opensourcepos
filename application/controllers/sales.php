@@ -176,7 +176,7 @@ class Sales extends Secure_area
  		$this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function add_payment()
 	{		
 		$data = array();
@@ -226,7 +226,7 @@ class Sales extends Secure_area
 		$this->_reload($data);
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function delete_payment( $payment_id )
 	{
 		$this->sale_lib->delete_payment( $payment_id );
@@ -758,7 +758,7 @@ class Sales extends Secure_area
 		$emp_info=$this->Employee->get_info($employee_id);
 		$payment_type = $this->input->post('payment_type');
 		$data['payment_type']=$this->input->post('payment_type');
-		//Alain Multiple payments
+		// Multiple payments
 		$data['payments']=$this->sale_lib->get_payments();
 		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;

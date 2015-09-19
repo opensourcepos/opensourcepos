@@ -22,7 +22,7 @@ class Sale_lib
 		$this->CI->session->set_userdata('cart',$cart_data);
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function get_payments()
 	{
 		if( !$this->CI->session->userdata( 'payments' ) )
@@ -31,7 +31,7 @@ class Sale_lib
 		return $this->CI->session->userdata('payments');
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function set_payments($payments_data)
 	{
 		$this->CI->session->set_userdata('payments',$payments_data);
@@ -130,7 +130,7 @@ class Sale_lib
 
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function edit_payment($payment_id,$payment_amount)
 	{
 		$payments = $this->get_payments();
@@ -144,7 +144,7 @@ class Sale_lib
 		return false;
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function delete_payment( $payment_id )
 	{
 		$payments = $this->get_payments();
@@ -152,13 +152,13 @@ class Sale_lib
 		$this->set_payments( $payments );
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function empty_payments()
 	{
 		$this->CI->session->unset_userdata('payments');
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function get_payments_total()
 	{
 		$subtotal = 0;
@@ -169,7 +169,7 @@ class Sale_lib
 		return to_currency_no_money($subtotal);
 	}
 
-	//Alain Multiple Payments
+	// Multiple Payments
 	function get_amount_due()
 	{
 		$amount_due=0;
@@ -248,7 +248,7 @@ class Sale_lib
             return false;
         }
 
-		//Alain Serialization and Description
+		// Serialization and Description
 
 		//Get all items in the cart so far...
 		$items = $this->get_cart();
