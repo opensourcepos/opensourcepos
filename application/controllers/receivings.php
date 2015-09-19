@@ -228,7 +228,7 @@ class Receivings extends Secure_area
 		$this->_remove_duplicate_cookies();
 	}
 	
-	function _substitute_variable($text, $variable, $object, $function)
+	private function _substitute_variable($text, $variable, $object, $function)
 	{
 		// don't query if this variable isn't used
 		if (strstr($text, $variable))
@@ -239,7 +239,7 @@ class Receivings extends Secure_area
 		return $text;
 	}
 	
-	function _substitute_variables($text,$supplier_info)
+	private function _substitute_variables($text,$supplier_info)
 	{
 		$text=$this->_substitute_variable($text, '$YCO', $this->Receiving, 'get_invoice_number_for_year');
 		$text=$this->_substitute_variable($text, '$CO', $this->Receiving , 'get_invoice_count');
@@ -249,7 +249,7 @@ class Receivings extends Secure_area
 	}
 	
 
-	function _substitute_supplier($text,$supplier_info)
+	private function _substitute_supplier($text,$supplier_info)
 	{
 		$supplier_id=$this->receiving_lib->get_supplier();
 		if($supplier_id!=-1)
@@ -265,7 +265,7 @@ class Receivings extends Secure_area
 		return $text;
 	}
 	
-	function _substitute_invoice_number($supplier_info='')
+	private function _substitute_invoice_number($supplier_info='')
 	{
 		$invoice_number=$this->receiving_lib->get_invoice_number();
 		if (empty($invoice_number))
@@ -326,7 +326,7 @@ class Receivings extends Secure_area
 		$this->_remove_duplicate_cookies();
 	}
 
-	function _reload($data=array())
+	private function _reload($data=array())
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart']=$this->receiving_lib->get_cart();
@@ -372,27 +372,27 @@ class Receivings extends Secure_area
 		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date', TRUE));
 
 		$receiving_data = array(
-				'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
-				'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
-				'employee_id' => $this->input->post('employee_id'),
-				'comment' => $this->input->post('comment'),
-				'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
+			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
+			'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
+			'employee_id' => $this->input->post('employee_id'),
+			'comment' => $this->input->post('comment'),
+			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
 		);
 	
 		if ($this->Receiving->update($receiving_data, $receiving_id))
 		{
 			echo json_encode(array(
-					'success'=>true,
-					'message'=>$this->lang->line('recvs_successfully_updated'),
-					'id'=>$receiving_id)
+				'success'=>true,
+				'message'=>$this->lang->line('recvs_successfully_updated'),
+				'id'=>$receiving_id)
 			);
 		}
 		else
 		{
 			echo json_encode(array(
-					'success'=>false,
-					'message'=>$this->lang->line('recvs_unsuccessfully_updated'),
-					'id'=>$receiving_id)
+				'success'=>false,
+				'message'=>$this->lang->line('recvs_unsuccessfully_updated'),
+				'id'=>$receiving_id)
 			);
 		}
 	}
@@ -410,6 +410,5 @@ class Receivings extends Secure_area
 		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number,$receiving_id);
     	echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('recvs_invoice_number_duplicate')));
     }
-
 }
 ?>
