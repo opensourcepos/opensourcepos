@@ -33,8 +33,8 @@ class Sales extends Secure_area
 		$location_id = 'all';
 
 		$inputs = array('start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
-			'sale_type' => $sale_type, 'location_id' => $location_id, 'only_invoices' => $only_invoices, 'lines_per_page' => $lines_per_page,
-			'limit_from' => $limit_from, 'only_cash' => $only_cash);
+						'sale_type' => $sale_type, 'location_id' => $location_id, 'only_invoices' => $only_invoices, 
+						'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from, 'only_cash' => $only_cash);
 		$sales = $this->Sale->get_all($inputs);
 		$payments = $this->Sale->get_payments_summary($inputs);
 		$data['only_invoices'] = $only_invoices;
@@ -43,7 +43,9 @@ class Sales extends Secure_area
 		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, count($sales), 'manage', $only_invoices);
 		$data['manage_table'] = get_sales_manage_table($sales, $this);
 		$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
+
 		$this->load->view($data['controller_name'] . '/manage', $data);
+
 		$this->_remove_duplicate_cookies();
 	}
 	
@@ -53,7 +55,8 @@ class Sales extends Secure_area
 
 		$sale_id = $this->input->post('row_id');
 		$sale_info = $this->Sale->get_info($sale_id)->result_array();
-		$data_row=get_sales_manage_sale_data_row($sale_info[0],$this);
+		$data_row = get_sales_manage_sale_data_row($sale_info[0],$this);
+
 		echo $data_row;
 	}
 	

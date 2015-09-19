@@ -101,7 +101,6 @@ class Sale extends CI_Model
 				$pieces = explode(' ',$inputs['search']);
 				$this->db->where('sales.sale_id', $pieces[1]);
 			}
-
 			else
 			{
 				$this->db->like('last_name', $inputs['search']);
@@ -109,7 +108,6 @@ class Sale extends CI_Model
 				$this->db->or_like('CONCAT( first_name, " ", last_name)', $inputs['search']);
 			}
 		}
-
 
 		if ($inputs['sale_type'] == 'sales')
 		{
@@ -144,11 +142,12 @@ class Sale extends CI_Model
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
 
+				// remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
 				unset($payments[$key]);
 			}
 		}
 
-		if( $gift_card_count > 0 && $gift_card_amount > 0 )
+		if( $gift_card_count > 0 )
 		{
 			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}
@@ -162,11 +161,12 @@ class Sale extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	function get_search_suggestions($search,$limit=25)
+	function get_search_suggestions($search, $limit=25)
 	{
 		$suggestions = array();
 
-		if (!$this->sale_lib->is_valid_receipt($search)) {
+		if (!$this->sale_lib->is_valid_receipt($search))
+		{
 			$this->db->distinct();
 			$this->db->select('first_name, last_name');
 			$this->db->from('sales');
@@ -180,18 +180,20 @@ class Sale extends CI_Model
 			{
 				$suggestions[]=$result[ 'first_name' ].' '.$result[ 'last_name' ];
 			}
-
-		} else {
+		}
+		else
+		{
 			$suggestions[]=$search;
 		}
+
 		return $suggestions;
 	}
-
 
 	function get_invoice_count()
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number is not null');
+
 		return $this->db->count_all_results();
 	}
 	
@@ -199,6 +201,7 @@ class Sale extends CI_Model
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
+
 		return $this->db->get();
 	}
 	
@@ -210,22 +213,22 @@ class Sale extends CI_Model
 		$this->db->where("DATE_FORMAT(sale_time, '%Y' ) = ", $year, FALSE);
 		$this->db->where("invoice_number IS NOT ", "NULL", FALSE);
 		$result = $this->db->get()->row_array();
+
 		return ($start_from + $result[ 'invoice_number_year']);
 	}
 
 	function exists($sale_id)
 	{
 		$this->db->from('sales');
-		$this->db->where('sale_id',$sale_id);
-		$query = $this->db->get();
+		$this->db->where('sale_id', $sale_id);
 
-		return ($query->num_rows()==1);
+		return ($this->db->get()->num_rows()==1);
 	}
 	
 	function update($sale_data, $sale_id)
 	{
 		$this->db->where('sale_id', $sale_id);
-		$success = $this->db->update('sales',$sale_data);
+		$success = $this->db->update('sales', $sale_data);
 		
 		return $success;
 	}
@@ -233,7 +236,9 @@ class Sale extends CI_Model
 	function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id=false)
 	{
 		if(count($items)==0)
+		{
 			return -1;
+		}
 
 		$sales_data = array(
 			'sale_time' => date('Y-m-d H:i:s'),
@@ -259,8 +264,7 @@ class Sale extends CI_Model
 				$this->Giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
 
-			$sales_payments_data = array
-			(
+			$sales_payments_data = array(
 				'sale_id'=>$sale_id,
 				'payment_type'=>$payment['payment_type'],
 				'payment_amount'=>$payment['payment_amount']
@@ -272,8 +276,7 @@ class Sale extends CI_Model
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 
-			$sales_items_data = array
-			(
+			$sales_items_data = array(
 				'sale_id'=>$sale_id,
 				'item_id'=>$item['item_id'],
 				'line'=>$item['line'],
@@ -336,9 +339,12 @@ class Sale extends CI_Model
 	function delete_list($sale_ids, $employee_id, $update_inventory=TRUE) 
 	{
 		$result = TRUE;
-		foreach($sale_ids as $sale_id) {
+
+		foreach($sale_ids as $sale_id)
+		{
 			$result &= $this->delete($sale_id, $employee_id, $update_inventory);
 		}
+
 		return $result;
 	}
 	
@@ -371,9 +377,7 @@ class Sale extends CI_Model
 				$this->Inventory->insert($inv_data);
 
 				// update quantities
-				$this->Item_quantity->change_quantity($item['item_id'],
-					$item['item_location'],
-					$item['quantity_purchased']);
+				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
 			}
 		}
 
@@ -391,25 +395,28 @@ class Sale extends CI_Model
 	function get_sale_items($sale_id)
 	{
 		$this->db->from('sales_items');
-		$this->db->where('sale_id',$sale_id);
+		$this->db->where('sale_id', $sale_id);
+
 		return $this->db->get();
 	}
 
 	function get_sale_payments($sale_id)
 	{
 		$this->db->from('sales_payments');
-		$this->db->where('sale_id',$sale_id);
+		$this->db->where('sale_id', $sale_id);
+
 		return $this->db->get();
 	}
 
 	function get_customer($sale_id)
 	{
 		$this->db->from('sales');
-		$this->db->where('sale_id',$sale_id);
+		$this->db->where('sale_id', $sale_id);
+
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
 	
-	function invoice_number_exists($invoice_number,$sale_id='')
+	function invoice_number_exists($invoice_number, $sale_id='')
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
@@ -417,8 +424,21 @@ class Sale extends CI_Model
 		{
 			$this->db->where('sale_id !=', $sale_id);
 		}
-		$query=$this->db->get();
-		return ($query->num_rows()==1);
+		
+		return ($this->db->get()->num_rows()==1);
+	}
+	
+	function get_giftcard_value( $giftcardNumber )
+	{
+		if ( !$this->Giftcard->exists( $this->Giftcard->get_giftcard_id($giftcardNumber) ) )
+		{
+			return 0;
+		}
+		
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number', $giftcardNumber);
+
+		return $this->db->get()->row()->value;
 	}
 
 	//We create a temp table that allows us to do easy report/sales queries
@@ -470,16 +490,6 @@ class Sale extends CI_Model
 
 		//Update null subtotals to be equal to the total as these don't have tax
 		$this->db->query('UPDATE '.$this->db->dbprefix('sales_items_temp'). ' SET total=subtotal WHERE total IS NULL');
-	}
-	
-	function get_giftcard_value( $giftcardNumber )
-	{
-		if ( !$this->Giftcard->exists( $this->Giftcard->get_giftcard_id($giftcardNumber)))
-			return 0;
-		
-		$this->db->from('giftcards');
-		$this->db->where('giftcard_number',$giftcardNumber);
-		return $this->db->get()->row()->value;
 	}
 }
 ?>

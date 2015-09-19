@@ -42,11 +42,12 @@ class Summary_payments extends Report
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
 
+				// remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
 				unset($payments[$key]);
 			}
 		}
 
-		if( $gift_card_count > 0 && $gift_card_amount > 0 )
+		if( $gift_card_count > 0 )
 		{
 			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}

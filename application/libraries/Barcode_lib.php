@@ -70,7 +70,7 @@ class Barcode_lib
 		try
 		{
 			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
-			
+
 			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 			$barcode->setData($barcode_content);
 			$barcode->setQuality($barcode_config['barcode_quality']);

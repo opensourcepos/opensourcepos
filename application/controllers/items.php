@@ -408,8 +408,7 @@ class Items extends Secure_area implements iData_controller
                 {              
 	                $success &= $this->Item_quantity->save($location_detail, $item_id, $location_data['location_id']);
 	                
-	                $inv_data = array
-	                (
+	                $inv_data = array(
 	                    'trans_date'=>date('Y-m-d H:i:s'),
 	                    'trans_items'=>$item_id,
 	                    'trans_user'=>$employee_id,
@@ -417,6 +416,7 @@ class Items extends Secure_area implements iData_controller
 	                    'trans_comment'=>$this->lang->line('items_manually_editing_of_quantity'),
 	                    'trans_inventory'=>$updated_quantity - $item_quantity->quantity
 	                );
+
 	                $success &= $this->Inventory->insert($inv_data);       
                 }                                            
             }        
@@ -473,8 +473,7 @@ class Items extends Secure_area implements iData_controller
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		$cur_item_info = $this->Item->get_info($item_id);
         $location_id = $this->input->post('stock_location');
-		$inv_data = array
-		(
+		$inv_data = array(
 			'trans_date'=>date('Y-m-d H:i:s'),
 			'trans_items'=>$item_id,
 			'trans_user'=>$employee_id,
@@ -482,16 +481,17 @@ class Items extends Secure_area implements iData_controller
 			'trans_comment'=>$this->input->post('trans_comment'),
 			'trans_inventory'=>$this->input->post('newquantity')
 		);
+		
 		$this->Inventory->insert($inv_data);
 		
 		//Update stock quantity
-		
 		$item_quantity= $this->Item_quantity->get_item_quantity($item_id,$location_id);
 		$item_quantity_data = array(
-		'item_id'=>$item_id,
-		'location_id'=>$location_id,
-		'quantity'=>$item_quantity->quantity + $this->input->post('newquantity')
+			'item_id'=>$item_id,
+			'location_id'=>$location_id,
+			'quantity'=>$item_quantity->quantity + $this->input->post('newquantity')
 		);
+
 		if($this->Item_quantity->save($item_quantity_data,$item_id,$location_id))
 		{			
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_updating').' '.
@@ -668,13 +668,14 @@ class Items extends Secure_area implements iData_controller
                                 );
                                 $this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);
 
-                                $excel_data = array (
+                                $excel_data = array(
                                     'trans_items'=>$item_data['item_id'],
                                     'trans_user'=>$employee_id,
                                     'trans_comment'=>$comment,
                                     'trans_location'=>$data[$col],
                                     'trans_inventory'=>$data[$col + 1]
                                 );
+								
                                 $this->Inventory->insert($excel_data);
                                 unset($allowed_locations[$location_id]);
                             }
