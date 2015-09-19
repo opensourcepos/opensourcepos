@@ -11,18 +11,19 @@ class Items extends Secure_area implements iData_controller
 	
 	function index($limit_from=0)
 	{
-		$stock_location=$this->item_lib->get_item_location();
-		$stock_locations=$this->Stock_location->get_allowed_locations();
+		$stock_location = $this->item_lib->get_item_location();
+		$stock_locations = $this->Stock_location->get_allowed_locations();
 		
-		$data['controller_name']=$this->get_controller_name();
-		$data['form_width']=$this->get_form_width();
+		$data['controller_name'] = $this->get_controller_name();
+		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$items = $this->Item->get_all($stock_location,$lines_per_page,$limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Item,$lines_per_page,$limit_from);
 		
-		$data['stock_location']=$stock_location;
-		$data['stock_locations']=$stock_locations;
-		$data['manage_table']=get_items_manage_table( $this->Item->get_all( $stock_location, $lines_per_page, $limit_from), $this );
+		$data['stock_location'] = $stock_location;
+		$data['stock_locations'] = $stock_locations;
+		$data['manage_table'] = get_items_manage_table( $this->Item->get_all( $stock_location, $lines_per_page, $limit_from), $this );
+
 		$this->load->view('items/manage',$data);
 		$this->_remove_duplicate_cookies();
 	}
@@ -89,7 +90,8 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit'), $this->input->post('is_deleted'));
+		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit'),
+															$this->input->post('search_custom'), $this->input->post('is_deleted'));
 		echo implode("\n",$suggestions);
 	}
 	
@@ -243,6 +245,7 @@ class Items extends Secure_area implements iData_controller
            $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
            $data['stock_locations'] = $location_array;
         }
+
 		$this->load->view("items/form", $data);
 	}
     

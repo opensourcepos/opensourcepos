@@ -90,7 +90,7 @@ class Item extends CI_Model
 	/*
 	Returns all the items
 	*/
-	function get_all($stock_location_id=-1, $rows = 0, $limit_from = 0)
+	function get_all($stock_location_id=-1, $rows=0, $limit_from=0)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -226,7 +226,7 @@ class Item extends CI_Model
  	/*
 	Get search suggestions to find items
 	*/
-	function get_search_suggestions($search, $limit=25, $is_deleted=0)
+	function get_search_suggestions($search, $limit=25, $search_custom=0, $is_deleted=0)
 	{
 		$suggestions = array();
 
@@ -292,24 +292,27 @@ class Item extends CI_Model
 		}
 
 		//Search by custom fields
-/* 		$this->db->from('items');
-		$this->db->like('custom1', $search);
-		$this->db->or_like('custom2', $search);
-		$this->db->or_like('custom3', $search);
-		$this->db->or_like('custom4', $search);
-		$this->db->or_like('custom5', $search);
-		$this->db->or_like('custom6', $search);
-		$this->db->or_like('custom7', $search);
-		$this->db->or_like('custom8', $search);
-		$this->db->or_like('custom9', $search);
-		$this->db->or_like('custom10', $search);
-		$this->db->where('deleted', $is_deleted);
-		$this->db->order_by("name", "asc");
-		$by_name = $this->db->get();
-		foreach($by_name->result() as $row)
+		if ($search_custom != 0)
 		{
-			$suggestions[]=$row->name;
-		} */
+			$this->db->from('items');
+			$this->db->like('custom1', $search);
+			$this->db->or_like('custom2', $search);
+			$this->db->or_like('custom3', $search);
+			$this->db->or_like('custom4', $search);
+			$this->db->or_like('custom5', $search);
+			$this->db->or_like('custom6', $search);
+			$this->db->or_like('custom7', $search);
+			$this->db->or_like('custom8', $search);
+			$this->db->or_like('custom9', $search);
+			$this->db->or_like('custom10', $search);
+			$this->db->where('deleted', $is_deleted);
+			$this->db->order_by("name", "asc");
+			$by_name = $this->db->get();
+			foreach($by_name->result() as $row)
+			{
+				$suggestions[] = $row->name;
+			}
+		}
 
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
@@ -320,7 +323,7 @@ class Item extends CI_Model
 		return $suggestions;
 	}
 
-	function get_item_search_suggestions($search, $limit=25, $is_deleted=0)
+	function get_item_search_suggestions($search, $limit=25, $search_custom=0, $is_deleted=0)
 	{
 		$suggestions = array();
 
@@ -363,24 +366,27 @@ class Item extends CI_Model
 		}
 
 		//Search by custom fields
-/* 		$this->db->from('items');
-		$this->db->where('deleted', $is_deleted);
-		$this->db->like('custom1', $search);
-		$this->db->or_like('custom2', $search);
-		$this->db->or_like('custom3', $search);
-		$this->db->or_like('custom4', $search);
-		$this->db->or_like('custom5', $search);
-		$this->db->or_like('custom6', $search);
-		$this->db->or_like('custom7', $search);
-		$this->db->or_like('custom8', $search);
-		$this->db->or_like('custom9', $search);
-		$this->db->or_like('custom10', $search);
-		$this->db->order_by("name", "asc");
-		$by_description = $this->db->get();
-		foreach($by_description->result() as $row)
+		if ($search_custom != 0)
 		{
-			$suggestions[] = $row->item_id.'|'.$row->name;
-		} */
+			$this->db->from('items');
+			$this->db->where('deleted', $is_deleted);
+			$this->db->like('custom1', $search);
+			$this->db->or_like('custom2', $search);
+			$this->db->or_like('custom3', $search);
+			$this->db->or_like('custom4', $search);
+			$this->db->or_like('custom5', $search);
+			$this->db->or_like('custom6', $search);
+			$this->db->or_like('custom7', $search);
+			$this->db->or_like('custom8', $search);
+			$this->db->or_like('custom9', $search);
+			$this->db->or_like('custom10', $search);
+			$this->db->order_by("name", "asc");
+			$by_description = $this->db->get();
+			foreach($by_description->result() as $row)
+			{
+				$suggestions[] = $row->item_id.'|'.$row->name;
+			}
+		}
 
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
@@ -621,7 +627,7 @@ class Item extends CI_Model
 		}
 		if (!empty($search)) 
 		{
-			if ($search_custom==0)
+			if ($search_custom == 0)
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
