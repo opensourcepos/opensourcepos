@@ -12,7 +12,7 @@ $(document).ready(function()
 		extra_params : {
 			'is_deleted' : function () {
 				return $("#is_deleted").is(":checked") ? 1 : 0;
-			}
+		}
 	}});
 	// clear suggestion cache when toggling filter
 	$("#is_deleted").change(function() {

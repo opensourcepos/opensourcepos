@@ -7,9 +7,8 @@ $(document).ready(function()
     enable_select_all();
     enable_checkboxes();
     enable_row_selection();
-    var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
-		confirm_message : '<?php echo $this->lang->line("common_confirm_search")?>'
-	});
+    enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
+					confirm_message : '<?php echo $this->lang->line("common_confirm_search")?>'});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
     $('#generate_barcodes').click(function()
@@ -36,7 +35,7 @@ function init_table_sorting()
 			headers:
 			{
 				0: { sorter: false},
-				4: { sorter: false}
+				6: { sorter: false}
 			}
 		});
 	}
@@ -51,9 +50,9 @@ function post_item_kit_form_submit(response)
 	else
 	{
 		//This is an update, just update one row
-		if(jQuery.inArray(response.item_id,get_visible_checkbox_ids()) != -1)
+		if(jQuery.inArray(response.item_kit_id,get_visible_checkbox_ids()) != -1)
 		{
-			update_row(response.item_id,'<?php echo site_url("$controller_name/get_row")?>');
+			update_row(response.item_kit_id,'<?php echo site_url("$controller_name/get_row")?>');
 			set_feedback(response.message,'success_message',false);
 
 		}
