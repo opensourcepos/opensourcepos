@@ -10,7 +10,7 @@ require APPPATH.'/views/barcodes/Ean8.php';
 class Barcode_lib
 {
 	private $CI = null;
-	private $supported_barcodes = array(1 => 'Code 39', 2 => 'Code 128', 3 => 'EAN 8', 4 => 'EAN 13');
+	private $supported_barcodes = array('Code39' => 'Code 39', 'Code128' => 'Code 128', 'Ean8' => 'EAN 8', 'Ean13' => 'EAN 13');
 	
 	function __construct()
 	{
@@ -42,24 +42,24 @@ class Barcode_lib
 		return $data;
 	}
 	
-	private function get_barcode_instance($barcode_type)
+	private function get_barcode_instance($barcode_type='Code128')
 	{
 		switch($barcode_type)
 		{
-			case '1':
+			case 'Code39':
 				return new emberlabs\Barcode\Code39();
 				break;
 				
-			case '2':
+			case 'Code128':
 			default:
 				return new emberlabs\Barcode\Code128();
 				break;
 				
-			case '3':
+			case 'Ean8':
 				return new emberlabs\Barcode\Ean8();
 				break;
 				
-			case '4':
+			case 'Ean13':
 				return new emberlabs\Barcode\Ean13();
 				break;
 		}
@@ -82,7 +82,7 @@ class Barcode_lib
 		} 
 		catch(Exception $e)
 		{
-			echo 'Caught exception: ',  $e->getMessage(), "\n";		
+			echo 'Caught exception: ', $e->getMessage(), "\n";		
 		}
 	}
 
@@ -90,8 +90,8 @@ class Barcode_lib
 	{
 		try
 		{
-			// Code128 is used for the receipts
-			$barcode = $this->get_barcode_instance(2);
+			// Code128 is the default and used in this case for the receipts
+			$barcode = $this->get_barcode_instance();
 
 			// set the receipt number to generate the barcode for
 			$barcode->setData($barcode_content);
@@ -109,7 +109,7 @@ class Barcode_lib
 		} 
 		catch(Exception $e)
 		{
-			echo 'Caught exception: ',  $e->getMessage(), "\n";		
+			echo 'Caught exception: ', $e->getMessage(), "\n";		
 		}
 	}
 	
@@ -134,7 +134,7 @@ class Barcode_lib
 		} 
 		catch(Exception $e)
 		{
-			echo 'Caught exception: ',  $e->getMessage(), "\n";		
+			echo 'Caught exception: ', $e->getMessage(), "\n";		
 		}
 	}
 

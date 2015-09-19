@@ -15,7 +15,7 @@ class Item_kit extends CI_Model
 	/*
 	Returns all the item kits
 	*/
-	function get_all($rows = 0, $limit_from = 0)
+	function get_all($rows=0, $limit_from=0)
 	{
 		$this->db->from('item_kits');
 		$this->db->order_by('name', 'asc');
@@ -156,7 +156,7 @@ class Item_kit extends CI_Model
 		foreach($by_name->result() as $row)
 		{
 			// do not touch the '|' otherwise the sale search will not fetch the kit
-			$suggestions[]='KIT ' . $row->item_kit_id . '|' . $row->name;
+			$suggestions[] = 'KIT ' . $row->item_kit_id . '|' . $row->name;
 		}
 
 		//only return $limit suggestions
@@ -169,7 +169,7 @@ class Item_kit extends CI_Model
 	}
 
 	/*
-	Preform a search on items
+	Perform a search on items
 	*/
 	function search($search, $rows=0, $limit_from=0)
 	{

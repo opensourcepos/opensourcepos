@@ -11,20 +11,17 @@ class Item_kits extends Secure_area implements iData_controller
 	// add the total cost and retail price to a passed items kit retrieving the data from each singolar item part of the kit
 	private function add_totals_to_item_kit($item_kit)
 	{
-		$total_cost_price = 0;
-		$total_unit_price = 0;
+		$item_kit->total_cost_price = 0;
+		$item_kit->total_unit_price = 0;
 		
 		foreach ($this->Item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
 		{
 			$item_info = $this->Item->get_info($item_kit_item['item_id']);
 			
-			$total_cost_price += $item_info->cost_price;
-			$total_unit_price += $item_info->unit_price;
+			$item_kit->total_cost_price += $item_info->cost_price;
+			$item_kit->total_unit_price += $item_info->unit_price;
 		}
 
-		$item_kit->total_cost_price = $total_cost_price;
-		$item_kit->total_unit_price = $total_unit_price;
-		
 		return $item_kit;
 	}
 	
@@ -177,9 +174,9 @@ class Item_kits extends Secure_area implements iData_controller
         $barcode_config = $this->barcode_lib->get_barcode_config();
 		// in case the selected barcode type is not Code39 or Code128 we set by default Code128
 		// the rationale for this is that EAN codes cannot have strings as seed, so 'KIT ' is not allowed
-		if($barcode_config['barcode_type'] != '1' && $barcode_config['barcode_type'] != '2')
+		if($barcode_config['barcode_type'] != 'Code39' && $barcode_config['barcode_type'] != 'Code128')
 		{
-			$barcode_config['barcode_type'] = '2';
+			$barcode_config['barcode_type'] = 'Code128';
 		}
 		$data['barcode_config'] = $barcode_config;
 		$this->load->view("barcode_sheet", $data);
