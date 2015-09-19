@@ -35,6 +35,7 @@ class Giftcard extends CI_Model
 		$this->db->join('people', 'people.person_id=giftcards.person_id', 'left');
 		$this->db->where('deleted', 0);
 		$this->db->order_by('giftcard_number');
+
 		if ($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
@@ -57,7 +58,7 @@ class Giftcard extends CI_Model
 	function get_info($giftcard_id)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
+		$this->db->join('people', 'people.person_id=giftcards.person_id', 'left');
 		$this->db->where('giftcard_id', $giftcard_id);
 		$this->db->where('deleted', 0);
 		
@@ -187,9 +188,9 @@ class Giftcard extends CI_Model
 		}
 
  		$this->db->from('customers');
-		$this->db->join('people', 'customers.person_id = people.person_id', 'left');
+		$this->db->join('people', 'customers.person_id=people.person_id', 'left');
 		$this->db->like('first_name', $this->db->escape_like_str($search));
-		$this->db->or_like("last_name", $this->db->escape_like_str($search)); 
+		$this->db->or_like('last_name', $this->db->escape_like_str($search)); 
 		$this->db->or_like("CONCAT(`first_name`, ' ' , `last_name`)", $this->db->escape_like_str($search));
 		$this->db->where('deleted', 0);
 		$this->db->order_by('last_name', 'asc');
@@ -255,6 +256,7 @@ class Giftcard extends CI_Model
 		$this->db->or_like('giftcards.person_id', $this->db->escape_like_str($search));
 		$this->db->where('deleted', 0);
 		$this->db->order_by('giftcard_number', 'asc');
+
 		if ($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);

@@ -7,10 +7,9 @@ class Item_kit extends CI_Model
 	function exists($item_kit_id)
 	{
 		$this->db->from('item_kits');
-		$this->db->where('item_kit_id',$item_kit_id);
-		$query = $this->db->get();
+		$this->db->where('item_kit_id', $item_kit_id);
 
-		return ($query->num_rows()==1);
+		return ($this->db->get()->num_rows()==1);
 	}
 
 	/*
@@ -19,7 +18,8 @@ class Item_kit extends CI_Model
 	function get_all($rows = 0, $limit_from = 0)
 	{
 		$this->db->from('item_kits');
-		$this->db->order_by("name", "asc");
+		$this->db->order_by('name', 'asc');
+
 		if ($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
@@ -41,7 +41,7 @@ class Item_kit extends CI_Model
 	function get_info($item_kit_id)
 	{
 		$this->db->from('item_kits');
-		$this->db->where('item_kit_id',$item_kit_id);
+		$this->db->where('item_kit_id', $item_kit_id);
 		
 		$query = $this->db->get();
 
@@ -73,7 +73,7 @@ class Item_kit extends CI_Model
 	{
 		$this->db->from('item_kits');
 		$this->db->where_in('item_kit_id',$item_kit_ids);
-		$this->db->order_by("name", "asc");
+		$this->db->order_by('name', 'asc');
 
 		return $this->db->get();
 	}
@@ -127,8 +127,9 @@ class Item_kit extends CI_Model
 
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
-		$this->db->order_by("name", "asc");
+		$this->db->order_by('name', 'asc');
 		$by_name = $this->db->get();
+
 		foreach($by_name->result() as $row)
 		{
 			$suggestions[] = $row->name;
@@ -149,8 +150,9 @@ class Item_kit extends CI_Model
 
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
-		$this->db->order_by("name", "asc");
+		$this->db->order_by('name', 'asc');
 		$by_name = $this->db->get();
+
 		foreach($by_name->result() as $row)
 		{
 			$suggestions[]='KIT ' . $row->item_kit_id . ' | ' . $row->name;
@@ -173,7 +175,8 @@ class Item_kit extends CI_Model
 		$this->db->from('item_kits');
 		$this->db->where("(name LIKE '%".$this->db->escape_like_str($search)."%' OR 
 						description LIKE '%".$this->db->escape_like_str($search)."%')");
-		$this->db->order_by("name", "asc");
+		$this->db->order_by('name', 'asc');
+
 		if ($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);

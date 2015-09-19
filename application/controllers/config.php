@@ -186,9 +186,7 @@ class Config extends Secure_area
     			'file_name' => 'company_logo');
     	$this->load->library('upload', $config);
     	$this->upload->do_upload('company_logo');
-    	return strlen($this->upload->display_errors()) == 0 ||
-    	!strcmp($this->upload->display_errors(),
-    			'<p>'.$this->lang->line('upload_no_file_selected').'</p>');
+    	return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
     }
     
     function backup_db()

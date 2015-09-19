@@ -447,6 +447,8 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$CI->lang->line('item_kits_kit'),
 	$CI->lang->line('item_kits_name'),
 	$CI->lang->line('item_kits_description'),
+	$CI->lang->line('items_cost_price'),
+	$CI->lang->line('items_unit_price'),
 	'&nbsp', 
 	);
 	
@@ -465,25 +467,25 @@ function get_item_kits_manage_table( $item_kits, $controller )
 /*
 Gets the html data rows for the item kits.
 */
-function get_item_kits_manage_table_data_rows( $item_kits, $controller )
+function get_item_kits_manage_table_data_rows($item_kits, $controller)
 {
 	$CI =& get_instance();
 	$table_data_rows='';
 	
 	foreach($item_kits->result() as $item_kit)
 	{
-		$table_data_rows.=get_item_kit_data_row( $item_kit, $controller );
+		$table_data_rows .= get_item_kit_data_row($item_kit, $controller);
 	}
 	
 	if($item_kits->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
+		$table_data_rows .= "<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
 }
 
-function get_item_kit_data_row($item_kit,$controller)
+function get_item_kit_data_row($item_kit, $controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
@@ -494,6 +496,8 @@ function get_item_kit_data_row($item_kit,$controller)
 	$table_data_row.='<td width="15%">'.'KIT '.$item_kit->item_kit_id.'</td>';
 	$table_data_row.='<td width="15%">'.$item_kit->name.'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($item_kit->description, 25).'</td>';
+	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_cost_price).'</td>';
+	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_unit_price).'</td>';
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 

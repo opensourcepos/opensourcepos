@@ -14,9 +14,32 @@ class Item_kits extends Secure_area implements iData_controller
 		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$item_kits = $this->Item_kit->get_all($lines_per_page, $limit_from);
+		
+		// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
+		foreach($item_kits->result() as $item_kit)
+		{
+			$item_kit_info = $this->Item_kit->get_info($item_kit->item_kit_id);
+			
+			$total_cost_price = 0;
+			$total_unit_price = 0;
+			
+			foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
+			{
+				$item_info = $this->Item->get_info($item_kit_item['item_id']);
+				
+				$total_cost_price += $item_info->cost_price;
+				$total_unit_price += $item_info->unit_price;
+			}
+
+			$item_kit->total_cost_price = $total_cost_price;
+			$item_kit->total_unit_price = $total_unit_price;
+		}
+		
 		$data['links'] = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from);
 		$data['manage_table'] = get_item_kits_manage_table($item_kits, $this);
+
 		$this->load->view('item_kits/manage', $data);
+		$this->_remove_duplicate_cookies();
 	}
 	
 	function search()
@@ -28,6 +51,8 @@ class Item_kits extends Secure_area implements iData_controller
 		$total_rows = $this->Item_kit->get_found_rows($search);
 		$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from, $total_rows, 'search');
 		$data_rows = get_item_kits_manage_table_data_rows($customers, $this);
+		$this->_remove_duplicate_cookies();
+
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 
@@ -37,14 +62,17 @@ class Item_kits extends Secure_area implements iData_controller
 	function suggest()
 	{
 		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('q'), $this->input->post('limit'));
-		echo implode("\n",$suggestions);
+
+		echo implode("\n", $suggestions);
 	}
 
 	function get_row()
 	{
 		$item_kit_id = $this->input->post('row_id');
 		$data_row = get_item_kit_data_row($this->Item_kit->get_info($item_kit_id), $this);
+
 		echo $data_row;
+		$this->_remove_duplicate_cookies();
 	}
 
 	function view($item_kit_id=-1)
@@ -124,8 +152,20 @@ class Item_kits extends Secure_area implements iData_controller
 		foreach ($item_kit_ids as $item_kid_id)
 		{
 			$item_kit_info = $this->Item_kit->get_info($item_kid_id);
+			
+			// calculate the total cost and retail price of the Kit so it can be added to the barcode test at the bottom
+			$total_cost_price = 0;
+			$total_unit_price = 0;
+			
+			foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
+			{
+				$item_info = $this->Item->get_info($item_kit_item['item_id']);
+				
+				$total_cost_price += $item_info->cost_price;
+				$total_unit_price += $item_info->unit_price;
+			}
 
-			$result[] = array('name'=>$item_kit_info->name, 'item_id'=>'KIT '.$item_kid_id, 'item_number'=>'KIT '.$item_kid_id);
+			$result[] = array('name'=>$item_kit_info->name, 'item_id'=>'KIT '.$item_kid_id, 'item_number'=>'KIT '.$item_kid_id, 'cost_price'=>$total_cost_price, 'unit_price'=>$total_unit_price);
 		}
 
 		$data['items'] = $result;
