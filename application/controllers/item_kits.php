@@ -153,7 +153,7 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			$item_kit_info = $this->Item_kit->get_info($item_kid_id);
 			
-			// calculate the total cost and retail price of the Kit so it can be added to the barcode test at the bottom
+			// calculate the total cost and retail price of the Kit so it can be added to the barcode text at the bottom
 			$total_cost_price = 0;
 			$total_unit_price = 0;
 			
