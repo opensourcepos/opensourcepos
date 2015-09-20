@@ -88,8 +88,12 @@ reports_tax_percent,VAT Percentage,Porcentaje de Impuestos,Tax Percent,Pourcenta
 reports_taxes,Belastingen,Impuestos,Taxes,Taxes,稅額,Налоги,ภาษี,Vergiler,Pajak
 reports_taxes_summary_report,Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: Résumé Taxes,稅金摘要報告,Сводный отчет налоги,รายงานสรุปภาษี,Vergi Özet Raporu,Laporan Ringkasan Pajak
 reports_this_month,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini
+reports_this_month_last_year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year
+reports_this_month_to_today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today
+reports_this_month_to_today_last_year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year
 reports_this_year,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini
 reports_today,Vandaag,Hoy,Today,Aujourd\'hui,今天,сегодня,วันนี้,Bugün,Hari ini
+reports_today_last_year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year
 reports_total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
 reports_type,Type,Tipo,Type,Type,類型,тип,ชนิด,Tür,Tipe
 reports_welcome_message,Welkom bij de rapporten. Selecteer hier een rapport.,Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.,Welcome to the reports panel. Please select a report to view.,Bienvenue à la page des rapports. Veuillez sélectionner un rapport à visualiser.,歡迎使用報表系統。請選擇要查看的報表。,"Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.",ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.,Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.,Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.

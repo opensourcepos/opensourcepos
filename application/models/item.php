@@ -30,21 +30,24 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where('deleted',0);
+
 		return $this->db->count_all_results();
 	}
 	
-	function get_found_rows($search, $stock_location_id=-1, $empty_upc=0, $low_inventory=0, $is_serialized=0, $no_description=0, $search_custom=0, $is_deleted=0)
+	function get_found_rows($search, $filters)
 	{
 		$this->db->from("items");
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		if ($stock_location_id > -1)
+
+		if ($filters['stock_location_id'] > -1)
 		{
 			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
-			$this->db->where('location_id', $stock_location_id);
+			$this->db->where('location_id', $filters['stock_location_id']);
 		}
-		if (!empty($search)) 
+
+		if ( !empty($search) ) 
 		{
-			if ($search_custom == 0)
+			if ($filters['search_custom'] == FALSE)
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
@@ -66,20 +69,22 @@ class Item extends CI_Model
 								"custom10 LIKE '%" . $this->db->escape_like_str($search) . "%')");
 			}
 		}
-		$this->db->where('items.deleted', $is_deleted);
-		if ($empty_upc != 0)
+
+		$this->db->where('items.deleted', $filters['is_deleted']);
+
+		if ($filters['empty_upc'] != FALSE)
 		{
 			$this->db->where('item_number', null);
 		}
-		if ($low_inventory != 0)
+		if ($filters['low_inventory'] != FALSE)
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
-		if ($is_serialized != 0)
+		if ($filters['is_serialized'] != FALSE)
 		{
 			$this->db->where('is_serialized', 1);
 		}
-		if ($no_description != 0)
+		if ($filters['no_description'] != FALSE)
 		{
 			$this->db->where('items.description', '');
 		}
@@ -172,6 +177,7 @@ class Item extends CI_Model
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where_in('item_id', $item_ids);
 		$this->db->order_by('item_id', 'asc');
+
 		return $this->db->get();
 	}
 
@@ -211,6 +217,7 @@ class Item extends CI_Model
 	function delete($item_id)
 	{
 		$this->db->where('item_id', $item_id);
+
 		return $this->db->update('items', array('deleted' => 1));
 	}
 
@@ -220,6 +227,7 @@ class Item extends CI_Model
 	function delete_list($item_ids)
 	{
 		$this->db->where_in('item_id',$item_ids);
+
 		return $this->db->update('items', array('deleted' => 1));
  	}
 
@@ -614,20 +622,22 @@ class Item extends CI_Model
 	}
 
 	/*
-	 Persform a search on items
+	 Perform a search on items
 	*/
-	function search($search, $stock_location_id=-1, $empty_upc=0, $low_inventory=0, $is_serialized=0, $no_description=0, $search_custom=0, $deleted=0, $rows=0, $limit_from=0)
+	function search($search, $filters, $rows=0, $limit_from=0)
 	{
 		$this->db->from("items");
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		if ($stock_location_id > -1)
+
+		if ($filters['stock_location_id'] > -1)
 		{
 			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
-			$this->db->where('location_id', $stock_location_id);
+			$this->db->where('location_id', $filters['stock_location_id']);
 		}
-		if (!empty($search)) 
+
+		if ( !empty($search) ) 
 		{
-			if ($search_custom == 0)
+			if ($filters['search_custom'] == FALSE)
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
@@ -649,26 +659,30 @@ class Item extends CI_Model
 								"custom10 LIKE '%" . $this->db->escape_like_str($search) . "%')");
 			}
 		}
-		$this->db->where('items.deleted', $deleted);
-		if ($empty_upc != 0)
+
+		$this->db->where('items.deleted', $filters['is_deleted']);
+
+		if ($filters['empty_upc'] != FALSE)
 		{
 			$this->db->where('item_number', null);
 		}
-		if ($low_inventory != 0)
+		if ($filters['low_inventory'] != FALSE)
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
-		if ($is_serialized != 0)
+		if ($filters['is_serialized'] != FALSE)
 		{
 			$this->db->where('is_serialized', 1);
 		}
-		if ($no_description != 0)
+		if ($filters['no_description'] != FALSE)
 		{
 			$this->db->where('items.description', '');
 		}
-		$this->db->order_by('items.name', "asc");
+
+		$this->db->order_by('items.name', 'asc');
+
 		if ($rows > 0) 
-		{
+		{	
 			$this->db->limit($rows, $limit_from);
 		}
 
