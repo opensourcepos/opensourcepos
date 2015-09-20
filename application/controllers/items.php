@@ -17,25 +17,14 @@ class Items extends Secure_area implements iData_controller
 		$data['controller_name'] = $this->get_controller_name();
 		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
-//*****
-		$start_of_time = date($this->config->item('dateformat'), 0);
-		$today = date($this->config->item('dateformat'));
-		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $start_of_time;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+		$items = $this->Item->get_all($stock_location,$lines_per_page,$limit_from);
+		$data['links'] = $this->_initialize_pagination($this->Item,$lines_per_page,$limit_from);
 		
-		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
-		$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
-//*****		
 		$data['stock_location'] = $stock_location;
 		$data['stock_locations'] = $stock_locations;
-		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
+		$data['manage_table'] = get_items_manage_table( $this->Item->get_all( $stock_location, $lines_per_page, $limit_from), $this );
 
-		$this->load->view('items/manage', $data);
-
+		$this->load->view('items/manage',$data);
 		$this->_remove_duplicate_cookies();
 	}
 
@@ -49,34 +38,22 @@ class Items extends Secure_area implements iData_controller
 	{
 		$search = $this->input->post('search');
 		$this->item_lib->set_item_location($this->input->post('stock_location'));
+		$stock_location = $this->item_lib->get_item_location();
 		$data['search_section_state'] = $this->input->post('search_section_state');
+		$empty_upc = $this->input->post('empty_upc');
+		$low_inventory = $this->input->post('low_inventory');
+		$is_serialized = $this->input->post('is_serialized');
+		$no_description = $this->input->post('no_description');
+		$search_custom = $this->input->post('search_custom');
+		$is_deleted = $this->input->post('is_deleted');
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-
-		$start_of_time = date($this->config->item('dateformat'), 0);
-		$today = date($this->config->item('dateformat'));
-		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $start_of_time;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
-		
-		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
-						'end_date' => $end_date_formatter->format('Y-m-d'),
-						'stock_location' => $this->item_lib->get_item_location(),
-						'empty_upc' => $this->input->post('empty_upc'),
-						'low_inventory' => $this->input->post('low_inventory'), 
-						'is_serialized' => $this->input->post('is_serialized'),
-						'no_description' => $this->input->post('no_description'),
-						'search_custom' => $this->input->post('search_custom'),
-						'is_deleted' => $this->input->post('is_deleted'));
-		
-		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
-		$data_rows = get_items_manage_table_data_rows($items, $this);
-		$total_rows = $this->Item->get_found_rows($search, $filters);
+		$items = $this->Item->search($search,$stock_location,$empty_upc,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted,$lines_per_page,$limit_from);
+		$data_rows = get_items_manage_table_data_rows($items,$this);
+		$total_rows = $this->Item->get_found_rows($search,$stock_location,$empty_upc,$low_inventory,$is_serialized,$no_description,$search_custom,$is_deleted);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
-		$data_rows = get_items_manage_table_data_rows($items, $this);
+		$data_rows = get_items_manage_table_data_rows($items,$this);
 		$this->_remove_duplicate_cookies();
-
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	

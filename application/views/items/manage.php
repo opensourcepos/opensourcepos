@@ -40,15 +40,6 @@ $(document).ready(function()
     	do_search(true);
     });
 
-	$(".date_filter").datepicker({onSelect: function(d,i){
-		if(d !== i.lastVal){
-			$(this).change();
-		}
-	}, dateFormat: "<?php echo dateformat_jquery($this->config->item('dateformat'));?>"}).change(function() {
-		do_search(true);
-		return false;
-	});
-	
     resize_thumbs();
 });
 
@@ -69,8 +60,7 @@ function init_table_sorting()
 			{
 				0: { sorter: false},
 				8: { sorter: false},
-				9: { sorter: false},
-				10: { sorter: false}
+				9: { sorter: false}
 			}
 		});
 	}
@@ -174,15 +164,7 @@ function show_hide_search_filter(search_filter_section, switchImgTag)
 	<?php echo form_label($this->lang->line('items_search_custom_items').' '.':', 'search_custom');?>
 	<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0)).' | ';?>
 	<?php echo form_label($this->lang->line('items_is_deleted').' '.':', 'is_deleted');?> 
-	<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0));?> 
-
-	</br>
-
-	<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-	<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size' => '15'));?>
-	<?php echo form_label(' - ', 'end_date');?>
-	<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size' => '15'));?>
-	
+	<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0));?>  
 	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
 </div>
 <div id="table_action_header">
