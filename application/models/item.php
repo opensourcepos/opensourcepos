@@ -33,19 +33,27 @@ class Item extends CI_Model
 
 		return $this->db->count_all_results();
 	}
-	
+
+	/*
+	 Get number of rows
+	*/
 	function get_found_rows($search, $filters)
 	{
 		$this->db->from("items");
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
 
 		if ($filters['stock_location_id'] > -1)
 		{
-			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
+			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
-
-		if ( !empty($search) ) 
+		
+		if (empty($search))
+		{
+			$this->db->where('trans_date BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
+		}
+		else
 		{
 			if ($filters['search_custom'] == FALSE)
 			{
@@ -92,6 +100,79 @@ class Item extends CI_Model
 		return $this->db->get()->num_rows();
 	}
 
+	/*
+	 Perform a search on items
+	*/
+	function search($search, $filters, $rows=0, $limit_from=0)
+	{
+		$this->db->from("items");
+		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
+
+		if ($filters['stock_location_id'] > -1)
+		{
+			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
+			$this->db->where('location_id', $filters['stock_location_id']);
+		}
+
+		if (empty($search))
+		{
+			$this->db->where('trans_date BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
+		}
+		else
+		{
+			if ($filters['search_custom'] == FALSE)
+			{
+				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								"company_name LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
+			}
+			else
+			{
+				$this->db->where("(custom1 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom2 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom3 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom4 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom5 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom6 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom7 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom8 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom9 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
+								"custom10 LIKE '%" . $this->db->escape_like_str($search) . "%')");
+			}
+		}
+
+		$this->db->where('items.deleted', $filters['is_deleted']);
+
+		if ($filters['empty_upc'] != FALSE)
+		{
+			$this->db->where('item_number', null);
+		}
+		if ($filters['low_inventory'] != FALSE)
+		{
+			$this->db->where('quantity <=', 'reorder_level');
+		}
+		if ($filters['is_serialized'] != FALSE)
+		{
+			$this->db->where('is_serialized', 1);
+		}
+		if ($filters['no_description'] != FALSE)
+		{
+			$this->db->where('items.description', '');
+		}
+
+		$this->db->order_by('items.name', 'asc');
+
+		if ($rows > 0) 
+		{	
+			$this->db->limit($rows, $limit_from);
+		}
+
+		return $this->db->get();
+	}
+	
 	/*
 	Returns all the items
 	*/
@@ -619,74 +700,6 @@ class Item extends CI_Model
 		}
 	
 		return $suggestions;
-	}
-
-	/*
-	 Perform a search on items
-	*/
-	function search($search, $filters, $rows=0, $limit_from=0)
-	{
-		$this->db->from("items");
-		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-
-		if ($filters['stock_location_id'] > -1)
-		{
-			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
-			$this->db->where('location_id', $filters['stock_location_id']);
-		}
-
-		if ( !empty($search) ) 
-		{
-			if ($filters['search_custom'] == FALSE)
-			{
-				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								"company_name LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
-			}
-			else
-			{
-				$this->db->where("(custom1 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom2 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom3 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom4 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom5 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom6 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom7 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom8 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom9 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom10 LIKE '%" . $this->db->escape_like_str($search) . "%')");
-			}
-		}
-
-		$this->db->where('items.deleted', $filters['is_deleted']);
-
-		if ($filters['empty_upc'] != FALSE)
-		{
-			$this->db->where('item_number', null);
-		}
-		if ($filters['low_inventory'] != FALSE)
-		{
-			$this->db->where('quantity <=', 'reorder_level');
-		}
-		if ($filters['is_serialized'] != FALSE)
-		{
-			$this->db->where('is_serialized', 1);
-		}
-		if ($filters['no_description'] != FALSE)
-		{
-			$this->db->where('items.description', '');
-		}
-
-		$this->db->order_by('items.name', 'asc');
-
-		if ($rows > 0) 
-		{	
-			$this->db->limit($rows, $limit_from);
-		}
-
-		return $this->db->get();
 	}
 
 	function get_categories()
