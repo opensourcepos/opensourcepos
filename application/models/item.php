@@ -39,7 +39,7 @@ class Item extends CI_Model
 	*/
 	function get_found_rows($search, $filters)
 	{
-		$this->db->from("items");
+		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
 
@@ -96,6 +96,8 @@ class Item extends CI_Model
 		{
 			$this->db->where('items.description', '');
 		}
+		
+		$this->db->group_by('items.name');
 		
 		return $this->db->get()->num_rows();
 	}
@@ -105,7 +107,7 @@ class Item extends CI_Model
 	*/
 	function search($search, $filters, $rows=0, $limit_from=0)
 	{
-		$this->db->from("items");
+		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
 
@@ -163,6 +165,7 @@ class Item extends CI_Model
 			$this->db->where('items.description', '');
 		}
 
+		$this->db->group_by('items.name');
 		$this->db->order_by('items.name', 'asc');
 
 		if ($rows > 0) 
