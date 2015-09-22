@@ -39,6 +39,8 @@ class Item extends CI_Model
 	*/
 	function get_found_rows($search, $filters)
 	{
+		// don't fecth all the table for a row counting function
+		$this->db->select('items.name');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
@@ -59,7 +61,7 @@ class Item extends CI_Model
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								"items.item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"company_name LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
 			}
@@ -96,7 +98,8 @@ class Item extends CI_Model
 		{
 			$this->db->where('items.description', '');
 		}
-		
+
+		// avoid duplicate entry with same name because of invetory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.name');
 		
 		return $this->db->get()->num_rows();
@@ -127,7 +130,7 @@ class Item extends CI_Model
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								"items.item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"company_name LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
 			}
@@ -165,7 +168,10 @@ class Item extends CI_Model
 			$this->db->where('items.description', '');
 		}
 
+		// avoid duplicate entry with same name because of invetory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.name');
+		
+		// order by name of item
 		$this->db->order_by('items.name', 'asc');
 
 		if ($rows > 0) 

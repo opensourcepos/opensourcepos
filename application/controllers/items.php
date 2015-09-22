@@ -20,9 +20,11 @@ class Items extends Secure_area implements iData_controller
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
-
-		$start_of_time = date($this->config->item('dateformat'), 0);
+		
+		// assume year 2010 as starting date for OSPOS
+		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
+
 		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
 		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
@@ -54,8 +56,10 @@ class Items extends Secure_area implements iData_controller
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$start_of_time = date($this->config->item('dateformat'), 0);
+		// assume year 2010 as starting date for OSPOS
+		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
+
 		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
 		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
