@@ -18,8 +18,8 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			$item_info = $this->Item->get_info($item_kit_item['item_id']);
 			
-			$item_kit->total_cost_price += $item_info->cost_price;
-			$item_kit->total_unit_price += $item_info->unit_price;
+			$item_kit->total_cost_price += $item_info->cost_price * $item_kit_item['quantity'];
+			$item_kit->total_unit_price += $item_info->unit_price * $item_kit_item['quantity'];
 		}
 
 		return $item_kit;
