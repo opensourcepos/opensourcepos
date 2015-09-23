@@ -61,7 +61,7 @@ class Item extends CI_Model
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								"items.item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"company_name LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
 			}
@@ -130,7 +130,7 @@ class Item extends CI_Model
 			{
 				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
 								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								"items.item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
+								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"company_name LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
 								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
 			}
