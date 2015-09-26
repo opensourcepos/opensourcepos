@@ -5,34 +5,34 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
-	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
-	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
+        <link rel="stylesheet" type="text/css" href="<?php echo assets_url('css/ospos.css') ?>"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo assets_url('css/ospos_print.css') ?>" media="print" />
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 	<!-- start js template tags -->
-	<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery-ui-1.11.4.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.bgiframe.min.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.color.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.form-3.51.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.metadata.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.tablesorter-2.20.1.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
-	<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
-	<script type="text/javascript" src="js/common.js" language="javascript"></script>
-	<script type="text/javascript" src="js/date.js" language="javascript"></script>
-	<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
-	<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
-	<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
-	<script type="text/javascript" src="js/swfobject.js" language="javascript"></script>
-	<script type="text/javascript" src="js/tabcontent.js" language="javascript"></script>
-	<script type="text/javascript" src="js/thickbox.js" language="javascript"></script>
+	<script type="text/javascript" src="<?php echo assets_url('js/jquery-1.8.3.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery-ui-1.11.4.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.ajax_queue.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.autocomplete.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.bgiframe.min.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.color.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.form-3.51.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.jkey-1.1.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.metadata.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.tablesorter-2.20.1.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.tablesorter.staticrow.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/jquery.validate-1.13.1-min.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/common.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/date.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/imgpreview.full.jquery.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/manage_tables.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/nominatim.autocomplete.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/swfobject.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/tabcontent.js') ?>" language="javascript"></script>
+        <script type="text/javascript" src="<?php echo assets_url('js/thickbox.js') ?>" language="javascript"></script>
 	<!-- end js template tags -->
     <?php else : ?>
     <!-- start minjs template tags -->
-    <script type="text/javascript" src="dist/opensourcepos.min.js?rel=3806e1c0ff" language="javascript"></script>
+    <script type="text/javascript" src="<?php echo assets_url('dist/opensourcepos.min.js?rel=3806e1c0ff') ?>" language="javascript"></script>
     <!-- end minjs template tags -->       
     <?php endif; ?>
 	<script type="text/javascript">
