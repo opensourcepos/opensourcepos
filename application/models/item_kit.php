@@ -72,7 +72,7 @@ class Item_kit extends CI_Model
 	function get_multiple_info($item_kit_ids)
 	{
 		$this->db->from('item_kits');
-		$this->db->where_in('item_kit_id',$item_kit_ids);
+		$this->db->where_in('item_kit_id', $item_kit_ids);
 		$this->db->order_by('name', 'asc');
 
 		return $this->db->get();
@@ -85,7 +85,7 @@ class Item_kit extends CI_Model
 	{
 		if (!$item_kit_id or !$this->exists($item_kit_id))
 		{
-			if($this->db->insert('item_kits',$item_kit_data))
+			if($this->db->insert('item_kits', $item_kit_data))
 			{
 				$item_kit_data['item_kit_id'] = $this->db->insert_id();
 
@@ -126,13 +126,31 @@ class Item_kit extends CI_Model
 		$suggestions = array();
 
 		$this->db->from('item_kits');
-		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		$by_name = $this->db->get();
 
-		foreach($by_name->result() as $row)
+		//KIT #
+		if (stripos($search, 'KIT ') !== false)
 		{
-			$suggestions[] = $row->name;
+			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search));
+			
+			$this->db->order_by('item_kit_id', 'asc');
+			$by_name = $this->db->get();
+	
+			foreach($by_name->result() as $row)
+			{
+				$suggestions[] = 'KIT ' . $row->item_kit_id;
+			}			
+		}
+		else
+		{
+			$this->db->like('name', $search);
+			
+			$this->db->order_by('name', 'asc');
+			$by_name = $this->db->get();
+	
+			foreach($by_name->result() as $row)
+			{
+				$suggestions[] = $row->name;
+			}
 		}
 
 		//only return $limit suggestions
@@ -174,8 +192,15 @@ class Item_kit extends CI_Model
 	function search($search, $rows=0, $limit_from=0)
 	{
 		$this->db->from('item_kits');
-		$this->db->where("(name LIKE '%".$this->db->escape_like_str($search)."%' OR 
-						description LIKE '%".$this->db->escape_like_str($search)."%')");
+		$this->db->like('name', $search);
+		$this->db->or_like('description', $search);
+		
+		//KIT #
+		if (stripos($search, 'KIT ') !== false)
+		{
+			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
+		}
+
 		$this->db->order_by('name', 'asc');
 
 		if ($rows > 0)
@@ -186,11 +211,17 @@ class Item_kit extends CI_Model
 		return $this->db->get();	
 	}
 	
-	function get_found_rows($search, $is_deleted=0)
+	function get_found_rows($search)
 	{
 		$this->db->from('item_kits');
-		$this->db->where("(name LIKE '%".$this->db->escape_like_str($search)."%' OR 
-						description LIKE '%".$this->db->escape_like_str($search)."%')");
+		$this->db->like('name', $search);
+		$this->db->or_like('description', $search);
+		
+		//KIT #
+		if (stripos($search, 'KIT ') !== false)
+		{
+			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
+		}
 
 		return $this->db->get()->num_rows();
 	}
