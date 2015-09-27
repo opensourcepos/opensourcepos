@@ -333,7 +333,7 @@ class Sales extends Secure_area
 		$data['discount']=$this->sale_lib->get_discount();
 		$data['receipt_title']=$this->lang->line('sales_receipt');
 		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
-		$data['transaction_date']= date($this->config->item('dateformat'), strtotime($data['transaction_time']));
+		$data['transaction_date']= date($this->config->item('dateformat'));
 		$data['show_stock_locations']=$this->Stock_location->show_locations('sales');
 		$customer_id=$this->sale_lib->get_customer();
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;

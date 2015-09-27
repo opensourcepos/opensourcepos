@@ -53,7 +53,7 @@ if (isset($error_message))
             
             <tr>
                 <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-                <td><div class="due"><?php echo to_currency($total); ?></div></td>
+                <td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
             </tr>
 			
         </table>
