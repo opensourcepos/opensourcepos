@@ -8,12 +8,12 @@ class Sale extends CI_Model
 		$this->db->select('DATE_FORMAT( sale_time, "%d-%m-%Y" ) AS sale_date', FALSE);
 		$this->db->select('CONCAT(first_name," ",  last_name) AS customer_name', FALSE);
 		$this->db->select('SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due');
-		$this->db->from("sales_items_temp");
+		$this->db->from('sales_items_temp');
 		$this->db->join('people', 'people.person_id = sales_items_temp.customer_id', 'left');
 
 		$this->db->where('sales_items_temp.sale_id', $sale_id);
-		$this->db->order_by('sale_time', 'desc');
 		$this->db->group_by('sale_id');
+		$this->db->order_by('sale_time', 'asc');
 
 		return $this->db->get();
 	}
@@ -84,7 +84,7 @@ class Sale extends CI_Model
 		}
 		
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date', 'desc');
+		$this->db->order_by('sale_date', 'asc');
 		
 		if ($rows > 0)
 		{
@@ -143,7 +143,7 @@ class Sale extends CI_Model
 			$this->db->like('payment_type ', $this->lang->line('sales_cash'), 'after');
 		}
 
-		$this->db->group_by("payment_type");
+		$this->db->group_by('payment_type');
 
 		$payments = $this->db->get()->result_array();
 
@@ -190,7 +190,7 @@ class Sale extends CI_Model
 			$this->db->like('last_name', $search);
 			$this->db->or_like('first_name', $search);
 			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-			$this->db->order_by('last_name', "asc");
+			$this->db->order_by('last_name', 'asc');
 
 			foreach($this->db->get()->result_array() as $result)
 			{
