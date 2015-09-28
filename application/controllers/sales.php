@@ -31,16 +31,24 @@ class Sales extends Secure_area
 
 		$sale_type   = 'all';
 		$location_id = 'all';
+		$is_valid_receipt = FALSE;
+		$search = null;
+		
+		$filters = array('sale_type' => $sale_type,
+						'location_id' => $location_id,
+						'start_date' => $start_date_formatter->format('Y-m-d'),
+						'end_date' => $end_date_formatter->format('Y-m-d'),
+						'only_invoices' => $only_invoices,
+						'only_cash' => $only_cash,
+						'is_valid_receipt' => $is_valid_receipt);
 
-		$inputs = array('start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
-						'sale_type' => $sale_type, 'location_id' => $location_id, 'only_invoices' => $only_invoices, 
-						'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from, 'only_cash' => $only_cash);
-		$sales = $this->Sale->get_all($inputs);
-		$payments = $this->Sale->get_payments_summary($inputs);
+		$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
+		$payments = $this->Sale->get_payments_summary($search, $filters);
+		$total_rows = $this->Sale->get_found_rows($search, $filters);
 		$data['only_invoices'] = $only_invoices;
 		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
 		$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
-		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, count($sales), 'manage', $only_invoices);
+		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
 		$data['manage_table'] = get_sales_manage_table($sales, $this);
 		$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
 
@@ -91,17 +99,23 @@ class Sales extends Secure_area
 		$sale_type = 'all';
 		$location_id = 'all';
 
-		$inputs = array('sale_type' => $sale_type, 'location_id' => $location_id,
-			'start_date' => $start_date_formatter->format('Y-m-d'), 'end_date' => $end_date_formatter->format('Y-m-d'),
-			'only_invoices' => $only_invoices, 'search' => $search, 'only_cash' => $only_cash,
-			'lines_per_page' => $lines_per_page, 'limit_from' => $limit_from, 'is_valid_receipt' => $is_valid_receipt);
-		$sales = $this->Sale->get_all($inputs);
-		$payments = $this->Sale->get_payments_summary($inputs);
-		$total_rows = count($sales);
+		$filters = array('sale_type' => $sale_type,
+						'location_id' => $location_id,
+						'start_date' => $start_date_formatter->format('Y-m-d'),
+						'end_date' => $end_date_formatter->format('Y-m-d'),
+						'only_invoices' => $only_invoices,
+						'only_cash' => $only_cash,
+						'is_valid_receipt' => $is_valid_receipt);
+
+		$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
+		$payments = $this->Sale->get_payments_summary($search, $filters);
+		$total_rows = $this->Sale->get_found_rows($search, $filters);
 		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
-		$sale_rows=get_sales_manage_table_data_rows($sales, $this);
-		$payment_summary=get_sales_manage_payments_summary($payments, $sales, $this);
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary'=>$payment_summary));
+		$sale_rows = get_sales_manage_table_data_rows($sales, $this);
+		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
+
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
+
 		$this->_remove_duplicate_cookies();
 	}
 
@@ -116,7 +130,7 @@ class Sales extends Secure_area
 		$suggestions = array_merge($suggestions, $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit')));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
 
-		echo implode("\n",$suggestions);
+		echo implode("\n", $suggestions);
 	}
 
 	function customer_search()
