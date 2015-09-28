@@ -97,7 +97,7 @@ class Sale extends CI_Model
 	/*
 	 Get the payment summary for the takings (sales/manage) view
 	*/
-	function get_payments_summary($search, $filters)
+	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', FALSE);
@@ -170,14 +170,14 @@ class Sale extends CI_Model
 		return $payments;
 	}
 	
-	function get_total_rows()
+	public function get_total_rows()
 	{
 		$this->db->from('sales');
 
 		return $this->db->count_all_results();
 	}
 
-	function get_search_suggestions($search, $limit=25)
+	public function get_search_suggestions($search, $limit=25)
 	{
 		$suggestions = array();
 
@@ -205,7 +205,7 @@ class Sale extends CI_Model
 		return $suggestions;
 	}
 
-	function get_invoice_count()
+	public function get_invoice_count()
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number is not null');
@@ -213,7 +213,7 @@ class Sale extends CI_Model
 		return $this->db->count_all_results();
 	}
 	
-	function get_sale_by_invoice_number($invoice_number)
+	public function get_sale_by_invoice_number($invoice_number)
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
@@ -221,7 +221,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 	
-	function get_invoice_number_for_year($year = '', $start_from = 0) 
+	public function get_invoice_number_for_year($year = '', $start_from = 0) 
 	{
 		$year = $year == '' ? date('Y') : $year;
 		$this->db->select("COUNT( 1 ) AS invoice_number_year", FALSE);
@@ -233,7 +233,7 @@ class Sale extends CI_Model
 		return ($start_from + $result[ 'invoice_number_year']);
 	}
 
-	function exists($sale_id)
+	public function exists($sale_id)
 	{
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
@@ -241,7 +241,7 @@ class Sale extends CI_Model
 		return ($this->db->get()->num_rows()==1);
 	}
 	
-	function update($sale_data, $sale_id)
+	public function update($sale_data, $sale_id)
 	{
 		$this->db->where('sale_id', $sale_id);
 		$success = $this->db->update('sales', $sale_data);
@@ -249,7 +249,7 @@ class Sale extends CI_Model
 		return $success;
 	}
 	
-	function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id=false)
+	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id=false)
 	{
 		if(count($items)==0)
 		{
@@ -352,7 +352,7 @@ class Sale extends CI_Model
 		return $sale_id;
 	}
 	
-	function delete_list($sale_ids, $employee_id, $update_inventory=TRUE) 
+	public function delete_list($sale_ids, $employee_id, $update_inventory=TRUE) 
 	{
 		$result = TRUE;
 
@@ -364,7 +364,7 @@ class Sale extends CI_Model
 		return $result;
 	}
 	
-	function delete($sale_id, $employee_id, $update_inventory=TRUE) 
+	public function delete($sale_id, $employee_id, $update_inventory=TRUE) 
 	{
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
@@ -410,7 +410,7 @@ class Sale extends CI_Model
 		return $this->db->trans_status();
 	}
 
-	function get_sale_items($sale_id)
+	public function get_sale_items($sale_id)
 	{
 		$this->db->from('sales_items');
 		$this->db->where('sale_id', $sale_id);
@@ -418,7 +418,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	function get_sale_payments($sale_id)
+	public function get_sale_payments($sale_id)
 	{
 		$this->db->from('sales_payments');
 		$this->db->where('sale_id', $sale_id);
@@ -426,7 +426,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	function get_customer($sale_id)
+	public function get_customer($sale_id)
 	{
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
@@ -434,7 +434,7 @@ class Sale extends CI_Model
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
 	
-	function invoice_number_exists($invoice_number, $sale_id='')
+	public function invoice_number_exists($invoice_number, $sale_id='')
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
@@ -446,7 +446,7 @@ class Sale extends CI_Model
 		return ($this->db->get()->num_rows()==1);
 	}
 	
-	function get_giftcard_value( $giftcardNumber )
+	public function get_giftcard_value( $giftcardNumber )
 	{
 		if ( !$this->Giftcard->exists( $this->Giftcard->get_giftcard_id($giftcardNumber) ) )
 		{
@@ -460,7 +460,7 @@ class Sale extends CI_Model
 	}
 
 	//We create a temp table that allows us to do easy report/sales queries
-	function create_sales_items_temp_table()
+	public function create_sales_items_temp_table()
 	{
 		if ($this->config->item('tax_included'))
 		{

@@ -113,10 +113,9 @@ class Sales extends Secure_area
 		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
 		$sale_rows = get_sales_manage_table_data_rows($sales, $this);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
-
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
-
 		$this->_remove_duplicate_cookies();
+		
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
 	}
 
 	function item_search()
