@@ -16,21 +16,22 @@ class Item_kit extends CI_Model
 	/*
 	Returns all the item kits
 	*/
-	function get_all($limit=10000, $offset=0)
+	function get_all($rows = 0, $limit_from = 0)
 	{
 		$this->db->from('item_kits');
 		$this->db->order_by("name", "asc");
-		$this->db->limit($limit);
-		$this->db->offset($offset);
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();
 	}
 	
-	function count_all()
+	function get_total_rows()
 	{
 		$this->db->from('item_kits');
 		return $this->db->count_all_results();
 	}
-
+	
 	/*
 	Gets information about a particular item kit
 	*/
@@ -159,13 +160,24 @@ class Item_kit extends CI_Model
 	/*
 	Preform a search on items
 	*/
-	function search($search)
+	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('item_kits');
 		$this->db->where("name LIKE '%".$this->db->escape_like_str($search)."%' or 
 		description LIKE '%".$this->db->escape_like_str($search)."%'");
 		$this->db->order_by("name", "asc");
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();	
+	}
+	
+	function get_found_rows($search)
+	{
+		$this->db->from('item_kits');
+		$this->db->where("name LIKE '%".$this->db->escape_like_str($search)."%' or 
+		description LIKE '%".$this->db->escape_like_str($search)."%'");
+		return $this->db->get()->num_rows();
 	}
 }
 ?>

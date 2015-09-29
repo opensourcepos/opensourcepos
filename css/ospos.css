@@ -8,13 +8,14 @@
 @import url(tables.css);
 @import url(thickbox.css);
 @import url(datepicker.css);
+@import url(invoice.css);
 
 body
 {
 	margin:0px;
 	padding:0px;
 	background-color:#f7f7f7;
-	font-family: "Lucida Grande", "Trebuchet MS", Tahoma, Verdana, sans-serif;
+	font-family: Arial, sans-serif, "Lucida Grande", "Trebuchet MS", Tahoma, Verdana;
 	font-size: 0.9em;
 }
 
@@ -127,12 +128,17 @@ a.none
 
 #config_info
 {
-	width:70%;
+	width:93%;
 	margin:0 auto;
 	padding:10px;
 	margin-bottom:30px;
 	margin-top:10px;
 	text-align:left;
+}
+
+#config_info .wide
+{
+	width: 30%;
 }
 
 #footer
@@ -145,4 +151,29 @@ a.none
 	color:#777777;
 	clear:both;
 	
+}
+
+input#search
+{
+	padding: 0px;
+}
+
+select#stock_location
+{
+	border: none;
+}
+
+#select_customer_form input, #select_supplier_form input
+{
+	width: 95%;
+}
+
+input.quantity, input.discount
+{
+	width: 40px;
+}
+
+a.rollover img
+{
+	padding: 3px;	
 }

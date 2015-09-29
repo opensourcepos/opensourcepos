@@ -96,7 +96,7 @@ label.required
 	width:100%;
 	top:35%;
 	color:#FFF;
-	font-size:0.8em;
+	font-size:0.9em;
 	font-weight:bold;
 	text-align:center;
 }
@@ -136,18 +136,8 @@ label.required
 
 input
 {
-	font-family:arial;
+	font-family: Arial;
 	padding: 3px;
-}
-
-input#search
-{
-	padding: 0px;
-}
-
-#select_customer_form input, #select_supplier_form input
-{
-	width: 95%;
 }
 
 .clearfix:after 

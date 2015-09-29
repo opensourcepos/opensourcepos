@@ -177,7 +177,7 @@ class CI_Email {
 	 * @param	string
 	 * @return	void
 	 */
-	public function from($from, $name = '')
+	public function from($from, $name = '', $return_path = NULL)
 	{
 		if (preg_match( '/\<(.*)\>/', $from, $match))
 		{
@@ -205,7 +205,8 @@ class CI_Email {
 		}
 
 		$this->_set_header('From', $name.' <'.$from.'>');
-		$this->_set_header('Return-Path', '<'.$from.'>');
+		isset($return_path) OR $return_path = $from;
+		$this->_set_header('Return-Path', '<'.$return_path.'>');
 
 		return $this;
 	}

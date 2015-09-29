@@ -9,18 +9,19 @@ class Inventory_summary extends Report
 	
 	public function getDataColumns()
 	{
-		return array($this->lang->line('reports_item_name'), $this->lang->line('reports_item_number'), $this->lang->line('reports_description'), $this->lang->line('reports_count'), $this->lang->line('reports_reorder_level'));
+		return array($this->lang->line('reports_item_name'), $this->lang->line('reports_item_number'), $this->lang->line('reports_description'), $this->lang->line('reports_count'), $this->lang->line('reports_reorder_level'), $this->lang->line('reports_stock_location'));
 	}
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('name, item_number, quantity, reorder_level, description');
-		$this->db->from('items');
-		$this->db->where('deleted', 0);	
+	    $this->db->from('items');
+        $this->db->join('item_quantities','items.item_id=item_quantities.item_id');
+        $this->db->join('stock_locations','item_quantities.location_id=stock_locations.location_id');
+		$this->db->select('name, item_number, reorder_level, item_quantities.quantity, description, location_name');
+		$this->db->where('items.deleted', 0);
 		$this->db->order_by('name');
-		
-		return $this->db->get()->result_array();
 
+		return $this->db->get()->result_array();
 	}
 	
 	public function getSummaryData(array $inputs)

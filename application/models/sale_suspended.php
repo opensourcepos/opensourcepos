@@ -12,6 +12,21 @@ class Sale_suspended extends CI_Model
 	{
 		$this->db->from('sales_suspended');
 		$this->db->where('sale_id',$sale_id);
+		$this->db->join('people', 'people.person_id = sales_suspended.customer_id', 'LEFT');
+		return $this->db->get();
+	}
+	
+	function get_invoice_count()
+	{
+		$this->db->from('sales_suspended');
+		$this->db->where('invoice_number is not null');
+		return $this->db->count_all_results();
+	}
+	
+	function get_sale_by_invoice_number($invoice_number)
+	{
+		$this->db->from('sales_suspended');
+		$this->db->where('invoice_number', $invoice_number);
 		return $this->db->get();
 	}
 
@@ -32,25 +47,17 @@ class Sale_suspended extends CI_Model
 		return $success;
 	}
 	
-	function save ($items,$customer_id,$employee_id,$comment,$payments,$sale_id=false)
+	function save ($items,$customer_id,$employee_id,$comment,$invoice_number,$payments,$sale_id=false)
 	{
 		if(count($items)==0)
 			return -1;
-
-		//Alain Multiple payments
-		//Build payment types string
-		$payment_types='';
-		foreach($payments as $payment_id=>$payment)
-		{
-			$payment_types=$payment_types.$payment['payment_type'].': '.to_currency($payment['payment_amount']).'<br />';
-		}
 
 		$sales_data = array(
 			'sale_time' => date('Y-m-d H:i:s'),
 			'customer_id'=> $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'=>$employee_id,
-			'payment_type'=>$payment_types,
-			'comment'=>$comment
+			'comment'=>$comment,
+			'invoice_number'=>$invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -84,7 +91,8 @@ class Sale_suspended extends CI_Model
 				'quantity_purchased'=>$item['quantity'],
 				'discount_percent'=>$item['discount'],
 				'item_cost_price' => $cur_item_info->cost_price,
-				'item_unit_price'=>$item['price']
+				'item_unit_price'=>$item['price'],
+				'item_location'=>$item['item_location']
 			);
 
 			$this->db->insert('sales_suspended_items',$sales_items_data);
@@ -142,14 +150,19 @@ class Sale_suspended extends CI_Model
 		$this->db->where('sale_id',$sale_id);
 		return $this->db->get();
 	}
-
-	function get_customer($sale_id)
+	
+	function invoice_number_exists($invoice_number,$sale_id='')
 	{
 		$this->db->from('sales_suspended');
-		$this->db->where('sale_id',$sale_id);
-		return $this->Customer->get_info($this->db->get()->row()->customer_id);
+		$this->db->where('invoice_number', $invoice_number);
+		if (!empty($sale_id))
+		{
+			$this->db->where('sale_id !=', $sale_id);
+		}
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
 	}
-	
+
 	function get_comment($sale_id)
 	{
 		$this->db->from('sales_suspended');

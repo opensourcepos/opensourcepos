@@ -1,6 +1,5 @@
 #receipt_wrapper
 {
-	font-family:Arial;
 	width:100%;	
 }
 
@@ -13,6 +12,12 @@
 {
 	font-size:150%;
 	font-weight:bold;
+}
+
+#company_name img
+{
+	max-width: 150px;
+	max-height: 150px;
 }
 
 #company_phone
@@ -38,7 +43,13 @@
 #receipt_items td
 {
 	position:relative;
-	padding:3px;	
+	padding:3px;
+	margin-bottom:5px;	
+	
+}
+
+#receipt_items tr {
+	margin-bottom:5px;	
 }
 
 .short_name
@@ -57,4 +68,15 @@
 {
 	margin-top:10px;
 	text-align:center;
+}
+
+.total-value 
+{
+	text-align: right;		
+}
+
+.discount
+{
+	font-weight: bold;
+}
 }

@@ -8,25 +8,27 @@ class Giftcards extends Secure_area implements iData_controller
 		parent::__construct('giftcards');
 	}
 
-	function index()
+	function index($limit_from=0)
 	{
-		$config['base_url'] = site_url('/giftcards/index');
-		$config['total_rows'] = $this->Giftcard->count_all();
-		$config['per_page'] = '20';
-		$config['uri_segment'] = 3;
-		$this->pagination->initialize($config);
-		
-		$data['controller_name']=strtolower(get_class());
+		$data['controller_name']=$this->get_controller_name();
 		$data['form_width']=$this->get_form_width();
-		$data['manage_table']=get_giftcards_manage_table( $this->Giftcard->get_all( $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$giftcards = $this->Giftcard->get_all($lines_per_page,$limit_from);
+		$data['links'] = $this->_initialize_pagination($this->Giftcard,$lines_per_page,$limit_from);
+		$data['manage_table']=get_giftcards_manage_table($giftcards,$this);
 		$this->load->view('giftcards/manage',$data);
 	}
 
 	function search()
 	{
-		$search=$this->input->post('search');
-		$data_rows=get_giftcards_manage_table_data_rows($this->Giftcard->search($search),$this);
-		echo $data_rows;
+		$search = $this->input->post('search');
+		$limit_from = $this->input->post('limit_from');
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$giftcards = $this->Giftcard->search($search, $lines_per_page, $limit_from);
+		$total_rows = $this->Giftcard->get_found_rows($search);
+		$links = $this->_initialize_pagination($this->Giftcard,$lines_per_page, $limit_from, $total_rows);
+		$data_rows=get_giftcards_manage_table_data_rows($giftcards,$this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 
 	/*
@@ -41,9 +43,9 @@ class Giftcards extends Secure_area implements iData_controller
 	/*
 	 Gives search suggestions for person_id based on what is being searched for
 	*/
-	function suggest_person()
+	function person_search()
 	{
-		$suggestions = $this->Giftcard->get_person_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'),$this->input->post('limit'));
 		echo implode("\n",$suggestions);
 	}
 /** END GARRISON ADDED **/
@@ -56,17 +58,21 @@ class Giftcards extends Secure_area implements iData_controller
 
 	function view($giftcard_id=-1)
 	{
-		$data['giftcard_info']=$this->Giftcard->get_info($giftcard_id);
-
+		$giftcard_info = $this->Giftcard->get_info($giftcard_id);
+		$person_name=$giftcard_id > 0? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
+		$data['selected_person'] = $giftcard_id > 0 && isset($giftcard_info->person_id) ? $giftcard_info->person_id . "|" . $person_name : "";
+		$data['giftcard_number']= $giftcard_id > 0 ? $giftcard_info->giftcard_number : $this->Giftcard->get_max_number()->giftcard_number + 1;
+		$data['giftcard_info'] = $giftcard_info;
 		$this->load->view("giftcards/form",$data);
 	}
 	
 	function save($giftcard_id=-1)
 	{
 		$giftcard_data = array(
-		'giftcard_number'=>$this->input->post('giftcard_number'),
-		'value'=>$this->input->post('value'),
-		'person_id'=>$this->input->post('person_id')/**GARRISON ADDED 4/22/2013**/		
+			'record_time' => date('Y-m-d H:i:s'),
+			'giftcard_number'=>$this->input->post('giftcard_number',TRUE),
+			'value'=>$this->input->post('value',TRUE),
+			'person_id'=>$this->input->post('person_id',TRUE)?$this->input->post('person_id'):NULL		
 		);
 
 		if( $this->Giftcard->save( $giftcard_data, $giftcard_id ) )

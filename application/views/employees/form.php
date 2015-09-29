@@ -2,7 +2,7 @@
 echo form_open('employees/save/'.$person_info->person_id,array('id'=>'employee_form'));
 ?>
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <fieldset id="employee_basic_info">
 <legend><?php echo $this->lang->line("employees_basic_information"); ?></legend>
 <?php $this->load->view("people/form_basic_info"); ?>
@@ -56,13 +56,35 @@ foreach($all_modules->result() as $module)
 {
 ?>
 <li>	
-<?php echo form_checkbox("permissions[]",$module->module_id,$this->Employee->has_permission($module->module_id,$person_info->person_id)); ?>
+<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id),"class='module'"); ?>
 <span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 <span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
-</li>
 <?php
+	foreach($all_subpermissions->result() as $permission)
+	{
+		$exploded_permission = explode('_', $permission->permission_id);
+		if ($permission->module_id == $module->module_id)
+		{
+			$lang_key = $module->module_id.'_'.$exploded_permission[1];
+			$lang_line = $this->lang->line($lang_key);
+			$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
+			if (empty($lang_line))
+			{
+				continue;
+			} 
+			?>
+		<ul>
+			<li>
+			<?php echo form_checkbox("grants[]",$permission->permission_id,$this->Employee->has_grant($permission->permission_id,$person_info->person_id)); ?>
+			<span class="medium"><?php echo $lang_line ?></span>
+			</li>
+		</ul>
+			<?php 
+		}
+	}
 }
 ?>
+</li>
 </ul>
 <?php
 echo form_submit(array(
@@ -82,6 +104,39 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
+
+	$.validator.addMethod("module", function (value, element) {
+		var result = true;
+		$(".module").each(function(index, element)
+		{
+			var parent = $(element).parent();
+			var checked =  $(element).is(":checked");
+			if ($("ul", parent).length > 0 && result)
+			{
+				result &= !checked || (checked && $("ul > li > input:checked", parent).length > 0);
+			}
+		});
+		return result;
+	}, '<?php echo $this->lang->line('employees_subpermission_required'); ?>');
+
+	$("ul#permission_list > li > input[name='grants[]']").each(function() 
+	{
+	    var $this = $(this);
+	    $("ul > li > input", $this.parent()).each(function() 
+	    {
+		    var $that = $(this);
+	        var updateCheckboxes = function (checked) 
+	        {
+				$that.prop("disabled", !checked);
+	         	!checked && $that.prop("checked", false);
+	        }
+	       $this.change(function() {
+	            updateCheckboxes($this.is(":checked"));
+	        });
+			updateCheckboxes($this.is(":checked"));
+	    });
+	});
+	
 	$('#employee_form').validate({
 		submitHandler:function(form)
 		{

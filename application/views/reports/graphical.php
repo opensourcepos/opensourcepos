@@ -4,7 +4,6 @@ $this->load->view("partial/header");
 <div id="page_title" style="margin-bottom:8px;"><?php echo $title ?></div>
 <div id="page_subtitle" style="margin-bottom:8px;"><?php echo $subtitle ?></div>
 <div style="text-align: center;">
-
 <script type="text/javascript">
 swfobject.embedSWF(
 "<?php echo base_url(); ?>open-flash-chart.swf", "chart",

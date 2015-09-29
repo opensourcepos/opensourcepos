@@ -14,25 +14,38 @@ class Customer extends Person
 		return ($query->num_rows()==1);
 	}
 	
-	/*
-	Returns all the customers
-	*/
-	function get_all($limit=10000, $offset=0)
+	function account_number_exists($account_number,$person_id='')
 	{
 		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');			
-		$this->db->where('deleted',0);
-		$this->db->order_by("last_name", "asc");
-		$this->db->limit($limit);
-		$this->db->offset($offset);
-		return $this->db->get();		
-	}
+		$this->db->where('account_number', $account_number);
+		if (!empty($person_id))
+		{
+			$this->db->where('person_id !=', $person_id);
+		}
+		$query=$this->db->get();
+		return ($query->num_rows()==1);
+	}	
 	
-	function count_all()
+	function get_total_rows()
 	{
 		$this->db->from('customers');
 		$this->db->where('deleted',0);
 		return $this->db->count_all_results();
+	}
+	
+	/*
+	Returns all the customers
+	*/
+	function get_all($rows = 0, $limit_from = 0)
+		{
+		$this->db->from('customers');
+		$this->db->join('people','customers.person_id=people.person_id');			
+		$this->db->where('deleted',0);
+		$this->db->order_by("last_name", "asc");
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
+		return $this->db->get();		
 	}
 	
 	/*
@@ -223,10 +236,24 @@ class Customer extends Person
 		return $suggestions;
 
 	}
+	
+	function get_found_rows($search)
+	{
+		$this->db->from('customers');
+		$this->db->join('people','customers.person_id=people.person_id');
+		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		last_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		email LIKE '%".$this->db->escape_like_str($search)."%' or
+		phone_number LIKE '%".$this->db->escape_like_str($search)."%' or
+		account_number LIKE '%".$this->db->escape_like_str($search)."%' or
+		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");
+		return $this->db->get()->num_rows();
+	}
+	
 	/*
 	Preform a search on customers
 	*/
-	function search($search)
+	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('customers');
 		$this->db->join('people','customers.person_id=people.person_id');		
@@ -237,7 +264,9 @@ class Customer extends Person
 		account_number LIKE '%".$this->db->escape_like_str($search)."%' or 
 		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");		
 		$this->db->order_by("last_name", "asc");
-		
+		if ($rows > 0) {
+			$this->db->limit($rows, $limit_from);
+		}
 		return $this->db->get();	
 	}
 

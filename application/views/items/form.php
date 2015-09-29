@@ -1,23 +1,24 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <?php
-echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
+echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'enctype'=>'multipart/form-data'));
 ?>
 <fieldset id="item_basic_info">
-<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
+	<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-<div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
+	<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('items_item_number').':', 'item_number',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'item_number',
+		'class'=>'item_number',
 		'id'=>'item_number',
 		'value'=>$item_info->item_number)
 	);?>
 	</div>
-</div>
+	</div>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'required wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -112,41 +113,53 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 	</div>
 </div>
 
+<?php
+foreach($stock_locations as $key=>$location_detail)
+{
+?>
+    <div class="field_row clearfix">
+    <?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] .':', 
+                            $key.'_quantity',
+                            array('class'=>'required wide')); ?>
+    	<div class='form_field'>
+    	<?php echo form_input(array(
+    		'name'=>$key.'_quantity',
+    		'id'=>$key.'_quantity',
+    		'class'=>'quantity',
+    		'size'=>'8',
+    		'value'=>isset($item_info->item_id)?$location_detail['quantity']:0)
+    	);?>
+    	</div>
+	</div>
+<?php
+}
+?>
 
 <div class="field_row clearfix">
-<?php echo form_label($this->lang->line('items_quantity').':', 'quantity',array('class'=>'required wide')); ?>
+<?php echo form_label($this->lang->line('items_receiving_quantity').':', 'receiving_quantity',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
-		'name'=>'quantity',
-		'id'=>'quantity',
-		'value'=>$item_info->quantity)
+		'name'=>'receiving_quantity',
+		'id'=>'receiving_quantity',
+		'size'=>'8',
+		'value'=>$item_info->receiving_quantity)
 	);?>
 	</div>
-</div>
+	</div>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'required wide')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'reorder_level',
 		'id'=>'reorder_level',
-		'value'=>$item_info->reorder_level)
+		'size'=>'8',
+		'value'=>isset($item_info->item_id)?0:$item_info->reorder_level)
 	);?>
 	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_location').':', 'location',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'location',
-		'id'=>'location',
-		'value'=>$item_info->location)
-	);?>
 	</div>
-</div>
 
-<div class="field_row clearfix">
+	<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_description').':', 'description',array('class'=>'wide')); ?>
 	<div class='form_field'>
 	<?php echo form_textarea(array(
@@ -157,6 +170,13 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 		'cols'=>'17')
 	);?>
 	</div>
+</div>
+
+<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('items_image').':', 'item_image',array('class'=>'wide')); ?>
+    <div class='form_field'>
+        <?php echo form_upload('item_image');?>
+    </div>
 </div>
 
 <div class="field_row clearfix">
@@ -197,158 +217,31 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form'));
 </div>
 <!-- Parq End -->
 
-
-
-<!--  GARRISON ADDED 4/21/2013 -->
-<div class="field_row clearfix">	
-<?php
-if($this->config->item('custom1_name') != NULL)
-{
-	echo form_label($this->config->item('custom1_name').':', 'custom1',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom1',
-			'id'=>'custom1',
-			'value'=>$item_info->custom1)
-		);?>
+<?php for ($i = 0; $i < 11; $i++) 
+{ 
+?>
+	<?php
+	if($this->config->item('custom'.$i.'_name') != NULL)
+	{
+		$item_arr = (array)$item_info;
+		?>
+		<div class="field_row clearfix">
+			<?php 	
+			echo form_label($this->config->item('custom'.$i.'_name').':', 'custom'.$i,array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'custom'.$i,
+					'id'=>'custom'.$i,
+					'value'=>$item_arr['custom'.$i])
+				);?>
+			</div>
 		</div>
-	</div>
-<?php }//end if?>
+		<?php 
+	}
+}
+?>
 
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom2_name') != NULL)
-{
-	echo form_label($this->config->item('custom2_name').':', 'custom2',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom2',
-			'id'=>'custom2',
-			'value'=>$item_info->custom2)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
 
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom3_name') != NULL)
-{
-	echo form_label($this->config->item('custom3_name').':', 'custom3',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom3',
-			'id'=>'custom3',
-			'value'=>$item_info->custom3)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom4_name') != NULL)
-{
-	echo form_label($this->config->item('custom4_name').':', 'custom4',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom4',
-			'id'=>'custom4',
-			'value'=>$item_info->custom4)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom5_name') != NULL)
-{
-	echo form_label($this->config->item('custom5_name').':', 'custom5',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom5',
-			'id'=>'custom5',
-			'value'=>$item_info->custom5)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom6_name') != NULL)
-{
-	echo form_label($this->config->item('custom6_name').':', 'custom6',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom6',
-			'id'=>'custom6',
-			'value'=>$item_info->custom6)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom7_name') != NULL)
-{
-	echo form_label($this->config->item('custom7_name').':', 'custom7',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom7',
-			'id'=>'custom7',
-			'value'=>$item_info->custom7)
-		);?>
-	</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom8_name') != NULL)
-{
-	echo form_label($this->config->item('custom8_name').':', 'custom8',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom8',
-			'id'=>'custom8',
-			'value'=>$item_info->custom8)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom9_name') != NULL)
-{
-	echo form_label($this->config->item('custom9_name').':', 'custom9',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom9',
-			'id'=>'custom9',
-			'value'=>$item_info->custom9)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
-
-<div class="field_row clearfix">
-<?php
-if($this->config->item('custom10_name') != NULL)
-{
-	echo form_label($this->config->item('custom10_name').':', 'custom10',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_input(array(
-			'name'=>'custom10',
-			'id'=>'custom10',
-			'value'=>$item_info->custom10)
-		);?>
-		</div>
-	</div>
-<?php }//end if?>
 
 <!--   END GARRISON ADDED -->
 
@@ -358,6 +251,12 @@ echo form_submit(array(
 	'id'=>'submit',
 	'value'=>$this->lang->line('common_submit'),
 	'class'=>'submit_button float_right')
+);
+echo form_submit(array(
+		'name'=>'continue',
+		'id'=>'continue',
+		'value'=>$this->lang->line('common_new'),
+		'class'=>'submit_button float_right')
 );
 ?>
 </fieldset>
@@ -369,73 +268,68 @@ echo form_close();
 //validation and submit handling
 $(document).ready(function()
 {
-	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10});
-    $("#category").result(function(event, data, formatted){});
-	$("#category").search();
-
-/** GARRISON ADDED 5/18/2013 **/	
-	$("#location").autocomplete("<?php echo site_url('items/suggest_location');?>",{max:100,minChars:0,delay:10});
-    $("#location").result(function(event, data, formatted){});
-	$("#location").search();
-
-	$("#custom1").autocomplete("<?php echo site_url('items/suggest_custom1');?>",{max:100,minChars:0,delay:10});
-    $("#custom1").result(function(event, data, formatted){});
-	$("#custom1").search();
-
-	$("#custom2").autocomplete("<?php echo site_url('items/suggest_custom2');?>",{max:100,minChars:0,delay:10});
-    $("#custom2").result(function(event, data, formatted){});
-	$("#custom2").search();
-
-	$("#custom3").autocomplete("<?php echo site_url('items/suggest_custom3');?>",{max:100,minChars:0,delay:10});
-    $("#custom3").result(function(event, data, formatted){});
-	$("#custom3").search();
-
-	$("#custom4").autocomplete("<?php echo site_url('items/suggest_custom4');?>",{max:100,minChars:0,delay:10});
-    $("#custom4").result(function(event, data, formatted){});
-	$("#custom4").search();
-
-	$("#custom5").autocomplete("<?php echo site_url('items/suggest_custom5');?>",{max:100,minChars:0,delay:10});
-    $("#custom5").result(function(event, data, formatted){});
-	$("#custom5").search();
-
-	$("#custom6").autocomplete("<?php echo site_url('items/suggest_custom6');?>",{max:100,minChars:0,delay:10});
-    $("#custom6").result(function(event, data, formatted){});
-	$("#custom6").search();
-
-	$("#custom7").autocomplete("<?php echo site_url('items/suggest_custom7');?>",{max:100,minChars:0,delay:10});
-    $("#custom7").result(function(event, data, formatted){});
-	$("#custom7").search();
-
-	$("#custom8").autocomplete("<?php echo site_url('items/suggest_custom8');?>",{max:100,minChars:0,delay:10});
-    $("#custom8").result(function(event, data, formatted){});
-	$("#custom8").search();
-
-	$("#custom9").autocomplete("<?php echo site_url('items/suggest_custom9');?>",{max:100,minChars:0,delay:10});
-    $("#custom9").result(function(event, data, formatted){});
-	$("#custom9").search();
-
-	$("#custom10").autocomplete("<?php echo site_url('items/suggest_custom10');?>",{max:100,minChars:0,delay:10});
-    $("#custom10").result(function(event, data, formatted){});
-	$("#custom10").search();
-/** END GARRISON ADDED **/
+    $("#continue").click(function()
+  	{
+        stay_open = true;
+    });
+    	    
+    $("#submit").click(function()
+    {
+        stay_open = false;
+    });
 	
+	var no_op = function(event, data, formatted){};
+	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10}).result(no_op).search();
+
+	<?php for ($i = 0; $i < 11; $i++) 
+	{ 
+	?>
+	$("#custom"+<?php echo $i; ?>).autocomplete("<?php echo site_url('items/suggest_custom'.$i);?>",{max:100,minChars:0,delay:10}).result(no_op).search();
+	<?php 
+	}
+	?>
+
+	$.validator.addMethod("item_number", function(value, element) 
+	{
+		return JSON.parse($.ajax(
+		{
+			  type: 'POST',
+			  url: '<?php echo site_url($controller_name . "/check_item_number")?>',
+			  data: {'item_id' : '<?php echo $item_info->item_id; ?>', 'item_number' : $(element).val() },
+			  success: function(response) 
+			  {
+				  success=response.success;
+			  },
+			  async:false,
+			  dataType: 'json'
+        }).responseText).success;
+        
+    }, '<?php echo $this->lang->line("items_item_number_duplicate"); ?>');
 	
 	$('#item_form').validate({
 		submitHandler:function(form)
 		{
-			/*
-			make sure the hidden field #item_number gets set
-			to the visible scan_item_number value
-			*/
-			$('#item_number').val($('#scan_item_number').val());
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				tb_remove();
-				post_item_form_submit(response);
-			},
-			dataType:'json'
-		});
+				success:function(response)
+				{
+					if (stay_open) 
+					{
+						// set action of item_form to url without item id, so a new one can be created
+				        $("#item_form").attr("action", "<?php echo site_url("items/save/")?>");
+						// use a whitelist of fields to minimize unintended side effects
+						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' + 
+								'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');  
+						// de-select any checkboxes, radios and drop-down menus
+						$(':input', '#item_form').not('#item_category_id').removeAttr('checked').removeAttr('selected');
+					}
+					else
+					{
+						tb_remove();
+					}
+					post_item_form_submit(response, stay_open);	
+				},
+				dataType:'json'
+			});
 
 		},
 		errorLabelContainer: "#error_message_box",
@@ -444,6 +338,7 @@ $(document).ready(function()
 		{
 			name:"required",
 			category:"required",
+			item_number: { item_number: true },
 			cost_price:
 			{
 				required:true,
@@ -460,16 +355,12 @@ $(document).ready(function()
 				required:true,
 				number:true
 			},
-			quantity:
-			{
-				required:true,
-				number:true
-			},
 			reorder_level:
 			{
 				required:true,
 				number:true
 			}
+			
    		},
 		messages:
 		{
@@ -489,11 +380,6 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('items_tax_percent_required'); ?>",
 				number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
-			},
-			quantity:
-			{
-				required:"<?php echo $this->lang->line('items_quantity_required'); ?>",
-				number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
 			},
 			reorder_level:
 			{

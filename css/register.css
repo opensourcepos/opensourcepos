@@ -2,7 +2,6 @@
 {
 	float:left;
 	width:70%;
-	font-family:Arial;
 	font-size:13px;
 }
 #mode_form
@@ -87,7 +86,6 @@
 	background-color:#BBBBBB;
 	width:28%;
 	padding:5px;
-	font-family:Arial;
 	font-size:13px;
 	
 }
@@ -105,7 +103,7 @@
 	position:relative;
 }
 
-#Payment_Types
+#payment_details
 {
 	float:left;
 	width:100%;
@@ -158,3 +156,9 @@
 	margin: 0 4px 8px 0;
 }
 
+#sales_overview
+{
+	position:absolute;
+	top:3px;
+	right:99px;
+}

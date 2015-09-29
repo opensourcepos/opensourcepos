@@ -1,5 +1,5 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="error_message_box"></ul>
+<ul id="error_message_box" class="error_message_box"></ul>
 <?php
 echo form_close();
 echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form'));
@@ -62,6 +62,16 @@ echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_for
 </tr>
 <tr>
 <td>
+<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location',array('class'=>'wide')); ?>
+</td>
+<td>
+    <?php 
+            echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="fill_quantity(this.value)"'); 
+    ?> 
+</td>
+</tr>
+<tr>
+<td>
 <?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity',array('class'=>'wide')); ?>
 </td>
 <td>
@@ -69,7 +79,7 @@ echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_for
 	
 		'name'=>'quantity',
 		'id'=>'quantity',
-		'value'=>$item_info->quantity,
+		'value'=>current($item_quantities),
 		'style'       => 'border:none',
 		'readonly' => 'readonly'
 		);
@@ -154,4 +164,11 @@ $(document).ready(function()
 		}
 	});
 });
+
+
+function fill_quantity(val) 
+{   
+    var item_quantities= <?php echo json_encode($item_quantities ); ?>;
+    document.getElementById("quantity").value = item_quantities[val];
+}
 </script>

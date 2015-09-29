@@ -7,26 +7,28 @@ class Item_kits extends Secure_area implements iData_controller
 	{
 		parent::__construct('item_kits');
 	}
-
-	function index()
+	
+	function index($limit_from=0)
 	{
-		$config['base_url'] = site_url('/item_kits/index');
-		$config['total_rows'] = $this->Item_kit->count_all();
-		$config['per_page'] = '20';
-		$config['uri_segment'] = 3;
-		$this->pagination->initialize($config);
-		
-		$data['controller_name']=strtolower(get_class());
+		$data['controller_name']=$this->get_controller_name();
 		$data['form_width']=$this->get_form_width();
-		$data['manage_table']=get_item_kits_manage_table( $this->Item_kit->get_all( $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$item_kits = $this->Item_kit->get_all($lines_per_page,$limit_from);
+		$data['links'] = $this->_initialize_pagination($this->Item_kit,$lines_per_page,$limit_from);
+		$data['manage_table']=get_item_kits_manage_table($item_kits,$this);
 		$this->load->view('item_kits/manage',$data);
 	}
-
+	
 	function search()
 	{
-		$search=$this->input->post('search');
-		$data_rows=get_item_kits_manage_table_data_rows($this->Item_kit->search($search),$this);
-		echo $data_rows;
+		$search = $this->input->post('search');
+		$limit_from = $this->input->post('limit_from');
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$customers = $this->Item_kit->search($search, $lines_per_page, $limit_from);
+		$total_rows = $this->Item_kit->get_found_rows($search);
+		$links = $this->_initialize_pagination($this->Item_kit,$lines_per_page, $limit_from, $total_rows);
+		$data_rows=get_item_kits_manage_table_data_rows($customers,$this);
+		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 
 	/*
@@ -112,6 +114,7 @@ class Item_kits extends Secure_area implements iData_controller
 	
 	function generate_barcodes($item_kit_ids)
 	{
+		$this->load->library('barcode_lib');
 		$result = array();
 
 		$item_kit_ids = explode(':', $item_kit_ids);
@@ -119,10 +122,12 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			$item_kit_info = $this->Item_kit->get_info($item_kid_id);
 
-			$result[] = array('name' =>$item_kit_info->name, 'id'=> 'KIT '.$item_kid_id);
+			$result[] = array('name' =>$item_kit_info->name, 'item_id'=> 'KIT '.$item_kid_id, 'item_number'=>'KIT '.$item_kid_id);
 		}
 
 		$data['items'] = $result;
+        $data['configs'] = $this->Appconfig->get_all();
+        $data['barcode_config'] = $this->barcode_lib->get_barcode_config();
 		$this->load->view("barcode_sheet", $data);
 	}
 	
@@ -132,7 +137,7 @@ class Item_kits extends Secure_area implements iData_controller
 	*/
 	function get_form_width()
 	{
-		return 360;
+		return 400;
 	}
 }
 ?>
