@@ -766,24 +766,24 @@ class Sales extends Secure_area
 	
 	function suspend()
 	{
-		$data['cart']=$this->sale_lib->get_cart();
-		$data['subtotal']=$this->sale_lib->get_subtotal();
-		$data['taxes']=$this->sale_lib->get_taxes();
-		$data['total']=$this->sale_lib->get_total();
-		$data['receipt_title']=$this->lang->line('sales_receipt');
-		$data['transaction_time']= date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
-		$customer_id=$this->sale_lib->get_customer();
-		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
-		$comment = $this->input->post('comment');
-		$invoice_number=$this->sale_lib->get_invoice_number();
+		$data['cart'] = $this->sale_lib->get_cart();
+		$data['subtotal'] = $this->sale_lib->get_subtotal();
+		$data['taxes'] = $this->sale_lib->get_taxes();
+		$data['total'] = $this->sale_lib->get_total();
+		$data['receipt_title'] = $this->lang->line('sales_receipt');
+		$data['transaction_time'] = date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
+		$customer_id = $this->sale_lib->get_customer();
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$comment = $this->sale_lib->get_comment();
+		$invoice_number = $this->sale_lib->get_invoice_number();
 		
-		$emp_info=$this->Employee->get_info($employee_id);
+		$emp_info = $this->Employee->get_info($employee_id);
 		$payment_type = $this->input->post('payment_type');
-		$data['payment_type']=$this->input->post('payment_type');
+		$data['payment_type'] = $this->input->post('payment_type');
 		// Multiple payments
-		$data['payments']=$this->sale_lib->get_payments();
-		$data['amount_change']=to_currency($this->sale_lib->get_amount_due() * -1);
-		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
+		$data['payments'] = $this->sale_lib->get_payments();
+		$data['amount_change'] = to_currency($this->sale_lib->get_amount_due() * -1);
+		$data['employee'] = $emp_info->first_name.' '.$emp_info->last_name;
 		
 		if ($this->Sale_suspended->invoice_number_exists($invoice_number))
 		{
@@ -793,7 +793,7 @@ class Sales extends Secure_area
 		{
 			if($customer_id!=-1)
 			{
-				$cust_info=$this->Customer->get_info($customer_id);
+				$cust_info = $this->Customer->get_info($customer_id);
 				if (isset($cust_info->company_name))
 				{
 					$data['customer'] = $cust_info->company_name;
@@ -812,7 +812,7 @@ class Sales extends Secure_area
 			}
 	
 			//SAVE sale to database
-			$data['sale_id']='POS '.$this->Sale_suspended->save($data['cart'], $customer_id,$employee_id,$comment,$invoice_number,$data['payments']);
+			$data['sale_id'] = 'POS '.$this->Sale_suspended->save($data['cart'], $customer_id,$employee_id,$comment,$invoice_number,$data['payments']);
 			if ($data['sale_id'] == 'POS -1')
 			{
 				$data['error_message'] = $this->lang->line('sales_transaction_failed');
