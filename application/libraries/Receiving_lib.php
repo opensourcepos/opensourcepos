@@ -60,7 +60,9 @@ class Receiving_lib
     
     function get_comment()
     {
-    	return $this->CI->session->userdata('comment');
+		// avoid returning a null that results in a 0 in the comment if nothing is set/available
+	
+    	return $this->CI->session->userdata('comment') != null ? $this->CI->session->userdata('comment') : '';
     }
     
     function set_comment($comment)
