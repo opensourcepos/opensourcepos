@@ -269,13 +269,6 @@ class Sales extends Secure_area
 		{
 			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
 		}
-		else if($this->Sale_suspended->invoice_number_exists($item_id_or_number_or_item_kit_or_receipt))
-		{
-			$this->sale_lib->clear_all();
-			$sale_id=$this->Sale_suspended->get_sale_by_invoice_number($item_id_or_number_or_item_kit_or_receipt)->row()->sale_id;
-			$this->sale_lib->copy_entire_suspended_sale($sale_id);
-			$this->Sale_suspended->delete($sale_id);
-		}
 		else if($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt,$item_location);
@@ -548,7 +541,7 @@ class Sales extends Secure_area
 		$this->sale_lib->set_invoice_number($invoice_number);
 		return $invoice_number;
 	}
-	
+
 	private function _load_sale_data($sale_id)
 	{
 		$this->Sale->create_sales_items_temp_table();
@@ -780,51 +773,44 @@ class Sales extends Secure_area
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->sale_lib->get_comment();
 		$invoice_number = $this->sale_lib->get_invoice_number();
-		
+
 		$emp_info = $this->Employee->get_info($employee_id);
 		$data['payment_type'] = $this->input->post('payment_type');
 		// Multiple payments
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['amount_change'] = to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee'] = $emp_info->first_name.' '.$emp_info->last_name;
-		
-		if ($this->Sale_suspended->invoice_number_exists($invoice_number))
-		{
-			$this->_reload(array('error' => $data['error']=$this->lang->line('sales_invoice_number_duplicate')));
-		}
-		else
-		{
-			if($customer_id!=-1)
-			{
-				$cust_info = $this->Customer->get_info($customer_id);
-				if (isset($cust_info->company_name))
-				{
-					$data['customer'] = $cust_info->company_name;
-				}
-				else
-				{
-					$data['customer'] = $cust_info->first_name.' '.$cust_info->last_name;
-				}
-			}
-	
-			$total_payments = 0;
-	
-			foreach($data['payments'] as $payment)
-			{
-				$total_payments = bcadd($total_payments, $payment['payment_amount'], PRECISION);
-			}
-	
-			//SAVE sale to database
-			$data['sale_id'] = 'POS '.$this->Sale_suspended->save($data['cart'], $customer_id, $employee_id, $comment, $invoice_number, $data['payments']);
-			if ($data['sale_id'] == 'POS -1')
-			{
-				$data['error_message'] = $this->lang->line('sales_transaction_failed');
-			}
 
-			$this->sale_lib->clear_all();
-
-			$this->_reload(array('success' => $this->lang->line('sales_successfully_suspended_sale')));
+		if($customer_id!=-1)
+		{
+			$cust_info = $this->Customer->get_info($customer_id);
+			if (isset($cust_info->company_name))
+			{
+				$data['customer'] = $cust_info->company_name;
+			}
+			else
+			{
+				$data['customer'] = $cust_info->first_name.' '.$cust_info->last_name;
+			}
 		}
+
+		$total_payments = 0;
+
+		foreach($data['payments'] as $payment)
+		{
+			$total_payments = bcadd($total_payments, $payment['payment_amount'], PRECISION);
+		}
+
+		//SAVE sale to database
+		$data['sale_id'] = 'POS '.$this->Sale_suspended->save($data['cart'], $customer_id, $employee_id, $comment, $invoice_number, $data['payments']);
+		if ($data['sale_id'] == 'POS -1')
+		{
+			$data['error_message'] = $this->lang->line('sales_transaction_failed');
+		}
+
+		$this->sale_lib->clear_all();
+
+		$this->_reload(array('success' => $this->lang->line('sales_successfully_suspended_sale')));
 	}
 	
 	function suspended()

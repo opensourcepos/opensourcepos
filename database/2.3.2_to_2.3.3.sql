@@ -4,3 +4,6 @@ ALTER TABLE `ospos_suppliers`
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
    ('dateformat', 'm-d-Y'),
    ('timeformat', 'H:i:s');
+
+ALTER TABLE `ospos_sales_suspended`
+    DROP KEY `invoice_number`;
