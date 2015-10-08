@@ -7,3 +7,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 
 ALTER TABLE `ospos_sales_suspended`
     DROP KEY `invoice_number`;
+
+-- Clear out emptied comments (0 inserted in comments if emtpy ##192)
+UPDATE `ospos_sales` SET comment = NULL WHERE comment = '0';
+UPDATE `ospos_receivings` SET comment = NULL WHERE comment = '0';
+UPDATE `ospos_sales_suspended` SET comment = NULL WHERE comment = '0';
