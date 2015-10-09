@@ -40,7 +40,8 @@ class Sale_lib
 	function get_comment() 
 	{
 		// avoid returning a null that results in a 0 in the comment if nothing is set/available
-    	return empty($this->CI->session->userdata('comment')) ? '' : $this->CI->session->userdata('comment');
+		$comment = $this->CI->session->userdata('comment');
+    	return empty($comment) ? '' : $comment;
 	}
 
 	function set_comment($comment) 
