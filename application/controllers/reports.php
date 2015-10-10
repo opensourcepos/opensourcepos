@@ -99,7 +99,7 @@ class Reports extends Secure_area
 
 	function get_summary_data($start_date, $end_date = NULL, $sale_type=0)
 	{
-		$end_date = $end_date ?: $start_date;
+		$end_date = $end_date ? $end_date : $start_date;
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 		$summary = $model->getSummaryData(array(
