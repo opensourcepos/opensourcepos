@@ -80,7 +80,7 @@ $autoload['helper'] = array('form','url','table','text','currency', 'html', 'dow
 |
 */
 
-$autoload['config'] = array();
+$autoload['config'] = array('assets');
 
 
 /*
