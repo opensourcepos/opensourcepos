@@ -31,15 +31,15 @@ function dateformat_jquery($php_format)
         'Y' => 'yy',
         'y' => 'y',
         // Time
-        'a' => '',
-        'A' => '',
+        'a' => 'tt',
+        'A' => 'TT',
         'B' => '',
-        'g' => '',
-        'G' => '',
-        'h' => '',
-        'H' => '',
-        'i' => '',
-        's' => '',
+        'g' => 'h',
+        'G' => 'H',
+        'h' => 'hh',
+        'H' => 'HH',
+        'i' => 'mm',
+        's' => 'ss',
         'u' => ''
     );
     $jqueryui_format = "";

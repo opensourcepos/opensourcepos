@@ -11,6 +11,7 @@
 @import url(invoice.css);
 @import url(jquery-ui.structure.css);
 @import url(jquery-ui.theme.css);
+@import url(jquery-ui-timepicker-addon.css);
 
 body
 {
