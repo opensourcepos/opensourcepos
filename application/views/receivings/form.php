@@ -3,84 +3,74 @@
 	<ul id="error_message_box" class="error_message_box"></ul>
 	
 	<fieldset id="receiving_basic_info">
-	<?php echo form_open("receivings/save/".$receiving_info['receiving_id'],array('id'=>'recvs_edit_form')); ?>
-	<legend><?php echo $this->lang->line("recvs_basic_information"); ?></legend>
-	
-	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('recvs_receipt_number').':', 'supplier'); ?>
-		<div class='form_field'>
-			<?php echo anchor('receivings/receipt/'.$receiving_info['receiving_id'], $this->lang->line('recvs_receipt_number') .$receiving_info['receiving_id'], array('target' => '_blank'));?>
+		<?php echo form_open("receivings/save/".$receiving_info['receiving_id'],array('id'=>'recvs_edit_form')); ?>
+		<legend><?php echo $this->lang->line("recvs_basic_information"); ?></legend>
+		
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('recvs_receipt_number').':', 'supplier'); ?>
+			<div class='form_field'>
+				<?php echo anchor('receivings/receipt/'.$receiving_info['receiving_id'], $this->lang->line('recvs_receipt_number') .$receiving_info['receiving_id'], array('target' => '_blank'));?>
+			</div>
 		</div>
-	</div>
-	
-	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('recvs_date').':', 'date', array('class'=>'required')); ?>
-		<div class='form_field'>
-			<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'class'=>'date'));?>
+		
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('recvs_date').':', 'date'); ?>
+			<div class='form_field'>
+				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'id'=>'datetime', 'readonly'=>'true'));?>
+			</div>
 		</div>
-	</div>
-	
-	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('recvs_supplier').':', 'supplier'); ?>
-		<div class='form_field'>
-			<?php echo form_input(array('name' => 'supplier_id', 'value' => $selected_supplier, 'id' => 'supplier_id'));?>
+		
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('recvs_supplier').':', 'supplier'); ?>
+			<div class='form_field'>
+				<?php echo form_input(array('name' => 'supplier_id', 'value' => $selected_supplier, 'id' => 'supplier_id'));?>
+			</div>
 		</div>
-	</div>
-	
-	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('recvs_invoice_number').':', 'invoice_number'); ?>
-		<div class='form_field'>
-			<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number'));?>
+		
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('recvs_invoice_number').':', 'invoice_number'); ?>
+			<div class='form_field'>
+				<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number'));?>
+			</div>
 		</div>
-	</div>
-	
-	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('recvs_employee').':', 'employee'); ?>
-		<div class='form_field'>
-			<?php echo form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id"');?>
+		
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('recvs_employee').':', 'employee'); ?>
+			<div class='form_field'>
+				<?php echo form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id"');?>
+			</div>
 		</div>
-	</div>
-	
-	<div class="field_row clearfix">
-	<?php echo form_label($this->lang->line('recvs_comments').':', 'comment'); ?>
-		<div class='form_field'>
-			<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'],'rows'=>'4','cols'=>'23', 'id'=>'comment'));?>
+		
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('recvs_comments').':', 'comment'); ?>
+			<div class='form_field'>
+				<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'],'rows'=>'4','cols'=>'23', 'id'=>'comment'));?>
+			</div>
 		</div>
-	</div>
-	
-	<?php
-	echo form_submit(array(
-		'name'=>'submit',
-		'value'=>$this->lang->line('common_submit'),
-		'class'=> 'submit_button float_right')
-	);
-	?>
-	</form>
-	
-	<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'],array('id'=>'recvs_delete_form')); ?>
-		<?php echo form_hidden('receiving_id', $receiving_info['receiving_id']);?>
-		<?php
-		echo form_submit(array(
+		
+		<?php echo form_submit(array(
 			'name'=>'submit',
-			'value'=>$this->lang->line('recvs_delete_entire_sale'),
-			'class'=>'delete_button float_right')
+			'value'=>$this->lang->line('common_submit'),
+			'class'=> 'submit_button float_right')
 		);
 		?>
-	</form>
+		</form>
+		
+		<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'],array('id'=>'recvs_delete_form')); ?>
+			<?php echo form_hidden('receiving_id', $receiving_info['receiving_id']);?>
+			<?php echo form_submit(array(
+				'name'=>'submit',
+				'value'=>$this->lang->line('recvs_delete_entire_sale'),
+				'class'=>'delete_button float_right')
+			);
+			?>
+		</form>
 	</fieldset>
 </div>
 
 <script type="text/javascript" language="javascript">
-
 $(document).ready(function()
 {
-	$.validator.addMethod("time", function (value, element) {
-		var stamp = value.split(" ");
-		var validDate = !/Invalid|NaN/.test(new Date(stamp[0]).toString());
-		var validTime = /^(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9])(:([0-5]?[0-9]))?$/i.test(stamp[1]);
-		return this.optional(element) || (validDate && validTime);
-	}, '<?php echo $this->lang->line('recvs_date_type'); ?>');
-
 	$.validator.addMethod("invoice_number", function(value, element)
 	{
 		var id = $("input[name='receiving_id']").val();
@@ -99,6 +89,13 @@ $(document).ready(function()
         }).responseText).success;
     }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
 	
+	$('#datetime').datetimepicker({
+		controlType: 'select',
+		oneLine: true,
+		dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
+		timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
+	});
+	
 	var format_item = function(row)
 	{
     	var result = [row[0], "|", row[1]].join("");
@@ -111,12 +108,12 @@ $(document).ready(function()
 	};
 	var autocompleter = $("#supplier_id").autocomplete('<?php echo site_url("receivings/supplier_search"); ?>', 
 	{
-    	minChars:0,
-    	delay:15, 
-    	max:100,
-       	cacheLength: 1,
-        formatItem: format_item,
-        formatResult : format_item
+		minChars: 0,
+		delay: 15, 
+		max: 100,
+		cacheLength: 1,
+		formatItem: format_item,
+		formatResult: format_item
     });
 
 	// declare submitHandler as an object.. will be reused
@@ -148,20 +145,13 @@ $(document).ready(function()
 		wrapper: "li",
 		rules: 
 		{
-			date: {
-				required:true,
-				time:true
-			},
 			invoice_number: {
 				invoice_number: true
 			}
 		},
 		messages: 
 		{
-			date: {
-				required: "<?= $this->lang->line('recvs_date_required'); ?>",
-				time: "<?= $this->lang->line('recvs_date_type'); ?>"
-			}
+
 		}
 	});
 	$('#recvs_delete_form').submit(function() 
