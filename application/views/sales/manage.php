@@ -3,6 +3,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$.datepicker.regional[ '<?php echo $this->config->item('language'); ?>' ];
     init_table_sorting();
     enable_checkboxes();
     enable_row_selection();
