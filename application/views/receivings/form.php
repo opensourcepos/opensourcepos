@@ -90,8 +90,6 @@ $(document).ready(function()
     }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
 	
 	$('#datetime').datetimepicker({
-		controlType: 'select',
-		oneLine: true,
 		dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
 		timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
 	});
