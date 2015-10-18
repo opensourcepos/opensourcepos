@@ -146,12 +146,20 @@ class Ean13 extends BarcodeBase
 	 * Set the data
 	 *
 	 * @param mixed data - (int or string) Data to be encoded
+	 * @param boolean - flag indicated whether a barcode needs to be generated out of a passed seed
 	 * @return instance of \emberlabs\Barcode\BarcodeInterface
 	 * @return throws \OverflowException
 	 */
-	public function setData($data)
+	public function setData($data, $generateBarcode)
 	{
-		$this->data = $this->generateEAN($data);
+		if( $generateBarcode )
+		{
+			$this->data = $this->generateEAN($data);
+		}
+		else
+		{
+			$this->data = $data;
+		}
 	}
 
 	/*
