@@ -138,8 +138,16 @@ class Barcode_lib
 			else
 			{
 				$barcode->setData($item['item_id'], true);
+
+				$code = $barcode->getData();
+
+				// in case no new code is generated like in Code39 and Code128 return an empty string because we don't want to override it with a pure item_id				
+				if( $code == $item['item_id'] )
+				{
+					$code = null;
+				}
 				
-				return $barcode->getData();
+				return $code;
 			}
 		} 
 		catch(Exception $e)
