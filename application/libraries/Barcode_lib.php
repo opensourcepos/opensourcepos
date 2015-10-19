@@ -121,7 +121,7 @@ class Barcode_lib
 		}
 	}
 	
-	public function get_barcode($item, $barcode_config)
+	public function get_new_barcode($item, $barcode_config)
 	{
 		try
 		{
