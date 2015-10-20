@@ -286,7 +286,7 @@ if (isset($success))
 				 
 				if ($payments_cover_total)
 				{
-					echo "<div class='small_button' id='finish_sale_button' style='float:left; margin-top:5px;'><span>".$this->lang->line('sales_complete_sale')."</span></div>";
+					echo "<div class='small_button' id='finish_sale_button' style='float:left; margin-top:5px;'><span style='color:#ffd800;'>".$this->lang->line('sales_complete_sale')."</span></div>";
 				}
 				?>
 			</div>
@@ -380,7 +380,7 @@ if (isset($success))
 				</table>
 				
 				<div class='small_button' id='add_payment_button' style='float: left; margin-top: 5px;'>
-					<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
+					<span style='color:#00fc9a;;'><?php echo $this->lang->line('sales_add_payment'); ?></span>
 				</div>
 
 				</form>
