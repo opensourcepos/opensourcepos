@@ -53,7 +53,7 @@ if (isset($error_message))
             
             <tr>
                 <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-                <td><div class="due"><?php echo to_currency($total); ?></div></td>
+                <td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
             </tr>
 			
         </table>
@@ -75,7 +75,7 @@ if (isset($error_message))
 		?>
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo $item['name']; ?></textarea></td>
+				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo $item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['quantity']; ?></textarea></td>
 				<td><textarea rows="5" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>

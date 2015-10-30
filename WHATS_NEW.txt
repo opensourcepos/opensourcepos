@@ -1,3 +1,24 @@
+Version 2.3.2
+-------------
++ Nominatim (OpenStreetMap) customer address autocompletion
++ Sale invoice templating
++ Configurable barcode generation for items
++ Stock location filtering in detailed sales and receivings reports
++ Giftcards bugfixes
++ Proper pagination support for most modules
++ Language updates
++ Bugfix for decimal taxrates
++ Add gender + company name attributes to customer
++ Stock location config screen refactor
++ Basic travis-ci + phantomJs setup
++ Database backup on admin logout
++ Modifiable item thumbnails
++ Email invoice PDF generation using DomPDF
++ Modifiable company logo
++ jQuery upgrade (1.2 -> 1.8.3)
++ Javascript minification (using grunt)
++ Numerous bugfixes
+
 Version 2.3.1
 -------------
 

@@ -6,9 +6,9 @@ $(document).ready(function()
     enable_select_all();
     enable_checkboxes();
     enable_row_selection();
-    enable_search('<?php echo site_url("$controller_name/suggest")?>','<?php echo $this->lang->line("common_confirm_search")?>');
+    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest")?>',
+					confirm_message: '<?php echo $this->lang->line("common_confirm_search")?>'});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
-
 });
 
 function init_table_sorting()
@@ -21,7 +21,8 @@ function init_table_sorting()
 			sortList: [[1,0]],
 			headers:
 			{
-				0: { sorter: false}
+				0: { sorter: false},
+				5: { sorter: false}
 			}
 		});
 	}
@@ -53,7 +54,6 @@ function post_giftcard_form_submit(response)
 		}
 	}
 }
-
 </script>
 
 <div id="title_bar">

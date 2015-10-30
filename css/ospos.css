@@ -9,6 +9,9 @@
 @import url(thickbox.css);
 @import url(datepicker.css);
 @import url(invoice.css);
+@import url(jquery-ui.structure.css);
+@import url(jquery-ui.theme.css);
+@import url(jquery-ui-timepicker-addon.css);
 
 body
 {
@@ -31,7 +34,7 @@ a.none
 	width:100%;
 	background-color:#FFFFFF;	
 	margin:0px;
-	padding:0px;
+	padding-bottom: 10px;
 	border-bottom:1px solid #CCCCCC;
 	text-align:center;	
 
@@ -166,6 +169,11 @@ select#stock_location
 #select_customer_form input, #select_supplier_form input
 {
 	width: 95%;
+}
+
+input.quantity, input.discount
+{
+	width: 40px;
 }
 
 a.rollover img

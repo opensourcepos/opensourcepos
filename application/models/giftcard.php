@@ -4,20 +4,20 @@ class Giftcard extends CI_Model
 	/*
 	Determines if a given giftcard_id is an giftcard
 	*/
-	function exists( $giftcard_id )
+	function exists($giftcard_id)
 	{
 		$this->db->from('giftcards');
-		$this->db->where('giftcard_id',$giftcard_id);
-		$this->db->where('deleted',0);
-		$query = $this->db->get();
+		$this->db->where('giftcard_id', $giftcard_id);
+		$this->db->where('deleted', 0);
 
-		return ($query->num_rows()==1);
+		return ($this->db->get()->num_rows()==1);
 	}
 	
-	function get_max_number ( )
+	function get_max_number()
 	{
 		$this->db->select_max('giftcard_number');
 		$query = $this->db->get('giftcards');
+
 		return $query->row();
 	}
 	
@@ -25,25 +25,30 @@ class Giftcard extends CI_Model
 	{
 		return $this->db->count_all('giftcards');
 	}
+
 	/*
 	Returns all the giftcards
 	*/
 	function get_all($rows=0, $limit_from=0)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','people.person_id=giftcards.person_id', 'left');//GARRISON ADDED 4/25/2013
-		$this->db->where('deleted',0);
-		$this->db->order_by("giftcard_number");
-		if ($rows > 0) {
+		$this->db->join('people', 'people.person_id=giftcards.person_id', 'left');
+		$this->db->where('deleted', 0);
+		$this->db->order_by('giftcard_number');
+
+		if ($rows > 0)
+		{
 			$this->db->limit($rows, $limit_from);
 		}
+
 		return $this->db->get();
 	}
 	
 	function count_all()
 	{
 		$this->db->from('giftcards');
-		$this->db->where('deleted',0);
+		$this->db->where('deleted', 0);
+
 		return $this->db->count_all_results();
 	}
 
@@ -53,9 +58,9 @@ class Giftcard extends CI_Model
 	function get_info($giftcard_id)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
-		$this->db->where('giftcard_id',$giftcard_id);
-		$this->db->where('deleted',0);
+		$this->db->join('people', 'people.person_id=giftcards.person_id', 'left');
+		$this->db->where('giftcard_id', $giftcard_id);
+		$this->db->where('deleted', 0);
 		
 		$query = $this->db->get();
 
@@ -66,7 +71,7 @@ class Giftcard extends CI_Model
 		else
 		{
 			//Get empty base parent object, as $giftcard_id is NOT an giftcard
-			$giftcard_obj=new stdClass();
+			$giftcard_obj = new stdClass();
 
 			//Get all the fields from giftcards table
 			$fields = $this->db->list_fields('giftcards');
@@ -86,8 +91,8 @@ class Giftcard extends CI_Model
 	function get_giftcard_id($giftcard_number)
 	{
 		$this->db->from('giftcards');
-		$this->db->where('giftcard_number',$giftcard_number);
-		$this->db->where('deleted',0);
+		$this->db->where('giftcard_number', $giftcard_number);
+		$this->db->where('deleted', 0);
 
 		$query = $this->db->get();
 
@@ -105,38 +110,43 @@ class Giftcard extends CI_Model
 	function get_multiple_info($giftcard_ids)
 	{
 		$this->db->from('giftcards');
-		$this->db->where_in('giftcard_id',$giftcard_ids);
-		$this->db->where('deleted',0);
-		$this->db->order_by("giftcard_number", "asc");
+		$this->db->where_in('giftcard_id', $giftcard_ids);
+		$this->db->where('deleted', 0);
+		$this->db->order_by('giftcard_number', 'asc');
+
 		return $this->db->get();
 	}
 
 	/*
 	Inserts or updates a giftcard
 	*/
-	function save(&$giftcard_data,$giftcard_id=false)
+	function save(&$giftcard_data, $giftcard_id=false)
 	{
 		if (!$giftcard_id or !$this->exists($giftcard_id))
 		{
-			if($this->db->insert('giftcards',$giftcard_data))
+			if($this->db->insert('giftcards', $giftcard_data))
 			{
-				$giftcard_data['giftcard_id']=$this->db->insert_id();
+				$giftcard_data['giftcard_id'] = $this->db->insert_id();
+
 				return true;
 			}
+
 			return false;
 		}
 
 		$this->db->where('giftcard_id', $giftcard_id);
+
 		return $this->db->update('giftcards',$giftcard_data);
 	}
 
 	/*
 	Updates multiple giftcards at once
 	*/
-	function update_multiple($giftcard_data,$giftcard_ids)
+	function update_multiple($giftcard_data, $giftcard_ids)
 	{
-		$this->db->where_in('giftcard_id',$giftcard_ids);
-		return $this->db->update('giftcards',$giftcard_data);
+		$this->db->where_in('giftcard_id', $giftcard_ids);
+
+		return $this->db->update('giftcards', $giftcard_data);
 	}
 
 	/*
@@ -145,6 +155,7 @@ class Giftcard extends CI_Model
 	function delete($giftcard_id)
 	{
 		$this->db->where('giftcard_id', $giftcard_id);
+
 		return $this->db->update('giftcards', array('deleted' => 1));
 	}
 
@@ -153,21 +164,22 @@ class Giftcard extends CI_Model
 	*/
 	function delete_list($giftcard_ids)
 	{
-		$this->db->where_in('giftcard_id',$giftcard_ids);
+		$this->db->where_in('giftcard_id', $giftcard_ids);
+
 		return $this->db->update('giftcards', array('deleted' => 1));
  	}
 
  	/*
 	Get search suggestions to find giftcards
 	*/
-	function get_search_suggestions($search,$limit=25)
+	function get_search_suggestions($search, $limit=25)
 	{
 		$suggestions = array();
 
 		$this->db->from('giftcards');
 		$this->db->like('giftcard_number', $search);
-		$this->db->where('deleted',0);
-		$this->db->order_by("giftcard_number", "asc");
+		$this->db->where('deleted', 0);
+		$this->db->order_by('giftcard_number', 'asc');
 		$by_number = $this->db->get();
 		
 		foreach($by_number->result() as $row)
@@ -175,31 +187,29 @@ class Giftcard extends CI_Model
 			$suggestions[]=$row->giftcard_number;
 		}
 
-/** GARRISON MODIFIED 4/24/2013 **/
  		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id', 'left');
-		$this->db->like("first_name",$this->db->escape_like_str($search));
-		$this->db->or_like("last_name",$this->db->escape_like_str($search)); 
-		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
-		$this->db->where("deleted","0");
-		$this->db->order_by("last_name", "asc");
+		$this->db->join('people', 'customers.person_id=people.person_id', 'left');
+		$this->db->like('first_name', $this->db->escape_like_str($search));
+		$this->db->or_like('last_name', $this->db->escape_like_str($search)); 
+		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
+		$this->db->where('deleted', 0);
+		$this->db->order_by('last_name', 'asc');
 		$by_name = $this->db->get();
 		
 		foreach($by_name->result() as $row)
 		{
 			$suggestions[]=$row->first_name.' '.$row->last_name;
-		}
-/** END GARRISON MODIFIED **/				
+		}			
 
-	//only return $limit suggestions
+		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
+
 		return $suggestions;
 	}
 	
-	/** GARRISON ADDED 5/3/2013 **/
 	/*
 	 Get search suggestions to find customers
 	*/
@@ -209,12 +219,12 @@ class Giftcard extends CI_Model
 	
 		$this->db->select('person_id');
 		$this->db->from('people');
-		$this->db->like('person_id',$this->db->escape_like_str($search));
-		$this->db->or_like('first_name',$this->db->escape_like_str($search));
-		$this->db->or_like('last_name',$this->db->escape_like_str($search));
-		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
-		$this->db->or_like('email',$this->db->escape_like_str($search));
-		$this->db->or_like('phone_number',$this->db->escape_like_str($search));
+		$this->db->like('person_id', $this->db->escape_like_str($search));
+		$this->db->or_like('first_name', $this->db->escape_like_str($search));
+		$this->db->or_like('last_name', $this->db->escape_like_str($search));
+		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
+		$this->db->or_like('email', $this->db->escape_like_str($search));
+		$this->db->or_like('phone_number', $this->db->escape_like_str($search));
 		$this->db->order_by('person_id', 'asc');
 		$by_person_id = $this->db->get();
 	
@@ -223,55 +233,62 @@ class Giftcard extends CI_Model
 			$suggestions[]=$row->person_id;
 		}
 	
-	//only return $limit suggestions
+		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
 			$suggestions = array_slice($suggestions, 0,$limit);
 		}
+
 		return $suggestions;
 	}	
-	
-/** GARRISON MODIFIED 4/24/2013 **/	
+
 	/*
 	Preform a search on giftcards
 	*/
 	function search($search, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','giftcards.person_id=people.person_id', 'left');
-		$this->db->like("first_name",$this->db->escape_like_str($search));
-		$this->db->or_like("last_name",$this->db->escape_like_str($search));
-		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
-		$this->db->or_like("giftcard_number",$this->db->escape_like_str($search));
-		$this->db->or_like("giftcards.person_id",$this->db->escape_like_str($search));
-		$this->db->where('deleted','0');
-		$this->db->order_by("giftcard_number", "asc");
-		if ($rows > 0) {
+		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
+		$this->db->like('first_name', $this->db->escape_like_str($search));
+		$this->db->or_like('last_name', $this->db->escape_like_str($search));
+		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
+		$this->db->or_like('giftcard_number', $this->db->escape_like_str($search));
+		$this->db->or_like('giftcards.person_id', $this->db->escape_like_str($search));
+		$this->db->where('deleted', 0);
+		$this->db->order_by('giftcard_number', 'asc');
+
+		if ($rows > 0)
+		{
 			$this->db->limit($rows, $limit_from);
 		}
+
 		return $this->db->get();
 	}
 	
 	function get_found_rows($search)
 	{
 		$this->db->from('giftcards');
-		$this->db->join('people','giftcards.person_id=people.person_id', 'left');
-		$this->db->like("first_name",$this->db->escape_like_str($search));
-		$this->db->or_like("last_name",$this->db->escape_like_str($search));
-		$this->db->or_like("CONCAT(`first_name`,' ',`last_name`)",$this->db->escape_like_str($search));
-		$this->db->or_like("giftcard_number",$this->db->escape_like_str($search));
-		$this->db->or_like("giftcards.person_id",$this->db->escape_like_str($search));
+		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
+		$this->db->like('first_name', $this->db->escape_like_str($search));
+		$this->db->or_like('last_name', $this->db->escape_like_str($search));
+		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
+		$this->db->or_like('giftcard_number', $this->db->escape_like_str($search));
+		$this->db->or_like('giftcards.person_id', $this->db->escape_like_str($search));
 		$this->db->where('deleted', 0);
+
 		return $this->db->get()->num_rows();
 	}
 	
 	public function get_giftcard_value( $giftcard_number )
 	{
-		if ( !$this->exists( $this->get_giftcard_id($giftcard_number)))
+		if ( !$this->exists( $this->get_giftcard_id($giftcard_number) ) )
+		{
 			return 0;
+		}
 		
 		$this->db->from('giftcards');
-		$this->db->where('giftcard_number',$giftcard_number);
+		$this->db->where('giftcard_number', $giftcard_number);
+
 		return $this->db->get()->row()->value;
 	}
 	

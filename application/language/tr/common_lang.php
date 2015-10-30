@@ -9,6 +9,7 @@ $lang["common_confirm_search"] = "Birden fazla satır seçtiniz, arama yaptığ�
 $lang["common_country"] = "Ülke";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "Sil";
+$lang["common_print"] = "Print";
 $lang["common_det"] = "Detaylar";
 $lang["common_edit"] = "düzenle";
 $lang["common_email"] = "E-Posta";

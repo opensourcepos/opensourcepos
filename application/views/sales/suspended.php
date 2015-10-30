@@ -13,7 +13,7 @@
 	?>
 		<tr>
 			<td><?php echo $suspended_sale['sale_id'];?></td>
-			<td><?php echo date('m/d/Y',strtotime($suspended_sale['sale_time']));?></td>
+			<td><?php echo date($this->config->item('dateformat'),strtotime($suspended_sale['sale_time']));?></td>
 			<td>
 				<?php
 				if (isset($suspended_sale['customer_id']))

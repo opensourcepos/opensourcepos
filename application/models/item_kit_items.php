@@ -7,7 +7,8 @@ class Item_kit_items extends CI_Model
 	function get_info($item_kit_id)
 	{
 		$this->db->from('item_kit_items');
-		$this->db->where('item_kit_id',$item_kit_id);
+		$this->db->where('item_kit_id', $item_kit_id);
+		
 		//return an array of item kit items for an item
 		return $this->db->get()->result_array();
 	}
@@ -25,10 +26,11 @@ class Item_kit_items extends CI_Model
 		foreach ($item_kit_items_data as $row)
 		{
 			$row['item_kit_id'] = $item_kit_id;
-			$this->db->insert('item_kit_items',$row);		
+			$this->db->insert('item_kit_items', $row);		
 		}
 		
 		$this->db->trans_complete();
+
 		return true;
 	}
 	

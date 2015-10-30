@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "Ошибка при добавлен
 $lang["item_kits_info"] = "Информация о товаре комплекта";
 $lang["item_kits_item"] = "товар";
 $lang["item_kits_items"] = "товары";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Наименование товара комплект";
 $lang["item_kits_new"] = "Новый товар комплект";
 $lang["item_kits_no_item_kits_to_display"] = "Нет товара комплекты для отображения";

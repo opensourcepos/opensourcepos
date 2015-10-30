@@ -39,7 +39,7 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 /*
  | Precision for calculations performed on decimals 
  */
-define("PRECISION", 3);
+define("PRECISION", 5);
 
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */

@@ -47,6 +47,7 @@ reports_payment_type,Betaald,Tipo de Pago,Payment Type,Type Paiement,付款方�
 reports_payments,Betalingen,Pagos,Payments,Paiements,付款,Оплаты,รายจ่าย,Ödemeler,Pembayaran
 reports_payments_summary_report,Overzicht Betalingen,Reporte de Resumen de Pagos,Payments Summary Report,Rapport: Résumé des Paiements,收入報告摘要,Платежей Сводный отчет,รายงานสรุปการจ่าย,Ödeme Özet Raporu,Laporan Ringkasan Pembayaran
 reports_profit,Winst,Ganancia,Profit,Bénéfice,利潤,прибыль,กำไร,Kâr,Keuntungan/Laba
+reports_cost,Cost,Cost,Cost,Cost,Cost,Cost,Cost
 reports_quantity_purchased,Aangekochte Hoeveelheid,Cantidad Comprada,Quantity Purchased,Quantité Achetée,銷售金額,купенный количество,จำนวนการช์้อ,Satın Alınan Adet,Jumlah Dibeli
 reports_received_by,Ontvangen door,Recibido por,Received By,Recu par,收款人,получило за,รับโดย,Alım Yapan,Diterima Oleh
 reports_receiving_id,,ID de Recepción,Receiving ID,,,,IDรับสินค้า,Alım No,Id Penerima
@@ -75,7 +76,7 @@ reports_sales_summary_report,Overzicht Verkoop,Reporte de Resumen de Ventas,Sale
 reports_serial_number,Nummer,S/N:,Serial #,# Série,序號 #,серийный номер,Serial #,Seri No,Serial #
 reports_sold_by,Werknemer,Vendido Por,Sold By,Vendu par,銷售人,Продавал через,ขายโดย,Satışı Yapan,Dijual Oleh
 reports_sold_to,Klant,Vendido A,Sold To,Vendu à,購買人,Продано к,ขายไปที่,Satış Yapılan,Dijual Kepada
-reports_stock_location,,Ubicación de Inventario,Stock location,,,,,Stok Yeri,Lokasi Stock
+reports_stock_location,Stock Locatie,Ubicación de Inventario,Stock Location,,,,,Stok Yeri,Lokasi Stock
 reports_subtotal,Subtotaal,Subtotal,Subtotal,Sous-total,小計,Промежуточная сумма,ยอดรวมรอง,Ara Toplam,SubTotal
 reports_summary_reports,Overzicht Rapporten,Reportes Resumidos,Summary Reports,Rapports de Résumés,摘要報表,Сводные отчеты,สรุปรายงาน,Özet Raporları,Ringkasan Laporan
 reports_supplied_by,Geleverd door,Provisto por,Supplied by,Fournit par,付款人,Поставлял за,ผบิตโดย,Sağlayıcı,Pemasok
@@ -87,9 +88,20 @@ reports_tax_percent,VAT Percentage,Porcentaje de Impuestos,Tax Percent,Pourcenta
 reports_taxes,Belastingen,Impuestos,Taxes,Taxes,稅額,Налоги,ภาษี,Vergiler,Pajak
 reports_taxes_summary_report,Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: Résumé Taxes,稅金摘要報告,Сводный отчет налоги,รายงานสรุปภาษี,Vergi Özet Raporu,Laporan Ringkasan Pajak
 reports_this_month,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini
+reports_this_month_last_year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year
+reports_this_month_to_today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today
+reports_this_month_to_today_last_year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year
 reports_this_year,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini
 reports_today,Vandaag,Hoy,Today,Aujourd\'hui,今天,сегодня,วันนี้,Bugün,Hari ini
+reports_today_last_year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year
 reports_total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
 reports_type,Type,Tipo,Type,Type,類型,тип,ชนิด,Tür,Tipe
 reports_welcome_message,Welkom bij de rapporten. Selecteer hier een rapport.,Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.,Welcome to the reports panel. Please select a report to view.,Bienvenue à la page des rapports. Veuillez sélectionner un rapport à visualiser.,歡迎使用報表系統。請選擇要查看的報表。,"Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.",ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.,Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.,Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.
 reports_yesterday,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin
+reports_item_count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Stok Habis/Belum Habis/Minus
+reports_cost_price,Aankoopprijs,Precio de Compra,Cost Price,Prix de Gros,成本價,Оптовая Цена,ราคาทุน,Maliyet Fiyatı,Harga Pokok
+reports_unit_price,Verkoopprijs,Precio de Venta,Retail Price,Prix au Détail,單價,Розничная Цена,ราคาขาย,Satış Fiyatı,Harga Jual
+reports_sub_total_value,Subtotaal,Subtotal,Sub Total,Sous-Total,小計,промежуточный итог,ยอดรวมหักภาษี ,Ara Toplam,Sub Total
+reports_total_inventory_value,Totale waarde stock,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Nilai Persediaan
+reports_zero_and_less,Nul en minder,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Stok habis dan minus
+reports_more_than_zero,Meer dan nul,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,Stok belum habis

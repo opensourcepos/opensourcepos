@@ -9,6 +9,7 @@ $lang["common_confirm_search"] = "U hebt een of meerdere rijen geselecteerd, dez
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";
 $lang["common_delete"] = "Verwijder";
+$lang["common_print"] = "Print";
 $lang["common_det"] = "details";
 $lang["common_edit"] = "bewerk";
 $lang["common_email"] = "Email";

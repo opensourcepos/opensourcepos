@@ -74,6 +74,20 @@ module.exports = function(grunt) {
     watch: {
       files: ['<%= jshint.files %>'],
       tasks: ['jshint']
+    },
+    cachebreaker: {
+        dev: {
+            options: {
+                match: ['opensourcepos.min.js'],
+                src: {
+                    path: 'dist/opensourcepos.min.js'
+                },
+                replacement: 'md5'
+            },
+            files: {
+                src: ['application/views/partial/header.php']
+            }
+        }
     }
   });
 
@@ -83,7 +97,8 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-script-link-tags');
   grunt.loadNpmTasks('grunt-mocha-webdriver');
+  grunt.loadNpmTasks('grunt-cache-breaker');
 
-  grunt.registerTask('default', ['tags:js', 'concat', 'uglify', 'tags:minjs']);
+  grunt.registerTask('default', ['tags:js', 'concat', 'uglify', 'tags:minjs', 'cachebreaker']);
 
 };

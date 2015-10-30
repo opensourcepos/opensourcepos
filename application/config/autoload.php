@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','form_validation','session','user_agen
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('form','url','table','text','currency', 'html', 'download', 'directory');
+$autoload['helper'] = array('form','url','table','text','currency', 'html', 'download', 'directory', 'dateformat_helper');
 
 
 /*
@@ -109,7 +109,7 @@ $autoload['language'] = array();
 |
 */
 
-$autoload['model'] = array('Appconfig','Person','Customer','Employee','Module','Item', 'Item_taxes', 'Sale', 'Sale_suspended', 'Supplier','Inventory','Receiving','Giftcard', 'Item_kit', 'Item_kit_items','Stock_locations','Item_quantities');
+$autoload['model'] = array('Appconfig','Person','Customer','Employee','Module','Item', 'Item_taxes', 'Sale', 'Sale_suspended', 'Supplier','Inventory','Receiving','Giftcard', 'Item_kit', 'Item_kit_items','Stock_location','Item_quantity');
 
 
 /* End of file autoload.php */

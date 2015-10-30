@@ -41,6 +41,7 @@ $lang["items_item"] = "Artículo";
 $lang["items_item_number"] = "UPC/EAN/ISBN";
 $lang["items_item_number_duplicate"] = "El número de artículo ya esta presente en la base de datos";
 $lang["items_location"] = "Ubicación";
+$lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "Artículos de Inventario Escaso";
 $lang["items_manually_editing_of_quantity"] = "Edición Manual de Cantidad";
 $lang["items_must_select_item_for_barcode"] = "Debes seleccionar al menos 1 artículo para generar códigos de barras";

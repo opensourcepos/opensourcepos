@@ -9,6 +9,7 @@ $lang["common_confirm_search"] = "您已經選擇一行或多行，在搜索後�
 $lang["common_country"] = "國家";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "刪除";
+$lang["common_print"] = "Print";
 $lang["common_det"] = "更多";
 $lang["common_edit"] = "編輯";
 $lang["common_email"] = "E-Mail";

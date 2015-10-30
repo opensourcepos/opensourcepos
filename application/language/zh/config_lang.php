@@ -115,3 +115,6 @@ $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "時區";
 $lang["config_use_invoice_template"] = "Use invoice template";
 $lang["config_website"] = "網站";
+$lang["config_locale_configuration"] = "Localisation Configuration";
+$lang["config_locale_info"] = "Localisation Configuration Information";
+$lang["config_datetimeformat"] = "Date and Time format";

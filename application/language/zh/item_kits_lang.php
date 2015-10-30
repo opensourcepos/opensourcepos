@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "新增/更新產品套件錯誤";
 $lang["item_kits_info"] = "產品套件資料";
 $lang["item_kits_item"] = "產品";
 $lang["item_kits_items"] = "產品";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "產品套件";
 $lang["item_kits_new"] = "新增產品套件";
 $lang["item_kits_no_item_kits_to_display"] = "沒有產品套件";

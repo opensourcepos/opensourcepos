@@ -8,6 +8,7 @@ $lang["item_kits_error_adding_updating"] = "Error adding/updating Item Kit";
 $lang["item_kits_info"] = "Item Kit Info";
 $lang["item_kits_item"] = "Item";
 $lang["item_kits_items"] = "Items";
+$lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Item Kit Name";
 $lang["item_kits_new"] = "New Item Kit";
 $lang["item_kits_no_item_kits_to_display"] = "No item kits to display";

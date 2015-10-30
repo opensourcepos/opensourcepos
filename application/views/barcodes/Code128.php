@@ -12,8 +12,8 @@
 namespace emberlabs\Barcode;
 
 /**
- * emberlabs Barcode Creator - Code39
- * 	     Generate Code39 Barcides
+ * emberlabs Barcode Creator - Code128
+ * 	     Generate Code128 Barcodes
  *
  *
  * @license     http://opensource.org/licenses/mit-license.php The MIT License
@@ -21,11 +21,6 @@ namespace emberlabs\Barcode;
  */
 class Code128 extends BarcodeBase
 {
-	/*
-	 * @var data - to be set
-	 */
-	private $data = '';
-
 	/*
 	 * Sub Type encoding
 	 * @var int (should be a class constant)
@@ -250,9 +245,9 @@ class Code128 extends BarcodeBase
 		$charAry = str_split($this->data);
 
 		// Calc scaling
-		// Bars is in refrence to a single, 1-level bar
+		// Bars is in reference to a single, 1-level bar
 		$numBarsRequired = ($this->type != self::TYPE_C) ? (sizeof($charAry) * 11) + 35 : ((sizeof($charAry)/2) * 11) + 35;
-		$this->x = ($this->x == 0) ? $numBarsRequired : $this->x;
+		$this->x  = ($this->x == 0) ? $numBarsRequired : $this->x;
 		$pxPerBar = (int) ($this->x / $numBarsRequired);
 		$currentX = ($this->x - ($numBarsRequired  * $pxPerBar)) / 2;
 
@@ -292,6 +287,12 @@ class Code128 extends BarcodeBase
 		$checkSumCollector = $this->getKey($this->getStartChar());
 
 		$this->img = @imagecreate($this->x, $this->y);
+		
+		if (!$this->img)
+		{
+			throw new \RuntimeException("Code128: Image failed to initialize");
+		}
+		
 		$white = imagecolorallocate($this->img, 255, 255, 255);
 		$black = imagecolorallocate($this->img, 0, 0, 0);
 
@@ -321,3 +322,4 @@ class Code128 extends BarcodeBase
 		}
 	}
 }
+?>

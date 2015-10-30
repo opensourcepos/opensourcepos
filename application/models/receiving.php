@@ -106,8 +106,8 @@ class Receiving extends CI_Model
 			}
 
 			//Update stock quantity
-			$item_quantity = $this->Item_quantities->get_item_quantity($item['item_id'], $item['item_location']);
-            $this->Item_quantities->save(array('quantity'=>$item_quantity->quantity + $items_received,
+			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+            $this->Item_quantity->save(array('quantity'=>$item_quantity->quantity + $items_received,
                                               'item_id'=>$item['item_id'],
                                               'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
 			
@@ -169,7 +169,7 @@ class Receiving extends CI_Model
 				$this->Inventory->insert($inv_data);
 
 				// update quantities
-				$this->Item_quantities->change_quantity($item['item_id'],
+				$this->Item_quantity->change_quantity($item['item_id'],
 														$item['item_location'],
 														$item['quantity_purchased']*-1);
 			}
@@ -211,15 +211,16 @@ class Receiving extends CI_Model
 	}
 	
 	//We create a temp table that allows us to do easy report/receiving queries
-	public function create_receivings_items_temp_table()
+	function create_receivings_items_temp_table()
 	{
-		$this->db->query("CREATE TEMPORARY TABLE ".$this->db->dbprefix('receivings_items_temp')."
-		(SELECT date(receiving_time) as receiving_date, ".$this->db->dbprefix('receivings_items').".receiving_id, comment, invoice_number, payment_type, employee_id,
+		$this->db->query("CREATE TEMPORARY TABLE IF NOT EXISTS ".$this->db->dbprefix('receivings_items_temp')."
+		(SELECT date(receiving_time) as receiving_date, ".$this->db->dbprefix('receivings_items').".receiving_id, comment, item_location, invoice_number, payment_type, employee_id,
 		".$this->db->dbprefix('items').".item_id, ".$this->db->dbprefix('receivings').".supplier_id, quantity_purchased, ".$this->db->dbprefix('receivings_items').".receiving_quantity,
 		item_cost_price, item_unit_price, discount_percent, (item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) as subtotal,
 		".$this->db->dbprefix('receivings_items').".line as line, serialnumber, ".$this->db->dbprefix('receivings_items').".description as description,
 		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) as total,
-		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) - (item_cost_price*quantity_purchased) as profit
+		(item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100) - (item_cost_price*quantity_purchased) as profit,
+		(item_cost_price*quantity_purchased) as cost
 		FROM ".$this->db->dbprefix('receivings_items')."
 		INNER JOIN ".$this->db->dbprefix('receivings')." ON  ".$this->db->dbprefix('receivings_items').'.receiving_id='.$this->db->dbprefix('receivings').'.receiving_id'."
 		INNER JOIN ".$this->db->dbprefix('items')." ON  ".$this->db->dbprefix('receivings_items').'.item_id='.$this->db->dbprefix('items').'.item_id'."

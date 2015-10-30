@@ -29,7 +29,7 @@ class Supplier extends Person
 		$this->db->from('suppliers');
 		$this->db->join('people','suppliers.person_id=people.person_id');			
 		$this->db->where('deleted', 0);
-		$this->db->order_by("last_name", "asc");
+		$this->db->order_by("company_name", "asc");
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}
@@ -151,6 +151,17 @@ class Supplier extends Person
 			$suggestions[]=$row->company_name;		
 		}
 
+		$this->db->from('suppliers');
+		$this->db->join('people','suppliers.person_id=people.person_id');	
+		$this->db->where('deleted', 0);
+		$this->db->distinct();
+		$this->db->like("agency_name",$search);
+		$this->db->order_by("agency_name", "asc");		
+		$by_agency_name = $this->db->get();
+		foreach($by_agency_name->result() as $row)
+		{
+			$suggestions[]=$row->agency_name;		
+		}
 		
 		$this->db->from('suppliers');
 		$this->db->join('people','suppliers.person_id=people.person_id');	
@@ -227,6 +238,19 @@ class Supplier extends Person
 
 		$this->db->from('suppliers');
 		$this->db->join('people','suppliers.person_id=people.person_id');	
+		$this->db->where('deleted', 0);
+		$this->db->distinct();
+		$this->db->like("agency_name",$search);
+		$this->db->order_by("agency_name", "asc");		
+		$by_agency_name = $this->db->get();
+		foreach($by_agency_name->result() as $row)
+		{
+			$suggestions[]=$row->person_id.'|'.$row->agency_name;		
+		}
+
+
+		$this->db->from('suppliers');
+		$this->db->join('people','suppliers.person_id=people.person_id');	
 		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or 
 		last_name LIKE '%".$this->db->escape_like_str($search)."%' or 
 		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");
@@ -253,6 +277,7 @@ class Supplier extends Person
 		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or
 		last_name LIKE '%".$this->db->escape_like_str($search)."%' or
 		company_name LIKE '%".$this->db->escape_like_str($search)."%' or
+		agency_name LIKE '%".$this->db->escape_like_str($search)."%' or
 		email LIKE '%".$this->db->escape_like_str($search)."%' or
 		phone_number LIKE '%".$this->db->escape_like_str($search)."%' or
 		account_number LIKE '%".$this->db->escape_like_str($search)."%' or
@@ -270,6 +295,7 @@ class Supplier extends Person
 		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or 
 		last_name LIKE '%".$this->db->escape_like_str($search)."%' or 
 		company_name LIKE '%".$this->db->escape_like_str($search)."%' or 
+		agency_name LIKE '%".$this->db->escape_like_str($search)."%' or 
 		email LIKE '%".$this->db->escape_like_str($search)."%' or 
 		phone_number LIKE '%".$this->db->escape_like_str($search)."%' or 
 		account_number LIKE '%".$this->db->escape_like_str($search)."%' or 

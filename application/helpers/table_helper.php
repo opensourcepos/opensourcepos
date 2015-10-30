@@ -1,16 +1,18 @@
 <?php
 
-function get_sales_manage_table($sales,$controller)
+function get_sales_manage_table($sales, $controller)
 {
 	$CI =& get_instance();
 	$table='<table class="tablesorter" id="sortable_table">';
 
 	$headers = array('&nbsp;',
+	$CI->lang->line('sales_receipt_number'),
 	$CI->lang->line('sales_sale_time'),
 	$CI->lang->line('customers_customer'),
 	$CI->lang->line('sales_amount_tendered'),
 	$CI->lang->line('sales_amount_due'),
-	$CI->lang->line('sales_receipt_number'),
+	$CI->lang->line('sales_change_due'),
+	$CI->lang->line('sales_payment'),
 	$CI->lang->line('sales_invoice_number'),
 	'&nbsp');
 
@@ -20,56 +22,97 @@ function get_sales_manage_table($sales,$controller)
 		$table.="<th>$header</th>";
 	}
 	$table.='</tr></thead><tbody>';
-	$table.=get_sales_manage_table_data_rows($sales,$controller);
+	$table.=get_sales_manage_table_data_rows($sales, $controller);
 	$table.='</tbody></table>';
+
 	return $table;
 }
 
 /*
- Gets the html data rows for the people.
+ Gets the html data rows for the sales.
  */
-function get_sales_manage_table_data_rows($sales,$controller)
+function get_sales_manage_table_data_rows($sales, $controller)
 {
 	$CI =& get_instance();
-	$table_data_rows='';
+	$table_data_rows = '';
+	$sum_amount_tendered = 0;
+	$sum_amount_due = 0;
+	$sum_change_due = 0;
 
-	foreach($sales->result_array() as $sale)
+	foreach($sales as $key=>$sale)
 	{
-		$table_data_rows.=get_sale_data_row($sale,$controller);
+		$table_data_rows .= get_sales_manage_sale_data_row($sale, $controller);
+		
+		$sum_amount_tendered += $sale['amount_tendered'];
+		$sum_amount_due += $sale['amount_due'];
+		$sum_change_due += $sale['change_due'];
 	}
 
-	if($sales->num_rows()==0)
+	if($table_data_rows == '')
 	{
-		$table_data_rows.="<tr><td colspan='8'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('sales_no_sales_to_display')."</div></tr></tr>";
+		$table_data_rows .= "<tr><td colspan='10'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
+	}
+	else
+	{
+		$table_data_rows .= "<tr class='static-last'><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"3\"></td></tr>";
 	}
 
 	return $table_data_rows;
 }
 
-function get_sale_data_row($sale,$controller)
+function get_sales_manage_sale_data_row($sale, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=$CI->uri->segment(1);
+	$controller_name = $CI->uri->segment(1);
 	$width = $controller->get_form_width();
 
 	$table_data_row='<tr>';
-	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_"' . $sale[ 'sale_id' ] . ' value="' . $sale[ 'sale_id' ]. '" /></td>';
-	$table_data_row.='<td width="17%">'.date('d/m/Y H:i' , strtotime($sale[ 'sale_time' ])).'</td>';
-	$table_data_row.='<td width="23%">'.character_limiter( $sale[ 'last_name' ] . " " . $sale[ 'first_name' ] ,25).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_tendered' ] ).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency( $sale[ 'amount_due' ] ).'</td>';
-	$table_data_row.='<td width="15%">'.'Ticket ' . $sale[ 'sale_id' ]. '</td>';
-	$table_data_row.='<td width="10%">'.$sale[ 'invoice_number' ].'</td>';
-	$table_data_row.='<td width="12%">';
-	$table_data_row.=anchor($controller_name."/edit/" . $sale[ 'sale_id' ] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
+	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_' . $sale['sale_id'] . '" value="' . $sale['sale_id']. '" /></td>';
+	$table_data_row.='<td width="15%">'.'POS ' . $sale['sale_id'] . '</td>';
+	$table_data_row.='<td width="17%">'.date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale['sale_time']) ).'</td>';
+	$table_data_row.='<td width="23%">'.character_limiter( $sale['customer_name'], 25).'</td>';
+	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_tendered'] ).'</td>';
+	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_due'] ).'</td>';
+	$table_data_row.='<td width="8%">'.to_currency( $sale['change_due'] ).'</td>';
+	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
+	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
+	$table_data_row.='<td width="8%">';
+	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale[ 'sale_id' ]) . '">' . $CI->lang->line('sales_show_receipt') .  '</a>';
+	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_receipt') . '</a>';
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.='<a href="'.site_url($controller_name. "/invoice/" . $sale[ 'sale_id' ]) . '">' . $CI->lang->line('sales_show_invoice') .  '</a>';
+	$table_data_row.='<a href="'.site_url($controller_name. "/invoice/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_invoice') . '</a>';
 	$table_data_row.='</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
+}
+
+/*
+Get the sales payments summary
+*/
+function get_sales_manage_payments_summary($payments, $sales, $controller)
+{
+	$CI =& get_instance();
+	$table='<div id="report_summary">';
+
+	foreach($payments as $key=>$payment)
+	{
+		$amount = $payment['payment_amount'];
+
+		// WARNING: the strong assumption here is that if a change is due it was a cash transaction always
+		// therefore we remove from the total cash amount any change due
+		if( $payment['payment_type'] == $CI->lang->line('sales_cash') )
+		{
+			foreach($sales as $key=>$sale)
+			{
+				$amount -= $sale['change_due'];
+			}
+		}
+		$table.='<div class="summary_row">'.$payment['payment_type'].': '.to_currency( $amount ) . '</div>';
+	}
+	$table.='</div>';
+	return $table;
 }
 
 /*
@@ -95,6 +138,7 @@ function get_people_manage_table($people,$controller)
 	$table.='</tr></thead><tbody>';
 	$table.=get_people_manage_table_data_rows($people,$controller);
 	$table.='</tbody></table>';
+
 	return $table;
 }
 
@@ -148,6 +192,7 @@ function get_detailed_data_row($row, $controller)
 		$table_data_row.='</td>';
 	}
 	$table_data_row.='</tr>';
+
 	return $table_data_row;
 }
 
@@ -161,10 +206,12 @@ function get_supplier_manage_table($suppliers,$controller)
 	
 	$headers = array('<input type="checkbox" id="select_all" />',
 	$CI->lang->line('suppliers_company_name'),
+	$CI->lang->line('suppliers_agency_name'),
 	$CI->lang->line('common_last_name'),
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
+	$CI->lang->line('suppliers_supplier_id'),
 	'&nbsp');
 	
 	$table.='<thead><tr>';
@@ -175,6 +222,7 @@ function get_supplier_manage_table($suppliers,$controller)
 	$table.='</tr></thead><tbody>';
 	$table.=get_supplier_manage_table_data_rows($suppliers,$controller);
 	$table.='</tbody></table>';
+
 	return $table;
 }
 
@@ -193,7 +241,7 @@ function get_supplier_manage_table_data_rows($suppliers,$controller)
 	
 	if($suppliers->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='7'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='9'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -208,11 +256,13 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->company_name,13).'</td>';
+	$table_data_row.='<td width="17%">'.character_limiter($supplier->agency_name,13).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->last_name,13).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';		
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
+	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
+	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -230,6 +280,7 @@ function get_items_manage_table($items,$controller)
 	$CI->lang->line('items_item_number'),
 	$CI->lang->line('items_name'),
 	$CI->lang->line('items_category'),
+	$CI->lang->line('suppliers_company_name'),
 	$CI->lang->line('items_cost_price'),
 	$CI->lang->line('items_unit_price'),
 	$CI->lang->line('items_quantity'),
@@ -247,6 +298,7 @@ function get_items_manage_table($items,$controller)
 	$table.='</tr></thead><tbody>';
 	$table.=get_items_manage_table_data_rows($items,$controller);
 	$table.='</tbody></table>';
+
 	return $table;
 }
 
@@ -265,7 +317,7 @@ function get_items_manage_table_data_rows($items,$controller)
 	
 	if($items->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='12'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('items_no_items_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='12'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -291,6 +343,7 @@ function get_item_data_row($item,$controller)
 	$table_data_row.='<td width="15%">'.$item->item_number.'</td>';
 	$table_data_row.='<td width="20%">'.$item->name.'</td>';
 	$table_data_row.='<td width="14%">'.$item->category.'</td>';
+	$table_data_row.='<td width="14%">'.$item->company_name.'</td>';
 	$table_data_row.='<td width="14%">'.to_currency($item->cost_price).'</td>';
 	$table_data_row.='<td width="14%">'.to_currency($item->unit_price).'</td>';
     $table_data_row.='<td width="14%">'.$item->quantity.'</td>';
@@ -306,12 +359,12 @@ function get_item_data_row($item,$controller)
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
-	
-	//Ramel Inventory Tracking
+
 	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id/width:$width", $CI->lang->line('common_inv'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count	
 	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id/width:$width", $CI->lang->line('common_det'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details	
 	
 	$table_data_row.='</tr>';
+
 	return $table_data_row;
 }
 
@@ -321,7 +374,6 @@ Gets the html table to manage giftcards.
 function get_giftcards_manage_table( $giftcards, $controller )
 {
 	$CI =& get_instance();
-	
 	$table='<table class="tablesorter" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
@@ -340,6 +392,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	$table.='</tr></thead><tbody>';
 	$table.=get_giftcards_manage_table_data_rows( $giftcards, $controller );
 	$table.='</tbody></table>';
+
 	return $table;
 }
 
@@ -358,13 +411,12 @@ function get_giftcards_manage_table_data_rows( $giftcards, $controller )
 	
 	if($giftcards->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></tr></tr>";
+		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
 }
 
-/** GARRISON MODIFIED 4/25/2013 **/
 function get_giftcard_data_row($giftcard,$controller)
 {
 	$CI =& get_instance();
@@ -377,12 +429,11 @@ function get_giftcard_data_row($giftcard,$controller)
 	$table_data_row.='<td width="15%">'.$giftcard->first_name.'</td>';
 	$table_data_row.='<td width="15%">'.$giftcard->giftcard_number.'</td>';
 	$table_data_row.='<td width="20%">'.to_currency($giftcard->value).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
-	
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
+
 	return $table_data_row;
 }
-/** END GARRISON MODIFIED **/
 
 /*
 Gets the html table to manage item kits.
@@ -390,12 +441,14 @@ Gets the html table to manage item kits.
 function get_item_kits_manage_table( $item_kits, $controller )
 {
 	$CI =& get_instance();
-	
 	$table='<table class="tablesorter" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
+	$CI->lang->line('item_kits_kit'),
 	$CI->lang->line('item_kits_name'),
 	$CI->lang->line('item_kits_description'),
+	$CI->lang->line('items_cost_price'),
+	$CI->lang->line('items_unit_price'),
 	'&nbsp', 
 	);
 	
@@ -407,31 +460,32 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$table.='</tr></thead><tbody>';
 	$table.=get_item_kits_manage_table_data_rows( $item_kits, $controller );
 	$table.='</tbody></table>';
+
 	return $table;
 }
 
 /*
 Gets the html data rows for the item kits.
 */
-function get_item_kits_manage_table_data_rows( $item_kits, $controller )
+function get_item_kits_manage_table_data_rows($item_kits, $controller)
 {
 	$CI =& get_instance();
 	$table_data_rows='';
 	
 	foreach($item_kits->result() as $item_kit)
 	{
-		$table_data_rows.=get_item_kit_data_row( $item_kit, $controller );
+		$table_data_rows .= get_item_kit_data_row($item_kit, $controller);
 	}
 	
 	if($item_kits->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></tr></tr>";
+		$table_data_rows .= "<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
 }
 
-function get_item_kit_data_row($item_kit,$controller)
+function get_item_kit_data_row($item_kit, $controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
@@ -439,11 +493,14 @@ function get_item_kit_data_row($item_kit,$controller)
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='3%'><input type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/></td>";
+	$table_data_row.='<td width="15%">'.'KIT '.$item_kit->item_kit_id.'</td>';
 	$table_data_row.='<td width="15%">'.$item_kit->name.'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($item_kit->description, 25).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
-	
+	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_cost_price).'</td>';
+	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_unit_price).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
+
 	return $table_data_row;
 }
 

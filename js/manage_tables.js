@@ -12,9 +12,9 @@ function checkbox_click(event)
 	}
 }
 
-function enable_search(suggest_url,confirm_search_message,format_item)
+function enable_search(options)
 {
-	if (!format_item) {
+	if (!options.format_item) {
 		format_item = function(results) {
 			return results[0];
 		};
@@ -28,10 +28,11 @@ function enable_search(suggest_url,confirm_search_message,format_item)
     	$(this).attr('value','');
     });
 
-    $("#search").autocomplete(suggest_url,{max:100,delay:10, selectFirst: false, formatItem : format_item});
+    var widget = $("#search").autocomplete(options.suggest_url,{max:100,delay:10, selectFirst: false,
+		formatItem : options.format_item, extraParams: options.extra_params});
     $("#search").result(function(event, data, formatted)
     {
-		do_search(true);
+		do_search(true, options.on_complete);
     });
     
     attach_search_listener();
@@ -43,11 +44,13 @@ function enable_search(suggest_url,confirm_search_message,format_item)
 		$('#limit_from').val(0);
 		if(get_selected_values().length >0)
 		{
-			if(!confirm(confirm_search_message))
+			if(!confirm(options.confirm_search_message))
 				return;
 		}
-		do_search(true);
+		do_search(true, options.on_complete);
 	});
+
+	return widget;
 }
 enable_search.enabled=false;
 
@@ -82,7 +85,7 @@ function do_search(show_feedback,on_complete)
 		function(response) {
 			$('#sortable_table tbody').html(response.rows);
 			if(typeof on_complete=='function')
-				on_complete();
+				on_complete(response);
 			$('#search').removeClass("ac_loading");
 			//$('#spinner').hide();
 			//re-init elements in new table, as table tbody children were replaced
@@ -300,6 +303,10 @@ function update_sortable_table()
 	{
 		var sorting = $("#sortable_table")[0].config.sortList; 		
 		$("#sortable_table").trigger("sorton",[sorting]);
+	}
+	else
+	{
+		window['init_table_sorting'] && init_table_sorting();
 	}
 }
 
