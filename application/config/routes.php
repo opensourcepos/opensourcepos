@@ -39,25 +39,25 @@
 */
 
 $route['default_controller'] = "login";
-$route['no_access/(:any)'] = "no_access/index/$1";
-$route['no_access/(:any)/(:any)'] = "no_access/index/$1/$2";
-$route['sales/index/(:any)'] = "sales/manage/$1";
-$route['sales/index/(:any)/(:any)'] = "sales/manage/$1/$2";
-$route['sales/index/(:any)/(:any)/(:any)'] = "sales/manage/$1/$2/$3";
-$route['reports/(summary_:any)/(:any)/(:any)'] = "reports/$1/$2/$3";
+$route['no_access/(.+)'] = "no_access/index/$1";
+$route['no_access/(.+)/(.+)'] = "no_access/index/$1/$2";
+$route['sales/index/(.+)'] = "sales/manage/$1";
+$route['sales/index/(.+)/(.+)'] = "sales/manage/$1/$2";
+$route['sales/index/(.+)/(.+)/(.+)'] = "sales/manage/$1/$2/$3";
+$route['reports/(summary_:any)/(.+)/(.+)'] = "reports/$1/$2/$3";
 $route['reports/summary_:any'] = "reports/date_input_excel_export";
-$route['reports/(graphical_:any)/(:any)/(:any)'] = "reports/$1/$2/$3";
+$route['reports/(graphical_:any)/(.+)/(.+)'] = "reports/$1/$2/$3";
 $route['reports/graphical_:any'] = "reports/date_input";
-$route['reports/(inventory_:any)/(:any)'] = "reports/$1/$2";
+$route['reports/(inventory_:any)/(.+)'] = "reports/$1/$2";
 $route['reports/inventory_:any'] = "reports/excel_export";
 $route['reports/inventory_summary'] = "reports/inventory_summary_input";
-$route['reports/(inventory_summary)/(:any)/(:any)/(:any)'] = "reports/$1/$2/$3/$4";
+$route['reports/(inventory_summary)/(.+)/(.+)/(.+)'] = "reports/$1/$2/$3/$4";
 
-$route['reports/(detailed_sales)/(:any)/(:any)/(:any)'] = "reports/$1/$2/$3$/$4";
+$route['reports/(detailed_sales)/(.+)/(.+)/(.+)'] = "reports/$1/$2/$3$/$4";
 $route['reports/detailed_sales'] = "reports/date_input_sales";
-$route['reports/(detailed_receivings)/(:any)/(:any)/(:any)'] = "reports/$1/$2/$3/$4";
+$route['reports/(detailed_receivings)/(.+)/(.+)/(.+)'] = "reports/$1/$2/$3/$4";
 $route['reports/detailed_receivings'] = "reports/date_input_recv";
-$route['reports/(specific_:any)/(:any)/(:any)/(:any)'] = "reports/$1/$2/$3/$4";
+$route['reports/(specific_:any)/(.+)/(.+)/(.+)'] = "reports/$1/$2/$3/$4";
 $route['reports/specific_customer'] = "reports/specific_customer_input";
 $route['reports/specific_employee'] = "reports/specific_employee_input";
 $route['reports/specific_discount'] = "reports/specific_discount_input";
