@@ -59,9 +59,14 @@ class Sale_lib
 		return $this->CI->session->userdata('sales_invoice_number');
 	}
 	
-	function set_invoice_number($invoice_number)
+	function set_invoice_number($invoice_number, $keep_custom = FALSE)
 	{
-		$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
+		$current_invoice_number = $this->CI->session->userdata('sales_invoice_number');
+		if (!$keep_custom || empty($current_invoice_number))
+		{
+			$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
+		}
+
 	}
 	
 	function clear_invoice_number()

@@ -535,11 +535,10 @@ class Sales extends Secure_area
 	
 	private function _substitute_invoice_number($cust_info)
 	{
-		$invoice_number=$this->sale_lib->get_invoice_number();
-		$invoice_number=$this->config->config['sales_invoice_format'];
+		$invoice_number = $this->config->config['sales_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number, $cust_info);
-		$this->sale_lib->set_invoice_number($invoice_number);
-		return $invoice_number;
+		$this->sale_lib->set_invoice_number($invoice_number, TRUE);
+		return $this->sale_lib->get_invoice_number();
 	}
 
 	private function _load_sale_data($sale_id)

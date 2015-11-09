@@ -271,7 +271,7 @@ class Receivings extends Secure_area
 		$invoice_number=$this->config->config['recv_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number,$supplier_info);
 		$this->receiving_lib->set_invoice_number($invoice_number);
-		return $invoice_number;
+		return $this->receiving_lib->get_invoice_number();
 	}
 
     function requisition_complete()
