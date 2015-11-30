@@ -1,0 +1,115 @@
+label,nl-BE,es,en,fr,zh,ru,th,tr,id
+sales_add_payment,Betaal,Agregar Pago,Add Payment,Ajouter Paiement,新增付款,Добавить оплаты,เพิ่มบิล,Ödeme Ekle,TERIMA
+sales_amount_due,Te betalen,Debe,Amount Due,Somme Due,Amount Due,Amount Due,ยอดต้องชำระ,Kalan Ödeme,Kembalian Uang
+sales_amount_tendered,Ontvangen bedrag,Cantidad Recibida,Amount Tendered,Somme,已收帳款,предложенная сумма,ชำระเข้ามา,Ödenen Tutar,Nilai Pembayaran
+sales_basic_information,Ticket informatie,información sobre las entradas,Sale information,Information de Vente,Sale information,информацию о билетах,,Satış bilgisi,Sale information
+sales_cancel_sale,Annuleer,Cancelar Venta,Cancel Sale,Annuler la Vente,取消銷售,Отменить продажу,ยกเลิกการขาย,İptal Et,Batal Jual
+sales_cash,Contant,Efectivo,Cash,Cash,現金,наличные деньги,เงินสด,Nakit,Tunai
+sales_change_due,Wisselgeld terug,Cambio,Change Due,Reste,更改到期日,сдача должное,เงินทอน,Para Üstü,Kembalian Uang
+sales_check,Waardebon,Cheque,Check,Cheque,支票,банковский чек,เช็ค,Çek,Cek
+sales_check_balance,Waardebon terug,Balance de Cheque,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder,Check remainder
+sales_comment,Commentaar,Comentario,Comment,Commentaire,評論,комментировать,หมายเหตุ,Yorum,Catatan
+sales_comments,Commentaar,Comentarios,Comments,Commentaires,評論,Комментарии,หมายเหตุ,Yorumlar,Keterangan
+sales_complete_sale,Bevestig,Completar Venta,Complete Sale,Finaliser la Vente,完成銷售,Завершить продажу,จบการขาย,Satışı Tamamla,Entri penjualan
+sales_confirm_cancel_sale,Bent u zeker dat u deze aankoop wil verwijderen?,¿Seguro(a) de querer limpiar esta venta? Todos los artículos serán limpiados.,Are you sure you want to clear this sale? All items will cleared.,Etes vous sûr(e) de vouloir annuler cette vente?,你確定要清除此筆銷售單？本單內的所有產品將被清除。,"Вы уверены, что хотите удалить эту продажу? Все детали будут очищены.",แน่ใจหรือไม่ที่จะล้างรายการขาย? สินค้าทุกอย่างจะถูกลบจากบอร์ด.,Bu satışı iptal etmek istiyor musunuz? Tüm ürünler çıkarılacak.,Anda yakin ingin membatalkan transaksi penjualan ini?  Semua item akan dihapus.
+sales_confirm_delete,Bent u zeker dat u de geselecteerde aankopen wil verwijderen?,¿Seguro(a) de querer borrar las ventas seleccionadas?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?,Are you sure you want to delete the selected sales?
+sales_confirm_finish_sale,Bent u zeker dat u deze aankoop wil invoeren? Dit kan niet ongedaan gemaakt worden.,¿Seguro(a) de querer procesar esta venta? Ésto no se puede deshacer.,Are you sure you want to submit this sale? This cannot be undone.,Etes vous sûr(e) de vouloir enregistrer cette vente? Cette opération est irréversible.,你確定要提交銷售單？此動作不能撤消。,"Вы уверены, что хотите заверщить эту продажу? Не может быть отменено.",แน่ใจหรือไม่ที่จะสำเร็จการขาย? ไม่สามารถย้อนกลับได้.,Satışı tamamlamak istediğinize emin misiniz? Tİşlem geri alınamaz.,Anda yakin ingin melakukan transaksi penjualan ini?  Proses tidak dapat dibatalkan.
+sales_confirm_suspend_sale,Bent u zeker dat u deze aankoop wil bewaren?,¿Seguro(a) de querer suspender esta venta?,Are you sure you want to suspend this sale?,Etes vous sûr(e) de vouloir suspendre cette vente?,你確定要暫停銷售？,"Вы уверены, что хотите приостановить эту продажу?",แน่ใจหรือไม่ที่จะระงับการขาย?,Bu satışı askıya almak istiyor musunuz?,Apakah anda yakin akan menangguhkan penjualan ini?
+sales_credit,Kredietkaart,Tarjeta de Crédito,Credit Card,Carte de Crédit,信用卡,кредитная карта,เครดิตการ์ด,Kredi Kartı,Kartu Credit
+sales_customer,Klant,cliente,Customer,Client,客戶,клиент,ลูกค้า,Müşteri,Pelanggan
+sales_date,Datum,Fecha,Sale Date,Date de Vente,日期,Число,วันที่ขาย,Satış Tarihi,Tanggal
+sales_date_required,Gelieve een correcte datum in te vullen,Una fecha correcta de ser ingresada,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,A correct date needs to be filled in,Permintaan Data
+sales_date_type,Er moet een correcte datum ingevuld worden,Campo de Fecha es requerido,Date field is required,Date field is required,Date field is required,Date field is required,Date field is required,Date field is required,Jenis Data
+sales_debit,Bancontact,Tarjeta de Débito,Debit Card,Carte Débit,簽帳卡,Дебетовая карта,เดบิตการ์ด,Banka Kartı,Kartu Debit
+sales_delete_confirmation,Bent u zeker dat u deze aankoop wil verwijderen?,¿Seguro(a) de querer borrar esta venta? Esta acción no se puede deshacer.,"Are you sure you want to delete this sale, this action cannot be undone",Etes vous sûr(e) de vouloir supprimer cette vente? Cette opération est irréversible.,你確定要刪除此銷售資料，這個動作不能撤消,"Вы уверены, что хотите удалить эту продажу, это действие не может быть отменено","แน่ใจหรือไม่ที่จะลบรายการขายนี้, ลบแล้วไม่สามารถเรียกกลับคืนใด้","Satışı silmek istediğinize emin misiniz, bu işlem geri alınamaz","Apakah anda yakin ingin menghapus transaksi penjualan ini, Pilihan ini tidak dapat dibatalkan"
+sales_delete_entire_sale,Verwijder,Borrar la venta completa,Delete entire sale,Supprimer Vente,刪除全部銷售資料,Удалить всего продажи,ลบการขายทั้งหมด,Satışın tamamını sil,Hapus Transaksi Penjualan
+sales_delete_successful,De geselecteerde aanko(o)p(en) werden verwijderd,Has borrado satisfactoriamente una venta,You have successfully deleted a sale,Suppréssion réussie,您已成功刪除銷售資料,Вы успешно удален продаже,คุณลบการขายสำเร็จ,Satışı sildiniz,Transaksi Penjualan berhasil dihapus
+sales_delete_unsuccessful,De geselecteerde aankopen konden niet worden verwijderd.,No he podido borrar la venta satisfactoriamente,You have unsuccessfully deleted a sale,Échec de suppression,銷售資料刪除失敗,Вы безуспешно удален продаже,คุณลบการขายไม่สำเร็จ,Satışı silemediniz,Transaksi Penjualan tidak berhasil dihapus
+sales_description_abbrv,Omschr.,Desc,Desc,Desc,倒序,описание,Desc,Tanım,Deskripsi
+sales_discount,%,% Descuento,Disc %,% Remise,折扣 %,скидка %,ส่วนลด %,İndirim %,Diskon %
+sales_discount_included,% Korting,% Descuento,% Discount,% Discount,% Discount,% Discount,% Discount,% Discount,% Discount
+sales_discount,Korting,Descuento,Discount,Discount,Discount,Discount,ส่วนลด,Discount,Discount
+sales_discount_short,%,%,%,%,%,%,,%,%
+sales_edit,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
+sales_edit_item,Bewaar,Editar Artículo,Edit Item,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
+sales_edit_sale,Bewerk Ticket,Editar Venta,Edit Sale,Éditer Vente,編輯銷售資料,Редактировать продажи,แก้ไขการขาย,Satışı Düzenle,Ubah Penjualan
+sales_email_receipt,E-Mail Ticket,Enviar Ticket,E-Mail Receipt,Recu par E-Mail,E-Mail 銷售單,послать квитанция по E-Mail,อีเมลบิล,E-Fatura,e-Mail Faktur
+sales_employee,Werknemer,Empleado,Employee,Employé,員工,сотрудник,พนักงาน,Personel,Karyawan
+sales_error_editing_item,Fout bij bewerken,Error editando artículo,Error editing item,Érreur lors de l\'édition,編輯產品錯誤,Ошибка редактирования товара,แก้ไขสินค้าล้มเหลว,Ürün düzenleme hatası,mengubah item salah
+sales_find_or_scan_item,Zoek/Scan Product,Encontrar/Escanear Artículo,Find/Scan Item,Trouver/Scanner Item,查找/掃描商品,Найти/Сканировать Товара,ค้นหาสินค้า,Ürün Bul/Oku,Cari/Scan Item
+sales_find_or_scan_item_or_receipt,Zoek/Scan Product of Ticket,Encontrar/Escanear Artículo o Entrada,Find/Scan Item OR Receipt,Trouver/Scanner Item OU Recu,查找/掃描產品或收貨單,Найти/Сканировать Товара ИЛИ Квитанция,ค้นหาสินค้า หรือ บิล,Ürün yada Fatura Bul/Oku,Cari/Scan Item ATAU Faktur
+sales_giftcard,Cadeaubon,Tarjeta de Regalo,Gift Card,Carte Cadeau,禮金券,Подарочная карта,Gift Card,Hediye Çeki,Gift Card
+sales_giftcard_balance,Cadeaubon Resterend,Balance de Tarjeta de Regalo,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance,Giftcard Balance
+sales_giftcard_number,Cadeaubon nummer,Número de Tarjeta de Regalo,Gift Card Number,Numéro de Carte cadeau,禮金券編號,Номер подарочных карт,เลขที่ Gift Card,Hediye Çeki No,Nomor Gift Card
+sales_id,Nummer Verkoop ,ID de Venta,Sale ID,ID Vente,銷售編號,Номер Продажы,เลขที่ขาย,Satış No,ID Penjualan
+sales_invoice,Factuur,tarjeta de Crédito,Invoice,Invoice,Invoice,Invoice,ใบแจ้งหนี้,Invoice,Invoice
+sales_invoice_confirm,Deze factuur zal verstuurd worden naar,Esta factura sera enviada a,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to,This invoice will be sent to
+sales_invoice_enable,Maak Factuur,Crear factura,Create Invoice,Create Invoice,Create Invoice,Create Invoice,ออกใบแจ้งหนี้,Create Invoice,Create Invoice
+sales_invoice_filter,Facturen,Facturas,Invoices,Invoices,Invoices,Invoices,ใบแจ้งหนี้,Invoices,Invoices
+sales_cash_filter,Contant,Efectivo,Cash,Cash,Cash,Cash,เงินสด,Cash,Cash
+sales_invoice_no_email,Er werd geen email adres gevonden voor deze klant,Este cliente no tiene un email válido,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address,This customer does not have a valid email address
+sales_invoice_number,Factuur #,Factura #,Invoice #,Invoice #,Invoice #,Invoice #,เลขใบแจ้งหนี้,Invoice #,Nomor Nota
+sales_invoice_number_duplicate,Vul een unieke nummer in,Por favor ingrese un número de factura único,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Please enter an unique invoice number,Nomor Nota Double
+sales_invoice_sent,Factuur verstuurd naar,Factura enviada a,Invoice sent to,Invoice sent to,Invoice sent to,Invoice sent to,Invoice sent to,Invoice sent to,Invoice sent to
+sales_invoice_unsent,Fout bij het versturen van factuur naar,Fallo el envio de la factura a,Invoice failed to be sent to,Invoice failed to be sent to,Invoice failed to be sent to,Invoice failed to be sent to,Invoice failed to be sent to,Invoice failed to be sent to,Invoice failed to be sent to
+sales_invoice_update,Hernummer,Actualizar,Recount,Recount,Recount,Recount,คำนวณใหม่,Recount,Recount
+sales_item_insufficient_of_stock,Product is niet meer in voorraad,Hay un número insuficiente de Artículos en existencia,Item is Insufficient of Stock,Stock top faible,產品庫存不足,Товар недостаточно на складе,จำนวนสินค้าไม่เพียงพอ,Ürün Stoğu Yetersiz,Stok Item tidak mencukupi
+sales_item_name,Naam,Nombre del Artículo,Item Name,Nom,產品名稱,Название товара,ชื่อสินค้า,Ürün Adı,Nama Item 
+sales_item_number,Product #,UPC/EAN/ISBN,Item #,# Item,產品 #,Номер товара,สินค้า #,Ürün No,Item #
+sales_item_out_of_stock,Product is niet meer in voorraad,El artículo está agotado,Item is Out of Stock,Stock épuisé,產品缺貨,Товар распродано,สินค้าจำหน่ายหมด,Ürün Stokta Yok,Item tidak ada stok
+sales_mode,Type Registratie,Modo,Register Mode,Mode d\'Enregistrement,登記模式,режим журнала,รูปแบบการลงทะเบียน,Kayıt Modu,Jenis Transaksi
+sales_must_enter_numeric,Het ontvangen bedrag moet een numerieke waarde zijn,Cantidad Recibida debe ser número,Must enter numeric value for amount tendered,Veuillez entrer une valeur numérique pour la somme,已收帳款必須輸入數值,числовое значение необходимое для предложенная сумма,จำนวนที่ถุกประมูลต้องใส่ข้อมุลที่เปนตัวเลข,Ödenen tutar sayı olmalıdır,Nilai yang dimasukkan harus angka numerik
+sales_must_enter_numeric_giftcard,Er moet een geldige code worden ingevuld voor de cadeaubon,Número de Tarjeta de Regalo debe ser número,Must enter numeric value for giftcard number,Veuillez entrer une valeur numérique pour le numéro de carte,禮金券編號必須輸入數值,числовое значение необходимое для число подарочную карту,กิ๊ฟการ์ด ต้องใส่ตัวเลขเท่านั้น,Hediye çeki numarası için sayı girmelisiniz,Nomor Gift Card harus angka numerik
+sales_new_customer,Nieuwe klant,Cliente Nuevo,New Customer,Nouveau Client,新客戶,Новый клиент,ลูกค้าใหม่,Yeni Müşteri,Pelanggan Baru
+sales_new_item,Nieuw Product,Artículo Nuevo,New Item,Nouvel Élément,新增產品,Новый Товар,สินค้าใหม่,Yeni Ürün,Item Baru
+sales_no_description,Geen,Ninguno,None,None,None,None,None,None,None
+sales_no_filter,Alle,Todos,All,All,All,All,All,All,All
+sales_no_items_in_cart,Er zijn geen aankopen geselecteerd,No hay artículos en el carrito,There are no items in the cart,Il n\'y a rien dans votre panier,購物車中沒有任何產品,Там нет товаров в корзине,ไม่พบสินค้าในตระกร้า,Sepette Ürün Yok,Tidak ada Item dalam Keranjang Belanja
+sales_no_sales_to_display,Er werden geen aankopen gevonden,No hay ventas que mostrar,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display,No sales to display
+sales_one_or_multiple,aankopen verwijderd,venta(s),sale(s),,,,,,
+sales_takings,Overzicht,Resumen,Takings,Takings,Takings,Takings,ประวัติ,Takings,Takings
+sales_payment,Betaalmethode,Tipo de Pago,Payment Type,Type Paiement,付款方式,Вид оплаты,รูปแบบชำระเงิน,Ödeme Türü,Type Pembayaran
+sales_payment_amount,Bedrag,Cantidad,Amount,Somme,Amount,количество,,Tutar,Amount
+sales_payment_not_cover_total,Betaalde hoeveelheid is onvoldoende,La Cantidad Recibida no cubre el pago total,Payment Amount does not cover Total,Le Paiement ne couvre pas le Total,付款金額不足,оплачиваемая сумма недостаточно, ปริมาณการจ่ายที่ไม่เพียงพอกะยอดรวม,Ödemeler toplam tutarı karşılamıyor,Jumlah pembayaran tidak mencakup Total
+sales_payment_type,Type,Tipo,Type,Type,Type,тип,ชำระโดย,Tür,Type
+sales_payments_total,Betaald bedrag,Pagado,Payments Total,Total Paiments,Payments Total,Payments Total,ยอดชำระแล้ว,Ödemeler Toplamı,Total Pembayaran
+sales_price,Prijs,Precio,Price,Prix,價格,цена,ราคา,Fiyat,Harga
+sales_print_after_sale,Print Ticket,Imprimir recibo después de una venta,Print after sale,Imprimer un recu après vente,出貨時打印收據,Распечатать квитанцию ​​после продажи,พิมพ์บิลหลังการขาย,Satıştan sonra yazdır,Cetak Faktur setelah penjualan
+sales_quantity,Aantal,Cant.,Qty.,Qté.,數量.,Кол-во.,จำนวน,Adet,Jumlah.
+sales_quantity_less_than_zero,"Waarschuwing, de gewenste hoeveelheid is onvoldoende. U kunt deze aankoop verwerken, maar kijk toch even de voorraad na.",Advertencia. La cantidad deseada es insuficiente. Puedes procesar la venta pero verifica el inventario.,"Warning, Desired Quantity is Insufficient. You can still process the sale, but check your inventory","Avertissement, Quantité Demandée Insuffisante. Vous pouvez accomplir la ventre, mais veuillez vérifier votre inventaire",警告！產品的庫存數量是不足的。您仍然可以處理銷售，但檢查您的庫存,"Внимание Желаемое количество является недостаточным. Вы все еще можете обрабатывать продажи, но проверить ваш инвентарь",คำเตือน ถ้าจำนวนของไม่เพียงพอกับความต้องการหรือไม่ตรงกับยอดในบันชี ก็สามารถทำการขายได้ แต่ต้องเชคปริมานสินค้าคงคลัง,"Dikkat, İstenen stok yetersiz. Satışa devam edebilirsiniz ama stoğunuzu kontrol ediniz","Peringatan!... Stok Inventori Kosong. Proses penjualan masih dapat dilanjutkan, Periksa Inventori."
+sales_receipt,Ticket #,Recibo de Venta,Sales Receipt,Recu de Ventes,銷貨單,товарный чек,บิลขาย,Satış Faturası,Faktur Penjualan
+sales_receipt_number,Ticket #,POS #,Sale #,# Caisse,POS #,POS #,จุดขาย#,,POS #
+sales_register,Kassa,Registro de Ventas,Sales Register,Registre des Ventes,銷售登記,Продажи журнала,ลงทะเบียนขาย,Satış Kaydı,Transaksi Penjualan
+sales_remove_customer,Verwijder Klant,Borrar Cliente,Remove Customer,Enlever Client,移除客戶,Удалите клиентов,ลบลูกค้า,Müşteriyi Kaldır,Hapus Pelanggan
+sales_return,Retour,Devolución,Return,Reprise,退貨,возвращать,คืน,İade,Retur
+sales_sale,Verkoop,Venta,Sale,Vente,銷售,Продажа,ขาย,Satış,Penjualan
+sales_sale_for_customer,Klant:,Cliente:,Customer:,Client:,客戶:,Клиент:,ลูกค้า:,Müşteri:,Pelanggan:
+sales_sale_time,Datum,Hora,Time,Time,Time,Time,เวลา,Saat,Waktu
+sales_select_customer,Selecteer Klant (Optioneel),Seleccionar Cliente (Opcional),Select Customer (Optional),Choisir Client (Facultatif),選擇客戶 (Optional),Выберите клиента (необязательно),เลือกลูกค้า (Optional),Müşteri Seç (İsteğe Bağlı),Pilih Pelanggan (Opsional)
+sales_send_invoice,Vestuur Factuur,Enviar Factura,Send Invoice,Send Invoice,Send Invoice,Send Invoice,ส่งใบแจ้งหนี้,Send Invoice,Send Invoice
+sales_serial,Nummer,Serial,Serial,Serie,序號,серийный номер,Serial,Seri,Serial
+sales_show_invoice,factuur,factura,invoice,invoice,invoice,invoice,ใบแจ้งหนี้,invoice,invoice
+sales_show_receipt,ticket,recibo,receipt,receipt,receipt,receipt,ใบเสร็จ,receipt,receipt
+sales_start_typing_customer_name,Typ naam klant...,Empieza a escribir el cliente...,Start Typing customer's name...,Commencez à saisir le nom du client...,開始輸入客戶的名字,Начните печатать название клиента...,เริ่มต้นพิมพ์ชื่อลูกค้า...,Müşteri Adı...,Ketik Nama Pelanggan...
+sales_start_typing_item_name,Typ naam product of barcode...,Empieza a escribir o escanea el código de barras...,Start Typing item's name or scan barcode...,Commencez à saisir le nom de l\'item ou scannez le code-barre...,開始輸入產品名或掃描條碼...,Начните печатать название товара или сканировайте штрих-кода...,เริ่มต้นพิมพ์ชื่อสินค้า หรือ สแกนบาร์โค๊ด...,Ürün adı yazın yada barkod okutun...,Ketik Nama Barang atau Scan Barcode...
+sales_stock_location,Stock locatie,Inventario,Stock location,,,,ที่เก็บ,Stok yeri,Lokasi Stock
+sales_sub_total,Subtotaal,Subtotal,Sub Total,Sous-Total,小計,промежуточный итог,ยอดรวมหักภาษี ,Ara Toplam,Sub Total
+sales_successfully_deleted,Uw aankoop werd verwijded,La Venta ha sido borrada satisfactoriamente,You have successfully deleted,Vente supprimée,銷售資料成功刪除,продажи успешно удален,ลบการขายสมยูรณ์,Satış silindi,Transaksi Penjualan berhasil dihapus
+sales_successfully_suspended_sale,Uw aankoop werd met sucess bewaard,La venta ha sido suspendida satisfactoriamente,Your sale has been successfully suspended,Vente suspendue,本銷售資料已經成功暫停,Ваши продажи успешно приостановлена,การขายของคุณถูกระงับเรียบร้อย,Satış askıya alındı,Penjualan anda telah berhasil ditangguhkan
+sales_successfully_updated,Wijzigingen bewaard voor ticket,La venta ha sido actualizada satisfactoriamente,Sale successfully updated,Vente éditée,銷售資料成功更新,Продажа успешно обновлен,อัพเดทการขายสมบูรณ์,Satış düzenlendi,Penjualan berhasil diperbarui
+sales_suspend_sale,Bewaar aankoop,Suspender Venta,Suspend Sale,Suspendre la Vente,暫停銷售,Приостановить продажи,พักรายการ,Satışı Askıya Al,Tangguhkan
+sales_suspended_sale_id,ID,ID de Venta Suspendida,ID,ID,暫停銷售編號,приостановила продажи ID,รหัสการขายที่ถูกพัก,No,ID Penjualan ditangguhkan
+sales_suspended_sales,Bewaarde Aankopen,Ventas Suspendidas,Suspended Sales,Ventes Suspendues,已暫停銷售,приостановила продажи,การขายที่พักไว้,Askıdaki Satışlar,Penangguhan
+sales_tax,VAT,Impuesto,Tax,Taxe,稅額,налог,ภาษี,Vergi,Pajak
+sales_tax_percent,VAT %,% de Impuesto,Tax %,% Taxe,稅率 %,Налоговые %,ภาษี %,Vergi %,Pajak %
+sales_total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
+sales_total_tax_exclusive,Totaal,No incluye impuestos,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded,Tax excluded
+sales_transaction_failed,Transactie mislukt,La transacción de venta falló,Sales Transaction Failed,Échec de Transaction de vente,銷售交易失敗,Транзакция не удалось,การดำเนินการขายล้มเหลว,Satış işlemi hatası,Transaksi Penjualan Salah
+sales_unable_to_add_item,Onmogelijk om product toe te voegen,No se puede agregar el artículo a la venta,Unable to add item to sale,Erreur d\'ajout à la vente,無法增加出售產品,Невозможно добавить товар продажи,,Ürün satışa eklenemedi,Tidak dapat menambahkan item dengan penjualan
+sales_unsuccessfully_deleted,De aankoop kon niet verwijderd worden,Ha fallado la eliminación de la Venta,Sale(s) could not be deleted,Échec de suppression,銷售資料刪除失敗,продажи безуспешно удален,ลบการขายไม่สำเร็จ,Satış silinemedi,Transaksi Penjualan tidak berhasil dihapus
+sales_unsuccessfully_updated,Fout bij het bewaren van ticket,Ha fallado la actualización de la venta,Sale unsuccessfully updated,Échec d\'édition,銷售資料更新失敗,Продажа безуспешно обновлен,อัพเดทการขายไม่สมบูรณ์,Satış düzenlenemedi,Penjualan tidak berhasil diperbarui
+sales_unsuspend,Hervat,Retomar,Unsuspend,Débloquer,取消暫停銷售,Разблокировать,ยกเลิกการระงับ,Satışa Al,Batal Penangguhan
+sales_unsuspend_and_delete,,Retomar y Borrar,,,取消暫停銷售並刪除,Разблокировать и удалить,ยกเลิกการระงับ และ ลบ,,Batalkan dan hapus penangguhan
+sales_update,Bewerk Ticket,Editar Venta,Edit Sale,Edit Sale,Edit Sale,Edit Sale,แก้ไขการขาย,Edit Sale,Edit Sale
+sales_date_range,Periode,Rango de Fecha,Date Range,Plage de dates,日期範圍,размах числа,ระหว่างวันที่,Tarih Aralığı,Rentang Tanggal
+sales_none_selected,U hebt geen aankopen geselecteerd,No has seleccionado venta para editar,You have not selected any sales to delete,Vous n\\\'avez sélectionné aucun élément,您還沒有選擇任何產品進行編輯,Вы не выбрали ни одной товари для редактирования,กรุณาเลือสินค้าที่ต้องการแก้ไข,Düzenlemek için ürün seçmediniz,Anda belum memilih item untuk diubah

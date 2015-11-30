@@ -1,0 +1,64 @@
+#receipt_wrapper 
+{
+	/*background-color:#FFFFFF;*/
+	font-size:75%;
+}
+
+#menubar,#footer
+{
+	display:none;
+}
+
+#content_area
+{
+	width:100%;
+}
+
+#content_area_wrapper
+{
+	border:0px;
+}
+
+#sale_return_policy
+{
+	width:100%;
+	text-align:center;
+}
+
+.short_name
+{
+	display:inline;
+}
+
+#receipt_items td
+{
+	white-space:nowrap;
+}
+
+/* Hide links in table for printing */
+table.innertable
+{
+	display: table;
+}
+
+table.innertable a 
+{
+	color: #000000;
+	text-decoration: none;	
+}
+
+table.report a.expand 
+{
+	visibility: hidden;
+}
+
+table.report a 
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+table.innertable thead 
+{
+	/*display:none;*/ 
+}

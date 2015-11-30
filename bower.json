@@ -1,0 +1,36 @@
+{
+  "name": "opensourcepos",
+  "version": "2.4",
+  "authors": [
+    "jekkos <jeroen.peelaerts - at - gmail.com>"
+  ],
+  "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface",
+  "main": "dist/ospos.js",
+  "keywords": [
+    "point-of-sale"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/jekkos/opensourcepos",
+  "private": true,
+  "moduleType": [
+    "globals"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jKey": "https://github.com/OscarGodson/jKey",
+    "jquery-bgiframe": "~3.0.1",
+    "jquery-color": "~2.1.2",
+    "jquery-form": "~3.46.0",
+    "jquery-validate": "~1.13.1",
+    "jquery": "1.8.3",
+    "jquery-ui": "1.11.4",
+    "swfobject": "*",
+    "thickbox": "~3.1.2"
+  }
+}

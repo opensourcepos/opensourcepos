@@ -1,0 +1,4 @@
+How to Upgrade
+-------------------------
+1. Replace all code from your point of sale installation with the code downloaded
+2. Run the necessary database upgrades from the database folder
