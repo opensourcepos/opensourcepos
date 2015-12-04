@@ -1,10 +1,10 @@
 <?php
 class Stock_location extends CI_Model
 {
-    function exists($location_id='')
+    function exists($location_name='')
     {
         $this->db->from('stock_locations');  
-        $this->db->where('location_id',$location_id);
+        $this->db->where('location_name',$location_name);
         $query = $this->db->get();
         
         return ($query->num_rows()>=1);
@@ -84,9 +84,9 @@ class Stock_location extends CI_Model
     
     function save(&$location_data,$location_id) 
     {
-    	if (!$this->exists($location_id))
+		$location_name = $location_data['location_name'];
+    	if (!$this->exists($location_name))
     	{
-    		$location_name = $location_data['location_name'];
     		$this->db->trans_start();
     		$location_data = array('location_name'=>$location_name,'deleted'=>0);
    			$this->db->insert('stock_locations',$location_data);
