@@ -154,7 +154,7 @@ foreach($stock_locations as $key=>$location_detail)
 		'name'=>'reorder_level',
 		'id'=>'reorder_level',
 		'size'=>'8',
-		'value'=>isset($item_info->item_id)?0:$item_info->reorder_level)
+		'value'=>!isset($item_info->item_id)?0:$item_info->reorder_level)
 	);?>
 	</div>
 	</div>
