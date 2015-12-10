@@ -1,7 +1,7 @@
 <?php 
 
 $lang["module_config"] = "Store Config";
-$lang["module_config_desc"] = "Change the store\'s configuration";
+$lang["module_config_desc"] = "Change the store's configuration";
 $lang["module_customers"] = "Customers";
 $lang["module_customers_desc"] = "Add, Update, Delete, and Search customers";
 $lang["module_employees"] = "Employees";
