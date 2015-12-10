@@ -26,7 +26,8 @@
 					show_report('summary',$grant['permission_id']);
 				}
 			}
-			?>
+			show_report('', 'reports_comments_customer');
+			?>			
 		</ul>
 	</li>
 	
@@ -51,6 +52,7 @@
 		<?php 
 			show_report('', 'reports_inventory_low');	
 			show_report('', 'reports_inventory_summary');
+			show_report('', 'reports_inventory_facebook');						
 		?>
 		</ul>
 	</li>

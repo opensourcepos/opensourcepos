@@ -49,7 +49,7 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
+		$this->db->join('inventory', 'inventory.trans_items = items.item_id', 'left');
 
 		if ($filters['stock_location_id'] > -1)
 		{
