@@ -71,8 +71,16 @@ class Barcode_lib
 		{
 			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
 
-			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
-			$barcode->setData($barcode_content);
+			// generate a barcode only if one is not already available and we use the item_id as seed.
+			// This avoids generating Barcodes out of existing Barcodes
+			if( $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) )
+			{
+				$barcode->setData($item['item_number'], false);
+			}
+			else
+			{
+				$barcode->setData($item['item_id'], true);
+			}
 			$barcode->setQuality($barcode_config['barcode_quality']);
 			$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
 
@@ -94,7 +102,7 @@ class Barcode_lib
 			$barcode = $this->get_barcode_instance();
 
 			// set the receipt number to generate the barcode for
-			$barcode->setData($barcode_content);
+			$barcode->setData($barcode_content, false);
 			
 			// image quality 100
 			$barcode->setQuality(100);
@@ -113,24 +121,34 @@ class Barcode_lib
 		}
 	}
 	
-	public function get_barcode($item, $barcode_config)
+	public function get_new_barcode($item, $barcode_config)
 	{
 		try
 		{
 			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
-			
-			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
-			$barcode->setData($barcode_content);
-			
-			$code = $barcode->getData();
-			
-			// in case no new code is generated like in Code39 and Code128 return an empty string because we don't want to override it with a pure item_id
-			if( $code == $item['item_id'] )
+
+			// generate a barcode only if one is not already available and we use the item_id as seed.
+			// This to avoid generating Barcodes out of existing Barcodes
+			if( $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) )
 			{
-				$code = null;
+				$barcode->setData($item['item_number'], false);
+				
+				return null;
 			}
-			
-			return $code;
+			else
+			{
+				$barcode->setData($item['item_id'], true);
+
+				$code = $barcode->getData();
+
+				// in case no new code is generated like in Code39 and Code128 return an empty string because we don't want to override it with a pure item_id				
+				if( $code == $item['item_id'] )
+				{
+					$code = null;
+				}
+				
+				return $code;
+			}
 		} 
 		catch(Exception $e)
 		{

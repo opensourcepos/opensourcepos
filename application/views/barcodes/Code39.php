@@ -84,10 +84,11 @@ class Code39 extends BarcodeBase
 	 * Set the data
 	 *
 	 * @param mixed data - (int or string) Data to be encoded
+	 * @param boolean - flag indicated whether a barcode needs to be generated out of a passed seed
 	 * @return instance of \emberlabs\Barcode\BarcodeInterface
 	 * @return throws \OverflowException
 	 */
-	public function setData($data)
+	public function setData($data, $generateBarcode)
 	{
 		$this->data = $data;
 	}
@@ -128,7 +129,7 @@ class Code39 extends BarcodeBase
 		// Do we have degenerate rectangles?
 		if ($narrowBar < 1 || $wideBar < 1 || $quietBar < 1 || $narrowBar == $quietBar || $narrowBar == $wideBar || $wideBar == $quietBar)
 		{
-			throw new \OverflowException("You need to spcify a bigger width to properly display this barcode");
+			throw new \OverflowException("You need to specify a bigger width to properly display this barcode");
 		}
 
 		$currentBarX = (int)(($this->x - $imageWidth) / 2);

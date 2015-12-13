@@ -58,10 +58,11 @@ abstract class BarcodeBase
 	 * (Abstract) Set the data
 	 *
 	 * @param mixed data - (int or string) Data to be encoded
+	 * @param boolean - flag indicated whether a barcode needs to be generated out of a passed seed
 	 * @return instance of \emberlabs\Barcode\BarcodeInterface
 	 * @return throws \OverflowException
 	 */
-	abstract public function setData($data);
+	abstract public function setData($data, $generateBarcode);
 
 	/*
 	 * Get the data
