@@ -345,7 +345,7 @@ class Items extends Secure_area implements iData_controller
 			if ($item['item_number'] == '' || $item['item_number'] == null)
 			{
 				// get the newly generated barcode
-				$item['item_number'] = $this->barcode_lib->get_barcode($item, $config);
+				$item['item_number'] = $this->barcode_lib->get_new_barcode($item, $config);
 				
 				// remove from item any suppliers table info to avoid save failure because of unknown fields
 				// WARNING: if suppliers table is changed this list needs to be upgraded, which makes the matter a bit tricky to maintain
