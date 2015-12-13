@@ -74,7 +74,16 @@ abstract class BarcodeBase
 	{
 		return $this->data;
 	}
-	
+
+	/**
+	 * Validate the given barcode.
+	 * @param $barcode The barcode to validate
+	 * @return bool true if it complies with the barcode formatting
+	 */
+	public function validate($barcode)
+	{
+		return TRUE;
+	}
 	/*
 	 * (Abstract) Draw the image
 	 *

@@ -89,69 +89,34 @@ class Ean8 extends BarcodeBase
 		)
 	);
 
-	/*
-	 * Calculate EAN8 or EAN13 automatically
-	 * set $len = 8 for EAN8, $len = 13 for EAN13
-	 * 
-	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
-	 * @return string with complete EAN code
-	 */
-	private function generateEAN($number, $len = 8)
+	public function validate($barcode)
 	{
-		$this->data = null;
-	
-		if($number > -1)
+		$ean = str_replace(array("-","/"," ","\t","\n"), "", $barcode);   // make a clean ean
+		$len = strlen($ean);
+
+		if( !is_numeric($ean) )
 		{
-			$data_len = $len - 1;
-			$this->data = $number;
-			
-			//Padding
-			$this->data = str_pad($this->data, $data_len, '0', STR_PAD_LEFT);
-			$this->data_len = strlen($this->data);
-			
-			// calculate check digit
-			$sum_a = 0;
-			for ($i = 1; $i < $data_len; $i += 2)
-			{
-				$sum_a += $this->data{$i};
-			}
-			
-			if ($len > 12)
-			{
-				$sum_a *= 3;
-			}
-			
-			$sum_b = 0;
-			for ($i = 0; $i < $data_len; $i += 2)
-			{
-				$sum_b += ($this->data{$i});
-			}
-			
-			if ($len < 13)
-			{
-				$sum_b *= 3;
-			}
-			
-			$r = ($sum_a + $sum_b) % 10;
-			
-			if($r > 0)
-			{
-				$r = (10 - $r);
-			}
-			
-			if ($this->data_len == $data_len)
-			{
-				// add check digit
-				$this->data .= $r;
-			}
-			elseif ($r !== intval($this->data{$data_len}))
-			{
-				// wrong checkdigit
-				$this->data = null;
-			}
+			return false;
 		}
 
-		return $this->data;
+		$weights = array(3,1,3,1,3,1,3);    // weights
+		$chk = $ean{7};     // 8. digit
+
+		$i       = 0;
+		$sum     = 0;
+
+		// sum or weight *  digit
+		foreach($weights as $num) {
+
+			$sum += $num * $ean{$i};
+			$i++;
+		}
+
+		if( (($sum + $chk) % 10) == 0 )
+		{
+			return true;
+		}
+		return false;
 	}
 
 	/*
@@ -159,11 +124,10 @@ class Ean8 extends BarcodeBase
 	 *
 	 * @param mixed data - (int or string) Data to be encoded
 	 * @return instance of \emberlabs\Barcode\BarcodeInterface
-	 * @return throws \OverflowException
 	 */
 	public function setData($data)
 	{
-		$this->data = $this->generateEAN($data);
+		$this->data = $data;
 	}
 
 	/*
