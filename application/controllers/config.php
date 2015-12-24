@@ -145,6 +145,7 @@ class Config extends Secure_area
 			'barcode_num_in_row'=>$this->input->post('barcode_num_in_row'),
 			'barcode_page_width'=>$this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing'),
+			'barcode_generate_if_empty'=>$this->input->post('barcode_generate_if_empty'),
 			'barcode_content'=>$this->input->post('barcode_content')
         );
         

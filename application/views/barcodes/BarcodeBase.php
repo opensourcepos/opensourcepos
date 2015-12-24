@@ -84,6 +84,18 @@ abstract class BarcodeBase
 	{
 		return TRUE;
 	}
+
+	/**
+	 * Generate a barcode for this implementation using the given seed.
+	 * Default implementation returns just the seed
+	 * @param $number The seed to generate a barcode for
+	 * @return mixed The generated barcode
+	 */
+	public function generate($number)
+	{
+		return $number;
+	}
+
 	/*
 	 * (Abstract) Draw the image
 	 *

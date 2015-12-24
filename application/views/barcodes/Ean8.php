@@ -89,12 +89,76 @@ class Ean8 extends BarcodeBase
 		)
 	);
 
+	/*
+	 * Calculate EAN8 or EAN13 automatically
+	 * set $len = 8 for EAN8, $len = 13 for EAN13
+	 *
+	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
+	 * @return string with complete EAN code
+	 */
+	public function generate($number, $len = 8)
+	{
+		$barcode = $number;
+
+		if($number > -1)
+		{
+			$data_len = $len - 1;
+
+			//Padding
+			$barcode = str_pad($barcode, $data_len, '0', STR_PAD_LEFT);
+			$barcode_len = strlen($barcode);
+
+			// calculate check digit
+			$sum_a = 0;
+			for ($i = 1; $i < $data_len; $i += 2)
+			{
+				$sum_a += $barcode{$i};
+			}
+
+			if ($len > 12)
+			{
+				$sum_a *= 3;
+			}
+
+			$sum_b = 0;
+			for ($i = 0; $i < $data_len; $i += 2)
+			{
+				$sum_b += ($barcode{$i});
+			}
+
+			if ($len < 13)
+			{
+				$sum_b *= 3;
+			}
+
+			$r = ($sum_a + $sum_b) % 10;
+
+			if($r > 0)
+			{
+				$r = (10 - $r);
+			}
+
+			if (strlen($barcode) == $data_len)
+			{
+				// add check digit
+				$barcode .= $r;
+			}
+			elseif ($r !== intval($barcode{$data_len}))
+			{
+				// wrong checkdigit
+				$barcode = null;
+			}
+		}
+
+		return $barcode;
+	}
+
 	public function validate($barcode)
 	{
 		$ean = str_replace(array("-","/"," ","\t","\n"), "", $barcode);   // make a clean ean
 		$len = strlen($ean);
 
-		if( !is_numeric($ean) )
+		if( !is_numeric($ean) || strlen($barcode) != 8 )
 		{
 			return false;
 		}

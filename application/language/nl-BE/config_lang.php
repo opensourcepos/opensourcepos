@@ -24,6 +24,7 @@ $lang["config_barcode_second_row"] = "Rij 2";
 $lang["config_barcode_third_row"] = "Rij 3";
 $lang["config_barcode_type"] = "Barcode Type";
 $lang["config_barcode_width"] = "Breedte (px)";
+$lang["config_barcode_generate_if_empty"] = "Genereer indien leeg";
 $lang["config_company"] = "Bedrijfsnaam";
 $lang["config_company_logo"] = "Logo";
 $lang["config_company_required"] = "De bedrijfsnaam moet ingevuld worden";

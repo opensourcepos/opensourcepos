@@ -127,6 +127,32 @@ class Ean13 extends BarcodeBase
 		$this->data = $data;
 	}
 
+	/*
+	 * Generate EAN13 code out of a provided number
+	 * Code taken from http://stackoverflow.com/questions/19890144/generate-valid-ean13-in-php (unknown copyright / license claims)
+	 *
+	 * @param number is the internal code you want to have EANed. The prefix, zero-padding and checksum are added by the function.
+	 * @return string with complete EAN13 code
+	 */
+	public function generate($number)
+	{
+		$number = '200' . str_pad($number, 9, '0');
+		$weightflag = true;
+		$sum = 0;
+
+		// Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
+		// loop backwards to make the loop length-agnostic. The same basic functionality
+		// will work for codes of different lengths.
+		for ($i = strlen($number) - 1; $i >= 0; $i--)
+		{
+			$sum += (int)$number[$i] * ($weightflag?3:1);
+			$weightflag = !$weightflag;
+		}
+		$number .= (10 - ($sum % 10)) % 10;
+
+		return $number;
+	}
+
 	public function validate($barcode)
 	{
 		// check to see if barcode is 13 digits long

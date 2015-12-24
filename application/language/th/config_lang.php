@@ -24,6 +24,7 @@ $lang["config_barcode_second_row"] = "แถว 2";
 $lang["config_barcode_third_row"] = "แถว 3";
 $lang["config_barcode_type"] = "ประเภทบาร์โค้ด";
 $lang["config_barcode_width"] = "กว้าง (px)";
+$lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "ชื่อร้านค้า";
 $lang["config_company_logo"] = "ภาพโลโก้";
 $lang["config_company_required"] = "ชื่อร้านค้าต้องกรอก";

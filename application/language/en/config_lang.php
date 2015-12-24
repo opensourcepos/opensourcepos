@@ -24,6 +24,7 @@ $lang["config_barcode_second_row"] = "Row 2";
 $lang["config_barcode_third_row"] = "Row 3";
 $lang["config_barcode_type"] = "Barcode Type";
 $lang["config_barcode_width"] = "Width (px)";
+$lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "Company Name";
 $lang["config_company_logo"] = "Company Logo";
 $lang["config_company_required"] = "Company name is a required field";

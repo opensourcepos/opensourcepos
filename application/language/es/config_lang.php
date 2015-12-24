@@ -24,6 +24,7 @@ $lang["config_barcode_second_row"] = "Fila 1";
 $lang["config_barcode_third_row"] = "Fila 2";
 $lang["config_barcode_type"] = "Tipo de Código de Barra";
 $lang["config_barcode_width"] = "Ancho (px)";
+$lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "Nombre del Comercio";
 $lang["config_company_logo"] = "Logotipo del Comercio";
 $lang["config_company_required"] = "Nombre del Comercio es requerido";

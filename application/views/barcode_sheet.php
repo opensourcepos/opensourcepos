@@ -16,7 +16,7 @@
 
 <body class=<?php  echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?> 
       style="font-size:<?php echo $barcode_config['barcode_font_size'] + 5; //5 is size offset for font in display label?>px">
-	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing']; ?> width=<?php echo $barcode_config['barcode_page_width']."%"; ?> >
+	<table cellspacing=<?php echo $barcode_config['barcode_page_cellspacing']; ?> width='<?php echo $barcode_config['barcode_page_width']."%"; ?>' >
 		<tr>
 			<?php
 			$count = 0;
@@ -26,7 +26,7 @@
 				{
 					echo '</tr><tr>';
 				}
-				echo "<td>" . $this->barcode_lib->create_display_barcode($item, $barcode_config) . "</td>";
+				echo "<td>" . $this->barcode_lib->display_barcode($item, $barcode_config) . "</td>";
 				$count++;
 			}
 			?>

@@ -3,7 +3,8 @@ ALTER TABLE `ospos_suppliers`
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
    ('dateformat', 'm/d/Y'),
-   ('timeformat', 'H:i:s');
+   ('timeformat', 'H:i:s'),
+   ('barcode_generate_if_empty', '0');
 
 ALTER TABLE `ospos_sales_suspended`
     DROP KEY `invoice_number`;

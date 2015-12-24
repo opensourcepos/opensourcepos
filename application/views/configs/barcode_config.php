@@ -86,6 +86,11 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
 						'value'=>'number',
 						'checked'=>$this->config->item('barcode_content') === "number")); ?>
 					<?php echo $this->lang->line('config_barcode_number'); ?>
+                    <?php echo form_checkbox(array(
+                        'name'=>'barcode_generate_if_empty',
+                        'value'=>'barcode_generate_if_empty',
+                        'checked'=>$this->config->item('barcode_generate_if_empty'))); ?>
+                    <?php echo $this->lang->line('config_barcode_generate_if_empty'); ?>
 				</div>
 			</div>
 
