@@ -316,7 +316,8 @@ class Sale_lib
                     'in_stock'=>$this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
                     'price'=>$price,
                     'total'=>$total,
-                    'discounted_total'=>$discounted_total
+                    'discounted_total'=>$discounted_total,
+					'discounted_price'=>$this->get_item_discount($quantity, $price, $discount)
                 )
             );
 			//add to existing array
