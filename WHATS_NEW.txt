@@ -1,6 +1,6 @@
 Version 2.3.3
 -------------
-+ item kit fixes (search, list, ..)
++ Item kit fixes (search, list, ..)
 + Add datepicker widgets in sale/receiving edit forms
 + Add date filter in items module
 + Add barcode generation logic for EAN8, EAN13
@@ -14,8 +14,11 @@ Version 2.3.3
 + Fix invoice numbering bug on suspend
 + Add configurable locale-dependent dateformat
 + Add grunt-cache-breaker plugin
++ Suspend button appeaers before adding a payment
++ Searching of deleted items, filtering part is removed
++ Remove infamous "0" after leaving sale or receiving comments empty
++ Add SQL script to clean zeroes in sales/receivings comments
 + Numerous other bug fixes
-
 
 Version 2.3.2
 -------------
