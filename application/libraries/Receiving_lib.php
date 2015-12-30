@@ -200,8 +200,8 @@ class Receiving_lib
             'item_location'=>$item_location,
             'stock_name'=>$this->CI->Stock_location->get_location_name($item_location),
             'line'=>$insertkey,
-            'name'=>$item_info->name,
-            'description'=>$description!=null ? $description: $item_info->description,
+            'name'=>base64_encode($item_info->name),
+            'description'=>base64_encode($description!=null ? $description: $item_info->description),
             'serialnumber'=>$serialnumber!=null ? $serialnumber: '',
             'allow_alt_description'=>$item_info->allow_alt_description,
             'is_serialized'=>$item_info->is_serialized,
@@ -236,7 +236,7 @@ class Receiving_lib
         if(isset($items[$line]))
         {
             $line = &$items[$line];
-            $line['description'] = $description;
+            $line['description'] = base64_encode($description);
             $line['serialnumber'] = $serialnumber;
             $line['quantity'] = $quantity;
             $line['discount'] = $discount;

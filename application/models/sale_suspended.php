@@ -86,7 +86,7 @@ class Sale_suspended extends CI_Model
 				'sale_id'=>$sale_id,
 				'item_id'=>$item['item_id'],
 				'line'=>$item['line'],
-				'description'=>character_limiter($item['description'], 30),
+				'description'=>character_limiter(base64_decode($item['description']), 30),
 				'serialnumber'=>character_limiter($item['serialnumber'], 30),
 				'quantity_purchased'=>$item['quantity'],
 				'discount_percent'=>$item['discount'],

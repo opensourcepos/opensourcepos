@@ -81,7 +81,7 @@ class Receiving extends CI_Model
 				'receiving_id'=>$receiving_id,
 				'item_id'=>$item['item_id'],
 				'line'=>$item['line'],
-				'description'=>$item['description'],
+				'description'=>base64_decode($item['description']),
 				'serialnumber'=>$item['serialnumber'],
 				'quantity_purchased'=>$item['quantity'],
 				'receiving_quantity'=>$item['receiving_quantity'],

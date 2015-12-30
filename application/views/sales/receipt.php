@@ -61,7 +61,7 @@ if (isset($error_message))
 	{
 	?>
 		<tr>
-			<td><span class='long_name'> <?php echo ucfirst($item['name']); ?></span></td>
+			<td><span class='long_name'> <?php echo ucfirst(base64_decode($item['name'])); ?></span></td>
 		
 		
 			<td><?php echo to_currency($item['price']); ?></td>
@@ -71,7 +71,7 @@ if (isset($error_message))
 			<td><div class="total-value"><?php echo to_currency($item[($this->Appconfig->get('show_total_discount') ? 'total' : 'discounted_total')]); ?></div></td>
 		</tr>
 	    <tr>
-	    <td colspan="2"><?php echo $item['description']; ?></td>
+	    <td colspan="2"><?php echo base64_decode($item['description']); ?></td>
 		<td ><?php echo $item['serialnumber']; ?></td>
 	    </tr>
 	    <?php if ($item['discount'] > 0) : ?>
