@@ -1,5 +1,5 @@
 <?php
-require_once("report.php");
+require_once("Report.php");
 class Summary_employees extends Report
 {
 	function __construct()
