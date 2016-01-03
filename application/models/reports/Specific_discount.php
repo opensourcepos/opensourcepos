@@ -1,5 +1,5 @@
 <?php
-require_once("report.php");
+require_once("Report.php");
 class Specific_discount extends Report
 {
 	function __construct()
