@@ -62,7 +62,7 @@ class Languagecheck extends CI_Controller {
 		foreach( $references as $reference )
 		{
 			// skip non-language files in the language directory
-			if ( strpos($reference, '_lang'.EXT) === FALSE )
+			if ( strpos($reference, '_lang.php') === FALSE )
 			{
 				continue;
 			}
