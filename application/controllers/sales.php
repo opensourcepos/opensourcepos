@@ -16,7 +16,7 @@ class Sales extends Secure_area
 	
 	function manage($only_invoices = FALSE, $only_cash = FALSE, $limit_from = 0)
 	{
-		$person_id = $this->session->userdata('person_id');git 
+		$person_id = $this->session->userdata('person_id');
 
 		if (!$this->Employee->has_grant('reports_sales', $person_id))
 		{
