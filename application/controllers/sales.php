@@ -16,43 +16,52 @@ class Sales extends Secure_area
 	
 	function manage($only_invoices = FALSE, $only_cash = FALSE, $limit_from = 0)
 	{
-		$this->Sale->create_sales_items_temp_table();
+		$person_id = $this->session->userdata('person_id');git 
 
-		$data['controller_name'] = strtolower($this->uri->segment(1));
-		$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
-		$data['search_section_state'] = $this->input->post('search_section_state');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		if (!$this->Employee->has_grant('reports_sales', $person_id))
+		{
+			redirect('no_access/sales/reports_sales');
+		}
+		else
+		{
+			$this->Sale->create_sales_items_temp_table();
 
-		$today = date($this->config->item('dateformat'));
-		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+			$data['controller_name'] = strtolower($this->uri->segment(1));
+			$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
+			$data['search_section_state'] = $this->input->post('search_section_state');
+			$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$sale_type   = 'all';
-		$location_id = 'all';
-		$is_valid_receipt = FALSE;
-		$search = null;
-		
-		$filters = array('sale_type' => $sale_type,
-						'location_id' => $location_id,
-						'start_date' => $start_date_formatter->format('Y-m-d'),
-						'end_date' => $end_date_formatter->format('Y-m-d'),
-						'only_invoices' => $only_invoices,
-						'only_cash' => $only_cash,
-						'is_valid_receipt' => $is_valid_receipt);
+			$today = date($this->config->item('dateformat'));
+			$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
+			$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
+			$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+			$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
-		$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
-		$payments = $this->Sale->get_payments_summary($search, $filters);
-		$total_rows = $this->Sale->get_found_rows($search, $filters);
-		$data['only_invoices'] = $only_invoices;
-		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
-		$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
-		$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
-		$data['manage_table'] = get_sales_manage_table($sales, $this);
-		$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
+			$sale_type   = 'all';
+			$location_id = 'all';
+			$is_valid_receipt = FALSE;
+			$search = null;
 
-		$this->load->view($data['controller_name'] . '/manage', $data);
+			$filters = array('sale_type' => $sale_type,
+				'location_id' => $location_id,
+				'start_date' => $start_date_formatter->format('Y-m-d'),
+				'end_date' => $end_date_formatter->format('Y-m-d'),
+				'only_invoices' => $only_invoices,
+				'only_cash' => $only_cash,
+				'is_valid_receipt' => $is_valid_receipt);
+
+			$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
+			$payments = $this->Sale->get_payments_summary($search, $filters);
+			$total_rows = $this->Sale->get_found_rows($search, $filters);
+			$data['only_invoices'] = $only_invoices;
+			$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
+			$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
+			$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
+			$data['manage_table'] = get_sales_manage_table($sales, $this);
+			$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
+
+			$this->load->view($data['controller_name'] . '/manage', $data);
+		}
 
 		$this->_remove_duplicate_cookies();
 	}
