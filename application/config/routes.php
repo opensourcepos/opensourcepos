@@ -64,7 +64,7 @@ $route['reports/specific_discount'] = "reports/specific_discount_input";
 
 $route['scaffolding_trigger'] = "";
 
-$route['404_override'] = 'errors/page_missing';
+$route['404_override'] = "";
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
