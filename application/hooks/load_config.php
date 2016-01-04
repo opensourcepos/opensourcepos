@@ -24,7 +24,7 @@ function load_config()
         $map = directory_map('./application/language/' . $language);
         foreach($map as $file)
         {
-            if ( substr(strrchr($file,'.'),1) == "php")
+            if ( !is_array($file) && substr(strrchr($file,'.'), 1) == "php")
             {
                 $CI->lang->load( str_replace( '_lang.php', '', $file ),  $language);    
             }
