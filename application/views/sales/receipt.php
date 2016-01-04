@@ -76,7 +76,7 @@ if (isset($error_message))
 	    </tr>
 	    <?php if ($item['discount'] > 0) : ?>
 		<tr>
-			<td colspan="3" class="discount"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td><td class="total-value"><?php echo to_currency($item['discounted_price']*-1) ; ?></td>
+			<td colspan="3" class="discount"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td><td class="total-value"><?php echo to_currency($item['discounted_total']) ; ?></td>
 		</tr>
 		<?php endif; ?>
 

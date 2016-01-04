@@ -317,7 +317,6 @@ class Sale_lib
                     'price'=>$price,
                     'total'=>$total,
                     'discounted_total'=>$discounted_total,
-					'discounted_price'=>$this->get_item_discount($quantity, $price, $discount)
                 )
             );
 			//add to existing array
@@ -400,7 +399,6 @@ class Sale_lib
 			$line['price'] = $price;
 			$line['total'] = $this->get_item_total($quantity, $price, $discount);
 			$line['discounted_total'] = $this->get_item_total($quantity, $price, $discount, TRUE);
-			$line['discounted_price'] = $this->get_item_discount($quantity, $price, $discount);
 			$this->set_cart($items);
 		}
 
