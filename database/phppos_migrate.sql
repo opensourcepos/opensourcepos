@@ -2,7 +2,8 @@
 -- This migration script should be run after creating tables with the regular database script and before applying the constraints.
 --
 
-source tables.sql;
+SOURCE tables.sql;
+
 --
 -- Dumping data for table `ospos_customers`
 --
@@ -26,7 +27,7 @@ SELECT `trans_id`, `trans_items`, `trans_user`, `trans_date`, `trans_comment`, 1
 -- Dumping data for table `ospos_items`
 --
 
-INSERT INTO `ospos_items` (`name`, `item_category_id`, `supplier_id`, `item_number`, `description`, `cost_price`, `unit_price`, `reorder_level`, `receiving_quantity`, `item_id`, `pic_id`, `allow_alt_description`, `is_serialized`, `deleted`, `custom1`, `custom2`, `custom3`, `custom4`, `custom5`, `custom6`, `custom7`, `custom8`, `custom9`, `custom10`) SELECT `name`, `subcategory_id`, `supplier_id`, `item_number`, `description`, `cost_price`, `unit_price`, `reorder_level`, 1, `item_id`, NULL, `allow_alt_description`, `is_serialized`, `deleted`, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 FROM `phppos`.phppos_items;
+INSERT INTO `ospos_items` (`name`, `category`, `supplier_id`, `item_number`, `description`, `cost_price`, `unit_price`, `reorder_level`, `receiving_quantity`, `item_id`, `pic_id`, `allow_alt_description`, `is_serialized`, `deleted`, `custom1`, `custom2`, `custom3`, `custom4`, `custom5`, `custom6`, `custom7`, `custom8`, `custom9`, `custom10`) SELECT `name`, `category`, `supplier_id`, `item_number`, `description`, `cost_price`, `unit_price`, `reorder_level`, 1, `item_id`, NULL, `allow_alt_description`, `is_serialized`, `deleted`, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 FROM `phppos`.phppos_items;
 
 --
 -- Dumping data for table `ospos_items_taxes`
@@ -44,8 +45,8 @@ INSERT INTO `ospos_items_taxes` (`item_id`, `name`, `percent`) SELECT `item_id`,
 -- Dumping data for table `ospos_people`
 --
 
-INSERT INTO `ospos_people` (`first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id`, `version`, `in_mailing_list`, `type`, `birthdate`) 
-SELECT `first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id`, `version`, `in_mailing_list`, `type`, `birthdate` FROM `phppos`.phppos_people; 
+INSERT INTO `ospos_people` (`first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id`)
+SELECT `first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id` FROM `phppos`.phppos_people;
 
 --
 -- Dumping data for table `ospos_receivings`
@@ -109,4 +110,5 @@ INSERT INTO  `ospos_item_quantities` (`item_id`, `location_id`, `quantity`) SELE
 
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`) SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
 
-source constraints.sql;
+-- Add constraints on copied data
+SOURCE constraints.sql;

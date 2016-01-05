@@ -11,5 +11,5 @@
 -- Database: `pos`
 --
 
-source tables.sql;
-source constraints.sql;
+SOURCE tables.sql;
+SOURCE constraints.sql;
