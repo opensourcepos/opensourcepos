@@ -33,6 +33,7 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 	<div class='form_field'>
 	<?php echo $this->lang->line('config_thousands_separator'); ?>
 	<?php echo form_dropdown('thousands_separator', array(
+		        '&apos;' => '&apos; (apostrophe)',
 			','    => ', (comma)',
 			'.'    => '. (dot)',
 			''    => '(none)'
@@ -53,6 +54,7 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 	<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide')); ?>
 	<div class='form_field'>
 		<?php echo form_dropdown('language', array(
+		'de-CH' => 'German (Swiss)',	
 		'en' => 'English',
 		'es' => 'Spanish',
 		'ru' => 'Russian',
