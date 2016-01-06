@@ -20,7 +20,7 @@ common_first_page,Erste,Eerste,Primera,First,First,First,First,อันดั�
 common_gender,Geschlecht,Geslacht,Género,Gender,Gender,Gender,Gender,เพศ,Gender,Gender
 common_gender_female,F,V,F,F,F,V,V,หญิง,V,V
 common_gender_male,M,M,M,M,M,M,M,ชาย,M,M
-common_inv,stock,Lager,inv,inv,inv,庫存,инв,ยอด,Stok,Persediaan
+common_inv,Lager,stock,inv,inv,inv,庫存,инв,ยอด,Stok,Persediaan
 common_last_name,Nachname,Achternaam,Apellidos,Last Name,Nom,姓,Фамилия,นามสกุล,Soy İsim,Nama Belakang
 common_last_name_required,Nachname ist erforderlich,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,姓氏為必填,Фамилия обязательный пробел,นามสกุลต้องกรอก,Soy isim zorunlu alandır.,Nama belakang wajib diisi.common_last_page,Laatste,Última,Last,Last,Last,Last,สุดท้าย,Last,Last
 common_last_page,Letzte,Laatste,�ltima,Last,Last,Last,Last,Last,Last,Last
