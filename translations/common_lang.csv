@@ -1,56 +1,56 @@
-label,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,,,,,,,,,
-common_address_1,Adresse 1,Adres 1,DirecciÃ³n 1,Address 1,Addresse 1,åœ°å€ 1,ÐÐ´Ñ€ÐµÑ 1,à¸—à¸µà¹ˆà¸­à¸¢à¸¹à¹ˆ,Adres 1,Alamat 1,,,,,,,,,
-common_address_2,Adresse 2,Adres 2,DirecciÃ³n 2,Address 2,Addresse 2,åœ°å€ 2,ÐÐ´Ñ€ÐµÑ 2,à¸—à¸µà¹ˆà¸­à¸¢à¸¹à¹ˆ (à¹€à¸žà¸´à¹ˆà¸¡à¹€à¸•à¸´à¸¡),Adres 2,Alamat 2,,,,,,,,,
-common_city,Ort,Stad,Ciudad,City,Ville,åŸŽå¸‚,Ð“Ð¾Ñ€Ð¾Ð´,à¸­à¸³à¹€à¸ à¸­,Åžehir,Kota,,,,,,,,,
-common_comments,Kommentare,Commentaar,Comentarios,Comments,Commentaires,è©•è«–,ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸,à¸«à¸¡à¸²à¸¢à¹€à¸«à¸•à¸¸,Yorumlar,Catatan,,,,,,,,,
-common_common,Allgemein,algemeen,comÃºn,common,commun,ä¸€èˆ¬,Ð¾Ð±Ñ‰ÐµÑÑ‚Ð²ÐµÐ½Ð½Ð¾,à¸˜à¸£à¸£à¸¡à¸”à¸²,genel,Biasa,,,,,,,,,
-common_confirm_search,Sie haben mehr als eine Zeile ausgewählt. Nach der Suche werden diese nicht mehr selektiert sein. Wollen Sie fortsetzen?,U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?,Has seleccionado una o mÃ¡s filas. Ã‰stas no estarÃ¡n seleccionadas despuÃ©s de tu bÃºsqueda. Â¿Seguro(a) que quieres hacer esta bÃºsqueda?,You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?,Vous avez sÃ©lectionnÃ© une ou plusieurs ligne(s). Elles ne seront plus selectionnÃ©es apres cette recherche. Voulez-vous lancer cette recherche?,æ‚¨å·²ç¶“é¸æ“‡ä¸€è¡Œæˆ–å¤šè¡Œï¼Œåœ¨æœç´¢å¾Œé€™äº›ç´€éŒ„å°‡ä¸èƒ½å†è¢«é¸å–ã€‚æ‚¨ç¢ºå®šè¦æäº¤é€™å€‹æœç´¢ï¼Ÿ,Ð’Ñ‹ Ð²Ñ‹Ð±Ñ€Ð°Ð»Ð¸ Ð¾Ð´Ð½Ñƒ Ð¸Ð»Ð¸ Ð½ÐµÑÐºÐ¾Ð»ÑŒÐºÐ¾ ÑÑ‚Ñ€Ð¾Ðº, ÑÑ‚Ð¾ Ð±Ð¾Ð»ÑŒÑˆÐµ Ð½Ðµ Ð±ÑƒÐ´ÐµÑ‚ Ð±Ñ‹Ñ‚ÑŒ Ð²Ñ‹Ð±Ñ€Ð°Ð½Ð¾ Ð¿Ð¾ÑÐ»Ðµ Ð¿Ð¾Ð¸ÑÐºÐ°. Ð’Ñ‹ ÑƒÐ²ÐµÑ€ÐµÐ½Ñ‹, Ñ‡Ñ‚Ð¾ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¿Ñ€ÐµÐ´ÑÑ‚Ð°Ð²Ð¸Ñ‚ÑŒ ÑÑ‚Ð¾Ñ‚ Ð¿Ð¾Ð¸ÑÐº?,à¸„à¸¸à¸“à¹€à¸¥à¸·à¸­à¸à¸¡à¸²à¸à¸à¸§à¹ˆà¸²à¸«à¸™à¸¶à¹ˆà¸‡à¹à¸–à¸§, à¸ªà¸´à¹ˆà¸‡à¸—à¸µà¹ˆà¸„à¸¸à¸“à¹€à¸¥à¸·à¸­à¸à¸ˆà¸°à¸–à¸¹à¸à¸¢à¸à¹€à¸¥à¸´à¸à¸«à¸¥à¸±à¸‡à¸à¸²à¸£à¸„à¹‰à¸™à¸«à¸². à¹à¸™à¹ˆà¹ƒà¸ˆà¸«à¸£à¸·à¸­à¹„à¸¡à¹ˆà¸—à¸µà¹ˆà¸ˆà¸°à¸„à¹‰à¸™à¸«à¸²?,Birden fazla satÄ±r seÃ§tiniz, arama yaptÄ±ÄŸÄ±nÄ±zda seÃ§iminiz kaybolacak. Arama yapmak istediÄŸinize emin misiniz?,Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?,,,,,,,,,
-common_country,Land,Land,PaÃ­s,Country,Pays,åœ‹å®¶,Ð¡Ñ‚Ñ€Ð°Ð½Ð°,à¸›à¸£à¸°à¹€à¸—à¸¨,Ãœlke,Negara,,,,,,,,,
-common_date,Datum,Datum,Date,Date,Date,Date,Date,Date,Date,Date,,,,,,,,,
-common_delete,Löschen,Verwijder,Borrar,Delete,Effacer,åˆªé™¤,Ð£Ð´Ð°Ð»Ð¸Ñ‚ÑŒ,à¸¥à¸š,Sil,Hapus,,,,,,,,,
-common_print,Drucken,Print,Print,Print,Imprimer,Print,Print,à¸žà¸´à¸¡à¸žà¹Œ,Print,Print,,,,,,,,,
-common_det,Details,details,detalles,details,dÃ©tails,æ›´å¤š,Ð´ÐµÑ‚Ð°Ð»Ð¸,à¸ªà¸£à¸¸à¸›,Detaylar,Detail,,,,,,,,,
-common_edit,Ändern,bewerk,editar,edit,Ã©diter,ç·¨è¼¯,Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ,à¹à¸à¹‰à¹„à¸‚,dÃ¼zenle,Ubah,,,,,,,,,
-common_email,E-Mail,Email,E-Mail,E-Mail,E-Mail,E-Mail,Ð­Ð»ÐµÐºÑ‚Ñ€Ð¾Ð½Ð½Ð°Ñ Ð¿Ð¾Ñ‡Ñ‚Ð°,E-Mail,E-Posta,E-Mail,,,,,,,,,
-common_email_invalid_format,Das E-Mail Format ist nicht korrekt,Je moet een geldig email adres invullen.,El e-mail no estÃ¡ en el formato requerido,The e-mail address is not in the proper format,Le format de l\'adresse Ã©lectronique est incorrect,E-mailæ ¼å¼éŒ¯èª¤,Ð­Ñ‚Ð¾ ÑÐ»ÐµÐºÑ‚Ñ€Ð¾Ð½Ð½Ð°Ñ Ð¿Ð¾Ñ‡Ñ‚Ð° Ð½Ðµ Ð² Ð½ÑƒÐ¶Ð½Ñ‹Ð¹ Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚,e-mail address à¹„à¸¡à¹ˆà¸–à¸¹à¸à¸•à¹‰à¸­à¸‡,E-Posta adresi doÄŸru formatta deÄŸil,Format alamat e-mail tidak benar,,,,,,,,,
-common_fields_required_message,Felder in rot sind erforderlich,Velden met een * moeten ingevuld worden,Los campos en rojo son requeridos,Fields in red are required,Les champs en rouge sont requis,ç´…è‰²æ¬„ä½ç‚ºå¿…å¡«,ÐšÑ€Ð°ÑÐ½Ñ‹Ðµ Ð¿Ñ€Ð¾Ð±ÐµÐ»Ð° Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ð¾,à¸Šà¹ˆà¸­à¸‡à¸ªà¸µà¹à¸”à¸‡à¸•à¹‰à¸­à¸‡à¸à¸£à¸­à¸,KÄ±rmÄ±zÄ± alanlar zorunludur,Bagian yang ditandai warna merah wajib diisi,,,,,,,,,
-common_first_name,Vorname,Voornaam,Nombre,First Name,PrÃ©nom,å,Ð˜Ð¼Ñ,à¸Šà¸·à¹ˆà¸­,Ä°sim,Nama Depan,,,,,,,,,
-common_first_name_required,Vorname ist erforderlich,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prÃ©nom est requis.,åç‚ºå¿…å¡«,Ð˜Ð¼Ñ Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð¿Ñ€Ð¾Ð±ÐµÐ»,à¸Šà¸·à¹ˆà¸­à¸•à¹‰à¸­à¸‡à¸à¸£à¸­à¸,Ä°sim zorunlu alandÄ±r,Nama depan wajib diisi.,,,,,,,,,
-common_first_page,Erster,Eerste,Primera,First,First,First,First,à¸­à¸±à¸™à¸”à¸±à¸šà¹à¸£à¸,First,First,,,,,,,,,
-common_gender,Geschlecht,Geslacht,GÃ©nero,Gender,Gender,Gender,Gender,à¹€à¸žà¸¨,Gender,Gender,,,,,,,,,
-common_gender_female,W,V,F,F,F,V,V,à¸«à¸à¸´à¸‡,V,V,,,,,,,,,
-common_gender_male,M,M,M,M,M,M,M,à¸Šà¸²à¸¢,M,M,,,,,,,,,
-common_inv,Lager,stock,inv,inv,inv,åº«å­˜,Ð¸Ð½Ð²,à¸¢à¸­à¸”,Stok,Persediaan,,,,,,,,,
-common_last_name,Nachname,Achternaam,Apellidos,Last Name,Nom,å§“,Ð¤Ð°Ð¼Ð¸Ð»Ð¸Ñ,à¸™à¸²à¸¡à¸ªà¸à¸¸à¸¥,Soy Ä°sim,Nama Belakang,,,,,,,,,
-common_last_name_required,Nachname ist erforderlich,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,å§“æ°ç‚ºå¿…å¡«,Ð¤Ð°Ð¼Ð¸Ð»Ð¸Ñ Ð¾Ð±ÑÐ·Ð°Ñ‚ÐµÐ»ÑŒÐ½Ñ‹Ð¹ Ð¿Ñ€Ð¾Ð±ÐµÐ»,à¸™à¸²à¸¡à¸ªà¸à¸¸à¸¥à¸•à¹‰à¸­à¸‡à¸à¸£à¸­à¸,Soy isim zorunlu alandÄ±r.,Nama belakang wajib diisi.common_last_page,Laatste,Ãšltima,Last,Last,Last,Last,à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢,Last,Last
-common_last_page,Letzer,Laatste,Última,Last,Last,Last,Last,Last,Last,Last,,,,,,,,,
-common_learn_about_project,Um mehr über dieses Projekt zu erfahren,om de laatste informatie te verkrijgen over het project,para leer la informaciÃ³n mÃ¡s reciente acerca del proyecto,to learn the lastest information about the project,pour les derniÃ¨res informations sur le projet,äº†è§£ç³»çµ±é–‹å±•é€²åº¦,, Ñ‡Ñ‚Ð¾Ð±Ñ‹ ÑƒÐ·Ð½Ð°Ñ‚ÑŒ ÑÐ°Ð¼ÑƒÑŽ Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑŽÑŽ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸ÑŽ Ð¾ Ð¿Ñ€Ð¾ÐµÐºÑ‚Ðµ,à¹€à¸žà¸·à¹ˆà¸­à¸¨à¸¶à¸à¸©à¸²à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸¥à¹ˆà¸²à¸ªà¸¸à¸”à¸‚à¸­à¸‡à¹‚à¸„à¸£à¸‡à¸à¸²à¸£, ,Untuk belajar informasi terbaru tentang proyek ini,,,,,,,,,
-common_list_of,Liste von,Lijst van,Lista de,List of,Liste de,åˆ—è¡¨,Ð¡Ð¿Ð¸ÑÐ¾Ðº,à¸£à¸²à¸¢à¸à¸²à¸£,Liste,Daftar,,,,,,,,,
-common_logout,Ausloggen,Logout,Salir,Logout,DÃ©connexion,ç™»å‡º,Ð’Ñ‹Ñ…Ð¾Ð´,à¸­à¸­à¸à¸ˆà¸²à¸à¸£à¸°à¸šà¸š,Ã‡Ä±kÄ±ÅŸ,Keluar,,,,,,,,,
-common_new,Neu,Nieuw,Nuevo,New,New,New,New,New,New,New,,,,,,,,,
-common_no_persons_to_display,Keine Personen zum Anzeigen,Er werden geen personen gevonden,No hay gente que mostrar,There are no people to display,Il n\'y a personne Ã  afficher,æ²’æœ‰ä½¿ç”¨è€…è³‡æ–™å¯ä»¥é¡¯ç¤º,Ð¢Ð°Ð¼ Ð½ÐµÑ‚ Ð»ÑŽÐ´ÐµÐ¹, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð·Ð¸Ñ‚ÑŒ,à¹„à¸¡à¹ˆà¸žà¸šà¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸•à¸±à¸§à¸šà¸¸à¸„à¸„à¸¥,GÃ¶sterecek kiÅŸi yok,Tidak ada orang untuk ditampilkan,,,,,,,,,
-common_or,ODER,Of,Ã“,OR,OU,æˆ–,Ð˜Ð›Ð˜,à¸«à¸£à¸·à¸­,Yada,ATAU,,,,,,,,,
-common_phone_number,Telefon,Telefoon,TelÃ©fono,Phone Number,TÃ©lÃ©phone,é›»è©±,ÐÐ¾Ð¼ÐµÑ€ Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ð°,à¹‚à¸—à¸£à¸¨à¸±à¸žà¸—à¹Œ,Telefon,Telepon,,,,,,,,,
-common_phone_number_required,Telefon ist erforderlich,,,,Le numÃ©ro de tÃ©lÃ©phone est requis.,,,à¸•à¹‰à¸­à¸‡à¸à¸£à¸­à¸à¹€à¸šà¸­à¸£à¹Œà¹‚à¸—à¸£,,Nomer Telepon Wajib Diisi,,,,,,,,,
-common_please_visit_my,Bitte besuche Sie meine,Bezoek mijn,Por favor, visita mi,Please visit my,SVP visitez le,è«‹é€ è¨ª,Ð¿Ð¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð¿Ð¾ÑÐµÑ‚Ð¸Ñ‚Ðµ,à¹€à¸¢à¸µà¹ˆà¸¢à¸¡à¸Šà¸¡à¸—à¸µà¹ˆ,ziyaret edin,Silahkan kunjungi,,,,,,,,,
-common_powered_by,Powered by,Powered by,Potenciado por,Powered by,AnimÃ© par,Powered by,ÑÐ°Ð¼Ð¾Ñ…Ð¾Ð´Ð½Ñ‹Ðµ Ð¸Ð·,à¸ˆà¸±à¸”à¸—à¸³à¹‚à¸”à¸¢,Powered by,Diberdayakan oleh,,,,,,,,,
-common_price,Preis,Prijs,Precio,Price,Prix,åƒ¹å€¼,Ð¦ÐµÐ½Ð°,à¸£à¸²à¸„à¸²,Fiyat,Harga,,,,,,,,,
-common_remove,Entfernen,Verwijder,Eliminar,Remove,Enlever,ç§»é™¤,Ð¡Ð½Ð¸Ð¼Ð°Ñ‚ÑŒ,à¸¥à¸š,KaldÄ±r,Hapus,,,,,,,,,
-common_return_policy,Rücknahmepolitik,Retourvoorwaarden,PolÃ­tica de DevoluciÃ³n,Return Policy,Politique de Reprise,é€€è²¨æ”¿ç­–,Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ð½Ð¸Ð¹ Ð¿Ð¾Ð»Ð¸Ñ,à¸™à¹‚à¸¢à¸šà¸²à¸¢à¸„à¸·à¸™à¸ªà¸´à¸™à¸„à¹‰à¸²,Ä°ade PolitikasÄ±,Kebijakan Retur,,,,,,,,,
-common_search,Suchen,Zoek,Buscar,Search,Recherche,æœå°‹,ÐŸÐ¾Ð¹ÑÐº,à¸„à¹‰à¸™à¸«à¸²,Arama,Cari,,,,,,,,,
-common_search_options,Suchoptionen,Zoek criteria,Opciones de bÃºsqueda,Search options,Search options,Search options,Search options,Search options,Search options,Search options,,,,,,,,,
-common_searched_for,Gesucht nach,Gezocht op,Buscaste,Searched for,RecherchÃ©,æŸ¥æ‰¾,Ð˜ÑÐºÐ°Ð»Ð¸ Ð·Ð°,à¸„à¹‰à¸™à¸«à¸²à¸ªà¸³à¸«à¸£à¸±à¸š,Ara,Mencari untuk,,,,,,,,,
-common_state,BL/Kanton,Provincie,Estado,State,Ã‰tat,å·ž,Ð¨Ñ‚Ð°Ñ‚,à¸ˆà¸±à¸‡à¸«à¸§à¸±à¸”,BÃ¶lge,Provinsi,,,,,,,,,
-common_submit,Sichern,Verzend,Enviar,Submit,Envoyer,é€å‡º,ÐŸÐ¾Ð´Ð°Ð²Ð°Ñ‚ÑŒ,à¸ªà¹ˆà¸‡à¸‚à¹‰à¸­à¸¡à¸¹à¸¥,Onayla,Kirim,,,,,,,,,
-common_view_recent_sales,Letzte Verkäufe,Bekijk recente verkoop,Ver Ventas Recientes,View Recent Sales,Voir Ventes RÃ©centes,æœ€æ–°çš„æ¶ˆå”®è³‡è¨Š,ÐŸÐ¾ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ ÐÐµÐ´Ð°Ð²Ð½Ð¸Ðµ ÐŸÑ€Ð¾Ð´Ð°Ð¶Ð¸,à¸à¸²à¸£à¸‚à¸²à¸¢à¸¥à¹ˆà¸²à¸ªà¸¸à¸”,Yeni satÄ±ÅŸlarÄ± gÃ¶ster,Lihat Penjualan Terkini,,,,,,,,,
-common_website,Website,website,sitio,website,site-web,ç¶²ç«™,Ð²ÐµÐ±-ÑÐ°Ð¹Ñ‚,website,website,Situs,,,,,,,,,
-common_welcome,Willkommen,Welkom,Bienvenido(a),Welcome,Bienvenue,æ­¡è¿Ž,Ð”Ð¾Ð±Ñ€Ð¾ Ð¿Ð¾Ð¶Ð°Ð»Ð¾Ð²Ð°Ñ‚ÑŒ,à¸¢à¸´à¸™à¸”à¸µà¸•à¹‰à¸­à¸™à¸£à¸±à¸š,HoÅŸgeldiniz,Selamat Datang,,,,,,,,,
-common_welcome_message,Willkommen zu Open Source Point Of Sale, zum Starten bitte auf gewünschtes Modul klicken!,Welkom in PHP Point Of Sale, klik beneden een module aan om te beginnen!,Bienvenido(a) a Open Source Point Of Sale. Â¡Haz click en algÃºn mÃ³dulo debajo, para empezar!,Welcome to Open Source Point Of Sale, click a module below to get started!,Bienvenue Ã  Open Source Point Of Sale, choisissez un module ci-dessous!,æ­¡è¿Žä½¿ç”¨Open Source Point of Saleï¼Œè«‹é»žæ“Šä¸‹é¢çš„æ¨¡çµ„ä»¥é–‹å§‹ä½¿ç”¨ï¼,Ð”Ð¾Ð±Ñ€Ð¾ Ð¿Ð¾Ð¶Ð°Ð»Ð¾Ð²Ð°Ñ‚ÑŒ Ð² Open Source Point Of Sale, Ð½Ð°Ð¶Ð¼Ð¸Ñ‚Ðµ Ð¼Ð¾Ð´ÑƒÐ»Ñ Ð½Ð¸Ð¶Ðµ, Ñ‡Ñ‚Ð¾Ð±Ñ‹ Ð½Ð°Ñ‡Ð°Ñ‚ÑŒ!,Opensource Point of sale. à¸à¸£à¸¸à¸“à¸²à¹€à¸¥à¸·à¸­à¸à¸„à¸³à¸ªà¸±à¹ˆà¸‡à¹€à¸¡à¸™à¸¹à¸”à¹‰à¸²à¸™à¸¥à¹ˆà¸²à¸‡ ,HoÅŸgeldiniz, devam etmek iÃ§in aÅŸaÄŸÄ±dan bir modÃ¼l seÃ§iniz!,Selamat Datang, klik modul di bawah ini untuk memulai,,,,,,,,,
-common_you_are_using_ospos,Sie verwenden Open Source Point Of Sale Version,You are using Open Source Point Of Sale Version,EstÃ¡s usando Open Source Point Of Sale VersiÃ³n,You are using Open Source Point Of Sale Version,Vous utilisez Open Source Point Of Sale Version,æ‚¨æ­£åœ¨ä½¿ç”¨ Open Source Point of Sale ç‰ˆæœ¬,Ð’Ñ‹ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°ÐµÑ‚Ðµ Open Source Point Of Sale Ð’ÐµÑ€ÑÐ¸Ñ,à¸„à¸¸à¸“à¸à¸³à¸¥à¸±à¸‡à¹ƒà¸Šà¹‰ Opensource Point of Sales à¸£à¸¸à¹ˆà¸™,KullandÄ±ÄŸÄ±nÄ±z sÃ¼rÃ¼m,Anda menggunakan Open Source Point Of Sale Versi,,,,,,,,,
-common_zip,PLZ,Postcode,CÃ³digo Postal,Zip,Zip,éƒµéžå€è™Ÿ,ÐŸÐ¾Ñ‡Ñ‚Ð¾Ð²Ñ‹Ð¹ Ð¸Ð½Ð´ÐµÐºÑ,à¸£à¸«à¸±à¸ªà¹„à¸›à¸£à¸©à¸“à¸µà¸¢à¹Œ,Åžehir Kodu,Kode POS,,,,,,,,,
-common_import,Import,Import,Importar,Import,Import,Import,Import,à¸™à¸³à¹€à¸‚à¹‰à¸²,Import,Import,,,,,,,,,
-common_download_import_template,Download Excel Import Vorlage (CSV),Download Import Excel Template (CSV),Descargar Plantilla de ImportaciÃ³n de Excel (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),,,,,,,,,
-common_import_file_path,Dateipfad,file path,Ruta del archivo,file path,file path,file path,file path,file path,file path,file path,,,,,,,,,
-common_import_excel,Excel Import,Excel Import,Importar Excel,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,,,,,,,,,
-common_import_full_path,Voller Dateipfad zur Excel Datei erforderlich,Full path to excel file required,Requerida la ruta completa del archivo,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,,,,,,,,,
-common_required,Erforderlich,Required,Requerido,Required,Required,Required,Required,à¸•à¹‰à¸­à¸‡à¸à¸£à¸­à¸,Required,Required,,,,,,,,,
+label,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id
+common_address_1,Adresse 1, Adres 1,Dirección 1,Address 1,Addresse 1,地址 1,Адрес 1,ที่อยู่,Adres 1,Alamat 1
+common_address_2,Adresse 2, Adres 2,Dirección 2,Address 2,Addresse 2,地址 2,Адрес 2,ที่อยู่ (เพิ่มเติม),Adres 2,Alamat 2
+common_city,Stadt,Stad,Ciudad,City,Ville,城市,Город,อำเภอ,Şehir,Kota
+common_comments,Kommentare, Commentaar,Comentarios,Comments,Commentaires,評論,Комментарии,หมายเหตุ,Yorumlar,Catatan
+common_common,Allgemein,algemeen,común,common,commun,一般,общественно,ธรรมดา,genel,Biasa
+common_confirm_search,"Sie haben einen oder mehrere Zeilen gewählt. Nach der Verarbeitung werden diese nicht mehr selektiert sein. Wollen Sie die Suche dennoch verarbeiten?","U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?",Has seleccionado una o más filas. Éstas no estarán seleccionadas después de tu búsqueda. ¿Seguro(a) que quieres hacer esta búsqueda?,"You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?",Vous avez sélectionné une ou plusieurs ligne(s). Elles ne seront plus selectionnées apres cette recherche. Voulez-vous lancer cette recherche?,您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？,"Вы выбрали одну или несколько строк, это больше не будет быть выбрано после поиска. Вы уверены, что хотите, чтобы представить этот поиск?","คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?","Birden fazla satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?","Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?"
+common_country,Land,Land,País,Country,Pays,國家,Страна,ประเทศ,Ülke,Negara
+common_date,Datum,Datum,Date,Date,Date,Date,Date,Date,Date,Date
+common_delete,Löschen,Verwijder,Borrar,Delete,Effacer,刪除,Удалить,ลบ,Sil,Hapus
+common_print,Drucken,Print,Print,Print,Imprimer,Print,Print,พิมพ์,Print,Print
+common_det,Details,details,detalles,details,détails,更多,детали,สรุป,Detaylar,Detail
+common_edit,Ändern,bewerk,editar,edit,éditer,編輯,редактировать,แก้ไข,düzenle,Ubah
+common_email,Email,Email,E-Mail,E-Mail,E-Mail,E-Mail,Электронная почта,E-Mail,E-Posta,E-Mail
+common_email_invalid_format,Das Email Format ist nicht korrekt,Je moet een geldig email adres invullen.,El e-mail no está en el formato requerido,The e-mail address is not in the proper format,Le format de l\'adresse électronique est incorrect,E-mail格式錯誤,Это электронная почта не в нужный формат,e-mail address ไม่ถูกต้อง,E-Posta adresi doğru formatta değil,Format alamat e-mail tidak benar
+common_fields_required_message,Die Felder in rot sind erforderlich,Velden met een * moeten ingevuld worden,Los campos en rojo son requeridos,Fields in red are required,Les champs en rouge sont requis,紅色欄位為必填,Красные пробела обязательно,ช่องสีแดงต้องกรอก,Kırmızı alanlar zorunludur,Bagian yang ditandai warna merah wajib diisi
+common_first_name,Vorname,Voornaam,Nombre,First Name,Prénom,名,Имя,ชื่อ,İsim,Nama Depan
+common_first_name_required,Vorname ist erforderlich,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prénom est requis.,名為必填,Имя обязательный пробел,ชื่อต้องกรอก,İsim zorunlu alandır,Nama depan wajib diisi.
+common_first_page,Erste,Eerste,Primera,First,First,First,First,อันดับแรก,First,First
+common_gender,Geschlecht,Geslacht,Género,Gender,Gender,Gender,Gender,เพศ,Gender,Gender
+common_gender_female,F,V,F,F,F,V,V,หญิง,V,V
+common_gender_male,M,M,M,M,M,M,M,ชาย,M,M
+common_inv,stock,Lager,inv,inv,inv,庫存,инв,ยอด,Stok,Persediaan
+common_last_name,Nachname,Achternaam,Apellidos,Last Name,Nom,姓,Фамилия,นามสกุล,Soy İsim,Nama Belakang
+common_last_name_required,Nachname ist erforderlich,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,姓氏為必填,Фамилия обязательный пробел,นามสกุลต้องกรอก,Soy isim zorunlu alandır.,Nama belakang wajib diisi.common_last_page,Laatste,Última,Last,Last,Last,Last,สุดท้าย,Last,Last
+common_last_page,Letzte,Laatste,�ltima,Last,Last,Last,Last,Last,Last,Last
+common_learn_about_project,für neueste Nachrichten zum Projekt,om de laatste informatie te verkrijgen over het project,para leer la información más reciente acerca del proyecto,to learn the latest information about the project,pour les dernières informations sur le projet,了解系統開展進度,", чтобы узнать самую последнюю информацию о проекте",เพื่อศึกษาข้อมูลล่าสุดของโครงการ, ,Untuk belajar informasi terbaru tentang proyek ini
+common_list_of,Liste von,Lijst van,Lista de,List of,Liste de,列表,Список,รายการ,Liste,Daftar
+common_logout,Logout,Logout,Salir,Logout,Déconnexion,登出,Выход,ออกจากระบบ,Çıkış,Keluar
+common_new,Neu,Nieuw,Nuevo,New,New,New,New,New,New,New
+common_no_persons_to_display,Keine Personen zum Anzeigen,Er werden geen personen gevonden,No hay gente que mostrar,There are no people to display,Il n\'y a personne à afficher,沒有使用者資料可以顯示,"Там нет людей, чтобы отобразить",ไม่พบข้อมูลตัวบุคคล,Gösterecek kişi yok,Tidak ada orang untuk ditampilkan
+common_or,Oder,Of,Ó,OR,OU,或,ИЛИ,หรือ,Yada,ATAU
+common_phone_number,Telefon,Telefoon,Teléfono,Phone Number,Téléphone,電話,Номер телефона,โทรศัพท์,Telefon,Telepon
+common_phone_number_required,Telefon ist erforderlich,,,,Le numéro de téléphone est requis.,,,ต้องกรอกเบอร์โทร,,Nomer Telepon Wajib Diisi
+common_please_visit_my,Bitte beuschen Sie ,Bezoek mijn,"Por favor, visita mi",Please visit my,SVP visitez le,請造訪,"пожалуйста, посетите",เยี่ยมชมที่,ziyaret edin,Silahkan kunjungi
+common_powered_by,Powered by,Powered by,Potenciado por,Powered by,Animé par,Powered by,самоходные из,จัดทำโดย,Powered by,Diberdayakan oleh
+common_price,Preis,Prijs,Precio,Price,Prix,價值,Цена,ราคา,Fiyat,Harga
+common_remove,Annulieren,Verwijder,Eliminar,Remove,Enlever,移除,Снимать,ลบ,Kaldır,Hapus
+common_return_policy,Rücknahmepolitik,Retourvoorwaarden,Política de Devolución,Return Policy,Politique de Reprise,退貨政策,Возвратний полис,นโยบายคืนสินค้า,İade Politikası,Kebijakan Retur
+common_search,Suche,Zoek,Buscar,Search,Recherche,搜尋,Пойск,ค้นหา,Arama,Cari
+common_search_options,Suchkriterien,Zoek criteria,Opciones de búsqueda,Search options,Search options,Search options,Search options,Search options,Search options,Search options
+common_searched_for,Gescuht nach,Gezocht op,Buscaste,Searched for,Recherché,查找,Искали за,ค้นหาสำหรับ,Ara,Mencari untuk
+common_state,BL/Kanton,Provincie,Estado,State,État,州,Штат,จังหวัด,Bölge,Provinsi
+common_submit,Senden,Verzend,Enviar,Submit,Envoyer,送出,Подавать,ส่งข้อมูล,Onayla,Kirim
+common_view_recent_sales,Letzte Verkäufe,Bekijk recente verkoop,Ver Ventas Recientes,View Recent Sales,Voir Ventes Récentes,最新的消售資訊,Посмотреть Недавние Продажи,การขายล่าสุด,Yeni satışları göster,Lihat Penjualan Terkini
+common_website,Website,website,sitio,website,site-web,網站,веб-сайт,website,website,Situs
+common_welcome,Willkommen,Welkom,Bienvenido(a),Welcome,Bienvenue,歡迎,Добро пожаловать,ยินดีต้อนรับ,Hoşgeldiniz,Selamat Datang
+common_welcome_message,"Willkommen bei PHP Point Of Sales, zum Beginnen auf ein Modul klicken","Welkom in PHP Point Of Sale, klik beneden een module aan om te beginnen!","Bienvenido(a) a Open Source Point Of Sale. ¡Haz click en algún módulo debajo, para empezar!","Welcome to Open Source Point Of Sale, click a module below to get started!","Bienvenue à Open Source Point Of Sale, choisissez un module ci-dessous!",歡迎使用Open Source Point of Sale，請點擊下面的模組以開始使用！,"Добро пожаловать в Open Source Point Of Sale, нажмите модуля ниже, чтобы начать!",Opensource Point of sale. กรุณาเลือกคำสั่งเมนูด้านล่าง ,"Hoşgeldiniz, devam etmek için aşağıdan bir modül seçiniz!","Selamat Datang, klik modul di bawah ini untuk memulai"
+common_you_are_using_ospos,Sie verwenden Open Source Point Of Sales Version,You are using Open Source Point Of Sale Version,Estás usando Open Source Point Of Sale Versión,You are using Open Source Point Of Sale Version,Vous utilisez Open Source Point Of Sale Version,您正在使用 Open Source Point of Sale 版本,Вы использоваете Open Source Point Of Sale Версия,คุณกำลังใช้ Opensource Point of Sales รุ่น,Kullandığınız sürüm,Anda menggunakan Open Source Point Of Sale Versi
+common_zip,PLZ,Postcode,Código Postal,Zip,Zip,郵遞區號,Почтовый индекс,รหัสไปรษณีย์,Şehir Kodu,Kode POS
+common_import,Import,Import,Importar,Import,Import,Import,Import,นำเข้า,Import,Import
+common_download_import_template,Download Import Excel Voralge (CSV),Download Import Excel Template (CSV),Descargar Plantilla de Importación de Excel (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV)
+common_import_file_path,Dateipfad,file path,Ruta del archivo,file path,file path,file path,file path,file path,file path,file path
+common_import_excel,Excel Import,Excel Import,Importar Excel,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import
+common_import_full_path,Voller Dateipfad zum Excel File notwendig,Full path to excel file required,Requerida la ruta completa del archivo,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required
+common_required,Erforderlich,Required,Requerido,Required,Required,Required,Required,ต้องกรอก,Required,Required
