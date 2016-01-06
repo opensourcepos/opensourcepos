@@ -1,3 +1,3 @@
-"label","nl-BE","es","en","fr","zh","ru","th","tr","id"
-"error_no_permission_module","U hebt geen toegang tot de module genaamd ","No tienes permiso para accesar el módulo llamado","You do not have permission to access the module named","Vous n\'avez pas d\'autorisation d\'accès pour le module","您沒有權限使用模組：","У вас нет разрешения на доступ к модуля называется","You do not have permission to access the module named","Bu modüle erişim yetkiniz yok","Anda tidak memiliki izin untuk mengakses modul ini"
-"error_unknown","onbekend","desconocido","unknown","inconnu","未知","неизвестный","unknown","bilinmeyen","tidak dikenal"
+label,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id
+error_no_permission_module,Sie haben nicht die erforderlichen Rechte für dieses Modul,U hebt geen toegang tot de module genaamd ,No tienes permiso para accesar el mÃ³dulo llamado,You do not have permission to access the module named,Vous n\'avez pas d\'autorisation d\'accÃ¨s pour le module,æ‚¨æ²’æœ‰æ¬Šé™ä½¿ç”¨æ¨¡çµ„ï¼š,Ð£ Ð²Ð°Ñ Ð½ÐµÑ‚ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð¸Ñ Ð½Ð° Ð´Ð¾ÑÑ‚ÑƒÐ¿ Ðº Ð¼Ð¾Ð´ÑƒÐ»Ñ Ð½Ð°Ð·Ñ‹Ð²Ð°ÐµÑ‚ÑÑ,You do not have permission to access the module named,Bu modÃ¼le eriÅŸim yetkiniz yok,Anda tidak memiliki izin untuk mengakses modul ini
+error_unknown,unbekannt,onbekend,desconocido,unknown,inconnu,æœªçŸ¥,Ð½ÐµÐ¸Ð·Ð²ÐµÑÑ‚Ð½Ñ‹Ð¹,unknown,bilinmeyen,tidak dikenal
