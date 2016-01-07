@@ -3,7 +3,7 @@
 function get_sales_manage_table($sales, $controller)
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 
 	$headers = array('&nbsp;',
 	$CI->lang->line('sales_receipt_number'),
@@ -121,7 +121,7 @@ Gets the html table to manage people.
 function get_people_manage_table($people,$controller)
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
 	$CI->lang->line('common_last_name'),
@@ -202,7 +202,7 @@ Gets the html table to manage suppliers.
 function get_supplier_manage_table($suppliers,$controller)
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />',
 	$CI->lang->line('suppliers_company_name'),
@@ -274,7 +274,7 @@ Gets the html table to manage items.
 function get_items_manage_table($items,$controller)
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
 	$CI->lang->line('items_item_number'),
@@ -374,7 +374,7 @@ Gets the html table to manage giftcards.
 function get_giftcards_manage_table( $giftcards, $controller )
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
 	$CI->lang->line('common_last_name'),
@@ -441,7 +441,7 @@ Gets the html table to manage item kits.
 function get_item_kits_manage_table( $item_kits, $controller )
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter" id="sortable_table">';
+	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />', 
 	$CI->lang->line('item_kits_kit'),
