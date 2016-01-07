@@ -1,107 +1,107 @@
 label,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id
-reports_all,Alle,Alle,Todo,All,Tous,å…¨éƒ¨,Ð²ÑÐµ,à¸—à¸±à¹‰à¸‡à¸«à¸¡à¸”,Hepsi,Semua
-reports_all_time,Seit Beginn,Alle,Todos,All Time,Depuis le dÃ©but,å…¨éƒ¨,Ð·Ð° Ð²ÑÐµ Ð²Ñ€ÐµÐ¼Ñ,à¹€à¸§à¸¥à¸²à¸—à¸±à¹‰à¸‡à¸«à¸¡à¸”,TÃ¼m Zamanlar,Semua Waktu
-reports_categories,Kategorien,CategorieÃ«n,CategorÃ­as,Categories,CatÃ©gories,é¡žåˆ¥,ÐšÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸,à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ,Kategoriler,Kategori
-reports_categories_summary_report,Bericht: Kategorien (summarisch),Rapport Overzicht CategorieÃ«n,Reporte de Resumen de CategorÃ­as,Categories Summary Report,Rapport: RÃ©sumÃ© des CatÃ©gories,åˆ†é¡žæ‘˜è¦å ±å‘Š,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ ÐšÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ð¸,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ,Kategori Ã–zet Raporu,Laporan Ringkasan Kategori
-reports_category,Kategorie,Categorie,CategorÃ­a,Category,CatÃ©gorie,é¡žåˆ¥,ÐºÐ°Ñ‚ÐµÐ³Ð¾Ñ€Ð¸Ñ,à¸«à¸¡à¸§à¸”à¸«à¸¡à¸¹à¹ˆ,Kategori,Kategori
-reports_comments,Kommentare,Commentaar,Comentarios,Comments,Commentaires,è©•è«–,ÐšÐ¾Ð¼Ð¼ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð¸,à¸«à¸¡à¸²à¸¢à¹€à¸«à¸•à¸¸,Yorumlar,Catatan
-reports_count,Anzahl,Aantal,Cuenta,Count,DÃ©compte,è¨ˆ,Ð¿Ð¾Ð´ÑÑ‡ÐµÑ‚,à¸™à¸±à¸š,SayÄ±,Jumlah
-reports_customer,Kunde,Klant,Cliente,Customer,Client,å®¢æˆ¶,ÐºÐ»Ð¸ÐµÐ½Ñ‚,à¸¥à¸¹à¸à¸„à¹‰à¸²,MÃ¼ÅŸteri,Pelanggan
-reports_customers,Kunden,Klanten,Clientes,Customers,Clients,å®¢æˆ¶,ÐšÐ»Ð¸ÐµÐ½Ñ‚Ñ‹,à¸¥à¸¹à¸à¸„à¹‰à¸²,MÃ¼ÅŸteriler,Pelanggan
-reports_customers_summary_report,Bericht: Kunden (summarisch),Rapport Overzicht Klanten,Reporte de Resumen de Clientes,Customers Summary Report,Rapport: RÃ©sumÃ© Clientelle,å®¢æˆ¶æ‘˜è¦å ±å‘Š,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ ÐºÐ»Ð¸ÐµÐ½Ñ‚Ð¾Ð²,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸¥à¸¹à¸à¸„à¹‰à¸²,MÃ¼ÅŸteri Ã–zet Raporu,Laporan Ringkasan Pelanggan
-reports_date,Datum,Datum,Fecha,Date,Date,æ—¥æœŸ,Ñ‡Ð¸ÑÐ»Ð¾,à¸§à¸±à¸™à¸—à¸µà¹ˆ,Tarih,Tanggal
-reports_date_range,Datumsbereich,Periode,Rango de Fecha,Date Range,Plage de dates,æ—¥æœŸç¯„åœ,Ñ€Ð°Ð·Ð¼Ð°Ñ… Ñ‡Ð¸ÑÐ»Ð°,à¸£à¸°à¸«à¸§à¹ˆà¸²à¸‡à¸§à¸±à¸™à¸—à¸µà¹ˆ,Tarih AralÄ±ÄŸÄ±,Rentang Tanggal
-reports_description,Bezeichnung,Omschrijving,DescripciÃ³n,Description,Description,æè¿°,Ð¾Ð¿Ð¸ÑÐ°Ð½Ð¸Ðµ,à¸„à¸³à¸­à¸˜à¸´à¸šà¸²à¸¢,TanÄ±m,Deskripsi
-reports_detailed_receivings_report,Bericht: Wareneingänge (detailliert),Gedetailleerd Raport Orders,Reporte Detallado de Entradas,Detailed Receivings Report,Rapport d\'Arrivages DÃ©taillÃ©,è©³ç´°çš„é€²è²¨å ±å‘Š,Ð”ÐµÑ‚Ð°Ð»ÑŒÐ½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ Ð¾ Ð¿Ð¾ÑÑ‚ÑƒÐ¿Ð»ÐµÐ½Ð¸ÑÑ…,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸à¸à¸²à¸£à¸£à¸±à¸šà¸‚à¸­à¸‡,DetaylÄ± AlÄ±m Raporu,Laporan Detail Barang Masuk
-reports_detailed_reports,Detaillierte Berichte,Gedetailleerde Rapporten,Reportes Detallados,Detailed Reports,Rapports DÃ©taillÃ©s,è©³ç´°å ±è¡¨,ÐŸÐ¾Ð´Ñ€Ð¾Ð±Ð½Ñ‹Ðµ Ð¾Ñ‚Ñ‡ÐµÑ‚Ñ‹,à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¸£à¸²à¸¢à¸‡à¸²à¸™,DetaylÄ± Raporlar,Perincian Laporan
-reports_detailed_requisition_report,,,Reporte Detallado de Requisiciones,,,,,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸£à¸²à¸¢à¸¥à¸°à¹€à¸­à¸µà¸¢à¸”à¸à¸²à¸£à¹€à¸šà¸´à¸à¸‚à¸­à¸‡,,Rincian Daftar Laporan Permintaan
-reports_detailed_sales_report,Verkaufsbericht (detailliert),Gedetailleerd Rapport Verkoop,Reporte de Ventas Detallado,Detailed Sales Report,Rapport de Ventes DÃ©taillÃ©,è©³ç´°éŠ·å”®å ±è¡¨,ÐŸÐ¾Ð´Ñ€Ð¾Ð±Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ Ð¾ Ð¿Ñ€Ð¾Ð´Ð°Ð¶Ð°Ñ…,à¸£à¸²à¸¢à¸‡à¸²à¸¢à¸‡à¸²à¸™à¸‚à¸²à¸¢,DetaylÄ± SatÄ±ÅŸ Raporu,Laporan Perincian Penjualan
-reports_discount,Rabatt,Korting,Descuento,Discount,Remise,æŠ˜æ‰£,ÑÐºÐ¸Ð´ÐºÐ°,à¸ªà¹ˆà¸§à¸™à¸¥à¸”,Ä°ndirim,Diskon
-reports_discount_percent,Rabatt (%),Kortingspercentage,Porcentaje de Descuento,Discount Percent,Pourcentage Remises,æŠ˜æ‰£çŽ‡,Ð¿Ñ€Ð¾Ñ†ÐµÐ½Ñ‚Ð½ÑƒÑŽ ÑÐºÐ¸Ð´ÐºÑƒ,à¹€à¸›à¸­à¸£à¹Œà¹€à¸‹à¹‡à¸™à¸•à¹Œà¸ªà¹ˆà¸§à¸™à¸¥à¸”,Ä°ndirim YÃ¼zdesi,Persen Diskon
-reports_discounts,Rabatte,Kortingen,Descuentos,Discounts,Remises,æŠ˜æ‰£,Ð¡ÐºÐ¸Ð´ÐºÐ¸,à¸ªà¹ˆà¸§à¸™à¸¥à¸”,Ä°ndirimler,Diskon
-reports_discounts_summary_report,Bericht: Rabatte (summarisch),Overzicht Kortingen,Reporte de Resumen de Descuentos,Discounts Summary Report,Rapport: RÃ©sumÃ© des Remises,æŠ˜æ‰£æ‘˜è¦å ±å‘Š,Ð¡ÐºÐ¸Ð´ÐºÐ¸ Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸ªà¹ˆà¸§à¸™à¸¥à¸”,Ä°ndirim Ã–zet Raporu,Laporan Ringkasan Diskon
-reports_employee,Mitarbeiter,Werknemer,Empleado,Employee,EmployÃ©,å“¡å·¥,Ð¡Ð¾Ñ‚Ñ€ÑƒÐ´Ð½Ð¸Ðº,à¸žà¸™à¸±à¸à¸‡à¸²à¸™,Personel,Karyawan
-reports_employees,Mitarbeiter,Werknemrs,Empleados,Employees,EmployÃ©s,å“¡å·¥,Ð¡Ð¾Ñ‚Ñ€ÑƒÐ´Ð½Ð¸ÐºÐ¸,à¸žà¸™à¸±à¸à¸‡à¸²à¸™,Personeller,Karyawan
-reports_employees_summary_report,Bericht: Mitarbeiter (summarisch),Rapport Overzicht Werknemers,Reporte de Resumen de Empleados,Employees Summary Report,Rapport: RÃ©sumÃ© EmployÃ©s,å“¡å·¥æ‘˜è¦å ±å‘Š,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ Ð¡Ð¾Ñ‚Ñ€ÑƒÐ´Ð½Ð¸ÐºÐ¸,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸žà¸™à¸±à¸à¸‡à¸²à¸™,Personel Ã–zet Raporu,Laporan Ringkasan Karyawan
-reports_graphical_reports,Grafische Berichte,Grafische Rapporten,Reportes GrÃ¡ficos,Graphical Reports,Rapports Graphiques,åœ–è¡¨,Ð³Ñ€Ð°Ñ„Ð¸Ñ‡ÐµÑÐºÐ¸Ñ… Ð¾Ñ‚Ñ‡ÐµÑ‚Ð¾Ð²,à¸£à¸²à¸¢à¸‡à¸²à¸¢à¹à¸šà¸šà¸à¸£à¸²à¸Ÿ,Grafik Raporlar,Laporan Dalam Bentuk Grafis
+reports_all,Alle,Alle,Todo,All,Tous,全部,все,ทั้งหมด,Hepsi,Semua
+reports_all_time,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu
+reports_categories,Kategorien,Categorieën,Categorías,Categories,Catégories,類別,Категории,หมวดหมู่,Kategoriler,Kategori
+reports_categories_summary_report,Bericht: Kategorien (summarisch),Rapport Overzicht Categorieën,Reporte de Resumen de Categorías,Categories Summary Report,Rapport: Résumé des Catégories,分類摘要報告,Сводный отчет Категории,รายงานสรุปหมวดหมู่,Kategori Özet Raporu,Laporan Ringkasan Kategori
+reports_category,Kategorie,Categorie,Categoría,Category,Catégorie,類別,категория,หมวดหมู่,Kategori,Kategori
+reports_comments,Kommentare,Commentaar,Comentarios,Comments,Commentaires,評論,Комментарии,หมายเหตุ,Yorumlar,Catatan
+reports_count,Anzahl,Aantal,Cuenta,Count,Décompte,計,подсчет,นับ,Sayı,Jumlah
+reports_customer,Kunde,Klant,Cliente,Customer,Client,客戶,клиент,ลูกค้า,Müşteri,Pelanggan
+reports_customers,Kunden,Klanten,Clientes,Customers,Clients,客戶,Клиенты,ลูกค้า,Müşteriler,Pelanggan
+reports_customers_summary_report,Bericht: Kunden (summarisch),Rapport Overzicht Klanten,Reporte de Resumen de Clientes,Customers Summary Report,Rapport: Résumé Clientelle,客戶摘要報告,Сводный отчет клиентов,รายงานสรุปลูกค้า,Müşteri Özet Raporu,Laporan Ringkasan Pelanggan
+reports_date,Datum,Datum,Fecha,Date,Date,日期,число,วันที่,Tarih,Tanggal
+reports_date_range,Zeitraum,Periode,Rango de Fecha,Date Range,Plage de dates,日期範圍,размах числа,ระหว่างวันที่,Tarih Aralığı,Rentang Tanggal
+reports_description,Bezeichnung,Omschrijving,Descripción,Description,Description,描述,описание,คำอธิบาย,Tanım,Deskripsi
+reports_detailed_receivings_report,Bericht: Wareneingänge (detailliert),Gedetailleerd Raport Orders,Reporte Detallado de Entradas,Detailed Receivings Report,Rapport d\'Arrivages Détaillé,詳細的進貨報告,Детальный отчет о поступлениях,รายงานรายละเอียกการรับของ,Detaylı Alım Raporu,Laporan Detail Barang Masuk
+reports_detailed_reports,Berichte (detailliert),Gedetailleerde Rapporten,Reportes Detallados,Detailed Reports,Rapports Détaillés,詳細報表,Подробные отчеты,รายละเอียดรายงาน,Detaylı Raporlar,Perincian Laporan
+reports_detailed_requisition_report,Bericht: Bedarf (detailliert),,Reporte Detallado de Requisiciones,,,,,รายงานรายละเอียดการเบิกของ,,Rincian Daftar Laporan Permintaan
+reports_detailed_sales_report,Bericht: Verkäufe (detailliert),Gedetailleerd Rapport Verkoop,Reporte de Ventas Detallado,Detailed Sales Report,Rapport de Ventes Détaillé,詳細銷售報表,Подробный отчет о продажах,รายงายงานขาย,Detaylı Satış Raporu,Laporan Perincian Penjualan
+reports_discount,Rabatt,Korting,Descuento,Discount,Remise,折扣,скидка,ส่วนลด,İndirim,Diskon
+reports_discount_percent,Rabatt %,Kortingspercentage,Porcentaje de Descuento,Discount Percent,Pourcentage Remises,折扣率,процентную скидку,เปอร์เซ็นต์ส่วนลด,İndirim Yüzdesi,Persen Diskon
+reports_discounts,Rabatte,Kortingen,Descuentos,Discounts,Remises,折扣,Скидки,ส่วนลด,İndirimler,Diskon
+reports_discounts_summary_report,Bericht: Rabatte (summarisch),Overzicht Kortingen,Reporte de Resumen de Descuentos,Discounts Summary Report,Rapport: Résumé des Remises,折扣摘要報告,Скидки Сводный отчет,รายงานสรุปส่วนลด,İndirim Özet Raporu,Laporan Ringkasan Diskon
+reports_employee,Mitarbeiter,Werknemer,Empleado,Employee,Employé,員工,Сотрудник,พนักงาน,Personel,Karyawan
+reports_employees,Mitarbeiter,Werknemrs,Empleados,Employees,Employés,員工,Сотрудники,พนักงาน,Personeller,Karyawan
+reports_employees_summary_report,Bericht: Mitarbeiter (summarisch),Rapport Overzicht Werknemers,Reporte de Resumen de Empleados,Employees Summary Report,Rapport: Résumé Employés,員工摘要報告,Сводный отчет Сотрудники,รายงานสรุปพนักงาน,Personel Özet Raporu,Laporan Ringkasan Karyawan
+reports_graphical_reports,Grafische Berichte,Grafische Rapporten,Reportes Gráficos,Graphical Reports,Rapports Graphiques,圖表,графических отчетов,รายงายแบบกราฟ,Grafik Raporlar,Laporan Dalam Bentuk Grafis
 reports_inventory,Lager,,Inventario,Inventory,,,,,,Laporan Persediaan
-reports_inventory_low,Niedrigbestand,Herbevoorrading,Inventario Bajo,Low Inventory,Niveau d\'Inventaire Bas,ä½Žåº«å­˜,ÐÐ¸Ð·ÐºÐ¸Ð¹ Ð¸Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸,à¸ªà¸´à¸™à¸„à¹‰à¸²à¹€à¸«à¸¥à¸·à¸­à¸™à¹‰à¸­à¸¢,,Laporan Persediaan Rendah
-reports_inventory_low_report,Bericht: Niedrigbestand,Rapport Herbevoorrading,Reporte de Inventario Bajo,Low Inventory Report,Rapport de Niveau d\'Inventaire Bas,ä½Žåº«å­˜å ±å‘Š,Ð¾Ñ‚Ñ‡ÐµÑ‚ ÐÐ¸Ð·ÐºÐ¸Ð¸ Ð¸Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸´à¸™à¸„à¹‰à¸²à¸—à¸µà¹ˆà¹€à¸«à¸¥à¸·à¸­à¸™à¹‰à¸­à¸¢,,Laporan Persediaan Rendah
-reports_inventory_reports,Lagerberichte,Rapporten Bevoorrading,Reportes de Inventario,Inventory Reports,Rapports d\'Inventaire,åº«å­˜å ±å‘Š,Ð˜Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ñ ÐžÑ‚Ñ‡ÐµÑ‚Ñ‹,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸´à¸™à¸„à¹‰à¸²à¸„à¸‡à¹€à¸«à¸¥à¸·à¸­,Stok RaporlarÄ±,Laporan Persediaan
-reports_inventory_summary,Lager (summarisch),Overzicht Vooraad,Resumen de Inventario, Inventory Summary, RÃ©sumÃ© d\'Inventaire, åº«å­˜æ‘˜è¦, Ð¡Ð²Ð¾Ð´ÐºÐ° Ð¸Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸, à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸´à¸™à¸„à¹‰à¸²à¸„à¸‡à¹€à¸«à¸¥à¸·à¸­, Stok Ã–zeti,Laporan Ringkasan Persediaan
-reports_inventory_summary_report,Bericht: Lager (summarisch),Rapport Overzicht Vooraad,Reporte de Resumen de Inventario,Inventory Summary Report,Rapport: RÃ©sumÃ© d\'Inventaire,åº«å­˜å ±å‘Šæ‘˜è¦,ÐžÑ‚Ñ‡ÐµÑ‚ Ð¡Ð²Ð¾Ð´ÐºÐ° Ð¸Ð½Ð²ÐµÐ½Ñ‚Ð°Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ð¸,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸ªà¸´à¸™à¸„à¹‰à¸²à¸„à¸‡à¹€à¸«à¸¥à¸·à¸­,Stok Ã–zet Raporu,Laporan Ringkasan Persediaan
-reports_item,Artikel,Product,ArtÃ­culo,Item,Item,ç”¢å“,Ñ‚Ð¾Ð²Ð°Ñ€,à¸ªà¸´à¸™à¸„à¹‰à¸²,ÃœrÃ¼n,Produk/Item
-reports_item_name,Artikelname,Product Naam,Nombre del ArtÃ­culo,Item Name,Nom d\'Item,ç”¢å“åç¨±,ÐÐ°Ð·Ð²Ð°Ð½Ð¸Ðµ Ñ‚Ð¾Ð²Ð°Ñ€Ð°,à¸Šà¸·à¹ˆà¸­à¸ªà¸´à¸™à¸„à¹‰à¸²,ÃœrÃ¼n AdÄ±,Nama Barang
-reports_item_number,Artikelnummer,Productnummer,NÃºmero de ArtÃ­culo,Item Number,NumÃ©ro d\'Item,ç”¢å“æ•¸é‡,ÐÐ¾Ð¼ÐµÑ€ Ð¢Ð¾Ð²Ð°Ñ€Ð°,à¹€à¸¥à¸‚à¸ªà¸´à¸™à¸„à¹‰à¸²,ÃœrÃ¼n Kodu,Nomor Barang
-reports_items,Artikel,Producten,ArtÃ­culos,Items,Items,ç”¢å“,Ñ‚Ð¾Ð²Ð°Ñ€Ñ‹,à¸ªà¸´à¸™à¸„à¹‰à¸²,ÃœrÃ¼nler,Produk/Item
-reports_items_purchased,Gekaufte Artikel,Hoeveelheid,ArtÃ­culos Comprados,Items Purchased,Ã‰lÃ©ments AchetÃ©s,éŠ·å”®ç”¢å“,ÐºÑƒÐ¿ÐµÐ½Ð½Ñ‹Ð¹ Ñ‚Ð¾Ð²Ð°Ñ€Ñ‹,à¸ªà¸´à¸™à¸„à¹‰à¸²à¸—à¸µà¹ˆà¸–à¸¹à¸à¸‹à¸·à¹‰à¸­,SatÄ±n AlÄ±nan ÃœrÃ¼nler,Produk Dibeli
-reports_items_received,Erhaltene Artikel,Items Ontvangen,ArtÃ­culos Recibidos,Items Received,Ã‰lÃ©ments ArrivÃ©s,é€²è²¨ç”¢å“,Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð½Ñ‹Ðµ Ð¢Ð¾Ð²Ð°Ñ€Ñ‹,à¸ªà¸´à¸™à¸„à¹‰à¸²à¹€à¸‚à¹‰à¸²,AlÄ±nan ÃœrÃ¼nler,Barang Masuk
-reports_items_summary_report,Bericht: Artikel (summarisch),Rapport Overzicht Producten,Reporte de Resumen de ArtÃ­culos,Items Summary Report,Rapport: RÃ©sumÃ© Items,ç”¢å“æ‘˜è¦å ±å‘Š,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ Ñ‚Ð¾Ð²Ð°Ñ€Ñ‹,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸ªà¸´à¸™à¸„à¹‰à¸²,ÃœrÃ¼n Ã–zet Raporu,Laporan Ringkasan Produk/Item
-reports_last_7,Letzte 7 Tage,Vorige 7 Dagen,Ãšltimos 7 DÃ­as,Last 7 Days,Ces 7 derniers jours,éŽåŽ»ä¸ƒå¤©,ÐŸÐ¾ÑÐ»ÐµÐ´Ð½Ð¸Ðµ 7 Ð´Ð½ÐµÐ¹,7 à¸§à¸±à¸™à¸ªà¸¸à¸”à¸—à¹‰à¸²à¸¢,Son 7 GÃ¼n,7 Hari Terakhir
-reports_last_month,Letzter Monat,Vorige Maand,Ãšltimo Mes,Last Month,Le mois dernier,ä¸Šå€‹æœˆ,ÐŸÐ¾ÑÐ»ÐµÐ´Ð½Ð¸Ð¹ Ð¼ÐµÑÑÑ†,à¹€à¸”à¸·à¸­à¸™à¸—à¸µà¹ˆà¹à¸¥à¹‰à¸§,GeÃ§en Ay,Bulan lalu
-reports_last_year,Letztes Jahr,Vorig Jaar,Ãšltimo AÃ±o,Last Year,L\'annÃ©e passÃ©e,åŽ»å¹´,Ð² Ð¿Ñ€Ð¾ÑˆÐ»Ð¾Ð¼ Ð³Ð¾Ð´Ñƒ,à¸›à¸µà¸—à¸µà¹ˆà¹à¸¥à¹‰à¸§,GeÃ§en YÄ±l,Tahun lalu
-reports_low_inventory,Mindestbestand,,Inventario Bajo,,,,,,DÃ¼ÅŸÃ¼k Stok,Kurang Persediaan
-reports_low_inventory_report,Bericht über Mindestbestand,,Reporte de Inventario Bajo,,,,,,DÃ¼ÅŸÃ¼k Stok Raporu,Laporan Persediaan Kurang
-reports_name,Name,Naam,Nombre,Name,Nom,åç¨±,Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ðµ,à¸Šà¸·à¹ˆà¸­,Ä°sim,Nama
-reports_payment_type,Zahlungsart,Betaald,Tipo de Pago,Payment Type,Type Paiement,ä»˜æ¬¾æ–¹å¼,Ð’Ð¸Ð´ Ð¾Ð¿Ð»Ð°Ñ‚Ñ‹,à¸Šà¸™à¸´à¸”à¸‚à¸­à¸‡à¸à¸²à¸£à¸ˆà¹ˆà¸²à¸¢,Ã–deme TÃ¼rÃ¼,Tipe Pembayaran
-reports_payments,Zahlungen,Betalingen,Pagos,Payments,Paiements,ä»˜æ¬¾,ÐžÐ¿Ð»Ð°Ñ‚Ñ‹,à¸£à¸²à¸¢à¸ˆà¹ˆà¸²à¸¢,Ã–demeler,Pembayaran
-reports_payments_summary_report,Bericht: Zahlungen (summarisch),Overzicht Betalingen,Reporte de Resumen de Pagos,Payments Summary Report,Rapport: RÃ©sumÃ© des Paiements,æ”¶å…¥å ±å‘Šæ‘˜è¦,ÐŸÐ»Ð°Ñ‚ÐµÐ¶ÐµÐ¹ Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸à¸²à¸£à¸ˆà¹ˆà¸²à¸¢,Ã–deme Ã–zet Raporu,Laporan Ringkasan Pembayaran
-reports_profit,Profit,Winst,Ganancia,Profit,BÃ©nÃ©fice,åˆ©æ½¤,Ð¿Ñ€Ð¸Ð±Ñ‹Ð»ÑŒ,à¸à¸³à¹„à¸£,KÃ¢r,Keuntungan/Laba
-reports_cost,Kosten,Cost,Cost,Cost,Cost,Cost,Cost,Cost,,
-reports_quantity_purchased,Mengen gekauft,Aangekochte Hoeveelheid,Cantidad Comprada,Quantity Purchased,QuantitÃ© AchetÃ©e,éŠ·å”®é‡‘é¡,ÐºÑƒÐ¿ÐµÐ½Ð½Ñ‹Ð¹ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾,à¸ˆà¸³à¸™à¸§à¸™à¸à¸²à¸£à¸Šà¹Œà¹‰à¸­,SatÄ±n AlÄ±nan Adet,Jumlah Dibeli
-reports_received_by,Empfangen von,Ontvangen door,Recibido por,Received By,Recu par,æ”¶æ¬¾äºº,Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ð»Ð¾ Ð·Ð°,à¸£à¸±à¸šà¹‚à¸”à¸¢,AlÄ±m Yapan,Diterima Oleh
-reports_receiving_id,Eingangs-ID,,ID de RecepciÃ³n,Receiving ID,,,,IDà¸£à¸±à¸šà¸ªà¸´à¸™à¸„à¹‰à¸²,AlÄ±m No,Id Penerima
-reports_receiving_type,Eingangstyp,,Tipo de RecepciÃ³n,Receiving Type,,,,à¸£à¸¹à¸›à¹à¸šà¸šà¸à¸²à¸£à¸£à¸±à¸šà¸ªà¸´à¸™à¸„à¹‰à¸²,AlÄ±m TÃ¼rÃ¼,Type Diterima
-reports_receivings,Eingänge,Orders,Entradas,Receivings,Arrivages,æ‡‰ä»˜æ¬¾,ÐŸÐ¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ð¸,à¸£à¸±à¸šà¸ªà¸´à¸™à¸„à¹‰à¸²,AlÄ±mlar,Barang Masuk
-reports_reorder_level,Mindestbestand,Reorder Level,Cantidad MÃ­nima,Reorder Level,Seuil de RÃ©approvisionnement,è£œè²¨é»ž,Ð¼Ð¸Ð½Ð¸Ð¼Ð°Ð»ÑŒÐ½Ñ‹Ð¹ ÑƒÑ€Ð¾Ð²ÐµÐ½ÑŒ,à¸£à¸°à¸”à¸±à¸šà¸à¸²à¸£à¸ªà¸±à¹ˆà¸‡à¹ƒà¸«à¸¡à¹ˆ,DÃ¼ÅŸÃ¼k Stok,Level Pesan Ulang
-reports_report,Bericht,Rapport,Reporte,Report,Rapport,å ±è¡¨,ÐžÑ‚Ñ‡ÐµÑ‚,à¸£à¸²à¸¢à¸‡à¸²à¸™,Rapor,Laporan
-reports_report_input,Berichtsdefinition,Input Rapport,Entrada de Reporte,Report Input,Rapport EntrÃ©es,è¼¸å…¥å ±è¡¨,Ð¾Ñ‚Ñ‡ÐµÑ‚ Ð²Ñ…Ð¾Ð´Ð½Ð¾Ð³Ð¾,à¸‚à¹‰à¸­à¸¡à¸¹à¸¥à¸£à¸²à¸¢à¸‡à¸²à¸™,Rapor Girdisi,Input data Laporan
-reports_reports,Berichte,Rapporten,Reportes,Reports,Rapports,å ±è¡¨,ÐžÑ‚Ñ‡ÐµÑ‚Ñ‹,à¸£à¸²à¸¢à¸‡à¸²à¸™,Raporlar,Lihat dan Cetak Laporan
-reports_requisition,Bedarf,,RequisiciÃ³n,,,,,à¹€à¸šà¸´à¸à¸ªà¸´à¸™à¸„à¹‰à¸²,,Daftar Permintaan
-reports_requisition_by,Bedarf durch,,RequisiciÃ³n por,,,,,à¸œà¸¹à¹‰à¹€à¸šà¸´à¸à¸ªà¸´à¸™à¸„à¹‰à¸²,,Daftar Permintaan Oleh
-reports_requisition_id,Bedarfs-ID,,ID de RequisiciÃ³n,,,,,IDà¹€à¸šà¸´à¸à¸ªà¸´à¸™à¸„à¹‰à¸²,,Identitas Peminta
-reports_requisition_item,,,Articulo de RequisiciÃ³n,,,,,à¸Šà¸·à¹ˆà¸­à¸ªà¸´à¸™à¸„à¹‰à¸²,,Jenis Permintaan
-reports_requisition_item_quantity,,,Cantidad de Articulo de RequisiciÃ³n,,,,,à¸ˆà¸³à¸™à¸§à¸™à¹€à¸šà¸´à¸,,Jumlah Permintaan
-reports_requisition_related_item,,,Articulo de RequisiciÃ³n relacionado,,,,,à¸ªà¸´à¸™à¸„à¹‰à¸²à¸¢à¹ˆà¸­à¸¢,,
-reports_requisition_related_item_total_quantity,,,Cantidad Total de Articulo de RequisiciÃ³n,,,,,à¸ˆà¸³à¸™à¸§à¸™à¸£à¸§à¸¡à¸ªà¸´à¸™à¸„à¹‰à¸²à¸¢à¹ˆà¸­à¸¢,,Jumlah Item Barang
-reports_requisition_related_item_unit_quantity,,,Cantidad Unitaria de Articulo de RequisiciÃ³n,,,,,à¸ˆà¸³à¸™à¸§à¸™à¸ªà¸´à¸™à¸„à¹‰à¸²à¸¢à¹ˆà¸´à¸­à¸¢,,Unit Item Barang
+reports_inventory_low,Lager mit Unterbestand,Herbevoorrading,Inventario Bajo,Low Inventory,Niveau d\'Inventaire Bas,低庫存,Низкий инвентаризации,สินค้าเหลือน้อย,,Laporan Persediaan Rendah
+reports_inventory_low_report,Bericht: Lager mit Unterbestand,Rapport Herbevoorrading,Reporte de Inventario Bajo,Low Inventory Report,Rapport de Niveau d\'Inventaire Bas,低庫存報告,отчет Низкии инвентаризации,รายงานสินค้าที่เหลือน้อย,,Laporan Persediaan Rendah
+reports_inventory_reports,Berichte: Lager,Rapporten Bevoorrading,Reportes de Inventario,Inventory Reports,Rapports d\'Inventaire,庫存報告,Инвентаризация Отчеты,รายงานสินค้าคงเหลือ,Stok Raporları,Laporan Persediaan
+reports_inventory_summary,Lager (summarisch),Overzicht Vooraad,Resumen de Inventario, Inventory Summary, Résumé d\'Inventaire, 庫存摘要, Сводка инвентаризации, รายงานสินค้าคงเหลือ, Stok Özeti,Laporan Ringkasan Persediaan
+reports_inventory_summary_report,Bericht: Lager (summarisch),Rapport Overzicht Vooraad,Reporte de Resumen de Inventario,Inventory Summary Report,Rapport: Résumé d\'Inventaire,庫存報告摘要,Отчет Сводка инвентаризации,รายงานสรุปสินค้าคงเหลือ,Stok Özet Raporu,Laporan Ringkasan Persediaan
+reports_item,Artikel,Product,Artículo,Item,Item,產品,товар,สินค้า,Ürün,Produk/Item
+reports_item_name,Artikelname,Product Naam,Nombre del Artículo,Item Name,Nom d\'Item,產品名稱,Название товара,ชื่อสินค้า,Ürün Adı,Nama Barang
+reports_item_number,Artikelnummer,Productnummer,Número de Artículo,Item Number,Numéro d\'Item,產品數量,Номер Товара,เลขสินค้า,Ürün Kodu,Nomor Barang
+reports_items,Artikel,Producten,Artículos,Items,Items,產品,товары,สินค้า,Ürünler,Produk/Item
+reports_items_purchased,Gekaufte Artikel,Hoeveelheid,Artículos Comprados,Items Purchased,Éléments Achetés,銷售產品,купенный товары,สินค้าที่ถูกซื้อ,Satın Alınan Ürünler,Produk Dibeli
+reports_items_received,Erhaltene Artikel,Items Ontvangen,Artículos Recibidos,Items Received,Éléments Arrivés,進貨產品,полученные Товары,สินค้าเข้า,Alınan Ürünler,Barang Masuk
+reports_items_summary_report,Bericht: Artikel (summarisch),Rapport Overzicht Producten,Reporte de Resumen de Artículos,Items Summary Report,Rapport: Résumé Items,產品摘要報告,Сводный отчет товары,รายงานสรุปสินค้า,Ürün Özet Raporu,Laporan Ringkasan Produk/Item
+reports_last_7,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir
+reports_last_month,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu
+reports_last_year,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L\'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu
+reports_low_inventory,Lager mit Unterbestand,,Inventario Bajo,,,,,,Düşük Stok,Kurang Persediaan
+reports_low_inventory_report,Bericht: Inventar,,Reporte de Inventario Bajo,,,,,,Düşük Stok Raporu,Laporan Persediaan Kurang
+reports_name,Name,Naam,Nombre,Name,Nom,名稱,название,ชื่อ,İsim,Nama
+reports_payment_type,Zahlungsart,Betaald,Tipo de Pago,Payment Type,Type Paiement,付款方式,Вид оплаты,ชนิดของการจ่าย,Ödeme Türü,Tipe Pembayaran
+reports_payments,Zahlungen,Betalingen,Pagos,Payments,Paiements,付款,Оплаты,รายจ่าย,Ödemeler,Pembayaran
+reports_payments_summary_report,Bericht: Zahlungen (summarisch),Overzicht Betalingen,Reporte de Resumen de Pagos,Payments Summary Report,Rapport: Résumé des Paiements,收入報告摘要,Платежей Сводный отчет,รายงานสรุปการจ่าย,Ödeme Özet Raporu,Laporan Ringkasan Pembayaran
+reports_profit,Gewinn,Winst,Ganancia,Profit,Bénéfice,利潤,прибыль,กำไร,Kâr,Keuntungan/Laba
+reports_cost,Kosten,Cost,Cost,Cost,Cost,Cost,Cost,Cost
+reports_quantity_purchased,Menge gekauft,Aangekochte Hoeveelheid,Cantidad Comprada,Quantity Purchased,Quantité Achetée,銷售金額,купенный количество,จำนวนการช์้อ,Satın Alınan Adet,Jumlah Dibeli
+reports_received_by,Erhalten von,Ontvangen door,Recibido por,Received By,Recu par,收款人,получило за,รับโดย,Alım Yapan,Diterima Oleh
+reports_receiving_id,Einangs-ID,,ID de Recepción,Receiving ID,,,,IDรับสินค้า,Alım No,Id Penerima
+reports_receiving_type,Eingangstyp,,Tipo de Recepción,Receiving Type,,,,รูปแบบการรับสินค้า,Alım Türü,Type Diterima
+reports_receivings,Eingänge,Orders,Entradas,Receivings,Arrivages,應付款,Получении,รับสินค้า,Alımlar,Barang Masuk
+reports_reorder_level,Mindestbestand,Reorder Level,Cantidad Mínima,Reorder Level,Seuil de Réapprovisionnement,補貨點,минимальный уровень,ระดับการสั่งใหม่,Düşük Stok,Level Pesan Ulang
+reports_report,Bericht,Rapport,Reporte,Report,Rapport,報表,Отчет,รายงาน,Rapor,Laporan
+reports_report_input,Berichtsdefinition,Input Rapport,Entrada de Reporte,Report Input,Rapport Entrées,輸入報表,отчет входного,ข้อมูลรายงาน,Rapor Girdisi,Input data Laporan
+reports_reports,Berichte,Rapporten,Reportes,Reports,Rapports,報表,Отчеты,รายงาน,Raporlar,Lihat dan Cetak Laporan
+reports_requisition,Bedarf,,Requisición,,,,,เบิกสินค้า,,Daftar Permintaan
+reports_requisition_by,Bedarf durch,,Requisición por,,,,,ผู้เบิกสินค้า,,Daftar Permintaan Oleh
+reports_requisition_id,Bedarfs-ID,,ID de Requisición,,,,,IDเบิกสินค้า,,Identitas Peminta
+reports_requisition_item,Artikel,,Articulo de Requisición,,,,,ชื่อสินค้า,,Jenis Permintaan
+reports_requisition_item_quantity,Menge,,Cantidad de Articulo de Requisición,,,,,จำนวนเบิก,,Jumlah Permintaan
+reports_requisition_related_item,Artikelverweis,,Articulo de Requisición relacionado,,,,,สินค้าย่อย,,
+reports_requisition_related_item_total_quantity,Gesamtmenge Bedarf,,Cantidad Total de Articulo de Requisición,,,,,จำนวนรวมสินค้าย่อย,,Jumlah Item Barang
+reports_requisition_related_item_unit_quantity,Bedarfsmenge,,Cantidad Unitaria de Articulo de Requisición,,,,,จำนวนสินค้าย่ิอย,,Unit Item Barang
 reports_requisitions,Bedarf,,Requisiciones,Requisitions,,,,,Talepler,Laporan Permintaan
-reports_returns,Retouren,Retour,Devoluciones,Returns,Reprises,è¿”å›ž,Ð’Ð¾Ð·Ð²Ñ€Ð°Ñ‚Ñ‹,à¸„à¸·à¸™,Ä°adeler,Retur
-reports_revenue,Ertrag,Inkomsten,Ingresos,Revenue,Revenu,æ”¶å…¥,Ð´Ð¾Ñ…Ð¾Ð´,à¸£à¸²à¸¢à¸£à¸±à¸š,KazanÃ§,Pendapatan
-reports_sale_id,Verkaufs-ID,TicketÂ°,ID de Venta,Sale ID,ID Vente,éŠ·å”®ç·¨è™Ÿ,ID ÐŸÑ€Ð¾Ð´Ð°Ð¶Ð°,IDà¸‚à¸²à¸¢,SatÄ±ÅŸ No,ID Penjualan 
-reports_sale_type,Verkaufstyp,Type,Tipo de Venta,Sale Type,Type Vente,éŠ·å”®é¡žåž‹,Ð’Ð¸Ð´ ÐŸÑ€Ð¾Ð´Ð°Ð¶Ð¸,à¸Šà¸™à¸´à¸”à¸‚à¸­à¸‡à¸à¸²à¸£à¸‚à¸²à¸¢,SatÄ±ÅŸ TÃ¼rÃ¼,Jenis Penjualan
-reports_sales,Verkauf,Verkoop,Ventas,Sale,Ventes,éŠ·å”®,ÐŸÑ€Ð¾Ð´Ð°Ð¶Ð°,à¸‚à¸²à¸¢,SatÄ±ÅŸ,Penjualan
-reports_sales_amount,Verkaufsbetrag,Sales amount,Monto de ventas,Sales amount,Somme de ventes,ç¸½éŠ·å”®é¡,ÑÑƒÐ¼Ð¼Ð° Ð¿Ñ€Ð¾Ð´Ð°Ð¶,à¸ˆà¸³à¸™à¸§à¸™à¸‚à¸²à¸¢,SatÄ±ÅŸ tutarÄ±,Jumlah Penjualan
-reports_sales_summary_report,Bericht: Verkäufe (summarisch),Overzicht Verkoop,Reporte de Resumen de Ventas,Sales Summary Report,Rapport: RÃ©sumÃ© des Ventes,éŠ·å”®æ‘˜è¦å ±å‘Š,ÐŸÑ€Ð¾Ð´Ð°Ð¶Ð¸ Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸à¸²à¸£à¸‚à¸²à¸¢,SatÄ±ÅŸ Ã–zet Raporu,Laporan Ringkasan Penjualan
-reports_serial_number,Serien-Nr.,Nummer,S/N:,Serial #,# SÃ©rie,åºè™Ÿ #,ÑÐµÑ€Ð¸Ð¹Ð½Ñ‹Ð¹ Ð½Ð¾Ð¼ÐµÑ€,Serial #,Seri No,Serial #
-reports_sold_by,Verkauft durch,Werknemer,Vendido Por,Sold By,Vendu par,éŠ·å”®äºº,ÐŸÑ€Ð¾Ð´Ð°Ð²Ð°Ð» Ñ‡ÐµÑ€ÐµÐ·,à¸‚à¸²à¸¢à¹‚à¸”à¸¢,SatÄ±ÅŸÄ± Yapan,Dijual Oleh
-reports_sold_to,Verkauft an,Klant,Vendido A,Sold To,Vendu Ã ,è³¼è²·äºº,ÐŸÑ€Ð¾Ð´Ð°Ð½Ð¾ Ðº,à¸‚à¸²à¸¢à¹„à¸›à¸—à¸µà¹ˆ,SatÄ±ÅŸ YapÄ±lan,Dijual Kepada
-reports_stock_location,Lagerort,Stock Locatie,UbicaciÃ³n de Inventario,Stock Location,,,,,Stok Yeri,Lokasi Stock
-reports_subtotal,Zwischentotal,Subtotaal,Subtotal,Subtotal,Sous-total,å°è¨ˆ,ÐŸÑ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚Ð¾Ñ‡Ð½Ð°Ñ ÑÑƒÐ¼Ð¼Ð°,à¸¢à¸­à¸”à¸£à¸§à¸¡à¸£à¸­à¸‡,Ara Toplam,SubTotal
-reports_summary_reports,Summarische Berichte,Overzicht Rapporten,Reportes Resumidos,Summary Reports,Rapports de RÃ©sumÃ©s,æ‘˜è¦å ±è¡¨,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ðµ Ð¾Ñ‚Ñ‡ÐµÑ‚Ñ‹,à¸ªà¸£à¸¸à¸›à¸£à¸²à¸¢à¸‡à¸²à¸™,Ã–zet RaporlarÄ±,Ringkasan Laporan
-reports_supplied_by,Geliefert von,Geleverd door,Provisto por,Supplied by,Fournit par,ä»˜æ¬¾äºº,ÐŸÐ¾ÑÑ‚Ð°Ð²Ð»ÑÐ» Ð·Ð°,à¸œà¸šà¸´à¸•à¹‚à¸”à¸¢,SaÄŸlayÄ±cÄ±,Pemasok
-reports_supplier,Lieferant,Leverancier,Proveedor,Supplier,Fournisseur,ä¾›æ‡‰å•†,ÐŸÐ¾ÑÑ‚Ð°Ð²Ñ‰Ð¸Ðº,à¸œà¸¹à¹‰à¸œà¸¥à¸´à¸•,SaÄŸlayÄ±cÄ±,Pemasok
-reports_suppliers,Lieferanten,Leveranciers,Proveedores,Suppliers,Fournisseurs,ä¾›æ‡‰å•†,ÐŸÐ¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ¸,à¸œà¸¹à¹‰à¸œà¸¥à¸´à¸•,SaÄŸlayÄ±cÄ±lar,Pemasok
-reports_suppliers_summary_report,Bericht: Lieferanten (summarisch),Rapport Overzicht Leveranciers,Reporte de Resumen de Proveedores,Suppliers Summary Report,Rapport: RÃ©sumÃ© Fournisseurs,ä¾›æ‡‰å•†æ‘˜è¦å ±å‘Š,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ ÐŸÐ¾ÑÑ‚Ð°Ð²Ñ‰Ð¸ÐºÐ¸,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸œà¸¹à¹‰à¸œà¸¥à¸´à¸•,SaÄŸlayÄ±cÄ± Ã–zet Raporu,Laporan Ringkasan Pemasok
-reports_tax,Steuer,VAT,Impuesto,Tax,Taxe,ç¨…é¡,Ð½Ð°Ð»Ð¾Ð³,à¸ à¸²à¸©à¸µ,Vergi,Pajak
-reports_tax_percent,Prozent,VAT Percentage,Porcentaje de Impuestos,Tax Percent,Pourcentage d\'imposition,ç¨…çŽ‡,Ð¿Ñ€Ð¾Ñ†ÐµÐ½Ñ‚ Ð½Ð°Ð»Ð¾Ð³Ð°,à¹€à¸›à¸­à¸£à¹Œà¹€à¸‹à¹‡à¸™à¸ à¸²à¸©à¸µ,Vergi OranÄ±,Persentase Pajak
-reports_taxes,Steuern,Belastingen,Impuestos,Taxes,Taxes,ç¨…é¡,ÐÐ°Ð»Ð¾Ð³Ð¸,à¸ à¸²à¸©à¸µ,Vergiler,Pajak
-reports_taxes_summary_report,Bericht: Steuern (summarisch),Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: RÃ©sumÃ© Taxes,ç¨…é‡‘æ‘˜è¦å ±å‘Š,Ð¡Ð²Ð¾Ð´Ð½Ñ‹Ð¹ Ð¾Ñ‚Ñ‡ÐµÑ‚ Ð½Ð°Ð»Ð¾Ð³Ð¸,à¸£à¸²à¸¢à¸‡à¸²à¸™à¸ªà¸£à¸¸à¸›à¸ à¸²à¸©à¸µ,Vergi Ã–zet Raporu,Laporan Ringkasan Pajak
-reports_this_month,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,é€™å€‹æœˆ,Ð’ ÑÑ‚Ð¾Ð¼ Ð¼ÐµÑÑÑ†Ðµ,à¹€à¸”à¸·à¸­à¸™à¸™à¸µà¹‰,Bu Ay,Bulan ini
-reports_this_month_last_year,Dieser Monat im Vorjahr,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year
-reports_this_month_to_today,Diesen Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today
-reports_this_month_to_today_last_year,Disen Monat bis heute vor einem Jahr,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year
-reports_this_year,Dieses Jahr,Dit Jaar,Este AÃ±o,This Year,Cette AnnÃ©e,ä»Šå¹´,Ð’ ÑÑ‚Ð¾Ð¼ Ð³Ð¾Ð´Ñƒ,à¸›à¸µà¸™à¸µà¹‰,Bu YÄ±l,Tahun ini
-reports_today,Heute,Vandaag,Hoy,Today,Aujourd\'hui,ä»Šå¤©,ÑÐµÐ³Ð¾Ð´Ð½Ñ,à¸§à¸±à¸™à¸™à¸µà¹‰,BugÃ¼n,Hari ini
-reports_today_last_year,Heute vor einem Jahr,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year
-reports_total,Total,Totaal,Total,Total,Total,ç¸½è¨ˆ,ÑÑƒÐ¼Ð¼Ð°,à¸¢à¸­à¸”à¸£à¸§à¸¡,Toplam,Total
-reports_type,Typ,Type,Tipo,Type,Type,é¡žåž‹,Ñ‚Ð¸Ð¿,à¸Šà¸™à¸´à¸”,TÃ¼r,Tipe
-reports_welcome_message,Willkommen im Berichtsmodul. Bitte wählen Sie einen Bericht.,Welkom bij de rapporten. Selecteer hier een rapport.,Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.,Welcome to the reports panel. Please select a report to view.,Bienvenue Ã  la page des rapports. Veuillez sÃ©lectionner un rapport Ã  visualiser.,æ­¡è¿Žä½¿ç”¨å ±è¡¨ç³»çµ±ã€‚è«‹é¸æ“‡è¦æŸ¥çœ‹çš„å ±è¡¨ã€‚,Ð”Ð¾Ð±Ñ€Ð¾ Ð¿Ð¾Ð¶Ð°Ð»Ð¾Ð²Ð°Ñ‚ÑŒ Ð² Ð¿Ð°Ð½ÐµÐ»ÑŒ Ð¾Ñ‚Ñ‡ÐµÑ‚Ð¾Ð². ÐŸÐ¾Ð¶Ð°Ð»ÑƒÐ¹ÑÑ‚Ð°, Ð²Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ‡ÐµÑ‚ Ð´Ð»Ñ Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€Ð°.,à¸¢à¸´à¸™à¸”à¸µà¸•à¹‰à¸­à¸™à¸£à¸±à¸šà¹€à¸‚à¹‰à¸²à¸ªà¸¹à¹ˆà¸£à¸²à¸¢à¸‡à¸²à¸™. à¹‚à¸›à¸£à¸”à¹€à¸¥à¸·à¸­à¸à¸Šà¸™à¸´à¸”à¸‚à¸­à¸‡à¸£à¸²à¸¢à¸‡à¸²à¸™.,Rapor paneline hoÅŸ geldiniz. GÃ¶rmek istediÄŸiniz raporu seÃ§iniz.,Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.
-reports_yesterday,Gestern,Gisteren,Ayer,Yesterday,Hier,æ˜¨å¤©,Ð²Ñ‡ÐµÑ€Ð°,à¹€à¸¡à¸·à¹ˆà¸­à¸§à¸²à¸™à¸™à¸µà¹‰,DÃ¼n,Kemarin
-reports_item_count,Filter Artikel-Anzahl,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Stok Habis/Belum Habis/Minus,
-reports_cost_price,Einstandspreis,Aankoopprijs,Precio de Compra,Cost Price,Prix de Gros,æˆæœ¬åƒ¹,ÐžÐ¿Ñ‚Ð¾Ð²Ð°Ñ Ð¦ÐµÐ½Ð°,à¸£à¸²à¸„à¸²à¸—à¸¸à¸™,Maliyet FiyatÄ±,Harga Pokok
-reports_unit_price,Verkaufspreis,Verkoopprijs,Precio de Venta,Retail Price,Prix au DÃ©tail,å–®åƒ¹,Ð Ð¾Ð·Ð½Ð¸Ñ‡Ð½Ð°Ñ Ð¦ÐµÐ½Ð°,à¸£à¸²à¸„à¸²à¸‚à¸²à¸¢,SatÄ±ÅŸ FiyatÄ±,Harga Jual
-reports_sub_total_value,Zwischentotal,Subtotaal,Subtotal,Sub Total,Sous-Total,å°è¨ˆ,Ð¿Ñ€Ð¾Ð¼ÐµÐ¶ÑƒÑ‚Ð¾Ñ‡Ð½Ñ‹Ð¹ Ð¸Ñ‚Ð¾Ð³,à¸¢à¸­à¸”à¸£à¸§à¸¡à¸«à¸±à¸à¸ à¸²à¸©à¸µ ,Ara Toplam,Sub Total
-reports_total_inventory_value,Inventarwert (Total),Totale waarde stock,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Nilai Persediaan
+reports_returns,Retoure,Retour,Devoluciones,Returns,Reprises,返回,Возвраты,คืน,İadeler,Retur
+reports_revenue,Einkommen,Inkomsten,Ingresos,Revenue,Revenu,收入,доход,รายรับ,Kazanç,Pendapatan
+reports_sale_id,Verkaufs-ID,Ticket°,ID de Venta,Sale ID,ID Vente,銷售編號,ID Продажа,IDขาย,Satış No,ID Penjualan 
+reports_sale_type,Verkaufs-Typ,Type,Tipo de Venta,Sale Type,Type Vente,銷售類型,Вид Продажи,ชนิดของการขาย,Satış Türü,Jenis Penjualan
+reports_sales,Verkäufe,Verkoop,Ventas,Sale,Ventes,銷售,Продажа,ขาย,Satış,Penjualan
+reports_sales_amount,Umsatz,Sales amount,Monto de ventas,Sales amount,Somme de ventes,總銷售額,сумма продаж,จำนวนขาย,Satış tutarı,Jumlah Penjualan
+reports_sales_summary_report,Bericht: Umsatz (summarisch),Overzicht Verkoop,Reporte de Resumen de Ventas,Sales Summary Report,Rapport: Résumé des Ventes,銷售摘要報告,Продажи Сводный отчет,รายงานสรุปการขาย,Satış Özet Raporu,Laporan Ringkasan Penjualan
+reports_serial_number,Seriennummer,Nummer,S/N:,Serial #,# Série,序號 #,серийный номер,Serial #,Seri No,Serial #
+reports_sold_by,Verkauft durch,Werknemer,Vendido Por,Sold By,Vendu par,銷售人,Продавал через,ขายโดย,Satışı Yapan,Dijual Oleh
+reports_sold_to,Verkauft an,Klant,Vendido A,Sold To,Vendu à,購買人,Продано к,ขายไปที่,Satış Yapılan,Dijual Kepada
+reports_stock_location,Lagerort,Stock Locatie,Ubicación de Inventario,Stock Location,,,,,Stok Yeri,Lokasi Stock
+reports_subtotal,Zwischensumme,Subtotaal,Subtotal,Subtotal,Sous-total,小計,Промежуточная сумма,ยอดรวมรอง,Ara Toplam,SubTotal
+reports_summary_reports,Berichte (summarisch),Overzicht Rapporten,Reportes Resumidos,Summary Reports,Rapports de Résumés,摘要報表,Сводные отчеты,สรุปรายงาน,Özet Raporları,Ringkasan Laporan
+reports_supplied_by,Geliefert von,Geleverd door,Provisto por,Supplied by,Fournit par,付款人,Поставлял за,ผบิตโดย,Sağlayıcı,Pemasok
+reports_supplier,Lieferant,Leverancier,Proveedor,Supplier,Fournisseur,供應商,Поставщик,ผู้ผลิต,Sağlayıcı,Pemasok
+reports_suppliers,Lieferanten,Leveranciers,Proveedores,Suppliers,Fournisseurs,供應商,Поставщики,ผู้ผลิต,Sağlayıcılar,Pemasok
+reports_suppliers_summary_report,Bericht: Lieferanten (summarisch),Rapport Overzicht Leveranciers,Reporte de Resumen de Proveedores,Suppliers Summary Report,Rapport: Résumé Fournisseurs,供應商摘要報告,Сводный отчет Поставщики,รายงานสรุปผู้ผลิต,Sağlayıcı Özet Raporu,Laporan Ringkasan Pemasok
+reports_tax,MWSt,VAT,Impuesto,Tax,Taxe,稅額,налог,ภาษี,Vergi,Pajak
+reports_tax_percent,MWSt %,VAT Percentage,Porcentaje de Impuestos,Tax Percent,Pourcentage d\'imposition,稅率,процент налога,เปอร์เซ็นภาษี,Vergi Oranı,Persentase Pajak
+reports_taxes,Steuern,Belastingen,Impuestos,Taxes,Taxes,稅額,Налоги,ภาษี,Vergiler,Pajak
+reports_taxes_summary_report,Bericht: Steuern (summarisch),Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: Résumé Taxes,稅金摘要報告,Сводный отчет налоги,รายงานสรุปภาษี,Vergi Özet Raporu,Laporan Ringkasan Pajak
+reports_this_month,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini
+reports_this_month_last_year,Dieser Monat letzten Jahres,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year
+reports_this_month_to_today,Dieser Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today
+reports_this_month_to_today_last_year,Dieser Monat bis Heute letzten Jahres,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year
+reports_this_year,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini
+reports_today,Heute,Vandaag,Hoy,Today,Aujourd\'hui,今天,сегодня,วันนี้,Bugün,Hari ini
+reports_today_last_year,Heute letzten Jahres,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year
+reports_total,Total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
+reports_type,Typ,Type,Tipo,Type,Type,類型,тип,ชนิด,Tür,Tipe
+reports_welcome_message,Willkommen bei Berichtsmodul,Welkom bij de rapporten. Selecteer hier een rapport.,Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.,Welcome to the reports panel. Please select a report to view.,Bienvenue à la page des rapports. Veuillez sélectionner un rapport à visualiser.,歡迎使用報表系統。請選擇要查看的報表。,"Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.",ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.,Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.,Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.
+reports_yesterday,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin
+reports_item_count,Filter nach Artikelzahl,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Stok Habis/Belum Habis/Minus
+reports_cost_price,Einstandspreis,Aankoopprijs,Precio de Compra,Cost Price,Prix de Gros,成本價,Оптовая Цена,ราคาทุน,Maliyet Fiyatı,Harga Pokok
+reports_unit_price,Verkaufspreis,Verkoopprijs,Precio de Venta,Retail Price,Prix au Détail,單價,Розничная Цена,ราคาขาย,Satış Fiyatı,Harga Jual
+reports_sub_total_value,Zwischentotal,Subtotaal,Subtotal,Sub Total,Sous-Total,小計,промежуточный итог,ยอดรวมหักภาษี ,Ara Toplam,Sub Total
+reports_total_inventory_value,Total Inventarwert,Totale waarde stock,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Inventory Value,Total Nilai Persediaan
 reports_zero_and_less,Null und weniger,Nul en minder,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Zero and less,Stok habis dan minus
-reports_more_than_zero,grösser als Null,Meer dan nul,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,Stok belum habis
+reports_more_than_zero,Mehr als Null,Meer dan nul,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,More than zero,Stok belum habis
