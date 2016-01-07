@@ -6,7 +6,8 @@
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
 	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/flatly/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/flatly/css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 	<!-- start js template tags -->
@@ -59,39 +60,32 @@ html {
 
 </head>
 
-<body>
-	<div id="menubar">
-		<div id="menubar_container">
-			<div id="menubar_company_info">
-				<span id="company_title"><?php echo $this->config->item('company'); ?></span><br />
-				<span style='font-size:8pt;'><?php echo $this->lang->line('common_powered_by').' Open Source Point Of Sale'; ?></span>
+<body>	
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+		
+				<a class="navbar-brand" href="<?php echo site_url(); ?>">OSPOS</a>
+ 	
 			</div>
-
-			<div id="menubar_navigation">
-				<?php
-				foreach($allowed_modules->result() as $module)
-				{
-				?>
-					<div class="menu_item">
-						<a href="<?php echo site_url("$module->module_id");?>">
-						<img src="<?php echo base_url().'images/menubar/'.$module->module_id.'.png';?>" border="0" alt="Menubar Image"></a><br>
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav navbar-right">
+					<?php foreach($allowed_modules->result() as $module): ?>
+					<li>
 						<a href="<?php echo site_url("$module->module_id");?>"><?php echo $this->lang->line("module_".$module->module_id) ?></a>
-					</div>
-				<?php
-				}
-				?>
-			</div>
-			
-			<div id="menubar_footer">
-				<?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
-				<a href="javascript:logout(true);"><?php echo $this->lang->line("common_logout"); ?></a> 
-			</div>
-			
-			<div id="menubar_date">
-				<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?>
-			</div>
+					</li>
+					<?php endforeach; ?>
+				</ul>
+			</div><!--/.nav-collapse -->
 		</div>
 	</div>
-	<div id="content_area_wrapper">
-	<div id="content_area">
+
+	<div class="container">
+		<div class="row-fluid">
  

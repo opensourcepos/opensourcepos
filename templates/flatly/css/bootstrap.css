@@ -7063,17 +7063,3 @@ a.list-group-item-danger.active:focus {
 .popover {
   color: #2c3e50;
 }
-
-/* additional */
-table.tablesorter tbody td.over {
-  background-color: #F5F5F5;
-}
-table.tablesorter tbody td.selected {
-  background-color: #ECECEC;
-}
-table.tablesorter thead tr th, table.tablesorter tfoot tr th {
-  padding: 8px;
-}
-#table_action_header {
-  height: 36px;
-}

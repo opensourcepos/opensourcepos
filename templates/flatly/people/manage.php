@@ -59,24 +59,24 @@ function post_person_form_submit(response)
 </script>
 
 <div id="title_bar">
-	<h2 class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></h2>
+	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
 	<div id="new_button">
 		<?php echo anchor("$controller_name/view/-1/width:$form_width", $this->lang->line($controller_name.'_new'),
-		array('class'=>'thickbox none btn btn-primary','title'=>$this->lang->line($controller_name.'_new')));
+		array('class'=>'thickbox none btn btn-primary btn-sm','title'=>$this->lang->line($controller_name.'_new')));
 		?>
 		<?php if ($controller_name =='customers') {?>
 			<?php echo anchor("$controller_name/excel_import/width:$form_width",
 			$this->lang->line('common_import_excel'),
-				array('class'=>'thickbox none btn btn-primary','title'=>'Import Items from Excel'));
+				array('class'=>'thickbox none btn btn-primary btn-sm','title'=>'Import Items from Excel'));
 			?>	
 		<?php } ?>
 	</div>
 </div>
-<div id="pagination" class="pagination"><?= $links ?></div>
+<div id="pagination"><?= $links ?></div>
 <div id="table_action_header">
 	<ul>
-		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete', 'class' => 'btn btn-default btn-xs')); ?></span></li>
-		<li class="float_left"><span><a href="#" id="email" class="btn btn-default btn-xs"><?php echo $this->lang->line("common_email");?></a></span></li>
+		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete', 'class' => '')); ?></span></li>
+		<li class="float_left"><span><a href="#" id="email" class=""><?php echo $this->lang->line("common_email");?></a></span></li>
 		<li class="float_right">
 		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 		<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
