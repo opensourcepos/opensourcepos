@@ -60,9 +60,23 @@ html {
 
 </head>
 
-<body>	
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-		<div class="container-fluid">
+<body>
+	<div class="wrapper">
+
+	<div class="topbar">
+		<div class="container">
+			<div class="navbar-left">
+				<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?>
+			</div>
+			<div class="navbar-right" style="margin:0">
+				<?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
+				<a href="javascript:logout(true);"><?php echo $this->lang->line("common_logout"); ?></a> 
+			</div>
+		</div>
+	</div>
+
+	<div class="navbar navbar-default" role="navigation">
+		<div class="container">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
 					<span class="sr-only">Toggle navigation</span>
@@ -71,14 +85,17 @@ html {
 					<span class="icon-bar"></span>
 				</button>
 		
-				<a class="navbar-brand" href="<?php echo site_url(); ?>">OSPOS</a>
+				<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">OSPOS</a>
  	
 			</div>
 			<div class="collapse navbar-collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<?php foreach($allowed_modules->result() as $module): ?>
-					<li>
-						<a href="<?php echo site_url("$module->module_id");?>"><?php echo $this->lang->line("module_".$module->module_id) ?></a>
+					<li class="<?php echo $module->module_id == $this->uri->segment(1)? 'active': ''; ?>">
+						<a href="<?php echo site_url("$module->module_id");?>" title="<?php echo $this->lang->line("module_".$module->module_id) ?>" class="menu-icon">
+							<img src="<?php echo base_url().'images/menubar/'.$module->module_id.'.png';?>" border="0" alt="Module Icon" /><br />
+							<?php echo $this->lang->line("module_".$module->module_id) ?>
+						</a>
 					</li>
 					<?php endforeach; ?>
 				</ul>
@@ -87,5 +104,5 @@ html {
 	</div>
 
 	<div class="container">
-		<div class="row-fluid">
+		<div class="row">
  
