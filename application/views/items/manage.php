@@ -46,11 +46,14 @@ $(document).ready(function()
         }
     });
 
-    $(".date_filter").datepicker({onSelect: function(d,i){
+    $(".date_filter").datepicker({onSelect: function(d,i)
+    {
         if(d !== i.lastVal){
             $(this).change();
         }
-    }, dateFormat: "<?php echo dateformat_jquery($this->config->item('dateformat'));?>"}).change(function() {
+    }, dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
+       timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
+    }).change(function() {
         do_search(true);
         return false;
     });
