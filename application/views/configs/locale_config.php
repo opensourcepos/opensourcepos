@@ -54,11 +54,11 @@ echo form_open('config/save_locale/',array('id'=>'locale_config_form'));
 	<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide')); ?>
 	<div class='form_field'>
 		<?php echo form_dropdown('language', array(
-		'de-CH' => 'German (Swiss)',	
 		'en' => 'English',
 		'es' => 'Spanish',
 		'ru' => 'Russian',
 		'nl-BE' => 'Dutch',
+		'de-CH' => 'German (Swiss)',
 		'zh' => 'Chinese',
 		'id' => 'Indonesian',
 		'fr'	=> 'French',
