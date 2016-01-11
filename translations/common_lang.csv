@@ -18,8 +18,8 @@ common_first_name,Vorname,Voornaam,Nombre,First Name,Prénom,名,Имя,ชื�
 common_first_name_required,Vorname ist erforderlich,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prénom est requis.,名為必填,Имя обязательный пробел,ชื่อต้องกรอก,İsim zorunlu alandır,Nama depan wajib diisi.
 common_first_page,Erste,Eerste,Primera,First,First,First,First,อันดับแรก,First,First
 common_gender,Geschlecht,Geslacht,Género,Gender,Gender,Gender,Gender,เพศ,Gender,Gender
-common_gender_female,F,V,F,F,F,V,V,หญิง,V,V
-common_gender_male,M,M,M,M,M,M,M,ชาย,M,M
+common_gender_female,F,V,F,F,F,V,V,หญิง,V,P
+common_gender_male,M,M,M,M,M,M,M,ชาย,M,L
 common_inv,Lag,stock,inv,inv,inv,庫存,инв,ยอด,Stok,Persediaan
 common_last_name,Nachname,Achternaam,Apellidos,Last Name,Nom,姓,Фамилия,นามสกุล,Soy İsim,Nama Belakang
 common_last_name_required,Nachname ist erforderlich,De achternaam moet ingevuld worden.,Apellidos es un campo requerido,The last name is a required field,Le nom est requis,姓氏為必填,Фамилия обязательный пробел,นามสกุลต้องกรอก,Soy isim zorunlu alandır.,Nama belakang wajib diisi.
@@ -27,7 +27,7 @@ common_last_page,Letzte,Laatste,�ltima,Last,Last,Last,Last,Last,Last,Last
 common_learn_about_project,für neueste Nachrichten zum Projekt,om de laatste informatie te verkrijgen over het project,para leer la información más reciente acerca del proyecto,to learn the latest information about the project,pour les dernières informations sur le projet,了解系統開展進度,", чтобы узнать самую последнюю информацию о проекте",เพื่อศึกษาข้อมูลล่าสุดของโครงการ, ,Untuk belajar informasi terbaru tentang proyek ini
 common_list_of,Liste von,Lijst van,Lista de,List of,Liste de,列表,Список,รายการ,Liste,Daftar
 common_logout,Logout,Logout,Salir,Logout,Déconnexion,登出,Выход,ออกจากระบบ,Çıkış,Keluar
-common_new,Neu,Nieuw,Nuevo,New,New,New,New,New,New,New
+common_new,Neu,Nieuw,Nuevo,New,New,New,New,New,New,Baru
 common_no_persons_to_display,Keine Personen zum Anzeigen,Er werden geen personen gevonden,No hay gente que mostrar,There are no people to display,Il n\'y a personne à afficher,沒有使用者資料可以顯示,"Там нет людей, чтобы отобразить",ไม่พบข้อมูลตัวบุคคล,Gösterecek kişi yok,Tidak ada orang untuk ditampilkan
 common_or,Oder,Of,Ó,OR,OU,或,ИЛИ,หรือ,Yada,ATAU
 common_phone_number,Telefon,Telefoon,Teléfono,Phone Number,Téléphone,電話,Номер телефона,โทรศัพท์,Telefon,Telepon
@@ -38,10 +38,10 @@ common_price,Preis,Prijs,Precio,Price,Prix,價值,Цена,ราคา,Fiyat,Ha
 common_remove,Annulieren,Verwijder,Eliminar,Remove,Enlever,移除,Снимать,ลบ,Kaldır,Hapus
 common_return_policy,Rücknahmepolitik,Retourvoorwaarden,Política de Devolución,Return Policy,Politique de Reprise,退貨政策,Возвратний полис,นโยบายคืนสินค้า,İade Politikası,Kebijakan Retur
 common_search,Suche,Zoek,Buscar,Search,Recherche,搜尋,Пойск,ค้นหา,Arama,Cari
-common_search_options,Suchkriterien,Zoek criteria,Opciones de búsqueda,Search options,Search options,Search options,Search options,Search options,Search options,Search options
+common_search_options,Suchkriterien,Zoek criteria,Opciones de búsqueda,Search options,Search options,Search options,Search options,Search options,Search options,Opsi Pencarian
 common_searched_for,Gescuht nach,Gezocht op,Buscaste,Searched for,Recherché,查找,Искали за,ค้นหาสำหรับ,Ara,Mencari untuk
 common_state,BL/Kanton,Provincie,Estado,State,État,州,Штат,จังหวัด,Bölge,Provinsi
-common_submit,Senden,Verzend,Enviar,Submit,Envoyer,送出,Подавать,ส่งข้อมูล,Onayla,Kirim
+common_submit,Senden,Verzend,Enviar,Submit,Envoyer,送出,Подавать,ส่งข้อมูล,Onayla,Proses
 common_view_recent_sales,Letzte Verkäufe,Bekijk recente verkoop,Ver Ventas Recientes,View Recent Sales,Voir Ventes Récentes,最新的消售資訊,Посмотреть Недавние Продажи,การขายล่าสุด,Yeni satışları göster,Lihat Penjualan Terkini
 common_website,Website,website,sitio,website,site-web,網站,веб-сайт,website,website,Situs
 common_welcome,Willkommen,Welkom,Bienvenido(a),Welcome,Bienvenue,歡迎,Добро пожаловать,ยินดีต้อนรับ,Hoşgeldiniz,Selamat Datang
@@ -53,4 +53,4 @@ common_download_import_template,Download Import Excel Voralge (CSV),Download Imp
 common_import_file_path,Dateipfad,file path,Ruta del archivo,file path,file path,file path,file path,file path,file path,file path
 common_import_excel,Excel Import,Excel Import,Importar Excel,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import
 common_import_full_path,Voller Dateipfad zum Excel File notwendig,Full path to excel file required,Requerida la ruta completa del archivo,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required
-common_required,Erforderlich,Required,Requerido,Required,Required,Required,Required,ต้องกรอก,Required,Required
+common_required,Erforderlich,Required,Requerido,Required,Required,Required,Required,ต้องกรอก,Required,Diperlukan
