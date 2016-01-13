@@ -16,6 +16,17 @@ username: admin
 password:pointofsale
 9. Enjoy
 
+13/01/2016: Intall using Docker
+-------------------------------
+From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
+
+To build and run the image, issue following commands in a terminal with docker installed
+
+    docker build -t me/ospos https://github.com/jekkos/opensourcepos.git
+    docker run -d -p 80:80 me/ospos
+
+Docker will clone the latest master into the image and start a LAMP stack with the application configured.
+
 A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
 
 If you like the project, and you are making money out of it on a daily basis, then consider to buy me a coffee so I can keep adding features.
