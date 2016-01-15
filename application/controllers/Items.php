@@ -25,9 +25,9 @@ class Items extends Secure_area implements iData_controller
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
 
-		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $start_of_time;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		
 		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
@@ -60,20 +60,20 @@ class Items extends Secure_area implements iData_controller
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
 
-		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $start_of_time;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		
 		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
 						'end_date' => $end_date_formatter->format('Y-m-d'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
-						'empty_upc' => $this->input->post('empty_upc'),
-						'low_inventory' => $this->input->post('low_inventory'), 
-						'is_serialized' => $this->input->post('is_serialized'),
-						'no_description' => $this->input->post('no_description'),
-						'search_custom' => $this->input->post('search_custom'),
-						'is_deleted' => $this->input->post('is_deleted'));
+						'empty_upc' => $this->input->post('empty_upc') != null,
+						'low_inventory' => $this->input->post('low_inventory') != null, 
+						'is_serialized' => $this->input->post('is_serialized') != null,
+						'no_description' => $this->input->post('no_description') != null,
+						'search_custom' => $this->input->post('search_custom') != null,
+						'is_deleted' => $this->input->post('is_deleted') != null);
 		
 		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
 		$data_rows = get_items_manage_table_data_rows($items, $this);
@@ -120,7 +120,7 @@ class Items extends Secure_area implements iData_controller
 	function suggest()
 	{
 		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit'),
-															$this->input->post('search_custom'), $this->input->post('is_deleted'));
+															$this->input->post('search_custom'), $this->input->post('is_deleted') != null);
 
 		echo implode("\n",$suggestions);
 	}
@@ -391,15 +391,15 @@ class Items extends Secure_area implements iData_controller
 			'name'=>$this->input->post('name'),
 			'description'=>$this->input->post('description'),
 			'category'=>$this->input->post('category'),
-			'supplier_id'=>$this->input->post('supplier_id')=='' ? null:$this->input->post('supplier_id'),
-			'item_number'=>$this->input->post('item_number')=='' ? null:$this->input->post('item_number'),
+			'supplier_id'=>$this->input->post('supplier_id')=='' ? null : $this->input->post('supplier_id'),
+			'item_number'=>$this->input->post('item_number')=='' ? null : $this->input->post('item_number'),
 			'cost_price'=>$this->input->post('cost_price'),
 			'unit_price'=>$this->input->post('unit_price'),
 			'reorder_level'=>$this->input->post('reorder_level'),
 			'receiving_quantity'=>$this->input->post('receiving_quantity'),
-			'allow_alt_description'=>$this->input->post('allow_alt_description'),
-			'is_serialized'=>$this->input->post('is_serialized'),
-			'deleted'=>$this->input->post('is_deleted'),
+			'allow_alt_description'=>$this->input->post('allow_alt_description') != null,
+			'is_serialized'=>$this->input->post('is_serialized') != null,
+			'deleted'=>$this->input->post('is_deleted') != null,
 			'custom1'=>$this->input->post('custom1'),			
 			'custom2'=>$this->input->post('custom2'),
 			'custom3'=>$this->input->post('custom3'),
