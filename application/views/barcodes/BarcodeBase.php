@@ -153,7 +153,7 @@ abstract class BarcodeBase
 		{
 			case 'jpg':
 			case 'jpeg':
-				imagejpeg($this->img, NULL, $this->jpgQuality);
+				imagejpeg($this->img, null, $this->jpgQuality);
 			break;
 
 			case 'gif':

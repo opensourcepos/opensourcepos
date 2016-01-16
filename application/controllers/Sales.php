@@ -390,7 +390,7 @@ class Sales extends Secure_area
 		}
 		else 
 		{
-			$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : NULL;
+			$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : null;
 			$data['invoice_number'] = $invoice_number;
 			$data['sale_id'] = 'POS '.$this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments']);
 			if ($data['sale_id'] == 'POS -1')
