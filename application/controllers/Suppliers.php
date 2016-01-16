@@ -58,23 +58,23 @@ class Suppliers extends Person_controller
 	function save($supplier_id=-1)
 	{
 		$person_data = array(
-		'first_name'=>$this->input->post('first_name'),
-		'last_name'=>$this->input->post('last_name'),
-		'gender'=>$this->input->post('gender'),
-		'email'=>$this->input->post('email'),
-		'phone_number'=>$this->input->post('phone_number'),
-		'address_1'=>$this->input->post('address_1'),
-		'address_2'=>$this->input->post('address_2'),
-		'city'=>$this->input->post('city'),
-		'state'=>$this->input->post('state'),
-		'zip'=>$this->input->post('zip'),
-		'country'=>$this->input->post('country'),
-		'comments'=>$this->input->post('comments')
+			'first_name'=>$this->input->post('first_name'),
+			'last_name'=>$this->input->post('last_name'),
+			'gender'=>$this->input->post('gender'),
+			'email'=>$this->input->post('email'),
+			'phone_number'=>$this->input->post('phone_number'),
+			'address_1'=>$this->input->post('address_1'),
+			'address_2'=>$this->input->post('address_2'),
+			'city'=>$this->input->post('city'),
+			'state'=>$this->input->post('state'),
+			'zip'=>$this->input->post('zip'),
+			'country'=>$this->input->post('country'),
+			'comments'=>$this->input->post('comments')
 		);
 		$supplier_data=array(
-		'company_name'=>$this->input->post('company_name'),
-		'agency_name'=>$this->input->post('agency_name'),
-		'account_number'=>$this->input->post('account_number')=='' ? null:$this->input->post('account_number'),
+			'company_name'=>$this->input->post('company_name'),
+			'agency_name'=>$this->input->post('agency_name'),
+			'account_number'=>$this->input->post('account_number') == '' ? null : $this->input->post('account_number')
 		);
 		if($this->Supplier->save_supplier($person_data,$supplier_data,$supplier_id))
 		{

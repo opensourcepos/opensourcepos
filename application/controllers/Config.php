@@ -23,7 +23,7 @@ class Config extends Secure_area
 		$upload_data = $this->upload->data();
 		
 		$batch_save_data=array(
-		'company'=>$this->input->post('company'),
+			'company'=>$this->input->post('company'),
 			'address'=>$this->input->post('address'),
 			'phone'=>$this->input->post('phone'),
 			'email'=>$this->input->post('email'),
@@ -34,10 +34,10 @@ class Config extends Secure_area
 			'default_tax_2_rate'=>$this->input->post('default_tax_2_rate'),	
 			'default_tax_2_name'=>$this->input->post('default_tax_2_name'),		
 			'return_policy'=>$this->input->post('return_policy'),
-			'tax_included'=>$this->input->post('tax_included'),
+			'tax_included'=>$this->input->post('tax_included') != null,
 			'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 			'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
-			'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price'),
+			'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price') != null,
 			'lines_per_page'=>$this->input->post('lines_per_page'),
 			'default_sales_discount'=>$this->input->post('default_sales_discount'),
 			'custom1_name'=>$this->input->post('custom1_name'),
@@ -69,7 +69,7 @@ class Config extends Secure_area
 	{
 		$batch_save_data=array(	
 			'currency_symbol'=>$this->input->post('currency_symbol'),
-			'currency_side'=>$this->input->post('currency_side'),
+			'currency_side'=>$this->input->post('currency_side') != null,
 			'language'=>$this->input->post('language'),
 			'timezone'=>$this->input->post('timezone'),
 			'dateformat'=>$this->input->post('dateformat'),
@@ -145,7 +145,7 @@ class Config extends Secure_area
 			'barcode_num_in_row'=>$this->input->post('barcode_num_in_row'),
 			'barcode_page_width'=>$this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing'=>$this->input->post('barcode_page_cellspacing'),
-			'barcode_generate_if_empty'=>$this->input->post('barcode_generate_if_empty'),
+			'barcode_generate_if_empty'=>$this->input->post('barcode_generate_if_empty') != null,
 			'barcode_content'=>$this->input->post('barcode_content')
         );
         
@@ -157,18 +157,18 @@ class Config extends Secure_area
     function save_receipt()
     {
     	$batch_save_data = array (
-			'use_invoice_template' => $this->input->post ( 'use_invoice_template' ),
+			'use_invoice_template' => $this->input->post ( 'use_invoice_template' ) != null,
 			'invoice_default_comments' => $this->input->post ( 'invoice_default_comments' ),
 			'invoice_email_message' => $this->input->post ( 'invoice_email_message' ),
-			'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ),
-			'print_silently' => $this->input->post ( 'print_silently' ),
-			'print_header' => $this->input->post ( 'print_header' ),
-			'print_footer' => $this->input->post ( 'print_footer' ),
+			'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ) != null,
+			'print_silently' => $this->input->post ( 'print_silently' ) != null,
+			'print_header' => $this->input->post ( 'print_header' ) != null,
+			'print_footer' => $this->input->post ( 'print_footer' ) != null,
 			'print_top_margin' => $this->input->post ( 'print_top_margin' ),
 			'print_left_margin' => $this->input->post ( 'print_left_margin' ),
 			'print_bottom_margin' => $this->input->post ( 'print_bottom_margin' ),
 			'print_right_margin' => $this->input->post ( 'print_right_margin' ),
-			'show_total_discount' => $this->input->post( 'show_total_discount' )
+			'show_total_discount' => $this->input->post( 'show_total_discount' ) != null
 		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;

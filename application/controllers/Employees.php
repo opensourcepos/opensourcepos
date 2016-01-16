@@ -59,27 +59,27 @@ class Employees extends Person_controller
 	function save($employee_id=-1)
 	{
 		$person_data = array(
-		'first_name'=>$this->input->post('first_name'),
-		'last_name'=>$this->input->post('last_name'),
-		'gender'=>$this->input->post('gender'),
-		'email'=>$this->input->post('email'),
-		'phone_number'=>$this->input->post('phone_number'),
-		'address_1'=>$this->input->post('address_1'),
-		'address_2'=>$this->input->post('address_2'),
-		'city'=>$this->input->post('city'),
-		'state'=>$this->input->post('state'),
-		'zip'=>$this->input->post('zip'),
-		'country'=>$this->input->post('country'),
-		'comments'=>$this->input->post('comments')
+			'first_name'=>$this->input->post('first_name'),
+			'last_name'=>$this->input->post('last_name'),
+			'gender'=>$this->input->post('gender'),
+			'email'=>$this->input->post('email'),
+			'phone_number'=>$this->input->post('phone_number'),
+			'address_1'=>$this->input->post('address_1'),
+			'address_2'=>$this->input->post('address_2'),
+			'city'=>$this->input->post('city'),
+			'state'=>$this->input->post('state'),
+			'zip'=>$this->input->post('zip'),
+			'country'=>$this->input->post('country'),
+			'comments'=>$this->input->post('comments')
 		);
-		$grants_data = $this->input->post("grants")!=FALSE ? $this->input->post("grants"):array();
+		$grants_data = $this->input->post('grants') != null ? $this->input->post('grants') : array();
 		
 		//Password has been changed OR first time password set
-		if($this->input->post('password')!='')
+		if ( $this->input->post('password') != '' )
 		{
 			$employee_data=array(
-			'username'=>$this->input->post('username'),
-			'password'=>md5($this->input->post('password'))
+				'username'=>$this->input->post('username'),
+				'password'=>md5($this->input->post('password'))
 			);
 		}
 		else //Password not changed

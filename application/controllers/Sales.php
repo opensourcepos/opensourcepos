@@ -32,9 +32,9 @@ class Sales extends Secure_area
 			$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 			$today = date($this->config->item('dateformat'));
-			$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
+			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $today;
 			$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-			$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
 			$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
 			$sale_type   = 'all';
@@ -98,9 +98,9 @@ class Sales extends Secure_area
 		$search = $this->input->post('search', TRUE);
 
 		$today = date($this->config->item('dateformat'));
-		$start_date = $this->input->post('start_date') != NULL ? $this->input->post('start_date', TRUE) : $today;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $today;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != NULL ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
@@ -159,7 +159,7 @@ class Sales extends Secure_area
 
 	function select_customer()
 	{
-		$customer_id = $this->input->post("customer");
+		$customer_id = $this->input->post('customer');
 		$this->sale_lib->set_customer($customer_id);
 		$this->_reload();
 	}
@@ -270,7 +270,7 @@ class Sales extends Secure_area
 	{
 		$data=array();
 		$mode = $this->sale_lib->get_mode();
-		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
+		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
 		$quantity = ($mode=="return")? -1:1;
 		$item_location = $this->sale_lib->get_sale_location();
 
@@ -300,12 +300,12 @@ class Sales extends Secure_area
 		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|numeric');
 		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|numeric');
 
-        $description = $this->input->post("description");
-        $serialnumber = $this->input->post("serialnumber");
-		$price = $this->input->post("price");
-		$quantity = $this->input->post("quantity");
-		$discount = $this->input->post("discount");
-		$item_location = $this->input->post("location");
+        $description = $this->input->post('description');
+        $serialnumber = $this->input->post('serialnumber');
+		$price = $this->input->post('price');
+		$quantity = $this->input->post('quantity');
+		$discount = $this->input->post('discount');
+		$item_location = $this->input->post('location');
 
 		if ($this->form_validation->run() != FALSE)
 		{
@@ -667,10 +667,10 @@ class Sales extends Secure_area
 
 		$sale_data = array(
 			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),
-			'customer_id' => $this->input->post('customer_id') ? $this->input->post('customer_id') : NULL,
+			'customer_id' => $this->input->post('customer_id'),
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number') ? $this->input->post('invoice_number') : NULL
+			'invoice_number' => $this->input->post('invoice_number')
 		);
 		
 		if ($this->Sale->update($sale_data, $sale_id))
