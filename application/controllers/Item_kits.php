@@ -118,7 +118,7 @@ class Item_kits extends Secure_area implements iData_controller
 									'item_kit_id'=>$item_kit_id));
 			}
 			
-			if ($this->input->post('item_kit_item'))
+			if ( $this->input->post('item_kit_item') != null )
 			{
 				$item_kit_items = array();
 				foreach($this->input->post('item_kit_item') as $item_id => $quantity)

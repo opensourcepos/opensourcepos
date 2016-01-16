@@ -30,13 +30,15 @@ class Login extends CI_Controller
 	
 	function login_check($username)
 	{
-		$password = $this->input->post("password");	
+		$password = $this->input->post('password');	
 		
-		if(!$this->Employee->login($username,$password))
+		if(!$this->Employee->login($username, $password))
 		{
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
+
 			return false;
 		}
+
 		return true;		
 	}
 }

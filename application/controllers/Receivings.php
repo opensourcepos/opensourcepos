@@ -29,7 +29,7 @@ class Receivings extends Secure_area
 
 	function select_supplier()
 	{
-		$supplier_id = $this->input->post("supplier");
+		$supplier_id = $this->input->post('supplier');
 		$this->receiving_lib->set_supplier($supplier_id);
 		$this->_reload();
 	}
@@ -37,12 +37,12 @@ class Receivings extends Secure_area
 	function change_mode()
 	{
 		$stock_destination = $this->input->post('stock_destination');
-		$stock_source = $this->input->post("stock_source");
+		$stock_source = $this->input->post('stock_source');
 		if ((!$stock_source || $stock_source == $this->receiving_lib->get_stock_source()) &&
 			(!$stock_destination || $stock_destination == $this->receiving_lib->get_stock_destination()))
 		{
 			$this->receiving_lib->clear_invoice_number();
-			$mode = $this->input->post("mode");
+			$mode = $this->input->post('mode');
 			$this->receiving_lib->set_mode($mode);
 		}
 		else if ($this->Stock_location->is_allowed_location($stock_source, 'receivings'))
@@ -77,7 +77,7 @@ class Receivings extends Secure_area
 	{
 		$data=array();
 		$mode = $this->receiving_lib->get_mode();
-		$item_id_or_number_or_item_kit_or_receipt = $this->input->post("item");
+		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
 		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
 		$item_location = $this->receiving_lib->get_stock_source();
 		if($mode=='return' && $this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
@@ -104,12 +104,12 @@ class Receivings extends Secure_area
 		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|numeric');
 		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|numeric');
 
-    	$description = $this->input->post("description");
-    	$serialnumber = $this->input->post("serialnumber");
-		$price = $this->input->post("price");
-		$quantity = $this->input->post("quantity");
-		$discount = $this->input->post("discount");
-		$item_location = $this->input->post("location");
+    	$description = $this->input->post('description');
+    	$serialnumber = $this->input->post('serialnumber');
+		$price = $this->input->post('price');
+		$quantity = $this->input->post('quantity');
+		$discount = $this->input->post('discount');
+		$item_location = $this->input->post('location');
 
 		if ($this->form_validation->run() != FALSE)
 		{
@@ -190,7 +190,7 @@ class Receivings extends Secure_area
 		$emp_info=$this->Employee->get_info($employee_id);
 		$payment_type=$this->input->post('payment_type');
         $data['stock_location']=$this->receiving_lib->get_stock_source();
-		if ($this->input->post('amount_tendered'))
+		if ( $this->input->post('amount_tendered') != null )
 		{
 			$data['amount_tendered'] = $this->input->post('amount_tendered');
 			$data['amount_change'] = to_currency($data['amount_tendered'] - round($data['total'], 2));
@@ -370,10 +370,10 @@ class Receivings extends Secure_area
 
 		$receiving_data = array(
 			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
+			'supplier_id' => $this->input->post('supplier_id'),
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
+			'invoice_number' => $this->input->post('invoice_number')
 		);
 	
 		if ($this->Receiving->update($receiving_data, $receiving_id))
