@@ -210,7 +210,7 @@ class Receivings extends Secure_area
 		}
 		else
 		{
-			$invoice_number = $this->receiving_lib->is_invoice_number_enabled() ? $invoice_number : NULL;
+			$invoice_number = $this->receiving_lib->is_invoice_number_enabled() ? $invoice_number : null;
 			$data['invoice_number']=$invoice_number;
 			$data['payment_type']=$this->input->post('payment_type');
 			//SAVE receiving to database

@@ -219,7 +219,7 @@ foreach($stock_locations as $key=>$location_detail)
 { 
 ?>
 	<?php
-	if($this->config->item('custom'.$i.'_name') != NULL)
+	if($this->config->item('custom'.$i.'_name') != null)
 	{
 		$item_arr = (array)$item_info;
 		?>
