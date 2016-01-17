@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Drivers
  * @category	Database
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/database/
+ * @link		https://codeigniter.com/user_guide/database/
  */
 abstract class CI_DB_driver {
 
@@ -505,6 +505,18 @@ abstract class CI_DB_driver {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Last error
+	 *
+	 * @return	array
+	 */
+	public function error()
+	{
+		return array('code' => NULL, 'message' => NULL);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
 	 * Set client character set
 	 *
 	 * @param	string
@@ -664,19 +676,15 @@ abstract class CI_DB_driver {
 				// if transactions are enabled. If we don't call this here
 				// the error message will trigger an exit, causing the
 				// transactions to remain in limbo.
-				if ($this->_trans_depth !== 0)
+				while ($this->_trans_depth !== 0)
 				{
-					do
+					$trans_depth = $this->_trans_depth;
+					$this->trans_complete();
+					if ($trans_depth === $this->_trans_depth)
 					{
-						$trans_depth = $this->_trans_depth;
-						$this->trans_complete();
-						if ($trans_depth === $this->_trans_depth)
-						{
-							log_message('error', 'Database: Failure during an automated transaction commit/rollback!');
-							break;
-						}
+						log_message('error', 'Database: Failure during an automated transaction commit/rollback!');
+						break;
 					}
-					while ($this->_trans_depth !== 0);
 				}
 
 				// Display errors
@@ -774,7 +782,10 @@ abstract class CI_DB_driver {
 	{
 		if ( ! $this->conn_id)
 		{
-			$this->initialize();
+			if ( ! $this->initialize())
+			{
+				return FALSE;
+			}
 		}
 
 		return $this->_execute($sql);
