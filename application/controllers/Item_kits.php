@@ -1,6 +1,7 @@
 <?php
 require_once ("Secure_area.php");
 require_once ("interfaces/Idata_controller.php");
+
 class Item_kits extends Secure_area implements iData_controller
 {
 	function __construct()
@@ -45,6 +46,9 @@ class Item_kits extends Secure_area implements iData_controller
 		$this->_remove_duplicate_cookies();
 	}
 	
+	/*
+	Returns Item kits table data rows. This will be called with AJAX.
+	*/
 	function search()
 	{
 		$search = $this->input->post('search');

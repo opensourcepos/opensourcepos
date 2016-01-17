@@ -20,6 +20,9 @@ class Giftcards extends Secure_area implements iData_controller
 		$this->load->view('giftcards/manage', $data);
 	}
 
+	/*
+	Returns Giftcards table data rows. This will be called with AJAX.
+	*/
 	function search()
 	{
 		$search = $this->input->post('search');
