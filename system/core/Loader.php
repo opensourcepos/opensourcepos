@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2015, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2015, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @subpackage	Libraries
  * @category	Loader
  * @author		EllisLab Dev Team
- * @link		http://codeigniter.com/user_guide/libraries/loader.html
+ * @link		https://codeigniter.com/user_guide/libraries/loader.html
  */
 class CI_Loader {
 
@@ -285,9 +285,39 @@ class CI_Loader {
 			$this->database($db_conn, FALSE, TRUE);
 		}
 
+		// Note: All of the code under this condition used to be just:
+		//
+		//       load_class('Model', 'core');
+		//
+		//       However, load_class() instantiates classes
+		//       to cache them for later use and that prevents
+		//       MY_Model from being an abstract class and is
+		//       sub-optimal otherwise anyway.
 		if ( ! class_exists('CI_Model', FALSE))
 		{
-			load_class('Model', 'core');
+			$app_path = APPPATH.'core'.DIRECTORY_SEPARATOR;
+			if (file_exists($app_path.'Model.php'))
+			{
+				require_once($app_path.'Model.php');
+				if ( ! class_exists('CI_Model', FALSE))
+				{
+					throw new RuntimeException($app_path."Model.php exists, but doesn't declare class CI_Model");
+				}
+			}
+			elseif ( ! class_exists('CI_Model', FALSE))
+			{
+				require_once(BASEPATH.'core'.DIRECTORY_SEPARATOR.'Model.php');
+			}
+
+			$class = config_item('subclass_prefix').'Model';
+			if (file_exists($app_path.$class.'.php'))
+			{
+				require_once($app_path.$class.'.php');
+				if ( ! class_exists($class, FALSE))
+				{
+					throw new RuntimeException($app_path.$class.".php exists, but doesn't declare class ".$class);
+				}
+			}
 		}
 
 		$model = ucfirst($model);
