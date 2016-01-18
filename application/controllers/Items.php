@@ -389,7 +389,7 @@ class Items extends Secure_area implements iData_controller
 	{
 		$upload_success = $this->_handle_image_upload();
 		$upload_data = $this->upload->data();
-        //Save item data
+		//Save item data
 		$item_data = array(
 			'name'=>$this->input->post('name'),
 			'description'=>$this->input->post('description'),
@@ -403,16 +403,16 @@ class Items extends Secure_area implements iData_controller
 			'allow_alt_description'=>$this->input->post('allow_alt_description') != null,
 			'is_serialized'=>$this->input->post('is_serialized') != null,
 			'deleted'=>$this->input->post('is_deleted') != null,
-			'custom1'=>$this->input->post('custom1'),			
-			'custom2'=>$this->input->post('custom2'),
-			'custom3'=>$this->input->post('custom3'),
-			'custom4'=>$this->input->post('custom4'),
-			'custom5'=>$this->input->post('custom5'),
-			'custom6'=>$this->input->post('custom6'),
-			'custom7'=>$this->input->post('custom7'),
-			'custom8'=>$this->input->post('custom8'),
-			'custom9'=>$this->input->post('custom9'),
-			'custom10'=>$this->input->post('custom10')
+			'custom1'=>$this->input->post('custom1') == null ? '' : $this->input->post('custom1'),
+			'custom2'=>$this->input->post('custom2') == null ? '' : $this->input->post('custom2'),
+			'custom3'=>$this->input->post('custom3') == null ? '' : $this->input->post('custom3'),
+			'custom4'=>$this->input->post('custom4') == null ? '' : $this->input->post('custom4'),
+			'custom5'=>$this->input->post('custom5') == null ? '' : $this->input->post('custom5'),
+			'custom6'=>$this->input->post('custom6') == null ? '' : $this->input->post('custom6'),
+			'custom7'=>$this->input->post('custom7') == null ? '' : $this->input->post('custom7'),
+			'custom8'=>$this->input->post('custom8') == null ? '' : $this->input->post('custom8'),
+			'custom9'=>$this->input->post('custom9') == null ? '' : $this->input->post('custom9'),
+			'custom10'=>$this->input->post('custom10') == null ? '' : $this->input->post('custom10')
 		);
 		
 		if (!empty($upload_data['orig_name']))
