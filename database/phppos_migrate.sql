@@ -2,8 +2,6 @@
 -- This migration script should be run after creating tables with the regular database script and before applying the constraints.
 --
 
-SOURCE tables.sql;
-
 --
 -- Dumping data for table `ospos_customers`
 --
@@ -111,4 +109,3 @@ INSERT INTO  `ospos_item_quantities` (`item_id`, `location_id`, `quantity`) SELE
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`) SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
 
 -- Add constraints on copied data
-SOURCE constraints.sql;
