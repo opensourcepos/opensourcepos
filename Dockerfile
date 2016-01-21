@@ -15,6 +15,7 @@ RUN apt-get install -y python git
 
 # Get latest Ospos source from Git
 RUN git clone https://github.com/jekkos/opensourcepos.git /app
+RUN cd app && git checkout develop/2.4
 # RUN cd app && npm install
 
 RUN ln -fs /app/* /var/www/html
