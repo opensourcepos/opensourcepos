@@ -11,6 +11,7 @@ RUN git clone https://github.com/jekkos/opensourcepos.git /app
 # RUN cd app && npm install
 
 RUN ln -fs /app/* /var/www
+RUN rm /var/www/index.html
 ADD ./start_container.sh /start_container.sh
 RUN chmod 755 /start_container.sh
 EXPOSE 80 3306
