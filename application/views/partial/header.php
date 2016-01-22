@@ -1,10 +1,10 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
+	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
@@ -50,14 +50,11 @@
 			}
 		}
 	</script>	
-<style type="text/css">
-html {
-    overflow: auto;
-}
-</style>
-
-<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/images/favicon.ico">
-
+	<style type="text/css">
+	html {
+		overflow: auto;
+	}
+	</style>
 </head>
 
 <body>
