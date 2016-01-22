@@ -16,6 +16,7 @@ RUN git clone https://github.com/jekkos/opensourcepos.git /app
 # RUN cd app && git checkout develop/2.4
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN cd app && npm install
+RUN npm install -g grunt-cli
 
 RUN ln -fs /app/* /var/www/html
 ADD ./docker/start_container.sh /start_container.sh
