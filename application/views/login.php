@@ -12,7 +12,11 @@ $(document).ready(function()
 	$("#login_form input:first").focus();
 });
 </script>
+
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/images/favicon.ico">
+
 </head>
+
 <body>
 
 <div align="center" style="margin-top:10px"><img src=<?php echo base_url();?>/images/logo.gif>

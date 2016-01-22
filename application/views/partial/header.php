@@ -56,6 +56,8 @@ html {
 }
 </style>
 
+<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/images/favicon.ico">
+
 </head>
 
 <body>
