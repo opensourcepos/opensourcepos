@@ -1,0 +1,133 @@
+/* additional styles placed here */
+
+html, body {
+	height: 100%;
+	
+}
+body {
+	
+}
+.wrapper {
+	min-height: 100%;
+	margin-bottom: -75px;
+}
+
+.navbar {
+	min-height: 40px;
+	border-radius: 0;
+}
+.navbar-brand {
+	padding: 22px 15px;
+	height: 40px;
+	
+}
+
+.topbar {
+	color: #eee;
+	font-size: 12px;
+	background: #182735;                
+	padding: 5px;
+}
+.navbar-default .navbar-nav > .active > a, 
+.navbar-default .navbar-nav > .active > a:hover, 
+.navbar-default .navbar-nav > .active > a:focus {
+    color: #375a7f;
+    background-color: 
+}
+.navbar-text {
+	color:#000000;
+}
+table.tablesorter {
+	border: 0;	
+}
+table.tablesorter tbody td {
+	padding: 8px;
+}
+table.tablesorter tbody td.over {
+	background-color: #F5F5F5;
+}
+table.tablesorter tbody td.selected {
+	background-color: #ECECEC;
+}
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	padding: 8px;
+}
+#table_action_header {
+	height: 35px;
+	background-color: transparent;
+	border: 0;
+}
+table.tablesorter thead tr th, table.tablesorter tfoot tr th {
+	background-color: #18BC9C;
+}
+#search_filter_section {
+	padding: 5px;
+	margin-bottom: 10px;
+}
+#titleTextImg {
+	background-color: transparent !important;
+}
+#table_action_header ul li span a {
+	background-color: rgba(0, 0, 0, 0);
+    border: 0;
+    color: 	#aaa;
+}
+#table_action_header ul li span a:hover {
+    color: 	#555;
+}
+#title,
+#page_title {
+	font-size: 32px;
+	margin-top: 21px;
+    margin-bottom: 10.5px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.1;
+    color: inherit;
+}
+
+#home_module_list {
+    padding: 20px 0;
+    text-align: center;
+}
+.module_item {
+    min-width: 105px;
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 3px;
+    border: 1px solid #ddd;
+}
+.module_item a {
+    display: block;
+}
+.module_item a:hover{
+-webkit-transform: scale(1.33);
+-moz-transform: scale(1.33);
+}
+.navbar .menu-icon {
+	text-align: center;
+	font-size: 11px;
+}
+.navbar .menu-icon img {
+	width: 34px;
+}
+.home-icon img:hover{
+-webkit-transform: scale(1.33);
+-moz-transform: scale(1.33);
+
+}
+#footer {
+	position:relative;
+	margin-top:10px;
+	margin-bottom:10px;	
+	text-align:center;
+	font-size:11px;
+	background-color:
+	clear:both;
+}
+
+@media (min-width: 768px){	
+	.navbar-nav > li > a {
+		padding: 10px 10px 9px;
+	}
+}
