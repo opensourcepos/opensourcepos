@@ -6,8 +6,8 @@
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
-	<link rel="stylesheet" type="text/css" href="templates/flatly/css/bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="templates/flatly/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 	<!-- start js template tags -->
