@@ -12,7 +12,6 @@ before_install:
     - docker build -t jekkos/opensourcepos .
     - docker run -d -p 127.0.0.1:80:80 jekkos/opensourcepos /bin/sh -c "cd /app; npm install"
     - docker ps -a
-    - docker run jekkos/opensourcepos /bin/sh -c "cd /app; grunt mochaWebdriver:test"
 
 script:
     - grunt mochaWebdriver:test
