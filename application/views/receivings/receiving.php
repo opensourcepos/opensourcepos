@@ -330,14 +330,14 @@ else
 
         </table>
         <br />
-		<div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
+		<div class='btn btn-sm btn-success' id='finish_receiving_button' style='float:right;margin-top:5px;'>
 			<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		</div>
         
 		</form>
 
 	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
-			    <div class='small_button' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
+			    <div class='btn btn-sm btn-danger' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
 					<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
 				</div>
         </form>
