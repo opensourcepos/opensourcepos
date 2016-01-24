@@ -9,4 +9,4 @@
 |
 |
 */
-$config['theme_name'] = 'flatly';
+$config['theme_name'] = 'spacelab';
