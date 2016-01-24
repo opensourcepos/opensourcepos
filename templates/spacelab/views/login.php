@@ -6,6 +6,8 @@
 	<title>Open Source Point Of Sale <?php echo $this->lang->line('login_login'); ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="css/login.css" />
+	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 	<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function()
@@ -41,7 +43,7 @@
 					'size'=>'20')); ?>
 				</div>
 				
-				<div id="submit_button"><?php echo form_submit('loginButton', 'Go'); ?> </div>
+				<input class="btn btn-primary btn-block" type="submit" name="loginButton" value="Go"/>
 			</div>
 		</div>
 
