@@ -28,13 +28,14 @@
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
 		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
+		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
 		<script type="text/javascript" src="js/swfobject.js" language="javascript"></script>
 		<script type="text/javascript" src="js/tabcontent.js" language="javascript"></script>
 		<script type="text/javascript" src="js/thickbox.js" language="javascript"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=cb9e5b15ec" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=45f4375544" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 
@@ -50,6 +51,23 @@
 			{
 				window.location = "<?php echo site_url('home/logout'); ?>";
 			}
+		}
+		
+		// live clock
+	
+		function clockTick(){  
+			setInterval('updateClock();', 1000);  
+		}
+
+		// start the clock immediatly
+		clockTick();
+
+		var now = new Date(<?php echo time() * 1000 ?>);
+
+		function updateClock() {
+			now.setTime(now.getTime() + 1000);
+			
+			document.getElementById('liveclock').innerHTML = phpjsDate("<?php echo $this->config->item('dateformat').' '.$this->config->item('timeformat') ?>", now);
 		}
 	</script>
 
@@ -89,7 +107,7 @@
 			</div>
 			
 			<div id="menubar_date">
-				<?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?>
+				<div id="liveclock"><?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?></div>
 			</div>
 		</div>
 	</div>
