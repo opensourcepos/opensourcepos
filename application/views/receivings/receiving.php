@@ -49,7 +49,7 @@ if(isset($error))
 <?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));?>
 <div id="new_item_button_register" >
 		<?php echo anchor("items/view/-1/width:450",
-		"<div class='small_button'><span>".$this->lang->line('sales_new_item')."</span></div>",
+		"<div class='btn btn-sm btn-info'><span>".$this->lang->line('sales_new_item')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
 		?>
 	</div>
@@ -204,7 +204,7 @@ else
 		<div style="margin-top:5px;text-align:center;">
 		<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
 		<?php echo anchor("suppliers/view/-1/width:400",
-		"<div class='small_button' style='margin:0 auto;'><span>".$this->lang->line('recvs_new_supplier')."</span></div>",
+		"<div class='btn btn-sm btn-info' style='margin:0 auto;'><span>".$this->lang->line('recvs_new_supplier')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('recvs_new_supplier')));
 		?>
 		</div>
@@ -239,12 +239,12 @@ else
 		        <?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 		        <br /><br />
 		        
-		        <div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
+		        <div class="btn btn-sm btn-success" id='finish_receiving_button' style='float:right;margin-top:5px;'>
 		        	<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		        </div>
 		        </form>    
 		        <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
-		        <div class='small_button' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
+		        <div class="btn btn-sm btn-danger" id='cancel_receiving_button' style='float:left;margin-top:5px;'>
 		        <span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
 		        </div>
 		        </form>
@@ -330,14 +330,14 @@ else
 
         </table>
         <br />
-		<div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
+		<div class='btn btn-sm btn-success' id='finish_receiving_button' style='float:right;margin-top:5px;'>
 			<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		</div>
         
 		</form>
 
 	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
-			    <div class='small_button' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
+			    <div class='btn btn-sm btn-danger' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
 					<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
 				</div>
         </form>

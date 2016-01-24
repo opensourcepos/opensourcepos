@@ -51,7 +51,7 @@
 		<?php echo form_submit(array(
 			'name'=>'submit',
 			'value'=>$this->lang->line('common_submit'),
-			'class'=> 'submit_button float_right')
+			'class'=> 'btn btn-xs btn-success float_right')
 		);
 		?>
 		</form>
@@ -61,7 +61,7 @@
 			<?php echo form_submit(array(
 				'name'=>'submit',
 				'value'=>$this->lang->line('recvs_delete_entire_sale'),
-				'class'=>'delete_button float_right')
+				'class'=>'btn btn-xs btn-danger float_right')
 			);
 			?>
 		</form>
