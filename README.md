@@ -25,9 +25,15 @@ To build and run the image, issue following commands in a terminal with docker i
     docker build -t me/ospos https://github.com/jekkos/opensourcepos.git
     docker run -d -p 80:80 me/ospos
 
-Docker will clone the latest master into the image and start a LAMP stack with the application configured.
+Docker will clone the latest master into the image and start a LAMP stack with the application configured. If you like to persist your changes in this install, then you can use two docker data containers to store database and filesystem changes. In this case you will need following command (first time only)
 
-A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
+    docker run -d -v /app --name="ospos" -v /var/lib/mysql --name="ospos-sql" -p 127.0.0.1:80:80 me/ospos
+
+After stopping the created container for the first time, this command will be replaced with
+
+    docker run -d -v /app --volumes-from="ospos" -v /var/lib/mysql --volumes-from="ospos-sql" -p 127.0.0.1:80:80 me/ospos
+
+Both the data and mysql directories will be persisted in a separate docker container and can be mounted within any other container using the last command. A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
 
 If you like the project, and you are making money out of it on a daily basis, then consider to buy me a coffee so I can keep adding features.
 
