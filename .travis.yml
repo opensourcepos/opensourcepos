@@ -1,17 +1,14 @@
-sudo: required
+sudo: false
 
 language: node_js
-
-node_js:
-    - 0.10
 
 services:
     - docker
 
 before_install:
     - docker build -t jekkos/opensourcepos .
-    - docker run -d jekkos/opensourcepos /bin/sh -c "cd /app; npm install"
-    - docker ps -a
+    - docker run -d -p 127.0.0.1:80:80 jekkos/opensourcepos 
+    - sleep 4
 
 script:
-    - docker run -d -p 127.0.0.1:80:80 jekkos/opensourcepos /bin/sh -c "cd /app; grunt mochaWebdriver:test"
+    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "cd /app; grunt mochaWebdriver:test" 
