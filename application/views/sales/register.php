@@ -260,7 +260,8 @@ if (isset($success))
 	{
 	?>
 		<?php echo form_open("sales/cancel_sale", array('id'=>'cancel_sale_form')); ?>
-    		<div id="Cancel_sale">
+
+    	<div id="Cancel_sale">
 			<div class='btn btn-sm btn-danger' id='cancel_sale_button' style='float:left; margin-top: 5px;'>
 				<span><?php echo $this->lang->line('sales_cancel_sale'); ?></span>
 			</div>
