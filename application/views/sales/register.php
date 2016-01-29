@@ -259,8 +259,9 @@ if (isset($success))
 	if(count($cart) > 0)
 	{
 	?>
+		<?php echo form_open("sales/cancel_sale", array('id'=>'cancel_sale_form')); ?>
+
     	<div id="Cancel_sale">
-			<?php echo form_open("sales/cancel_sale", array('id'=>'cancel_sale_form')); ?>
 			<div class='small_button' id='cancel_sale_button' style='float:left; margin-top: 5px;'>
 				<span><?php echo $this->lang->line('sales_cancel_sale'); ?></span>
 			</div>
@@ -279,8 +280,9 @@ if (isset($success))
 		if(count($payments) > 0)
 		{
 		?>
+			<?php echo form_open("sales/complete", array('id'=>'finish_sale_form')); ?>
+
 			<div id="finish_sale">
-				<?php echo form_open("sales/complete", array('id'=>'finish_sale_form')); ?>
 				<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 				<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23'));?>
 				<br />
