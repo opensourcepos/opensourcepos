@@ -1,14 +1,16 @@
 sudo: false
-
+    
 language: node_js
+
+node_js:
+      - "4.1"
 
 services:
     - docker
 
 before_install:
     - docker build -t jekkos/opensourcepos .
-    - docker run -d -p 127.0.0.1:80:80 jekkos/opensourcepos 
-    - sleep 4
+    - docker run -d jekkos/opensourcepos 
 
 script:
-    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "cd /app; grunt mochaWebdriver:test" 
+    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "wget --retry-connrefused --tries=5 -q --waitretry=3 --spider http://localhost/index.php && cd /app && grunt mochaWebdriver:test" 
