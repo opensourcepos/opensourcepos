@@ -771,8 +771,7 @@ SELECT `receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quanti
 --
 
 INSERT INTO `ospos_sales` (`sale_time`, `customer_id`, `employee_id`, `comment`, `sale_id`, `invoice_number`) 
-SELECT `sale_time`, `customer_id`, `employee_id`, `comment`, `sale_id`, `invoice_number` FROM `phppos`.phppos_sales;
-UPDATE `ospos_sales` c1, `ospos_sales` c2 SET `c1`.`invoice_number` = NULL WHERE `c1`.`sale_id` > `c2`.`sale_id` AND `c1`.`invoice_number` = `c2`.`invoice_number`;
+SELECT `sale_time`, `customer_id`, `employee_id`, `comment`, `sale_id`, NULL FROM `phppos`.phppos_sales;
 
 --
 -- Dumping data for table `ospos_sales_items`
