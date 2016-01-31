@@ -2,7 +2,7 @@ FROM ubuntu:trusty
 MAINTAINER jekkos
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny php5-mysql php5-gd nodejs npm wget
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny php5-mysql php5-gd nodejs npm curl
 RUN easy_install supervisor
 ADD ./docker/foreground.sh /etc/apache2/foreground.sh
 ADD ./docker/supervisord.conf /etc/supervisord.conf
