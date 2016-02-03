@@ -18,7 +18,7 @@ RUN git clone https://github.com/jekkos/opensourcepos.git /app
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN cd app && npm install
 RUN npm install -g grunt-cli
-RUn ln -s /usr/local/bin/grunt /usr/bin/grunt
+RUN ln -s /usr/local/bin/grunt /usr/bin/grunt
 
 RUN ln -fs /app/* /var/www/html
 RUN rm /var/www/html/index.html
