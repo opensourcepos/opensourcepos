@@ -13,4 +13,4 @@ before_install:
     - docker run -d jekkos/opensourcepos 
 
 script:
-    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "while ! curl http://localhost/index.php; do sleep 1; done; cd app && grunt mochaWebdriver:test" 
+    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "while ! curl http://localhost/index.php | grep username; do sleep 1; done; cd app && grunt mochaWebdriver:test" 
