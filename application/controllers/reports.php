@@ -1018,5 +1018,59 @@ class Reports extends Secure_area
 		$this->load->view("reports/tabular",$data);
 	}
 
+	/*Inventory that can be shown to customers, i.e. on Facebook*/
+	function inventory_facebook($export_excel=0)
+	{
+		$this->load->model('reports/Inventory_facebook');
+		$model = $this->Inventory_facebook;
+		$tabular_data = array();
+		$report_data = $model->getData(array());
+		foreach($report_data as $row)
+		{
+			$tabular_data[] = array($row['name'],
+								$row['category'],
+								$row['quantity'],
+								to_currency($row['unit_price']));
+		}
+
+		$data = array(
+			"title" => $this->lang->line('reports_inventory_facebook_report'),
+			"subtitle" => '',
+			"headers" => $model->getDataColumns(),
+			"data" => $tabular_data,
+			"summary_data" => $model->getSummaryData($report_data),
+			"export_excel" => $export_excel
+		);
+
+		$this->load->view("reports/tabular",$data);
+	}
+	
+	/*List of all customers with items in the comments field*/
+	function comments_customer($export_excel=0)
+	{
+		$this->load->model('reports/Comments_customer');
+		$model = $this->Comments_customer;
+		$tabular_data = array();
+		$report_data = $model->getData(array());
+		foreach($report_data as $row)
+		{
+			$tabular_data[] = array($row['first_name'],
+								$row['last_name'],
+								$row['phone_number'],
+								$row['email'],
+								$row['comments']);
+		}
+
+		$data = array(
+			"title" => $this->lang->line('reports_comments_customer_report'),
+			"subtitle" => '',
+			"headers" => $model->getDataColumns(),
+			"data" => $tabular_data,
+			"summary_data" => $model->getSummaryData($report_data),
+			"export_excel" => $export_excel
+		);
+
+		$this->load->view("reports/tabular",$data);
+	}
 }
 ?>

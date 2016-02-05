@@ -18,7 +18,7 @@ if(isset($error))
 
 	<?php echo form_label($this->lang->line('reports_item_count'), 'reports_item_count_label', array('class'=>'required')); ?>
 	<div id='report_item_count'>
-		<?php echo form_dropdown('item_count',$item_count,'all','id="item_count"'); ?>
+		<?php echo form_dropdown('item_count',$item_count,'more_than_zero','id="item_count"'); ?>
 	</div>
 
 <?php
