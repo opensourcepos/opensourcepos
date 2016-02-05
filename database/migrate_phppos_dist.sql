@@ -708,6 +708,8 @@ CREATE TABLE `ospos_suppliers` (
 --
 -- This migration script should be run after creating tables with the regular database script and before applying the constraints.
 --
+-- This script migrates data from phppos to ospos 2.3.4
+--
 
 --
 -- Copy data to table `ospos_app_config`
