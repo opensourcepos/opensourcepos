@@ -750,6 +750,7 @@ SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'return_pol
 --
 -- Copy data to table `ospos_customers`
 --
+
 INSERT INTO `ospos_customers` (`person_id`, `account_number`, `taxable`, `deleted`)
 SELECT `person_id`, `account_number`, `taxable`, `deleted` FROM `phppos`.phppos_customers;   
 UPDATE `ospos_customers` c1, `ospos_customers` c2 SET `c1`.`account_number` = NULL WHERE `c1`.`person_id` > `c2`.`person_id` AND `c1`.`account_number` = `c2`.`account_number`;
