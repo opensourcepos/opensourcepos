@@ -95,7 +95,7 @@
 				<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">OSPOS</a>
 			</div>
 
-			<div class="collapse navbar-collapse">
+			<div class="navbar-collapse collapse">
 				<ul class="nav navbar-nav navbar-right">
 					<?php foreach($allowed_modules->result() as $module): ?>
 					<li class="<?php echo $module->module_id == $this->uri->segment(1)? 'active': ''; ?>">
