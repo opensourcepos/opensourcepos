@@ -91,7 +91,7 @@ echo form_submit(array(
 	'name'=>'submit',
 	'id'=>'submit',
 	'value'=>$this->lang->line('common_submit'),
-	'class'=>'submit_button float_right')
+	'class'=>'btn btn-primary btn-sm pull-right')
 );
 
 ?>

@@ -17,7 +17,7 @@ echo form_open('config/save_locations/',array('id'=>'location_config_form'));
                 'name'=>'submit',
                 'id'=>'submit',
                 'value'=>$this->lang->line('common_submit'),
-                'class'=>'submit_button float_right')
+                'class'=>'btn btn-primary btn-sm pull-right')
             );
             ?>
         </fieldset>

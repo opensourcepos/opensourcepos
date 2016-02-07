@@ -172,7 +172,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
                 'name'=>'submit',
                 'id'=>'submit',
                 'value'=>$this->lang->line('common_submit'),
-                'class'=>'submit_button float_right')
+                'class'=>'btn btn-primary btn-sm pull-right')
             );
             ?>
         </fieldset>
