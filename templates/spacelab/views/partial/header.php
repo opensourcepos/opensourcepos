@@ -42,19 +42,6 @@
 	<?php endif; ?>
 
 	<script type="text/javascript">
-		function logout(logout)
-		{
-			logout = logout && <?php echo $backup_allowed;?>;
-			if (logout && confirm("<?php echo $this->lang->line('config_logout'); ?>"))
-			{
-				window.location = "<?php echo site_url('config/backup_db'); ?>";
-			}
-			else
-			{
-				window.location = "<?php echo site_url('home/logout'); ?>";
-			}
-		}
-		
 		// live clock
 	
 		function clockTick(){  
@@ -90,7 +77,7 @@
 			</div>
 			<div class="navbar-right" style="margin:0">
 				<?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
-				<a href="javascript:logout(true);"><?php echo $this->lang->line("common_logout"); ?></a> 
+				<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 			</div>
 		</div>
 	</div>
