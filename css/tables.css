@@ -134,7 +134,7 @@ table.innertable tbody tr td
 	font-weight: bold;
 }
 
-#pagination a, strong
+#pagination a, #pagination strong
 {
 	padding: 2px 3px;
 }
