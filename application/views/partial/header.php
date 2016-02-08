@@ -72,11 +72,11 @@
 		<div class="topbar">
 			<div class="container">
 				<div class="navbar-left">
-					<div id="liveclock"><?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?></div>
+					<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
 				</div>
-
+				
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
+					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  "; ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 				</div>
 			</div>

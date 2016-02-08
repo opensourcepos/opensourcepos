@@ -293,7 +293,7 @@
 
 			<div class="field_row clearfix">	
 			<?php echo form_label($this->lang->line('config_backup_database').':', 'config_backup_database',array('class'=>'wide')); ?>
-				<div id="backup_db" class="btn btn-primary btn-sm">
+				<div id="backup_db" class="btn btn-default btn-sm">
 					<span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
 				</div>
 			</div>
