@@ -247,10 +247,11 @@ echo form_submit(array(
 	'class'=>'btn btn-primary btn-sm pull-right')
 );
 echo form_submit(array(
-		'name'=>'continue',
-		'id'=>'continue',
-		'value'=>$this->lang->line('common_new'),
-		'class'=>'btn btn-default btn-sm pull-right')
+	'name'=>'continue',
+	'id'=>'continue',
+	'value'=>$this->lang->line('common_new'),
+	'class'=>'btn btn-default btn-sm pull-right',
+	'style'=>'margin-right: 10px;')
 );
 ?>
 </fieldset>

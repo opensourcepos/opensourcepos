@@ -8,6 +8,13 @@ body {
 	/*padding-top: 80px;*/
 }
 
+.topbar {
+	color: #eee;
+	font-size: 12px;
+	background: #182735;
+	padding: 5px;
+}
+
 .wrapper {
 	min-height: 100%;
 	margin-bottom: -75px;
@@ -21,13 +28,6 @@ body {
 .navbar-brand {
 	padding: 22px 15px;
 	height: 40px;
-}
-
-.topbar {
-	color: #eee;
-	font-size: 12px;
-	background: #182735;
-	padding: 5px;
 }
 
 .navbar-default .navbar-nav > .active > a, 
@@ -97,50 +97,6 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	color: inherit;
 }
 
-#new_button {
-	bottom: 5px;
-}
-
-#new_button > a {
-	border-width: 2px;
-	padding: 6px 9px;
-	font-size: 13px;
-	line-height: 1.5;
-	border-radius: 3px;
-	color: #ffffff;
-	background-color: #0099ff;
-	border-color: #cccccc;
-	display: inline-block;
-	margin-bottom: 0;
-	font-weight: normal;
-	text-align: center;
-	vertical-align: middle;
-	-ms-touch-action: manipulation;
-	touch-action: manipulation;
-	cursor: pointer;
-	background-image: none;
-	border: 1px solid transparent;
-	white-space: nowrap;
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-}
-
-#new_button > a > .big_button {
-	float: none !important;
-	position: static;
-	width: auto;
-	height: auto;
-	background: none;
-}
-
-#new_button > a > .big_button > span {
-	position: static;
-	font-size: 13px;
-	font-weight: normal;
-}
-
 #home_module_list {
 	padding: 20px 0;
 	text-align: center;
@@ -166,6 +122,11 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	width: 24px;
 }
 
+#main_container {
+	font-size: 14px;
+	line-height: 1.5;
+}
+
 #feedback_bar {
 	position: fixed;
 	bottom: 0;
@@ -177,11 +138,6 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	filter: alpha(opacity=0);
 	z-index: 1;
 	line-height: 3.3;
-}
-
-.container {
-	font-size: 14px;
-	line-height: 1.5;
 }
 
 #register th {	
