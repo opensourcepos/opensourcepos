@@ -1,3 +1,15 @@
+Version 2.3.4
+-------------
++ Migration script fixes
++ Improved continuous integration setup
++ More integration tests
++ Virtualized container setup (docker install)
++ Live clock functionality + favicon
++ Improved PHP 7 compatbility
++ Added de_CH (German) as language 
++ Minor code cleanup
++ Removal of annoying backup prompt on logout
+
 Version 2.3.3
 -------------
 + Item kit fixes (search, list, ..)
