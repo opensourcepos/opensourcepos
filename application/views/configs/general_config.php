@@ -294,7 +294,7 @@ echo form_open('config/save/',array('id'=>'config_form','enctype'=>'multipart/fo
 
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_backup_database').':', 'config_backup_database',array('class'=>'wide')); ?>
-	<div id="backup_db" class="form_field small_button" style="background-color:transparent;">
+	<div id="backup_db" class="btn btn-primary btn-sm">
 		<span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>
 	</div>
 </div>

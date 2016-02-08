@@ -26,7 +26,7 @@ echo form_button(array(
 	'name'=>'generate_report',
 	'id'=>'generate_report',
 	'content'=>$this->lang->line('common_submit'),
-	'class'=>'submit_button')
+	'class'=>'btn btn-primary btn-sm')
 );
 ?>
 

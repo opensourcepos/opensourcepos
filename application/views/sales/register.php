@@ -21,52 +21,49 @@ if (isset($success))
 ?>
 
 <div id="register_wrapper">
-	<?php echo form_open("sales/change_mode",array('id'=>'mode_form')); ?>
-	<span><?php echo $this->lang->line('sales_mode') ?></span>
-	<?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
-	<?php
-	if (count($stock_locations) > 1)
-	{
-	?>
-		<span><?php echo $this->lang->line('sales_stock_location') ?></span>
-		<?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'onchange="$(\'#mode_form\').submit();"'); ?>
-	<?php
-	}
-	?>
+	<?php echo form_open("sales/change_mode", array('id'=>'mode_form')); ?>
+		<label><?php echo $this->lang->line('sales_mode') ?></label>
+		
+		<?php echo form_dropdown('mode', $modes, $mode, 'onchange="$(\'#mode_form\').submit();"'); ?>
 
-	<?php
-	if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
-	{
-	?>
-	<div id="sales_overview" class="btn btn-sm btn-primary">
-		<a href="<?=site_url($controller_name . '/manage')?>"><span><?php echo $this->lang->line('sales_takings'); ?><span></a>
-	</div>
-	<?php
-	}
-	?>
+		<?php
+		if (count($stock_locations) > 1)
+		{
+		?>
+			<span><?php echo $this->lang->line('sales_stock_location') ?></span>
+			<?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'onchange="$(\'#mode_form\').submit();"'); ?>
+		<?php
+		}
+		?>
 
-	<div id="show_suspended_sales_button">
+		<?php
+		if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+		{
+		?>
+			<a href="<?=site_url($controller_name . '/manage')?>"><div class="btn btn-primary btn-sm" id="sales_overview"><span><?php echo $this->lang->line('sales_takings'); ?><span></div></a>
+		<?php
+		}
+		?>
+
 		<?php echo anchor("sales/suspended/width:425",
-		"<div class='btn btn-sm btn-warning'><span style='font-size:73%;'>".$this->lang->line('sales_suspended_sales')."</span></div>",
+		"<div class='btn btn-warning btn-sm' id='show_suspended_sales_button'><span>".$this->lang->line('sales_suspended_sales')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_suspended_sales')));
 		?>
-	</div>
-
 	</form>
 
-	<?php echo form_open("sales/add",array('id'=>'add_item_form')); ?>
-	<label id="item_label" for="item"> 
-		<?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?>
-	</label>
-	
-	<?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40','tabindex'=>'1')); ?>
-	<div id="new_item_button_register" >
-		<?php echo anchor("items/view/-1/width:450",
-		"<div class='btn btn-sm btn-info'><span>".$this->lang->line('sales_new_item')."</span></div>",
-		array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
-		?>
-	</div>
+	<?php echo form_open("sales/add", array('id'=>'add_item_form')); ?>
+		<label id="item_label" for="item"> 
+			<?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?>
+		</label>
+		
+		<?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40','tabindex'=>'1')); ?>
 
+		<div id="new_item_button_register" >
+			<?php echo anchor("items/view/-1/width:450",
+			"<div class='btn btn-info btn-sm'><span>".$this->lang->line('sales_new_item')."</span></div>",
+			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
+			?>
+		</div>
 	</form>
 
 	<table id="register">
