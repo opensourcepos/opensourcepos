@@ -45,7 +45,7 @@ function post_item_kit_form_submit(response)
 {
 	if(!response.success)
 	{
-		set_feedback(response.message,'error_message',true);
+		set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
 	}
 	else
 	{
@@ -53,7 +53,7 @@ function post_item_kit_form_submit(response)
 		if(jQuery.inArray(response.item_kit_id,get_visible_checkbox_ids()) != -1)
 		{
 			update_row(response.item_kit_id,'<?php echo site_url("$controller_name/get_row")?>');
-			set_feedback(response.message,'success_message',false);
+			set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 
 		}
 		else //refresh entire table
@@ -62,7 +62,7 @@ function post_item_kit_form_submit(response)
 			{
 				//highlight new row
 				hightlight_row(response.item_kit_id);
-				set_feedback(response.message,'success_message',false);
+				set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 			});
 		}
 	}
@@ -78,25 +78,23 @@ function post_item_kit_form_submit(response)
 </div>
 
 <div id="pagination"><?= $links ?></div>
-<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
-<div id="table_action_header">
-	<ul>
-		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
-		<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
-		<li class="float_right">
-			<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
-			<input type="text" name ='search' id='search'/>
-			<input type="hidden" name ='limit_from' id='limit_from'/>
-		</li>
-	</ul>
-</div>
 
+<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
+	<div id="table_action_header">
+		<ul>
+			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
+			<li class="float_right">
+				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
+				<input type="text" name ='search' id='search'/>
+				<input type="hidden" name ='limit_from' id='limit_from'/>
+			</li>
+		</ul>
+	</div>
 <?php echo form_close(); ?>
 
 <div id="table_holder">
 	<?php echo $manage_table; ?>
 </div>
-
-<div id="feedback_bar"></div>
 
 <?php $this->load->view("partial/footer"); ?>

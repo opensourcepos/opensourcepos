@@ -61,7 +61,7 @@
 <?php
 if(isset($error))
 {
-	echo "<div class='error_message'>".$error."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 ?>
 <?php $this->load->view("partial/footer"); ?>

@@ -6,17 +6,17 @@
 <?php
 if (isset($error))
 {
-	echo "<div class='error_message'>".$error."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 
 if (isset($warning))
 {
-	echo "<div class='warning_mesage'>".$warning."</div>";
+	echo "<div class='alert alert-dismissible alert-warning'>".$warning."</div>";
 }
 
 if (isset($success))
 {
-	echo "<div class='success_message'>".$success."</div>";
+	echo "<div class='alert alert-dismissible alert-success'>".$success."</div>";
 }
 ?>
 
@@ -46,10 +46,10 @@ if (isset($success))
 		?>
 
 		<?php echo anchor("sales/suspended/width:425",
-		"<div class='btn btn-warning btn-sm' id='show_suspended_sales_button'><span>".$this->lang->line('sales_suspended_sales')."</span></div>",
+		"<div class='btn btn-default btn-sm' id='show_suspended_sales_button'><span>".$this->lang->line('sales_suspended_sales')."</span></div>",
 		array('class'=>'thickbox none','title'=>$this->lang->line('sales_suspended_sales')));
 		?>
-	</form>
+	<?php echo form_close(); ?>
 
 	<?php echo form_open("sales/add", array('id'=>'add_item_form')); ?>
 		<label id="item_label" for="item"> 
@@ -64,7 +64,7 @@ if (isset($success))
 			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
 			?>
 		</div>
-	</form>
+	<?php echo form_close(); ?>
 
 	<table id="register">
 		<thead>
@@ -86,7 +86,7 @@ if (isset($success))
 			?>
 				<tr>
 					<td colspan='8'>
-						<div class='warning_message' style='padding: 7px;'><?php echo $this->lang->line('sales_no_items_in_cart'); ?></div>
+						<div class='alert alert-dismissible alert-warning'><?php echo $this->lang->line('sales_no_items_in_cart'); ?></div>
 					</td>
 				</tr>
 			<?php
@@ -99,107 +99,108 @@ if (isset($success))
 					if($tabindex == 3) 
 					{
 						$tabindex = 5;
-					}					
+					}
+
 					echo form_open("sales/edit_item/$line");
 			?>
-					<tr>
-						<td><?php echo anchor("sales/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-						<td><?php echo $item['item_number']; ?></td>
-						<td style="align: center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock'] ?> in <?php echo $item['stock_name']; ?>]
-							<?php echo form_hidden('location', $item['item_location']); ?>
-						</td>
+						<tr>
+							<td><?php echo anchor("sales/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
+							<td><?php echo $item['item_number']; ?></td>
+							<td style="align: center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock'] ?> in <?php echo $item['stock_name']; ?>]
+								<?php echo form_hidden('location', $item['item_location']); ?>
+							</td>
 
-						<?php if ($items_module_allowed)
-						{
-						?>
-							<td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
-						<?php
-						}
-						else
-						{
-						?>
-							<td><?php echo to_currency($item['price']); ?></td>
-							<?php echo form_hidden('price',$item['price']); ?>
-						<?php
-						}
-						?>
-
-						<td>
-						<?php
-							if($item['is_serialized']==1)
+							<?php if ($items_module_allowed)
 							{
-								echo $item['quantity'];
-								echo form_hidden('quantity',$item['quantity']);
+							?>
+								<td><?php echo form_input(array('name'=>'price','value'=>$item['price'],'size'=>'6'));?></td>
+							<?php
 							}
 							else
-							{								
-				        		echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2','tabindex'=>$tabindex));
-							}
-						?>
-						</td>
-
-						<td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
-						<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-						<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
-					</tr>
-					<tr>
-						<?php 
-						if($item['allow_alt_description']==1)
-						{
-						?>
-							<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
-						<?php 
-						}
-						?>
-
-						<td colspan=2 style="text-align: left;">
+							{
+							?>
+								<td><?php echo to_currency($item['price']); ?></td>
+								<?php echo form_hidden('price',$item['price']); ?>
 							<?php
+							}
+							?>
+
+							<td>
+							<?php
+								if($item['is_serialized']==1)
+								{
+									echo $item['quantity'];
+									echo form_hidden('quantity',$item['quantity']);
+								}
+								else
+								{								
+									echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2','tabindex'=>$tabindex));
+								}
+							?>
+							</td>
+
+							<td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
+							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
+							<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
+						</tr>
+						<tr>
+							<?php 
 							if($item['allow_alt_description']==1)
 							{
-								echo form_input(array('name'=>'description','value'=>base64_decode($item['description']),'size'=>'20'));
+							?>
+								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
+							<?php 
 							}
-							else
-							{
-								if (base64_decode($item['description'])!='')
+							?>
+
+							<td colspan=2 style="text-align: left;">
+								<?php
+								if($item['allow_alt_description']==1)
 								{
-									echo base64_decode($item['description']);
-									echo form_hidden('description',base64_decode($item['description']));
+									echo form_input(array('name'=>'description','value'=>base64_decode($item['description']),'size'=>'20'));
 								}
 								else
 								{
-									echo $this->lang->line('sales_no_description');
-									echo form_hidden('description','');
+									if (base64_decode($item['description'])!='')
+									{
+										echo base64_decode($item['description']);
+										echo form_hidden('description',base64_decode($item['description']));
+									}
+									else
+									{
+										echo $this->lang->line('sales_no_description');
+										echo form_hidden('description','');
+									}
 								}
-							}
-							?>
-						</td>
-						<td>&nbsp;</td>
-						<td style="color: #2F4F4F;">
-							<?php
-							if($item['is_serialized']==1)
-							{
-								echo $this->lang->line('sales_serial').':';
-							}
-							?>
-						</td>
-						<td colspan="4" style="text-align: left;">
-							<?php
-							if($item['is_serialized']==1)
-							{
-								echo form_input(array('name'=>'serialnumber','value'=>$item['serialnumber'],'size'=>'20'));
-							}
-							else
-							{
-								echo form_hidden('serialnumber', '');
-							}
-							?>
-						</td>
-					</tr>
-					<tr style="height: 3px">
-						<td colspan=8 style="background-color: white"></td>
-					</tr>
+								?>
+							</td>
+							<td>&nbsp;</td>
+							<td style="color: #2F4F4F;">
+								<?php
+								if($item['is_serialized']==1)
+								{
+									echo $this->lang->line('sales_serial').':';
+								}
+								?>
+							</td>
+							<td colspan="4" style="text-align: left;">
+								<?php
+								if($item['is_serialized']==1)
+								{
+									echo form_input(array('name'=>'serialnumber','value'=>$item['serialnumber'],'size'=>'20'));
+								}
+								else
+								{
+									echo form_hidden('serialnumber', '');
+								}
+								?>
+							</td>
+						</tr>
+						<tr style="height: 3px">
+							<td colspan=8 style="background-color: white"></td>
+						</tr>
 
-					</form>
+					<?php echo form_close(); ?>
 			<?php					
 					$tabindex = $tabindex + 1;					
 				}
@@ -220,10 +221,10 @@ if (isset($success))
 	{
 		echo form_open("sales/select_customer",array('id'=>'select_customer_form'));
 	?>
-		<label id="customer_label" for="customer"><?php echo $this->lang->line('sales_select_customer'); ?></label>
-		<?php echo form_input(array('name'=>'customer','id'=>'customer','size'=>'30','value'=>$this->lang->line('sales_start_typing_customer_name')));?>
+			<label id="customer_label" for="customer"><?php echo $this->lang->line('sales_select_customer'); ?></label>
+			<?php echo form_input(array('name'=>'customer','id'=>'customer','size'=>'30','value'=>$this->lang->line('sales_start_typing_customer_name')));?>
 
-		</form>
+		<?php echo form_close(); ?>
 
 		<div style="margin-top: 5px; text-align: center;">
 			<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
@@ -263,12 +264,12 @@ if (isset($success))
 				<span><?php echo $this->lang->line('sales_cancel_sale'); ?></span>
 			</div>
 			
-			<div class='btn btn-sm btn-warning' id='suspend_sale_button' style='float:right; margin-top: 5px;'>
+			<div class='btn btn-sm btn-default' id='suspend_sale_button' style='float:right; margin-top: 5px;'>
 				<span><?php echo $this->lang->line('sales_suspend_sale'); ?></span>
 			</div>
 		</div>
 	
-		</form>
+		<?php echo form_close(); ?>
 
 		<div class="clearfix" style="margin-bottom: 1px;">&nbsp;</div>
 
@@ -276,35 +277,33 @@ if (isset($success))
 		// Only show this part if there is at least one payment entered.
 		if(count($payments) > 0)
 		{
+			echo form_open("sales/complete", array('id'=>'finish_sale_form'));
 		?>
-			<?php echo form_open("sales/complete", array('id'=>'finish_sale_form')); ?>
-
-			<div id="finish_sale">
-				<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-				<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23'));?>
-				<br />
-				<br />
-				<?php
-				if(!empty($customer_email))
-				{
-					echo $this->lang->line('sales_email_receipt'). ': '
-						. form_checkbox(array(
-					    'name'    => 'email_receipt',
-					    'id'      => 'email_receipt',
-					    'value'   => '1',
-					    'checked' => (boolean)$email_receipt,
-					    )).'<br />('.$customer_email.')<br />';
-				}
-				 
-				if ($payments_cover_total)
-				{					
-					echo "<div class='btn btn-sm btn-success' id='finish_sale_button' style='float:left; margin-top:5px;' tabindex='3'><span>".$this->lang->line('sales_complete_sale')."</span></div>";
-				}
-				?>
-			</div>
-
-			</form>
-		<?php
+				<div id="finish_sale">
+					<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
+					<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23'));?>
+					<br />
+					<br />
+					<?php
+					if(!empty($customer_email))
+					{
+						echo $this->lang->line('sales_email_receipt'). ': '
+							. form_checkbox(array(
+							'name'    => 'email_receipt',
+							'id'      => 'email_receipt',
+							'value'   => '1',
+							'checked' => (boolean)$email_receipt,
+							)).'<br />('.$customer_email.')<br />';
+					}
+					 
+					if ($payments_cover_total)
+					{					
+						echo "<div class='btn btn-sm btn-success' id='finish_sale_button' style='float:left; margin-top:5px;' tabindex='3'><span>".$this->lang->line('sales_complete_sale')."</span></div>";
+					}
+					?>
+				</div>
+			<?php 
+			echo form_close();
 		}
 		?>
 
@@ -324,78 +323,77 @@ if (isset($success))
 		<div id="payment_details">
 			<div>
 				<?php echo form_open("sales/add_payment",array('id'=>'add_payment_form')); ?>
-				<table width="100%">
-					<tr>
-						<td>
-							<?php echo $this->lang->line('sales_print_after_sale'); ?>
-						</td>
-						<td>
-							<?php
-							if ($print_after_sale)
-							{
-								echo form_checkbox(array('name'=>'sales_print_after_sale','id'=>'sales_print_after_sale','checked'=>'checked'));
-							}
-							else
-							{
-								echo form_checkbox(array('name'=>'sales_print_after_sale','id'=>'sales_print_after_sale'));
-							}
-							?>
-						</td>
-					</tr>
-					<?php
-					if ($mode == "sale") 
-					{
-					?>
-					<tr>
-						<td>
-							<?php echo $this->lang->line('sales_invoice_enable'); ?>
-						</td>
-						<td>
-							<?php if ($invoice_number_enabled)
-							{
-								echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','checked'=>'checked'));
-							}
-							else
-							{
-								echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable'));
-							}
-							?>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<?php echo $this->lang->line('sales_invoice_number').':   ';?>
-						</td>
-						<td>
-							<?php echo form_input(array('name'=>'sales_invoice_number','id'=>'sales_invoice_number','value'=>$invoice_number,'size'=>10));?>
-						</td>
-					</tr>
-					<?php 
-					}
-					?>
-					<tr>
-						<td>
-							<?php echo $this->lang->line('sales_payment').':   ';?>
-						</td>
-						<td>
-							<?php echo form_dropdown( 'payment_type', $payment_options, array(), 'id="payment_types"' ); ?>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<span id="amount_tendered_label"><?php echo $this->lang->line( 'sales_amount_tendered' ).': '; ?></span>
-						</td>
-						<td>
-							<?php echo form_input( array( 'name'=>'amount_tendered', 'id'=>'amount_tendered', 'value'=>to_currency_no_money($amount_due), 'size'=>'10','tabindex'=>4 ) ); ?>
-						</td>
-					</tr>
-				</table>
-				
-				<div class='btn btn-sm btn-primary' id='add_payment_button' style='float: left; margin-top: 5px;'>
-					<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
-				</div>
-
-				</form>
+					<table width="100%">
+						<tr>
+							<td>
+								<?php echo $this->lang->line('sales_print_after_sale'); ?>
+							</td>
+							<td>
+								<?php
+								if ($print_after_sale)
+								{
+									echo form_checkbox(array('name'=>'sales_print_after_sale','id'=>'sales_print_after_sale','checked'=>'checked'));
+								}
+								else
+								{
+									echo form_checkbox(array('name'=>'sales_print_after_sale','id'=>'sales_print_after_sale'));
+								}
+								?>
+							</td>
+						</tr>
+						<?php
+						if ($mode == "sale") 
+						{
+						?>
+						<tr>
+							<td>
+								<?php echo $this->lang->line('sales_invoice_enable'); ?>
+							</td>
+							<td>
+								<?php if ($invoice_number_enabled)
+								{
+									echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable','checked'=>'checked'));
+								}
+								else
+								{
+									echo form_checkbox(array('name'=>'sales_invoice_enable','id'=>'sales_invoice_enable'));
+								}
+								?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<?php echo $this->lang->line('sales_invoice_number').':   ';?>
+							</td>
+							<td>
+								<?php echo form_input(array('name'=>'sales_invoice_number','id'=>'sales_invoice_number','value'=>$invoice_number,'size'=>10));?>
+							</td>
+						</tr>
+						<?php 
+						}
+						?>
+						<tr>
+							<td>
+								<?php echo $this->lang->line('sales_payment').':   ';?>
+							</td>
+							<td>
+								<?php echo form_dropdown( 'payment_type', $payment_options, array(), 'id="payment_types"' ); ?>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span id="amount_tendered_label"><?php echo $this->lang->line( 'sales_amount_tendered' ).': '; ?></span>
+							</td>
+							<td>
+								<?php echo form_input( array( 'name'=>'amount_tendered', 'id'=>'amount_tendered', 'value'=>to_currency_no_money($amount_due), 'size'=>'10','tabindex'=>4 ) ); ?>
+							</td>
+						</tr>
+					</table>
+					
+					<div class='btn btn-sm btn-primary' id='add_payment_button' style='float: left; margin-top: 5px;'>
+						<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
+					</div>
+				<?php echo form_close(); ?>
 			</div>
 
 			<?php
@@ -418,14 +416,13 @@ if (isset($success))
 						{
 							echo form_open("sales/edit_payment/$payment_id",array('id'=>'edit_payment_form'.$payment_id));
 							?>
-							<tr>
-								<td><?php echo anchor( "sales/delete_payment/$payment_id", '['.$this->lang->line('common_delete').']' ); ?></td>
-								<td><?php echo $payment['payment_type']; ?></td>
-								<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
-							</tr>
-							
-							</form>
-						<?php
+								<tr>
+									<td><?php echo anchor( "sales/delete_payment/$payment_id", '['.$this->lang->line('common_delete').']' ); ?></td>
+									<td><?php echo $payment['payment_type']; ?></td>
+									<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
+								</tr>
+							<?php 
+							echo form_close();
 						}
 						?>
 					</tbody>
@@ -434,9 +431,7 @@ if (isset($success))
 			<?php
 			}
 			?>
-
 		</div>
-
 	<?php
 	}
 	?>

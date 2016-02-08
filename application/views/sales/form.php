@@ -4,73 +4,74 @@
 	
 	<fieldset id="sale_basic_info">
 		<?php echo form_open("sales/save/".$sale_info['sale_id'],array('id'=>'sales_edit_form')); ?>
-		<legend><?php echo $this->lang->line("sales_basic_information"); ?></legend>
-		
-		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('sales_receipt_number').':', 'customer'); ?>
-			<div class='form_field'>
-				<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], $this->lang->line('sales_receipt_number') .$sale_info['sale_id'], array('target' => '_blank'));?>
+			<legend><?php echo $this->lang->line("sales_basic_information"); ?></legend>
+			
+			<div class="field_row clearfix">
+				<?php echo form_label($this->lang->line('sales_receipt_number').':', 'customer'); ?>
+				<div class='form_field'>
+					<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], $this->lang->line('sales_receipt_number') .$sale_info['sale_id'], array('target' => '_blank'));?>
+				</div>
 			</div>
-		</div>
-		
-		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('sales_date').':', 'date'); ?>
-			<div class='form_field'>
-				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'readonly'=>'true'));?>
+			
+			<div class="field_row clearfix">
+				<?php echo form_label($this->lang->line('sales_date').':', 'date'); ?>
+				<div class='form_field'>
+					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'readonly'=>'true'));?>
+				</div>
 			</div>
-		</div>
-		
-		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('sales_invoice_number').':', 'invoice_number'); ?>
-			<div class='form_field'>
-				<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
-					isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
-					<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
-					<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
-				<?php else: ?>
-					<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
-				<?php endif; ?>
+			
+			<div class="field_row clearfix">
+				<?php echo form_label($this->lang->line('sales_invoice_number').':', 'invoice_number'); ?>
+				<div class='form_field'>
+					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
+						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
+						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
+						<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
+					<?php else: ?>
+						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
+					<?php endif; ?>
+				</div>
 			</div>
-		</div>
-		
-		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('sales_customer').':', 'customer'); ?>
-			<div class='form_field'>
-				<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id'));?>
+			
+			<div class="field_row clearfix">
+				<?php echo form_label($this->lang->line('sales_customer').':', 'customer'); ?>
+				<div class='form_field'>
+					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id'));?>
+				</div>
 			</div>
-		</div>
-		
-		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('sales_employee').':', 'employee'); ?>
-			<div class='form_field'>
-				<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id"');?>
+			
+			<div class="field_row clearfix">
+				<?php echo form_label($this->lang->line('sales_employee').':', 'employee'); ?>
+				<div class='form_field'>
+					<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id"');?>
+				</div>
 			</div>
-		</div>
-		
-		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('sales_comment').':', 'comment'); ?>
-			<div class='form_field'>
-				<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'rows'=>'4','cols'=>'23', 'id'=>'comment'));?>
+			
+			<div class="field_row clearfix">
+				<?php echo form_label($this->lang->line('sales_comment').':', 'comment'); ?>
+				<div class='form_field'>
+					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'rows'=>'4','cols'=>'23', 'id'=>'comment'));?>
+				</div>
 			</div>
-		</div>
-		
-		<?php echo form_submit(array(
-			'name'=>'submit',
-			'value'=>$this->lang->line('common_submit'),
-			'class'=> 'btn btn-primary btn-sm pull-right')
-		);
-		?>
-		</form>
+			
+			<?php echo form_submit(array(
+				'name'=>'submit',
+				'value'=>$this->lang->line('common_submit'),
+				'class'=> 'btn btn-primary btn-sm pull-right')
+			);
+			?>
+		<?php echo form_close(); ?>
 		
 		<?php echo form_open("sales/delete/".$sale_info['sale_id'],array('id'=>'sales_delete_form')); ?>
 			<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
 			<?php echo form_submit(array(
 				'name'=>'submit',
 				'value'=>$this->lang->line('sales_delete_entire_sale'),
-				'class'=>'btn btn-danger btn-sm pull-right')
+				'class'=>'btn btn-danger btn-sm pull-right',
+				'style'=>'margin-right: 10px;')
 			);
 			?>
-		</form>
+		<?php echo form_close(); ?>
 	</fieldset>
 </div>
 
@@ -184,7 +185,7 @@ $(document).ready(function()
 				success: function(response)
 				{
 					tb_remove();
-					set_feedback(response.message,'success_message',false);
+					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 					var $element = get_table_row(id).parent().parent();
 					$element.find("td").animate({backgroundColor:"green"},1200,"linear")
 					.end().animate({opacity:0},1200,"linear",function()
@@ -196,7 +197,7 @@ $(document).ready(function()
 					});
 				},
 				error: function(jqXHR, textStatus, errorThrown) {
-					set_feedback(textStatus,'error_message',true);
+					set_feedback(textStatus, 'alert alert-dismissible alert-danger', true);
 				},
 				dataType:'json'
 			});

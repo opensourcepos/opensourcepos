@@ -1,159 +1,151 @@
 <div id="required_fields_message"><?php echo $this->lang->line('items_edit_fields_you_want_to_update'); ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
-<?php
-echo form_open('items/bulk_update/',array('id'=>'item_form'));
-?>
-<fieldset id="item_basic_info">
-<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'name',
-		'id'=>'name')
-	);?>
-	</div>
-</div>
+<?php echo form_open('items/bulk_update/',array('id'=>'item_form')); ?>
+	<fieldset id="item_basic_info">
+		<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'category',
-		'id'=>'category')
-	);?>
-	</div>
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'name',
+					'id'=>'name')
+				);?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_supplier').':', 'supplier',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_dropdown('supplier_id', $suppliers, '');?>
-	</div>
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'category',
+					'id'=>'category')
+				);?>
+			</div>
+		</div>
 
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_supplier').':', 'supplier',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_dropdown('supplier_id', $suppliers, '');?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_cost_price').':', 'cost_price',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'cost_price',
-		'size'=>'8',
-		'id'=>'cost_price')
-	);?>
-	</div>
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_cost_price').':', 'cost_price',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'cost_price',
+					'size'=>'8',
+					'id'=>'cost_price')
+				);?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_unit_price').':', 'unit_price',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'unit_price',
-		'size'=>'8',
-		'id'=>'unit_price')
-	);?>
-	</div>
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_unit_price').':', 'unit_price',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'unit_price',
+					'size'=>'8',
+					'id'=>'unit_price')
+				);?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_tax_1').':', 'tax_percent_1',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'tax_names[]',
-		'id'=>'tax_name_1',
-		'size'=>'8',
-		'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->lang->line('items_sales_tax_1'))
-	);?>
-	</div>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'tax_percents[]',
-		'id'=>'tax_percent_name_1',
-		'size'=>'3',
-		'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : '')
-	);?>
-	%
-	</div>
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_tax_1').':', 'tax_percent_1',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'tax_names[]',
+					'id'=>'tax_name_1',
+					'size'=>'8',
+					'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->lang->line('items_sales_tax_1'))
+				);?>
+			</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_tax_2').':', 'tax_percent_2',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'tax_names[]',
-		'id'=>'tax_name_2',
-		'size'=>'8',
-		'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->lang->line('items_sales_tax_2'))
-	);?>
-	</div>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'tax_percents[]',
-		'id'=>'tax_percent_name_2',
-		'size'=>'3',
-		'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : '')
-	);?>
-	%
-	</div>
-</div>
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'reorder_level',
-		'id'=>'reorder_level')
-	);?>
-	</div>
-</div>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'tax_percents[]',
+					'id'=>'tax_percent_name_1',
+					'size'=>'3',
+					'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : '')
+				);?>
+				%
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_description').':', 'description',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_textarea(array(
-		'name'=>'description',
-		'id'=>'description',
-		'rows'=>'5',
-		'cols'=>'17')		
-	);?>
-	</div>
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_tax_2').':', 'tax_percent_2',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'tax_names[]',
+					'id'=>'tax_name_2',
+					'size'=>'8',
+					'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->lang->line('items_sales_tax_2'))
+				);?>
+			</div>
 
-<div class="field_row clearfix">
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'tax_percents[]',
+					'id'=>'tax_percent_name_2',
+					'size'=>'3',
+					'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : '')
+				);?>
+				%
+			</div>
+		</div>
 
-<?php echo form_label($this->lang->line('items_allow_alt_description').':', 'allow_alt_description',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices);?>
-	</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_reorder_level').':', 'reorder_level',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_input(array(
+					'name'=>'reorder_level',
+					'id'=>'reorder_level')
+				);?>
+			</div>
+		</div>
 
-</div>
+		<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('items_description').':', 'description',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_textarea(array(
+					'name'=>'description',
+					'id'=>'description',
+					'rows'=>'5',
+					'cols'=>'17')		
+				);?>
+			</div>
+		</div>
 
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('items_allow_alt_description').':', 'allow_alt_description',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices);?>
+			</div>
+		</div>
 
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('items_is_serialized').':', 'is_serialized',array('class'=>'wide')); ?>
+			<div class='form_field'>
+				<?php echo form_dropdown('is_serialized', $serialization_choices);?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">
+		<?php
+		echo form_submit(array(
+			'name'=>'submit',
+			'id'=>'submit',
+			'value'=>$this->lang->line('common_submit'),
+			'class'=>'btn btn-primary btn-sm pull-right')
+		);
+		?>
+	</fieldset>
+<?php echo form_close(); ?>
 
-<?php echo form_label($this->lang->line('items_is_serialized').':', 'is_serialized',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_dropdown('is_serialized', $serialization_choices);?>
-
-	</div>
-
-</div>
-
-<?php
-echo form_submit(array(
-	'name'=>'submit',
-	'id'=>'submit',
-	'value'=>$this->lang->line('common_submit'),
-	'class'=>'btn btn-primary btn-sm pull-right')
-);
-?>
-</fieldset>
-<?php 
-echo form_close();
-?>
 <script type='text/javascript'>
-
 //validation and submit handling
 $(document).ready(function()
 {	

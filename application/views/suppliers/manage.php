@@ -1,4 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
+
 <script type="text/javascript">
 $(document).ready(function() 
 { 
@@ -32,7 +33,7 @@ function post_person_form_submit(response)
 {
 	if(!response.success)
 	{
-		set_feedback(response.message,'error_message',true);	
+		set_feedback(response.message, 'alert alert-dismissible alert-danger', true);	
 	}
 	else
 	{
@@ -40,7 +41,7 @@ function post_person_form_submit(response)
 		if(jQuery.inArray(response.person_id,get_visible_checkbox_ids()) != -1)
 		{
 			update_row(response.person_id,'<?php echo site_url("$controller_name/get_row")?>');
-			set_feedback(response.message,'success_message',false);	
+			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
 			
 		}
 		else //refresh entire table
@@ -49,7 +50,7 @@ function post_person_form_submit(response)
 			{
 				//highlight new row
 				hightlight_row(response.person_id);
-				set_feedback(response.message,'success_message',false);		
+				set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
 			});
 		}
 	}
@@ -63,22 +64,26 @@ function post_person_form_submit(response)
 	array('class'=>'thickbox none', 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
+
 <div id="pagination"><?= $links ?></div>
+
 <div id="table_action_header">
 	<ul>
 		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 		<li class="float_left"><span><a href="#" id="email"><?php echo $this->lang->line("common_email");?></a></span></li>
 		<li class="float_right">
-		<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
-		<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
-		<input type="text" name ='search' id='search'/>
-		<input type="hidden" name ='limit_from' id='limit_from'/>
-		</form>
+			<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
+
+			<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
+				<input type="text" name ='search' id='search'/>
+				<input type="hidden" name ='limit_from' id='limit_from'/>
+			<?php echo form_close(); ?>
 		</li>
 	</ul>
 </div>
+
 <div id="table_holder">
-<?php echo $manage_table; ?>
+	<?php echo $manage_table; ?>
 </div>
-<div id="feedback_bar"></div>
+
 <?php $this->load->view("partial/footer"); ?>

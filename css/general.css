@@ -44,41 +44,8 @@ label.required
 	float:right;
 }
 
-.warning_message
-{
-	text-align:center;
-	background-color:#fffcdd;
-	border:1px solid #fff4aa;
-	font-weight:bold;
-}
-
-.error_message
-{
-	text-align:center;
-	background-color:#f68383;
-	border:1px solid #da3232;
-	font-weight:bold;
-}
-
-.warning_mesage
-{
-	text-align:center;
-	background-color:#FBEC5D;
-	border:1px solid #da3232;
-	font-weight:bold;
-}
-
-.success_message
-{
-	text-align:center;
-	background-color:#e1ffdd;
-	border:1px solid #2ca71c;
-	font-weight:bold;
-}
-
 input
 {
-	font-family: Arial;
 	padding: 3px;
 }
 
@@ -92,6 +59,17 @@ input
 	height: 0;
 }
 
-.clearfix { display: inline-block; }
-html[xmlns] .clearfix {	display: block; }
-* html .clearfix { height: 1%; }
+.clearfix
+{
+	display: inline-block;
+}
+
+html[xmlns] .clearfix
+{
+	display: block;
+}
+
+* html .clearfix
+{
+	height: 1%;
+}

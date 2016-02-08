@@ -3,7 +3,7 @@
 <?php
 if(isset($error))
 {
-	echo "<div class='error_message'>".$error."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 ?>
 	<?php echo form_label($this->lang->line('reports_date_range'), 'report_date_range_label', array('class'=>'required')); ?>

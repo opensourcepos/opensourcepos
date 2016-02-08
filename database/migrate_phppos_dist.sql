@@ -245,7 +245,6 @@ CREATE TABLE `ospos_item_kit_items` (
 -- Dumping data for table `ospos_item_kit_items`
 --
 
-
 -- --------------------------------------------------------
 
 --
@@ -663,7 +662,6 @@ CREATE TABLE `ospos_sessions` (
 -- Dumping data for table `ospos_sessions`
 --
 
-
 -- --------------------------------------------------------
 
 --
@@ -704,10 +702,9 @@ CREATE TABLE `ospos_suppliers` (
 --
 
 
+
 --
 -- This migration script should be run after creating tables with the regular database script and before applying the constraints.
---
--- This script migrates data from phppos to ospos 2.3.4
 --
 
 --
@@ -871,6 +868,11 @@ SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.ph
 
 --
 -- Add constraints on copied data
+--
+
+
+--
+-- Constraints for dumped tables
 --
 
 --

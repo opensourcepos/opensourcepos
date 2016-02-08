@@ -50,7 +50,7 @@ function get_sales_manage_table_data_rows($sales, $controller)
 
 	if($table_data_rows == '')
 	{
-		$table_data_rows .= "<tr><td colspan='10'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
+		$table_data_rows .= "<tr><td colspan='10'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
 	}
 	else
 	{
@@ -157,7 +157,7 @@ function get_people_manage_table_data_rows($people,$controller)
 	
 	if($people->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='6'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
+		$table_data_rows.="<tr><td colspan='6'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -241,7 +241,7 @@ function get_supplier_manage_table_data_rows($suppliers,$controller)
 	
 	if($suppliers->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='9'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
+		$table_data_rows.="<tr><td colspan='9'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -317,7 +317,7 @@ function get_items_manage_table_data_rows($items,$controller)
 	
 	if($items->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='12'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
+		$table_data_rows.="<tr><td colspan='12'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -411,7 +411,7 @@ function get_giftcards_manage_table_data_rows( $giftcards, $controller )
 	
 	if($giftcards->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
+		$table_data_rows.="<tr><td colspan='11'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -479,7 +479,7 @@ function get_item_kits_manage_table_data_rows($item_kits, $controller)
 	
 	if($item_kits->num_rows()==0)
 	{
-		$table_data_rows .= "<tr><td colspan='11'><div class='warning_message' style='padding:7px;'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
+		$table_data_rows .= "<tr><td colspan='11'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;

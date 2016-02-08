@@ -1,7 +1,6 @@
 <div id="page_title"><?php echo $this->lang->line('config_barcode_configuration'); ?></div>
-<?php
-echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
-?>
+
+<?php echo form_open('config/save_barcode/',array('id'=>'barcode_config_form')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
@@ -177,9 +176,7 @@ echo form_open('config/save_barcode/',array('id'=>'barcode_config_form'));
             ?>
         </fieldset>
     </div>
-<?php
-echo form_close();
-?>
+<?php echo form_close(); ?>
 
 
 <script type='text/javascript'>
@@ -195,11 +192,11 @@ $(document).ready(function()
             {
                 if(response.success)
                 {
-                    set_feedback(response.message,'success_message',false);     
+                    set_feedback(response.message, 'alert alert-dismissible alert-success', false);     
                 }
                 else
                 {
-                    set_feedback(response.message,'error_message',true);        
+                    set_feedback(response.message, 'alert alert-dismissible alert-danger', true);        
                 }
             },
             dataType:'json'

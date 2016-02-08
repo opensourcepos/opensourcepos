@@ -476,7 +476,7 @@ class Items extends Secure_area implements iData_controller
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 
-            	echo json_encode(array('success'=>true,'message'=>$success_message,'item_id'=>$item_id));
+            	echo json_encode(array('success'=>true, 'message'=>$success_message, 'item_id'=>$item_id));
             }
             else
             {
@@ -484,16 +484,13 @@ class Items extends Secure_area implements iData_controller
 	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
     	        	$this->upload->display_errors(); 
 
-            	echo json_encode(array('success'=>false,
-            			'message'=>$error_message,'item_id'=>$item_id)); 
+            	echo json_encode(array('success'=>false, 'message'=>$error_message, 'item_id'=>$item_id)); 
             }
             
 		}
 		else//failure
 		{
-			echo json_encode(array('success'=>false,
-					'message'=>$this->lang->line('items_error_adding_updating').' '
-					.$item_data['name'],'item_id'=>-1));
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('items_error_adding_updating').' '.$item_data['name'], 'item_id'=>-1));
 		}
 	}
 	

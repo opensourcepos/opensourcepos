@@ -4,19 +4,14 @@
 	font-size:75%;
 }
 
-#menubar,#footer
+.topbar
 {
 	display:none;
 }
 
-#content_area
+#menubar, #footer
 {
-	width:100%;
-}
-
-#content_area_wrapper
-{
-	border:0px;
+	display:none;
 }
 
 #sale_return_policy

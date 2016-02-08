@@ -1,190 +1,187 @@
 <div id="page_title"><?php echo $this->lang->line('config_receipt_configuration'); ?></div>
-<?php
-echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
-?>
-<div id="config_wrapper">
-<fieldset id="config_info">
-<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-<ul id="receipt_error_message_box" class="error_message_box"></ul>
-<legend><?php echo $this->lang->line("config_receipt_info"); ?></legend>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_use_invoice_template').':', 'use_invoice_template',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'use_invoice_template',
-		'value'=>'use_invoice_template',
-		'id'=>'use_invoice_template',
-		'checked'=>$this->config->item('use_invoice_template')));?>
+<?php echo form_open('config/save_receipt/',array('id'=>'receipt_config_form')); ?>
+	<div id="config_wrapper">
+		<fieldset id="config_info">
+			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+			<ul id="receipt_error_message_box" class="error_message_box"></ul>
+			<legend><?php echo $this->lang->line("config_receipt_info"); ?></legend>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_use_invoice_template').':', 'use_invoice_template',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_checkbox(array(
+					'name'=>'use_invoice_template',
+					'value'=>'use_invoice_template',
+					'id'=>'use_invoice_template',
+					'checked'=>$this->config->item('use_invoice_template')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_invoice_default_comments').':', 'invoice_default_comments',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_textarea(array(
+					'name'=>'invoice_default_comments',
+					'id'=>'invoice_default_comments',
+					'rows'=>4,
+					'cols'=>25,
+					'value'=>$this->config->item('invoice_default_comments')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_invoice_email_message').':', 'invoice_email_message',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_textarea(array(
+					'name'=>'invoice_email_message',
+					'id'=>'invoice_email_message',
+					'rows'=>4,
+					'cols'=>25,
+					'value'=>$this->config->item('invoice_email_message')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_receipt_show_taxes').':', 'receipt_show_taxes',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_checkbox(array(
+					'name'=>'receipt_show_taxes',
+					'value'=>'receipt_show_taxes',
+					'id'=>'receipt_show_taxes',
+					'checked'=>$this->config->item('receipt_show_taxes')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_show_total_discount').':', 'show_total_discount',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_checkbox(array(
+					'name'=>'show_total_discount',
+					'value'=>'show_total_discount',
+					'id'=>'show_total_discount',
+					'checked'=>$this->config->item('show_total_discount')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_print_silently').':', 'print_silently',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_checkbox(array(
+					'name'=>'print_silently',
+					'id'=>'print_silently',
+					'value'=>'print_silently',
+					'checked'=>$this->config->item('print_silently')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_print_header').':', 'print_header',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_checkbox(array(
+					'name'=>'print_header',
+					'id'=>'print_header',
+					'value'=>'print_header',
+					'checked'=>$this->config->item('print_header')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_print_footer').':', 'print_footer',array('class'=>'wide')); ?>
+				<div class='form_field'>
+				<?php echo form_checkbox(array(
+					'name'=>'print_footer',
+					'id'=>'print_footer',
+					'value'=>'print_footer',
+					'checked'=>$this->config->item('print_footer')));?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_receipt_printer').':', 'config_receipt_printer',array('class'=>'wide')); ?>
+				<div class='form_field'>
+					<?php echo form_dropdown(
+						'receipt_printer',
+						array(),
+						'','id="receipt_printer"');?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">	
+			<?php echo form_label($this->lang->line('config_invoice_printer').':', 'config_invoice_printer',array('class'=>'wide')); ?>
+				<div class='form_field'>
+					<?php echo form_dropdown('invoice_printer', array(), ' ','id="invoice_printer"');?>
+				</div>
+			</div>
+
+			<div class="field_row clearfix">    
+				<?php echo form_label($this->lang->line('config_print_top_margin').':', 'print_top_margin',array('class'=>'wide required')); ?>
+				<div class='form_field'>
+				<?php echo form_input(array(
+					'type'=>'number',
+					'min'=>'0',
+					'max'=>'20',
+					'name'=>'print_top_margin',
+					'id'=>'print_top_margin',
+					'value'=>$this->config->item('print_top_margin')));?>
+					 px
+				</div>
+			</div>
+
+			<div class="field_row clearfix">    
+				<?php echo form_label($this->lang->line('config_print_left_margin').':', 'print_left_margin',array('class'=>'wide required')); ?>
+				<div class='form_field'>
+				<?php echo form_input(array(
+					'type'=>'number',
+					'min'=>'0',
+					'max'=>'20',
+					'name'=>'print_left_margin',
+					'id'=>'print_left_margin',
+					'value'=>$this->config->item('print_left_margin')));?>
+					 px
+				</div>
+			</div>
+
+			<div class="field_row clearfix">    
+				<?php echo form_label($this->lang->line('config_print_bottom_margin').':', 'print_bottom_margin',array('class'=>'wide required')); ?>
+				<div class='form_field'>
+				<?php echo form_input(array(
+					'type'=>'number',
+					'min'=>'0',
+					'max'=>'20',
+					'name'=>'print_bottom_margin',
+					'id'=>'print_bottom_margin',
+					'value'=>$this->config->item('print_bottom_margin')));?>
+							px
+				</div>
+			</div>
+
+			<div class="field_row clearfix">    
+				<?php echo form_label($this->lang->line('config_print_right_margin').':', 'print_right_margin',array('class'=>'wide required')); ?>
+				<div class='form_field'>
+				<?php echo form_input(array(
+					'type'=>'number',
+					'min'=>'0',
+					'max'=>'20',
+					'name'=>'print_right_margin',
+					'id'=>'print_right_margin',
+					'value'=>$this->config->item('print_right_margin')));?>
+							px
+				</div>
+			</div>
+
+
+			<?php 
+			echo form_submit(array(
+				'name'=>'submit_form',
+				'id'=>'submit_form',
+				'value'=>$this->lang->line('common_submit'),
+				'class'=>'btn btn-primary btn-sm pull-right')
+			);
+			?>
+		</fieldset>
 	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_invoice_default_comments').':', 'invoice_default_comments',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_textarea(array(
-		'name'=>'invoice_default_comments',
-		'id'=>'invoice_default_comments',
-		'rows'=>4,
-		'cols'=>25,
-		'value'=>$this->config->item('invoice_default_comments')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_invoice_email_message').':', 'invoice_email_message',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_textarea(array(
-		'name'=>'invoice_email_message',
-		'id'=>'invoice_email_message',
-		'rows'=>4,
-		'cols'=>25,
-		'value'=>$this->config->item('invoice_email_message')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_receipt_show_taxes').':', 'receipt_show_taxes',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'receipt_show_taxes',
-		'value'=>'receipt_show_taxes',
-		'id'=>'receipt_show_taxes',
-		'checked'=>$this->config->item('receipt_show_taxes')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_show_total_discount').':', 'show_total_discount',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'show_total_discount',
-		'value'=>'show_total_discount',
-		'id'=>'show_total_discount',
-		'checked'=>$this->config->item('show_total_discount')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_print_silently').':', 'print_silently',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'print_silently',
-		'id'=>'print_silently',
-		'value'=>'print_silently',
-		'checked'=>$this->config->item('print_silently')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_print_header').':', 'print_header',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'print_header',
-		'id'=>'print_header',
-		'value'=>'print_header',
-		'checked'=>$this->config->item('print_header')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_print_footer').':', 'print_footer',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_checkbox(array(
-		'name'=>'print_footer',
-		'id'=>'print_footer',
-		'value'=>'print_footer',
-		'checked'=>$this->config->item('print_footer')));?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_receipt_printer').':', 'config_receipt_printer',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_dropdown(
-			'receipt_printer',
-			array(),
-			'','id="receipt_printer"');?>
-	</div>
-</div>
-
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('config_invoice_printer').':', 'config_invoice_printer',array('class'=>'wide')); ?>
-	<div class='form_field'>
-		<?php echo form_dropdown('invoice_printer', array(), ' ','id="invoice_printer"');?>
-	</div>
-</div>
-
-<div class="field_row clearfix">    
- 	<?php echo form_label($this->lang->line('config_print_top_margin').':', 'print_top_margin',array('class'=>'wide required')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-     	'type'=>'number',
-      	'min'=>'0',
-      	'max'=>'20',
-        'name'=>'print_top_margin',
-        'id'=>'print_top_margin',
-        'value'=>$this->config->item('print_top_margin')));?>
-         px
-    </div>
-</div>
-
-<div class="field_row clearfix">    
- 	<?php echo form_label($this->lang->line('config_print_left_margin').':', 'print_left_margin',array('class'=>'wide required')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-     	'type'=>'number',
-      	'min'=>'0',
-       	'max'=>'20',
-        'name'=>'print_left_margin',
-        'id'=>'print_left_margin',
-        'value'=>$this->config->item('print_left_margin')));?>
-         px
-    </div>
-</div>
-
-<div class="field_row clearfix">    
- 	<?php echo form_label($this->lang->line('config_print_bottom_margin').':', 'print_bottom_margin',array('class'=>'wide required')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-        'type'=>'number',
-        'min'=>'0',
-        'max'=>'20',
-        'name'=>'print_bottom_margin',
-        'id'=>'print_bottom_margin',
-        'value'=>$this->config->item('print_bottom_margin')));?>
-                px
-    </div>
-</div>
-
-<div class="field_row clearfix">    
- 	<?php echo form_label($this->lang->line('config_print_right_margin').':', 'print_right_margin',array('class'=>'wide required')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-        'type'=>'number',
-        'min'=>'0',
-        'max'=>'20',
-        'name'=>'print_right_margin',
-        'id'=>'print_right_margin',
-        'value'=>$this->config->item('print_right_margin')));?>
-                px
-    </div>
-</div>
-
-
-<?php 
-echo form_submit(array(
-	'name'=>'submit_form',
-	'id'=>'submit_form',
-	'value'=>$this->lang->line('common_submit'),
-	'class'=>'btn btn-primary btn-sm pull-right')
-);
-?>
-</fieldset>
-</div>
-<?php
-echo form_close();
-?>
+<?php echo form_close(); ?>
 
 <script type='text/javascript'>
 
@@ -240,11 +237,11 @@ $(document).ready(function()
 			{
 				if(response.success)
 				{
-					set_feedback(response.message,'success_message',false);		
+					set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
 				}
 				else
 				{
-					set_feedback(response.message,'error_message',true);		
+					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
 				}
 				// set back disabled state
 				enable_disable_use_invoice_template();

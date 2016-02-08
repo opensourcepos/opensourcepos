@@ -189,14 +189,12 @@ function do_delete(url)
 				});
 			});
 			
-			set_feedback(response.message,'success_message',false);	
+			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
 		}
 		else
 		{
-			set_feedback(response.message,'error_message',true);	
+			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);	
 		}
-		
-
 	},"json");
 }
 
@@ -277,8 +275,7 @@ function enable_row_selection(rows)
 	);
 	
 	rows.click(function row_click(event)
-	{	
-
+	{
 		var checkbox = $(this).find(":checkbox");
 		checkbox.attr('checked',!checkbox.attr('checked'));
 		do_email(enable_email.url);
@@ -310,7 +307,8 @@ function update_sortable_table()
 	}
 }
 
-function get_table_row(id) {
+function get_table_row(id)
+{
 	id = id || $("input[name='sale_id']").val();
 	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
 	if ($element.length === 0) {
