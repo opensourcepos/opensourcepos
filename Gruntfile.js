@@ -97,7 +97,7 @@ module.exports = function(grunt) {
                 replacement: 'md5'
             },
             files: {
-                src: ['application/views/partial/header.php']
+                src: ['**/header.php']
             }
         }
     }
