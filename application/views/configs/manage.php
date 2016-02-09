@@ -4,51 +4,40 @@
     <div id="title" class="float_left"><?php echo $this->lang->line('module_config'); ?></div>
 </div>
 
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active" role="presentation">
-        <a href="#">General</a>
+        <a data-toggle="tab" href="#general">General</a>
     </li>
     <li role="presentation">
-        <a href="#">Locale</a>
+        <a data-toggle="tab" href="#locale">Locale</a>
     </li>
     <li role="presentation">
-        <a href="#">Barcode</a>
+        <a data-toggle="tab" href="#barcode">Barcode</a>
     </li>
     <li role="presentation">
-        <a href="#">Stock</a>
+        <a data-toggle="tab" href="#stock">Stock</a>
     </li>
     <li role="presentation">
-        <a href="#">Receipt</a>
+        <a data-toggle="tab" href="#receipt">Receipt</a>
     </li>
 </ul>
 
-<div id="tab_contents">
-    <div>
+<div class="tab-content">
+    <div class="tab-pane fade in active" id="general">
         <?php $this->load->view("configs/general_config"); ?>
     </div>
-    <div>
+    <div class="tab-pane" id="locale">
         <?php $this->load->view("configs/locale_config"); ?>
     </div>
-    <div>
+    <div class="tab-pane" id="barcode">
         <?php $this->load->view("configs/barcode_config"); ?>
     </div>
-    <div>
+    <div class="tab-pane" id="stock">
         <?php $this->load->view("configs/stock_config"); ?>
     </div>
-    <div>
+    <div class="tab-pane" id="receipt">
         <?php $this->load->view("configs/receipt_config"); ?>
     </div>
 </div>
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $(".nav-tabs li a").click(function () {
-            var $parent = $(this).parents("li");
-            $parent.addClass("active").siblings().removeClass("active");
-            $("#tab_contents > div").hide().filter("div:eq(" + $parent.index() + ")").show();
-            return false;
-        });
-    });
-</script>
 
 <?php $this->load->view("partial/footer"); ?>
