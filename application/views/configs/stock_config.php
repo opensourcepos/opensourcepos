@@ -5,8 +5,7 @@
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
             <ul id="location_error_message_box" class="error_message_box"></ul>
-            <legend><?php echo $this->lang->line("config_location_info"); ?></legend>
-            
+
             <div id="stock_locations">
 				<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
 			</div>

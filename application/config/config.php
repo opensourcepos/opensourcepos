@@ -18,7 +18,6 @@ $config['application_version'] = '2.4';
 |--------------------------------------------------------------------------
 |
 | URL to your CodeIgniter root. Typically this will be your base URL,
-| WITH a trailing slash:
 |
 |	http://example.com/
 |

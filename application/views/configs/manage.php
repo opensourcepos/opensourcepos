@@ -1,36 +1,54 @@
 <?php $this->load->view("partial/header"); ?>
 
-<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/tabcontent.css" />
-<script src="<?php echo base_url();?>js/tabcontent.js" type="text/javascript" language="javascript" charset="UTF-8"></script>
-
 <div id="title_bar">
     <div id="title" class="float_left"><?php echo $this->lang->line('module_config'); ?></div>
 </div>
 
-<ul class="tabs" data-persist="true">
-    <li><a href="#general_config">General</a></li>
-    <li><a href="#locale_config">Locale</a></li>
-    <li><a href="#barcode_config">Barcode</a></li>
-    <li><a href="#stock_config">Stock</a></li>
-    <li><a href="#receipt_config">Receipt</a></li>
+<ul class="nav nav-tabs">
+    <li class="active" role="presentation">
+        <a href="#">General</a>
+    </li>
+    <li role="presentation">
+        <a href="#">Locale</a>
+    </li>
+    <li role="presentation">
+        <a href="#">Barcode</a>
+    </li>
+    <li role="presentation">
+        <a href="#">Stock</a>
+    </li>
+    <li role="presentation">
+        <a href="#">Receipt</a>
+    </li>
 </ul>
 
-<div class="tabcontents">
-    <div id="general_config">
+<div id="tab_contents">
+    <div>
         <?php $this->load->view("configs/general_config"); ?>
     </div>
-    <div id="locale_config">
+    <div>
         <?php $this->load->view("configs/locale_config"); ?>
     </div>
-    <div id="barcode_config">
+    <div>
         <?php $this->load->view("configs/barcode_config"); ?>
     </div>
-    <div id="stock_config">
+    <div>
         <?php $this->load->view("configs/stock_config"); ?>
     </div>
-    <div id="receipt_config">
+    <div>
         <?php $this->load->view("configs/receipt_config"); ?>
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(".nav-tabs li a").click(function () {
+            var $parent = $(this).parents("li");
+            $parent.addClass("active").siblings().removeClass("active");
+            $("#tab_contents > div").hide().filter("div:eq(" + $parent.index() + ")").show();
+            return false;
+        });
+    });
+</script>
 
 <?php $this->load->view("partial/footer"); ?>
