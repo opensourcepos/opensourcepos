@@ -33,7 +33,6 @@
 		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
 		<script type="text/javascript" src="js/swfobject.js" language="javascript"></script>
-		<script type="text/javascript" src="js/tabcontent.js" language="javascript"></script>
 		<script type="text/javascript" src="js/thickbox.js" language="javascript"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
