@@ -141,7 +141,7 @@ if (isset($success))
 
 							<td><?php echo form_input(array('name'=>'discount','value'=>$item['discount'],'size'=>'3'));?></td>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-							<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
+							<td><?php echo form_submit(array('name'=>'edit_item', 'value'=>$this->lang->line('sales_edit_item'), 'class'=>'btn btn-default btn-sm pull-right'));?></td>
 						</tr>
 						<tr>
 							<?php 
