@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "Breedte (px)";
 $lang["config_barcode_generate_if_empty"] = "Genereer indien leeg";
 $lang["config_company"] = "Bedrijfsnaam";
 $lang["config_company_logo"] = "Logo";
+$lang["config_company_choose_file"] = "";
 $lang["config_company_required"] = "De bedrijfsnaam moet ingevuld worden";
 $lang["config_company_website_url"] = "De website van het bedrijf is geen geldige URL (http://...)";
 $lang["config_currency_side"] = "Rechterkant";

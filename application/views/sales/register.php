@@ -1,4 +1,3 @@
-
 <?php $this->load->view("partial/header"); ?>
 
 <div id="page_title" style="margin-bottom: 8px;"><?php echo $this->lang->line('sales_register'); ?></div>

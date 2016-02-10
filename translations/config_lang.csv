@@ -26,6 +26,7 @@ config_barcode_width,Breite (px),Breedte (px),Ancho (px),Width (px),Width (px),W
 config_barcode_generate_if_empty,Generiere Barcode wenn leer,Genereer indien leeg,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty
 config_company,Firmenname,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
 config_company_logo,Logo,Logo,Logotipo del Comercio,Company Logo,Company Logo,Company Logo,Company Logo,ภาพโลโก้,Company Logo,Company Logo
+config_company_choose_file,,,,Choose File,,,,,,
 config_company_required,Firmenname ist erforderlich,De bedrijfsnaam moet ingevuld worden,Nombre del Comercio es requerido,Company name is a required field,Le nom d\'entreprise est requis,公司名稱為必填,Имя Компании обязательный пробел,ชื่อร้านค้าต้องกรอก,Şirket Adı zorunlu alandır,Nama Perusahaan wajib diisi
 config_company_website_url,Webseite ist nicht in korrektem Format,De website van het bedrijf is geen geldige URL (http://...),Sitio Web no es una URL estándar (http://...),Company website is not a valid URL (http://...),Le site web de l\'entreprise n\'est pas une URL valide (http://...),公司網址格式錯誤 (http://...),Веб-сайт Компании не является допустимым URL (http://...),เว็บไซต์ร้านค้าไม่ถูกต้อง,website adresi yanlış (http://...),Situs Perusahaan bukan URL yang benar(http://...)
 config_currency_side,Pos. rechts,Rechterkant,Lado derecho,Right side,Symbole à droite,Right side,Правая сторона,ด้านขวา,Sağda,Sisi Kanan

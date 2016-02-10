@@ -12,7 +12,7 @@
 
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
+		<script type="text/javascript" src="js/jquery-1.12.0.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.11.4.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
@@ -25,6 +25,8 @@
 		<script type="text/javascript" src="js/jquery.tablesorter-2.20.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap-3.3.6.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap.file-input.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/date.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
@@ -36,7 +38,7 @@
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=946c014a6d" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=96f6785349" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 

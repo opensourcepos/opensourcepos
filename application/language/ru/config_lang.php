@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "Width (px)";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "Название Компании";
 $lang["config_company_logo"] = "Company Logo";
+$lang["config_company_choose_file"] = "";
 $lang["config_company_required"] = "Имя Компании обязательный пробел";
 $lang["config_company_website_url"] = "Веб-сайт Компании не является допустимым URL (http://...)";
 $lang["config_currency_side"] = "Правая сторона";

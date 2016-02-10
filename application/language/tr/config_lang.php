@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "Width (px)";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "Şirket Adı";
 $lang["config_company_logo"] = "Company Logo";
+$lang["config_company_choose_file"] = "";
 $lang["config_company_required"] = "Şirket Adı zorunlu alandır";
 $lang["config_company_website_url"] = "website adresi yanlış (http://...)";
 $lang["config_currency_side"] = "Sağda";

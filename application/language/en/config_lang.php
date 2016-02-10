@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "Width (px)";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "Company Name";
 $lang["config_company_logo"] = "Company Logo";
+$lang["config_company_choose_file"] = "Choose File";
 $lang["config_company_required"] = "Company name is a required field";
 $lang["config_company_website_url"] = "Company website is not a valid URL (http://...)";
 $lang["config_currency_side"] = "Right side";
