@@ -316,7 +316,6 @@ $(document).ready(function()
 	});
 	
 	$('input[type=file]').bootstrapFileInput();
-	$('.file-inputs').bootstrapFileInput();
 	
 	$('#config_form').validate({
 		submitHandler:function(form)
