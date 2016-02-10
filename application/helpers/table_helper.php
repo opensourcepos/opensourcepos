@@ -50,7 +50,7 @@ function get_sales_manage_table_data_rows($sales, $controller)
 
 	if($table_data_rows == '')
 	{
-		$table_data_rows .= "<tr><td colspan='10'><div class='alert alert-dismissible alert-warning'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
+		$table_data_rows .= "<tr><td colspan='10'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
 	}
 	else
 	{
