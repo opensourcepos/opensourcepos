@@ -7,9 +7,8 @@ module.exports = function(grunt) {
             options: {
                 separator: ';'
             },
-            dist: {
-                src: ['js/jquery*', 'js/*.js'],
-                dest: 'dist/<%= pkg.name %>.js'
+            files: {
+                'dist/<%= pkg.name %>.js': ['js/jquery*', 'js/*.js']
             }
         },
         sql: {
@@ -29,7 +28,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': ['<%= concat.js.dist.dest %>']
+          'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.js']
         }
       }
     },
