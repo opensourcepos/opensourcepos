@@ -3,7 +3,7 @@
 	<ul id="error_message_box" class="error_message_box"></ul>
 	
 	<fieldset id="sale_basic_info">
-		<?php echo form_open("sales/save/".$sale_info['sale_id'],array('id'=>'sales_edit_form')); ?>
+		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form')); ?>
 			<legend><?php echo $this->lang->line("sales_basic_information"); ?></legend>
 			
 			<div class="field_row clearfix">
@@ -50,19 +50,19 @@
 			<div class="field_row clearfix">
 				<?php echo form_label($this->lang->line('sales_comment').':', 'comment'); ?>
 				<div class='form_field'>
-					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'rows'=>'4','cols'=>'23', 'id'=>'comment'));?>
+					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'rows'=>'4', 'cols'=>'23', 'id'=>'comment'));?>
 				</div>
 			</div>
 			
 			<?php echo form_submit(array(
-				'name'=>'submit',
-				'value'=>$this->lang->line('common_submit'),
-				'class'=> 'btn btn-primary btn-sm pull-right')
+				'name' => 'submit',
+				'value' => $this->lang->line('common_submit'),
+				'class' => 'btn btn-primary btn-sm pull-right')
 			);
 			?>
 		<?php echo form_close(); ?>
 		
-		<?php echo form_open("sales/delete/".$sale_info['sale_id'],array('id'=>'sales_delete_form')); ?>
+		<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
 			<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
 			<?php echo form_submit(array(
 				'name'=>'submit',

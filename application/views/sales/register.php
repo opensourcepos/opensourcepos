@@ -620,4 +620,5 @@ function check_payment_type_gifcard()
 }
 
 </script>
+
 <?php $this->load->view("partial/footer"); ?>
