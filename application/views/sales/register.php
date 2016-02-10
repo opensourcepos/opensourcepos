@@ -390,7 +390,7 @@ if (isset($success))
 						</tr>
 					</table>
 					
-					<div class='btn btn-sm btn-primary' id='add_payment_button' style='float: left; margin-top: 5px;'>
+					<div class='btn btn-sm btn-success' id='add_payment_button' style='float: left; margin-top: 5px;'>
 						<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
 					</div>
 				<?php echo form_close(); ?>
