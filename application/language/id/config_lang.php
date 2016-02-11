@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "Width (px)";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "Nama Perusahaan";
 $lang["config_company_logo"] = "Company Logo";
+$lang["config_company_choose_file"] = "";
 $lang["config_company_required"] = "Nama Perusahaan wajib diisi";
 $lang["config_company_website_url"] = "Situs Perusahaan bukan URL yang benar(http://...)";
 $lang["config_currency_side"] = "Sisi Kanan";

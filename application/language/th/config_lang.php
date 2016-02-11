@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "กว้าง (px)";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "ชื่อร้านค้า";
 $lang["config_company_logo"] = "ภาพโลโก้";
+$lang["config_company_choose_file"] = "";
 $lang["config_company_required"] = "ชื่อร้านค้าต้องกรอก";
 $lang["config_company_website_url"] = "เว็บไซต์ร้านค้าไม่ถูกต้อง";
 $lang["config_currency_side"] = "ด้านขวา";

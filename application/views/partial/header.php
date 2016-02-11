@@ -27,6 +27,7 @@
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
 		<script type="text/javascript" src="js/bootstrap-3.3.6.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap.file-input.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/date.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>

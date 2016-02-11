@@ -27,6 +27,7 @@ $lang["config_barcode_width"] = "Width (px)";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_company"] = "公司名稱";
 $lang["config_company_logo"] = "Company Logo";
+$lang["config_company_choose_file"] = "";
 $lang["config_company_required"] = "公司名稱為必填";
 $lang["config_company_website_url"] = "公司網址格式錯誤 (http://...)";
 $lang["config_currency_side"] = "Right side";
