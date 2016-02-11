@@ -12,7 +12,8 @@
 
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery-1.12.0.js" language="javascript"></script>
+		<script type="text/javascript" src="js/jquery-1.9.1.js" language="javascript"></script>
+		<script type="text/javascript" src="js/jquery-migrate-1.3.0.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.11.4.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
@@ -37,7 +38,7 @@
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=946c014a6d" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ddff138e90" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 
