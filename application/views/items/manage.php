@@ -7,6 +7,7 @@ $(document).ready(function()
     enable_select_all();
     enable_checkboxes();
     enable_row_selection();
+	
     var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
         confirm_message : '<?php echo $this->lang->line("common_confirm_search")?>',
         extra_params : {
@@ -14,6 +15,7 @@ $(document).ready(function()
                 return $("#is_deleted").is(":checked") ? 1 : 0;
         }
     }});
+	
     // clear suggestion cache when toggling filter
     $("#is_deleted").change(function() {
         widget.flushCache();
@@ -46,14 +48,14 @@ $(document).ready(function()
         }
     });
 
-    $(".date_filter").datepicker({onSelect: function(d,i)
-    {
-        if(d !== i.lastVal){
-            $(this).change();
-        }
-    }, dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
-       timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
-    }).change(function() {
+    $(".date_filter").datetimepicker({
+        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')); ?>",
+        startDate: '01/01/2010',
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true,
+        language: "<?php echo $this->config->item('language'); ?>"
+    }).on('changeDate', function(event) {
         do_search(true);
         return false;
     });
@@ -64,6 +66,22 @@ $(document).ready(function()
 function resize_thumbs()
 {
     $('a.rollover').imgPreview();
+}
+
+function show_hide_search_filter(search_filter_section, switchImgTag)
+{
+    var ele = document.getElementById(search_filter_section);
+    var imageEle = document.getElementById(switchImgTag);
+    if(ele.style.display == "block")
+    {
+		ele.style.display = "none";
+		imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/plus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
+    }
+    else
+    {
+		ele.style.display = "block";
+		imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/minus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
+    }
 }
 
 function init_table_sorting()
@@ -127,26 +145,6 @@ function post_bulk_form_submit(response)
         set_feedback(response.message, 'alert alert-dismissible alert-success', false);
     }
 }
-
-function show_hide_search_filter(search_filter_section, switchImgTag)
-{
-    var ele = document.getElementById(search_filter_section);
-    var imageEle = document.getElementById(switchImgTag);
-    var elesearchstate = document.getElementById('search_section_state');
-
-    if(ele.style.display == "block")
-    {
-        ele.style.display = "none";
-        imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/plus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
-        elesearchstate.value="none";
-    }
-    else
-    {
-        ele.style.display = "block";
-        imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/minus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
-        elesearchstate.value="block";
-    }
-}
 </script>
 
 <div id="title_bar">
@@ -163,15 +161,14 @@ function show_hide_search_filter(search_filter_section, switchImgTag)
 
 <div id="pagination"><?= $links ?></div>
 
-<div id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
+<div id="titleTextImg">
     <div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'); ?> :</div>
     <a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
-    <img src="
-    <?php echo isset($search_section_state)? ( ($search_section_state)? base_url().'images/minus.png' : base_url().'images/plus.png') : base_url().'images/plus.png';?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
+	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
-	<div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>; background-color:#EEEEEE;">
+<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
+	<div id="search_filter_section" style="display:none;">
 		<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
 		<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>
 		<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
@@ -189,8 +186,6 @@ function show_hide_search_filter(search_filter_section, switchImgTag)
 		<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size' => '15'));?>
 		<?php echo form_label(' - ', 'end_date');?>
 		<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size' => '15'));?>
-		
-		<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
 	</div>
 
 	<div id="table_action_header">
@@ -198,9 +193,14 @@ function show_hide_search_filter(search_filter_section, switchImgTag)
 			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit/width:$form_width",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
 			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
-			<?php if (count($stock_locations) > 1): ?>
+			<?php
+			if (count($stock_locations) > 1)
+			{
+			?>
 				<li class="float_left"><span><?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'id="stock_location" onchange="$(\'#search_form\').submit();"'); ?></span></li>
-			<?php endif; ?>
+			<?php
+			}
+			?>
 			<li class="float_right">
 				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 				<input type="text" name ='search' id='search'/>

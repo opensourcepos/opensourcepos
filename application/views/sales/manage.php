@@ -3,7 +3,6 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	$.datepicker.regional[ '<?php echo $this->config->item('language'); ?>' ];
     init_table_sorting();
     enable_checkboxes();
     enable_row_selection();
@@ -36,13 +35,14 @@ $(document).ready(function()
 	$("#only_invoices").change(show_renumber);
 	show_renumber();
 
-	$(".date_filter").datepicker({onSelect: function(d,i){
-		if(d !== i.lastVal){
-			$(this).change();
-		}
-	}, dateFormat: "<?php echo dateformat_jquery($this->config->item('dateformat'));?>",
-	   timeFormat: "<?php echo dateformat_jquery($this->config->item('timeFormat'));?>"
-	}).change(function() {
+	$(".date_filter").datetimepicker({
+		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat'))?>",
+		startDate: '01/01/2010',
+		autoclose: true,
+		todayBtn: true,
+		todayHighlight: true,
+		language: "<?php echo $this->config->item('language'); ?>"
+	}).on('changeDate', function(event) {
 		do_search(true, function(response) {
 			$("#payment_summary").html(response.payment_summary);
 		});
@@ -174,23 +174,23 @@ function init_table_sorting()
 
 <div id="pagination"><?= $links ?></div>
 
-<div id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
+<div id="titleTextImg">
 	<div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
-	<div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>;background-color:#EEEEEE;">
+<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
+	<div id="search_filter_section" style="display:none;">
 		<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
 		<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
-		<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-		<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size' => '15'));?>
-		<?php echo form_label(' - ', 'end_date');?>
-		<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size' => '15')) . ' | ';?>
 		<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
-		<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0));?>
-		<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
+		<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0)) . ' | ';?>
+
+		<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
+		<?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter', 'size' => '15'));?>
+		<?php echo form_label(' - ', 'end_date');?>
+		<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '15'));?>
 	</div>
 
 	<div id="table_action_header">
@@ -198,9 +198,9 @@ function init_table_sorting()
 			<li class="float_left"><span><?php echo anchor($controller_name . "/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 			<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'),array('id'=>'update_invoice_numbers')); ?></span></li-->
 			<li class="float_right">
-			<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
-			<input type="text" name ='search' id='search'/>
-			<input type="hidden" name ='limit_from' id='limit_from'/>
+				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
+				<input type="text" name ='search' id='search'/>
+				<input type="hidden" name ='limit_from' id='limit_from'/>
 			</li>
 		</ul>
 	</div>

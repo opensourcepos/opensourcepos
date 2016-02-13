@@ -38,7 +38,7 @@
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ec83b8a708" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=710c9d4a22" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 

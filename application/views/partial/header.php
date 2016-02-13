@@ -14,7 +14,6 @@
 		<script type="text/javascript" src="js/jquery-1.12.0.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery-migrate-1.3.0.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery-ui-1.11.4.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery-ui-timepicker-addon.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.bgiframe.min.js" language="javascript"></script>
@@ -39,7 +38,7 @@
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ec83b8a708" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=710c9d4a22" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 
