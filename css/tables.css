@@ -134,7 +134,7 @@ table.tablesorter thead .tablesorter-headerDesc
 
 table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSortUp 
 {
-	background-color: #8dbdd8;
+	background-color: #555555;
 }
 
 table.innertable
@@ -145,7 +145,7 @@ table.innertable
 
 table.innertable thead tr th 
 {
-	background-color: #0a6184;
+	background-color: #999999;
 }
 
 table.innertable tbody tr td 
