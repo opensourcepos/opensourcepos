@@ -26444,135 +26444,1883 @@ if (typeof jQuery === 'undefined') {
   })
 
 }(jQuery);
-;/*
-  Bootstrap - File Input
-  ======================
+;/* =========================================================
+ * bootstrap-datetimepicker.js
+ * =========================================================
+ * Copyright 2012 Stefan Petre
+ *
+ * Improvements by Andrew Rowls
+ * Improvements by Sébastien Malot
+ * Improvements by Yun Lai
+ * Improvements by Kenneth Henderick
+ * Improvements by CuGBabyBeaR
+ * Improvements by Christian Vaas <auspex@auspex.eu>
+ *
+ * Project URL : http://www.malot.fr/bootstrap-datetimepicker
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================= */
 
-  This is meant to convert all file input tags into a set of elements that displays consistently in all browsers.
+(function(factory){
+    if (typeof define === 'function' && define.amd)
+      define(['jquery'], factory);
+    else if (typeof exports === 'object')
+      factory(require('jquery'));
+    else
+      factory(jQuery);
 
-  Converts all
-  <input type="file">
-  into Bootstrap buttons
-  <a class="btn">Browse</a>
+}(function($, undefined){
 
-*/
-(function($) {
-
-$.fn.bootstrapFileInput = function() {
-
-  this.each(function(i,elem){
-
-    var $elem = $(elem);
-
-    // Maybe some fields don't need to be standardized.
-    if (typeof $elem.attr('data-bfi-disabled') != 'undefined') {
-      return;
+  // Add ECMA262-5 Array methods if not supported natively (IE8)
+  if (!('indexOf' in Array.prototype)) {
+    Array.prototype.indexOf = function (find, i) {
+      if (i === undefined) i = 0;
+      if (i < 0) i += this.length;
+      if (i < 0) i = 0;
+      for (var n = this.length; i < n; i++) {
+        if (i in this && this[i] === find) {
+          return i;
+        }
+      }
+      return -1;
     }
+  }
 
-    // Set the word to be displayed on the button
-    var buttonWord = 'Browse';
-
-    if (typeof $elem.attr('title') != 'undefined') {
-      buttonWord = $elem.attr('title');
-    }
-
-    var className = '';
-
-    if (!!$elem.attr('class')) {
-      className = ' ' + $elem.attr('class');
-    }
-
-    // Now we're going to wrap that input field with a Bootstrap button.
-    // The input will actually still be there, it will just be float above and transparent (done with the CSS).
-    $elem.wrap('<a class="file-input-wrapper btn btn-default ' + className + '"></a>').parent().prepend($('<span></span>').html(buttonWord));
-  })
-
-  // After we have found all of the file inputs let's apply a listener for tracking the mouse movement.
-  // This is important because the in order to give the illusion that this is a button in FF we actually need to move the button from the file input under the cursor. Ugh.
-  .promise().done( function(){
-
-    // As the cursor moves over our new Bootstrap button we need to adjust the position of the invisible file input Browse button to be under the cursor.
-    // This gives us the pointer cursor that FF denies us
-    $('.file-input-wrapper').mousemove(function(cursor) {
-
-      var input, wrapper,
-        wrapperX, wrapperY,
-        inputWidth, inputHeight,
-        cursorX, cursorY;
-
-      // This wrapper element (the button surround this file input)
-      wrapper = $(this);
-      // The invisible file input element
-      input = wrapper.find("input");
-      // The left-most position of the wrapper
-      wrapperX = wrapper.offset().left;
-      // The top-most position of the wrapper
-      wrapperY = wrapper.offset().top;
-      // The with of the browsers input field
-      inputWidth= input.width();
-      // The height of the browsers input field
-      inputHeight= input.height();
-      //The position of the cursor in the wrapper
-      cursorX = cursor.pageX;
-      cursorY = cursor.pageY;
-
-      //The positions we are to move the invisible file input
-      // The 20 at the end is an arbitrary number of pixels that we can shift the input such that cursor is not pointing at the end of the Browse button but somewhere nearer the middle
-      moveInputX = cursorX - wrapperX - inputWidth + 20;
-      // Slides the invisible input Browse button to be positioned middle under the cursor
-      moveInputY = cursorY- wrapperY - (inputHeight/2);
-
-      // Apply the positioning styles to actually move the invisible file input
-      input.css({
-        left:moveInputX,
-        top:moveInputY
-      });
+  function elementOrParentIsFixed (element) {
+    var $element = $(element);
+    var $checkElements = $element.add($element.parents());
+    var isFixed = false;
+    $checkElements.each(function(){
+      if ($(this).css('position') === 'fixed') {
+        isFixed = true;
+        return false;
+      }
     });
+    return isFixed;
+  }
 
-    $('body').on('change', '.file-input-wrapper input[type=file]', function(){
+  function UTCDate() {
+    return new Date(Date.UTC.apply(Date, arguments));
+  }
 
-      var fileName;
-      fileName = $(this).val();
+  function UTCToday() {
+    var today = new Date();
+    return UTCDate(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate(), today.getUTCHours(), today.getUTCMinutes(), today.getUTCSeconds(), 0);
+  }
 
-      // Remove any previous file names
-      $(this).parent().next('.file-input-name').remove();
-      if (!!$(this).prop('files') && $(this).prop('files').length > 1) {
-        fileName = $(this)[0].files.length+' files';
+  // Picker object
+  var Datetimepicker = function (element, options) {
+    var that = this;
+
+    this.element = $(element);
+
+    // add container for single page application
+    // when page switch the datetimepicker div will be removed also.
+    this.container = options.container || 'body';
+
+    this.language = options.language || this.element.data('date-language') || 'en';
+    this.language = this.language in dates ? this.language : this.language.split('-')[0]; // fr-CA fallback to fr
+    this.language = this.language in dates ? this.language : 'en';
+    this.isRTL = dates[this.language].rtl || false;
+    this.formatType = options.formatType || this.element.data('format-type') || 'standard';
+    this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || dates[this.language].format || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
+    this.isInline = false;
+    this.isVisible = false;
+    this.isInput = this.element.is('input');
+    this.fontAwesome = options.fontAwesome || this.element.data('font-awesome') || false;
+
+    this.bootcssVer = options.bootcssVer || (this.isInput ? (this.element.is('.form-control') ? 3 : 2) : ( this.bootcssVer = this.element.is('.input-group') ? 3 : 2 ));
+
+    this.component = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-remove, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o').parent() : this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar, .add-on .fa-calendar, .add-on .fa-clock-o').parent()) : false;
+    this.componentReset = this.element.is('.date') ? ( this.bootcssVer == 3 ? this.element.find('.input-group-addon .glyphicon-remove, .input-group-addon .fa-times').parent():this.element.find('.add-on .icon-remove, .add-on .fa-times').parent()) : false;
+    this.hasInput = this.component && this.element.find('input').length;
+    if (this.component && this.component.length === 0) {
+      this.component = false;
+    }
+    this.linkField = options.linkField || this.element.data('link-field') || false;
+    this.linkFormat = DPGlobal.parseFormat(options.linkFormat || this.element.data('link-format') || DPGlobal.getDefaultFormat(this.formatType, 'link'), this.formatType);
+    this.minuteStep = options.minuteStep || this.element.data('minute-step') || 5;
+    this.pickerPosition = options.pickerPosition || this.element.data('picker-position') || 'bottom-right';
+    this.showMeridian = options.showMeridian || this.element.data('show-meridian') || false;
+    this.initialDate = options.initialDate || new Date();
+    this.zIndex = options.zIndex || this.element.data('z-index') || undefined;
+    this.title = typeof options.title === 'undefined' ? false : options.title;
+
+    this.icons = {
+      leftArrow: this.fontAwesome ? 'fa-arrow-left' : (this.bootcssVer === 3 ? 'glyphicon-arrow-left' : 'icon-arrow-left'),
+      rightArrow: this.fontAwesome ? 'fa-arrow-right' : (this.bootcssVer === 3 ? 'glyphicon-arrow-right' : 'icon-arrow-right')
+    }
+    this.icontype = this.fontAwesome ? 'fa' : 'glyphicon';
+
+    this._attachEvents();
+
+    this.clickedOutside = function (e) {
+        // Clicked outside the datetimepicker, hide it
+        if ($(e.target).closest('.datetimepicker').length === 0) {
+            that.hide();
+        }
+    }
+
+    this.formatViewType = 'datetime';
+    if ('formatViewType' in options) {
+      this.formatViewType = options.formatViewType;
+    } else if ('formatViewType' in this.element.data()) {
+      this.formatViewType = this.element.data('formatViewType');
+    }
+
+    this.minView = 0;
+    if ('minView' in options) {
+      this.minView = options.minView;
+    } else if ('minView' in this.element.data()) {
+      this.minView = this.element.data('min-view');
+    }
+    this.minView = DPGlobal.convertViewMode(this.minView);
+
+    this.maxView = DPGlobal.modes.length - 1;
+    if ('maxView' in options) {
+      this.maxView = options.maxView;
+    } else if ('maxView' in this.element.data()) {
+      this.maxView = this.element.data('max-view');
+    }
+    this.maxView = DPGlobal.convertViewMode(this.maxView);
+
+    this.wheelViewModeNavigation = false;
+    if ('wheelViewModeNavigation' in options) {
+      this.wheelViewModeNavigation = options.wheelViewModeNavigation;
+    } else if ('wheelViewModeNavigation' in this.element.data()) {
+      this.wheelViewModeNavigation = this.element.data('view-mode-wheel-navigation');
+    }
+
+    this.wheelViewModeNavigationInverseDirection = false;
+
+    if ('wheelViewModeNavigationInverseDirection' in options) {
+      this.wheelViewModeNavigationInverseDirection = options.wheelViewModeNavigationInverseDirection;
+    } else if ('wheelViewModeNavigationInverseDirection' in this.element.data()) {
+      this.wheelViewModeNavigationInverseDirection = this.element.data('view-mode-wheel-navigation-inverse-dir');
+    }
+
+    this.wheelViewModeNavigationDelay = 100;
+    if ('wheelViewModeNavigationDelay' in options) {
+      this.wheelViewModeNavigationDelay = options.wheelViewModeNavigationDelay;
+    } else if ('wheelViewModeNavigationDelay' in this.element.data()) {
+      this.wheelViewModeNavigationDelay = this.element.data('view-mode-wheel-navigation-delay');
+    }
+
+    this.startViewMode = 2;
+    if ('startView' in options) {
+      this.startViewMode = options.startView;
+    } else if ('startView' in this.element.data()) {
+      this.startViewMode = this.element.data('start-view');
+    }
+    this.startViewMode = DPGlobal.convertViewMode(this.startViewMode);
+    this.viewMode = this.startViewMode;
+
+    this.viewSelect = this.minView;
+    if ('viewSelect' in options) {
+      this.viewSelect = options.viewSelect;
+    } else if ('viewSelect' in this.element.data()) {
+      this.viewSelect = this.element.data('view-select');
+    }
+    this.viewSelect = DPGlobal.convertViewMode(this.viewSelect);
+
+    this.forceParse = true;
+    if ('forceParse' in options) {
+      this.forceParse = options.forceParse;
+    } else if ('dateForceParse' in this.element.data()) {
+      this.forceParse = this.element.data('date-force-parse');
+    }
+    var template = this.bootcssVer === 3 ? DPGlobal.templateV3 : DPGlobal.template;
+    while (template.indexOf('{iconType}') !== -1) {
+      template = template.replace('{iconType}', this.icontype);
+    }
+    while (template.indexOf('{leftArrow}') !== -1) {
+      template = template.replace('{leftArrow}', this.icons.leftArrow);
+    }
+    while (template.indexOf('{rightArrow}') !== -1) {
+      template = template.replace('{rightArrow}', this.icons.rightArrow);
+    }
+    this.picker = $(template)
+      .appendTo(this.isInline ? this.element : this.container) // 'body')
+      .on({
+        click:     $.proxy(this.click, this),
+        mousedown: $.proxy(this.mousedown, this)
+      });
+
+    if (this.wheelViewModeNavigation) {
+      if ($.fn.mousewheel) {
+        this.picker.on({mousewheel: $.proxy(this.mousewheel, this)});
+      } else {
+        console.log('Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option');
+      }
+    }
+
+    if (this.isInline) {
+      this.picker.addClass('datetimepicker-inline');
+    } else {
+      this.picker.addClass('datetimepicker-dropdown-' + this.pickerPosition + ' dropdown-menu');
+    }
+    if (this.isRTL) {
+      this.picker.addClass('datetimepicker-rtl');
+      var selector = this.bootcssVer === 3 ? '.prev span, .next span' : '.prev i, .next i';
+      this.picker.find(selector).toggleClass(this.icons.leftArrow + ' ' + this.icons.rightArrow);
+    }
+
+    $(document).on('mousedown', this.clickedOutside);
+
+    this.autoclose = false;
+    if ('autoclose' in options) {
+      this.autoclose = options.autoclose;
+    } else if ('dateAutoclose' in this.element.data()) {
+      this.autoclose = this.element.data('date-autoclose');
+    }
+
+    this.keyboardNavigation = true;
+    if ('keyboardNavigation' in options) {
+      this.keyboardNavigation = options.keyboardNavigation;
+    } else if ('dateKeyboardNavigation' in this.element.data()) {
+      this.keyboardNavigation = this.element.data('date-keyboard-navigation');
+    }
+
+    this.todayBtn = (options.todayBtn || this.element.data('date-today-btn') || false);
+    this.clearBtn = (options.clearBtn || this.element.data('date-clear-btn') || false);
+    this.todayHighlight = (options.todayHighlight || this.element.data('date-today-highlight') || false);
+
+    this.weekStart = ((options.weekStart || this.element.data('date-weekstart') || dates[this.language].weekStart || 0) % 7);
+    this.weekEnd = ((this.weekStart + 6) % 7);
+    this.startDate = -Infinity;
+    this.endDate = Infinity;
+    this.datesDisabled = [];
+    this.daysOfWeekDisabled = [];
+    this.setStartDate(options.startDate || this.element.data('date-startdate'));
+    this.setEndDate(options.endDate || this.element.data('date-enddate'));
+    this.setDatesDisabled(options.datesDisabled || this.element.data('date-dates-disabled'));
+    this.setDaysOfWeekDisabled(options.daysOfWeekDisabled || this.element.data('date-days-of-week-disabled'));
+    this.setMinutesDisabled(options.minutesDisabled || this.element.data('date-minute-disabled'));
+    this.setHoursDisabled(options.hoursDisabled || this.element.data('date-hour-disabled'));
+    this.fillDow();
+    this.fillMonths();
+    this.update();
+    this.showMode();
+
+    if (this.isInline) {
+      this.show();
+    }
+  };
+
+  Datetimepicker.prototype = {
+    constructor: Datetimepicker,
+
+    _events:       [],
+    _attachEvents: function () {
+      this._detachEvents();
+      if (this.isInput) { // single input
+        this._events = [
+          [this.element, {
+            focus:   $.proxy(this.show, this),
+            keyup:   $.proxy(this.update, this),
+            keydown: $.proxy(this.keydown, this)
+          }]
+        ];
+      }
+      else if (this.component && this.hasInput) { // component: input + button
+        this._events = [
+          // For components that are not readonly, allow keyboard nav
+          [this.element.find('input'), {
+            focus:   $.proxy(this.show, this),
+            keyup:   $.proxy(this.update, this),
+            keydown: $.proxy(this.keydown, this)
+          }],
+          [this.component, {
+            click: $.proxy(this.show, this)
+          }]
+        ];
+        if (this.componentReset) {
+          this._events.push([
+            this.componentReset,
+            {click: $.proxy(this.reset, this)}
+          ]);
+        }
+      }
+      else if (this.element.is('div')) {  // inline datetimepicker
+        this.isInline = true;
       }
       else {
-        fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
+        this._events = [
+          [this.element, {
+            click: $.proxy(this.show, this)
+          }]
+        ];
+      }
+      for (var i = 0, el, ev; i < this._events.length; i++) {
+        el = this._events[i][0];
+        ev = this._events[i][1];
+        el.on(ev);
+      }
+    },
+
+    _detachEvents: function () {
+      for (var i = 0, el, ev; i < this._events.length; i++) {
+        el = this._events[i][0];
+        ev = this._events[i][1];
+        el.off(ev);
+      }
+      this._events = [];
+    },
+
+    show: function (e) {
+      this.picker.show();
+      this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
+      if (this.forceParse) {
+        this.update();
+      }
+      this.place();
+      $(window).on('resize', $.proxy(this.place, this));
+      if (e) {
+        e.stopPropagation();
+        e.preventDefault();
+      }
+      this.isVisible = true;
+      this.element.trigger({
+        type: 'show',
+        date: this.date
+      });
+    },
+
+    hide: function (e) {
+      if (!this.isVisible) return;
+      if (this.isInline) return;
+      this.picker.hide();
+      $(window).off('resize', this.place);
+      this.viewMode = this.startViewMode;
+      this.showMode();
+      if (!this.isInput) {
+        $(document).off('mousedown', this.hide);
       }
 
-      // Don't try to show the name if there is none
-      if (!fileName) {
+      if (
+        this.forceParse &&
+          (
+            this.isInput && this.element.val() ||
+              this.hasInput && this.element.find('input').val()
+            )
+        )
+        this.setValue();
+      this.isVisible = false;
+      this.element.trigger({
+        type: 'hide',
+        date: this.date
+      });
+    },
+
+    remove: function () {
+      this._detachEvents();
+      $(document).off('mousedown', this.clickedOutside);
+      this.picker.remove();
+      delete this.picker;
+      delete this.element.data().datetimepicker;
+    },
+
+    getDate: function () {
+      var d = this.getUTCDate();
+      return new Date(d.getTime() + (d.getTimezoneOffset() * 60000));
+    },
+
+    getUTCDate: function () {
+      return this.date;
+    },
+
+    getInitialDate: function () {
+      return this.initialDate
+    },
+
+    setInitialDate: function (initialDate) {
+      this.initialDate = initialDate;
+    },
+
+    setDate: function (d) {
+      this.setUTCDate(new Date(d.getTime() - (d.getTimezoneOffset() * 60000)));
+    },
+
+    setUTCDate: function (d) {
+      if (d >= this.startDate && d <= this.endDate) {
+        this.date = d;
+        this.setValue();
+        this.viewDate = this.date;
+        this.fill();
+      } else {
+        this.element.trigger({
+          type:      'outOfRange',
+          date:      d,
+          startDate: this.startDate,
+          endDate:   this.endDate
+        });
+      }
+    },
+
+    setFormat: function (format) {
+      this.format = DPGlobal.parseFormat(format, this.formatType);
+      var element;
+      if (this.isInput) {
+        element = this.element;
+      } else if (this.component) {
+        element = this.element.find('input');
+      }
+      if (element && element.val()) {
+        this.setValue();
+      }
+    },
+
+    setValue: function () {
+      var formatted = this.getFormattedDate();
+      if (!this.isInput) {
+        if (this.component) {
+          this.element.find('input').val(formatted);
+        }
+        this.element.data('date', formatted);
+      } else {
+        this.element.val(formatted);
+      }
+      if (this.linkField) {
+        $('#' + this.linkField).val(this.getFormattedDate(this.linkFormat));
+      }
+    },
+
+    getFormattedDate: function (format) {
+      if (format == undefined) format = this.format;
+      return DPGlobal.formatDate(this.date, format, this.language, this.formatType);
+    },
+
+    setStartDate: function (startDate) {
+      this.startDate = startDate || -Infinity;
+      if (this.startDate !== -Infinity) {
+        this.startDate = DPGlobal.parseDate(this.startDate, this.format, this.language, this.formatType);
+      }
+      this.update();
+      this.updateNavArrows();
+    },
+
+    setEndDate: function (endDate) {
+      this.endDate = endDate || Infinity;
+      if (this.endDate !== Infinity) {
+        this.endDate = DPGlobal.parseDate(this.endDate, this.format, this.language, this.formatType);
+      }
+      this.update();
+      this.updateNavArrows();
+    },
+
+    setDatesDisabled: function (datesDisabled) {
+      this.datesDisabled = datesDisabled || [];
+      if (!$.isArray(this.datesDisabled)) {
+        this.datesDisabled = this.datesDisabled.split(/,\s*/);
+      }
+      this.datesDisabled = $.map(this.datesDisabled, function (d) {
+        return DPGlobal.parseDate(d, this.format, this.language, this.formatType).toDateString();
+      });
+      this.update();
+      this.updateNavArrows();
+    },
+
+    setTitle: function (selector, value) {
+      return this.picker.find(selector)
+        .find('th:eq(1)')
+        .text(this.title === false ? value : this.title);
+    },
+
+    setDaysOfWeekDisabled: function (daysOfWeekDisabled) {
+      this.daysOfWeekDisabled = daysOfWeekDisabled || [];
+      if (!$.isArray(this.daysOfWeekDisabled)) {
+        this.daysOfWeekDisabled = this.daysOfWeekDisabled.split(/,\s*/);
+      }
+      this.daysOfWeekDisabled = $.map(this.daysOfWeekDisabled, function (d) {
+        return parseInt(d, 10);
+      });
+      this.update();
+      this.updateNavArrows();
+    },
+
+    setMinutesDisabled: function (minutesDisabled) {
+      this.minutesDisabled = minutesDisabled || [];
+      if (!$.isArray(this.minutesDisabled)) {
+        this.minutesDisabled = this.minutesDisabled.split(/,\s*/);
+      }
+      this.minutesDisabled = $.map(this.minutesDisabled, function (d) {
+        return parseInt(d, 10);
+      });
+      this.update();
+      this.updateNavArrows();
+    },
+
+    setHoursDisabled: function (hoursDisabled) {
+      this.hoursDisabled = hoursDisabled || [];
+      if (!$.isArray(this.hoursDisabled)) {
+        this.hoursDisabled = this.hoursDisabled.split(/,\s*/);
+      }
+      this.hoursDisabled = $.map(this.hoursDisabled, function (d) {
+        return parseInt(d, 10);
+      });
+      this.update();
+      this.updateNavArrows();
+    },
+
+    place: function () {
+      if (this.isInline) return;
+
+      if (!this.zIndex) {
+        var index_highest = 0;
+        $('div').each(function () {
+          var index_current = parseInt($(this).css('zIndex'), 10);
+          if (index_current > index_highest) {
+            index_highest = index_current;
+          }
+        });
+        this.zIndex = index_highest + 10;
+      }
+
+      var offset, top, left, containerOffset;
+      if (this.container instanceof $) {
+        containerOffset = this.container.offset();
+      } else {
+        containerOffset = $(this.container).offset();
+      }
+
+      if (this.component) {
+        offset = this.component.offset();
+        left = offset.left;
+        if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
+          left += this.component.outerWidth() - this.picker.outerWidth();
+        }
+      } else {
+        offset = this.element.offset();
+        left = offset.left;
+        if (this.pickerPosition == 'bottom-left' || this.pickerPosition == 'top-left') {
+          left += this.element.outerWidth() - this.picker.outerWidth();
+        }
+      }
+
+      var bodyWidth = document.body.clientWidth || window.innerWidth;
+      if (left + 220 > bodyWidth) {
+        left = bodyWidth - 220;
+      }
+
+      if (this.component) {
+        top = top - containerOffset.top + 169;
+        left = left - containerOffset.left + 210;
+      } else {
+        if (this.pickerPosition == 'top-left' || this.pickerPosition == 'top-right') {
+          top = offset.top - this.picker.outerHeight();
+        } else {
+          top = offset.top + this.height;
+        }
+      }
+
+      this.picker.css({
+        top:    top,
+        left:   left,
+        zIndex: this.zIndex
+      });
+    },
+
+    update: function () {
+      var date, fromArgs = false;
+      if (arguments && arguments.length && (typeof arguments[0] === 'string' || arguments[0] instanceof Date)) {
+        date = arguments[0];
+        fromArgs = true;
+      } else {
+        date = (this.isInput ? this.element.val() : this.element.find('input').val()) || this.element.data('date') || this.initialDate;
+        if (typeof date == 'string' || date instanceof String) {
+          date = date.replace(/^\s+|\s+$/g,'');
+        }
+      }
+
+      if (!date) {
+        date = new Date();
+        fromArgs = false;
+      }
+
+      this.date = DPGlobal.parseDate(date, this.format, this.language, this.formatType);
+
+      if (fromArgs) this.setValue();
+
+      if (this.date < this.startDate) {
+        this.viewDate = new Date(this.startDate);
+      } else if (this.date > this.endDate) {
+        this.viewDate = new Date(this.endDate);
+      } else {
+        this.viewDate = new Date(this.date);
+      }
+      this.fill();
+    },
+
+    fillDow: function () {
+      var dowCnt = this.weekStart,
+        html = '<tr>';
+      while (dowCnt < this.weekStart + 7) {
+        html += '<th class="dow">' + dates[this.language].daysMin[(dowCnt++) % 7] + '</th>';
+      }
+      html += '</tr>';
+      this.picker.find('.datetimepicker-days thead').append(html);
+    },
+
+    fillMonths: function () {
+      var html = '',
+        i = 0;
+      while (i < 12) {
+        html += '<span class="month">' + dates[this.language].monthsShort[i++] + '</span>';
+      }
+      this.picker.find('.datetimepicker-months td').html(html);
+    },
+
+    fill: function () {
+      if (this.date == null || this.viewDate == null) {
+        return;
+      }
+      var d = new Date(this.viewDate),
+        year = d.getUTCFullYear(),
+        month = d.getUTCMonth(),
+        dayMonth = d.getUTCDate(),
+        hours = d.getUTCHours(),
+        minutes = d.getUTCMinutes(),
+        startYear = this.startDate !== -Infinity ? this.startDate.getUTCFullYear() : -Infinity,
+        startMonth = this.startDate !== -Infinity ? this.startDate.getUTCMonth() + 1 : -Infinity,
+        endYear = this.endDate !== Infinity ? this.endDate.getUTCFullYear() : Infinity,
+        endMonth = this.endDate !== Infinity ? this.endDate.getUTCMonth() + 1 : Infinity,
+        currentDate = (new UTCDate(this.date.getUTCFullYear(), this.date.getUTCMonth(), this.date.getUTCDate())).valueOf(),
+        today = new Date();
+      this.setTitle('.datetimepicker-days', dates[this.language].months[month] + ' ' + year)
+      if (this.formatViewType == 'time') {
+        var formatted = this.getFormattedDate();
+        this.setTitle('.datetimepicker-hours', formatted);
+        this.setTitle('.datetimepicker-minutes', formatted);
+      } else {
+        this.setTitle('.datetimepicker-hours', dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+        this.setTitle('.datetimepicker-minutes', dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
+      }
+      this.picker.find('tfoot th.today')
+        .text(dates[this.language].today || dates['en'].today)
+        .toggle(this.todayBtn !== false);
+      this.picker.find('tfoot th.clear')
+        .text(dates[this.language].clear || dates['en'].clear)
+        .toggle(this.clearBtn !== false);
+      this.updateNavArrows();
+      this.fillMonths();
+      /*var prevMonth = UTCDate(year, month, 0,0,0,0,0);
+       prevMonth.setUTCDate(prevMonth.getDate() - (prevMonth.getUTCDay() - this.weekStart + 7)%7);*/
+      var prevMonth = UTCDate(year, month - 1, 28, 0, 0, 0, 0),
+        day = DPGlobal.getDaysInMonth(prevMonth.getUTCFullYear(), prevMonth.getUTCMonth());
+      prevMonth.setUTCDate(day);
+      prevMonth.setUTCDate(day - (prevMonth.getUTCDay() - this.weekStart + 7) % 7);
+      var nextMonth = new Date(prevMonth);
+      nextMonth.setUTCDate(nextMonth.getUTCDate() + 42);
+      nextMonth = nextMonth.valueOf();
+      var html = [];
+      var clsName;
+      while (prevMonth.valueOf() < nextMonth) {
+        if (prevMonth.getUTCDay() == this.weekStart) {
+          html.push('<tr>');
+        }
+        clsName = '';
+        if (prevMonth.getUTCFullYear() < year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() < month)) {
+          clsName += ' old';
+        } else if (prevMonth.getUTCFullYear() > year || (prevMonth.getUTCFullYear() == year && prevMonth.getUTCMonth() > month)) {
+          clsName += ' new';
+        }
+        // Compare internal UTC date with local today, not UTC today
+        if (this.todayHighlight &&
+          prevMonth.getUTCFullYear() == today.getFullYear() &&
+          prevMonth.getUTCMonth() == today.getMonth() &&
+          prevMonth.getUTCDate() == today.getDate()) {
+          clsName += ' today';
+        }
+        if (prevMonth.valueOf() == currentDate) {
+          clsName += ' active';
+        }
+        if ((prevMonth.valueOf() + 86400000) <= this.startDate || prevMonth.valueOf() > this.endDate ||
+          $.inArray(prevMonth.getUTCDay(), this.daysOfWeekDisabled) !== -1 ||
+					$.inArray(prevMonth.toDateString(), this.datesDisabled) !== -1) {
+          clsName += ' disabled';
+        }
+        html.push('<td class="day' + clsName + '">' + prevMonth.getUTCDate() + '</td>');
+        if (prevMonth.getUTCDay() == this.weekEnd) {
+          html.push('</tr>');
+        }
+        prevMonth.setUTCDate(prevMonth.getUTCDate() + 1);
+      }
+      this.picker.find('.datetimepicker-days tbody').empty().append(html.join(''));
+
+      html = [];
+      var txt = '', meridian = '', meridianOld = '';
+      var hoursDisabled = this.hoursDisabled || [];
+      for (var i = 0; i < 24; i++) {
+        if (hoursDisabled.indexOf(i) !== -1) continue;
+        var actual = UTCDate(year, month, dayMonth, i);
+        clsName = '';
+        // We want the previous hour for the startDate
+        if ((actual.valueOf() + 3600000) <= this.startDate || actual.valueOf() > this.endDate) {
+          clsName += ' disabled';
+        } else if (hours == i) {
+          clsName += ' active';
+        }
+        if (this.showMeridian && dates[this.language].meridiem.length == 2) {
+          meridian = (i < 12 ? dates[this.language].meridiem[0] : dates[this.language].meridiem[1]);
+          if (meridian != meridianOld) {
+            if (meridianOld != '') {
+              html.push('</fieldset>');
+            }
+            html.push('<fieldset class="hour"><legend>' + meridian.toUpperCase() + '</legend>');
+          }
+          meridianOld = meridian;
+          txt = (i % 12 ? i % 12 : 12);
+          html.push('<span class="hour' + clsName + ' hour_' + (i < 12 ? 'am' : 'pm') + '">' + txt + '</span>');
+          if (i == 23) {
+            html.push('</fieldset>');
+          }
+        } else {
+          txt = i + ':00';
+          html.push('<span class="hour' + clsName + '">' + txt + '</span>');
+        }
+      }
+      this.picker.find('.datetimepicker-hours td').html(html.join(''));
+
+      html = [];
+      txt = '', meridian = '', meridianOld = '';
+      var minutesDisabled = this.minutesDisabled || [];
+      for (var i = 0; i < 60; i += this.minuteStep) {
+        if (minutesDisabled.indexOf(i) !== -1) continue;
+        var actual = UTCDate(year, month, dayMonth, hours, i, 0);
+        clsName = '';
+        if (actual.valueOf() < this.startDate || actual.valueOf() > this.endDate) {
+          clsName += ' disabled';
+        } else if (Math.floor(minutes / this.minuteStep) == Math.floor(i / this.minuteStep)) {
+          clsName += ' active';
+        }
+        if (this.showMeridian && dates[this.language].meridiem.length == 2) {
+          meridian = (hours < 12 ? dates[this.language].meridiem[0] : dates[this.language].meridiem[1]);
+          if (meridian != meridianOld) {
+            if (meridianOld != '') {
+              html.push('</fieldset>');
+            }
+            html.push('<fieldset class="minute"><legend>' + meridian.toUpperCase() + '</legend>');
+          }
+          meridianOld = meridian;
+          txt = (hours % 12 ? hours % 12 : 12);
+          //html.push('<span class="minute'+clsName+' minute_'+(hours<12?'am':'pm')+'">'+txt+'</span>');
+          html.push('<span class="minute' + clsName + '">' + txt + ':' + (i < 10 ? '0' + i : i) + '</span>');
+          if (i == 59) {
+            html.push('</fieldset>');
+          }
+        } else {
+          txt = i + ':00';
+          //html.push('<span class="hour'+clsName+'">'+txt+'</span>');
+          html.push('<span class="minute' + clsName + '">' + hours + ':' + (i < 10 ? '0' + i : i) + '</span>');
+        }
+      }
+      this.picker.find('.datetimepicker-minutes td').html(html.join(''));
+
+      var currentYear = this.date.getUTCFullYear();
+      var months = this.setTitle('.datetimepicker-months', year)
+        .end()
+        .find('span').removeClass('active');
+      if (currentYear == year) {
+        // getUTCMonths() returns 0 based, and we need to select the next one
+        // To cater bootstrap 2 we don't need to select the next one
+        var offset = months.length - 12;
+        months.eq(this.date.getUTCMonth() + offset).addClass('active');
+      }
+      if (year < startYear || year > endYear) {
+        months.addClass('disabled');
+      }
+      if (year == startYear) {
+        months.slice(0, startMonth + 1).addClass('disabled');
+      }
+      if (year == endYear) {
+        months.slice(endMonth).addClass('disabled');
+      }
+
+      html = '';
+      year = parseInt(year / 10, 10) * 10;
+      var yearCont = this.setTitle('.datetimepicker-years', year + '-' + (year + 9))
+        .end()
+        .find('td');
+      year -= 1;
+      for (var i = -1; i < 11; i++) {
+        html += '<span class="year' + (i == -1 || i == 10 ? ' old' : '') + (currentYear == year ? ' active' : '') + (year < startYear || year > endYear ? ' disabled' : '') + '">' + year + '</span>';
+        year += 1;
+      }
+      yearCont.html(html);
+      this.place();
+    },
+
+    updateNavArrows: function () {
+      var d = new Date(this.viewDate),
+        year = d.getUTCFullYear(),
+        month = d.getUTCMonth(),
+        day = d.getUTCDate(),
+        hour = d.getUTCHours();
+      switch (this.viewMode) {
+        case 0:
+          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
+            && month <= this.startDate.getUTCMonth()
+            && day <= this.startDate.getUTCDate()
+            && hour <= this.startDate.getUTCHours()) {
+            this.picker.find('.prev').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.prev').css({visibility: 'visible'});
+          }
+          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
+            && month >= this.endDate.getUTCMonth()
+            && day >= this.endDate.getUTCDate()
+            && hour >= this.endDate.getUTCHours()) {
+            this.picker.find('.next').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.next').css({visibility: 'visible'});
+          }
+          break;
+        case 1:
+          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
+            && month <= this.startDate.getUTCMonth()
+            && day <= this.startDate.getUTCDate()) {
+            this.picker.find('.prev').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.prev').css({visibility: 'visible'});
+          }
+          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
+            && month >= this.endDate.getUTCMonth()
+            && day >= this.endDate.getUTCDate()) {
+            this.picker.find('.next').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.next').css({visibility: 'visible'});
+          }
+          break;
+        case 2:
+          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()
+            && month <= this.startDate.getUTCMonth()) {
+            this.picker.find('.prev').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.prev').css({visibility: 'visible'});
+          }
+          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()
+            && month >= this.endDate.getUTCMonth()) {
+            this.picker.find('.next').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.next').css({visibility: 'visible'});
+          }
+          break;
+        case 3:
+        case 4:
+          if (this.startDate !== -Infinity && year <= this.startDate.getUTCFullYear()) {
+            this.picker.find('.prev').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.prev').css({visibility: 'visible'});
+          }
+          if (this.endDate !== Infinity && year >= this.endDate.getUTCFullYear()) {
+            this.picker.find('.next').css({visibility: 'hidden'});
+          } else {
+            this.picker.find('.next').css({visibility: 'visible'});
+          }
+          break;
+      }
+    },
+
+    mousewheel: function (e) {
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (this.wheelPause) {
         return;
       }
 
-      var selectedFileNamePlacement = $(this).data('filename-placement');
-      if (selectedFileNamePlacement === 'inside') {
-        // Print the fileName inside
-        $(this).siblings('span').html(fileName);
-        $(this).attr('title', fileName);
+      this.wheelPause = true;
+
+      var originalEvent = e.originalEvent;
+
+      var delta = originalEvent.wheelDelta;
+
+      var mode = delta > 0 ? 1 : (delta === 0) ? 0 : -1;
+
+      if (this.wheelViewModeNavigationInverseDirection) {
+        mode = -mode;
+      }
+
+      this.showMode(mode);
+
+      setTimeout($.proxy(function () {
+
+        this.wheelPause = false
+
+      }, this), this.wheelViewModeNavigationDelay);
+
+    },
+
+    click: function (e) {
+      e.stopPropagation();
+      e.preventDefault();
+      var target = $(e.target).closest('span, td, th, legend');
+      if (target.is('.' + this.icontype)) {
+        target = $(target).parent().closest('span, td, th, legend');
+      }
+      if (target.length == 1) {
+        if (target.is('.disabled')) {
+          this.element.trigger({
+            type:      'outOfRange',
+            date:      this.viewDate,
+            startDate: this.startDate,
+            endDate:   this.endDate
+          });
+          return;
+        }
+        switch (target[0].nodeName.toLowerCase()) {
+          case 'th':
+            switch (target[0].className) {
+              case 'switch':
+                this.showMode(1);
+                break;
+              case 'prev':
+              case 'next':
+                var dir = DPGlobal.modes[this.viewMode].navStep * (target[0].className == 'prev' ? -1 : 1);
+                switch (this.viewMode) {
+                  case 0:
+                    this.viewDate = this.moveHour(this.viewDate, dir);
+                    break;
+                  case 1:
+                    this.viewDate = this.moveDate(this.viewDate, dir);
+                    break;
+                  case 2:
+                    this.viewDate = this.moveMonth(this.viewDate, dir);
+                    break;
+                  case 3:
+                  case 4:
+                    this.viewDate = this.moveYear(this.viewDate, dir);
+                    break;
+                }
+                this.fill();
+                this.element.trigger({
+                  type:      target[0].className + ':' + this.convertViewModeText(this.viewMode),
+                  date:      this.viewDate,
+                  startDate: this.startDate,
+                  endDate:   this.endDate
+                });
+                break;
+              case 'clear':
+                this.reset();
+                if (this.autoclose) {
+                  this.hide();
+                }
+                break;
+              case 'today':
+                var date = new Date();
+                date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds(), 0);
+
+                // Respect startDate and endDate.
+                if (date < this.startDate) date = this.startDate;
+                else if (date > this.endDate) date = this.endDate;
+
+                this.viewMode = this.startViewMode;
+                this.showMode(0);
+                this._setDate(date);
+                this.fill();
+                if (this.autoclose) {
+                  this.hide();
+                }
+                break;
+            }
+            break;
+          case 'span':
+            if (!target.is('.disabled')) {
+              var year = this.viewDate.getUTCFullYear(),
+                month = this.viewDate.getUTCMonth(),
+                day = this.viewDate.getUTCDate(),
+                hours = this.viewDate.getUTCHours(),
+                minutes = this.viewDate.getUTCMinutes(),
+                seconds = this.viewDate.getUTCSeconds();
+
+              if (target.is('.month')) {
+                this.viewDate.setUTCDate(1);
+                month = target.parent().find('span').index(target);
+                day = this.viewDate.getUTCDate();
+                this.viewDate.setUTCMonth(month);
+                this.element.trigger({
+                  type: 'changeMonth',
+                  date: this.viewDate
+                });
+                if (this.viewSelect >= 3) {
+                  this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+                }
+              } else if (target.is('.year')) {
+                this.viewDate.setUTCDate(1);
+                year = parseInt(target.text(), 10) || 0;
+                this.viewDate.setUTCFullYear(year);
+                this.element.trigger({
+                  type: 'changeYear',
+                  date: this.viewDate
+                });
+                if (this.viewSelect >= 4) {
+                  this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+                }
+              } else if (target.is('.hour')) {
+                hours = parseInt(target.text(), 10) || 0;
+                if (target.hasClass('hour_am') || target.hasClass('hour_pm')) {
+                  if (hours == 12 && target.hasClass('hour_am')) {
+                    hours = 0;
+                  } else if (hours != 12 && target.hasClass('hour_pm')) {
+                    hours += 12;
+                  }
+                }
+                this.viewDate.setUTCHours(hours);
+                this.element.trigger({
+                  type: 'changeHour',
+                  date: this.viewDate
+                });
+                if (this.viewSelect >= 1) {
+                  this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+                }
+              } else if (target.is('.minute')) {
+                minutes = parseInt(target.text().substr(target.text().indexOf(':') + 1), 10) || 0;
+                this.viewDate.setUTCMinutes(minutes);
+                this.element.trigger({
+                  type: 'changeMinute',
+                  date: this.viewDate
+                });
+                if (this.viewSelect >= 0) {
+                  this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+                }
+              }
+              if (this.viewMode != 0) {
+                var oldViewMode = this.viewMode;
+                this.showMode(-1);
+                this.fill();
+                if (oldViewMode == this.viewMode && this.autoclose) {
+                  this.hide();
+                }
+              } else {
+                this.fill();
+                if (this.autoclose) {
+                  this.hide();
+                }
+              }
+            }
+            break;
+          case 'td':
+            if (target.is('.day') && !target.is('.disabled')) {
+              var day = parseInt(target.text(), 10) || 1;
+              var year = this.viewDate.getUTCFullYear(),
+                month = this.viewDate.getUTCMonth(),
+                hours = this.viewDate.getUTCHours(),
+                minutes = this.viewDate.getUTCMinutes(),
+                seconds = this.viewDate.getUTCSeconds();
+              if (target.is('.old')) {
+                if (month === 0) {
+                  month = 11;
+                  year -= 1;
+                } else {
+                  month -= 1;
+                }
+              } else if (target.is('.new')) {
+                if (month == 11) {
+                  month = 0;
+                  year += 1;
+                } else {
+                  month += 1;
+                }
+              }
+              this.viewDate.setUTCFullYear(year);
+              this.viewDate.setUTCMonth(month, day);
+              this.element.trigger({
+                type: 'changeDay',
+                date: this.viewDate
+              });
+              if (this.viewSelect >= 2) {
+                this._setDate(UTCDate(year, month, day, hours, minutes, seconds, 0));
+              }
+            }
+            var oldViewMode = this.viewMode;
+            this.showMode(-1);
+            this.fill();
+            if (oldViewMode == this.viewMode && this.autoclose) {
+              this.hide();
+            }
+            break;
+        }
+      }
+    },
+
+    _setDate: function (date, which) {
+      if (!which || which == 'date')
+        this.date = date;
+      if (!which || which == 'view')
+        this.viewDate = date;
+      this.fill();
+      this.setValue();
+      var element;
+      if (this.isInput) {
+        element = this.element;
+      } else if (this.component) {
+        element = this.element.find('input');
+      }
+      if (element) {
+        element.change();
+        if (this.autoclose && (!which || which == 'date')) {
+          //this.hide();
+        }
+      }
+      this.element.trigger({
+        type: 'changeDate',
+        date: this.getDate()
+      });
+      if(date == null)
+        this.date = this.viewDate;
+    },
+
+    moveMinute: function (date, dir) {
+      if (!dir) return date;
+      var new_date = new Date(date.valueOf());
+      //dir = dir > 0 ? 1 : -1;
+      new_date.setUTCMinutes(new_date.getUTCMinutes() + (dir * this.minuteStep));
+      return new_date;
+    },
+
+    moveHour: function (date, dir) {
+      if (!dir) return date;
+      var new_date = new Date(date.valueOf());
+      //dir = dir > 0 ? 1 : -1;
+      new_date.setUTCHours(new_date.getUTCHours() + dir);
+      return new_date;
+    },
+
+    moveDate: function (date, dir) {
+      if (!dir) return date;
+      var new_date = new Date(date.valueOf());
+      //dir = dir > 0 ? 1 : -1;
+      new_date.setUTCDate(new_date.getUTCDate() + dir);
+      return new_date;
+    },
+
+    moveMonth: function (date, dir) {
+      if (!dir) return date;
+      var new_date = new Date(date.valueOf()),
+        day = new_date.getUTCDate(),
+        month = new_date.getUTCMonth(),
+        mag = Math.abs(dir),
+        new_month, test;
+      dir = dir > 0 ? 1 : -1;
+      if (mag == 1) {
+        test = dir == -1
+          // If going back one month, make sure month is not current month
+          // (eg, Mar 31 -> Feb 31 == Feb 28, not Mar 02)
+          ? function () {
+          return new_date.getUTCMonth() == month;
+        }
+          // If going forward one month, make sure month is as expected
+          // (eg, Jan 31 -> Feb 31 == Feb 28, not Mar 02)
+          : function () {
+          return new_date.getUTCMonth() != new_month;
+        };
+        new_month = month + dir;
+        new_date.setUTCMonth(new_month);
+        // Dec -> Jan (12) or Jan -> Dec (-1) -- limit expected date to 0-11
+        if (new_month < 0 || new_month > 11)
+          new_month = (new_month + 12) % 12;
       } else {
-        // Print the fileName aside (right after the the button)
-        $(this).parent().after('<span class="file-input-name">'+fileName+'</span>');
+        // For magnitudes >1, move one month at a time...
+        for (var i = 0; i < mag; i++)
+          // ...which might decrease the day (eg, Jan 31 to Feb 28, etc)...
+          new_date = this.moveMonth(new_date, dir);
+        // ...then reset the day, keeping it in the new month
+        new_month = new_date.getUTCMonth();
+        new_date.setUTCDate(day);
+        test = function () {
+          return new_month != new_date.getUTCMonth();
+        };
+      }
+      // Common date-resetting loop -- if date is beyond end of month, make it
+      // end of month
+      while (test()) {
+        new_date.setUTCDate(--day);
+        new_date.setUTCMonth(new_month);
+      }
+      return new_date;
+    },
+
+    moveYear: function (date, dir) {
+      return this.moveMonth(date, dir * 12);
+    },
+
+    dateWithinRange: function (date) {
+      return date >= this.startDate && date <= this.endDate;
+    },
+
+    keydown: function (e) {
+      if (this.picker.is(':not(:visible)')) {
+        if (e.keyCode == 27) // allow escape to hide and re-show picker
+          this.show();
+        return;
+      }
+      var dateChanged = false,
+        dir, day, month,
+        newDate, newViewDate;
+      switch (e.keyCode) {
+        case 27: // escape
+          this.hide();
+          e.preventDefault();
+          break;
+        case 37: // left
+        case 39: // right
+          if (!this.keyboardNavigation) break;
+          dir = e.keyCode == 37 ? -1 : 1;
+          viewMode = this.viewMode;
+          if (e.ctrlKey) {
+            viewMode += 2;
+          } else if (e.shiftKey) {
+            viewMode += 1;
+          }
+          if (viewMode == 4) {
+            newDate = this.moveYear(this.date, dir);
+            newViewDate = this.moveYear(this.viewDate, dir);
+          } else if (viewMode == 3) {
+            newDate = this.moveMonth(this.date, dir);
+            newViewDate = this.moveMonth(this.viewDate, dir);
+          } else if (viewMode == 2) {
+            newDate = this.moveDate(this.date, dir);
+            newViewDate = this.moveDate(this.viewDate, dir);
+          } else if (viewMode == 1) {
+            newDate = this.moveHour(this.date, dir);
+            newViewDate = this.moveHour(this.viewDate, dir);
+          } else if (viewMode == 0) {
+            newDate = this.moveMinute(this.date, dir);
+            newViewDate = this.moveMinute(this.viewDate, dir);
+          }
+          if (this.dateWithinRange(newDate)) {
+            this.date = newDate;
+            this.viewDate = newViewDate;
+            this.setValue();
+            this.update();
+            e.preventDefault();
+            dateChanged = true;
+          }
+          break;
+        case 38: // up
+        case 40: // down
+          if (!this.keyboardNavigation) break;
+          dir = e.keyCode == 38 ? -1 : 1;
+          viewMode = this.viewMode;
+          if (e.ctrlKey) {
+            viewMode += 2;
+          } else if (e.shiftKey) {
+            viewMode += 1;
+          }
+          if (viewMode == 4) {
+            newDate = this.moveYear(this.date, dir);
+            newViewDate = this.moveYear(this.viewDate, dir);
+          } else if (viewMode == 3) {
+            newDate = this.moveMonth(this.date, dir);
+            newViewDate = this.moveMonth(this.viewDate, dir);
+          } else if (viewMode == 2) {
+            newDate = this.moveDate(this.date, dir * 7);
+            newViewDate = this.moveDate(this.viewDate, dir * 7);
+          } else if (viewMode == 1) {
+            if (this.showMeridian) {
+              newDate = this.moveHour(this.date, dir * 6);
+              newViewDate = this.moveHour(this.viewDate, dir * 6);
+            } else {
+              newDate = this.moveHour(this.date, dir * 4);
+              newViewDate = this.moveHour(this.viewDate, dir * 4);
+            }
+          } else if (viewMode == 0) {
+            newDate = this.moveMinute(this.date, dir * 4);
+            newViewDate = this.moveMinute(this.viewDate, dir * 4);
+          }
+          if (this.dateWithinRange(newDate)) {
+            this.date = newDate;
+            this.viewDate = newViewDate;
+            this.setValue();
+            this.update();
+            e.preventDefault();
+            dateChanged = true;
+          }
+          break;
+        case 13: // enter
+          if (this.viewMode != 0) {
+            var oldViewMode = this.viewMode;
+            this.showMode(-1);
+            this.fill();
+            if (oldViewMode == this.viewMode && this.autoclose) {
+              this.hide();
+            }
+          } else {
+            this.fill();
+            if (this.autoclose) {
+              this.hide();
+            }
+          }
+          e.preventDefault();
+          break;
+        case 9: // tab
+          this.hide();
+          break;
+      }
+      if (dateChanged) {
+        var element;
+        if (this.isInput) {
+          element = this.element;
+        } else if (this.component) {
+          element = this.element.find('input');
+        }
+        if (element) {
+          element.change();
+        }
+        this.element.trigger({
+          type: 'changeDate',
+          date: this.getDate()
+        });
+      }
+    },
+
+    showMode: function (dir) {
+      if (dir) {
+        var newViewMode = Math.max(0, Math.min(DPGlobal.modes.length - 1, this.viewMode + dir));
+        if (newViewMode >= this.minView && newViewMode <= this.maxView) {
+          this.element.trigger({
+            type:        'changeMode',
+            date:        this.viewDate,
+            oldViewMode: this.viewMode,
+            newViewMode: newViewMode
+          });
+
+          this.viewMode = newViewMode;
+        }
+      }
+      /*
+       vitalets: fixing bug of very special conditions:
+       jquery 1.7.1 + webkit + show inline datetimepicker in bootstrap popover.
+       Method show() does not set display css correctly and datetimepicker is not shown.
+       Changed to .css('display', 'block') solve the problem.
+       See https://github.com/vitalets/x-editable/issues/37
+
+       In jquery 1.7.2+ everything works fine.
+       */
+      //this.picker.find('>div').hide().filter('.datetimepicker-'+DPGlobal.modes[this.viewMode].clsName).show();
+      this.picker.find('>div').hide().filter('.datetimepicker-' + DPGlobal.modes[this.viewMode].clsName).css('display', 'block');
+      this.updateNavArrows();
+    },
+
+    reset: function (e) {
+      this._setDate(null, 'date');
+    },
+
+    convertViewModeText:  function (viewMode) {
+      switch (viewMode) {
+        case 4:
+          return 'decade';
+        case 3:
+          return 'year';
+        case 2:
+          return 'month';
+        case 1:
+          return 'day';
+        case 0:
+          return 'hour';
+      }
+    }
+  };
+
+  var old = $.fn.datetimepicker;
+  $.fn.datetimepicker = function (option) {
+    var args = Array.apply(null, arguments);
+    args.shift();
+    var internal_return;
+    this.each(function () {
+      var $this = $(this),
+        data = $this.data('datetimepicker'),
+        options = typeof option == 'object' && option;
+      if (!data) {
+        $this.data('datetimepicker', (data = new Datetimepicker(this, $.extend({}, $.fn.datetimepicker.defaults, options))));
+      }
+      if (typeof option == 'string' && typeof data[option] == 'function') {
+        internal_return = data[option].apply(data, args);
+        if (internal_return !== undefined) {
+          return false;
+        }
       }
     });
+    if (internal_return !== undefined)
+      return internal_return;
+    else
+      return this;
+  };
 
+  $.fn.datetimepicker.defaults = {
+  };
+  $.fn.datetimepicker.Constructor = Datetimepicker;
+  var dates = $.fn.datetimepicker.dates = {
+    en: {
+      days:        ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      daysShort:   ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      daysMin:     ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'],
+      months:      ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      meridiem:    ['am', 'pm'],
+      suffix:      ['st', 'nd', 'rd', 'th'],
+      today:       'Today',
+      clear:       'Clear'
+    }
+  };
+
+  var DPGlobal = {
+    modes:            [
+      {
+        clsName: 'minutes',
+        navFnc:  'Hours',
+        navStep: 1
+      },
+      {
+        clsName: 'hours',
+        navFnc:  'Date',
+        navStep: 1
+      },
+      {
+        clsName: 'days',
+        navFnc:  'Month',
+        navStep: 1
+      },
+      {
+        clsName: 'months',
+        navFnc:  'FullYear',
+        navStep: 1
+      },
+      {
+        clsName: 'years',
+        navFnc:  'FullYear',
+        navStep: 10
+      }
+    ],
+    isLeapYear:       function (year) {
+      return (((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0))
+    },
+    getDaysInMonth:   function (year, month) {
+      return [31, (DPGlobal.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
+    },
+    getDefaultFormat: function (type, field) {
+      if (type == 'standard') {
+        if (field == 'input')
+          return 'yyyy-mm-dd hh:ii';
+        else
+          return 'yyyy-mm-dd hh:ii:ss';
+      } else if (type == 'php') {
+        if (field == 'input')
+          return 'Y-m-d H:i';
+        else
+          return 'Y-m-d H:i:s';
+      } else {
+        throw new Error('Invalid format type.');
+      }
+    },
+    validParts: function (type) {
+      if (type == 'standard') {
+        return /t|hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g;
+      } else if (type == 'php') {
+        return /[dDjlNwzFmMnStyYaABgGhHis]/g;
+      } else {
+        throw new Error('Invalid format type.');
+      }
+    },
+    nonpunctuation: /[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,
+    parseFormat: function (format, type) {
+      // IE treats \0 as a string end in inputs (truncating the value),
+      // so it's a bad format delimiter, anyway
+      var separators = format.replace(this.validParts(type), '\0').split('\0'),
+        parts = format.match(this.validParts(type));
+      if (!separators || !separators.length || !parts || parts.length == 0) {
+        throw new Error('Invalid date format.');
+      }
+      return {separators: separators, parts: parts};
+    },
+    parseDate: function (date, format, language, type) {
+      if (date instanceof Date) {
+        var dateUTC = new Date(date.valueOf() - date.getTimezoneOffset() * 60000);
+        dateUTC.setMilliseconds(0);
+        return dateUTC;
+      }
+      if (/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(date)) {
+        format = this.parseFormat('yyyy-mm-dd', type);
+      }
+      if (/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}$/.test(date)) {
+        format = this.parseFormat('yyyy-mm-dd hh:ii', type);
+      }
+      if (/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}\:\d{1,2}[Z]{0,1}$/.test(date)) {
+        format = this.parseFormat('yyyy-mm-dd hh:ii:ss', type);
+      }
+      if (/^[-+]\d+[dmwy]([\s,]+[-+]\d+[dmwy])*$/.test(date)) {
+        var part_re = /([-+]\d+)([dmwy])/,
+          parts = date.match(/([-+]\d+)([dmwy])/g),
+          part, dir;
+        date = new Date();
+        for (var i = 0; i < parts.length; i++) {
+          part = part_re.exec(parts[i]);
+          dir = parseInt(part[1]);
+          switch (part[2]) {
+            case 'd':
+              date.setUTCDate(date.getUTCDate() + dir);
+              break;
+            case 'm':
+              date = Datetimepicker.prototype.moveMonth.call(Datetimepicker.prototype, date, dir);
+              break;
+            case 'w':
+              date.setUTCDate(date.getUTCDate() + dir * 7);
+              break;
+            case 'y':
+              date = Datetimepicker.prototype.moveYear.call(Datetimepicker.prototype, date, dir);
+              break;
+          }
+        }
+        return UTCDate(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(), date.getUTCSeconds(), 0);
+      }
+      var parts = date && date.toString().match(this.nonpunctuation) || [],
+        date = new Date(0, 0, 0, 0, 0, 0, 0),
+        parsed = {},
+        setters_order = ['hh', 'h', 'ii', 'i', 'ss', 's', 'yyyy', 'yy', 'M', 'MM', 'm', 'mm', 'D', 'DD', 'd', 'dd', 'H', 'HH', 'p', 'P'],
+        setters_map = {
+          hh:   function (d, v) {
+            return d.setUTCHours(v);
+          },
+          h:    function (d, v) {
+            return d.setUTCHours(v);
+          },
+          HH:   function (d, v) {
+            return d.setUTCHours(v == 12 ? 0 : v);
+          },
+          H:    function (d, v) {
+            return d.setUTCHours(v == 12 ? 0 : v);
+          },
+          ii:   function (d, v) {
+            return d.setUTCMinutes(v);
+          },
+          i:    function (d, v) {
+            return d.setUTCMinutes(v);
+          },
+          ss:   function (d, v) {
+            return d.setUTCSeconds(v);
+          },
+          s:    function (d, v) {
+            return d.setUTCSeconds(v);
+          },
+          yyyy: function (d, v) {
+            return d.setUTCFullYear(v);
+          },
+          yy:   function (d, v) {
+            return d.setUTCFullYear(2000 + v);
+          },
+          m:    function (d, v) {
+            v -= 1;
+            while (v < 0) v += 12;
+            v %= 12;
+            d.setUTCMonth(v);
+            while (d.getUTCMonth() != v)
+              if (isNaN(d.getUTCMonth()))
+                return d;
+              else
+                d.setUTCDate(d.getUTCDate() - 1);
+            return d;
+          },
+          d:    function (d, v) {
+            return d.setUTCDate(v);
+          },
+          p:    function (d, v) {
+            return d.setUTCHours(v == 1 ? d.getUTCHours() + 12 : d.getUTCHours());
+          }
+        },
+        val, filtered, part;
+      setters_map['M'] = setters_map['MM'] = setters_map['mm'] = setters_map['m'];
+      setters_map['dd'] = setters_map['d'];
+      setters_map['P'] = setters_map['p'];
+      date = UTCDate(date.getFullYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), date.getSeconds());
+      if (parts.length == format.parts.length) {
+        for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
+          val = parseInt(parts[i], 10);
+          part = format.parts[i];
+          if (isNaN(val)) {
+            switch (part) {
+              case 'MM':
+                filtered = $(dates[language].months).filter(function () {
+                  var m = this.slice(0, parts[i].length),
+                    p = parts[i].slice(0, m.length);
+                  return m == p;
+                });
+                val = $.inArray(filtered[0], dates[language].months) + 1;
+                break;
+              case 'M':
+                filtered = $(dates[language].monthsShort).filter(function () {
+                  var m = this.slice(0, parts[i].length),
+                    p = parts[i].slice(0, m.length);
+                  return m.toLowerCase() == p.toLowerCase();
+                });
+                val = $.inArray(filtered[0], dates[language].monthsShort) + 1;
+                break;
+              case 'p':
+              case 'P':
+                val = $.inArray(parts[i].toLowerCase(), dates[language].meridiem);
+                break;
+            }
+          }
+          parsed[part] = val;
+        }
+        for (var i = 0, s; i < setters_order.length; i++) {
+          s = setters_order[i];
+          if (s in parsed && !isNaN(parsed[s]))
+            setters_map[s](date, parsed[s])
+        }
+      }
+      return date;
+    },
+    formatDate:       function (date, format, language, type) {
+      if (date == null) {
+        return '';
+      }
+      var val;
+      if (type == 'standard') {
+        val = {
+          t:    date.getTime(),
+          // year
+          yy:   date.getUTCFullYear().toString().substring(2),
+          yyyy: date.getUTCFullYear(),
+          // month
+          m:    date.getUTCMonth() + 1,
+          M:    dates[language].monthsShort[date.getUTCMonth()],
+          MM:   dates[language].months[date.getUTCMonth()],
+          // day
+          d:    date.getUTCDate(),
+          D:    dates[language].daysShort[date.getUTCDay()],
+          DD:   dates[language].days[date.getUTCDay()],
+          p:    (dates[language].meridiem.length == 2 ? dates[language].meridiem[date.getUTCHours() < 12 ? 0 : 1] : ''),
+          // hour
+          h:    date.getUTCHours(),
+          // minute
+          i:    date.getUTCMinutes(),
+          // second
+          s:    date.getUTCSeconds()
+        };
+
+        if (dates[language].meridiem.length == 2) {
+          val.H = (val.h % 12 == 0 ? 12 : val.h % 12);
+        }
+        else {
+          val.H = val.h;
+        }
+        val.HH = (val.H < 10 ? '0' : '') + val.H;
+        val.P = val.p.toUpperCase();
+        val.hh = (val.h < 10 ? '0' : '') + val.h;
+        val.ii = (val.i < 10 ? '0' : '') + val.i;
+        val.ss = (val.s < 10 ? '0' : '') + val.s;
+        val.dd = (val.d < 10 ? '0' : '') + val.d;
+        val.mm = (val.m < 10 ? '0' : '') + val.m;
+      } else if (type == 'php') {
+        // php format
+        val = {
+          // year
+          y: date.getUTCFullYear().toString().substring(2),
+          Y: date.getUTCFullYear(),
+          // month
+          F: dates[language].months[date.getUTCMonth()],
+          M: dates[language].monthsShort[date.getUTCMonth()],
+          n: date.getUTCMonth() + 1,
+          t: DPGlobal.getDaysInMonth(date.getUTCFullYear(), date.getUTCMonth()),
+          // day
+          j: date.getUTCDate(),
+          l: dates[language].days[date.getUTCDay()],
+          D: dates[language].daysShort[date.getUTCDay()],
+          w: date.getUTCDay(), // 0 -> 6
+          N: (date.getUTCDay() == 0 ? 7 : date.getUTCDay()),       // 1 -> 7
+          S: (date.getUTCDate() % 10 <= dates[language].suffix.length ? dates[language].suffix[date.getUTCDate() % 10 - 1] : ''),
+          // hour
+          a: (dates[language].meridiem.length == 2 ? dates[language].meridiem[date.getUTCHours() < 12 ? 0 : 1] : ''),
+          g: (date.getUTCHours() % 12 == 0 ? 12 : date.getUTCHours() % 12),
+          G: date.getUTCHours(),
+          // minute
+          i: date.getUTCMinutes(),
+          // second
+          s: date.getUTCSeconds()
+        };
+        val.m = (val.n < 10 ? '0' : '') + val.n;
+        val.d = (val.j < 10 ? '0' : '') + val.j;
+        val.A = val.a.toString().toUpperCase();
+        val.h = (val.g < 10 ? '0' : '') + val.g;
+        val.H = (val.G < 10 ? '0' : '') + val.G;
+        val.i = (val.i < 10 ? '0' : '') + val.i;
+        val.s = (val.s < 10 ? '0' : '') + val.s;
+      } else {
+        throw new Error('Invalid format type.');
+      }
+      var date = [],
+        seps = $.extend([], format.separators);
+      for (var i = 0, cnt = format.parts.length; i < cnt; i++) {
+        if (seps.length) {
+          date.push(seps.shift());
+        }
+        date.push(val[format.parts[i]]);
+      }
+      if (seps.length) {
+        date.push(seps.shift());
+      }
+      return date.join('');
+    },
+    convertViewMode:  function (viewMode) {
+      switch (viewMode) {
+        case 4:
+        case 'decade':
+          viewMode = 4;
+          break;
+        case 3:
+        case 'year':
+          viewMode = 3;
+          break;
+        case 2:
+        case 'month':
+          viewMode = 2;
+          break;
+        case 1:
+        case 'day':
+          viewMode = 1;
+          break;
+        case 0:
+        case 'hour':
+          viewMode = 0;
+          break;
+      }
+
+      return viewMode;
+    },
+    headTemplate: '<thead>' +
+                '<tr>' +
+                '<th class="prev"><i class="{iconType} {leftArrow}"/></th>' +
+                '<th colspan="5" class="switch"></th>' +
+                '<th class="next"><i class="{iconType} {rightArrow}"/></th>' +
+                '</tr>' +
+      '</thead>',
+    headTemplateV3: '<thead>' +
+                '<tr>' +
+                '<th class="prev"><span class="{iconType} {leftArrow}"></span> </th>' +
+                '<th colspan="5" class="switch"></th>' +
+                '<th class="next"><span class="{iconType} {rightArrow}"></span> </th>' +
+                '</tr>' +
+      '</thead>',
+    contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
+    footTemplate: '<tfoot>' + 
+                    '<tr><th colspan="7" class="today"></th></tr>' +
+                    '<tr><th colspan="7" class="clear"></th></tr>' +
+                  '</tfoot>'
+  };
+  DPGlobal.template = '<div class="datetimepicker">' +
+    '<div class="datetimepicker-minutes">' +
+    '<table class=" table-condensed">' +
+    DPGlobal.headTemplate +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-hours">' +
+    '<table class=" table-condensed">' +
+    DPGlobal.headTemplate +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-days">' +
+    '<table class=" table-condensed">' +
+    DPGlobal.headTemplate +
+    '<tbody></tbody>' +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-months">' +
+    '<table class="table-condensed">' +
+    DPGlobal.headTemplate +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-years">' +
+    '<table class="table-condensed">' +
+    DPGlobal.headTemplate +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '</div>';
+  DPGlobal.templateV3 = '<div class="datetimepicker">' +
+    '<div class="datetimepicker-minutes">' +
+    '<table class=" table-condensed">' +
+    DPGlobal.headTemplateV3 +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-hours">' +
+    '<table class=" table-condensed">' +
+    DPGlobal.headTemplateV3 +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-days">' +
+    '<table class=" table-condensed">' +
+    DPGlobal.headTemplateV3 +
+    '<tbody></tbody>' +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-months">' +
+    '<table class="table-condensed">' +
+    DPGlobal.headTemplateV3 +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '<div class="datetimepicker-years">' +
+    '<table class="table-condensed">' +
+    DPGlobal.headTemplateV3 +
+    DPGlobal.contTemplate +
+    DPGlobal.footTemplate +
+    '</table>' +
+    '</div>' +
+    '</div>';
+  $.fn.datetimepicker.DPGlobal = DPGlobal;
+
+  /* DATETIMEPICKER NO CONFLICT
+   * =================== */
+
+  $.fn.datetimepicker.noConflict = function () {
+    $.fn.datetimepicker = old;
+    return this;
+  };
+
+  /* DATETIMEPICKER DATA-API
+   * ================== */
+
+  $(document).on(
+    'focus.datetimepicker.data-api click.datetimepicker.data-api',
+    '[data-provide="datetimepicker"]',
+    function (e) {
+      var $this = $(this);
+      if ($this.data('datetimepicker')) return;
+      e.preventDefault();
+      // component click requires us to explicitly show it
+      $this.datetimepicker('show');
+    }
+  );
+  $(function () {
+    $('[data-provide="datetimepicker-inline"]').datetimepicker();
   });
 
-};
-
-// Add the styles before the first stylesheet
-// This ensures they can be easily overridden with developer styles
-var cssHtml = '<style>'+
-  '.file-input-wrapper { overflow: hidden; position: relative; cursor: pointer; z-index: 1; }'+
-  '.file-input-wrapper input[type=file], .file-input-wrapper input[type=file]:focus, .file-input-wrapper input[type=file]:hover { position: absolute; top: 0; left: 0; cursor: pointer; opacity: 0; filter: alpha(opacity=0); z-index: 99; outline: 0; }'+
-  '.file-input-name { margin-left: 8px; }'+
-  '</style>';
-$('link[rel=stylesheet]').eq(0).before(cssHtml);
-
-})(jQuery);
+}));
 ;function get_dimensions() 
 {
 	var dims = {width:0,height:0};
@@ -27232,7 +28980,1031 @@ Date.fullYearStart = '20';
         
     };
     
-})(jQuery);;function checkbox_click(event)
+})(jQuery);;/*!
+ * Jasny Bootstrap v3.1.3 (http://jasny.github.io/bootstrap)
+ * Copyright 2012-2014 Arnold Daniels
+ * Licensed under Apache-2.0 (https://github.com/jasny/bootstrap/blob/master/LICENSE)
+ */
+
+if (typeof jQuery === 'undefined') { throw new Error('Jasny Bootstrap\'s JavaScript requires jQuery') }
+
+/* ========================================================================
+ * Bootstrap: transition.js v3.1.3
+ * http://getbootstrap.com/javascript/#transitions
+ * ========================================================================
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * ======================================================================== */
+
+
++function ($) {
+  'use strict';
+
+  // CSS TRANSITION SUPPORT (Shoutout: http://www.modernizr.com/)
+  // ============================================================
+
+  function transitionEnd() {
+    var el = document.createElement('bootstrap')
+
+    var transEndEventNames = {
+      WebkitTransition : 'webkitTransitionEnd',
+      MozTransition    : 'transitionend',
+      OTransition      : 'oTransitionEnd otransitionend',
+      transition       : 'transitionend'
+    }
+
+    for (var name in transEndEventNames) {
+      if (el.style[name] !== undefined) {
+        return { end: transEndEventNames[name] }
+      }
+    }
+
+    return false // explicit for ie8 (  ._.)
+  }
+
+  if ($.support.transition !== undefined) return  // Prevent conflict with Twitter Bootstrap
+
+  // http://blog.alexmaccaw.com/css-transitions
+  $.fn.emulateTransitionEnd = function (duration) {
+    var called = false, $el = this
+    $(this).one($.support.transition.end, function () { called = true })
+    var callback = function () { if (!called) $($el).trigger($.support.transition.end) }
+    setTimeout(callback, duration)
+    return this
+  }
+
+  $(function () {
+    $.support.transition = transitionEnd()
+  })
+
+}(window.jQuery);
+
+/* ========================================================================
+ * Bootstrap: offcanvas.js v3.1.3
+ * http://jasny.github.io/bootstrap/javascript/#offcanvas
+ * ========================================================================
+ * Copyright 2013-2014 Arnold Daniels
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ======================================================================== */
+
++function ($) { "use strict";
+
+  // OFFCANVAS PUBLIC CLASS DEFINITION
+  // =================================
+
+  var OffCanvas = function (element, options) {
+    this.$element = $(element)
+    this.options  = $.extend({}, OffCanvas.DEFAULTS, options)
+    this.state    = null
+    this.placement = null
+    
+    if (this.options.recalc) {
+      this.calcClone()
+      $(window).on('resize', $.proxy(this.recalc, this))
+    }
+    
+    if (this.options.autohide)
+      $(document).on('click', $.proxy(this.autohide, this))
+
+    if (this.options.toggle) this.toggle()
+    
+    if (this.options.disablescrolling) {
+        this.options.disableScrolling = this.options.disablescrolling
+        delete this.options.disablescrolling
+    }
+  }
+
+  OffCanvas.DEFAULTS = {
+    toggle: true,
+    placement: 'auto',
+    autohide: true,
+    recalc: true,
+    disableScrolling: true
+  }
+
+  OffCanvas.prototype.offset = function () {
+    switch (this.placement) {
+      case 'left':
+      case 'right':  return this.$element.outerWidth()
+      case 'top':
+      case 'bottom': return this.$element.outerHeight()
+    }
+  }
+  
+  OffCanvas.prototype.calcPlacement = function () {
+    if (this.options.placement !== 'auto') {
+        this.placement = this.options.placement
+        return
+    }
+    
+    if (!this.$element.hasClass('in')) {
+      this.$element.css('visiblity', 'hidden !important').addClass('in')
+    } 
+    
+    var horizontal = $(window).width() / this.$element.width()
+    var vertical = $(window).height() / this.$element.height()
+        
+    var element = this.$element
+    function ab(a, b) {
+      if (element.css(b) === 'auto') return a
+      if (element.css(a) === 'auto') return b
+      
+      var size_a = parseInt(element.css(a), 10)
+      var size_b = parseInt(element.css(b), 10)
+  
+      return size_a > size_b ? b : a
+    }
+    
+    this.placement = horizontal >= vertical ? ab('left', 'right') : ab('top', 'bottom')
+      
+    if (this.$element.css('visibility') === 'hidden !important') {
+      this.$element.removeClass('in').css('visiblity', '')
+    }
+  }
+  
+  OffCanvas.prototype.opposite = function (placement) {
+    switch (placement) {
+      case 'top':    return 'bottom'
+      case 'left':   return 'right'
+      case 'bottom': return 'top'
+      case 'right':  return 'left'
+    }
+  }
+  
+  OffCanvas.prototype.getCanvasElements = function() {
+    // Return a set containing the canvas plus all fixed elements
+    var canvas = this.options.canvas ? $(this.options.canvas) : this.$element
+    
+    var fixed_elements = canvas.find('*').filter(function() {
+      return $(this).css('position') === 'fixed'
+    }).not(this.options.exclude)
+    
+    return canvas.add(fixed_elements)
+  }
+  
+  OffCanvas.prototype.slide = function (elements, offset, callback) {
+    // Use jQuery animation if CSS transitions aren't supported
+    if (!$.support.transition) {
+      var anim = {}
+      anim[this.placement] = "+=" + offset
+      return elements.animate(anim, 350, callback)
+    }
+
+    var placement = this.placement
+    var opposite = this.opposite(placement)
+    
+    elements.each(function() {
+      if ($(this).css(placement) !== 'auto')
+        $(this).css(placement, (parseInt($(this).css(placement), 10) || 0) + offset)
+      
+      if ($(this).css(opposite) !== 'auto')
+        $(this).css(opposite, (parseInt($(this).css(opposite), 10) || 0) - offset)
+    })
+    
+    this.$element
+      .one($.support.transition.end, callback)
+      .emulateTransitionEnd(350)
+  }
+
+  OffCanvas.prototype.disableScrolling = function() {
+    var bodyWidth = $('body').width()
+    var prop = 'padding-' + this.opposite(this.placement)
+
+    if ($('body').data('offcanvas-style') === undefined) {
+      $('body').data('offcanvas-style', $('body').attr('style') || '')
+    }
+      
+    $('body').css('overflow', 'hidden')
+
+    if ($('body').width() > bodyWidth) {
+      var padding = parseInt($('body').css(prop), 10) + $('body').width() - bodyWidth
+      
+      setTimeout(function() {
+        $('body').css(prop, padding)
+      }, 1)
+    }
+  }
+
+  OffCanvas.prototype.show = function () {
+    if (this.state) return
+    
+    var startEvent = $.Event('show.bs.offcanvas')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    this.state = 'slide-in'
+    this.calcPlacement();
+    
+    var elements = this.getCanvasElements()
+    var placement = this.placement
+    var opposite = this.opposite(placement)
+    var offset = this.offset()
+
+    if (elements.index(this.$element) !== -1) {
+      $(this.$element).data('offcanvas-style', $(this.$element).attr('style') || '')
+      this.$element.css(placement, -1 * offset)
+      this.$element.css(placement); // Workaround: Need to get the CSS property for it to be applied before the next line of code
+    }
+
+    elements.addClass('canvas-sliding').each(function() {
+      if ($(this).data('offcanvas-style') === undefined) $(this).data('offcanvas-style', $(this).attr('style') || '')
+      if ($(this).css('position') === 'static') $(this).css('position', 'relative')
+      if (($(this).css(placement) === 'auto' || $(this).css(placement) === '0px') &&
+          ($(this).css(opposite) === 'auto' || $(this).css(opposite) === '0px')) {
+        $(this).css(placement, 0)
+      }
+    })
+    
+    if (this.options.disableScrolling) this.disableScrolling()
+    
+    var complete = function () {
+      if (this.state != 'slide-in') return
+      
+      this.state = 'slid'
+
+      elements.removeClass('canvas-sliding').addClass('canvas-slid')
+      this.$element.trigger('shown.bs.offcanvas')
+    }
+
+    setTimeout($.proxy(function() {
+      this.$element.addClass('in')
+      this.slide(elements, offset, $.proxy(complete, this))
+    }, this), 1)
+  }
+
+  OffCanvas.prototype.hide = function (fast) {
+    if (this.state !== 'slid') return
+
+    var startEvent = $.Event('hide.bs.offcanvas')
+    this.$element.trigger(startEvent)
+    if (startEvent.isDefaultPrevented()) return
+
+    this.state = 'slide-out'
+
+    var elements = $('.canvas-slid')
+    var placement = this.placement
+    var offset = -1 * this.offset()
+
+    var complete = function () {
+      if (this.state != 'slide-out') return
+      
+      this.state = null
+      this.placement = null
+      
+      this.$element.removeClass('in')
+      
+      elements.removeClass('canvas-sliding')
+      elements.add(this.$element).add('body').each(function() {
+        $(this).attr('style', $(this).data('offcanvas-style')).removeData('offcanvas-style')
+      })
+
+      this.$element.trigger('hidden.bs.offcanvas')
+    }
+
+    elements.removeClass('canvas-slid').addClass('canvas-sliding')
+    
+    setTimeout($.proxy(function() {
+      this.slide(elements, offset, $.proxy(complete, this))
+    }, this), 1)
+  }
+
+  OffCanvas.prototype.toggle = function () {
+    if (this.state === 'slide-in' || this.state === 'slide-out') return
+    this[this.state === 'slid' ? 'hide' : 'show']()
+  }
+
+  OffCanvas.prototype.calcClone = function() {
+    this.$calcClone = this.$element.clone()
+      .html('')
+      .addClass('offcanvas-clone').removeClass('in')
+      .appendTo($('body'))
+  }
+
+  OffCanvas.prototype.recalc = function () {
+    if (this.$calcClone.css('display') === 'none' || (this.state !== 'slid' && this.state !== 'slide-in')) return
+    
+    this.state = null
+    this.placement = null
+    var elements = this.getCanvasElements()
+    
+    this.$element.removeClass('in')
+    
+    elements.removeClass('canvas-slid')
+    elements.add(this.$element).add('body').each(function() {
+      $(this).attr('style', $(this).data('offcanvas-style')).removeData('offcanvas-style')
+    })
+  }
+  
+  OffCanvas.prototype.autohide = function (e) {
+    if ($(e.target).closest(this.$element).length === 0) this.hide()
+  }
+
+  // OFFCANVAS PLUGIN DEFINITION
+  // ==========================
+
+  var old = $.fn.offcanvas
+
+  $.fn.offcanvas = function (option) {
+    return this.each(function () {
+      var $this   = $(this)
+      var data    = $this.data('bs.offcanvas')
+      var options = $.extend({}, OffCanvas.DEFAULTS, $this.data(), typeof option === 'object' && option)
+
+      if (!data) $this.data('bs.offcanvas', (data = new OffCanvas(this, options)))
+      if (typeof option === 'string') data[option]()
+    })
+  }
+
+  $.fn.offcanvas.Constructor = OffCanvas
+
+
+  // OFFCANVAS NO CONFLICT
+  // ====================
+
+  $.fn.offcanvas.noConflict = function () {
+    $.fn.offcanvas = old
+    return this
+  }
+
+
+  // OFFCANVAS DATA-API
+  // =================
+
+  $(document).on('click.bs.offcanvas.data-api', '[data-toggle=offcanvas]', function (e) {
+    var $this   = $(this), href
+    var target  = $this.attr('data-target')
+        || e.preventDefault()
+        || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, '') //strip for ie7
+    var $canvas = $(target)
+    var data    = $canvas.data('bs.offcanvas')
+    var option  = data ? 'toggle' : $this.data()
+
+    e.stopPropagation()
+
+    if (data) data.toggle()
+      else $canvas.offcanvas(option)
+  })
+
+}(window.jQuery);
+
+/* ============================================================
+ * Bootstrap: rowlink.js v3.1.3
+ * http://jasny.github.io/bootstrap/javascript/#rowlink
+ * ============================================================
+ * Copyright 2012-2014 Arnold Daniels
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ============================================================ */
+
++function ($) { "use strict";
+
+  var Rowlink = function (element, options) {
+    this.$element = $(element)
+    this.options = $.extend({}, Rowlink.DEFAULTS, options)
+    
+    this.$element.on('click.bs.rowlink', 'td:not(.rowlink-skip)', $.proxy(this.click, this))
+  }
+
+  Rowlink.DEFAULTS = {
+    target: "a"
+  }
+
+  Rowlink.prototype.click = function(e) {
+    var target = $(e.currentTarget).closest('tr').find(this.options.target)[0]
+    if ($(e.target)[0] === target) return
+    
+    e.preventDefault();
+    
+    if (target.click) {
+      target.click()
+    } else if (document.createEvent) {
+      var evt = document.createEvent("MouseEvents"); 
+      evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null); 
+      target.dispatchEvent(evt);
+    }
+  }
+
+  
+  // ROWLINK PLUGIN DEFINITION
+  // ===========================
+
+  var old = $.fn.rowlink
+
+  $.fn.rowlink = function (options) {
+    return this.each(function () {
+      var $this = $(this)
+      var data = $this.data('bs.rowlink')
+      if (!data) $this.data('bs.rowlink', (data = new Rowlink(this, options)))
+    })
+  }
+
+  $.fn.rowlink.Constructor = Rowlink
+
+
+  // ROWLINK NO CONFLICT
+  // ====================
+
+  $.fn.rowlink.noConflict = function () {
+    $.fn.rowlink = old
+    return this
+  }
+
+
+  // ROWLINK DATA-API
+  // ==================
+
+  $(document).on('click.bs.rowlink.data-api', '[data-link="row"]', function (e) {
+    if ($(e.target).closest('.rowlink-skip').length !== 0) return
+    
+    var $this = $(this)
+    if ($this.data('bs.rowlink')) return
+    $this.rowlink($this.data())
+    $(e.target).trigger('click.bs.rowlink')
+  })
+  
+}(window.jQuery);
+
+/* ===========================================================
+ * Bootstrap: inputmask.js v3.1.0
+ * http://jasny.github.io/bootstrap/javascript/#inputmask
+ * 
+ * Based on Masked Input plugin by Josh Bush (digitalbush.com)
+ * ===========================================================
+ * Copyright 2012-2014 Arnold Daniels
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================== */
+
++function ($) { "use strict";
+
+  var isIphone = (window.orientation !== undefined)
+  var isAndroid = navigator.userAgent.toLowerCase().indexOf("android") > -1
+  var isIE = window.navigator.appName == 'Microsoft Internet Explorer'
+
+  // INPUTMASK PUBLIC CLASS DEFINITION
+  // =================================
+
+  var Inputmask = function (element, options) {
+    if (isAndroid) return // No support because caret positioning doesn't work on Android
+    
+    this.$element = $(element)
+    this.options = $.extend({}, Inputmask.DEFAULTS, options)
+    this.mask = String(this.options.mask)
+    
+    this.init()
+    this.listen()
+        
+    this.checkVal() //Perform initial check for existing values
+  }
+
+  Inputmask.DEFAULTS = {
+    mask: "",
+    placeholder: "_",
+    definitions: {
+      '9': "[0-9]",
+      'a': "[A-Za-z]",
+      'w': "[A-Za-z0-9]",
+      '*': "."
+    }
+  }
+
+  Inputmask.prototype.init = function() {
+    var defs = this.options.definitions
+    var len = this.mask.length
+
+    this.tests = [] 
+    this.partialPosition = this.mask.length
+    this.firstNonMaskPos = null
+
+    $.each(this.mask.split(""), $.proxy(function(i, c) {
+      if (c == '?') {
+        len--
+        this.partialPosition = i
+      } else if (defs[c]) {
+        this.tests.push(new RegExp(defs[c]))
+        if (this.firstNonMaskPos === null)
+          this.firstNonMaskPos =  this.tests.length - 1
+      } else {
+        this.tests.push(null)
+      }
+    }, this))
+
+    this.buffer = $.map(this.mask.split(""), $.proxy(function(c, i) {
+      if (c != '?') return defs[c] ? this.options.placeholder : c
+    }, this))
+
+    this.focusText = this.$element.val()
+
+    this.$element.data("rawMaskFn", $.proxy(function() {
+      return $.map(this.buffer, function(c, i) {
+        return this.tests[i] && c != this.options.placeholder ? c : null
+      }).join('')
+    }, this))
+  }
+    
+  Inputmask.prototype.listen = function() {
+    if (this.$element.attr("readonly")) return
+
+    var pasteEventName = (isIE ? 'paste' : 'input') + ".mask"
+
+    this.$element
+      .on("unmask.bs.inputmask", $.proxy(this.unmask, this))
+
+      .on("focus.bs.inputmask", $.proxy(this.focusEvent, this))
+      .on("blur.bs.inputmask", $.proxy(this.blurEvent, this))
+
+      .on("keydown.bs.inputmask", $.proxy(this.keydownEvent, this))
+      .on("keypress.bs.inputmask", $.proxy(this.keypressEvent, this))
+
+      .on(pasteEventName, $.proxy(this.pasteEvent, this))
+  }
+
+  //Helper Function for Caret positioning
+  Inputmask.prototype.caret = function(begin, end) {
+    if (this.$element.length === 0) return
+    if (typeof begin == 'number') {
+      end = (typeof end == 'number') ? end : begin
+      return this.$element.each(function() {
+        if (this.setSelectionRange) {
+          this.setSelectionRange(begin, end)
+        } else if (this.createTextRange) {
+          var range = this.createTextRange()
+          range.collapse(true)
+          range.moveEnd('character', end)
+          range.moveStart('character', begin)
+          range.select()
+        }
+      })
+    } else {
+      if (this.$element[0].setSelectionRange) {
+        begin = this.$element[0].selectionStart
+        end = this.$element[0].selectionEnd
+      } else if (document.selection && document.selection.createRange) {
+        var range = document.selection.createRange()
+        begin = 0 - range.duplicate().moveStart('character', -100000)
+        end = begin + range.text.length
+      }
+      return {
+        begin: begin, 
+        end: end
+      }
+    }
+  }
+  
+  Inputmask.prototype.seekNext = function(pos) {
+    var len = this.mask.length
+    while (++pos <= len && !this.tests[pos]);
+
+    return pos
+  }
+  
+  Inputmask.prototype.seekPrev = function(pos) {
+    while (--pos >= 0 && !this.tests[pos]);
+
+    return pos
+  }
+
+  Inputmask.prototype.shiftL = function(begin,end) {
+    var len = this.mask.length
+
+    if (begin < 0) return
+
+    for (var i = begin, j = this.seekNext(end); i < len; i++) {
+      if (this.tests[i]) {
+        if (j < len && this.tests[i].test(this.buffer[j])) {
+          this.buffer[i] = this.buffer[j]
+          this.buffer[j] = this.options.placeholder
+        } else
+          break
+        j = this.seekNext(j)
+      }
+    }
+    this.writeBuffer()
+    this.caret(Math.max(this.firstNonMaskPos, begin))
+  }
+
+  Inputmask.prototype.shiftR = function(pos) {
+    var len = this.mask.length
+
+    for (var i = pos, c = this.options.placeholder; i < len; i++) {
+      if (this.tests[i]) {
+        var j = this.seekNext(i)
+        var t = this.buffer[i]
+        this.buffer[i] = c
+        if (j < len && this.tests[j].test(t))
+          c = t
+        else
+          break
+      }
+    }
+  },
+
+  Inputmask.prototype.unmask = function() {
+    this.$element
+      .unbind(".mask")
+      .removeData("inputmask")
+  }
+
+  Inputmask.prototype.focusEvent = function() {
+    this.focusText = this.$element.val()
+    var len = this.mask.length 
+    var pos = this.checkVal()
+    this.writeBuffer()
+
+    var that = this
+    var moveCaret = function() {
+      if (pos == len)
+        that.caret(0, pos)
+      else
+        that.caret(pos)
+    }
+
+    moveCaret()
+    setTimeout(moveCaret, 50)
+  }
+
+  Inputmask.prototype.blurEvent = function() {
+    this.checkVal()
+    if (this.$element.val() !== this.focusText)
+      this.$element.trigger('change')
+  }
+
+  Inputmask.prototype.keydownEvent = function(e) {
+    var k = e.which
+
+    //backspace, delete, and escape get special treatment
+    if (k == 8 || k == 46 || (isIphone && k == 127)) {
+      var pos = this.caret(),
+      begin = pos.begin,
+      end = pos.end
+
+      if (end - begin === 0) {
+        begin = k != 46 ? this.seekPrev(begin) : (end = this.seekNext(begin - 1))
+        end = k == 46 ? this.seekNext(end) : end
+      }
+      this.clearBuffer(begin, end)
+      this.shiftL(begin, end - 1)
+
+      return false
+    } else if (k == 27) {//escape
+      this.$element.val(this.focusText)
+      this.caret(0, this.checkVal())
+      return false
+    }
+  }
+
+  Inputmask.prototype.keypressEvent = function(e) {
+    var len = this.mask.length
+
+    var k = e.which,
+    pos = this.caret()
+
+    if (e.ctrlKey || e.altKey || e.metaKey || k < 32)  {//Ignore
+      return true
+    } else if (k) {
+      if (pos.end - pos.begin !== 0) {
+        this.clearBuffer(pos.begin, pos.end)
+        this.shiftL(pos.begin, pos.end - 1)
+      }
+
+      var p = this.seekNext(pos.begin - 1)
+      if (p < len) {
+        var c = String.fromCharCode(k)
+        if (this.tests[p].test(c)) {
+          this.shiftR(p)
+          this.buffer[p] = c
+          this.writeBuffer()
+          var next = this.seekNext(p)
+          this.caret(next)
+        }
+      }
+      return false
+    }
+  }
+
+  Inputmask.prototype.pasteEvent = function() {
+    var that = this
+
+    setTimeout(function() {
+      that.caret(that.checkVal(true))
+    }, 0)
+  }
+
+  Inputmask.prototype.clearBuffer = function(start, end) {
+    var len = this.mask.length
+
+    for (var i = start; i < end && i < len; i++) {
+      if (this.tests[i])
+        this.buffer[i] = this.options.placeholder
+    }
+  }
+
+  Inputmask.prototype.writeBuffer = function() {
+    return this.$element.val(this.buffer.join('')).val()
+  }
+
+  Inputmask.prototype.checkVal = function(allow) {
+    var len = this.mask.length
+    //try to place characters where they belong
+    var test = this.$element.val()
+    var lastMatch = -1
+
+    for (var i = 0, pos = 0; i < len; i++) {
+      if (this.tests[i]) {
+        this.buffer[i] = this.options.placeholder
+        while (pos++ < test.length) {
+          var c = test.charAt(pos - 1)
+          if (this.tests[i].test(c)) {
+            this.buffer[i] = c
+            lastMatch = i
+            break
+          }
+        }
+        if (pos > test.length)
+          break
+      } else if (this.buffer[i] == test.charAt(pos) && i != this.partialPosition) {
+        pos++
+        lastMatch = i
+      }
+    }
+    if (!allow && lastMatch + 1 < this.partialPosition) {
+      this.$element.val("")
+      this.clearBuffer(0, len)
+    } else if (allow || lastMatch + 1 >= this.partialPosition) {
+      this.writeBuffer()
+      if (!allow) this.$element.val(this.$element.val().substring(0, lastMatch + 1))
+    }
+    return (this.partialPosition ? i : this.firstNonMaskPos)
+  }
+
+  
+  // INPUTMASK PLUGIN DEFINITION
+  // ===========================
+
+  var old = $.fn.inputmask
+  
+  $.fn.inputmask = function (options) {
+    return this.each(function () {
+      var $this = $(this)
+      var data = $this.data('bs.inputmask')
+      
+      if (!data) $this.data('bs.inputmask', (data = new Inputmask(this, options)))
+    })
+  }
+
+  $.fn.inputmask.Constructor = Inputmask
+
+
+  // INPUTMASK NO CONFLICT
+  // ====================
+
+  $.fn.inputmask.noConflict = function () {
+    $.fn.inputmask = old
+    return this
+  }
+
+
+  // INPUTMASK DATA-API
+  // ==================
+
+  $(document).on('focus.bs.inputmask.data-api', '[data-mask]', function (e) {
+    var $this = $(this)
+    if ($this.data('bs.inputmask')) return
+    $this.inputmask($this.data())
+  })
+
+}(window.jQuery);
+
+/* ===========================================================
+ * Bootstrap: fileinput.js v3.1.3
+ * http://jasny.github.com/bootstrap/javascript/#fileinput
+ * ===========================================================
+ * Copyright 2012-2014 Arnold Daniels
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License")
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ========================================================== */
+
++function ($) { "use strict";
+
+  var isIE = window.navigator.appName == 'Microsoft Internet Explorer'
+
+  // FILEUPLOAD PUBLIC CLASS DEFINITION
+  // =================================
+
+  var Fileinput = function (element, options) {
+    this.$element = $(element)
+    
+    this.$input = this.$element.find(':file')
+    if (this.$input.length === 0) return
+
+    this.name = this.$input.attr('name') || options.name
+
+    this.$hidden = this.$element.find('input[type=hidden][name="' + this.name + '"]')
+    if (this.$hidden.length === 0) {
+      this.$hidden = $('<input type="hidden">').insertBefore(this.$input)
+    }
+
+    this.$preview = this.$element.find('.fileinput-preview')
+    var height = this.$preview.css('height')
+    if (this.$preview.css('display') !== 'inline' && height !== '0px' && height !== 'none') {
+      this.$preview.css('line-height', height)
+    }
+        
+    this.original = {
+      exists: this.$element.hasClass('fileinput-exists'),
+      preview: this.$preview.html(),
+      hiddenVal: this.$hidden.val()
+    }
+    
+    this.listen()
+  }
+  
+  Fileinput.prototype.listen = function() {
+    this.$input.on('change.bs.fileinput', $.proxy(this.change, this))
+    $(this.$input[0].form).on('reset.bs.fileinput', $.proxy(this.reset, this))
+    
+    this.$element.find('[data-trigger="fileinput"]').on('click.bs.fileinput', $.proxy(this.trigger, this))
+    this.$element.find('[data-dismiss="fileinput"]').on('click.bs.fileinput', $.proxy(this.clear, this))
+  },
+
+  Fileinput.prototype.change = function(e) {
+    var files = e.target.files === undefined ? (e.target && e.target.value ? [{ name: e.target.value.replace(/^.+\\/, '')}] : []) : e.target.files
+    
+    e.stopPropagation()
+
+    if (files.length === 0) {
+      this.clear()
+      return
+    }
+
+    this.$hidden.val('')
+    this.$hidden.attr('name', '')
+    this.$input.attr('name', this.name)
+
+    var file = files[0]
+
+    if (this.$preview.length > 0 && (typeof file.type !== "undefined" ? file.type.match(/^image\/(gif|png|jpeg)$/) : file.name.match(/\.(gif|png|jpe?g)$/i)) && typeof FileReader !== "undefined") {
+      var reader = new FileReader()
+      var preview = this.$preview
+      var element = this.$element
+
+      reader.onload = function(re) {
+        var $img = $('<img>')
+        $img[0].src = re.target.result
+        files[0].result = re.target.result
+        
+        element.find('.fileinput-filename').text(file.name)
+        
+        // if parent has max-height, using `(max-)height: 100%` on child doesn't take padding and border into account
+        if (preview.css('max-height') != 'none') $img.css('max-height', parseInt(preview.css('max-height'), 10) - parseInt(preview.css('padding-top'), 10) - parseInt(preview.css('padding-bottom'), 10)  - parseInt(preview.css('border-top'), 10) - parseInt(preview.css('border-bottom'), 10))
+        
+        preview.html($img)
+        element.addClass('fileinput-exists').removeClass('fileinput-new')
+
+        element.trigger('change.bs.fileinput', files)
+      }
+
+      reader.readAsDataURL(file)
+    } else {
+      this.$element.find('.fileinput-filename').text(file.name)
+      this.$preview.text(file.name)
+      
+      this.$element.addClass('fileinput-exists').removeClass('fileinput-new')
+      
+      this.$element.trigger('change.bs.fileinput')
+    }
+  },
+
+  Fileinput.prototype.clear = function(e) {
+    if (e) e.preventDefault()
+    
+    this.$hidden.val('')
+    this.$hidden.attr('name', this.name)
+    this.$input.attr('name', '')
+
+    //ie8+ doesn't support changing the value of input with type=file so clone instead
+    if (isIE) { 
+      var inputClone = this.$input.clone(true);
+      this.$input.after(inputClone);
+      this.$input.remove();
+      this.$input = inputClone;
+    } else {
+      this.$input.val('')
+    }
+
+    this.$preview.html('')
+    this.$element.find('.fileinput-filename').text('')
+    this.$element.addClass('fileinput-new').removeClass('fileinput-exists')
+    
+    if (e !== undefined) {
+      this.$input.trigger('change')
+      this.$element.trigger('clear.bs.fileinput')
+    }
+  },
+
+  Fileinput.prototype.reset = function() {
+    this.clear()
+
+    this.$hidden.val(this.original.hiddenVal)
+    this.$preview.html(this.original.preview)
+    this.$element.find('.fileinput-filename').text('')
+
+    if (this.original.exists) this.$element.addClass('fileinput-exists').removeClass('fileinput-new')
+     else this.$element.addClass('fileinput-new').removeClass('fileinput-exists')
+    
+    this.$element.trigger('reset.bs.fileinput')
+  },
+
+  Fileinput.prototype.trigger = function(e) {
+    this.$input.trigger('click')
+    e.preventDefault()
+  }
+
+  
+  // FILEUPLOAD PLUGIN DEFINITION
+  // ===========================
+
+  var old = $.fn.fileinput
+  
+  $.fn.fileinput = function (options) {
+    return this.each(function () {
+      var $this = $(this),
+          data = $this.data('bs.fileinput')
+      if (!data) $this.data('bs.fileinput', (data = new Fileinput(this, options)))
+      if (typeof options == 'string') data[options]()
+    })
+  }
+
+  $.fn.fileinput.Constructor = Fileinput
+
+
+  // FILEINPUT NO CONFLICT
+  // ====================
+
+  $.fn.fileinput.noConflict = function () {
+    $.fn.fileinput = old
+    return this
+  }
+
+
+  // FILEUPLOAD DATA-API
+  // ==================
+
+  $(document).on('click.fileinput.data-api', '[data-provides="fileinput"]', function (e) {
+    var $this = $(this)
+    if ($this.data('bs.fileinput')) return
+    $this.fileinput($this.data())
+      
+    var $target = $(e.target).closest('[data-dismiss="fileinput"],[data-trigger="fileinput"]');
+    if ($target.length > 0) {
+      e.preventDefault()
+      $target.trigger('click.bs.fileinput')
+    }
+  })
+
+}(window.jQuery);
+;function checkbox_click(event)
 {
 	event.stopPropagation();
 	do_email(enable_email.url);

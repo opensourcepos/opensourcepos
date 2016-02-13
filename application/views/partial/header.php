@@ -5,10 +5,9 @@
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/ospos.css" />
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
-	<link rel="stylesheet" type="text/css" href="templates/flatly/css/bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="templates/flatly/css/style.css"/>
 
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- start js template tags -->
@@ -27,10 +26,11 @@
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
 		<script type="text/javascript" src="js/bootstrap-3.3.6.js" language="javascript"></script>
-		<script type="text/javascript" src="js/bootstrap.file-input.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap-datetimepicker.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/date.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
+		<script type="text/javascript" src="js/jasny-bootstrap.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
 		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
@@ -39,7 +39,7 @@
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8fce06b653" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ec83b8a708" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 

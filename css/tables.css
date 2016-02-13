@@ -1,11 +1,28 @@
+#titleTextImg
+{
+	background-color: transparent;
+	height: 30px;
+	position: relative;
+	
+    //background-color: #EEEEEE;
+}
+
+#search_filter_section
+{
+	background-color: transparent;
+	position: relative;
+	
+    //background-color: #EEEEEE;
+}
+
 #table_action_header
 {
 	position:relative;
 	width:100%;
-	background-color:#EEEEEE;
+	background-color: transparent;
 	background-image:url(../images/checkbox_arrow.gif);
-	height:20px;
-	border-top:1px solid #CCCCCC;	
+	height:35px;
+	border: 0;
 	background-position:5px 10px;
 	background-repeat:no-repeat;	
 	padding:5px 0px 5px 0px;
@@ -28,16 +45,28 @@
 
 #table_action_header ul li span a
 {
-	background-color:#0a6184;
-	border:2px solid #DDDDDD;
+	background-color: rgba(0, 0, 0, 0);
+	border: 0;
+	color: #aaa;
 	padding:2px 5px 2px 5px;
 	
+}
+
+#table_action_header ul li span a:hover
+{
+	color: #555;
 }
 
 #table_action_header a
 {
 	text-decoration:none;
 	color:#FFF;	
+}
+
+#search_filter_section
+{
+	padding: 5px;
+	margin-bottom: 10px;
 }
 
 #table_holder
@@ -48,19 +77,18 @@
 
 table.tablesorter 
 {
-	position:relative;
-	width:100%;
-	border-top:3px solid #0a6184;
-	border-collapse:collapse;
+	position: relative;
+	width: 100%;
+	border: 0;
+	border-collapse: collapse;
 }
 
 table.tablesorter thead tr th, table.tablesorter tfoot tr th 
 {
 	color:#FFFFFF;
 	text-align:left;
-	background-color:#4386a1;
-	padding: 0px 5px 0px 5px;
-	
+	background-color:#999999;
+	padding: 8px;
 }
 
 table.tablesorter thead tr .header 
@@ -76,22 +104,18 @@ table.tablesorter tbody td
 	color: #3D3D3D;
 	background-color: #FFF;
 	vertical-align: top;
-	padding: 0px 5px 0px 5px;
-}
-
-table.tablesorter tbody td 
-{
+	padding: 8px;
 	border-bottom:1px solid #DDDDDD;
 }
 
 table.tablesorter tbody td.over
 {
-	background-color:#CCCCCC;
+	background-color: #F5F5F5;
 }
 
 table.tablesorter tbody td.selected
 {
-	background-color:#BBBBBB;
+	background-color: #ECECEC;
 }
 
 table.tablesorter thead tr .tablesorter-headerAsc 

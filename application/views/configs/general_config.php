@@ -20,7 +20,18 @@
 			<div class="field_row clearfix">	
 			<?php echo form_label($this->lang->line('config_company_logo').':', 'company_logo', array('class'=>'wide')); ?>
 				<div class='form_field'>
-					<input name='company_logo' id='company_logo' class="btn btn-default btn-sm" type="file" title='<?php echo $this->lang->line("config_company_choose_file")?>'>
+					<div class="fileinput fileinput-new" data-provides="fileinput">
+						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">	
+							<img data-src="holder.js/100%x100%" <!-- alt="100%x100%" src="..." style="height: 100%; width: 100%; display: block;" --> >
+						</div>
+						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+						<div>
+							<span class="btn btn-default btn-sm btn-file">
+								<span class="fileinput-new"><!-- Select image --> <?php echo $this->lang->line("config_company_choose_file"); ?></span>
+								<span class="fileinput-exists">Change</span><input type="file" name="company_logo"></span>
+							<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
+						</div>
+					</div>
 				</div>
 			</div>
 
@@ -314,8 +325,6 @@ $(document).ready(function()
 	$("#backup_db").click(function() {
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
-	
-	$('input[type=file]').bootstrapFileInput();
 	
 	$('#config_form').validate({
 		submitHandler:function(form)

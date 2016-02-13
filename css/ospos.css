@@ -11,6 +11,8 @@
 @import url(jquery-ui.structure.css);
 @import url(jquery-ui.theme.css);
 @import url(jquery-ui-timepicker-addon.css);
+@import url(jasny-bootstrap.css);
+@import url(bootstrap-datetimepicker.css);
 
 html, body
 {
@@ -46,8 +48,8 @@ a.none
 .navbar-default .navbar-nav > .active > a:hover, 
 .navbar-default .navbar-nav > .active > a:focus
 {
-	color: #2C3E50 !important;
-	background-color: #FFFFFF !important;
+	color: #2C3E50;
+	background-color: #FFFFFF;
 }
 
 .navbar .menu-icon {
@@ -188,4 +190,20 @@ input.quantity, input.discount
 a.rollover img
 {
 	padding: 3px;	
+}
+
+@media (min-width: 768px)
+{	
+	.navbar-nav > li > a
+	{
+		padding: 10px 10px 9px;
+	}
+}
+
+@media print
+{    
+    .no-print, .no-print *
+	{
+        display: none !important;
+    }
 }
