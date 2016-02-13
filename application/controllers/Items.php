@@ -470,9 +470,8 @@ class Items extends Secure_area implements iData_controller
 
 	                $success &= $this->Inventory->insert($inv_data);       
                 }                                            
-            }        
-            
-            if ($success && $upload_success) 
+            }
+			if ($success && $upload_success)
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 

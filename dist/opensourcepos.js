@@ -26076,7 +26076,7 @@ if (typeof jQuery === 'undefined') {
   });
 
 }));
-;function get_dimensions() 
+;function get_dimensions()
 {
 	var dims = {width:0,height:0};
 	
@@ -28147,7 +28147,21 @@ function get_visible_checkbox_ids()
 		row_ids.push($(this).val());
 	});
 	return row_ids;
-};(function($) {
+}
+
+$(document).ready(function()
+{
+	$('[data-toggle="modal"]').click(function(e) {
+		$('#myModal').remove();
+		e.preventDefault();
+		var $this = $(this)
+			, $remote = $this.data('remote') || $this.attr('href')
+			, $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
+		$('body').append($modal);
+		$modal.modal({backdrop: 'static', keyboard: false});
+		$modal.load($remote);
+	});
+});;(function($) {
 	
 	function http_s(url)
 	{

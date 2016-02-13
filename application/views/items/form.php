@@ -306,7 +306,6 @@
 					$('#item_form').validate({
 						submitHandler:function(form)
 						{
-							debugger;;
 							var $form = $(form);
 							var $target = $(".modal");
 
@@ -314,6 +313,7 @@
 								type: $form.attr('method'),
 								url: $form.attr('action'),
 								data: $form.serialize(),
+								dataType: 'json',
 
 								success: function(response, status) {
 									if (stay_open)
