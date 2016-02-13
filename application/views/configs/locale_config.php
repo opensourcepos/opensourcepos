@@ -186,6 +186,7 @@
 				<?php echo form_dropdown('timeformat', array(
 					'H:i:s' => 'hh:mm:ss (24h)',
 					'h:i:s a' => 'hh:mm:ss am/pm',
+					'h:i:s A' => 'hh:mm:ss AM/PM',
 					'h:i:s' => 'hh:mm:ss (12h)'),
 					$this->config->item('timeformat'));
 					?>
