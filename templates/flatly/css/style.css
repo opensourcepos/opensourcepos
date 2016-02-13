@@ -75,3 +75,14 @@ table.tablesorter thead tr th, table.tablesorter tfoot tr th
         display: none !important;
     }
 }
+
+.modal-dialog
+{
+	overflow-y: initial !important
+}
+
+.modal-body
+{
+	height: 500px;
+	overflow-y: auto;
+}

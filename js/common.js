@@ -1,4 +1,4 @@
-function get_dimensions() 
+function get_dimensions()
 {
 	var dims = {width:0,height:0};
 	

@@ -387,3 +387,18 @@ function get_visible_checkbox_ids()
 	});
 	return row_ids;
 }
+
+$(document).ready(function()
+{
+	$('[data-toggle="modal"]').click(
+		function(e) {
+			$('#myModal').remove();
+			e.preventDefault();
+			var $this = $(this)
+				, $remote = $this.data('remote') || $this.attr('href')
+				, $modal = $('<div class="modal" id="ajaxModal"><div class="modal-body"></div></div>');
+			$('body').append($modal);
+			$modal.modal({backdrop: 'static', keyboard: false});
+			$modal.load($remote);
+		});
+});
