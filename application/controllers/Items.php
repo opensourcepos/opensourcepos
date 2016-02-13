@@ -53,10 +53,9 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search');
-		$this->item_lib->set_item_location($this->input->post('stock_location'));
-		$data['search_section_state'] = $this->input->post('search_section_state');
-		$limit_from = $this->input->post('limit_from');
+		$search = $this->input->post('search', TRUE);
+		$this->item_lib->set_item_location($this->input->post('stock_location', TRUE));
+		$limit_from = $this->input->post('limit_from', TRUE);
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 		// assume year 2010 as starting date for OSPOS
@@ -71,12 +70,12 @@ class Items extends Secure_area implements iData_controller
 		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
 						'end_date' => $end_date_formatter->format('Y-m-d'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
-						'empty_upc' => $this->input->post('empty_upc') != null,
-						'low_inventory' => $this->input->post('low_inventory') != null, 
-						'is_serialized' => $this->input->post('is_serialized') != null,
-						'no_description' => $this->input->post('no_description') != null,
-						'search_custom' => $this->input->post('search_custom') != null,
-						'is_deleted' => $this->input->post('is_deleted') != null);
+						'empty_upc' => $this->input->post('empty_upc', TRUE) != null,
+						'low_inventory' => $this->input->post('low_inventory', TRUE) != null, 
+						'is_serialized' => $this->input->post('is_serialized', TRUE) != null,
+						'no_description' => $this->input->post('no_description', TRUE) != null,
+						'search_custom' => $this->input->post('search_custom', TRUE) != null,
+						'is_deleted' => $this->input->post('is_deleted', TRUE) != null);
 		
 		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
 		$data_rows = get_items_manage_table_data_rows($items, $this);

@@ -29,10 +29,10 @@ class Sales extends Secure_area
 
 			$data['controller_name'] = strtolower($this->uri->segment(1));
 			$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
-			$data['search_section_state'] = $this->input->post('search_section_state');
 			$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 			$today = date($this->config->item('dateformat'));
+
 			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $today;
 			$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
 			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
@@ -44,12 +44,12 @@ class Sales extends Secure_area
 			$search = null;
 
 			$filters = array('sale_type' => $sale_type,
-				'location_id' => $location_id,
-				'start_date' => $start_date_formatter->format('Y-m-d'),
-				'end_date' => $end_date_formatter->format('Y-m-d'),
-				'only_invoices' => $only_invoices,
-				'only_cash' => $only_cash,
-				'is_valid_receipt' => $is_valid_receipt);
+							'location_id' => $location_id,
+							'start_date' => $start_date_formatter->format('Y-m-d'),
+							'end_date' => $end_date_formatter->format('Y-m-d'),
+							'only_invoices' => $only_invoices,
+							'only_cash' => $only_cash,
+							'is_valid_receipt' => $is_valid_receipt);
 
 			$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
 			$payments = $this->Sale->get_payments_summary($search, $filters);
@@ -92,11 +92,11 @@ class Sales extends Secure_area
 	{
 		$this->Sale->create_sales_items_temp_table();
 
+		$search = $this->input->post('search', TRUE);
 		$only_invoices = $this->input->post('only_invoices', TRUE);
 		$only_cash = $this->input->post('only_cash', TRUE);
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$limit_from = $this->input->post('limit_from', TRUE);
-		$search = $this->input->post('search', TRUE);
+		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 		$today = date($this->config->item('dateformat'));
 		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $today;
