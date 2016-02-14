@@ -27,8 +27,7 @@ class Sales extends Secure_area
 		{
 			$this->Sale->create_sales_items_temp_table();
 
-			$data['controller_name'] = strtolower($this->uri->segment(1));
-			$data['only_invoices'] = array($this->lang->line('sales_no_filter'), $this->lang->line('sales_invoice'));
+			$data['controller_name'] = $this->get_controller_name();
 			$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 			$today = date($this->config->item('dateformat'));
@@ -38,7 +37,7 @@ class Sales extends Secure_area
 			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 			$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
-			$sale_type   = 'all';
+			$sale_type = 'all';
 			$location_id = 'all';
 			$is_valid_receipt = FALSE;
 			$search = null;
@@ -55,6 +54,7 @@ class Sales extends Secure_area
 			$payments = $this->Sale->get_payments_summary($search, $filters);
 			$total_rows = $this->Sale->get_found_rows($search, $filters);
 			$data['only_invoices'] = $only_invoices;
+			$data['only_cash '] = $only_cash;
 			$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
 			$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
 			$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
@@ -87,14 +87,15 @@ class Sales extends Secure_area
 	{
 		return 400;
 	}
-	
+
+	/*
+	Returns Sales table data rows. This will be called with AJAX.
+	*/
 	function search()
 	{
 		$this->Sale->create_sales_items_temp_table();
 
-		$search = $this->input->post('search');
-		$only_invoices = $this->input->post('only_invoices');
-		$only_cash = $this->input->post('only_cash');
+		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
@@ -109,6 +110,8 @@ class Sales extends Secure_area
 
 		$sale_type = 'all';
 		$location_id = 'all';
+		$only_invoices = $this->input->post('only_invoices') != null;
+		$only_cash = $this->input->post('only_cash') != null;
 
 		$filters = array('sale_type' => $sale_type,
 						'location_id' => $location_id,
@@ -306,8 +309,8 @@ class Sales extends Secure_area
 		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|numeric');
 		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|numeric');
 
-        $description = $this->input->post('description');
-        $serialnumber = $this->input->post('serialnumber');
+		$description = $this->input->post('description');
+		$serialnumber = $this->input->post('serialnumber');
 		$price = $this->input->post('price');
 		$quantity = $this->input->post('quantity');
 		$discount = $this->input->post('discount');
@@ -370,7 +373,7 @@ class Sales extends Secure_area
 				$this->config->item('phone'),
 				$this->config->item('account_number')
 		));
-        $cust_info = '';
+		$cust_info = '';
 		if($customer_id!=-1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
@@ -724,11 +727,11 @@ class Sales extends Secure_area
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart'] = $this->sale_lib->get_cart();	 
-        $data['modes'] = array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
-        $data['mode'] = $this->sale_lib->get_mode();
+		$data['modes'] = array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
+		$data['mode'] = $this->sale_lib->get_mode();
 
-        $data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
-        $data['stock_location'] = $this->sale_lib->get_sale_location();
+		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
+		$data['stock_location'] = $this->sale_lib->get_sale_location();
         
 		$data['subtotal'] = $this->sale_lib->get_subtotal(TRUE);
 		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
@@ -767,11 +770,11 @@ class Sales extends Secure_area
 		$this->_remove_duplicate_cookies();
 	}
 
-    function cancel_sale()
-    {
-    	$this->sale_lib->clear_all();
-    	$this->_reload();
-    }
+	function cancel_sale()
+	{
+		$this->sale_lib->clear_all();
+		$this->_reload();
+	}
 	
 	function suspend()
 	{
@@ -838,7 +841,7 @@ class Sales extends Secure_area
 		$this->sale_lib->clear_all();
 		$this->sale_lib->copy_entire_suspended_sale($sale_id);
 		$this->Sale_suspended->delete($sale_id);
-    	$this->_reload();
+		$this->_reload();
 	}
 	
 	function check_invoice_number()
@@ -846,6 +849,7 @@ class Sales extends Secure_area
 		$sale_id=$this->input->post('sale_id');
 		$invoice_number=$this->input->post('invoice_number');
 		$exists=!empty($invoice_number) && $this->Sale->invoice_number_exists($invoice_number,$sale_id);
+
 		echo json_encode(array('success'=>!$exists, 'message'=>$this->lang->line('sales_invoice_number_duplicate')));
 	}
 }

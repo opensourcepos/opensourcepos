@@ -25,13 +25,15 @@ class Suppliers extends Person_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search');
+		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
+
 		$suppliers = $this->Supplier->search($search, $lines_per_page, $limit_from);
 		$total_rows = $this->Supplier->get_found_rows($search);
 		$links = $this->_initialize_pagination($this->Supplier, $lines_per_page, $limit_from, $total_rows);
 		$data_rows = get_supplier_manage_table_data_rows($suppliers, $this);
+
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	

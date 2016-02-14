@@ -53,10 +53,10 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search');
-		$this->item_lib->set_item_location($this->input->post('stock_location'));
+		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$this->item_lib->set_item_location($this->input->post('stock_location'));
 
 		// set 01/01/2010 as starting date for OSPOS
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
