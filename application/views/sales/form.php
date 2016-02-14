@@ -108,8 +108,13 @@ $(document).ready(function()
     }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
 
 	$('#datetime').datetimepicker({
-		dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
-		timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
+		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
+		startDate: '01/01/2010 00:00:00',
+		minuteStep: 1,
+		autoclose: true,
+		todayBtn: true,
+		todayHighlight: true,
+		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
 	var format_item = function(row)

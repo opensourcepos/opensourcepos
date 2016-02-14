@@ -30,12 +30,13 @@ class Sales extends Secure_area
 			$data['controller_name'] = $this->get_controller_name();
 			$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-			$today = date($this->config->item('dateformat'));
-
-			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
-			$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-			$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+			$today_start = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0));
+			$today_end = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(23, 59, 59));
+			
+			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today_start;
+			$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $start_date);
+			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today_end;
+			$end_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $end_date);
 
 			$sale_type = 'all';
 			$location_id = 'all';
@@ -44,8 +45,8 @@ class Sales extends Secure_area
 
 			$filters = array('sale_type' => $sale_type,
 							'location_id' => $location_id,
-							'start_date' => $start_date_formatter->format('Y-m-d'),
-							'end_date' => $end_date_formatter->format('Y-m-d'),
+							'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
+							'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
 							'only_invoices' => $only_invoices,
 							'only_cash' => $only_cash,
 							'is_valid_receipt' => $is_valid_receipt);
@@ -55,8 +56,8 @@ class Sales extends Secure_area
 			$total_rows = $this->Sale->get_found_rows($search, $filters);
 			$data['only_invoices'] = $only_invoices;
 			$data['only_cash '] = $only_cash;
-			$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
-			$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
+			$data['start_date'] = $start_date;
+			$data['end_date'] = $end_date;
 			$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
 			$data['manage_table'] = get_sales_manage_table($sales, $this);
 			$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
@@ -99,12 +100,12 @@ class Sales extends Secure_area
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$today = date($this->config->item('dateformat'));
+		$today = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 
 		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $start_date);
 		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+		$end_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $end_date);
 
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
@@ -115,8 +116,8 @@ class Sales extends Secure_area
 
 		$filters = array('sale_type' => $sale_type,
 						'location_id' => $location_id,
-						'start_date' => $start_date_formatter->format('Y-m-d'),
-						'end_date' => $end_date_formatter->format('Y-m-d'),
+						'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
+						'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
 						'only_invoices' => $only_invoices,
 						'only_cash' => $only_cash,
 						'is_valid_receipt' => $is_valid_receipt);
@@ -573,7 +574,7 @@ class Sales extends Secure_area
 		$data['total'] = $this->sale_lib->get_total();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
-		$data['transaction_time'] = date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime($sale_info['sale_time']));
+		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
 		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$customer_id = $this->sale_lib->get_customer();
@@ -670,7 +671,7 @@ class Sales extends Secure_area
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('sales_unsuccessfully_deleted')));
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('sales_unsuccessfully_deleted')));
 		}
 	}
 	
@@ -683,23 +684,17 @@ class Sales extends Secure_area
 			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : null,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number')
+			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
 		);
 		
 		if ($this->Sale->update($sale_data, $sale_id))
 		{
-			echo json_encode(array(
-				'success'=>true,
-				'message'=>$this->lang->line('sales_successfully_updated'),
-				'id'=>$sale_id)
+			echo json_encode(array('success'=>true,	'message'=>$this->lang->line('sales_successfully_updated'),	'id'=>$sale_id)
 			);
 		}
 		else
 		{
-			echo json_encode(array(
-				'success'=>false,
-				'message'=>$this->lang->line('sales_unsuccessfully_updated'),
-				'id'=>$sale_id)
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('sales_unsuccessfully_updated'), 'id'=>$sale_id)
 			);
 		}
 	}

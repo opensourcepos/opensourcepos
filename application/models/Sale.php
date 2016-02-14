@@ -41,7 +41,7 @@ class Sale extends CI_Model
 
 		if (empty($search))
 		{
-			$this->db->where('sale_date BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
+			$this->db->where('sale_time BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
@@ -107,11 +107,11 @@ class Sale extends CI_Model
 
 		if (empty($search))
 		{
-			$this->db->where('DATE(sale_time) BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
+			$this->db->where('sale_time BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			if ($filters['is_valid_receipt'])
+			if ($filters['is_valid_receipt'] != FALSE)
 			{
 				$pieces = explode(' ',$search);
 				$this->db->where('sales.sale_id', $pieces[1]);
