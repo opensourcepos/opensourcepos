@@ -33,9 +33,9 @@ class Sales extends Secure_area
 
 			$today = date($this->config->item('dateformat'));
 
-			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $today;
+			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
 			$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
+			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 			$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
 			$sale_type   = 'all';
@@ -92,16 +92,17 @@ class Sales extends Secure_area
 	{
 		$this->Sale->create_sales_items_temp_table();
 
-		$search = $this->input->post('search', TRUE);
-		$only_invoices = $this->input->post('only_invoices', TRUE);
-		$only_cash = $this->input->post('only_cash', TRUE);
-		$limit_from = $this->input->post('limit_from', TRUE);
+		$search = $this->input->post('search');
+		$only_invoices = $this->input->post('only_invoices');
+		$only_cash = $this->input->post('only_cash');
+		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 		$today = date($this->config->item('dateformat'));
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $today;
+
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
@@ -123,6 +124,8 @@ class Sales extends Secure_area
 		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
 		$sale_rows = get_sales_manage_table_data_rows($sales, $this);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
+
+		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
 		$this->_remove_duplicate_cookies();
 		
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
@@ -151,8 +154,8 @@ class Sales extends Secure_area
 
 	function suggest()
 	{
-		$search = $this->input->post('q', TRUE);
-		$limit = $this->input->post('limit', TRUE);
+		$search = $this->input->post('q');
+		$limit = $this->input->post('limit');
 		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
 
 		echo implode("\n",$suggestions);
@@ -670,7 +673,7 @@ class Sales extends Secure_area
 	
 	function save($sale_id)
 	{
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date', TRUE));
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
 
 		$sale_data = array(
 			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),

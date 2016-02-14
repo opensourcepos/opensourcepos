@@ -21,13 +21,13 @@ class Items extends Secure_area implements iData_controller
 		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
 		
-		// assume year 2010 as starting date for OSPOS
+		// set 01/01/2010 as starting date for OSPOS
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
 
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $start_of_time;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		
 		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
@@ -53,35 +53,36 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search', TRUE);
-		$this->item_lib->set_item_location($this->input->post('stock_location', TRUE));
-		$limit_from = $this->input->post('limit_from', TRUE);
+		$search = $this->input->post('search');
+		$this->item_lib->set_item_location($this->input->post('stock_location'));
+		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		// assume year 2010 as starting date for OSPOS
+		// set 01/01/2010 as starting date for OSPOS
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
 
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $start_of_time;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		
 		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
 						'end_date' => $end_date_formatter->format('Y-m-d'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
-						'empty_upc' => $this->input->post('empty_upc', TRUE) != null,
-						'low_inventory' => $this->input->post('low_inventory', TRUE) != null, 
-						'is_serialized' => $this->input->post('is_serialized', TRUE) != null,
-						'no_description' => $this->input->post('no_description', TRUE) != null,
-						'search_custom' => $this->input->post('search_custom', TRUE) != null,
-						'is_deleted' => $this->input->post('is_deleted', TRUE) != null);
+						'empty_upc' => $this->input->post('empty_upc') != null,
+						'low_inventory' => $this->input->post('low_inventory') != null, 
+						'is_serialized' => $this->input->post('is_serialized') != null,
+						'no_description' => $this->input->post('no_description') != null,
+						'search_custom' => $this->input->post('search_custom') != null,
+						'is_deleted' => $this->input->post('is_deleted') != null);
 		
 		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
 		$data_rows = get_items_manage_table_data_rows($items, $this);
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
 		$data_rows = get_items_manage_table_data_rows($items, $this);
+
 		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
 		$this->_remove_duplicate_cookies();
 		
