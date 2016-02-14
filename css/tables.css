@@ -9,9 +9,11 @@
 
 #search_filter_section
 {
+	padding: 5px;
+	margin-bottom: 10px;
 	background-color: transparent;
 	position: relative;
-	
+
     //background-color: #EEEEEE;
 }
 
@@ -61,12 +63,6 @@
 {
 	text-decoration:none;
 	color:#FFF;	
-}
-
-#search_filter_section
-{
-	padding: 5px;
-	margin-bottom: 10px;
 }
 
 #table_holder

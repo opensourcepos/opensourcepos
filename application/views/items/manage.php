@@ -9,7 +9,7 @@ $(document).ready(function()
     enable_row_selection();
 	
     var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
-        confirm_message : '<?php echo $this->lang->line("common_confirm_search")?>',
+        confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
         extra_params : {
             'is_deleted' : function () {
                 return $("#is_deleted").is(":checked") ? 1 : 0;
@@ -20,6 +20,7 @@ $(document).ready(function()
     $("#is_deleted").change(function() {
         widget.flushCache();
     });
+
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
     enable_bulk_edit('<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
@@ -35,6 +36,7 @@ $(document).ready(function()
         $(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
     });
 
+	// when any filter is clicked
     $("#search_filter_section input").click(function() 
     {
         // reset page number when selecting a specific page number
@@ -42,12 +44,14 @@ $(document).ready(function()
         do_search(true);
     });
 
+	// accept partial suggestion to trigger a search on enter press
     $('#search').keypress(function (e) {
         if (e.which == 13) {
             $('#search_form').submit();
         }
     });
 
+	// initialise the datetime picker and trigger a search on any change date
     $(".date_filter").datetimepicker({
         format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')); ?>",
         startDate: '01/01/2010',
@@ -97,7 +101,8 @@ function init_table_sorting()
                 0: { sorter: false},
                 8: { sorter: false},
                 9: { sorter: false},
-                10: { sorter: false}
+                10: { sorter: false},
+                11: { sorter: false}
             }
         });
     }
@@ -119,7 +124,7 @@ function post_item_form_submit(response)
         }
         else //refresh entire table
         {
-            do_search(true,function()
+            do_search(true, function()
             {
                 //highlight new row
                 hightlight_row(response.item_id);
@@ -162,7 +167,7 @@ function post_bulk_form_submit(response)
 <div id="pagination"><?= $links ?></div>
 
 <div id="titleTextImg">
-    <div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'); ?> :</div>
+    <div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>
     <a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>

@@ -16,16 +16,21 @@ $(document).ready(function()
 		on_complete : on_complete});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
-	$("#search_filter_section #only_invoices").change(function() {
-		do_search(true, on_complete);
-		return false;
-	});
+    $("#search_filter_section input").click(function() 
+    {
+        // reset page number when selecting a specific page number
+        $('#limit_from').val("0");
+        do_search(true, on_complete);
+    });
 	
-	$("#search_filter_section #only_cash").change(function() {
-		do_search(true, on_complete);
-		return false;
-	});
+	// accept partial suggestion to trigger a search on enter press
+    $('#search').keypress(function (e) {
+        if (e.which == 13) {
+            $('#search_form').submit();
+        }
+    });
 
+/*
 	var show_renumber = function() {
 		var value = $("#only_invoices").val();
 		var $button = $("#update_invoice_numbers").parents("li");
@@ -35,6 +40,13 @@ $(document).ready(function()
 	$("#only_invoices").change(show_renumber);
 	show_renumber();
 
+	$("#update_invoice_numbers").click(function() {
+		$.ajax({url : "<?php echo site_url('sales') ?>/update_invoice_numbers", dataType: 'json', success : post_bulk_form_submit });
+		return false;
+	});
+*/
+
+	// initialise the datetime picker and trigger a search on any change date
 	$(".date_filter").datetimepicker({
 		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat'))?>",
 		startDate: '01/01/2010',
@@ -43,14 +55,7 @@ $(document).ready(function()
 		todayHighlight: true,
 		language: "<?php echo $this->config->item('language'); ?>"
 	}).on('changeDate', function(event) {
-		do_search(true, function(response) {
-			$("#payment_summary").html(response.payment_summary);
-		});
-		return false;
-	});
-
-	$("#update_invoice_numbers").click(function() {
-		$.ajax({url : "<?php echo site_url('sales') ?>/update_invoice_numbers", dataType: 'json', success : post_bulk_form_submit });
+		do_search(true, on_complete);
 		return false;
 	});
 });
@@ -196,7 +201,7 @@ function init_table_sorting()
 	<div id="table_action_header">
 		<ul>
 			<li class="float_left"><span><?php echo anchor($controller_name . "/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
-			<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'),array('id'=>'update_invoice_numbers')); ?></span></li-->
+			<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'),array('id'=>'update_invoice_numbers')); ?></span></li -->
 			<li class="float_right">
 				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 				<input type="text" name ='search' id='search'/>
