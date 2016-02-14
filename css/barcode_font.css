@@ -1,8 +1,8 @@
 @font-face 
 {
     font-family:'SansationLight';
-   	src: url('../font/SansationLight.eot');
-	src: local('SansationLight'), url('../font/SansationLight.woff') format('woff'), url('../font/SansationLight.ttf') format('truetype');
+   	src: url('../fonts/SansationLight.eot');
+	src: local('SansationLight'), url('../fonts/SansationLight.woff') format('woff'), url('../fonts/SansationLight.ttf') format('truetype');
 }
 
 .font_SansationLight {
@@ -12,8 +12,8 @@
 @font-face 
 {
     font-family:'Arial';
-   	src: url('../font/Arial.eot');
-	src: local('Arial'), url('../font/Arial.woff') format('woff'), url('../font/Arial.ttf') format('truetype');
+   	src: url('../fonts/Arial.eot');
+	src: local('Arial'), url('../fonts/Arial.woff') format('woff'), url('../fonts/Arial.ttf') format('truetype');
 }
 
 .font_Arial {
@@ -23,8 +23,8 @@
 @font-face 
 {
     font-family:'JUNEBUG';
-   	src: url('../font/JUNEBUG.eot');
-	src: local('JUNEBUG'), url('../font/JUNEBUG.woff') format('woff'), url('../font/JUNEBUG.ttf') format('truetype');
+   	src: url('../fonts/JUNEBUG.eot');
+	src: local('JUNEBUG'), url('../fonts/JUNEBUG.woff') format('woff'), url('../fonts/JUNEBUG.ttf') format('truetype');
 }
 
 .font_JUNEBUG {
@@ -34,8 +34,8 @@
 @font-face 
 {
     font-family:'b-de-bonita-shadow';
-   	src: url('../font/b-de-bonita-shadow.eot');
-	src: local('JUNEBUG'), url('../font/b-de-bonita-shadow.woff') format('woff'), url('../font/b-de-bonita-shadow.ttf') format('truetype');
+   	src: url('../fonts/b-de-bonita-shadow.eot');
+	src: local('JUNEBUG'), url('../fonts/b-de-bonita-shadow.woff') format('woff'), url('../fonts/b-de-bonita-shadow.ttf') format('truetype');
 }
 
 .font_b-de-bonita-shadow {
