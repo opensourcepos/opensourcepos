@@ -6,13 +6,7 @@
 @import url(reports.css);
 @import url(tables.css);
 @import url(thickbox.css);
-@import url(datepicker.css);
 @import url(invoice.css);
-@import url(jquery-ui.structure.css);
-@import url(jquery-ui.theme.css);
-@import url(jquery-ui-timepicker-addon.css);
-@import url(jasny-bootstrap.css);
-@import url(bootstrap-datetimepicker.css);
 
 html, body
 {

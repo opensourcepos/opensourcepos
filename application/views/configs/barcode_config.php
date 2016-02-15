@@ -57,7 +57,7 @@
             <?php echo form_label($this->lang->line('config_barcode_font').':', 'barcode_font',array('class'=>'wide required')); ?>
                 <div class='form_field'>
                 <?php echo form_dropdown('barcode_font', 
-                   $this->barcode_lib->listfonts("font"), 
+                   $this->barcode_lib->listfonts("fonts"),
                     $this->config->item('barcode_font'));
                     ?>
                     

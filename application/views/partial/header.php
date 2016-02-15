@@ -5,41 +5,47 @@
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<!-- bower:css -->
+	<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
+	<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
+	<link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+	<!-- endbower -->
 	<link rel="stylesheet" type="text/css" href="css/ospos.css" />
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
-
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
+		<!-- bower:js -->
+		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script src="bower_components/jquery-bgiframe/jquery.bgiframe.js"></script>
+		<script src="bower_components/jquery-migrate/jquery-migrate.js"></script>
+		<script src="bower_components/jquery-form/jquery.form.js"></script>
+		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
+		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src="bower_components/swfobject/swfobject/swfobject.js"></script>
+		<script src="bower_components/thickbox/thickbox.js"></script>
+		<script src="bower_components/tablesorter/dist/js/jquery.tablesorter.combined.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+		<script src="bower_components/bootswatch-dist/js/bootstrap.js"></script>
+		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery-1.12.0.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery-migrate-1.3.0.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery-ui-1.11.4.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.bgiframe.min.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.color.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.form-3.51.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.metadata.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.tablesorter-2.20.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.validate-1.13.1-min.js" language="javascript"></script>
-		<script type="text/javascript" src="js/bootstrap-3.3.6.js" language="javascript"></script>
-		<script type="text/javascript" src="js/bootstrap-datetimepicker.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
-		<script type="text/javascript" src="js/date.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jasny-bootstrap.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
 		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
-		<script type="text/javascript" src="js/swfobject.js" language="javascript"></script>
-		<script type="text/javascript" src="js/thickbox.js" language="javascript"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=d2178e43ec" language="javascript"></script>
-		<!-- end minjs template tags -->       
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=d847fd4fb1" language="javascript"></script>
+		<!-- end minjs template tags -->
 	<?php endif; ?>
 
 	<script type="text/javascript">

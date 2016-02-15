@@ -2,13 +2,26 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    wiredep: {
+        task: {
+            ignorePath: '../../../',
+            src: ['**/header.php']
+        }
+    },
+    bower_concat: {
+        all: {
+            dest: {
+                'js': 'dist/opensourcepos_bower.js'
+            }
+        }
+    },
     concat: {
         js: {
             options: {
                 separator: ';'
             },
             files: {
-                'dist/<%= pkg.name %>.js': ['js/jquery*', 'js/*.js']
+                'dist/<%= pkg.name %>.js': ['dist/opensourcepos_bower.js', 'js/jquery*', 'js/*.js']
             }
         },
         sql: {
@@ -21,16 +34,15 @@ module.exports = function(grunt) {
             }
         }
     },
-
     uglify: {
-      options: {
-        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
-      },
-      dist: {
-        files: {
-          'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.js']
+        options: {
+            banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        },
+        dist: {
+            files: {
+                'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.js']
+            }
         }
-      }
     },
     jshint: {
       files: ['Gruntfile.js', 'js/*.js'],
@@ -52,9 +64,7 @@ module.exports = function(grunt) {
                 closeTag: '<!-- end js template tags -->',
                 absolutePath: true
             },
-            src: [
-                'js/jquery*.js', 'js/*.js',
-            ],
+            src: [ 'js/jquery*', 'js/*.js' ],
             dest: 'application/views/partial/header.php'
        },
        minjs : {
@@ -65,7 +75,7 @@ module.exports = function(grunt) {
                absolutePath: true
            },
            src: [
-               'dist/*min.js',
+               'dist/*min.js'
            ],
            dest: 'application/views/partial/header.php'
       }
@@ -102,14 +112,8 @@ module.exports = function(grunt) {
     }
   });
 
-  grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
-  grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-script-link-tags');
-  grunt.loadNpmTasks('grunt-mocha-webdriver');
-  grunt.loadNpmTasks('grunt-cache-breaker');
+  require('load-grunt-tasks')(grunt);
 
-  grunt.registerTask('default', ['tags:js', 'concat', 'uglify', 'tags:minjs', 'cachebreaker']);
+  grunt.registerTask('default', ['wiredep', 'tags:js', 'bower_concat', 'concat', 'uglify', 'tags:minjs', 'cachebreaker']);
 
 };
