@@ -53,6 +53,7 @@ $(document).ready(function()
 		autoclose: true,
 		todayBtn: true,
 		todayHighlight: true,
+		bootcssVer: 3,
 		language: "<?php echo $this->config->item('language'); ?>"
 	}).on('changeDate', function(event) {
 		do_search(true, on_complete);

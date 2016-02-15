@@ -114,6 +114,7 @@ $(document).ready(function()
 		autoclose: true,
 		todayBtn: true,
 		todayHighlight: true,
+		bootcssVer: 3,
 		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
