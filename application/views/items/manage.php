@@ -109,6 +109,37 @@ function init_table_sorting()
     }
 }
 
+var item_details = function(url) {
+
+    dialog_support = { hide: function () {}, clicked_button : undefined };
+
+    var submit_form = function(button_id) {
+        return function(dialog_ref)
+        {
+            dialog_support.clicked_button = button_id;
+            $('#item_form').submit();
+            dialog_support.hide_dialog = function() {
+                dialog_ref.close();
+            };
+        }
+    };
+
+    return BootstrapDialog.show({
+        title: '<?php echo $this->lang->line("items_basic_information"); ?>',
+        message: $('<div></div>').load(url),
+        buttons: [{
+            id: 'submit',
+            label: '<?php echo $this->lang->line('common_submit'); ?>',
+            action: submit_form('submit')
+        }, {
+            id: 'new',
+            label: '<?php echo $this->lang->line('common_new'); ?>',
+            action: submit_form('new')
+        }]
+    });
+};
+
+
 function post_item_form_submit(response)
 {
     if(!response.success)
