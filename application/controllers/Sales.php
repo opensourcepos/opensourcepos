@@ -129,7 +129,7 @@ class Sales extends Secure_area
 		$sale_rows = get_sales_manage_table_data_rows($sales, $this);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
 
-		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
+		// do not move this line to be after the json_encode otherwise the search function won't work!!
 		$this->_remove_duplicate_cookies();
 		
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
@@ -138,22 +138,27 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
+		$search = $this->input->post('q');
+		$limit = $this->input->post('limit');
 
-		if ($this->sale_lib->get_mode() == 'return') 
+		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
 		{
-			$this->sale_lib->is_valid_receipt($this->input->post('q')) && $suggestions[] = $this->input->post('q');
+			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit')));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
+		$suggestions = array_merge($suggestions, $this->Item->get_item_search_suggestions($search , $limit));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($search, $limit));
 
 		echo implode("\n", $suggestions);
 	}
 
 	function customer_search()
 	{
-		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$search = $this->input->post('q');
+		$limit = $this->input->post('limit');
+		
+		$suggestions = $this->Customer->get_customer_search_suggestions($search, $limit);
 
-		echo implode("\n",$suggestions);
+		echo implode("\n", $suggestions);
 	}
 
 	function suggest()
@@ -162,7 +167,7 @@ class Sales extends Secure_area
 		$limit = $this->input->post('limit');
 		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
 
-		echo implode("\n",$suggestions);
+		echo implode("\n", $suggestions);
 	}
 
 	function select_customer()
@@ -276,10 +281,11 @@ class Sales extends Secure_area
 
 	function add()
 	{
-		$data=array();
+		$data = array();
+
 		$mode = $this->sale_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$quantity = ($mode=="return")? -1:1;
+		$quantity = ($mode=="return") ? -1 : 1;
 		$item_location = $this->sale_lib->get_sale_location();
 
 		if($mode == 'return' && $this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
@@ -292,13 +298,14 @@ class Sales extends Secure_area
 		}
 		else if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location,$this->config->item('default_sales_discount')))
 		{
-			$data['error']=$this->lang->line('sales_unable_to_add_item');
+			$data['error'] = $this->lang->line('sales_unable_to_add_item');
 		}
 		
 		if($this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt,$item_location))
 		{
 			$data['warning'] = $this->lang->line('sales_quantity_less_than_zero');
 		}
+
 		$this->_reload($data);
 	}
 
@@ -375,7 +382,7 @@ class Sales extends Secure_area
 				$this->config->item('account_number')
 		));
 		$cust_info = '';
-		if($customer_id!=-1)
+		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
 			if (isset($cust_info->company_name))
@@ -406,7 +413,7 @@ class Sales extends Secure_area
 		{
 			$invoice_number = $this->sale_lib->is_invoice_number_enabled() ? $invoice_number : null;
 			$data['invoice_number'] = $invoice_number;
-			$data['sale_id'] = 'POS '.$this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments']);
+			$data['sale_id'] = 'POS ' . $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments']);
 			if ($data['sale_id'] == 'POS -1')
 			{
 				$data['error_message'] = $this->lang->line('sales_transaction_failed');
@@ -446,11 +453,11 @@ class Sales extends Secure_area
 			$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 			if ($this->sale_lib->is_invoice_number_enabled() && $this->config->item('use_invoice_template'))
 			{
-				$this->load->view("sales/invoice",$data);
+				$this->load->view("sales/invoice", $data);
 			}
 			else
 			{
-				$this->load->view("sales/receipt",$data);
+				$this->load->view("sales/receipt", $data);
 			}
 			$this->sale_lib->clear_all();
 		}
@@ -555,6 +562,7 @@ class Sales extends Secure_area
 		$invoice_number = $this->config->config['sales_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number, $cust_info);
 		$this->sale_lib->set_invoice_number($invoice_number, TRUE);
+
 		return $this->sale_lib->get_invoice_number();
 	}
 
@@ -584,7 +592,7 @@ class Sales extends Secure_area
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$data['employee'] = $emp_info->first_name.' '.$emp_info->last_name;
 	
-		if($customer_id!=-1)
+		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
 			if (isset($cust_info->company_name))
@@ -608,7 +616,7 @@ class Sales extends Secure_area
 				$data['account_number']
 			));
 		}
-		$data['sale_id'] = 'POS '.$sale_id;
+		$data['sale_id'] = 'POS ' . $sale_id;
 		$data['comments'] = $sale_info['comment'];
 		$data['invoice_number'] = $sale_info['invoice_number'];
 		$data['company_info'] = implode("\n", array(
@@ -632,10 +640,12 @@ class Sales extends Secure_area
 	
 	function invoice($sale_id, $sale_info='')
 	{
-		if ($sale_info == '') {
+		if ($sale_info == '')
+		{
 			$sale_info = $this->_load_sale_data($sale_id);
 		}
-		$this->load->view("sales/invoice",$sale_info);
+
+		$this->load->view("sales/invoice", $sale_info);
 		$this->sale_lib->clear_all();
 		$this->_remove_duplicate_cookies();
 	}
@@ -689,13 +699,11 @@ class Sales extends Secure_area
 		
 		if ($this->Sale->update($sale_data, $sale_id))
 		{
-			echo json_encode(array('success'=>true,	'message'=>$this->lang->line('sales_successfully_updated'),	'id'=>$sale_id)
-			);
+			echo json_encode(array('success'=>true,	'message'=>$this->lang->line('sales_successfully_updated'),	'id'=>$sale_id));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('sales_unsuccessfully_updated'), 'id'=>$sale_id)
-			);
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('sales_unsuccessfully_updated'), 'id'=>$sale_id));
 		}
 	}
 	
@@ -749,7 +757,7 @@ class Sales extends Secure_area
 
 		$customer_id = $this->sale_lib->get_customer();
 		$cust_info = '';
-		if($customer_id!=-1)
+		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
 			$data['customer'] = $cust_info->first_name.' '.$cust_info->last_name;
@@ -791,7 +799,7 @@ class Sales extends Secure_area
 		$data['amount_change'] = to_currency($this->sale_lib->get_amount_due() * -1);
 		$data['employee'] = $emp_info->first_name.' '.$emp_info->last_name;
 
-		if($customer_id!=-1)
+		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
 			if (isset($cust_info->company_name))
@@ -841,9 +849,9 @@ class Sales extends Secure_area
 	
 	function check_invoice_number()
 	{
-		$sale_id=$this->input->post('sale_id');
-		$invoice_number=$this->input->post('invoice_number');
-		$exists=!empty($invoice_number) && $this->Sale->invoice_number_exists($invoice_number,$sale_id);
+		$sale_id = $this->input->post('sale_id');
+		$invoice_number = $this->input->post('invoice_number');
+		$exists = !empty($invoice_number) && $this->Sale->invoice_number_exists($invoice_number,$sale_id);
 
 		echo json_encode(array('success'=>!$exists, 'message'=>$this->lang->line('sales_invoice_number_duplicate')));
 	}
