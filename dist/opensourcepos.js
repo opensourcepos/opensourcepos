@@ -44816,6 +44816,28 @@ function get_visible_checkbox_ids()
 	});
 	return row_ids;
 }
+
+dialog_support = (function() {
+
+	var submit_form = function(button_id) {
+		return function(dialog_ref)
+		{
+			dialog_support.clicked_button = button_id;
+			$('#item_form').submit();
+			dialog_support.hide_dialog = function() {
+				dialog_ref.close();
+			};
+		}
+	};
+
+	return {
+		hide: function () {},
+		clicked_button : undefined,
+		submit: submit_form
+	};
+
+})();
+
 ;(function($) {
 	
 	function http_s(url)

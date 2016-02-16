@@ -201,8 +201,7 @@ a.rollover img
     }
 }
 
-.modal .modal-body
-{
-	max-height: 420px;
+.modal-body {
+	max-height: calc(100vh - 212px);
 	overflow-y: auto;
 }

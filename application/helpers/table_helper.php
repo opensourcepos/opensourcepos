@@ -358,9 +358,9 @@ function get_item_data_row($item,$controller)
 		}
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
-	$table_data_row.='<td width="5%"><a onclick="item_details(\''.$controller_name.'/view/'. $item->item_id . '/width:' . $width . '\')">'. $CI->lang->line('common_edit').'</a></td>';
-	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id/width:$width", $CI->lang->line('common_inv'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count
-	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id/width:$width", $CI->lang->line('common_det'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
+	$table_data_row.='<td width="5%"><a onclick="item_details(\''.$controller_name.'/view/'. $item->item_id . '/width:' . $width . '\',\''.$CI->lang->line("items_basic_information").'\')">'. $CI->lang->line('common_edit').'</a>';
+	$table_data_row.='<td width="10%"><a onclick="item_details(\''.$controller_name.'/inventory/' . $item->item_id . '/width:' . $width . '\', \''.$CI->lang->line("items_count"). '\')">'. $CI->lang->line('common_inv'). '</a>'.
+	 '&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="item_details(\''.$controller_name.'/count_details/'. $item->item_id. '/width:' . $width . '\', \''. $CI->lang->line('items_details_count') . '\')">' . $CI->lang->line('common_det'). '</a></td>';//inventory detail_
 	
 	$table_data_row.='</tr>';
 
