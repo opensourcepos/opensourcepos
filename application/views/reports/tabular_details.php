@@ -108,7 +108,7 @@ else
 					update_sortable_table();
 					animate_row(row);
 					row.find("a.expand").click(expand_handler).text(sign);
-					tb_init(row.find("a.thickbox"));
+					dialog_support.init(row.find("a.modal"));
 				});
 				set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 			}

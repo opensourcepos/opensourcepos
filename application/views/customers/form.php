@@ -1,48 +1,37 @@
-<?php echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_form')); ?>
-	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-	<ul id="error_message_box" class="error_message_box"></ul>
-	<fieldset id="customer_basic_info">
-		<legend><?php echo $this->lang->line("customers_basic_information"); ?></legend>
-		<?php $this->load->view("people/form_basic_info"); ?>
+<?php echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_form', 'class'=>'form-horizontal')); ?>
+<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+<ul id="error_message_box" class="error_message_box"></ul>
+<?php $this->load->view("people/form_basic_info"); ?>
 
-		<div class="field_row clearfix">	
-		<?php echo form_label($this->lang->line('customers_company_name').':', 'company_name'); ?>
-			<div class='form_field'>
-			<?php echo form_input(array(
-				'name'=>'company_name',
-				'value'=>$person_info->company_name)
-			);?>
-			</div>
-		</div>
+<div class="form-group">
+<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
+	<div class='col-xs-6'>
+	<?php echo form_input(array(
+		'name'=>'company_name',
+		'class'=>'form-control',
+		'value'=>$person_info->company_name)
+	);?>
+	</div>
+</div>
 
-		<div class="field_row clearfix">	
-		<?php echo form_label($this->lang->line('customers_account_number').':', 'account_number'); ?>
-			<div class='form_field'>
-			<?php echo form_input(array(
-				'name'=>'account_number',
-				'id'=>'account_number',
-				'class'=>'account_number',
-				'value'=>$person_info->account_number)
-			);?>
-			</div>
-		</div>
+<div class="form-group">
+<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
+	<div class='col-xs-6'>
+	<?php echo form_input(array(
+		'name'=>'account_number',
+		'id'=>'account_number',
+		'class'=>'account_number form-control',
+		'value'=>$person_info->account_number)
+	);?>
+	</div>
+</div>
 
-		<div class="field_row clearfix">	
-		<?php echo form_label($this->lang->line('customers_taxable').':', 'taxable'); ?>
-			<div class='form_field'>
-			<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable);?>
-			</div>
-		</div>
-
-		<?php
-		echo form_submit(array(
-			'name'=>'submit',
-			'id'=>'submit',
-			'value'=>$this->lang->line('common_submit'),
-			'class'=>'btn btn-primary btn-sm pull-right')
-		);
-		?>
-	</fieldset>
+<div class="form-group">
+<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
+	<div class='col-xs-1'>
+	<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable, 'class="form-control"');?>
+	</div>
+</div>
 <?php echo form_close(); ?>
 
 <script type='text/javascript'>
@@ -74,7 +63,7 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_person_form_submit(response);
 			},
 			dataType:'json'

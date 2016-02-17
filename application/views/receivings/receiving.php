@@ -53,7 +53,7 @@ if(isset($error))
 		<div id="new_item_button_register" >
 			<?php echo anchor("items/view/-1/width:450",
 			"<div class='btn btn-sm btn-info'><span>".$this->lang->line('sales_new_item')."</span></div>",
-			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
+			array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_new_item')));
 			?>
 		</div>
 	<?php echo form_close(); ?>
@@ -207,7 +207,7 @@ if(isset($error))
 		<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
 		<?php echo anchor("suppliers/view/-1/width:400",
 		"<div class='btn btn-sm btn-info' style='margin:0 auto;'><span>".$this->lang->line('recvs_new_supplier')."</span></div>",
-		array('class'=>'thickbox none','title'=>$this->lang->line('recvs_new_supplier')));
+		array('class'=>'modal-dlg none','title'=>$this->lang->line('recvs_new_supplier')));
 		?>
 		</div>
 		<div class="clearfix">&nbsp;</div>

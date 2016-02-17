@@ -144,7 +144,7 @@
 	?>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity',array('class'=>'wide control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-2'>
 			<?php echo form_input(array(
 					'name'=>'receiving_quantity',
@@ -295,7 +295,7 @@
 		$('#item_form').validate({
 			submitHandler:function(form, event)
 			{
-				var stay_open = dialog_support.clicked_button != 'submit';
+				var stay_open = dialog_support.clicked_id() != 'submit';
 				var $form = $(form);
 
 				$.ajax({
@@ -317,7 +317,7 @@
 						}
 						else
 						{
-							dialog_support.hide_dialog();
+							dialog_support.hide();
 						}
 						post_item_form_submit(response, stay_open);
 					}

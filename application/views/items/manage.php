@@ -175,11 +175,11 @@ function post_bulk_form_submit(response)
     <div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
 	<?php echo anchor("$controller_name/excel_import/width:$form_width",
 	"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-	array('class'=>'thickbox none', 'title'=>'Import Items from Excel'));
+	array('class'=>'modal-dlg none', 'title'=>'Import Items from Excel'));
 	?>
 	<?php echo anchor("$controller_name/view/-1/width:$form_width",
 	"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-	array('class'=>'thickbox none', 'title'=>$this->lang->line($controller_name . '_new')));
+	array('class'=>'modal-dlg', 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
 
