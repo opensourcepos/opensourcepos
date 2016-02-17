@@ -174,12 +174,12 @@
 				<div class='form_field'>
 				<?php echo form_dropdown('dateformat', array(
 					'd/m/Y' => 'dd/mm/yyyy',
+					'd.m.Y' => 'dd.mm.yyyy',
 					'm/d/Y' => 'mm/dd/yyyy',
 					'Y/m/d' => 'yyyy/mm/dd',
 					'd/m/y' => 'dd/mm/yy',
 					'm/d/y' => 'mm/dd/yy',
-					'y/m/d' => 'yy/mm/dd',
-					'd.m.Y' => 'dd.mm.yyyy',), 
+					'y/m/d' => 'yy/mm/dd'),
 					$this->config->item('dateformat'));
 					?>
 				</div>
@@ -187,8 +187,7 @@
 				<?php echo form_dropdown('timeformat', array(
 					'H:i:s' => 'hh:mm:ss (24h)',
 					'h:i:s a' => 'hh:mm:ss am/pm',
-					'h:i:s A' => 'hh:mm:ss AM/PM',
-					'h:i:s' => 'hh:mm:ss (12h)'),
+					'h:i:s A' => 'hh:mm:ss AM/PM'),
 					$this->config->item('timeformat'));
 					?>
 				</div>

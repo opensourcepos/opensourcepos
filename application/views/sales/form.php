@@ -158,14 +158,44 @@ $(document).ready(function()
 				"<?php echo $this->lang->line("common_monthsshort_november"); ?>",
 				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
 		today: "<?php echo $this->lang->line("common_today"); ?>",
-		suffix: [],
-		meridiem: [],
+		<?php
+			$t = $this->config->item('timeformat');
+			$m = $t[strlen($t)-1];
+			if( $m == 'a')
+			{ 
+		?>
+				meridiem: ["am", "pm"],
+		<?php 
+			}
+			else
+			{
+		?>
+				meridiem: ["AM", "PM"],
+		<?php 
+			}
+		?>
 		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>,
 	};
 	
 	$('#datetime').datetimepicker({
 		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
-		startDate: '01/01/2010 00:00:00',
+		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		<?php
+			$t = $this->config->item('timeformat');
+			$m = $t[strlen($t)-1];
+			if( $m == 'a' || $m == 'A' )
+			{ 
+		?>
+				showMeridian: true,
+		<?php 
+			}
+			else
+			{
+		?>
+				showMeridian: false,
+		<?php 
+			}
+		?>
 		minuteStep: 1,
 		autoclose: true,
 		todayBtn: true,

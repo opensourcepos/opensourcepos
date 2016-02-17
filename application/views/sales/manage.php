@@ -101,15 +101,45 @@ $(document).ready(function()
 				"<?php echo $this->lang->line("common_monthsshort_november"); ?>",
 				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
 		today: "<?php echo $this->lang->line("common_today"); ?>",
-		suffix: [],
-		meridiem: [],
-		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>,
+		<?php
+			$t = $this->config->item('timeformat');
+			$m = $t[strlen($t)-1];
+			if( $m == 'a')
+			{ 
+		?>
+				meridiem: ["am", "pm"],
+		<?php 
+			}
+			else
+			{
+		?>
+				meridiem: ["AM", "PM"],
+		<?php 
+			}
+		?>
+		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>
 	};
-
+		
 	// initialise the datetime picker and trigger a search on any change of date
 	$(".date_filter").datetimepicker({
 		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
-		startDate: '01/01/2010 00:00:00',
+		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		<?php
+			$t = $this->config->item('timeformat');
+			$m = $t[strlen($t)-1];
+			if( $m == 'a' || $m == 'A' )
+			{ 
+		?>
+				showMeridian: true,
+		<?php 
+			}
+			else
+			{
+		?>
+				showMeridian: false,
+		<?php 
+			}
+		?>
 		autoclose: true,
 		todayBtn: true,
 		todayHighlight: true,
@@ -254,9 +284,9 @@ function init_table_sorting()
 		<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0)) . ' | ';?>
 
 		<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-		<?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter', 'size' => '18'));?>
+		<?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter', 'size' => '22'));?>
 		<?php echo form_label(' - ', 'end_date');?>
-		<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '18'));?>
+		<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '22'));?>
 	</div>
 
 	<div id="table_action_header">

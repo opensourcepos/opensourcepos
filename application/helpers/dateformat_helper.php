@@ -94,7 +94,7 @@ function dateformat_bootstrap($php_format)
         'y' => 'yy',
         // Time
         'a' => 'p',
-        'A' => 'PP',
+        'A' => 'P',
         'B' => '',
         'g' => 'H',
         'G' => 'h',

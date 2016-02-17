@@ -102,7 +102,6 @@ $(document).ready(function()
 				"<?php echo $this->lang->line("common_monthsshort_november"); ?>",
 				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
 		today: "<?php echo $this->lang->line("common_today"); ?>",
-		suffix: [],
 		meridiem: [],
 		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>,
 	};
@@ -110,7 +109,7 @@ $(document).ready(function()
 	// initialise the datetime picker and trigger a search on any change date
     $(".date_filter").datetimepicker({
         format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')); ?>",
-        startDate: '01/01/2010',
+		startDate: "<?php echo date($this->config->item('dateformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		minView: 2,
         autoclose: true,
         todayBtn: true,
