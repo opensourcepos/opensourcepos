@@ -6,16 +6,16 @@
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
             <ul id="barcode_error_message_box" class="error_message_box"></ul>
 
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_type').':', 'barcode_type',array('class'=>'wide')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_type').':', 'barcode_type',array('class'=>'control-label col-xs-3')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_dropdown('barcode_type', $support_barcode, $this->config->item('barcode_type'));?>
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_quality').':', 'barcode_quality',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_quality').':', 'barcode_quality',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_input(array(
                     'max'=>'100',
                     'min'=>'10',
@@ -26,9 +26,9 @@
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_width').':', 'barcode_width',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_width').':', 'barcode_width',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_input(array(
                     'step'=>'5',
                     'max'=>'350',
@@ -40,9 +40,9 @@
                 </div>
             </div>
 
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_height').':', 'barcode_height',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_height').':', 'barcode_height',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_input(array(
                     'type' => 'number',
                     'min' => 10,
@@ -53,9 +53,9 @@
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_font').':', 'barcode_font',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_font').':', 'barcode_font',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_dropdown('barcode_font', 
                    $this->barcode_lib->listfonts("fonts"),
                     $this->config->item('barcode_font'));
@@ -71,9 +71,9 @@
                 </div>
             </div>
             
-			<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('config_barcode_content').':', 'barcode_content',array('class'=>'wide')); ?>
-				<div class='form_field'>
+			<div class="form-group">
+			<?php echo form_label($this->lang->line('config_barcode_content').':', 'barcode_content',array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
 					<?php echo form_radio(array(
 						'name'=>'barcode_content',
 						'value'=>'id',
@@ -92,9 +92,9 @@
 				</div>
 			</div>
 
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_layout').':', 'barcode_layout',array('class'=>'wide')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_layout').':', 'barcode_layout',array('class'=>'control-label col-xs-3')); ?>
+                <div class='col-xs-6'>
                 <?php echo $this->lang->line('config_barcode_first_row').' '; ?>
                 <?php echo form_dropdown('barcode_first_row', array(
                         'not_show'        => 'Not show',
@@ -133,9 +133,9 @@
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_number_in_row').':', 'barcode_num_in_row',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_number_in_row').':', 'barcode_num_in_row',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_input(array(
                     'name'=>'barcode_num_in_row',
                     'id'=>'barcode_num_in_row',
@@ -143,9 +143,9 @@
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_page_width').':', 'barcode_page_width',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_page_width').':', 'barcode_page_width',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_input(array(
                     'name'=>'barcode_page_width',
                     'id'=>'barcode_page_width',
@@ -154,9 +154,9 @@
                 </div>
             </div>
             
-            <div class="field_row clearfix">    
-            <?php echo form_label($this->lang->line('config_barcode_page_cellspacing').':', 'barcode_page_cellspacing',array('class'=>'wide required')); ?>
-                <div class='form_field'>
+            <div class="form-group">    
+            <?php echo form_label($this->lang->line('config_barcode_page_cellspacing').':', 'barcode_page_cellspacing',array('class'=>'control-label col-xs-3 required')); ?>
+                <div class='col-xs-6'>
                 <?php echo form_input(array(
                     'name'=>'barcode_page_cellspacing',
                     'id'=>'barcode_page_cellspacing',

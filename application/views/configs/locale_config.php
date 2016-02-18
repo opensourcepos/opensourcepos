@@ -1,56 +1,59 @@
 <div id="page_title"><?php echo $this->lang->line('config_locale_configuration'); ?></div>
 
-<?php echo form_open('config/save_locale/',array('id'=>'locale_config_form')); ?>
+<?php echo form_open('config/save_locale/',array('id'=>'locale_config_form', 'class'=>'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 			<ul id="error_message_box" class="error_message_box"></ul>
 
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('config_currency_symbol').':', 'currency_symbol',array('class'=>'wide')); ?>
-				<div class='form_field'>
+			<div class="form-group">
+				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol',array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-sm-1'>
 					<?php echo form_input(array(
 							'name'=>'currency_symbol',
 							'id'=>'currency_symbol',
+							'class'=>'form-control',
 							'value'=>$this->config->item('currency_symbol')));?>
 				</div>
-
-				<?php echo form_label($this->lang->line('config_currency_side').':', 'currency_side',array('class'=>''));?>
-				<div class='form_field'>
-					<?php 
+				<div class='checkbox col-sm-2'>
+					<label>
+						<?php
 						echo form_checkbox(array(
 							'name'=>'currency_side',
 							'id'=>'currency_side',
 							'value'=>'currency_side',
-							'checked'=>$this->config->item('currency_side')));?>
+							'checked'=>$this->config->item('currency_side')));?><?php echo $this->lang->line('config_currency_side');?>
+					</label>
 				</div>
 			</div>
 
-			<div class="field_row clearfix">    
-			<?php echo form_label($this->lang->line('config_number_format').':', 'number_format',array('class'=>'wide')); ?>
-				<div class='form_field'>
-				<?php echo $this->lang->line('config_thousands_separator'); ?>
-				<?php echo form_dropdown('thousands_separator', array(
-							'&apos;' => '&apos; (apostrophe)',
-						','    => ', (comma)',
-						'.'    => '. (dot)',
-						''    => '(none)'
-						), 
-					$this->config->item('thousands_separator'));
+			<div class="form-group">    
+				<?php echo form_label($this->lang->line('config_number_format'), 'number_format',array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-sm-2'>
+					<?php echo $this->lang->line('config_thousands_separator'); ?>
+					<?php echo form_dropdown('thousands_separator', array(
+								'&apos;' => '&apos; (apostrophe)',
+							','    => ', (comma)',
+							'.'    => '. (dot)',
+							''    => '(none)'
+							),
+						$this->config->item('thousands_separator'), "class='form-control'");
 					?>
-				<?php echo $this->lang->line('config_decimal_point'); ?>
-				<?php echo form_dropdown('decimal_point', array(
+				</div>
+				<div class="col-sm-2">
+					<?php echo $this->lang->line('config_decimal_point'); ?>
+					<?php echo form_dropdown('decimal_point', array(
 						'.'    => '. (dot)',
 						','    => ', (comma)'
-						), 
-					$this->config->item('decimal_point'));
+					),
+						$this->config->item('decimal_point'), "class='form-control'");
 					?>
 				</div>
 			</div>
 
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('config_language').':', 'language',array('class'=>'wide')); ?>
-				<div class='form_field'>
+			<div class="form-group">
+				<?php echo form_label($this->lang->line('config_language'), 'language',array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
 					<?php echo form_dropdown('language', array(
 					'en' => 'English',
 					'es' => 'Spanish',
@@ -63,14 +66,14 @@
 					'th' => 'Thai',
 					'tr' => 'Turkish'
 					),
-					$this->config->item('language'));
+					$this->config->item('language'), "class='form-control'");
 					?>
 				</div>
 			</div>
 
-			<div class="field_row clearfix">	
-			<?php echo form_label($this->lang->line('config_timezone').':', 'timezone',array('class'=>'wide')); ?>
-				<div class='form_field'>
+			<div class="form-group">	
+			<?php echo form_label($this->lang->line('config_timezone'), 'timezone',array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
 				<?php echo form_dropdown('timezone', 
 				 array(
 					'Pacific/Midway'=>'(GMT-11:00) Midway Island, Samoa',
@@ -164,14 +167,14 @@
 					'Pacific/Chatham'=>'(GMT+12:45) Chatham Islands',
 					'Pacific/Tongatapu'=>'(GMT+13:00) Nuku\'alofa',
 					'Pacific/Kiritimati'=>'(GMT+14:00) Kiritimati'
-					), $this->config->item('timezone') ? $this->config->item('timezone') : date_default_timezone_get());
+					), $this->config->item('timezone') ? $this->config->item('timezone') : date_default_timezone_get(), "class='form-control'");
 					?>
 				</div>
 			</div>
 
-			<div class="field_row clearfix">	
-			<?php echo form_label($this->lang->line('config_datetimeformat').':', 'datetimeformat', array('class'=>'wide')); ?>
-				<div class='form_field'>
+			<div class="form-group">	
+			<?php echo form_label($this->lang->line('config_datetimeformat'), 'datetimeformat', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-sm-2'>
 				<?php echo form_dropdown('dateformat', array(
 					'd/m/Y' => 'dd/mm/yyyy',
 					'm/d/Y' => 'mm/dd/yyyy',
@@ -180,16 +183,16 @@
 					'm/d/y' => 'mm/dd/yy',
 					'y/m/d' => 'yy/mm/dd',
 					'd.m.Y' => 'dd.mm.yyyy',), 
-					$this->config->item('dateformat'));
+					$this->config->item('dateformat'), "class='form-control'");
 					?>
 				</div>
-				<div class='form_field'>
+				<div class='col-sm-2'>
 				<?php echo form_dropdown('timeformat', array(
 					'H:i:s' => 'hh:mm:ss (24h)',
 					'h:i:s a' => 'hh:mm:ss am/pm',
 					'h:i:s A' => 'hh:mm:ss AM/PM',
 					'h:i:s' => 'hh:mm:ss (12h)'),
-					$this->config->item('timeformat'));
+					$this->config->item('timeformat'), "class='form-control'");
 					?>
 				</div>
 			</div>

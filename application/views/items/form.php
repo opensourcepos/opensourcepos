@@ -111,16 +111,15 @@
 					'class'=>'form-control',
 					'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
 			);?>
-			</div>
-			<div class="col-sm-2 input-group">
-				<?php echo form_input(array(
-						'name'=>'tax_percents[]',
-						'class'=>'form-control',
-						'id'=>'tax_percent_name_2',
-						'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
-				);?>
-				<span class="input-group-addon">%</span>
-			</div>
+		</div>
+		<div class="col-sm-2 input-group">
+			<?php echo form_input(array(
+					'name'=>'tax_percents[]',
+					'class'=>'form-control',
+					'id'=>'tax_percent_name_2',
+					'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
+			);?>
+			<span class="input-group-addon">%</span>
 		</div>
 	</div>
 

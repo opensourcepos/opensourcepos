@@ -44848,7 +44848,8 @@ dialog_support = (function() {
 				message: $('<div></div>').load($link.attr('href')),
 				buttons: [{
 					id: 'submit',
-					label: 'submit',
+					label: 'Submit',
+					cssClass: 'btn-primary',
 					action: submit('submit')
 				}]
 			});
