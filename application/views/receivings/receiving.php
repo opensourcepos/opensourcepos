@@ -84,9 +84,9 @@ if (isset($error))
 					echo form_open("receivings/edit_item/$line");	
 			?>
 						<tr>
-						<td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-						<td style="align: center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
-							<?php echo form_hidden('location', $item['item_location']); ?></td>
+							<td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
+							<td style="align: center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+								<?php echo form_hidden('location', $item['item_location']); ?></td>
 
 						<?php if ($items_module_allowed && $mode !='requisition')
 						{
