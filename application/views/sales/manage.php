@@ -7,15 +7,18 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
 
+	// refresh payment summaries at page bottom when a search complete takes place
 	var on_complete = function(response) {
 		$("#payment_summary").html(response.payment_summary);
 	};
 
-    enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
-		confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
-		on_complete : on_complete});
-    enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
+	// hook the ajax connectors on search actions, hook a on_complete action (refresh payment summaries at page bottom)
+    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest"); ?>',
+		confirm_search_message: '<?php echo $this->lang->line("common_confirm_search"); ?>',
+		on_complete: on_complete});
+    enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete"); ?>', '<?php echo $this->lang->line($controller_name."_none_selected"); ?>');
 
+	// on any input action in the search filter section trigger a do_search
     $("#search_filter_section input").click(function() 
     {
         // reset page number when selecting a specific page number
@@ -31,6 +34,7 @@ $(document).ready(function()
     });
 
 /*
+	// invoice edit related functionality that is currently disabled (see html)
 	var show_renumber = function() {
 		var value = $("#only_invoices").val();
 		var $button = $("#update_invoice_numbers").parents("li");
@@ -46,7 +50,63 @@ $(document).ready(function()
 	});
 */
 
-	// initialise the datetime picker and trigger a search on any change date
+	// set the locale language for the datetime picker
+	$.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
+		days: ["<?php echo $this->lang->line("common_days_sunday"); ?>",
+				"<?php echo $this->lang->line("common_days_monday"); ?>",
+				"<?php echo $this->lang->line("common_days_tueday"); ?>",
+				"<?php echo $this->lang->line("common_days_wednesday"); ?>",
+				"<?php echo $this->lang->line("common_days_thursday"); ?>",
+				"<?php echo $this->lang->line("common_days_friday"); ?>",
+				"<?php echo $this->lang->line("common_days_saturday"); ?>",
+				"<?php echo $this->lang->line("common_days_sunday"); ?>"],
+		daysShort: ["<?php echo $this->lang->line("common_daysshort_sunday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_monday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_tueday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_wednesday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_thursday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_friday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_saturday"); ?>",
+				"<?php echo $this->lang->line("common_daysshort_sunday"); ?>"],
+		daysMin: ["<?php echo $this->lang->line("common_daysmin_sunday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_monday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_tueday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_wednesday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_thursday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_friday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_saturday"); ?>",
+				"<?php echo $this->lang->line("common_daysmin_sunday"); ?>"],
+		months: ["<?php echo $this->lang->line("common_months_january"); ?>",
+				"<?php echo $this->lang->line("common_months_february"); ?>",
+				"<?php echo $this->lang->line("common_months_march"); ?>",
+				"<?php echo $this->lang->line("common_months_april"); ?>",
+				"<?php echo $this->lang->line("common_months_may"); ?>",
+				"<?php echo $this->lang->line("common_months_june"); ?>",
+				"<?php echo $this->lang->line("common_months_july"); ?>",
+				"<?php echo $this->lang->line("common_months_august"); ?>",
+				"<?php echo $this->lang->line("common_months_september"); ?>",
+				"<?php echo $this->lang->line("common_months_october"); ?>",				
+				"<?php echo $this->lang->line("common_months_november"); ?>",
+				"<?php echo $this->lang->line("common_months_december"); ?>"],
+		monthsShort: ["<?php echo $this->lang->line("common_monthsshort_january"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_february"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_march"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_april"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_may"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_june"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_july"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_august"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_september"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_october"); ?>",				
+				"<?php echo $this->lang->line("common_monthsshort_november"); ?>",
+				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
+		today: "<?php echo $this->lang->line("common_today"); ?>",
+		suffix: [],
+		meridiem: [],
+		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>,
+	};
+
+	// initialise the datetime picker and trigger a search on any change of date
 	$(".date_filter").datetimepicker({
 		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
 		startDate: '01/01/2010 00:00:00',
@@ -69,7 +129,7 @@ function post_form_submit(response)
 	}
 	else
 	{
-		update_row(response.id,'<?php echo site_url("$controller_name/get_row")?>');
+		update_row(response.id,'<?php echo site_url("$controller_name/get_row"); ?>');
 		set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 	}
 }
@@ -84,7 +144,7 @@ function post_bulk_form_submit(response)
 	{
 		for(id in response.ids)
 		{
-			update_row(response.ids[id],'<?php echo site_url("$controller_name/get_row")?>');
+			update_row(response.ids[id],'<?php echo site_url("$controller_name/get_row"); ?>');
 		}
 		set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 	}
@@ -97,12 +157,12 @@ function show_hide_search_filter(search_filter_section, switchImgTag)
     if(ele.style.display == "block")
     {
 		ele.style.display = "none";
-		imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/plus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
+		imageEle.innerHTML = '<img src=" <?php echo base_url(); ?>images/plus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
     }
     else
     {
 		ele.style.display = "block";
-		imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/minus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
+		imageEle.innerHTML = '<img src=" <?php echo base_url(); ?>images/minus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
     }
 }
     
@@ -204,7 +264,7 @@ function init_table_sorting()
 			<li class="float_left"><span><?php echo anchor($controller_name . "/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 			<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'),array('id'=>'update_invoice_numbers')); ?></span></li -->
 			<li class="float_right">
-				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
+				<img src='<?php echo base_url(); ?>images/spinner_small.gif' alt='spinner' id='spinner' />
 				<input type="text" name ='search' id='search'/>
 				<input type="hidden" name ='limit_from' id='limit_from'/>
 			</li>

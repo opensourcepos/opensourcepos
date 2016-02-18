@@ -59,9 +59,9 @@
 					'de-CH' => 'German (Swiss)',
 					'zh' => 'Chinese',
 					'id' => 'Indonesian',
-					'fr'	=> 'French',
-					'th'	=> 'Thai',
-					'tr'	=> 'Turkish'
+					'fr' => 'French',
+					'th' => 'Thai',
+					'tr' => 'Turkish'
 					),
 					$this->config->item('language'));
 					?>
@@ -178,7 +178,8 @@
 					'Y/m/d' => 'yyyy/mm/dd',
 					'd/m/y' => 'dd/mm/yy',
 					'm/d/y' => 'mm/dd/yy',
-					'y/m/d' => 'yy/mm/dd'), 
+					'y/m/d' => 'yy/mm/dd',
+					'd.m.Y' => 'dd.mm.yyyy',), 
 					$this->config->item('dateformat'));
 					?>
 				</div>
