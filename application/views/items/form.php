@@ -2,6 +2,8 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<fieldset id="item_basic_info">
+	<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
 	<div class="form-group">
 		<?php echo form_label($this->lang->line('items_item_number'), 'item_number',array('class'=>'control-label col-xs-3')); ?>
@@ -127,7 +129,7 @@
 	{
 		?>
 		<div class="form-group">
-			<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] .':',
+			<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] ,
 				$key.'_quantity',
 				array('class'=>'required wide control-label col-xs-3')); ?>
 			<div class='col-xs-2'>
@@ -180,19 +182,21 @@
 	</div>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_image').':', 'item_image',array('class'=>'control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_image'), 'item_image',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
-			<?php echo form_upload('item_image');?>
+			<label class="file">
+				<input type="file" id="item_image">
+				<span class="file-custom"></span>
+			</label>
 		</div>
 	</div>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_allow_alt_description').':', 'allow_alt_description',array('class'=>'control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 			<?php echo form_checkbox(array(
 					'name'=>'allow_alt_description',
 					'id'=>'allow_alt_description',
-					'class'=>'form-control',
 					'value'=>1,
 					'checked'=>($item_info->allow_alt_description)? 1  :0)
 			);?>
@@ -200,12 +204,11 @@
 	</div>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_is_serialized').':', 'is_serialized',array('class'=>'control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 			<?php echo form_checkbox(array(
 					'name'=>'is_serialized',
 					'id'=>'is_serialized',
-					'class'=>'form-control',
 					'value'=>1,
 					'checked'=>($item_info->is_serialized)? 1 : 0)
 			);?>
@@ -213,12 +216,11 @@
 	</div>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_is_deleted').':', 'is_deleted',array('class'=>'control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_is_deleted'), 'is_deleted',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 			<?php echo form_checkbox(array(
 					'name'=>'is_deleted',
 					'id'=>'is_deleted',
-					'class'=>'form-control',
 					'value'=>1,
 					'checked'=>($item_info->deleted)? 1 : 0)
 			);?>
@@ -234,7 +236,7 @@
 			$item_arr = (array)$item_info;
 			?>
 			<div class="form-group">
-				<?php echo form_label($this->config->item('custom'.$i.'_name').':', 'custom'.$i,array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label($this->config->item('custom'.$i.'_name'), 'custom'.$i,array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 							'name'=>'custom'.$i,
@@ -248,6 +250,7 @@
 		}
 	}
 	?>
+</fieldset>
 <?php echo form_close(); ?>
 
 <script type='text/javascript'>

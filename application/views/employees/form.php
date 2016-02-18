@@ -1,4 +1,4 @@
-<?php echo form_open('employees/save/'.$person_info->person_id,array('id'=>'employee_form')); ?>
+<?php echo form_open('employees/save/'.$person_info->person_id,array('id'=>'employee_form', 'class'=> 'form-horizontal')); ?>
 	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 	<ul id="error_message_box" class="error_message_box"></ul>
 	<fieldset id="employee_basic_info">
@@ -8,36 +8,39 @@
 
 	<fieldset id="employee_login_info">
 		<legend><?php echo $this->lang->line("employees_login_info"); ?></legend>
-		<div class="field_row clearfix">	
-		<?php echo form_label($this->lang->line('employees_username').':', 'username',array('class'=>'required')); ?>
-			<div class='form_field'>
+		<div class="form-group">	
+		<?php echo form_label($this->lang->line('employees_username'), 'username',array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-5'>
 			<?php echo form_input(array(
 				'name'=>'username',
 				'id'=>'username',
+				'class'=>'form-control',
 				'value'=>$person_info->username));?>
 			</div>
 		</div>
 
 		<?php
-		$password_label_attributes = $person_info->person_id == "" ? array('class'=>'required'):array();
+		$password_label_attributes = $person_info->person_id == "" ? array('class'=>'required col-xs-3 control-label'):array();
 		?>
 
-		<div class="field_row clearfix">	
-		<?php echo form_label($this->lang->line('employees_password').':', 'password',$password_label_attributes); ?>
-			<div class='form_field'>
+		<div class="form-group">	
+		<?php echo form_label($this->lang->line('employees_password'), 'password',$password_label_attributes); ?>
+			<div class='col-xs-5'>
 			<?php echo form_password(array(
 				'name'=>'password',
-				'id'=>'password'
+				'id'=>'password',
+				'class'=>'form-control'
 			));?>
 			</div>
 		</div>
 
-		<div class="field_row clearfix">	
-		<?php echo form_label($this->lang->line('employees_repeat_password').':', 'repeat_password',$password_label_attributes); ?>
-			<div class='form_field'>
+		<div class="form-group">	
+		<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password',$password_label_attributes); ?>
+			<div class='col-xs-5'>
 			<?php echo form_password(array(
 				'name'=>'repeat_password',
-				'id'=>'repeat_password'
+				'id'=>'repeat_password',
+				'class'=>'form-control'
 			));?>
 			</div>
 		</div>
@@ -83,15 +86,6 @@
 		?>
 		</li>
 		</ul>
-		<?php
-		echo form_submit(array(
-			'name'=>'submit',
-			'id'=>'submit',
-			'value'=>$this->lang->line('common_submit'),
-			'class'=>'btn btn-primary btn-sm pull-right')
-		);
-
-		?>
 	</fieldset>
 <?php echo form_close(); ?>
 
@@ -138,7 +132,7 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_person_form_submit(response);
 			},
 			dataType:'json'

@@ -4,6 +4,7 @@
 	<?php echo form_input(array(
 		'name'=>'first_name',
 		'id'=>'first_name',
+		'class'=>'form-control',
 		'value'=>$person_info->first_name)
 	);?>
 	</div>
@@ -14,6 +15,7 @@
 	<?php echo form_input(array(
 		'name'=>'last_name',
 		'id'=>'last_name',
+		'class'=>'form-control',
 		'value'=>$person_info->last_name)
 	);?>
 	</div>
@@ -21,27 +23,28 @@
 
 <div class="form-group">	
 <?php echo form_label($this->lang->line('common_gender'), 'gender',
-!empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array()); ?>
-	<div class='col-sm-2'>
-	<?php echo form_radio(array(
-		'name'=>'gender',
-		'type'=>'radio',
-		'id'=>'gender',
-		'class'=>'form-control',
-		'value'=>1,
-		'checked'=>$person_info->gender === '1')
-	);
-	echo '&nbsp;' . $this->lang->line('common_gender_male') . '&nbsp;';
-	echo form_radio(array(
-		'name'=>'gender',
-		'type'=>'radio',
-		'id'=>'gender',
-		'class'=>'form-control',
-		'value'=>0,
-		'checked'=>$person_info->gender === '0')
-	);
-	echo '&nbsp;' . $this->lang->line('common_gender_female');
-	?>
+!empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class' => 'control-label col-xs-3')); ?>
+	<div class="col-xs-4">
+		<label class="radio-inline">
+			<?php echo form_radio(array(
+				'name'=>'gender',
+				'type'=>'radio',
+				'id'=>'gender',
+				'value'=>1,
+				'checked'=>$person_info->gender === '1')
+			);
+			?> <?php echo $this->lang->line('common_gender_male'); ?>
+		</label>
+		<label class="radio-inline">
+			<?php echo form_radio(array(
+					'name'=>'gender',
+					'type'=>'radio',
+					'id'=>'gender',
+					'value'=>0,
+					'checked'=>$person_info->gender === '0')
+			); ?> <?php echo $this->lang->line('common_gender_female'); ?>
+		</label>
+
 	</div>
 </div>
 

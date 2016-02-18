@@ -83,7 +83,7 @@ $(document).ready(function()
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
 				$.get('<?=site_url() . "/sales/send_invoice/" . $sale_info['sale_id']?>',
 						function(response) {
-							tb_remove();
+							dialog_support.hide();
 							post_form_submit(response);
 						}, "json"
 				);	
@@ -146,7 +146,7 @@ $(document).ready(function()
 		{
 			success: function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_form_submit(response);
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
@@ -190,7 +190,7 @@ $(document).ready(function()
 			$(this).ajaxSubmit({
 				success: function(response)
 				{
-					tb_remove();
+					dialog_support.hide();
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 					var $element = get_table_row(id).parent().parent();
 					$element.find("td").animate({backgroundColor:"green"},1200,"linear")

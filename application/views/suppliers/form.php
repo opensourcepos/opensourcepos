@@ -1,50 +1,45 @@
-<?php echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_form')); ?>
+<?php echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_form', 'class' => 'form-horizontal')); ?>
 	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 	<ul id="error_message_box" class="error_message_box"></ul>
 	<fieldset id="supplier_basic_info">
 	<legend><?php echo $this->lang->line("suppliers_basic_information"); ?></legend>
 
-	<div class="field_row clearfix">	
-	<?php echo form_label($this->lang->line('suppliers_company_name').':', 'company_name', array('class'=>'required')); ?>
-		<div class='form_field'>
+	<div class="form-group">	
+	<?php echo form_label($this->lang->line('suppliers_company_name'), 'company_name', array('class'=>'required control-label col-xs-3')); ?>
+		<div class='col-xs-6'>
 		<?php echo form_input(array(
 			'name'=>'company_name',
 			'id'=>'company_name_input',
+			'class'=>'form-control',
 			'value'=>$person_info->company_name)
 		);?>
 		</div>
 	</div>
 
-	<div class="field_row clearfix">	
-	<?php echo form_label($this->lang->line('suppliers_agency_name').':', 'agency_name'); ?>
-		<div class='form_field'>
+	<div class="form-group">	
+	<?php echo form_label($this->lang->line('suppliers_agency_name'), 'agency_name', array('class'=>'control-label col-xs-3')); ?>
+		<div class='col-xs-6'>
 		<?php echo form_input(array(
 			'name'=>'agency_name',
 			'id'=>'agency_name_input',
+			'class'=>'form-control',
 			'value'=>$person_info->agency_name)
 		);?>
 		</div>
 	</div>
 
 	<?php $this->load->view("people/form_basic_info"); ?>
-	<div class="field_row clearfix">	
-	<?php echo form_label($this->lang->line('suppliers_account_number').':', 'account_number'); ?>
-		<div class='form_field'>
+	<div class="form-group">	
+	<?php echo form_label($this->lang->line('suppliers_account_number'), 'account_number', array('class'=>'control-label col-xs-3')); ?>
+		<div class='col-xs-6'>
 		<?php echo form_input(array(
 			'name'=>'account_number',
 			'id'=>'account_number',
+			'class'=>'form-control',
 			'value'=>$person_info->account_number)
 		);?>
 		</div>
 	</div>
-	<?php
-	echo form_submit(array(
-		'name'=>'submit',
-		'id'=>'submit',
-		'value'=>$this->lang->line('common_submit'),
-		'class'=>'btn btn-primary btn-sm pull-right')
-	);
-	?>
 	</fieldset>
 <?php echo form_close(); ?>
 
@@ -58,7 +53,7 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_person_form_submit(response);
 			},
 			dataType:'json'
