@@ -21,50 +21,39 @@ if (isset($success))
 
 <div id="register_wrapper">
 	<?php echo form_open("sales/change_mode", array('id'=>'mode_form')); ?>
-		<label><?php echo $this->lang->line('sales_mode') ?></label>
-		
-		<?php echo form_dropdown('mode', $modes, $mode, 'onchange="$(\'#mode_form\').submit();"'); ?>
+		<label id="mode_label"><?php echo $this->lang->line('sales_mode') ?></label>
+		<?php 
+		echo form_dropdown('mode', $modes, $mode, 'onchange="$(\'#mode_form\').submit();"');
 
-		<?php
 		if (count($stock_locations) > 1)
 		{
-		?>
-			<span><?php echo $this->lang->line('sales_stock_location') ?></span>
-			<?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'onchange="$(\'#mode_form\').submit();"'); ?>
-		<?php
+			echo $this->lang->line('sales_stock_location');
+			echo form_dropdown('stock_location', $stock_locations, $stock_location, 'onchange="$(\'#mode_form\').submit();"');
 		}
-		?>
 
-		<?php
+		echo anchor("sales/suspended/width:425", $this->lang->line('sales_suspended_sales'), 
+					array('class'=>'btn btn-default btn-sm pull-right thickbox none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales')));
+
 		if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
 		{
-		?>
-			<a href="<?=site_url($controller_name . '/manage')?>"><div class="btn btn-primary btn-sm" id="sales_overview"><span><?php echo $this->lang->line('sales_takings'); ?><span></div></a>
-		<?php
+			echo anchor("sales/manage", $this->lang->line('sales_takings'), 
+						array('class'=>'btn btn-primary btn-sm pull-right', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings')));
 		}
-		?>
-
-		<?php echo anchor("sales/suspended/width:425",
-		"<div class='btn btn-default btn-sm' id='show_suspended_sales_button'><span>".$this->lang->line('sales_suspended_sales')."</span></div>",
-		array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_suspended_sales')));
 		?>
 	<?php echo form_close(); ?>
 
 	<?php echo form_open("sales/add", array('id'=>'add_item_form')); ?>
-		<label id="item_label" for="item"> 
-			<?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?>
-		</label>
-		
-		<?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40','tabindex'=>'1')); ?>
+		<label id="item_label" for="item"><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
+		<?php
+		echo form_input(array('name'=>'item', 'id'=>'item', 'size'=>'40', 'tabindex'=>'1'));
 
-		<div id="new_item_button_register" >
-			<?php echo anchor("items/view/-1/width:450",
-			"<div class='btn btn-info btn-sm'><span>".$this->lang->line('sales_new_item')."</span></div>",
-			array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_new_item')));
-			?>
-		</div>
+		echo anchor("items/view/-1/width:450", $this->lang->line('sales_new_item'), 
+					array('class'=>'btn btn-info btn-sm pull-right modal-dlg none', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
+		?>
 	<?php echo form_close(); ?>
 
+<!-- Sale Items List -->
+	
 	<table id="register">
 		<thead>
 			<tr>
@@ -152,7 +141,7 @@ if (isset($success))
 							}
 							?>
 
-							<td colspan=2 style="text-align: left;">
+							<td colspan='2' style="text-align: left;">
 								<?php
 								if($item['allow_alt_description']==1)
 								{
@@ -182,7 +171,7 @@ if (isset($success))
 								}
 								?>
 							</td>
-							<td colspan="4" style="text-align: left;">
+							<td colspan='4' style="text-align: left;">
 								<?php
 								if($item['is_serialized']==1)
 								{
@@ -195,10 +184,6 @@ if (isset($success))
 								?>
 							</td>
 						</tr>
-						<tr style="height: 3px">
-							<td colspan=8 style="background-color: white"></td>
-						</tr>
-
 					<?php echo form_close(); ?>
 			<?php					
 					$tabindex = $tabindex + 1;					
@@ -208,6 +193,8 @@ if (isset($success))
 		</tbody>
 	</table>
 </div>
+
+<!-- Overall Sale -->
 
 <div id="overall_sale">
 	<?php
@@ -222,14 +209,14 @@ if (isset($success))
 	?>
 			<label id="customer_label" for="customer"><?php echo $this->lang->line('sales_select_customer'); ?></label>
 			<?php echo form_input(array('name'=>'customer','id'=>'customer','size'=>'30','value'=>$this->lang->line('sales_start_typing_customer_name')));?>
-
 		<?php echo form_close(); ?>
 
 		<div style="margin-top: 5px; text-align: center;">
 			<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
-			<?php echo anchor("customers/view/-1/width:400",
-			"<div class='btn btn-sm btn-info' style='margin:0 auto;'><span>".$this->lang->line('sales_new_customer')."</span></div>",
-			array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_new_customer')));
+			
+			<?php 
+			echo anchor("customers/view/-1/width:400", $this->lang->line('sales_new_customer'), 
+						array('class'=>'btn btn-info btn-sm modal-dlg none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer')));
 			?>
 		</div>
 		
@@ -257,17 +244,15 @@ if (isset($success))
 	{
 	?>
 		<?php echo form_open("sales/cancel_sale", array('id'=>'cancel_sale_form')); ?>
-
-    	<div id="Cancel_sale">
-			<div class='btn btn-sm btn-danger' id='cancel_sale_button' style='float:left; margin-top: 5px;'>
-				<span><?php echo $this->lang->line('sales_cancel_sale'); ?></span>
+			<div id="cancel_sale">
+				<div class='btn btn-sm btn-danger pull-left' id='cancel_sale_button' style='margin-top: 5px;'>
+					<?php echo $this->lang->line('sales_cancel_sale'); ?>
+				</div>
+				
+				<div class='btn btn-sm btn-default pull-right' id='suspend_sale_button' style='margin-top: 5px;'>
+					<?php echo $this->lang->line('sales_suspend_sale'); ?>
+				</div>
 			</div>
-			
-			<div class='btn btn-sm btn-default' id='suspend_sale_button' style='float:right; margin-top: 5px;'>
-				<span><?php echo $this->lang->line('sales_suspend_sale'); ?></span>
-			</div>
-		</div>
-	
 		<?php echo form_close(); ?>
 
 		<div class="clearfix" style="margin-bottom: 1px;">&nbsp;</div>
@@ -389,8 +374,8 @@ if (isset($success))
 						</tr>
 					</table>
 					
-					<div class='btn btn-sm btn-success' id='add_payment_button' style='float: left; margin-top: 5px;'>
-						<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
+					<div class='btn btn-sm btn-success pull-left' id='add_payment_button' style=' margin-top: 5px;'>
+						<?php echo $this->lang->line('sales_add_payment'); ?>
 					</div>
 				<?php echo form_close(); ?>
 			</div>
