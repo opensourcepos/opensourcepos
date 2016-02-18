@@ -1,35 +1,30 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title" style="margin-bottom:8px;"><?php echo $this->lang->line('recvs_register'); ?></div>
+<div id="page_title" style="margin-bottom: 8px;"><?php echo $this->lang->line('recvs_register'); ?></div>
 
 <?php
-if(isset($error))
+if (isset($error))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 ?>
 
-
-
 <div id="register_wrapper">
-	<?php echo form_open("receivings/change_mode",array('id'=>'mode_form')); ?>
+	<?php echo form_open("receivings/change_mode", array('id'=>'mode_form')); ?>
 		<label><?php echo $this->lang->line('recvs_mode') ?></label>
+		<?php
+		echo form_dropdown('mode', $modes, $mode, 'onchange="$(\'#mode_form\').submit();"');
 		
-		<?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
-		
-		<?php 
 		if ($show_stock_locations) 
 		{
-		?>
-		<span><?php echo $this->lang->line('recvs_stock_source') ?></span>
-		<?php echo form_dropdown('stock_source',$stock_locations,$stock_source,'onchange="$(\'#mode_form\').submit();"'); ?>
-		<?php 
-		if($mode=='requisition')
-		{
-		?>
-		<span><?php echo $this->lang->line('recvs_stock_destination') ?></span>
-		<?php echo form_dropdown('stock_destination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();"');        
-		}
+			echo $this->lang->line('recvs_stock_source');
+			echo form_dropdown('stock_source', $stock_locations, $stock_source, 'onchange="$(\'#mode_form\').submit();"');
+
+			if($mode=='requisition')
+			{
+				echo $this->lang->line('recvs_stock_destination');
+				echo form_dropdown('stock_destination', $stock_locations, $stock_destination, 'onchange="$(\'#mode_form\').submit();"');
+			}
 		}
 		?>    
 	<?php echo form_close(); ?>
@@ -48,14 +43,12 @@ if(isset($error))
 			?>
 		</label>
 
-		<?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));?>
+		<?php
+		echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));
 		
-		<div id="new_item_button_register" >
-			<?php echo anchor("items/view/-1/width:450",
-			"<div class='btn btn-sm btn-info'><span>".$this->lang->line('sales_new_item')."</span></div>",
-			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
-			?>
-		</div>
+		echo anchor("items/view/-1/width:450", $this->lang->line('sales_new_item'), 
+					array('class'=>'btn btn-info btn-sm pull-right thickbox none', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
+		?>
 	<?php echo form_close(); ?>
 
 <!-- Receiving Items List -->
@@ -92,7 +85,7 @@ if(isset($error))
 			?>
 						<tr>
 						<td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-						<td style="align:center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+						<td style="align: center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
 							<?php echo form_hidden('location', $item['item_location']); ?></td>
 
 						<?php if ($items_module_allowed && $mode !='requisition')
@@ -144,7 +137,7 @@ if(isset($error))
 							}
 						?>
 						<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-						<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
+						<td><?php echo form_submit(array('name'=>'edit_item', 'value'=>$this->lang->line('sales_edit_item'), 'class'=>'btn btn-default btn-sm pull-right'));?></td>
 						</tr>
 						<tr>
 						<?php 
@@ -199,40 +192,45 @@ if(isset($error))
 	}
 	else
 	{
-		echo form_open("receivings/select_supplier",array('id'=>'select_supplier_form')); ?>
+		echo form_open("receivings/select_supplier",array('id'=>'select_supplier_form'));
+	?>
 			<label id="supplier_label" for="supplier"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
 			<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')));?>
 		<?php echo form_close(); ?>
-		<div style="margin-top:5px;text-align:center;">
-		<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
-		<?php echo anchor("suppliers/view/-1/width:400",
-		"<div class='btn btn-sm btn-info' style='margin:0 auto;'><span>".$this->lang->line('recvs_new_supplier')."</span></div>",
-		array('class'=>'thickbox none','title'=>$this->lang->line('recvs_new_supplier')));
-		?>
+		
+		<div style="margin-top:5px; text-align:center;">
+			<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
+
+			<?php 
+			echo anchor("suppliers/view/-1/width:400", $this->lang->line('recvs_new_supplier'), 
+						array('class'=>'btn btn-info btn-sm thickbox none', 'id'=>'new_supplier_button', 'title'=>$this->lang->line('recvs_new_supplier')));
+			?>
 		</div>
+
 		<div class="clearfix">&nbsp;</div>
-		<?php
+	<?php
 	}
 	?>
 	
     <?php
-        if($mode != 'requisition')
-        {
+	if($mode != 'requisition')
+	{
     ?>
-	<div id='sale_details'>
-		<div class="float_left" style='width:55%;'><?php echo $this->lang->line('sales_total'); ?>:</div>
-		<div class="float_left" style="width:45%;font-weight:bold;"><?php echo to_currency($total); ?></div>
-	</div>
+		<div id='sale_details'>
+			<div class="float_left" style='width:55%;'><?php echo $this->lang->line('sales_total'); ?>:</div>
+			<div class="float_left" style="width:45%;font-weight:bold;"><?php echo to_currency($total); ?></div>
+		</div>
 	<?php 
-        }
+	}
 	?>
+
 	<?php
 	if(count($cart) > 0)
 	{
 		if($mode == 'requisition')
 		{
 	?>
-		    <div  style='border-top:2px solid #000;' />
+		    <div style='border-top:2px solid #000;' />
 		    <div id="finish_sale">
 		        <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_receiving_form')); ?>
 					<br />
@@ -240,113 +238,117 @@ if(isset($error))
 					<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 					<br /><br />
 					
-					<div class="btn btn-sm btn-success" id='finish_receiving_button' style='float:right;margin-top:5px;'>
-						<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
+					<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button' style='margin-top:5px;'>
+						<?php echo $this->lang->line('recvs_complete_receiving') ?>
 					</div>
-					</form>    
-					<?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
-					<div class="btn btn-sm btn-danger" id='cancel_receiving_button' style='float:left;margin-top:5px;'>
-						<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
+				<?php echo form_close(); ?> 
+				
+				<?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
+					<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button' style='margin-top:5px;'>
+						<?php echo $this->lang->line('recvs_cancel_receiving')?>
 					</div>
 				<?php echo form_close(); ?>
 		     </div>
-	    <?php
-	        }
-	        else
-	        {
-		?>
-	<div id="finish_sale">
-		<?php echo form_open("receivings/complete",array('id'=>'finish_receiving_form')); ?>
-			<br />
-			<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-			<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
-			<br /><br />
-			<table width="100%">
-			<tr>
-				<td>
-					<?php echo $this->lang->line('recvs_print_after_sale'); ?>
-				</td>
-				<td>
-					<?php if ($print_after_sale)
-					{
-						echo form_checkbox(array('name'=>'recv_print_after_sale','id'=>'recv_print_after_sale','checked'=>'checked'));
-					}
-					else
-					{
-						echo form_checkbox(array('name'=>'recv_print_after_sale','id'=>'recv_print_after_sale'));
-					}
+	<?php
+		}
+		else
+		{
+	?>
+		<div id="finish_sale">
+			<?php echo form_open("receivings/complete",array('id'=>'finish_receiving_form')); ?>
+				<br />
+				<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
+				<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
+				<br /><br />
+				<table width="100%">
+				<tr>
+					<td>
+						<?php echo $this->lang->line('recvs_print_after_sale'); ?>
+					</td>
+					<td>
+						<?php if ($print_after_sale)
+						{
+							echo form_checkbox(array('name'=>'recv_print_after_sale','id'=>'recv_print_after_sale','checked'=>'checked'));
+						}
+						else
+						{
+							echo form_checkbox(array('name'=>'recv_print_after_sale','id'=>'recv_print_after_sale'));
+						}
+						?>
+					</td>
+				</tr>
+				<?php
+				if ($mode == "receive") 
+				{
+				?>
+					<tr>
+						<td>
+							<?php echo $this->lang->line('recvs_invoice_enable'); ?>
+						</td>
+						<td>
+						<?php
+						if ($invoice_number_enabled)
+						{
+							echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10,'checked'=>'checked'));
+						}
+						else
+						{
+							echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10));
+						}
+						?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
+						</td>
+						<td>
+							<?php echo form_input(array('name'=>'recv_invoice_number','id'=>'recv_invoice_number','value'=>$invoice_number,'size'=>10));?>
+						</td>
+					</tr>
+				<?php 
+				}
+				?>
+				<tr>
+					<td>
+					<?php
+						echo $this->lang->line('sales_payment').':   ';?>
+					</td>
+					<td>
+					<?php
+						echo form_dropdown('payment_type',$payment_options);?>
+					</td>
+				</tr>
+
+				<tr>
+					<td>
+					<?php
+						echo $this->lang->line('sales_amount_tendered').':   ';?>
+					</td>
+					<td>
+					<?php
+						echo form_input(array('name'=>'amount_tendered','value'=>'','size'=>'10'));
 					?>
-				</td>
-			</tr>
-			<?php if ($mode == "receive") 
-			{
-			?>
-			<tr>
-			<td>
-			<?php echo $this->lang->line('recvs_invoice_enable'); ?>
-			</td>
-			<td>
-			<?php if ($invoice_number_enabled)
-			{
-				echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10,'checked'=>'checked'));
-			}
-			else
-			{
-				echo form_checkbox(array('name'=>'recv_invoice_enable','id'=>'recv_invoice_enable','size'=>10));
-			}
-			?>
-			</td>
-			</tr>
-			
-			<tr>
-			<td>
-			<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
-			</td>
-			<td>
-			<?php echo form_input(array('name'=>'recv_invoice_number','id'=>'recv_invoice_number','value'=>$invoice_number,'size'=>10));?>
-			</td>
-			</tr>
-			<?php 
-			}
-			?>
-			<tr><td>
-			<?php
-				echo $this->lang->line('sales_payment').':   ';?>
-			</td><td>
-			<?php
-				echo form_dropdown('payment_type',$payment_options);?>
-			</td>
-			</tr>
+					</td>
+				</tr>
 
-			<tr>
-			<td>
-			<?php
-				echo $this->lang->line('sales_amount_tendered').':   ';?>
-			</td><td>
-			<?php
-				echo form_input(array('name'=>'amount_tendered','value'=>'','size'=>'10'));
-			?>
-			</td>
-			</tr>
-
-			</table>
-			<br />
-			<div class='btn btn-sm btn-success' id='finish_receiving_button' style='float:right;margin-top:5px;'>
-				<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
-			</div>
-		<?php echo form_close(); ?>
-
-	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
-			    <div class='btn btn-sm btn-danger' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
-					<span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
+				</table>
+				<br />
+				<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button' style='margin-top:5px;'>
+					<?php echo $this->lang->line('recvs_complete_receiving') ?>
 				</div>
-		<?php echo form_close(); ?>
-	</div>
-<?php
-	}
-}
-?>
+			<?php echo form_close(); ?>
 
+			<?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
+					<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button' style='margin-top:5px;'>
+						<?php echo $this->lang->line('recvs_cancel_receiving')?>
+					</div>
+			<?php echo form_close(); ?>
+		</div>
+	<?php
+		}
+	}
+	?>
 </div>
 <div class="clearfix" style="margin-bottom:30px;">&nbsp;</div>
 
