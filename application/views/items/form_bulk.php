@@ -171,7 +171,7 @@ $(document).ready(function()
 				$(form).ajaxSubmit({
 				success:function(response)
 				{
-					tb_remove();
+					dialog_support.hide();
 					post_bulk_form_submit(response);
 				},
 				dataType:'json'

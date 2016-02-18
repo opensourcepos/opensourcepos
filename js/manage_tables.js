@@ -89,7 +89,7 @@ function do_search(show_feedback,on_complete)
 			$('#search').removeClass("ac_loading");
 			//$('#spinner').hide();
 			//re-init elements in new table, as table tbody children were replaced
-			tb_init('#sortable_table a.thickbox');
+			dialog_support.init('#sortable_table a.modal-dlg');
 			$('#pagination').html(response.pagination);
 			$('#sortable_table tbody :checkbox').click(checkbox_click);
 			$("#select_all").attr('checked',false);
@@ -337,7 +337,7 @@ function reinit_row(checkbox_id)
 	enable_row_selection(new_row);
 	//Re-init some stuff as we replaced row
 	update_sortable_table();
-	tb_init(new_row.find("a.thickbox"));
+	dialog_support.init(new_row.find("a.modal-dlg"));
 	//re-enable e-mail
 	new_checkbox.click(checkbox_click);	
 }
@@ -387,3 +387,56 @@ function get_visible_checkbox_ids()
 	});
 	return row_ids;
 }
+
+dialog_support = (function() {
+
+	var btn_id, dialog_ref;
+
+	var hide = function() {
+		debugger;;
+		dialog_ref.close();
+	};
+
+	var clicked_id = function() {
+		return btn_id;
+	};
+
+	var submit = function(button_id) {
+		btn_id = button_id;
+		return function(dlog_ref)
+		{
+			dialog_ref = dlog_ref;
+			$('form', dlog_ref.$modalBody).submit();
+		}
+	};
+
+	var init = function(selector) {
+		$(selector).click(function(event) {
+			var $link = $(event.target);
+			$link = $link.is("a") ? $link : $link.parents("a");
+			BootstrapDialog.show({
+				title: $link.attr('title'),
+				message: $('<div></div>').load($link.attr('href')),
+				buttons: [{
+					id: 'submit',
+					label: 'submit',
+					action: submit('submit')
+				}]
+			});
+			event.preventDefault();
+		});
+	};
+
+	$(document).ready(function() {
+		init("a.modal-dlg");
+	});
+
+	return {
+		hide: hide,
+		clicked_id: clicked_id,
+		init: init,
+		submit: submit
+	};
+
+})();
+

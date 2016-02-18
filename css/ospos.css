@@ -5,7 +5,6 @@
 @import url(receipt.css);
 @import url(reports.css);
 @import url(tables.css);
-@import url(thickbox.css);
 @import url(invoice.css);
 
 html, body
@@ -200,4 +199,9 @@ a.rollover img
 	{
         display: none !important;
     }
+}
+
+.modal-body {
+	max-height: calc(100vh - 212px);
+	overflow-y: auto;
 }

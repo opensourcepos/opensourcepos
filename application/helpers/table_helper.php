@@ -77,7 +77,7 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
 	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
 	$table_data_row.='<td width="8%">';
-	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
+	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal','title'=>$CI->lang->line($controller_name.'_update')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
 	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_receipt') . '</a>';
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -174,8 +174,8 @@ function get_person_data_row($person,$controller)
 	$table_data_row.='<td width="20%">'.character_limiter($person->last_name,13).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
-	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';		
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
+	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -262,7 +262,7 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
 	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -358,10 +358,10 @@ function get_item_data_row($item,$controller)
 		}
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'data-modal','data-toggle'=>'modal','data-target'=>'#ajaxModal','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 
-	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id/width:$width", $CI->lang->line('common_inv'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count	
-	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id/width:$width", $CI->lang->line('common_det'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
+	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id/width:$width", $CI->lang->line('common_inv'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count
+	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id/width:$width", $CI->lang->line('common_det'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
 	
 	$table_data_row.='</tr>';
 
@@ -429,7 +429,7 @@ function get_giftcard_data_row($giftcard,$controller)
 	$table_data_row.='<td width="15%">'.$giftcard->first_name.'</td>';
 	$table_data_row.='<td width="15%">'.$giftcard->giftcard_number.'</td>';
 	$table_data_row.='<td width="20%">'.to_currency($giftcard->value).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
@@ -498,7 +498,7 @@ function get_item_kit_data_row($item_kit, $controller)
 	$table_data_row.='<td width="20%">'.character_limiter($item_kit->description, 25).'</td>';
 	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_cost_price).'</td>';
 	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_unit_price).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;

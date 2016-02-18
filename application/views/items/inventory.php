@@ -3,15 +3,10 @@
 
 <?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form')); ?>
 	<fieldset id="item_basic_info">
-		<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-		<table align="center" border="0" bgcolor="#CCCCCC">
 		<div class="field_row clearfix">
-		<tr>
-		<td>	
 		<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
-		</td>
-		<td>
+			<div class="form_field">
 			<?php $inumber = array (
 				'name'=>'item_number',
 				'id'=>'item_number',
@@ -19,16 +14,14 @@
 				'style'       => 'border:none',
 				'readonly' => 'readonly'
 			);
-			
 				echo form_input($inumber);
 			?>
-		</td>
-		</tr>
-		<tr>
-		<td>	
-		<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
-		</td>
-		<td>	
+			</div>
+		</div>
+
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
+			<div class='form_field'>
 			<?php $iname = array (
 				'name'=>'name',
 				'id'=>'name',
@@ -36,60 +29,53 @@
 				'style'       => 'border:none',
 				'readonly' => 'readonly'
 			);
-				echo form_input($iname);
-				?>
-		</td>
-		</tr>
-		<tr>
-		<td>	
-		<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
-		</td>
-		<td>	
+			echo form_input($iname);
+			?>
+			</div>
+		</div>
+
+		<div class="field_row clearfix">
+			<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
+			<div class='form_field'>
 			<?php $cat = array (
-				
 				'name'=>'category',
 				'id'=>'category',
 				'value'=>$item_info->category,
 				'style'       => 'border:none',
 				'readonly' => 'readonly'
 				);
-			
 				echo form_input($cat);
 				?>
-		</td>
-		</tr>
-		<tr>
-		<td>
+			</div>
+		</div>
+
+		<div class="field_row clearfix">
 		<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location',array('class'=>'wide')); ?>
-		</td>
-		<td>
-			<?php 
-					echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="fill_quantity(this.value)"'); 
-			?> 
-		</td>
-		</tr>
-		<tr>
-		<td>
+			<div class='form_field'>
+			<?php
+					echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="fill_quantity(this.value)"');
+			?>
+			</div>
+		</div>
+
+		<div class="field_row clearfix">
 		<?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity',array('class'=>'wide')); ?>
-		</td>
-		<td>
+			<div class='form_field'>
 			<?php $qty = array (
-			
+
 				'name'=>'quantity',
 				'id'=>'quantity',
 				'value'=>current($item_quantities),
 				'style'       => 'border:none',
 				'readonly' => 'readonly'
 				);
-			
+
 				echo form_input($qty);
 			?>
-		</td>
-		</tr>
-		</div>	
-		</table>
+			</div>
+		</div>
 
-		<div class="field_row clearfix">	
+		<div class="field_row clearfix">
 		<?php echo form_label($this->lang->line('items_add_minus').':', 'quantity',array('class'=>'required wide')); ?>
 			<div class='form_field'>
 			<?php echo form_input(array(
@@ -100,25 +86,17 @@
 			</div>
 		</div>
 
-		<div class="field_row clearfix">	
+		<div class="field_row clearfix">
 		<?php echo form_label($this->lang->line('items_inventory_comments').':', 'description',array('class'=>'wide')); ?>
 			<div class='form_field'>
 			<?php echo form_textarea(array(
 				'name'=>'trans_comment',
 				'id'=>'trans_comment',
 				'rows'=>'3',
-				'cols'=>'17')		
+				'cols'=>'17')
 			);?>
 			</div>
 		</div>
-		<?php
-		echo form_submit(array(
-			'name'=>'submit',
-			'id'=>'submit',
-			'value'=>$this->lang->line('common_submit'),
-			'class'=>'btn btn-primary btn-sm pull-right')
-		);
-		?>
 	</fieldset>
 <?php echo form_close(); ?>
 
@@ -133,7 +111,7 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_item_form_submit(response);
 			},
 			dataType:'json'

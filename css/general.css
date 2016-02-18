@@ -1,19 +1,13 @@
-.field_row 
-{
-	margin: 0 0 10px 0;
-}
-
-.field_row label 
+.field_row label
 {
 	float:left;
-	width:100px;
+	width:20%;
 	text-align:left;
-	line-height:2.3;
 }
 
 .field_row label.wide 
 {
- 	width:150px;
+ 	width:30%;
 }
 
 label.required
@@ -25,12 +19,10 @@ label.required
 {
  	float:left;
  	padding: 3px;
- 	background-color: #f2f2f2;
 }
   
 .form_field input, .form_field textarea 
 {
- 	border: 1px solid #ccc;
  	padding: 4px;
 }
 
@@ -49,7 +41,7 @@ input
 	padding: 3px;
 }
 
-.clearfix:after 
+.clearfix:after
 {
 	content: ".";
 	display: block;

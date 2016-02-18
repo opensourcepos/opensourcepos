@@ -1,11 +1,9 @@
 <?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form')); ?>
 	<fieldset id="inv_item_basic_info">
-		<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
-
-		<table align="center" border="0" bgcolor="#CCCCCC">
+		<table border="0" bgcolor="#CCCCCC">
 			<div class="field_row clearfix">
 			<tr>
-			<td>	
+			<td>
 				<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
 			</td>
 			<td>
@@ -22,10 +20,10 @@
 			</td>
 			</tr>
 			<tr>
-			<td>	
+			<td>
 				<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
 			</td>
-			<td>	
+			<td>
 				<?php $iname = array (
 					'name'=>'name',
 					'id'=>'name',
@@ -38,10 +36,10 @@
 			</td>
 			</tr>
 			<tr>
-			<td>	
+			<td>
 				<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
 			</td>
-			<td>	
+			<td>
 				<?php $cat = array (
 					
 					'name'=>'category',
@@ -86,13 +84,7 @@
 			</div>
 		</table>
 
-		<div class="field_row clearfix">
-		  <div class='form_field'></div>
-		</div>
 
-		<div class="field_row clearfix">
-		  <div class='form_field'></div>
-		</div>
 	</fieldset>
 <?php echo form_close(); ?>
 
@@ -106,9 +98,9 @@ foreach( $inventory_array as $row)
     array_push($employee_name, $employee->first_name." ".$employee->last_name);
 }
 ?>
-<table id="inventory_result" border="0" align="center">
+<table id="inventory_result" style="width:100%;">
 <tr bgcolor="#FF0033" align="center" style="font-weight:bold"><td colspan="4">Inventory Data Tracking</td></tr>
-<tr align="center" style="font-weight:bold"><td width="15%">Date</td><td width="25%">Employee</td><td width="15%">In/Out Qty</td><td width="45%">Remarks</td></tr>
+<tr style="font-weight:bold"><td width="30%">Date</td><td width="25%">Employee</td><td width="15%">In/Out Qty</td><td width="45%">Remarks</td></tr>
 </table>
 
 <script type='text/javascript'>
@@ -141,8 +133,7 @@ function display_stock(location_id)
         {
             var tr = document.createElement('TR');
             tr.setAttribute("bgColor","#CCCCCC");
-            tr.setAttribute("align","#center");
-            
+
             var td = document.createElement('TD');
             td.appendChild(document.createTextNode(data['trans_date']));
             tr.appendChild(td);
@@ -152,7 +143,6 @@ function display_stock(location_id)
             tr.appendChild(td);
             
             td = document.createElement('TD');
-            td.setAttribute("align","right");
             td.appendChild(document.createTextNode(data['trans_inventory']));
             tr.appendChild(td);
             

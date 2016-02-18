@@ -46,7 +46,7 @@ if (isset($success))
 
 		<?php echo anchor("sales/suspended/width:425",
 		"<div class='btn btn-default btn-sm' id='show_suspended_sales_button'><span>".$this->lang->line('sales_suspended_sales')."</span></div>",
-		array('class'=>'thickbox none','title'=>$this->lang->line('sales_suspended_sales')));
+		array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_suspended_sales')));
 		?>
 	<?php echo form_close(); ?>
 
@@ -60,7 +60,7 @@ if (isset($success))
 		<div id="new_item_button_register" >
 			<?php echo anchor("items/view/-1/width:450",
 			"<div class='btn btn-info btn-sm'><span>".$this->lang->line('sales_new_item')."</span></div>",
-			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_item')));
+			array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_new_item')));
 			?>
 		</div>
 	<?php echo form_close(); ?>
@@ -229,7 +229,7 @@ if (isset($success))
 			<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
 			<?php echo anchor("customers/view/-1/width:400",
 			"<div class='btn btn-sm btn-info' style='margin:0 auto;'><span>".$this->lang->line('sales_new_customer')."</span></div>",
-			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_customer')));
+			array('class'=>'modal-dlg none','title'=>$this->lang->line('sales_new_customer')));
 			?>
 		</div>
 		

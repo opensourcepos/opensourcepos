@@ -5,7 +5,7 @@
 	<base href="<?php echo base_url();?>" />
 	<title>Open Source Point Of Sale <?php echo $this->lang->line('login_login'); ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="css/login.css" />
 
 	<script type="text/javascript">
