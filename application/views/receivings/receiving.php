@@ -144,11 +144,11 @@ if (isset($error))
 							if($item['allow_alt_description']==1)
 							{
 							?>
-							<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
+								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
 							<?php 
 							} 
 							?>
-							<td colspan="2" style="text-align: left;">
+							<td colspan='2' style="text-align: left;">
 						
 							<?php
 								if($item['allow_alt_description']==1)
@@ -170,7 +170,7 @@ if (isset($error))
 								}
 							?>
 							</td>
-							<td colspan="6"></td>
+							<td colspan='6'></td>
 						</tr>
 					<?php
 					echo form_close();

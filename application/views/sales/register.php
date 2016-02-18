@@ -141,7 +141,7 @@ if (isset($success))
 							}
 							?>
 
-							<td colspan=2 style="text-align: left;">
+							<td colspan='2' style="text-align: left;">
 								<?php
 								if($item['allow_alt_description']==1)
 								{
@@ -171,7 +171,7 @@ if (isset($success))
 								}
 								?>
 							</td>
-							<td colspan="4" style="text-align: left;">
+							<td colspan='4' style="text-align: left;">
 								<?php
 								if($item['is_serialized']==1)
 								{
@@ -184,10 +184,6 @@ if (isset($success))
 								?>
 							</td>
 						</tr>
-						<tr style="height: 3px">
-							<td colspan=8 style="background-color: white"></td>
-						</tr>
-
 					<?php echo form_close(); ?>
 			<?php					
 					$tabindex = $tabindex + 1;					
