@@ -62,8 +62,8 @@ a.none
 	height: 50px;
 }
 
-#title,
-#page_title {
+#title, #page_title
+{
 	font-size: 22px;
 	margin-top: 21px;
 	margin-bottom: 10.5px;
@@ -96,6 +96,13 @@ a.none
 	width: 100%;
 	z-index: 1;
 	line-height: 3.3;
+	text-align: center;
+}
+
+#home_module_list
+{
+	position: relative;
+	padding: 20px 0;
 	text-align: center;
 }
 
@@ -172,7 +179,8 @@ a.rollover img
 	}
 }
 
-.modal-body {
+.modal-body
+{
 	max-height: calc(100vh - 212px);
 	overflow-y: auto;
 }
