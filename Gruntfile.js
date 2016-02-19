@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         cssmin: {
             target: {
                 files: {
-                    'dist/<%= pkg.name %>.min.css': ['dist/opensourcepos_bower.css', 'css/*.css']
+                    'dist/<%= pkg.name %>.min.css': ['dist/opensourcepos_bower.css', 'css/*.css', '!css/login.css']
                 }
             }
         },

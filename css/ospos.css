@@ -99,14 +99,7 @@ a.none
 	text-align: center;
 }
 
-#home_module_list
-{
-	position: relative;
-	padding: 20px 0;
-	text-align: center;
-}
-
-.module_item 
+.module_item
 {
 	padding: 10px;
 	min-width: 105px;
@@ -166,11 +159,6 @@ select#stock_location
 	width: 95%;
 }
 
-input.quantity, input.discount
-{
-	width: 40px;
-}
-
 a.rollover img
 {
 	padding: 3px;	
@@ -182,14 +170,6 @@ a.rollover img
 	{
 		padding: 10px 10px 9px;
 	}
-}
-
-@media print
-{    
-    .no-print, .no-print *
-	{
-        display: none !important;
-    }
 }
 
 .modal-body {

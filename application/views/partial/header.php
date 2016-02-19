@@ -59,7 +59,7 @@
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=7c0e8d652d"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=4991d0840f"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
 		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f57ef65f75" language="javascript"></script>
