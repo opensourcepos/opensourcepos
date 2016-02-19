@@ -102,20 +102,24 @@ $(document).ready(function()
 				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
 		today: "<?php echo $this->lang->line("common_today"); ?>",
 		<?php
-			$t = $this->config->item('timeformat');
-			$m = $t[strlen($t)-1];
-			if( $m == 'a')
-			{ 
+		if( strpos($this->config->item('timeformat'), 'a') !== false )
+		{ 
 		?>
-				meridiem: ["am", "pm"],
+			meridiem: ["am", "pm"],
 		<?php 
-			}
-			else
-			{
+		}
+		else if( strpos($this->config->item('timeformat'), 'A') !== false )
+		{
 		?>
-				meridiem: ["AM", "PM"],
+			meridiem: ["AM", "PM"],
 		<?php 
-			}
+		}
+		else
+		{
+		?>
+			meridiem: [],
+		<?php 
+		}
 		?>
 		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>
 	};
@@ -125,20 +129,20 @@ $(document).ready(function()
 		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
 		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
-			$t = $this->config->item('timeformat');
-			$m = $t[strlen($t)-1];
-			if( $m == 'a' || $m == 'A' )
-			{ 
+		$t = $this->config->item('timeformat');
+		$m = $t[strlen($t)-1];
+		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+		{ 
 		?>
-				showMeridian: true,
+			showMeridian: true,
 		<?php 
-			}
-			else
-			{
+		}
+		else
+		{
 		?>
-				showMeridian: false,
+			showMeridian: false,
 		<?php 
-			}
+		}
 		?>
 		autoclose: true,
 		todayBtn: true,
