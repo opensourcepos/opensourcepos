@@ -1,59 +1,63 @@
-#receipt_wrapper 
-{
-	/*background-color:#FFFFFF;*/
-	font-size:75%;
-}
+@media print {
 
-.topbar
-{
-	display:none;
-}
+	#receipt_wrapper
+	{
+		/*background-color:#FFFFFF;*/
+		font-size:75%;
+	}
 
-#menubar, #footer
-{
-	display:none;
-}
+	.topbar
+	{
+		display:none;
+	}
 
-#sale_return_policy
-{
-	width:100%;
-	text-align:center;
-}
+	#menubar, #footer
+	{
+		display:none;
+	}
 
-.short_name
-{
-	display:inline;
-}
+	#sale_return_policy
+	{
+		width:100%;
+		text-align:center;
+	}
 
-#receipt_items td
-{
-	white-space:nowrap;
-}
+	.short_name
+	{
+		display:inline;
+	}
 
-/* Hide links in table for printing */
-table.innertable
-{
-	display: table;
-}
+	#receipt_items td
+	{
+		white-space:nowrap;
+	}
 
-table.innertable a 
-{
-	color: #000000;
-	text-decoration: none;	
-}
+	/* Hide links in table for printing */
+	table.innertable
+	{
+		display: table;
+	}
 
-table.report a.expand 
-{
-	visibility: hidden;
-}
+	table.innertable a
+	{
+		color: #000000;
+		text-decoration: none;
+	}
 
-table.report a 
-{
-	color: #000000;
-	text-decoration: none;
-}
+	table.report a.expand
+	{
+		visibility: hidden;
+	}
 
-table.innertable thead 
-{
-	/*display:none;*/ 
+	table.report a
+	{
+		color: #000000;
+		text-decoration: none;
+	}
+
+	table.innertable thead
+	{
+		/*display:none;*/
+	}
+
 }

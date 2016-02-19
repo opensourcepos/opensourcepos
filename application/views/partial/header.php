@@ -5,16 +5,29 @@
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company').' -- '.$this->lang->line('common_powered_by').' OS Point Of Sale' ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
-	<!-- bower:css -->
-	<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
-	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-	<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
-	<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
-	<link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
-	<!-- endbower -->
-	<link rel="stylesheet" type="text/css" href="css/ospos.css" />
-	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
+		<!-- bower:css -->
+		<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
+		<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
+		<link rel="stylesheet" href="bower_components/bootswatch-dist/css/bootstrap.css" />
+		<link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+		<!-- endbower -->
+		<!-- start css template tags -->
+		<link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
+		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
+		<link rel="stylesheet" type="text/css" href="css/general.css"/>
+		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="css/invoice_email.css"/>
+		<link rel="stylesheet" type="text/css" href="css/login.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
+		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
+		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
+		<link rel="stylesheet" type="text/css" href="css/register.css"/>
+		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
+		<link rel="stylesheet" type="text/css" href="css/tables.css"/>
+		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
 		<script src="bower_components/jquery-bgiframe/jquery.bgiframe.js"></script>
@@ -42,8 +55,14 @@
 		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
+		<!--[if lte IE 8]>
+		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
+		<![endif]-->
+		<!-- start mincss template tags -->
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=7c0e8d652d"/>
+		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=d794e57f0c" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f57ef65f75" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

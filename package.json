@@ -21,6 +21,7 @@
     "grunt-bower-concat": "^1.0.0",
     "grunt-cache-breaker": "^2.0.1",
     "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~0.8.0",
     "grunt-contrib-watch": "~0.5.3",

@@ -38,10 +38,10 @@
     "smalot-bootstrap-datetimepicker": "^2.3.8"
   },
   "overrides": {
-    "bootstrap": {
+    "bootswatch-dist": {
       "main": [
-        "dist/js/bootstrap.js",
-        "dist/css/bootstrap.css"
+        "js/bootstrap.js",
+        "css/bootstrap.css"
       ]
     }
   }

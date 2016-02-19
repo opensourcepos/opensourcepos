@@ -32,7 +32,7 @@ if (isset($success))
 		}
 
 		echo anchor("sales/suspended/width:425", $this->lang->line('sales_suspended_sales'), 
-					array('class'=>'btn btn-default btn-sm pull-right thickbox none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales')));
+					array('class'=>'btn btn-default btn-sm pull-right modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales')));
 
 		if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
 		{
