@@ -22,7 +22,7 @@ module.exports = function(grunt) {
         cssmin: {
             target: {
                 files: {
-                    'dist/<%= pkg.name %>.min.css': ['dist/opensourcepos_bower.css', 'css/*.css', '!css/login.css']
+                    'dist/<%= pkg.name %>.min.css': ['dist/opensourcepos_bower.css', 'css/autocomplete.css', 'css/general.css', 'css/invoice.css', 'css/popupbox.css', 'css/receipt.css', 'css/register.css', 'css/reports.css', 'css/tables.css', 'css/ospos.css', 'css/ospos_print.css']
                 }
             }
         },
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end css template tags -->',
                     absolutePath: true
                 },
-                src: [ 'css/*.css' ],
+                src: [ 'css/autocomplete.css', 'css/general.css', 'css/invoice.css', 'css/popupbox.css', 'css/receipt.css', 'css/register.css', 'css/reports.css', 'css/tables.css', 'css/ospos.css', 'css/ospos_print.css' ],
                 dest: 'application/views/partial/header.php'
             },
             mincss: {
