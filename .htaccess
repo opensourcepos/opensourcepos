@@ -30,3 +30,10 @@ IndexIgnore *
  deny from all
  satisfy All
 </Files>
+
+<IfModule mod_expires.c>
+          <FilesMatch "\.(jpe?g|png|gif|js|css)$">
+                      ExpiresActive On
+                      ExpiresDefault "access plus 1 week"
+          </FilesMatch>
+</IfModule>
