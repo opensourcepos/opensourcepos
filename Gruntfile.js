@@ -11,13 +11,27 @@ module.exports = function(grunt) {
         bower_concat: {
             all: {
                 mainFiles: {
-                    'bootswatch-dist': ['css/bootstrap.css', 'js/bootstrap.js']
+                    'bootswatch-dist': ['js/bootstrap.js']
                 },
                 dest: {
                     'js': 'dist/opensourcepos_bower.js',
                     'css': 'dist/opensourcepos_bower.css'
                 }
             }
+        },
+        bowercopy: {
+			options: {
+				// Bower components folder will be removed afterwards 
+				// clean: true
+			},
+			bootstrap: {
+				options: {
+					destPrefix: 'dist'
+				},
+				files: {
+					'bootstrap.min.css': 'bootswatch-dist/css/bootstrap.min.css'
+				},
+			}
         },
         cssmin: {
             target: {
@@ -68,7 +82,7 @@ module.exports = function(grunt) {
             }
         },
         tags: {
-            css : {
+            css_header: {
                 options: {
                     scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
                     openTag: '<!-- start css template tags -->',
@@ -78,7 +92,7 @@ module.exports = function(grunt) {
                 src: [ 'css/*.css', '!css/login.css', '!css/invoice_email.css' ],
                 dest: 'application/views/partial/header.php'
             },
-            mincss: {
+            mincss_header: {
                 options: {
                     scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
                     openTag: '<!-- start mincss template tags -->',
@@ -88,7 +102,17 @@ module.exports = function(grunt) {
                 src: [ 'dist/*min.css' ],
                 dest: 'application/views/partial/header.php'
             },
-            js : {
+            css_login: {
+                options: {
+                    scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
+                    openTag: '<!-- start css template tags -->',
+                    closeTag: '<!-- end css template tags -->',
+                    absolutePath: true
+                },
+                src: [ 'dist/bootstrap.min.css', 'css/login.css' ],
+                dest: 'application/views/login.php'
+            },
+            js: {
                 options: {
                     scriptTemplate: '<script type="text/javascript" src="{{ path }}" language="javascript"></script>',
                     openTag: '<!-- start js template tags -->',
@@ -98,7 +122,7 @@ module.exports = function(grunt) {
                 src: [ 'js/jquery*', 'js/*.js' ],
                 dest: 'application/views/partial/header.php'
             },
-            minjs : {
+            minjs: {
                 options: {
                     scriptTemplate: '<script type="text/javascript" src="{{ path }}" language="javascript"></script>',
                     openTag: '<!-- start minjs template tags -->',
@@ -133,13 +157,14 @@ module.exports = function(grunt) {
                     match: [
                         {
                         'opensourcepos.min.js': 'dist/opensourcepos.min.js',
-                        'opensourcepos.min.css':    'dist/opensourcepos.min.css'
+                        'opensourcepos.min.css': 'dist/opensourcepos.min.css',
+                        'bootstrap.min.css': 'dist/bootstrap.min.css'
                     }
                     ],
                     replacement: 'md5'
                 },
                 files: {
-                    src: ['**/header.php']
+                    src: ['**/header.php', '**/login.php']
                 }
             }
         }
@@ -147,6 +172,6 @@ module.exports = function(grunt) {
 
     require('load-grunt-tasks')(grunt);
 
-    grunt.registerTask('default', ['wiredep', 'bower_concat', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
+    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
 
 };
