@@ -81,7 +81,7 @@
 	</div>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1',array('class'=>'wide control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-sm-3'>
 			<?php echo form_input(array(
 					'name'=>'tax_names[]',
@@ -103,7 +103,7 @@
 	</div>
 
 	<div class="form-group">
-		<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2',array('class'=>'wide control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-sm-3'>
 			<?php echo form_input(array(
 					'name'=>'tax_names[]',
@@ -130,7 +130,7 @@
 		<div class="form-group">
 			<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] ,
 				$key.'_quantity',
-				array('class'=>'required wide control-label col-xs-3')); ?>
+				array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-2'>
 				<?php echo form_input(array(
 						'name'=>$key.'_quantity',
