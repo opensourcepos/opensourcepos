@@ -1,21 +1,25 @@
 <?php
 require_once ("person_controller.php");
-class Employees extends Person_controller
-{
-	function __construct()
-	{
+class Employees extends Person_controller {
+	function __construct() {
 		parent::__construct('employees');
 	}
 	
-	function index($limit_from=0)
-	{
-		$data['controller_name']=$this->get_controller_name();
+	function index() {
+		$config['base_url'] = site_url('/employees/index');
+		$config['total_rows'] = $this->Employee->count_all();
+		$config['per_page'] = '20';
+		$config['uri_segment'] = 3;
+		$this->pagination->initialize($config);
+		
+		$data['controller_name']=strtolower(get_class());
 		$data['form_width']=$this->get_form_width();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$suppliers = $this->Employee->get_all($lines_per_page,$limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Employee,$lines_per_page,$limit_from);
-		$data['manage_table']=get_people_manage_table($suppliers,$this);
-		$this->load->view('suppliers/manage',$data);
+		$data['manage_table']=get_people_manage_table( $this->Employee->get_all( $config['per_page'], $this->uri->segment( $config['uri_segment'] ) ), $this );
+		
+		// $this->load->view('people/manage',$data);
+		$data['selected_module'] = 'employees';
+    $this->smartyci->assign($data);
+    $this->smartyci->display('people/manage.php.tpl');
 	}
 	
 	/*
@@ -23,14 +27,9 @@ class Employees extends Person_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search');
-		$limit_from = $this->input->post('limit_from');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$employees = $this->Employee->search($search, $limit_from, $lines_per_page);
-		$total_rows = $this->Employee->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Employee, $lines_per_page, $limit_from, $total_rows);
-		$data_rows=get_people_manage_table_data_rows($employees,$this);
-		echo json_encode(array('rows' => $data_rows, 'pagination' => $links));
+		$search=$this->input->post('search');
+		$data_rows=get_people_manage_table_data_rows($this->Employee->search($search),$this);
+		echo $data_rows;
 	}
 	
 	/*
@@ -45,12 +44,15 @@ class Employees extends Person_controller
 	/*
 	Loads the employee edit form
 	*/
-	function view($employee_id=-1)
-	{
+	function view($employee_id=-1) {
 		$data['person_info']=$this->Employee->get_info($employee_id);
 		$data['all_modules']=$this->Module->get_all_modules();
 		$data['all_subpermissions']=$this->Module->get_all_subpermissions();
-		$this->load->view("employees/form",$data);
+    
+		$data["modal_id"]='#'.$this->input->get('modal_id', true);
+    $this->smartyci->assign($data);
+    $this->smartyci->display("employees/form.php.tpl");
+		//$this->load->view("employees/form",$data);
 	}
 	
 	/*
@@ -61,7 +63,6 @@ class Employees extends Person_controller
 		$person_data = array(
 		'first_name'=>$this->input->post('first_name'),
 		'last_name'=>$this->input->post('last_name'),
-		'gender'=>$this->input->post('gender'),
 		'email'=>$this->input->post('email'),
 		'phone_number'=>$this->input->post('phone_number'),
 		'address_1'=>$this->input->post('address_1'),
@@ -72,7 +73,7 @@ class Employees extends Person_controller
 		'country'=>$this->input->post('country'),
 		'comments'=>$this->input->post('comments')
 		);
-		$grants_data = $this->input->post("grants")!=FALSE ? $this->input->post("grants"):array();
+		$grants_data = $this->input->post("grants")!=false ? $this->input->post("grants"):array();
 		
 		//Password has been changed OR first time password set
 		if($this->input->post('password')!='')
@@ -130,7 +131,11 @@ class Employees extends Person_controller
 	*/
 	function get_form_width()
 	{
-		return 750;
+		return 650;
+	}
+  
+	function get_modal_id() {
+		return "#myModal";
 	}
 }
 ?>
