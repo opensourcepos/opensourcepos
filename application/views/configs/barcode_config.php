@@ -7,14 +7,14 @@
             <ul id="barcode_error_message_box" class="error_message_box"></ul>
 
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_type'), 'barcode_type',array('class'=>'control-label col-xs-3')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_type'), 'barcode_type',array('class'=>'control-label col-xs-2')); ?>
                 <div class='col-xs-2'>
                 <?php echo form_dropdown('barcode_type', $support_barcode, $this->config->item('barcode_type'), "class='form-control'");?>
                 </div>
             </div>
             
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_quality'), 'barcode_quality',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_quality'), 'barcode_quality',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class='col-xs-2'>
                 <?php echo form_input(array(
                     'max'=>'100',
@@ -28,7 +28,7 @@
             </div>
             
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_width'), 'barcode_width',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_width'), 'barcode_width',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class='col-xs-2'>
                 <?php echo form_input(array(
                     'step'=>'5',
@@ -43,7 +43,7 @@
             </div>
 
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_height'), 'barcode_height',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_height'), 'barcode_height',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class='col-xs-2'>
                 <?php echo form_input(array(
                     'type' => 'number',
@@ -57,7 +57,7 @@
             </div>
             
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_font'), 'barcode_font',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_font'), 'barcode_font',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class='col-sm-2'>
                 <?php echo form_dropdown('barcode_font', 
                    $this->barcode_lib->listfonts("fonts"),
@@ -77,7 +77,7 @@
             </div>
             
 			<div class="form-group">
-			<?php echo form_label($this->lang->line('config_barcode_content'), 'barcode_content',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_barcode_content'), 'barcode_content',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
                     <label class="radio-inline">
                         <?php echo form_radio(array(
@@ -104,52 +104,56 @@
 			</div>
 
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_layout'), 'barcode_layout',array('class'=>'control-label col-xs-3')); ?>
-                <div class='col-sm-2'>
-                    <?php echo $this->lang->line('config_barcode_first_row').' '; ?>
-                    <?php echo form_dropdown('barcode_first_row', array(
-                            'not_show'        => 'Not show',
-                            'name'        => 'Name',
-                            'category'   => 'Category',
-                            'cost_price'           => 'Cost price',
-                            'unit_price'           => 'Unit price',
-                            'company_name'         => 'Company Name'
+            <?php echo form_label($this->lang->line('config_barcode_layout'), 'barcode_layout',array('class'=>'control-label col-xs-2')); ?>
+                <div class="col-sm-10">
+                    <div class="form-group row">
+                        <label class="control-label col-sm-1"><?php echo $this->lang->line('config_barcode_first_row').' '; ?></label>
+                        <div class='col-sm-2'>
+                            <?php echo form_dropdown('barcode_first_row', array(
+                                'not_show'        => 'Not show',
+                                'name'        => 'Name',
+                                'category'   => 'Category',
+                                'cost_price'           => 'Cost price',
+                                'unit_price'           => 'Unit price',
+                                'company_name'         => 'Company Name'
                             ),
-                        $this->config->item('barcode_first_row'), "class='form-control'");
-                        ?>
-                </div>
-                <div class='col-sm-2'>
-                    <?php echo $this->lang->line('config_barcode_second_row').' '; ?>
-                    <?php echo form_dropdown('barcode_second_row', array(
-                            'not_show'        => 'Not show',
-                            'name'        => 'Name',
-                            'category'   => 'Category',
-                            'cost_price'           => 'Cost price',
-                            'unit_price'           => 'Unit price',
-                            'item_code'            => 'Item code',
-                            'company_name'         => 'Company Name'
+                            $this->config->item('barcode_first_row'), "class='form-control'");
+                            ?>
+                        </div>
+                        <label class="control-label col-sm-1"><?php echo $this->lang->line('config_barcode_second_row').' '; ?></label>
+                        <div class='col-sm-2'>
+                            <?php echo form_dropdown('barcode_second_row', array(
+                                'not_show'        => 'Not show',
+                                'name'        => 'Name',
+                                'category'   => 'Category',
+                                'cost_price'           => 'Cost price',
+                                'unit_price'           => 'Unit price',
+                                'item_code'            => 'Item code',
+                                'company_name'         => 'Company Name'
                             ),
-                        $this->config->item('barcode_second_row'), "class='form-control'");
-                        ?>
-                </div>
-                <div class='col-sm-2'>
-                    <?php echo $this->lang->line('config_barcode_third_row').' '; ?>
-                    <?php echo form_dropdown('barcode_third_row', array(
-                        'not_show'        => 'Not show',
-                        'name'        => 'Name',
-                        'category'   => 'Category',
-                        'cost_price'           => 'Cost price',
-                        'unit_price'           => 'Unit price',
-                        'item_code'            => 'Item code',
-                        'company_name'         => 'Company Name'
-                    ),
-                        $this->config->item('barcode_third_row'), "class='form-control'");
-                    ?>
+                            $this->config->item('barcode_second_row'), "class='form-control'");
+                            ?>
+                        </div>
+                        <label class="control-label col-sm-1"><?php echo $this->lang->line('config_barcode_third_row').' '; ?></label>
+                        <div class='col-sm-3'>
+                            <?php echo form_dropdown('barcode_third_row', array(
+                                'not_show'        => 'Not show',
+                                'name'        => 'Name',
+                                'category'   => 'Category',
+                                'cost_price'           => 'Cost price',
+                                'unit_price'           => 'Unit price',
+                                'item_code'            => 'Item code',
+                                'company_name'         => 'Company Name'
+                            ),
+                            $this->config->item('barcode_third_row'), "class='form-control'");
+                            ?>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_number_in_row'), 'barcode_num_in_row',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_number_in_row'), 'barcode_num_in_row',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class='col-xs-2'>
                 <?php echo form_input(array(
                     'name'=>'barcode_num_in_row',
@@ -160,7 +164,7 @@
             </div>
             
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_page_width'), 'barcode_page_width',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_page_width'), 'barcode_page_width',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class="col-sm-2">
                     <div class='input-group'>
                         <?php echo form_input(array(
@@ -174,7 +178,7 @@
             </div>
             
             <div class="form-group">    
-            <?php echo form_label($this->lang->line('config_barcode_page_cellspacing'), 'barcode_page_cellspacing',array('class'=>'control-label col-xs-3 required')); ?>
+            <?php echo form_label($this->lang->line('config_barcode_page_cellspacing'), 'barcode_page_cellspacing',array('class'=>'control-label col-xs-2 required')); ?>
                 <div class='col-sm-2'>
                     <div class="input-group">
                         <?php echo form_input(array(

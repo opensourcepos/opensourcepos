@@ -7,7 +7,7 @@
 			<ul id="error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_company'), 'company', array('class'=>'control-label col-xs-3 required')); ?>
+			<?php echo form_label($this->lang->line('config_company'), 'company', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 						'name'=>'company',
@@ -19,7 +19,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_company_logo'), 'company_logo', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_company_logo'), 'company_logo', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<div class="fileinput fileinput-new" data-provides="fileinput">
 						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">	
@@ -37,7 +37,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_address'), 'address', array('class'=>'control-label col-xs-3  required')); ?>
+			<?php echo form_label($this->lang->line('config_address'), 'address', array('class'=>'control-label col-xs-2  required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea(array(
 						'name'=>'address',
@@ -48,7 +48,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_website'), 'website',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_website'), 'website',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 						'name'=>'website',
@@ -59,7 +59,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('common_email'), 'email',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('common_email'), 'email',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 						'name'=>'email',
@@ -71,7 +71,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_phone'), 'phone',array('class'=>'control-label col-xs-3  required')); ?>
+			<?php echo form_label($this->lang->line('config_phone'), 'phone',array('class'=>'control-label col-xs-2  required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 						'name'=>'phone',
@@ -82,7 +82,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_fax'), 'fax',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_fax'), 'fax',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 						'name'=>'fax',
@@ -93,7 +93,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('common_return_policy'), 'return_policy',array('class'=>'control-label col-xs-3  required')); ?>
+			<?php echo form_label($this->lang->line('common_return_policy'), 'return_policy',array('class'=>'control-label col-xs-2  required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea(array(
 						'name'=>'return_policy',
@@ -104,7 +104,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_default_tax_rate_1'), 'default_tax_1_rate',array('class'=>'control-label col-xs-3 required')); ?>
+			<?php echo form_label($this->lang->line('config_default_tax_rate_1'), 'default_tax_1_rate',array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-sm-2'>
 					<?php echo form_input(array(
 						'name'=>'default_tax_1_name',
@@ -123,7 +123,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_default_tax_rate_2'), 'default_tax_1_rate',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_default_tax_rate_2'), 'default_tax_1_rate',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-sm-2'>
 					<?php echo form_input(array(
 						'name'=>'default_tax_2_name',
@@ -142,7 +142,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_tax_included'), 'tax_included',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_tax_included'), 'tax_included',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_checkbox(array(
 						'name'=>'tax_included',
@@ -153,7 +153,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount',array('class'=>'control-label col-xs-3  required')); ?>
+			<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount',array('class'=>'control-label col-xs-2  required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
 					<?php echo form_input(array(
@@ -170,7 +170,7 @@
 			</div>
 
 			<div class="form-group">    
-			<?php echo form_label($this->lang->line('config_sales_invoice_format'), 'sales_invoice_format',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_sales_invoice_format'), 'sales_invoice_format',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'sales_invoice_format',
@@ -181,7 +181,7 @@
 			</div>
 
 			<div class="form-group">    
-			<?php echo form_label($this->lang->line('config_recv_invoice_format'), 'recv_invoice_format',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_recv_invoice_format'), 'recv_invoice_format',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'recv_invoice_format',
@@ -192,7 +192,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_receiving_calculate_average_price'), 'receiving_calculate_average_price',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_receiving_calculate_average_price'), 'receiving_calculate_average_price',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
 						'name'=>'receiving_calculate_average_price',
@@ -203,8 +203,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_lines_per_page'), 'lines_per_page',array('class'=>'control-label col-xs-3  required')); ?>
-				<div class='col-xs-1'>
+			<?php echo form_label($this->lang->line('config_lines_per_page'), 'lines_per_page',array('class'=>'control-label col-xs-2  required')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'lines_per_page',
 						'id'=>'lines_per_page',
@@ -217,8 +217,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom1'), 'config_custom1',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom1'), 'config_custom1',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom1_name',
 						'id'=>'custom1_name',
@@ -228,8 +228,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom2'), 'config_custom2',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom2'), 'config_custom2',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom2_name',
 						'id'=>'custom2_name',
@@ -239,8 +239,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom3'), 'config_custom3',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom3'), 'config_custom3',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom3_name',
 						'id'=>'custom3_name',
@@ -250,8 +250,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom4'), 'config_custom4',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom4'), 'config_custom4',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom4_name',
 						'id'=>'custom4_name',
@@ -261,8 +261,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom5'), 'config_custom5',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom5'), 'config_custom5',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom5_name',
 						'id'=>'custom5_name',
@@ -272,8 +272,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom6'), 'config_custom6',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom6'), 'config_custom6',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom6_name',
 						'id'=>'custom6_name',
@@ -283,8 +283,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom7'), 'config_custom7',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom7'), 'config_custom7',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom7_name',
 						'id'=>'custom7_name',
@@ -294,8 +294,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom8'), 'config_custom8',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom8'), 'config_custom8',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom8_name',
 						'id'=>'custom8_name',
@@ -305,8 +305,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom9'), 'config_custom9',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom9'), 'config_custom9',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom9_name',
 						'id'=>'custom9_name',
@@ -316,8 +316,8 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_custom10'), 'config_custom10',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-3'>
+			<?php echo form_label($this->lang->line('config_custom10'), 'config_custom10',array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'custom10_name',
 						'id'=>'custom10_name',
@@ -327,7 +327,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database',array('class'=>'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<div id="backup_db" class="btn btn-default btn-sm">
 						<span style="top:22%;"><?php echo $this->lang->line('config_backup_button'); ?></span>

@@ -3,7 +3,7 @@
 <?php $location_id = $location_data['location_id']; ?>
 <?php $location_name = $location_data['location_name']; ?>
 <div class="form-group" style="<?php echo $location_data['deleted'] ? 'display:none;' : 'display:block;' ?>">
-  <?php echo form_label($this->lang->line('config_stock_location').' ' .++$i, 'stock_location_'.$i ,array('class'=>'required control-label col-xs-3')); ?>
+  <?php echo form_label($this->lang->line('config_stock_location').' ' .++$i, 'stock_location_'.$i ,array('class'=>'required control-label col-xs-2')); ?>
     <div class='col-xs-2'>
     <?php $form_data = array(
         'name'=>'stock_location_'.$location_id,

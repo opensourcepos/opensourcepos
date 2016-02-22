@@ -7,7 +7,7 @@
 			<ul id="error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group">
-				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol',array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-sm-1'>
 					<?php echo form_input(array(
 							'name'=>'currency_symbol',
@@ -28,31 +28,36 @@
 			</div>
 
 			<div class="form-group">    
-				<?php echo form_label($this->lang->line('config_number_format'), 'number_format',array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-sm-2'>
-					<?php echo $this->lang->line('config_thousands_separator'); ?>
-					<?php echo form_dropdown('thousands_separator', array(
+				<?php echo form_label($this->lang->line('config_number_format'), 'number_format',array('class'=>'control-label col-xs-2')); ?>
+				<div class="col-sm-10">
+					<div class="form-group row">
+						<label class="control-label col-sm-2"><?php echo $this->lang->line('config_thousands_separator'); ?></label>
+						<div class='col-sm-2'>
+							<?php echo form_dropdown('thousands_separator', array(
 								'&apos;' => '&apos; (apostrophe)',
-							','    => ', (comma)',
-							'.'    => '. (dot)',
-							''    => '(none)'
+								','    => ', (comma)',
+								'.'    => '. (dot)',
+								''    => '(none)'
 							),
-						$this->config->item('thousands_separator'), "class='form-control'");
-					?>
+								$this->config->item('thousands_separator'), "class='form-control'");
+							?>
+						</div>
+						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_decimal_point'); ?></label>
+						<div class="col-sm-2">
+							<?php echo form_dropdown('decimal_point', array(
+								'.'    => '. (dot)',
+								','    => ', (comma)'
+							),
+								$this->config->item('decimal_point'), "class='form-control'");
+							?>
+						</div>
+					</div>
 				</div>
-				<div class="col-sm-2">
-					<?php echo $this->lang->line('config_decimal_point'); ?>
-					<?php echo form_dropdown('decimal_point', array(
-						'.'    => '. (dot)',
-						','    => ', (comma)'
-					),
-						$this->config->item('decimal_point'), "class='form-control'");
-					?>
-				</div>
+
 			</div>
 
 			<div class="form-group">
-				<?php echo form_label($this->lang->line('config_language'), 'language',array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('config_language'), 'language',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_dropdown('language', array(
 					'en' => 'English',
@@ -72,7 +77,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_timezone'), 'timezone',array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_timezone'), 'timezone',array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 				<?php echo form_dropdown('timezone', 
 				 array(
@@ -173,7 +178,7 @@
 			</div>
 
 			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_datetimeformat'), 'datetimeformat', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('config_datetimeformat'), 'datetimeformat', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-sm-2'>
 				<?php echo form_dropdown('dateformat', array(
 					'd/m/Y' => 'dd/mm/yyyy',
