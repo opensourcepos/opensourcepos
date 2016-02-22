@@ -45,7 +45,7 @@ class Sale extends CI_Model
 		}
 		else
 		{
-			if ($filters['is_valid_receipt'])
+			if ($filters['is_valid_receipt'] != FALSE)
 			{
 				$pieces = explode(' ', $search);
 				$this->db->where('sales_items_temp.sale_id', $pieces[1]);
