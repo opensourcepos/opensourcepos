@@ -668,7 +668,7 @@ class Sales extends Secure_area
 
 		$sale_data = array(
 			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),
-			'customer_id' => $this->input->post('customer_id'),
+			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : null,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number')
