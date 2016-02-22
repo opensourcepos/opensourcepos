@@ -11,26 +11,25 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 	/*
 	This returns a mailto link for persons with a certain id. This is called with AJAX.
 	*/
-	function mailto()
-	{
+	function mailto() {
 		$people_to_email=$this->input->post('ids');
-		
-		if($people_to_email!=false)
-		{
+
+		if($people_to_email != false) {
 			$mailto_url='mailto:';
-			foreach($this->Person->get_multiple_info($people_to_email)->result() as $person)
-			{
-				$mailto_url.=$person->email.',';	
+			foreach($this->Person->get_multiple_info($people_to_email)->result() as $person) {
+				if (strpos($mailto_url, $person->email) === false)
+					$mailto_url .= $person->email.',';
 			}
 			//remove last comma
 			$mailto_url=substr($mailto_url,0,strlen($mailto_url)-1);
-			
+
 			echo $mailto_url;
 			exit;
 		}
 		echo '#';
 	}
-	
+
+	/** GARRISON ADDED 4/25/2013 IN PROGRESS **/	
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
@@ -49,5 +48,6 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 		$data_row=get_person_data_row($this->Person->get_info($person_id),$this);
 		echo $data_row;
 	}
+		
 }
 ?>

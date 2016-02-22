@@ -9,7 +9,7 @@
 |
 |
 */
-$config['application_version'] = '2.3.4';
+$config['application_version'] = '2.3.1';
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -237,7 +237,7 @@ $config['cache_path'] = '';
 | MUST set an encryption key.  See the user guide for info.
 |
 */
-$config['encryption_key'] = 'PUT_YOUR_ENCRYPTION_KEY_HERE';
+$config['encryption_key'] = 'TB53J1EE8x2ZEudhVrVKfIN6k6AhvCsF';
 
 /*
 |--------------------------------------------------------------------------
@@ -262,10 +262,10 @@ $config['sess_expiration']		= 0;
 $config['sess_expire_on_close']	= FALSE;
 $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= TRUE;
-$config['sess_table_name']		= 'sessions';
+$config['sess_table_name']		= 'ospos_sessions';
 $config['sess_match_ip']		= FALSE;
-$config['sess_match_useragent']	= FALSE;
-$config['sess_time_to_update']	= 120;
+$config['sess_match_useragent']	= FAlSE;
+$config['sess_time_to_update']	= 0;
 
 /*
 |--------------------------------------------------------------------------
