@@ -21,13 +21,13 @@ class Items extends Secure_area implements iData_controller
 		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
 		
-		// assume year 2010 as starting date for OSPOS
+		// set 01/01/2010 as starting date for OSPOS
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
 
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $start_of_time;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		
 		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
@@ -53,19 +53,18 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search');
-		$this->item_lib->set_item_location($this->input->post('stock_location'));
-		$data['search_section_state'] = $this->input->post('search_section_state');
+		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$this->item_lib->set_item_location($this->input->post('stock_location'));
 
-		// assume year 2010 as starting date for OSPOS
+		// set 01/01/2010 as starting date for OSPOS
 		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
 		$today = date($this->config->item('dateformat'));
 
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date', TRUE) : $start_of_time;
+		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
 		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date', TRUE) : $today;
+		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
 		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
 		
 		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
@@ -83,6 +82,7 @@ class Items extends Secure_area implements iData_controller
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
 		$data_rows = get_items_manage_table_data_rows($items, $this);
+
 		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
 		$this->_remove_duplicate_cookies();
 		
@@ -470,13 +470,12 @@ class Items extends Secure_area implements iData_controller
 
 	                $success &= $this->Inventory->insert($inv_data);       
                 }                                            
-            }        
-            
-            if ($success && $upload_success) 
+            }
+			if ($success && $upload_success)
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 
-            	echo json_encode(array('success'=>true,'message'=>$success_message,'item_id'=>$item_id));
+            	echo json_encode(array('success'=>true, 'message'=>$success_message, 'item_id'=>$item_id));
             }
             else
             {
@@ -484,16 +483,13 @@ class Items extends Secure_area implements iData_controller
 	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
     	        	$this->upload->display_errors(); 
 
-            	echo json_encode(array('success'=>false,
-            			'message'=>$error_message,'item_id'=>$item_id)); 
+            	echo json_encode(array('success'=>false, 'message'=>$error_message, 'item_id'=>$item_id)); 
             }
             
 		}
 		else//failure
 		{
-			echo json_encode(array('success'=>false,
-					'message'=>$this->lang->line('items_error_adding_updating').' '
-					.$item_data['name'],'item_id'=>-1));
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('items_error_adding_updating').' '.$item_data['name'], 'item_id'=>-1));
 		}
 	}
 	

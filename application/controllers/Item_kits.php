@@ -51,9 +51,10 @@ class Item_kits extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search');
+		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
+
 		$item_kits = $this->Item_kit->search($search, $lines_per_page, $limit_from);
 		$total_rows = $this->Item_kit->get_found_rows($search);
 		$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from, $total_rows, 'search');
