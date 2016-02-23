@@ -13,6 +13,7 @@
 		<link rel="stylesheet" href="bower_components/bootswatch-dist/css/bootstrap.css" />
 		<link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
@@ -42,6 +43,7 @@
 		<script src="bower_components/bootswatch-dist/js/bootstrap.js"></script>
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
@@ -60,10 +62,10 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=1a3aad06c8"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=f8680d8d01"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ca5e30082f" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f94af9ca53" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
