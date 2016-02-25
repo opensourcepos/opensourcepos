@@ -225,7 +225,6 @@ class Receivings extends Secure_area
 			$this->load->view("receivings/receipt",$data);
 			$this->receiving_lib->clear_all();
 		}
-		$this->_remove_duplicate_cookies();
 	}
 	
 	private function _substitute_variable($text, $variable, $object, $function)
@@ -320,7 +319,6 @@ class Receivings extends Secure_area
 		$data['print_after_sale'] = FALSE;
 		$this->load->view("receivings/receipt",$data);
 		$this->receiving_lib->clear_all();
-		$this->_remove_duplicate_cookies();
 	}
 
 	private function _reload($data=array())
@@ -361,7 +359,6 @@ class Receivings extends Secure_area
 		$data['invoice_number_enabled']=$this->receiving_lib->is_invoice_number_enabled();
 		$data['print_after_sale']=$this->receiving_lib->is_print_after_sale();
 		$this->load->view("receivings/receiving",$data);
-		$this->_remove_duplicate_cookies();
 	}
 	
 	function save($receiving_id)

@@ -43,7 +43,6 @@ class Item_kits extends Secure_area implements iData_controller
 		$data['manage_table'] = get_item_kits_manage_table($item_kits, $this);
 
 		$this->load->view('item_kits/manage', $data);
-		$this->_remove_duplicate_cookies();
 	}
 	
 	/*
@@ -66,7 +65,6 @@ class Item_kits extends Secure_area implements iData_controller
 		}
 
 		$data_rows = get_item_kits_manage_table_data_rows($item_kits, $this);
-		$this->_remove_duplicate_cookies();
 
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
@@ -89,7 +87,6 @@ class Item_kits extends Secure_area implements iData_controller
 		$item_kit = $this->add_totals_to_item_kit($this->Item_kit->get_info($item_kit_id));
 		
 		echo (get_item_kit_data_row($item_kit, $this));
-		$this->_remove_duplicate_cookies();
 	}
 
 	function view($item_kit_id=-1)
