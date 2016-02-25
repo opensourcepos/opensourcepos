@@ -64,7 +64,6 @@ class Sales extends Secure_area
 			$this->load->view($data['controller_name'] . '/manage', $data);
 		}
 
-		$this->_remove_duplicate_cookies();
 	}
 	
 	function get_row()
@@ -129,8 +128,7 @@ class Sales extends Secure_area
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
 
 		// do not move this line to be after the json_encode otherwise the search function won't work!!
-		$this->_remove_duplicate_cookies();
-		
+
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
 	}
 
@@ -460,7 +458,6 @@ class Sales extends Secure_area
 			$this->sale_lib->clear_all();
 		}
 
-		$this->_remove_duplicate_cookies();
 	}
 	
 	private function _invoice_email_pdf($data)
@@ -482,7 +479,6 @@ class Sales extends Secure_area
 		$sale_data['image_prefix'] = base_url();
 		$this->load->view('sales/invoice_email', $sale_data);
 		$this->sale_lib->clear_all();
-		$this->_remove_duplicate_cookies();
 	}
 	
 	function send_invoice($sale_id)
@@ -507,7 +503,6 @@ class Sales extends Secure_area
 		}
 		echo json_encode(array('success'=>$result, 'message'=>$message, 'id'=>$sale_id));
 		$this->sale_lib->clear_all();
-		$this->_remove_duplicate_cookies();
 	}
 	
 	private function _substitute_variable($text, $variable, $object, $function)
@@ -629,7 +624,6 @@ class Sales extends Secure_area
 		$data = $this->_load_sale_data($sale_id);	
 		$this->load->view("sales/receipt",$data);
 		$this->sale_lib->clear_all();
-		$this->_remove_duplicate_cookies();
 	}
 	
 	function invoice($sale_id, $sale_info='')
@@ -639,7 +633,6 @@ class Sales extends Secure_area
 		}
 		$this->load->view("sales/invoice",$sale_info);
 		$this->sale_lib->clear_all();
-		$this->_remove_duplicate_cookies();
 	}
 	
 	function edit($sale_id)
@@ -762,7 +755,6 @@ class Sales extends Secure_area
 
 		$this->load->view("sales/register", $data);
 
-		$this->_remove_duplicate_cookies();
 	}
 
 	function cancel_sale()
