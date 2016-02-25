@@ -71,7 +71,7 @@ function post_item_kit_form_submit(response)
 
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
-	<?php echo anchor("$controller_name/view/-1/width:$form_width",
+	<?php echo anchor("$controller_name/view/-1",
 	"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
 	array('class'=>'modal-dlg none', 'title'=>$this->lang->line($controller_name . '_new')));
 	?>

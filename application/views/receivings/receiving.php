@@ -47,7 +47,7 @@ if (isset($error))
 		echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));
 		
 		echo anchor("items/view/-1/width:450", $this->lang->line('sales_new_item'), 
-					array('class'=>'btn btn-info btn-sm pull-right modal-dlg none', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
+					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
 		?>
 	<?php echo form_close(); ?>
 

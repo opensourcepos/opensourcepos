@@ -64,7 +64,6 @@ function get_sales_manage_sale_data_row($sale, $controller)
 {
 	$CI =& get_instance();
 	$controller_name = $CI->uri->segment(1);
-	$width = $controller->get_form_width();
 
 	$table_data_row='<tr>';
 	$table_data_row.='<td width="3%"><input type="checkbox" id="sale_' . $sale['sale_id'] . '" value="' . $sale['sale_id']. '" /></td>';
@@ -77,7 +76,7 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
 	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
 	$table_data_row.='<td width="8%">';
-	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal','title'=>$CI->lang->line($controller_name.'_update')));
+	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'], $CI->lang->line('common_edit'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_update')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
 	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_receipt') . '</a>';
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -167,15 +166,15 @@ function get_person_data_row($person,$controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	$width = $controller->get_form_width();
+	$modal_class = $controller_name == 'employees' ? 'modal-dlg-wide' : '';
 
 	$table_data_row='<tr>';
-	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$person->person_id' value='".$person->person_id."'/></td>";
+	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$person->person_id' <value='".$person->person_id."'/></td>";
 	$table_data_row.='<td width="20%">'.character_limiter($person->last_name,13).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg $modal_class",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -251,7 +250,6 @@ function get_supplier_data_row($supplier,$controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	$width = $controller->get_form_width();
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
@@ -262,7 +260,7 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
 	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -334,7 +332,6 @@ function get_item_data_row($item,$controller)
 	}
 	$tax_percents=substr($tax_percents, 0, -2);
 	$controller_name=strtolower(get_class($CI));
-	$width = $controller->get_form_width();
 
     $item_quantity='';
     
@@ -358,10 +355,10 @@ function get_item_data_row($item,$controller)
 		}
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg modal-btn-new",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 
-	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id/width:$width", $CI->lang->line('common_inv'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count
-	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id/width:$width", $CI->lang->line('common_det'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
+	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id", $CI->lang->line('common_inv'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count
+	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id", $CI->lang->line('common_det'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
 	
 	$table_data_row.='</tr>';
 
@@ -421,7 +418,6 @@ function get_giftcard_data_row($giftcard,$controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	$width = $controller->get_form_width();
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='3%'><input type='checkbox' id='giftcard_$giftcard->giftcard_id' value='".$giftcard->giftcard_id."'/></td>";
@@ -429,7 +425,7 @@ function get_giftcard_data_row($giftcard,$controller)
 	$table_data_row.='<td width="15%">'.$giftcard->first_name.'</td>';
 	$table_data_row.='<td width="15%">'.$giftcard->giftcard_number.'</td>';
 	$table_data_row.='<td width="20%">'.to_currency($giftcard->value).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
@@ -489,7 +485,6 @@ function get_item_kit_data_row($item_kit, $controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	$width = $controller->get_form_width();
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='3%'><input type='checkbox' id='item_kit_$item_kit->item_kit_id' value='".$item_kit->item_kit_id."'/></td>";
@@ -498,7 +493,7 @@ function get_item_kit_data_row($item_kit, $controller)
 	$table_data_row.='<td width="20%">'.character_limiter($item_kit->description, 25).'</td>';
 	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_cost_price).'</td>';
 	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_unit_price).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'modal-dlg','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;

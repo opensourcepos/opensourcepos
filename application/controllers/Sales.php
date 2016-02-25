@@ -79,16 +79,6 @@ class Sales extends Secure_area
 		echo $data_row;
 	}
 	
-	/**
-	 *
-	 * Get the width for the add/edit form.
-	 * @return number The form width
-	 */
-	function get_form_width()
-	{
-		return 400;
-	}
-
 	/*
 	Returns Sales table data rows. This will be called with AJAX.
 	*/

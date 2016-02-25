@@ -4,7 +4,7 @@
 	<fieldset id="supplier_basic_info">
 	<legend><?php echo $this->lang->line("suppliers_basic_information"); ?></legend>
 
-	<div class="form-group">	
+	<div class="form-group">
 	<?php echo form_label($this->lang->line('suppliers_company_name'), 'company_name', array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 		<?php echo form_input(array(
@@ -61,7 +61,8 @@ $(document).ready(function()
 
 		},
 		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
+		errorClass: "has-error",
+		wrapper: "li",
 		rules: 
 		{
 			company_name: "required",

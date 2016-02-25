@@ -62,17 +62,17 @@ function post_person_form_submit(response)
 	<?php if ($controller_name =='customers')
 	{
 	?>
-		<?php echo anchor("$controller_name/excel_import/width:$form_width",
+		<?php echo anchor("$controller_name/excel_import",
 		"<div class='btn btn-info btn-sm pull-right''><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-			array('class'=>'modal-dlg none', 'title'=>'Import Items from Excel'));
-		?>	
+			array('class'=>"modal-dlg modal-dlg", 'title'=>$this->lang->line('items_import_items_excel')));
+		?>
 	<?php
 	}
 	?>
 
-	<?php echo anchor("$controller_name/view/-1/width:$form_width",
+	<?php $dlog_class = ($controller_name == 'employees' ? 'modal-dlg-wide' : ''); echo anchor("$controller_name/view/-1",
 	"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-	array('class'=>'modal-dlg none', 'title'=>$this->lang->line($controller_name . '_new')));
+	array('class'=>"modal-dlg $dlog_class", 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
 

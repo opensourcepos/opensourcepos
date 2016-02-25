@@ -177,6 +177,16 @@ a.rollover img
 	{
 		padding: 10px 10px 9px;
 	}
+
+	.modal-dlg .modal-dialog
+	{
+		width: 500px;
+	}
+
+	.modal-dlg-wide .modal-dialog
+	{
+		width: 750px;
+	}
 }
 
 .modal-body

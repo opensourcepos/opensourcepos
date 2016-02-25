@@ -16,7 +16,6 @@ class Items extends Secure_area implements iData_controller
 		$stock_locations = $this->Stock_location->get_allowed_locations();
 		
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
@@ -786,12 +785,5 @@ class Items extends Secure_area implements iData_controller
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );
 	}
 
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 450;
-	}
 }
 ?>

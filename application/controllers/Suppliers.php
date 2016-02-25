@@ -11,7 +11,6 @@ class Suppliers extends Person_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$suppliers = $this->Supplier->get_all($lines_per_page);
 		
@@ -126,14 +125,6 @@ class Suppliers extends Person_controller
 		$person_id = $this->input->post('row_id');
 		$data_row=get_supplier_data_row($this->Supplier->get_info($person_id),$this);
 		echo $data_row;
-	}
-	
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{			
-		return 360;
 	}
 }
 ?>

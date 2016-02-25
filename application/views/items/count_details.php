@@ -1,7 +1,7 @@
 <?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form')); ?>
 	<fieldset id="inv_item_basic_info">
 		<table border="0" bgcolor="#CCCCCC">
-			<div class="field_row clearfix">
+			<div class="form-group">
 			<tr>
 			<td>
 				<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>

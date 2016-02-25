@@ -74,7 +74,7 @@ function do_search(show_feedback,on_complete)
 	//If search is not enabled, don't do anything
 	if(!enable_search.enabled)
 		return;
-		
+
 	if(show_feedback)
 		$('#search').addClass("ac_loading");
 		
@@ -206,16 +206,12 @@ function enable_bulk_edit(none_selected_message)
 	
 	$('#bulk_edit').click(function(event)
 	{
-		event.preventDefault();
-		if($("#sortable_table tbody :checkbox:checked").length >0)
-		{
-			tb_show($(this).attr('title'),$(this).attr('href'),false);
-			$(this).blur();
-		}
-		else
+		if($("#sortable_table tbody :checkbox:checked").length == 0)
 		{
 			alert(none_selected_message);
+			return false;
 		}
+		event.preventDefault();
 	});
 }
 enable_bulk_edit.enabled=false;
@@ -393,7 +389,6 @@ dialog_support = (function() {
 	var btn_id, dialog_ref;
 
 	var hide = function() {
-		debugger;;
 		dialog_ref.close();
 	};
 
@@ -411,19 +406,41 @@ dialog_support = (function() {
 	};
 
 	var init = function(selector) {
-		$(selector).click(function(event) {
+		return $(selector).click(function(event) {
+			var buttons = [{
+				id: 'submit',
+				label: 'Submit',
+				cssClass: 'btn-primary',
+				action: submit('submit')
+			}];
+
+			var dialog_class = 'modal-dlg';
+			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
+				var width_class = className.split("modal-dlg-");
+				if (width_class && width_class.length > 1) {
+					dialog_class = className;
+				}
+
+				var btn_class = className.split("modal-btn-");
+				if (btn_class && btn_class.length > 1) {
+					var btn_name = btn_class[1];
+					buttons.push({
+						id: btn_name,
+						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
+						action: submit(btn_name)
+					});
+				}
+			});
+
 			var $link = $(event.target);
 			$link = $link.is("a") ? $link : $link.parents("a");
 			BootstrapDialog.show({
+				cssClass: dialog_class,
 				title: $link.attr('title'),
 				message: $('<div></div>').load($link.attr('href')),
-				buttons: [{
-					id: 'submit',
-					label: 'Submit',
-					cssClass: 'btn-primary',
-					action: submit('submit')
-				}]
+				buttons: buttons
 			});
+
 			event.preventDefault();
 		});
 	};

@@ -12,7 +12,6 @@ class Giftcards extends Secure_area implements iData_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$giftcards = $this->Giftcard->get_all($lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Giftcard, $lines_per_page, $limit_from);
@@ -116,14 +115,6 @@ class Giftcards extends Secure_area implements iData_controller
 		{
 			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('giftcards_cannot_be_deleted')));
 		}
-	}
-		
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 360;
 	}
 }
 ?>

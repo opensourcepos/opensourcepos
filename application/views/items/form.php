@@ -54,7 +54,7 @@
 		<div class="col-xs-3">
 
 		<div class="input-group">
-			<span class="input-group-addon">$</span>
+			<span class="input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
 			<?php echo form_input(array(
 					'name'=>'cost_price',
 					'id'=>'cost_price',
@@ -76,7 +76,7 @@
 					'class'=>'form-control',
 					'value'=>$item_info->unit_price)
 			);?>
-				</div>
+			</div>
 		</div>
 	</div>
 
@@ -90,14 +90,16 @@
 					'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
 			);?>
 			</div>
-			<div class="col-sm-2 input-group">
-				<?php echo form_input(array(
-						'name'=>'tax_percents[]',
-						'id'=>'tax_percent_name_1',
-						'class'=>'form-control',
-						'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : $default_tax_1_rate)
-				);?>
-				<span class="input-group-addon">%</span>
+			<div class="col-sm-3">
+				<div class="input-group">
+					<?php echo form_input(array(
+							'name'=>'tax_percents[]',
+							'id'=>'tax_percent_name_1',
+							'class'=>'form-control',
+							'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : $default_tax_1_rate)
+					);?>
+					<span class="input-group-addon">%</span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -112,14 +114,16 @@
 					'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
 			);?>
 		</div>
-		<div class="col-sm-2 input-group">
-			<?php echo form_input(array(
-					'name'=>'tax_percents[]',
-					'class'=>'form-control',
-					'id'=>'tax_percent_name_2',
-					'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
-			);?>
-			<span class="input-group-addon">%</span>
+		<div class="col-sm-3">
+			<div class="input-group">
+				<?php echo form_input(array(
+						'name'=>'tax_percents[]',
+						'class'=>'form-control',
+						'id'=>'tax_percent_name_2',
+						'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
+				);?>
+				<span class="input-group-addon">%</span>
+			</div>
 		</div>
 	</div>
 
@@ -327,6 +331,7 @@
 				event.preventDefault();
 			},
 			errorLabelContainer: "#error_message_box",
+			errorClass: "has-error",
 			wrapper: "li",
 			rules:
 			{

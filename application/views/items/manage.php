@@ -50,61 +50,8 @@ $(document).ready(function()
             $('#search_form').submit();
         }
     });
-	
-	// set the locale language for the datetime picker
-	$.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
-		days: ["<?php echo $this->lang->line("common_days_sunday"); ?>",
-				"<?php echo $this->lang->line("common_days_monday"); ?>",
-				"<?php echo $this->lang->line("common_days_tueday"); ?>",
-				"<?php echo $this->lang->line("common_days_wednesday"); ?>",
-				"<?php echo $this->lang->line("common_days_thursday"); ?>",
-				"<?php echo $this->lang->line("common_days_friday"); ?>",
-				"<?php echo $this->lang->line("common_days_saturday"); ?>",
-				"<?php echo $this->lang->line("common_days_sunday"); ?>"],
-		daysShort: ["<?php echo $this->lang->line("common_daysshort_sunday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_monday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_tueday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_wednesday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_thursday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_friday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_saturday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_sunday"); ?>"],
-		daysMin: ["<?php echo $this->lang->line("common_daysmin_sunday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_monday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_tueday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_wednesday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_thursday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_friday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_saturday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_sunday"); ?>"],
-		months: ["<?php echo $this->lang->line("common_months_january"); ?>",
-				"<?php echo $this->lang->line("common_months_february"); ?>",
-				"<?php echo $this->lang->line("common_months_march"); ?>",
-				"<?php echo $this->lang->line("common_months_april"); ?>",
-				"<?php echo $this->lang->line("common_months_may"); ?>",
-				"<?php echo $this->lang->line("common_months_june"); ?>",
-				"<?php echo $this->lang->line("common_months_july"); ?>",
-				"<?php echo $this->lang->line("common_months_august"); ?>",
-				"<?php echo $this->lang->line("common_months_september"); ?>",
-				"<?php echo $this->lang->line("common_months_october"); ?>",				
-				"<?php echo $this->lang->line("common_months_november"); ?>",
-				"<?php echo $this->lang->line("common_months_december"); ?>"],
-		monthsShort: ["<?php echo $this->lang->line("common_monthsshort_january"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_february"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_march"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_april"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_may"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_june"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_july"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_august"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_september"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_october"); ?>",				
-				"<?php echo $this->lang->line("common_monthsshort_november"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
-		today: "<?php echo $this->lang->line("common_today"); ?>",
-		meridiem: [],
-		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>,
-	};
+
+    <?php $this->load->view('partial/datepicker_locale'); ?>
 
 	// initialise the datetime picker and trigger a search on any change date
     $(".date_filter").datetimepicker({
@@ -165,24 +112,6 @@ function init_table_sorting()
     }
 }
 
-var item_details = function(url, title) {
-
-    return BootstrapDialog.show({
-        title: title,
-        message: $('<div></div>').load(url),
-        buttons: [{
-            id: 'submit',
-            label: '<?php echo $this->lang->line('common_submit'); ?>',
-            action: dialog_support.submit('submit')
-        }, {
-            id: 'new',
-            label: '<?php echo $this->lang->line('common_new'); ?>',
-            action: dialog_support.submit('new')
-        }]
-    });
-};
-
-
 function post_item_form_submit(response)
 {
     if(!response.success)
@@ -229,13 +158,13 @@ function post_bulk_form_submit(response)
 
 <div id="title_bar">
     <div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
-	<?php echo anchor("$controller_name/excel_import/width:$form_width",
+	<?php echo anchor("$controller_name/excel_import",
 	"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
 	array('class'=>'modal-dlg none', 'title'=>'Import Items from Excel'));
 	?>
-	<?php echo anchor("$controller_name/view/-1/width:$form_width",
+	<?php echo anchor("$controller_name/view/-1",
 	"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-	array('class'=>'modal-dlg', 'title'=>$this->lang->line($controller_name . '_new')));
+	array('class'=>'modal-dlg modal-btn-new', 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
 
@@ -271,7 +200,7 @@ function post_bulk_form_submit(response)
 	<div id="table_action_header">
 		<ul>
 			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit/width:$form_width",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','class'=>'modal-dlg','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
 			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
 			<?php
 			if (count($stock_locations) > 1)
@@ -282,7 +211,6 @@ function post_bulk_form_submit(response)
 			}
 			?>
 			<li class="float_right">
-				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 				<input type="text" name ='search' id='search'/>
 				<input type="hidden" name ='limit_from' id='limit_from'/>
 			</li>

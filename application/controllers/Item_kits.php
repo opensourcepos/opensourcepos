@@ -29,7 +29,6 @@ class Item_kits extends Secure_area implements iData_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$item_kits = $this->Item_kit->get_all($lines_per_page, $limit_from);
 		
@@ -185,14 +184,6 @@ class Item_kits extends Secure_area implements iData_controller
 		}
 		$data['barcode_config'] = $barcode_config;
 		$this->load->view("barcode_sheet", $data);
-	}
-
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 400;
 	}
 }
 ?>
