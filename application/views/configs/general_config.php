@@ -22,15 +22,15 @@
 			<?php echo form_label($this->lang->line('config_company_logo'), 'company_logo', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
 					<div class="fileinput fileinput-new" data-provides="fileinput">
-						<div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">	
-							<img data-src="holder.js/100%x100%" <!-- alt="100%x100%" src="..." style="height: 100%; width: 100%; display: block;" --> >
+						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">	
+							<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('config_company_logo'); ?>" src="<?php if($this->Appconfig->get('company_logo') != '') echo base_url('uploads/' . $this->Appconfig->get('company_logo')); else echo ''; ?>" style="max-height: 100%; max-width: 100%;">
 						</div>
-						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"></div>
+						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"></div>
 						<div>
 							<span class="btn btn-default btn-sm btn-file">
-								<span class="fileinput-new"><!-- Select image --> <?php echo $this->lang->line("config_company_choose_file"); ?></span>
-								<span class="fileinput-exists">Change</span><input type="file" name="company_logo"></span>
-							<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput">Remove</a>
+								<span class="fileinput-new"><?php echo $this->lang->line("config_company_select_image"); ?></span>
+								<span class="fileinput-exists"><?php echo $this->lang->line("config_company_change_image"); ?></span><input type="file" name="company_logo"></span>
+							<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("config_company_remove_image"); ?></a>
 						</div>
 					</div>
 				</div>
