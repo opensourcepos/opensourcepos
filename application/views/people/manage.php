@@ -64,7 +64,7 @@ function post_person_form_submit(response)
 	?>
 		<?php echo anchor("$controller_name/excel_import",
 		"<div class='btn btn-info btn-sm pull-right''><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-			array('class'=>"modal-dlg modal-dlg", 'title'=>$this->lang->line('items_import_items_excel')));
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$this->lang->line('items_import_items_excel')));
 		?>
 	<?php
 	}
@@ -72,7 +72,7 @@ function post_person_form_submit(response)
 
 	<?php $dlog_class = ($controller_name == 'employees' ? 'modal-dlg-wide' : ''); echo anchor("$controller_name/view/-1",
 	"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-	array('class'=>"modal-dlg $dlog_class", 'title'=>$this->lang->line($controller_name . '_new')));
+	array('class'=>"modal-dlg modal-btn-submit $dlog_class", 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
 

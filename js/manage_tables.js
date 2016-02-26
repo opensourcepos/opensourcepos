@@ -87,10 +87,10 @@ function do_search(show_feedback,on_complete)
 			if(typeof on_complete=='function')
 				on_complete(response);
 			$('#search').removeClass("ac_loading");
+			$('#pagination').html(response.pagination);
 			//$('#spinner').hide();
 			//re-init elements in new table, as table tbody children were replaced
 			dialog_support.init('#sortable_table a.modal-dlg');
-			$('#pagination').html(response.pagination);
 			$('#sortable_table tbody :checkbox').click(checkbox_click);
 			$("#select_all").attr('checked',false);
 			if (response.total_rows > 0)
@@ -407,28 +407,31 @@ dialog_support = (function() {
 
 	var init = function(selector) {
 		return $(selector).click(function(event) {
-			var buttons = [{
-				id: 'submit',
-				label: 'Submit',
-				cssClass: 'btn-primary',
-				action: submit('submit')
-			}];
-
+			var buttons = [];
 			var dialog_class = 'modal-dlg';
 			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
 				var width_class = className.split("modal-dlg-");
 				if (width_class && width_class.length > 1) {
 					dialog_class = className;
 				}
-
 				var btn_class = className.split("modal-btn-");
 				if (btn_class && btn_class.length > 1) {
 					var btn_name = btn_class[1];
 					buttons.push({
 						id: btn_name,
 						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
+						cssClass: buttons.length ? '' : 'btn-primary',
 						action: submit(btn_name)
 					});
+				}
+			});
+
+			!buttons.length && buttons.push({
+				id: 'close',
+				label: 'Close',
+				cssClass: 'btn-primary',
+				action: function(dialog_ref) {
+					dialog_ref.close();
 				}
 			});
 

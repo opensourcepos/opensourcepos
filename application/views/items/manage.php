@@ -160,11 +160,11 @@ function post_bulk_form_submit(response)
     <div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
 	<?php echo anchor("$controller_name/excel_import",
 	"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-	array('class'=>'modal-dlg none', 'title'=>'Import Items from Excel'));
+	array('class'=>'modal-dlg modal-btn-submit none', 'title'=>$this->lang->line('common_import_excel')));
 	?>
 	<?php echo anchor("$controller_name/view/-1",
 	"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-	array('class'=>'modal-dlg modal-btn-new', 'title'=>$this->lang->line($controller_name . '_new')));
+	array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
 
@@ -200,7 +200,7 @@ function post_bulk_form_submit(response)
 	<div id="table_action_header">
 		<ul>
 			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','class'=>'modal-dlg','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','class'=>'modal-dlg modal-btn-submit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
 			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
 			<?php
 			if (count($stock_locations) > 1)

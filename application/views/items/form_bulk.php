@@ -5,7 +5,7 @@
 	<fieldset id="item_basic_info">
 		<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_name'), 'name',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
@@ -16,7 +16,7 @@
 			</div>
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_category'), 'category',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
@@ -27,18 +27,18 @@
 			</div>
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('supplier_id', $suppliers, '', 'class="form-control"');?>
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-3'>
-				<div class="input-group">
-					<span class="input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
+				<div class="input-group input-group-sm">
+					<span class="input-group input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
 					<?php echo form_input(array(
 							'name'=>'cost_price',
 							'id'=>'cost_price',
@@ -48,11 +48,11 @@
 			</div>
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group form-group">
 			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-3'>
-				<div class="input-group">
-					<span class="input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
+				<div class="input-group input-group-sm">
+					<span class="input-group input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
 					<?php echo form_input(array(
 							'name'=>'unit_price',
 							'id'=>'unit_price',
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-sm-3'>
 				<?php echo form_input(array(
@@ -73,19 +73,19 @@
 				);?>
 			</div>
 			<div class="col-sm-3">
-				<div class="input-group">
+				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control',
 							'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : '')
 					);?>
-					<span class="input-group-addon">%</span>
+					<span class="input-group input-group-addon">%</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-sm-3'>
 				<?php echo form_input(array(
@@ -96,19 +96,19 @@
 				);?>
 			</div>
 			<div class="col-sm-3">
-				<div class="input-group">
+				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
 							'class'=>'form-control',
 							'id'=>'tax_percent_name_2',
 							'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : '')
 					);?>
-					<span class="input-group-addon">%</span>
+					<span class="input-group input-group-addon">%</span>
 				</div>
 			</div>
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-3'>
 				<?php echo form_input(array(
@@ -119,7 +119,7 @@
 			</div>
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_description'), 'description',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
 				<?php echo form_textarea(array(
@@ -130,14 +130,14 @@
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
 				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', 'class="form-control"');?>
 			</div>
 		</div>
 
-		<div class="form-group">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized',array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
 				<?php echo form_dropdown('is_serialized', $serialization_choices, '', 'class="form-control"');?>

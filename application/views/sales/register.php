@@ -31,7 +31,7 @@ if (isset($success))
 			echo form_dropdown('stock_location', $stock_locations, $stock_location, 'onchange="$(\'#mode_form\').submit();"');
 		}
 
-		echo anchor("sales/suspended/width:425", $this->lang->line('sales_suspended_sales'), 
+		echo anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
 					array('class'=>'btn btn-default btn-sm pull-right modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales')));
 
 		if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
@@ -47,8 +47,8 @@ if (isset($success))
 		<?php
 		echo form_input(array('name'=>'item', 'id'=>'item', 'size'=>'40', 'tabindex'=>'1'));
 
-		echo anchor("items/view/-1/width:450", $this->lang->line('sales_new_item'), 
-					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
+		echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
+					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
 		?>
 	<?php echo form_close(); ?>
 
@@ -215,8 +215,8 @@ if (isset($success))
 			<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
 			
 			<?php 
-			echo anchor("customers/view/-1/width:400", $this->lang->line('sales_new_customer'), 
-						array('class'=>'btn btn-info btn-sm modal-dlg none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer')));
+			echo anchor("customers/view/-1", $this->lang->line('sales_new_customer'),
+						array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-submit none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer')));
 			?>
 		</div>
 		
