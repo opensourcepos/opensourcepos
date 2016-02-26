@@ -336,19 +336,19 @@ class Sale_lib
 	}
 	
 	function out_of_stock($item_id,$item_location)
+	
 	{
 		//make sure item exists
 		if($this->validate_item($item_id) == false)
         {
             return false;
         }
-
-		
-		//$item = $this->CI->Item->get_info($item_id);
+		$item_info = $this->CI->Item->get_info($item_id);		
+		$data['reorder_level'] = $item_info->reorder_level;
 		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id,$item_location)->quantity;
 		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
 		
-		if ($item_quantity - $quantity_added < 0)
+		if ($item_quantity - $quantity_added <= $data['reorder_level'])
 		{
 			return true;
 		}
