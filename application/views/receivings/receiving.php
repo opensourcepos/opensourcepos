@@ -32,7 +32,7 @@ if (isset($error))
 				?>
 					<label class='col-sm-2 control-label'><?php echo $this->lang->line('recvs_stock_destination'); ?></label>
 					<div class="col-sm-2">
-					<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+						<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</div>
 			<?php
 				}
