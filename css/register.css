@@ -7,32 +7,17 @@
 
 #mode_form, #add_item_form
 {
-	position: relative;
-	width: 100%;
-	padding: 10px 5px 10px 5px;
+	margin: 0;
+}
+
+#mode_form .panel-body, #add_item_form .panel-body
+{
+	padding: 10px;
 }
 
 #mode_form
 {
 	background-color: #DDD;
-	padding-bottom: 15px;
-}
-
-#mode_form label
-{
-	font-weight: bold;
-	margin: 0px 5px 0px 5px;
-}
-
-#sales_takings_button, #show_suspended_sales_button, #new_item_button
-{
-	position: relative;
-	bottom: 4px;
-}
-
-#sales_takings_button
-{
-	margin-right: 5px;
 }
 
 #add_item_form
@@ -40,21 +25,14 @@
 	background-color: #BBB;
 }
 
-#add_item_form input
+#item_label
 {
- 	border: 1px solid #CCC;
- 	padding: 2px;
+	padding-top: 0;
 }
 
-#add_item_form label
+#sales_takings_button
 {
-	font-weight: bold;
-	margin: 0px 5px 0px 5px;
-}
-
-#customer_label
-{
-	font-weight: bold;
+	margin-right: 5px;
 }
 
 #register
