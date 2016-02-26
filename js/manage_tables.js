@@ -397,9 +397,9 @@ dialog_support = (function() {
 	};
 
 	var submit = function(button_id) {
-		btn_id = button_id;
 		return function(dlog_ref)
 		{
+			btn_id = button_id;
 			dialog_ref = dlog_ref;
 			$('form', dlog_ref.$modalBody).submit();
 		}

@@ -169,7 +169,7 @@ function get_person_data_row($person,$controller)
 	$modal_class = $controller_name == 'employees' ? 'modal-dlg-wide' : '';
 
 	$table_data_row='<tr>';
-	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$person->person_id' <value='".$person->person_id."'/></td>";
+	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$person->person_id' value='".$person->person_id."'/></td>";
 	$table_data_row.='<td width="20%">'.character_limiter($person->last_name,13).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';

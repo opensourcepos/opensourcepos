@@ -303,6 +303,7 @@
 			{
 				var stay_open = dialog_support.clicked_id() != 'submit';
 				var $form = $(form);
+				debugger;
 
 				$.ajax({
 					type: $form.attr('method'),

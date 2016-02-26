@@ -49027,7 +49027,7 @@ function do_search(show_feedback,on_complete)
 	//If search is not enabled, don't do anything
 	if(!enable_search.enabled)
 		return;
-		
+
 	if(show_feedback)
 		$('#search').addClass("ac_loading");
 		
@@ -49350,9 +49350,9 @@ dialog_support = (function() {
 	};
 
 	var submit = function(button_id) {
-		btn_id = button_id;
 		return function(dlog_ref)
 		{
+			btn_id = button_id;
 			dialog_ref = dlog_ref;
 			$('form', dlog_ref.$modalBody).submit();
 		}
@@ -49367,7 +49367,7 @@ dialog_support = (function() {
 				action: submit('submit')
 			}];
 
-			var dialog_class = '';
+			var dialog_class = 'modal-dlg';
 			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
 				var width_class = className.split("modal-dlg-");
 				if (width_class && width_class.length > 1) {
