@@ -3,57 +3,51 @@
 	<ul id="error_message_box" class="error_message_box"></ul>
 	
 	<fieldset id="receiving_basic_info">
-		<?php echo form_open("receivings/save/".$receiving_info['receiving_id'],array('id'=>'recvs_edit_form')); ?>
+		<?php echo form_open("receivings/save/".$receiving_info['receiving_id'],array('id'=>'recvs_edit_form', 'class' => 'form-horizontal')); ?>
 			<legend><?php echo $this->lang->line("recvs_basic_information"); ?></legend>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('recvs_receipt_number').':', 'supplier'); ?>
-				<div class='form_field'>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_receipt_number'), 'supplier', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
 					<?php echo anchor('receivings/receipt/'.$receiving_info['receiving_id'], $this->lang->line('recvs_receipt_number') .$receiving_info['receiving_id'], array('target' => '_blank'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('recvs_date').':', 'date'); ?>
-				<div class='form_field'>
-					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'id'=>'datetime', 'readonly'=>'true'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_date'), 'date', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'id'=>'datetime', 'class' => 'form-control', 'readonly'=>'true'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('recvs_supplier').':', 'supplier'); ?>
-				<div class='form_field'>
-					<?php echo form_input(array('name' => 'supplier_id', 'value' => $selected_supplier, 'id' => 'supplier_id'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_supplier'), 'supplier', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array('name' => 'supplier_id', 'value' => $selected_supplier, 'id' => 'supplier_id', 'class'=>'form-control'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('recvs_invoice_number').':', 'invoice_number'); ?>
-				<div class='form_field'>
-					<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_invoice_number'), 'invoice_number', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number', 'class' => 'form-control'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('recvs_employee').':', 'employee'); ?>
-				<div class='form_field'>
-					<?php echo form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id"');?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_employee'), 'employee', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_dropdown('employee_id', $employees, $receiving_info['employee_id'], 'id="employee_id" class="form-control"');?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('recvs_comments').':', 'comment'); ?>
-				<div class='form_field'>
-					<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'],'rows'=>'4','cols'=>'23', 'id'=>'comment'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_comments'), 'comment', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'], 'id'=>'comment', 'class' => 'form-control'));?>
 				</div>
 			</div>
-			
-			<?php echo form_submit(array(
-				'name'=>'submit',
-				'value'=>$this->lang->line('common_submit'),
-				'class'=> 'btn btn-primary btn-sm pull-right')
-			);
-			?>
+
 		<?php echo form_close(); ?>
 		
 		<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'],array('id'=>'recvs_delete_form')); ?>

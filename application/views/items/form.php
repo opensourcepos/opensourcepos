@@ -5,7 +5,7 @@
 <fieldset id="item_basic_info">
 	<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_item_number'), 'item_number',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 			<?php echo form_input(array(
@@ -18,7 +18,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_name'), 'name',array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 			<?php echo form_input(array(
@@ -30,7 +30,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_category'), 'category',array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 			<?php echo form_input(array(
@@ -42,18 +42,18 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_supplier'), 'supplier',array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 			<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, 'class="form-control"');?>
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price',array('class'=>'required control-label col-xs-3')); ?>
 		<div class="col-xs-3">
 
-		<div class="input-group">
+		<div class="input-group input-group-sm">
 			<span class="input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
 			<?php echo form_input(array(
 					'name'=>'cost_price',
@@ -65,10 +65,10 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price',array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-3'>
-			<div class="input-group">
+			<div class="input-group input-group-sm">
 				<span class="input-group-addon"><?php echo $this->config->item('currency_symbol'); ?></span>
 				<?php echo form_input(array(
 					'name'=>'unit_price',
@@ -80,7 +80,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-sm-3'>
 			<?php echo form_input(array(
@@ -91,7 +91,7 @@
 			);?>
 			</div>
 			<div class="col-sm-3">
-				<div class="input-group">
+				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
@@ -104,7 +104,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-sm-3'>
 			<?php echo form_input(array(
@@ -115,7 +115,7 @@
 			);?>
 		</div>
 		<div class="col-sm-3">
-			<div class="input-group">
+			<div class="input-group input-group-sm">
 				<?php echo form_input(array(
 						'name'=>'tax_percents[]',
 						'class'=>'form-control',
@@ -131,7 +131,7 @@
 	foreach($stock_locations as $key=>$location_detail)
 	{
 		?>
-		<div class="form-group">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] ,
 				$key.'_quantity',
 				array('class'=>'required control-label col-xs-3')); ?>
@@ -148,7 +148,7 @@
 	}
 	?>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-2'>
 			<?php echo form_input(array(
@@ -160,7 +160,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level',array('class'=>'required control-label col-xs-3')); ?>
 		<div class='col-xs-2'>
 			<?php echo form_input(array(
@@ -172,7 +172,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_description'), 'description',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 			<?php echo form_textarea(array(
@@ -184,7 +184,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_image'), 'item_image',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 			<label class="file">
@@ -194,7 +194,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 			<?php echo form_checkbox(array(
@@ -206,7 +206,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 			<?php echo form_checkbox(array(
@@ -218,7 +218,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('items_is_deleted'), 'is_deleted',array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 			<?php echo form_checkbox(array(
@@ -238,7 +238,7 @@
 		{
 			$item_arr = (array)$item_info;
 			?>
-			<div class="form-group">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->config->item('custom'.$i.'_name'), 'custom'.$i,array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(

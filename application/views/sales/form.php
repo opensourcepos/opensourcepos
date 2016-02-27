@@ -3,63 +3,57 @@
 	<ul id="error_message_box" class="error_message_box"></ul>
 	
 	<fieldset id="sale_basic_info">
-		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form')); ?>
+		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form', 'class' => 'form-horizontal')); ?>
 			<legend><?php echo $this->lang->line("sales_basic_information"); ?></legend>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('sales_receipt_number').':', 'customer'); ?>
-				<div class='form_field'>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_receipt_number'), 'customer', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
 					<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], $this->lang->line('sales_receipt_number') .$sale_info['sale_id'], array('target' => '_blank'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('sales_date').':', 'date'); ?>
-				<div class='form_field'>
-					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'readonly'=>'true'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_date'), 'date', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class' => 'form-control', 'readonly'=>'true'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('sales_invoice_number').':', 'invoice_number'); ?>
-				<div class='form_field'>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
 					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
 						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
+						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control'));?>
 						<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
 					<?php else: ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number'));?>
+						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control'));?>
 					<?php endif; ?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('sales_customer').':', 'customer'); ?>
-				<div class='form_field'>
-					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id', 'class' => 'form-control'));?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('sales_employee').':', 'employee'); ?>
-				<div class='form_field'>
-					<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id"');?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
 				</div>
 			</div>
 			
-			<div class="field_row clearfix">
-				<?php echo form_label($this->lang->line('sales_comment').':', 'comment'); ?>
-				<div class='form_field'>
-					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'rows'=>'4', 'cols'=>'23', 'id'=>'comment'));?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_comment'), 'comment',array('class' => 'control-label col-xs-3')); ?>
+				<div class='col-xs-6'>
+					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class' => 'form-control'));?>
 				</div>
 			</div>
 			
-			<?php echo form_submit(array(
-				'name' => 'submit',
-				'value' => $this->lang->line('common_submit'),
-				'class' => 'btn btn-primary btn-sm pull-right')
-			);
-			?>
 		<?php echo form_close(); ?>
 		
 		<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
@@ -107,106 +101,7 @@ $(document).ready(function()
         }).responseText).success;
     }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
 
-	// set the locale language for the datetime picker
-	$.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
-		days: ["<?php echo $this->lang->line("common_days_sunday"); ?>",
-				"<?php echo $this->lang->line("common_days_monday"); ?>",
-				"<?php echo $this->lang->line("common_days_tueday"); ?>",
-				"<?php echo $this->lang->line("common_days_wednesday"); ?>",
-				"<?php echo $this->lang->line("common_days_thursday"); ?>",
-				"<?php echo $this->lang->line("common_days_friday"); ?>",
-				"<?php echo $this->lang->line("common_days_saturday"); ?>",
-				"<?php echo $this->lang->line("common_days_sunday"); ?>"],
-		daysShort: ["<?php echo $this->lang->line("common_daysshort_sunday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_monday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_tueday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_wednesday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_thursday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_friday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_saturday"); ?>",
-				"<?php echo $this->lang->line("common_daysshort_sunday"); ?>"],
-		daysMin: ["<?php echo $this->lang->line("common_daysmin_sunday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_monday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_tueday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_wednesday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_thursday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_friday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_saturday"); ?>",
-				"<?php echo $this->lang->line("common_daysmin_sunday"); ?>"],
-		months: ["<?php echo $this->lang->line("common_months_january"); ?>",
-				"<?php echo $this->lang->line("common_months_february"); ?>",
-				"<?php echo $this->lang->line("common_months_march"); ?>",
-				"<?php echo $this->lang->line("common_months_april"); ?>",
-				"<?php echo $this->lang->line("common_months_may"); ?>",
-				"<?php echo $this->lang->line("common_months_june"); ?>",
-				"<?php echo $this->lang->line("common_months_july"); ?>",
-				"<?php echo $this->lang->line("common_months_august"); ?>",
-				"<?php echo $this->lang->line("common_months_september"); ?>",
-				"<?php echo $this->lang->line("common_months_october"); ?>",				
-				"<?php echo $this->lang->line("common_months_november"); ?>",
-				"<?php echo $this->lang->line("common_months_december"); ?>"],
-		monthsShort: ["<?php echo $this->lang->line("common_monthsshort_january"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_february"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_march"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_april"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_may"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_june"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_july"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_august"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_september"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_october"); ?>",				
-				"<?php echo $this->lang->line("common_monthsshort_november"); ?>",
-				"<?php echo $this->lang->line("common_monthsshort_december"); ?>"],
-		today: "<?php echo $this->lang->line("common_today"); ?>",
-		<?php
-		if( strpos($this->config->item('timeformat'), 'a') !== false )
-		{ 
-		?>
-			meridiem: ["am", "pm"],
-		<?php 
-		}
-		else if( strpos($this->config->item('timeformat'), 'A') !== false )
-		{
-		?>
-			meridiem: ["AM", "PM"],
-		<?php 
-		}
-		else
-		{
-		?>
-			meridiem: [],
-		<?php 
-		}
-		?>
-		weekStart: <?php echo $this->lang->line("common_weekstart"); ?>,
-	};
-	
-	$('#datetime').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
-		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
-		<?php
-		$t = $this->config->item('timeformat');
-		$m = $t[strlen($t)-1];
-		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
-		{ 
-		?>
-			showMeridian: true,
-		<?php 
-		}
-		else
-		{
-		?>
-			showMeridian: false,
-		<?php 
-		}
-		?>
-		minuteStep: 1,
-		autoclose: true,
-		todayBtn: true,
-		todayHighlight: true,
-		bootcssVer: 3,
-		language: "<?php echo $this->config->item('language'); ?>"
-	});
+	<?php $this->load->view('partial/datepicker_locale'); ?>
 
 	var format_item = function(row)
 	{

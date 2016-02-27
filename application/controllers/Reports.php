@@ -59,9 +59,9 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataBySaleId($sale_id);
 
-		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'] . '/width:'.FORM_WIDTH,
+		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'],
 				'POS '.$report_data['sale_id'],
-				array('class' => 'modal')),
+				array('class' => 'modal-dlg modal-btn-submit')),
 				$report_data['sale_date'],
 				$report_data['items_purchased'],
 				$report_data['employee_name'],
@@ -872,7 +872,7 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'] . '/width:'.FORM_WIDTH, 'POS '.$row['sale_id'], array('class' => 'modal')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('class' => 'modal-dlg modal-btn-submit')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -915,7 +915,7 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('receivings/edit/'.$row['receiving_id'].'/width:'.FORM_WIDTH, 'RECV '.$row['receiving_id'], array('class' => 'modal')), $row['receiving_date'], $row['items_purchased'], $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['invoice_number'], $row['comment']);
+			$summary_data[] = array(anchor('receivings/edit/'.$row['receiving_id'], 'RECV '.$row['receiving_id'], array('class' => 'modal-dlg modal-btn-submit')), $row['receiving_date'], $row['items_purchased'], $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['invoice_number'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
