@@ -39,7 +39,7 @@ if (isset($success))
 			}
 			?>
 
-			<?php anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
+			<?php echo anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
 							array('class'=>'btn btn-default btn-sm pull-right modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales'))); ?>
 						
 			<?php 
@@ -59,7 +59,7 @@ if (isset($success))
 				<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'tabindex'=>'1')); ?>
 			</div>
 
-			<?php anchor("items/view/-1", $this->lang->line('sales_new_item'),
+			<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
 					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
 		</div>
 	<?php echo form_close(); ?>
