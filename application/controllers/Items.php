@@ -38,7 +38,6 @@ class Items extends Secure_area implements iData_controller
 
 		$this->load->view('items/manage', $data);
 
-		$this->_remove_duplicate_cookies();
 	}
 
 	function find_item_info()
@@ -83,8 +82,7 @@ class Items extends Secure_area implements iData_controller
 		$data_rows = get_items_manage_table_data_rows($items, $this);
 
 		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
-		$this->_remove_duplicate_cookies();
-		
+
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 	
@@ -265,7 +263,6 @@ class Items extends Secure_area implements iData_controller
 		
 		echo $data_row;
 
-		$this->_remove_duplicate_cookies();
 	}
 
 	function view($item_id=-1)
