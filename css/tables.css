@@ -3,8 +3,6 @@
 	background-color: transparent;
 	height: 30px;
 	position: relative;
-	
-    //background-color: #EEEEEE;
 }
 
 #search_filter_section
@@ -13,8 +11,6 @@
 	margin-bottom: 10px;
 	background-color: transparent;
 	position: relative;
-
-    //background-color: #EEEEEE;
 }
 
 #table_action_header

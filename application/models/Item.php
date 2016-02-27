@@ -682,7 +682,7 @@ class Item extends CI_Model
 	{
 		if($old_price === null)
 		{
-			$item_info = $this->get_info($item['item_id']);
+			$item_info = $this->get_info($item_id);
 			$old_price = $item_info->cost_price;
 		}
 

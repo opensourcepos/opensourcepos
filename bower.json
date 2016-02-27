@@ -29,7 +29,7 @@
     "jquery-color": "~2.1.2",
     "jquery-form": "~3.46.0",
     "jquery-validate": "~1.13.1",
-    "jquery": "~1.12.0",
+    "jquery": "~1.12.1",
     "jquery-ui": "1.11.4",
     "swfobject": "*",
     "tablesorter": "jquery.tablesorter#^2.20.1",
@@ -38,7 +38,8 @@
     "bootswatch-dist": "3.3.6-flatly",
     "smalot-bootstrap-datetimepicker": "^2.3.8",
     "bootstrap-select": "^1.10.0",
-    "bootstrap-table": "^1.10.1"
+    "bootstrap-table": "^1.10.1",
+    "bootstrap-daterangepicker": "^2.1.18"
   },
   "overrides": {
     "bootswatch-dist": {

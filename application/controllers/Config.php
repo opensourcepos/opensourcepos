@@ -14,7 +14,6 @@ class Config extends Secure_area
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$this->load->view("configs/manage", $data);
-		$this->_remove_duplicate_cookies();
 	}
 		
 	function save()
@@ -62,7 +61,6 @@ class Config extends Secure_area
 		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : $this->upload->display_errors();
 		echo json_encode(array('success'=>$success,'message'=>$message));
-		$this->_remove_duplicate_cookies();	
 	}
 	
 	function save_locale() 
@@ -81,8 +79,7 @@ class Config extends Secure_area
         $result = $this->Appconfig->batch_save( $batch_save_data );
         $success = $result ? true : false;
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
-		$this->_remove_duplicate_cookies();
-	} 
+	}
 	
 	function stock_locations() 
 	{
@@ -127,7 +124,6 @@ class Config extends Secure_area
 		}
 		$success = $this->db->trans_complete();
 		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
-		$this->_remove_duplicate_cookies();
 	}
 
     function save_barcode()

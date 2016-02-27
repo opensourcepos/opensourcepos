@@ -1,13 +1,13 @@
 <div id="page_title"><?php echo $this->lang->line('config_receipt_configuration'); ?></div>
 
-<?php echo form_open('config/save_receipt/',array('id'=>'receipt_config_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('config/save_receipt/', array('id'=>'receipt_config_form', 'class'=>'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 			<ul id="receipt_error_message_box" class="error_message_box"></ul>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_use_invoice_template'), 'use_invoice_template',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_use_invoice_template'), 'use_invoice_template', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 					'name'=>'use_invoice_template',
@@ -17,30 +17,30 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_invoice_default_comments'), 'invoice_default_comments',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_invoice_default_comments'), 'invoice_default_comments', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-5'>
 				<?php echo form_textarea(array(
 					'name'=>'invoice_default_comments',
 					'id'=>'invoice_default_comments',
-					'class'=>'form-control',
+					'class'=>'form-control input-sm',
 					'value'=>$this->config->item('invoice_default_comments')));?>
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_invoice_email_message'), 'invoice_email_message',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_invoice_email_message'), 'invoice_email_message', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-5'>
 				<?php echo form_textarea(array(
 					'name'=>'invoice_email_message',
 					'id'=>'invoice_email_message',
-					'class'=>'form-control',
+					'class'=>'form-control input-sm',
 					'value'=>$this->config->item('invoice_email_message')));?>
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_receipt_show_taxes'), 'receipt_show_taxes',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_receipt_show_taxes'), 'receipt_show_taxes', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 					'name'=>'receipt_show_taxes',
@@ -50,8 +50,8 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_show_total_discount'), 'show_total_discount',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_show_total_discount'), 'show_total_discount', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 					'name'=>'show_total_discount',
@@ -61,8 +61,8 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_print_silently'), 'print_silently',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_print_silently'), 'print_silently', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 					'name'=>'print_silently',
@@ -72,8 +72,8 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_print_header'), 'print_header',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_print_header'), 'print_header', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 					'name'=>'print_header',
@@ -83,8 +83,8 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_print_footer'), 'print_footer',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_print_footer'), 'print_footer', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
 					'name'=>'print_footer',
@@ -94,8 +94,8 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_receipt_printer'), 'config_receipt_printer',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_receipt_printer'), 'config_receipt_printer', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown(
 						'receipt_printer',
@@ -104,15 +104,15 @@
 				</div>
 			</div>
 
-			<div class="form-group">	
-			<?php echo form_label($this->lang->line('config_invoice_printer'), 'config_invoice_printer',array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_invoice_printer'), 'config_invoice_printer', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('invoice_printer', array(), ' ','id="invoice_printer" class="form-control"');?>
 				</div>
 			</div>
 
-			<div class="form-group">    
-				<?php echo form_label($this->lang->line('config_print_top_margin'), 'print_top_margin',array('class'=>'control-label col-xs-2 required')); ?>
+			<div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_print_top_margin'), 'print_top_margin', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
 						<?php echo form_input(array(
@@ -121,15 +121,15 @@
 							'max'=>'20',
 							'name'=>'print_top_margin',
 							'id'=>'print_top_margin',
-							'class'=>'form-control',
+							'class'=>'form-control input-sm',
 							'value'=>$this->config->item('print_top_margin')));?>
-						<span class="input-group-addon">px</span>
+						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group">    
-				<?php echo form_label($this->lang->line('config_print_left_margin'), 'print_left_margin',array('class'=>'control-label col-xs-2 required')); ?>
+			<div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_print_left_margin'), 'print_left_margin', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
 						<?php echo form_input(array(
@@ -138,15 +138,15 @@
 							'max'=>'20',
 							'name'=>'print_left_margin',
 							'id'=>'print_left_margin',
-							'class'=>'form-control',
+							'class'=>'form-control input-sm',
 							'value'=>$this->config->item('print_left_margin')));?>
-						<span class="input-group-addon">px</span>
+						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group">    
-				<?php echo form_label($this->lang->line('config_print_bottom_margin'), 'print_bottom_margin',array('class'=>'control-label col-xs-2 required')); ?>
+			<div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_print_bottom_margin'), 'print_bottom_margin', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
 						<?php echo form_input(array(
@@ -155,15 +155,15 @@
 							'max'=>'20',
 							'name'=>'print_bottom_margin',
 							'id'=>'print_bottom_margin',
-							'class'=>'form-control',
+							'class'=>'form-control input-sm',
 							'value'=>$this->config->item('print_bottom_margin')));?>
-						<span class="input-group-addon">px</span>
+						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
 			</div>
 
-			<div class="form-group">    
-				<?php echo form_label($this->lang->line('config_print_right_margin'), 'print_right_margin',array('class'=>'control-label col-xs-2 required')); ?>
+			<div class="form-group form-group-sm">    
+				<?php echo form_label($this->lang->line('config_print_right_margin'), 'print_right_margin', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
 					<?php echo form_input(array(
@@ -172,9 +172,9 @@
 						'max'=>'20',
 						'name'=>'print_right_margin',
 						'id'=>'print_right_margin',
-						'class'=>'form-control',
+						'class'=>'form-control input-sm',
 						'value'=>$this->config->item('print_right_margin')));?>
-						<span class="input-group-addon">px</span>
+						<span class="input-group-addon input-sm">px</span>
 					</div>
 				</div>
 			</div>

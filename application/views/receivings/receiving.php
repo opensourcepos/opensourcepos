@@ -10,47 +10,61 @@ if (isset($error))
 ?>
 
 <div id="register_wrapper">
-	<?php echo form_open("receivings/change_mode", array('id'=>'mode_form')); ?>
-		<label><?php echo $this->lang->line('recvs_mode') ?></label>
-		<?php
-		echo form_dropdown('mode', $modes, $mode, 'onchange="$(\'#mode_form\').submit();"');
-		
-		if ($show_stock_locations) 
-		{
-			echo $this->lang->line('recvs_stock_source');
-			echo form_dropdown('stock_source', $stock_locations, $stock_source, 'onchange="$(\'#mode_form\').submit();"');
+	<?php echo form_open("receivings/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+		<div class="panel-body form-group-sm">
+			<label class='col-sm-2 control-label'><?php echo $this->lang->line('recvs_mode'); ?></label>
+			<div class="col-sm-2">
+				<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+			</div>
 
-			if($mode=='requisition')
+			<?php 
+			if ($show_stock_locations)
 			{
-				echo $this->lang->line('recvs_stock_destination');
-				echo form_dropdown('stock_destination', $stock_locations, $stock_destination, 'onchange="$(\'#mode_form\').submit();"');
-			}
-		}
-		?>    
-	<?php echo form_close(); ?>
-	
-	<?php echo form_open("receivings/add",array('id'=>'add_item_form')); ?>
-		<label id="item_label" for="item">
+			?>
+				<label class='col-sm-2 control-label'><?php echo $this->lang->line('recvs_stock_source'); ?></label>
+				<div class="col-sm-2">
+					<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+				</div>
+				
+				<?php
+				if($mode=='requisition')
+				{
+				?>
+					<label class='col-sm-2 control-label'><?php echo $this->lang->line('recvs_stock_destination'); ?></label>
+					<div class="col-sm-2">
+						<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+					</div>
 			<?php
-			if($mode=='receive' or $mode=='requisition')
-			{
-				echo $this->lang->line('recvs_find_or_scan_item');
-			}
-			else
-			{
-				echo $this->lang->line('recvs_find_or_scan_item_or_receipt');
+				}
 			}
 			?>
-		</label>
-
-		<?php
-		echo form_input(array('name'=>'item','id'=>'item','size'=>'40'));
-		
-		echo anchor("items/view/-1/width:450", $this->lang->line('sales_new_item'), 
-					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-submit modal-btn-new', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
-		?>
+		</div>
 	<?php echo form_close(); ?>
 
+	<?php echo form_open("receivings/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
+		<div class="panel-body form-group-sm">
+			<label id="item_label" for="item", class='col-sm-2 control-label'>
+				<?php
+				if($mode=='receive' or $mode=='requisition')
+				{
+					echo $this->lang->line('recvs_find_or_scan_item');
+				}
+				else
+				{
+					echo $this->lang->line('recvs_find_or_scan_item_or_receipt');
+				}
+				?>			
+			</label>
+			
+			<div class="col-sm-6">
+				<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'tabindex'=>'1')); ?>
+			</div>
+
+			<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'), 
+					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-submit modal-btn-new', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
+		</div>
+	<?php echo form_close(); ?>
+	
 <!-- Receiving Items List -->
 
 	<table id="register">

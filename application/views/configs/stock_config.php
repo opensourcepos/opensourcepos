@@ -1,6 +1,6 @@
 <div id="page_title"><?php echo $this->lang->line('config_location_configuration'); ?></div>
 
-<?php echo form_open('config/save_locations/',array('id'=>'location_config_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('config/save_locations/', array('id'=>'location_config_form', 'class'=>'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
@@ -50,7 +50,7 @@ $(document).ready(function()
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'stock_location_' + ++id;
 		$(new_block).find('label').html("<?php echo $this->lang->line('config_stock_location'); ?> " + ++location_count).attr('for', new_block_id).attr('class', 'control-label col-xs-2');
-		$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control').val('');
+		$(new_block).find('input').attr('id', new_block_id).removeAttr('disabled').attr('name', new_block_id).attr('class', 'form-control input-sm').val('');
 		hide_show_remove();
 	};
 

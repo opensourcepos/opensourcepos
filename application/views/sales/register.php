@@ -20,36 +20,48 @@ if (isset($success))
 ?>
 
 <div id="register_wrapper">
-	<?php echo form_open("sales/change_mode", array('id'=>'mode_form')); ?>
-		<label id="mode_label"><?php echo $this->lang->line('sales_mode') ?></label>
-		<?php 
-		echo form_dropdown('mode', $modes, $mode, 'onchange="$(\'#mode_form\').submit();"');
+	<?php echo form_open("sales/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+		<div class="panel-body form-group-sm">
+			<label class='col-sm-2 control-label'><?php echo $this->lang->line('sales_mode'); ?></label>
+			<div class="col-sm-2">
+				<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+			</div>
 
-		if (count($stock_locations) > 1)
-		{
-			echo $this->lang->line('sales_stock_location');
-			echo form_dropdown('stock_location', $stock_locations, $stock_location, 'onchange="$(\'#mode_form\').submit();"');
-		}
+			<?php 
+			if (count($stock_locations) > 1)
+			{
+			?>
+				<label class='col-sm-2 control-label'><?php echo $this->lang->line('sales_stock_location'); ?></label>
+				<div class="col-sm-2">
+					<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+				</div>
+			<?php
+			}
+			?>
 
-		echo anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
-					array('class'=>'btn btn-default btn-sm pull-right modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales')));
-
-		if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
-		{
-			echo anchor("sales/manage", $this->lang->line('sales_takings'), 
-						array('class'=>'btn btn-primary btn-sm pull-right', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings')));
-		}
-		?>
+			<?php anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
+							array('class'=>'btn btn-default btn-sm pull-right modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales'))); ?>
+						
+			<?php 
+			if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+			{
+				echo anchor("sales/manage", $this->lang->line('sales_takings'), 
+							array('class'=>'btn btn-primary btn-sm pull-right', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings')));
+			}
+			?>
+		</div>
 	<?php echo form_close(); ?>
 
-	<?php echo form_open("sales/add", array('id'=>'add_item_form')); ?>
-		<label id="item_label" for="item"><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
-		<?php
-		echo form_input(array('name'=>'item', 'id'=>'item', 'size'=>'40', 'tabindex'=>'1'));
+	<?php echo form_open("sales/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
+		<div class="panel-body form-group-sm">
+			<label id="item_label" for="item", class='col-sm-2 control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
+			<div class="col-sm-6">
+				<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'tabindex'=>'1')); ?>
+			</div>
 
-		echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
-					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item')));
-		?>
+			<?php anchor("items/view/-1", $this->lang->line('sales_new_item'),
+					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
+		</div>
 	<?php echo form_close(); ?>
 
 <!-- Sale Items List -->
@@ -265,7 +277,7 @@ if (isset($success))
 		?>
 				<div id="finish_sale">
 					<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
-					<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23'));?>
+					<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23')); ?>
 					<br />
 					<br />
 					<?php
@@ -286,7 +298,7 @@ if (isset($success))
 					}
 					?>
 				</div>
-			<?php 
+		<?php 
 			echo form_close();
 		}
 		?>
@@ -451,8 +463,7 @@ $(document).ready(function()
 
     var clear_fields = function()
     {
-        if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . 
-        	$this->lang->line('sales_start_typing_customer_name'); ?>"))
+        if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . $this->lang->line('sales_start_typing_customer_name'); ?>"))
         {
             $(this).val('');
         }
@@ -552,7 +563,7 @@ $(document).ready(function()
 		}
 	});	
 	
-    $( "#finish_sale_button" ).keypress(function( event ) {
+    $("#finish_sale_button").keypress(function( event ) {
 		if ( event.which == 13 ) {
 			if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
 			{
