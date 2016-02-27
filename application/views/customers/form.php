@@ -1,22 +1,22 @@
-<?php echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('customers/save/'.$person_info->person_id, array('id'=>'customer_form', 'class'=>'form-horizontal')); ?>
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 <fieldset id="customer_basic_info">
 	<legend><?php echo $this->lang->line("customers_basic_information"); ?></legend>
 	<?php $this->load->view("people/form_basic_info"); ?>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 	<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 		<?php echo form_input(array(
 			'name'=>'company_name',
-			'class'=>'form-control',
+			'class'=>'form-control input-sm',
 			'value'=>$person_info->company_name)
 		);?>
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 	<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-6'>
 		<?php echo form_input(array(
@@ -28,7 +28,7 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+	<div class="form-group form-group-sm">
 	<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-1'>
 		<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable);?>

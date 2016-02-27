@@ -1,10 +1,10 @@
-<?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form')); ?>
+<?php echo form_open('items/save_inventory/'.$item_info->item_id, array('id'=>'item_form')); ?>
 	<fieldset id="inv_item_basic_info">
 		<table border="0" bgcolor="#CCCCCC">
-			<div class="form-group">
+			<div class="form-group form-group-sm">
 			<tr>
 			<td>
-				<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
+				<?php echo form_label($this->lang->line('items_item_number').':', 'name', array('class'=>'wide')); ?>
 			</td>
 			<td>
 				<?php $inumber = array (
@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 			<td>
-				<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
+				<?php echo form_label($this->lang->line('items_name').':', 'name', array('class'=>'wide')); ?>
 			</td>
 			<td>
 				<?php $iname = array (
@@ -37,7 +37,7 @@
 			</tr>
 			<tr>
 			<td>
-				<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
+				<?php echo form_label($this->lang->line('items_category').':', 'category', array('class'=>'wide')); ?>
 			</td>
 			<td>
 				<?php $cat = array (
@@ -55,7 +55,7 @@
 			</tr>
 			<tr>
 			<td>
-				<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location',array('class'=>'wide')); ?>
+				<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location', array('class'=>'wide')); ?>
 			</td>
 			<td>
 				<?php 
@@ -65,7 +65,7 @@
 			</tr>
 			<tr>
 			<td>
-				<?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity',array('class'=>'wide')); ?>
+				<?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity', array('class'=>'wide')); ?>
 			</td>
 			<td>
 				<?php $qty = array (

@@ -74,7 +74,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-			<?php echo form_label($this->lang->line('config_timezone'), 'timezone',array('class'=>'control-label col-xs-2')); ?>
+			<?php echo form_label($this->lang->line('config_timezone'), 'timezone', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 				<?php echo form_dropdown('timezone', 
 				 array(

@@ -46,7 +46,7 @@ if(isset($error))
     ?>
     	<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required')); ?>
     	<div id='report_sale_type'>
-    		<?php echo form_dropdown('sale_type',array('all' => $this->lang->line('reports_all'), 
+    		<?php echo form_dropdown('sale_type', array('all' => $this->lang->line('reports_all'), 
     		'sales' => $this->lang->line('reports_sales'), 
     		'returns' => $this->lang->line('reports_returns')), 'all', 'id="input_type"'); ?>
     	</div>
@@ -57,7 +57,7 @@ if(isset($error))
     ?>
         <?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required')); ?>
         <div id='report_receiving_type'>
-     	   <?php echo form_dropdown('receiving_type',array('all' => $this->lang->line('reports_all'),
+     	   <?php echo form_dropdown('receiving_type', array('all' => $this->lang->line('reports_all'),
         'receiving' => $this->lang->line('reports_receivings'), 
         'returns' => $this->lang->line('reports_returns'),
         'requisitions' => $this->lang->line('reports_requisitions')), 'all', 'id="input_type"'); ?>

@@ -16,7 +16,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_date'), 'date', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class' => 'form-control', 'readonly'=>'true'));?>
+					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
 				</div>
 			</div>
 			
@@ -25,10 +25,10 @@
 				<div class='col-xs-6'>
 					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
 						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control'));?>
+						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control input-sm'));?>
 						<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
 					<?php else: ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control'));?>
+						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control input-sm'));?>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -36,7 +36,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id', 'class' => 'form-control'));?>
+					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id', 'class' => 'form-control input-sm'));?>
 				</div>
 			</div>
 			
@@ -48,12 +48,11 @@
 			</div>
 			
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_comment'), 'comment',array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_comment'), 'comment', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class' => 'form-control'));?>
+					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class' => 'form-control input-sm'));?>
 				</div>
 			</div>
-			
 		<?php echo form_close(); ?>
 		
 		<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
@@ -63,8 +62,7 @@
 				'value'=>$this->lang->line('sales_delete_entire_sale'),
 				'class'=>'btn btn-danger btn-sm pull-right',
 				'style'=>'margin-right: 10px;')
-			);
-			?>
+			); ?>
 		<?php echo form_close(); ?>
 	</fieldset>
 </div>
@@ -102,6 +100,33 @@ $(document).ready(function()
     }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
 
 	<?php $this->load->view('partial/datepicker_locale'); ?>
+	
+	$('#datetime').datetimepicker({
+		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
+		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		<?php
+		$t = $this->config->item('timeformat');
+		$m = $t[strlen($t)-1];
+		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+		{ 
+		?>
+			showMeridian: true,
+		<?php 
+		}
+		else
+		{
+		?>
+			showMeridian: false,
+		<?php 
+		}
+		?>
+		minuteStep: 1,
+		autoclose: true,
+		todayBtn: true,
+		todayHighlight: true,
+		bootcssVer: 3,
+		language: "<?php echo $this->config->item('language'); ?>"
+	});
 
 	var format_item = function(row)
 	{

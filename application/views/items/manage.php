@@ -199,9 +199,9 @@ function post_bulk_form_submit(response)
 
 	<div id="table_action_header">
 		<ul>
-			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit",$this->lang->line("items_bulk_edit"),array('id'=>'bulk_edit','class'=>'modal-dlg modal-btn-submit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"), array('id'=>'delete')); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit",$this->lang->line("items_bulk_edit"), array('id'=>'bulk_edit','class'=>'modal-dlg modal-btn-submit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"), array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
 			<?php
 			if (count($stock_locations) > 1)
 			{

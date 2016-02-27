@@ -667,7 +667,9 @@ class Sales extends Secure_area
 	
 	function save($sale_id)
 	{
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
+		$newdate = $this->input->post('date');
+		
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
 
 		$sale_data = array(
 			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),

@@ -1,27 +1,27 @@
-<div class="form-group">	
-<?php echo form_label($this->lang->line('common_first_name'), 'first_name',array('class' => 'control-label col-xs-3')); ?>
+<div class="form-group form-group-sm">	
+<?php echo form_label($this->lang->line('common_first_name'), 'first_name', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'first_name',
 		'id'=>'first_name',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->first_name)
 	);?>
 	</div>
 </div>
-<div class="form-group">	
-<?php echo form_label($this->lang->line('common_last_name'), 'last_name',array('class'=>'required control-label required col-xs-3')); ?>
+<div class="form-group form-group-sm">	
+<?php echo form_label($this->lang->line('common_last_name'), 'last_name', array('class'=>'required control-label required col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'last_name',
 		'id'=>'last_name',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->last_name)
 	);?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_gender'), 'gender',
 !empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class' => 'control-label col-xs-3')); ?>
 	<div class="col-xs-4">
@@ -48,102 +48,102 @@
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_email'), 'email', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'email',
 		'id'=>'email',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->email)
 	);?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_phone_number'), 'phone_number', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'phone_number',
 		'id'=>'phone_number',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->phone_number));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_address_1'), 'address_1', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'address_1',
 		'id'=>'address_1',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->address_1));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_address_2'), 'address_2', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'address_2',
 		'id'=>'address_2',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->address_2));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_city'), 'city', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'city',
 		'id'=>'city',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->city));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_state'), 'state', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'state',
 		'id'=>'state',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->state));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_zip'), 'zip', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'zip',
 		'id'=>'postcode',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->zip));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_country'), 'country', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_input(array(
 		'name'=>'country',
 		'id'=>'country',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->country));?>
 	</div>
 </div>
 
-<div class="form-group">	
+<div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_comments'), 'comments', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
 	<?php echo form_textarea(array(
 		'name'=>'comments',
 		'id'=>'comments',
-		'class'=>'form-control',
+		'class'=>'form-control input-sm',
 		'value'=>$person_info->comments
 		));?>
 	</div>

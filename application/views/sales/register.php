@@ -217,7 +217,7 @@ if (isset($success))
 	}
 	else
 	{
-		echo form_open("sales/select_customer",array('id'=>'select_customer_form'));
+		echo form_open("sales/select_customer", array('id'=>'select_customer_form'));
 	?>
 			<label id="customer_label" for="customer"><?php echo $this->lang->line('sales_select_customer'); ?></label>
 			<?php echo form_input(array('name'=>'customer','id'=>'customer','size'=>'30','value'=>$this->lang->line('sales_start_typing_customer_name')));?>
@@ -318,7 +318,7 @@ if (isset($success))
 
 		<div id="payment_details">
 			<div>
-				<?php echo form_open("sales/add_payment",array('id'=>'add_payment_form')); ?>
+				<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form')); ?>
 					<table width="100%">
 						<tr>
 							<td>
@@ -410,7 +410,7 @@ if (isset($success))
 						<?php
 						foreach($payments as $payment_id=>$payment)
 						{
-							echo form_open("sales/edit_payment/$payment_id",array('id'=>'edit_payment_form'.$payment_id));
+							echo form_open("sales/edit_payment/$payment_id", array('id'=>'edit_payment_form'.$payment_id));
 							?>
 								<tr>
 									<td><?php echo anchor( "sales/delete_payment/$payment_id", '['.$this->lang->line('common_delete').']' ); ?></td>

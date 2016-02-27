@@ -3,7 +3,7 @@
 	<ul id="error_message_box" class="error_message_box"></ul>
 	
 	<fieldset id="receiving_basic_info">
-		<?php echo form_open("receivings/save/".$receiving_info['receiving_id'],array('id'=>'recvs_edit_form', 'class' => 'form-horizontal')); ?>
+		<?php echo form_open("receivings/save/".$receiving_info['receiving_id'], array('id'=>'recvs_edit_form', 'class' => 'form-horizontal')); ?>
 			<legend><?php echo $this->lang->line("recvs_basic_information"); ?></legend>
 			
 			<div class="form-group form-group-sm">
@@ -16,21 +16,21 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('recvs_date'), 'date', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'id'=>'datetime', 'class' => 'form-control', 'readonly'=>'true'));?>
+					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time'])), 'id'=>'datetime', 'class' => 'form-control input-sm', 'readonly'=>'true'));?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('recvs_supplier'), 'supplier', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name' => 'supplier_id', 'value' => $selected_supplier, 'id' => 'supplier_id', 'class'=>'form-control'));?>
+					<?php echo form_input(array('name' => 'supplier_id', 'value' => $selected_supplier, 'id' => 'supplier_id', 'class'=>'form-control input-sm'));?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('recvs_invoice_number'), 'invoice_number', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number', 'class' => 'form-control'));?>
+					<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number', 'class' => 'form-control input-sm'));?>
 				</div>
 			</div>
 			
@@ -44,13 +44,13 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('recvs_comments'), 'comment', array('class' => 'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'], 'id'=>'comment', 'class' => 'form-control'));?>
+					<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'], 'id'=>'comment', 'class' => 'form-control input-sm'));?>
 				</div>
 			</div>
 
 		<?php echo form_close(); ?>
 		
-		<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'],array('id'=>'recvs_delete_form')); ?>
+		<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'], array('id'=>'recvs_delete_form')); ?>
 			<?php echo form_hidden('receiving_id', $receiving_info['receiving_id']);?>
 			<?php echo form_submit(array(
 				'name'=>'submit',
@@ -83,9 +83,33 @@ $(document).ready(function()
         }).responseText).success;
     }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
 	
+	<?php $this->load->view('partial/datepicker_locale'); ?>
+	
 	$('#datetime').datetimepicker({
-		dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
-		timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
+		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
+		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
+		<?php
+		$t = $this->config->item('timeformat');
+		$m = $t[strlen($t)-1];
+		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+		{ 
+		?>
+			showMeridian: true,
+		<?php 
+		}
+		else
+		{
+		?>
+			showMeridian: false,
+		<?php 
+		}
+		?>
+		minuteStep: 1,
+		autoclose: true,
+		todayBtn: true,
+		todayHighlight: true,
+		bootcssVer: 3,
+		language: "<?php echo $this->config->item('language'); ?>"
 	});
 	
 	var format_item = function(row)

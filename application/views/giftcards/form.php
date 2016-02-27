@@ -1,41 +1,41 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('giftcards/save/'.$giftcard_info->giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="giftcard_basic_info" style="padding: 5px;">
 		<legend><?php echo $this->lang->line("giftcards_basic_information"); ?></legend>
 
-		<div class="form-group">
-		<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'control-label col-xs-3')); ?>
+		<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 			<?php echo form_input(array(
 				'name'=>'person_id',
 				'id'=>'person_id',
-				'class'=>'form-control',
+				'class'=>'form-control input-sm',
 				'value'=>$selected_person)
 			);?>
 			</div>
 		</div>
 
-		<div class="form-group">
-		<?php echo form_label($this->lang->line('giftcards_giftcard_number').':', 'name',array('class'=>'required control-label col-xs-3')); ?>
+		<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('giftcards_giftcard_number').':', 'name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 			<?php echo form_input(array(
 				'name'=>'giftcard_number',
 				'id'=>'giftcard_number',
-				'class'=>'form-control',
+				'class'=>'form-control input-sm',
 				'value'=>$giftcard_number)
 			);?>
 			</div>
 		</div>
 
-		<div class="form-group">
-		<?php echo form_label($this->lang->line('giftcards_card_value').':', 'name',array('class'=>'required control-label col-xs-3')); ?>
+		<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('giftcards_card_value').':', 'name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 			<?php echo form_input(array(
 				'name'=>'value',
 				'id'=>'value',
-				'class'=>'form-control',
+				'class'=>'form-control input-sm',
 				'value'=>$giftcard_info->value)
 			);?>
 			</div>

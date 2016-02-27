@@ -1,11 +1,11 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form')); ?>
+<?php echo form_open('items/save_inventory/'.$item_info->item_id, array('id'=>'item_form')); ?>
 	<fieldset id="item_basic_info">
 
 		<div class="field_row clearfix">
-		<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
+		<?php echo form_label($this->lang->line('items_item_number').':', 'name', array('class'=>'wide')); ?>
 			<div class="form_field">
 			<?php $inumber = array (
 				'name'=>'item_number',
@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
+			<?php echo form_label($this->lang->line('items_name').':', 'name', array('class'=>'wide')); ?>
 			<div class='form_field'>
 			<?php $iname = array (
 				'name'=>'name',
@@ -35,7 +35,7 @@
 		</div>
 
 		<div class="field_row clearfix">
-			<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
+			<?php echo form_label($this->lang->line('items_category').':', 'category', array('class'=>'wide')); ?>
 			<div class='form_field'>
 			<?php $cat = array (
 				'name'=>'category',
@@ -50,7 +50,7 @@
 		</div>
 
 		<div class="field_row clearfix">
-		<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location',array('class'=>'wide')); ?>
+		<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location', array('class'=>'wide')); ?>
 			<div class='form_field'>
 			<?php
 					echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="fill_quantity(this.value)"');
@@ -59,7 +59,7 @@
 		</div>
 
 		<div class="field_row clearfix">
-		<?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity',array('class'=>'wide')); ?>
+		<?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity', array('class'=>'wide')); ?>
 			<div class='form_field'>
 			<?php $qty = array (
 
@@ -76,7 +76,7 @@
 		</div>
 
 		<div class="field_row clearfix">
-		<?php echo form_label($this->lang->line('items_add_minus').':', 'quantity',array('class'=>'required wide')); ?>
+		<?php echo form_label($this->lang->line('items_add_minus').':', 'quantity', array('class'=>'required wide')); ?>
 			<div class='form_field'>
 			<?php echo form_input(array(
 				'name'=>'newquantity',
@@ -87,7 +87,7 @@
 		</div>
 
 		<div class="field_row clearfix">
-		<?php echo form_label($this->lang->line('items_inventory_comments').':', 'description',array('class'=>'wide')); ?>
+		<?php echo form_label($this->lang->line('items_inventory_comments').':', 'description', array('class'=>'wide')); ?>
 			<div class='form_field'>
 			<?php echo form_textarea(array(
 				'name'=>'trans_comment',

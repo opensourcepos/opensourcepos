@@ -79,11 +79,11 @@ function post_item_kit_form_submit(response)
 
 <div id="pagination"><?= $links ?></div>
 
-<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
 	<div id="table_action_header">
 		<ul>
-			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"),array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"), array('id'=>'delete')); ?></span></li>
+			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"), array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
 			<li class="float_right">
 				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 				<input type="text" name ='search' id='search'/>

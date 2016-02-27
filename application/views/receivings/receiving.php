@@ -206,7 +206,7 @@ if (isset($error))
 	}
 	else
 	{
-		echo form_open("receivings/select_supplier",array('id'=>'select_supplier_form'));
+		echo form_open("receivings/select_supplier", array('id'=>'select_supplier_form'));
 	?>
 			<label id="supplier_label" for="supplier"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
 			<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')));?>
@@ -246,7 +246,7 @@ if (isset($error))
 	?>
 		    <div style='border-top:2px solid #000;' />
 		    <div id="finish_sale">
-		        <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_receiving_form')); ?>
+		        <?php echo form_open("receivings/requisition_complete", array('id'=>'finish_receiving_form')); ?>
 					<br />
 					<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 					<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
@@ -257,7 +257,7 @@ if (isset($error))
 					</div>
 				<?php echo form_close(); ?> 
 				
-				<?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
+				<?php echo form_open("receivings/cancel_receiving", array('id'=>'cancel_receiving_form')); ?>
 					<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button' style='margin-top:5px;'>
 						<?php echo $this->lang->line('recvs_cancel_receiving')?>
 					</div>
@@ -269,7 +269,7 @@ if (isset($error))
 		{
 	?>
 		<div id="finish_sale">
-			<?php echo form_open("receivings/complete",array('id'=>'finish_receiving_form')); ?>
+			<?php echo form_open("receivings/complete", array('id'=>'finish_receiving_form')); ?>
 				<br />
 				<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 				<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
@@ -353,7 +353,7 @@ if (isset($error))
 				</div>
 			<?php echo form_close(); ?>
 
-			<?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
+			<?php echo form_open("receivings/cancel_receiving", array('id'=>'cancel_receiving_form')); ?>
 					<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button' style='margin-top:5px;'>
 						<?php echo $this->lang->line('recvs_cancel_receiving')?>
 					</div>

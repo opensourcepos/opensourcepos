@@ -68,11 +68,11 @@ function post_giftcard_form_submit(response)
 
 <div id="table_action_header">
 	<ul>
-		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
+		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"), array('id'=>'delete')); ?></span></li>
 		<li class="float_right">
 			<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
 
-			<?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
+			<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
 				<input type="text" name ='search' id='search'/>
 				<input type="hidden" name ='limit_from' id='limit_from'/>
 			<?php echo form_close(); ?>

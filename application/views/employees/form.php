@@ -1,4 +1,4 @@
-<?php echo form_open('employees/save/'.$person_info->person_id,array('id'=>'employee_form', 'class'=> 'form-horizontal')); ?>
+<?php echo form_open('employees/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=> 'form-horizontal')); ?>
 	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 	<ul id="error_message_box" class="error_message_box"></ul>
 	<fieldset id="employee_basic_info">
@@ -8,13 +8,13 @@
 
 	<fieldset id="employee_login_info">
 		<legend><?php echo $this->lang->line("employees_login_info"); ?></legend>
-		<div class="form-group">	
-		<?php echo form_label($this->lang->line('employees_username'), 'username',array('class'=>'required control-label col-xs-3')); ?>
+		<div class="form-group form-group-sm">	
+		<?php echo form_label($this->lang->line('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-5'>
 			<?php echo form_input(array(
 				'name'=>'username',
 				'id'=>'username',
-				'class'=>'form-control',
+				'class'=>'form-control input-sm',
 				'value'=>$person_info->username));?>
 			</div>
 		</div>
@@ -23,24 +23,24 @@
 		$password_label_attributes = $person_info->person_id == "" ? array('class'=>'required col-xs-3 control-label'):array();
 		?>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 		<?php echo form_label($this->lang->line('employees_password'), 'password',$password_label_attributes); ?>
 			<div class='col-xs-5'>
 			<?php echo form_password(array(
 				'name'=>'password',
 				'id'=>'password',
-				'class'=>'form-control'
+				'class'=>'form-control input-sm'
 			));?>
 			</div>
 		</div>
 
-		<div class="form-group">	
+		<div class="form-group form-group-sm">	
 		<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password',$password_label_attributes); ?>
 			<div class='col-xs-5'>
 			<?php echo form_password(array(
 				'name'=>'repeat_password',
 				'id'=>'repeat_password',
-				'class'=>'form-control'
+				'class'=>'form-control input-sm'
 			));?>
 			</div>
 		</div>
