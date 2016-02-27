@@ -52138,7 +52138,7 @@ dialog_support = (function() {
 		{
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
-			$('form', dlog_ref.$modalBody).submit();
+			$('form', dlog_ref.$modalBody).first().submit();
 		}
 	};
 
