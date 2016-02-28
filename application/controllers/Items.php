@@ -757,8 +757,9 @@ class Items extends Secure_area implements iData_controller
                     {
                         $failCodes[] = $i;
                     }
+
+					$i++;
                 }
-                $i++;
             }
             else 
             {
@@ -781,6 +782,5 @@ class Items extends Secure_area implements iData_controller
 
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );
 	}
-
 }
 ?>

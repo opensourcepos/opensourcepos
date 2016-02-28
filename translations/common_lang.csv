@@ -50,9 +50,11 @@ common_you_are_using_ospos,Sie verwenden Open Source Point Of Sales Version,You 
 common_zip,PLZ,Postcode,Código Postal,Zip,Zip,郵遞區號,Почтовый индекс,รหัสไปรษณีย์,Şehir Kodu,Kode POS
 common_import,Import,Import,Importar,Import,Import,Import,Import,นำเข้า,Import,Import
 common_download_import_template,Download Import Excel Voralge (CSV),Download Import Excel Template (CSV),Descargar Plantilla de Importación de Excel (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV),Download Import Excel Template (CSV)
-common_import_file_path,Dateipfad,file path,Ruta del archivo,file path,file path,file path,file path,file path,file path,file path
 common_import_excel,Excel Import,Excel Import,Importar Excel,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import,Excel Import
 common_import_full_path,Voller Dateipfad zum Excel File notwendig,Full path to excel file required,Requerida la ruta completa del archivo,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required,Full path to excel file required
+common_import_select_file,,,,Select file,,,,,,
+common_import_change_file,,,,Change,,,,,,
+common_import_remove_file,,,,Remove,,,,,,
 common_required,Erforderlich,Required,Requerido,Required,Required,Required,Required,ต้องกรอก,Required,Required
 common_days_sunday,Sonntag,Zondag,Domingo,Sunday,Dimanche,,,,,
 common_days_monday,Montag,Maandag,Lunes,Monday,Lundi,,,,,

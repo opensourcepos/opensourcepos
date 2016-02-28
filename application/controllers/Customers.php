@@ -142,6 +142,7 @@ class Customers extends Person_controller
 		{
 			$msg = $this->lang->line('items_excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
+
 			return;
 		}
 		else
@@ -155,22 +156,22 @@ class Customers extends Person_controller
 				while (($data = fgetcsv($handle)) !== FALSE) 
 				{
 					$person_data = array(
-					'first_name'=>$data[0],
-					'last_name'=>$data[1],
-					'gender'=>$data[2],
-					'email'=>$data[3],
-					'phone_number'=>$data[4],
-					'address_1'=>$data[5],
-					'address_2'=>$data[6],
-					'city'=>$data[7],
-					'state'=>$data[8],
-					'zip'=>$data[9],
-					'country'=>$data[10],
-					'comments'=>$data[11]
+						'first_name'=>$data[0],
+						'last_name'=>$data[1],
+						'gender'=>$data[2],
+						'email'=>$data[3],
+						'phone_number'=>$data[4],
+						'address_1'=>$data[5],
+						'address_2'=>$data[6],
+						'city'=>$data[7],
+						'state'=>$data[8],
+						'zip'=>$data[9],
+						'country'=>$data[10],
+						'comments'=>$data[11]
 					);
 					
 					$customer_data=array(
-					'taxable'=>$data[13]=='' ? 0:1
+						'taxable'=>$data[13]=='' ? 0:1
 					);
 					
 					$account_number = $data[12];
@@ -191,7 +192,8 @@ class Customers extends Person_controller
 			}
 			else 
 			{
-				echo json_encode( array('success'=>false,'message'=>'Your upload file has no data or not in supported format.') );
+				echo json_encode( array('success'=>false, 'message'=>'Your upload file has no data or not in supported format.') );
+
 				return;
 			}
 		}
@@ -207,8 +209,7 @@ class Customers extends Person_controller
 			$msg = "Import Customers successful";
 		}
 
-		echo json_encode( array('success'=>$success,'message'=>$msg) );
+		echo json_encode( array('success'=>$success, 'message'=>$msg) );
 	}
-
 }
 ?>
