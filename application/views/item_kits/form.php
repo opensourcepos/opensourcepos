@@ -41,7 +41,7 @@
 
 		<table id="item_kit_items" class="table table-striped table-hover" role="grid">
 			<thead>
-				<tr role="row" class="tablesorter-headerRow">
+				<tr role="row">
 					<th role="columnheader"><?php echo $this->lang->line('common_delete'); ?></th>
 					<th role="columnheader"><?php echo $this->lang->line('item_kits_item'); ?></th>
 					<th role="columnheader"><?php echo $this->lang->line('item_kits_quantity'); ?></th>

@@ -1,6 +1,6 @@
 <table id="suspended_sales_table" class="table table-striped table-hover" role="grid">
 	<thead>
-		<tr role="row" class="tablesorter-headerRow">
+		<tr role="row">
 			<th role="columnheader"><?php echo $this->lang->line('sales_suspended_sale_id'); ?></th>
 			<th role="columnheader"><?php echo $this->lang->line('sales_date'); ?></th>
 			<th role="columnheader"><?php echo $this->lang->line('sales_customer'); ?></th>
