@@ -88,7 +88,7 @@ $("#item").result(function(event, data, formatted)
 	}
 	else
 	{
-		$("#item_kit_items").append("<tr><td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-remove'></span></a></td><td>"+data[1]+"</td><td><input class='quantity form-control input-sm' id='item_kit_item_"+data[0]+"' type='text' name=item_kit_item["+data[0]+"] value='1'/></td></tr>");
+		$("#item_kit_items").append("<tr><td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-trash'></span></a></td><td>"+data[1]+"</td><td><input class='quantity form-control input-sm' id='item_kit_item_"+data[0]+"' type='text' name=item_kit_item["+data[0]+"] value='1'/></td></tr>");
 	}
 });
 
