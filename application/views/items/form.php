@@ -11,7 +11,6 @@
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
 					<?php echo form_input(array(
 							'name'=>'item_number',
-							'class'=>'item_number',
 							'id'=>'item_number',
 							'class'=>'form-control input-sm',
 							'value'=>$item_info->item_number)

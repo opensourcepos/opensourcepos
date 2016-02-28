@@ -7,13 +7,16 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_item_number').':', 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-6">
-				<?php echo form_input(array(
-						'name'=>'item_number',
-						'id'=>'item_number',
-						'value'=>$item_info->item_number,
-						'class'=>'form-control input-sm',
-						'disabled'=>'')
-						); ?>
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
+					<?php echo form_input(array(
+							'name'=>'item_number',
+							'id'=>'item_number',
+							'class'=>'form-control input-sm',
+							'disabled'=>'',
+							'value'=>$item_info->item_number)
+							);?>
+				</div>
 			</div>
 		</div>
 
@@ -23,9 +26,9 @@
 				<?php echo form_input(array(
 						'name'=>'name',
 						'id'=>'name',
-						'value'=>$item_info->name,
 						'class'=>'form-control input-sm',
-						'disabled'=>'')
+						'disabled'=>'',
+						'value'=>$item_info->name)
 						); ?>
 			</div>
 		</div>
@@ -33,13 +36,16 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_category').':', 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_input(array(
-						'name'=>'category',
-						'id'=>'category',
-						'value'=>$item_info->category,
-						'class'=>'form-control input-sm',
-						'disabled'=>'')
-						); ?>
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
+					<?php echo form_input(array(
+							'name'=>'category',
+							'id'=>'category',
+							'class'=>'form-control input-sm',
+							'disabled'=>'',
+							'value'=>$item_info->category)
+							);?>
+				</div>
 			</div>
 		</div>
 
@@ -56,9 +62,9 @@
 				<?php echo form_input(array(
 						'name'=>'quantity',
 						'id'=>'quantity',
-						'value'=>current($item_quantities),
 						'class'=>'form-control input-sm',
-						'disabled'=>'')
+						'disabled'=>'',
+						'value'=>current($item_quantities))
 						); ?>
 			</div>
 		</div>
