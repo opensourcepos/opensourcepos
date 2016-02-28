@@ -9,13 +9,17 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_item_number'), 'item_number', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_input(array(
-						'name'=>'item_number',
-						'class'=>'item_number',
-						'id'=>'item_number',
-						'class'=>'form-control input-sm',
-						'value'=>$item_info->item_number)
-				);?>
+				<div class="input-group">
+					<span class="input-group-addon input-sm glyphicon glyphicon-barcode"></span>
+					<?php echo form_input(array(
+							'name'=>'item_number',
+							'class'=>'item_number',
+							'id'=>'item_number',
+							'class'=>'form-control input-sm',
+							'value'=>$item_info->item_number)
+					);?>
+				</div>
+
 			</div>
 		</div>
 
@@ -34,12 +38,16 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_input(array(
-						'name'=>'category',
-						'id'=>'category',
-						'class'=>'form-control input-sm',
-						'value'=>$item_info->category)
-				);?>
+				<div class="input-group">
+					<span class="input-group-addon input-sm glyphicon glyphicon-tag"></span>
+					<?php echo form_input(array(
+							'name'=>'category',
+							'id'=>'category',
+							'class'=>'form-control input-sm',
+							'value'=>$item_info->category)
+					);?>
+				</div>
+
 			</div>
 		</div>
 

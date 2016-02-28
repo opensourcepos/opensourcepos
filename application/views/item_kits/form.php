@@ -55,7 +55,7 @@
 		?>
             <tr>
                 <?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
-                <td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-remove'></span></a></td>
+                <td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
                 <td><?php echo $item_info->name; ?></td>
                 <td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo $item_kit_item['quantity'] ?>'/></td>
             </tr>

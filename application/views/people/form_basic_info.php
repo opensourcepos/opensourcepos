@@ -51,23 +51,29 @@
 <div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_email'), 'email', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
-	<?php echo form_input(array(
-		'name'=>'email',
-		'id'=>'email',
-		'class'=>'form-control input-sm',
-		'value'=>$person_info->email)
-	);?>
-	</div>
+		<div class="input-group">
+			<span class="input-group-addon input-sm glyphicon glyphicon-envelope"></span>
+			<?php echo form_input(array(
+					'name'=>'email',
+					'id'=>'email',
+					'class'=>'form-control input-sm',
+					'value'=>$person_info->email)
+			);?>
+			</div>
+		</div>
 </div>
 
 <div class="form-group form-group-sm">	
 <?php echo form_label($this->lang->line('common_phone_number'), 'phone_number', array('class' => 'control-label col-xs-3')); ?>
 	<div class='col-xs-6'>
-	<?php echo form_input(array(
-		'name'=>'phone_number',
-		'id'=>'phone_number',
-		'class'=>'form-control input-sm',
-		'value'=>$person_info->phone_number));?>
+		<div class="input-group">
+			<span class="input-group-addon input-sm glyphicon glyphicon-phone-alt"></span>
+			<?php echo form_input(array(
+				'name'=>'phone_number',
+				'id'=>'phone_number',
+				'class'=>'form-control input-sm',
+				'value'=>$person_info->phone_number));?>
+		</div>
 	</div>
 </div>
 
