@@ -1,56 +1,55 @@
+<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+
+<ul id="error_message_box" class="error_message_box"></ul>
+
 <div id="edit_sale_wrapper">
-	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-	<ul id="error_message_box" class="error_message_box"></ul>
-	
 	<fieldset id="sale_basic_info">
-		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form', 'class' => 'form-horizontal')); ?>
-			<legend><?php echo $this->lang->line("sales_basic_information"); ?></legend>
-			
+		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form', 'class'=>'form-horizontal')); ?>	
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_receipt_number'), 'customer', array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_receipt_number'), 'customer', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], $this->lang->line('sales_receipt_number') .$sale_info['sale_id'], array('target' => '_blank'));?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_date'), 'date', array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
 						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control input-sm'));?>
+						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
 						<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
 					<?php else: ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class' => 'form-control input-sm'));?>
+						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
 					<?php endif; ?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id', 'class' => 'form-control input-sm'));?>
+					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id', 'class'=>'form-control input-sm'));?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_comment'), 'comment', array('class' => 'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_comment'), 'comment', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class' => 'form-control input-sm'));?>
+					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class'=>'form-control input-sm'));?>
 				</div>
 			</div>
 		<?php echo form_close(); ?>
