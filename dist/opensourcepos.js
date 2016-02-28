@@ -52138,7 +52138,15 @@ dialog_support = (function() {
 		{
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
-			$('form', dlog_ref.$modalBody).first().submit();
+			debugger;;
+			if (button_id == 'delete')
+			{
+				$("form[id*='delete_form']").submit();
+			}
+			else
+			{
+				$('form', dlog_ref.$modalBody).first().submit();
+			}
 		}
 	};
 
@@ -52157,7 +52165,7 @@ dialog_support = (function() {
 					buttons.push({
 						id: btn_name,
 						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
-						cssClass: buttons.length ? '' : 'btn-primary',
+						cssClass: btn_name == 'submit' ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
 						action: submit(btn_name)
 					});
 				}

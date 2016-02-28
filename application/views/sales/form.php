@@ -57,12 +57,6 @@
 		
 		<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
 			<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
-			<?php echo form_submit(array(
-				'name'=>'submit',
-				'value'=>$this->lang->line('sales_delete_entire_sale'),
-				'class'=>'btn btn-danger btn-sm pull-right',
-				'style'=>'margin-right: 10px;')
-			); ?>
 		<?php echo form_close(); ?>
 	</fieldset>
 </div>

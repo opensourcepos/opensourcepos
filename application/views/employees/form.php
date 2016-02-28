@@ -20,11 +20,11 @@
 		</div>
 
 		<?php
-		$password_label_attributes = $person_info->person_id == "" ? array('class'=>'required col-xs-3 control-label'):array();
+		$password_label_attributes = $person_info->person_id == "" ? array('class'=>'required'):array();
 		?>
 
 		<div class="form-group form-group-sm">	
-		<?php echo form_label($this->lang->line('employees_password'), 'password',$password_label_attributes); ?>
+		<?php echo form_label($this->lang->line('employees_password'), 'password',array_merge($password_label_attributes, array('class' => 'col-xs-3 control-label'))); ?>
 			<div class='col-xs-5'>
 			<?php echo form_password(array(
 				'name'=>'password',
@@ -35,7 +35,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">	
-		<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password',$password_label_attributes); ?>
+		<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password',array_merge($password_label_attributes, array('class' => 'col-xs-3 control-label'))); ?>
 			<div class='col-xs-5'>
 			<?php echo form_password(array(
 				'name'=>'repeat_password',
