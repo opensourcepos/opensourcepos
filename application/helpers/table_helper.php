@@ -166,7 +166,6 @@ function get_person_data_row($person,$controller)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
-	$modal_class = $controller_name == 'employees' ? 'modal-dlg-wide' : '';
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$person->person_id' value='".$person->person_id."'/></td>";
@@ -174,7 +173,7 @@ function get_person_data_row($person,$controller)
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg modal-btn-submit $modal_class",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id", $CI->lang->line('common_edit'), array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;

@@ -1,102 +1,120 @@
 <?php echo form_open('employees/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=> 'form-horizontal')); ?>
 	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 	<ul id="error_message_box" class="error_message_box"></ul>
-	<fieldset id="employee_basic_info">
-		<legend><?php echo $this->lang->line("employees_basic_information"); ?></legend>
-		<?php $this->load->view("people/form_basic_info"); ?>
-	</fieldset>
 
-	<fieldset id="employee_login_info">
-		<legend><?php echo $this->lang->line("employees_login_info"); ?></legend>
-		<div class="form-group form-group-sm">	
-			<?php echo form_label($this->lang->line('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-					<?php echo form_input(array(
-						'name'=>'username',
-						'id'=>'username',
-						'class'=>'form-control input-sm',
-						'value'=>$person_info->username)
-						);?>
-				</div>
-			</div>
+	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
+		<li class="active" role="presentation">
+			<a data-toggle="tab" href="#employee_basic_info"><?php echo $this->lang->line("employees_basic_information"); ?></a>
+		</li>
+		<li role="presentation">
+			<a data-toggle="tab" href="#employee_login_info"><?php echo $this->lang->line("employees_login_info"); ?></a>
+		</li>
+		<li role="presentation">
+			<a data-toggle="tab" href="#employee_permission_info"><?php echo $this->lang->line("employees_permission_info"); ?></a>
+		</li>
+	</ul>
+
+	<div class="tab-content">
+		<div class="tab-pane fade in active" id="employee_basic_info">
+			<fieldset>
+				<?php $this->load->view("people/form_basic_info"); ?>
+			</fieldset>
 		</div>
 
-		<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : array(); ?>
-
-		<div class="form-group form-group-sm">	
-			<?php echo form_label($this->lang->line('employees_password'), 'password',array_merge($password_label_attributes, array('class' => 'col-xs-3 control-label'))); ?>
-			<div class='col-xs-6'>
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
-					<?php echo form_password(array(
-						'name'=>'password',
-						'id'=>'password',
-						'class'=>'form-control input-sm')
-						);?>
+		<div class="tab-pane" id="employee_login_info">
+			<fieldset>
+				<div class="form-group form-group-sm">	
+					<?php echo form_label($this->lang->line('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
+					<div class='col-xs-6'>
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
+							<?php echo form_input(array(
+								'name'=>'username',
+								'id'=>'username',
+								'class'=>'form-control input-sm',
+								'value'=>$person_info->username)
+								);?>
+						</div>
+					</div>
 				</div>
-			</div>
+
+				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : array(); ?>
+
+				<div class="form-group form-group-sm">	
+					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'col-xs-3 control-label'))); ?>
+					<div class='col-xs-6'>
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+							<?php echo form_password(array(
+								'name'=>'password',
+								'id'=>'password',
+								'class'=>'form-control input-sm')
+								);?>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'col-xs-3 control-label'))); ?>
+					<div class='col-xs-6'>
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+							<?php echo form_password(array(
+								'name'=>'repeat_password',
+								'id'=>'repeat_password',
+								'class'=>'form-control input-sm')
+								);?>
+						</div>
+					</div>
+				</div>
+			</fieldset>
 		</div>
 
-		<div class="form-group form-group-sm">	
-		<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password',array_merge($password_label_attributes, array('class' => 'col-xs-3 control-label'))); ?>
-			<div class='col-xs-6'>
-				<div class="input-group">
-					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
-					<?php echo form_password(array(
-						'name'=>'repeat_password',
-						'id'=>'repeat_password',
-						'class'=>'form-control input-sm')
-						);?>
-				</div>
-			</div>
-		</div>
-	</fieldset>
+		<div class="tab-pane" id="employee_permission_info">
+			<fieldset>
+				<p><?php echo $this->lang->line("employees_permission_desc"); ?></p>
 
-	<fieldset id="employee_permission_info">
-		<legend><?php echo $this->lang->line("employees_permission_info"); ?></legend>
-		<p><?php echo $this->lang->line("employees_permission_desc"); ?></p>
-
-		<ul id="permission_list">
-			<?php
-			foreach($all_modules->result() as $module)
-			{
-			?>
-				<li>	
-					<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id),"class='module'"); ?>
-					<span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
-					<span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
+				<ul id="permission_list">
 					<?php
-						foreach($all_subpermissions->result() as $permission)
-						{
-							$exploded_permission = explode('_', $permission->permission_id);
-							if ($permission->module_id == $module->module_id)
-							{
-								$lang_key = $module->module_id.'_'.$exploded_permission[1];
-								$lang_line = $this->lang->line($lang_key);
-								$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
-								if (empty($lang_line))
+					foreach($all_modules->result() as $module)
+					{
+					?>
+						<li>	
+							<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id),"class='module'"); ?>
+							<span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
+							<span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
+							<?php
+								foreach($all_subpermissions->result() as $permission)
 								{
-									continue;
-								} 
+									$exploded_permission = explode('_', $permission->permission_id);
+									if ($permission->module_id == $module->module_id)
+									{
+										$lang_key = $module->module_id.'_'.$exploded_permission[1];
+										$lang_line = $this->lang->line($lang_key);
+										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
+										if (empty($lang_line))
+										{
+											continue;
+										} 
+							?>
+									<ul>
+										<li>
+											<?php echo form_checkbox("grants[]", $permission->permission_id, $this->Employee->has_grant($permission->permission_id,$person_info->person_id)); ?>
+											<span class="medium"><?php echo $lang_line ?></span>
+										</li>
+									</ul>
+							<?php 
+									}
+								}
+							?>
+						</li>
+					<?php
+					}
 					?>
-							<ul>
-								<li>
-									<?php echo form_checkbox("grants[]",$permission->permission_id,$this->Employee->has_grant($permission->permission_id,$person_info->person_id)); ?>
-									<span class="medium"><?php echo $lang_line ?></span>
-								</li>
-							</ul>
-					<?php 
-							}
-						}
-					?>
-				</li>
-			<?php
-			}
-			?>
-		</ul>
-	</fieldset>
+				</ul>
+			</fieldset>
+		</div>
+	</div>
 <?php echo form_close(); ?>
 
 <script type='text/javascript'>

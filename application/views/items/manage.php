@@ -159,12 +159,12 @@ function post_bulk_form_submit(response)
 <div id="title_bar">
     <div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
 	<?php echo anchor("$controller_name/excel_import",
-	"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-	array('class'=>'modal-dlg modal-btn-submit none', 'title'=>$this->lang->line('common_import_excel')));
+		"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
+		array('class'=>'modal-dlg modal-btn-submit none', 'title'=>$this->lang->line('common_import_excel')));
 	?>
 	<?php echo anchor("$controller_name/view/-1",
-	"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-	array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new')));
+		"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
+		array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new')));
 	?>
 </div>
 

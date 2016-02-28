@@ -189,10 +189,8 @@ $(document).ready(function()
 			country : {
 				dependencies :  ["state", "country"]
 			}
-
 		},
 		language : '<?php echo $this->config->item('language');?>'
 	});
-
 });
 </script>
