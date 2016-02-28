@@ -64,7 +64,7 @@
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm',
 							'value'=>$item_info->cost_price)
-					);?>
+							);?>
 				</div>
 			</div>
 		</div>
@@ -75,11 +75,11 @@
 				<div class="input-group input-group-sm">
 					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php echo form_input(array(
-						'name'=>'unit_price',
-						'id'=>'unit_price',
-						'class'=>'form-control input-sm',
-						'value'=>$item_info->unit_price)
-					);?>
+							'name'=>'unit_price',
+							'id'=>'unit_price',
+							'class'=>'form-control input-sm',
+							'value'=>$item_info->unit_price)
+							);?>
 				</div>
 			</div>
 		</div>
@@ -88,11 +88,11 @@
 			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-sm-3'>
 				<?php echo form_input(array(
-					'name'=>'tax_names[]',
-					'id'=>'tax_name_1',
-					'class'=>'form-control input-sm',
-					'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
-				);?>
+						'name'=>'tax_names[]',
+						'id'=>'tax_name_1',
+						'class'=>'form-control input-sm',
+						'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
+						);?>
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
@@ -101,7 +101,7 @@
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
 							'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : $default_tax_1_rate)
-					);?>
+							);?>
 					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
 			</div>
@@ -111,11 +111,11 @@
 			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-sm-3'>
 				<?php echo form_input(array(
-					'name'=>'tax_names[]',
-					'id'=>'tax_name_2',
-					'class'=>'form-control input-sm',
-					'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
-				);?>
+						'name'=>'tax_names[]',
+						'id'=>'tax_name_2',
+						'class'=>'form-control input-sm',
+						'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
+						);?>
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
@@ -124,7 +124,7 @@
 							'class'=>'form-control input-sm',
 							'id'=>'tax_percent_name_2',
 							'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
-					);?>
+							);?>
 					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
 			</div>
@@ -144,7 +144,7 @@
 							'id'=>$key.'_quantity',
 							'class'=>'quantity form-control',
 							'value'=>isset($item_info->item_id)?$location_detail['quantity']:0)
-					);?>
+							);?>
 				</div>
 			</div>
 		<?php
@@ -159,7 +159,7 @@
 						'id'=>'receiving_quantity',
 						'class'=>'form-control input-sm',
 						'value'=>$item_info->receiving_quantity)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -171,7 +171,7 @@
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
 						'value'=>!isset($item_info->item_id)?0:$item_info->reorder_level)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -183,7 +183,7 @@
 						'id'=>'description',
 						'class'=>'form-control input-sm',
 						'value'=>$item_info->description)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -205,7 +205,7 @@
 						'id'=>'allow_alt_description',
 						'value'=>1,
 						'checked'=>($item_info->allow_alt_description)? 1 : 0)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -217,7 +217,7 @@
 						'id'=>'is_serialized',
 						'value'=>1,
 						'checked'=>($item_info->is_serialized)? 1 : 0)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -229,7 +229,7 @@
 						'id'=>'is_deleted',
 						'value'=>1,
 						'checked'=>($item_info->deleted)? 1 : 0)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -250,7 +250,7 @@
 								'id'=>'custom'.$i,
 								'class'=>'form-control input-sm',
 								'value'=>$item_arr['custom'.$i])
-						);?>
+								);?>
 					</div>
 				</div>
 		<?php
