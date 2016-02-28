@@ -39,12 +39,12 @@
 			</div>
 		</div>
 
-		<table id="item_kit_items" class="table table-striped table-hover" role="grid">
+		<table id="item_kit_items" class="table table-striped table-hover">
 			<thead>
-				<tr role="row">
-					<th role="columnheader"><?php echo $this->lang->line('common_delete'); ?></th>
-					<th role="columnheader"><?php echo $this->lang->line('item_kits_item'); ?></th>
-					<th role="columnheader"><?php echo $this->lang->line('item_kits_quantity'); ?></th>
+				<tr bgcolor="#CCC">
+					<th><?php echo $this->lang->line('common_delete'); ?></th>
+					<th><?php echo $this->lang->line('item_kits_item'); ?></th>
+					<th><?php echo $this->lang->line('item_kits_quantity'); ?></th>
 				</tr>
 			</thead>
 			<tbody>

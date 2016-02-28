@@ -1,11 +1,11 @@
-<table id="suspended_sales_table" class="table table-striped table-hover" role="grid">
+<table id="suspended_sales_table" class="table table-striped table-hover">
 	<thead>
-		<tr role="row">
-			<th role="columnheader"><?php echo $this->lang->line('sales_suspended_sale_id'); ?></th>
-			<th role="columnheader"><?php echo $this->lang->line('sales_date'); ?></th>
-			<th role="columnheader"><?php echo $this->lang->line('sales_customer'); ?></th>
-			<th role="columnheader"><?php echo $this->lang->line('sales_comments'); ?></th>
-			<th role="columnheader"><?php echo $this->lang->line('sales_unsuspend_and_delete'); ?></th>
+		<tr bgcolor="#CCC">
+			<th><?php echo $this->lang->line('sales_suspended_sale_id'); ?></th>
+			<th><?php echo $this->lang->line('sales_date'); ?></th>
+			<th><?php echo $this->lang->line('sales_customer'); ?></th>
+			<th><?php echo $this->lang->line('sales_comments'); ?></th>
+			<th><?php echo $this->lang->line('sales_unsuspend_and_delete'); ?></th>
 		</tr>
 	</thead>
 	<tbody>
