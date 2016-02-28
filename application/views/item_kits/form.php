@@ -42,26 +42,29 @@
         </div>
     </div>
 
-    <table id="item_kit_items">
-        <tr>
-            <th><?php echo $this->lang->line('common_delete'); ?></th>
-            <th><?php echo $this->lang->line('item_kits_item'); ?></th>
-            <th><?php echo $this->lang->line('item_kits_quantity'); ?></th>
-        </tr>
-
-        <?php
-		foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
-		{
-		?>
-            <tr>
-                <?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
-                <td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
-                <td><?php echo $item_info->name; ?></td>
-                <td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo $item_kit_item['quantity'] ?>'/></td>
-            </tr>
-        <?php
-		}
-		?>
+    <table id="item_kit_items" class="table table-striped table-hover" role="grid">
+		<thead>
+			<tr role="row" class="tablesorter-headerRow">
+				<th role="columnheader"><?php echo $this->lang->line('common_delete'); ?></th>
+				<th role="columnheader"><?php echo $this->lang->line('item_kits_item'); ?></th>
+				<th role="columnheader"><?php echo $this->lang->line('item_kits_quantity'); ?></th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php
+			foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
+			{
+			?>
+				<tr>
+					<?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
+					<td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
+					<td><?php echo $item_info->name; ?></td>
+					<td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo $item_kit_item['quantity'] ?>'/></td>
+				</tr>
+			<?php
+			}
+			?>
+		</tbody>
     </table>
 </fieldset>
 <?php echo form_close(); ?>

@@ -10,7 +10,7 @@
 			<?php echo form_label($this->lang->line('items_item_number'), 'item_number', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group">
-					<span class="input-group-addon input-sm glyphicon glyphicon-barcode"></span>
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
 					<?php echo form_input(array(
 							'name'=>'item_number',
 							'class'=>'item_number',
@@ -19,7 +19,6 @@
 							'value'=>$item_info->item_number)
 					);?>
 				</div>
-
 			</div>
 		</div>
 
@@ -39,7 +38,7 @@
 			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group">
-					<span class="input-group-addon input-sm glyphicon glyphicon-tag"></span>
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php echo form_input(array(
 							'name'=>'category',
 							'id'=>'category',
@@ -47,7 +46,6 @@
 							'value'=>$item_info->category)
 					);?>
 				</div>
-
 			</div>
 		</div>
 
@@ -62,7 +60,7 @@
 			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class'=>'required control-label col-xs-3')); ?>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
-					<span class="input-group-addon input-sm"><?php echo $this->config->item('currency_symbol'); ?></span>
+					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php echo form_input(array(
 							'name'=>'cost_price',
 							'id'=>'cost_price',
@@ -77,7 +75,7 @@
 			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<span class="input-group-addon input-sm"><?php echo $this->config->item('currency_symbol'); ?></span>
+					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php echo form_input(array(
 						'name'=>'unit_price',
 						'id'=>'unit_price',
@@ -106,7 +104,7 @@
 							'class'=>'form-control input-sm',
 							'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : $default_tax_1_rate)
 					);?>
-					<span class="input-group-addon input-sm">%</span>
+					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
 			</div>
 		</div>
@@ -129,7 +127,7 @@
 							'id'=>'tax_percent_name_2',
 							'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
 					);?>
-					<span class="input-group-addon input-sm">%</span>
+					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
 			</div>
 		</div>
@@ -208,7 +206,7 @@
 						'name'=>'allow_alt_description',
 						'id'=>'allow_alt_description',
 						'value'=>1,
-						'checked'=>($item_info->allow_alt_description)? 1  :0)
+						'checked'=>($item_info->allow_alt_description)? 1 : 0)
 				);?>
 			</div>
 		</div>
@@ -238,7 +236,7 @@
 		</div>
 
 		<?php
-		for ($i = 0; $i < 11; $i++)
+		for ($i = 1; $i <= 10; $i++)
 		{
 		?>
 			<?php
