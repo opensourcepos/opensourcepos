@@ -1,7 +1,8 @@
-<?php echo form_open('employees/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=> 'form-horizontal')); ?>
-	<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-	<ul id="error_message_box" class="error_message_box"></ul>
+<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 
+<ul id="error_message_box" class="error_message_box"></ul>
+
+<?php echo form_open('employees/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=> 'form-horizontal')); ?>
 	<ul class="nav nav-tabs nav-justified" data-tabs="tabs">
 		<li class="active" role="presentation">
 			<a data-toggle="tab" href="#employee_basic_info"><?php echo $this->lang->line("employees_basic_information"); ?></a>

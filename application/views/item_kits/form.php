@@ -1,72 +1,69 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, array('id'=>'item_kit_form', 'class' => 'form-horizontal')); ?>
+	<fieldset id="item_kit_info">
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('item_kits_name').':', 'name', array('class'=>'control-label col-xs-3 required')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+					'name'=>'name',
+					'id'=>'name',
+					'class'=>'form-control input-sm',
+					'value'=>$item_kit_info->name)
+					);?>
+			</div>
+		</div>
 
-<fieldset id="item_kit_info">
-	<legend><?php echo $this->lang->line("item_kits_info"); ?></legend>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('item_kits_description').':', 'description', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_textarea(array(
+					'name'=>'description',
+					'id'=>'description',
+					'class'=>'form-control input-sm',
+					'value'=>$item_kit_info->description)
+					);?>
+			</div>
+		</div>
 
-    <div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('item_kits_name').':', 'name', array('class'=>'control-label col-xs-3 required')); ?>
-        <div class='col-xs-6'>
-        <?php echo form_input(array(
-            'name'=>'name',
-            'id'=>'name',
-            'class'=>'form-control input-sm',
-            'value'=>$item_kit_info->name)
-        );?>
-        </div>
-    </div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('item_kits_add_item').':', 'item', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+					'name'=>'item',
+					'id'=>'item',
+					'class'=>'form-control input-sm')
+					);?>
+			</div>
+		</div>
 
-    <div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('item_kits_description').':', 'description', array('class'=>'control-label col-xs-3')); ?>
-        <div class='col-xs-6'>
-        <?php echo form_textarea(array(
-            'name'=>'description',
-            'id'=>'description',
-            'class'=>'form-control input-sm',
-            'value'=>$item_kit_info->description,
-            )
-        );?>
-        </div>
-    </div>
-
-    <div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('item_kits_add_item').':', 'item', array('class'=>'control-label col-xs-3')); ?>
-        <div class='col-xs-6'>
-            <?php echo form_input(array(
-                'name'=>'item',
-                'id'=>'item',
-                'class'=>'form-control input-sm',
-            ));?>
-        </div>
-    </div>
-
-    <table id="item_kit_items" class="table table-striped table-hover" role="grid">
-		<thead>
-			<tr role="row" class="tablesorter-headerRow">
-				<th role="columnheader"><?php echo $this->lang->line('common_delete'); ?></th>
-				<th role="columnheader"><?php echo $this->lang->line('item_kits_item'); ?></th>
-				<th role="columnheader"><?php echo $this->lang->line('item_kits_quantity'); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-			foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
-			{
-			?>
-				<tr>
-					<?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
-					<td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
-					<td><?php echo $item_info->name; ?></td>
-					<td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo $item_kit_item['quantity'] ?>'/></td>
+		<table id="item_kit_items" class="table table-striped table-hover" role="grid">
+			<thead>
+				<tr role="row" class="tablesorter-headerRow">
+					<th role="columnheader"><?php echo $this->lang->line('common_delete'); ?></th>
+					<th role="columnheader"><?php echo $this->lang->line('item_kits_item'); ?></th>
+					<th role="columnheader"><?php echo $this->lang->line('item_kits_quantity'); ?></th>
 				</tr>
-			<?php
-			}
-			?>
-		</tbody>
-    </table>
-</fieldset>
+			</thead>
+			<tbody>
+				<?php
+				foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
+				{
+				?>
+					<tr>
+						<?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
+						<td><a href='#' onclick='return deleteItemKitRow(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
+						<td><?php echo $item_info->name; ?></td>
+						<td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo $item_kit_item['quantity'] ?>'/></td>
+					</tr>
+				<?php
+				}
+				?>
+			</tbody>
+		</table>
+	</fieldset>
 <?php echo form_close(); ?>
 
 <script type='text/javascript'>

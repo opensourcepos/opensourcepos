@@ -4,8 +4,6 @@
 
 <?php echo form_open('items/save/'.$item_info->item_id, array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
-		<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
-
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_item_number'), 'item_number', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
@@ -17,7 +15,7 @@
 							'id'=>'item_number',
 							'class'=>'form-control input-sm',
 							'value'=>$item_info->item_number)
-					);?>
+							);?>
 				</div>
 			</div>
 		</div>
@@ -30,7 +28,7 @@
 						'id'=>'name',
 						'class'=>'form-control input-sm',
 						'value'=>$item_info->name)
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -44,7 +42,7 @@
 							'id'=>'category',
 							'class'=>'form-control input-sm',
 							'value'=>$item_info->category)
-					);?>
+							);?>
 				</div>
 			</div>
 		</div>

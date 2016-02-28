@@ -36,11 +36,11 @@
 		</label>
 		<label class="radio-inline">
 			<?php echo form_radio(array(
-					'name'=>'gender',
-					'type'=>'radio',
-					'id'=>'gender',
-					'value'=>0,
-					'checked'=>$person_info->gender === '0')
+				'name'=>'gender',
+				'type'=>'radio',
+				'id'=>'gender',
+				'value'=>0,
+				'checked'=>$person_info->gender === '0')
 				); ?> <?php echo $this->lang->line('common_gender_female'); ?>
 		</label>
 
@@ -53,10 +53,10 @@
 		<div class="input-group">
 			<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-envelope"></span></span>
 			<?php echo form_input(array(
-					'name'=>'email',
-					'id'=>'email',
-					'class'=>'form-control input-sm',
-					'value'=>$person_info->email)
+				'name'=>'email',
+				'id'=>'email',
+				'class'=>'form-control input-sm',
+				'value'=>$person_info->email)
 				);?>
 		</div>
 	</div>
