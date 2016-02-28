@@ -1,4 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
+
 <script type="text/javascript">
 $(document).ready(function() 
 { 
@@ -59,12 +60,13 @@ function post_person_form_submit(response)
 
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
-	<?php if ($controller_name =='customers')
+	<?php
+	if ($controller_name == 'customers')
 	{
 	?>
 		<?php echo anchor("$controller_name/excel_import",
 			"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('items_import_items_excel')));
+			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('customers_import_items_excel')));
 		?>
 	<?php
 	}

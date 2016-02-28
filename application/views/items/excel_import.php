@@ -1,5 +1,3 @@
-<div id="required_fields_message"><?php echo $this->lang->line('items_import_items_excel'); ?></div>
-
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open_multipart('items/do_excel_import/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
