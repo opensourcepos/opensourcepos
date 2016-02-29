@@ -24,7 +24,7 @@
 //validation and submit handling
 $(document).ready(function()
 {	
-	$('#item_form').validate({
+	$('#item_form').validate($.extend({
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
@@ -47,6 +47,6 @@ $(document).ready(function()
 		{
    			file_path:"<?php echo $this->lang->line('common_import_full_path'); ?>"
 		}
-	});
+	}, dialog_support.error));
 });
 </script>

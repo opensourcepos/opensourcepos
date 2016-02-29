@@ -79,7 +79,7 @@ $(document).ready(function()
 		});
 	};
 	
-	$('#giftcard_form').validate({
+	$('#giftcard_form').validate($.extend({
 		submitHandler:function(form)
 		{
 			var selected_person = autocompleter.val();
@@ -115,6 +115,6 @@ $(document).ready(function()
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
-	});
+	}, dialog_support.error));
 });
 </script>

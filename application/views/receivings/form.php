@@ -147,7 +147,7 @@ $(document).ready(function()
 			dataType:'json'
 		});
 	};
-	$('#recvs_edit_form').validate(
+	$('#recvs_edit_form').validate($.extend(
 	{
 		submitHandler : function(form)
 		{
@@ -168,7 +168,7 @@ $(document).ready(function()
 		{
 
 		}
-	});
+	}, dialog_support.error));
 	$('#recvs_delete_form').submit(function() 
 	{
 		var id = $("input[name='receiving_id']").val();

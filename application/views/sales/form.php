@@ -161,7 +161,7 @@ $(document).ready(function()
 		});
 	};
 
-	$('#sales_edit_form').validate(
+	$('#sales_edit_form').validate($.extend(
 	{
 		submitHandler : function(form)
 		{
@@ -183,7 +183,7 @@ $(document).ready(function()
 		{
 
 		}
-	});
+	}, dialog_support.error));
 
 	$('#sales_delete_form').submit(function() 
 	{

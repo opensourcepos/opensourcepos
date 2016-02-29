@@ -96,7 +96,7 @@ $("#item").result(function(event, data, formatted)
 //validation and submit handling
 $(document).ready(function()
 {
-	$('#item_kit_form').validate({
+	$('#item_kit_form').validate($.extend({
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
@@ -121,7 +121,7 @@ $(document).ready(function()
 			name:"<?php echo $this->lang->line('items_name_required'); ?>",
 			category:"<?php echo $this->lang->line('items_category_required'); ?>"
 		}
-	});
+	}, dialog_support.error));
 });
 
 function deleteItemKitRow(link)

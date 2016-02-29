@@ -48,7 +48,7 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$('#supplier_form').validate({
+	$('#supplier_form').validate($.extend({
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
@@ -77,7 +77,7 @@ $(document).ready(function()
 			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
 			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
 		}
-	});
+	}, dialog_support.error));
 });
 
 </script>

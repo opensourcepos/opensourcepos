@@ -301,7 +301,7 @@
 
 		}, '<?php echo $this->lang->line("items_item_number_duplicate"); ?>');
 
-		$('#item_form').validate({
+		$('#item_form').validate($.extend({
 			submitHandler:function(form, event)
 			{
 				var stay_open = dialog_support.clicked_id() != 'submit';
@@ -388,7 +388,7 @@
 					number:"<?php echo $this->lang->line('items_reorder_level_number'); ?>"
 				}
 			}
-		});
+		}, dialog_support.error));
 	});
 </script>
 

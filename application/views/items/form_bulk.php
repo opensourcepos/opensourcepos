@@ -158,7 +158,7 @@ $(document).ready(function()
     });
 	$("#category").search();
 	
-	$('#item_form').validate({
+	$('#item_form').validate($.extend({
 		submitHandler:function(form)
 		{
 			if(confirm("<?php echo $this->lang->line('items_confirm_bulk_edit') ?>"))
@@ -224,6 +224,6 @@ $(document).ready(function()
 			}
 
 		}
-	});
+	}, dialog_support.error));
 });
 </script>

@@ -52138,7 +52138,6 @@ dialog_support = (function() {
 		{
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
-			debugger;;
 			if (button_id == 'delete')
 			{
 				$("form[id*='delete_form']").submit();
@@ -52201,7 +52200,17 @@ dialog_support = (function() {
 		hide: hide,
 		clicked_id: clicked_id,
 		init: init,
-		submit: submit
+		submit: submit,
+		error: {
+			highlight: function (e)
+			{
+				$(e).closest('.form-group').addClass('has-error');
+			},
+			unhighlight: function (e)
+			{
+				$(e).closest('.form-group').removeClass('has-error');
+			}
+		}
 	};
 
 })();
