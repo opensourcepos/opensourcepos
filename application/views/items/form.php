@@ -333,9 +333,6 @@
 				});
 				event.preventDefault();
 			},
-			errorLabelContainer: "#error_message_box",
-			errorClass: "has-error",
-			wrapper: "li",
 			rules:
 			{
 				name:"required",

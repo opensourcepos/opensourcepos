@@ -156,9 +156,7 @@ $(document).ready(function()
 			selected_supplier_id && autocompleter.val(selected_supplier_id);
 			submit_form.call(form, selected_supplier);
 		},
-		errorLabelContainer: "#error_message_box",
-		wrapper: "li",
-		rules: 
+		rules:
 		{
 			invoice_number: {
 				invoice_number: true

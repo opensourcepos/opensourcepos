@@ -87,8 +87,6 @@ $(document).ready(function()
 			selected_person_id && autocompleter.val(selected_person_id);
 			submit_form.call(form, selected_person);
 		},
-		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
 		rules:
 		{
 			giftcard_number:

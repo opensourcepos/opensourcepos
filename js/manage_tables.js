@@ -465,6 +465,9 @@ dialog_support = (function() {
 		init: init,
 		submit: submit,
 		error: {
+			errorClass: "has-error",
+			errorLabelContainer: "#error_message_box",
+			wrapper: "li",
 			highlight: function (e)
 			{
 				$(e).closest('.form-group').addClass('has-error');

@@ -61,10 +61,7 @@ $(document).ready(function()
 		});
 
 		},
-		errorLabelContainer: "#error_message_box",
-		errorClass: "has-error",
-		wrapper: "li",
-		rules: 
+		rules:
 		{
 			company_name: "required",
 			first_name: "required",

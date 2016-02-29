@@ -109,8 +109,6 @@ $(document).ready(function()
 		});
 
 		},
-		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
 		rules:
 		{
 			name:"required",

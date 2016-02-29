@@ -170,9 +170,7 @@ $(document).ready(function()
 			selected_customer_id && autocompleter.val(selected_customer_id);
 			submit_form.call(form, selected_customer);
 		},
-		errorLabelContainer: "#error_message_box",
-		wrapper: "li",
-		rules: 
+		rules:
 		{
 			invoice_number:
 			{

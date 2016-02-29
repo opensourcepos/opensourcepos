@@ -182,10 +182,7 @@ $(document).ready(function()
 			}
 
 		},
-		errorLabelContainer: "#error_message_box",
-		errorClass: "has-error",
-		wrapper: "li",
-		rules: 
+		rules:
 		{
 			unit_price:
 			{
