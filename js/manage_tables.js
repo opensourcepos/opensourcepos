@@ -424,10 +424,12 @@ dialog_support = (function() {
 				var btn_class = className.split("modal-btn-");
 				if (btn_class && btn_class.length > 1) {
 					var btn_name = btn_class[1];
+					var is_submit = btn_name == 'submit';
 					buttons.push({
 						id: btn_name,
 						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
-						cssClass: btn_name == 'submit' ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
+						cssClass: is_submit ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
+						hotkey: is_submit ? 13 : undefined, // Enter.
 						action: submit(btn_name)
 					});
 				}
