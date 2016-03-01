@@ -8,72 +8,72 @@ if(isset($error))
 ?>
 <?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
 
-<div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('reports_date_range'), 'report_date_range_label', array('class'=>'control-label col-xs-1 required')); ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('reports_date_range'), 'report_date_range_label', array('class'=>'control-label col-xs-2 required')); ?>
 
-	<div class="col-xs-4">
-		<div class="radio">
-			<label>
-				<input type="radio" name="report_type" id="simple_radio" value='simple' checked='checked'/>
-				<?php echo form_dropdown('report_date_range_simple',$report_date_range_simple, '', 'id="report_date_range_simple" class="form-control"'); ?>
-			</label>
-		</div>
-		<div class="radio">
-			<label>
-				<input type="radio" name="report_type" id="complex_radio" value='complex' />
-				<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?></label>
+		<div class="col-xs-4">
+			<div class="radio">
+				<label>
+					<input type="radio" name="report_type" id="simple_radio" value='simple' checked='checked'/>
+					<?php echo form_dropdown('report_date_range_simple',$report_date_range_simple, '', 'id="report_date_range_simple" class="form-control"'); ?>
+				</label>
+			</div>
+			<div class="radio">
+				<label>
+					<input type="radio" name="report_type" id="complex_radio" value='complex' />
+					<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?></label>
+			</div>
 		</div>
 	</div>
-</div>
-
+	
 <?php
-if($mode == 'sale')
-{
+	if($mode == 'sale')
+	{
 ?>
-<div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required control-label col-xs-1')); ?>
-	<div id='report_sale_type' class="col-xs-4">
-		<?php echo form_dropdown('sale_type', array('all' => $this->lang->line('reports_all'),
-		'sales' => $this->lang->line('reports_sales'),
-		'returns' => $this->lang->line('reports_returns')), 'all', 'id="input_type" class="form-control"'); ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required control-label col-xs-2')); ?>
+		<div id='report_sale_type' class="col-xs-3">
+			<?php echo form_dropdown('sale_type', array('all' => $this->lang->line('reports_all'),
+			'sales' => $this->lang->line('reports_sales'),
+			'returns' => $this->lang->line('reports_returns')), 'all', 'id="input_type" class="form-control"'); ?>
+		</div>
 	</div>
-</div>
 <?php
 }
 elseif($mode == 'receiving')
 {
 ?>
-<div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required control-label col-xs-2')); ?>
-	<div id='report_receiving_type' class="col-xs-4">
-		<?php echo form_dropdown('receiving_type', array('all' => $this->lang->line('reports_all'),
-			'receiving' => $this->lang->line('reports_receivings'),
-			'returns' => $this->lang->line('reports_returns'),
-			'requisitions' => $this->lang->line('reports_requisitions')), 'all', 'id="input_type" class="form-control"'); ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required control-label col-xs-2')); ?>
+		<div id='report_receiving_type' class="col-xs-3">
+			<?php echo form_dropdown('receiving_type', array('all' => $this->lang->line('reports_all'),
+				'receiving' => $this->lang->line('reports_receivings'),
+				'returns' => $this->lang->line('reports_returns'),
+				'requisitions' => $this->lang->line('reports_requisitions')), 'all', 'id="input_type" class="form-control"'); ?>
+		</div>
 	</div>
-</div>
 <?php
 }
 if (!empty($stock_locations) && count($stock_locations) > 1)
 {
 ?>
-<div class="form-group form-group-sm">
-	<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
-	<div id='report_stock_location' class="col-xs-4">
-		<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
+		<div id='report_stock_location' class="col-xs-3">
+			<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
+		</div>
 	</div>
-</div>
 <?php
 }
 ?>
 
 <?php
-echo form_button(array(
-	'name'=>'generate_report',
-	'id'=>'generate_report',
-	'content'=>$this->lang->line('common_submit'),
-	'class'=>'btn btn-primary btn-sm')
-);
+	echo form_button(array(
+		'name'=>'generate_report',
+		'id'=>'generate_report',
+		'content'=>$this->lang->line('common_submit'),
+		'class'=>'btn btn-primary btn-sm')
+	);
 ?>
 
 <?php echo form_close(); ?>
@@ -91,8 +91,9 @@ $(document).ready(function()
 		startDate: "<?php echo date($this->config->item('dateformat'), time());?>",
 		endDate: "<?php echo date($this->config->item('dateformat'), time());?>"
 	}).on('apply.daterangepicker', function(ev, picker) {
-		start_date = picker.startDate.format('MM-DD-YYYY');
-		end_date = picker.endDate.format('MM-DD-YYYY');
+		$("#complex_radio").attr("checked", "checked");
+		start_date = picker.startDate.format('YYYY-MM-DD');
+		end_date = picker.endDate.format('YYYY-MM-DD');
 	});
 
 	$("#generate_report").click(function()
@@ -121,12 +122,7 @@ $(document).ready(function()
 		}
 		window.location = location;
 	});
-	
-	$("#start_month, #start_day, #start_year, #end_month, #end_day, #end_year").click(function()
-	{
-		$("#complex_radio").attr('checked', 'checked');
-	});
-	
+
 	$("#report_date_range_simple").click(function()
 	{
 		$("#simple_radio").attr('checked', 'checked');
