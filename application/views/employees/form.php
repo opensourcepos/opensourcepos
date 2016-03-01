@@ -122,6 +122,7 @@
 //validation and submit handling
 $(document).ready(function()
 {
+	$.validator.setDefaults({ ignore: [] });
 
 	$.validator.addMethod("module", function (value, element) {
 		var result = true;
