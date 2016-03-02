@@ -78,6 +78,7 @@ $lang["sales_price"] = "Harga";
 $lang["sales_print_after_sale"] = "Cetak Faktur setelah penjualan";
 $lang["sales_quantity"] = "Jumlah.";
 $lang["sales_quantity_less_than_zero"] = "Peringatan!... Stok Inventori Kosong. Proses penjualan masih dapat dilanjutkan, Periksa Inventori.";
+$lang["sales_quantity_less_than_reorder_level"] = "Peringatan!... Stok Inventori Kosong.";
 $lang["sales_receipt"] = "Faktur Penjualan";
 $lang["sales_receipt_number"] = "POS #";
 $lang["sales_register"] = "Transaksi Penjualan";

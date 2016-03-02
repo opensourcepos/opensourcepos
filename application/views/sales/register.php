@@ -9,7 +9,7 @@ if (isset($error))
 	echo "<div class='error_message'>".$error."</div>";
 }
 
-if (isset($warning))
+if (!empty($warning))
 {
 	echo "<div class='warning_mesage'>".$warning."</div>";
 }

@@ -78,6 +78,7 @@ $lang["sales_price"] = "ราคา";
 $lang["sales_print_after_sale"] = "พิมพ์บิลหลังการขาย";
 $lang["sales_quantity"] = "จำนวน";
 $lang["sales_quantity_less_than_zero"] = "คำเตือน ถ้าจำนวนของไม่เพียงพอกับความต้องการหรือไม่ตรงกับยอดในบันชี ก็สามารถทำการขายได้ แต่ต้องเชคปริมานสินค้าคงคลัง";
+$lang["sales_quantity_less_than_reorder_level"] = "คำเตือน ถ้าจำนวนของไม่เพียงพอกับความต้องการหรือไม่ตรงกับยอดในบันชี ก็สามารถทำการขายได้ แต่ต้องเชคปริมานสินค้าคงคลัง";
 $lang["sales_receipt"] = "บิลขาย";
 $lang["sales_receipt_number"] = "จุดขาย#";
 $lang["sales_register"] = "ลงทะเบียนขาย";

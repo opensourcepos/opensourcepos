@@ -78,6 +78,7 @@ $lang["sales_price"] = "цена";
 $lang["sales_print_after_sale"] = "Распечатать квитанцию ​​после продажи";
 $lang["sales_quantity"] = "Кол-во.";
 $lang["sales_quantity_less_than_zero"] = "Внимание Желаемое количество является недостаточным. Вы все еще можете обрабатывать продажи, но проверить ваш инвентарь";
+$lang["sales_quantity_less_than_reorder_level"] = "Внимание Желаемое количество является недостаточным.";
 $lang["sales_receipt"] = "товарный чек";
 $lang["sales_receipt_number"] = "POS #";
 $lang["sales_register"] = "Продажи журнала";

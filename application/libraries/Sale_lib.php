@@ -343,16 +343,19 @@ class Sale_lib
             return false;
         }
 
-		
+		$item_info = $this->CI->Item->get_info($item_id);
 		//$item = $this->CI->Item->get_info($item_id);
 		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id,$item_location)->quantity;
 		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
-		
+
 		if ($item_quantity - $quantity_added < 0)
 		{
-			return true;
+			return $this->CI->lang->line('sales_quantity_less_than_zero');
 		}
-		
+		else if ($item_quantity - $quantity_added < $item_info->reorder_level)
+		{
+			return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
+		}
 		return false;
 	}
 	

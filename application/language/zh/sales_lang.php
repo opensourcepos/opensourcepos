@@ -78,6 +78,7 @@ $lang["sales_price"] = "價格";
 $lang["sales_print_after_sale"] = "出貨時打印收據";
 $lang["sales_quantity"] = "數量.";
 $lang["sales_quantity_less_than_zero"] = "警告！產品的庫存數量是不足的。您仍然可以處理銷售，但檢查您的庫存";
+$lang["sales_quantity_less_than_reorder_level"] = "警告！產品的庫存數量是不足的。您仍然可以處理銷售，但檢查您的庫存";
 $lang["sales_receipt"] = "銷貨單";
 $lang["sales_receipt_number"] = "POS #";
 $lang["sales_register"] = "銷售登記";
