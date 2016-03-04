@@ -49,7 +49,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control'));?>
+				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'required form-control'));?>
 			</div>
 		</div>
 
@@ -141,7 +141,7 @@
 					<?php echo form_input(array(
 							'name'=>$key.'_quantity',
 							'id'=>$key.'_quantity',
-							'class'=>'quantity form-control',
+							'class'=>'required quantity form-control',
 							'value'=>isset($item_info->item_id)?$location_detail['quantity']:0)
 							);?>
 				</div>
@@ -151,12 +151,12 @@
 		?>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-2'>
 				<?php echo form_input(array(
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
-						'class'=>'form-control input-sm',
+						'class'=>'required form-control input-sm',
 						'value'=>$item_info->receiving_quantity)
 						);?>
 			</div>
@@ -169,7 +169,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
-						'value'=>!isset($item_info->item_id)?0:$item_info->reorder_level)
+						'value'=>!isset($item_info->item_id) ? 0 : $item_info->reorder_level)
 						);?>
 			</div>
 		</div>
@@ -185,17 +185,43 @@
 						);?>
 			</div>
 		</div>
-
+		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_image'), 'item_image', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
-				<label class="file">
-					<input type="file" id="item_image">
-					<span class="file-custom"></span>
-				</label>
+			<div class='col-xs-8'>
+				<div class="fileinput fileinput-new input-group" data-provides="fileinput">
+					<div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span></div>
+					<span class="input-group-addon input-sm btn btn-default btn-file"><span class="fileinput-new"><?php echo $this->lang->line("common_import_select_file"); ?></span><span class="fileinput-exists"><?php echo $this->lang->line("common_import_change_file"); ?></span><input type="file" id="item_image" name="item_image" accept="image/*"></span>
+					<a href="#" class="input-group-addon input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("common_import_remove_file"); ?></a>
+				</div>
 			</div>
 		</div>
 
+<?php
+/*
+		<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('items_image'), 'items_image', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<div class="fileinput fileinput-new" data-provides="fileinput">
+					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;">	
+						<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('items_image'); ?>" 
+							src="<?php isset($item_info->pic_id) ? base_url('uploads/item_pics/') . '/' . $item_info->pic_id : ''?>" 
+							style="max-height: 100%; max-width: 100%;">
+					</div>
+					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;"></div>
+					<div>
+						<span class="btn btn-default btn-sm btn-file">
+							<span class="fileinput-new"><?php echo $this->lang->line("config_company_select_image"); ?></span>
+							<span class="fileinput-exists"><?php echo $this->lang->line("config_company_change_image"); ?></span>
+							<input type="file" name="items_image">
+						</span>
+						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("config_company_remove_image"); ?></a>
+					</div>
+				</div>
+			</div>
+		</div>
+*/
+?>		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
