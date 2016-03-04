@@ -60,6 +60,7 @@ class Config extends Secure_area
 		$success = $upload_success && $result ? true : false;
 		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : $this->upload->display_errors();
+
 		echo json_encode(array('success'=>$success,'message'=>$message));
 	}
 	
@@ -168,12 +169,14 @@ class Config extends Secure_area
 		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;
+
     	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
     
-    function _handle_logo_upload()
+    private function _handle_logo_upload()
     {
     	$this->load->helper('directory');
+
     	// load upload library
     	$config = array('upload_path' => './uploads/',
     			'allowed_types' => 'gif|jpg|png',
@@ -183,6 +186,7 @@ class Config extends Secure_area
     			'file_name' => 'company_logo');
     	$this->load->library('upload', $config);
     	$this->upload->do_upload('company_logo');
+
     	return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
     }
     

@@ -37,12 +37,12 @@ class Items extends Secure_area implements iData_controller
 		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
 
 		$this->load->view('items/manage', $data);
-
 	}
 
 	function find_item_info()
 	{
 		$item_number = $this->input->post('scan_item_number');
+
 		echo json_encode($this->Item->find_item_info($item_number));
 	}
 
@@ -80,8 +80,6 @@ class Items extends Secure_area implements iData_controller
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
 		$data_rows = get_items_manage_table_data_rows($items, $this);
-
-		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
 
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
@@ -262,30 +260,29 @@ class Items extends Secure_area implements iData_controller
 		$data_row = get_item_data_row($item_info,$this);
 		
 		echo $data_row;
-
 	}
 
 	function view($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
-		$data['item_tax_info']=$this->Item_taxes->get_info($item_id);
+		$data['item_info'] = $this->Item->get_info($item_id);
+		$data['item_tax_info'] = $this->Item_taxes->get_info($item_id);
 		$suppliers = array('' => $this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
 
-		$data['suppliers']=$suppliers;
+		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
-		$data['default_tax_1_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
-		$data['default_tax_2_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
+		$data['default_tax_1_rate'] = ($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
+		$data['default_tax_2_rate'] = ($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
         
         $locations_data = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($locations_data as $location)
         {
            $quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
            $quantity = ($item_id == -1) ? null: $quantity;
-           $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
+           $location_array[$location['location_id']] = array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
            $data['stock_locations'] = $location_array;
         }
 
@@ -354,9 +351,9 @@ class Items extends Secure_area implements iData_controller
 			}
 		}
 		$data['items'] = $result;
+
 		// display barcodes
 		$this->load->view("barcode_sheet", $data);
-
 	}
 
 	function bulk_edit()
@@ -385,6 +382,7 @@ class Items extends Secure_area implements iData_controller
 	{
 		$upload_success = $this->_handle_image_upload();
 		$upload_data = $this->upload->data();
+
 		//Save item data
 		$item_data = array(
 			'name'=>$this->input->post('name'),
@@ -492,13 +490,16 @@ class Items extends Secure_area implements iData_controller
 	function check_item_number()
 	{
 		$exists = $this->Item->item_number_exists($this->input->post('item_number'),$this->input->post('item_id'));
+
 		echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('items_item_number_duplicate')));
 	}
 	
-	function _handle_image_upload()
+	private function _handle_image_upload()
 	{
 		$this->load->helper('directory');
+
 		$map = directory_map('./uploads/item_pics/', 1);
+
 		// load upload library
 		$config = array('upload_path' => './uploads/item_pics/',
 				'allowed_types' => 'gif|jpg|png',
@@ -509,9 +510,7 @@ class Items extends Secure_area implements iData_controller
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');           
 		
-		return strlen($this->upload->display_errors()) == 0 || 
-            	!strcmp($this->upload->display_errors(), 
-            		'<p>'.$this->lang->line('upload_no_file_selected').'</p>');
+		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
 	
 	function save_inventory($item_id=-1)
