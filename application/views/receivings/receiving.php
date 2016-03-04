@@ -61,7 +61,7 @@ if (isset($error))
 			</div>
 
 			<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'), 
-					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-submit modal-btn-new', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
+					array('class'=>'btn btn-info btn-sm pull-right modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
 		</div>
 	<?php echo form_close(); ?>
 	

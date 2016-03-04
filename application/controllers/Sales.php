@@ -449,7 +449,6 @@ class Sales extends Secure_area
 			}
 			$this->sale_lib->clear_all();
 		}
-
 	}
 	
 	private function _invoice_email_pdf($data)
@@ -751,7 +750,6 @@ class Sales extends Secure_area
 		$data['payments_cover_total'] = $this->_payments_cover_total();
 
 		$this->load->view("sales/register", $data);
-
 	}
 
 	function cancel_sale()
