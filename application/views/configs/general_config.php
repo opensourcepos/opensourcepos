@@ -126,7 +126,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_default_tax_rate_2'), 'default_tax_1_rate', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_default_tax_rate_2'), 'default_tax_2_rate', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name'=>'default_tax_2_name',
