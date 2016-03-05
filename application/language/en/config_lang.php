@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "Tax 1 Rate";
 $lang["config_default_tax_rate_2"] = "Tax 2 Rate";
 $lang["config_default_tax_rate_number"] = "The default tax rate must be a number";
 $lang["config_default_tax_rate_required"] = "The default tax rate is a required field";
+$lang["config_default_tax_name_required"] = "The default tax name is a required field";
 $lang["config_fax"] = "Fax";
 $lang["config_general_configuration"] = "General Configuration";
 $lang["config_info"] = "Store Configuration Information";

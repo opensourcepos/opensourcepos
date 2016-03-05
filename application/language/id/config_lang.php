@@ -62,6 +62,7 @@ $lang["config_default_barcode_width_required"] = "The default barcode width is a
 $lang["config_default_sales_discount"] = "Default Sales Discount %";
 $lang["config_default_sales_discount_number"] = "The default sales discount must be a number";
 $lang["config_default_sales_discount_required"] = "The default sales discount is a required field";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_default_tax_rate"] = "Tarif Pajak Biasa%";
 $lang["config_default_tax_rate_1"] = "Tarif Pajak 1";
 $lang["config_default_tax_rate_2"] = "Tarif Pajak 2";

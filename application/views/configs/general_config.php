@@ -388,11 +388,12 @@ $(document).ready(function()
 			company: "required",
 			address: "required",
 			phone: "required",
-    		default_tax_rate:
+    		default_tax_1_rate:
     		{
     			required: true,
     			number: true
     		},
+			default_tax_1_name: "required",
     		email: "email",
     		return_policy: "required",
     		lines_per_page:
@@ -412,10 +413,15 @@ $(document).ready(function()
 			company: "<?php echo $this->lang->line('config_company_required'); ?>",
 			address: "<?php echo $this->lang->line('config_address_required'); ?>",
 			phone: "<?php echo $this->lang->line('config_phone_required'); ?>",
-			default_tax_rate:
+			default_tax_1_rate:
 			{
 				required: "<?php echo $this->lang->line('config_default_tax_rate_required'); ?>",
 				number: "<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
+			},
+			default_tax_1_name:
+			{
+				required: "<?php echo $this->lang->line('config_default_tax_name_required'); ?>",
+				number: "<?php echo $this->lang->line('config_default_tax_name_number'); ?>"
 			},
 			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
 			return_policy: "<?php echo $this->lang->line('config_return_policy_required'); ?>",

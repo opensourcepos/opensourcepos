@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "ставка налога 1";
 $lang["config_default_tax_rate_2"] = "ставка налога 2";
 $lang["config_default_tax_rate_number"] = "Обычный ставка налога должен быть цифра";
 $lang["config_default_tax_rate_required"] = "Обычный ставка налога обязательный пробел";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "Факс";
 $lang["config_general_configuration"] = "General Configuration";
 $lang["config_info"] = "информация о магазин конфигурация";

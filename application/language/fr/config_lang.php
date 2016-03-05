@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "Taux d\'Imposition 1";
 $lang["config_default_tax_rate_2"] = "Taux d\'Imposition 2";
 $lang["config_default_tax_rate_number"] = "Le taux d\'imposition doit etre un nombre";
 $lang["config_default_tax_rate_required"] = "Le taux d\'imposition par défaut est requis";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "Fax";
 $lang["config_general_configuration"] = "General Configuration";
 $lang["config_info"] = "Çonfiguration de l\'Entreprise";

@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "稅率 1";
 $lang["config_default_tax_rate_2"] = "稅率 2";
 $lang["config_default_tax_rate_number"] = "預設稅率必需為數字";
 $lang["config_default_tax_rate_required"] = "預設稅率為必填";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "傳真";
 $lang["config_general_configuration"] = "General Configuration";
 $lang["config_info"] = "儲存組態";

@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "VAT 1 %";
 $lang["config_default_tax_rate_2"] = "VAT 2 %";
 $lang["config_default_tax_rate_number"] = "Het percentage VAT moet een nummer zijn";
 $lang["config_default_tax_rate_required"] = "Het percentage VAT moet ingevuld worden";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "Fax";
 $lang["config_general_configuration"] = "Algemene Instellingen";
 $lang["config_info"] = "Systeeminstellingen";

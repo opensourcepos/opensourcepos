@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "อัตราภาษี 1";
 $lang["config_default_tax_rate_2"] = "อัตราภาษี 2";
 $lang["config_default_tax_rate_number"] = "อัตราภาษีเริ่มต้นต้องเป็นตัวเลข";
 $lang["config_default_tax_rate_required"] = "อัตราภาษีเริ่มต้นต้องกรอก";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "แฟ็กซ์";
 $lang["config_general_configuration"] = "ตั้งค่าทั่วไป";
 $lang["config_info"] = "ข้อมูลร้านค้า";

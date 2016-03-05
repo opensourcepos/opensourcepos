@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "Impuesto 1";
 $lang["config_default_tax_rate_2"] = "Impuesto 2";
 $lang["config_default_tax_rate_number"] = "El Impuesto Predeterminado debe ser un número";
 $lang["config_default_tax_rate_required"] = "El Impuesto Predeterminado es requerido";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "Fax";
 $lang["config_general_configuration"] = "Configuración General ";
 $lang["config_info"] = "Información del Comercio";

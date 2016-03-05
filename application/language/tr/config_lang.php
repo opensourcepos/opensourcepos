@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "Vergi Oranı 1";
 $lang["config_default_tax_rate_2"] = "Vergi Oranı 2";
 $lang["config_default_tax_rate_number"] = "Varsayılan Vergi Oranı sayı olmalıdır";
 $lang["config_default_tax_rate_required"] = "Varsayılan Vergi Oranı zorunlu alandır";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "Faks";
 $lang["config_general_configuration"] = "General Configuration";
 $lang["config_info"] = "Mağaza yapılandırma bilgisi";

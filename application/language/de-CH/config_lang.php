@@ -67,6 +67,7 @@ $lang["config_default_tax_rate_1"] = "MWSt 1";
 $lang["config_default_tax_rate_2"] = "MWSt 2";
 $lang["config_default_tax_rate_number"] = "MWSt Rate";
 $lang["config_default_tax_rate_required"] = "MWSt ist erforderlich";
+$lang["config_default_tax_name_required"] = "";
 $lang["config_fax"] = "Fax";
 $lang["config_general_configuration"] = "Einstellungen";
 $lang["config_info"] = "Systemeinstellungen";
