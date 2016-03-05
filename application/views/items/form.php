@@ -47,9 +47,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control'));?>
+				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'required form-control'));?>
 			</div>
 		</div>
 
@@ -196,16 +196,14 @@
 				</div>
 			</div>
 		</div>
-
-<?php
-/*
+<?php /*
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_image'), 'items_image', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="fileinput fileinput-new" data-provides="fileinput">
 					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;">	
 						<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('items_image'); ?>" 
-							src="<?php isset($item_info->pic_id) ? base_url('uploads/item_pics/') . '/' . $item_info->pic_id : ''?>" 
+							src="<?php if($item_info->pic_id != null) echo base_url('uploads/item_pics/') . '/' . $item_info->pic_id . '.png'; else echo '';?>" 
 							style="max-height: 100%; max-width: 100%;">
 					</div>
 					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;"></div>
@@ -220,8 +218,7 @@
 				</div>
 			</div>
 		</div>
-*/
-?>		
+*/ ?>	
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
@@ -289,13 +286,11 @@
 	//validation and submit handling
 	$(document).ready(function()
 	{
-		$("#continue").click(function()
-		{
+		$("#continue").click(function() {
 			stay_open = true;
 		});
 
-		$("#submit").click(function()
-		{
+		$("#submit").click(function() {
 			stay_open = false;
 		});
 
@@ -310,37 +305,31 @@
 		}
 		?>
 
-		$.validator.addMethod("item_number", function(value, element)
-		{
-			return JSON.parse($.ajax(
-				{
-					type: 'POST',
-					url: '<?php echo site_url($controller_name . "/check_item_number")?>',
-					data: {'item_id' : '<?php echo $item_info->item_id; ?>', 'item_number' : $(element).val() },
-					success: function(response)
-					{
-						success=response.success;
-					},
-					async:false,
-					dataType: 'json'
-				}).responseText).success;
-
+		$.validator.addMethod("item_number", function(value, element) {
+			return JSON.parse($.ajax({
+				type: 'POST',
+				url: '<?php echo site_url($controller_name . "/check_item_number")?>',
+				data: {'item_id' : '<?php echo $item_info->item_id; ?>', 'item_number' : $(element).val() },
+				success: function(response) {
+					success = response.success;
+				},
+				async: false,
+				dataType: 'json'
+			}).responseText).success;
 		}, '<?php echo $this->lang->line("items_item_number_duplicate"); ?>');
 
 		$('#item_form').validate($.extend({
-			submitHandler:function(form, event)
-			{
+			submitHandler: function(form, event) {
 				$(form).ajaxSubmit({
-					success:function(response)
-					{
+					success: function(response) {
 						var stay_open = dialog_support.clicked_id() != 'submit';
-						if (stay_open) 
+						if (stay_open)
 						{
 							// set action of item_form to url without item id, so a new one can be created
 							$("#item_form").attr("action", "<?php echo site_url("items/save/")?>");
 							// use a whitelist of fields to minimize unintended side effects
-							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' + 
-									'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');  
+							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' +
+								'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');
 							// de-select any checkboxes, radios and drop-down menus
 							$(':input', '#item_form').not('#item_category_id').removeAttr('checked').removeAttr('selected');
 						}
@@ -348,16 +337,19 @@
 						{
 							dialog_support.hide();
 						}
-						post_item_form_submit(response, stay_open);	
+						post_item_form_submit(response, stay_open);
 					},
-					dataType:'json'
+					dataType: 'json'
 				});
 			},
 			rules:
 			{
 				name:"required",
 				category:"required",
-				item_number: { item_number: true },
+				item_number:
+				{
+					item_number: true
+				},
 				cost_price:
 				{
 					required:true,
@@ -378,7 +370,6 @@
 					required:true,
 					number:true
 				}
-
 			},
 			messages:
 			{
