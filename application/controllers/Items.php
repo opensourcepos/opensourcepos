@@ -444,7 +444,7 @@ class Items extends Secure_area implements iData_controller
             $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
             foreach($stock_locations as $location_data)
             {
-                $updated_quantity = $this->input->post($location_data['location_id'].'_quantity');
+                $updated_quantity = $this->input->post('quantity_' . $location_data['location_id']);
                 $location_detail = array('item_id'=>$item_id,
                                         'location_id'=>$location_data['location_id'],
                                         'quantity'=>$updated_quantity);  

@@ -47,9 +47,9 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'required form-control'));?>
+				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control')); ?>
 			</div>
 		</div>
 
@@ -135,14 +135,14 @@
 		?>
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] ,
-					$key.'_quantity',
+					'quantity_' . $key,
 					array('class'=>'required control-label col-xs-3')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
-							'name'=>$key.'_quantity',
-							'id'=>$key.'_quantity',
+							'name'=>'quantity_' . $key,
+							'id'=>'quantity_' . $key,
 							'class'=>'required quantity form-control',
-							'value'=>isset($item_info->item_id)?$location_detail['quantity']:0)
+							'value'=>isset($item_info->item_id) ? $location_detail['quantity'] : 0)
 							);?>
 				</div>
 			</div>
@@ -226,7 +226,7 @@
 						'name'=>'allow_alt_description',
 						'id'=>'allow_alt_description',
 						'value'=>1,
-						'checked'=>($item_info->allow_alt_description)? 1 : 0)
+						'checked'=>($item_info->allow_alt_description) ? 1 : 0)
 						);?>
 			</div>
 		</div>
@@ -238,7 +238,7 @@
 						'name'=>'is_serialized',
 						'id'=>'is_serialized',
 						'value'=>1,
-						'checked'=>($item_info->is_serialized)? 1 : 0)
+						'checked'=>($item_info->is_serialized) ? 1 : 0)
 						);?>
 			</div>
 		</div>
@@ -250,7 +250,7 @@
 						'name'=>'is_deleted',
 						'id'=>'is_deleted',
 						'value'=>1,
-						'checked'=>($item_info->deleted)? 1 : 0)
+						'checked'=>($item_info->deleted) ? 1 : 0)
 						);?>
 			</div>
 		</div>
@@ -348,7 +348,7 @@
 				category:"required",
 				item_number:
 				{
-					item_number: true
+					item_number:true
 				},
 				cost_price:
 				{
@@ -360,12 +360,29 @@
 					required:true,
 					number:true
 				},
-				tax_percent:
+				<?php
+				foreach($stock_locations as $key=>$location_detail)
+				{
+				?>
+					<?php echo 'quantity_' . $key ?>:
+					{
+						required:true,
+						number:true
+					},
+				<?php
+				}
+				?>
+				receiving_quantity:
 				{
 					required:true,
 					number:true
 				},
 				reorder_level:
+				{
+					required:true,
+					number:true
+				},
+				tax_percent:
 				{
 					required:true,
 					number:true
@@ -385,15 +402,32 @@
 					required:"<?php echo $this->lang->line('items_unit_price_required'); ?>",
 					number:"<?php echo $this->lang->line('items_unit_price_number'); ?>"
 				},
-				tax_percent:
+				<?php
+				foreach($stock_locations as $key=>$location_detail)
 				{
-					required:"<?php echo $this->lang->line('items_tax_percent_required'); ?>",
-					number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
+				?>
+					<?php echo 'quantity_' . $key ?>:
+					{
+						required:"<?php echo $this->lang->line('items_quantity_required'); ?>",
+						number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
+					},
+				<?php
+				}
+				?>
+				receiving_quantity:
+				{
+					required:"<?php echo $this->lang->line('items_quantity_required'); ?>",
+					number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
 				},
 				reorder_level:
 				{
 					required:"<?php echo $this->lang->line('items_reorder_level_required'); ?>",
 					number:"<?php echo $this->lang->line('items_reorder_level_number'); ?>"
+				},
+				tax_percent:
+				{
+					required:"<?php echo $this->lang->line('items_tax_percent_required'); ?>",
+					number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
 				}
 			}
 		}, dialog_support.error));
