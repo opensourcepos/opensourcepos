@@ -330,23 +330,17 @@
 		$('#item_form').validate($.extend({
 			submitHandler:function(form, event)
 			{
-				var stay_open = dialog_support.clicked_id() != 'submit';
-				var $form = $(form);
-
-				$.ajax({
-					type: $form.attr('method'),
-					url: $form.attr('action'),
-					data: $form.serialize(),
-					dataType: 'json',
-
-					success: function(response, status) {
-						if (stay_open)
+				$(form).ajaxSubmit({
+					success:function(response)
+					{
+						var stay_open = dialog_support.clicked_id() != 'submit';
+						if (stay_open) 
 						{
 							// set action of item_form to url without item id, so a new one can be created
 							$("#item_form").attr("action", "<?php echo site_url("items/save/")?>");
 							// use a whitelist of fields to minimize unintended side effects
-							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' +
-								'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');
+							$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' + 
+									'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');  
 							// de-select any checkboxes, radios and drop-down menus
 							$(':input', '#item_form').not('#item_category_id').removeAttr('checked').removeAttr('selected');
 						}
@@ -354,10 +348,10 @@
 						{
 							dialog_support.hide();
 						}
-						post_item_form_submit(response, stay_open);
-					}
+						post_item_form_submit(response, stay_open);	
+					},
+					dataType:'json'
 				});
-				event.preventDefault();
 			},
 			rules:
 			{
