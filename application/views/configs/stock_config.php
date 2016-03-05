@@ -109,17 +109,35 @@ $(document).ready(function()
 
 		rules: 
 		{
-    		stock_location:
+			<?php
+			$i = 0;
+
+			foreach($stock_locations as $location=>$location_data)
 			{
-        		required: true,
-				stock_location: true,
-				valid_chars: true
-    		}
+			?>
+				<?php echo 'stock_location_' . ++$i ?>:
+				{
+					required: true,
+					stock_location: true,
+					valid_chars: true
+				},
+			<?php
+			}
+			?>
    		},
 
 		messages: 
 		{
-     		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>"
+			<?php
+			$i = 0;
+
+			foreach($stock_locations as $location=>$location_data)
+			{
+			?>
+				<?php echo 'stock_location_' . ++$i ?>: "<?php echo $this->lang->line('config_stock_location_required'); ?>",
+			<?php
+			}
+			?>
 		}
 	});
 });

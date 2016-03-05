@@ -342,6 +342,7 @@
 					dataType: 'json'
 				});
 			},
+
 			rules:
 			{
 				name:"required",
@@ -388,6 +389,7 @@
 					number:true
 				}
 			},
+
 			messages:
 			{
 				name:"<?php echo $this->lang->line('items_name_required'); ?>",
