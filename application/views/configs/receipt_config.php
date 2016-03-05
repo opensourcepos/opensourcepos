@@ -121,7 +121,7 @@
 							'max'=>'20',
 							'name'=>'print_top_margin',
 							'id'=>'print_top_margin',
-							'class'=>'form-control input-sm',
+							'class'=>'form-control input-sm required',
 							'value'=>$this->config->item('print_top_margin')));?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -138,7 +138,7 @@
 							'max'=>'20',
 							'name'=>'print_left_margin',
 							'id'=>'print_left_margin',
-							'class'=>'form-control input-sm',
+							'class'=>'form-control input-sm required',
 							'value'=>$this->config->item('print_left_margin')));?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -155,7 +155,7 @@
 							'max'=>'20',
 							'name'=>'print_bottom_margin',
 							'id'=>'print_bottom_margin',
-							'class'=>'form-control input-sm',
+							'class'=>'form-control input-sm required',
 							'value'=>$this->config->item('print_bottom_margin')));?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -172,7 +172,7 @@
 						'max'=>'20',
 						'name'=>'print_right_margin',
 						'id'=>'print_right_margin',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('print_right_margin')));?>
 						<span class="input-group-addon input-sm">px</span>
 					</div>
@@ -233,33 +233,39 @@ $(document).ready(function()
 	var dialog_confirmed = window.jsPrintSetup;
 			
 	$('#receipt_config_form').validate({
-		submitHandler:function(form)
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-			beforeSerialize: function(arr, $form, options) {
-				dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>');
-				$("input:disabled, textarea:disabled").prop("disabled", false); 
-				return dialog_confirmed;
-			},
-			success:function(response)
-			{
-				if(response.success)
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-				}
-				else
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-				}
-				// set back disabled state
-				enable_disable_use_invoice_template();
-			},
-			dataType:'json'
-		});
-
+				beforeSerialize: function(arr, $form, options) {
+					dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>');
+					$("input:disabled, textarea:disabled").prop("disabled", false); 
+					return dialog_confirmed;
+				},
+				success: function(response) {
+					if(response.success)
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
+					}
+					else
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
+					}
+					// set back disabled state
+					enable_disable_use_invoice_template();
+				},
+				dataType:'json'
+			});
 		},
+
+		errorClass: "has-error",
 		errorLabelContainer: "#receipt_error_message_box",
- 		wrapper: "li",
+		wrapper: "li",
+		highlight: function (e)	{
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		},
+
 		rules: 
 		{
 			print_top_margin:
@@ -283,6 +289,7 @@ $(document).ready(function()
     			number:true
     		}    		
    		},
+
 		messages: 
 		{
 			print_top_margin:

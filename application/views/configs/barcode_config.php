@@ -22,7 +22,7 @@
                     'type'=>'number',
                     'name'=>'barcode_quality',
                     'id'=>'barcode_quality',
-                    'class'=>'form-control input-sm',
+                    'class'=>'form-control input-sm required',
                     'value'=>$this->config->item('barcode_quality')));?>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     'type'=>'number',
                     'name'=>'barcode_width',
                     'id'=>'barcode_width',
-                    'class'=>'form-control input-sm',
+                    'class'=>'form-control input-sm required',
                     'value'=>$this->config->item('barcode_width')));?>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     'max' => 120,
                     'name'=>'barcode_height',
                     'id'=>'barcode_height',
-                    'class'=>'form-control input-sm',
+                    'class'=>'form-control input-sm required',
                     'value'=>$this->config->item('barcode_height')));?>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 <div class='col-sm-2'>
                 <?php echo form_dropdown('barcode_font', 
                     $this->barcode_lib->listfonts("fonts"),
-                    $this->config->item('barcode_font'), array('class'=>'form-control input-sm'));
+                    $this->config->item('barcode_font'), array('class'=>'form-control input-sm required'));
                     ?>
                 </div>
                 <div class="col-sm-2">
@@ -71,7 +71,7 @@
                         'max' => '30',
                         'name'=>'barcode_font_size',
                         'id'=>'barcode_font_size',
-                        'class'=>'form-control input-sm',
+                        'class'=>'form-control input-sm required',
                         'value'=>$this->config->item('barcode_font_size')));?>
                 </div>
             </div>
@@ -158,7 +158,7 @@
                 <?php echo form_input(array(
                     'name'=>'barcode_num_in_row',
                     'id'=>'barcode_num_in_row',
-                    'class'=>'form-control input-sm',
+                    'class'=>'form-control input-sm required',
                     'value'=>$this->config->item('barcode_num_in_row')));?>
                 </div>
             </div>
@@ -170,7 +170,7 @@
                         <?php echo form_input(array(
                             'name'=>'barcode_page_width',
                             'id'=>'barcode_page_width',
-                            'class'=>'form-control input-sm',
+                            'class'=>'form-control input-sm required',
                             'value'=>$this->config->item('barcode_page_width')));?>
                         <span class="input-group-addon input-sm">%</span>
                     </div>
@@ -184,7 +184,7 @@
                         <?php echo form_input(array(
                             'name'=>'barcode_page_cellspacing',
                             'id'=>'barcode_page_cellspacing',
-                            'class'=>'form-control input-sm',
+                            'class'=>'form-control input-sm required',
                             'value'=>$this->config->item('barcode_page_cellspacing')));?>
                         <span class="input-group-addon input-sm">px</span>
                     </div>
@@ -210,26 +210,32 @@
 $(document).ready(function()
 {
     $('#barcode_config_form').validate({
-        submitHandler:function(form)
-        {
-            $(form).ajaxSubmit({
-            success:function(response)
-            {
-                if(response.success)
-                {
-                    set_feedback(response.message, 'alert alert-dismissible alert-success', false);     
-                }
-                else
-                {
-                    set_feedback(response.message, 'alert alert-dismissible alert-danger', true);        
-                }
-            },
-            dataType:'json'
-        });
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)	{
+					if(response.success)
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
+					}
+					else
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
+					}
+				},
+				dataType: 'json'
+			});
+		},
 
-        },
-        errorLabelContainer: "#barcode_error_message_box",
-        wrapper: "li",
+		errorClass: "has-error",
+		errorLabelContainer: "#barcode_error_message_box",
+		wrapper: "li",
+		highlight: function (e)	{
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		},
+
         rules: 
         {
             barcode_width: 
@@ -268,6 +274,7 @@ $(document).ready(function()
                 number:true
             }        
         },
+
         messages: 
         {
             barcode_width:

@@ -4,7 +4,7 @@
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-			<ul id="error_message_box" class="error_message_box"></ul>
+			<ul id="locale_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol', array('class'=>'control-label col-xs-2')); ?>
@@ -220,30 +220,37 @@
 $(document).ready(function()
 {
 	$('#locale_config_form').validate({
-		submitHandler:function(form)
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				if(response.success)
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-				}
-				else
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-				}
-			},
-			dataType:'json'
-		});
-
+				success: function(response)	{
+					if(response.success)
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
+					}
+					else
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
+					}
+				},
+				dataType: 'json'
+			});
 		},
-		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
+
+		errorClass: "has-error",
+		errorLabelContainer: "#locale_error_message_box",
+		wrapper: "li",
+		highlight: function (e)	{
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		},
+
 		rules: 
 		{
  		
    		},
+
 		messages: 
 		{
 

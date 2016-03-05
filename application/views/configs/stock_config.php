@@ -4,7 +4,7 @@
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-            <ul id="location_error_message_box" class="error_message_box"></ul>
+            <ul id="stock_error_message_box" class="error_message_box"></ul>
 
             <div id="stock_locations">
 				<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
@@ -30,8 +30,7 @@ $(document).ready(function()
 {
 	var location_count = <?php echo sizeof($stock_locations); ?>;
 
-	var hide_show_remove = function() 
-	{
+	var hide_show_remove = function() {
 		if ($("input[name*='stock_location']:enabled").length > 1)
 		{
 			$(".remove_stock_location").show();
@@ -42,8 +41,7 @@ $(document).ready(function()
 		}
 	};
 
-	var add_stock_location = function() 
-	{
+	var add_stock_location = function() {
 		var id = $(this).parent().find('input').attr('id');
 		id = id.replace(/.*?_(\d+)$/g, "$1");
 		var block = $(this).parent().clone(true);
@@ -54,14 +52,12 @@ $(document).ready(function()
 		hide_show_remove();
 	};
 
-	var remove_stock_location = function() 
-	{
+	var remove_stock_location = function() {
 		$(this).parent().remove();
 		hide_show_remove();
 	};
 
-	var init_add_remove_locations = function() 
-	{
+	var init_add_remove_locations = function() {
 		$('.add_stock_location').click(add_stock_location);
 		$('.remove_stock_location').click(remove_stock_location);
 		hide_show_remove();
@@ -70,8 +66,7 @@ $(document).ready(function()
 
 	var duplicate_found = false;
 	// run validator once for all fields
-	$.validator.addMethod('stock_location' , function(value, element) 
-	{
+	$.validator.addMethod('stock_location' , function(value, element) {
 		var value_count = 0;
 		$("input[name*='stock_location']").each(function() {
 			value_count = $(this).val() == value ? value_count + 1 : value_count; 
@@ -79,41 +74,49 @@ $(document).ready(function()
 		return value_count < 2;
     }, "<?php echo $this->lang->line('config_stock_location_duplicate'); ?>");
 
-    $.validator.addMethod('valid_chars', function(value, element)
-	{
+    $.validator.addMethod('valid_chars', function(value, element) {
 		return value.indexOf('_') === -1;
     }, "<?php echo $this->lang->line('config_stock_location_invalid_chars'); ?>");
 	
 	$('#location_config_form').validate({
-		submitHandler:function(form)
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				if(response.success)
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-				}
-				else
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-				}
-				$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
-			},
-			dataType:'json'
-		});
+				success: function(response)	{
+					if(response.success)
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
+					}
+					else
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
+					}
 
+					$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
+				},
+				dataType: 'json'
+			});
 		},
-		errorLabelContainer: "#location_error_message_box",
- 		wrapper: "li",
+
+		errorClass: "has-error",
+		errorLabelContainer: "#stock_error_message_box",
+		wrapper: "li",
+		highlight: function (e)	{
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		},
+
 		rules: 
 		{
-    		stock_location: {
-        		required:true,
+    		stock_location:
+			{
+        		required: true,
 				stock_location: true,
 				valid_chars: true
     		}
    		},
+
 		messages: 
 		{
      		stock_location:"<?php echo $this->lang->line('config_stock_location_required'); ?>"

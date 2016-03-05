@@ -4,7 +4,7 @@
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-			<ul id="error_message_box" class="error_message_box"></ul>
+			<ul id="general_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_company'), 'company', array('class'=>'control-label col-xs-2 required')); ?>
@@ -12,7 +12,7 @@
 					<?php echo form_input(array(
 						'name'=>'company',
 						'id'=>'company',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('company')));?>
 				</div>
 			</div>
@@ -40,12 +40,12 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_address'), 'address', array('class'=>'control-label col-xs-2  required')); ?>
+				<?php echo form_label($this->lang->line('config_address'), 'address', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea(array(
 						'name'=>'address',
 						'id'=>'address',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('address')));?>
 				</div>
 			</div>
@@ -74,12 +74,12 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_phone'), 'phone', array('class'=>'control-label col-xs-2  required')); ?>
+				<?php echo form_label($this->lang->line('config_phone'), 'phone', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_input(array(
 						'name'=>'phone',
 						'id'=>'phone',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('phone')));?>
 				</div>
 			</div>
@@ -96,12 +96,12 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('common_return_policy'), 'return_policy', array('class'=>'control-label col-xs-2  required')); ?>
+				<?php echo form_label($this->lang->line('common_return_policy'), 'return_policy', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-6'>
 					<?php echo form_textarea(array(
 						'name'=>'return_policy',
 						'id'=>'return_policy',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('return_policy')));?>
 				</div>
 			</div>
@@ -112,14 +112,14 @@
 					<?php echo form_input(array(
 						'name'=>'default_tax_1_name',
 						'id'=>'default_tax_1_name',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : $this->lang->line('items_sales_tax_1')));?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input(array(
 						'name'=>'default_tax_1_rate',
 						'id'=>'default_tax_1_rate',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'value'=>$this->config->item('default_tax_1_rate')));?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
@@ -156,13 +156,13 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount', array('class'=>'control-label col-xs-2  required')); ?>
+				<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
 						<?php echo form_input(array(
 							'name'=>'default_sales_discount',
 							'id'=>'default_sales_discount',
-							'class'=>'form-control input-sm',
+							'class'=>'form-control input-sm required',
 							'type'=>'number',
 							'min'=>0,
 							'max'=>100,
@@ -211,7 +211,7 @@
 					<?php echo form_input(array(
 						'name'=>'lines_per_page',
 						'id'=>'lines_per_page',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm required',
 						'type'=>'number',
 						'min'=>10,
 						'max'=>1000,
@@ -357,37 +357,43 @@ $(document).ready(function()
 	});
 	
 	$('#config_form').validate({
-		submitHandler:function(form)
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				if(response.success)
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-				}
-				else
-				{
-					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-				}
-			},
-			dataType:'json'
-		});
-
+				success: function(response)	{
+					if(response.success)
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
+					}
+					else
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
+					}
+				},
+				dataType: 'json'
+			});
 		},
-		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
+
+		errorClass: "has-error",
+		errorLabelContainer: "#general_error_message_box",
+		wrapper: "li",
+		highlight: function (e)	{
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		},
+
 		rules: 
 		{
 			company: "required",
 			address: "required",
-    		phone: "required",
+			phone: "required",
     		default_tax_rate:
     		{
-    			required:true,
-    			number:true
+    			required: true,
+    			number: true
     		},
-    		email:"email",
+    		email: "email",
     		return_policy: "required",
     		lines_per_page:
     		{
@@ -400,28 +406,29 @@ $(document).ready(function()
         		number: true
     		}  		
    		},
+
 		messages: 
 		{
-     		company: "<?php echo $this->lang->line('config_company_required'); ?>",
-     		address: "<?php echo $this->lang->line('config_address_required'); ?>",
-     		phone: "<?php echo $this->lang->line('config_phone_required'); ?>",
-     		default_tax_rate:
-    		{
-    			required:"<?php echo $this->lang->line('config_default_tax_rate_required'); ?>",
-    			number:"<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
-    		},
-     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-     		return_policy:"<?php echo $this->lang->line('config_return_policy_required'); ?>",
-     		default_sales_discount:
-         	{
-             	required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
-             	number :"<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
-         	},
-     		lines_per_page: 
-         	{
-            	required: "<?php echo $this->lang->line('config_lines_per_page_required'); ?>",
-                number: "<?php echo $this->lang->line('config_lines_per_page_number'); ?>"
-            }
+			company: "<?php echo $this->lang->line('config_company_required'); ?>",
+			address: "<?php echo $this->lang->line('config_address_required'); ?>",
+			phone: "<?php echo $this->lang->line('config_phone_required'); ?>",
+			default_tax_rate:
+			{
+				required: "<?php echo $this->lang->line('config_default_tax_rate_required'); ?>",
+				number: "<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
+			},
+			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
+			return_policy: "<?php echo $this->lang->line('config_return_policy_required'); ?>",
+			default_sales_discount:
+			{
+				required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
+				number: "<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
+			},
+			lines_per_page: 
+			{
+				required: "<?php echo $this->lang->line('config_lines_per_page_required'); ?>",
+				number: "<?php echo $this->lang->line('config_lines_per_page_number'); ?>"
+			}
 		}
 	});
 });
