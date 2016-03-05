@@ -47,7 +47,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control'));?>
 			</div>
