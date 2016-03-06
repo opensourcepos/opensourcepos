@@ -26,9 +26,9 @@ config_barcode_width,Breite (px),Breedte (px),Ancho (px),Width (px),Width (px),W
 config_barcode_generate_if_empty,Generiere Barcode wenn leer,Genereer indien leeg,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty,Generate if empty
 config_company,Firmenname,Bedrijfsnaam,Nombre del Comercio,Company Name,Nome de l\'Entreprise,公司名稱,Название Компании,ชื่อร้านค้า,Şirket Adı,Nama Perusahaan
 config_company_logo,Logo,Logo,Logotipo del Comercio,Company Logo,Company Logo,Company Logo,Company Logo,ภาพโลโก้,Company Logo,Company Logo
-config_company_select_image,,,,Select Image,,,,,,
-config_company_change_image,,,,Change Image,,,,,,
-config_company_remove_image,,,,Remove Image,,,,,,
+config_company_select_image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image
+config_company_change_image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image
+config_company_remove_image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image
 config_company_required,Firmenname ist erforderlich,De bedrijfsnaam moet ingevuld worden,Nombre del Comercio es requerido,Company name is a required field,Le nom d\'entreprise est requis,公司名稱為必填,Имя Компании обязательный пробел,ชื่อร้านค้าต้องกรอก,Şirket Adı zorunlu alandır,Nama Perusahaan wajib diisi
 config_company_website_url,Webseite ist nicht in korrektem Format,De website van het bedrijf is geen geldige URL (http://...),Sitio Web no es una URL estándar (http://...),Company website is not a valid URL (http://...),Le site web de l\'entreprise n\'est pas une URL valide (http://...),公司網址格式錯誤 (http://...),Веб-сайт Компании не является допустимым URL (http://...),เว็บไซต์ร้านค้าไม่ถูกต้อง,website adresi yanlış (http://...),Situs Perusahaan bukan URL yang benar(http://...)
 config_currency_side,Pos. rechts,Rechterkant,Lado derecho,Right side,Symbole à droite,Right side,Правая сторона,ด้านขวา,Sağda,Sisi Kanan
@@ -66,7 +66,7 @@ config_default_tax_rate_1,MWSt 1,VAT 1 %,Impuesto 1,Tax 1 Rate,Taux d\'Impositio
 config_default_tax_rate_2,MWSt 2,VAT 2 %,Impuesto 2,Tax 2 Rate,Taux d\'Imposition 2,稅率 2,ставка налога 2,อัตราภาษี 2,Vergi Oranı 2,Tarif Pajak 2
 config_default_tax_rate_number,MWSt Rate,Het percentage VAT moet een nummer zijn,El Impuesto Predeterminado debe ser un número,The default tax rate must be a number,Le taux d\'imposition doit etre un nombre,預設稅率必需為數字,Обычный ставка налога должен быть цифра,อัตราภาษีเริ่มต้นต้องเป็นตัวเลข,Varsayılan Vergi Oranı sayı olmalıdır,Tarif Pajak Biasa harus angka
 config_default_tax_rate_required,MWSt ist erforderlich,Het percentage VAT moet ingevuld worden,El Impuesto Predeterminado es requerido,The default tax rate is a required field,Le taux d\'imposition par défaut est requis,預設稅率為必填,Обычный ставка налога обязательный пробел,อัตราภาษีเริ่มต้นต้องกรอก,Varsayılan Vergi Oranı zorunlu alandır,Tarif Pajak Biasa wajib diisi
-config_default_tax_name_required,,,,The default tax name is a required field,,,,,
+config_default_tax_name_required,The default tax name is a required field,De naam van de VAT moet ingevuld worden,The default tax name is a required field,The default tax name is a required field,The default tax name is a required field,The default tax name is a required field,The default tax name is a required field,The default tax name is a required field,The default tax name is a required field,The default tax name is a required field
 config_fax,Fax,Fax,Fax,Fax,Fax,傳真,Факс,แฟ็กซ์,Faks,Fax
 config_general_configuration,Einstellungen,Algemene Instellingen,Configuración General ,General Configuration,General Configuration,General Configuration,General Configuration,ตั้งค่าทั่วไป,General Configuration,General Configuration
 config_info,Systemeinstellungen,Systeeminstellingen,Información del Comercio,Store Configuration Information,Çonfiguration de l\'Entreprise,儲存組態,информация о магазин конфигурация,ข้อมูลร้านค้า,Mağaza yapılandırma bilgisi,Informasi Konfigurasi Toko
