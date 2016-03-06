@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "Alle";
-$lang["reports_all_time"] = "Alle";
 $lang["reports_categories"] = "Categorieën";
 $lang["reports_categories_summary_report"] = "Rapport Overzicht Categorieën";
 $lang["reports_category"] = "Categorie";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "Producten";
 $lang["reports_items_purchased"] = "Hoeveelheid";
 $lang["reports_items_received"] = "Items Ontvangen";
 $lang["reports_items_summary_report"] = "Rapport Overzicht Producten";
-$lang["reports_last_7"] = "Vorige 7 Dagen";
-$lang["reports_last_month"] = "Vorige Maand";
-$lang["reports_last_year"] = "Vorig Jaar";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_name"] = "Naam";
@@ -88,17 +84,9 @@ $lang["reports_tax"] = "VAT";
 $lang["reports_tax_percent"] = "VAT Percentage";
 $lang["reports_taxes"] = "Belastingen";
 $lang["reports_taxes_summary_report"] = "Rapport Overzicht Belastingen";
-$lang["reports_this_month"] = "Deze Maand";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "Dit Jaar";
-$lang["reports_today"] = "Vandaag";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "Totaal";
 $lang["reports_type"] = "Type";
 $lang["reports_welcome_message"] = "Welkom bij de rapporten. Selecteer hier een rapport.";
-$lang["reports_yesterday"] = "Gisteren";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Aankoopprijs";
 $lang["reports_unit_price"] = "Verkoopprijs";

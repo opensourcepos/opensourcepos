@@ -1,6 +1,5 @@
 label,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id
 reports_all,Alle,Alle,Todo,All,Tous,全部,все,ทั้งหมด,Hepsi,Semua
-reports_all_time,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu
 reports_categories,Kategorien,Categorieën,Categorías,Categories,Catégories,類別,Категории,หมวดหมู่,Kategoriler,Kategori
 reports_categories_summary_report,Bericht: Kategorien (summarisch),Rapport Overzicht Categorieën,Reporte de Resumen de Categorías,Categories Summary Report,Rapport: Résumé des Catégories,分類摘要報告,Сводный отчет Категории,รายงานสรุปหมวดหมู่,Kategori Özet Raporu,Laporan Ringkasan Kategori
 reports_category,Kategorie,Categorie,Categoría,Category,Catégorie,類別,категория,หมวดหมู่,Kategori,Kategori
@@ -37,9 +36,6 @@ reports_items,Artikel,Producten,Artículos,Items,Items,產品,товары,ส�
 reports_items_purchased,Gekaufte Artikel,Hoeveelheid,Artículos Comprados,Items Purchased,Éléments Achetés,銷售產品,купенный товары,สินค้าที่ถูกซื้อ,Satın Alınan Ürünler,Produk Dibeli
 reports_items_received,Erhaltene Artikel,Items Ontvangen,Artículos Recibidos,Items Received,Éléments Arrivés,進貨產品,полученные Товары,สินค้าเข้า,Alınan Ürünler,Barang Masuk
 reports_items_summary_report,Bericht: Artikel (summarisch),Rapport Overzicht Producten,Reporte de Resumen de Artículos,Items Summary Report,Rapport: Résumé Items,產品摘要報告,Сводный отчет товары,รายงานสรุปสินค้า,Ürün Özet Raporu,Laporan Ringkasan Produk/Item
-reports_last_7,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir
-reports_last_month,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu
-reports_last_year,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L\'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu
 reports_low_inventory,Lager mit Unterbestand,,Inventario Bajo,,,,,,Düşük Stok,Kurang Persediaan
 reports_low_inventory_report,Bericht: Inventar,,Reporte de Inventario Bajo,,,,,,Düşük Stok Raporu,Laporan Persediaan Kurang
 reports_name,Name,Naam,Nombre,Name,Nom,名稱,название,ชื่อ,İsim,Nama
@@ -87,17 +83,9 @@ reports_tax,MWSt,VAT,Impuesto,Tax,Taxe,稅額,налог,ภาษี,Vergi,Paja
 reports_tax_percent,MWSt %,VAT Percentage,Porcentaje de Impuestos,Tax Percent,Pourcentage d\'imposition,稅率,процент налога,เปอร์เซ็นภาษี,Vergi Oranı,Persentase Pajak
 reports_taxes,Steuern,Belastingen,Impuestos,Taxes,Taxes,稅額,Налоги,ภาษี,Vergiler,Pajak
 reports_taxes_summary_report,Bericht: Steuern (summarisch),Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: Résumé Taxes,稅金摘要報告,Сводный отчет налоги,รายงานสรุปภาษี,Vergi Özet Raporu,Laporan Ringkasan Pajak
-reports_this_month,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini
-reports_this_month_last_year,Dieser Monat letzten Jahres,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year
-reports_this_month_to_today,Dieser Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today
-reports_this_month_to_today_last_year,Dieser Monat bis Heute letzten Jahres,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year
-reports_this_year,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini
-reports_today,Heute,Vandaag,Hoy,Today,Aujourd\'hui,今天,сегодня,วันนี้,Bugün,Hari ini
-reports_today_last_year,Heute letzten Jahres,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year
 reports_total,Total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total
 reports_type,Typ,Type,Tipo,Type,Type,類型,тип,ชนิด,Tür,Tipe
 reports_welcome_message,Willkommen bei Berichtsmodul,Welkom bij de rapporten. Selecteer hier een rapport.,Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.,Welcome to the reports panel. Please select a report to view.,Bienvenue à la page des rapports. Veuillez sélectionner un rapport à visualiser.,歡迎使用報表系統。請選擇要查看的報表。,"Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.",ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.,Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.,Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.
-reports_yesterday,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin
 reports_item_count,Filter nach Artikelzahl,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Stok Habis/Belum Habis/Minus,
 reports_cost_price,Einstandspreis,Aankoopprijs,Precio de Compra,Cost Price,Prix de Gros,成本價,Оптовая Цена,ราคาทุน,Maliyet Fiyatı,Harga Pokok
 reports_unit_price,Verkaufspreis,Verkoopprijs,Precio de Venta,Retail Price,Prix au Détail,單價,Розничная Цена,ราคาขาย,Satış Fiyatı,Harga Jual

@@ -31,25 +31,11 @@ class Reports extends Secure_area
 		$this->load->view("reports/listing",$data);
 	}
 
-	function _get_common_report_data()
-	{
-		$data = array();
-		$data['report_date_range_simple'] = get_simple_date_ranges();
-		$data['months'] = get_months();
-		$data['days'] = get_days();
-		$data['years'] = get_years();
-		$data['selected_month']=date('n');
-		$data['selected_day']=date('d');
-		$data['selected_year']=date('Y');
-
-		return $data;
-	}
-
 	//Input for reports that require only a date range and an export to excel. (see routes.php to see that all summary reports route here)
 	function date_input_excel_export()
 	{
-		$data = $this->_get_common_report_data();
-		$this->load->view("reports/date_input_excel_export",$data);
+		$data = array();
+		$this->load->view("reports/date_input_excel_export", $data);
 	}
 
  	function get_detailed_sales_row($sale_id)
@@ -337,7 +323,7 @@ class Reports extends Secure_area
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	function date_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);
 	}
@@ -345,7 +331,7 @@ class Reports extends Secure_area
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	function date_input_sales()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$stock_locations = $this->Stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -355,7 +341,7 @@ class Reports extends Secure_area
 
     function date_input_recv()
     {
-        $data = $this->_get_common_report_data();
+        $data = array();
 		$stock_locations = $this->Stock_location->get_allowed_locations('receivings');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -709,7 +695,7 @@ class Reports extends Secure_area
 
 	function specific_customer_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['specific_input_name'] = $this->lang->line('reports_customer');
 
 		$customers = array();
@@ -759,7 +745,7 @@ class Reports extends Secure_area
 
 	function specific_employee_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['specific_input_name'] = $this->lang->line('reports_employee');
 
 		$employees = array();
@@ -809,7 +795,7 @@ class Reports extends Secure_area
 
 	function specific_discount_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['specific_input_name'] = $this->lang->line('reports_discount');
 
 		$discounts = array();

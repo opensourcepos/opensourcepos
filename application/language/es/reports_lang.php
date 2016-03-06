@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "Todo";
-$lang["reports_all_time"] = "Todos";
 $lang["reports_categories"] = "Categorías";
 $lang["reports_categories_summary_report"] = "Reporte de Resumen de Categorías";
 $lang["reports_category"] = "Categoría";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "Artículos";
 $lang["reports_items_purchased"] = "Artículos Comprados";
 $lang["reports_items_received"] = "Artículos Recibidos";
 $lang["reports_items_summary_report"] = "Reporte de Resumen de Artículos";
-$lang["reports_last_7"] = "Últimos 7 Días";
-$lang["reports_last_month"] = "Último Mes";
-$lang["reports_last_year"] = "Último Año";
 $lang["reports_low_inventory"] = "Inventario Bajo";
 $lang["reports_low_inventory_report"] = "Reporte de Inventario Bajo";
 $lang["reports_name"] = "Nombre";
@@ -88,17 +84,9 @@ $lang["reports_tax"] = "Impuesto";
 $lang["reports_tax_percent"] = "Porcentaje de Impuestos";
 $lang["reports_taxes"] = "Impuestos";
 $lang["reports_taxes_summary_report"] = "Reporte de Resumen de Impuestos";
-$lang["reports_this_month"] = "Este Mes";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "Este Año";
-$lang["reports_today"] = "Hoy";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Tipo";
 $lang["reports_welcome_message"] = "Bienvenido(a) al panel de reportes. Selecciona un reporte para verlo.";
-$lang["reports_yesterday"] = "Ayer";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Precio de Compra";
 $lang["reports_unit_price"] = "Precio de Venta";

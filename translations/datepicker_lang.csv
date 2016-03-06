@@ -46,3 +46,21 @@ datepicker_monthsshort_november,Nov,Nov,Nov,Nov,Nov,,,,,
 datepicker_monthsshort_december,Dez,Dec,Dic,Dec,Dec,,,,,
 datepicker_today,Heute,Vandaag,Hoy,Today,Aujourd'hui,,,,,
 datepicker_weekstart,1,0,0,0,1,,,,,
+datepicker_all_time,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu
+datepicker_last_7,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir
+datepicker_last_30,Letzte 30 Tage,Vorige 30 Dagen,Últimos 30 Días,Last 30 Days,Ces 30 derniers jours,過去七天,Последние 30 дней,30 วันสุดท้าย,Son 30 Gün,30 Hari Terakhir
+datepicker_last_month,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu
+datepicker_last_year,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L\'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu
+datepicker_this_month,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini
+datepicker_this_month_last_year,Dieser Monat letzten Jahres,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year
+datepicker_this_month_to_today,Dieser Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today
+datepicker_this_month_to_today_last_year,Dieser Monat bis Heute letzten Jahres,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year
+datepicker_this_year,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini
+datepicker_today,Heute,Vandaag,Hoy,Today,Aujourd\'hui,今天,сегодня,วันนี้,Bugün,Hari ini
+datepicker_today_last_year,Heute letzten Jahres,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year
+datepicker_yesterday,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin
+datepicker_apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply
+datepicker_cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel
+datepicker_from,From,From,From,From,From,From,From,From,From,From
+datepicker_to,To,To,To,To,To,To,To,To,To,To
+datepicker_custom,Custom,Custom,Custom,Custom,Custom,Custom,Custom,Custom,Custom,Custom

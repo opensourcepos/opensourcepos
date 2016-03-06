@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "ทั้งหมด";
-$lang["reports_all_time"] = "เวลาทั้งหมด";
 $lang["reports_categories"] = "หมวดหมู่";
 $lang["reports_categories_summary_report"] = "รายงานสรุปหมวดหมู่";
 $lang["reports_category"] = "หมวดหมู่";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "สินค้า";
 $lang["reports_items_purchased"] = "สินค้าที่ถูกซื้อ";
 $lang["reports_items_received"] = "สินค้าเข้า";
 $lang["reports_items_summary_report"] = "รายงานสรุปสินค้า";
-$lang["reports_last_7"] = "7 วันสุดท้าย";
-$lang["reports_last_month"] = "เดือนที่แล้ว";
-$lang["reports_last_year"] = "ปีที่แล้ว";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_name"] = "ชื่อ";
@@ -88,17 +84,9 @@ $lang["reports_tax"] = "ภาษี";
 $lang["reports_tax_percent"] = "เปอร์เซ็นภาษี";
 $lang["reports_taxes"] = "ภาษี";
 $lang["reports_taxes_summary_report"] = "รายงานสรุปภาษี";
-$lang["reports_this_month"] = "เดือนนี้";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "ปีนี้";
-$lang["reports_today"] = "วันนี้";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "ยอดรวม";
 $lang["reports_type"] = "ชนิด";
 $lang["reports_welcome_message"] = "ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.";
-$lang["reports_yesterday"] = "เมื่อวานนี้";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "ราคาทุน";
 $lang["reports_unit_price"] = "ราคาขาย";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "все";
-$lang["reports_all_time"] = "за все время";
 $lang["reports_categories"] = "Категории";
 $lang["reports_categories_summary_report"] = "Сводный отчет Категории";
 $lang["reports_category"] = "категория";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "товары";
 $lang["reports_items_purchased"] = "купенный товары";
 $lang["reports_items_received"] = "полученные Товары";
 $lang["reports_items_summary_report"] = "Сводный отчет товары";
-$lang["reports_last_7"] = "Последние 7 дней";
-$lang["reports_last_month"] = "Последний месяц";
-$lang["reports_last_year"] = "в прошлом году";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_name"] = "название";
@@ -88,17 +84,9 @@ $lang["reports_tax"] = "налог";
 $lang["reports_tax_percent"] = "процент налога";
 $lang["reports_taxes"] = "Налоги";
 $lang["reports_taxes_summary_report"] = "Сводный отчет налоги";
-$lang["reports_this_month"] = "В этом месяце";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "В этом году";
-$lang["reports_today"] = "сегодня";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "сумма";
 $lang["reports_type"] = "тип";
 $lang["reports_welcome_message"] = "Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.";
-$lang["reports_yesterday"] = "вчера";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Оптовая Цена";
 $lang["reports_unit_price"] = "Розничная Цена";
