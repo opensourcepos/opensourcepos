@@ -57,7 +57,6 @@ $lang["datepicker_this_month_last_year"] = "This Month Last Year";
 $lang["datepicker_this_month_to_today"] = "This Month To Today";
 $lang["datepicker_this_month_to_today_last_year"] = "This Month To Today Last Year";
 $lang["datepicker_this_year"] = "This Year";
-$lang["datepicker_today"] = "Today";
 $lang["datepicker_today_last_year"] = "Today Last Year";
 $lang["datepicker_yesterday"] = "Yesterday";
 $lang["datepicker_apply"] = "Apply";
