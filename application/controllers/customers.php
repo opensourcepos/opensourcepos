@@ -75,7 +75,7 @@ class Customers extends Person_controller
 		'company_name'=>$this->input->post('company_name')=='' ? null:$this->input->post('company_name'),
 		'taxable'=>$this->input->post('taxable')=='' ? 0:1,
 		);
-		if($this->Customer->save($person_data,$customer_data,$customer_id))
+		if($this->Customer->save_customer($person_data,$customer_data,$customer_id))
 		{
 			//New customer
 			if($customer_id==-1)
@@ -179,7 +179,7 @@ class Customers extends Person_controller
 						$invalidated = $this->Customer->account_number_exists($account_number);
 					}
 					
-					if($invalidated || !$this->Customer->save($person_data,$customer_data))
+					if($invalidated || !$this->Customer->save_customer($person_data,$customer_data))
 					{	
 						$failCodes[] = $i;
 					}

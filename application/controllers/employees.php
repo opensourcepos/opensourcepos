@@ -87,7 +87,7 @@ class Employees extends Person_controller
 			$employee_data=array('username'=>$this->input->post('username'));
 		}
 		
-		if($this->Employee->save($person_data,$employee_data,$grants_data,$employee_id))
+		if($this->Employee->save_employee($person_data,$employee_data,$grants_data,$employee_id))
 		{
 			//New employee
 			if($employee_id==-1)
