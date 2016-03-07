@@ -72,7 +72,7 @@
 $(document).ready(function()
 {
 	$("#item").autocomplete({
-		source: '<?php echo site_url("items/item_search"); ?>',
+		source: '<?php echo site_url("items/suggest"); ?>',
 		minChars:0,
 		autoFocus: false,
 		delay:10,
@@ -87,6 +87,7 @@ $(document).ready(function()
 				$("#item_kit_items").append("<tr><td><a href='#' onclick='return delete_item_kit_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td><td>" + ui.item.label + "</td><td><input class='quantity form-control input-sm' id='item_kit_item_" + ui.item.value + "' type='text' name=item_kit_item[" + ui.item.value + "] value='1'/></td></tr>");
 			}
 			$("#item").val("");
+			return false;
 		}
 	});
 

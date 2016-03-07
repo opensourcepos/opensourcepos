@@ -16,14 +16,9 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('term'));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->post('term')));
-		echo json_encode($suggestions);
-	}
-
-	function supplier_search()
-	{
-		$suggestions = $this->Supplier->get_suppliers_search_suggestions($this->input->post('term'),$this->input->post('limit'));
+		$suggestions = $this->Item->get_search_suggestions($this->input->get('term'),
+			array('is_deleted' => FALSE, 'search_custom' => FALSE), FALSE);
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->get('term')));
 		echo json_encode($suggestions);
 	}
 
@@ -141,7 +136,8 @@ class Receivings extends Secure_area
 	
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
 		$person_name = $receiving_info['first_name'] . " " . $receiving_info['last_name'];
-		$data['selected_supplier'] = !empty($receiving_info['supplier_id']) ? $receiving_info['supplier_id'] . "|" . $person_name : "";
+		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $person_name : "";
+		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
 	
 		$this->load->view('receivings/form', $data);
@@ -367,7 +363,7 @@ class Receivings extends Secure_area
 
 		$receiving_data = array(
 			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => $this->input->post('supplier_id'),
+			'supplier_id' => $this->input->post('supplier_id', TRUE) ? $this->input->post('supplier_id') : null,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number')

@@ -263,7 +263,7 @@ class Item extends CI_Model
 		return $this->db->update('items', array('deleted' => 1));
  	}
 
-	public function get_search_suggestions($search, $filters, $unique = FALSE, $limit=25)
+	public function get_search_suggestions($search, $filters = array("is_deleted"), $unique = FALSE, $limit=25)
 	{
 		$suggestions = array();
 
@@ -280,7 +280,7 @@ class Item extends CI_Model
 
 		$this->db->select('item_id, item_number');
 		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
+		$this->db->where('deleted', $filters['is_deleted'] != null);
 		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
 		$by_item_number = $this->db->get();
@@ -289,55 +289,58 @@ class Item extends CI_Model
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
-		$this->db->select('company_name');
-		$this->db->from('suppliers');
-		$this->db->like('company_name', $search);
-		// restrict to non deleted companies only if is_deleted if false
-        $this->db->where('deleted', $filters['is_deleted']);
-		$this->db->distinct();
-		$this->db->order_by('company_name', 'asc');
-		$by_company_name = $this->db->get();
-		foreach($by_company_name->result() as $row)
+		if (!$unique)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->company_name);
-		}
-
-		//Search by description
-		$this->db->select('item_id, name, description');
-		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted']);
-		$this->db->like('description', $search);
-		$this->db->order_by('description', 'asc');
-		$by_description = $this->db->get();
-		foreach($by_description->result() as $row)
-		{
-			$entry = array('value' => $row->item_id, 'label' => $row->name);
-			if (!array_walk($suggestions, function($value, $label) use ($entry) {
-				return $entry['label'] != $label;
-			})) {
-				$suggestions[] = $entry;
+			$this->db->select('company_name');
+			$this->db->from('suppliers');
+			$this->db->like('company_name', $search);
+			// restrict to non deleted companies only if is_deleted if false
+			$this->db->where('deleted', $filters['is_deleted']);
+			$this->db->distinct();
+			$this->db->order_by('company_name', 'asc');
+			$by_company_name = $this->db->get();
+			foreach($by_company_name->result() as $row)
+			{
+				$suggestions[] = array('value' => $row->item_id, 'label' => $row->company_name);
 			}
-		}
 
-		//Search by custom fields
-		if ($filters['search_custom'] != 0)
-		{
+			//Search by description
+			$this->db->select('item_id, name, description');
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
-			$this->db->like('custom1', $search);
-			$this->db->or_like('custom2', $search);
-			$this->db->or_like('custom3', $search);
-			$this->db->or_like('custom4', $search);
-			$this->db->or_like('custom5', $search);
-			$this->db->or_like('custom6', $search);
-			$this->db->or_like('custom7', $search);
-			$this->db->or_like('custom8', $search);
-			$this->db->or_like('custom9', $search);
-			$this->db->or_like('custom10', $search);
+			$this->db->like('description', $search);
+			$this->db->order_by('description', 'asc');
 			$by_description = $this->db->get();
 			foreach($by_description->result() as $row)
 			{
-				$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+				$entry = array('value' => $row->item_id, 'label' => $row->name);
+				if (!array_walk($suggestions, function($value, $label) use ($entry) {
+					return $entry['label'] != $label;
+				})) {
+					$suggestions[] = $entry;
+				}
+			}
+
+			//Search by custom fields
+			if ($filters['search_custom'] != 0)
+			{
+				$this->db->from('items');
+				$this->db->where('deleted', $filters['is_deleted']);
+				$this->db->like('custom1', $search);
+				$this->db->or_like('custom2', $search);
+				$this->db->or_like('custom3', $search);
+				$this->db->or_like('custom4', $search);
+				$this->db->or_like('custom5', $search);
+				$this->db->or_like('custom6', $search);
+				$this->db->or_like('custom7', $search);
+				$this->db->or_like('custom8', $search);
+				$this->db->or_like('custom9', $search);
+				$this->db->or_like('custom10', $search);
+				$by_description = $this->db->get();
+				foreach($by_description->result() as $row)
+				{
+					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+				}
 			}
 		}
 

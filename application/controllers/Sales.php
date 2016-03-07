@@ -126,19 +126,20 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->post('term');
+		$search = $this->input->get('term');
 
 		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
 		{
 			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($search));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search,
+			array('is_deleted' => FALSE, 'search_custom' => FALSE), FALSE));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
 		echo json_encode($suggestions);
 	}
 
-	function suggest()
+	function suggest_search()
 	{
 		$suggestions = $this->Sale->get_search_suggestions($this->input->post('term'));
 		echo json_encode($suggestions);
@@ -628,7 +629,8 @@ class Sales extends Secure_area
 
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
-		$data['selected_customer'] = !empty($sale_info['customer_id']) ? $sale_info['customer_id'] . "|" . $person_name : "";
+		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ?  $person_name : '';
+		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
 		
 		$this->load->view('sales/form', $data);

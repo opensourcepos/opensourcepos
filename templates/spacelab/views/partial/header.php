@@ -7,6 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
+		<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" href="../bower_components/tablesorter/dist/css/theme.blue.min.css" />
 		<link rel="stylesheet" href="../bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<link rel="stylesheet" href="../bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
@@ -15,7 +16,6 @@
 		<link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
 		<link rel="stylesheet" href="../bower_components/bootstrap-table/src/bootstrap-table.css" />
 		<link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css" />
-		<link rel="stylesheet" href="../bower_components/jquery-ui-bootstrap/jquery.ui.theme.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>

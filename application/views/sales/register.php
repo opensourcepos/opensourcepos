@@ -57,6 +57,7 @@ if (isset($success))
 			<label id="item_label" for="item", class='col-sm-2 control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
 			<div class="col-sm-6">
 				<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'tabindex'=>'1')); ?>
+				<span class="ui-helper-hidden-accessible" role="status"></span>
 			</div>
 
 			<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
@@ -438,20 +439,16 @@ if (isset($success))
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {
-    $("#item").autocomplete('<?php echo site_url("sales/item_search"); ?>',
+    $("#item").autocomplete(
     {
+		source: '<?php echo site_url("sales/item_search"); ?>',
     	minChars:0,
-    	max:100,
-    	selectFirst: false,
+    	autoFocus: false,
        	delay:10,
-    	formatItem: function(row) {
-			return (row.length > 1 && row[1]) || row[0];
+		select: function (a, ui) {
+			$(this).val(ui.item.value);
+			$("#add_item_form").submit();
 		}
-    });
-
-    $("#item").result(function(event, data, formatted)
-    {
-		$("#add_item_form").submit();
     });
 
 	$('#item').focus();
@@ -471,19 +468,15 @@ $(document).ready(function()
 
     $('#item, #customer').click(clear_fields);
 
-    $("#customer").autocomplete('<?php echo site_url("sales/customer_search"); ?>',
+    $("#customer").autocomplete(
     {
+		source: '<?php echo site_url("customers/suggest"); ?>',
     	minChars:0,
     	delay:10,
-    	max:100,
-    	formatItem: function(row) {
-			return row[1];
+		select: function (a, ui) {
+			$(this).val(ui.item.value);
+			$("#select_customer_form").submit();
 		}
-    });
-
-    $("#customer").result(function(event, data, formatted)
-    {
-		$("#select_customer_form").submit();
     });
 
     $('#customer').blur(function()

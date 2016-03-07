@@ -369,20 +369,16 @@ if (isset($error))
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {
-    $("#item").autocomplete('<?php echo site_url("receivings/item_search"); ?>',
+    $("#item").autocomplete(
     {
+		source: '<?php echo site_url("receivings/item_search"); ?>',
     	minChars:0,
-    	max:100,
        	delay:10,
-       	selectFirst: false,
-    	formatItem: function(row) {
-			return row[1];
+       	autoFocus: false,
+		select:	function (a, ui) {
+			$(this).val(ui.item.value);
+			$("#add_item_form").submit();
 		}
-    });
-
-    $("#item").result(function(event, data, formatted)
-    {
-		$("#add_item_form").submit();
     });
 
     $('#item').focus();
@@ -427,19 +423,15 @@ $(document).ready(function()
     	$(this).attr('value','');
     });
 
-    $("#supplier").autocomplete('<?php echo site_url("receivings/supplier_search"); ?>',
+    $("#supplier").autocomplete(
     {
+		source: '<?php echo site_url("suppliers/suggest"); ?>',
     	minChars:0,
     	delay:10,
-    	max:100,
-    	formatItem: function(row) {
-			return row[1];
+		select: function (a, ui) {
+			$(this).val(ui.item.value);
+			$("#select_supplier_form").submit();
 		}
-    });
-
-    $("#supplier").result(function(event, data, formatted)
-    {
-		$("#select_supplier_form").submit();
     });
 
     $('#supplier').blur(function()

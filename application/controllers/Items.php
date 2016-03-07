@@ -115,18 +115,20 @@ class Items extends Secure_area implements iData_controller
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
-	function suggest()
+	function suggest_search()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('term'), array(
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
 			'search_custom' => $this->input->post('search_custom'),
-			'is_deleted' => $this->input->post('is_deleted') != "0"),
+			'is_deleted' => !empty($this->input->post('is_deleted'))),
 			FALSE, $this->input->post('limit'));
 		echo json_encode($suggestions);
 	}
 
-	function suggest_search()
+	function suggest()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('term'), TRUE);
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
+			'search_custom' => FALSE,
+			'is_deleted' => FALSE), TRUE);
 		echo json_encode($suggestions);
 	}
 

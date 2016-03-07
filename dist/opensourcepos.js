@@ -51575,7 +51575,6 @@ dialog_support = (function() {
 			{
 				var handle_field_completion = handle_auto_completion(value.dependencies);
 
-
 				$("#" + key).autocomplete({
 					source: function (request, response) {
 						var extra_params = request_params(key, value.response && value.response.field, options.language);

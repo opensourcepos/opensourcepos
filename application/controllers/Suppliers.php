@@ -41,7 +41,13 @@ class Suppliers extends Person_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Supplier->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
+		$suggestions = $this->Supplier->get_search_suggestions($this->input->get('term'), TRUE);
+		echo json_encode($suggestions);
+	}
+
+	function suggest_search()
+	{
+		$suggestions = $this->Supplier->get_search_suggestions($this->input->post('term'), FALSE);
 		echo json_encode($suggestions);
 	}
 	

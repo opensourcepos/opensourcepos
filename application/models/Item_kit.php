@@ -123,13 +123,31 @@ class Item_kit extends CI_Model
 		$suggestions = array();
 
 		$this->db->from('item_kits');
-		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		$by_name = $this->db->get();
 
-		foreach($by_name->result() as $row)
+		//KIT #
+		if (stripos($search, 'KIT ') !== false)
 		{
-			$suggestions[] = array('value' => 'KIT ' . $row->item_kit_id, 'label'  => $row->name);
+			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search));
+
+			$this->db->order_by('item_kit_id', 'asc');
+			$by_name = $this->db->get();
+
+			foreach($by_name->result() as $row)
+			{
+				$suggestions[] = array('value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id);
+			}
+		}
+		else
+		{
+			$this->db->like('name', $search);
+
+			$this->db->order_by('name', 'asc');
+			$by_name = $this->db->get();
+
+			foreach($by_name->result() as $row)
+			{
+				$suggestions[] = array('value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name);
+			}
 		}
 
 		//only return $limit suggestions

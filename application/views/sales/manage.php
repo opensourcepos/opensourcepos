@@ -13,7 +13,7 @@ $(document).ready(function()
 	};
 
 	// hook the ajax connectors on search actions, hook a on_complete action (refresh payment summaries at page bottom)
-    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest"); ?>',
+    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest_search"); ?>',
 		confirm_search_message: '<?php echo $this->lang->line("common_confirm_search"); ?>',
 		on_complete: on_complete});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete"); ?>', '<?php echo $this->lang->line($controller_name."_none_selected"); ?>');

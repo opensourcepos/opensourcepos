@@ -199,7 +199,7 @@ class Sale extends CI_Model
 		}
 		else
 		{
-			$suggestions[] = $search;
+			$suggestions[] = array('label' => $search);
 		}
 
 		return $suggestions;
