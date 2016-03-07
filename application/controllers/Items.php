@@ -137,7 +137,7 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_category()
 	{
-		$suggestions = $this->Item->get_category_suggestions($this->input->post('term'));
+		$suggestions = $this->Item->get_category_suggestions($this->input->get('term'));
 
 		echo json_encode($suggestions);
 	}
@@ -147,7 +147,7 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_location()
 	{
-		$suggestions = $this->Item->get_location_suggestions($this->input->post('term'));
+		$suggestions = $this->Item->get_location_suggestions($this->input->get('term'));
 		echo json_encode($suggestions);
 	}
 	

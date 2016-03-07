@@ -69,7 +69,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8aac97eb12" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=87aa85a1f1" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
