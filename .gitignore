@@ -1,6 +1,6 @@
 node_modules
 bower_components
-dist/*_bower.*
+dist/
 application/config/email.php
 application/config/database.php
 *.patch

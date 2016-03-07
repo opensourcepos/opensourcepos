@@ -28,13 +28,34 @@ function enable_search(options)
     	$(this).attr('value','');
     });
 
-    var widget = $("#search").autocomplete(options.suggest_url,{max:100,delay:10, selectFirst: false,
-		formatItem : options.format_item, extraParams: options.extra_params});
-    $("#search").result(function(event, data, formatted)
-    {
-		do_search(true, options.on_complete);
-    });
-    
+    var widget = $("#search").autocomplete({
+		source: function (request, response) {
+			var extra_params = {limit: 100};
+			$.each(options.extra_params, function(key, param) {
+				extra_params[key] = typeof param == "function" ? param() : param;
+			});
+
+			$.ajax({
+				type: "POST",
+				url: options.suggest_url,
+				dataType: "json",
+				data: $.extend(request, extra_params),
+				success: function(data) {
+					response($.map(data, function(item) {
+						return {
+							value: item.label,
+						};
+				}))}
+			});
+		},
+		delay:10,
+		autoFocus: false,
+		select: function (a, ui) {
+			$(this).val(ui.item.value);
+			do_search(true, options.on_complete);
+		}
+	});
+
     attach_search_listener();
     
 	$('#search_form').submit(function(event)

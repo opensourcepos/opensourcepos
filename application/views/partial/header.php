@@ -7,6 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
+		<link rel="stylesheet" href="bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />
 		<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
@@ -17,7 +18,6 @@
 		<link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
 		<link rel="stylesheet" type="text/css" href="css/general.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
@@ -50,7 +50,6 @@
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
@@ -65,10 +64,12 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b16e574e44"/>
+		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=400d6cd480"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=c56afe3d23" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8aac97eb12" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

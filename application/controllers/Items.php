@@ -115,19 +115,21 @@ class Items extends Secure_area implements iData_controller
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
+	function suggest_search()
+	{
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
+			'search_custom' => $this->input->post('search_custom'),
+			'is_deleted' => !empty($this->input->post('is_deleted'))),
+			FALSE, $this->input->post('limit'));
+		echo json_encode($suggestions);
+	}
+
 	function suggest()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit'),
-															$this->input->post('search_custom'), $this->input->post('is_deleted') != null);
-
-		echo implode("\n",$suggestions);
-	}
-	
-	function item_search()
-	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'), $this->input->post('limit'));
-
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
+			'search_custom' => FALSE,
+			'is_deleted' => FALSE), TRUE);
+		echo json_encode($suggestions);
 	}
 
 	/*
@@ -135,9 +137,9 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_category()
 	{
-		$suggestions = $this->Item->get_category_suggestions($this->input->post('q'));
+		$suggestions = $this->Item->get_category_suggestions($this->input->post('term'));
 
-		echo implode("\n",$suggestions);
+		echo json_encode($suggestions);
 	}
 
 	/*
@@ -145,111 +147,19 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_location()
 	{
-		$suggestions = $this->Item->get_location_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Item->get_location_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 	
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
-	function suggest_custom1()
+	function suggest_custom()
 	{
-		$suggestions = $this->Item->get_custom1_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Item->get_custom_suggestions($this->input->post('term'), $this->input->post('field_no'));
+		echo json_encode($suggestions);
 	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom2()
-	{
-		$suggestions = $this->Item->get_custom2_suggestions($this->input->post('q'));
 
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom3()
-	{
-		$suggestions = $this->Item->get_custom3_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom4()
-	{
-		$suggestions = $this->Item->get_custom4_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom5()
-	{
-		$suggestions = $this->Item->get_custom5_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom6()
-	{
-		$suggestions = $this->Item->get_custom6_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom7()
-	{
-		$suggestions = $this->Item->get_custom7_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom8()
-	{
-		$suggestions = $this->Item->get_custom8_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom9()
-	{
-		$suggestions = $this->Item->get_custom9_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom10()
-	{
-		$suggestions = $this->Item->get_custom10_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-		
 	function get_row()
 	{
 		$item_id = $this->input->post('row_id');

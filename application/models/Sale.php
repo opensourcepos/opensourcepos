@@ -194,12 +194,12 @@ class Sale extends CI_Model
 
 			foreach($this->db->get()->result_array() as $result)
 			{
-				$suggestions[] = $result[ 'first_name' ].' '.$result[ 'last_name' ];
+				$suggestions[] = array('label' => $result[ 'first_name' ].' '.$result[ 'last_name' ]);
 			}
 		}
 		else
 		{
-			$suggestions[] = $search;
+			$suggestions[] = array('label' => $search);
 		}
 
 		return $suggestions;

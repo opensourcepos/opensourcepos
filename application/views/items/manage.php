@@ -8,7 +8,7 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
 	
-    var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
+    var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest_search")?>',
         confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
         extra_params : {
             'is_deleted' : function () {

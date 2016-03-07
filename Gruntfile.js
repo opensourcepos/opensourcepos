@@ -29,6 +29,7 @@ module.exports = function(grunt) {
 					destPrefix: 'dist'
 				},
 				files: {
+                    'jquery-ui.css': 'jquery-ui/themes/smoothness/jquery-ui.css',
 					'bootstrap.min.css': 'bootswatch-dist/css/bootstrap.min.css'
 				}
 			}
@@ -99,7 +100,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end mincss template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*min.css' ],
+                src: [ 'dist/*.css' ],
                 dest: 'application/views/partial/header.php'
             },
             css_login: {
@@ -109,7 +110,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end css template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/bootstrap.min.css', 'css/login.css' ],
+                src: [ 'dist/jquery-ui.min.css', 'dist/bootstrap.min.css', 'css/login.css' ],
                 dest: 'application/views/login.php'
             },
             js: {

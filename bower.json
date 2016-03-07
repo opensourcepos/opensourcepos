@@ -47,6 +47,12 @@
         "js/bootstrap.js",
         "css/bootstrap.css"
       ]
+    },
+    "jquery-ui": {
+      "main": [
+        "themes/smoothness/jquery-ui.css",
+        "jquery-ui.js"
+      ]
     }
   }
 }

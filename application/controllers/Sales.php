@@ -126,36 +126,23 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
+		$search = $this->input->get('term');
 
 		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
 		{
 			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_item_search_suggestions($search , $limit));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($search, $limit));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search,
+			array('is_deleted' => FALSE, 'search_custom' => FALSE), FALSE));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
-		echo implode("\n", $suggestions);
+		echo json_encode($suggestions);
 	}
 
-	function customer_search()
+	function suggest_search()
 	{
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
-		
-		$suggestions = $this->Customer->get_customer_search_suggestions($search, $limit);
-
-		echo implode("\n", $suggestions);
-	}
-
-	function suggest()
-	{
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
-		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
-
-		echo implode("\n", $suggestions);
+		$suggestions = $this->Sale->get_search_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 
 	function select_customer()
@@ -642,7 +629,8 @@ class Sales extends Secure_area
 
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
-		$data['selected_customer'] = !empty($sale_info['customer_id']) ? $sale_info['customer_id'] . "|" . $person_name : "";
+		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ?  $person_name : '';
+		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
 		
 		$this->load->view('sales/form', $data);

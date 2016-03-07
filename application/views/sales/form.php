@@ -35,7 +35,8 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name' => 'customer_id', 'value' => $selected_customer, 'id' => 'customer_id', 'class'=>'form-control input-sm'));?>
+					<?php echo form_input(array('name' => 'customer_name', 'value' => $selected_customer_name, 'id' => 'customer_name', 'class'=>'form-control input-sm'));?>
+					<?php echo form_hidden('customer_id', $selected_customer_id);?>
 				</div>
 			</div>
 			
@@ -121,29 +122,24 @@ $(document).ready(function()
 		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
-	var format_item = function(row)
-	{
-    	var result = [row[0], "|", row[1]].join("");
-    	// if more than one occurence
-    	if (row[2] > 1 && row[3] && row[3].toString().trim()) {
-			// display zip code
-    		result += ' - ' + row[3];
-    	}
-		return result;
+	var fill_value =  function(event, ui) {
+		event.preventDefault();
+		$("input[name='customer_id']").val(ui.item.value);
+		$("input[name='customer_name']").val(ui.item.label);
 	};
 
-	var autocompleter = $("#customer_id").autocomplete('<?php echo site_url("sales/customer_search"); ?>', 
+	var autocompleter = $("#customer_id").autocomplete(
 	{
+		source: '<?php echo site_url("customers/suggest"); ?>',
 		minChars: 0,
 		delay: 15, 
-		max: 100,
 		cacheLength: 1,
-		formatItem: format_item,
-		formatResult : format_item
+		appendTo: '.modal-content',
+		select: fill_value,
+		focus: fill_value
 	});
 
-	// declare submitHandler as an object.. will be reused
-	var submit_form = function(selected_customer) 
+	var submit_form = function()
 	{ 
 		$(this).ajaxSubmit(
 		{
@@ -154,7 +150,6 @@ $(document).ready(function()
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
 			{
-				selected_customer && autocompleter.val(selected_customer);
 				post_form_submit({message: errorThrown});
 			},
 			dataType: 'json'
@@ -165,10 +160,7 @@ $(document).ready(function()
 	{
 		submitHandler : function(form)
 		{
-			var selected_customer = autocompleter.val();
-			var selected_customer_id = selected_customer.replace(/(\w)\|.*/, "$1");
-			selected_customer_id && autocompleter.val(selected_customer_id);
-			submit_form.call(form, selected_customer);
+			submit_form.call(form);
 		},
 		rules:
 		{

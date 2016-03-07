@@ -38,10 +38,10 @@ class Employees extends Person_controller
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
-	function suggest()
+	function suggest_search()
 	{
-		$suggestions = $this->Employee->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Employee->get_search_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 	
 	/*

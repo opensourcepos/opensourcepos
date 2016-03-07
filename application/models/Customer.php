@@ -141,7 +141,7 @@ class Customer extends Person
  	/*
 	Get search suggestions to find customers
 	*/
-	function get_search_suggestions($search,$limit=25)
+	function get_search_suggestions($search, $unique=TRUE, $limit=25)
 	{
 		$suggestions = array();
 		
@@ -154,41 +154,45 @@ class Customer extends Person
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]=$row->first_name.' '.$row->last_name;		
-		}
-		
-		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');	
-		$this->db->where('deleted',0);		
-		$this->db->like("email",$search);
-		$this->db->order_by("email", "asc");		
-		$by_email = $this->db->get();
-		foreach($by_email->result() as $row)
-		{
-			$suggestions[]=$row->email;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
 		}
 
-		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');	
-		$this->db->where('deleted',0);		
-		$this->db->like("phone_number",$search);
-		$this->db->order_by("phone_number", "asc");		
-		$by_phone = $this->db->get();
-		foreach($by_phone->result() as $row)
+		if (!$unique)
 		{
-			$suggestions[]=$row->phone_number;		
+			$this->db->from('customers');
+			$this->db->join('people','customers.person_id=people.person_id');
+			$this->db->where('deleted',0);
+			$this->db->like("email",$search);
+			$this->db->order_by("email", "asc");
+			$by_email = $this->db->get();
+			foreach($by_email->result() as $row)
+			{
+				$suggestions[]=array('value' => $row->person_id, 'label' => $row->email);
+			}
+
+			$this->db->from('customers');
+			$this->db->join('people','customers.person_id=people.person_id');
+			$this->db->where('deleted',0);
+			$this->db->like("phone_number",$search);
+			$this->db->order_by("phone_number", "asc");
+			$by_phone = $this->db->get();
+			foreach($by_phone->result() as $row)
+			{
+				$suggestions[]=array('value' => $row->person_id, 'label' => $row->phone_number);
+			}
+
+			$this->db->from('customers');
+			$this->db->join('people','customers.person_id=people.person_id');
+			$this->db->where('deleted',0);
+			$this->db->like("account_number",$search);
+			$this->db->order_by("account_number", "asc");
+			$by_account_number = $this->db->get();
+			foreach($by_account_number->result() as $row)
+			{
+				$suggestions[]=	array('value' => $row->person_id, 'label' => $row->account_number);
+			}
 		}
-		
-		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');	
-		$this->db->where('deleted',0);		
-		$this->db->like("account_number",$search);
-		$this->db->order_by("account_number", "asc");		
-		$by_account_number = $this->db->get();
-		foreach($by_account_number->result() as $row)
-		{
-			$suggestions[]=$row->account_number;		
-		}
+
 		
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
@@ -197,46 +201,7 @@ class Customer extends Person
 		}
 		return $suggestions;
 	}
-	
-	/*
-	Get search suggestions to find customers
-	*/
-	function get_customer_search_suggestions($search,$limit=25)
-	{
-		$suggestions = array();
-		
-		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');	
-		$this->db->where("(first_name LIKE '%".$this->db->escape_like_str($search)."%' or 
-		last_name LIKE '%".$this->db->escape_like_str($search)."%' or 
-		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");
-		$this->db->order_by("last_name", "asc");		
-		$by_name = $this->db->get();
-		foreach($by_name->result() as $row)
-		{
-			$suggestions[]=$row->person_id.'|'.$row->first_name.' '.$row->last_name;		
-		}
-		
-		$this->db->from('customers');
-		$this->db->join('people','customers.person_id=people.person_id');	
-		$this->db->where('deleted',0);		
-		$this->db->like("account_number",$search);
-		$this->db->order_by("account_number", "asc");		
-		$by_account_number = $this->db->get();
-		foreach($by_account_number->result() as $row)
-		{
-			$suggestions[]=$row->person_id.'|'.$row->account_number;
-		}
 
-		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0,$limit);
-		}
-		return $suggestions;
-
-	}
-	
 	function get_found_rows($search)
 	{
 		$this->db->from('customers');
