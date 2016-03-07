@@ -1,69 +1,105 @@
 <?php 
-// Check if for excel export process
-if($export_excel == 1)
-{
-	ob_start();
-	$this->load->view("partial/header_excel");
-}
-else
-{
-	$this->load->view("partial/header");
-} 
+	// Check if for excel export process
+	if($export_excel == 1)
+	{
+		ob_start();
+		$this->load->view("partial/header_excel");
+	}
+	else
+	{
+		$this->load->view("partial/header");
+	} 
 ?>
 
-<div id="page_title" style="margin-bottom:8px;"><?php echo $title ?></div>
-<div id="page_subtitle" style="margin-bottom:8px;"><?php echo $subtitle ?></div>
+<div id="page_title"><?php echo $title ?></div>
+
+<div id="page_subtitle"><?php echo $subtitle ?></div>
 
 <div id="table_holder">
 	<table class="tablesorter report" id="sortable_table">
 		<thead>
 			<tr>
 				<th><a href="#" class="expand_all">+</a></th>
-				<?php foreach ($headers['summary'] as $header) { ?>
-				<th width="<?=$header_width?>%"><?php echo $header; ?></th>
-				<?php } ?>
+				<?php
+				foreach ($headers['summary'] as $header)
+				{
+				?>
+					<th width="<?=$header_width?>%"><?php echo $header; ?></th>
+				<?php
+				}
+				?>
 			</tr>
 		</thead>
 		<tbody>
-			<?php foreach ($summary_data as $key=>$row) { ?>
-			<tr>
-				<td><a href="#" class="expand">+</a></td>
-				<?php foreach ($row as $cell) { ?>
-				<td><?php echo $cell; ?></td>
-				<?php } ?>
-			</tr>
-			<tr>
-				<td colspan="100">
-				<table class="innertable">
-					<thead>
-						<tr>
-							<?php foreach ($headers['details'] as $header) { ?>
-							<th><?php echo $header; ?></th>
-							<?php } ?>
-						</tr>
-					</thead>
-				
-					<tbody>
-						<?php foreach ($details_data[$key] as $row2) { ?>
+			<?php
+			foreach ($summary_data as $key=>$row) 
+			{
+			?>
+				<tr>
+					<td><a href="#" class="expand">+</a></td>
+					<?php
+					foreach ($row as $cell)
+					{
+					?>
+						<td><?php echo $cell; ?></td>
+					<?php
+					}
+					?>
+				</tr>
+				<tr>
+					<td colspan="100">
+					<table class="innertable">
+						<thead>
 							<tr>
-								<?php foreach ($row2 as $cell) { ?>
-								<td><?php echo $cell; ?></td>
-								<?php } ?>
+								<?php
+								foreach ($headers['details'] as $header)
+								{
+								?>
+									<th><?php echo $header; ?></th>
+								<?php
+								}
+								?>
 							</tr>
-						<?php } ?>
-					</tbody>
-				</table>
-				</td>
-			</tr>
-			<?php } ?>
+						</thead>
+					
+						<tbody>
+							<?php
+							foreach ($details_data[$key] as $row2)
+							{
+							?>
+								<tr>
+									<?php
+									foreach ($row2 as $cell)
+									{
+									?>
+										<td><?php echo $cell; ?></td>
+									<?php
+									}
+									?>
+								</tr>
+							<?php
+							}
+							?>
+						</tbody>
+					</table>
+					</td>
+				</tr>
+			<?php
+			}
+			?>
 		</tbody>
 	</table>
 </div>
 
 <div id="report_summary">
-	<?php foreach($overall_summary_data as $name=>$value) { ?>
+	<?php
+	foreach($overall_summary_data as $name=>$value)
+	{
+	?>
 		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
-	<?php }?>
+	<?php
+	}
+	?>
 </div>
 
 <?php 

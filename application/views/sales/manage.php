@@ -208,7 +208,7 @@ function init_table_sorting()
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-group')); ?>
 	<div id="search_filter_section" style="display:none;">
 		<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
 		<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
@@ -223,11 +223,11 @@ function init_table_sorting()
 
 	<div id="table_action_header">
 		<ul>
-			<li class="float_left"><span><?php echo anchor($controller_name . "/delete",$this->lang->line("common_delete"), array('id'=>'delete')); ?></span></li>
-			<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'), array('id'=>'update_invoice_numbers')); ?></span></li -->
+			<li class="float_left"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+			<!-- li class="float_left"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
 			<li class="float_right">
 				<img src='<?php echo base_url(); ?>images/spinner_small.gif' alt='spinner' id='spinner' />
-				<input type="text" name ='search' id='search'/>
+				<input type="text" name ='search' id='search', class='form-control input-sm'/>
 				<input type="hidden" name ='limit_from' id='limit_from'/>
 			</li>
 		</ul>

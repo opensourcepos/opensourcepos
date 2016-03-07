@@ -160,13 +160,11 @@ function post_bulk_form_submit(response)
     <div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
 	<?php echo anchor("$controller_name/excel_import",
 		"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-		array('class'=>'modal-dlg modal-btn-submit none', 'title'=>$this->lang->line('items_import_items_excel')));
-	?>
+		array('class'=>'modal-dlg modal-btn-submit none', 'title'=>$this->lang->line('items_import_items_excel'))); ?>
 
 	<?php echo anchor("$controller_name/view/-1",
 		"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-		array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new')));
-	?>
+		array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new'))); ?>
 </div>
 
 <div id="pagination"><?= $links ?></div>
@@ -177,7 +175,7 @@ function post_bulk_form_submit(response)
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-group')); ?>
 	<div id="search_filter_section" style="display:none;">
 		<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
 		<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>
@@ -200,19 +198,19 @@ function post_bulk_form_submit(response)
 
 	<div id="table_action_header">
 		<ul>
-			<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"), array('id'=>'delete')); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/bulk_edit",$this->lang->line("items_bulk_edit"), array('id'=>'bulk_edit','class'=>'modal-dlg modal-btn-submit','title'=>$this->lang->line('items_edit_multiple_items'))); ?></span></li>
-			<li class="float_left"><span><?php echo anchor("$controller_name/generate_barcodes",$this->lang->line("items_generate_barcodes"), array('id'=>'generate_barcodes', 'target' =>'_blank','title'=>$this->lang->line('items_generate_barcodes'))); ?></span></li>
+			<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+			<li class="float_left"><?php echo anchor("$controller_name/bulk_edit", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_bulk_edit") . '</span></div>', array('id'=>'bulk_edit', 'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('items_edit_multiple_items'))); ?></li>
+			<li class="float_left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
 			<?php
 			if (count($stock_locations) > 1)
 			{
 			?>
-				<li class="float_left"><span><?php echo form_dropdown('stock_location',$stock_locations,$stock_location,'id="stock_location" onchange="$(\'#search_form\').submit();"'); ?></span></li>
+				<li class="float_left"><span><?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id'=>'stock_location', 'onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></span></li>
 			<?php
 			}
 			?>
 			<li class="float_right">
-				<input type="text" name ='search' id='search'/>
+				<input type="text" name ='search' id='search', class='form-control input-sm'/>
 				<input type="hidden" name ='limit_from' id='limit_from'/>
 			</li>
 		</ul>

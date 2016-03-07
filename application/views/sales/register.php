@@ -220,7 +220,7 @@ if (isset($success))
 		echo form_open("sales/select_customer", array('id'=>'select_customer_form'));
 	?>
 			<label id="customer_label" for="customer"><?php echo $this->lang->line('sales_select_customer'); ?></label>
-			<?php echo form_input(array('name'=>'customer','id'=>'customer','size'=>'30','value'=>$this->lang->line('sales_start_typing_customer_name')));?>
+			<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'size'=>'30', 'value'=>$this->lang->line('sales_start_typing_customer_name')));?>
 		<?php echo form_close(); ?>
 
 		<div style="margin-top: 5px; text-align: center;">

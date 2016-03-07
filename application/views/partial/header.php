@@ -65,10 +65,10 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=f940457590"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b16e574e44"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=906f616faa" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=c56afe3d23" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

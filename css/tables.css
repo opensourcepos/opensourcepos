@@ -1,70 +1,52 @@
 #titleTextImg
 {
+	margin-top: 0.5em;
 	background-color: transparent;
-	height: 30px;
 	position: relative;
 }
 
 #search_filter_section
 {
-	padding: 5px;
-	margin-bottom: 10px;
+	padding: 0.5em;
 	background-color: transparent;
 	position: relative;
 }
 
 #table_action_header
 {
-	position:relative;
-	width:100%;
+	position: relative;
+	width: 100%;
 	background-color: transparent;
-	background-image:url(../images/checkbox_arrow.gif);
-	height:35px;
+	background-image: url(../images/checkbox_arrow.gif);
+	height: 2em;
 	border: 0;
-	background-position:5px 10px;
-	background-repeat:no-repeat;	
-	padding:5px 0px 5px 0px;
+	margin-top: 1em;
+	background-position: 0.5em 1.2em;
+	background-repeat: no-repeat;
 }
 
 #table_action_header ul
 {
-	list-style:none;
-	padding:0px;
-	margin:0px;
-	margin-left:15px;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-left: 1em;
+}
+
+#table_action_header ul.dropdown-menu.inner
+{
+	margin-left: -1em !important;
 }
 
 #table_action_header ul li
 {
-	margin-left:8px;
-	margin-right:4px;
-	
-}
-
-#table_action_header ul li span a
-{
-	background-color: rgba(0, 0, 0, 0);
-	border: 0;
-	color: #aaa;
-	padding:2px 5px 2px 5px;
-	
-}
-
-#table_action_header ul li span a:hover
-{
-	color: #555;
-}
-
-#table_action_header a
-{
-	text-decoration:none;
-	color:#FFF;	
+	margin-left: 1em;
 }
 
 #table_holder
 {
-	position:relative;
-	margin-bottom:50px;
+	position: relative;
+	margin-bottom: 50px;
 }
 
 table.tablesorter 
@@ -77,9 +59,9 @@ table.tablesorter
 
 table.tablesorter thead tr th, table.tablesorter tfoot tr th 
 {
-	color:#FFFFFF;
-	text-align:left;
-	background-color:#999999;
+	color: #FFFFFF;
+	text-align: left;
+	background-color: #999999;
 	padding: 8px;
 }
 
@@ -113,14 +95,14 @@ table.tablesorter tbody td.selected
 table.tablesorter thead tr .tablesorter-headerAsc 
 {
 	background-image: url(../images/tables/asc.gif);
-	background-repeat:no-repeat;
+	background-repeat: no-repeat;
 	background-position: right; 
 }
 
 table.tablesorter thead .tablesorter-headerDesc 
 {
 	background-image: url(../images/tables/desc.gif);
-	background-repeat:no-repeat;
+	background-repeat: no-repeat;
 	background-position: right; 
 }
 
@@ -152,5 +134,5 @@ table.innertable tbody tr td
 
 #pagination a, #pagination strong
 {
-	padding: 2px 3px;
+	padding: 3px;
 }

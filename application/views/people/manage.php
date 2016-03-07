@@ -66,13 +66,11 @@ function post_person_form_submit(response)
 	?>
 		<?php echo anchor("$controller_name/excel_import",
 			"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line('common_import_excel') . "</span></div>",
-			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('customers_import_items_excel')));
-		?>
+			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('customers_import_items_excel'))); ?>
 		
 		<?php echo anchor("$controller_name/view/-1",
 			"<div class='btn btn-info btn-sm pull-right' style='margin-right: 10px;'><span>" . $this->lang->line('customers_new') . "</span></div>",
-			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('customers_new')));
-		?>
+			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('customers_new'))); ?>
 	<?php
 	}
 	else
@@ -80,8 +78,7 @@ function post_person_form_submit(response)
 	?>
 		<?php echo anchor("$controller_name/view/-1",
 			"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
-			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new')));
-		?>
+			array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new'))); ?>
 	<?php
 	}
 	?>
@@ -89,19 +86,19 @@ function post_person_form_submit(response)
 
 <div id="pagination"><?= $links ?></div>
 
-<div id="table_action_header">
-	<ul>
-		<li class="float_left"><span><?php echo anchor("$controller_name/delete",$this->lang->line("common_delete"), array('id'=>'delete')); ?></span></li>
-		<li class="float_left"><span><a href="#" id="email"><?php echo $this->lang->line("common_email");?></a></span></li>
-		<li class="float_right">
-			<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
-			<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
-				<input type="text" name ='search' id='search'/>
-				<input type="hidden" name ='limit_from' id='limit_from'/>
-			<?php echo form_close(); ?>
-		</li>
-	</ul>
-</div>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-group')); ?>
+	<div id="table_action_header">
+		<ul>
+			<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+			<li class="float_left"><span><a href="#" id="email"><div class="btn btn-default btn-sm"><?php echo $this->lang->line("common_email");?></div></a></span></li>
+			<li class="float_right">
+				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
+				<input type="text" name ='search' id='search', class='form-control input-sm' />
+				<input type="hidden" name ='limit_from' id='limit_from' />
+			</li>
+		</ul>
+	</div>
+<?php echo form_close(); ?>
 
 <div id="table_holder">
 	<?php echo $manage_table; ?>

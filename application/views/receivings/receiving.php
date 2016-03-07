@@ -209,7 +209,7 @@ if (isset($error))
 		echo form_open("receivings/select_supplier", array('id'=>'select_supplier_form'));
 	?>
 			<label id="supplier_label" for="supplier"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
-			<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')));?>
+			<?php echo form_input(array('name'=>'supplier', 'id'=>'supplier', 'size'=>'30', 'value'=>$this->lang->line('recvs_start_typing_supplier_name')));?>
 		<?php echo form_close(); ?>
 		
 		<div style="margin-top:5px; text-align:center;">

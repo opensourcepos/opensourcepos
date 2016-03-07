@@ -36,11 +36,6 @@ label.required
 	float:right;
 }
 
-input
-{
-	padding: 3px;
-}
-
 .clearfix:after
 {
 	content: ".";
