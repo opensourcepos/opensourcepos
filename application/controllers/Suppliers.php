@@ -42,7 +42,7 @@ class Suppliers extends Person_controller
 	function suggest()
 	{
 		$suggestions = $this->Supplier->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		echo json_encode($suggestions);
 	}
 	
 	/*

@@ -15,6 +15,7 @@
 		<link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
 		<link rel="stylesheet" href="../bower_components/bootstrap-table/src/bootstrap-table.css" />
 		<link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+		<link rel="stylesheet" href="../bower_components/jquery-ui-bootstrap/jquery.ui.theme.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
@@ -50,7 +51,6 @@
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
@@ -65,11 +65,11 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=f940457590"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=63bde3dd80"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=906f616faa" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8aac97eb12" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

@@ -40,8 +40,14 @@ class Customers extends Person_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Customer->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Customer->get_search_suggestions($this->input->post('term'), TRUE);
+		echo json_encode($suggestions);
+	}
+
+	function suggest_search()
+	{
+		$suggestions = $this->Customer->get_search_suggestions($this->input->post('term'), FALSE);
+		echo json_encode($suggestions);
 	}
 	
 	/*

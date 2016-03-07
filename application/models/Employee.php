@@ -192,7 +192,7 @@ class Employee extends Person
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]=$row->first_name.' '.$row->last_name;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
 		}
 		
 		$this->db->from('employees');
@@ -203,7 +203,7 @@ class Employee extends Person
 		$by_email = $this->db->get();
 		foreach($by_email->result() as $row)
 		{
-			$suggestions[]=$row->email;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->email);
 		}
 		
 		$this->db->from('employees');
@@ -214,7 +214,7 @@ class Employee extends Person
 		$by_username = $this->db->get();
 		foreach($by_username->result() as $row)
 		{
-			$suggestions[]=$row->username;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->username);
 		}
 
 
@@ -226,7 +226,7 @@ class Employee extends Person
 		$by_phone = $this->db->get();
 		foreach($by_phone->result() as $row)
 		{
-			$suggestions[]=$row->phone_number;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->phone_number);
 		}
 		
 		

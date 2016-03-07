@@ -177,7 +177,7 @@ function post_bulk_form_submit(response)
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search", array('id'=>'search_form')); ?>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<div id="search_filter_section" style="display:none;">
 		<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
 		<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>

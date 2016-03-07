@@ -148,7 +148,7 @@ class Supplier extends Person
 		$by_company_name = $this->db->get();
 		foreach($by_company_name->result() as $row)
 		{
-			$suggestions[]=$row->company_name;		
+			$suggestions[]=array('label' => $row->company_name);
 		}
 
 		$this->db->from('suppliers');
@@ -160,7 +160,7 @@ class Supplier extends Person
 		$by_agency_name = $this->db->get();
 		foreach($by_agency_name->result() as $row)
 		{
-			$suggestions[]=$row->agency_name;		
+			$suggestions[]=array('label' => $row->agency_name);
 		}
 		
 		$this->db->from('suppliers');
@@ -172,7 +172,7 @@ class Supplier extends Person
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]=$row->first_name.' '.$row->last_name;		
+			$suggestions[]=array('label' => $row->first_name.' '.$row->last_name);
 		}
 		
 		$this->db->from('suppliers');
@@ -183,7 +183,7 @@ class Supplier extends Person
 		$by_email = $this->db->get();
 		foreach($by_email->result() as $row)
 		{
-			$suggestions[]=$row->email;		
+			$suggestions[]=array('label' => $row->email);
 		}
 
 		$this->db->from('suppliers');
@@ -194,7 +194,7 @@ class Supplier extends Person
 		$by_phone = $this->db->get();
 		foreach($by_phone->result() as $row)
 		{
-			$suggestions[]=$row->phone_number;		
+			$suggestions[]=array('label' => $row->phone_number);
 		}
 		
 		$this->db->from('suppliers');
@@ -205,7 +205,7 @@ class Supplier extends Person
 		$by_account_number = $this->db->get();
 		foreach($by_account_number->result() as $row)
 		{
-			$suggestions[]=$row->account_number;		
+			$suggestions[]=array('label' => $row->account_number);
 		}
 		
 		//only return $limit suggestions
@@ -232,7 +232,7 @@ class Supplier extends Person
 		$by_company_name = $this->db->get();
 		foreach($by_company_name->result() as $row)
 		{
-			$suggestions[]=$row->person_id.'|'.$row->company_name;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->company_name);
 		}
 
 
@@ -245,7 +245,7 @@ class Supplier extends Person
 		$by_agency_name = $this->db->get();
 		foreach($by_agency_name->result() as $row)
 		{
-			$suggestions[]=$row->person_id.'|'.$row->agency_name;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->agency_name);
 		}
 
 
@@ -258,7 +258,7 @@ class Supplier extends Person
 		$by_name = $this->db->get();
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]=$row->person_id.'|'.$row->first_name.' '.$row->last_name;		
+			$suggestions[]=array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
 		}
 		
 		//only return $limit suggestions

@@ -118,51 +118,7 @@ class Item_kit extends CI_Model
 		return $this->db->delete('item_kits');		
  	}
 
- 	/*
-	Get search suggestions to find kits
-	*/
 	function get_search_suggestions($search, $limit=25)
-	{
-		$suggestions = array();
-
-		$this->db->from('item_kits');
-
-		//KIT #
-		if (stripos($search, 'KIT ') !== false)
-		{
-			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search));
-			
-			$this->db->order_by('item_kit_id', 'asc');
-			$by_name = $this->db->get();
-	
-			foreach($by_name->result() as $row)
-			{
-				$suggestions[] = 'KIT ' . $row->item_kit_id;
-			}			
-		}
-		else
-		{
-			$this->db->like('name', $search);
-			
-			$this->db->order_by('name', 'asc');
-			$by_name = $this->db->get();
-	
-			foreach($by_name->result() as $row)
-			{
-				$suggestions[] = $row->name;
-			}
-		}
-
-		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0, $limit);
-		}
-
-		return $suggestions;
-	}
-	
-	function get_item_kit_search_suggestions($search, $limit=25)
 	{
 		$suggestions = array();
 
@@ -173,8 +129,7 @@ class Item_kit extends CI_Model
 
 		foreach($by_name->result() as $row)
 		{
-			// do not touch the '|' otherwise the sale search will not fetch the kit
-			$suggestions[] = 'KIT ' . $row->item_kit_id . '|' . $row->name;
+			$suggestions[] = array('value' => 'KIT ' . $row->item_kit_id, 'label'  => $row->name);
 		}
 
 		//only return $limit suggestions

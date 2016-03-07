@@ -8,11 +8,12 @@
 		<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'person_id',
-					'id'=>'person_id',
+					'name'=>'person_name',
+					'id'=>'person_name',
 					'class'=>'form-control input-sm',
-					'value'=>$selected_person)
+					'value'=>$selected_person_name)
 					);?>
+				<?php echo form_hidden('person_id', $selected_person_id);?>
 			</div>
 		</div>
 
@@ -46,22 +47,25 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	var format_item = function(row) 
-	{
-    	return [row[0], "|", row[1]].join("");
+	var fill_value =  function(event, ui) {
+		event.preventDefault();
+		$("input[name='person_id']").val(ui.item.value);
+		$("input[name='person_name']").val(ui.item.label);
 	};
-	var autocompleter = $("#person_id").autocomplete('<?php echo site_url("giftcards/person_search"); ?>', 
+
+	var autocompleter = $("#person_name").autocomplete(
 	{
+		source: '<?php echo site_url("customers/suggest"); ?>',
     	minChars:0,
     	delay:15, 
-    	max:100,
        	cacheLength: 1,
-        formatItem: format_item,
-        formatResult : format_item
+		appendTo: '.modal-content',
+		select: fill_value,
+		focus: fill_value
     });
 
 	// declare submitHandler as an object.. will be reused
-	var submit_form = function(selected_person) 
+	var submit_form = function()
 	{ 
 		$(this).ajaxSubmit(
 		{
@@ -72,7 +76,6 @@ $(document).ready(function()
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
 			{
-				selected_customer && autocompleter.val(selected_person);
 				post_giftcard_form_submit({message: errorThrown});
 			},
 			dataType:'json'
@@ -82,10 +85,7 @@ $(document).ready(function()
 	$('#giftcard_form').validate($.extend({
 		submitHandler:function(form)
 		{
-			var selected_person = autocompleter.val();
-			var selected_person_id = selected_person && selected_person.replace(/(\w)\|.*/, "$1");
-			selected_person_id && autocompleter.val(selected_person_id);
-			submit_form.call(form, selected_person);
+			submit_form.call(form)
 		},
 		rules:
 		{

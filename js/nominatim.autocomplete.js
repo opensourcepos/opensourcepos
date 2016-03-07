@@ -94,17 +94,38 @@
 			$.each(options.fields, function(key, value)
 			{
 				var handle_field_completion = handle_auto_completion(value.dependencies);
-				$("#" + key).autocomplete(url,{
-					max:100,
+
+
+				$("#" + key).autocomplete({
+					source: function (request, response) {
+						var extra_params = request_params(key, value.response && value.response.field, options.language);
+						$.each(options.extra_params, function(key, param) {
+							extra_params[key] = typeof param == "function" ? param() : param;
+						});
+
+						$.ajax({
+							type: "GET",
+							url: url,
+							dataType: "json",
+							data: $.extend(request, extra_params),
+							success: function(data) {
+								response($.map(data, function(item) {
+									return {
+										value: item.label
+									};
+								}))
+							}
+						});
+					},
 					minChars:3,
 					delay:500,
 					formatItem: set_field_values,
-					type: 'GET',
-					dataType:'json',
-					extraParams: request_params(key, value.response && value.response.field, options.language),
-					parse: create_parser(key, (value.response && value.response.format) || value.dependencies)
+					parse: create_parser(key, (value.response && value.response.format) || value.dependencies),
+					result: function(a, ui) {
+						$("#" + ui.item.value).result(handle_field_completion);
+					}
 				});
-			    $("#" + key).result(handle_field_completion);
+
 			});
 		}
 	

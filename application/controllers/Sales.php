@@ -126,36 +126,22 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
+		$search = $this->input->post('term');
 
 		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
 		{
 			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_item_search_suggestions($search , $limit));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($search, $limit));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($search));
 
-		echo implode("\n", $suggestions);
-	}
-
-	function customer_search()
-	{
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
-		
-		$suggestions = $this->Customer->get_customer_search_suggestions($search, $limit);
-
-		echo implode("\n", $suggestions);
+		echo json_encode($suggestions);
 	}
 
 	function suggest()
 	{
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
-		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
-
-		echo implode("\n", $suggestions);
+		$suggestions = $this->Sale->get_search_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 
 	function select_customer()

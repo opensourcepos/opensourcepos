@@ -263,156 +263,67 @@ class Item extends CI_Model
 		return $this->db->update('items', array('deleted' => 1));
  	}
 
- 	/*
-	Get search suggestions to find items
-	*/
-	public function get_search_suggestions($search, $limit=25, $search_custom=0, $is_deleted=0)
+	public function get_search_suggestions($search, $filters, $unique = FALSE, $limit=25)
 	{
 		$suggestions = array();
 
-		$this->db->select('category');
+		$this->db->select('item_id, name');
 		$this->db->from('items');
-		$this->db->where('deleted', $is_deleted);
-		$this->db->distinct();
-		$this->db->like('category', $search);
-		$this->db->order_by('category', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
+		$this->db->where('deleted', $filters['is_deleted']);
+		$this->db->like('name', $search);
+		$this->db->order_by('name', 'asc');
+		$by_name = $this->db->get();
+		foreach($by_name->result() as $row)
 		{
-			$suggestions[] = $row->category;
+			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+		}
+
+		$this->db->select('item_id, item_number');
+		$this->db->from('items');
+		$this->db->where('deleted', $filters['is_deleted']);
+		$this->db->like('item_number', $search);
+		$this->db->order_by('item_number', 'asc');
+		$by_item_number = $this->db->get();
+		foreach($by_item_number->result() as $row)
+		{
+			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
 		$this->db->select('company_name');
 		$this->db->from('suppliers');
 		$this->db->like('company_name', $search);
 		// restrict to non deleted companies only if is_deleted if false
-		if( $is_deleted == 0 )
-		{
-			$this->db->where('deleted', $is_deleted);
-		}
+        $this->db->where('deleted', $filters['is_deleted']);
 		$this->db->distinct();
 		$this->db->order_by('company_name', 'asc');
 		$by_company_name = $this->db->get();
 		foreach($by_company_name->result() as $row)
 		{
-			$suggestions[] = $row->company_name;
-		}
-		
-		$this->db->select('name');
-		$this->db->from('items');
-		$this->db->like('name', $search);
-		$this->db->where('deleted', $is_deleted);
-		$this->db->order_by('name', 'asc');
-		$by_name = $this->db->get();
-		foreach($by_name->result() as $row)
-		{
-			$suggestions[] = $row->name;
-		}
-
-		$this->db->select('item_number');
-		$this->db->from('items');
-		$this->db->like('item_number', $search);
-		$this->db->where('deleted', $is_deleted);
-		$this->db->order_by('item_number', 'asc');
-		$by_item_number = $this->db->get();
-		foreach($by_item_number->result() as $row)
-		{
-			$suggestions[] = $row->item_number;
-		}
-
-		//Search by description
-		$this->db->select('name, description');
-		$this->db->from('items');
-		$this->db->like('description', $search);
-		$this->db->where('deleted', $is_deleted);
-		$this->db->order_by('description', 'asc');
-		$by_name = $this->db->get();
-		foreach($by_name->result() as $row)
-		{
-			if (!in_array($row->name, $suggestions))
-			{
-				$suggestions[] = $row->name;
-			}
-		}
-
-		//Search by custom fields
-		if ($search_custom != 0)
-		{
-			$this->db->from('items');
-			$this->db->like('custom1', $search);
-			$this->db->or_like('custom2', $search);
-			$this->db->or_like('custom3', $search);
-			$this->db->or_like('custom4', $search);
-			$this->db->or_like('custom5', $search);
-			$this->db->or_like('custom6', $search);
-			$this->db->or_like('custom7', $search);
-			$this->db->or_like('custom8', $search);
-			$this->db->or_like('custom9', $search);
-			$this->db->or_like('custom10', $search);
-			$this->db->where('deleted', $is_deleted);
-			$by_name = $this->db->get();
-			foreach($by_name->result() as $row)
-			{
-				$suggestions[] = $row->name;
-			}
-		}
-
-		//only return $limit suggestions
-		if(count($suggestions > $limit))
-		{
-			$suggestions = array_slice($suggestions, 0, $limit);
-		}
-
-		return $suggestions;
-	}
-
-	public function get_item_search_suggestions($search, $limit=25, $search_custom=0, $is_deleted=0)
-	{
-		$suggestions = array();
-
-		$this->db->select('item_id, name');
-		$this->db->from('items');
-		$this->db->where('deleted', $is_deleted);
-		$this->db->like('name', $search);
-		$this->db->order_by('name', 'asc');
-		$by_name = $this->db->get();
-		foreach($by_name->result() as $row)
-		{
-			$suggestions[] = $row->item_id.'|'.$row->name;
-		}
-
-		$this->db->select('item_id, item_number');
-		$this->db->from('items');
-		$this->db->where('deleted', $is_deleted);
-		$this->db->like('item_number', $search);
-		$this->db->order_by('item_number', 'asc');
-		$by_item_number = $this->db->get();
-		foreach($by_item_number->result() as $row)
-		{
-			$suggestions[] = $row->item_id.'|'.$row->item_number;
+			$suggestions[] = array('value' => $row->item_id, 'label' => $row->company_name);
 		}
 
 		//Search by description
 		$this->db->select('item_id, name, description');
 		$this->db->from('items');
-		$this->db->where('deleted', $is_deleted);
+		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->like('description', $search);
 		$this->db->order_by('description', 'asc');
 		$by_description = $this->db->get();
 		foreach($by_description->result() as $row)
 		{
-			$entry = $row->item_id.'|'.$row->name;
-			if (!in_array($entry, $suggestions))
-			{
+			$entry = array('value' => $row->item_id, 'label' => $row->name);
+			if (!array_walk($suggestions, function($value, $label) use ($entry) {
+				return $entry['label'] != $label;
+			})) {
 				$suggestions[] = $entry;
 			}
 		}
 
 		//Search by custom fields
-		if ($search_custom != 0)
+		if ($filters['search_custom'] != 0)
 		{
 			$this->db->from('items');
-			$this->db->where('deleted', $is_deleted);
+			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->like('custom1', $search);
 			$this->db->or_like('custom2', $search);
 			$this->db->or_like('custom3', $search);
@@ -426,7 +337,7 @@ class Item extends CI_Model
 			$by_description = $this->db->get();
 			foreach($by_description->result() as $row)
 			{
-				$suggestions[] = $row->item_id.'|'.$row->name;
+				$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 			}
 		}
 
@@ -451,7 +362,7 @@ class Item extends CI_Model
 		$by_category = $this->db->get();
 		foreach($by_category->result() as $row)
 		{
-			$suggestions[] = $row->category;
+			$suggestions[] = array('label' => $row->category);
 		}
 
 		return $suggestions;
@@ -469,187 +380,26 @@ class Item extends CI_Model
 		$by_category = $this->db->get();
 		foreach($by_category->result() as $row)
 		{
-			$suggestions[] = $row->location;
+			$suggestions[] = array('label' => $row->location);
 		}
 	
 		return $suggestions;
 	}
 
-	public function get_custom1_suggestions($search)
+	public function get_custom_suggestions($search, $field_no)
 	{
 		$suggestions = array();
 		$this->db->distinct();
-		$this->db->select('custom1');
+		$this->db->select('custom'.$field_no);
 		$this->db->from('items');
-		$this->db->like('custom1', $search);
+		$this->db->like('custom'.$field_no, $search);
 		$this->db->where('deleted', 0);
-		$this->db->order_by('custom1', 'asc');
+		$this->db->order_by('custom'.$field_no, 'asc');
 		$by_category = $this->db->get();
 		foreach($by_category->result() as $row)
 		{
-			$suggestions[] = $row->custom1;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom2_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom2');
-		$this->db->from('items');
-		$this->db->like('custom2', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom2', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom2;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom3_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom3');
-		$this->db->from('items');
-		$this->db->like('custom3', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom3', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom3;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom4_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom4');
-		$this->db->from('items');
-		$this->db->like('custom4', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom4', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom4;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom5_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom5');
-		$this->db->from('items');
-		$this->db->like('custom5', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom5', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom5;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom6_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom6');
-		$this->db->from('items');
-		$this->db->like('custom6', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom6', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom6;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom7_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom7');
-		$this->db->from('items');
-		$this->db->like('custom7', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom7', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom7;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom8_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom8');
-		$this->db->from('items');
-		$this->db->like('custom8', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom8', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom8;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom9_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom9');
-		$this->db->from('items');
-		$this->db->like('custom9', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom9', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom9;
-		}
-	
-		return $suggestions;
-	}
-	
-	public function get_custom10_suggestions($search)
-	{
-		$suggestions = array();
-		$this->db->distinct();
-		$this->db->select('custom10');
-		$this->db->from('items');
-		$this->db->like('custom10', $search);
-		$this->db->where('deleted', 0);
-		$this->db->order_by('custom10', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
-		{
-			$suggestions[] = $row->custom10;
+			$row_array = (array) $row;
+			$suggestions[] = array('label' => $row_array['custom'.$field_no]);
 		}
 	
 		return $suggestions;
@@ -665,7 +415,7 @@ class Item extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	/*
 	 * changes the cost price of a given item
 	 * calculates the average price between received items and items on stock
@@ -673,10 +423,10 @@ class Item extends CI_Model
 	 * $items_received : the amount of new items received
 	 * $new_price : the cost-price for the newly received items
 	 * $old_price (optional) : the current-cost-price
-	 * 
+	 *
 	 * used in receiving-process to update cost-price if changed
 	 * caution: must be used there before item_quantities gets updated, otherwise average price is wrong!
-	 * 
+	 *
 	 */
 	public function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
 	{
@@ -697,7 +447,7 @@ class Item extends CI_Model
 		$average_price = bcdiv(bcadd(bcmul($items_received, $new_price), bcmul($old_total_quantity, $old_price)), $total_quantity);
 
 		$data = array('cost_price' => $average_price);
-		
+
 		return $this->save($data, $item_id);
 	}
 }

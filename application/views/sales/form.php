@@ -121,25 +121,13 @@ $(document).ready(function()
 		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
-	var format_item = function(row)
+	var autocompleter = $("#customer_id").autocomplete(
 	{
-    	var result = [row[0], "|", row[1]].join("");
-    	// if more than one occurence
-    	if (row[2] > 1 && row[3] && row[3].toString().trim()) {
-			// display zip code
-    		result += ' - ' + row[3];
-    	}
-		return result;
-	};
-
-	var autocompleter = $("#customer_id").autocomplete('<?php echo site_url("sales/customer_search"); ?>', 
-	{
+		source: '<?php echo site_url("customers/suggest"); ?>',
 		minChars: 0,
 		delay: 15, 
-		max: 100,
 		cacheLength: 1,
-		formatItem: format_item,
-		formatResult : format_item
+		appendTo: '.modal-content'
 	});
 
 	// declare submitHandler as an object.. will be reused
@@ -165,8 +153,8 @@ $(document).ready(function()
 	{
 		submitHandler : function(form)
 		{
-			var selected_customer = autocompleter.val();
-			var selected_customer_id = selected_customer.replace(/(\w)\|.*/, "$1");
+			var selected_customer_id = autocompleter.val();
+			//var selected_customer_id = selected_customer.replace(/(\w)\|.*/, "$1");
 			selected_customer_id && autocompleter.val(selected_customer_id);
 			submit_form.call(form, selected_customer);
 		},

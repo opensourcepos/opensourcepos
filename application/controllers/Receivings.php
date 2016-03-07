@@ -16,15 +16,15 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Item->get_search_suggestions($this->input->post('term'));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->post('term')));
+		echo json_encode($suggestions);
 	}
 
 	function supplier_search()
 	{
-		$suggestions = $this->Supplier->get_suppliers_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Supplier->get_suppliers_search_suggestions($this->input->post('term'),$this->input->post('limit'));
+		echo json_encode($suggestions);
 	}
 
 	function select_supplier()

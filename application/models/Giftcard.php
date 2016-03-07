@@ -184,7 +184,7 @@ class Giftcard extends CI_Model
 		
 		foreach($by_number->result() as $row)
 		{
-			$suggestions[]=$row->giftcard_number;
+			$suggestions[]=array('label' => $row->giftcard_number);
 		}
 
  		$this->db->from('customers');
@@ -198,7 +198,7 @@ class Giftcard extends CI_Model
 		
 		foreach($by_name->result() as $row)
 		{
-			$suggestions[]=$row->first_name.' '.$row->last_name;
+			$suggestions[]=array('label' => $row->first_name.' '.$row->last_name);
 		}			
 
 		//only return $limit suggestions
@@ -230,7 +230,7 @@ class Giftcard extends CI_Model
 	
 		foreach($by_person_id->result() as $row)
 		{
-			$suggestions[]=$row->person_id;
+			$suggestions[]=array('label' => $row->person_id);
 		}
 	
 		//only return $limit suggestions

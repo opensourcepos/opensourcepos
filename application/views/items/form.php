@@ -295,12 +295,29 @@
 		});
 
 		var no_op = function(event, data, formatted){};
-		$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10}).result(no_op).search();
+		$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",delay:10,appendTo: '.modal-content'});
 
 		<?php for ($i = 1; $i <= 10; $i++)
 		{
 		?>
-			$("#custom"+<?php echo $i; ?>).autocomplete("<?php echo site_url('items/suggest_custom'.$i);?>",{max:100,minChars:0,delay:10}).result(no_op).search();
+			$("#custom"+<?php echo $i; ?>).autocomplete({
+				source:function (request, response) {
+					$.ajax({
+						type: "POST",
+						url: "<?php echo site_url('items/suggest_custom');?>",
+						dataType: "json",
+						data: $.extend(request, {field_no: <?php echo $i; ?>}),
+						success: function(data) {
+							response($.map(data, function(item) {
+								return {
+									value: item.label
+								};
+							}))
+						}
+					});
+				},
+				delay:10,
+				appendTo: '.modal-content'});
 		<?php
 		}
 		?>
