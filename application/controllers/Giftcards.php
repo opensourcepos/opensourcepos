@@ -41,7 +41,7 @@ class Giftcards extends Secure_area implements iData_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Giftcard->get_search_suggestions($this->input->post('term'), $this->input->post('limit'));
+		$suggestions = $this->Giftcard->get_search_suggestions($this->input->post('term'));
 		echo json_encode($suggestions);
 	}
 

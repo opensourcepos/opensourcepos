@@ -263,7 +263,7 @@ class Item extends CI_Model
 		return $this->db->update('items', array('deleted' => 1));
  	}
 
-	public function get_search_suggestions($search, $filters = array("is_deleted"), $unique = FALSE, $limit=25)
+	public function get_search_suggestions($search, $filters = array("is_deleted" => 0), $unique = FALSE, $limit=25)
 	{
 		$suggestions = array();
 
@@ -291,6 +291,18 @@ class Item extends CI_Model
 
 		if (!$unique)
 		{
+			$this->db->select('category');
+			$this->db->from('items');
+			$this->db->where('deleted', $filters['is_deleted']);
+			$this->db->distinct();
+			$this->db->like('category', $search);
+			$this->db->order_by('category', 'asc');
+			$by_category = $this->db->get();
+			foreach($by_category->result() as $row)
+			{
+				$suggestions[] = array('label' => $row->category);
+			}
+
 			$this->db->select('company_name');
 			$this->db->from('suppliers');
 			$this->db->like('company_name', $search);
@@ -301,7 +313,7 @@ class Item extends CI_Model
 			$by_company_name = $this->db->get();
 			foreach($by_company_name->result() as $row)
 			{
-				$suggestions[] = array('value' => $row->item_id, 'label' => $row->company_name);
+				$suggestions[] = array('label' => $row->company_name);
 			}
 
 			//Search by description
