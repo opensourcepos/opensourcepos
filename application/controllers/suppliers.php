@@ -76,7 +76,7 @@ class Suppliers extends Person_controller
 		'agency_name'=>$this->input->post('agency_name'),
 		'account_number'=>$this->input->post('account_number')=='' ? null:$this->input->post('account_number'),
 		);
-		if($this->Supplier->save($person_data,$supplier_data,$supplier_id))
+		if($this->Supplier->save_supplier($person_data,$supplier_data,$supplier_id))
 		{
 			//New supplier
 			if($supplier_id==-1)
