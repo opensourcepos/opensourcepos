@@ -16,7 +16,7 @@ username: admin
 password:pointofsale
 9. Enjoy
 
-13/01/2016: Intall using Docker
+13/01/2016: Install using Docker
 -------------------------------
 From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
