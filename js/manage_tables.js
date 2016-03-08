@@ -2,7 +2,7 @@ function checkbox_click(event)
 {
 	event.stopPropagation();
 	do_email(enable_email.url);
-	if($(event.target).attr('checked'))
+	if($(event.target).is(':checked'))
 	{
 		$(event.target).parent().parent().find("td").addClass('selected').css("backgroundColor","");		
 	}
@@ -112,7 +112,7 @@ function do_search(show_feedback,on_complete)
 			//re-init elements in new table, as table tbody children were replaced
 			dialog_support.init('#sortable_table a.modal-dlg');
 			$('#sortable_table tbody :checkbox').click(checkbox_click);
-			$("#select_all").attr('checked',false);
+			$("#select_all").prop('checked',false);
 			if (response.total_rows > 0)
 			{
 				update_sortable_table();	
@@ -244,11 +244,11 @@ function enable_select_all()
 
 	$('#select_all').click(function()
 	{
-		if($(this).attr('checked'))
+		if($(this).is(':checked'))
 		{	
 			$("#sortable_table tbody :checkbox").each(function()
 			{
-				$(this).attr('checked',true);
+				$(this).prop('checked',true);
 				$(this).parent().parent().find("td").addClass('selected').css("backgroundColor","");
 
 			});
@@ -257,7 +257,7 @@ function enable_select_all()
 		{
 			$("#sortable_table tbody :checkbox").each(function()
 			{
-				$(this).attr('checked',false);
+				$(this).prop('checked',false);
 				$(this).parent().parent().find("td").removeClass();				
 			});    	
 		}
