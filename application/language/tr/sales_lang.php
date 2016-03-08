@@ -78,6 +78,7 @@ $lang["sales_price"] = "Fiyat";
 $lang["sales_print_after_sale"] = "Satıştan sonra yazdır";
 $lang["sales_quantity"] = "Adet";
 $lang["sales_quantity_less_than_zero"] = "Dikkat, İstenen stok yetersiz. Satışa devam edebilirsiniz ama stoğunuzu kontrol ediniz";
+$lang["sales_quantity_less_than_reorder_level"] = "Dikkat, İstenen stok yetersiz.";
 $lang["sales_receipt"] = "Satış Faturası";
 $lang["sales_receipt_number"] = "";
 $lang["sales_register"] = "Satış Kaydı";

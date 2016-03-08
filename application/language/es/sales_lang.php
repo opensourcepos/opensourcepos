@@ -78,6 +78,7 @@ $lang["sales_price"] = "Precio";
 $lang["sales_print_after_sale"] = "Imprimir recibo después de una venta";
 $lang["sales_quantity"] = "Cant.";
 $lang["sales_quantity_less_than_zero"] = "Advertencia. La cantidad deseada es insuficiente. Puedes procesar la venta pero verifica el inventario.";
+$lang["sales_quantity_less_than_reorder_level"] = "Advertencia. La cantidad deseada es insuficiente";
 $lang["sales_receipt"] = "Recibo de Venta";
 $lang["sales_receipt_number"] = "POS #";
 $lang["sales_register"] = "Registro de Ventas";

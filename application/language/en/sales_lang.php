@@ -78,6 +78,7 @@ $lang["sales_price"] = "Price";
 $lang["sales_print_after_sale"] = "Print after sale";
 $lang["sales_quantity"] = "Qty.";
 $lang["sales_quantity_less_than_zero"] = "Warning, Desired Quantity is Insufficient. You can still process the sale, but check your inventory";
+$lang["sales_quantity_less_than_reorder_level"] = "Warning, Desired Quantity is below reorder level";
 $lang["sales_receipt"] = "Sales Receipt";
 $lang["sales_receipt_number"] = "Sale #";
 $lang["sales_register"] = "Sales Register";

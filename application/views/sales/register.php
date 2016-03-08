@@ -8,7 +8,7 @@ if (isset($error))
 	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 
-if (isset($warning))
+if (!empty($warning))
 {
 	echo "<div class='alert alert-dismissible alert-warning'>".$warning."</div>";
 }

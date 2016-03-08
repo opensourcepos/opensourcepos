@@ -78,6 +78,7 @@ $lang["sales_price"] = "Preis";
 $lang["sales_print_after_sale"] = "Drucke Bon nach Verkauf";
 $lang["sales_quantity"] = "Menge";
 $lang["sales_quantity_less_than_zero"] = "Warnung: Gewünschte Menge ist nicht verfügbar. Sie können den Verkauf fortsetzen, dennoch prüfen Sie bitte den Lagerbestand.";
+$lang["sales_quantity_less_than_reorder_level"] = "Warnung: Gewünschte Menge ist nicht verfügbar.";
 $lang["sales_receipt"] = "Quittung";
 $lang["sales_receipt_number"] = "Quittung Nr.";
 $lang["sales_register"] = "Kasse";

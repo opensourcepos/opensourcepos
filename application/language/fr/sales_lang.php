@@ -78,6 +78,7 @@ $lang["sales_price"] = "Prix";
 $lang["sales_print_after_sale"] = "Imprimer un recu après vente";
 $lang["sales_quantity"] = "Qté.";
 $lang["sales_quantity_less_than_zero"] = "Avertissement, Quantité Demandée Insuffisante. Vous pouvez accomplir la ventre, mais veuillez vérifier votre inventaire";
+$lang["sales_quantity_less_than_reorder_level"] = "Avertissement, Quantité Demandée Insuffisante";
 $lang["sales_receipt"] = "Recu de Ventes";
 $lang["sales_receipt_number"] = "# Caisse";
 $lang["sales_register"] = "Registre des Ventes";

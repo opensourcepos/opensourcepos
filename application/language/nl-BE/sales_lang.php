@@ -78,6 +78,7 @@ $lang["sales_price"] = "Prijs";
 $lang["sales_print_after_sale"] = "Print Ticket";
 $lang["sales_quantity"] = "Aantal";
 $lang["sales_quantity_less_than_zero"] = "Waarschuwing, de gewenste hoeveelheid is onvoldoende. U kunt deze aankoop verwerken, maar kijk toch even de voorraad na.";
+$lang["sales_quantity_less_than_reorder_level"] = "Waarschuwing, de gewenste hoeveelheid stock is overgeschreden.";
 $lang["sales_receipt"] = "Ticket #";
 $lang["sales_receipt_number"] = "Ticket #";
 $lang["sales_register"] = "Kassa";
