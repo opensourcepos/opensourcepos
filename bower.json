@@ -31,7 +31,7 @@
     "jquery-validate": "~1.13.1",
     "jquery": "~1.12.1",
     "jquery-ui": "1.11.4",
-    "swfobject": "*",
+    "swfobject-bower": "2.3.0",
     "tablesorter": "jquery.tablesorter#^2.20.1",
     "bootstrap3-dialog": "bootstrap-dialog#^1.34.9",
     "jasny-bootstrap": "^3.1.3",
