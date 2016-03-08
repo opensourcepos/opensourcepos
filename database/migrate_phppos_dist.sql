@@ -652,12 +652,11 @@ CREATE TABLE `ospos_sales_suspended_payments` (
 --
 
 CREATE TABLE `ospos_sessions` (
-  `session_id` varchar(40) NOT NULL DEFAULT '0',
+  `id` varchar(40) NOT NULL DEFAULT '0',
   `ip_address` varchar(45) NOT NULL DEFAULT '0',
-  `user_agent` varchar(120) NOT NULL,
-  `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
-  `user_data` text,
-  PRIMARY KEY (`session_id`)
+  `data` blob NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --

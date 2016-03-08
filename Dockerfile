@@ -21,7 +21,6 @@ RUN npm install -g grunt-cli
 RUN ln -s /usr/local/bin/grunt /usr/bin/grunt
 
 RUN ln -fs /app/* /var/www/html
-RUN rm /var/www/html/index.html
 ADD ./docker/start_container.sh /start_container.sh
 RUN chmod 755 /start_container.sh
 EXPOSE 80 3306

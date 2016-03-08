@@ -300,6 +300,7 @@ class Sales extends Secure_area
 		$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt,$item_location);
 
 
+
 		$this->_reload($data);
 	}
 
