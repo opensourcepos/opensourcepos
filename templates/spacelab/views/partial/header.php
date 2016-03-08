@@ -37,7 +37,7 @@
 		<script src="../bower_components/jquery-form/jquery.form.js"></script>
 		<script src="../bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="../bower_components/swfobject/swfobject/swfobject.js"></script>
+		<script src="../bower_components/swfobject-bower/swfobject/swfobject.js"></script>
 		<script src="../bower_components/tablesorter/dist/js/jquery.tablesorter.combined.js"></script>
 		<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="../bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
@@ -65,11 +65,11 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=400d6cd480"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a5e6ea4b25"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=87aa85a1f1" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ab845a1430" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
