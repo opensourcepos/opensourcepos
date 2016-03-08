@@ -175,46 +175,45 @@ function post_bulk_form_submit(response)
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-group')); ?>
-	<div id="search_filter_section" style="display:none;">
-		<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
-		<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>
-		<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
-		<?php echo form_checkbox(array('name'=>'low_inventory','id'=>'low_inventory','value'=>1,'checked'=> isset($low_inventory)?  ( ($low_inventory)? 1 : 0) : 0)).' | ';?>
-		<?php echo form_label($this->lang->line('items_serialized_items').' '.':', 'is_serialized');?>
-		<?php echo form_checkbox(array('name'=>'is_serialized','id'=>'is_serialized','value'=>1,'checked'=> isset($is_serialized)?  ( ($is_serialized)? 1 : 0) : 0)).' | ';?>
-		<?php echo form_label($this->lang->line('items_no_description_items').' '.':', 'no_description');?>
-		<?php echo form_checkbox(array('name'=>'no_description','id'=>'no_description','value'=>1,'checked'=> isset($no_description)?  ( ($no_description)? 1 : 0) : 0)).' | ';?>
-		<?php echo form_label($this->lang->line('items_search_custom_items').' '.':', 'search_custom');?>
-		<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0)).' | ';?>
-		<?php echo form_label($this->lang->line('items_is_deleted').' '.':', 'is_deleted');?> 
-		<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0));?> 
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
+	<fieldset>
+		<div id="search_filter_section" class="form-group" style="display:none;">
+			<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
+			<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>
+			<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
+			<?php echo form_checkbox(array('name'=>'low_inventory','id'=>'low_inventory','value'=>1,'checked'=> isset($low_inventory)?  ( ($low_inventory)? 1 : 0) : 0)).' | ';?>
+			<?php echo form_label($this->lang->line('items_serialized_items').' '.':', 'is_serialized');?>
+			<?php echo form_checkbox(array('name'=>'is_serialized','id'=>'is_serialized','value'=>1,'checked'=> isset($is_serialized)?  ( ($is_serialized)? 1 : 0) : 0)).' | ';?>
+			<?php echo form_label($this->lang->line('items_no_description_items').' '.':', 'no_description');?>
+			<?php echo form_checkbox(array('name'=>'no_description','id'=>'no_description','value'=>1,'checked'=> isset($no_description)?  ( ($no_description)? 1 : 0) : 0)).' | ';?>
+			<?php echo form_label($this->lang->line('items_search_custom_items').' '.':', 'search_custom');?>
+			<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0)).' | ';?>
+			<?php echo form_label($this->lang->line('items_is_deleted').' '.':', 'is_deleted');?> 
+			<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0));?> 
 
-		<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-		<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size' => '15'));?>
-		<?php echo form_label(' - ', 'end_date');?>
-		<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size' => '15'));?>
-	</div>
+			<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
+			<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size'=>'15'));?>
+			<?php echo form_label(' - ', 'end_date');?>
+			<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size'=>'15'));?>
+		</div>
 
-	<div id="table_action_header">
-		<ul>
-			<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-			<li class="float_left"><?php echo anchor("$controller_name/bulk_edit", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_bulk_edit") . '</span></div>', array('id'=>'bulk_edit', 'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('items_edit_multiple_items'))); ?></li>
-			<li class="float_left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
-			<?php
-			if (count($stock_locations) > 1)
-			{
-			?>
-				<li class="float_left"><span><?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id'=>'stock_location', 'onchange'=>"$('#search_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></span></li>
-			<?php
-			}
-			?>
-			<li class="float_right">
-				<input type="text" name ='search' id='search', class='form-control input-sm'/>
-				<input type="hidden" name ='limit_from' id='limit_from'/>
-			</li>
-		</ul>
-	</div>
+		<div id="table_action_header" class="form-group">
+			<ul>
+				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<li class="float_left"><?php echo anchor("$controller_name/bulk_edit", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_bulk_edit") . '</span></div>', array('id'=>'bulk_edit', 'class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line('items_edit_multiple_items'))); ?></li>
+				<li class="float_left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
+				<?php
+				if (count($stock_locations) > 1)
+				{
+				?>
+					<li class="float_left"><span><?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id'=>'stock_location', 'onchange'=>"$('#search_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></span></li>
+				<?php
+				}
+				?>
+				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+			</ul>
+		</div>
+	</fieldset>
 <?php echo form_close(); ?>
 
 <div id="table_holder">

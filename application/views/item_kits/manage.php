@@ -78,18 +78,16 @@ function post_item_kit_form_submit(response)
 
 <div id="pagination"><?= $links ?></div>
 
-<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-group')); ?>
-	<div id="table_action_header">
-		<ul>
-			<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-			<li class="float_left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
-			<li class="float_right">
-				<img src='<?php echo base_url()?>images/spinner_small.gif' alt='spinner' id='spinner' />
-				<input type="text" name ='search' id='search', class='form-control input-sm' />
-				<input type="hidden" name ='limit_from' id='limit_from' />
-			</li>
-		</ul>
-	</div>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
+	<fieldset>
+		<div id="table_action_header" class="form-group">
+			<ul>
+				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<li class="float_left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
+				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+			</ul>
+		</div>
+	</fieldset>
 <?php echo form_close(); ?>
 
 <div id="table_holder">

@@ -208,30 +208,28 @@ function init_table_sorting()
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 
-<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-group')); ?>
-	<div id="search_filter_section" style="display:none;">
-		<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
-		<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
-		<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
-		<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0)) . ' | ';?>
+<?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
+	<fieldset>
+		<div id="search_filter_section" class="form-group" style="display:none;">
+			<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
+			<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
+			<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
+			<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0)) . ' | ';?>
 
-		<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-		<?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter', 'size' => '22'));?>
-		<?php echo form_label(' - ', 'end_date');?>
-		<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '22'));?>
-	</div>
+			<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
+			<?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter', 'size' => '22'));?>
+			<?php echo form_label(' - ', 'end_date');?>
+			<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '22'));?>
+		</div>
 
-	<div id="table_action_header">
-		<ul>
-			<li class="float_left"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-			<!-- li class="float_left"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
-			<li class="float_right">
-				<img src='<?php echo base_url(); ?>images/spinner_small.gif' alt='spinner' id='spinner' />
-				<input type="text" name ='search' id='search', class='form-control input-sm'/>
-				<input type="hidden" name ='limit_from' id='limit_from'/>
-			</li>
-		</ul>
-	</div>
+		<div id="table_action_header" class="form-group">
+			<ul>
+				<li class="float_left"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<!-- li class="float_left"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
+				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+			</ul>
+		</div>
+	</fieldset>
 <?php echo form_close(); ?>
 
 <div id="table_holder" class="totals">
