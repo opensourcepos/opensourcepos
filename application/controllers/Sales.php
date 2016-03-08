@@ -672,7 +672,7 @@ class Sales extends Secure_area
 			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : null,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number')
+			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
 		);
 		
 		if ($this->Sale->update($sale_data, $sale_id))
