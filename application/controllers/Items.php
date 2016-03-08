@@ -38,7 +38,6 @@ class Items extends Secure_area implements iData_controller
 		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
 
 		$this->load->view('items/manage', $data);
-
 	}
 
 	function find_item_info()

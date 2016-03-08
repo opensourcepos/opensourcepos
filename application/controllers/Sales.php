@@ -127,8 +127,6 @@ class Sales extends Secure_area
 		$sale_rows = get_sales_manage_table_data_rows($sales, $this);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
 
-		// do not move this line to be after the json_encode otherwise the search function won't work!!
-
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
 	}
 
