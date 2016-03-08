@@ -218,11 +218,13 @@ class Giftcard extends CI_Model
 		$this->db->from('giftcards');
 		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
 		$this->db->like('first_name', $this->db->escape_like_str($search));
+		$this->db->or_group_start();
 		$this->db->or_like('last_name', $this->db->escape_like_str($search));
 		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
 		$this->db->or_like('giftcard_number', $this->db->escape_like_str($search));
 		$this->db->or_like('giftcards.person_id', $this->db->escape_like_str($search));
-		$this->db->where('deleted', 0);
+		$this->db->group_end();
+		$this->db->where('giftcards.deleted', 0);
 		$this->db->order_by('giftcard_number', 'asc');
 
 		if ($rows > 0)
@@ -238,12 +240,13 @@ class Giftcard extends CI_Model
 		$this->db->from('giftcards');
 		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
 		$this->db->like('first_name', $this->db->escape_like_str($search));
+		$this->db->or_group_start();
 		$this->db->or_like('last_name', $this->db->escape_like_str($search));
 		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
 		$this->db->or_like('giftcard_number', $this->db->escape_like_str($search));
 		$this->db->or_like('giftcards.person_id', $this->db->escape_like_str($search));
-		$this->db->where('deleted', 0);
-
+		$this->db->group_end();
+		$this->db->where('giftcards.deleted', 0);
 		return $this->db->get()->num_rows();
 	}
 	
