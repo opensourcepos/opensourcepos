@@ -109,7 +109,6 @@ function do_search(show_feedback,on_complete)
 				on_complete(response);
 			$('#search').removeClass("ac_loading");
 			$('#pagination').html(response.pagination);
-			//$('#spinner').hide();
 			//re-init elements in new table, as table tbody children were replaced
 			dialog_support.init('#sortable_table a.modal-dlg');
 			$('#sortable_table tbody :checkbox').click(checkbox_click);

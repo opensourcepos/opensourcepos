@@ -19,13 +19,6 @@
 	padding: 5px;
 }
 
-#scan_item_number.loading
-{
-	background-image: url(../images/spinner_small.gif);
-	background-position: center right;
-	background-repeat: no-repeat;	
-}
-
 #info_provided_by
 {
 	display: none;

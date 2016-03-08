@@ -39,13 +39,6 @@ class Items extends Secure_area implements iData_controller
 		$this->load->view('items/manage', $data);
 	}
 
-	function find_item_info()
-	{
-		$item_number = $this->input->post('scan_item_number');
-
-		echo json_encode($this->Item->find_item_info($item_number));
-	}
-
 	/*
 	Returns Items table data rows. This will be called with AJAX.
 	*/

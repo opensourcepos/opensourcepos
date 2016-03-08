@@ -67,12 +67,6 @@ a.none
 	text-align: center;
 }
 
-#spinner
-{
-	float: right;	
-	display: none;
-}
-
 #feedback_bar
 {
 	position: fixed;
