@@ -68,12 +68,9 @@ class Item_kits extends Secure_area implements iData_controller
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-	function suggest()
+	function suggest_search()
 	{
-		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('term'), TRUE);
+		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('term'));
 		echo json_encode($suggestions);
 	}
 
