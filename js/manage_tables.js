@@ -293,10 +293,10 @@ function enable_row_selection(rows)
 	rows.click(function row_click(event)
 	{
 		var checkbox = $(this).find(":checkbox");
-		checkbox.attr('checked',!checkbox.attr('checked'));
+		checkbox.prop('checked',!checkbox.is(':checked'));
 		do_email(enable_email.url);
 		
-		if(checkbox.attr('checked'))
+		if(checkbox.is(':checked'))
 		{
 			$(this).find("td").addClass('selected').css("backgroundColor","");
 		}
