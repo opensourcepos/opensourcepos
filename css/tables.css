@@ -7,20 +7,23 @@
 
 #search_filter_section
 {
-	padding: 0.5em;
-	background-color: transparent;
 	position: relative;
+	width: 100%;
+	padding: 0.5em;
+	margin-left: 0;
+	background-color: transparent;
 }
 
 #table_action_header
 {
 	position: relative;
 	width: 100%;
-	background-color: transparent;
-	background-image: url(../images/checkbox_arrow.gif);
 	height: 2em;
 	border: 0;
 	margin-top: 1em;
+	margin-left: 0;
+	background-color: transparent;
+	background-image: url(../images/checkbox_arrow.gif);
 	background-position: 0.5em 1.2em;
 	background-repeat: no-repeat;
 }
