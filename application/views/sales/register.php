@@ -466,8 +466,6 @@ $(document).ready(function()
         }
     };
 
-    $('#item, #customer').click(clear_fields);
-
     $("#customer").autocomplete(
     {
 		source: '<?php echo site_url("customers/suggest"); ?>',
@@ -479,7 +477,12 @@ $(document).ready(function()
 		}
     });
 
-    $('#customer').blur(function()
+	$('#item, #customer').click(clear_fields).dblclick(function(event) {
+		$(this).autocomplete("search");
+	});
+
+
+	$('#customer').blur(function()
     {
     	$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
     });

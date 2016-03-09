@@ -65,11 +65,11 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a5e6ea4b25"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=fab2796a66"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=3fc124cd56" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=0bc5d892d3" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
