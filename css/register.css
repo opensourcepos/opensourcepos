@@ -12,7 +12,8 @@
 
 #mode_form .panel-body, #add_item_form .panel-body
 {
-	padding: 10px;
+	padding: 0.7em;
+	margin: 0;
 }
 
 #mode_form
@@ -20,26 +21,33 @@
 	background-color: #DDD;
 }
 
+#mode_form ul, #add_item_form ul
+{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#mode_form ul.dropdown-menu.inner, #add_item_form ul.dropdown-menu.inner
+{
+	margin-left: -1em !important;
+}
+
+#mode_form ul li, #add_item_form  ul li
+{
+	margin-left: 1em;
+}
+
 #add_item_form
 {
 	background-color: #BBB;
-}
-
-#item_label
-{
-	padding-top: 0;
-}
-
-#sales_takings_button
-{
-	margin-right: 5px;
 }
 
 #register
 {
 	position: relative;
 	width: 100%;
-	padding: 0px;
+	padding: 0;
 	border-collapse: collapse;	
 }
 
@@ -60,19 +68,30 @@
 
 #overall_sale
 {
-	float: left;
-	margin-left: 4px;
-	background-color: #BBB;
 	width: 28%;
-	padding: 5px;
+	float: left;
+	margin-left: 0.1em;
+	background-color: #BBB;
 	font-size: 13px;
+	text-align: center;
+}
+
+#overall_sale .panel-body
+{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#overall_sale .btn
+{
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
 }
 
 #sale_details
 {
 	position: relative;
 	width: 100%;
-	margin-top: 5px;
 	border-top: 2px solid #000;
 }
 
@@ -85,10 +104,12 @@
 {
 	float: left;
 	width: 100%;
-	margin-top: 5px;
 	border-top: 2px solid #000;
 	background-color: #DDD;
-	margin-bottom: 0px;
+	margin-top: 0.2em;
+	margin-bottom: 1em;
+	padding: 0.5em;
+	text-align: left;
 	clear: both;
 }
 
@@ -96,7 +117,6 @@
 {
 	float: left;
 	width: 100%;
-	margin-top: 5px;
 	clear: both;
 }
 
