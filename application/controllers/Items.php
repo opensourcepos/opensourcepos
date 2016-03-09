@@ -114,6 +114,7 @@ class Items extends Secure_area implements iData_controller
 			'search_custom' => $this->input->post('search_custom'),
 			'is_deleted' => !empty($this->input->post('is_deleted'))),
 			FALSE);
+
 		echo json_encode($suggestions);
 	}
 
@@ -122,6 +123,7 @@ class Items extends Secure_area implements iData_controller
 		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
 			'search_custom' => FALSE,
 			'is_deleted' => FALSE), TRUE);
+
 		echo json_encode($suggestions);
 	}
 
@@ -141,6 +143,7 @@ class Items extends Secure_area implements iData_controller
 	function suggest_location()
 	{
 		$suggestions = $this->Item->get_location_suggestions($this->input->get('term'));
+
 		echo json_encode($suggestions);
 	}
 	
@@ -150,6 +153,7 @@ class Items extends Secure_area implements iData_controller
 	function suggest_custom()
 	{
 		$suggestions = $this->Item->get_custom_suggestions($this->input->post('term'), $this->input->post('field_no'));
+
 		echo json_encode($suggestions);
 	}
 
