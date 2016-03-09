@@ -256,7 +256,7 @@ class Items extends Secure_area implements iData_controller
 		$data['items'] = $result;
 
 		// display barcodes
-		$this->load->view("barcode_sheet", $data);
+		$this->load->view("barcodes/barcode_sheet", $data);
 	}
 
 	function bulk_edit()

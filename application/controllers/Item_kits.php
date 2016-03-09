@@ -176,7 +176,7 @@ class Item_kits extends Secure_area implements iData_controller
 			$barcode_config['barcode_type'] = 'Code128';
 		}
 		$data['barcode_config'] = $barcode_config;
-		$this->load->view("barcode_sheet", $data);
+		$this->load->view("barcodes/barcode_sheet", $data);
 	}
 }
 ?>
