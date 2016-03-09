@@ -34,7 +34,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_height', '50'),
 ('barcode_quality', '100'),
 ('barcode_font', 'Arial'),
-('barcode_font_size', '10'),
+('barcode_font_size', '12'),
 ('barcode_first_row', 'category'),
 ('barcode_second_row', 'item_code'),
 ('barcode_third_row', 'unit_price'),
