@@ -33,8 +33,11 @@ function enable_search(options)
     $("#search").result(function(event, data, formatted)
     {
 		do_search(true, options.on_complete);
-    });
-    
+    }).on("keypress", function(event) {
+		if(event.which == 13) {
+			do_search(true, options.on_complete);
+		}
+	});
     attach_search_listener();
     
 	$('#search_form').submit(function(event)

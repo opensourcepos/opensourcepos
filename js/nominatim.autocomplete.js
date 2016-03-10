@@ -78,7 +78,7 @@
 				 format: 'json',
 	             limit: 5,
 			     addressdetails: 1,
-			     country: window['sessionStorage'] ? sessionStorage['country'] : 'be',
+			     countrycodes: window['sessionStorage'] ? sessionStorage['country'] : 'be',
 			     'accept-language' : language || navigator.language
 			};			
 			result[key || id] = $("#"+id).val();
