@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title" style="margin-bottom: 8px;"><?php echo $this->lang->line('sales_register'); ?></div>
+<div id="page_title"><?php echo $this->lang->line('sales_register'); ?></div>
 
 <?php
 if (isset($error))
@@ -165,7 +165,7 @@ if (isset($success))
 							if($item['allow_alt_description']==1)
 							{
 							?>
-								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
+								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv');?></td>
 							<?php 
 							}
 							?>
@@ -196,7 +196,7 @@ if (isset($success))
 								<?php
 								if($item['is_serialized']==1)
 								{
-									echo $this->lang->line('sales_serial').':';
+									echo $this->lang->line('sales_serial');
 								}
 								?>
 							</td>
@@ -230,7 +230,7 @@ if (isset($success))
 		<?php
 		if(isset($customer))
 		{
-			echo '<label class="control-label">' . $this->lang->line("sales_customer") . ': <b>' . $customer . '</b></label><br />';
+			echo '<label class="control-label">' . $this->lang->line("sales_customer") . '<b>' . $customer . '</b></label><br />';
 			echo anchor("sales/remove_customer",'['.$this->lang->line('common_remove').' '.$this->lang->line('customers_customer').']');
 		}
 		else
@@ -251,7 +251,7 @@ if (isset($success))
 
 		<table id="sale_details">
 			<tr>
-				<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?>:</th>
+				<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?></th>
 			</tr>
 			
@@ -260,7 +260,7 @@ if (isset($success))
 			{
 			?>
 				<tr>
-					<th style='width: 55%;'><?php echo $name; ?>:</th>
+					<th style='width: 55%;'><?php echo $name; ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($value); ?></th>
 				</tr>
 			<?php
@@ -268,7 +268,7 @@ if (isset($success))
 			?>
 
 			<tr>
-				<th style='width: 55%;'><?php echo $this->lang->line('sales_total'); ?>:</th>
+				<th style='width: 55%;'><?php echo $this->lang->line('sales_total'); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo to_currency($total); ?></th>
 			</tr>
 		</table>
@@ -293,13 +293,12 @@ if (isset($success))
 			?>
 				<?php echo form_open("sales/complete", array('id'=>'finish_sale_form', 'class'=>'form-horizontal')); ?>
 					<div class="form-group" id="finish_sale">
-						<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
+						<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
 						<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23')); ?>
 						<?php
 						if(!empty($customer_email))
 						{
-							echo $this->lang->line('sales_email_receipt'). ': '
-								. form_checkbox(array(
+							echo $this->lang->line('sales_email_receipt') . form_checkbox(array(
 								'name'    => 'email_receipt',
 								'id'      => 'email_receipt',
 								'value'   => '1',
@@ -320,11 +319,11 @@ if (isset($success))
 
 			<table width="100%">
 				<tr>
-					<th style="width: 55%;"><?php echo $this->lang->line('sales_payments_total').':';?></th>
+					<th style="width: 55%;"><?php echo $this->lang->line('sales_payments_total');?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
 				</tr>
 				<tr>
-					<th style="width: 55%;"><?php echo $this->lang->line('sales_amount_due').':';?></th>
+					<th style="width: 55%;"><?php echo $this->lang->line('sales_amount_due');?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($amount_due); ?></th>
 				</tr>
 			</table>
@@ -367,7 +366,7 @@ if (isset($success))
 								</td>
 							</tr>
 							<tr>
-								<td><?php echo $this->lang->line('sales_invoice_number').':   ';?></td>
+								<td><?php echo $this->lang->line('sales_invoice_number');?></td>
 								<td>
 									<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>10));?>
 								</td>
@@ -376,13 +375,13 @@ if (isset($success))
 							}
 							?>
 							<tr>
-								<td><?php echo $this->lang->line('sales_payment').':   ';?></td>
+								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
 									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm')); ?>
 								</td>
 							</tr>
 							<tr>
-								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered') . ': '; ?></span></td>
+								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 								<td>
 									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'10', 'tabindex'=>4)); ?>
 								</td>
@@ -401,9 +400,9 @@ if (isset($success))
 					<table id="register">
 						<thead>
 							<tr>
-								<th style="width: 11%;"><?php echo $this->lang->line('common_delete'); ?></th>
+								<th style="width: 10%;"><?php echo $this->lang->line('common_delete'); ?></th>
 								<th style="width: 60%;"><?php echo $this->lang->line('sales_payment_type'); ?></th>
-								<th style="width: 18%;"><?php echo $this->lang->line('sales_payment_amount'); ?></th>
+								<th style="width: 20%;"><?php echo $this->lang->line('sales_payment_amount'); ?></th>
 							</tr>
 						</thead>
 			
