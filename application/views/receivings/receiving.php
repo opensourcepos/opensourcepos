@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title" style="margin-bottom: 8px;"><?php echo $this->lang->line('recvs_register'); ?></div>
+<div id="page_title"><?php echo $this->lang->line('recvs_register'); ?></div>
 
 <?php
 if (isset($error))
