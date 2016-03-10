@@ -235,18 +235,16 @@ if (isset($success))
 		}
 		else
 		{
-			echo form_open("sales/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal'));
 		?>
-				<div class="form-group" style="margin: 0">
+			<?php echo form_open("sales/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
+				<div class="form-group" id="select_customer">
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em;"><?php echo $this->lang->line('sales_select_customer'); ?></label>
 					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('sales_start_typing_customer_name')));?>
-				</div>
-			<?php echo form_close(); ?>
 
-			<h4 style="margin-top: 0.4em; margin-bottom: 0;"><?php echo $this->lang->line('common_or'); ?></h4>
-			
-			<?php echo anchor("customers/view/-1", $this->lang->line('sales_new_customer'),
-						array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-submit none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer'))); ?>
+					<?php echo anchor("customers/view/-1", $this->lang->line('sales_new_customer'),
+								array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-submit none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer'))); ?>
+				</div>			
+			<?php echo form_close(); ?>
 		<?php
 		}
 		?>
@@ -281,10 +279,10 @@ if (isset($success))
 		{
 		?>
 			<?php echo form_open("sales/cancel_sale", array('id'=>'cancel_sale_form', 'class'=>'form-horizontal')); ?>
-				<div id="cancel_sale">
-					<div class='btn btn-sm btn-danger pull-left' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
-					
-					<div class='btn btn-sm btn-default pull-right' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+				<div class="form-group" id="cancel_sale">
+					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+
+					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				</div>
 			<?php echo form_close(); ?>
 
@@ -292,9 +290,9 @@ if (isset($success))
 			// Only show this part if there is at least one payment entered.
 			if(count($payments) > 0)
 			{
-				echo form_open("sales/complete", array('id'=>'finish_sale_form', 'class'=>'form-horizontal'));
 			?>
-					<div id="finish_sale">
+				<?php echo form_open("sales/complete", array('id'=>'finish_sale_form', 'class'=>'form-horizontal')); ?>
+					<div class="form-group" id="finish_sale">
 						<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 						<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4', 'cols'=>'23')); ?>
 						<?php
@@ -315,8 +313,8 @@ if (isset($success))
 						}
 						?>
 					</div>
+				<?php echo form_close(); ?>
 			<?php 
-				echo form_close();
 			}
 			?>
 
@@ -426,7 +424,6 @@ if (isset($success))
 							?>
 						</tbody>
 					</table>
-					<br />
 				<?php
 				}
 				?>
@@ -436,8 +433,6 @@ if (isset($success))
 		?>
 	</div>
 </div>
-
-<div class="clearfix" style="margin-bottom: 30px;">&nbsp;</div>
 
 <script type="text/javascript" language="javascript">
 $(document).ready(function()

@@ -45,7 +45,6 @@
 
 #register
 {
-	position: relative;
 	width: 100%;
 	padding: 0;
 	border-collapse: collapse;	
@@ -71,6 +70,7 @@
 	width: 28%;
 	float: left;
 	margin-left: 0.1em;
+	padding-bottom: 1em;
 	background-color: #BBB;
 	font-size: 13px;
 	text-align: center;
@@ -82,6 +82,11 @@
 	padding-bottom: 0;
 }
 
+#overall_sale .form-group
+{
+	margin: 0;
+}
+
 #overall_sale .btn
 {
 	margin-top: 0.5em;
@@ -90,14 +95,13 @@
 
 #sale_details
 {
-	position: relative;
 	width: 100%;
 	border-top: 2px solid #000;
 }
 
-#finish_sale
+#select_customer, #cancel_sale, #finish_sale
 {
-	position: relative;
+
 }
 
 #payment_details
@@ -107,7 +111,6 @@
 	border-top: 2px solid #000;
 	background-color: #DDD;
 	margin-top: 0.2em;
-	margin-bottom: 1em;
 	padding: 0.5em;
 	text-align: left;
 	clear: both;
