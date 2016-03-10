@@ -65,7 +65,7 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=3d75aef5c6"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a7d8e4b2d7"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->

@@ -722,9 +722,35 @@ class Sales extends Secure_area
 		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
-			$data['customer'] = $cust_info->first_name . ' ' . $cust_info->last_name;
+			if (isset($cust_info->company_name))
+			{
+				$data['customer'] = $cust_info->company_name;
+			}
+			else
+			{
+				$data['customer'] = $cust_info->first_name . ' ' . $cust_info->last_name;
+			}
+			$data['first_name'] = $cust_info->first_name;
+			$data['last_name'] = $cust_info->last_name;
+			$data['customer_address'] = $cust_info->address_1;
+			if (!empty($cust_info->zip) or !empty($cust_info->city))
+			{
+				$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;				
+			}
+			else
+			{
+				$data['customer_location'] = '';
+			}
 			$data['customer_email'] = $cust_info->email;
+			$data['account_number'] = $cust_info->account_number;
+			$data['customer_info'] = implode("\n", array(
+				$data['customer'],
+				$data['customer_address'],
+				$data['customer_location'],
+				$data['account_number']
+			));
 		}
+		
 		$data['invoice_number'] = $this->_substitute_invoice_number($cust_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
