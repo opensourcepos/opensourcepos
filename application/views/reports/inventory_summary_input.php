@@ -1,5 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
-<div id="page_title" style="margin-bottom:8px;"><?php echo $this->lang->line('reports_report_input'); ?></div>
+
+<div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?></div>
+
 <?php
 if(isset($error))
 {

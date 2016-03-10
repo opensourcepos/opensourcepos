@@ -1,13 +1,15 @@
 <?php $this->load->view("partial/header"); ?>
-<div id="page_title" style="margin-bottom:8px;"><?php echo $this->lang->line('reports_report_input'); ?></div>
+
+<div id="page_title"<?php echo $this->lang->line('reports_report_input'); ?></div>
+
 <?php
 if(isset($error))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 ?>
-<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
 
+<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('common_export_excel'), 'export_excel', !empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class'=>'control-label col-xs-2')); ?>
 		<div class="col-xs-4">
@@ -21,7 +23,6 @@ if(isset($error))
 	</div>
 
 <?php
-
 	echo form_button(array(
 		'name'=>'generate_report',
 		'id'=>'generate_report',
@@ -29,7 +30,6 @@ if(isset($error))
 		'class'=>'btn btn-primary btn-sm')
 	);
 ?>
-
 <?php echo form_close(); ?>
 
 <?php $this->load->view("partial/footer"); ?>

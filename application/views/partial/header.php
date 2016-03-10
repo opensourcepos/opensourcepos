@@ -65,11 +65,11 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=fab2796a66"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a7d8e4b2d7"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=0bc5d892d3" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=979821bd66" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
