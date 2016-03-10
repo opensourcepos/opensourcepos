@@ -27,7 +27,7 @@ if (isset($success))
 					<label class="control-label"><?php echo $this->lang->line('sales_mode'); ?></label>
 				</li>
 				<li class="float_left">
-					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
 				</li>
 
 				<?php
@@ -38,7 +38,7 @@ if (isset($success))
 						<label class="control-label"><?php echo $this->lang->line('sales_stock_location'); ?></label>
 					</li>
 					<li class="float_left">
-						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
 					</li>
 				<?php
 				}
