@@ -13,6 +13,7 @@ class Config extends Secure_area
 		$location_names = array();
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
+		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
 		$this->load->view("configs/manage", $data);
 	}
 		
@@ -172,6 +173,12 @@ class Config extends Secure_area
 
     	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
+
+	public function remove_logo()
+	{
+		$result = $this->Appconfig->batch_save(array('company_logo' => ''));;
+		echo json_encode(array('success' => $result));
+	}
     
     private function _handle_logo_upload()
     {

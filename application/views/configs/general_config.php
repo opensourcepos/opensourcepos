@@ -20,13 +20,13 @@
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_company_logo'), 'company_logo', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-6'>
-					<div class="fileinput fileinput-new" data-provides="fileinput">
-						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;">	
-							<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('config_company_logo'); ?>" 
-								src="<?php if($this->Appconfig->get('company_logo') != '') echo base_url('uploads/' . $this->Appconfig->get('company_logo')); else echo ''; ?>" 
-								style="max-height: 100%; max-width: 100%;">
+					<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
+						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
+						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
+							<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('config_company_logo'); ?>"
+								 src="<?php if($logo_exists) echo base_url('uploads/' . $this->Appconfig->get('company_logo')); else echo ''; ?>"
+								 style="max-height: 100%; max-width: 100%;">
 						</div>
-						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;"></div>
 						<div>
 							<span class="btn btn-default btn-sm btn-file">
 								<span class="fileinput-new"><?php echo $this->lang->line("config_company_select_image"); ?></span>
@@ -355,7 +355,15 @@ $(document).ready(function()
 	$("#backup_db").click(function() {
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
-	
+
+	$("a.fileinput-exists").click(function() {
+		$.ajax({
+			type: "GET",
+			url: "<?php echo site_url("$controller_name/remove_logo"); ?>",
+			dataType: "json"
+		})
+	});
+
 	$('#config_form').validate({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
