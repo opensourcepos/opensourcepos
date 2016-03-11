@@ -616,7 +616,7 @@ $(document).ready(function()
 	
     $("#finish_sale_button").click(function()
     {
-    	//if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
+    	if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
     	{
 			$('#buttons_form').attr('action', '<?php echo site_url("sales/complete"); ?>');
     		$('#buttons_form').submit();
@@ -625,7 +625,7 @@ $(document).ready(function()
 
 	$("#suspend_sale_button").click(function()
 	{ 	
-		//if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
+		if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
     	{
 			$('#buttons_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
     		$('#buttons_form').submit();
@@ -634,7 +634,7 @@ $(document).ready(function()
 
     $("#cancel_sale_button").click(function()
     {
-    	//if (confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
+    	if (confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
     	{
 			$('#buttons_form').attr('action', '<?php echo site_url("sales/cancel"); ?>');
     		$('#buttons_form').submit();
@@ -643,7 +643,10 @@ $(document).ready(function()
 
 	$("#add_payment_button").click(function()
 	{
-	   $('#add_payment_form').submit();
+		if( ! $('#add_payment_button').hasClass('disabled') )
+		{
+			$('#add_payment_form').submit();
+		}
     });
 
 	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard)
