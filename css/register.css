@@ -33,7 +33,7 @@
 	margin-left: 1em;
 }
 
-#first_li
+.first_li
 {
     margin-left: 0.2em !important;
 }
@@ -50,7 +50,6 @@
 
 #register
 {
-	width: 100%;
 	padding: 0;
 	border-collapse: collapse;	
 }
@@ -99,7 +98,12 @@
 	margin-bottom: 0.5em;
 }
 
-#customer_info, #sale_totals, #payment_totals, #payment_details, #buttons_sale, #suspended_sales_table
+#payment_details, #buttons_sale, #suspended_sales_table
+{
+	width: 100%;
+}
+
+.sales_table_100
 {
 	width: 100%;
 }
@@ -118,34 +122,4 @@
 	padding: 0.5em;
 	text-align: left;
 	clear: both;
-}
-
-#credit_card_form fieldset 
-{
-	overflow: auto;
-	border: 0;
-	margin: 0;
-	padding: 0; 
-}
-
-#credit_card_form fieldset div 
-{
-	float: left; 
-}
-
-#credit_card_form fieldset.centered div 
-{
-	text-align: center; 
-}
-
-#credit_card_form label 
-{
-	display: block;
-	margin-bottom: 5px; 
-}
-
-#credit_card_form input.text 
-{
-	border: 1px solid #bfbab4;
-	margin: 0 4px 8px 0;
 }

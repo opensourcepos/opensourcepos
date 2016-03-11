@@ -81,7 +81,7 @@ if (isset($error))
 	
 <!-- Receiving Items List -->
 
-	<table id="register">
+	<table class="sales_table_100" id="register">
 		<thead>
 			<tr>
 				<th style="width:10%;"><?php echo $this->lang->line('common_delete'); ?></th>
@@ -289,7 +289,7 @@ if (isset($error))
 				<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 				<?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 				<br /><br />
-				<table width="100%">
+				<table class="sales_table_100">
 				<tr>
 					<td>
 						<?php echo $this->lang->line('recvs_print_after_sale'); ?>

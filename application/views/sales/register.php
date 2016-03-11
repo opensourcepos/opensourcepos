@@ -26,7 +26,7 @@ if (isset($success))
 	<?php echo form_open("sales/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="float_left" id="first_li">
+				<li class="float_left first_li">
 					<label class="control-label"><?php echo $this->lang->line('sales_mode'); ?></label>
 				</li>
 				<li class="float_left">
@@ -70,14 +70,13 @@ if (isset($success))
 	<?php echo form_open("sales/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="float_left" id="first_li">
+				<li class="float_left first_li">
 					<label for="item", class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
 				</li>
 				<li class="float_left">
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
-
 				<li class="float_right">
 					<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
 							array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
@@ -88,7 +87,7 @@ if (isset($success))
 
 <!-- Sale Items List -->
 	
-	<table id="register">
+	<table class="sales_table_100" id="register">
 		<thead>
 			<tr>
 				<th style="width: 10%;"><?php echo $this->lang->line('common_delete'); ?></th>
@@ -235,7 +234,7 @@ if (isset($success))
 		if(isset($customer))
 		{
 		?>
-			<table id="customer_info">
+			<table class="sales_table_100">
 				<tr>
 					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer"); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo $customer; ?></th>
@@ -295,7 +294,7 @@ if (isset($success))
 		}
 		?>
 
-		<table id="sale_totals">
+		<table class="sales_table_100" id="sale_totals">
 			<tr>
 				<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?></th>
@@ -324,7 +323,7 @@ if (isset($success))
 		if(count($cart) > 0)
 		{
 		?>
-			<table id="payment_totals">
+			<table class="sales_table_100" id="payment_totals">
 				<tr>
 					<th style="width: 55%;"><?php echo $this->lang->line('sales_payments_total');?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
@@ -338,7 +337,7 @@ if (isset($success))
 			<div id="payment_details">
 				<div>
 					<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
-						<table width="100%">
+						<table class="sales_table_100">
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
@@ -375,7 +374,7 @@ if (isset($success))
 				if(count($payments) > 0)
 				{
 				?>
-					<table id="register">
+					<table class="sales_table_100" id="register">
 						<thead>
 							<tr>
 								<th style="width: 10%;"><?php echo $this->lang->line('common_delete'); ?></th>
@@ -406,7 +405,7 @@ if (isset($success))
 
 			<?php echo form_open("sales/cancel", array('id'=>'buttons_form', 'class'=>'form-horizontal')); ?>
 				<div class="form-group" id="buttons_sale">
-					<table width="100%">
+					<table class="sales_table_100">
 						<tbody>
 							<tr>
 								<td style="width: 33%; text-align: left;">
@@ -438,7 +437,7 @@ if (isset($success))
 						<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
 						<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
 
-						<table width="100%">
+						<table class="sales_table_100">
 							<tr>
 								<td style="width: 30%; text-align: left;">
 									<?php echo form_label($this->lang->line('sales_print_after_sale'), 'print_after_sale', array('class'=>'control-label')); ?>
