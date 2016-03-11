@@ -20,6 +20,9 @@ if (isset($success))
 ?>
 
 <div id="register_wrapper">
+
+<!-- Top register controls -->
+
 	<?php echo form_open("sales/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
@@ -100,7 +103,7 @@ if (isset($success))
 		</thead>
 		<tbody id="cart_contents">
 			<?php
-			if(count($cart)==0)
+			if(count($cart) == 0)
 			{
 			?>
 				<tr>
@@ -232,7 +235,7 @@ if (isset($success))
 		if(isset($customer))
 		{
 		?>
-			<table id="customer_details">
+			<table id="customer_info">
 				<tr>
 					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer"); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo $customer; ?></th>
@@ -271,6 +274,7 @@ if (isset($success))
 				}
 				?>
 			</table>
+
 			<?php echo anchor("sales/remove_customer", $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
 								array('class'=>'btn btn-danger btn-xs', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
 		<?php
@@ -291,7 +295,7 @@ if (isset($success))
 		}
 		?>
 
-		<table id="sale_details">
+		<table id="sale_totals">
 			<tr>
 				<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?></th>
@@ -320,36 +324,7 @@ if (isset($success))
 		if(count($cart) > 0)
 		{
 		?>
-			<?php echo form_open("sales/cancel_sale", array('id'=>'cancel_sale_form', 'class'=>'form-horizontal')); ?>
-				<div class="form-group" id="cancel_sale">
-					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
-
-					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
-				</div>
-			<?php echo form_close(); ?>
-
-			<?php
-			// Only show this part if there is at least one payment entered.
-			if(count($payments) > 0)
-			{
-			?>
-				<?php echo form_open("sales/complete", array('id'=>'finish_sale_form', 'class'=>'form-horizontal')); ?>
-					<div class="form-group" id="finish_sale">
-						<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
-						<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
-						<?php				 
-						if ($payments_cover_total)
-						{					
-							echo "<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='3'><span>".$this->lang->line('sales_complete_sale')."</span></div>";
-						}
-						?>
-					</div>
-				<?php echo form_close(); ?>
-			<?php 
-			}
-			?>
-
-			<table width="100%">
+			<table id="payment_totals">
 				<tr>
 					<th style="width: 55%;"><?php echo $this->lang->line('sales_payments_total');?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($payments_total); ?></th>
@@ -360,74 +335,10 @@ if (isset($success))
 				</tr>
 			</table>
 
-			<div id="payment_details" class="panel-footer">
+			<div id="payment_details">
 				<div>
 					<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table width="100%">
-							<tr>
-								<?php 
-								if(!empty($customer_email))
-								{
-								?>
-									<td><?php echo $this->lang->line('sales_email_receipt'); ?></td>
-									<td>
-										<?php
-										if($email_receipt)
-										{
-											echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox', 'checked'=>'checked'));
-										}
-										else
-										{
-											echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox'));
-										}
-										?>
-									</td>
-								<?php
-								}
-								?>
-							</tr>
-							<tr>
-								<td><?php echo $this->lang->line('sales_print_after_sale'); ?></td>
-								<td>
-									<?php
-									if ($print_after_sale)
-									{
-										echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox', 'checked'=>'checked'));
-									}
-									else
-									{
-										echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox'));
-									}
-									?>
-								</td>
-							</tr>
-							<?php
-							if ($mode == "sale") 
-							{
-							?>
-								<tr>
-									<td><?php echo $this->lang->line('sales_invoice_enable'); ?></td>
-									<td>
-										<?php if ($invoice_number_enabled)
-										{
-											echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox', 'checked'=>'checked'));
-										}
-										else
-										{
-											echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox'));
-										}
-										?>
-									</td>
-								</tr>
-								<tr>
-									<td><?php echo $this->lang->line('sales_invoice_number');?></td>
-									<td>
-										<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>10));?>
-									</td>
-								</tr>
-							<?php 
-							}
-							?>
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
@@ -442,7 +353,20 @@ if (isset($success))
 							</tr>
 						</table>
 						
-						<div class='btn btn-sm btn-success pull-right' id='add_payment_button'><?php echo $this->lang->line('sales_add_payment'); ?></div>
+						<?php
+						if( $payments_cover_total )
+						{
+						?>
+							<div class='btn btn-sm btn-success pull-right disabled' id='add_payment_button'><?php echo $this->lang->line('sales_add_payment'); ?></div>
+						<?php
+						}
+						else
+						{
+						?>
+							<div class='btn btn-sm btn-success pull-right' id='add_payment_button'><?php echo $this->lang->line('sales_add_payment'); ?></div>
+						<?php
+						}
+						?>
 					<?php echo form_close(); ?>
 				</div>
 
@@ -465,13 +389,11 @@ if (isset($success))
 							foreach($payments as $payment_id=>$payment)
 							{
 							?>
-								<?php echo form_open("sales/edit_payment/$payment_id", array('id'=>'edit_payment_form'.$payment_id)); ?>
-									<tr>
-										<td><?php echo anchor( "sales/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>' ); ?></td>
-										<td><?php echo $payment['payment_type']; ?></td>
-										<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
-									</tr>
-								<?php echo form_close(); ?>
+								<tr>
+									<td><?php echo anchor( "sales/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>' ); ?></td>
+									<td><?php echo $payment['payment_type']; ?></td>
+									<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
+								</tr>
 							<?php
 							}
 							?>
@@ -481,6 +403,127 @@ if (isset($success))
 				}
 				?>
 			</div>
+
+			<?php echo form_open("sales/cancel", array('id'=>'buttons_form', 'class'=>'form-horizontal')); ?>
+				<div class="form-group" id="buttons_sale">
+					<table width="100%">
+						<tbody>
+							<tr>
+								<td style="width: 33%; text-align: left;">
+									<div class='btn btn-sm btn-default' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+								</td>
+								<td style="width: 33%; text-align: center;">
+									<div class='btn btn-sm btn-danger' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
+								</td>
+								<td style="width: 33%; text-align: right;">
+									<?php
+									if (count($payments) > 0 && $payments_cover_total)
+									{
+									?>
+										<div class='btn btn-sm btn-success' id='finish_sale_button' tabindex='3'><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+									<?php
+									}
+									?>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<?php
+				if (count($payments) > 0)
+				{
+				?>
+					<div class="form-group form-group-sm">
+						<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
+						<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
+
+						<table width="100%">
+							<tr>
+								<td style="width: 30%; text-align: left;">
+									<?php echo form_label($this->lang->line('sales_print_after_sale'), 'print_after_sale', array('class'=>'control-label')); ?>
+								</td>
+								<td style="width: 20%; text-align: center; display: inline-block;">
+									<?php
+									if($print_after_sale)
+									{
+										echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox', 'checked'=>'checked'));
+									}
+									else
+									{
+										echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox'));
+									}
+									?>
+								</td>
+
+								<?php 
+								if(!empty($customer_email))
+								{
+								?>
+									<td style="width: 30%; text-align: left;">
+										<?php echo form_label($this->lang->line('sales_email_receipt'), 'email_receipt', array('class'=>'control-label')); ?>
+									</td>
+									<td style="width: 20%; text-align: center; display: inline-block;">
+										<?php
+										if($email_receipt)
+										{
+											echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox', 'checked'=>'checked'));
+										}
+										else
+										{
+											echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox'));
+										}
+										?>
+									</td>
+								<?php
+								}
+								else
+								{
+								?>
+									<td style="width: 30%; text-align: left;"></td>
+									<td style="width: 20%; text-align: center; display: inline-block;"></td>
+								<?php
+								}
+								?>
+							</tr>
+						
+							<?php
+							if ($mode == "sale") 
+							{
+							?>
+								<tr>
+									<td style="width: 30%; text-align: left;">
+										<?php echo form_label($this->lang->line('sales_invoice_enable'), 'invoice_enable', array('class'=>'control-label')); ?>
+									</td>
+									<td style="width: 20%; text-align: center; display: inline-block;">
+										<?php
+										if($invoice_number_enabled)
+										{
+											echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox', 'checked'=>'checked'));
+										}
+										else
+										{
+											echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox'));
+										}
+										?>
+									</td>
+
+									<td style="width: 30%; text-align: left;">
+										<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label')); ?>
+									</td>
+									<td style="width: 20%; text-align: right;">
+										<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>5));?>
+									</td>
+								</tr>
+							<?php 
+							}
+							?>
+						</table>
+					</div>
+				<?php
+				}
+				?>
+			<?php echo form_close(); ?>
 		<?php
 		}
 		?>
@@ -574,26 +617,28 @@ $(document).ready(function()
 	
     $("#finish_sale_button").click(function()
     {
-    	if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
+    	//if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
     	{
-    		$('#finish_sale_form').submit();
+			$('#buttons_form').attr('action', '<?php echo site_url("sales/complete"); ?>');
+    		$('#buttons_form').submit();
     	}
     });
 
 	$("#suspend_sale_button").click(function()
 	{ 	
-		if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
+		//if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
     	{
-			$('#cancel_sale_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
-    		$('#cancel_sale_form').submit();
+			$('#buttons_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
+    		$('#buttons_form').submit();
     	}
 	});
 
     $("#cancel_sale_button").click(function()
     {
-    	if (confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
+    	//if (confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
     	{
-    		$('#cancel_sale_form').submit();
+			$('#buttons_form').attr('action', '<?php echo site_url("sales/cancel"); ?>');
+    		$('#buttons_form').submit();
     	}
     });
 
@@ -602,7 +647,7 @@ $(document).ready(function()
 	   $('#add_payment_form').submit();
     });
 
-	$("#payment_types").change(check_payment_type_gifcard).ready(check_payment_type_gifcard)
+	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard)
 	
 	$("#amount_tendered").keyup(function(event){
 		if(event.which == 13) {
@@ -647,7 +692,7 @@ function post_person_form_submit(response)
 	}
 }
 
-function check_payment_type_gifcard()
+function check_payment_type_giftcard()
 {
 	if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
 	{

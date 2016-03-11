@@ -99,19 +99,14 @@
 	margin-bottom: 0.5em;
 }
 
-#customer_details, #sale_details, #payment_details
+#customer_info, #sale_totals, #payment_totals, #payment_details, #buttons_sale, #suspended_sales_table
 {
 	width: 100%;
 }
 
-#sale_details
+#sale_totals, #payment_totals
 {
 	border-top: 2px solid #000;
-}
-
-#select_customer, #finish_sale
-{
-
 }
 
 #payment_details
@@ -123,18 +118,6 @@
 	padding: 0.5em;
 	text-align: left;
 	clear: both;
-}
-
-#cancel_sale
-{
-	float: left;
-	width: 100%;
-	clear: both;
-}
-
-#suspended_sales_table
-{
-	width: 100%;
 }
 
 #credit_card_form fieldset 

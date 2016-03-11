@@ -679,8 +679,7 @@ class Sales extends Secure_area
 		}
 
 		/* Changed the conditional to account for floating point rounding */
-		if ( ($this->sale_lib->get_mode() == 'sale') && 
-		      ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
+		if ( ($this->sale_lib->get_mode() == 'sale') && ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
 		{
 			return false;
 		}
@@ -710,11 +709,11 @@ class Sales extends Secure_area
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['payment_options'] = array(
-			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
-			$this->lang->line('sales_check') => $this->lang->line('sales_check'),
-			$this->lang->line('sales_giftcard') => $this->lang->line('sales_giftcard'),
 			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
+			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
+			$this->lang->line('sales_giftcard') => $this->lang->line('sales_giftcard'),
+			$this->lang->line('sales_check') => $this->lang->line('sales_check')
 		);
 
 		$customer_id = $this->sale_lib->get_customer();
@@ -759,9 +758,10 @@ class Sales extends Secure_area
 		$this->load->view("sales/register", $data);
 	}
 
-	function cancel_sale()
+	function cancel()
 	{
 		$this->sale_lib->clear_all();
+
 		$this->_reload();
 	}
 	

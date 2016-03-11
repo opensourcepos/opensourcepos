@@ -6,7 +6,7 @@
 	<fieldset id="sale_basic_info">
 		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form', 'class'=>'form-horizontal')); ?>	
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_receipt_number'), 'customer', array('class'=>'control-label col-xs-3')); ?>
+				<?php echo form_label($this->lang->line('sales_receipt_number'), 'receipt_number', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
 					<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], $this->lang->line('sales_receipt_number') .$sale_info['sale_id'], array('target' => '_blank'));?>
 				</div>
