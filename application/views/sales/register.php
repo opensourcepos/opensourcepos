@@ -336,33 +336,49 @@ if (isset($success))
 
 			<div id="payment_details">
 				<div>
-					<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
-						<table class="sales_table_100">
-							<tr>
-								<td><?php echo $this->lang->line('sales_payment');?></td>
-								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm')); ?>
-								</td>
-							</tr>
-							<tr>
-								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
-								<td>
-									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'10', 'tabindex'=>4)); ?>
-								</td>
-							</tr>
-						</table>
-						
+					<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>						
 						<?php
-						if( $payments_cover_total )
+						// Show Complete sale button instead of Add Payment if there is no amount due left
+						if( $amount_due == 0 )
 						{
 						?>
-							<div class='btn btn-sm btn-success pull-right disabled' id='add_payment_button'><?php echo $this->lang->line('sales_add_payment'); ?></div>
+							<table class="sales_table_100">
+								<tr>
+									<td><?php echo $this->lang->line('sales_payment');?></td>
+									<td>
+										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm', 'disabled'=>'')); ?>
+									</td>
+								</tr>
+								<tr>
+									<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
+									<td>
+										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'', 'value'=>to_currency_no_money($amount_due), 'size'=>'10', 'tabindex'=>3)); ?>
+									</td>
+								</tr>
+							</table>
+						
+							<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='4'><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
 						}
 						else
 						{
 						?>
-							<div class='btn btn-sm btn-success pull-right' id='add_payment_button'><?php echo $this->lang->line('sales_add_payment'); ?></div>
+							<table class="sales_table_100">
+								<tr>
+									<td><?php echo $this->lang->line('sales_payment');?></td>
+									<td>
+										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm')); ?>
+									</td>
+								</tr>
+								<tr>
+									<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
+									<td>
+										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'10', 'tabindex'=>3)); ?>
+									</td>
+								</tr>
+							</table>
+
+							<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='4'><?php echo $this->lang->line('sales_add_payment'); ?></div>
 						<?php
 						}
 						?>
@@ -405,31 +421,13 @@ if (isset($success))
 
 			<?php echo form_open("sales/cancel", array('id'=>'buttons_form', 'class'=>'form-horizontal')); ?>
 				<div class="form-group" id="buttons_sale">
-					<table class="sales_table_100">
-						<tbody>
-							<tr>
-								<td style="width: 33%; text-align: left;">
-									<div class='btn btn-sm btn-default' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
-								</td>
-								<td style="width: 33%; text-align: center;">
-									<div class='btn btn-sm btn-danger' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
-								</td>
-								<td style="width: 33%; text-align: right;">
-									<?php
-									if (count($payments) > 0 && $payments_cover_total)
-									{
-									?>
-										<div class='btn btn-sm btn-success' id='finish_sale_button' tabindex='3'><?php echo $this->lang->line('sales_complete_sale'); ?></div>
-									<?php
-									}
-									?>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+
+					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				</div>
 				
 				<?php
+				// Only show this part if there is at least one payment entered.
 				if (count($payments) > 0)
 				{
 				?>
@@ -570,16 +568,16 @@ $(document).ready(function()
 		}
     });
 
-	$('#item, #customer').click(clear_fields).dblclick(function(event) {
+	$('#item, #customer').click(clear_fields).dblclick(function(event)
+	{
 		$(this).autocomplete("search");
 	});
-
 
 	$('#customer').blur(function()
     {
     	$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
     });
-	
+
 	$('#comment').keyup(function() 
 	{
 		$.post('<?php echo site_url("sales/set_comment");?>', {comment: $('#comment').val()});
@@ -599,11 +597,13 @@ $(document).ready(function()
 
 	enable_invoice_number();
 
-	$("#sales_print_after_sale").change(function() {
+	$("#sales_print_after_sale").change(function()
+	{
 		$.post('<?php echo site_url("sales/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
 	});
 	
-	$("#sales_invoice_enable").change(function() {
+	$("#sales_invoice_enable").change(function()
+	{
 		var enabled = enable_invoice_number();
 		$.post('<?php echo site_url("sales/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
 	});
@@ -613,23 +613,16 @@ $(document).ready(function()
 		$.post('<?php echo site_url("sales/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
 	});
 	
-	
     $("#finish_sale_button").click(function()
     {
-    	if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
-    	{
-			$('#buttons_form').attr('action', '<?php echo site_url("sales/complete"); ?>');
-    		$('#buttons_form').submit();
-    	}
+		$('#buttons_form').attr('action', '<?php echo site_url("sales/complete"); ?>');
+		$('#buttons_form').submit();
     });
 
 	$("#suspend_sale_button").click(function()
 	{ 	
-		if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
-    	{
-			$('#buttons_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
-    		$('#buttons_form').submit();
-    	}
+		$('#buttons_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
+		$('#buttons_form').submit();
 	});
 
     $("#cancel_sale_button").click(function()
@@ -643,28 +636,26 @@ $(document).ready(function()
 
 	$("#add_payment_button").click(function()
 	{
-		if( ! $('#add_payment_button').hasClass('disabled') )
-		{
-			$('#add_payment_form').submit();
-		}
+		$('#add_payment_form').submit();
     });
 
 	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard)
 	
-	$("#amount_tendered").keyup(function(event){
-		if(event.which == 13) {
+	$("#amount_tendered").keypress(function(event)
+	{
+		if( event.which == 13 )
+		{
 			$('#add_payment_form').submit();
 		}
-	});	
+	});
 	
-    $("#finish_sale_button").keypress(function( event ) {
-		if ( event.which == 13 ) {
-			if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
-			{
-				$('#finish_sale_form').submit();
-			}
+    $("#finish_sale_button").keypress(function(event)
+	{
+		if ( event.which == 13 )
+		{
+			$('#finish_sale_form').submit();
 		}
-	});	    
+	});
 });
 
 function post_item_form_submit(response, stay_open)

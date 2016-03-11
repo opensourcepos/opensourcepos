@@ -669,24 +669,6 @@ class Sales extends Secure_area
 		}
 	}
 	
-	private function _payments_cover_total()
-	{
-		$total_payments = 0;
-
-		foreach($this->sale_lib->get_payments() as $payment)
-		{
-			$total_payments += $payment['payment_amount'];
-		}
-
-		/* Changed the conditional to account for floating point rounding */
-		if ( ($this->sale_lib->get_mode() == 'sale') && ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
-		{
-			return false;
-		}
-		
-		return true;
-	}
-	
 	private function _reload($data=array())
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
@@ -753,7 +735,6 @@ class Sales extends Secure_area
 		$data['invoice_number'] = $this->_substitute_invoice_number($cust_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['payments_cover_total'] = $this->_payments_cover_total();
 
 		$this->load->view("sales/register", $data);
 	}
