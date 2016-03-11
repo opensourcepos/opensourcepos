@@ -39,7 +39,7 @@
     "smalot-bootstrap-datetimepicker": "^2.3.8",
     "bootstrap-select": "^1.10.0",
     "bootstrap-table": "^1.10.1",
-    "bootstrap-daterangepicker": "^2.1.18"
+    "bootstrap-daterangepicker": "^2.1.19"
   },
   "overrides": {
     "bootswatch-dist": {
