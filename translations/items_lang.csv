@@ -84,3 +84,6 @@ items_upc_database,UPC Datenbank,UPC Database,Base de datos UPC,UPC Database,Bas
 items_update,Ändere Artikel,Bewerk Product,Actualizar Artículo,Update Item,Éditer Item,更新產品,Обновить Товар,ปรับแต่งสินค้า,Ürün Güncelle,Ubah
 items_use_inventory_menu,Verwende Bestandesmenu,Use Inv. Menu,Usar Menú de Inventario,Use Inv. Menu,Utiliser Menu Inv.,使用庫存清單,Используйте меню инвентаря,ใช้เมนูสินค้าคงเหลือ,Stok Menüsünü Kullan,Gunakan Inv. Menu
 items_import_items_excel,Importiere Artikel mit Excel Datei,Import items from Excel sheet,Importar Artículos desde Excel,Import items from Excel sheet,Import items from Excel sheet,Import items from Excel sheet,Import items from Excel sheet,Import items from Excel sheet,Import items from Excel sheet,Import items from Excel sheet
+items_select_image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image,Select Image
+items_change_image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image,Change Image
+items_remove_image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image,Remove Image

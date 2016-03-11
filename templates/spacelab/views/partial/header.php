@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
-		<link rel="stylesheet" href="../bower_components/jquery-ui/themes/smoothness/jquery-ui.css" />
+		<link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" href="../bower_components/tablesorter/dist/css/theme.blue.min.css" />
 		<link rel="stylesheet" href="../bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<link rel="stylesheet" href="../bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
@@ -65,11 +65,11 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a7d8e4b2d7"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=4beaa785e7"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=979821bd66" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1bff9ada8f" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

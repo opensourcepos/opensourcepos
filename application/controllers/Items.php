@@ -179,12 +179,16 @@ class Items extends Secure_area implements iData_controller
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
 
+		$item_info = $this->Item->get_info($item_id);
 		$data['suppliers'] = $suppliers;
-		$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
+		$data['selected_supplier'] = $item_info->supplier_id;
 		$data['default_tax_1_rate'] = ($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
 		$data['default_tax_2_rate'] = ($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
-        
-        $locations_data = $this->Stock_location->get_undeleted_all()->result_array();
+		$data['logo_exists'] = $item_info->pic_id != '';
+		$images = glob ("uploads/item_pics/" . $item_info->pic_id . ".*");
+		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+
+		$locations_data = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($locations_data as $location)
         {
            $quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
@@ -413,13 +417,20 @@ class Items extends Secure_area implements iData_controller
 				'max_size' => '100',
 				'max_width' => '640',
 				'max_height' => '480',
-				'file_name' => sizeof($map));
+				'file_name' => sizeof($map) + 1);
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');           
 		
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
-	
+
+	public function remove_logo($item_id)
+	{
+		$item_data = array('pic_id' => null);
+		$result = $this->Item->save($item_data, $item_id);;
+		echo json_encode(array('success' => $result));
+	}
+
 	function save_inventory($item_id=-1)
 	{	
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;

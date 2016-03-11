@@ -187,38 +187,27 @@
 		</div>
 		
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('items_image'), 'item_image', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
-				<div class="fileinput fileinput-new input-group" data-provides="fileinput">
-					<div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i><span class="fileinput-filename"></span></div>
-					<span class="input-group-addon input-sm btn btn-default btn-file"><span class="fileinput-new"><?php echo $this->lang->line("common_import_select_file"); ?></span><span class="fileinput-exists"><?php echo $this->lang->line("common_import_change_file"); ?></span><input type="file" id="item_image" name="item_image" accept="image/*"></span>
-					<a href="#" class="input-group-addon input-sm btn btn-default fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("common_import_remove_file"); ?></a>
-				</div>
-			</div>
-		</div>
-<?php /*
-		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_image'), 'items_image', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
-				<div class="fileinput fileinput-new" data-provides="fileinput">
-					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;">	
-						<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('items_image'); ?>" 
-							src="<?php if($item_info->pic_id != null) echo base_url('uploads/item_pics/') . '/' . $item_info->pic_id . '.png'; else echo '';?>" 
-							style="max-height: 100%; max-width: 100%;">
+			<div class='col-xs-8'>
+				<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
+					<div class="fileinput-new thumbnail" style="width: 100px; height: 100px;"></div>
+					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;">
+						<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('items_image'); ?>"
+							 src="<?php echo $image_path; ?>"
+							 style="max-height: 100%; max-width: 100%;">
 					</div>
-					<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 100px; max-height: 100px;"></div>
 					<div>
-						<span class="btn btn-default btn-sm btn-file">
-							<span class="fileinput-new"><?php echo $this->lang->line("config_company_select_image"); ?></span>
-							<span class="fileinput-exists"><?php echo $this->lang->line("config_company_change_image"); ?></span>
-							<input type="file" name="items_image">
-						</span>
-						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("config_company_remove_image"); ?></a>
+							<span class="btn btn-default btn-sm btn-file">
+								<span class="fileinput-new"><?php echo $this->lang->line("items_select_image"); ?></span>
+								<span class="fileinput-exists"><?php echo $this->lang->line("items_change_image"); ?></span>
+								<input type="file" name="item_image" accept="image/*">
+							</span>
+						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("items_remove_image"); ?></a>
 					</div>
 				</div>
 			</div>
 		</div>
-*/ ?>	
+
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
@@ -334,6 +323,14 @@
 				dataType: 'json'
 			}).responseText).success;
 		}, '<?php echo $this->lang->line("items_item_number_duplicate"); ?>');
+
+		$("a.fileinput-exists").click(function() {
+			$.ajax({
+				type: "GET",
+				url: "<?php echo site_url("$controller_name/remove_logo/$item_info->item_id"); ?>",
+				dataType: "json"
+			})
+		});
 
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {

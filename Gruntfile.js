@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 					destPrefix: 'dist'
 				},
 				files: {
-                    'jquery-ui.css': 'jquery-ui/themes/smoothness/jquery-ui.css',
+                    'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
 					'bootstrap.min.css': 'bootswatch-dist/css/bootstrap.min.css'
 				}
 			}

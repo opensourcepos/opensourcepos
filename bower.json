@@ -50,7 +50,7 @@
     },
     "jquery-ui": {
       "main": [
-        "themes/smoothness/jquery-ui.css",
+        "themes/base/jquery-ui.css",
         "jquery-ui.js"
       ]
     }

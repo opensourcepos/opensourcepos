@@ -85,3 +85,6 @@ $lang["items_upc_database"] = "UPC Database";
 $lang["items_update"] = "更新產品";
 $lang["items_use_inventory_menu"] = "使用庫存清單";
 $lang["items_import_items_excel"] = "Import items from Excel sheet";
+$lang["items_select_image"] = "Select Image";
+$lang["items_change_image"] = "Change Image";
+$lang["items_remove_image"] = "Remove Image";
