@@ -14,6 +14,7 @@ class Config extends Secure_area
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
+
 		$this->load->view("configs/manage", $data);
 	}
 		
@@ -80,12 +81,14 @@ class Config extends Secure_area
 	
         $result = $this->Appconfig->batch_save( $batch_save_data );
         $success = $result ? true : false;
+		
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 	
 	function stock_locations() 
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
+
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
 	} 
 	
@@ -124,7 +127,9 @@ class Config extends Secure_area
 		{
 			$this->Stock_location->delete($location_id);
 		}
+
 		$success = $this->db->trans_complete();
+		
 		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
@@ -149,6 +154,7 @@ class Config extends Secure_area
         
         $result = $this->Appconfig->batch_save( $batch_save_data );
         $success = $result ? true : false;
+		
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
     
@@ -176,7 +182,8 @@ class Config extends Secure_area
 
 	public function remove_logo()
 	{
-		$result = $this->Appconfig->batch_save(array('company_logo' => ''));;
+		$result = $this->Appconfig->batch_save(array('company_logo' => ''));
+		
 		echo json_encode(array('success' => $result));
 	}
     

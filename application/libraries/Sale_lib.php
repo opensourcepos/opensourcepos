@@ -66,7 +66,6 @@ class Sale_lib
 		{
 			$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
 		}
-
 	}
 	
 	function clear_invoice_number()
@@ -133,8 +132,8 @@ class Sale_lib
 		}
 
 		$this->set_payments( $payments );
+		
 		return true;
-
 	}
 
 	// Multiple Payments
@@ -331,8 +330,8 @@ class Sale_lib
         }
 
 		$this->set_cart($items);
+		
 		return true;
-
 	}
 	
 	function out_of_stock($item_id,$item_location)
@@ -356,6 +355,7 @@ class Sale_lib
 		{
 			return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
 		}
+
 		return false;
 	}
 	
@@ -426,6 +426,7 @@ class Sale_lib
 				return true;
 			}
 		}
+
 		return false;
 	}
 	
@@ -589,6 +590,7 @@ class Sale_lib
 				$discount = bcadd($discount, $item_discount, PRECISION); 
 			}
 		}
+
 		return $discount;
 	}
 
@@ -618,8 +620,10 @@ class Sale_lib
 		if ($include_discount)
 		{
 			$discount_amount = $this->get_item_discount($quantity, $price, $discount_percentage);
+
 			return bcsub($total, $discount_amount, PRECISION);
 		}
+
 		return $total;
 	}
 	
@@ -627,6 +631,7 @@ class Sale_lib
 	{
 		$total = bcmul($quantity, $price, PRECISION);
 		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
+
 		return bcmul($total, $discount_fraction, PRECISION);
 	}
 	
@@ -642,6 +647,7 @@ class Sale_lib
 			return bcsub($price, $price_tax_excl, PRECISION);
 		}
 		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
+
 		return bcmul($price, $tax_fraction, PRECISION);
 	}
 
@@ -659,6 +665,7 @@ class Sale_lib
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
 			}
 		}
+
 		return $subtotal;
 	}
 
@@ -688,6 +695,7 @@ class Sale_lib
             if(!$item_id)
                 return false;
         }
+
         return true;
     }
 }

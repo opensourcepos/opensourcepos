@@ -30,17 +30,17 @@
 					<div class="form_field_label"><?php echo $this->lang->line('login_username'); ?>: </div>
 					<div class="form_field">
 						<?php echo form_input(array(
-						'name'=>'username',
-						'id'=>'username',
-						'size'=>'20')); ?>
+							'name'=>'username',
+							'id'=>'username',
+							'size'=>'20')); ?>
 					</div>
 
 					<div class="form_field_label"><?php echo $this->lang->line('login_password'); ?>: </div>
 					<div class="form_field">
 						<?php echo form_password(array(
-						'name'=>'password',
-						'id' => 'password',
-						'size'=>'20')); ?>
+							'name'=>'password',
+							'id' => 'password',
+							'size'=>'20')); ?>
 					</div>
 					
 					<input class="btn btn-primary btn-block" type="submit" name="loginButton" value="Go"/>
