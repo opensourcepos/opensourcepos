@@ -100,6 +100,7 @@ if (isset($success))
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_edit'); ?></th>
 			</tr>
 		</thead>
+
 		<tbody id="cart_contents">
 			<?php
 			if(count($cart) == 0)
@@ -130,7 +131,8 @@ if (isset($success))
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
-							<?php if ($items_module_allowed)
+							<?php
+							if ($items_module_allowed)
 							{
 							?>
 								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>$item['price']));?></td>
