@@ -110,7 +110,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('email_receipt');
 	}
 
-	function add_payment( $payment_id, $payment_amount )
+	function add_payment($payment_id, $payment_amount)
 	{
 		$payments = $this->get_payments();
 		if( isset( $payments[$payment_id] ) )
@@ -122,22 +122,22 @@ class Sale_lib
 		{
 			//add to existing array
 			$payment = array( $payment_id=>
-			array(
-				'payment_type' => $payment_id,
-				'payment_amount' => $payment_amount
-				)
+				array(
+					'payment_type' => $payment_id,
+					'payment_amount' => $payment_amount
+					)
 			);
 			
 			$payments += $payment;
 		}
 
-		$this->set_payments( $payments );
+		$this->set_payments($payments);
 		
 		return true;
 	}
 
 	// Multiple Payments
-	function edit_payment($payment_id,$payment_amount)
+	function edit_payment($payment_id, $payment_amount)
 	{
 		$payments = $this->get_payments();
 		if(isset($payments[$payment_id]))
@@ -151,7 +151,7 @@ class Sale_lib
 	}
 
 	// Multiple Payments
-	function delete_payment( $payment_id )
+	function delete_payment($payment_id)
 	{
 		$payments = $this->get_payments();
 		unset( $payments[urldecode( $payment_id )] );
@@ -172,17 +172,17 @@ class Sale_lib
 		{
 		    $subtotal = bcadd($payments['payment_amount'], $subtotal, PRECISION);
 		}
+
 		return to_currency_no_money($subtotal);
 	}
 
 	// Multiple Payments
 	function get_amount_due()
 	{
-		$amount_due=0;
 		$payment_total = $this->get_payments_total();
-		$sales_total=$this->get_total();
-		$amount_due=to_currency_no_money(bcsub($sales_total, $payment_total, PRECISION));
-		return $amount_due;
+		$sales_total = $this->get_total();
+		
+		return to_currency_no_money(bcsub($sales_total, $payment_total, PRECISION));
 	}
 
 	function get_customer()
@@ -218,6 +218,7 @@ class Sale_lib
              $location_id = $this->CI->Stock_location->get_default_location_id();
              $this->set_sale_location($location_id);
         }
+
         return $this->CI->session->userdata('sale_location');
     }
 
@@ -246,7 +247,7 @@ class Sale_lib
     	$this->CI->session->unset_userdata('giftcard_remainder');
     }
     
-	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
+	function add_item($item_id, $quantity=1, $item_location, $discount=0, $price=null, $description=null, $serialnumber=null)
 	{
 		//make sure item exists	     
 		if($this->validate_item($item_id) == false)
@@ -334,7 +335,7 @@ class Sale_lib
 		return true;
 	}
 	
-	function out_of_stock($item_id,$item_location)
+	function out_of_stock($item_id, $item_location)
 	{
 		//make sure item exists
 		if($this->validate_item($item_id) == false)
@@ -359,7 +360,7 @@ class Sale_lib
 		return false;
 	}
 	
-	function get_quantity_already_added($item_id,$item_location)
+	function get_quantity_already_added($item_id, $item_location)
 	{
 		$items = $this->get_cart();
 		$quanity_already_added = 0;
@@ -389,7 +390,7 @@ class Sale_lib
 		return -1;
 	}
 
-	function edit_item($line,$description,$serialnumber,$quantity,$discount,$price)
+	function edit_item($line, $description, $serialnumber, $quantity, $discount, $price)
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))	

@@ -230,7 +230,7 @@ class Sales extends Secure_area
 			$new_giftcard_value = ( $new_giftcard_value >= 0 ) ? $new_giftcard_value : 0;
 			$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
 			$data['warning'] = $this->lang->line('giftcards_remaining_balance', $this->input->post('amount_tendered'), to_currency( $new_giftcard_value, TRUE ));
-			$payment_amount = min( $this->sale_lib->get_amount_due( ), $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) );
+			$payment_amount = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) );
 		}
 		else
 		{
@@ -669,6 +669,25 @@ class Sales extends Secure_area
 		}
 	}
 	
+	private function _payments_cover_total()
+	{
+		// Changed the conditional to account for floating point rounding
+		
+		// "sale" amount due needs to be <=0 to state it's fine
+		if( ($this->sale_lib->get_mode() == 'sale') && $this->sale_lib->get_amount_due() > 1e-6 )
+		{
+			return false;
+		}
+
+		// "return" amount due needs to be >=0 to state it's fine		
+		if( ($this->sale_lib->get_mode() == 'return') && $this->sale_lib->get_amount_due() < -(1e-6) )
+		{
+			return false;
+		}
+		
+		return true;
+	}
+	
 	private function _reload($data=array())
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
@@ -735,6 +754,7 @@ class Sales extends Secure_area
 		$data['invoice_number'] = $this->_substitute_invoice_number($cust_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['payments_cover_total'] = $this->_payments_cover_total();
 
 		$this->load->view("sales/register", $data);
 	}

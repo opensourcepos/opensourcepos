@@ -341,7 +341,7 @@ if (isset($success))
 					<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>						
 						<?php
 						// Show Complete sale button instead of Add Payment if there is no amount due left
-						if( $amount_due == 0 )
+						if( $payments_cover_total )
 						{
 						?>
 							<table class="sales_table_100">
