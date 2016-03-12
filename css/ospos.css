@@ -127,6 +127,12 @@ a.rollover img
 	padding: 3px;	
 }
 
+button.btn.dropdown-toggle.btn-sm
+{
+	background-color: white;
+	color: black;
+}
+
 @media (min-width: 768px)
 {	
 	.navbar-nav > li > a

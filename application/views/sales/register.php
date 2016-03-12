@@ -30,7 +30,7 @@ if (isset($success))
 					<label class="control-label"><?php echo $this->lang->line('sales_mode'); ?></label>
 				</li>
 				<li class="float_left">
-					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
+					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 
 				<?php
@@ -41,7 +41,7 @@ if (isset($success))
 						<label class="control-label"><?php echo $this->lang->line('sales_stock_location'); ?></label>
 					</li>
 					<li class="float_left">
-						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
+						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</li>
 				<?php
 				}
@@ -337,55 +337,53 @@ if (isset($success))
 			</table>
 
 			<div id="payment_details">
-				<div>
-					<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>						
-						<?php
-						// Show Complete sale button instead of Add Payment if there is no amount due left
-						if( $payments_cover_total )
-						{
-						?>
-							<table class="sales_table_100">
-								<tr>
-									<td><?php echo $this->lang->line('sales_payment');?></td>
-									<td>
-										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm', 'disabled'=>'')); ?>
-									</td>
-								</tr>
-								<tr>
-									<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
-									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'', 'value'=>to_currency_no_money($amount_due), 'size'=>'10', 'tabindex'=>3)); ?>
-									</td>
-								</tr>
-							</table>
-						
-							<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='4'><?php echo $this->lang->line('sales_complete_sale'); ?></div>
-						<?php
-						}
-						else
-						{
-						?>
-							<table class="sales_table_100">
-								<tr>
-									<td><?php echo $this->lang->line('sales_payment');?></td>
-									<td>
-										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm')); ?>
-									</td>
-								</tr>
-								<tr>
-									<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
-									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'10', 'tabindex'=>3)); ?>
-									</td>
-								</tr>
-							</table>
+				<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>						
+					<?php
+					// Show Complete sale button instead of Add Payment if there is no amount due left
+					if( $payments_cover_total )
+					{
+					?>
+						<table class="sales_table_100">
+							<tr>
+								<td><?php echo $this->lang->line('sales_payment');?></td>
+								<td>
+									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'')); ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
+								<td>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>3)); ?>
+								</td>
+							</tr>
+						</table>
+					
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='4'><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+					<?php
+					}
+					else
+					{
+					?>
+						<table class="sales_table_100">
+							<tr>
+								<td><?php echo $this->lang->line('sales_payment');?></td>
+								<td>
+									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
+								<td>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>3)); ?>
+								</td>
+							</tr>
+						</table>
 
-							<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='4'><?php echo $this->lang->line('sales_add_payment'); ?></div>
-						<?php
-						}
-						?>
-					<?php echo form_close(); ?>
-				</div>
+						<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='4'><?php echo $this->lang->line('sales_add_payment'); ?></div>
+					<?php
+					}
+					?>
+				<?php echo form_close(); ?>
 
 				<?php
 				// Only show this part if there is at least one payment entered.

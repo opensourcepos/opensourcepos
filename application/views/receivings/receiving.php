@@ -20,7 +20,7 @@ if (isset($error))
 					<label class="control-label"><?php echo $this->lang->line('recvs_mode'); ?></label>
 				</li>
 				<li class="float_left">
-					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
+					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 
 				<?php 
@@ -31,7 +31,7 @@ if (isset($error))
 						<label class="control-label"><?php echo $this->lang->line('recvs_stock_source'); ?></label>
 					</li>
 					<li class="float_left">
-						<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
+						<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</li>
 					
 					<?php
@@ -42,7 +42,7 @@ if (isset($error))
 							<label class="control-label"><?php echo $this->lang->line('recvs_stock_destination'); ?></label>
 						</li>
 						<li class="float_left">
-							<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, array('onchange'=>"$('#mode_form').submit();", 'class'=>'form-control input-sm')); ?>
+							<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 						</li>
 				<?php
 					}
@@ -290,7 +290,7 @@ if (isset($error))
 							<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
 							<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4'));?>
 
-							<table class="sales_table_100">
+							<table class="sales_table_100" id="payment_details">
 								<tr>
 									<td><?php echo $this->lang->line('recvs_print_after_sale'); ?></td>
 									<td>
@@ -328,7 +328,7 @@ if (isset($error))
 									<tr>
 										<td><?php echo $this->lang->line('recvs_invoice_number');?></td>
 										<td>
-											<?php echo form_input(array('name'=>'recv_invoice_number', 'id'=>'recv_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>10));?>
+											<?php echo form_input(array('name'=>'recv_invoice_number', 'id'=>'recv_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>5));?>
 										</td>
 									</tr>
 								<?php 
@@ -337,14 +337,14 @@ if (isset($error))
 								<tr>
 									<td><?php echo $this->lang->line('sales_payment'); ?></td>
 									<td>
-										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'form-control input-sm')); ?>
+										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
 									</td>
 								</tr>
 
 								<tr>
 									<td><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
 									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'value'=>'', 'class'=>'form-control input-sm', 'size'=>'10')); ?>
+										<?php echo form_input(array('name'=>'amount_tendered', 'value'=>'', 'class'=>'form-control input-sm', 'size'=>'5')); ?>
 									</td>
 								</tr>
 							</table>
