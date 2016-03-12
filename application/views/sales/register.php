@@ -441,16 +441,7 @@ if (isset($success))
 									<?php echo form_label($this->lang->line('sales_print_after_sale'), 'print_after_sale', array('class'=>'control-label')); ?>
 								</td>
 								<td style="width: 20%; text-align: center; display: inline-block;">
-									<?php
-									if($print_after_sale)
-									{
-										echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox', 'checked'=>'checked'));
-									}
-									else
-									{
-										echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox'));
-									}
-									?>
+									<?php echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox', 'value'=>1, 'checked'=>$print_after_sale)); ?>
 								</td>
 
 								<?php 
@@ -461,16 +452,7 @@ if (isset($success))
 										<?php echo form_label($this->lang->line('sales_email_receipt'), 'email_receipt', array('class'=>'control-label')); ?>
 									</td>
 									<td style="width: 20%; text-align: center; display: inline-block;">
-										<?php
-										if($email_receipt)
-										{
-											echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox', 'checked'=>'checked'));
-										}
-										else
-										{
-											echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox'));
-										}
-										?>
+										<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox', 'value'=>1, 'checked'=>$email_receipt)); ?>
 									</td>
 								<?php
 								}
@@ -493,18 +475,8 @@ if (isset($success))
 										<?php echo form_label($this->lang->line('sales_invoice_enable'), 'invoice_enable', array('class'=>'control-label')); ?>
 									</td>
 									<td style="width: 20%; text-align: center; display: inline-block;">
-										<?php
-										if($invoice_number_enabled)
-										{
-											echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox', 'checked'=>'checked'));
-										}
-										else
-										{
-											echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox'));
-										}
-										?>
+										<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
 									</td>
-
 									<td style="width: 30%; text-align: left;">
 										<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label')); ?>
 									</td>

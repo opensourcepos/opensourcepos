@@ -294,15 +294,7 @@ if (isset($error))
 								<tr>
 									<td><?php echo $this->lang->line('recvs_print_after_sale'); ?></td>
 									<td>
-										<?php if ($print_after_sale)
-										{
-											echo form_checkbox(array('name'=>'recv_print_after_sale', 'id'=>'recv_print_after_sale', 'class'=>'checkbox', 'checked'=>'checked'));
-										}
-										else
-										{
-											echo form_checkbox(array('name'=>'recv_print_after_sale', 'id'=>'recv_print_after_sale', 'class'=>'checkbox'));
-										}
-										?>
+										<?php echo form_checkbox(array('name'=>'recv_print_after_sale', 'id'=>'recv_print_after_sale', 'class'=>'checkbox', 'value'=>1, 'checked'=>$print_after_sale)); ?>
 									</td>
 								</tr>
 
@@ -313,16 +305,7 @@ if (isset($error))
 									<tr>
 										<td><?php echo $this->lang->line('recvs_invoice_enable'); ?></td>
 										<td>
-											<?php
-											if ($invoice_number_enabled)
-											{
-												echo form_checkbox(array('name'=>'recv_invoice_enable', 'id'=>'recv_invoice_enable', 'class'=>'checkbox', 'checked'=>'checked'));
-											}
-											else
-											{
-												echo form_checkbox(array('name'=>'recv_invoice_enable', 'id'=>'recv_invoice_enable', 'class'=>'checkbox'));
-											}
-											?>
+											<?php echo form_checkbox(array('name'=>'recv_invoice_enable', 'id'=>'recv_invoice_enable', 'class'=>'checkbox', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
 										</td>
 									</tr>
 									<tr>
