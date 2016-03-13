@@ -1,27 +1,27 @@
-var start_date = <?php echo date('Y-m-d') ?>;
-var end_date   = <?php echo date('Y-m-d') ?>;
+var start_date = "<?php echo date('Y-m-d') ?>";
+var end_date   = "<?php echo date('Y-m-d') ?>";
 
 $('#daterangepicker').daterangepicker({
 	"ranges": {
 		"<?php echo $this->lang->line("datepicker_today"); ?>": [
-			"<?php echo date($this->config->item('dateformat'), time());?>",
-			"<?php echo date($this->config->item('dateformat'), time());?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y")));?>",
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 		],
 		"<?php echo $this->lang->line("datepicker_today_last_year"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y")-1));?>",
-			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y")-1));?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y")-1)-1);?>"
 		],
 		"<?php echo $this->lang->line("datepicker_yesterday"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-1,date("Y")));?>",
-			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-1,date("Y")));?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y"))-1);?>"
 		],
 		"<?php echo $this->lang->line("datepicker_last_7"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-6,date("Y")));?>",
-			"<?php echo date($this->config->item('dateformat'), time());?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 		],
 		"<?php echo $this->lang->line("datepicker_last_30"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")-29,date("Y")));?>",
-			"<?php echo date($this->config->item('dateformat'), time());?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 		],
 		"<?php echo $this->lang->line("datepicker_this_month"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")));?>",
@@ -29,7 +29,7 @@ $('#daterangepicker').daterangepicker({
 		],
 		 "<?php echo $this->lang->line("datepicker_this_month_to_today_last_year"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
-			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d"),date("Y")-1));?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y")-1)-1);?>"
 		],
 		 "<?php echo $this->lang->line("datepicker_this_month_last_year"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
@@ -49,7 +49,7 @@ $('#daterangepicker').daterangepicker({
 		],
 		 "<?php echo $this->lang->line("datepicker_all_time"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>",
-			"<?php echo date($this->config->item('dateformat'), time());?>"
+			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 		],
 	},
 	"locale": {
@@ -87,10 +87,10 @@ $('#daterangepicker').daterangepicker({
 		"firstDay": <?php echo $this->lang->line("datepicker_weekstart"); ?>
 	},
 	"alwaysShowCalendars": true,
-	"startDate": "<?php echo date($this->config->item('dateformat'), time());?>",
-	"endDate": "<?php echo date($this->config->item('dateformat'), time());?>",
+	"startDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>",
+	"endDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>",
 	"minDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>",
-	"maxDate": "<?php echo date($this->config->item('dateformat'), time());?>"
+	"maxDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 }, function(start, end, label) {
 	start_date = start.format('YYYY-MM-DD');
 	end_date = end.format('YYYY-MM-DD');

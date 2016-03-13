@@ -9,7 +9,7 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('common_export_excel'), 'export_excel', !empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class'=>'control-label col-xs-2')); ?>

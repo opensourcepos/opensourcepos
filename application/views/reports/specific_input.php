@@ -9,7 +9,7 @@ if(isset($error))
 }
 ?>
 
-<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('reports_date_range'), 'report_date_range_label', array('class'=>'control-label col-xs-2 required')); ?>
 		<div class="col-xs-3">

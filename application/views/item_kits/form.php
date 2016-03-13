@@ -2,7 +2,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, array('id'=>'item_kit_form', 'class' => 'form-horizontal')); ?>
+<?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, array('id'=>'item_kit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_kit_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('item_kits_name'), 'name', array('class'=>'control-label col-xs-3 required')); ?>
