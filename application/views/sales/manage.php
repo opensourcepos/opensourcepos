@@ -169,18 +169,18 @@ function init_table_sorting()
 
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('sales_receipt_number'); ?></div>
-	<div id="new_button">
+	<div id="print_button" class="print_hide">
 		<a href="javascript:window.print()"><div class='big_button' style='float: left;'><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
 	</div>
 </div>
 <div id="pagination"><?= $links ?></div>
-<div id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
+<div class="print_hide" id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
 	<div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>
 <?php echo form_open("$controller_name/search",array('id'=>'search_form')); ?>
-<div id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>;background-color:#EEEEEE;">
+<div class="print_show" id="search_filter_section" style="display: <?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'block';?>;background-color:#EEEEEE;">
 	<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
 	<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
 	<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
@@ -189,9 +189,9 @@ function init_table_sorting()
 	<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size' => '15')) . ' | ';?>
 	<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
 	<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0));?>
-	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'none';?>" />
+	<input type="hidden" name="search_section_state" id="search_section_state" value="<?php echo isset($search_section_state)?  ( ($search_section_state)? 'block' : 'none') : 'block';?>" />
 </div>
-<div id="table_action_header">
+<div id="table_action_header" class="print_hide">
 	<ul>
 		<li class="float_left"><span><?php echo anchor($controller_name . "/delete",$this->lang->line("common_delete"),array('id'=>'delete')); ?></span></li>
 		<!-- li class="float_left"><span><?php echo anchor($controller_name . "/update_invoice_numbers", $this->lang->line('sales_invoice_update'),array('id'=>'update_invoice_numbers')); ?></span></li-->

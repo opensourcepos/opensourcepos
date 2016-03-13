@@ -4,7 +4,7 @@
 	font-size:75%;
 }
 
-#menubar,#footer
+#menubar, #footer
 {
 	display:none;
 }
@@ -61,4 +61,14 @@ table.report a
 table.innertable thead 
 {
 	/*display:none;*/ 
+}
+
+.print_show 
+{
+	display:block !important; 
+}
+
+.print_hide
+{
+	display:none !important;
 }

@@ -87,7 +87,7 @@ a.none
 	text-align:center;
 }
 
-#new_button
+#new_button, #print_button
 {
 	position:absolute;
 	bottom:-5px;
