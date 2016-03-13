@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Receivings Transactions Failed";
-$lang["recvs_basic_information"] = "Receiving information";
 $lang["recvs_cancel_receiving"] = "Cancel";
 $lang["recvs_cannot_be_deleted"] = "Receiving(s) could not be deleted";
 $lang["recvs_comments"] = "Comments";

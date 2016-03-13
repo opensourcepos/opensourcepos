@@ -1,7 +1,6 @@
 <?php 
 
 $lang["suppliers_account_number"] = "# Compte";
-$lang["suppliers_basic_information"] = "Informations fournisseur";
 $lang["suppliers_cannot_be_deleted"] = "Impossible de supprimer le(s) fournisseur(s) sélectionné(s). Un ou plusieurs ont des ventes.";
 $lang["suppliers_company_name"] = "Nom d\'Entreprise";
 $lang["suppliers_company_name_required"] = "Le Nom d\'Entreprise est un champ requis";

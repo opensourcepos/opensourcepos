@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Las Transacciones de Entrada Fallaron";
-$lang["recvs_basic_information"] = "Información de Ingreso";
 $lang["recvs_cancel_receiving"] = "Cancelar";
 $lang["recvs_cannot_be_deleted"] = "Ingreso(s) no pueden borrarse";
 $lang["recvs_comments"] = "Comentarios";

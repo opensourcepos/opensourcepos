@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "เพิ่มบิล";
 $lang["sales_amount_due"] = "ยอดต้องชำระ";
 $lang["sales_amount_tendered"] = "ชำระเข้ามา";
-$lang["sales_basic_information"] = "";
 $lang["sales_cancel_sale"] = "ยกเลิกการขาย";
 $lang["sales_cash"] = "เงินสด";
 $lang["sales_change_due"] = "เงินทอน";

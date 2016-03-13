@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Add Payment";
 $lang["sales_amount_due"] = "Amount Due";
 $lang["sales_amount_tendered"] = "Amount Tendered";
-$lang["sales_basic_information"] = "Sale information";
 $lang["sales_cancel_sale"] = "Cancel";
 $lang["sales_cash"] = "Cash";
 $lang["sales_change_due"] = "Change Due";

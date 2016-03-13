@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Betaal";
 $lang["sales_amount_due"] = "Te betalen";
 $lang["sales_amount_tendered"] = "Ontvangen bedrag";
-$lang["sales_basic_information"] = "Ticket informatie";
 $lang["sales_cancel_sale"] = "Annuleer";
 $lang["sales_cash"] = "Contant";
 $lang["sales_change_due"] = "Wisselgeld terug";

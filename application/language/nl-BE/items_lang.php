@@ -4,7 +4,6 @@ $lang["items_add_minus"] = "Corrigatie hoeveelheid";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["items_amazon"] = "Amazon";
-$lang["items_basic_information"] = "Productinformatie";
 $lang["items_bulk_edit"] = "Bewerk Selectie";
 $lang["items_buy_price_required"] = "Buy price is a required field";
 $lang["items_cannot_be_deleted"] = "De geselecteerde producten konden niet worden verwijderd.";

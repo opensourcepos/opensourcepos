@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Order transactie mislukt";
-$lang["recvs_basic_information"] = "Order informatie";
 $lang["recvs_cancel_receiving"] = "Annuleer";
 $lang["recvs_cannot_be_deleted"] = "Order(s) konden niet verwijderd worden";
 $lang["recvs_comments"] = "Commentaar";

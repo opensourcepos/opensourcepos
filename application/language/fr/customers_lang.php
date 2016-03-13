@@ -2,7 +2,6 @@
 
 $lang["customers_account_number"] = "# Compte";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
-$lang["customers_basic_information"] = "Informations Client";
 $lang["customers_cannot_be_deleted"] = "Impossible de supprimer. Un ou plusiers client(s) sélectionné(s) ont des ventes.";
 $lang["customers_company_name"] = "Company Name";
 $lang["customers_confirm_delete"] = "Etes vous sûr(e) de vouloir supprimer ces clients?";

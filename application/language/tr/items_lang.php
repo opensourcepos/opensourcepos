@@ -4,7 +4,6 @@ $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";
 $lang["items_amazon"] = "Amazon";
-$lang["items_basic_information"] = "Ürün Bilgisi";
 $lang["items_bulk_edit"] = "Toplu Düzenleme";
 $lang["items_buy_price_required"] = "Alış Fiyatı zorunlu alandır";
 $lang["items_cannot_be_deleted"] = "Seçili ürünler silinemedi, bazı ürünlerin satışı var.";

@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "TERIMA";
 $lang["sales_amount_due"] = "Kembalian Uang";
 $lang["sales_amount_tendered"] = "Nilai Pembayaran";
-$lang["sales_basic_information"] = "Sale information";
 $lang["sales_cancel_sale"] = "Batal Jual";
 $lang["sales_cash"] = "Tunai";
 $lang["sales_change_due"] = "Kembalian Uang";

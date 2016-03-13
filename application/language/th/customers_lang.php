@@ -2,7 +2,6 @@
 
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
-$lang["customers_basic_information"] = "ข้อมูลลูกค้า";
 $lang["customers_cannot_be_deleted"] = "ไม่สามารลบลูกค้าที่ถูกเลือก, ลูกค้าที่ถูกเลือกถูขายไปแล้ว.";
 $lang["customers_company_name"] = "Company Name";
 $lang["customers_confirm_delete"] = "ยืนยันลบข้อมูลลูกค้า?";

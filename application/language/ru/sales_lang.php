@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Добавить оплаты";
 $lang["sales_amount_due"] = "Amount Due";
 $lang["sales_amount_tendered"] = "предложенная сумма";
-$lang["sales_basic_information"] = "информацию о билетах";
 $lang["sales_cancel_sale"] = "Отменить продажу";
 $lang["sales_cash"] = "наличные деньги";
 $lang["sales_change_due"] = "сдача должное";

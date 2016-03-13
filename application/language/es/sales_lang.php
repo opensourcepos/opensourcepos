@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Agregar Pago";
 $lang["sales_amount_due"] = "Debe";
 $lang["sales_amount_tendered"] = "Cantidad Recibida";
-$lang["sales_basic_information"] = "información sobre las entradas";
 $lang["sales_cancel_sale"] = "Cancelar Venta";
 $lang["sales_cash"] = "Efectivo";
 $lang["sales_change_due"] = "Cambio";

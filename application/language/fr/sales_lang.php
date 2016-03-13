@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Ajouter Paiement";
 $lang["sales_amount_due"] = "Somme Due";
 $lang["sales_amount_tendered"] = "Somme";
-$lang["sales_basic_information"] = "Information de Vente";
 $lang["sales_cancel_sale"] = "Annuler la Vente";
 $lang["sales_cash"] = "Cash";
 $lang["sales_change_due"] = "Reste";

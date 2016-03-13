@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Zahlung";
 $lang["sales_amount_due"] = "fälliger Betrag";
 $lang["sales_amount_tendered"] = "Erhalten";
-$lang["sales_basic_information"] = "Quittung";
 $lang["sales_cancel_sale"] = "Annullieren";
 $lang["sales_cash"] = "Bar";
 $lang["sales_change_due"] = "Wechselgeld";

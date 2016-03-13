@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "Ödeme Ekle";
 $lang["sales_amount_due"] = "Kalan Ödeme";
 $lang["sales_amount_tendered"] = "Ödenen Tutar";
-$lang["sales_basic_information"] = "Satış bilgisi";
 $lang["sales_cancel_sale"] = "İptal Et";
 $lang["sales_cash"] = "Nakit";
 $lang["sales_change_due"] = "Para Üstü";

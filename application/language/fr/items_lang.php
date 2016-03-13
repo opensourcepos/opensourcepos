@@ -4,7 +4,6 @@ $lang["items_add_minus"] = "Ajoujer/Soustraire à l\'Inventaire";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Autoriser Description Alt";
 $lang["items_amazon"] = "Amazon";
-$lang["items_basic_information"] = "Informations sur l\'Item";
 $lang["items_bulk_edit"] = "Édition en groupe";
 $lang["items_buy_price_required"] = "Le Prix d\'achat est requis";
 $lang["items_cannot_be_deleted"] = "Impossible de supprimer. Un ou plusiers des items sélectionnés a des ventes.";

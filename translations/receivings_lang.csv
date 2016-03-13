@@ -1,6 +1,5 @@
 label,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id
 receivings_transaction_failed,Eingangstransaktion fehlerhaft,Order transactie mislukt,Las Transacciones de Entrada Fallaron,Receivings Transactions Failed,Échec d'opération d'arrivage,進貨交易失敗,Ошибка Получение транзакции,,Alım İşlemi Hatası,Transaksi Penerimaan Salah
-recvs_basic_information,Eingangsbestellung,Order informatie,Información de Ingreso,Receiving information,,,,,,Informasi Penerimaan Barang
 recvs_cancel_receiving,Abbrechen,Annuleer,Cancelar,Cancel,,,,,,Batal
 recvs_cannot_be_deleted,Eingangsbestellung(en) konnten nicht gelöscht werden,Order(s) konden niet verwijderd worden,Ingreso(s) no pueden borrarse,Receiving(s) could not be deleted,,,,,,Tidak bisa dihapus
 recvs_comments,Kommentare,Commentaar,Comentarios,Comments,,,,,,Keterangan

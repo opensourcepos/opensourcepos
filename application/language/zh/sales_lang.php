@@ -3,7 +3,6 @@
 $lang["sales_add_payment"] = "新增付款";
 $lang["sales_amount_due"] = "Amount Due";
 $lang["sales_amount_tendered"] = "已收帳款";
-$lang["sales_basic_information"] = "Sale information";
 $lang["sales_cancel_sale"] = "取消銷售";
 $lang["sales_cash"] = "現金";
 $lang["sales_change_due"] = "更改到期日";

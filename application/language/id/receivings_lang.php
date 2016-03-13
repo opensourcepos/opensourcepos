@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Transaksi Penerimaan Salah";
-$lang["recvs_basic_information"] = "Informasi Penerimaan Barang";
 $lang["recvs_cancel_receiving"] = "Batal";
 $lang["recvs_cannot_be_deleted"] = "Tidak bisa dihapus";
 $lang["recvs_comments"] = "Keterangan";
