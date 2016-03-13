@@ -34,7 +34,7 @@ sales_discount_short,%,%,%,%,%,%,%,,%,%
 sales_edit,Ändern,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
 sales_edit_item,Ändere Art.,Bewaar,Editar Artículo,Edit Item,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
 sales_edit_sale,Auftrag ändern,Bewerk Ticket,Editar Venta,Edit Sale,Éditer Vente,編輯銷售資料,Редактировать продажи,แก้ไขการขาย,Satışı Düzenle,Ubah Penjualan
-sales_email_receipt,Quittung per E-Mail,E-Mail Ticket,Enviar Ticket,E-Mail Receipt,Recu par E-Mail,E-Mail 銷售單,послать квитанция по E-Mail,อีเมลบิล,E-Fatura,e-Mail Faktur
+sales_email_receipt,Quittung per Email,Email Ticket,Enviar Ticket,Email Receipt,Recu par Email,Email 銷售單,послать квитанция по Email,อีเมลบิล,E-Fatura,email Faktur
 sales_employee,Mitarbeiter,Werknemer,Empleado,Employee,Employé,員工,сотрудник,พนักงาน,Personel,Karyawan
 sales_error_editing_item,Fehler beim Ändern des Artikels,Fout bij bewerken,Error editando artículo,Error editing item,Érreur lors de l\'édition,編輯產品錯誤,Ошибка редактирования товара,แก้ไขสินค้าล้มเหลว,Ürün düzenleme hatası,mengubah item salah
 sales_find_or_scan_item,Finde/Scanne Artikel,Zoek/Scan Product,Encontrar/Escanear Artículo,Find/Scan Item,Trouver/Scanner Item,查找/掃描商品,Найти/Сканировать Товара,ค้นหาสินค้า,Ürün Bul/Oku,Cari/Scan Item

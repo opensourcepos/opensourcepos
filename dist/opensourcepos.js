@@ -51321,7 +51321,7 @@ function reinit_row(checkbox_id)
 	//Re-init some stuff as we replaced row
 	update_sortable_table();
 	dialog_support.init(new_row.find("a.modal-dlg"));
-	//re-enable e-mail
+	//re-enable email
 	new_checkbox.click(checkbox_click);	
 }
 

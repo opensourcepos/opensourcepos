@@ -11,8 +11,8 @@ common_delete,Löschen,Verwijder,Borrar,Delete,Effacer,刪除,Удалить,ล
 common_print,Drucken,Print,Print,Print,Imprimer,Print,Print,พิมพ์,Print,Print
 common_det,Details,details,detalles,details,détails,更多,детали,สรุป,Detaylar,Detail
 common_edit,Ändern,bewerk,editar,edit,éditer,編輯,редактировать,แก้ไข,düzenle,Ubah
-common_email,Email,Email,E-Mail,E-Mail,E-Mail,E-Mail,Электронная почта,E-Mail,E-Posta,E-Mail
-common_email_invalid_format,Das Email Format ist nicht korrekt,Je moet een geldig email adres invullen.,El e-mail no está en el formato requerido,The e-mail address is not in the proper format,Le format de l\'adresse électronique est incorrect,E-mail格式錯誤,Это электронная почта не в нужный формат,e-mail address ไม่ถูกต้อง,E-Posta adresi doğru formatta değil,Format alamat e-mail tidak benar
+common_email,Email,Email,Email,Email,Email,Email,Электронная почта,Email,E-Posta,Email
+common_email_invalid_format,Das Email Format ist nicht korrekt,Je moet een geldig email adres invullen.,El email no está en el formato requerido,The email address is not in the proper format,Le format de l'adresse électronique est incorrect,Email格式錯誤,Это электронная почта не в нужный формат,email address ไม่ถูกต้อง,E-Posta adresi doğru formatta değil,Format alamat email tidak benar
 common_fields_required_message,Die Felder in rot sind erforderlich,Velden met een * moeten ingevuld worden,Los campos en rojo son requeridos,Fields in red are required,Les champs en rouge sont requis,紅色欄位為必填,Красные пробела обязательно,ช่องสีแดงต้องกรอก,Kırmızı alanlar zorunludur,Bagian yang ditandai warna merah wajib diisi
 common_first_name,Vorname,Voornaam,Nombre,First Name,Prénom,名,Имя,ชื่อ,İsim,Nama Depan
 common_first_name_required,Vorname ist erforderlich,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prénom est requis.,名為必填,Имя обязательный пробел,ชื่อต้องกรอก,İsim zorunlu alandır,Nama depan wajib diisi.
