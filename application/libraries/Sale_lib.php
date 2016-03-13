@@ -305,9 +305,9 @@ class Sale_lib
                     'item_location'=>$item_location,
                     'stock_name'=>$this->CI->Stock_location->get_location_name($item_location),
                     'line'=>$insertkey,
-                    'name'=>base64_encode($item_info->name),
+                    'name'=>$item_info->name,
                     'item_number'=>$item_info->item_number,
-                    'description'=>base64_encode($description!=null ? $description: $item_info->description),
+                    'description'=>$description!=null ? $description: $item_info->description,
                     'serialnumber'=>$serialnumber!=null ? $serialnumber: '',
                     'allow_alt_description'=>$item_info->allow_alt_description,
                     'is_serialized'=>$item_info->is_serialized,
@@ -395,7 +395,7 @@ class Sale_lib
 		if(isset($items[$line]))	
 		{
 			$line = &$items[$line];
-			$line['description'] = base64_encode($description);
+			$line['description'] = $description;
 			$line['serialnumber'] = $serialnumber;
 			$line['quantity'] = $quantity;
 			$line['discount'] = $discount;

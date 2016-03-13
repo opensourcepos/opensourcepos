@@ -76,12 +76,11 @@ class Receiving extends CI_Model
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 			
 
-			$receivings_items_data = array
-			(
+			$receivings_items_data = array(
 				'receiving_id'=>$receiving_id,
 				'item_id'=>$item['item_id'],
 				'line'=>$item['line'],
-				'description'=>base64_decode($item['description']),
+				'description'=>$item['description'],
 				'serialnumber'=>$item['serialnumber'],
 				'quantity_purchased'=>$item['quantity'],
 				'receiving_quantity'=>$item['receiving_quantity'],

@@ -90,7 +90,7 @@ else
 ?>
 	    <tr>
 	    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
-		<td style="align:center;"><?php echo base64_decode($item['name']); ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
             <?php echo form_hidden('location', $item['item_location']); ?></td>
 
 		<?php if ($items_module_allowed && $mode !='requisition')
@@ -158,14 +158,14 @@ else
 			<?php
 	        	if($item['allow_alt_description']==1)
 	        	{
-	        		echo form_input(array('name'=>'description','value'=>base64_decode($item['description']),'size'=>'20'));
+	        		echo form_input(array('name'=>'description','value'=>$item['description'],'size'=>'20'));
 	        	}
 	        	else
 	        	{
-					if (base64_decode($item['description'])!='')
+					if ($item['description']!='')
 					{
-						echo base64_decode($item['description']);
-	        			echo form_hidden('description',base64_decode($item['description']));
+						echo $item['description'];
+	        			echo form_hidden('description',$item['description']);
 	        		}
 	        		else
 	        		{
