@@ -197,12 +197,12 @@ function init_table_sorting()
 
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('sales_receipt_number'); ?></div>
-	<a href="javascript:window.print()"><div class="btn btn-info btn-sm pull-right"><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
+	<a href="javascript:window.print()"><div class="btn btn-info btn-sm pull-right print_hide"><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
 </div>
 
 <div id="pagination"><?= $links ?></div>
 
-<div id="titleTextImg">
+<div class="print_hide" id="titleTextImg">
 	<div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
@@ -210,7 +210,7 @@ function init_table_sorting()
 
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>
-		<div id="search_filter_section" class="form-group" style="display:none;">
+		<div id="search_filter_section" class="form-group print_show" style="display:none;">
 			<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
 			<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
 			<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
@@ -222,7 +222,7 @@ function init_table_sorting()
 			<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '22'));?>
 		</div>
 
-		<div id="table_action_header" class="form-group">
+		<div id="table_action_header" class="form-group print_hide">
 			<ul>
 				<li class="float_left"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
 				<!-- li class="float_left"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->

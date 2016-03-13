@@ -65,4 +65,13 @@
 		/*display:none;*/
 	}
 
+	.print_show 
+	{
+		display:block !important; 
+	}
+
+	.print_hide
+	{
+		display:none !important;
+	}
 }

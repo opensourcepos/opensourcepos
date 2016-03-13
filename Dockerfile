@@ -3,7 +3,7 @@ MAINTAINER jekkos
 RUN sed -i -e 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update
 RUN apt-get -y upgrade
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny php5-mysql php5-gd nodejs npm curl
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-client mysql-server apache2 libapache2-mod-php5 pwgen python-setuptools vim-tiny php5-mysql php5-gd php5-apcu nodejs npm curl
 RUN easy_install supervisor
 ADD ./docker/foreground.sh /etc/apache2/foreground.sh
 ADD ./docker/supervisord.conf /etc/supervisord.conf

@@ -63,7 +63,7 @@ if (isset($error_message))
 		{
 		?>
 			<tr>
-				<td><span class='long_name'><?php echo base64_decode($item['name']); ?></span><span class='short_name'><?php echo character_limiter(base64_decode($item['name']),10); ?></span></td>
+				<td><span class='long_name'><?php echo $item['name']; ?></span><span class='short_name'><?php echo character_limiter($item['name'],10); ?></span></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 				?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1; ?></td>
