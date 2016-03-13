@@ -77,11 +77,11 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
 	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
 	$table_data_row.='<td width="8%" class="print_hide">';
-	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update')));
+	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'] . "/width:$width", $CI->lang->line('common_edit'), array('class'=>'thickbox print_hide', 'title'=>$CI->lang->line('common_edit')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.='<a href="'.site_url($controller_name. "/receipt/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_receipt') . '</a>';
+	$table_data_row.=anchor($controller_name."/receipt/" . $sale['sale_id'], $CI->lang->line('sales_show_receipt'), array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_receipt')));
 	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.='<a href="'.site_url($controller_name. "/invoice/" . $sale['sale_id']) . '">' . $CI->lang->line('sales_show_invoice') . '</a>';
+	$table_data_row.=anchor($controller_name."/invoice/" . $sale['sale_id'], $CI->lang->line('sales_show_invoice'), array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_invoice')));
 	$table_data_row.='</td>';
 	$table_data_row.='</tr>';
 
