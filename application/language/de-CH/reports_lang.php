@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "Steuern";
 $lang["reports_taxes_summary_report"] = "Bericht: Steuern (summarisch)";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Typ";
-$lang["reports_welcome_message"] = "Willkommen bei Berichtsmodul";
 $lang["reports_item_count"] = "Filter nach Artikelzahl";
 $lang["reports_cost_price"] = "Einstandspreis";
 $lang["reports_unit_price"] = "Verkaufspreis";

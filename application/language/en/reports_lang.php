@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "Taxes";
 $lang["reports_taxes_summary_report"] = "Taxes Summary Report";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Type";
-$lang["reports_welcome_message"] = "Welcome to the reports panel. Please select a report to view.";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Cost Price";
 $lang["reports_unit_price"] = "Retail Price";

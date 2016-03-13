@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "Belastingen";
 $lang["reports_taxes_summary_report"] = "Rapport Overzicht Belastingen";
 $lang["reports_total"] = "Totaal";
 $lang["reports_type"] = "Type";
-$lang["reports_welcome_message"] = "Welkom bij de rapporten. Selecteer hier een rapport.";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Aankoopprijs";
 $lang["reports_unit_price"] = "Verkoopprijs";

@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "稅額";
 $lang["reports_taxes_summary_report"] = "稅金摘要報告";
 $lang["reports_total"] = "總計";
 $lang["reports_type"] = "類型";
-$lang["reports_welcome_message"] = "歡迎使用報表系統。請選擇要查看的報表。";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "成本價";
 $lang["reports_unit_price"] = "單價";

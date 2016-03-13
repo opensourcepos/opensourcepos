@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "Налоги";
 $lang["reports_taxes_summary_report"] = "Сводный отчет налоги";
 $lang["reports_total"] = "сумма";
 $lang["reports_type"] = "тип";
-$lang["reports_welcome_message"] = "Добро пожаловать в панель отчетов. Пожалуйста, выберите отчет для просмотра.";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Оптовая Цена";
 $lang["reports_unit_price"] = "Розничная Цена";

@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "ภาษี";
 $lang["reports_taxes_summary_report"] = "รายงานสรุปภาษี";
 $lang["reports_total"] = "ยอดรวม";
 $lang["reports_type"] = "ชนิด";
-$lang["reports_welcome_message"] = "ยินดีต้อนรับเข้าสู่รายงาน. โปรดเลือกชนิดของรายงาน.";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "ราคาทุน";
 $lang["reports_unit_price"] = "ราคาขาย";

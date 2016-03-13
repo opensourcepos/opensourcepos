@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "Vergiler";
 $lang["reports_taxes_summary_report"] = "Vergi Özet Raporu";
 $lang["reports_total"] = "Toplam";
 $lang["reports_type"] = "Tür";
-$lang["reports_welcome_message"] = "Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.";
 $lang["reports_item_count"] = "Filter Stok Habis/Belum Habis/Minus";
 $lang["reports_cost_price"] = "Maliyet Fiyatı";
 $lang["reports_unit_price"] = "Satış Fiyatı";

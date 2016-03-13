@@ -86,7 +86,6 @@ $lang["reports_taxes"] = "Pajak";
 $lang["reports_taxes_summary_report"] = "Laporan Ringkasan Pajak";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Tipe";
-$lang["reports_welcome_message"] = "Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.";
 $lang["reports_item_count"] = "";
 $lang["reports_cost_price"] = "Harga Pokok";
 $lang["reports_unit_price"] = "Harga Jual";
