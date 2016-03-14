@@ -77,9 +77,9 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="8%">'.to_currency( $sale['change_due'] ).'</td>';
 	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
 	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
-	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/edit/" . $sale['sale_id'], '<span class="glyphicon glyphicon-edit"></span>', array('class'=>'modal-dlg modal-btn-delete modal-btn-submit', 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/receipt/" . $sale['sale_id'], '<span class="glyphicon glyphicon-print"></span>', array('title'=>$CI->lang->line('sales_show_receipt'))).'</td>';
-	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/invoice/" . $sale['sale_id'], '<span class="glyphicon glyphicon-list-alt"></span>', array('title'=>$CI->lang->line('sales_show_invoice'))).'</td>';
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/edit/" . $sale['sale_id'], '<span class="glyphicon glyphicon-edit"></span>', array('class'=>'modal-dlg modal-btn-delete modal-btn-submit print_hide', 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/receipt/" . $sale['sale_id'], '<span class="glyphicon glyphicon-print"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_receipt'))).'</td>';
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/invoice/" . $sale['sale_id'], '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_invoice'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;

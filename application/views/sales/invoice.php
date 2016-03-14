@@ -8,11 +8,11 @@ if (isset($error_message))
 }
 ?>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
+<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:window.print()"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo $this->lang->line('common_print'); ?></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("#", $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo $this->lang->line('common_print'); ?></div></a>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
 	<?php echo anchor("sales", $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 	<?php echo anchor("sales/manage", $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
@@ -25,7 +25,7 @@ if (isset($error_message))
 			if(isset($customer))
 			{
 			?>
-				<textarea id="customer" rows="5" cols="6"><?=$customer_info ?></textarea>
+				<textarea id="customer" rows="5" cols="6"><?php echo $customer_info ?></textarea>
 			<?php
 			}
 			?>
@@ -51,7 +51,7 @@ if (isset($error_message))
 	<div class="clearfix"></div>
 
 	<div id="block2">
-       	<textarea id="company-title" rows="5" cols="20"><?=$company_info?></textarea>
+       	<textarea id="company-title" rows="5" cols="20"><?php echo $company_info ?></textarea>
         <table id="meta">
             <tr>
                 <td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>

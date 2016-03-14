@@ -197,9 +197,11 @@ function init_table_sorting()
 }
 </script>
 
+<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'manage_printer')); ?>
+
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('sales_receipt_number'); ?></div>
-	<a href="javascript:window.print()"><div class="btn btn-info btn-sm pull-right print_hide"><?php echo $this->lang->line('common_print'); ?></div></a>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm pull-right print_hide"><?php echo $this->lang->line('common_print'); ?></div></a>
 </div>
 
 <div id="pagination"><?= $links ?></div>
