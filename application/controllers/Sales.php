@@ -276,8 +276,6 @@ class Sales extends Secure_area
 		
 		$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt,$item_location);
 
-
-
 		$this->_reload($data);
 	}
 
@@ -427,6 +425,7 @@ class Sales extends Secure_area
 			{
 				$this->load->view("sales/receipt", $data);
 			}
+
 			$this->sale_lib->clear_all();
 		}
 	}
@@ -594,7 +593,7 @@ class Sales extends Secure_area
 	function receipt($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);	
-		$this->load->view("sales/receipt",$data);
+		$this->load->view("sales/receipt", $data);
 		$this->sale_lib->clear_all();
 	}
 	
@@ -692,7 +691,7 @@ class Sales extends Secure_area
 	{
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart'] = $this->sale_lib->get_cart();	 
-		$data['modes'] = array('sale'=>$this->lang->line('sales_sale'),'return'=>$this->lang->line('sales_return'));
+		$data['modes'] = array('sale'=>$this->lang->line('sales_sale'), 'return'=>$this->lang->line('sales_return'));
 		$data['mode'] = $this->sale_lib->get_mode();
 
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
