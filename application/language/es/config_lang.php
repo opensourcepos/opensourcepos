@@ -111,6 +111,7 @@ $lang["config_stock_location"] = "Ubicación de Inventario";
 $lang["config_stock_location_duplicate"] = "Por favor use un nombre de inventario único";
 $lang["config_stock_location_invalid_chars"] = "Nombre de la Ubicación de Inventario no debe contener '_'";
 $lang["config_stock_location_required"] = "Número de Ubicación de Inventario es requerido";
+$lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_included"] = "Impuestos incluidos";
 $lang["config_thousands_separator"] = "Separador de miles";
 $lang["config_timezone"] = "Zona Horaria";

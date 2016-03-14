@@ -111,6 +111,7 @@ $lang["config_stock_location"] = "Stock location";
 $lang["config_stock_location_duplicate"] = "Please use an unique location name";
 $lang["config_stock_location_invalid_chars"] = "The stock location name can not contain '_'";
 $lang["config_stock_location_required"] = "Stock location number is a required field";
+$lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Fuseau Horaire";

@@ -17,4 +17,5 @@ git-svn-diff.py
 *~
 *.~
 *.log
+dist/*_bower.*
 application/sessions/*

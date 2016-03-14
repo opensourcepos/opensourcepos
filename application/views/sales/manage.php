@@ -167,15 +167,17 @@ function init_table_sorting()
 }
 </script>
 
+<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
+
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('sales_receipt_number'); ?></div>
-	<div id="print_button" class="print_hide">
-		<a href="javascript:window.print()"><div class='big_button' style='float: left;'><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
-	</div>
+	<div id="new_button"><a href="javascript:printdoc()"><div class="big_button print_hide float_right" ><span><?php echo $this->lang->line('common_print'); ?></span></div></a></div>
+
 </div>
-<div id="pagination"><?= $links ?></div>
-<div class="print_hide" id="titleTextImg" style="background-color:#EEEEEE;height:30px;position:relative;">
-	<div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>
+<div class="print_hide" id="pagination"><?php echo $links; ?></div>
+
+<div class="print_hide" id="titleTextImg">
+	<div style="float:left; vertical-align:text-top;"><?php echo $this->lang->line('common_search_options') . ': '; ?></div>
 	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
 	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
 </div>

@@ -1,15 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-            "http://www.w3.org/TR/html4/loose.dtd"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/invoice_email.css"/>
 </head>
+
 <body>
 <?php
 if (isset($error_message))
 {
-	echo '<h1 style="text-align: center;">'.$error_message.'</h1>';
+	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 	exit;
 }
 ?>
@@ -22,13 +22,13 @@ if (isset($error_message))
 		        <?php if ($this->Appconfig->get('company_logo') == '') 
 		        { 
 		        ?>
-		        <div id="company_name"><?php echo $this->config->item('company'); ?></div>
+					<div id="company_name"><?php echo $this->config->item('company'); ?></div>
 				<?php 
 				}
 				else 
 				{ 
 				?>
-				<img id="image" src="<?php echo $image_prefix. 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
+					<img id="image" src="<?php echo $image_prefix. 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
 				<?php
 				}
 				?>

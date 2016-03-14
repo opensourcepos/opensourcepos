@@ -111,6 +111,7 @@ $lang["config_stock_location"] = "สถานที่เก็บ";
 $lang["config_stock_location_duplicate"] = "";
 $lang["config_stock_location_invalid_chars"] = "The stock location name can not contain '_'";
 $lang["config_stock_location_required"] = "จำเป็นต้องระบุสถานที่เก็บ";
+$lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_included"] = "รวมภาษีแล้ว";
 $lang["config_thousands_separator"] = "ตัวคั่นหลักพัน";
 $lang["config_timezone"] = "โซนเวลา";

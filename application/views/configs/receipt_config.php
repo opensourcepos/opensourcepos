@@ -101,32 +101,37 @@ echo form_open('config/save_receipt/',array('id'=>'receipt_config_form'));
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_receipt_printer').':', 'config_receipt_printer',array('class'=>'wide')); ?>
 	<div class='form_field'>
-		<?php echo form_dropdown(
-			'receipt_printer',
-			array(),
-			'','id="receipt_printer"');?>
+					<?php echo form_dropdown('receipt_printer',	array(), ' ', 'id="receipt_printer" class="form-control"');?>
 	</div>
 </div>
 
 <div class="field_row clearfix">	
 <?php echo form_label($this->lang->line('config_invoice_printer').':', 'config_invoice_printer',array('class'=>'wide')); ?>
 	<div class='form_field'>
-		<?php echo form_dropdown('invoice_printer', array(), ' ','id="invoice_printer"');?>
+					<?php echo form_dropdown('invoice_printer', array(), ' ', 'id="invoice_printer" class="form-control"');?>
 	</div>
 </div>
 
+<div class="field_row clearfix">	
+	<?php echo form_label($this->lang->line('config_takings_printer'), 'config_takings_printer', array('class'=>'wide required')); ?>
+	<div class='form_field'>
+		<?php echo form_dropdown('takings_printer', array(), ' ', 'id="takings_printer" class="form-control"');?>
+	</div>
+</div>
+
+
 <div class="field_row clearfix">    
- 	<?php echo form_label($this->lang->line('config_print_top_margin').':', 'print_top_margin',array('class'=>'wide required')); ?>
-    <div class='form_field'>
-    <?php echo form_input(array(
-     	'type'=>'number',
-      	'min'=>'0',
-      	'max'=>'20',
-        'name'=>'print_top_margin',
-        'id'=>'print_top_margin',
-        'value'=>$this->config->item('print_top_margin')));?>
-         px
-    </div>
+	<?php echo form_label($this->lang->line('config_print_top_margin').':', 'print_top_margin',array('class'=>'wide required')); ?>
+	<div class='form_field'>
+	<?php echo form_input(array(
+		'type'=>'number',
+		'min'=>'0',
+		'max'=>'20',
+		'name'=>'print_top_margin',
+		'id'=>'print_top_margin',
+		'value'=>$this->config->item('print_top_margin')));?>
+		 px
+	</div>
 </div>
 
 <div class="field_row clearfix">    
@@ -202,7 +207,7 @@ $(document).ready(function()
 	if (window.localStorage && window.jsPrintSetup) 
 	{
 		var printers = (jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
-		$('#receipt_printer, #invoice_printer').each(function() 
+		$('#receipt_printer, #invoice_printer, #takings_printer').each(function() 
 		{
 			var $this = $(this)
 			$(printers).each(function(key, value) 
@@ -218,8 +223,8 @@ $(document).ready(function()
 	}
 	else
 	{
-		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #invoice_printer, #print_silently").prop('disabled', true);
-		$("#receipt_printer, #invoice_printer").each(function() 
+		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #invoice_printer, #takings_printer, #print_silently").prop('disabled', true);
+		$("#receipt_printer, #invoice_printer, #takings_printer").each(function() 
 		{
 			$(this).append($('<option>', {value : 'na'}).text('N/A'));
 		});
