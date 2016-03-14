@@ -184,10 +184,12 @@ function init_table_sorting()
 			dateFormat: '<?php echo dateformat_jquery($this->config->item('dateformat')); ?>',
 			headers:
 			{
-			    0: { sorter: false},
+			    0: { sorter: 'false'},
 				7: { sorter: 'false'},
 				8: { sorter: 'invoice_number'},
-				9: { sorter: 'false'}
+				9: { sorter: 'false'},
+				10: { sorter: 'false'},
+				11: { sorter: 'false'}
 			},
 			widgets: ['staticRow']
 		});

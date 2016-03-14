@@ -89,8 +89,8 @@ sales_sale_time,Zeit,Datum,Hora,Time,Time,Time,Time,เวลา,Saat,Waktu
 sales_select_customer,Wähle Kunde (optional),Selecteer Klant (Optioneel),Seleccionar Cliente (Opcional),Select Customer (Optional),Choisir Client (Facultatif),選擇客戶 (Optional),Выберите клиента (необязательно),เลือกลูกค้า (Optional),Müşteri Seç (İsteğe Bağlı),Pilih Pelanggan (Opsional)
 sales_send_invoice,Sende Rechnung,Vestuur Factuur,Enviar Factura,Send Invoice,Send Invoice,Send Invoice,Send Invoice,ส่งใบแจ้งหนี้,Send Invoice,Send Invoice
 sales_serial,Seriennummer,Nummer,Serial,Serial,Serie,序號,серийный номер,Serial,Seri,Serial
-sales_show_invoice,Rechnung,factuur,factura,invoice,invoice,invoice,invoice,ใบแจ้งหนี้,invoice,invoice
-sales_show_receipt,Quittung,ticket,recibo,receipt,receipt,receipt,receipt,ใบเสร็จ,receipt,receipt
+sales_show_invoice,Rechnung,Factuur,Factura,Show Invoice,Show Invoice,Show Invoice,Show Invoice,ใบแจ้งหนี้,Show Invoice,Show Invoice
+sales_show_receipt,Quittung,Ticket,Recibo,Show Receipt,Show Receipt,Show Receipt,Show Receipt,ใบเสร็จ,Show Receipt,Show Receipt
 sales_start_typing_customer_name,Geben Sie den Kundennamen ein...,Typ naam klant...,Empieza a escribir el cliente...,Start Typing customer's name...,Commencez à saisir le nom du client...,開始輸入客戶的名字,Начните печатать название клиента...,เริ่มต้นพิมพ์ชื่อลูกค้า...,Müşteri Adı...,Ketik Nama Pelanggan...
 sales_start_typing_item_name,Geben Sie den Artikel ein oder scannen Sie ihn...,Typ naam product of barcode...,Empieza a escribir o escanea el código de barras...,Start Typing item's name or scan barcode...,Commencez à saisir le nom de l\'item ou scannez le code-barre...,開始輸入產品名或掃描條碼...,Начните печатать название товара или сканировайте штрих-кода...,เริ่มต้นพิมพ์ชื่อสินค้า หรือ สแกนบาร์โค๊ด...,Ürün adı yazın yada barkod okutun...,Ketik Nama Barang atau Scan Barcode...
 sales_stock_location,Lagerort,Stock locatie,Inventario,Stock location,,,,ที่เก็บ,Stok yeri,Lokasi Stock

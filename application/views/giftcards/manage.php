@@ -21,8 +21,8 @@ function init_table_sorting()
 			sortList: [[1,0]],
 			headers:
 			{
-				0: { sorter: false},
-				5: { sorter: false}
+				0: { sorter: 'false'},
+				5: { sorter: 'false'}
 			}
 		});
 	}

@@ -102,11 +102,12 @@ function init_table_sorting()
             sortList: [[1,0]],
             headers:
             {
-                0: { sorter: false},
-                8: { sorter: false},
-                9: { sorter: false},
-                10: { sorter: false},
-                11: { sorter: false}
+                0: { sorter: 'false'},
+                8: { sorter: 'false'},
+                9: { sorter: 'false'},
+                10: { sorter: 'false'},
+                11: { sorter: 'false'},
+                12: { sorter: 'false'}
             }
         });
     }

@@ -14,6 +14,8 @@ function get_sales_manage_table($sales, $controller)
 	$CI->lang->line('sales_change_due'),
 	$CI->lang->line('sales_payment'),
 	$CI->lang->line('sales_invoice_number'),
+	'&nbsp',
+	'&nbsp',
 	'&nbsp');
 
 	$table.='<thead><tr>';
@@ -50,11 +52,11 @@ function get_sales_manage_table_data_rows($sales, $controller)
 
 	if($table_data_rows == '')
 	{
-		$table_data_rows .= "<tr><td colspan='10'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
+		$table_data_rows .= "<tr><td colspan='12'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
 	}
 	else
 	{
-		$table_data_rows .= "<tr class='static-last'><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"3\"></td></tr>";
+		$table_data_rows .= "<tr class='static-last'><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"5\"></td></tr>";
 	}
 
 	return $table_data_rows;
@@ -75,13 +77,9 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="8%">'.to_currency( $sale['change_due'] ).'</td>';
 	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
 	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
-	$table_data_row.='<td width="8%" class="print_hide">';
-	$table_data_row.=anchor($controller_name."/edit/" . $sale['sale_id'], $CI->lang->line('common_edit'), array('class'=>'modal-dlg modal-btn-delete modal-btn print_hide', 'title'=>$CI->lang->line('common_edit')));
-	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.=anchor($controller_name."/receipt/" . $sale['sale_id'], $CI->lang->line('sales_show_receipt'), array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_receipt')));
-	$table_data_row.='&nbsp;&nbsp;&nbsp;&nbsp;';
-	$table_data_row.=anchor($controller_name."/invoice/" . $sale['sale_id'], $CI->lang->line('sales_show_invoice'), array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_invoice')));
-	$table_data_row.='</td>';
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/edit/" . $sale['sale_id'], '<span class="glyphicon glyphicon-edit"></span>', array('class'=>'modal-dlg modal-btn-delete modal-btn-submit', 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/receipt/" . $sale['sale_id'], '<span class="glyphicon glyphicon-print"></span>', array('title'=>$CI->lang->line('sales_show_receipt'))).'</td>';
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/invoice/" . $sale['sale_id'], '<span class="glyphicon glyphicon-list-alt"></span>', array('title'=>$CI->lang->line('sales_show_invoice'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
@@ -173,7 +171,7 @@ function get_person_data_row($person,$controller)
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id", $CI->lang->line('common_edit'), array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -259,7 +257,7 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
 	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -282,6 +280,7 @@ function get_items_manage_table($items,$controller)
 	$CI->lang->line('items_unit_price'),
 	$CI->lang->line('items_quantity'),
 	$CI->lang->line('items_tax_percents'),
+	$CI->lang->line('items_image'),
 	'&nbsp;',
 	'&nbsp;',
 	'&nbsp;'	
@@ -314,7 +313,7 @@ function get_items_manage_table_data_rows($items,$controller)
 	
 	if($items->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='12'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
+		$table_data_rows.="<tr><td colspan='13'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -347,18 +346,16 @@ function get_item_data_row($item,$controller)
 	$image = '';
 	if (!empty($item->pic_id))
 	{
-		$images = glob ("uploads/item_pics/" . $item->pic_id . ".*");
+		$images = glob("uploads/item_pics/" . $item->pic_id . ".*");
 		if (sizeof($images) > 0)
 		{
 			$image.='<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/'.$item->pic_id).'"></a>';
 		}
 	}
 	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg modal-btn-new modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-
-	$table_data_row.='<td width="10%">'.anchor($controller_name."/inventory/$item->item_id", $CI->lang->line('common_inv'),array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_count')))./*'</td>';//inventory count
-	$table_data_row.='<td width="5%">'*/'&nbsp;&nbsp;&nbsp;&nbsp;'.anchor($controller_name."/count_details/$item->item_id", $CI->lang->line('common_det'),array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
-	
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-new modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_count'))).'</td>';//inventory count
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
@@ -377,8 +374,7 @@ function get_giftcards_manage_table( $giftcards, $controller )
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('giftcards_giftcard_number'),
 	$CI->lang->line('giftcards_card_value'),
-	'&nbsp', 
-	);
+	'&nbsp');
 	
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -407,7 +403,7 @@ function get_giftcards_manage_table_data_rows( $giftcards, $controller )
 	
 	if($giftcards->num_rows()==0)
 	{
-		$table_data_rows.="<tr><td colspan='11'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
+		$table_data_rows.="<tr><td colspan='6'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -424,7 +420,7 @@ function get_giftcard_data_row($giftcard,$controller)
 	$table_data_row.='<td width="15%">'.$giftcard->first_name.'</td>';
 	$table_data_row.='<td width="15%">'.$giftcard->giftcard_number.'</td>';
 	$table_data_row.='<td width="20%">'.to_currency($giftcard->value).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
@@ -444,8 +440,7 @@ function get_item_kits_manage_table( $item_kits, $controller )
 	$CI->lang->line('item_kits_description'),
 	$CI->lang->line('items_cost_price'),
 	$CI->lang->line('items_unit_price'),
-	'&nbsp', 
-	);
+	'&nbsp');
 	
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -474,7 +469,7 @@ function get_item_kits_manage_table_data_rows($item_kits, $controller)
 	
 	if($item_kits->num_rows()==0)
 	{
-		$table_data_rows .= "<tr><td colspan='11'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
+		$table_data_rows .= "<tr><td colspan='7'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('item_kits_no_item_kits_to_display')."</div></td></tr>";
 	}
 	
 	return $table_data_rows;
@@ -492,7 +487,7 @@ function get_item_kit_data_row($item_kit, $controller)
 	$table_data_row.='<td width="20%">'.character_limiter($item_kit->description, 25).'</td>';
 	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_cost_price).'</td>';
 	$table_data_row.='<td width="15%">'.to_currency($item_kit->total_unit_price).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id", $CI->lang->line('common_edit'),array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
