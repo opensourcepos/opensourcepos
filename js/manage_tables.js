@@ -469,8 +469,14 @@ dialog_support = (function() {
 			BootstrapDialog.show({
 				cssClass: dialog_class,
 				title: $link.attr('title'),
-				message: $('<div></div>').load($link.attr('href')),
-				buttons: buttons
+				message: (function() {
+					var node = $('<div></div>');
+					$.get($link.attr('href'), function(data) {
+						node.html(data);
+					});
+					return node;
+				}),
+				button: buttons
 			});
 
 			event.preventDefault();
