@@ -51429,14 +51429,14 @@ dialog_support = (function() {
 			BootstrapDialog.show({
 				cssClass: dialog_class,
 				title: $link.attr('title'),
+				buttons: buttons,
 				message: (function() {
 					var node = $('<div></div>');
 					$.get($link.attr('href'), function(data) {
 						node.html(data);
 					});
 					return node;
-				}),
-				button: buttons
+				})
 			});
 
 			event.preventDefault();

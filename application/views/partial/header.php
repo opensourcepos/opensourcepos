@@ -19,6 +19,7 @@
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/general.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
@@ -64,11 +65,11 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=97b1bb8280"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=bb5544348c"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=bea183fdb7" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2758e714d6" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
