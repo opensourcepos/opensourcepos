@@ -115,6 +115,7 @@ $lang["config_stock_location"] = "Lagerort";
 $lang["config_stock_location_duplicate"] = "Bitte verwenden Sie einen eindeutigen Lagerort";
 $lang["config_stock_location_invalid_chars"] = "Der Lagerort kann keine Unterstriche enthalten";
 $lang["config_stock_location_required"] = "Lagerort Nummer ist erforderlich";
+$lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_included"] = "MWSt inbegriffen";
 $lang["config_thousands_separator"] = "Tausendertrennzeichen";
 $lang["config_timezone"] = "Zeitzone";

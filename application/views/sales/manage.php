@@ -197,7 +197,7 @@ function init_table_sorting()
 }
 </script>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'manage_printer')); ?>
+<?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
 
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('sales_receipt_number'); ?></div>

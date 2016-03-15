@@ -115,6 +115,7 @@ $lang["config_stock_location"] = "Mağaza Yeri";
 $lang["config_stock_location_duplicate"] = "Please use an unique location name";
 $lang["config_stock_location_invalid_chars"] = "The stock location name can not contain '_'";
 $lang["config_stock_location_required"] = "Mağaza Yeri numarası zorunlu alandır";
+$lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Saat Dilimi";
