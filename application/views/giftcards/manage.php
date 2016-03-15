@@ -63,7 +63,7 @@ function post_giftcard_form_submit(response)
 		array('class'=>'modal-dlg modal-btn-submit', 'title'=>$this->lang->line($controller_name.'_new')));	?>
 </div>
 
-<div id="pagination"><?= $links ?></div>
+<div id="pagination"><?php echo $links; ?></div>
 
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>

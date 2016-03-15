@@ -168,7 +168,7 @@ function post_bulk_form_submit(response)
 		array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new'))); ?>
 </div>
 
-<div id="pagination"><?= $links ?></div>
+<div id="pagination"><?php echo $links; ?></div>
 
 <div id="titleTextImg">
     <div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>

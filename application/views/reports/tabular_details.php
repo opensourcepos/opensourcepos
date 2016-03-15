@@ -24,7 +24,7 @@
 				foreach ($headers['summary'] as $header)
 				{
 				?>
-					<th width="<?=$header_width?>%"><?php echo $header; ?></th>
+					<th width="<?php echo $header_width; ?>%"><?php echo $header; ?></th>
 				<?php
 				}
 				?>

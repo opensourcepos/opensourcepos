@@ -204,7 +204,7 @@ function init_table_sorting()
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm pull-right print_hide"><?php echo $this->lang->line('common_print'); ?></div></a>
 </div>
 
-<div id="pagination"><?= $links ?></div>
+<div class="print_hide" id="pagination"><?php echo $links; ?></div>
 
 <div class="print_hide" id="titleTextImg">
 	<div style="float:left; vertical-align:text-top;"><?php echo $this->lang->line('common_search_options') . ': '; ?></div>

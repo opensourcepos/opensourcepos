@@ -84,7 +84,7 @@ function post_person_form_submit(response)
 	?>
 </div>
 
-<div id="pagination"><?= $links ?></div>
+<div id="pagination"><?php echo $links; ?></div>
 
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>

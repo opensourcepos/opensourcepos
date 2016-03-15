@@ -25,7 +25,7 @@
 					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
 						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
 						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
-						<a id="send_invoice" href="javascript:void(0);"><?=$this->lang->line('sales_send_invoice')?></a>
+						<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
 					<?php else: ?>
 						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
 					<?php endif; ?>
@@ -67,7 +67,7 @@ $(document).ready(function()
 	<?php if (isset($sale_info['email'])): ?>
 		$("#send_invoice").click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get('<?=site_url() . "/sales/send_invoice/" . $sale_info['sale_id']?>',
+				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
 						function(response) {
 							dialog_support.hide();
 							post_form_submit(response);

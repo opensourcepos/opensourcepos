@@ -134,8 +134,3 @@ table.innertable tbody tr td
 {
 	font-weight: bold;
 }
-
-#pagination a, #pagination strong
-{
-	padding: 3px;
-}
