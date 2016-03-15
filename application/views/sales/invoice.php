@@ -135,7 +135,7 @@ if (isset($error_message))
 </div>
 
 <script type="text/javascript">
-$(window).load(function()
+$(window).on("load", function()
 {
 	// install firefox addon in order to use this plugin
 	if (window.jsPrintSetup) 
