@@ -51,7 +51,7 @@ if (isset($error_message))
 	<div class="clearfix"></div>
 
 	<div id="block2">
-       	<textarea id="company-title" rows="5" cols="20"><?php echo $company_info ?></textarea>
+       	<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>
         <table id="meta">
             <tr>
                 <td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
