@@ -16,11 +16,6 @@ $(document).ready(function()
         }
     }});
 	
-    // clear suggestion cache when toggling filter
-    $("#is_deleted").change(function() {
-        widget.flushCache();
-    });
-
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
     enable_bulk_edit('<?php echo $this->lang->line($controller_name."_none_selected")?>');
 
