@@ -64,7 +64,6 @@ class Sales extends Secure_area
 
 			$this->load->view($data['controller_name'] . '/manage', $data);
 		}
-
 	}
 	
 	function get_row()
@@ -124,14 +123,13 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->get('term');
+		$search = $this->input->get('term') != '' ? $this->input->get('term') : null;
 
 		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
 		{
 			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search,
-			array('is_deleted' => FALSE, 'search_custom' => FALSE), FALSE));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array('is_deleted'=>FALSE, 'search_custom'=>FALSE), FALSE));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
 		echo json_encode($suggestions);
@@ -139,7 +137,10 @@ class Sales extends Secure_area
 
 	function suggest_search()
 	{
-		$suggestions = $this->Sale->get_search_suggestions($this->input->post('term'));
+		$search = $this->input->post('term') != '' ? $this->input->post('term') : null;
+		
+		$suggestions = $this->Sale->get_search_suggestions($search);
+		
 		echo json_encode($suggestions);
 	}
 
@@ -147,6 +148,7 @@ class Sales extends Secure_area
 	{
 		$customer_id = $this->input->post('customer');
 		$this->sale_lib->set_customer($customer_id);
+
 		$this->_reload();
 	}
 
@@ -162,6 +164,7 @@ class Sales extends Secure_area
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
+
 		$this->_reload();
 	}
 	
@@ -249,6 +252,7 @@ class Sales extends Secure_area
 	function delete_payment( $payment_id )
 	{
 		$this->sale_lib->delete_payment( $payment_id );
+
 		$this->_reload();
 	}
 
@@ -310,6 +314,7 @@ class Sales extends Secure_area
 	function delete_item($item_number)
 	{
 		$this->sale_lib->delete_item($item_number);
+
 		$this->_reload();
 	}
 
@@ -318,6 +323,7 @@ class Sales extends Secure_area
 		$this->sale_lib->clear_giftcard_remainder();
 		$this->sale_lib->clear_invoice_number();
 		$this->sale_lib->remove_customer();
+
 		$this->_reload();
 	}
 
@@ -821,6 +827,7 @@ class Sales extends Secure_area
 	{
 		$data = array();
 		$data['suspended_sales'] = $this->Sale_suspended->get_all()->result_array();
+
 		$this->load->view('sales/suspended', $data);
 	}
 	
@@ -830,6 +837,7 @@ class Sales extends Secure_area
 		$this->sale_lib->clear_all();
 		$this->sale_lib->copy_entire_suspended_sale($sale_id);
 		$this->Sale_suspended->delete($sale_id);
+
 		$this->_reload();
 	}
 	
