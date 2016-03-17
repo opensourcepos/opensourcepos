@@ -9,7 +9,7 @@ function csvstring_to_array(&$string, $CSV_SEPARATOR = ',', $CSV_ENCLOSURE = '"'
 	$i = 0;
 	while ( $i < $cnt ) {
 		$s = $string [$i];
-		
+
 		while (sizeof($o) <= $num) {
 			$o [] = "";
 		}
@@ -48,7 +48,7 @@ function csvstring_to_array(&$string, $CSV_SEPARATOR = ',', $CSV_ENCLOSURE = '"'
 				$o [$num] .= $CSV_ENCLOSURE;
 				$escesc = false;
 			}
-			$o [$num] .= $s;
+			$o [$num] .= preg_replace("/\r|\n/", "", $s);;
 		}
 		$i ++;
 	}
