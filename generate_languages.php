@@ -48,7 +48,7 @@ function csvstring_to_array(&$string, $CSV_SEPARATOR = ',', $CSV_ENCLOSURE = '"'
 				$o [$num] .= $CSV_ENCLOSURE;
 				$escesc = false;
 			}
-			$o [$num] .= preg_replace("/\r|\n/", "", $s);;
+			$o [$num] .= $s;
 		}
 		$i ++;
 	}
@@ -109,13 +109,9 @@ foreach ($dir as $fileinfo) {
 
                     $lfh = fopen ( $output_base . $l . '/' . $index_file_name . '.php', 'w' );
                     fwrite ( $lfh, '<?php ' . PHP_EOL . PHP_EOL );
-                    fwrite ( $lfh, '$lang["' . $key_name . '"] = "' . str_replace ( '"', '\"', $line [($key + 1)] ) . '";' . PHP_EOL );
-                } else {
-					if (sizeof($line) > 2) {
-	                    // yes -- add to file we're working on
-    	                fwrite ( $lfh, '$lang["' . $key_name . '"] = "' . str_replace ( '"', '\"', $line [($key + 1)] ) . '";' . PHP_EOL );
-					}
                 }
+				$newline = preg_replace("/\r|\n/", "", $line [ $key + 1 ]);
+				fwrite ( $lfh, '$lang["' . $key_name . '"] = "' . str_replace ( '"', '\"', $newline ) . '";' . PHP_EOL );
             }
         }
     }
