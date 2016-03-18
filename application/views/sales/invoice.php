@@ -10,8 +10,7 @@ if (isset($error_message))
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
 <div class="print_hide" id="control_buttons" style="height: 40px; margin-right: -150px; margin-top: 10px;">
-	<?php echo anchor("javascript:printdoc();", "<div class='big_button float_right'><span>".$this->lang->line('common_print')."</span></div>",
-		array('id'=>'show_print_button')); ?>
+	<a href="javascript:printdoc();" id="show_print_button"><div class='big_button float_right'><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
 	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'big_button', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
 	<?php echo anchor("sales", "<div class='big_button float_right'><span>".$this->lang->line('sales_register')."</span></div>",
 		array('id'=>'show_sales_button')); ?>
