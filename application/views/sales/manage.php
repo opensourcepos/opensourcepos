@@ -171,7 +171,7 @@ function init_table_sorting()
 
 <div id="title_bar">
 	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('sales_receipt_number'); ?></div>
-	<div id="new_button"><a href="javascript:printdoc()"><div class="big_button print_hide float_right" ><span><?php echo $this->lang->line('common_print'); ?></span></div></a></div>
+	<div id="new_button" class="print_hide"><a href="javascript:printdoc()"><div class="big_button float_right" ><span><?php echo $this->lang->line('common_print'); ?></span></div></a></div>
 
 </div>
 <div class="print_hide" id="pagination"><?php echo $links; ?></div>
