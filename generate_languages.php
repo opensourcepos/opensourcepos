@@ -1,60 +1,5 @@
 <?php
 
-function csvstring_to_array(&$string, $CSV_SEPARATOR = ',', $CSV_ENCLOSURE = '"', $CSV_LINEBREAK = "\n") {
-	$o = array ();
-	$cnt = strlen ( $string );
-	$esc = false;
-	$escesc = false;
-	$num = 0;
-	$i = 0;
-	while ( $i < $cnt ) {
-		$s = $string [$i];
-
-		while (sizeof($o) <= $num) {
-			$o [] = "";
-		}
-				
-		if ($s == $CSV_LINEBREAK) {
-			if ($esc) {
-				$o [$num] .= $s;
-				$o [] = "";
-			} else {
-				$i ++;
-				break;
-			}
-		} elseif ($s == $CSV_SEPARATOR) {
-			if ($esc) {
-				$o [$num] .= $s;
-			} else {
-				$num ++;
-				$esc = false;
-				$escesc = false;
-			}
-		} elseif ($s == $CSV_ENCLOSURE) {
-			if ($escesc) {
-				$o [$num] .= $CSV_ENCLOSURE;
-				$escesc = false;
-			}
-			
-			if ($esc) {
-				$esc = false;
-				$escesc = true;
-			} else {
-				$esc = true;
-				$escesc = false;
-			}
-		} else {
-			if ($escesc) {
-				$o [$num] .= $CSV_ENCLOSURE;
-				$escesc = false;
-			}
-			$o [$num] .= $s;
-		}
-		$i ++;
-	}
-	return $o;
-}
-
 $dir = new DirectoryIterator(__DIR__ . "/translations");
 foreach ($dir as $fileinfo) {
     if (!$fileinfo->isDot()) {
@@ -90,7 +35,7 @@ foreach ($dir as $fileinfo) {
             $lfh = false;
 
             while ( $line = fgets ( $fh, 9999999 ) ) {
-                $line = csvstring_to_array ( $line, ',', '"', "\n" );
+                $line = str_getcsv ( $line );
                 if (! sizeof($line))
                     continue; // this is a blank line between groups
                 $index_file_name = basename($file, ".csv");
