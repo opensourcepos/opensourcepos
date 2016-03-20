@@ -33,7 +33,6 @@
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
 		<script src="bower_components/jquery-bgiframe/jquery.bgiframe.js"></script>
-		<script src="bower_components/jquery-migrate/jquery-migrate.js"></script>
 		<script src="bower_components/jquery-form/jquery.form.js"></script>
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
@@ -69,7 +68,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=e795d0fd70" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=270497bb26" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

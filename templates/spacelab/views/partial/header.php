@@ -18,8 +18,8 @@
 		<link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="css/autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/general.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
@@ -33,7 +33,6 @@
 		<!-- bower:js -->
 		<script src="../bower_components/jquery/dist/jquery.js"></script>
 		<script src="../bower_components/jquery-bgiframe/jquery.bgiframe.js"></script>
-		<script src="../bower_components/jquery-migrate/jquery-migrate.js"></script>
 		<script src="../bower_components/jquery-form/jquery.form.js"></script>
 		<script src="../bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
@@ -50,7 +49,6 @@
 		<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.ajax_queue.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
@@ -65,11 +63,13 @@
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
+		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=19fb7e2d85"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=e795d0fd70" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=270497bb26" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
