@@ -249,15 +249,15 @@ function get_supplier_data_row($supplier,$controller)
 	$controller_name=strtolower(get_class($CI));
 
 	$table_data_row='<tr>';
-	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->company_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->agency_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->last_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
-	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
+	$table_data_row.="<td width='2%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
+	$table_data_row.='<td width="15%">'.character_limiter($supplier->company_name,13).'</td>';
+	$table_data_row.='<td width="15%">'.character_limiter($supplier->agency_name,13).'</td>';
+	$table_data_row.='<td width="15%">'.character_limiter($supplier->last_name,13).'</td>';
+	$table_data_row.='<td width="15%">'.character_limiter($supplier->first_name,13).'</td>';
+	$table_data_row.='<td width="20%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
+	$table_data_row.='<td width="10%">'.character_limiter($supplier->phone_number,13).'</td>';
 	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -334,15 +334,15 @@ function get_item_data_row($item,$controller)
     $item_quantity='';
     
 	$table_data_row='<tr>';
-	$table_data_row.="<td width='3%'><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/></td>";
-	$table_data_row.='<td width="15%">'.$item->item_number.'</td>';
-	$table_data_row.='<td width="20%">'.$item->name.'</td>';
-	$table_data_row.='<td width="14%">'.$item->category.'</td>';
-	$table_data_row.='<td width="14%">'.$item->company_name.'</td>';
-	$table_data_row.='<td width="14%">'.to_currency($item->cost_price).'</td>';
-	$table_data_row.='<td width="14%">'.to_currency($item->unit_price).'</td>';
-    $table_data_row.='<td width="14%">'.$item->quantity.'</td>';
-	$table_data_row.='<td width="14%">'.$tax_percents.'</td>';
+	$table_data_row.="<td width='2%'><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/></td>";
+	$table_data_row.='<td width="10%">'.$item->item_number.'</td>';
+	$table_data_row.='<td width="15%">'.$item->name.'</td>';
+	$table_data_row.='<td width="10%">'.$item->category.'</td>';
+	$table_data_row.='<td width="10%">'.$item->company_name.'</td>';
+	$table_data_row.='<td width="10%">'.to_currency($item->cost_price).'</td>';
+	$table_data_row.='<td width="10%">'.to_currency($item->unit_price).'</td>';
+    $table_data_row.='<td width="8%">'.$item->quantity.'</td>';
+	$table_data_row.='<td width="8%">'.$tax_percents.'</td>';
 	$image = '';
 	if (!empty($item->pic_id))
 	{
@@ -352,10 +352,10 @@ function get_item_data_row($item,$controller)
 			$image.='<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/'.$item->pic_id).'"></a>';
 		}
 	}
-	$table_data_row.='<td align="center" width="55px">' . $image . '</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-new modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_count'))).'</td>';//inventory count
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
+	$table_data_row.='<td align="center" width="8%">' . $image . '</td>';
+	$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-new modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	$table_data_row.='<td width="3%">'.anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_count'))).'</td>';//inventory count
+	$table_data_row.='<td width="3%">'.anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
