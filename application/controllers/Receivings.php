@@ -367,7 +367,7 @@ class Receivings extends Secure_area
 
 		$receiving_data = array(
 			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => $this->input->post('supplier_id'),
+			'supplier_id' => empty($this->input->post('supplier_id')) ? NULL : $this->input->post('supplier_id'),
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number')
@@ -402,7 +402,7 @@ class Receivings extends Secure_area
 		$receiving_id=$this->input->post('receiving_id');
 		$invoice_number=$this->input->post('invoice_number');
 		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number,$receiving_id);
-    	echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('recvs_invoice_number_duplicate')));
+		echo !$exists ? 'true' : 'false';
     }
 }
 ?>

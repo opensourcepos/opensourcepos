@@ -54,23 +54,6 @@ echo form_close();
 $(document).ready(function()
 {
 
-	$.validator.addMethod("account_number", function(value, element) 
-	{
-		return JSON.parse($.ajax(
-		{
-			  type: 'POST',
-			  url: '<?php echo site_url($controller_name . "/check_account_number")?>',
-			  data: {'person_id' : '<?php echo $person_info->person_id; ?>', 'account_number' : $(element).val() },
-			  success: function(response) 
-			  {
-				  success=response.success;
-			  },
-			  async:false,
-			  dataType: 'json'
-        }).responseText).success;
-        
-    }, '<?php echo $this->lang->line("customers_account_number_duplicate"); ?>');
-
 	$('#customer_form').validate({
 		submitHandler:function(form)
 		{
@@ -91,13 +74,29 @@ $(document).ready(function()
 			first_name: "required",
 			last_name: "required",
     		email: "email",
-    		account_number: { account_number: true }
+    		account_number:
+			{
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/check_account_number')?>",
+					type: "post",
+					data:
+					{
+						"person_id" : "<?php echo $person_info->person_id; ?>",
+						"account_number" : function()
+						{
+							return $("#account_number").val();
+						}
+					}
+				}
+			}
    		},
 		messages: 
 		{
      		first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
      		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
+     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
+			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
 	});
 });

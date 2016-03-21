@@ -282,23 +282,6 @@ $(document).ready(function()
 	<?php 
 	}
 	?>
-
-	$.validator.addMethod("item_number", function(value, element) 
-	{
-		return JSON.parse($.ajax(
-		{
-			  type: 'POST',
-			  url: '<?php echo site_url($controller_name . "/check_item_number")?>',
-			  data: {'item_id' : '<?php echo $item_info->item_id; ?>', 'item_number' : $(element).val() },
-			  success: function(response) 
-			  {
-				  success=response.success;
-			  },
-			  async:false,
-			  dataType: 'json'
-        }).responseText).success;
-        
-    }, '<?php echo $this->lang->line("items_item_number_duplicate"); ?>');
 	
 	$('#item_form').validate({
 		submitHandler:function(form)
@@ -332,7 +315,22 @@ $(document).ready(function()
 		{
 			name:"required",
 			category:"required",
-			item_number: { item_number: true },
+			item_number:
+			{
+                remote:
+				{
+					url: "<?php echo site_url($controller_name . '/check_item_number')?>",
+					type: "POST",
+					data:
+					{
+						"item_id": "<?php echo $item_info->item_id; ?>",
+						"item_number": function ()
+						{
+							return $("#item_number").val();
+						}
+					}
+				}
+			},
 			cost_price:
 			{
 				required:true,
@@ -359,6 +357,7 @@ $(document).ready(function()
 		messages:
 		{
 			name:"<?php echo $this->lang->line('items_name_required'); ?>",
+			item_number:"<?php echo $this->lang->line('items_item_number_duplicate'); ?>",
 			category:"<?php echo $this->lang->line('items_category_required'); ?>",
 			cost_price:
 			{

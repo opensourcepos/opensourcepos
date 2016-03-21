@@ -71,24 +71,6 @@
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {
-	$.validator.addMethod("invoice_number", function(value, element)
-	{
-		var id = $("input[name='receiving_id']").val();
-
-		return JSON.parse($.ajax(
-		{
-			  type: 'POST',
-			  url: '<?php echo site_url($controller_name . "/check_invoice_number")?>',
-			  data: {'receiving_id' : id, 'invoice_number' : $(element).val() },
-			  success: function(response)
-			  {
-				  success=response.success;
-			  },
-			  async:false,
-			  dataType: 'json'
-        }).responseText).success;
-    }, '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>');
-	
 	$('#datetime').datetimepicker({
 		dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
 		timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
@@ -144,14 +126,28 @@ $(document).ready(function()
 		rules: 
 		{
 			invoice_number: {
-				invoice_number: true
+
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
+					type: "POST",
+					data:
+					{
+						"receiving_id" : <?php echo $receiving_info['receiving_id']; ?>,
+						"invoice_number" : function()
+						{
+							return $("#invoice_number").val();
+						}
+					}
+				}
 			}
 		},
 		messages: 
 		{
-
+			invoice_number: '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>'
 		}
 	});
+
 	$('#recvs_delete_form').submit(function() 
 	{
 		var id = $("input[name='receiving_id']").val();

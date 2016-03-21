@@ -90,22 +90,6 @@ $(document).ready(function()
 		});
 	<?php endif; ?>
 	
-	$.validator.addMethod("invoice_number", function(value, element)
-	{
-		return JSON.parse($.ajax(
-		{
-			  type: 'POST',
-			  url: '<?php echo site_url($controller_name . "/check_invoice_number")?>',
-			  data: {'sale_id' : <?php echo $sale_info['sale_id']; ?>, 'invoice_number' : $(element).val() },
-			  success: function(response)
-			  {
-				  success=response.success;
-			  },
-			  async:false,
-			  dataType: 'json'
-        }).responseText).success;
-    }, '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>');
-
 	$('#datetime').datetimepicker({
 		dateFormat: '<?php echo dateformat_jquery($this->config->item("dateformat"));?>',
 		timeFormat: '<?php echo dateformat_jquery($this->config->item("timeformat"));?>'
@@ -166,12 +150,24 @@ $(document).ready(function()
 		{
 			invoice_number:
 			{
-				invoice_number: true
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
+					type: "POST",
+					data:
+					{
+						"sale_id" : <?php echo $sale_info['sale_id']; ?>,
+						"invoice_number" : function()
+						{
+							return $("#invoice_number").val();
+						}
+					}
+				}
 			}
 		},
 		messages: 
 		{
-
+			invoice_number: '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>'
 		}
 	});
 
