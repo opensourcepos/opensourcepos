@@ -152,12 +152,8 @@
 //validation and submit handling
 $(document).ready(function()
 {	
-	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10});
-    $("#category").result(function(event, data, formatted)
-    {
-    });
-	$("#category").search();
-	
+	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",appendTo:'.modal-content',delay:10});
+
 	$('#item_form').validate($.extend({
 		submitHandler:function(form)
 		{
