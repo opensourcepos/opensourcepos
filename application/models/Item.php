@@ -106,7 +106,7 @@ class Item extends CI_Model
 		}
 
 		// avoid duplicate entry with same name because of inventory reporting multiple changes on the same item in the same date range
-		$this->db->group_by('items.name');
+		$this->db->group_by('items.item_id');
 		
 		// order by name of item
 		$this->db->order_by('items.name', 'asc');
