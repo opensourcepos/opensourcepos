@@ -120,7 +120,7 @@ class Items extends Secure_area implements iData_controller
 	function suggest()
 	{
 		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit'),
-															$this->input->post('search_custom'), $this->input->post('is_deleted') != null);
+															$this->input->post('search_custom'), !empty($this->input->post('is_deleted')));
 
 		echo implode("\n",$suggestions);
 	}
