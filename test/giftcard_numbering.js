@@ -8,7 +8,7 @@ describe("giftcard numbering test", function () {
         return ospos.login(this.browser, done);
     });
 
-    it("issue #65: giftcard numbering should add properly", function(done) {
+    it.skip("issue #65: giftcard numbering should add properly", function(done) {
         return this.browser.get(ospos.url("/index.php/giftcards")).waitForElementByCss(".big_button").click()
             .waitForElementByName("value", 10000).type("100").elementById('giftcard_number').clear().type("10")
             .elementById("submit").click().waitForElementByXPath("//table/tbody/tr[td/text()='10']/td[4]", 2000).text().then(function (value) {
