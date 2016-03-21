@@ -401,8 +401,7 @@ class Items extends Secure_area implements iData_controller
 	function check_item_number()
 	{
 		$exists = $this->Item->item_number_exists($this->input->post('item_number'),$this->input->post('item_id'));
-
-		echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('items_item_number_duplicate')));
+		echo !$exists ? 'true' : 'false';
 	}
 	
 	private function _handle_image_upload()

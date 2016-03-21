@@ -398,7 +398,7 @@ class Receivings extends Secure_area
 		$receiving_id=$this->input->post('receiving_id');
 		$invoice_number=$this->input->post('invoice_number');
 		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number,$receiving_id);
-    	echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('recvs_invoice_number_duplicate')));
+		echo !$exists ? 'true' : 'false';
     }
 }
 ?>

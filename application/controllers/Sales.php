@@ -846,8 +846,7 @@ class Sales extends Secure_area
 		$sale_id = $this->input->post('sale_id');
 		$invoice_number = $this->input->post('invoice_number');
 		$exists = !empty($invoice_number) && $this->Sale->invoice_number_exists($invoice_number,$sale_id);
-
-		echo json_encode(array('success'=>!$exists, 'message'=>$this->lang->line('sales_invoice_number_duplicate')));
+		echo !$exists ? 'true' : 'false';
 	}
 }
 ?>

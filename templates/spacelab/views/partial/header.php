@@ -32,7 +32,6 @@
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="../bower_components/jquery/dist/jquery.js"></script>
-		<script src="../bower_components/jquery-bgiframe/jquery.bgiframe.js"></script>
 		<script src="../bower_components/jquery-form/jquery.form.js"></script>
 		<script src="../bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
@@ -69,7 +68,7 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=270497bb26" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=c03a135354" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

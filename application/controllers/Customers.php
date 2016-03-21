@@ -107,7 +107,7 @@ class Customers extends Person_controller
 	function check_account_number()
 	{
 		$exists = $this->Customer->account_number_exists($this->input->post('account_number'),$this->input->post('person_id'));
-		echo json_encode(array('success'=>!$exists,'message'=>$this->lang->line('customers_account_number_duplicate')));
+		echo !$exists ? 'true' : 'false';
 	}
 	
 	/*

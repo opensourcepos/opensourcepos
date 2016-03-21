@@ -24,7 +24,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery-bgiframe": "~3.0.1",
     "jquery-color": "~2.1.2",
     "jquery-form": "~3.46.0",
     "jquery-validate": "~1.13.1",
