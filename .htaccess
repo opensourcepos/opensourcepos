@@ -31,6 +31,17 @@ IndexIgnore *
  satisfy All
 </Files>
 
+# prevent access to generate_languages.php
+<Files generate_languages.php>
+ order allow,deny
+ deny from all
+ allow from 127.0.0.1
+ 
+# My IP(s)
+#  allow from xxx.xxx.xxx.xx
+
+</Files>
+
 <IfModule mod_expires.c>
           <FilesMatch "\.(jpe?g|png|gif|js|css)$">
                       ExpiresActive On
