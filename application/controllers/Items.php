@@ -473,15 +473,15 @@ class Items extends Secure_area implements iData_controller
 		$item_data = array();
 
 		foreach($_POST as $key=>$value)
-		{
+		{		
 			//This field is nullable, so treat it differently
-			if ($key == 'supplier_id')
-			{
-				$item_data["$key"]=$value == '' ? null : $value;
+			if ($key == 'supplier_id' and $value != '')
+			{	
+				$item_data["$key"] = $value;
 			}
-			elseif($value!='' and !(in_array($key, array('submit', 'item_ids', 'tax_names', 'tax_percents', 'category'))))
+			elseif($value != '' and !(in_array($key, array('item_ids', 'tax_names', 'tax_percents'))))
 			{
-				$item_data["$key"]=$value;
+				$item_data["$key"] = $value;
 			}
 		}
 

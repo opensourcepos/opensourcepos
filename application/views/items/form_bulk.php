@@ -157,26 +157,21 @@ $(document).ready(function()
 	$('#item_form').validate($.extend({
 		submitHandler:function(form)
 		{
-			if(confirm("<?php echo $this->lang->line('items_confirm_bulk_edit') ?>"))
+			//Get the selected ids and create hidden fields to send with ajax submit.
+			var selected_item_ids=get_selected_values();
+			for(k=0;k<selected_item_ids.length;k++)
 			{
-				//Get the selected ids and create hidden fields to send with ajax submit.
-				var selected_item_ids=get_selected_values();
-				for(k=0;k<selected_item_ids.length;k++)
-				{
-					$(form).append("<input type='hidden' name='item_ids[]' value='"+selected_item_ids[k]+"' />");
-				}
-				
-				
-				$(form).ajaxSubmit({
+				$(form).append("<input type='hidden' name='item_ids[]' value='"+selected_item_ids[k]+"' />");
+			}
+			
+			$(form).ajaxSubmit({
 				success:function(response)
 				{
 					dialog_support.hide();
 					post_bulk_form_submit(response);
 				},
 				dataType:'json'
-				});
-			}
-
+			});
 		},
 		rules:
 		{
