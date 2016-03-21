@@ -18,7 +18,7 @@
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
-				<div class="input-group">
+				<div class="input-group ui-front">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php echo form_input(array(
 							'name'=>'category',
@@ -152,12 +152,8 @@
 //validation and submit handling
 $(document).ready(function()
 {	
-	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10});
-    $("#category").result(function(event, data, formatted)
-    {
-    });
-	$("#category").search();
-	
+	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",max:100,minChars:0,delay:10});
+
 	$('#item_form').validate($.extend({
 		submitHandler:function(form)
 		{
