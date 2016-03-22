@@ -16,6 +16,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Ändere alle zu NICHT Erlau
 $lang["items_change_all_to_serialized"] = "Ändere alle zu serialisiert";
 $lang["items_change_all_to_unserialized"] = "Ändere alle zu nicht serialisiert";
 $lang["items_confirm_bulk_edit"] = "Wollen Sie alle gewählten Artikel ändern?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "Wollen Sie alle gewählten Artikel löschen?";
 $lang["items_cost_price"] = "Einstandspreis";
 $lang["items_cost_price_number"] = "Einstandspresi muss eine Zahl sein";

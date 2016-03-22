@@ -84,7 +84,7 @@ echo form_open('items/bulk_update/',array('id'=>'item_form'));
 		'name'=>'tax_names[]',
 		'id'=>'tax_name_2',
 		'size'=>'8',
-		'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->lang->line('items_sales_tax_2'))
+		'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->lang->line('items_sales_tax_2'),)
 	);?>
 	</div>
 	<div class='form_field'>
@@ -162,11 +162,19 @@ $(document).ready(function()
     {
     });
 	$("#category").search();
-	
+
+	var confirm_message = "<?php echo $this->lang->line('items_confirm_bulk_edit') ?>";
+	$("#tax_percent_name_2, #tax_name_2").prop('disabled', true),
+	$("#tax_percent_name_1").blur(function() {
+		var enabled = !$(this).val();
+		$("#tax_percent_name_2, #tax_name_2").prop('disabled', enabled);
+		confirm_message =  confirm_message + " <?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
+	});
+
 	$('#item_form').validate({
 		submitHandler:function(form)
 		{
-			if(confirm("<?php echo $this->lang->line('items_confirm_bulk_edit') ?>"))
+			if(confirm(confirm_message))
 			{
 				//Get the selected ids and create hidden fields to send with ajax submit.
 				var selected_item_ids=get_selected_values();

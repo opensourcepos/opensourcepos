@@ -16,6 +16,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "不允許全部ALT倒序";
 $lang["items_change_all_to_serialized"] = "全部更改序號至序列化";
 $lang["items_change_all_to_unserialized"] = "全部更改序號至非序列化";
 $lang["items_confirm_bulk_edit"] = "您確定您要編輯的所有選定的產品嗎？";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "你確定你要刪除選定的產品嗎？";
 $lang["items_cost_price"] = "成本價";
 $lang["items_cost_price_number"] = "成本價必需是數值";

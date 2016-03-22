@@ -16,6 +16,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Interdire Desc Alt Pour Tou
 $lang["items_change_all_to_serialized"] = "Tout Sérialiser";
 $lang["items_change_all_to_unserialized"] = "Tout désérialiser";
 $lang["items_confirm_bulk_edit"] = "Etes vous sûre de vouloir éditer toute la sélection?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "Etes vous sûre de vouloir supprimer la sélection?";
 $lang["items_cost_price"] = "Prix de Gros";
 $lang["items_cost_price_number"] = "Le Prix d\'achat doit etre un nombre";
