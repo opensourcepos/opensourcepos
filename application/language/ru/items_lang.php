@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Не разрешить а�
 $lang["items_change_all_to_serialized"] = "Изменить все в сериализованную";
 $lang["items_change_all_to_unserialized"] = "Изменить все в несериализованную";
 $lang["items_confirm_bulk_edit"] = "Вы уверены, что хотите редактировать все товари выбраны?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "Вы уверены, что хотите удалить выбранные товари?";
 $lang["items_cost_price"] = "Оптовая Цена";
 $lang["items_cost_price_number"] = "Оптовая цена должно быть число";

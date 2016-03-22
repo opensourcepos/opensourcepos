@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Vaste omschrijvingen";
 $lang["items_change_all_to_serialized"] = "Genummerd";
 $lang["items_change_all_to_unserialized"] = "Niet genummerd";
 $lang["items_confirm_bulk_edit"] = "Bent u zeker dat u de geselecteerde producten wil aanpassen?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "Alle taxgegevens zullen overschreven worden!";
 $lang["items_confirm_delete"] = "Bent u zeker dat u de geselecteerde producten wil verwijderen?";
 $lang["items_cost_price"] = "Aankoopprijs";
 $lang["items_cost_price_number"] = "Kostprijs moet een cijfer zijn";

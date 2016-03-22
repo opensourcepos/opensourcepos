@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Not Allow Alt Desc For All"
 $lang["items_change_all_to_serialized"] = "Change All To Serialized";
 $lang["items_change_all_to_unserialized"] = "Change All To Unserialized";
 $lang["items_confirm_bulk_edit"] = "Are you sure you want to edit all the items selected?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "Are you sure you want to delete the selected items?";
 $lang["items_cost_price"] = "Cost Price";
 $lang["items_cost_price_number"] = "Cost price must be a number";

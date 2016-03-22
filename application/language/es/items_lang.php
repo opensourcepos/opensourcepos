@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Denegar Descripción Altern
 $lang["items_change_all_to_serialized"] = "Cambiar Todo A Serializado";
 $lang["items_change_all_to_unserialized"] = "Cambiar Todo A Deserializado";
 $lang["items_confirm_bulk_edit"] = "¿Estás seguro(a) de querer editar los artículos seleccionados?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "¿Estás seguro(a) de querer borrar los artículos seleccionados?";
 $lang["items_cost_price"] = "Precio de Compra";
 $lang["items_cost_price_number"] = "Precio de Compra debe ser número";

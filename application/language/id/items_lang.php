@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Tidak Diijinkan Deskripsi a
 $lang["items_change_all_to_serialized"] = "Ubah semua menggunakan nomor serial";
 $lang["items_change_all_to_unserialized"] = "Ubah semua tanpa nomor serial";
 $lang["items_confirm_bulk_edit"] = "Apakah Anda yakin ingin merubah semua item yang dipilih?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "Apakah Anda yakin ingin menghapus item yang dipilih?";
 $lang["items_cost_price"] = "Harga Pokok";
 $lang["items_cost_price_number"] = "Biaya Item harus angka";

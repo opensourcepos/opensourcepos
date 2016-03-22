@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Tümünde dip nota izin ver
 $lang["items_change_all_to_serialized"] = "Tümünü seri numaralı yap";
 $lang["items_change_all_to_unserialized"] = "Tümünü seri numarasız yap";
 $lang["items_confirm_bulk_edit"] = "Seçili tüm ürünleri düzenlemek istediğinize emin misiniz?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "Seçili ürünleri silmek istediğinize emin misiniz?";
 $lang["items_cost_price"] = "Maliyet Fiyatı";
 $lang["items_cost_price_number"] = "Fiyat sayı olmalıdır (9.90)";

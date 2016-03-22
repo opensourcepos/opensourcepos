@@ -154,24 +154,35 @@ $(document).ready(function()
 {	
 	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",appendTo:'.modal-content',delay:10});
 
+	var confirm_message = false;
+	$("#tax_percent_name_2, #tax_name_2").prop('disabled', true),
+	$("#tax_percent_name_1, tax_name_1").blur(function() {
+		var disabled = !($("#tax_percent_name_1").val() + $("#tax_name_1").val());
+		$("#tax_percent_name_2, #tax_name_2").prop('disabled', disabled);
+		confirm_message =  disabled ? "" : "<?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
+	});
+
 	$('#item_form').validate($.extend({
 		submitHandler:function(form)
 		{
-			//Get the selected ids and create hidden fields to send with ajax submit.
-			var selected_item_ids=get_selected_values();
-			for(k=0;k<selected_item_ids.length;k++)
+			if(!confirm_message || confirm(confirm_message))
 			{
-				$(form).append("<input type='hidden' name='item_ids[]' value='"+selected_item_ids[k]+"' />");
-			}
-			
-			$(form).ajaxSubmit({
-				success:function(response)
+				//Get the selected ids and create hidden fields to send with ajax submit.
+				var selected_item_ids=get_selected_values();
+				for(k=0;k<selected_item_ids.length;k++)
 				{
-					dialog_support.hide();
-					post_bulk_form_submit(response);
-				},
-				dataType:'json'
-			});
+					$(form).append("<input type='hidden' name='item_ids[]' value='"+selected_item_ids[k]+"' />");
+				}
+
+				$(form).ajaxSubmit({
+					success:function(response)
+					{
+						dialog_support.hide();
+						post_bulk_form_submit(response);
+					},
+					dataType:'json'
+				});
+			}
 		},
 		rules:
 		{

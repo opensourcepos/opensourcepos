@@ -15,6 +15,7 @@ $lang["items_change_all_to_not_allow_allow_desc"] = "Not Allow Alt Desc For All"
 $lang["items_change_all_to_serialized"] = "เปลี่ยนแปลงรหัสสินค้าทั้งหมด";
 $lang["items_change_all_to_unserialized"] = "ลบรหัสสินค้าทั้งหมด";
 $lang["items_confirm_bulk_edit"] = "แน่ใจหรือไม่ที่จะแก้ใขสินค้าทั้งหมดที่คุณเลือก?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "โปรดยืนยันการลบสินค้าที่ถูกเลือก?";
 $lang["items_cost_price"] = "ราคาทุน";
 $lang["items_cost_price_number"] = "ราคาทุนต้องเป็นตัวเลข";
