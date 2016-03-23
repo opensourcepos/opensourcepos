@@ -165,10 +165,11 @@ $(document).ready(function()
 
 	var confirm_message = "<?php echo $this->lang->line('items_confirm_bulk_edit') ?>";
 	$("#tax_percent_name_2, #tax_name_2").prop('disabled', true),
-	$("#tax_percent_name_1").blur(function() {
-		var enabled = !$(this).val();
-		$("#tax_percent_name_2, #tax_name_2").prop('disabled', enabled);
-		confirm_message =  confirm_message + " <?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
+	$("#tax_percent_name_1, tax_name_1").blur(function() {
+		var disabled = !($("#tax_percent_name_1").val() + $("#tax_name_1").val());
+		$("#tax_percent_name_2, #tax_name_2").prop('disabled', disabled);
+		confirm_message = "<?php echo $this->lang->line('items_confirm_bulk_edit') ?>";
+		confirm_message +=  disabled ? "" : "<?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
 	});
 
 	$('#item_form').validate({
