@@ -125,7 +125,7 @@ $(document).ready(function()
 	$.validator.setDefaults({ ignore: [] });
 
 	$.validator.addMethod("module", function (value, element) {
-		var result = true;
+		var result = $("#permission_list input").is(":checked");
 		$(".module").each(function(index, element)
 		{
 			var parent = $(element).parent();
