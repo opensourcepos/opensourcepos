@@ -84,11 +84,16 @@ if (isset($error_message))
 		?>
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name"><textarea rows="5" cols="6" class='long_name'><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['quantity']; ?></textarea></td>
-				<td><textarea rows="5" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>
-				<td style='border-right: solid 1px; text-align:right;'><textarea rows="5" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
+				<td class="item-name"><textarea rows="4" cols="6" class='long_name'><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
+				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['quantity']; ?></textarea></td>
+				<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
+				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>
+				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
+			</tr>
+			<tr class="item-row">
+				<td></td>
+				<td class="item-name"><textarea class='long_name' cols="6"><?php echo $item['description']; ?></textarea></td>
+				<td style='text-align:center;'><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
 			</tr>
 		<?php
 		}
