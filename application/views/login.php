@@ -11,10 +11,10 @@
 	<!-- end css template tags -->
 
 	<script type="text/javascript">
-		$(document).ready(function()
+		window.onload = function()
 		{
-			$("#login_form input:first").focus();
-		});
+			document.getElementById("username").focus();
+		};
 	</script>
 </head>
 
