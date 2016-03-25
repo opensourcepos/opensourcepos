@@ -31,7 +31,7 @@ sales_discount_included,Rabatt %,% Korting,% Descuento,% Discount,% Discount,% D
 sales_discount,Rabatt,Korting,Descuento,Discount,Discount,Discount,Discount,ส่วนลด,Discount,Discount
 sales_discount_short,%,%,%,%,%,%,%,,%,%
 sales_edit,Ändern,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
-sales_edit_item,Ändere Art.,Bewaar,Editar Artículo,Edit Item,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
+sales_edit_item,Ändere Art.,Bewaar,Editar Artículo,Update,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
 sales_edit_sale,Auftrag ändern,Bewerk Ticket,Editar Venta,Edit Sale,Éditer Vente,編輯銷售資料,Редактировать продажи,แก้ไขการขาย,Satışı Düzenle,Ubah Penjualan
 sales_email_receipt,Quittung per Email,Email Ticket,Enviar Ticket,Email Receipt,Recu par Email,Email 銷售單,послать квитанция по Email,อีเมลบิล,E-Fatura,email Faktur
 sales_employee,Mitarbeiter,Werknemer,Empleado,Employee,Employé,員工,сотрудник,พนักงาน,Personel,Karyawan
