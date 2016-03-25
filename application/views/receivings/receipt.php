@@ -1,17 +1,24 @@
 <?php $this->load->view("partial/header"); ?>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer' => 'receipt_printer')); ?>
-
 <?php
 if (isset($error_message))
 {
-	echo '<h1 style="text-align: center;">'.$error_message.'</h1>';
+	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 	exit;
 }
 ?>
+
+<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
+
+<div class="print_hide" id="control_buttons" style="text-align:right">
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo $this->lang->line('common_print'); ?></div></a>
+	<?php echo anchor("receivings", $this->lang->line('recvs_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+</div>
+
 <div id="receipt_wrapper">
 	<div id="receipt_header">
-		<?php if ($this->Appconfig->get('company_logo') == '') 
+		<?php
+		if ($this->Appconfig->get('company_logo') == '') 
         { 
         ?>
 			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
@@ -24,7 +31,6 @@ if (isset($error_message))
 		<?php
 		}
 		?>
-
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
 		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
@@ -32,7 +38,8 @@ if (isset($error_message))
 	</div>
 
 	<div id="receipt_general_info">
-		<?php if(isset($supplier))
+		<?php
+		if(isset($supplier))
 		{
 		?>
 			<div id="customer"><?php echo $this->lang->line('suppliers_supplier').": ".$supplier; ?></div>
@@ -40,7 +47,8 @@ if (isset($error_message))
 		}
 		?>
 		<div id="sale_id"><?php echo $this->lang->line('recvs_id').": ".$receiving_id; ?></div>
-		<?php if (!empty($invoice_number))
+		<?php 
+		if (!empty($invoice_number))
 		{
 		?>
 			<div id="invoice_number"><?php echo $this->lang->line('recvs_invoice_number').": ".$invoice_number; ?></div>	
