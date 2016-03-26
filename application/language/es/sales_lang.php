@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "Ha fallado la eliminación de la Venta"
 $lang["sales_unsuccessfully_updated"] = "Ha fallado la actualización de la venta";
 $lang["sales_unsuspend"] = "Retomar";
 $lang["sales_unsuspend_and_delete"] = "Retomar y Borrar";
-$lang["sales_update"] = "Editar Venta";
+$lang["sales_update"] = "Editar";
 $lang["sales_date_range"] = "Rango de Fecha";
 $lang["sales_none_selected"] = "No has seleccionado venta para editar";

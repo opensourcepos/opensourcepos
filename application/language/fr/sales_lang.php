@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "Échec de suppression";
 $lang["sales_unsuccessfully_updated"] = "Échec d'édition";
 $lang["sales_unsuspend"] = "Débloquer";
 $lang["sales_unsuspend_and_delete"] = "";
-$lang["sales_update"] = "Edit Sale";
+$lang["sales_update"] = "Éditer";
 $lang["sales_date_range"] = "Plage de dates";
 $lang["sales_none_selected"] = "Vous n'avez sélectionné aucun élément";

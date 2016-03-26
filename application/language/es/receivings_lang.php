@@ -48,3 +48,4 @@ $lang["recvs_supplier"] = "Proveedor";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "No se puede agregar el artículo a la entrada";
 $lang["recvs_unsuccessfully_updated"] = "Recepción actualizada sin exito";
+$lang["recvs_update"] = "Editar";

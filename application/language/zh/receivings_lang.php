@@ -48,3 +48,4 @@ $lang["recvs_supplier"] = "供應商";
 $lang["recvs_total"] = "總數量";
 $lang["recvs_unable_to_add_item"] = "無法新增進貨資料";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "編輯";

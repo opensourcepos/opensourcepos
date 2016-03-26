@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "ลบการขายไม่สำ
 $lang["sales_unsuccessfully_updated"] = "อัพเดทการขายไม่สมบูรณ์";
 $lang["sales_unsuspend"] = "ยกเลิกการระงับ";
 $lang["sales_unsuspend_and_delete"] = "ยกเลิกการระงับ และ ลบ";
-$lang["sales_update"] = "แก้ไขการขาย";
+$lang["sales_update"] = "แก้ไข";
 $lang["sales_date_range"] = "ระหว่างวันที่";
 $lang["sales_none_selected"] = "กรุณาเลือสินค้าที่ต้องการแก้ไข";

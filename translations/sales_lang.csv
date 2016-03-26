@@ -31,7 +31,7 @@ sales_discount_included,Rabatt %,% Korting,% Descuento,% Discount,% Discount,% D
 sales_discount,Rabatt,Korting,Descuento,Discount,Discount,Discount,Discount,ส่วนลด,Discount,Discount
 sales_discount_short,%,%,%,%,%,%,%,,%,%
 sales_edit,Ändern,Bewerk,Editar,Edit,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
-sales_edit_item,Ändere Art.,Bewaar,Editar Artículo,Update,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
+sales_edit_item,Ändere Art.,Bewaar,Editar Artículo,Edit Item,Éditer Item,編輯產品,Редактировать Товар,แก้ไขสินค้า,Düzenle,Ubah Item
 sales_edit_sale,Auftrag ändern,Bewerk Ticket,Editar Venta,Edit Sale,Éditer Vente,編輯銷售資料,Редактировать продажи,แก้ไขการขาย,Satışı Düzenle,Ubah Penjualan
 sales_email_receipt,Quittung per Email,Email Ticket,Enviar Ticket,Email Receipt,Recu par Email,Email 銷售單,послать квитанция по Email,อีเมลบิล,E-Fatura,email Faktur
 sales_employee,Mitarbeiter,Werknemer,Empleado,Employee,Employé,員工,сотрудник,พนักงาน,Personel,Karyawan
@@ -111,6 +111,6 @@ sales_unsuccessfully_deleted,Löschung nicht erfolgreich,De aankoop kon niet ver
 sales_unsuccessfully_updated,Änderung nicht erfolgreich,Fout bij het bewaren van ticket,Ha fallado la actualización de la venta,Sale unsuccessfully updated,Échec d'édition,銷售資料更新失敗,Продажа безуспешно обновлен,อัพเดทการขายไม่สมบูรณ์,Satış düzenlenemedi,Penjualan tidak berhasil diperbarui
 sales_unsuspend,Aktivieren,Hervat,Retomar,Unsuspend,Débloquer,取消暫停銷售,Разблокировать,ยกเลิกการระงับ,Satışa Al,Batal Penangguhan
 sales_unsuspend_and_delete,Aktivieren und löschen,,Retomar y Borrar,,,取消暫停銷售並刪除,Разблокировать и удалить,ยกเลิกการระงับ และ ลบ,,Batalkan dan hapus penangguhan
-sales_update,Ändere Auftrag,Bewerk Ticket,Editar Venta,Edit Sale,Edit Sale,Edit Sale,Edit Sale,แก้ไขการขาย,Edit Sale,Edit Sale
+sales_update,Ändern,Bewerk,Editar,Update,Éditer,編輯,редактировать,แก้ไข,Düzenle,Ubah
 sales_date_range,Zeitrahmen,Periode,Rango de Fecha,Date Range,Plage de dates,日期範圍,размах числа,ระหว่างวันที่,Tarih Aralığı,Rentang Tanggal
 sales_none_selected,Sie haben keinen Auftrag zum Löschen ausgewählt,U hebt geen aankopen geselecteerd,No has seleccionado venta para editar,You have not selected any sales to delete,Vous n'avez sélectionné aucun élément,您還沒有選擇任何產品進行編輯,Вы не выбрали ни одной товари для редактирования,กรุณาเลือสินค้าที่ต้องการแก้ไข,Düzenlemek için ürün seçmediniz,Anda belum memilih item untuk diubah

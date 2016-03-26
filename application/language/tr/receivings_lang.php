@@ -48,3 +48,4 @@ $lang["recvs_supplier"] = "Sağlayıcı";
 $lang["recvs_total"] = "Toplam";
 $lang["recvs_unable_to_add_item"] = "Ürünler alıma eklenemedi";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "Düzenle";

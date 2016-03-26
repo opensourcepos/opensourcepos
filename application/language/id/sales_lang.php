@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "Transaksi Penjualan tidak berhasil diha
 $lang["sales_unsuccessfully_updated"] = "Penjualan tidak berhasil diperbarui";
 $lang["sales_unsuspend"] = "Batal Penangguhan";
 $lang["sales_unsuspend_and_delete"] = "Batalkan dan hapus penangguhan";
-$lang["sales_update"] = "Edit Sale";
+$lang["sales_update"] = "Ubah";
 $lang["sales_date_range"] = "Rentang Tanggal";
 $lang["sales_none_selected"] = "Anda belum memilih item untuk diubah";

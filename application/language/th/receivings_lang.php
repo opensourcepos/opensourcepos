@@ -48,3 +48,4 @@ $lang["recvs_supplier"] = "ผู้ผลิต";
 $lang["recvs_total"] = "รวม";
 $lang["recvs_unable_to_add_item"] = "ไม่สามารถเพิ่มสินค้าได้";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "แก้ไข";

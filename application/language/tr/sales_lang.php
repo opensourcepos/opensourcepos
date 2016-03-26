@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "Satış silinemedi";
 $lang["sales_unsuccessfully_updated"] = "Satış düzenlenemedi";
 $lang["sales_unsuspend"] = "Satışa Al";
 $lang["sales_unsuspend_and_delete"] = "";
-$lang["sales_update"] = "Edit Sale";
+$lang["sales_update"] = "Düzenle";
 $lang["sales_date_range"] = "Tarih Aralığı";
 $lang["sales_none_selected"] = "Düzenlemek için ürün seçmediniz";

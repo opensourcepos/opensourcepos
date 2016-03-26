@@ -89,14 +89,14 @@ if (isset($error))
 	<table class="sales_table_100" id="register">
 		<thead>
 			<tr>
-				<th style="width:10%;"><?php echo $this->lang->line('common_delete'); ?></th>
-				<th style="width:35%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
+				<th style="width:5%;"><?php echo $this->lang->line('common_delete'); ?></th>
+				<th style="width:45%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
 				<th style="width:5%;"></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_total'); ?></th>
-				<th style="width:10%;"><?php echo $this->lang->line('recvs_edit'); ?></th>
+				<th style="width:5%;"><?php echo $this->lang->line('recvs_update'); ?></th>
 			</tr>
 		</thead>
 
@@ -117,11 +117,13 @@ if (isset($error))
 				foreach(array_reverse($cart, true) as $line=>$item)
 				{
 			?>
-					<?php echo form_open("receivings/edit_item/$line", array('class'=>'form-horizontal')); ?>
+					<?php echo form_open("receivings/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td><?php echo anchor("receivings/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
-							<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
-								<?php echo form_hidden('location', $item['item_location']); ?></td>
+							<td style="align:center;">
+								<?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+								<?php echo form_hidden('location', $item['item_location']); ?>
+							</td>
 
 							<?php 
 							if ($items_module_allowed && $mode !='requisition')
@@ -133,8 +135,10 @@ if (isset($error))
 							else
 							{
 							?>
-								<td><?php echo $item['price']; ?></td>
-								<?php echo form_hidden('price',$item['price']); ?>
+								<td>
+									<?php echo $item['price']; ?>
+									<?php echo form_hidden('price', $item['price']); ?>
+								</td>
 							<?php
 							}
 							?>
@@ -144,7 +148,7 @@ if (isset($error))
 							if ($item['receiving_quantity'] > 1) 
 							{
 							?>
-								<td>x <?php echo $item['receiving_quantity']; ?></td>	
+								<td><?php echo 'x'.$item['receiving_quantity']; ?></td>	
 							<?php 
 							}
 							else
@@ -171,7 +175,7 @@ if (isset($error))
 							}
 							?>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-							<td><?php echo form_submit(array('name'=>'edit_item', 'value'=>$this->lang->line('sales_edit_item'), 'class'=>'btn btn-default btn-xs'));?></td>
+							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('recvs_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php 

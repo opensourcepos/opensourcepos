@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "Löschung nicht erfolgreich";
 $lang["sales_unsuccessfully_updated"] = "Änderung nicht erfolgreich";
 $lang["sales_unsuspend"] = "Aktivieren";
 $lang["sales_unsuspend_and_delete"] = "Aktivieren und löschen";
-$lang["sales_update"] = "Ändere Auftrag";
+$lang["sales_update"] = "Ändern";
 $lang["sales_date_range"] = "Zeitrahmen";
 $lang["sales_none_selected"] = "Sie haben keinen Auftrag zum Löschen ausgewählt";

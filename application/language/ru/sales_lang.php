@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "продажи безуспешно у�
 $lang["sales_unsuccessfully_updated"] = "Продажа безуспешно обновлен";
 $lang["sales_unsuspend"] = "Разблокировать";
 $lang["sales_unsuspend_and_delete"] = "Разблокировать и удалить";
-$lang["sales_update"] = "Edit Sale";
+$lang["sales_update"] = "редактировать";
 $lang["sales_date_range"] = "размах числа";
 $lang["sales_none_selected"] = "Вы не выбрали ни одной товари для редактирования";

@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "De aankoop kon niet verwijderd worden";
 $lang["sales_unsuccessfully_updated"] = "Fout bij het bewaren van ticket";
 $lang["sales_unsuspend"] = "Hervat";
 $lang["sales_unsuspend_and_delete"] = "";
-$lang["sales_update"] = "Bewerk Ticket";
+$lang["sales_update"] = "Bewerk";
 $lang["sales_date_range"] = "Periode";
 $lang["sales_none_selected"] = "U hebt geen aankopen geselecteerd";

@@ -112,6 +112,6 @@ $lang["sales_unsuccessfully_deleted"] = "銷售資料刪除失敗";
 $lang["sales_unsuccessfully_updated"] = "銷售資料更新失敗";
 $lang["sales_unsuspend"] = "取消暫停銷售";
 $lang["sales_unsuspend_and_delete"] = "取消暫停銷售並刪除";
-$lang["sales_update"] = "Edit Sale";
+$lang["sales_update"] = "編輯";
 $lang["sales_date_range"] = "日期範圍";
 $lang["sales_none_selected"] = "您還沒有選擇任何產品進行編輯";

@@ -90,14 +90,14 @@ if (isset($success))
 	<table class="sales_table_100" id="register">
 		<thead>
 			<tr>
-				<th style="width: 10%;"><?php echo $this->lang->line('common_delete'); ?></th>
+				<th style="width: 5%;"><?php echo $this->lang->line('common_delete'); ?></th>
 				<th style="width: 15%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
-				<th style="width: 25%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
+				<th style="width: 35%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_price'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_discount'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_total'); ?></th>
-				<th style="width: 10%;"><?php echo $this->lang->line('sales_edit'); ?></th>
+				<th style="width: 5%;"><?php echo $this->lang->line('sales_update'); ?></th>
 			</tr>
 		</thead>
 
@@ -123,11 +123,12 @@ if (isset($success))
 						$tabindex = 5;
 					}
 			?>
-					<?php echo form_open("sales/edit_item/$line", array('class'=>'form-horizontal')); ?>
+					<?php echo form_open("sales/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td><?php echo anchor("sales/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
-							<td style="align: center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock'] ?> in <?php echo $item['stock_name']; ?>]
+							<td style="align: center;">
+								<?php echo $item['name']; ?><br /> [<?php echo $item['in_stock'] ?> in <?php echo $item['stock_name']; ?>]
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -141,8 +142,10 @@ if (isset($success))
 							else
 							{
 							?>
-								<td><?php echo to_currency($item['price']); ?></td>
-								<?php echo form_hidden('price',$item['price']); ?>
+								<td>
+									<?php echo to_currency($item['price']); ?>
+									<?php echo form_hidden('price', $item['price']); ?>
+								</td>
 							<?php
 							}
 							?>
@@ -163,7 +166,7 @@ if (isset($success))
 
 							<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount']));?></td>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-							<td><?php echo form_submit(array('name'=>'edit_item', 'value'=>$this->lang->line('sales_edit_item'), 'class'=>'btn btn-default btn-xs'));?></td>
+							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php 

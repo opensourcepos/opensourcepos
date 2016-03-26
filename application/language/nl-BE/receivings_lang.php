@@ -48,3 +48,4 @@ $lang["recvs_supplier"] = "Leverancier";
 $lang["recvs_total"] = "Totaal";
 $lang["recvs_unable_to_add_item"] = "Onmogelijk om product aan order toe te voegen";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "Bewerk";
