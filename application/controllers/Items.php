@@ -202,7 +202,7 @@ class Items extends Secure_area implements iData_controller
     
 	function inventory($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
+		$data['item_info'] = $this->Item->get_info($item_id);
         
         $data['stock_locations'] = array();
         $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
@@ -217,7 +217,7 @@ class Items extends Secure_area implements iData_controller
 	
 	function count_details($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
+		$data['item_info'] = $this->Item->get_info($item_id);
         
         $data['stock_locations'] = array();
         $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
@@ -342,7 +342,7 @@ class Items extends Secure_area implements iData_controller
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
-			for($k=0;$k<count($tax_percents);$k++)
+			for($k = 0; $k < count($tax_percents); $k++)
 			{
 				if (is_numeric($tax_percents[$k]))
 				{
@@ -376,7 +376,7 @@ class Items extends Secure_area implements iData_controller
 	                $success &= $this->Inventory->insert($inv_data);       
                 }                                            
             }
-			if ($success && $upload_success)
+			if($success && $upload_success)
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 
@@ -390,7 +390,6 @@ class Items extends Secure_area implements iData_controller
 
             	echo json_encode(array('success'=>false, 'message'=>$error_message, 'item_id'=>$item_id)); 
             }
-            
 		}
 		else//failure
 		{
@@ -426,7 +425,8 @@ class Items extends Secure_area implements iData_controller
 	public function remove_logo($item_id)
 	{
 		$item_data = array('pic_id' => null);
-		$result = $this->Item->save($item_data, $item_id);;
+		$result = $this->Item->save($item_data, $item_id);
+
 		echo json_encode(array('success' => $result));
 	}
 
@@ -474,30 +474,38 @@ class Items extends Secure_area implements iData_controller
 		foreach($_POST as $key=>$value)
 		{		
 			//This field is nullable, so treat it differently
-			if ($key == 'supplier_id' and $value != '')
+			if($key == 'supplier_id' && $value != '')
 			{	
 				$item_data["$key"] = $value;
 			}
-			elseif($value != '' and !(in_array($key, array('item_ids', 'tax_names', 'tax_percents'))))
+			elseif($value != '' && !(in_array($key, array('item_ids', 'tax_names', 'tax_percents'))))
 			{
 				$item_data["$key"] = $value;
 			}
 		}
 
 		//Item data could be empty if tax information is being updated
-		if(empty($item_data) || $this->Item->update_multiple($item_data,$items_to_update))
+		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
-			for($k=0;$k<count($tax_percents);$k++)
-			{
-				if (is_numeric($tax_percents[$k]))
+			$tax_updated = false;
+			
+			for($k = 0; $k < count($tax_percents); $k++)
+			{		
+				if( !empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
 				{
-					$items_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k] );
+					$tax_updated = true;
+					
+					$items_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k]);
 				}
 			}
-			$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
+			
+			if($tax_updated)
+			{
+				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
+			}
 
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit')));
 		}
@@ -509,7 +517,7 @@ class Items extends Secure_area implements iData_controller
 
 	function delete()
 	{
-		$items_to_delete=$this->input->post('ids');
+		$items_to_delete = $this->input->post('ids');
 
 		if($this->Item->delete_list($items_to_delete))
 		{

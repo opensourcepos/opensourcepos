@@ -71,7 +71,7 @@
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_1',
 						'class'=>'form-control input-sm',
-						'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('items_sales_tax_1'))
+						'value'=>$this->config->item('default_tax_1_name'))
 				);?>
 			</div>
 			<div class="col-sm-3">
@@ -80,7 +80,7 @@
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
-							'value'=> isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : '')
+							'value'=>$this->config->item('default_tax_1_rate'))
 					);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>
@@ -94,16 +94,16 @@
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_2',
 						'class'=>'form-control input-sm',
-						'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('items_sales_tax_2'))
+						'value'=>$this->config->item('default_tax_2_name'))
 				);?>
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
-							'class'=>'form-control input-sm',
 							'id'=>'tax_percent_name_2',
-							'value'=> isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : '')
+							'class'=>'form-control input-sm',
+							'value'=>$this->config->item('default_tax_2_rate'))
 					);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>
@@ -156,7 +156,7 @@ $(document).ready(function()
 
 	var confirm_message = false;
 	$("#tax_percent_name_2, #tax_name_2").prop('disabled', true),
-	$("#tax_percent_name_1, tax_name_1").blur(function() {
+	$("#tax_percent_name_1, #tax_name_1").blur(function() {
 		var disabled = !($("#tax_percent_name_1").val() + $("#tax_name_1").val());
 		$("#tax_percent_name_2, #tax_name_2").prop('disabled', disabled);
 		confirm_message =  disabled ? "" : "<?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
