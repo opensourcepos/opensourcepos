@@ -558,11 +558,11 @@ class Items extends Secure_area implements iData_controller
 		foreach($_POST as $key=>$value)
 		{
 			//This field is nullable, so treat it differently
-			if ($key == 'supplier_id')
-			{
-				$item_data["$key"]=$value == '' ? null : $value;
+			if($key == 'supplier_id' && $value != '')
+			{	
+				$item_data["$key"] = $value;
 			}
-			elseif($value!='' and !(in_array($key, array('submit', 'item_ids', 'tax_names', 'tax_percents', 'category'))))
+			elseif($value != '' && !(in_array($key, array('submit', 'item_ids', 'tax_names', 'tax_percents'))))
 			{
 				$item_data["$key"]=$value;
 			}
@@ -574,14 +574,21 @@ class Items extends Secure_area implements iData_controller
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
+			$tax_updated = false;
 			for($k=0;$k<count($tax_percents);$k++)
 			{
-				if (is_numeric($tax_percents[$k]))
+				if (!empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
 				{
+					$tax_updated = true;
+					
 					$items_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k] );
 				}
 			}
-			$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
+			
+			if($tax_updated)
+			{
+				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
+			}
 
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit')));
 		}
