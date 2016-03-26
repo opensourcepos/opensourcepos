@@ -58,13 +58,12 @@ function post_person_form_submit(response)
 </script>
 
 <div id="title_bar">
-	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
+	<div id="pagination" class="float_left"><?php echo $links; ?></div>
+
 	<?php echo anchor("$controller_name/view/-1",
 		"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
 		array('class'=>'modal-dlg modal-btn-submit none', 'title'=>$this->lang->line($controller_name . '_new'))); ?>
 </div>
-
-<div id="pagination"><?php echo $links; ?></div>
 
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>

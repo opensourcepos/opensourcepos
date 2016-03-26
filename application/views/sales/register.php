@@ -1,7 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title"><?php echo $this->lang->line('sales_register'); ?></div>
-
 <?php
 if (isset($error))
 {

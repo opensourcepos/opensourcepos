@@ -10,7 +10,6 @@ if(isset($error))
 ?>
 
 <?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
-
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('common_export_excel'), 'export_excel', !empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class'=>'control-label col-xs-2')); ?>
 		<div class="col-xs-4">
@@ -37,15 +36,14 @@ if(isset($error))
 		</div>
 	</div>
 
-<?php
+	<?php
 	echo form_button(array(
 		'name'=>'generate_report',
 		'id'=>'generate_report',
 		'content'=>$this->lang->line('common_submit'),
 		'class'=>'btn btn-primary btn-sm')
 	);
-?>
-
+	?>
 <?php echo form_close(); ?>
 
 <?php $this->load->view("partial/footer"); ?>

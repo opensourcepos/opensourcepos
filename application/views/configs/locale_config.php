@@ -1,5 +1,3 @@
-<div id="page_title"><?php echo $this->lang->line('config_locale_configuration'); ?></div>
-
 <?php echo form_open('config/save_locale/', array('id'=>'locale_config_form', 'class'=>'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
@@ -215,7 +213,6 @@
 <?php echo form_close(); ?>
 
 <script type='text/javascript'>
-
 //validation and submit handling
 $(document).ready(function()
 {

@@ -1,24 +1,20 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="title_bar">
-    <div id="title" class="float_left"><?php echo $this->lang->line('module_config'); ?></div>
-</div>
-
 <ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active" role="presentation">
-        <a data-toggle="tab" href="#general">General</a>
+        <a data-toggle="tab" href="#general" title="<?php echo $this->lang->line('config_general_configuration'); ?>">General</a>
     </li>
     <li role="presentation">
-        <a data-toggle="tab" href="#locale">Locale</a>
+        <a data-toggle="tab" href="#locale" title="<?php echo $this->lang->line('config_locale_configuration'); ?>">Locale</a>
     </li>
     <li role="presentation">
-        <a data-toggle="tab" href="#barcode">Barcode</a>
+        <a data-toggle="tab" href="#barcode" title="<?php echo $this->lang->line('config_barcode_configuration'); ?>">Barcode</a>
     </li>
     <li role="presentation">
-        <a data-toggle="tab" href="#stock">Stock</a>
+        <a data-toggle="tab" href="#stock" title="<?php echo $this->lang->line('config_location_configuration'); ?>">Stock</a>
     </li>
     <li role="presentation">
-        <a data-toggle="tab" href="#receipt">Receipt</a>
+        <a data-toggle="tab" href="#receipt" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>">Receipt</a>
     </li>
 </ul>
 

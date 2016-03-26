@@ -1,5 +1,3 @@
-<div id="page_title"><?php echo $this->lang->line('config_barcode_configuration'); ?></div>
-
 <?php echo form_open('config/save_barcode/', array('id'=>'barcode_config_form', 'class'=>'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
@@ -203,9 +201,7 @@
     </div>
 <?php echo form_close(); ?>
 
-
 <script type='text/javascript'>
-
 //validation and submit handling
 $(document).ready(function()
 {

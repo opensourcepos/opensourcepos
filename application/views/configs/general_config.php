@@ -1,5 +1,3 @@
-<div id="page_title"><?php echo $this->lang->line('config_general_configuration'); ?></div>
-
 <?php echo form_open('config/save/', array('id'=>'config_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
@@ -348,7 +346,6 @@
 <?php echo form_close(); ?>
 
 <script type='text/javascript'>
-
 //validation and submit handling
 $(document).ready(function()
 {

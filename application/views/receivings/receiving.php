@@ -1,7 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title"><?php echo $this->lang->line('recvs_register'); ?></div>
-
 <?php
 if (isset($error))
 {
@@ -464,6 +462,6 @@ function post_person_form_submit(response)
 		$("#select_supplier_form").submit();
 	}
 }
-
 </script>
+
 <?php $this->load->view("partial/footer"); ?>

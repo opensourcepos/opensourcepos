@@ -1,6 +1,11 @@
 <?php $this->load->view("partial/header"); ?>
 
-<div id="page_title"><?php echo $this->lang->line('reports_reports'); ?></div>
+<?php
+if(isset($error))
+{
+	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
+}
+?>
 
 <ul id="report_list">
 	<li><h4><?php echo $this->lang->line('reports_graphical_reports'); ?></h4>
@@ -59,10 +64,5 @@
 	}
 	?>
 </ul>
-<?php
-if(isset($error))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
-}
-?>
+
 <?php $this->load->view("partial/footer"); ?>

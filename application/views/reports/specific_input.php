@@ -45,7 +45,7 @@ if(isset($error))
 		</div>
 	</div>
 
-	<?php
+	<?php 
 	echo form_button(array(
 			'name'=>'generate_report',
 			'id'=>'generate_report',

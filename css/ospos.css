@@ -45,6 +45,11 @@ a.none
 	font-size: 14px;
 }
 
+.pagination
+{
+	margin: 0 !important;
+}
+
 #title_bar
 {
 	position: relative;
@@ -52,7 +57,7 @@ a.none
 	height: 3em;
 }
 
-#title, #page_title
+#page_title
 {
 	font-size: 22px;
 	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;

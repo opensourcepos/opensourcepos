@@ -59,7 +59,8 @@ function post_person_form_submit(response)
 </script>
 
 <div id="title_bar">
-	<div id="title" class="float_left"><?php echo $this->lang->line('common_list_of').' '.$this->lang->line('module_'.$controller_name); ?></div>
+	<div id="pagination" class="float_left"><?php echo $links; ?></div>
+
 	<?php
 	if ($controller_name == 'customers')
 	{
@@ -83,8 +84,6 @@ function post_person_form_submit(response)
 	}
 	?>
 </div>
-
-<div id="pagination"><?php echo $links; ?></div>
 
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>

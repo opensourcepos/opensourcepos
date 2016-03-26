@@ -19,7 +19,7 @@
 	foreach($summary_data as $name=>$value)
 	{
 	?>
-		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
+		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': ' . to_currency($value); ?></div>
 	<?php
 	}
 	?>
