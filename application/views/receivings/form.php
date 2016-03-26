@@ -47,17 +47,10 @@
 					<?php echo form_textarea(array('name'=>'comment','value'=>$receiving_info['comment'], 'id'=>'comment', 'class'=>'form-control input-sm'));?>
 				</div>
 			</div>
-
 		<?php echo form_close(); ?>
 		
 		<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'], array('id'=>'recvs_delete_form')); ?>
 			<?php echo form_hidden('receiving_id', $receiving_info['receiving_id']);?>
-			<?php echo form_submit(array(
-				'name'=>'submit',
-				'value'=>$this->lang->line('recvs_delete_entire_sale'),
-				'class'=>'btn btn-danger btn-sm pull-right')
-			);
-			?>
 		<?php echo form_close(); ?>
 	</fieldset>
 </div>
@@ -114,7 +107,8 @@ $(document).ready(function()
 	// declare submitHandler as an object.. will be reused
 	var submit_form = function()
 	{ 
-		$(this).ajaxSubmit({
+		$(this).ajaxSubmit(
+		{
 			success:function(response)
 			{
 				dialog_support.hide();
@@ -126,6 +120,7 @@ $(document).ready(function()
 			dataType:'json'
 		});
 	};
+
 	$('#recvs_edit_form').validate($.extend(
 	{
 		submitHandler : function(form)
@@ -156,15 +151,14 @@ $(document).ready(function()
 			invoice_number: '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>'
 		}
 	}, dialog_support.error));
-
+	
 	$('#recvs_delete_form').submit(function() 
 	{
-		var id = $("input[name='receiving_id']").val();
-		$(this).ajaxSubmit(
+		if (confirm('<?php echo $this->lang->line("recvs_delete_confirmation"); ?>'))
 		{
-			success:function(response)
-			{
-				if (confirm('<?php echo $this->lang->line("recvs_delete_confirmation"); ?>'))
+			var id = $("input[name='receiving_id']").val();
+			$(this).ajaxSubmit({
+				success: function(response)
 				{
 					dialog_support.hide();
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
@@ -177,14 +171,13 @@ $(document).ready(function()
 						//Re-init sortable table as we removed a row
 						update_sortable_table();
 					});
-				}
-				return false;
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				set_feedback(textStatus, 'alert alert-dismissible alert-danger', true);
-			},
-			dataType:'json'
-		});
+				},
+				error: function(jqXHR, textStatus, errorThrown) {
+					set_feedback(textStatus, 'alert alert-dismissible alert-danger', true);
+				},
+				dataType:'json'
+			});
+		}
 		return false;
 	});
 });

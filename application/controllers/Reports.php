@@ -2,8 +2,6 @@
 require_once ("Secure_area.php");
 require_once (APPPATH."libraries/ofc-library/Open-flash-chart.php");
 
-define("FORM_WIDTH", "400");
-
 class Reports extends Secure_area
 {
 
@@ -69,9 +67,9 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
-		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'] . '/width:'.FORM_WIDTH,
+		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'],
 				'RECV '.$report_data['receiving_id'],
-				array('class' => 'modal')),
+				array('class' => 'modal-dlg modal-btn-submit')),
 				$report_data['receiving_date'],
 				$report_data['items_purchased'],
 				$report_data['employee_name'],
