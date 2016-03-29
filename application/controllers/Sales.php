@@ -168,7 +168,10 @@ class Sales extends Secure_area
 	function select_customer()
 	{
 		$customer_id = $this->input->post('customer');
-		$this->sale_lib->set_customer($customer_id);
+		if ($this->Customer->exists($customer_id))
+		{
+			$this->sale_lib->set_customer($customer_id);
+		}
 		$this->_reload();
 	}
 
@@ -513,7 +516,7 @@ class Sales extends Secure_area
 	{
 		// substitute customer info
 		$customer_id = $this->sale_lib->get_customer();
-		if($customer_id != -1 && $cust_info != '')
+		if($customer_id != -1 && $cust_info != '' && $cust_info->last_name != '' && $cust_info->first_name != '')
 		{
 			$text = str_replace('$CU',$cust_info->first_name . ' ' . $cust_info->last_name,$text);
 			$words = preg_split("/\s+/", trim($cust_info->first_name . ' ' . $cust_info->last_name));
