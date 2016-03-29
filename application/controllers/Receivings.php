@@ -30,7 +30,10 @@ class Receivings extends Secure_area
 	function select_supplier()
 	{
 		$supplier_id = $this->input->post('supplier');
-		$this->receiving_lib->set_supplier($supplier_id);
+		if ($this->Supplier->exists($supplier_id))
+		{
+			$this->receiving_lib->set_supplier($supplier_id);
+		}
 		$this->_reload();
 	}
 

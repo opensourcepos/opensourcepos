@@ -516,7 +516,7 @@ class Sales extends Secure_area
 	{
 		// substitute customer info
 		$customer_id = $this->sale_lib->get_customer();
-		if($customer_id != -1 && $cust_info != '' && $cust_info->last_name != '' && $cust_info->first_name != '')
+		if($customer_id != -1 && $cust_info != '')
 		{
 			$text = str_replace('$CU',$cust_info->first_name . ' ' . $cust_info->last_name,$text);
 			$words = preg_split("/\s+/", trim($cust_info->first_name . ' ' . $cust_info->last_name));
