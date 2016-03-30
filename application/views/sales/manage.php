@@ -23,7 +23,7 @@ $(document).ready(function()
 	{
         // reset page number when selecting a specific page number
         $('#limit_from').val("0");
-        do_search(true);
+        do_search(true, on_complete);
 	});
 	
 	//$('#filters').selectpicker('val', [<?php echo "'" . implode("','", $selected) . "'" ?>]);
