@@ -8,7 +8,7 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
 	
-    var widget = enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest_search")?>',
+    enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest_search")?>',
         confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
         extra_params : {
             'is_deleted' : function () {
@@ -31,14 +31,6 @@ $(document).ready(function()
         }
 
         $(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
-    });
-
-	// when any filter is clicked
-    $("#search_filter_section input").click(function() 
-    {
-        // reset page number when selecting a specific page number
-        $('#limit_from').val("0");
-        do_search(true);
     });
 	
 	// when any filter is clicked and the dropdown window is closed
