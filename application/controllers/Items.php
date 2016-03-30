@@ -18,20 +18,16 @@ class Items extends Secure_area implements iData_controller
 		$data['controller_name'] = $this->get_controller_name();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
-		
-		// set 01/01/2010 as starting date for OSPOS
-		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
-		$today = date($this->config->item('dateformat'));
+		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);	
 
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
-		
-		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
-		$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
-	
+		// filters that will be loaded in the multiselect dropdown
+		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
+								'low_inventory' => $this->lang->line('items_low_inventory_items'), 
+								'is_serialized' => $this->lang->line('items_serialized_items'),
+								'no_description' => $this->lang->line('items_no_description_items'),
+								'search_custom' => $this->lang->line('items_search_custom_items'),
+								'is_deleted' => $this->lang->line('items_is_deleted'));
+
 		$data['stock_location'] = $stock_location;
 		$data['stock_locations'] = $stock_locations;
 		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
@@ -49,25 +45,25 @@ class Items extends Secure_area implements iData_controller
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$this->item_lib->set_item_location($this->input->post('stock_location'));
 
-		// set 01/01/2010 as starting date for OSPOS
-		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
-		$today = date($this->config->item('dateformat'));
-
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
-		
-		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
-						'end_date' => $end_date_formatter->format('Y-m-d'),
+		$filters = array('start_date' => $this->input->post('start_date'), 
+						'end_date' => $this->input->post('end_date'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
-						'empty_upc' => $this->input->post('empty_upc') != null,
-						'low_inventory' => $this->input->post('low_inventory') != null, 
-						'is_serialized' => $this->input->post('is_serialized') != null,
-						'no_description' => $this->input->post('no_description') != null,
-						'search_custom' => $this->input->post('search_custom') != null,
-						'is_deleted' => $this->input->post('is_deleted') != null);
+						'empty_upc' => FALSE,
+						'low_inventory' => FALSE, 
+						'is_serialized' => FALSE,
+						'no_description' => FALSE,
+						'search_custom' => FALSE,
+						'is_deleted' => FALSE);
 		
+		// check if any filter is set in the multiselect dropdown
+		if( $this->input->post('filters') != null )
+		{
+			foreach($this->input->post('filters') as $key)
+			{
+				$filters[$key] = TRUE;
+			}
+		}
+	
 		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
 		$data_rows = get_items_manage_table_data_rows($items, $this);
 		$total_rows = $this->Item->get_found_rows($search, $filters);
@@ -110,9 +106,11 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_search()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
-			'search_custom' => $this->input->post('search_custom'),
-			'is_deleted' => !empty($this->input->post('is_deleted'))),
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'),
+			array(
+				'search_custom' => $this->input->post('search_custom'),
+				'is_deleted' => !empty($this->input->post('is_deleted'))
+				),
 			FALSE);
 
 		echo json_encode($suggestions);
@@ -120,9 +118,12 @@ class Items extends Secure_area implements iData_controller
 
 	function suggest()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'), array(
-			'search_custom' => FALSE,
-			'is_deleted' => FALSE), TRUE);
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'),
+			array(
+				'search_custom' => FALSE,
+				'is_deleted' => FALSE
+				), 
+			TRUE);
 
 		echo json_encode($suggestions);
 	}

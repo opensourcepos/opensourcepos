@@ -12,9 +12,11 @@ $(document).ready(function()
         confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
         extra_params : {
             'is_deleted' : function () {
-                return $("#is_deleted").is(":checked") ? 1 : 0;
+				// the comparison is split in two parts: find the index of the selected and check the index against the index in the listed strings of the multiselect menu
+                return $("#multi_filter li.selected").attr("data-original-index") == $("#filters option[value='is_deleted']").index() ? 1 : 0;
+            }
         }
-    }});
+	});
 	
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
     enable_bulk_edit('<?php echo $this->lang->line($controller_name."_none_selected")?>');
@@ -38,6 +40,14 @@ $(document).ready(function()
         $('#limit_from').val("0");
         do_search(true);
     });
+	
+	// when any filter is clicked and the dropdown window is closed
+	$('#filters').on('hidden.bs.select', function(e)
+	{
+        // reset page number when selecting a specific page number
+        $('#limit_from').val("0");
+        do_search(true);
+	});
 
 	// accept partial suggestion to trigger a search on enter press
     $('#search').keypress(function (e) {
@@ -46,21 +56,25 @@ $(document).ready(function()
         }
     });
 
-    <?php $this->load->view('partial/datepicker_locale'); ?>
+	// load the preset datarange picker
+	<?php $this->load->view('partial/daterangepicker'); ?>
+	
+	// set the beginning of time as starting date
+	$('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>");
+	start_date = "<?php echo date('Y-m-d', mktime(0,0,0,01,01,2010));?>";
 
-	// initialise the datetime picker and trigger a search on any change date
-    $(".date_filter").datetimepicker({
-        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')); ?>",
-		startDate: "<?php echo date($this->config->item('dateformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
-		minView: 2,
-        autoclose: true,
-        todayBtn: true,
-        todayHighlight: true,
-        bootcssVer: 3,
-        language: "<?php echo $this->config->item('language'); ?>"
-    }).on('changeDate', function(event) {
+	// set default dates in the hidden inputs
+	$("#start_date").val(start_date);
+	$("#end_date").val(end_date);
+
+	// update the hidden inputs with the selected dates before submitting the search data
+	$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
+		$("#start_date").val(start_date);
+		$("#end_date").val(end_date);
+
+        // reset page number when selecting a specific page number
+        $('#limit_from').val("0");
         do_search(true);
-        return false;
     });
 
     resize_thumbs();
@@ -69,22 +83,6 @@ $(document).ready(function()
 function resize_thumbs()
 {
     $('a.rollover').imgPreview();
-}
-
-function show_hide_search_filter(search_filter_section, switchImgTag)
-{
-    var ele = document.getElementById(search_filter_section);
-    var imageEle = document.getElementById(switchImgTag);
-    if(ele.style.display == "block")
-    {
-		ele.style.display = "none";
-		imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/plus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
-    }
-    else
-    {
-		ele.style.display = "block";
-		imageEle.innerHTML = '<img src=" <?php echo base_url()?>images/minus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
-    }
 }
 
 function init_table_sorting()
@@ -164,34 +162,8 @@ function post_bulk_form_submit(response)
 		array('class'=>'modal-dlg modal-btn-new modal-btn-submit', 'title'=>$this->lang->line($controller_name . '_new'))); ?>
 </div>
 
-<div id="titleTextImg">
-    <div style="float:left;vertical-align:text-top;"><?php echo $this->lang->line('common_search_options'). ': '; ?></div>
-    <a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
-	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
-</div>
-
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>
-		<div id="search_filter_section" class="form-group" style="display:none;">
-			<?php echo form_label($this->lang->line('items_empty_upc_items').' '.':', 'empty_upc');?>
-			<?php echo form_checkbox(array('name'=>'empty_upc','id'=>'empty_upc','value'=>1,'checked'=> isset($empty_upc)?  ( ($empty_upc)? 1 : 0) : 0)).' | ';?>
-			<?php echo form_label($this->lang->line('items_low_inventory_items').' '.':', 'low_inventory');?>
-			<?php echo form_checkbox(array('name'=>'low_inventory','id'=>'low_inventory','value'=>1,'checked'=> isset($low_inventory)?  ( ($low_inventory)? 1 : 0) : 0)).' | ';?>
-			<?php echo form_label($this->lang->line('items_serialized_items').' '.':', 'is_serialized');?>
-			<?php echo form_checkbox(array('name'=>'is_serialized','id'=>'is_serialized','value'=>1,'checked'=> isset($is_serialized)?  ( ($is_serialized)? 1 : 0) : 0)).' | ';?>
-			<?php echo form_label($this->lang->line('items_no_description_items').' '.':', 'no_description');?>
-			<?php echo form_checkbox(array('name'=>'no_description','id'=>'no_description','value'=>1,'checked'=> isset($no_description)?  ( ($no_description)? 1 : 0) : 0)).' | ';?>
-			<?php echo form_label($this->lang->line('items_search_custom_items').' '.':', 'search_custom');?>
-			<?php echo form_checkbox(array('name'=>'search_custom','id'=>'search_custom','value'=>1,'checked'=> isset($search_custom)?  ( ($search_custom)? 1 : 0) : 0)).' | ';?>
-			<?php echo form_label($this->lang->line('items_is_deleted').' '.':', 'is_deleted');?> 
-			<?php echo form_checkbox(array('name'=>'is_deleted','id'=>'is_deleted','value'=>1,'checked'=> isset($is_deleted)?  ( ($is_deleted)? 1 : 0) : 0));?> 
-
-			<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-			<?php echo form_input(array('name'=>'start_date','value'=>$start_date, 'class'=>'date_filter', 'size'=>'15'));?>
-			<?php echo form_label(' - ', 'end_date');?>
-			<?php echo form_input(array('name'=>'end_date','value'=>$end_date, 'class'=>'date_filter', 'size'=>'15'));?>
-		</div>
-
 		<div id="table_action_header" class="form-group">
 			<ul>
 				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
@@ -205,6 +177,12 @@ function post_bulk_form_submit(response)
 				<?php
 				}
 				?>
+				<li class="float_left"><div id="multi_filter"><?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></div></li>
+				<li class="float_left">
+					<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
+					<?php echo form_input(array('name'=>'start_date', 'type'=>'hidden', 'id'=>'start_date'));?>
+					<?php echo form_input(array('name'=>'end_date', 'type'=>'hidden', 'id'=>'end_date'));?>
+				</li>
 				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
 			</ul>
 		</div>

@@ -129,7 +129,7 @@ class Sales extends Secure_area
 		{
 			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array('is_deleted'=>FALSE, 'search_custom'=>FALSE), FALSE));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
 		echo json_encode($suggestions);

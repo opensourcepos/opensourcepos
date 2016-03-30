@@ -263,7 +263,7 @@ class Item extends CI_Model
 		return $this->db->update('items', array('deleted' => 1));
  	}
 
-	public function get_search_suggestions($search, $filters = array("is_deleted" => 0), $unique = FALSE, $limit=25)
+	public function get_search_suggestions($search, $filters = array('is_deleted'=>FALSE, 'search_custom'=>FALSE), $unique = FALSE, $limit=25)
 	{
 		$suggestions = array();
 
@@ -280,7 +280,7 @@ class Item extends CI_Model
 
 		$this->db->select('item_id, item_number');
 		$this->db->from('items');
-		$this->db->where('deleted', $filters['is_deleted'] != null);
+		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
 		$by_item_number = $this->db->get();
@@ -334,7 +334,7 @@ class Item extends CI_Model
 			}
 
 			//Search by custom fields
-			if ($filters['search_custom'] != 0)
+			if ($filters['search_custom'] != FALSE)
 			{
 				$this->db->from('items');
 				$this->db->where('deleted', $filters['is_deleted']);
