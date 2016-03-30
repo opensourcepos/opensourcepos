@@ -18,13 +18,15 @@ $(document).ready(function()
 		on_complete: on_complete});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete"); ?>', '<?php echo $this->lang->line($controller_name."_none_selected"); ?>');
 
-	// on any input action in the search filter section trigger a do_search
-    $("#search_filter_section input").click(function() 
-    {
+	// when any filter is clicked and the dropdown window is closed
+	$('#filters').on('hidden.bs.select', function(e)
+	{
         // reset page number when selecting a specific page number
         $('#limit_from').val("0");
-        do_search(true, on_complete);
-    });
+        do_search(true);
+	});
+	
+	//$('#filters').selectpicker('val', [<?php echo "'" . implode("','", $selected) . "'" ?>]);
 	
 	// accept partial suggestion to trigger a search on enter press
     $('#search').keypress(function (e) {
@@ -78,6 +80,8 @@ $(document).ready(function()
 		bootcssVer: 3,
 		language: "<?php echo $this->config->item('language'); ?>"
 	}).on('changeDate', function(event) {
+        // reset page number when selecting a specific page number
+        $('#limit_from').val("0");
 		do_search(true, on_complete);
 		return false;
 	});
@@ -110,22 +114,6 @@ function post_bulk_form_submit(response)
 		}
 		set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 	}
-}
-
-function show_hide_search_filter(search_filter_section, switchImgTag)
-{
-    var ele = document.getElementById(search_filter_section);
-    var imageEle = document.getElementById(switchImgTag);
-    if(ele.style.display == "block")
-    {
-		ele.style.display = "none";
-		imageEle.innerHTML = '<img src=" <?php echo base_url(); ?>images/plus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
-    }
-    else
-    {
-		ele.style.display = "block";
-		imageEle.innerHTML = '<img src=" <?php echo base_url(); ?>images/minus.png" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;" >';
-    }
 }
     
 function init_table_sorting()
@@ -205,31 +193,23 @@ function init_table_sorting()
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm pull-right"><?php echo $this->lang->line('common_print'); ?></div></a>
 </div>
 
-<div id="titleTextImg" class="print_hide">
-	<div style="float:left; vertical-align:text-top;"><?php echo $this->lang->line('common_search_options') . ': '; ?></div>
-	<a id="imageDivLink" href="javascript:show_hide_search_filter('search_filter_section', 'imageDivLink');" style="outline:none;">
-	<img src="<?php echo base_url().'images/plus.png'; ?>" style="border:0;outline:none;padding:0px;margin:0px;position:relative;top:-5px;"></a>
-</div>
-
 <?php echo form_open("$controller_name/search", array('id'=>'search_form', 'class'=>'form-horizontal')); ?>
 	<fieldset>
-		<div id="search_filter_section" class="form-group print_show" style="display:none;">
-			<?php echo form_label($this->lang->line('sales_invoice_filter').' '.':', 'invoices_filter');?>
-			<?php echo form_checkbox(array('name'=>'only_invoices','id'=>'only_invoices','value'=>1,'checked'=> isset($only_invoices)?  ( ($only_invoices)? 1 : 0) : 0)) . ' | ';?>
-			<?php echo form_label($this->lang->line('sales_cash_filter').' '.':', 'cash_filter');?>
-			<?php echo form_checkbox(array('name'=>'only_cash','id'=>'only_cash','value'=>1,'checked'=> isset($only_cash)?  ( ($only_cash)? 1 : 0) : 0)) . ' | ';?>
-
-			<?php echo form_label($this->lang->line('sales_date_range').' :', 'start_date');?>
-			<?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter', 'size' => '22'));?>
-			<?php echo form_label(' - ', 'end_date');?>
-			<?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter', 'size' => '22'));?>
-		</div>
-
-		<div id="table_action_header" class="form-group print_hide">
+		<div id="table_action_header" class="form-group">
 			<ul>
-				<li class="float_left"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-				<!-- li class="float_left"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
-				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+				<li class="float_left print_hide"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<!-- li class="float_left print_hide"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
+				<li class="float_left print_show"><div id="multi_filter"><?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 3', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></div></li>
+
+				<li class="float_left print_show"><?php echo form_label($this->lang->line('sales_date_range').':', 'start_date');?></li>
+				<li class="float_left print_show"><?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter form-control input-sm'));?></li>
+				<li class="float_left print_show"><?php echo form_label('-', 'end_date');?></li>
+				<li class="float_left print_show"><?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter form-control input-sm'));?></li>
+				
+				<li class="float_right print_hide">
+					<input type="text" name="search" id="search", class="form-control input-sm"/>
+					<input type="hidden" name="limit_from" id="limit_from"/>
+				</li>
 			</ul>
 		</div>
 	</fieldset>

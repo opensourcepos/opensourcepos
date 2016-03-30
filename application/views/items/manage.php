@@ -172,10 +172,13 @@ function post_bulk_form_submit(response)
 				<li class="float_left"><div id="multi_filter"><?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></div></li>
 				<li class="float_left">
 					<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
-					<?php echo form_input(array('name'=>'start_date', 'type'=>'hidden', 'id'=>'start_date'));?>
-					<?php echo form_input(array('name'=>'end_date', 'type'=>'hidden', 'id'=>'end_date'));?>
+					<?php echo form_input(array('name'=>'start_date', 'type'=>'hidden', 'id'=>'start_date')); ?>
+					<?php echo form_input(array('name'=>'end_date', 'type'=>'hidden', 'id'=>'end_date')); ?>
 				</li>
-				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+				<li class="float_right">
+					<input type="text" name="search" id="search", class="form-control input-sm"/>
+					<input type="hidden" name="limit_from" id="limit_from"/>
+				</li>
 			</ul>
 		</div>
 	</fieldset>

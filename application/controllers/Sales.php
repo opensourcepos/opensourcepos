@@ -47,15 +47,19 @@ class Sales extends Secure_area
 							'location_id' => $location_id,
 							'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
 							'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
-							'only_invoices' => $only_invoices,
 							'only_cash' => $only_cash,
+							'only_invoices' => $only_invoices,
 							'is_valid_receipt' => $is_valid_receipt);
 
 			$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
 			$payments = $this->Sale->get_payments_summary($search, $filters);
 			$total_rows = $this->Sale->get_found_rows($search, $filters);
-			$data['only_invoices'] = $only_invoices;
-			$data['only_cash '] = $only_cash;
+			
+			// filters that will be loaded in the multiselect dropdown
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+									'only_invoices' => $this->lang->line('sales_invoice_filter'));
+			$data['selected'] = array( ($only_cash ? 'only_cash' : ''), ($only_invoices ? 'only_invoices' : '') );
+
 			$data['start_date'] = $start_date;
 			$data['end_date'] = $end_date;
 			$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
@@ -106,9 +110,18 @@ class Sales extends Secure_area
 						'location_id' => $location_id,
 						'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
 						'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
-						'only_invoices' => $only_invoices,
-						'only_cash' => $only_cash,
+						'only_cash' => FALSE,
+						'only_invoices' => FALSE,
 						'is_valid_receipt' => $is_valid_receipt);
+						
+		// check if any filter is set in the multiselect dropdown
+		if( $this->input->post('filters') != null )
+		{
+			foreach($this->input->post('filters') as $key)
+			{
+				$filters[$key] = TRUE;
+			}
+		}
 
 		$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
 		$payments = $this->Sale->get_payments_summary($search, $filters);
