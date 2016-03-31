@@ -8,9 +8,9 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
 	
-    enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest_search")?>',
-        confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
-        extra_params : {
+    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest_search")?>',
+        confirm_search_message: '<?php echo $this->lang->line("common_confirm_search")?>',
+        extra_params: {
             'is_deleted' : function () {
 				// the comparison is split in two parts: find the index of the selected and check the index against the index in the listed strings of the multiselect menu
                 return $("#multi_filter li.selected").attr("data-original-index") == $("#filters option[value='is_deleted']").index() ? 1 : 0;

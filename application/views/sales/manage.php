@@ -8,7 +8,8 @@ $(document).ready(function()
     enable_row_selection();
 
 	// refresh payment summaries at page bottom when a search complete takes place
-	var on_complete = function(response) {
+	var on_complete = function(response)
+	{
 		$("#payment_summary").html(response.payment_summary);
 	};
 
@@ -29,15 +30,18 @@ $(document).ready(function()
 	//$('#filters').selectpicker('val', [<?php echo "'" . implode("','", $selected) . "'" ?>]);
 	
 	// accept partial suggestion to trigger a search on enter press
-    $('#search').keypress(function (e) {
-        if (e.which == 13) {
+    $('#search').keypress(function (e)
+	{
+        if (e.which == 13)
+		{
             $('#search_form').submit();
         }
     });
 
 /*
 	// invoice edit related functionality that is currently disabled (see html)
-	var show_renumber = function() {
+	var show_renumber = function()
+	{
 		var value = $("#only_invoices").val();
 		var $button = $("#update_invoice_numbers").parents("li");
 		$button.toggle(value === "1");
@@ -46,7 +50,8 @@ $(document).ready(function()
 	$("#only_invoices").change(show_renumber);
 	show_renumber();
 
-	$("#update_invoice_numbers").click(function() {
+	$("#update_invoice_numbers").click(function()
+	{
 		$.ajax({url : "<?php echo site_url('sales') ?>/update_invoice_numbers", dataType: 'json', success : post_bulk_form_submit });
 		return false;
 	});

@@ -58,9 +58,6 @@ function post_item_kit_form_submit(response)
 		}
 		else //refresh entire table
 		{
-			// reset page number when selecting a specific page number
-			$('#limit_from').val("0");
-
 			do_search(true,function()
 			{
 				//highlight new row
