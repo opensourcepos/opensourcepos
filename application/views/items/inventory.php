@@ -58,7 +58,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-2'>
+			<div class='col-xs-3'>
 				<?php echo form_input(array(
 						'name'=>'quantity',
 						'id'=>'quantity',
@@ -71,7 +71,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_add_minus'), 'quantity', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-2'>
+			<div class='col-xs-3'>
 				<?php echo form_input(array(
 						'name'=>'newquantity',
 						'id'=>'newquantity',

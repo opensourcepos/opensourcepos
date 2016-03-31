@@ -85,7 +85,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-sm-3'>
+			<div class='col-xs-3'>
 				<?php echo form_input(array(
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_1',
@@ -93,7 +93,7 @@
 						'value'=> isset($item_tax_info[0]['name']) ? $item_tax_info[0]['name'] : $this->config->item('default_tax_1_name'))
 						);?>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-xs-3">
 				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
@@ -108,7 +108,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-sm-3'>
+			<div class='col-xs-3'>
 				<?php echo form_input(array(
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_2',
@@ -116,7 +116,7 @@
 						'value'=> isset($item_tax_info[1]['name']) ? $item_tax_info[1]['name'] : $this->config->item('default_tax_2_name'))
 						);?>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-xs-3">
 				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
@@ -134,10 +134,8 @@
 		{
 		?>
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'] ,
-					'quantity_' . $key,
-					array('class'=>'required control-label col-xs-3')); ?>
-				<div class='col-xs-2'>
+				<?php echo form_label($this->lang->line('items_quantity').' '.$location_detail['location_name'], 'quantity_' . $key, array('class'=>'required control-label col-xs-3')); ?>
+				<div class='col-xs-3'>
 					<?php echo form_input(array(
 							'name'=>'quantity_' . $key,
 							'id'=>'quantity_' . $key,
@@ -152,7 +150,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_receiving_quantity'), 'receiving_quantity', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-2'>
+			<div class='col-xs-3'>
 				<?php echo form_input(array(
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
@@ -164,7 +162,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-2'>
+			<div class='col-xs-3'>
 				<?php echo form_input(array(
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
@@ -197,11 +195,11 @@
 							 style="max-height: 100%; max-width: 100%;">
 					</div>
 					<div>
-							<span class="btn btn-default btn-sm btn-file">
-								<span class="fileinput-new"><?php echo $this->lang->line("items_select_image"); ?></span>
-								<span class="fileinput-exists"><?php echo $this->lang->line("items_change_image"); ?></span>
-								<input type="file" name="item_image" accept="image/*">
-							</span>
+						<span class="btn btn-default btn-sm btn-file">
+							<span class="fileinput-new"><?php echo $this->lang->line("items_select_image"); ?></span>
+							<span class="fileinput-exists"><?php echo $this->lang->line("items_change_image"); ?></span>
+							<input type="file" name="item_image" accept="image/*">
+						</span>
 						<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("items_remove_image"); ?></a>
 					</div>
 				</div>
