@@ -164,8 +164,8 @@ CREATE TABLE `ospos_items` (
   `description` varchar(255) NOT NULL,
   `cost_price` decimal(15,2) NOT NULL,
   `unit_price` decimal(15,2) NOT NULL,
-  `reorder_level` decimal(15,2) NOT NULL DEFAULT '0',
-  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
+  `reorder_level` decimal(15,3) NOT NULL DEFAULT '0',
+  `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `pic_id` int(10) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
@@ -236,7 +236,7 @@ CREATE TABLE `ospos_item_kits` (
 CREATE TABLE `ospos_item_kit_items` (
   `item_kit_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `quantity` decimal(15,2) NOT NULL,
+  `quantity` decimal(15,3) NOT NULL,
   PRIMARY KEY (`item_kit_id`,`item_id`,`quantity`),
   KEY `ospos_item_kit_items_ibfk_2` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -254,7 +254,7 @@ CREATE TABLE `ospos_item_kit_items` (
 CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   `item_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL DEFAULT '0',
+  `quantity` decimal(15,3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
@@ -446,12 +446,12 @@ CREATE TABLE `ospos_receivings_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL,
-  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0',
+  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `item_location` int(11) NOT NULL,
-  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
+  `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -498,7 +498,7 @@ CREATE TABLE `ospos_sales_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
@@ -590,7 +590,7 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
@@ -700,5 +700,4 @@ CREATE TABLE `ospos_suppliers` (
 --
 -- Dumping data for table `ospos_suppliers`
 --
-
 
