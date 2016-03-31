@@ -87,7 +87,6 @@ $('#daterangepicker').daterangepicker({
 		"firstDay": <?php echo $this->lang->line("datepicker_weekstart"); ?>
 	},
 	"alwaysShowCalendars": true,
-	"opens": "center",
 	"startDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>",
 	"endDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>",
 	"minDate": "<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>",

@@ -6,8 +6,8 @@ $(document).ready(function()
     init_table_sorting();
     enable_select_all();
     enable_row_selection();
-    enable_search({ suggest_url : '<?php echo site_url("$controller_name/suggest_search")?>',
-		confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>'});
+    enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest_search")?>',
+		confirm_search_message: '<?php echo $this->lang->line("common_confirm_search")?>'});
     enable_email('<?php echo site_url("$controller_name/mailto")?>');
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 });
@@ -25,7 +25,6 @@ function init_table_sorting()
 				0: { sorter: 'false'}, 
 				5: { sorter: 'false'} 
 			} 
-
 		}); 
 	}
 }
@@ -47,6 +46,9 @@ function post_person_form_submit(response)
 		}
 		else //refresh entire table
 		{
+			// reset page number when selecting a specific page number
+			$('#limit_from').val("0");
+
 			do_search(true,function()
 			{
 				//highlight new row
@@ -91,7 +93,11 @@ function post_person_form_submit(response)
 			<ul>
 				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
 				<li class="float_left"><span><a href="#" id="email"><div class="btn btn-default btn-sm"><?php echo $this->lang->line("common_email");?></div></a></span></li>
-				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+
+				<li class="float_right">
+					<?php echo form_input(array('name'=>'search', 'class'=>'form-control input-sm', 'id'=>'search')); ?>
+					<?php echo form_input(array('name'=>'limit_from', 'type'=>'hidden', 'id'=>'limit_from')); ?>
+				</li>
 			</ul>
 		</div>
 	</fieldset>

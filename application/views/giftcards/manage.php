@@ -7,7 +7,7 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
     enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest_search")?>',
-					confirm_message: '<?php echo $this->lang->line("common_confirm_search")?>'});
+		confirm_message: '<?php echo $this->lang->line("common_confirm_search")?>'});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 });
 
@@ -45,6 +45,9 @@ function post_giftcard_form_submit(response)
 		}
 		else //refresh entire table
 		{
+			// reset page number when selecting a specific page number
+			$('#limit_from').val("0");
+			
 			do_search(true,function()
 			{
 				//highlight new row
@@ -69,7 +72,11 @@ function post_giftcard_form_submit(response)
 		<div id="table_action_header" class="form-group">
 			<ul>
 				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-				<li class="float_right"><input type="text" name="search" id="search", class="form-control input-sm"/><input type="hidden" name="limit_from" id="limit_from"/></li>
+
+				<li class="float_right">
+					<?php echo form_input(array('name'=>'search', 'class'=>'form-control input-sm', 'id'=>'search')); ?>
+					<?php echo form_input(array('name'=>'limit_from', 'type'=>'hidden', 'id'=>'limit_from')); ?>
+				</li>
 			</ul>
 		</div>
 	</fieldset>
