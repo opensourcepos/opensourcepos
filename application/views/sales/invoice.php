@@ -47,8 +47,6 @@ if (isset($error_message))
 			?>
         </div>
 	</div>
-	
-	<div class="clearfix"></div>
 
 	<div id="block2">
        	<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>

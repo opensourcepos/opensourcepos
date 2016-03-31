@@ -20,7 +20,6 @@
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
-		<link rel="stylesheet" type="text/css" href="css/general.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
@@ -62,7 +61,7 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b2108594cd"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c8934fe7a7"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->

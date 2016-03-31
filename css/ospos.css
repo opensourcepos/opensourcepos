@@ -144,6 +144,11 @@ button.btn.dropdown-toggle.btn-sm
 	font-size: 13px;
 }
 
+label.required
+{
+	color:red;
+}
+
 @media (min-width: 768px)
 {	
 	.navbar-nav > li > a

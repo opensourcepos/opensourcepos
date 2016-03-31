@@ -25,24 +25,14 @@
 	<div id="login">
 		<?php echo form_open('login') ?>
 			<div id="container">
-				<?php echo validation_errors(); ?>
+				<div align="center" style="color:red"><?php echo validation_errors(); ?></div>
 				
 				<div id="login_form">
-					<div class="form_field_label"><?php echo $this->lang->line('login_username'); ?>: </div>
-					<div class="form_field">
-						<?php echo form_input(array(
-						'name'=>'username',
-						'id'=>'username',
-						'size'=>'20')); ?>
-					</div>
+					<?php echo $this->lang->line('login_username') . ':'; ?>
+					<?php echo form_input(array('name'=>'username', 'id'=>'username', 'class'=>'form-control', 'size'=>'20')); ?>
 
-					<div class="form_field_label"><?php echo $this->lang->line('login_password'); ?>: </div>
-					<div class="form_field">
-						<?php echo form_password(array(
-						'name'=>'password',
-						'id' => 'password',
-						'size'=>'20')); ?>
-					</div>
+					<?php echo $this->lang->line('login_password') . ':'; ?>
+					<?php echo form_password(array('name'=>'password', 'id' => 'password', 'class'=>'form-control', 'size'=>'20')); ?>
 					
 					<input class="btn btn-primary btn-block" type="submit" name="loginButton" value="Go"/>
 				</div>
