@@ -100,6 +100,7 @@ $lang["config_print_silently"] = "Zeige Druckdialog";
 $lang["config_print_top_margin"] = "Rand oben";
 $lang["config_print_top_margin_number"] = "Rand oben muss eine Zahl sein";
 $lang["config_print_top_margin_required"] = "Rand oben ist erforderlich";
+$lang["config_quantity_decimals"] = "Quantity Decimals";
 $lang["config_receipt_configuration"] = "Druckereinstellungen";
 $lang["config_receipt_info"] = "Quittungsinformation";
 $lang["config_receipt_printer"] = "Quittungsdrucker";

@@ -86,7 +86,7 @@ if (isset($error_message))
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
 				<td class="item-name long_name"><?php echo $item['name']; ?></td>
-				<td><?php echo $item['quantity']; ?></td>
+				<td><?php echo to_quantity($item['quantity']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo $item['discount'] .'%'; ?></td>
 				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>

@@ -76,7 +76,8 @@ class Config extends Secure_area
 			'dateformat'=>$this->input->post('dateformat'),
 			'timeformat'=>$this->input->post('timeformat'),
 			'thousands_separator'=>$this->input->post('thousands_separator'),
-			'decimal_point'=>$this->input->post('decimal_point')
+			'decimal_point'=>$this->input->post('decimal_point'),
+			'quantity_decimals'=>$this->input->post('quantity_decimals')
 		);
 	
         $result = $this->Appconfig->batch_save( $batch_save_data );

@@ -100,6 +100,7 @@ $lang["config_print_silently"] = "Show Print Dialog";
 $lang["config_print_top_margin"] = "Margin Top";
 $lang["config_print_top_margin_number"] = "The default top margin must be a number";
 $lang["config_print_top_margin_required"] = "The default top margin is a required field";
+$lang["config_quantity_decimals"] = "Quantity Decimals";
 $lang["config_receipt_configuration"] = "Print Settings";
 $lang["config_receipt_info"] = "Receipt Configuration Information";
 $lang["config_receipt_printer"] = "Ticket Printer";

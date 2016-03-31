@@ -141,12 +141,12 @@ if (isset($error))
 							}
 							?>
 							
-							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>$item['quantity'])); ?></td>
+							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity($item['quantity']))); ?></td>
 							<?php
 							if ($item['receiving_quantity'] > 1) 
 							{
 							?>
-								<td><?php echo 'x'.$item['receiving_quantity']; ?></td>	
+								<td><?php echo 'x'.to_quantity($item['receiving_quantity']); ?></td>	
 							<?php 
 							}
 							else

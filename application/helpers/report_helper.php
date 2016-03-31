@@ -1,4 +1,5 @@
 <?php
+
 function get_random_colors($how_many)
 {
 	$colors = array();
@@ -46,3 +47,5 @@ function show_report($report_prefix, $report_name, $lang_key='')
 		<?php 
 	}
 }
+
+?>

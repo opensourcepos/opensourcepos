@@ -60,7 +60,7 @@
 						'id'=>'quantity',
 						'class'=>'form-control input-sm',
 						'disabled'=>'',
-						'value'=>current($item_quantities))
+						'value'=>to_quantity(current($item_quantities)))
 						); ?>
 			</div>
 		</div>
@@ -105,7 +105,7 @@ $(document).ready(function()
 
 function display_stock(location_id)
 {
-    var item_quantities= <?php echo json_encode($item_quantities); ?>;
+    var item_quantities = <?php echo json_encode($item_quantities); ?>;
     document.getElementById("quantity").value = item_quantities[location_id];
     
     var inventory_data = <?php echo json_encode($inventory_array); ?>;

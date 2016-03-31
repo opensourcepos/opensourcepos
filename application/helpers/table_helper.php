@@ -341,7 +341,7 @@ function get_item_data_row($item,$controller)
 	$table_data_row.='<td width="10%">'.$item->company_name.'</td>';
 	$table_data_row.='<td width="10%">'.to_currency($item->cost_price).'</td>';
 	$table_data_row.='<td width="10%">'.to_currency($item->unit_price).'</td>';
-    $table_data_row.='<td width="8%">'.$item->quantity.'</td>';
+    $table_data_row.='<td width="8%">'.to_quantity($item->quantity).'</td>';
 	$table_data_row.='<td width="8%">'.$tax_percents.'</td>';
 	$image = '';
 	if (!empty($item->pic_id))

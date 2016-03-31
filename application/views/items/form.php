@@ -140,7 +140,7 @@
 							'name'=>'quantity_' . $key,
 							'id'=>'quantity_' . $key,
 							'class'=>'required quantity form-control',
-							'value'=>isset($item_info->item_id) ? $location_detail['quantity'] : 0)
+							'value'=>isset($item_info->item_id) ? to_quantity($location_detail['quantity']) : 0)
 							);?>
 				</div>
 			</div>
@@ -155,7 +155,7 @@
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
 						'class'=>'required form-control input-sm',
-						'value'=>$item_info->receiving_quantity)
+						'value'=>to_quantity($item_info->receiving_quantity))
 						);?>
 			</div>
 		</div>
@@ -167,7 +167,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
-						'value'=>!isset($item_info->item_id) ? 0 : $item_info->reorder_level)
+						'value'=>!isset($item_info->item_id) ? 0 : to_quantity($item_info->reorder_level))
 						);?>
 			</div>
 		</div>

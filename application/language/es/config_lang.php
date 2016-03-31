@@ -100,6 +100,7 @@ $lang["config_print_silently"] = "Mostrar cuadro de Dialogo de impresión";
 $lang["config_print_top_margin"] = "Margen Superior";
 $lang["config_print_top_margin_number"] = "Margen Superior debe ser un número";
 $lang["config_print_top_margin_required"] = "Margen Superior es requerido";
+$lang["config_quantity_decimals"] = "Quantity Decimals";
 $lang["config_receipt_configuration"] = "Parámetros de Impresión";
 $lang["config_receipt_info"] = "Información de Configuración de Recibo";
 $lang["config_receipt_printer"] = "Impresora de Ticket";

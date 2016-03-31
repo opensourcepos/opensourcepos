@@ -64,7 +64,7 @@
 						'id'=>'quantity',
 						'class'=>'form-control input-sm',
 						'disabled'=>'',
-						'value'=>current($item_quantities))
+						'value'=>to_quantity(current($item_quantities)))
 						); ?>
 			</div>
 		</div>
@@ -135,7 +135,7 @@ $(document).ready(function()
 
 function fill_quantity(val) 
 {   
-    var item_quantities= <?php echo json_encode($item_quantities ); ?>;
+    var item_quantities = <?php echo json_encode($item_quantities); ?>;
     document.getElementById("quantity").value = item_quantities[val];
 }
 </script>

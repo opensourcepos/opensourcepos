@@ -152,12 +152,12 @@ if (isset($success))
 								<?php
 								if($item['is_serialized']==1)
 								{
-									echo $item['quantity'];
-									echo form_hidden('quantity',$item['quantity']);
+									echo to_quantity($item['quantity']);
+									echo form_hidden('quantity', $item['quantity']);
 								}
 								else
 								{								
-									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>$item['quantity'], 'tabindex'=>$tabindex));
+									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity($item['quantity']), 'tabindex'=>$tabindex));
 								}
 								?>
 							</td>

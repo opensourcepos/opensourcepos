@@ -193,7 +193,7 @@ class Items extends Secure_area implements iData_controller
         foreach($locations_data as $location)
         {
            $quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
-           $quantity = ($item_id == -1) ? null: $quantity;
+           $quantity = ($item_id == -1) ? 0 : $quantity;
            $location_array[$location['location_id']] = array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
            $data['stock_locations'] = $location_array;
         }

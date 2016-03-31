@@ -6,14 +6,14 @@
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-sm-1'>
+				<div class='col-xs-1'>
 					<?php echo form_input(array(
 							'name'=>'currency_symbol',
 							'id'=>'currency_symbol',
 							'class'=>'form-control input-sm',
 							'value'=>$this->config->item('currency_symbol')));?>
 				</div>
-				<div class='checkbox col-sm-2'>
+				<div class='checkbox col-xs-2'>
 					<label>
 						<?php echo form_checkbox(array(
 							'name'=>'currency_side',
@@ -27,7 +27,7 @@
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_decimal_point'), 'language', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-sm-2'>
+				<div class='col-xs-2'>
 					<?php echo form_dropdown('decimal_point', array(
 						'.' => '. (dot)',
 						',' => ', (comma)'
@@ -39,7 +39,7 @@
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_thousands_separator'), 'language', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-sm-2'>
+				<div class='col-xs-2'>
 					<?php echo form_dropdown('thousands_separator', array(
 						'&apos;' => '&apos; (apostrophe)',
 						',' => ', (comma)',
@@ -47,6 +47,20 @@
 						'' => '(none)'
 					),
 					$this->config->item('thousands_separator'), array('class'=>'form-control input-sm'));
+					?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_quantity_decimals'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_dropdown('quantity_decimals', array(
+						'0' => '0',
+						'1' => '1',
+						'2' => '2',
+						'3' => '3'
+					),
+					$this->config->item('quantity_decimals'), array('class'=>'form-control input-sm'));
 					?>
 				</div>
 			</div>
