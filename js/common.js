@@ -35,12 +35,3 @@ function set_feedback(text, classname, keep_displayed)
 		$('#feedback_bar').css('opacity','0');
 	}
 }
-
-;(function($){
-	//keylisteners
-	$.each(['customers', 'items', 'reports', 'receivings', 'sales'], function(key, value) {
-		$(window).jkey('f' + (key+1), function(){
-			window.location = BASE_URL + '/' + value + '/index';
-		});	
-	});
-})(jQuery);

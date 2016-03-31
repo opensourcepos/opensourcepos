@@ -17,7 +17,6 @@
 		<script type="text/javascript" src="js/jquery.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.color.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.form-3.51.js" language="javascript"></script>
-		<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.metadata.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter-2.20.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
@@ -34,7 +33,7 @@
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f929eb734c" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=5b6d6cb4c1" language="javascript"></script>
 		<!-- end minjs template tags -->       
 	<?php endif; ?>
 
