@@ -14,10 +14,10 @@ if (isset($error))
 	<?php echo form_open("receivings/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="float_left first_li">
+				<li class="pull-left first_li">
 					<label class="control-label"><?php echo $this->lang->line('recvs_mode'); ?></label>
 				</li>
-				<li class="float_left">
+				<li class="pull-left">
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 
@@ -25,10 +25,10 @@ if (isset($error))
 				if ($show_stock_locations)
 				{
 				?>
-					<li class="float_left">
+					<li class="pull-left">
 						<label class="control-label"><?php echo $this->lang->line('recvs_stock_source'); ?></label>
 					</li>
-					<li class="float_left">
+					<li class="pull-left">
 						<?php echo form_dropdown('stock_source', $stock_locations, $stock_source, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</li>
 					
@@ -36,10 +36,10 @@ if (isset($error))
 					if($mode=='requisition')
 					{
 					?>
-						<li class="float_left">
+						<li class="pull-left">
 							<label class="control-label"><?php echo $this->lang->line('recvs_stock_destination'); ?></label>
 						</li>
-						<li class="float_left">
+						<li class="pull-left">
 							<?php echo form_dropdown('stock_destination', $stock_locations, $stock_destination, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 						</li>
 				<?php
@@ -53,7 +53,7 @@ if (isset($error))
 	<?php echo form_open("receivings/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="float_left first_li">
+				<li class="pull-left first_li">
 					<label for="item", class='control-label'>
 						<?php
 						if($mode=='receive' or $mode=='requisition')
@@ -71,10 +71,10 @@ if (isset($error))
 						?>			
 					</label>
 				</li>
-				<li class="float_left">
+				<li class="pull-left">
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
 				</li>
-				<li class="float_right">
+				<li class="pull-right">
 					<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'), 
 							array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
 				</li>

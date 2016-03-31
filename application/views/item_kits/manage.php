@@ -70,7 +70,7 @@ function post_item_kit_form_submit(response)
 </script>
 
 <div id="title_bar">
-	<div id="pagination" class="float_left"><?php echo $links; ?></div>
+	<div id="pagination" class="pull-left"><?php echo $links; ?></div>
 
 	<?php echo anchor("$controller_name/view/-1",
 		"<div class='btn btn-info btn-sm pull-right'><span>" . $this->lang->line($controller_name . '_new') . "</span></div>",
@@ -81,10 +81,10 @@ function post_item_kit_form_submit(response)
 	<fieldset>
 		<div id="table_action_header" class="form-group">
 			<ul>
-				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-				<li class="float_left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
+				<li class="pull-left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<li class="pull-left"><?php echo anchor("$controller_name/generate_barcodes", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("items_generate_barcodes") . '</span></div>', array('id'=>'generate_barcodes', 'target' =>'_blank', 'title'=>$this->lang->line('items_generate_barcodes'))); ?></li>
 
-				<li class="float_right">
+				<li class="pull-right">
 					<?php echo form_input(array('name'=>'search', 'class'=>'form-control input-sm', 'id'=>'search')); ?>
 					<?php echo form_input(array('name'=>'limit_from', 'type'=>'hidden', 'id'=>'limit_from')); ?>
 				</li>

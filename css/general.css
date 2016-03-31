@@ -26,16 +26,6 @@ label.required
  	padding: 4px;
 }
 
-.float_left
-{
-	float:left;
-}
-
-.float_right
-{
-	float:right;
-}
-
 .clearfix:after
 {
 	content: ".";

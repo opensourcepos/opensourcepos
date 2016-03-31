@@ -24,10 +24,10 @@ if (isset($success))
 	<?php echo form_open("sales/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="float_left first_li">
+				<li class="pull-left first_li">
 					<label class="control-label"><?php echo $this->lang->line('sales_mode'); ?></label>
 				</li>
-				<li class="float_left">
+				<li class="pull-left">
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
 
@@ -35,17 +35,17 @@ if (isset($success))
 				if (count($stock_locations) > 1)
 				{
 				?>
-					<li class="float_left">
+					<li class="pull-left">
 						<label class="control-label"><?php echo $this->lang->line('sales_stock_location'); ?></label>
 					</li>
-					<li class="float_left">
+					<li class="pull-left">
 						<?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</li>
 				<?php
 				}
 				?>
 
-				<li class="float_right">
+				<li class="pull-right">
 					<?php echo anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
 								array('class'=>'btn btn-default btn-sm modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales'))); ?>
 				</li>
@@ -54,7 +54,7 @@ if (isset($success))
 				if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
 				{
 				?>
-					<li class="float_right">
+					<li class="pull-right">
 						<?php echo anchor("sales/manage", $this->lang->line('sales_takings'), 
 									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
 					</li>
@@ -68,14 +68,14 @@ if (isset($success))
 	<?php echo form_open("sales/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
-				<li class="float_left first_li">
+				<li class="pull-left first_li">
 					<label for="item", class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
 				</li>
-				<li class="float_left">
+				<li class="pull-left">
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
-				<li class="float_right">
+				<li class="pull-right">
 					<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
 							array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
 				</li>

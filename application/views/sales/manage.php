@@ -193,7 +193,7 @@ function init_table_sorting()
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
 
 <div id="title_bar" class="print_hide">
-	<div id="pagination" class="float_left"><?php echo $links; ?></div>
+	<div id="pagination" class="pull-left"><?php echo $links; ?></div>
 
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm pull-right"><?php echo $this->lang->line('common_print'); ?></div></a>
 </div>
@@ -202,18 +202,18 @@ function init_table_sorting()
 	<fieldset>
 		<div id="table_action_header" class="form-group">
 			<ul>
-				<li class="float_left print_hide"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-				<!-- li class="float_left print_hide"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
+				<li class="pull-left print_hide"><?php echo anchor($controller_name . "/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<!-- li class="pull-left print_hide"><?php echo anchor($controller_name . "/update_invoice_numbers", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line('sales_invoice_update') . '</span></div>', array('id'=>'update_invoice_numbers')); ?></li -->
 				
-				<li class="float_right print_hide">
+				<li class="pull-right print_hide">
 					<?php echo form_input(array('name'=>'search', 'class'=>'form-control input-sm', 'id'=>'search')); ?>
 					<?php echo form_input(array('name'=>'limit_from', 'type'=>'hidden', 'id'=>'limit_from')); ?>
 				</li>
-				<li class="float_right print_show"><?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter form-control input-sm'));?></li>
-				<li class="float_right print_show"><?php echo form_label('-', 'end_date');?></li>
-				<li class="float_right print_show"><?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter form-control input-sm'));?></li>
-				<li class="float_right print_show"><?php echo form_label($this->lang->line('sales_date_range').':', 'start_date');?></li>
-				<li class="float_right print_show"><div id="multi_filter"><?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 3', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></div></li>
+				<li class="pull-right print_show"><?php echo form_input(array('name'=>'end_date', 'value'=>$end_date, 'class'=>'date_filter form-control input-sm'));?></li>
+				<li class="pull-right print_show"><?php echo form_label('-', 'end_date');?></li>
+				<li class="pull-right print_show"><?php echo form_input(array('name'=>'start_date', 'value'=>$start_date, 'class'=>'date_filter form-control input-sm'));?></li>
+				<li class="pull-right print_show"><?php echo form_label($this->lang->line('sales_date_range').':', 'start_date');?></li>
+				<li class="pull-right print_show"><div id="multi_filter"><?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 3', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?></div></li>
 			</ul>
 		</div>
 	</fieldset>

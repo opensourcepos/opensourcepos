@@ -58,7 +58,7 @@ function post_person_form_submit(response)
 </script>
 
 <div id="title_bar">
-	<div id="pagination" class="float_left"><?php echo $links; ?></div>
+	<div id="pagination" class="pull-left"><?php echo $links; ?></div>
 
 	<?php
 	if ($controller_name == 'customers')
@@ -88,10 +88,10 @@ function post_person_form_submit(response)
 	<fieldset>
 		<div id="table_action_header" class="form-group">
 			<ul>
-				<li class="float_left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
-				<li class="float_left"><span><a href="#" id="email"><div class="btn btn-default btn-sm"><?php echo $this->lang->line("common_email");?></div></a></span></li>
+				<li class="pull-left"><?php echo anchor("$controller_name/delete", '<div class="btn btn-default btn-sm"><span>' . $this->lang->line("common_delete") . '</span></div>', array('id'=>'delete')); ?></li>
+				<li class="pull-left"><span><a href="#" id="email"><div class="btn btn-default btn-sm"><?php echo $this->lang->line("common_email");?></div></a></span></li>
 
-				<li class="float_right">
+				<li class="pull-right">
 					<?php echo form_input(array('name'=>'search', 'class'=>'form-control input-sm', 'id'=>'search')); ?>
 					<?php echo form_input(array('name'=>'limit_from', 'type'=>'hidden', 'id'=>'limit_from')); ?>
 				</li>
