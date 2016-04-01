@@ -172,30 +172,42 @@ class Items extends Secure_area implements iData_controller
 
 	function view($item_id=-1)
 	{
-		$data['item_info'] = $this->Item->get_info($item_id);
+		$item_info = $this->Item->get_info($item_id);
+
 		$data['item_tax_info'] = $this->Item_taxes->get_info($item_id);
-		$suppliers = array('' => $this->lang->line('items_none'));
+		$data['default_tax_1_rate'] = '';
+		$data['default_tax_2_rate'] = '';
+
+		if($item_id==-1)
+		{
+			$data['default_tax_1_rate'] = $this->Appconfig->get('default_tax_1_rate');
+			$data['default_tax_2_rate'] = $this->Appconfig->get('default_tax_2_rate');
+			
+			$item_info->receiving_quantity = 0;
+			$item_info->reorder_level = 0;
+		}
+
+		$data['item_info'] = $item_info;
+		
+		$suppliers = array(''=>$this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
-
-		$item_info = $this->Item->get_info($item_id);
 		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $item_info->supplier_id;
-		$data['default_tax_1_rate'] = ($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
-		$data['default_tax_2_rate'] = ($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
+
 		$data['logo_exists'] = $item_info->pic_id != '';
-		$images = glob ("uploads/item_pics/" . $item_info->pic_id . ".*");
+		$images = glob("uploads/item_pics/" . $item_info->pic_id . ".*");
 		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
 
 		$locations_data = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($locations_data as $location)
         {
-           $quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
-           $quantity = ($item_id == -1) ? 0 : $quantity;
-           $location_array[$location['location_id']] = array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
-           $data['stock_locations'] = $location_array;
+			$quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
+			$quantity = ($item_id == -1) ? 0 : $quantity;
+			$location_array[$location['location_id']] = array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
+			$data['stock_locations'] = $location_array;
         }
 
 		$this->load->view("items/form", $data);
