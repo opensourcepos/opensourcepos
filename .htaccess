@@ -33,7 +33,7 @@ IndexIgnore *
 
 # prevent access to generate_languages.php
 <Files generate_languages.php>
- order allow,deny
+ order deny,allow
  deny from all
  allow from 127.0.0.1
  
