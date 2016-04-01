@@ -132,81 +132,52 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 	return $table;
 }
 
-/*
-Gets the html table to manage people.
-*/
-function get_people_manage_table($people,$controller)
-{
-	$CI =& get_instance();
-	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
-	
-	$headers = array('<input type="checkbox" id="select_all" />', 
-	$CI->lang->line('common_last_name'),
-	$CI->lang->line('common_first_name'),
-	$CI->lang->line('common_email'),
-	$CI->lang->line('common_phone_number'),
-	'&nbsp');
+function transform_headers($array)
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{
 		$headers[] = '&nbsp';
 	}
-	
-	$table.='<thead><tr>';
-	foreach($headers as $header)
-	{
-		$table.="<th>$header</th>";
-	}
-	$table.='</tr></thead><tbody>';
-	$table.=get_people_manage_table_data_rows($people,$controller);
-	$table.='</tbody></table>';
-
-	return $table;
+{
+ 	return json_encode(array_map(function($v) {
+		return array('field' => key($v), 'title' => current($v), 'checkbox' => (key($v) == 'checkbox'));
+	}, $array));
 }
 
 /*
-Gets the html data rows for the people.
+Gets the html table to manage people.
 */
-function get_people_manage_table_data_rows($people,$controller)
+function get_people_manage_table_headers()
 {
 	$CI =& get_instance();
-	$table_data_rows='';
+
+	$headers = array(
+		array('checkbox' => 'select'),
+		array('id' => $CI->lang->line('common_id')),
+		array('last_name' => $CI->lang->line('common_last_name')),
+		array('first_name' => $CI->lang->line('common_first_name')),
+		array('email' => $CI->lang->line('common_email')),
+		array('phone_number' => $CI->lang->line('common_phone_number')),
+		array('edit' => '')
+	);
 	
-	foreach($people->result() as $person)
-	{
-		$table_data_rows.=get_person_data_row($person,$controller);
-	}
-	
-	if($people->num_rows()==0)
-	{
-		$table_data_rows.="<tr><td colspan='6'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
-	}
-	
-	return $table_data_rows;
+	return transform_headers($headers);
 }
 
-function get_person_data_row($person,$controller)
-{
+function get_person_data_row($person, $controller) {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
-	$table_data_row='<tr>';
-	$table_data_row.="<td width='4%'><input type='checkbox' id='person_$person->person_id' value='".$person->person_id."'/></td>";
-	$table_data_row.='<td width="20%">'.character_limiter($person->last_name,13).'</td>';
-	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
-	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
-	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
-	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
-	{
-		$table_data_row.='<td width="3%">'.anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))).'</td>';
-		$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	}
-	else
-	{
-		$table_data_row.='<td width="6%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
-	}
-	$table_data_row.='</tr>';
-	
-	return $table_data_row;
+	$row = array (
+		'id' => $person->person_id,
+		'last_name' => character_limiter($person->last_name,13),
+		'first_name' => character_limiter($person->first_name,13),
+		'email' => mailto($person->email,character_limiter($person->email,22)),
+		'phone_number' => character_limiter($person->phone_number,13),
+		'messages' => anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))),
+		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
+	));
 }
 
 function get_detailed_data_row($row, $controller)
@@ -239,7 +210,7 @@ function get_supplier_manage_table($suppliers,$controller)
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
-	$CI->lang->line('suppliers_supplier_id'),
+	$CI->lang->line('common_id'),
 	'&nbsp');
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{

@@ -14,5 +14,4 @@ $lang["suppliers_successful_adding"] = "เพิ่มผู้ผลิตส�
 $lang["suppliers_successful_deleted"] = "ลบสำเร็จ";
 $lang["suppliers_successful_updating"] = "ปรับปรุงผู้ผลิตสำเร็จ";
 $lang["suppliers_supplier"] = "ผู้ผลิต";
-$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "ปรับปรุงผู้ผลิต";

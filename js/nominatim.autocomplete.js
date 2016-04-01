@@ -7,13 +7,13 @@
 	
 	if (window.sessionStorage && !sessionStorage['country'])
 	{
-		$.ajax({
+		/*$.ajax({
 			type: "GET",
 			url: http_s('ipinfo.io/json'),
 			success: function(response) {
 				sessionStorage['country'] = response.country;
 			}, dataType: 'jsonp'
-		});
+		})*/;
 	}
 	
 	var url = http_s('nominatim.openstreetmap.org/search');

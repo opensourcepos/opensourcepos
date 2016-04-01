@@ -59,3 +59,4 @@ common_export_excel,Excel Export,Excel Export,Excel Export,Excel Export,Excel Ex
 common_export_excel_yes,Igen,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Sim,Da
 common_export_excel_no,Nem,No,No,No,No,No,No,No,No,No,No,Não,Ne
 common_required,Kötelező,Erforderlich,Required,Requerido,Required,Required,Required,Required,ต้องกรอก,Required,Required,Requerido,Potreban
+common_id,ID,Id,Id,Id,Id,Id,Id,Id,Id,Id

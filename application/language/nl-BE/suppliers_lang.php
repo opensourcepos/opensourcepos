@@ -14,5 +14,4 @@ $lang["suppliers_successful_adding"] = "Leverancier succesvol toegevoegd";
 $lang["suppliers_successful_deleted"] = "Er werd(en)";
 $lang["suppliers_successful_updating"] = "Wijzigingen leveranciersgegevens bewaard";
 $lang["suppliers_supplier"] = "Leverancier";
-$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "Bewerk Leverancier";

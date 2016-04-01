@@ -43,11 +43,10 @@ abstract class Person_controller extends Secure_area implements iPerson_controll
 	/*
 	Gets one row for a person manage table. This is called using AJAX to update one row.
 	*/
-	function get_row()
+	function get_row($row_id)
 	{
-		$person_id = $this->input->post('row_id');
-		$data_row=get_person_data_row($this->Person->get_info($person_id),$this);
-		echo $data_row;
+		$data_row=get_person_data_row($this->Person->get_info($row_id),$this);
+		echo json_encode($data_row);
 	}
 }
 ?>

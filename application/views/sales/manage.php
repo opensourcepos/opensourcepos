@@ -20,7 +20,7 @@ $(document).ready(function()
     enable_delete("<?php echo $this->lang->line($controller_name."_confirm_delete")?>","<?php echo $this->lang->line($controller_name."_none_selected")?>");
 
 	// when any filter is clicked and the dropdown window is closed
-	$('#filters').on('hidden.bs.select', function(e)
+	$('#filters').on('hidan.bs.select', function(e)
 	{
         // reset page number when selecting a specific page number
         $('#limit_from').val("0");

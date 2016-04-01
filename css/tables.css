@@ -12,6 +12,13 @@
 	background-repeat: no-repeat;
 }
 
+.arrow-left
+{
+	background-color: transparent;
+	background-image: url(../images/checkbox_arrow.gif);
+	background-repeat: no-repeat;
+}
+
 #table_action_header ul
 {
 	list-style: none;
