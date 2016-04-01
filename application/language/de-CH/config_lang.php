@@ -34,6 +34,7 @@ $lang["config_company_required"] = "Firmenname ist erforderlich";
 $lang["config_company_website_url"] = "Webseite ist nicht in korrektem Format";
 $lang["config_currency_side"] = "Pos. rechts";
 $lang["config_currency_symbol"] = "Währungssymbol";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Zusatzfeld 1";
 $lang["config_custom10"] = "Zusatzfeld 10";
 $lang["config_custom2"] = "Zusatzfeld 2";

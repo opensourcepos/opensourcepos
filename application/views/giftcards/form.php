@@ -38,7 +38,7 @@
 							'name'=>'value',
 							'id'=>'value',
 							'class'=>'form-control input-sm',
-							'value'=>$giftcard_info->value)
+							'value'=>to_currency_no_money($giftcard_info->value))
 							);?>
 				</div>
 			</div>

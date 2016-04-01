@@ -62,7 +62,7 @@
 							'name'=>'cost_price',
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm',
-							'value'=>$item_info->cost_price)
+							'value'=>to_currency_no_money($item_info->cost_price))
 							);?>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 							'name'=>'unit_price',
 							'id'=>'unit_price',
 							'class'=>'form-control input-sm',
-							'value'=>$item_info->unit_price)
+							'value'=>to_currency_no_money($item_info->unit_price))
 							);?>
 				</div>
 			</div>

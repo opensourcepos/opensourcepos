@@ -34,6 +34,7 @@ $lang["config_company_required"] = "Имя Компании обязательн
 $lang["config_company_website_url"] = "Веб-сайт Компании не является допустимым URL (http://...)";
 $lang["config_currency_side"] = "Правая сторона";
 $lang["config_currency_symbol"] = "Символ валюты";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Изготовленный пробел 1";
 $lang["config_custom10"] = "Изготовленный пробел 10";
 $lang["config_custom2"] = "Изготовленный пробел 2";

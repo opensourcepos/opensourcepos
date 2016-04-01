@@ -106,7 +106,7 @@ $(document).ready(function()
 function display_stock(location_id)
 {
     var item_quantities = <?php echo json_encode($item_quantities); ?>;
-    document.getElementById("quantity").value = item_quantities[location_id];
+    document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals(); ?>);
     
     var inventory_data = <?php echo json_encode($inventory_array); ?>;
     var employee_data = <?php echo json_encode($employee_name); ?>;
@@ -137,7 +137,7 @@ function display_stock(location_id)
             tr.appendChild(td);
             
             td = document.createElement('td');
-            td.appendChild(document.createTextNode(data['trans_inventory']));
+            td.appendChild(document.createTextNode(parseFloat(data['trans_inventory']).toFixed(<?php echo quantity_decimals(); ?>)));
 			td.setAttribute("style", "text-align:center");
             tr.appendChild(td);
             
@@ -149,5 +149,4 @@ function display_stock(location_id)
         }
     }
 }
-
 </script>

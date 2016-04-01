@@ -34,6 +34,7 @@ $lang["config_company_required"] = "Nombre del Comercio es requerido";
 $lang["config_company_website_url"] = "Sitio Web no es una URL estándar (http://...)";
 $lang["config_currency_side"] = "Lado derecho";
 $lang["config_currency_symbol"] = "Símbolo de moneda";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Campo Libre 1";
 $lang["config_custom10"] = "Campo Libre 10";
 $lang["config_custom2"] = "Campo Libre 2";

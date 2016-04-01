@@ -34,6 +34,7 @@ $lang["config_company_required"] = "公司名稱為必填";
 $lang["config_company_website_url"] = "公司網址格式錯誤 (http://...)";
 $lang["config_currency_side"] = "Right side";
 $lang["config_currency_symbol"] = "貨幣符號";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Custom Field 1";
 $lang["config_custom10"] = "Custom Field 10";
 $lang["config_custom2"] = "Custom Field 2";

@@ -126,7 +126,7 @@ if (isset($success))
 							<td><?php echo anchor("sales/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align: center;">
-								<?php echo $item['name']; ?><br /> [<?php echo $item['in_stock'] ?> in <?php echo $item['stock_name']; ?>]
+								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -134,7 +134,7 @@ if (isset($success))
 							if ($items_module_allowed)
 							{
 							?>
-								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>$item['price']));?></td>
+								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price'])));?></td>
 							<?php
 							}
 							else
@@ -668,7 +668,7 @@ function check_payment_type_giftcard()
 	else
 	{
 		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
-		$("#amount_tendered").val('<?php echo $amount_due; ?>');
+		$("#amount_tendered").val('<?php echo to_currency_no_money($amount_due); ?>');
 	}
 }
 

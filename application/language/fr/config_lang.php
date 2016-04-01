@@ -34,6 +34,7 @@ $lang["config_company_required"] = "Le nom d'entreprise est requis";
 $lang["config_company_website_url"] = "Le site web de l'entreprise n'est pas une URL valide (http://...)";
 $lang["config_currency_side"] = "Symbole à droite";
 $lang["config_currency_symbol"] = "Symbole Monétaire";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Champ Personnalisé 1";
 $lang["config_custom10"] = "Champ Personnalisé 10";
 $lang["config_custom2"] = "Champ Personnalisé 2";

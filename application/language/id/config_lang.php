@@ -34,6 +34,7 @@ $lang["config_company_required"] = "Nama Perusahaan wajib diisi";
 $lang["config_company_website_url"] = "Situs Perusahaan bukan URL yang benar(http://...)";
 $lang["config_currency_side"] = "Sisi Kanan";
 $lang["config_currency_symbol"] = "Simbol Mata Uang";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Custom Field 1";
 $lang["config_custom10"] = "Custom Field 10";
 $lang["config_custom2"] = "Custom Field 2";

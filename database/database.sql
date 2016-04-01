@@ -57,7 +57,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('show_total_discount', '1'),
 ('dateformat', 'm/d/Y'),
 ('timeformat', 'H:i:s'),
-('currency_symbol', '$');
+('currency_symbol', '$'),
+('decimal_point', '.'),
+('currency_decimals', '2'),
+('quantity_decimals', '0');
 
 -- --------------------------------------------------------
 

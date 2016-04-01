@@ -119,7 +119,7 @@ if (isset($error))
 						<tr>
 							<td><?php echo anchor("receivings/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td style="align:center;">
-								<?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
+								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -127,7 +127,7 @@ if (isset($error))
 							if ($items_module_allowed && $mode !='requisition')
 							{
 							?>
-								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>$item['price']));?></td>
+								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price'])));?></td>
 							<?php
 							}
 							else

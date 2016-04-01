@@ -132,10 +132,9 @@ $(document).ready(function()
 	});
 });
 
-
 function fill_quantity(val) 
 {   
     var item_quantities = <?php echo json_encode($item_quantities); ?>;
-    document.getElementById("quantity").value = item_quantities[val];
+    document.getElementById("quantity").value = parseFloat(item_quantities[val]).toFixed(<?php echo quantity_decimals(); ?>);
 }
 </script>

@@ -63,12 +63,12 @@ class Config extends Secure_area
 		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : $this->upload->display_errors();
 
-		echo json_encode(array('success'=>$success,'message'=>$message));
+		echo json_encode(array('success'=>$success, 'message'=>$message));
 	}
 	
 	function save_locale() 
 	{
-		$batch_save_data=array(	
+		$batch_save_data = array(	
 			'currency_symbol'=>$this->input->post('currency_symbol'),
 			'currency_side'=>$this->input->post('currency_side') != null,
 			'language'=>$this->input->post('language'),
@@ -77,10 +77,11 @@ class Config extends Secure_area
 			'timeformat'=>$this->input->post('timeformat'),
 			'thousands_separator'=>$this->input->post('thousands_separator'),
 			'decimal_point'=>$this->input->post('decimal_point'),
+			'currency_decimals'=>$this->input->post('currency_decimals'),
 			'quantity_decimals'=>$this->input->post('quantity_decimals')
 		);
 	
-        $result = $this->Appconfig->batch_save( $batch_save_data );
+        $result = $this->Appconfig->batch_save($batch_save_data);
         $success = $result ? true : false;
 		
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
@@ -131,7 +132,7 @@ class Config extends Secure_area
 
 		$success = $this->db->trans_complete();
 		
-		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
     function save_barcode()
@@ -185,7 +186,7 @@ class Config extends Secure_area
 	{
 		$result = $this->Appconfig->batch_save(array('company_logo' => ''));
 		
-		echo json_encode(array('success' => $result));
+		echo json_encode(array('success'=>$result));
 	}
     
     private function _handle_logo_upload()
@@ -221,7 +222,8 @@ class Config extends Secure_area
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
     		$save = 'uploads/'.$file_name;
     		$this->load->helper('download');
-    		while (ob_get_level()) {
+    		while (ob_get_level())
+			{
     			ob_end_clean();
     		}
     		force_download($file_name, $backup);

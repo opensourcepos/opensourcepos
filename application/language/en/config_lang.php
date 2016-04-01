@@ -34,6 +34,7 @@ $lang["config_company_required"] = "Company name is a required field";
 $lang["config_company_website_url"] = "Company website is not a valid URL (http://...)";
 $lang["config_currency_side"] = "Right side";
 $lang["config_currency_symbol"] = "Currency Symbol";
+$lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_custom1"] = "Custom Field 1";
 $lang["config_custom10"] = "Custom Field 10";
 $lang["config_custom2"] = "Custom Field 2";
