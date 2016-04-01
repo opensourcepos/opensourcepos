@@ -78,7 +78,8 @@
 						'id' => 'Indonesian',
 						'fr' => 'French',
 						'th' => 'Thai',
-						'tr' => 'Turkish'
+						'tr' => 'Turkish',
+						'hu-HU' => 'Hungarian'
 					),
 					$this->config->item('language'), array('class'=>'form-control input-sm'));
 					?>
