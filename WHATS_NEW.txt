@@ -1,3 +1,6 @@
++ *CodeIgniter 3.0.5* Upgrade (please read UPGRADE.txt)
++ Bulk item edit fixes (category, tax and supplier fields)
++ Improve language generation scripts (use PHP builtin functionality)
 Version 2.3.4
 -------------
 + Migration script fixes

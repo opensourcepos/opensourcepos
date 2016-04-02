@@ -29,7 +29,7 @@ password:pointofsale
 
 FAQ
 ---
-If an blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
+If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
 13/01/2016: Install using Docker
 -------------------------------
