@@ -203,7 +203,7 @@ CREATE TABLE `ospos_items` (
 CREATE TABLE `ospos_items_taxes` (
   `item_id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,2) NOT NULL,
+  `percent` decimal(15,3) NOT NULL,
   PRIMARY KEY (`item_id`,`name`,`percent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -528,7 +528,7 @@ CREATE TABLE `ospos_sales_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,2) NOT NULL,
+  `percent` decimal(15,3) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)
@@ -619,7 +619,7 @@ CREATE TABLE `ospos_sales_suspended_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,2) NOT NULL,
+  `percent` decimal(15,3) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

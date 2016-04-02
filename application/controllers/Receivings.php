@@ -75,7 +75,7 @@ class Receivings extends Secure_area
 		$data=array();
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
+		$quantity = ($mode=="receive" or $mode=="requisition") ? 1 : -1;
 		$item_location = $this->receiving_lib->get_stock_source();
 		if($mode=='return' && $this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -110,7 +110,7 @@ class Receivings extends Secure_area
 
 		if ($this->form_validation->run() != FALSE)
 		{
-			$this->receiving_lib->edit_item($item_id,$description,$serialnumber,$quantity,$discount,$price);
+			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price);
 		}
 		else
 		{
@@ -191,7 +191,7 @@ class Receivings extends Secure_area
 		if ( $this->input->post('amount_tendered') != null )
 		{
 			$data['amount_tendered'] = $this->input->post('amount_tendered');
-			$data['amount_change'] = to_currency($data['amount_tendered'] - round($data['total'], 2));
+			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
 		}
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 		$suppl_info	='';
@@ -244,7 +244,6 @@ class Receivings extends Secure_area
 		$text=$this->_substitute_supplier($text, $supplier_info);
 		return $text;
 	}
-	
 
 	private function _substitute_supplier($text,$supplier_info)
 	{
@@ -399,7 +398,7 @@ class Receivings extends Secure_area
     {
 		$receiving_id=$this->input->post('receiving_id');
 		$invoice_number=$this->input->post('invoice_number');
-		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number,$receiving_id);
+		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number, $receiving_id);
 		echo !$exists ? 'true' : 'false';
     }
 }

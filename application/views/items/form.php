@@ -99,7 +99,7 @@
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
-							'value'=>isset($item_tax_info[0]['percent']) ? $item_tax_info[0]['percent'] : $default_tax_1_rate)
+							'value'=>isset($item_tax_info[0]['percent']) ? to_tax_decimals($item_tax_info[0]['percent']) : to_tax_decimals($default_tax_1_rate))
 							);?>
 					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
@@ -122,7 +122,7 @@
 							'name'=>'tax_percents[]',
 							'class'=>'form-control input-sm',
 							'id'=>'tax_percent_name_2',
-							'value'=>isset($item_tax_info[1]['percent']) ? $item_tax_info[1]['percent'] : $default_tax_2_rate)
+							'value'=>isset($item_tax_info[1]['percent']) ? to_tax_decimals($item_tax_info[1]['percent']) : to_tax_decimals($default_tax_2_rate))
 							);?>
 					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
@@ -140,7 +140,7 @@
 							'name'=>'quantity_' . $key,
 							'id'=>'quantity_' . $key,
 							'class'=>'required quantity form-control',
-							'value'=>isset($item_info->item_id) ? to_quantity($location_detail['quantity']) : to_quantity(0))
+							'value'=>isset($item_info->item_id) ? to_quantity_decimals($location_detail['quantity']) : to_quantity_decimals(0))
 							);?>
 				</div>
 			</div>
@@ -155,7 +155,7 @@
 						'name'=>'receiving_quantity',
 						'id'=>'receiving_quantity',
 						'class'=>'required form-control input-sm',
-						'value'=>isset($item_info->item_id) ? to_quantity($item_info->receiving_quantity) : to_quantity(0))
+						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->receiving_quantity) : to_quantity_decimals(0))
 						);?>
 			</div>
 		</div>
@@ -167,7 +167,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm',
-						'value'=>isset($item_info->item_id) ? to_quantity($item_info->reorder_level) : to_quantity(0))
+						'value'=>isset($item_info->item_id) ? to_quantity_decimals($item_info->reorder_level) : to_quantity_decimals(0))
 						);?>
 			</div>
 		</div>

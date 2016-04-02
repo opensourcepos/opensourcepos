@@ -60,7 +60,7 @@
 						'id'=>'quantity',
 						'class'=>'form-control input-sm',
 						'disabled'=>'',
-						'value'=>to_quantity(current($item_quantities)))
+						'value'=>to_quantity_decimals(current($item_quantities)))
 						); ?>
 			</div>
 		</div>

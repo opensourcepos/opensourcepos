@@ -565,14 +565,14 @@ class Sale_lib
 
 			foreach($tax_info as $tax)
 			{
-				$name = $tax['percent'].'% ' . $tax['name'];
-				$tax_percentage = $tax['percent'];
-				$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax_percentage);
+				$name = to_tax_decimals($tax['percent']) . '% ' . $tax['name'];
+				$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax['percent']);
 
 				if (!isset($taxes[$name]))
 				{
 					$taxes[$name] = 0;
 				}
+
 				$taxes[$name] = bcadd($taxes[$name], $tax_amount, PRECISION);
 			}
 		}

@@ -13,6 +13,12 @@ function to_currency($number, $escape=FALSE)
 	$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : '';
 	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
 	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
+	
+	// in case of taxation with 3 decimals, force the currency decimal to be 3 and not max 2 as per db table (this is only used at UI level)
+	if( $CI->config->item('tax_decimals') > $CI->config->item('currency_decimals') )
+	{
+		$decimals = $CI->config->item('tax_decimals');
+	}
 
 	if($number >= 0)
 	{
@@ -42,14 +48,57 @@ function to_currency_no_money($number)
 
 	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
 
+	// in case of taxation with 3 decimals, force the currency decimal to be 3 and not max 2 as per db table (this is only used at UI level)
+	if( $CI->config->item('tax_decimals') > $CI->config->item('currency_decimals') )
+	{
+		$decimals = $CI->config->item('tax_decimals');
+	}
+
 	return number_format($number, $decimals, '.', '');
 }
+
+function totals_decimals()
+{
+	$CI =& get_instance();
+	
+	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
+
+	// in case of taxation with 3 decimals, force the tatals decimal to be 3 so roundings are correct
+	if( $CI->config->item('tax_decimals') > $CI->config->item('currency_decimals') )
+	{
+		$decimals = $CI->config->item('tax_decimals');
+	}
+
+	return $decimals;
+}
+
+
+/*
+ * Tax locale
+ */
+
+function to_tax_decimals($number)
+{
+	// ignore empty strings as they are just for empty input
+	if( empty($number) )
+	{
+		return $number;
+	}
+	
+	$CI =& get_instance();
+
+	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
+	$decimals = $CI->config->item('tax_decimals') ? $CI->config->item('tax_decimals') : 0;
+
+	return number_format($number, $decimals, $decimal_point, '');
+}
+
 
 /*
  * Quantity decimals
  */
 
-function to_quantity($number)
+function to_quantity_decimals($number)
 {
 	$CI =& get_instance();
 

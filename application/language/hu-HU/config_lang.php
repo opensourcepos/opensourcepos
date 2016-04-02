@@ -118,6 +118,7 @@ $lang["config_stock_location_duplicate"] = "Kérem egyedi helyszin nevet haszná
 $lang["config_stock_location_invalid_chars"] = "A bolt helyének neve nem tartalmazhat '_' karaktert";
 $lang["config_stock_location_required"] = "Bolt helyszín szám kötelező mező";
 $lang["config_takings_printer"] = "Takings Printer";
+$lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "Adókat tartalmaz";
 $lang["config_thousands_separator"] = "Ezres elválasztó";
 $lang["config_timezone"] = "Időzóna";

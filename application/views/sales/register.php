@@ -126,7 +126,7 @@ if (isset($success))
 							<td><?php echo anchor("sales/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align: center;">
-								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
+								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -152,12 +152,12 @@ if (isset($success))
 								<?php
 								if($item['is_serialized']==1)
 								{
-									echo to_quantity($item['quantity']);
+									echo to_quantity_decimals($item['quantity']);
 									echo form_hidden('quantity', $item['quantity']);
 								}
 								else
 								{								
-									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity($item['quantity']), 'tabindex'=>$tabindex));
+									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>$tabindex));
 								}
 								?>
 							</td>

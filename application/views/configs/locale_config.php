@@ -39,6 +39,20 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_tax_decimals'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_dropdown('tax_decimals', array(
+						'0' => '0',
+						'1' => '1',
+						'2' => '2',
+						'3' => '3'
+					),
+					$this->config->item('tax_decimals'), array('class'=>'form-control input-sm'));
+					?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_decimal_point'), 'language', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('decimal_point', array(

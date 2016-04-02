@@ -80,7 +80,7 @@
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
-							'value'=>$this->config->item('default_tax_1_rate'))
+							'value'=>to_tax_decimals($this->config->item('default_tax_1_rate')))
 					);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>
@@ -103,7 +103,7 @@
 							'name'=>'tax_percents[]',
 							'id'=>'tax_percent_name_2',
 							'class'=>'form-control input-sm',
-							'value'=>$this->config->item('default_tax_2_rate'))
+							'value'=>to_tax_decimals($this->config->item('default_tax_2_rate')))
 					);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>

@@ -326,8 +326,9 @@ function get_item_data_row($item,$controller)
 	$tax_percents = '';
 	foreach($item_tax_info as $tax_info)
 	{
-		$tax_percents.=$tax_info['percent']. '%, ';
+		$tax_percents.=to_tax_decimals($tax_info['percent']) . '%, ';
 	}
+	// remove ', ' from last item
 	$tax_percents=substr($tax_percents, 0, -2);
 	$controller_name=strtolower(get_class($CI));
 
@@ -341,7 +342,7 @@ function get_item_data_row($item,$controller)
 	$table_data_row.='<td width="10%">'.$item->company_name.'</td>';
 	$table_data_row.='<td width="10%">'.to_currency($item->cost_price).'</td>';
 	$table_data_row.='<td width="10%">'.to_currency($item->unit_price).'</td>';
-    $table_data_row.='<td width="8%">'.to_quantity($item->quantity).'</td>';
+    $table_data_row.='<td width="8%">'.to_quantity_decimals($item->quantity).'</td>';
 	$table_data_row.='<td width="8%">'.$tax_percents.'</td>';
 	$image = '';
 	if (!empty($item->pic_id))

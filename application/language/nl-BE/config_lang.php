@@ -118,6 +118,7 @@ $lang["config_stock_location_duplicate"] = "Vul een unieke naam in";
 $lang["config_stock_location_invalid_chars"] = "De bedrijfsnaam moet ingevuld worden";
 $lang["config_stock_location_required"] = "Naam van de stock locatie is een verplicht veld";
 $lang["config_takings_printer"] = "Takings Printer";
+$lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "VAT Inbegrepen";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Tijdzone";

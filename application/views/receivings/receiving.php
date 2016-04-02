@@ -119,7 +119,7 @@ if (isset($error))
 						<tr>
 							<td><?php echo anchor("receivings/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td style="align:center;">
-								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
+								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -141,12 +141,12 @@ if (isset($error))
 							}
 							?>
 							
-							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity($item['quantity']))); ?></td>
+							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']))); ?></td>
 							<?php
 							if ($item['receiving_quantity'] > 1) 
 							{
 							?>
-								<td><?php echo 'x'.to_quantity($item['receiving_quantity']); ?></td>	
+								<td><?php echo 'x'.to_quantity_decimals($item['receiving_quantity']); ?></td>	
 							<?php 
 							}
 							else

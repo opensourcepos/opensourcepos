@@ -19,3 +19,14 @@ ALTER TABLE `ospos_sales_items`
 
 ALTER TABLE `ospos_sales_suspended_items`
  MODIFY COLUMN `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0';
+ 
+ALTER TABLE `ospos_sales_items_taxes`
+ MODIFY COLUMN `percent` decimal(15,3) NOT NULL;
+ 
+ALTER TABLE `ospos_sales_suspended_items_taxes`
+ MODIFY COLUMN `percent` decimal(15,3) NOT NULL;
+ 
+ALTER TABLE `ospos_items_taxes`
+ MODIFY COLUMN `percent` decimal(15,3) NOT NULL;
+
+ 
