@@ -39,7 +39,7 @@
 
 #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
 #items th { background: #eee; text-align: center; }
-#items textarea { width: 80px; height: 40px; }
+#items textarea { width: 80px; height: 20px; }
 #items tr.item-row td { border: 0; vertical-align: top; }
 #items td.description { width: 300px; }
 #items td.item-name { width: 175px; }
