@@ -11,12 +11,11 @@ class Employees extends Person_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$suppliers = $this->Employee->get_all($lines_per_page, $limit_from);
+		$employees = $this->Employee->get_all($lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Employee, $lines_per_page, $limit_from);
-		$data['manage_table'] = get_people_manage_table($suppliers, $this);
-		$this->load->view('suppliers/manage',$data);
+		$data['manage_table'] = get_people_manage_table($employees, $this);
+		$this->load->view('people/manage',$data);
 	}
 	
 	/*
@@ -39,10 +38,10 @@ class Employees extends Person_controller
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
-	function suggest()
+	function suggest_search()
 	{
-		$suggestions = $this->Employee->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Employee->get_search_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 	
 	/*
@@ -127,13 +126,6 @@ class Employees extends Person_controller
 		{
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('employees_cannot_be_deleted')));
 		}
-	}
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 750;
 	}
 }
 ?>

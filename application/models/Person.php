@@ -106,7 +106,7 @@ class Person extends CI_Model
 
 		foreach($by_person_id->result() as $row)
 		{
-			$suggestions[]=$row->person_id;
+			$suggestions[]=array('label' => $row->person_id);
 		}
 	
 		//only return $limit suggestions

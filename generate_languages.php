@@ -55,8 +55,8 @@ foreach ($dir as $fileinfo) {
                     $lfh = fopen ( $output_base . $l . '/' . $index_file_name . '.php', 'w' );
                     fwrite ( $lfh, '<?php ' . PHP_EOL . PHP_EOL );
                 }
-				$newline = preg_replace("/\r|\n/", "", $line [ $key + 1 ]);
-				fwrite ( $lfh, '$lang["' . $key_name . '"] = "' . str_replace ( '"', '\"', $newline ) . '";' . PHP_EOL );
+                $newline = preg_replace("/\r|\n/", "", $line [ $key + 1 ]);
+                fwrite ( $lfh, '$lang["' . $key_name . '"] = "' . str_replace ( '"', '\"', $newline ) . '";' . PHP_EOL );
             }
         }
     }

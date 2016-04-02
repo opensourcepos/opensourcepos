@@ -2,8 +2,6 @@
 require_once ("Secure_area.php");
 require_once (APPPATH."libraries/ofc-library/Open-flash-chart.php");
 
-define("FORM_WIDTH", "400");
-
 class Reports extends Secure_area
 {
 
@@ -31,25 +29,11 @@ class Reports extends Secure_area
 		$this->load->view("reports/listing",$data);
 	}
 
-	function _get_common_report_data()
-	{
-		$data = array();
-		$data['report_date_range_simple'] = get_simple_date_ranges();
-		$data['months'] = get_months();
-		$data['days'] = get_days();
-		$data['years'] = get_years();
-		$data['selected_month']=date('n');
-		$data['selected_day']=date('d');
-		$data['selected_year']=date('Y');
-
-		return $data;
-	}
-
 	//Input for reports that require only a date range and an export to excel. (see routes.php to see that all summary reports route here)
 	function date_input_excel_export()
 	{
-		$data = $this->_get_common_report_data();
-		$this->load->view("reports/date_input_excel_export",$data);
+		$data = array();
+		$this->load->view("reports/date_input_excel_export", $data);
 	}
 
  	function get_detailed_sales_row($sale_id)
@@ -59,9 +43,9 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataBySaleId($sale_id);
 
-		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'] . '/width:'.FORM_WIDTH,
+		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'],
 				'POS '.$report_data['sale_id'],
-				array('class' => 'thickbox')),
+				array('class' => 'modal-dlg modal-btn-submit')),
 				$report_data['sale_date'],
 				$report_data['items_purchased'],
 				$report_data['employee_name'],
@@ -83,9 +67,9 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
-		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'] . '/width:'.FORM_WIDTH,
+		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'],
 				'RECV '.$report_data['receiving_id'],
-				array('class' => 'thickbox')),
+				array('class' => 'modal-dlg modal-btn-submit')),
 				$report_data['receiving_date'],
 				$report_data['items_purchased'],
 				$report_data['employee_name'],
@@ -119,7 +103,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['sale_date'], $row['quantity_purchased'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
+			$tabular_data[] = array($row['sale_date'], to_quantity_decimals($row['quantity_purchased']), to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
 		}
 
 		$data = array(
@@ -144,7 +128,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['category'], $row['quantity_purchased'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
+			$tabular_data[] = array($row['category'], to_quantity_decimals($row['quantity_purchased']), to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
 		}
 
 		$data = array(
@@ -169,7 +153,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['customer'], $row['quantity_purchased'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
+			$tabular_data[] = array($row['customer'], to_quantity_decimals($row['quantity_purchased']), to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
 		}
 
 		$data = array(
@@ -194,7 +178,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['supplier'], $row['quantity_purchased'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
+			$tabular_data[] = array($row['supplier'], to_quantity_decimals($row['quantity_purchased']), to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
 		}
 
 		$data = array(
@@ -219,7 +203,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array(character_limiter($row['name'], 40), $row['quantity_purchased'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
+			$tabular_data[] = array(character_limiter($row['name'], 40), to_quantity_decimals($row['quantity_purchased']), to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
 		}
 
 		$data = array(
@@ -244,7 +228,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['employee'], $row['quantity_purchased'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
+			$tabular_data[] = array($row['employee'], to_quantity_decimals($row['quantity_purchased']), to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']));
 		}
 
 		$data = array(
@@ -337,7 +321,7 @@ class Reports extends Secure_area
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	function date_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['mode'] = 'sale';
 		$this->load->view("reports/date_input",$data);
 	}
@@ -345,7 +329,7 @@ class Reports extends Secure_area
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	function date_input_sales()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$stock_locations = $this->Stock_location->get_allowed_locations('sales');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -355,7 +339,7 @@ class Reports extends Secure_area
 
     function date_input_recv()
     {
-        $data = $this->_get_common_report_data();
+        $data = array();
 		$stock_locations = $this->Stock_location->get_allowed_locations('receivings');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
@@ -709,7 +693,7 @@ class Reports extends Secure_area
 
 	function specific_customer_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['specific_input_name'] = $this->lang->line('reports_customer');
 
 		$customers = array();
@@ -734,11 +718,11 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $drow['quantity_purchased'], to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -759,7 +743,7 @@ class Reports extends Secure_area
 
 	function specific_employee_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['specific_input_name'] = $this->lang->line('reports_employee');
 
 		$employees = array();
@@ -784,11 +768,11 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $drow['quantity_purchased'], to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -809,7 +793,7 @@ class Reports extends Secure_area
 
 	function specific_discount_input()
 	{
-		$data = $this->_get_common_report_data();
+		$data = array();
 		$data['specific_input_name'] = $this->lang->line('reports_discount');
 
 		$discounts = array();
@@ -834,11 +818,11 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], $row['items_purchased'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),/*to_currency($row['profit']),*/ $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target' => '_blank')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']),/*to_currency($row['profit']),*/ $row['payment_type'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $drow['quantity_purchased'], to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
+				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
 			}
 		}
 
@@ -872,11 +856,11 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'] . '/width:'.FORM_WIDTH, 'POS '.$row['sale_id'], array('class' => 'thickbox')), $row['sale_date'], $row['items_purchased'], $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('class' => 'modal-dlg modal-btn-submit')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$quantity_purchased = $drow['quantity_purchased'];
+				$quantity_purchased = to_quantity_decimals($drow['quantity_purchased']);
 				if ($show_locations)
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
@@ -915,11 +899,11 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('receivings/edit/'.$row['receiving_id'].'/width:'.FORM_WIDTH, 'RECV '.$row['receiving_id'], array('class' => 'thickbox')), $row['receiving_date'], $row['items_purchased'], $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['invoice_number'], $row['comment']);
+			$summary_data[] = array(anchor('receivings/edit/'.$row['receiving_id'], 'RECV '.$row['receiving_id'], array('class' => 'modal-dlg modal-btn-delete modal-btn-submit')), $row['receiving_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['invoice_number'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$quantity_purchased = $drow['receiving_quantity'] > 1 ? $drow['quantity_purchased'] . ' x ' . $drow['receiving_quantity'] : $drow['quantity_purchased'];
+				$quantity_purchased = $drow['receiving_quantity'] > 1 ? to_quantity_decimals($drow['quantity_purchased']) . ' x ' . to_quantity_decimals($drow['receiving_quantity']) : to_quantity_decimals($drow['quantity_purchased']);
 				if ($show_locations)
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';

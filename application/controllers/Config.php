@@ -13,6 +13,8 @@ class Config extends Secure_area
 		$location_names = array();
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
+		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
+
 		$this->load->view("configs/manage", $data);
 	}
 		
@@ -60,12 +62,13 @@ class Config extends Secure_area
 		$success = $upload_success && $result ? true : false;
 		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : $this->upload->display_errors();
-		echo json_encode(array('success'=>$success,'message'=>$message));
+
+		echo json_encode(array('success'=>$success, 'message'=>$message));
 	}
 	
 	function save_locale() 
 	{
-		$batch_save_data=array(	
+		$batch_save_data = array(	
 			'currency_symbol'=>$this->input->post('currency_symbol'),
 			'currency_side'=>$this->input->post('currency_side') != null,
 			'language'=>$this->input->post('language'),
@@ -73,17 +76,22 @@ class Config extends Secure_area
 			'dateformat'=>$this->input->post('dateformat'),
 			'timeformat'=>$this->input->post('timeformat'),
 			'thousands_separator'=>$this->input->post('thousands_separator'),
-			'decimal_point'=>$this->input->post('decimal_point')
+			'decimal_point'=>$this->input->post('decimal_point'),
+			'currency_decimals'=>$this->input->post('currency_decimals'),
+			'tax_decimals'=>$this->input->post('tax_decimals'),
+			'quantity_decimals'=>$this->input->post('quantity_decimals')
 		);
 	
-        $result = $this->Appconfig->batch_save( $batch_save_data );
+        $result = $this->Appconfig->batch_save($batch_save_data);
         $success = $result ? true : false;
+		
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 	
 	function stock_locations() 
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
+
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
 	} 
 	
@@ -122,8 +130,10 @@ class Config extends Secure_area
 		{
 			$this->Stock_location->delete($location_id);
 		}
+
 		$success = $this->db->trans_complete();
-		echo json_encode(array('success'=>$success,'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		
+		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
     function save_barcode()
@@ -147,6 +157,7 @@ class Config extends Secure_area
         
         $result = $this->Appconfig->batch_save( $batch_save_data );
         $success = $result ? true : false;
+		
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
     
@@ -168,12 +179,21 @@ class Config extends Secure_area
 		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;
+
     	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
+
+	public function remove_logo()
+	{
+		$result = $this->Appconfig->batch_save(array('company_logo' => ''));
+		
+		echo json_encode(array('success'=>$result));
+	}
     
-    function _handle_logo_upload()
+    private function _handle_logo_upload()
     {
     	$this->load->helper('directory');
+
     	// load upload library
     	$config = array('upload_path' => './uploads/',
     			'allowed_types' => 'gif|jpg|png',
@@ -183,6 +203,7 @@ class Config extends Secure_area
     			'file_name' => 'company_logo');
     	$this->load->library('upload', $config);
     	$this->upload->do_upload('company_logo');
+
     	return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
     }
     
@@ -202,7 +223,8 @@ class Config extends Secure_area
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
     		$save = 'uploads/'.$file_name;
     		$this->load->helper('download');
-    		while (ob_get_level()) {
+    		while (ob_get_level())
+			{
     			ob_end_clean();
     		}
     		force_download($file_name, $backup);

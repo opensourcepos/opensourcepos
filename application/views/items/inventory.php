@@ -1,132 +1,99 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+
 <ul id="error_message_box" class="error_message_box"></ul>
-<?php
-echo form_close();
-echo form_open('items/save_inventory/'.$item_info->item_id,array('id'=>'item_form'));
-?>
-<fieldset id="item_basic_info">
-<legend><?php echo $this->lang->line("items_basic_information"); ?></legend>
 
-<table align="center" border="0" bgcolor="#CCCCCC">
-<div class="field_row clearfix">
-<tr>
-<td>	
-<?php echo form_label($this->lang->line('items_item_number').':', 'name',array('class'=>'wide')); ?>
-</td>
-<td>
-	<?php $inumber = array (
-		'name'=>'item_number',
-		'id'=>'item_number',
-		'value'=>$item_info->item_number,
-		'style'       => 'border:none',
-		'readonly' => 'readonly'
-	);
-	
-		echo form_input($inumber)
-	?>
-</td>
-</tr>
-<tr>
-<td>	
-<?php echo form_label($this->lang->line('items_name').':', 'name',array('class'=>'wide')); ?>
-</td>
-<td>	
-	<?php $iname = array (
-		'name'=>'name',
-		'id'=>'name',
-		'value'=>$item_info->name,
-		'style'       => 'border:none',
-		'readonly' => 'readonly'
-	);
-		echo form_input($iname);
-		?>
-</td>
-</tr>
-<tr>
-<td>	
-<?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'wide')); ?>
-</td>
-<td>	
-	<?php $cat = array (
-		
-		'name'=>'category',
-		'id'=>'category',
-		'value'=>$item_info->category,
-		'style'       => 'border:none',
-		'readonly' => 'readonly'
-		);
-	
-		echo form_input($cat);
-		?>
-</td>
-</tr>
-<tr>
-<td>
-<?php echo form_label($this->lang->line('items_stock_location').':', 'stock_location',array('class'=>'wide')); ?>
-</td>
-<td>
-    <?php 
-            echo form_dropdown('stock_location',$stock_locations,current($stock_locations),'onchange="fill_quantity(this.value)"'); 
-    ?> 
-</td>
-</tr>
-<tr>
-<td>
-<?php echo form_label($this->lang->line('items_current_quantity').':', 'quantity',array('class'=>'wide')); ?>
-</td>
-<td>
-	<?php $qty = array (
-	
-		'name'=>'quantity',
-		'id'=>'quantity',
-		'value'=>current($item_quantities),
-		'style'       => 'border:none',
-		'readonly' => 'readonly'
-		);
-	
-		echo form_input($qty);
-	?>
-</td>
-</tr>
-</div>	
-</table>
+<?php echo form_open('items/save_inventory/'.$item_info->item_id, array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
+	<fieldset id="item_basic_info">
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<div class="col-xs-6">
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
+					<?php echo form_input(array(
+							'name'=>'item_number',
+							'id'=>'item_number',
+							'class'=>'form-control input-sm',
+							'disabled'=>'',
+							'value'=>$item_info->item_number)
+							);?>
+				</div>
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_add_minus').':', 'quantity',array('class'=>'required wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'newquantity',
-		'id'=>'newquantity'
-		)
-	);?>
-	</div>
-</div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+						'name'=>'name',
+						'id'=>'name',
+						'class'=>'form-control input-sm',
+						'disabled'=>'',
+						'value'=>$item_info->name)
+						); ?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('items_inventory_comments').':', 'description',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_textarea(array(
-		'name'=>'trans_comment',
-		'id'=>'trans_comment',
-		'rows'=>'3',
-		'cols'=>'17')		
-	);?>
-	</div>
-</div>
-<?php
-echo form_submit(array(
-	'name'=>'submit',
-	'id'=>'submit',
-	'value'=>$this->lang->line('common_submit'),
-	'class'=>'submit_button float_right')
-);
-?>
-</fieldset>
-<?php 
-echo form_close();
-?>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
+					<?php echo form_input(array(
+							'name'=>'category',
+							'id'=>'category',
+							'class'=>'form-control input-sm',
+							'disabled'=>'',
+							'value'=>$item_info->category)
+							);?>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange'=>'fill_quantity(this.value)', 'class'=>'form-control'));	?>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-3'>
+				<?php echo form_input(array(
+						'name'=>'quantity',
+						'id'=>'quantity',
+						'class'=>'form-control input-sm',
+						'disabled'=>'',
+						'value'=>to_quantity_decimals(current($item_quantities)))
+						); ?>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_add_minus'), 'quantity', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-3'>
+				<?php echo form_input(array(
+						'name'=>'newquantity',
+						'id'=>'newquantity',
+						'class'=>'form-control input-sm')
+						); ?>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_inventory_comments'), 'description', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_textarea(array(
+						'name'=>'trans_comment',
+						'id'=>'trans_comment',
+						'class'=>'form-control input-sm')
+						);?>
+			</div>
+		</div>
+	</fieldset>
+<?php echo form_close(); ?>
+
 <script type='text/javascript'>
-
 //validation and submit handling
 $(document).ready(function()
 {		
@@ -136,7 +103,7 @@ $(document).ready(function()
 			$(form).ajaxSubmit({
 			success:function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_item_form_submit(response);
 			},
 			dataType:'json'
@@ -165,10 +132,9 @@ $(document).ready(function()
 	});
 });
 
-
 function fill_quantity(val) 
 {   
-    var item_quantities= <?php echo json_encode($item_quantities ); ?>;
-    document.getElementById("quantity").value = item_quantities[val];
+    var item_quantities = <?php echo json_encode($item_quantities); ?>;
+    document.getElementById("quantity").value = parseFloat(item_quantities[val]).toFixed(<?php echo quantity_decimals(); ?>);
 }
 </script>

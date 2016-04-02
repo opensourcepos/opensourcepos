@@ -226,8 +226,8 @@ class Receiving_lib
         }
 
         $this->set_cart($items);
-        return true;
 
+        return true;
     }
 
     function edit_item($line,$description,$serialnumber,$quantity,$discount,$price)

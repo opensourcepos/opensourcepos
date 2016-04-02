@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Eingangstransaktion fehlerhaft";
-$lang["recvs_basic_information"] = "Eingangsbestellung";
 $lang["recvs_cancel_receiving"] = "Abbrechen";
 $lang["recvs_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden";
 $lang["recvs_comments"] = "Kommentare";
@@ -49,3 +48,4 @@ $lang["recvs_supplier"] = "Lieferant";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Kann Artikel nicht zum Eingang hinzufügen";
 $lang["recvs_unsuccessfully_updated"] = "Eingang nicht erfolgreich geändert";
+$lang["recvs_update"] = "Ändern";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Alım İşlemi Hatası";
-$lang["recvs_basic_information"] = "";
 $lang["recvs_cancel_receiving"] = "";
 $lang["recvs_cannot_be_deleted"] = "";
 $lang["recvs_comments"] = "";
@@ -49,3 +48,4 @@ $lang["recvs_supplier"] = "Sağlayıcı";
 $lang["recvs_total"] = "Toplam";
 $lang["recvs_unable_to_add_item"] = "Ürünler alıma eklenemedi";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "Düzenle";

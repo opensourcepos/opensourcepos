@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "全部";
-$lang["reports_all_time"] = "全部";
 $lang["reports_categories"] = "類別";
 $lang["reports_categories_summary_report"] = "分類摘要報告";
 $lang["reports_category"] = "類別";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "產品";
 $lang["reports_items_purchased"] = "銷售產品";
 $lang["reports_items_received"] = "進貨產品";
 $lang["reports_items_summary_report"] = "產品摘要報告";
-$lang["reports_last_7"] = "過去七天";
-$lang["reports_last_month"] = "上個月";
-$lang["reports_last_year"] = "去年";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_name"] = "名稱";
@@ -88,17 +84,8 @@ $lang["reports_tax"] = "稅額";
 $lang["reports_tax_percent"] = "稅率";
 $lang["reports_taxes"] = "稅額";
 $lang["reports_taxes_summary_report"] = "稅金摘要報告";
-$lang["reports_this_month"] = "這個月";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "今年";
-$lang["reports_today"] = "今天";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "總計";
 $lang["reports_type"] = "類型";
-$lang["reports_welcome_message"] = "歡迎使用報表系統。請選擇要查看的報表。";
-$lang["reports_yesterday"] = "昨天";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "成本價";
 $lang["reports_unit_price"] = "單價";

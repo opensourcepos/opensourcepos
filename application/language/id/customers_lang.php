@@ -2,7 +2,6 @@
 
 $lang["customers_account_number"] = "No.Pelanggan";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
-$lang["customers_basic_information"] = "Informasi Pelanggan";
 $lang["customers_cannot_be_deleted"] = "pelanggan terpilih tidak bisa dihapus. satu atau lebih dari pelanggan yang dipilih memiliki penjualan.";
 $lang["customers_company_name"] = "Company Name";
 $lang["customers_confirm_delete"] = "Apakah Anda yakin ingin menghapus pelanggan yang dipilih?";

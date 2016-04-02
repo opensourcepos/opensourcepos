@@ -1,5 +1,6 @@
 node_modules
 bower_components
+dist/*_bower.*
 application/config/email.php
 application/config/database.php
 *.patch
@@ -17,5 +18,4 @@ git-svn-diff.py
 *~
 *.~
 *.log
-dist/*_bower.*
 application/sessions/*

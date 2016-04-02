@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "All";
-$lang["reports_all_time"] = "All Time";
 $lang["reports_categories"] = "Categories";
 $lang["reports_categories_summary_report"] = "Categories Summary Report";
 $lang["reports_category"] = "Category";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "Items";
 $lang["reports_items_purchased"] = "Items Purchased";
 $lang["reports_items_received"] = "Items Received";
 $lang["reports_items_summary_report"] = "Items Summary Report";
-$lang["reports_last_7"] = "Last 7 Days";
-$lang["reports_last_month"] = "Last Month";
-$lang["reports_last_year"] = "Last Year";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_name"] = "Name";
@@ -88,17 +84,8 @@ $lang["reports_tax"] = "Tax";
 $lang["reports_tax_percent"] = "Tax Percent";
 $lang["reports_taxes"] = "Taxes";
 $lang["reports_taxes_summary_report"] = "Taxes Summary Report";
-$lang["reports_this_month"] = "This Month";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "This Year";
-$lang["reports_today"] = "Today";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Type";
-$lang["reports_welcome_message"] = "Welcome to the reports panel. Please select a report to view.";
-$lang["reports_yesterday"] = "Yesterday";
 $lang["reports_item_count"] = "Filter Item Count";
 $lang["reports_cost_price"] = "Cost Price";
 $lang["reports_unit_price"] = "Retail Price";

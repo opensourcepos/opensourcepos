@@ -66,7 +66,6 @@ class Sale_lib
 		{
 			$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
 		}
-
 	}
 	
 	function clear_invoice_number()
@@ -111,7 +110,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('email_receipt');
 	}
 
-	function add_payment( $payment_id, $payment_amount )
+	function add_payment($payment_id, $payment_amount)
 	{
 		$payments = $this->get_payments();
 		if( isset( $payments[$payment_id] ) )
@@ -123,22 +122,22 @@ class Sale_lib
 		{
 			//add to existing array
 			$payment = array( $payment_id=>
-			array(
-				'payment_type' => $payment_id,
-				'payment_amount' => $payment_amount
-				)
+				array(
+					'payment_type' => $payment_id,
+					'payment_amount' => $payment_amount
+					)
 			);
 			
 			$payments += $payment;
 		}
 
-		$this->set_payments( $payments );
+		$this->set_payments($payments);
+		
 		return true;
-
 	}
 
 	// Multiple Payments
-	function edit_payment($payment_id,$payment_amount)
+	function edit_payment($payment_id, $payment_amount)
 	{
 		$payments = $this->get_payments();
 		if(isset($payments[$payment_id]))
@@ -152,7 +151,7 @@ class Sale_lib
 	}
 
 	// Multiple Payments
-	function delete_payment( $payment_id )
+	function delete_payment($payment_id)
 	{
 		$payments = $this->get_payments();
 		unset( $payments[urldecode( $payment_id )] );
@@ -173,17 +172,17 @@ class Sale_lib
 		{
 		    $subtotal = bcadd($payments['payment_amount'], $subtotal, PRECISION);
 		}
+
 		return to_currency_no_money($subtotal);
 	}
 
 	// Multiple Payments
 	function get_amount_due()
 	{
-		$amount_due=0;
 		$payment_total = $this->get_payments_total();
-		$sales_total=$this->get_total();
-		$amount_due=to_currency_no_money(bcsub($sales_total, $payment_total, PRECISION));
-		return $amount_due;
+		$sales_total = $this->get_total();
+		
+		return to_currency_no_money(bcsub($sales_total, $payment_total, PRECISION));
 	}
 
 	function get_customer()
@@ -219,6 +218,7 @@ class Sale_lib
              $location_id = $this->CI->Stock_location->get_default_location_id();
              $this->set_sale_location($location_id);
         }
+
         return $this->CI->session->userdata('sale_location');
     }
 
@@ -247,7 +247,7 @@ class Sale_lib
     	$this->CI->session->unset_userdata('giftcard_remainder');
     }
     
-	function add_item($item_id,$quantity=1,$item_location,$discount=0,$price=null,$description=null,$serialnumber=null)
+	function add_item($item_id, $quantity=1, $item_location, $discount=0, $price=null, $description=null, $serialnumber=null)
 	{
 		//make sure item exists	     
 		if($this->validate_item($item_id) == false)
@@ -331,11 +331,11 @@ class Sale_lib
         }
 
 		$this->set_cart($items);
+		
 		return true;
-
 	}
 	
-	function out_of_stock($item_id,$item_location)
+	function out_of_stock($item_id, $item_location)
 	{
 		//make sure item exists
 		if($this->validate_item($item_id) == false)
@@ -356,10 +356,11 @@ class Sale_lib
 		{
 			return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
 		}
+
 		return false;
 	}
 	
-	function get_quantity_already_added($item_id,$item_location)
+	function get_quantity_already_added($item_id, $item_location)
 	{
 		$items = $this->get_cart();
 		$quanity_already_added = 0;
@@ -389,7 +390,7 @@ class Sale_lib
 		return -1;
 	}
 
-	function edit_item($line,$description,$serialnumber,$quantity,$discount,$price)
+	function edit_item($line, $description, $serialnumber, $quantity, $discount, $price)
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))	
@@ -426,6 +427,7 @@ class Sale_lib
 				return true;
 			}
 		}
+
 		return false;
 	}
 	
@@ -563,14 +565,14 @@ class Sale_lib
 
 			foreach($tax_info as $tax)
 			{
-				$name = $tax['percent'].'% ' . $tax['name'];
-				$tax_percentage = $tax['percent'];
-				$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax_percentage);
+				$name = to_tax_decimals($tax['percent']) . '% ' . $tax['name'];
+				$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax['percent']);
 
 				if (!isset($taxes[$name]))
 				{
 					$taxes[$name] = 0;
 				}
+
 				$taxes[$name] = bcadd($taxes[$name], $tax_amount, PRECISION);
 			}
 		}
@@ -589,6 +591,7 @@ class Sale_lib
 				$discount = bcadd($discount, $item_discount, PRECISION); 
 			}
 		}
+
 		return $discount;
 	}
 
@@ -618,8 +621,10 @@ class Sale_lib
 		if ($include_discount)
 		{
 			$discount_amount = $this->get_item_discount($quantity, $price, $discount_percentage);
+
 			return bcsub($total, $discount_amount, PRECISION);
 		}
+
 		return $total;
 	}
 	
@@ -627,6 +632,7 @@ class Sale_lib
 	{
 		$total = bcmul($quantity, $price, PRECISION);
 		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
+
 		return bcmul($total, $discount_fraction, PRECISION);
 	}
 	
@@ -642,6 +648,7 @@ class Sale_lib
 			return bcsub($price, $price_tax_excl, PRECISION);
 		}
 		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
+
 		return bcmul($price, $tax_fraction, PRECISION);
 	}
 
@@ -659,6 +666,7 @@ class Sale_lib
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
 			}
 		}
+
 		return $subtotal;
 	}
 
@@ -688,6 +696,7 @@ class Sale_lib
             if(!$item_id)
                 return false;
         }
+
         return true;
     }
 }

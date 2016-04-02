@@ -16,15 +16,9 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($this->input->post('q'),$this->input->post('limit')));
-		echo implode("\n",$suggestions);
-	}
-
-	function supplier_search()
-	{
-		$suggestions = $this->Supplier->get_suppliers_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Item->get_search_suggestions($this->input->get('term'));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->get('term')));
+		echo json_encode($suggestions);
 	}
 
 	function select_supplier()
@@ -81,7 +75,7 @@ class Receivings extends Secure_area
 		$data=array();
 		$mode = $this->receiving_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$quantity = ($mode=="receive" or $mode=="requisition") ? 1:-1;
+		$quantity = ($mode=="receive" or $mode=="requisition") ? 1 : -1;
 		$item_location = $this->receiving_lib->get_stock_source();
 		if($mode=='return' && $this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -116,7 +110,7 @@ class Receivings extends Secure_area
 
 		if ($this->form_validation->run() != FALSE)
 		{
-			$this->receiving_lib->edit_item($item_id,$description,$serialnumber,$quantity,$discount,$price);
+			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price);
 		}
 		else
 		{
@@ -144,7 +138,8 @@ class Receivings extends Secure_area
 	
 		$receiving_info = $this->Receiving->get_info($receiving_id)->row_array();
 		$person_name = $receiving_info['first_name'] . " " . $receiving_info['last_name'];
-		$data['selected_supplier'] = !empty($receiving_info['supplier_id']) ? $receiving_info['supplier_id'] . "|" . $person_name : "";
+		$data['selected_supplier_name'] = !empty($receiving_info['supplier_id']) ? $person_name : "";
+		$data['selected_supplier_id'] = $receiving_info['supplier_id'];
 		$data['receiving_info'] = $receiving_info;
 	
 		$this->load->view('receivings/form', $data);
@@ -196,7 +191,7 @@ class Receivings extends Secure_area
 		if ( $this->input->post('amount_tendered') != null )
 		{
 			$data['amount_tendered'] = $this->input->post('amount_tendered');
-			$data['amount_change'] = to_currency($data['amount_tendered'] - round($data['total'], 2));
+			$data['amount_change'] = to_currency($data['amount_tendered'] - $data['total']);
 		}
 		$data['employee']=$emp_info->first_name.' '.$emp_info->last_name;
 		$suppl_info	='';
@@ -249,7 +244,6 @@ class Receivings extends Secure_area
 		$text=$this->_substitute_supplier($text, $supplier_info);
 		return $text;
 	}
-	
 
 	private function _substitute_supplier($text,$supplier_info)
 	{
@@ -370,7 +364,7 @@ class Receivings extends Secure_area
 
 		$receiving_data = array(
 			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => empty($this->input->post('supplier_id')) ? NULL : $this->input->post('supplier_id'),
+			'supplier_id' => $this->input->post('supplier_id', TRUE) ? $this->input->post('supplier_id') : null,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number')
@@ -404,7 +398,7 @@ class Receivings extends Secure_area
     {
 		$receiving_id=$this->input->post('receiving_id');
 		$invoice_number=$this->input->post('invoice_number');
-		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number,$receiving_id);
+		$exists=!empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number, $receiving_id);
 		echo !$exists ? 'true' : 'false';
     }
 }

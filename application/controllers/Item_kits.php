@@ -29,7 +29,6 @@ class Item_kits extends Secure_area implements iData_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$item_kits = $this->Item_kit->get_all($lines_per_page, $limit_from);
 		
@@ -69,14 +68,10 @@ class Item_kits extends Secure_area implements iData_controller
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
 
-	/*
-	Gives search suggestions based on what is being searched for
-	*/
-	function suggest()
+	function suggest_search()
 	{
-		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('q'), $this->input->post('limit'));
-
-		echo implode("\n", $suggestions);
+		$suggestions = $this->Item_kit->get_search_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 
 	function get_row()
@@ -181,15 +176,9 @@ class Item_kits extends Secure_area implements iData_controller
 			$barcode_config['barcode_type'] = 'Code128';
 		}
 		$data['barcode_config'] = $barcode_config;
-		$this->load->view("barcode_sheet", $data);
-	}
-
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 400;
+		
+		// display barcodes
+		$this->load->view("barcodes/barcode_sheet", $data);
 	}
 }
 ?>

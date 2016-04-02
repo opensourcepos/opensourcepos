@@ -1,8 +1,8 @@
 <?php
 $lang['required'] = 'Het "%s" veld mag niet leeg zijn.';
 $lang['isset'] = 'Het "%s" veld moet een waarde hebben.';
-$lang['valid_email'] = 'Het "%s" veld moet een geldig e-mail adres bevatten.';
-$lang['valid_emails'] = 'Het "%s" veld moet geldige e-mail adressen bevatten.';
+$lang['valid_email'] = 'Het "%s" veld moet een geldig email adres bevatten.';
+$lang['valid_emails'] = 'Het "%s" veld moet geldige email adressen bevatten.';
 $lang['valid_url'] = 'Het "%s" veld moet een correcte URL bevatten.';
 $lang['valid_ip'] = 'Het "%s" veld moet een correct IP adres bevatten.';
 $lang['min_length'] = 'Het "%s" veld moet tenminste %s tekens bevatten.';

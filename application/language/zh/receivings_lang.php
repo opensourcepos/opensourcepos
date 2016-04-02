@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "進貨交易失敗";
-$lang["recvs_basic_information"] = "";
 $lang["recvs_cancel_receiving"] = "";
 $lang["recvs_cannot_be_deleted"] = "";
 $lang["recvs_comments"] = "";
@@ -49,3 +48,4 @@ $lang["recvs_supplier"] = "供應商";
 $lang["recvs_total"] = "總數量";
 $lang["recvs_unable_to_add_item"] = "無法新增進貨資料";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "編輯";

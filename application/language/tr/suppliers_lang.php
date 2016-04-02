@@ -1,7 +1,6 @@
 <?php 
 
 $lang["suppliers_account_number"] = "Hesap No";
-$lang["suppliers_basic_information"] = "Sağlayıcı Bilgisi";
 $lang["suppliers_cannot_be_deleted"] = "Sağlayıcı silinemedi, bazı sağlayıcıların satışı var.";
 $lang["suppliers_company_name"] = "Şirket Adı";
 $lang["suppliers_company_name_required"] = "Şirket Adı zorunlu alandır";

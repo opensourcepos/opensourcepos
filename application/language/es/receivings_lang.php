@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Las Transacciones de Entrada Fallaron";
-$lang["recvs_basic_information"] = "Información de Ingreso";
 $lang["recvs_cancel_receiving"] = "Cancelar";
 $lang["recvs_cannot_be_deleted"] = "Ingreso(s) no pueden borrarse";
 $lang["recvs_comments"] = "Comentarios";
@@ -49,3 +48,4 @@ $lang["recvs_supplier"] = "Proveedor";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "No se puede agregar el artículo a la entrada";
 $lang["recvs_unsuccessfully_updated"] = "Recepción actualizada sin exito";
+$lang["recvs_update"] = "Editar";

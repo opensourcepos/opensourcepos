@@ -10,13 +10,11 @@ if (isset($error_message))
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
 
-<div class="print_hide" id="control_buttons" style="height: 60px; margin-right: -150px; margin-top: 10px;">
-	<a href="javascript:printdoc();" id="show_print_button"><div class='big_button float_right'><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'big_button', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
-	<?php echo anchor("sales", "<div class='big_button float_right'><span>".$this->lang->line('sales_register')."</span></div>",
-		array('id'=>'show_sales_button'));  ?>
-	<?php echo anchor("sales/manage", "<div class='big_button float_right'><span>".$this->lang->line('sales_takings')."</span></div>",
-		array('id'=>'show_takings_button')); ?>
+<div class="print_hide" id="control_buttons" style="text-align:right">
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo $this->lang->line('common_print'); ?></div></a>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
+	<?php echo anchor("sales", $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("sales/manage", $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
 <div id="receipt_wrapper">
@@ -78,7 +76,7 @@ if (isset($error_message))
 			<tr>
 				<td><span class='long_name'><?php echo ucfirst($item['name']); ?></span></td>
 				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); ?></td>
+				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); ?></td>
 				<td><div class="total-value"><?php echo to_currency($item[($this->Appconfig->get('show_total_discount') ? 'total' : 'discounted_total')]); ?></div></td>
 			</tr>
 			<tr>

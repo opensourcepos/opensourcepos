@@ -2,7 +2,7 @@ function checkbox_click(event)
 {
 	event.stopPropagation();
 	do_email(enable_email.url);
-	if($(event.target).attr('checked'))
+	if($(event.target).is(':checked'))
 	{
 		$(event.target).parent().parent().find("td").addClass('selected').css("backgroundColor","");		
 	}
@@ -28,16 +28,34 @@ function enable_search(options)
     	$(this).attr('value','');
     });
 
-    var widget = $("#search").autocomplete(options.suggest_url,{max:100,delay:10, selectFirst: false,
-		formatItem : options.format_item, extraParams: options.extra_params});
-    $("#search").result(function(event, data, formatted)
-    {
-		do_search(true, options.on_complete);
-    }).on("keypress", function(event) {
-		if(event.which == 13) {
+    var widget = $("#search").autocomplete({
+		source: function (request, response) {
+			var extra_params = {limit: 100};
+			$.each(options.extra_params, function(key, param) {
+				extra_params[key] = typeof param == "function" ? param() : param;
+			});
+
+			$.ajax({
+				type: "POST",
+				url: options.suggest_url,
+				dataType: "json",
+				data: $.extend(request, extra_params),
+				success: function(data) {
+					response($.map(data, function(item) {
+						return {
+							value: item.label,
+						};
+				}))}
+			});
+		},
+		delay:10,
+		autoFocus: false,
+		select: function (a, ui) {
+			$(this).val(ui.item.value);
 			do_search(true, options.on_complete);
 		}
 	});
+
     attach_search_listener();
     
 	$('#search_form').submit(function(event)
@@ -77,7 +95,7 @@ function do_search(show_feedback,on_complete)
 	//If search is not enabled, don't do anything
 	if(!enable_search.enabled)
 		return;
-		
+
 	if(show_feedback)
 		$('#search').addClass("ac_loading");
 		
@@ -90,12 +108,11 @@ function do_search(show_feedback,on_complete)
 			if(typeof on_complete=='function')
 				on_complete(response);
 			$('#search').removeClass("ac_loading");
-			//$('#spinner').hide();
-			//re-init elements in new table, as table tbody children were replaced
-			tb_init('#sortable_table a.thickbox');
 			$('#pagination').html(response.pagination);
+			//re-init elements in new table, as table tbody children were replaced
+			dialog_support.init('#sortable_table a.modal-dlg');
 			$('#sortable_table tbody :checkbox').click(checkbox_click);
-			$("#select_all").attr('checked',false);
+			$("#select_all").prop('checked',false);
 			if (response.total_rows > 0)
 			{
 				update_sortable_table();	
@@ -192,14 +209,12 @@ function do_delete(url)
 				});
 			});
 			
-			set_feedback(response.message,'success_message',false);	
+			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
 		}
 		else
 		{
-			set_feedback(response.message,'error_message',true);	
+			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);	
 		}
-		
-
 	},"json");
 }
 
@@ -211,16 +226,12 @@ function enable_bulk_edit(none_selected_message)
 	
 	$('#bulk_edit').click(function(event)
 	{
-		event.preventDefault();
-		if($("#sortable_table tbody :checkbox:checked").length >0)
-		{
-			tb_show($(this).attr('title'),$(this).attr('href'),false);
-			$(this).blur();
-		}
-		else
+		if($("#sortable_table tbody :checkbox:checked").length == 0)
 		{
 			alert(none_selected_message);
+			return false;
 		}
+		event.preventDefault();
 	});
 }
 enable_bulk_edit.enabled=false;
@@ -233,11 +244,11 @@ function enable_select_all()
 
 	$('#select_all').click(function()
 	{
-		if($(this).attr('checked'))
+		if($(this).is(':checked'))
 		{	
 			$("#sortable_table tbody :checkbox").each(function()
 			{
-				$(this).attr('checked',true);
+				$(this).prop('checked',true);
 				$(this).parent().parent().find("td").addClass('selected').css("backgroundColor","");
 
 			});
@@ -246,7 +257,7 @@ function enable_select_all()
 		{
 			$("#sortable_table tbody :checkbox").each(function()
 			{
-				$(this).attr('checked',false);
+				$(this).prop('checked',false);
 				$(this).parent().parent().find("td").removeClass();				
 			});    	
 		}
@@ -280,13 +291,12 @@ function enable_row_selection(rows)
 	);
 	
 	rows.click(function row_click(event)
-	{	
-
+	{
 		var checkbox = $(this).find(":checkbox");
-		checkbox.attr('checked',!checkbox.attr('checked'));
+		checkbox.prop('checked',!checkbox.is(':checked'));
 		do_email(enable_email.url);
 		
-		if(checkbox.attr('checked'))
+		if(checkbox.is(':checked'))
 		{
 			$(this).find("td").addClass('selected').css("backgroundColor","");
 		}
@@ -313,7 +323,8 @@ function update_sortable_table()
 	}
 }
 
-function get_table_row(id) {
+function get_table_row(id)
+{
 	id = id || $("input[name='sale_id']").val();
 	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
 	if ($element.length === 0) {
@@ -342,8 +353,8 @@ function reinit_row(checkbox_id)
 	enable_row_selection(new_row);
 	//Re-init some stuff as we replaced row
 	update_sortable_table();
-	tb_init(new_row.find("a.thickbox"));
-	//re-enable e-mail
+	dialog_support.init(new_row.find("a.modal-dlg"));
+	//re-enable email
 	new_checkbox.click(checkbox_click);	
 }
 
@@ -392,3 +403,109 @@ function get_visible_checkbox_ids()
 	});
 	return row_ids;
 }
+
+dialog_support = (function() {
+
+	var btn_id, dialog_ref;
+
+	var hide = function() {
+		dialog_ref.close();
+	};
+
+	var clicked_id = function() {
+		return btn_id;
+	};
+
+	var submit = function(button_id) {
+		return function(dlog_ref)
+		{
+			btn_id = button_id;
+			dialog_ref = dlog_ref;
+			if (button_id == 'delete')
+			{
+				$("form[id*='delete_form']").submit();
+			}
+			else
+			{
+				$('form', dlog_ref.$modalBody).first().submit();
+			}
+		}
+	};
+
+	var init = function(selector) {
+		return $(selector).click(function(event) {
+			var buttons = [];
+			var dialog_class = 'modal-dlg';
+			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
+				var width_class = className.split("modal-dlg-");
+				if (width_class && width_class.length > 1) {
+					dialog_class = className;
+				}
+				var btn_class = className.split("modal-btn-");
+				if (btn_class && btn_class.length > 1) {
+					var btn_name = btn_class[1];
+					var is_submit = btn_name == 'submit';
+					buttons.push({
+						id: btn_name,
+						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
+						cssClass: is_submit ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
+						hotkey: is_submit ? 13 : undefined, // Enter.
+						action: submit(btn_name)
+					});
+				}
+			});
+
+			!buttons.length && buttons.push({
+				id: 'close',
+				label: 'Close',
+				cssClass: 'btn-primary',
+				action: function(dialog_ref) {
+					dialog_ref.close();
+				}
+			});
+
+			var $link = $(event.target);
+			$link = $link.is("a") ? $link : $link.parents("a");
+			BootstrapDialog.show({
+				cssClass: dialog_class,
+				title: $link.attr('title'),
+				buttons: buttons,
+				message: (function() {
+					var node = $('<div></div>');
+					$.get($link.attr('href'), function(data) {
+						node.html(data);
+					});
+					return node;
+				})
+			});
+
+			event.preventDefault();
+		});
+	};
+
+	$(document).ready(function() {
+		init("a.modal-dlg");
+	});
+
+	return {
+		hide: hide,
+		clicked_id: clicked_id,
+		init: init,
+		submit: submit,
+		error: {
+			errorClass: "has-error",
+			errorLabelContainer: "#error_message_box",
+			wrapper: "li",
+			highlight: function (e)
+			{
+				$(e).closest('.form-group').addClass('has-error');
+			},
+			unhighlight: function (e)
+			{
+				$(e).closest('.form-group').removeClass('has-error');
+			}
+		}
+	};
+
+})();
+

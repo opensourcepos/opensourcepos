@@ -1,4 +1,5 @@
 <?php $this->load->view("partial/header"); ?>
+
 <?php
 if (isset($error_message))
 {
@@ -9,13 +10,11 @@ if (isset($error_message))
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
-<div class="print_hide" id="control_buttons" style="height: 40px; margin-right: -150px; margin-top: 10px;">
-	<a href="javascript:printdoc();" id="show_print_button"><div class='big_button float_right'><span><?php echo $this->lang->line('common_print'); ?></span></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'big_button', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
-	<?php echo anchor("sales", "<div class='big_button float_right'><span>".$this->lang->line('sales_register')."</span></div>",
-		array('id'=>'show_sales_button')); ?>
-	<?php echo anchor("sales/manage", "<div class='big_button float_right'><span>".$this->lang->line('sales_takings')."</span></div>",
-		array('id'=>'show_takings_button')); ?>
+<div class="print_hide" id="control_buttons" style="text-align:right">
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo $this->lang->line('common_print'); ?></div></a>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
+	<?php echo anchor("sales", $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("sales/manage", $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
 <div id="page-wrap">
@@ -48,8 +47,6 @@ if (isset($error_message))
 			?>
         </div>
 	</div>
-	
-	<div class="clearfix"></div>
 
 	<div id="block2">
        	<textarea id="company-title" rows="5" cols="35"><?php echo $company_info ?></textarea>
@@ -85,7 +82,7 @@ if (isset($error_message))
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
 				<td class="item-name"><textarea rows="4" cols="6" class='long_name'><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['quantity']; ?></textarea></td>
+				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 				<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>
 				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
@@ -141,7 +138,7 @@ if (isset($error_message))
 </div>
 
 <script type="text/javascript">
-$(window).load(function()
+$(window).on("load", function()
 {
 	// install firefox addon in order to use this plugin
 	if (window.jsPrintSetup) 

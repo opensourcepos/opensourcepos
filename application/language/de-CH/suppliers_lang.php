@@ -1,7 +1,6 @@
 <?php 
 
 $lang["suppliers_account_number"] = "Konto-Nr.";
-$lang["suppliers_basic_information"] = "Lieferanten-Information";
 $lang["suppliers_cannot_be_deleted"] = "Kann gewählte Lieferanten nicht löschen, einer oder mehrere weisen Verkäufe aus.";
 $lang["suppliers_company_name"] = "Firmenname";
 $lang["suppliers_company_name_required"] = "Firmenname ist erforderlich";

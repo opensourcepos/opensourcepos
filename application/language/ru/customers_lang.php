@@ -2,7 +2,6 @@
 
 $lang["customers_account_number"] = "Номер счота";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
-$lang["customers_basic_information"] = "Информация о клиенте";
 $lang["customers_cannot_be_deleted"] = "Невозможно удалить выбранных клиентов, один или более из них имеет продаж.";
 $lang["customers_company_name"] = "Company Name";
 $lang["customers_confirm_delete"] = "Вы уверены, что хотите удалить выбранных клиентов?";

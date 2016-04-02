@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Transaksi Penerimaan Salah";
-$lang["recvs_basic_information"] = "Informasi Penerimaan Barang";
 $lang["recvs_cancel_receiving"] = "Batal";
 $lang["recvs_cannot_be_deleted"] = "Tidak bisa dihapus";
 $lang["recvs_comments"] = "Keterangan";
@@ -49,3 +48,4 @@ $lang["recvs_supplier"] = "Pemasok";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Item tidak dapat ditambahkan ke penerimaan barang masuk";
 $lang["recvs_unsuccessfully_updated"] = "Tidak Berhasil Diperbaharui";
+$lang["recvs_update"] = "Ubah";

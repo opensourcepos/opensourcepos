@@ -4,7 +4,6 @@ $lang["giftcards_add_minus"] = "Bestandsänderung";
 $lang["giftcards_allow_alt_description"] = "Erlaube Alternative Bezeichnung";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_remaining_balance"] = "Restwert von Gutschein %1 ist %2!";
-$lang["giftcards_basic_information"] = "Gutschein Information";
 $lang["giftcards_bulk_edit"] = "Sammeländerung";
 $lang["giftcards_cannot_be_deleted"] = "Konnte gewählte Gutscheine nicht löschen, einer oder mehrere weisen Verkäufe auf";
 $lang["giftcards_cannot_find_giftcard"] = "Konnte keinen Gutschein finden";

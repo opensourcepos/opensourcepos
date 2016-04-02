@@ -30,12 +30,13 @@ class Sales extends Secure_area
 			$data['controller_name'] = $this->get_controller_name();
 			$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-			$today = date($this->config->item('dateformat'));
-
-			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
-			$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-			$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+			$today_start = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0));
+			$today_end = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(23, 59, 59));
+			
+			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today_start;
+			$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $start_date);
+			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today_end;
+			$end_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $end_date);
 
 			$sale_type = 'all';
 			$location_id = 'all';
@@ -44,26 +45,29 @@ class Sales extends Secure_area
 
 			$filters = array('sale_type' => $sale_type,
 							'location_id' => $location_id,
-							'start_date' => $start_date_formatter->format('Y-m-d'),
-							'end_date' => $end_date_formatter->format('Y-m-d'),
-							'only_invoices' => $only_invoices,
+							'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
+							'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
 							'only_cash' => $only_cash,
+							'only_invoices' => $only_invoices,
 							'is_valid_receipt' => $is_valid_receipt);
 
 			$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
 			$payments = $this->Sale->get_payments_summary($search, $filters);
 			$total_rows = $this->Sale->get_found_rows($search, $filters);
-			$data['only_invoices'] = $only_invoices;
-			$data['only_cash '] = $only_cash;
-			$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
-			$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
+			
+			// filters that will be loaded in the multiselect dropdown
+			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+									'only_invoices' => $this->lang->line('sales_invoice_filter'));
+			$data['selected'] = array( ($only_cash ? 'only_cash' : ''), ($only_invoices ? 'only_invoices' : '') );
+
+			$data['start_date'] = $start_date;
+			$data['end_date'] = $end_date;
 			$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
 			$data['manage_table'] = get_sales_manage_table($sales, $this);
 			$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
 
 			$this->load->view($data['controller_name'] . '/manage', $data);
 		}
-
 	}
 	
 	function get_row()
@@ -77,16 +81,6 @@ class Sales extends Secure_area
 		echo $data_row;
 	}
 	
-	/**
-	 *
-	 * Get the width for the add/edit form.
-	 * @return number The form width
-	 */
-	function get_form_width()
-	{
-		return 400;
-	}
-
 	/*
 	Returns Sales table data rows. This will be called with AJAX.
 	*/
@@ -98,12 +92,12 @@ class Sales extends Secure_area
 		$limit_from = $this->input->post('limit_from');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$today = date($this->config->item('dateformat'));
+		$today = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 
 		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $start_date);
 		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
+		$end_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $end_date);
 
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
@@ -114,11 +108,20 @@ class Sales extends Secure_area
 
 		$filters = array('sale_type' => $sale_type,
 						'location_id' => $location_id,
-						'start_date' => $start_date_formatter->format('Y-m-d'),
-						'end_date' => $end_date_formatter->format('Y-m-d'),
-						'only_invoices' => $only_invoices,
-						'only_cash' => $only_cash,
+						'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
+						'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
+						'only_cash' => FALSE,
+						'only_invoices' => FALSE,
 						'is_valid_receipt' => $is_valid_receipt);
+						
+		// check if any filter is set in the multiselect dropdown
+		if( $this->input->post('filters') != null )
+		{
+			foreach($this->input->post('filters') as $key)
+			{
+				$filters[$key] = TRUE;
+			}
+		}
 
 		$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
 		$payments = $this->Sale->get_payments_summary($search, $filters);
@@ -133,36 +136,25 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
+		$search = $this->input->get('term') != '' ? $this->input->get('term') : null;
 
 		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
 		{
 			$suggestions[] = $search;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_item_search_suggestions($search , $limit));
-		$suggestions = array_merge($suggestions, $this->Item_kit->get_item_kit_search_suggestions($search, $limit));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search));
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
-		echo implode("\n", $suggestions);
+		echo json_encode($suggestions);
 	}
 
-	function customer_search()
+	function suggest_search()
 	{
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
+		$search = $this->input->post('term') != '' ? $this->input->post('term') : null;
 		
-		$suggestions = $this->Customer->get_customer_search_suggestions($search, $limit);
-
-		echo implode("\n", $suggestions);
-	}
-
-	function suggest()
-	{
-		$search = $this->input->post('q');
-		$limit = $this->input->post('limit');
-		$suggestions = $this->Sale->get_search_suggestions($search, $limit);
-
-		echo implode("\n", $suggestions);
+		$suggestions = $this->Sale->get_search_suggestions($search);
+		
+		echo json_encode($suggestions);
 	}
 
 	function select_customer()
@@ -187,6 +179,7 @@ class Sales extends Secure_area
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
+
 		$this->_reload();
 	}
 	
@@ -255,7 +248,7 @@ class Sales extends Secure_area
 			$new_giftcard_value = ( $new_giftcard_value >= 0 ) ? $new_giftcard_value : 0;
 			$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
 			$data['warning'] = $this->lang->line('giftcards_remaining_balance', $this->input->post('amount_tendered'), to_currency( $new_giftcard_value, TRUE ));
-			$payment_amount = min( $this->sale_lib->get_amount_due( ), $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) );
+			$payment_amount = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) );
 		}
 		else
 		{
@@ -274,12 +267,14 @@ class Sales extends Secure_area
 	function delete_payment( $payment_id )
 	{
 		$this->sale_lib->delete_payment( $payment_id );
+
 		$this->_reload();
 	}
 
 	function add()
 	{
 		$data = array();
+
 		$mode = $this->sale_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
 		$quantity = ($mode == "return") ? -1 : 1;
@@ -334,6 +329,7 @@ class Sales extends Secure_area
 	function delete_item($item_number)
 	{
 		$this->sale_lib->delete_item($item_number);
+
 		$this->_reload();
 	}
 
@@ -342,6 +338,7 @@ class Sales extends Secure_area
 		$this->sale_lib->clear_giftcard_remainder();
 		$this->sale_lib->clear_invoice_number();
 		$this->sale_lib->remove_customer();
+
 		$this->_reload();
 	}
 
@@ -452,7 +449,6 @@ class Sales extends Secure_area
 
 			$this->sale_lib->clear_all();
 		}
-
 	}
 	
 	private function _invoice_email_pdf($data)
@@ -554,6 +550,7 @@ class Sales extends Secure_area
 		$invoice_number = $this->config->config['sales_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number, $cust_info);
 		$this->sale_lib->set_invoice_number($invoice_number, TRUE);
+
 		return $this->sale_lib->get_invoice_number();
 	}
 
@@ -607,7 +604,7 @@ class Sales extends Secure_area
 				$data['account_number']
 			));
 		}
-		$data['sale_id'] = 'POS '.$sale_id;
+		$data['sale_id'] = 'POS ' . $sale_id;
 		$data['comments'] = $sale_info['comment'];
 		$data['invoice_number'] = $sale_info['invoice_number'];
 		$data['company_info'] = implode("\n", array(
@@ -630,10 +627,12 @@ class Sales extends Secure_area
 	
 	function invoice($sale_id, $sale_info='')
 	{
-		if ($sale_info == '') {
+		if ($sale_info == '')
+		{
 			$sale_info = $this->_load_sale_data($sale_id);
 		}
-		$this->load->view("sales/invoice",$sale_info);
+
+		$this->load->view("sales/invoice", $sale_info);
 		$this->sale_lib->clear_all();
 	}
 	
@@ -650,7 +649,8 @@ class Sales extends Secure_area
 
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
-		$data['selected_customer'] = !empty($sale_info['customer_id']) ? $sale_info['customer_id'] . "|" . $person_name : "";
+		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ?  $person_name : '';
+		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
 		
 		$this->load->view('sales/form', $data);
@@ -674,7 +674,9 @@ class Sales extends Secure_area
 	
 	function save($sale_id)
 	{
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
+		$newdate = $this->input->post('date');
+		
+		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
 
 		$sale_data = array(
 			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),
@@ -696,16 +698,16 @@ class Sales extends Secure_area
 	
 	private function _payments_cover_total()
 	{
-		$total_payments = 0;
-
-		foreach($this->sale_lib->get_payments() as $payment)
+		// Changed the conditional to account for floating point rounding
+		
+		// "sale" amount due needs to be <=0 to state it's fine
+		if( ($this->sale_lib->get_mode() == 'sale') && $this->sale_lib->get_amount_due() > 1e-6 )
 		{
-			$total_payments += $payment['payment_amount'];
+			return false;
 		}
 
-		/* Changed the conditional to account for floating point rounding */
-		if ( ($this->sale_lib->get_mode() == 'sale') && 
-		      ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
+		// "return" amount due needs to be >=0 to state it's fine		
+		if( ($this->sale_lib->get_mode() == 'return') && $this->sale_lib->get_amount_due() < -(1e-6) )
 		{
 			return false;
 		}
@@ -735,11 +737,11 @@ class Sales extends Secure_area
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['payment_options'] = array(
-			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
-			$this->lang->line('sales_check') => $this->lang->line('sales_check'),
-			$this->lang->line('sales_giftcard') => $this->lang->line('sales_giftcard'),
 			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
+			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
+			$this->lang->line('sales_giftcard') => $this->lang->line('sales_giftcard'),
+			$this->lang->line('sales_check') => $this->lang->line('sales_check')
 		);
 
 		$customer_id = $this->sale_lib->get_customer();
@@ -747,21 +749,47 @@ class Sales extends Secure_area
 		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
-			$data['customer'] = $cust_info->first_name . ' ' . $cust_info->last_name;
+			if (isset($cust_info->company_name))
+			{
+				$data['customer'] = $cust_info->company_name;
+			}
+			else
+			{
+				$data['customer'] = $cust_info->first_name . ' ' . $cust_info->last_name;
+			}
+			$data['first_name'] = $cust_info->first_name;
+			$data['last_name'] = $cust_info->last_name;
+			$data['customer_address'] = $cust_info->address_1;
+			if (!empty($cust_info->zip) or !empty($cust_info->city))
+			{
+				$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;				
+			}
+			else
+			{
+				$data['customer_location'] = '';
+			}
 			$data['customer_email'] = $cust_info->email;
+			$data['account_number'] = $cust_info->account_number;
+			$data['customer_info'] = implode("\n", array(
+				$data['customer'],
+				$data['customer_address'],
+				$data['customer_location'],
+				$data['account_number']
+			));
 		}
+		
 		$data['invoice_number'] = $this->_substitute_invoice_number($cust_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['payments_cover_total'] = $this->_payments_cover_total();
 
 		$this->load->view("sales/register", $data);
-
 	}
 
-	function cancel_sale()
+	function cancel()
 	{
 		$this->sale_lib->clear_all();
+
 		$this->_reload();
 	}
 	
@@ -825,6 +853,7 @@ class Sales extends Secure_area
 	{
 		$data = array();
 		$data['suspended_sales'] = $this->Sale_suspended->get_all()->result_array();
+
 		$this->load->view('sales/suspended', $data);
 	}
 	
@@ -834,6 +863,7 @@ class Sales extends Secure_area
 		$this->sale_lib->clear_all();
 		$this->sale_lib->copy_entire_suspended_sale($sale_id);
 		$this->Sale_suspended->delete($sale_id);
+
 		$this->_reload();
 	}
 	

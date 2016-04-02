@@ -51,17 +51,17 @@ class Receiving extends CI_Model
 		return $success;
 	}
 
-	function save ($items,$supplier_id,$employee_id,$comment,$invoice_number,$payment_type,$receiving_id=false)
+	function save($items, $supplier_id, $employee_id, $comment, $invoice_number, $payment_type, $receiving_id=false)
 	{
 		if(count($items)==0)
 			return -1;
 
 		$receivings_data = array(
-		'supplier_id'=> $this->Supplier->exists($supplier_id) ? $supplier_id : null,
-		'employee_id'=>$employee_id,
-		'payment_type'=>$payment_type,
-		'comment'=>$comment,
-		'invoice_number'=>$invoice_number
+			'supplier_id'=>$this->Supplier->exists($supplier_id) ? $supplier_id : null,
+			'employee_id'=>$employee_id,
+			'payment_type'=>$payment_type,
+			'comment'=>$comment,
+			'invoice_number'=>$invoice_number
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -70,11 +70,9 @@ class Receiving extends CI_Model
 		$this->db->insert('receivings',$receivings_data);
 		$receiving_id = $this->db->insert_id();
 
-
 		foreach($items as $line=>$item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
-			
 
 			$receivings_items_data = array(
 				'receiving_id'=>$receiving_id,
@@ -90,7 +88,7 @@ class Receiving extends CI_Model
 				'item_location'=>$item['item_location']
 			);
 
-			$this->db->insert('receivings_items',$receivings_items_data);
+			$this->db->insert('receivings_items', $receivings_items_data);
 
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 

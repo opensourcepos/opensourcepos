@@ -11,7 +11,6 @@ class Customers extends Person_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$customers = $this->Customer->get_all($lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Customer, $lines_per_page, $limit_from);
@@ -41,8 +40,14 @@ class Customers extends Person_controller
 	*/
 	function suggest()
 	{
-		$suggestions = $this->Customer->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Customer->get_search_suggestions($this->input->get('term'), TRUE);
+		echo json_encode($suggestions);
+	}
+
+	function suggest_search()
+	{
+		$suggestions = $this->Customer->get_search_suggestions($this->input->post('term'), FALSE);
+		echo json_encode($suggestions);
 	}
 	
 	/*
@@ -143,6 +148,7 @@ class Customers extends Person_controller
 		{
 			$msg = $this->lang->line('items_excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
+
 			return;
 		}
 		else
@@ -156,22 +162,22 @@ class Customers extends Person_controller
 				while (($data = fgetcsv($handle)) !== FALSE) 
 				{
 					$person_data = array(
-					'first_name'=>$data[0],
-					'last_name'=>$data[1],
-					'gender'=>$data[2],
-					'email'=>$data[3],
-					'phone_number'=>$data[4],
-					'address_1'=>$data[5],
-					'address_2'=>$data[6],
-					'city'=>$data[7],
-					'state'=>$data[8],
-					'zip'=>$data[9],
-					'country'=>$data[10],
-					'comments'=>$data[11]
+						'first_name'=>$data[0],
+						'last_name'=>$data[1],
+						'gender'=>$data[2],
+						'email'=>$data[3],
+						'phone_number'=>$data[4],
+						'address_1'=>$data[5],
+						'address_2'=>$data[6],
+						'city'=>$data[7],
+						'state'=>$data[8],
+						'zip'=>$data[9],
+						'country'=>$data[10],
+						'comments'=>$data[11]
 					);
 					
 					$customer_data=array(
-					'taxable'=>$data[13]=='' ? 0:1
+						'taxable'=>$data[13]=='' ? 0:1
 					);
 					
 					$account_number = $data[12];
@@ -192,7 +198,8 @@ class Customers extends Person_controller
 			}
 			else 
 			{
-				echo json_encode( array('success'=>false,'message'=>'Your upload file has no data or not in supported format.') );
+				echo json_encode( array('success'=>false, 'message'=>'Your upload file has no data or not in supported format.') );
+
 				return;
 			}
 		}
@@ -208,15 +215,7 @@ class Customers extends Person_controller
 			$msg = "Import Customers successful";
 		}
 
-		echo json_encode( array('success'=>$success,'message'=>$msg) );
-	}
-	
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{			
-		return 400;
+		echo json_encode( array('success'=>$success, 'message'=>$msg) );
 	}
 }
 ?>

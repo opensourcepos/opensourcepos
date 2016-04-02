@@ -12,7 +12,6 @@ class Giftcards extends Secure_area implements iData_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$giftcards = $this->Giftcard->get_all($lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Giftcard, $lines_per_page, $limit_from);
@@ -40,19 +39,10 @@ class Giftcards extends Secure_area implements iData_controller
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
-	function suggest()
+	function suggest_search()
 	{
-		$suggestions = $this->Giftcard->get_search_suggestions($this->input->post('q'), $this->input->post('limit'));
-		echo implode("\n",$suggestions);
-	}
-
-	/*
-	 Gives search suggestions for person_id based on what is being searched for
-	*/
-	function person_search()
-	{
-		$suggestions = $this->Customer->get_customer_search_suggestions($this->input->post('q'), $this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->Giftcard->get_search_suggestions($this->input->post('term'));
+		echo json_encode($suggestions);
 	}
 
 	function get_row()
@@ -66,7 +56,8 @@ class Giftcards extends Secure_area implements iData_controller
 	{
 		$giftcard_info = $this->Giftcard->get_info($giftcard_id);
 		$person_name=$giftcard_id > 0? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
-		$data['selected_person'] = $giftcard_id > 0 && isset($giftcard_info->person_id) ? $giftcard_info->person_id . "|" . $person_name : "";
+		$data['selected_person_name'] = $giftcard_id > 0 && isset($giftcard_info->person_id) ?  $person_name : '';
+		$data['selected_person_id'] = $giftcard_info->person_id;
 		$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : $this->Giftcard->get_max_number()->giftcard_number + 1;
 		$data['giftcard_info'] = $giftcard_info;
 		$this->load->view("giftcards/form",$data);
@@ -116,14 +107,6 @@ class Giftcards extends Secure_area implements iData_controller
 		{
 			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('giftcards_cannot_be_deleted')));
 		}
-	}
-		
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 360;
 	}
 }
 ?>

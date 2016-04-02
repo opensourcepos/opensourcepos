@@ -16,34 +16,23 @@ class Items extends Secure_area implements iData_controller
 		$stock_locations = $this->Stock_location->get_allowed_locations();
 		
 		$data['controller_name'] = $this->get_controller_name();
-		$data['form_width'] = $this->get_form_width();
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);
-		
-		// set 01/01/2010 as starting date for OSPOS
-		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
-		$today = date($this->config->item('dateformat'));
+		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);	
 
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
-		
-		$data['start_date'] = $start_date_formatter->format($this->config->item('dateformat'));
-		$data['end_date'] = $end_date_formatter->format($this->config->item('dateformat'));
-	
+		// filters that will be loaded in the multiselect dropdown
+		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
+								'low_inventory' => $this->lang->line('items_low_inventory_items'), 
+								'is_serialized' => $this->lang->line('items_serialized_items'),
+								'no_description' => $this->lang->line('items_no_description_items'),
+								'search_custom' => $this->lang->line('items_search_custom_items'),
+								'is_deleted' => $this->lang->line('items_is_deleted'));
+
 		$data['stock_location'] = $stock_location;
 		$data['stock_locations'] = $stock_locations;
 		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
 
 		$this->load->view('items/manage', $data);
-	}
-
-	function find_item_info()
-	{
-		$item_number = $this->input->post('scan_item_number');
-		echo json_encode($this->Item->find_item_info($item_number));
 	}
 
 	/*
@@ -56,32 +45,30 @@ class Items extends Secure_area implements iData_controller
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 		$this->item_lib->set_item_location($this->input->post('stock_location'));
 
-		// set 01/01/2010 as starting date for OSPOS
-		$start_of_time = date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));
-		$today = date($this->config->item('dateformat'));
-
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $start_of_time;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat'), $end_date);
-		
-		$filters = array('start_date' => $start_date_formatter->format('Y-m-d'), 
-						'end_date' => $end_date_formatter->format('Y-m-d'),
+		$filters = array('start_date' => $this->input->post('start_date'), 
+						'end_date' => $this->input->post('end_date'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
-						'empty_upc' => $this->input->post('empty_upc') != null,
-						'low_inventory' => $this->input->post('low_inventory') != null, 
-						'is_serialized' => $this->input->post('is_serialized') != null,
-						'no_description' => $this->input->post('no_description') != null,
-						'search_custom' => $this->input->post('search_custom') != null,
-						'is_deleted' => $this->input->post('is_deleted') != null);
+						'empty_upc' => FALSE,
+						'low_inventory' => FALSE, 
+						'is_serialized' => FALSE,
+						'no_description' => FALSE,
+						'search_custom' => FALSE,
+						'is_deleted' => FALSE);
 		
+		// check if any filter is set in the multiselect dropdown
+		if( $this->input->post('filters') != null )
+		{
+			foreach($this->input->post('filters') as $key)
+			{
+				$filters[$key] = TRUE;
+			}
+		}
+	
 		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
 		$data_rows = get_items_manage_table_data_rows($items, $this);
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
 		$data_rows = get_items_manage_table_data_rows($items, $this);
-
-		// do not move this line to be after the json_encode otherwise the searhc function won't work!!
 
 		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
 	}
@@ -117,19 +104,28 @@ class Items extends Secure_area implements iData_controller
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
+	function suggest_search()
+	{
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'),
+			array(
+				'search_custom' => $this->input->post('search_custom'),
+				'is_deleted' => !empty($this->input->post('is_deleted'))
+				),
+			FALSE);
+
+		echo json_encode($suggestions);
+	}
+
 	function suggest()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->post('q'), $this->input->post('limit'),
-															$this->input->post('search_custom'), !empty($this->input->post('is_deleted')));
+		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'),
+			array(
+				'search_custom' => FALSE,
+				'is_deleted' => FALSE
+				), 
+			TRUE);
 
-		echo implode("\n",$suggestions);
-	}
-	
-	function item_search()
-	{
-		$suggestions = $this->Item->get_item_search_suggestions($this->input->post('q'), $this->input->post('limit'));
-
-		echo implode("\n",$suggestions);
+		echo json_encode($suggestions);
 	}
 
 	/*
@@ -137,9 +133,9 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_category()
 	{
-		$suggestions = $this->Item->get_category_suggestions($this->input->post('q'));
+		$suggestions = $this->Item->get_category_suggestions($this->input->get('term'));
 
-		echo implode("\n",$suggestions);
+		echo json_encode($suggestions);
 	}
 
 	/*
@@ -147,111 +143,21 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function suggest_location()
 	{
-		$suggestions = $this->Item->get_location_suggestions($this->input->post('q'));
+		$suggestions = $this->Item->get_location_suggestions($this->input->get('term'));
 
-		echo implode("\n",$suggestions);
+		echo json_encode($suggestions);
 	}
 	
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
-	function suggest_custom1()
+	function suggest_custom()
 	{
-		$suggestions = $this->Item->get_custom1_suggestions($this->input->post('q'));
+		$suggestions = $this->Item->get_custom_suggestions($this->input->post('term'), $this->input->post('field_no'));
 
-		echo implode("\n",$suggestions);
+		echo json_encode($suggestions);
 	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom2()
-	{
-		$suggestions = $this->Item->get_custom2_suggestions($this->input->post('q'));
 
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom3()
-	{
-		$suggestions = $this->Item->get_custom3_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom4()
-	{
-		$suggestions = $this->Item->get_custom4_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom5()
-	{
-		$suggestions = $this->Item->get_custom5_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom6()
-	{
-		$suggestions = $this->Item->get_custom6_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom7()
-	{
-		$suggestions = $this->Item->get_custom7_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom8()
-	{
-		$suggestions = $this->Item->get_custom8_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom9()
-	{
-		$suggestions = $this->Item->get_custom9_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-	
-	/*
-	 Gives search suggestions based on what is being searched for
-	*/
-	function suggest_custom10()
-	{
-		$suggestions = $this->Item->get_custom10_suggestions($this->input->post('q'));
-
-		echo implode("\n",$suggestions);
-	}
-		
 	function get_row()
 	{
 		$item_id = $this->input->post('row_id');
@@ -262,31 +168,46 @@ class Items extends Secure_area implements iData_controller
 		$data_row = get_item_data_row($item_info,$this);
 		
 		echo $data_row;
-
 	}
 
 	function view($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
-		$data['item_tax_info']=$this->Item_taxes->get_info($item_id);
-		$suppliers = array('' => $this->lang->line('items_none'));
+		$item_info = $this->Item->get_info($item_id);
+
+		$data['item_tax_info'] = $this->Item_taxes->get_info($item_id);
+		$data['default_tax_1_rate'] = '';
+		$data['default_tax_2_rate'] = '';
+
+		if($item_id==-1)
+		{
+			$data['default_tax_1_rate'] = $this->Appconfig->get('default_tax_1_rate');
+			$data['default_tax_2_rate'] = $this->Appconfig->get('default_tax_2_rate');
+			
+			$item_info->receiving_quantity = 0;
+			$item_info->reorder_level = 0;
+		}
+
+		$data['item_info'] = $item_info;
+		
+		$suppliers = array(''=>$this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
 			$suppliers[$row['person_id']] = $row['company_name'];
 		}
+		$data['suppliers'] = $suppliers;
+		$data['selected_supplier'] = $item_info->supplier_id;
 
-		$data['suppliers']=$suppliers;
-		$data['selected_supplier'] = $this->Item->get_info($item_id)->supplier_id;
-		$data['default_tax_1_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_1_rate') : '';
-		$data['default_tax_2_rate']=($item_id==-1) ? $this->Appconfig->get('default_tax_2_rate') : '';
-        
-        $locations_data = $this->Stock_location->get_undeleted_all()->result_array();
+		$data['logo_exists'] = $item_info->pic_id != '';
+		$images = glob("uploads/item_pics/" . $item_info->pic_id . ".*");
+		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+
+		$locations_data = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($locations_data as $location)
         {
-           $quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
-           $quantity = ($item_id == -1) ? null: $quantity;
-           $location_array[$location['location_id']] =  array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
-           $data['stock_locations'] = $location_array;
+			$quantity = $this->Item_quantity->get_item_quantity($item_id,$location['location_id'])->quantity;
+			$quantity = ($item_id == -1) ? 0 : $quantity;
+			$location_array[$location['location_id']] = array('location_name'=>$location['location_name'], 'quantity'=>$quantity);
+			$data['stock_locations'] = $location_array;
         }
 
 		$this->load->view("items/form", $data);
@@ -294,7 +215,7 @@ class Items extends Secure_area implements iData_controller
     
 	function inventory($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
+		$data['item_info'] = $this->Item->get_info($item_id);
         
         $data['stock_locations'] = array();
         $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
@@ -309,7 +230,7 @@ class Items extends Secure_area implements iData_controller
 	
 	function count_details($item_id=-1)
 	{
-		$data['item_info']=$this->Item->get_info($item_id);
+		$data['item_info'] = $this->Item->get_info($item_id);
         
         $data['stock_locations'] = array();
         $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
@@ -354,9 +275,9 @@ class Items extends Secure_area implements iData_controller
 			}
 		}
 		$data['items'] = $result;
-		// display barcodes
-		$this->load->view("barcode_sheet", $data);
 
+		// display barcodes
+		$this->load->view("barcodes/barcode_sheet", $data);
 	}
 
 	function bulk_edit()
@@ -385,6 +306,7 @@ class Items extends Secure_area implements iData_controller
 	{
 		$upload_success = $this->_handle_image_upload();
 		$upload_data = $this->upload->data();
+
 		//Save item data
 		$item_data = array(
 			'name'=>$this->input->post('name'),
@@ -433,7 +355,7 @@ class Items extends Secure_area implements iData_controller
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
-			for($k=0;$k<count($tax_percents);$k++)
+			for($k = 0; $k < count($tax_percents); $k++)
 			{
 				if (is_numeric($tax_percents[$k]))
 				{
@@ -446,7 +368,7 @@ class Items extends Secure_area implements iData_controller
             $stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
             foreach($stock_locations as $location_data)
             {
-                $updated_quantity = $this->input->post($location_data['location_id'].'_quantity');
+                $updated_quantity = $this->input->post('quantity_' . $location_data['location_id']);
                 $location_detail = array('item_id'=>$item_id,
                                         'location_id'=>$location_data['location_id'],
                                         'quantity'=>$updated_quantity);  
@@ -467,7 +389,7 @@ class Items extends Secure_area implements iData_controller
 	                $success &= $this->Inventory->insert($inv_data);       
                 }                                            
             }
-			if ($success && $upload_success)
+			if($success && $upload_success)
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 
@@ -481,7 +403,6 @@ class Items extends Secure_area implements iData_controller
 
             	echo json_encode(array('success'=>false, 'message'=>$error_message, 'item_id'=>$item_id)); 
             }
-            
 		}
 		else//failure
 		{
@@ -495,25 +416,33 @@ class Items extends Secure_area implements iData_controller
 		echo !$exists ? 'true' : 'false';
 	}
 	
-	function _handle_image_upload()
+	private function _handle_image_upload()
 	{
 		$this->load->helper('directory');
+
 		$map = directory_map('./uploads/item_pics/', 1);
+
 		// load upload library
 		$config = array('upload_path' => './uploads/item_pics/',
 				'allowed_types' => 'gif|jpg|png',
 				'max_size' => '100',
 				'max_width' => '640',
 				'max_height' => '480',
-				'file_name' => sizeof($map));
+				'file_name' => sizeof($map) + 1);
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');           
 		
-		return strlen($this->upload->display_errors()) == 0 || 
-            	!strcmp($this->upload->display_errors(), 
-            		'<p>'.$this->lang->line('upload_no_file_selected').'</p>');
+		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
-	
+
+	public function remove_logo($item_id)
+	{
+		$item_data = array('pic_id' => null);
+		$result = $this->Item->save($item_data, $item_id);
+
+		echo json_encode(array('success' => $result));
+	}
+
 	function save_inventory($item_id=-1)
 	{	
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
@@ -556,32 +485,33 @@ class Items extends Secure_area implements iData_controller
 		$item_data = array();
 
 		foreach($_POST as $key=>$value)
-		{
+		{		
 			//This field is nullable, so treat it differently
 			if($key == 'supplier_id' && $value != '')
 			{	
 				$item_data["$key"] = $value;
 			}
-			elseif($value != '' && !(in_array($key, array('submit', 'item_ids', 'tax_names', 'tax_percents'))))
+			elseif($value != '' && !(in_array($key, array('item_ids', 'tax_names', 'tax_percents'))))
 			{
-				$item_data["$key"]=$value;
+				$item_data["$key"] = $value;
 			}
 		}
 
 		//Item data could be empty if tax information is being updated
-		if(empty($item_data) || $this->Item->update_multiple($item_data,$items_to_update))
+		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
 			$tax_updated = false;
-			for($k=0;$k<count($tax_percents);$k++)
-			{
-				if (!empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
+			
+			for($k = 0; $k < count($tax_percents); $k++)
+			{		
+				if( !empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
 				{
 					$tax_updated = true;
 					
-					$items_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k] );
+					$items_taxes_data[] = array('name'=>$tax_names[$k], 'percent'=>$tax_percents[$k]);
 				}
 			}
 			
@@ -600,7 +530,7 @@ class Items extends Secure_area implements iData_controller
 
 	function delete()
 	{
-		$items_to_delete=$this->input->post('ids');
+		$items_to_delete = $this->input->post('ids');
 
 		if($this->Item->delete_list($items_to_delete))
 		{
@@ -764,8 +694,9 @@ class Items extends Secure_area implements iData_controller
                     {
                         $failCodes[] = $i;
                     }
+
+					$i++;
                 }
-                $i++;
             }
             else 
             {
@@ -787,14 +718,6 @@ class Items extends Secure_area implements iData_controller
 		}
 
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );
-	}
-
-	/*
-	get the width for the add/edit form
-	*/
-	function get_form_width()
-	{
-		return 450;
 	}
 }
 ?>

@@ -10,7 +10,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 |
 */
-$config['application_version'] = '2.4.0';
+$config['application_version'] = '3.0.0';
 
 /*
 |--------------------------------------------------------------------------
@@ -452,8 +452,8 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
 $config['csrf_protection'] = FALSE;
-$config['csrf_token_name'] = 'csrf_ospos_v24';
-$config['csrf_cookie_name'] = 'csrf_cookie_ospos_v24';
+$config['csrf_token_name'] = 'csrf_ospos_v3';
+$config['csrf_cookie_name'] = 'csrf_cookie_ospos_v3';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array();

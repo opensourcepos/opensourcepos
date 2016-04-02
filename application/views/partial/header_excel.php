@@ -18,17 +18,7 @@
 	{
 		display:none;
 	}
-	
-	#content_area
-	{
-		width:100%;
-	}
-	
-	#content_area_wrapper
-	{
-		border:0px;
-	}
-	
+
 	#sale_return_policy
 	{
 		width:100%;

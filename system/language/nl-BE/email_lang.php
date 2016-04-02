@@ -1,6 +1,6 @@
 <?php
 $lang['email_must_be_array'] = 'De email validatie methode moet een array als argument krijgen.';
-$lang['email_invalid_address'] = 'Ongeldig e-mailadres: %s';
+$lang['email_invalid_address'] = 'Ongeldig emailadres: %s';
 $lang['email_attachment_missing'] = 'De volgende bijlage kon niet worden gevonden: %s';
 $lang['email_attachment_unreadable'] = 'Kan deze bijlage niet openen: %s';
 $lang['email_no_recipients'] = 'U moet ontvangers specificeren in: To, Cc, of Bcc';
