@@ -1,15 +1,15 @@
 Version 2.4
 -----------
-+ *CodeIgniter 3.0.5* Upgrade
++ *CodeIgniter 3.0.5* Upgrade (please read UPGRADE.txt)
 + Fix for spurious logouts
 + Apache .htaccess mod_expiry caching and security optimizations
-+ Bulk item edit fixes (tax and supplier fields)
++ Bulk item edit fixes (category, tax and supplier fields)
 + Remove f-key shortcuts used for module navigation
 + Allow to use custom invoice numbers when suspending sale
 + PHP7 fixes
 + Specific warnings to distinguish between reorder level and out of stock situation in sales
 + Fix malware detection issues due to usage of base64 encoding for storing session variables
-+ Improve langauge generation scripts (use PHP builtin functionality)
++ Improve language generation scripts (use PHP builtin functionality)
 + Add extra buttons for navigation and printing to receipt and invoice
 + Improve print layout for invoices
 + Make layout consistent for items between receipt and invoice templates
