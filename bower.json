@@ -30,7 +30,7 @@
     "jquery": "~1.12.2",
     "jquery-ui": "1.11.4",
     "swfobject-bower": "2.3.0",
-    "tablesorter": "jquery.tablesorter#^2.25.6",
+    "tablesorter": "jquery.tablesorter#^2.25.7",
     "bootstrap3-dialog": "bootstrap-dialog#^1.35.1",
     "jasny-bootstrap": "^3.1.3",
     "bootswatch-dist": "3.3.6-flatly",
