@@ -63,12 +63,12 @@
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c8934fe7a7"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b02e114127"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=57fd58af7d" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8d98a84d84" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

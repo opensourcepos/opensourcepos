@@ -13,7 +13,7 @@ describe("test receiving quantity", function() {
         receiving_quantity: 2
     };
 
-    it("should be able to creaate item with receiving quantity", function(done) {
+    it("should be able to create item with receiving quantity", function(done) {
         return ospos.create_item(this.browser, item).then(done, done);
     });
 
