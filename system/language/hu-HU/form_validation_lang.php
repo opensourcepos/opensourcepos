@@ -1,68 +1,40 @@
 <?php
 /**
- * CodeIgniter
+ * System messages translation for CodeIgniter(tm)
  *
- * An open source application development framework for PHP
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @author		CodeIgniter community
  * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
+ * @license		http://opensource.org/licenses/MIT	MIT License
+ * @link		http://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['form_validation_required']		= 'The {field} field is required.';
-$lang['form_validation_isset']			= 'The {field} field must have a value.';
-$lang['form_validation_valid_email']		= 'The {field} field must contain a valid email address.';
-$lang['form_validation_valid_emails']		= 'The {field} field must contain all valid email addresses.';
-$lang['form_validation_valid_url']		= 'The {field} field must contain a valid URL.';
-$lang['form_validation_valid_ip']		= 'The {field} field must contain a valid IP.';
-$lang['form_validation_min_length']		= 'The {field} field must be at least {param} characters in length.';
-$lang['form_validation_max_length']		= 'The {field} field cannot exceed {param} characters in length.';
-$lang['form_validation_exact_length']		= 'The {field} field must be exactly {param} characters in length.';
-$lang['form_validation_alpha']			= 'The {field} field may only contain alphabetical characters.';
-$lang['form_validation_alpha_numeric']		= 'The {field} field may only contain alpha-numeric characters.';
-$lang['form_validation_alpha_numeric_spaces']	= 'The {field} field may only contain alpha-numeric characters and spaces.';
-$lang['form_validation_alpha_dash']		= 'The {field} field may only contain alpha-numeric characters, underscores, and dashes.';
-$lang['form_validation_numeric']		= 'The {field} field must contain only numbers.';
-$lang['form_validation_is_numeric']		= 'The {field} field must contain only numeric characters.';
-$lang['form_validation_integer']		= 'The {field} field must contain an integer.';
-$lang['form_validation_regex_match']		= 'The {field} field is not in the correct format.';
-$lang['form_validation_matches']		= 'The {field} field does not match the {param} field.';
-$lang['form_validation_differs']		= 'The {field} field must differ from the {param} field.';
-$lang['form_validation_is_unique'] 		= 'The {field} field must contain a unique value.';
-$lang['form_validation_is_natural']		= 'The {field} field must only contain digits.';
-$lang['form_validation_is_natural_no_zero']	= 'The {field} field must only contain digits and must be greater than zero.';
-$lang['form_validation_decimal']		= 'The {field} field must contain a decimal number.';
-$lang['form_validation_less_than']		= 'The {field} field must contain a number less than {param}.';
-$lang['form_validation_less_than_equal_to']	= 'The {field} field must contain a number less than or equal to {param}.';
-$lang['form_validation_greater_than']		= 'The {field} field must contain a number greater than {param}.';
-$lang['form_validation_greater_than_equal_to']	= 'The {field} field must contain a number greater than or equal to {param}.';
-$lang['form_validation_error_message_not_set']	= 'Unable to access an error message corresponding to your field name {field}.';
-$lang['form_validation_in_list']		= 'The {field} field must be one of: {param}.';
+$lang['form_validation_required']				= '{field} mező megadása kötelező.';
+$lang['form_validation_isset']					= '{field} mező nem lehet üres.';
+$lang['form_validation_valid_email']			= '{field} mező csak érvényes email címet tartalmazhat.';
+$lang['form_validation_valid_emails']			= '{field} mező csak érvényes email címeket tartalmazhat.';
+$lang['form_validation_valid_url']				= '{field} mező csak érvényes URL címet tartalmazhat.';
+$lang['form_validation_valid_ip']				= '{field} mező csak érvényes IP címet tartalmazhat.';
+$lang['form_validation_min_length']				= '{field} mező legalább {param} karakter hosszú kell hogy legyen.';
+$lang['form_validation_max_length']				= '{field} mező hossza nem haladhatja meg a(z) {param} karaktert.';
+$lang['form_validation_exact_length']			= '{field} mező hossza pontosan {param} karakter kell hogy legyen.';
+$lang['form_validation_alpha']					= '{field} mező csak az angol abc karaktereit tartalmazhatja.';
+$lang['form_validation_alpha_numeric']			= '{field} mező alfanumerikus karaktereket tartalmazhat.';
+$lang['form_validation_alpha_numeric_spaces']	= '{field} mező alfanumerikus karaktereket és szóközöket tartalmazhat.';
+$lang['form_validation_alpha_dash']				= '{field} mező alfanumerikus karaktereket, alsóvonást és kötőjelet tartalmazhat.';
+$lang['form_validation_numeric']				= '{field} mező csak számokat tartalmazhat.';
+$lang['form_validation_is_numeric']				= '{field} mező csak numerikus karaktereket tartalmazhat.';
+$lang['form_validation_integer']				= '{field} mező csak egészet tartalmazhat.';
+$lang['form_validation_regex_match']			= '{field} mező nem megfelelő formátumú.';
+$lang['form_validation_matches']				= '{field} mező nem azonos a(z) {param} mezővel.';
+$lang['form_validation_differs']				= '{field} mező nem különböző a(z) {param} mezőtől.';
+$lang['form_validation_is_unique'] 				= '{field} mező csak egyedi értéket tartalmazhat.';
+$lang['form_validation_is_natural']				= '{field} mező csak nem negatív egész számokat tartalmazhat.';
+$lang['form_validation_is_natural_no_zero']		= '{field} mező csak pozitív egész számokat tartalmazhat.';
+$lang['form_validation_decimal']				= '{field} mező csak tizedes számokat tartalmazhat.';
+$lang['form_validation_less_than']				= '{field} mező értéke kisebb, mint {param}.';
+$lang['form_validation_less_than_equal_to']		= '{field} mező értéke kisebb vagy egyenlő, mint {param}.';
+$lang['form_validation_greater_than']			= '{field} mező értéke nagyobb, mint {param}.';
+$lang['form_validation_greater_than_equal_to']	= '{field} mező értéke nagyobb vagy egyenlő, mint {param}.';
+$lang['form_validation_error_message_not_set']	= '{field} mezőhöz tartozó hibaüzenet nem érhető el!';
+$lang['form_validation_in_list']				= '{field} mező értékének a következők egyikének kell lennie: {param}.';

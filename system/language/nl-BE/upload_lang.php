@@ -1,17 +1,28 @@
 <?php
-$lang['upload_userfile_not_set'] = 'Kon de POST variabele "userfile" niet vinden.';
-$lang['upload_file_exceeds_limit'] = 'Het geuploade bestand overschrijdt de maximum grootte. Deze maximum grootte is gespecificeerd in uw PHP configuratie bestand.';
-$lang['upload_file_exceeds_form_limit'] = 'Het geuploade bestand overschrijdt de maximum grootte die in het formulier is aangegeven';
-$lang['upload_file_partial'] = 'Het bestand is maar gedeeltelijk geupload.';
-$lang['upload_no_temp_directory'] = 'De tijdelijke map bestaat niet.';
-$lang['upload_unable_to_write_file'] = 'Het bestand kon niet naar de schijf geschreven worden.';
-$lang['upload_stopped_by_extension'] = 'Het uploaden is gestopt door uitbreiding.';
-$lang['upload_no_file_selected'] = 'U heeft geen bestand geselecteerd om te uploaden.';
-$lang['upload_invalid_filetype'] = 'Het bestandstype van het bestand dat u probeert te uploaden is niet toegestaan.';
-$lang['upload_invalid_filesize'] = 'De bestandsgrootte van het bestand dat u probeert te uploaden is te groot.';
-$lang['upload_invalid_dimensions'] = 'De afbeelding die u probeert te uploaden is breder of hoger dan toegestaan.';
-$lang['upload_destination_error'] = 'Er is een probleem opgetreden bij het verplaatsen van het bestand naar de doellocatie.';
-$lang['upload_no_filepath'] = 'Het uploadpad is niet correct.';
-$lang['upload_no_file_types'] = 'U heeft geen toegestane bestandstypen gespecificeerd.';
-$lang['upload_bad_filename'] = 'De bestandsnaam die u heeft opgegeven komt al voor op de server.';
-$lang['upload_not_writable'] = 'De doellocatie op de server is niet schijfbaar';
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author	CodeIgniter community
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Pieter Krul
+ * @license	http://opensource.org/licenses/MIT	MIT License
+ * @link	http://codeigniter.com
+ */
+defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
+
+$lang['upload_userfile_not_set']		= 'De POST-variabele "userfile" ontbreekt.  ';
+$lang['upload_file_exceeds_limit']		= 'Het bestand is groter dan in het PHP-configuratiebestand maximaal is toegestaan.';
+$lang['upload_file_exceeds_form_limit']		= 'Het bestand is groter dan dat volgens het formulier maximaal is toegestaan.';
+$lang['upload_file_partial']			= 'Het bestand is slechts gedeeltelijk aangekomen.';
+$lang['upload_no_temp_directory']		= 'De tijdelijke folder ontbreekt.';
+$lang['upload_unable_to_write_file']		= 'Het bestand kon niet worden weggeschreven.';
+$lang['upload_stopped_by_extension']		= 'De upload is gestopt door de extensie van het bestand.';
+$lang['upload_no_file_selected']		= 'Voor het uploaden dient een bestand geselecteerd te worden. ';
+$lang['upload_invalid_filetype']		= 'Het bestandstype wordt niet toegestaan. ';
+$lang['upload_invalid_filesize']		= 'Het bestand dat u probeert te uploaden is groter dan toestaan.';
+$lang['upload_invalid_dimensions']		= 'Het afbeeldingsbestand past niet binnen de toegestane afmetingen.';
+$lang['upload_destination_error']		= 'Er is een probleem ontstaan bij het verplaatsen van de upload naar de uiteindelijke bestemming.';
+$lang['upload_no_filepath']			= 'Het pad voor uploads blijkt niet te kloppen.';
+$lang['upload_no_file_types']			= 'Er zijn geen toegestane bestandstypen opgegeven.';
+$lang['upload_bad_filename']			= 'De opgegeven bestandsnaam bestaat al op de server.';
+$lang['upload_not_writable']			= 'Schrijfrechten lijken te ontbreken voor de upload-directory.';

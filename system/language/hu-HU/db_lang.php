@@ -1,63 +1,35 @@
 <?php
 /**
- * CodeIgniter
+ * System messages translation for CodeIgniter(tm)
  *
- * An open source application development framework for PHP
- *
- * This content is released under the MIT License (MIT)
- *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * @package	CodeIgniter
- * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @author		CodeIgniter community
  * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
- * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	https://codeigniter.com
- * @since	Version 1.0.0
- * @filesource
+ * @license		http://opensource.org/licenses/MIT	MIT License
+ * @link		http://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['db_invalid_connection_str'] = 'Unable to determine the database settings based on the connection string you submitted.';
-$lang['db_unable_to_connect'] = 'Unable to connect to your database server using the provided settings.';
-$lang['db_unable_to_select'] = 'Unable to select the specified database: %s';
-$lang['db_unable_to_create'] = 'Unable to create the specified database: %s';
-$lang['db_invalid_query'] = 'The query you submitted is not valid.';
-$lang['db_must_set_table'] = 'You must set the database table to be used with your query.';
-$lang['db_must_use_set'] = 'You must use the "set" method to update an entry.';
-$lang['db_must_use_index'] = 'You must specify an index to match on for batch updates.';
-$lang['db_batch_missing_index'] = 'One or more rows submitted for batch updating is missing the specified index.';
-$lang['db_must_use_where'] = 'Updates are not allowed unless they contain a "where" clause.';
-$lang['db_del_must_use_where'] = 'Deletes are not allowed unless they contain a "where" or "like" clause.';
-$lang['db_field_param_missing'] = 'To fetch fields requires the name of the table as a parameter.';
-$lang['db_unsupported_function'] = 'This feature is not available for the database you are using.';
-$lang['db_transaction_failure'] = 'Transaction failure: Rollback performed.';
-$lang['db_unable_to_drop'] = 'Unable to drop the specified database.';
-$lang['db_unsupported_feature'] = 'Unsupported feature of the database platform you are using.';
-$lang['db_unsupported_compression'] = 'The file compression format you chose is not supported by your server.';
-$lang['db_filepath_error'] = 'Unable to write data to the file path you have submitted.';
-$lang['db_invalid_cache_path'] = 'The cache path you submitted is not valid or writable.';
-$lang['db_table_name_required'] = 'A table name is required for that operation.';
-$lang['db_column_name_required'] = 'A column name is required for that operation.';
-$lang['db_column_definition_required'] = 'A column definition is required for that operation.';
-$lang['db_unable_to_set_charset'] = 'Unable to set client connection character set: %s';
-$lang['db_error_heading'] = 'A Database Error Occurred';
+$lang['db_invalid_connection_str']		= 'A megadott karaterláncből nem sikerült megállapítani az adatbázis beállításait.';
+$lang['db_unable_to_connect']			= 'Nem sikerült az adatbázishoz kapcsolódni a megadott beállításokkal.';
+$lang['db_unable_to_select']			= 'A megadott adatbázis kiválasztása sikertelen: %s';
+$lang['db_unable_to_create']			= 'A megadott adatbázis létrehozása sikertelen: %s';
+$lang['db_invalid_query']				= 'A megadott lekérdezés nem érvényes.';
+$lang['db_must_set_table']				= 'Az adatbázis táblát meg kell adni a lekérdezés futtatásához.';
+$lang['db_must_use_set']				= 'A "set" metódust kell használni egy bejegyzés frissítéséhez.';
+$lang['db_must_use_index']				= 'A kötegelt frissítéshez egy egyező index megadása szükséges.';
+$lang['db_batch_missing_index']			= 'A kötegelt frissítés egy vagy több sorában hiányzik az index megadása.';
+$lang['db_must_use_where']				= 'A frissítések csak akkor engedélyezettek, ha tartalmaznak "where" szelekciót.';
+$lang['db_del_must_use_where']			= 'A törlések csak akkor engedélyezettek, ha tartalmaznak "where" vagy "like" szelekciót.';
+$lang['db_field_param_missing']			= 'A mezők lekéréséhez a tábla nevének paraméterként történő megadása szükséges.';
+$lang['db_unsupported_function']		= 'Ez a függvény nem elérhető a használt adatbázis esetén.';
+$lang['db_transaction_failure']			= 'Tranzakció hiba, a visszavonás (rollback) megtörtént.';
+$lang['db_unable_to_drop']				= 'A megadott adatbázis eldobása sikertelen.';
+$lang['db_unsupported_feature']			= 'Ez a szolgáltatás nem elérhető a használt adatbázis esetén.';
+$lang['db_unsupported_compression']		= 'A választott fájl tömörítési eljárást nem támogatja a szerver.';
+$lang['db_filepath_error']				= 'Nem sikerült adatot írni a megadott könyvtárba.';
+$lang['db_invalid_cache_path']			= 'A megadott gyorsítótár könyvtár érvénytelen vagy nem írható.';
+$lang['db_table_name_required']			= 'Ehhez a művelethez egy táblanév megadása szükséges.';
+$lang['db_column_name_required']		= 'Ehhez a művelethez egy oszlopnév megadása szükséges.';
+$lang['db_column_definition_required']	= 'Ehhez a művelethez egy oszlop specifikáció megadása szükséges.';
+$lang['db_unable_to_set_charset']		= 'Nem sikerült az adatbázis kapcsolat karakterkódolását beállítani: %s';
+$lang['db_error_heading']				= 'Adatbázis hiba';
