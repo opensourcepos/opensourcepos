@@ -60,6 +60,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('currency_symbol', '$'),
 ('decimal_point', '.'),
 ('currency_decimals', '2'),
+('tax_decimals', '2'),
 ('quantity_decimals', '0');
 
 -- --------------------------------------------------------
