@@ -1,7 +1,7 @@
 <?php 
 
 $lang["suppliers_account_number"] = "Conta nº";
-$lang["suppliers_cannot_be_deleted"] = "Não foi possível excluir fornecedores selecionados,um ou mais dos fornecedores selecionados tem vendas.";
+$lang["suppliers_cannot_be_deleted"] = "Não foi possível excluir fornecedores selecionados, um ou mais dos fornecedores selecionados tem vendas.";
 $lang["suppliers_company_name"] = "Empresa";
 $lang["suppliers_company_name_required"] = "Nome da Empresa é um campo obrigatório";
 $lang["suppliers_agency_name"] = "Nome da Agência";

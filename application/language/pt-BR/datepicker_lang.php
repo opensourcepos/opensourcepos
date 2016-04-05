@@ -1,13 +1,13 @@
 <?php 
 
-$lang["datepicker_days_sunday"] = " Domingo";
+$lang["datepicker_days_sunday"] = "Domingo";
 $lang["datepicker_days_monday"] = "Segunda Feira";
 $lang["datepicker_days_tueday"] = "Terça-feira";
 $lang["datepicker_days_wednesday"] = "Quarta-feira";
 $lang["datepicker_days_thursday"] = "Quinta-feira";
 $lang["datepicker_days_friday"] = "Sexta-feira";
 $lang["datepicker_days_saturday"] = "Sábado";
-$lang["datepicker_daysshort_sunday"] = " Dom";
+$lang["datepicker_daysshort_sunday"] = "Dom";
 $lang["datepicker_daysshort_monday"] = "Seg";
 $lang["datepicker_daysshort_tueday"] = "Ter";
 $lang["datepicker_daysshort_wednesday"] = "Qua";
@@ -53,14 +53,14 @@ $lang["datepicker_last_30"] = " Últimos 30 Dias";
 $lang["datepicker_last_month"] = " Último Mês";
 $lang["datepicker_last_year"] = "Último ano";
 $lang["datepicker_this_month"] = "Este Mes";
-$lang["datepicker_this_month_last_year"] = "This Month Last Year";
-$lang["datepicker_this_month_to_today"] = " This Month To Today";
+$lang["datepicker_this_month_last_year"] = "Este mês último ano";
+$lang["datepicker_this_month_to_today"] = " Deste mês para hoje";
 $lang["datepicker_this_month_to_today_last_year"] = " This Month To Today Last Year";
-$lang["datepicker_this_year"] = " Este A�o";
+$lang["datepicker_this_year"] = " Este Ano";
 $lang["datepicker_today_last_year"] = " Today Last Year";
 $lang["datepicker_yesterday"] = " Ayer";
 $lang["datepicker_apply"] = "Aplicar";
 $lang["datepicker_cancel"] = "Cancelar";
 $lang["datepicker_from"] = "De";
 $lang["datepicker_to"] = "Para";
-$lang["datepicker_custom"] = "Clilengte";
+$lang["datepicker_custom"] = "Cliente";
