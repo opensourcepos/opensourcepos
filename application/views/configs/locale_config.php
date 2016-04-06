@@ -106,7 +106,8 @@
 						'fr' => 'French',
 						'th' => 'Thai',
 						'tr' => 'Turkish',
-						'hu-HU' => 'Hungarian'
+						'hu-HU' => 'Hungarian',
+						'pt-BR' => 'Portugues (Brasil)'
 					),
 					$this->config->item('language'), array('class'=>'form-control input-sm'));
 					?>
