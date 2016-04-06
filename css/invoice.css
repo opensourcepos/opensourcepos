@@ -30,7 +30,7 @@
 #customer-title textarea { width: 150px; }
 
 /* second row */
-#block2 { overflow: hidden; }
+#block2 { overflow: hidden; width: 100%; }
 #company-title { float: left; }
 #meta { margin-top: 1px; width: 300px; float: right; }
 #meta td { text-align: right;  }

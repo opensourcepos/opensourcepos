@@ -112,7 +112,7 @@ $(document).ready(function()
 		$("input[name='customer_name']").val(ui.item.label);
 	};
 
-	var autocompleter = $("#customer_id").autocomplete(
+	$("#customer_name").autocomplete(
 	{
 		source: '<?php echo site_url("customers/suggest"); ?>',
 		minChars: 0,
