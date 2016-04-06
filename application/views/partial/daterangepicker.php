@@ -1,3 +1,5 @@
+<?php $this->lang->load("calendar"); $this->lang->load("date"); ?>
+
 var start_date = "<?php echo date('Y-m-d') ?>";
 var end_date   = "<?php echo date('Y-m-d') ?>";
 
@@ -61,28 +63,28 @@ $('#daterangepicker').daterangepicker({
 		"toLabel": "<?php echo $this->lang->line("datepicker_to"); ?>",
 		"customRangeLabel": "<?php echo $this->lang->line("datepicker_custom"); ?>",
 		"daysOfWeek": [
-			"<?php echo $this->lang->line("datepicker_daysmin_sunday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_monday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_tueday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_wednesday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_thursday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_friday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_saturday"); ?>",
-			"<?php echo $this->lang->line("datepicker_daysmin_sunday"); ?>"
+			"<?php echo $this->lang->line("cal_su"); ?>",
+			"<?php echo $this->lang->line("cal_mo"); ?>",
+			"<?php echo $this->lang->line("cal_tu"); ?>",
+			"<?php echo $this->lang->line("cal_we"); ?>",
+			"<?php echo $this->lang->line("cal_th"); ?>",
+			"<?php echo $this->lang->line("cal_fr"); ?>",
+			"<?php echo $this->lang->line("cal_sa"); ?>",
+			"<?php echo $this->lang->line("cal_su"); ?>"
 		],
 		"monthNames": [
-			"<?php echo $this->lang->line("datepicker_months_january"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_february"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_march"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_april"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_may"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_june"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_july"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_august"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_september"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_october"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_november"); ?>",
-			"<?php echo $this->lang->line("datepicker_months_december"); ?>"
+			"<?php echo $this->lang->line("cal_january"); ?>",
+			"<?php echo $this->lang->line("cal_february"); ?>",
+			"<?php echo $this->lang->line("cal_march"); ?>",
+			"<?php echo $this->lang->line("cal_april"); ?>",
+			"<?php echo $this->lang->line("cal_may"); ?>",
+			"<?php echo $this->lang->line("cal_june"); ?>",
+			"<?php echo $this->lang->line("cal_july"); ?>",
+			"<?php echo $this->lang->line("cal_august"); ?>",
+			"<?php echo $this->lang->line("cal_september"); ?>",
+			"<?php echo $this->lang->line("cal_october"); ?>",
+			"<?php echo $this->lang->line("cal_november"); ?>",
+			"<?php echo $this->lang->line("cal_december"); ?>"
 		],
 		"firstDay": <?php echo $this->lang->line("datepicker_weekstart"); ?>
 	},
