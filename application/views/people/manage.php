@@ -42,7 +42,6 @@ function post_person_form_submit(response)
 		{
 			update_row(response.person_id,'<?php echo site_url("$controller_name/get_row")?>');
 			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
-			
 		}
 		else //refresh entire table
 		{
