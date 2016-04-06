@@ -13,18 +13,18 @@ datepicker_daysshort_wednesday,Sze,Mit,Wo,Mi�,Wed,Mer,,,,,,Qua
 datepicker_daysshort_thursday,Csüt,Don,Do,Jue,Thu,Jeu,,,,,,Qui
 datepicker_daysshort_friday,Pén,Fre,Vr,Vie,Fri,Ven,,,,,,Sex
 datepicker_daysshort_saturday,Szo,Sam,Za,S�b,Sat,Sam,,,,,,Sab
-datepicker_daysmin_sunday,V,So,Zo,Do,Su,D,,,,,,Do
-datepicker_daysmin_monday,H,Mo,Ma,Lu,Mo,L,,,,,,Se
-datepicker_daysmin_tueday,K,Di,Di,Ma,Tu,Ma,,,,,,Te
-datepicker_daysmin_wednesday,Sze,Mi,Wo,Mi,We,Me,,,,,,Qa
-datepicker_daysmin_thursday,Cs,Do,Do,Ju,Th,J,,,,,,Qi
-datepicker_daysmin_friday,P,Fr,Vr,Vi,Fr,V,,,,,,Se
-datepicker_daysmin_saturday,Szo,Sa,Za,Sa,Sa,S,,,,,,Sa
+datepicker_daysmin_sunday,V,So,Zo,Do,Su,D,,,,,,D
+datepicker_daysmin_monday,H,Mo,Ma,Lu,Mo,L,,,,,,S
+datepicker_daysmin_tueday,K,Di,Di,Ma,Tu,Ma,,,,,,T
+datepicker_daysmin_wednesday,Sze,Mi,Wo,Mi,We,Me,,,,,,Q
+datepicker_daysmin_thursday,Cs,Do,Do,Ju,Th,J,,,,,,Q
+datepicker_daysmin_friday,P,Fr,Vr,Vi,Fr,V,,,,,,S
+datepicker_daysmin_saturday,Szo,Sa,Za,Sa,Sa,S,,,,,,S
 datepicker_months_january,Január,Januar,Januari,Enero,January,Janvier,,,,,,Janeiro
 datepicker_months_february,Február,Februar,Februari,Febrero,February,F�vrier,,,,,,Fevereiro
 datepicker_months_march,Március,M�rz,Maart,Marzo,March,Mars,,,,,,Março
 datepicker_months_april,Április,April,April,Abril,April,Avril,,,,,,Abril
-datepicker_months_may,Május,Mai,Mei,Mayo,May,Mai,,,,,,Maiio
+datepicker_months_may,Május,Mai,Mei,Mayo,May,Mai,,,,,,Maio
 datepicker_months_june,Június,Juni,Juni,Junio,June,Juin,,,,,,Junho
 datepicker_months_july,Július,Juli,Juli,Julio,July,Juillet,,,,,,Julho
 datepicker_months_august,Augusztus,August,Augustus,Agosto,August,Ao�t,,,,,,Agosto
@@ -45,19 +45,19 @@ datepicker_monthsshort_october,Okt,Okt,Okt,Oct,Oct,Oct,,,,,,Out
 datepicker_monthsshort_november,Nov,Nov,Nov,Nov,Nov,Nov,,,,,,Nov
 datepicker_monthsshort_december,Dec,Dez,Dec,Dic,Dec,Dec,,,,,,Dez
 datepicker_today,Ma,Heute,Vandaag,Hoy,Today,Aujourd'hui,今天,сегодня,วันนี้,Bugün,Hari ini,Hoje
-datepicker_weekstart,1,1,0,0,0,1,,,,,,0
-datepicker_all_time,Kezdetektől,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu, Todos
-datepicker_last_7,Utolsó 7 nap,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir,ùltimos 7 Dias
-datepicker_last_30,Utolsó 30 nap,Letzte 30 Tage,Vorige 30 Dagen,Últimos 30 Días,Last 30 Days,Ces 30 derniers jours,過去七天,Последние 30 дней,30 วันสุดท้าย,Son 30 Gün,30 Hari Terakhir, Últimos 30 Dias
-datepicker_last_month,Múlt hónap,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu, Último Mês
+datepicker_weekstart,1,1,0,0,0,1,,,,,,
+datepicker_all_time,Kezdetektől,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu,Todos
+datepicker_last_7,Utolsó 7 nap,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir,Últimos 7 Dias
+datepicker_last_30,Utolsó 30 nap,Letzte 30 Tage,Vorige 30 Dagen,Últimos 30 Días,Last 30 Days,Ces 30 derniers jours,過去七天,Последние 30 дней,30 วันสุดท้าย,Son 30 Gün,30 Hari Terakhir,Últimos 30 Dias
+datepicker_last_month,Múlt hónap,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu,Último Mês
 datepicker_last_year,Múlt év,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu,Último ano
 datepicker_this_month,Ez a hónap,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini,Este Mes
 datepicker_this_month_last_year,"Ez a hónap, múlt évben",Dieser Monat letzten Jahres,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,Este mês último ano
-datepicker_this_month_to_today,"Ez a hónap, mai napig",Dieser Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today, Deste mês para hoje
-datepicker_this_month_to_today_last_year,"Ez a hónap, mai nap, múlt évben",Dieser Monat bis Heute letzten Jahres,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year, This Month To Today Last Year
-datepicker_this_year,Ezév,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini, Este Ano
-datepicker_today_last_year,"Mai nap, elmúlt évben",Heute letzten Jahres,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year, Today Last Year
-datepicker_yesterday,Tegnap,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin, Ayer
+datepicker_this_month_to_today,"Ez a hónap, mai napig",Dieser Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,Deste mês para hoje
+datepicker_this_month_to_today_last_year,"Ez a hónap, mai nap, múlt évben",Dieser Monat bis Heute letzten Jahres,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,Este mês Para Hoje Último Ano
+datepicker_this_year,Ezév,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini,Este Ano
+datepicker_today_last_year,"Mai nap, elmúlt évben",Heute letzten Jahres,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Hoje Último Ano
+datepicker_yesterday,Tegnap,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin,Ontem
 datepicker_apply,Elfogad,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Aplicar
 datepicker_cancel,Mégsem,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancelar
 datepicker_from,Tól,From,From,From,From,From,From,From,From,From,From,De
