@@ -1,12 +1,5 @@
 <?php 
 
-$lang["datepicker_daysshort_sunday"] = "Dim";
-$lang["datepicker_daysshort_monday"] = "Lun";
-$lang["datepicker_daysshort_tueday"] = "Mar";
-$lang["datepicker_daysshort_wednesday"] = "Mer";
-$lang["datepicker_daysshort_thursday"] = "Jeu";
-$lang["datepicker_daysshort_friday"] = "Ven";
-$lang["datepicker_daysshort_saturday"] = "Sam";
 $lang["datepicker_today"] = "Aujourd'hui";
 $lang["datepicker_weekstart"] = "1";
 $lang["datepicker_all_time"] = "Depuis le début";

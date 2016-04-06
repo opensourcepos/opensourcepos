@@ -1,12 +1,5 @@
 <?php 
 
-$lang["datepicker_daysshort_sunday"] = "";
-$lang["datepicker_daysshort_monday"] = "";
-$lang["datepicker_daysshort_tueday"] = "";
-$lang["datepicker_daysshort_wednesday"] = "";
-$lang["datepicker_daysshort_thursday"] = "";
-$lang["datepicker_daysshort_friday"] = "";
-$lang["datepicker_daysshort_saturday"] = "";
 $lang["datepicker_today"] = "Hari ini";
 $lang["datepicker_weekstart"] = "";
 $lang["datepicker_all_time"] = "Semua Waktu";

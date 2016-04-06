@@ -1,11 +1,4 @@
 label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id
-datepicker_daysshort_sunday,Vas,Son,Zo,Dom,Sun,Dim,,,,,
-datepicker_daysshort_monday,Hét,Mon,Ma,Lun,Mon,Lun,,,,,
-datepicker_daysshort_tueday,Ke,Die,Di,Mar,Tue,Mar,,,,,
-datepicker_daysshort_wednesday,Sze,Mit,Wo,Mi�,Wed,Mer,,,,,
-datepicker_daysshort_thursday,Csüt,Don,Do,Jue,Thu,Jeu,,,,,
-datepicker_daysshort_friday,Pén,Fre,Vr,Vie,Fri,Ven,,,,,
-datepicker_daysshort_saturday,Szo,Sam,Za,S�b,Sat,Sam,,,,,
 datepicker_today,Ma,Heute,Vandaag,Hoy,Today,Aujourd'hui,今天,сегодня,วันนี้,Bugün,Hari ini
 datepicker_weekstart,1,1,0,0,0,1,,,,,
 datepicker_all_time,Kezdetektől,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu
