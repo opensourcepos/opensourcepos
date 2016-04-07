@@ -8,11 +8,11 @@
 			<?php echo form_label($this->lang->line('item_kits_name'), 'name', array('class'=>'control-label col-xs-3 required')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'name',
-					'id'=>'name',
-					'class'=>'form-control input-sm',
-					'value'=>$item_kit_info->name)
-					);?>
+						'name'=>'name',
+						'id'=>'name',
+						'class'=>'form-control input-sm',
+						'value'=>$item_kit_info->name)
+						);?>
 			</div>
 		</div>
 
@@ -20,11 +20,11 @@
 			<?php echo form_label($this->lang->line('item_kits_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_textarea(array(
-					'name'=>'description',
-					'id'=>'description',
-					'class'=>'form-control input-sm',
-					'value'=>$item_kit_info->description)
-					);?>
+						'name'=>'description',
+						'id'=>'description',
+						'class'=>'form-control input-sm',
+						'value'=>$item_kit_info->description)
+						);?>
 			</div>
 		</div>
 
@@ -32,19 +32,19 @@
 			<?php echo form_label($this->lang->line('item_kits_add_item'), 'item', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'item',
-					'id'=>'item',
-					'class'=>'form-control input-sm')
-					);?>
+						'name'=>'item',
+						'id'=>'item',
+						'class'=>'form-control input-sm')
+						);?>
 			</div>
 		</div>
 
 		<table id="item_kit_items" class="table table-striped table-hover">
 			<thead>
-				<tr bgcolor="#CCC">
-					<th><?php echo $this->lang->line('common_delete'); ?></th>
-					<th><?php echo $this->lang->line('item_kits_item'); ?></th>
-					<th><?php echo $this->lang->line('item_kits_quantity'); ?></th>
+				<tr>
+					<th width="10%"><?php echo $this->lang->line('common_delete'); ?></th>
+					<th width="70%"><?php echo $this->lang->line('item_kits_item'); ?></th>
+					<th width="20%"><?php echo $this->lang->line('item_kits_quantity'); ?></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -56,7 +56,7 @@
 						<?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
 						<td><a href='#' onclick='return delete_item_kit_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
 						<td><?php echo $item_info->name; ?></td>
-						<td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo to_quantity_decimals($item_kit_item['quantity']) ?>' size='5'/></td>
+						<td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo to_quantity_decimals($item_kit_item['quantity']) ?>'/></td>
 					</tr>
 				<?php
 				}

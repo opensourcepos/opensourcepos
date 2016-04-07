@@ -7,30 +7,30 @@
 		<?php $this->load->view("people/form_basic_info"); ?>
 
 		<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'company_name',
-					'class'=>'form-control input-sm',
-					'value'=>$person_info->company_name)
-					);?>
+						'name'=>'company_name',
+						'class'=>'form-control input-sm',
+						'value'=>$person_info->company_name)
+						);?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'account_number',
-					'id'=>'account_number',
-					'class'=>'account_number form-control',
-					'value'=>$person_info->account_number)
-					);?>
+						'name'=>'account_number',
+						'id'=>'account_number',
+						'class'=>'account_number form-control',
+						'value'=>$person_info->account_number)
+						);?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
 				<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable);?>
 			</div>

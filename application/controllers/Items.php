@@ -225,7 +225,7 @@ class Items extends Secure_area implements iData_controller
             $data['item_quantities'][$location_data['location_id']] = $this->Item_quantity->get_item_quantity($item_id,$location_data['location_id'])->quantity;
         }     
         
-		$this->load->view("items/inventory", $data);
+		$this->load->view("items/form_inventory", $data);
 	}
 	
 	function count_details($item_id=-1)
@@ -240,7 +240,7 @@ class Items extends Secure_area implements iData_controller
             $data['item_quantities'][$location_data['location_id']] = $this->Item_quantity->get_item_quantity($item_id,$location_data['location_id'])->quantity;
         }     
                 
-		$this->load->view("items/count_details", $data);
+		$this->load->view("items/form_count_details", $data);
 	}
 
 	function generate_barcodes($item_ids)
@@ -552,7 +552,7 @@ class Items extends Secure_area implements iData_controller
 	
 	function excel_import()
 	{
-		$this->load->view("items/excel_import", null);
+		$this->load->view("items/form_excel_import", null);
 	}
 
     function do_excel_import()

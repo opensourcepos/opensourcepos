@@ -58,23 +58,28 @@
 	font-size: 80%;
 }
 
-#item_kit_items_title
+#items_count_details
 {
-	text-align: center;
+	font-size: 80%;
 }
 
-#item_kit_items
+#item_kit_items, #items_count_details
 {
 	width: 100%;
 }
 
-#item_kit_items th
+#item_kit_items thead tr, #items_count_details thead tr
+{
+	background-color: #CCC;
+}
+
+#item_kit_items th, #items_count_details th
 {
 	text-align: center;
 	font-weight: bold;
 }
 
-#item_kit_items td
+#item_kit_items td, #items_count_details td
 {
 	text-align: center;
 }
