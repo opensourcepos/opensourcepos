@@ -60,4 +60,4 @@ $lang['db_table_name_required'] = 'Um nome de tabela é necessária para que a o
 $lang['db_column_name_required'] = 'Um nome de coluna é necessária para que a operação.';
 $lang['db_column_definition_required'] = 'A definição da coluna é necessária para que a operação.';
 $lang['db_unable_to_set_charset'] = 'Não é possível definir o conjunto de caracteres de conexão do cliente: %s';
-$lang['db_error_heading'] = ' Ocorreu um erro na base de dados.';
+$lang['db_error_heading'] = 'Ocorreu um erro na base de dados.';

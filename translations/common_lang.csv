@@ -1,6 +1,6 @@
 label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,pt-BR
 common_address_1,Cím 1,Adresse 1,Adres 1,Dirección 1,Address 1,Addresse 1,地址 1,Адрес 1,ที่อยู่,Adres 1,Alamat 1,Endereço
-common_address_2,Cím 2,Adresse 2,Adres 2,Dirección 2,Address 2,Addresse 2,地址 2,Адрес 2,ที่อยู่ (เพิ่มเติม),Adres 2,Alamat 2,Coomplemento
+common_address_2,Cím 2,Adresse 2,Adres 2,Dirección 2,Address 2,Addresse 2,地址 2,Адрес 2,ที่อยู่ (เพิ่มเติม),Adres 2,Alamat 2,Complemento
 common_city,Város,Stadt,Stad,Ciudad,City,Ville,城市,Город,อำเภอ,Şehir,Kota,Cidade
 common_comments,Megjegyzések,Kommentare,Commentaar,Comentarios,Comments,Commentaires,評論,Комментарии,หมายเหตุ,Yorumlar,Catatan,Comentários
 common_common,közös,Allgemein,algemeen,común,common,commun,一般,общественно,ธรรมดา,genel,Biasa,comum
@@ -12,7 +12,7 @@ common_print,Nyomtat,Drucken,Print,Print,Print,Imprimer,Print,Print,พิมพ
 common_det,részletek,Details,details,detalles,details,détails,更多,детали,สรุป,Detaylar,Detail,detalhes
 common_edit,szerkeszt,Ändern,bewerk,editar,edit,éditer,編輯,редактировать,แก้ไข,düzenle,Ubah,editar
 common_email,E-Mail,Email,Email,Email,Email,Email,Email,Электронная почта,Email,E-Posta,Email,e-mail
-common_email_invalid_format,Az E-mail cím nem megfelelően formázott,Das Email Format ist nicht korrekt,Je moet een geldig email adres invullen.,El email no está en el formato requerido,The email address is not in the proper format,Le format de l'adresse électronique est incorrect,Email格式錯誤,Это электронная почта не в нужный формат,email address ไม่ถูกต้อง,E-Posta adresi doğru formatta değil,Format alamat email tidak benar,O formato do email não é válido
+common_email_invalid_format,Az E-mail cím nem megfelelően formázott,Das Email Format ist nicht korrekt,Je moet een geldig email adres invullen.,El email no está en el formato requerido,The email address is not in the proper format,Le format de l'adresse électronique est incorrect,Email格式錯誤,Это электронная почта не в нужный формат,email address ไม่ถูกต้อง,E-Posta adresi doğru formatta değil,Format alamat email tidak benar,O formato do e-mail não é válido
 common_fields_required_message,A piros mezők kötelezők,Die Felder in rot sind erforderlich,Velden met een * moeten ingevuld worden,Los campos en rojo son requeridos,Fields in red are required,Les champs en rouge sont requis,紅色欄位為必填,Красные пробела обязательно,ช่องสีแดงต้องกรอก,Kırmızı alanlar zorunludur,Bagian yang ditandai warna merah wajib diisi,Campos em vermelho são obrigatórios
 common_first_name,Vezetéknév,Vorname,Voornaam,Nombre,First Name,Prénom,名,Имя,ชื่อ,İsim,Nama Depan,Nome
 common_first_name_required,A vezetéknév kötelező mező,Vorname ist erforderlich,De voornaam moet ingevuld worden.,Nombre es un campo requerido,The first name is a required field.,Le prénom est requis.,名為必填,Имя обязательный пробел,ชื่อต้องกรอก,İsim zorunlu alandır,Nama depan wajib diisi.,O nome é requerido.
@@ -32,7 +32,7 @@ common_no_persons_to_display,Nincsenek megjeleníthető emberek,Keine Personen z
 common_or,VAGY,Oder,Of,Ó,OR,OU,或,ИЛИ,หรือ,Yada,ATAU,ou
 common_phone_number,Telefonszám,Telefon,Telefoon,Teléfono,Phone Number,Téléphone,電話,Номер телефона,โทรศัพท์,Telefon,Telepon,Telefone
 common_phone_number_required,Telefonszám kötelező mező,Telefon ist erforderlich,,,,Le numéro de téléphone est requis.,,,ต้องกรอกเบอร์โทร,,Nomer Telepon Wajib Diisi,Número do telefone é requerido
-common_please_visit_my,Kérem látogassa meg a ,Bitte beuschen Sie ,Bezoek mijn,"Por favor, visita mi",Please visit my,SVP visitez le,請造訪,"пожалуйста, посетите",เยี่ยมชมที่,ziyaret edin,Silahkan kunjungi,Por favor visite meu website;
+common_please_visit_my,Kérem látogassa meg a ,Bitte beuschen Sie ,Bezoek mijn,"Por favor, visita mi",Please visit my,SVP visitez le,請造訪,"пожалуйста, посетите",เยี่ยมชมที่,ziyaret edin,Silahkan kunjungi,Por favor visite o site da internet
 common_powered_by,Powered by,Powered by,Powered by,Potenciado por,Powered by,Animé par,Powered by,самоходные из,จัดทำโดย,Powered by,Diberdayakan oleh,Desenvolvido por
 common_price,Ár,Preis,Prijs,Precio,Price,Prix,價值,Цена,ราคา,Fiyat,Harga,Preço
 common_remove,Eltávolít,Annulieren,Verwijder,Eliminar,Remove,Enlever,移除,Снимать,ลบ,Kaldır,Hapus,Remover
@@ -43,7 +43,7 @@ common_searched_for,Keresett ,Gescuht nach,Gezocht op,Buscaste,Searched for,Rech
 common_state,Megye,BL/Kanton,Provincie,Estado,State,État,州,Штат,จังหวัด,Bölge,Provinsi,Estado
 common_submit,Elküld,Senden,Verzend,Enviar,Submit,Envoyer,送出,Подавать,ส่งข้อมูล,Onayla,Kirim,Enviar
 common_view_recent_sales,Eladások megtekintése,Letzte Verkäufe,Bekijk recente verkoop,Ver Ventas Recientes,View Recent Sales,Voir Ventes Récentes,最新的消售資訊,Посмотреть Недавние Продажи,การขายล่าสุด,Yeni satışları göster,Lihat Penjualan Terkini,Ver Vendas Recentes
-common_website,weboldalt,Website,website,sitio,website,site-web,網站,веб-сайт,website,website,Situs,website
+common_website,weboldalt,Website,website,sitio,website,site-web,網站,веб-сайт,website,website,Situs,site da internet
 common_welcome,Üdvözlet,Willkommen,Welkom,Bienvenido(a),Welcome,Bienvenue,歡迎,Добро пожаловать,ยินดีต้อนรับ,Hoşgeldiniz,Selamat Datang,Bem-vindo
 common_welcome_message,"Üdvözli az Open Source Point Of Sale, kattintson a modulokra a kezdéshez!","Willkommen bei PHP Point Of Sales, zum Beginnen auf ein Modul klicken","Welkom in PHP Point Of Sale, klik beneden een module aan om te beginnen!","Bienvenido(a) a Open Source Point Of Sale. ¡Haz click en algún módulo debajo, para empezar!","Welcome to Open Source Point Of Sale, click a module below to get started!","Bienvenue à Open Source Point Of Sale, choisissez un module ci-dessous!",歡迎使用Open Source Point of Sale，請點擊下面的模組以開始使用！,"Добро пожаловать в Open Source Point Of Sale, нажмите модуля ниже, чтобы начать!",Opensource Point of sale. กรุณาเลือกคำสั่งเมนูด้านล่าง ,"Hoşgeldiniz, devam etmek için aşağıdan bir modül seçiniz!","Selamat Datang, klik modul di bawah ini untuk memulai",Bem-vindo Ponto de Venda software livre
 common_you_are_using_ospos,Ön az Open Source Point Of Sale alábbi verzióját használja,Sie verwenden Open Source Point Of Sales Version,You are using Open Source Point Of Sale Version,Estás usando Open Source Point Of Sale Versión,You are using Open Source Point Of Sale Version,Vous utilisez Open Source Point Of Sale Version,您正在使用 Open Source Point of Sale 版本,Вы использоваете Open Source Point Of Sale Версия,คุณกำลังใช้ Opensource Point of Sales รุ่น,Kullandığınız sürüm,Anda menggunakan Open Source Point Of Sale Versi,Você está usando OSPOS Versão

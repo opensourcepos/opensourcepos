@@ -1,16 +1,16 @@
 <?php 
 
 $lang["module_config"] = "Configurações";
-$lang["module_config_desc"] = "Alterar configuraççoes do sistema";
+$lang["module_config_desc"] = "Alterar configurações do sistema";
 $lang["module_customers"] = "Clientes";
 $lang["module_customers_desc"] = "Adicionar, atualizar,  excluir e Pesquisar clientes";
-$lang["module_employees"] = "Empregados";
-$lang["module_employees_desc"] = "Adicionar , atualizar,  excluir e Pesquisar empregados";
-$lang["module_giftcards"] = "Cupons";
-$lang["module_giftcards_desc"] = "Adicionar,  atualizar, excluir e Pesquisar cupons";
+$lang["module_employees"] = "Funcionários";
+$lang["module_employees_desc"] = "Adicionar , atualizar,  excluir e Pesquisar funcionários";
+$lang["module_giftcards"] = "Cartões Presente";
+$lang["module_giftcards_desc"] = "Adicionar,  atualizar, excluir e Pesquisar cartões presente";
 $lang["module_home"] = "Home";
-$lang["module_item_kits"] = "Item Kits";
-$lang["module_item_kits_desc"] = "Adicionar , atualizar, excluir e Pesquisar Item Kits";
+$lang["module_item_kits"] = "Conjunyo de itens";
+$lang["module_item_kits_desc"] = "Adicionar , atualizar, excluir e Pesquisar conjunto de itens";
 $lang["module_items"] = "Itens";
 $lang["module_items_desc"] = "Adicionar,  atualizar,  excluir e Pesquisar itens";
 $lang["module_receivings"] = "Recebimento";

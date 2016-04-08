@@ -1,12 +1,12 @@
 label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,pt-BR
 datepicker_today,Ma,Heute,Vandaag,Hoy,Today,Aujourd'hui,今天,сегодня,วันนี้,Bugün,Hari ini,Hoje
-datepicker_weekstart,1,1,0,0,0,1,,,,,,
+datepicker_weekstart,1,1,0,0,0,1,,,,,,0
 datepicker_all_time,Kezdetektől,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu,Todos
 datepicker_last_7,Utolsó 7 nap,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir,Últimos 7 Dias
 datepicker_last_30,Utolsó 30 nap,Letzte 30 Tage,Vorige 30 Dagen,Últimos 30 Días,Last 30 Days,Ces 30 derniers jours,過去七天,Последние 30 дней,30 วันสุดท้าย,Son 30 Gün,30 Hari Terakhir,Últimos 30 Dias
 datepicker_last_month,Múlt hónap,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu,Último Mês
 datepicker_last_year,Múlt év,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu,Último ano
-datepicker_this_month,Ez a hónap,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini,Este Mes
+datepicker_this_month,Ez a hónap,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini,Este Mês
 datepicker_this_month_last_year,"Ez a hónap, múlt évben",Dieser Monat letzten Jahres,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,This Month Last Year,Este mês último ano
 datepicker_this_month_to_today,"Ez a hónap, mai napig",Dieser Monat bis heute,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,Deste mês para hoje
 datepicker_this_month_to_today_last_year,"Ez a hónap, mai nap, múlt évben",Dieser Monat bis Heute letzten Jahres,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,This Month To Today Last Year,Este mês Para Hoje Último Ano

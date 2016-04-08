@@ -1,7 +1,7 @@
 <?php 
 
 $lang["common_address_1"] = "Endereço";
-$lang["common_address_2"] = "Coomplemento";
+$lang["common_address_2"] = "Complemento";
 $lang["common_city"] = "Cidade";
 $lang["common_comments"] = "Comentários";
 $lang["common_common"] = "comum";
@@ -13,7 +13,7 @@ $lang["common_print"] = "Imprimir";
 $lang["common_det"] = "detalhes";
 $lang["common_edit"] = "editar";
 $lang["common_email"] = "e-mail";
-$lang["common_email_invalid_format"] = "O formato do email não é válido";
+$lang["common_email_invalid_format"] = "O formato do e-mail não é válido";
 $lang["common_fields_required_message"] = "Campos em vermelho são obrigatórios";
 $lang["common_first_name"] = "Nome";
 $lang["common_first_name_required"] = "O nome é requerido.";
@@ -33,7 +33,7 @@ $lang["common_no_persons_to_display"] = "Não existem pessoas para mostrar";
 $lang["common_or"] = "ou";
 $lang["common_phone_number"] = "Telefone";
 $lang["common_phone_number_required"] = "Número do telefone é requerido";
-$lang["common_please_visit_my"] = "Por favor visite meu website;";
+$lang["common_please_visit_my"] = "Por favor visite o site da internet";
 $lang["common_powered_by"] = "Desenvolvido por";
 $lang["common_price"] = "Preço";
 $lang["common_remove"] = "Remover";
@@ -44,7 +44,7 @@ $lang["common_searched_for"] = "Pesquisar por";
 $lang["common_state"] = "Estado";
 $lang["common_submit"] = "Enviar";
 $lang["common_view_recent_sales"] = "Ver Vendas Recentes";
-$lang["common_website"] = "website";
+$lang["common_website"] = "site da internet";
 $lang["common_welcome"] = "Bem-vindo";
 $lang["common_welcome_message"] = "Bem-vindo Ponto de Venda software livre";
 $lang["common_you_are_using_ospos"] = "Você está usando OSPOS Versão";

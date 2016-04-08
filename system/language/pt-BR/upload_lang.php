@@ -37,7 +37,7 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$Lang['upload_userfile_not_set'] = '. Não é possível localizar uma variável post chamado userfile';
+$Lang['upload_userfile_not_set'] = 'Não é possível localizar uma variável post chamado userfile.';
 $Lang['upload_file_exceeds_limit'] = 'O arquivo enviado excede o tamanho máximo permitido no seu arquivo de configuração do PHP.';
 $Lang['upload_file_exceeds_form_limit'] = 'O arquivo enviado excede o tamanho máximo permitido pelo formulário de submissão.';
 $Lang['upload_file_partial'] = 'O arquivo foi enviado apenas parcialmente.';
