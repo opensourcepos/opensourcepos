@@ -38,7 +38,7 @@ IndexIgnore *
  allow from 127.0.0.1
  
 # My IP(s)
-#  allow from xxx.xxx.xxx.xx
+#  allow from xxx.xxx.xxx.xxx
 
 </Files>
 

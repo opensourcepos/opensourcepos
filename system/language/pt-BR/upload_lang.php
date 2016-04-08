@@ -37,19 +37,19 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['upload_userfile_not_set'] = 'Unable to find a post variable called userfile.';
-$lang['upload_file_exceeds_limit'] = 'The uploaded file exceeds the maximum allowed size in your PHP configuration file.';
-$lang['upload_file_exceeds_form_limit'] = 'The uploaded file exceeds the maximum size allowed by the submission form.';
-$lang['upload_file_partial'] = 'The file was only partially uploaded.';
-$lang['upload_no_temp_directory'] = 'The temporary folder is missing.';
-$lang['upload_unable_to_write_file'] = 'The file could not be written to disk.';
-$lang['upload_stopped_by_extension'] = 'The file upload was stopped by extension.';
-$lang['upload_no_file_selected'] = 'You did not select a file to upload.';
-$lang['upload_invalid_filetype'] = 'The filetype you are attempting to upload is not allowed.';
-$lang['upload_invalid_filesize'] = 'The file you are attempting to upload is larger than the permitted size.';
-$lang['upload_invalid_dimensions'] = 'The image you are attempting to upload doesn\'t fit into the allowed dimensions.';
-$lang['upload_destination_error'] = 'A problem was encountered while attempting to move the uploaded file to the final destination.';
-$lang['upload_no_filepath'] = 'The upload path does not appear to be valid.';
-$lang['upload_no_file_types'] = 'You have not specified any allowed file types.';
-$lang['upload_bad_filename'] = 'The file name you submitted already exists on the server.';
-$lang['upload_not_writable'] = 'The upload destination folder does not appear to be writable.';
+$Lang['upload_userfile_not_set'] = 'Não é possível localizar uma variável post chamado userfile.';
+$Lang['upload_file_exceeds_limit'] = 'O arquivo enviado excede o tamanho máximo permitido no seu arquivo de configuração do PHP.';
+$Lang['upload_file_exceeds_form_limit'] = 'O arquivo enviado excede o tamanho máximo permitido pelo formulário de submissão.';
+$Lang['upload_file_partial'] = 'O arquivo foi enviado apenas parcialmente.';
+$Lang['upload_no_temp_directory'] = 'A pasta temporária está faltando.';
+$Lang['upload_unable_to_write_file'] = 'O arquivo não pôde ser gravado em disco.';
+$Lang['upload_stopped_by_extension'] = 'O upload do arquivo foi parado por extensão.';
+$Lang['upload_no_file_selected'] = 'Você não selecionou um arquivo para upload.';
+$Lang['upload_invalid_filetype'] = 'O tipo de arquivo que você está tentando fazer upload não é permitido.';
+$Lang['upload_invalid_filesize'] = 'O arquivo que você está tentando fazer o upload é maior do que o tamanho permitido.';
+$Lang['upload_invalid_dimensions'] = 'A imagem que você está tentando fazer upload não caberá nas dimensões permitidas.';
+$Lang['upload_destination_error'] = 'Foi encontrado um problema ao tentar mover o arquivo enviado para o destino final.';
+$Lang['upload_no_filepath'] = 'O caminho do upload não parece ser válido.';
+$Lang['upload_no_file_types'] = 'Você não especificou quaisquer tipos de arquivos permitidos.';
+$Lang['upload_bad_filename'] = 'O nome do arquivo que você já apresentados existe no servidor.';
+$Lang['upload_not_writable'] = 'A pasta de destino de upload não parece ser gravável.';

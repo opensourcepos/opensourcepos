@@ -16,14 +16,14 @@ function to_currency($number, $escape=FALSE)
 
 	if($number >= 0)
 	{
-		if($CI->config->item('currency_side') !== 'currency_side')
+		if(!$CI->config->item('currency_side'))
 			return $currency_symbol.number_format($number, $decimals, $decimal_point, $thousands_separator);
 		else
 			return number_format($number, $decimals, $decimal_point, $thousands_separator).$currency_symbol;
 	}
     else
     {
-    	if($CI->config->item('currency_side') !== 'currency_side')
+    	if(!$CI->config->item('currency_side'))
     		return '-'.$currency_symbol.number_format(abs($number), $decimals, $decimal_point, $thousands_separator);
     	else
     		return '-'.number_format(abs($number), $decimals, $decimal_point, $thousands_separator).$currency_symbol;
