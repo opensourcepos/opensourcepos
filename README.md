@@ -2,7 +2,7 @@ Introduction
 ------------
 Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.
 
-This is vs 3.0.0 and based on Bootstrap 3 using Bootswatch theme Flatly as default. This version also contains CodeIgniter 3.0.5.
+Th latest version is the 3.0.0 and it's based on Bootstrap 3 using Bootswatch theme Flatly as default, and CodeIgniter 3.0.6.
 
 Badges
 ------
@@ -11,6 +11,12 @@ Badges
 Server Requirements
 -------------------
 PHP version 5.5 or newer is recommended.
+
+Keep the Machine Running
+------------------------
+If you like the project, and you are making money out of it on a daily basis, then consider buying me a coffee so I can keep adding features.
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
 Installation
 ------------
@@ -49,8 +55,4 @@ After stopping the created container for the first time, this command will be re
 
 Both the data and mysql directories will be persisted in a separate docker container and can be mounted within any other container using the last command. A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
 
-If you like the project, and you are making money out of it on a daily basis, then consider to buy me a coffee so I can keep adding features.
-
-
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
