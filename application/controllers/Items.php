@@ -109,7 +109,7 @@ class Items extends Secure_area implements iData_controller
 		$suggestions = $this->Item->get_search_suggestions($this->input->post_get('term'),
 			array(
 				'search_custom' => $this->input->post('search_custom'),
-				'is_deleted' => !empty($this->input->post('is_deleted'))
+				'is_deleted' => $this->input->post('is_deleted') != null
 				),
 			FALSE);
 
