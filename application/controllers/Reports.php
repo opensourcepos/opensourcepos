@@ -4,7 +4,6 @@ require_once (APPPATH."libraries/ofc-library/Open-flash-chart.php");
 
 class Reports extends Secure_area
 {
-
 	function __construct()
 	{
 		parent::__construct('reports');
@@ -15,18 +14,19 @@ class Reports extends Secure_area
 		$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : "s");
 		$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
 		// check access to report submodule
-		if (sizeof($exploder) > 1 && !$this->Employee->has_grant('reports_'.$submodule_id,$employee_id))
+		if (sizeof($exploder) > 1 && !$this->Employee->has_grant('reports_' . $submodule_id,$employee_id))
 		{
 			redirect('no_access/reports/reports_' . $submodule_id);
 		}
+
 		$this->load->helper('report');
 	}
 
 	//Initial report listing screen
 	function index()
 	{
-		$data['grants']=$this->Employee->get_employee_grants($this->session->userdata('person_id'));
-		$this->load->view("reports/listing",$data);
+		$data['grants'] = $this->Employee->get_employee_grants($this->session->userdata('person_id'));
+		$this->load->view("reports/listing", $data);
 	}
 
 	//Input for reports that require only a date range and an export to excel. (see routes.php to see that all summary reports route here)
@@ -47,7 +47,7 @@ class Reports extends Secure_area
 				'POS '.$report_data['sale_id'],
 				array('class'=>'modal-dlg modal-btn-submit')),
 				$report_data['sale_date'],
-				$report_data['items_purchased'],
+				to_quantity_decimals($report_data['items_purchased']),
 				$report_data['employee_name'],
 				$report_data['customer_name'],
 				to_currency($report_data['subtotal']),
@@ -57,6 +57,7 @@ class Reports extends Secure_area
 				to_currency($report_data['profit']),
 				$report_data['payment_type'],
 				$report_data['comment']);
+
 		echo get_detailed_data_row($summary_data, $this);
 	}
 
@@ -71,13 +72,14 @@ class Reports extends Secure_area
 				'RECV '.$report_data['receiving_id'],
 				array('class'=>'modal-dlg modal-btn-submit')),
 				$report_data['receiving_date'],
-				$report_data['items_purchased'],
+				to_quantity_decimals($report_data['items_purchased']),
 				$report_data['employee_name'],
 				$report_data['supplier_name'],
 				to_currency($report_data['total']),
 				$report_data['payment_type'],
 				$report_data['invoice_number'],
 				$report_data['comment']);
+
 		echo get_detailed_data_row($summary_data, $this);
 	}
 
@@ -90,6 +92,7 @@ class Reports extends Secure_area
 				'start_date'=>$start_date,
 				'end_date'=>$end_date,
 				'sale_type'=>$sale_type));
+
 		echo get_sales_summary_totals($summary, $this);
 	}
 
@@ -114,14 +117,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_sales_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary categories report
@@ -145,14 +148,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_categories_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary customers report
@@ -176,14 +179,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_customers_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary suppliers report
@@ -207,14 +210,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary items report
@@ -238,14 +241,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_items_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary employees report
@@ -269,14 +272,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_employees_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary taxes report
@@ -298,14 +301,14 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary discounts report
@@ -318,19 +321,20 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['discount_percent'], $row['count']);
+			$tabular_data[] = array($row['discount_percent'], 
+				$row['count']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
 
-		$this->load->view("reports/tabular",$data);
+		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary payments report
@@ -343,12 +347,14 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['payment_type'], $row['count'], to_currency($row['payment_amount']));
+			$tabular_data[] = array($row['payment_type'], 
+				$row['count'], 
+				to_currency($row['payment_amount']));
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_payments_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
@@ -363,6 +369,7 @@ class Reports extends Secure_area
 	{
 		$data = array();
 		$data['mode'] = 'sale';
+
 		$this->load->view("reports/date_input", $data);
 	}
 
@@ -374,6 +381,7 @@ class Reports extends Secure_area
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
         $data['mode'] = 'sale';
+
 		$this->load->view("reports/date_input", $data);
 	}
 
@@ -384,6 +392,7 @@ class Reports extends Secure_area
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
  		$data['mode'] = 'receiving';
+
         $this->load->view("reports/date_input", $data);
     }
 
@@ -396,7 +405,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_sales_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_sales_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -413,7 +422,7 @@ class Reports extends Secure_area
 		$graph_data = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[date($this->config->item('dateformat'), strtotime($row['sale_date']))]= $row['total'];
+			$graph_data[date($this->config->item('dateformat'), strtotime($row['sale_date']))] = $row['total'];
 		}
 
 		$data = array(
@@ -424,7 +433,6 @@ class Reports extends Secure_area
 		);
 
 		$this->load->view("reports/graphs/line", $data);
-
 	}
 
 	//Graphical summary items report
@@ -436,7 +444,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_items_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_items_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -475,7 +483,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_categories_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_categories_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -512,7 +520,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_suppliers_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_suppliers_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -549,7 +557,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_employees_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_employees_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -586,7 +594,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_taxes_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_taxes_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -623,7 +631,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_customers_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_customers_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -662,7 +670,7 @@ class Reports extends Secure_area
 		$data = array(
 			"title" => $this->lang->line('reports_discounts_summary_report'),
 			"data_file" => site_url("reports/graphical_summary_discounts_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -742,6 +750,7 @@ class Reports extends Secure_area
 			$customers[$customer->person_id] = $customer->first_name .' '.$customer->last_name;
 		}
 		$data['specific_input_data'] = $customers;
+
 		$this->load->view("reports/specific_input", $data);
 	}
 
@@ -769,7 +778,7 @@ class Reports extends Secure_area
 		$customer_info = $this->Customer->get_info($customer_id);
 		$data = array(
 			"title" => $customer_info->first_name .' '. $customer_info->last_name.' '.$this->lang->line('reports_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
@@ -792,6 +801,7 @@ class Reports extends Secure_area
 			$employees[$employee->person_id] = $employee->first_name .' '.$employee->last_name;
 		}
 		$data['specific_input_data'] = $employees;
+
 		$this->load->view("reports/specific_input", $data);
 	}
 
@@ -819,7 +829,7 @@ class Reports extends Secure_area
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data = array(
 			"title" => $employee_info->first_name .' '. $employee_info->last_name.' '.$this->lang->line('reports_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
@@ -842,6 +852,7 @@ class Reports extends Secure_area
 			$discounts[$i] = $i . '%';
 		}
 		$data['specific_input_data'] = $discounts;
+
 		$this->load->view("reports/specific_input", $data);
 	}
 
@@ -868,7 +879,7 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $discount. '% '.$this->lang->line('reports_discount') . ' ' . $this->lang->line('reports_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $headers,
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
@@ -910,7 +921,7 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_detailed_sales_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"editable" => "sales",
 			"summary_data" => $summary_data,
@@ -953,7 +964,7 @@ class Reports extends Secure_area
 
 		$data = array(
 			"title" => $this->lang->line('reports_detailed_receivings_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) .'-'.date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"header_width" => intval(100 / count($headers['summary'])),
 			"editable" => "receivings",

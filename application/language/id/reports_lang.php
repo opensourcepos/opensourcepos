@@ -46,6 +46,7 @@ $lang["reports_payments_summary_report"] = "Laporan Ringkasan Pembayaran";
 $lang["reports_profit"] = "Keuntungan/Laba";
 $lang["reports_cost"] = "";
 $lang["reports_quantity_purchased"] = "Jumlah Dibeli";
+$lang["reports_quantity"] = "Jumlah";
 $lang["reports_received_by"] = "Diterima Oleh";
 $lang["reports_receiving_id"] = "Id Penerima";
 $lang["reports_receiving_type"] = "Type Diterima";

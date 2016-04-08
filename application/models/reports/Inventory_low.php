@@ -9,7 +9,12 @@ class Inventory_low extends Report
 	
 	public function getDataColumns()
 	{
-		return array($this->lang->line('reports_item_name'), $this->lang->line('reports_item_number'), $this->lang->line('reports_description'), $this->lang->line('reports_count'), $this->lang->line('reports_reorder_level'), $this->lang->line('reports_stock_location'));
+		return array($this->lang->line('reports_item_name'),
+					$this->lang->line('reports_item_number'), 
+					$this->lang->line('reports_description'), 
+					$this->lang->line('reports_quantity'), 
+					$this->lang->line('reports_reorder_level'), 
+					$this->lang->line('reports_stock_location'));
 	}
 	
     public function getData(array $inputs)

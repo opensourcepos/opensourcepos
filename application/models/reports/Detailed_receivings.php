@@ -9,8 +9,8 @@ class Detailed_receivings extends Report
 	
 	public function getDataColumns()
 	{
-		return array('summary' => array($this->lang->line('reports_receiving_id'), $this->lang->line('reports_date'), $this->lang->line('reports_count'), $this->lang->line('reports_received_by'), $this->lang->line('reports_supplied_by'), $this->lang->line('reports_total'), $this->lang->line('reports_payment_type'), $this->lang->line('recvs_invoice_number'), $this->lang->line('reports_comments')),
-					'details' => array($this->lang->line('reports_item_number'), $this->lang->line('reports_name'), $this->lang->line('reports_category'), $this->lang->line('reports_count'), $this->lang->line('reports_total'), $this->lang->line('reports_discount'))
+		return array('summary' => array($this->lang->line('reports_receiving_id'), $this->lang->line('reports_date'), $this->lang->line('reports_quantity'), $this->lang->line('reports_received_by'), $this->lang->line('reports_supplied_by'), $this->lang->line('reports_total'), $this->lang->line('reports_payment_type'), $this->lang->line('recvs_invoice_number'), $this->lang->line('reports_comments')),
+					'details' => array($this->lang->line('reports_item_number'), $this->lang->line('reports_name'), $this->lang->line('reports_category'), $this->lang->line('reports_quantity'), $this->lang->line('reports_total'), $this->lang->line('reports_discount'))
 		);		
 	}
 	

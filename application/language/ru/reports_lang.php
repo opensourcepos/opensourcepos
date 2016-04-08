@@ -46,6 +46,7 @@ $lang["reports_payments_summary_report"] = "Платежей Сводный от
 $lang["reports_profit"] = "прибыль";
 $lang["reports_cost"] = "Cost";
 $lang["reports_quantity_purchased"] = "купенный количество";
+$lang["reports_quantity"] = "Количество";
 $lang["reports_received_by"] = "получило за";
 $lang["reports_receiving_id"] = "";
 $lang["reports_receiving_type"] = "";

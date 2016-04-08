@@ -46,6 +46,7 @@ $lang["reports_payments_summary_report"] = "รายงานสรุปกา
 $lang["reports_profit"] = "กำไร";
 $lang["reports_cost"] = "Cost";
 $lang["reports_quantity_purchased"] = "จำนวนการช์้อ";
+$lang["reports_quantity"] = "จำนวน";
 $lang["reports_received_by"] = "รับโดย";
 $lang["reports_receiving_id"] = "IDรับสินค้า";
 $lang["reports_receiving_type"] = "รูปแบบการรับสินค้า";

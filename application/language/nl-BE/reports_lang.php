@@ -46,6 +46,7 @@ $lang["reports_payments_summary_report"] = "Overzicht Betalingen";
 $lang["reports_profit"] = "Winst";
 $lang["reports_cost"] = "Cost";
 $lang["reports_quantity_purchased"] = "Aangekochte Hoeveelheid";
+$lang["reports_quantity"] = "Stock";
 $lang["reports_received_by"] = "Ontvangen door";
 $lang["reports_receiving_id"] = "";
 $lang["reports_receiving_type"] = "";
