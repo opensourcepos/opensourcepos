@@ -79,11 +79,11 @@ reports_summary_reports,Summary Reports,Berichte (summarisch),Overzicht Rapporte
 reports_supplied_by,Supplied by,Geliefert von,Geleverd door,Provisto por,Supplied by,Fournit par,付款人,Поставлял за,ผบิตโดย,Sağlayıcı,Pemasok,Fornecido por
 reports_supplier,Beszállító,Lieferant,Leverancier,Proveedor,Supplier,Fournisseur,供應商,Поставщик,ผู้ผลิต,Sağlayıcı,Pemasok,Fornecedor
 reports_suppliers,Beszállítók,Lieferanten,Leveranciers,Proveedores,Suppliers,Fournisseurs,供應商,Поставщики,ผู้ผลิต,Sağlayıcılar,Pemasok,Fornecedores
-reports_suppliers_summary_report,Beszállítók összegző riport,Bericht: Lieferanten (summarisch),Rapport Overzicht Leveranciers,Reporte de Resumen de Proveedores,Suppliers Summary Report,Rapport: Résumé Fournisseurs,供應商摘要報告,Сводный отчет Поставщики,รายงานสรุปผู้ผลิต,Sağlayıcı Özet Raporu,Laporan Ringkasan Pemasok,Relatório Fornecedor
+reports_suppliers_summary_report,Beszállítók összegző riport,Bericht: Lieferanten (summarisch),Rapport Overzicht Leveranciers,Reporte de Resumen de Proveedores,Suppliers Summary Report,Rapport: Résumé Fournisseurs,供應商摘要報告,Сводный отчет Поставщики,รายงานสรุปผู้ผลิต,Sağlayıcı Özet Raporu,Laporan Ringkasan Pemasok,Relatório Resumido Fornecedor
 reports_tax,Adó,MWSt,VAT,Impuesto,Tax,Taxe,稅額,налог,ภาษี,Vergi,Pajak,Imposto
 reports_tax_percent,Adó %,MWSt %,VAT Percentage,Porcentaje de Impuestos,Tax Percent,Pourcentage d'imposition,稅率,процент налога,เปอร์เซ็นภาษี,Vergi Oranı,Persentase Pajak,Percentual de Imposto
 reports_taxes,Adók,Steuern,Belastingen,Impuestos,Taxes,Taxes,稅額,Налоги,ภาษี,Vergiler,Pajak,Impostos
-reports_taxes_summary_report,Adók összegző riport,Bericht: Steuern (summarisch),Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: Résumé Taxes,稅金摘要報告,Сводный отчет налоги,รายงานสรุปภาษี,Vergi Özet Raporu,Laporan Ringkasan Pajak,Impostos Resumo Relatório
+reports_taxes_summary_report,Adók összegző riport,Bericht: Steuern (summarisch),Rapport Overzicht Belastingen,Reporte de Resumen de Impuestos,Taxes Summary Report,Rapport: Résumé Taxes,稅金摘要報告,Сводный отчет налоги,รายงานสรุปภาษี,Vergi Özet Raporu,Laporan Ringkasan Pajak,Relatório Resumido de Impostos
 reports_total,Összesen,Total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total,Total
 reports_type,Típus,Typ,Type,Tipo,Type,Type,類型,тип,ชนิด,Tür,Tipe,Tipo
 reports_item_count,Filter Item Count,Filter nach Artikelzahl,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Item Count,Filter Stok Habis/Belum Habis/Minus,,Filtro por quantidade

@@ -1,7 +1,7 @@
 <?php 
 
 $lang["employees_basic_information"] = "Informações do Funcionário";
-$lang["employees_cannot_be_deleted"] = "Não foi possível excluir funcionários selecionados  um ou mais dos funcionários processou vendas ou você está tentando excluir-se.";
+$lang["employees_cannot_be_deleted"] = "Não foi possível excluir funcionários selecionados, um ou mais dos funcionários processou vendas ou você está tentando excluir-se :)";
 $lang["employees_confirm_delete"] = "Tem certeza de que deseja excluir os funcionários selecionados?";
 $lang["employees_employee"] = "Funcionário";
 $lang["employees_error_adding_updating"] = "Erro ao adicionar/atualizar funcionário";
