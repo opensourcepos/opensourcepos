@@ -5,7 +5,13 @@ module.exports = function(grunt) {
         wiredep: {
             task: {
                 ignorePath: '../../../',
-                src: ['**/header.php']
+                src: ['application/views/partial/header.php']
+            }
+        },
+        wiredep_templates: {
+            task: {
+                ignorePath: '../../../../',
+                src: ['templates/*/views/partial/header.php']
             }
         },
         bower_concat: {
@@ -71,7 +77,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            files: ['Gruntfile.js', 'js/*.js'],
+            files: [ 'Gruntfile.js', 'js/*.js' ],
             options: {
                 // options here to override JSHint defaults
                 globals: {
@@ -91,7 +97,8 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: [ 'css/*.css', '!css/login.css', '!css/invoice_email.css' ],
-                dest: 'application/views/partial/header.php'
+                dest: 'application/views/partial/header.php',
+                dest: 'templates/spacelab/views/partial/header.php'
             },
             mincss_header: {
                 options: {
@@ -101,7 +108,17 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: [ 'dist/*.css', '!dist/opensourcepos_bower.css' ],
-                dest: 'application/views/partial/header.php'
+                dest: 'application/views/partial/header.php',
+            },
+            mincss_header_templates: {
+                options: {
+                    scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
+                    openTag: '<!-- start mincss template tags -->',
+                    closeTag: '<!-- end mincss template tags -->',
+                    absolutePath: true
+                },
+                src: [ 'dist/*.css', '!dist/bootstrap.min.css', '!dist/opensourcepos_bower.css' ],
+                dest: 'templates/spacelab/views/partial/header.php'
             },
             css_login: {
                 options: {
@@ -121,7 +138,8 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: [ 'js/jquery*', 'js/*.js' ],
-                dest: 'application/views/partial/header.php'
+                dest: 'application/views/partial/header.php',
+                dest: 'templates/spacelab/views/partial/header.php'
             },
             minjs: {
                 options: {
@@ -130,10 +148,9 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end minjs template tags -->',
                     absolutePath: true
                 },
-                src: [
-                    'dist/*min.js'
-                ],
-                dest: 'application/views/partial/header.php'
+                src: [ 'dist/*min.js' ],
+                dest: 'application/views/partial/header.php',
+                dest: 'templates/spacelab/views/partial/header.php'
             }
         },
         mochaWebdriver: {
@@ -155,17 +172,15 @@ module.exports = function(grunt) {
         cachebreaker: {
             dev: {
                 options: {
-                    match: [
-                        {
+                    match: [ {
                         'opensourcepos.min.js': 'dist/opensourcepos.min.js',
                         'opensourcepos.min.css': 'dist/opensourcepos.min.css',
                         'bootstrap.min.css': 'dist/bootstrap.min.css'
-                    }
-                    ],
+                    } ],
                     replacement: 'md5'
                 },
                 files: {
-                    src: ['**/header.php', '**/login.php']
+                    src: [ '**/header.php', '**/login.php' ]
                 }
             }
         }

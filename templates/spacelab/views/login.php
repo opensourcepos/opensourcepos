@@ -20,7 +20,7 @@
 </head>
 
 <body>
-	<div align="center" style="margin-top:10px"><img src=<?php echo base_url();?>/images/logo.gif></div>
+	<div id="logo" align="center"><img src=<?php echo base_url();?>/images/logo.gif></div>
 
 	<div id="login">
 		<?php echo form_open('login') ?>
