@@ -1,7 +1,7 @@
 <?php 
 
 $lang["employees_basic_information"] = "Informasi Karyawan";
-$lang["employees_cannot_be_deleted"] = "Karyawan terpilih tidak bisa dihapus; satu atau lebih dari para pekerja telah memproses penjualan atau Anda mencoba untuk menghapus diri Anda sendiri:)";
+$lang["employees_cannot_be_deleted"] = "Karyawan terpilih tidak bisa dihapus satu atau lebih dari para pekerja telah memproses penjualan atau Anda mencoba untuk menghapus diri Anda sendiri :)";
 $lang["employees_confirm_delete"] = "Apakah Anda yakin ingin menghapus karyawan yang dipilih?";
 $lang["employees_employee"] = "Karyawan";
 $lang["employees_error_adding_updating"] = "Kesalahan menambah / memperbarui karyawan";

@@ -4,18 +4,18 @@ $lang["items_add_minus"] = "Inventário para adicionar/subtrair";
 $lang["items_allow_alt_desciption"] = "Descrição longa";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
 $lang["items_amazon"] = "Amazon";
-$lang["items_bulk_edit"] = "Informações do Item";
-$lang["items_buy_price_required"] = "Editar Múltiplos Itens";
-$lang["items_cannot_be_deleted"] = "Preço de compra é um campo obrigatório";
-$lang["items_cannot_find_item"] = "Não foi possível excluir os itens selecionados um ou mais dos itens selecionados tem vendas.";
-$lang["items_category"] = "Não consegue encontrar qualquer informação sobre o produto";
-$lang["items_category_required"] = "Categoria";
-$lang["items_change_all_to_allow_alt_desc"] = "Categoria é um campo obrigatório";
-$lang["items_change_all_to_not_allow_allow_desc"] = "Permitir alterar desconto para todos";
-$lang["items_change_all_to_serialized"] = "Não Permitir alterar desconto para todos";
-$lang["items_change_all_to_unserialized"] = "Alterar todos para serializados";
-$lang["items_confirm_bulk_edit"] = "Alterar todos para desserializados";
-$lang["items_confirm_bulk_edit_wipe_taxes"] = "Tem certeza de que deseja editar todos os itens selecionados?";
+$lang["items_bulk_edit"] = "Editar Múltiplos Itens";
+$lang["items_buy_price_required"] = "Preço de compra é um campo obrigatório";
+$lang["items_cannot_be_deleted"] = "Não foi possível excluir os itens selecionados um ou mais dos itens selecionados tem vendas.";
+$lang["items_cannot_find_item"] = "Não consegue encontrar qualquer informação sobre o produto";
+$lang["items_category"] = "Categoria";
+$lang["items_category_required"] = "Categoria é um campo obrigatório";
+$lang["items_change_all_to_allow_alt_desc"] = "Permitir alterar desconto para todos";
+$lang["items_change_all_to_not_allow_allow_desc"] = "Não Permitir alterar desconto para todos";
+$lang["items_change_all_to_serialized"] = "Alterar todos para serializados";
+$lang["items_change_all_to_unserialized"] = "Alterar todos para desserializados";
+$lang["items_confirm_bulk_edit"] = "Tem certeza de que deseja editar todos os itens selecionados?";
+$lang["items_confirm_bulk_edit_wipe_taxes"] = "Tem certeza de que deseja editar todos osimpostos selecionados?";
 $lang["items_confirm_delete"] = "Tem certeza de que deseja excluir os itens selecionados?";
 $lang["items_cost_price"] = "Preço de Custo";
 $lang["items_cost_price_number"] = "Preço de custo deve ser um número";
@@ -88,6 +88,3 @@ $lang["items_import_items_excel"] = "Importar planilha de produtos do Excel";
 $lang["items_select_image"] = "Selecionar imagem";
 $lang["items_change_image"] = "Substituir imagem";
 $lang["items_remove_image"] = "Remover imagem";
-
-
-

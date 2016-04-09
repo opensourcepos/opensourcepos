@@ -8,10 +8,10 @@
 			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'name',
-					'id'=>'name',
-					'class'=>'form-control input-sm')
-				);?>
+						'name'=>'name',
+						'id'=>'name',
+						'class'=>'form-control input-sm')
+						);?>
 			</div>
 		</div>
 
@@ -47,7 +47,7 @@
 							'name'=>'cost_price',
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm')
-					);?>
+							);?>
 					<?php if ($this->config->item('currency_side')): ?>
 					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
@@ -66,7 +66,7 @@
 							'name'=>'unit_price',
 							'id'=>'unit_price',
 							'class'=>'form-control input-sm')
-					);?>
+							);?>
 					<?php if ($this->config->item('currency_side')): ?>
 					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
@@ -82,7 +82,7 @@
 						'id'=>'tax_name_1',
 						'class'=>'form-control input-sm',
 						'value'=>$this->config->item('default_tax_1_name'))
-				);?>
+						);?>
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
@@ -91,7 +91,7 @@
 							'id'=>'tax_percent_name_1',
 							'class'=>'form-control input-sm',
 							'value'=>to_tax_decimals($this->config->item('default_tax_1_rate')))
-					);?>
+							);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>
 			</div>
@@ -105,7 +105,7 @@
 						'id'=>'tax_name_2',
 						'class'=>'form-control input-sm',
 						'value'=>$this->config->item('default_tax_2_name'))
-				);?>
+						);?>
 			</div>
 			<div class="col-sm-3">
 				<div class="input-group input-group-sm">
@@ -114,7 +114,7 @@
 							'id'=>'tax_percent_name_2',
 							'class'=>'form-control input-sm',
 							'value'=>to_tax_decimals($this->config->item('default_tax_2_rate')))
-					);?>
+							);?>
 					<span class="input-group input-group-addon"><b>%</b></span>
 				</div>
 			</div>
@@ -127,7 +127,7 @@
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
 						'class'=>'form-control input-sm')
-				);?>
+						);?>
 			</div>
 		</div>
 
@@ -138,7 +138,7 @@
 						'name'=>'description',
 						'id'=>'description',
 						'class'=>'form-control input-sm')
-				);?>
+						);?>
 			</div>
 		</div>
 

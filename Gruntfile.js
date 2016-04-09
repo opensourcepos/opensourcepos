@@ -100,7 +100,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end mincss template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*.css' ],
+                src: [ 'dist/*.css', '!dist/opensourcepos_bower.css' ],
                 dest: 'application/views/partial/header.php'
             },
             css_login: {

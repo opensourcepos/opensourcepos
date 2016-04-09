@@ -3,16 +3,16 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('giftcards/save/'.$giftcard_info->giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="giftcard_basic_info" style="padding: 5px;">
+	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'person_name',
-					'id'=>'person_name',
-					'class'=>'form-control input-sm',
-					'value'=>$selected_person_name)
-					);?>
+						'name'=>'person_name',
+						'id'=>'person_name',
+						'class'=>'form-control input-sm',
+						'value'=>$selected_person_name)
+						);?>
 				<?php echo form_hidden('person_id', $selected_person_id);?>
 			</div>
 		</div>
@@ -21,11 +21,11 @@
 			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
-					'name'=>'giftcard_number',
-					'id'=>'giftcard_number',
-					'class'=>'form-control input-sm',
-					'value'=>$giftcard_number)
-					);?>
+						'name'=>'giftcard_number',
+						'id'=>'giftcard_number',
+						'class'=>'form-control input-sm',
+						'value'=>$giftcard_number)
+						);?>
 			</div>
 		</div>
 

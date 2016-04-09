@@ -45,6 +45,7 @@ $lang["reports_payments"] = "Fizetések";
 $lang["reports_payments_summary_report"] = "Fizetések összefoglaló riport";
 $lang["reports_profit"] = "Profit";
 $lang["reports_cost"] = "Kiadás";
+$lang["reports_quantity"] = "Mennyiség";
 $lang["reports_quantity_purchased"] = "Vásárolt mennyiség";
 $lang["reports_received_by"] = "Átvéve";
 $lang["reports_receiving_id"] = "Átvételi ID";

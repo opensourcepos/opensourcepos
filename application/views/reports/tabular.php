@@ -1,5 +1,5 @@
 <?php 
-	//OJB: Check if for excel export process
+	// Check if for excel export process
 	if($export_excel == 1)
 	{
 		ob_start();

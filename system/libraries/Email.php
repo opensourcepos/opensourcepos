@@ -65,7 +65,7 @@ class CI_Email {
 	public $mailpath	= '/usr/sbin/sendmail';	// Sendmail path
 
 	/**
-	 * Which method to use for sending emails.
+	 * Which method to use for sending e-mails.
 	 *
 	 * @var	string	'mail', 'sendmail' or 'smtp'
 	 */
@@ -164,7 +164,7 @@ class CI_Email {
 	public $alt_message	= '';
 
 	/**
-	 * Whether to validate email addresses.
+	 * Whether to validate e-mail addresses.
 	 *
 	 * @var	bool
 	 */

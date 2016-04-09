@@ -30,11 +30,11 @@
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 							<?php echo form_input(array(
-								'name'=>'username',
-								'id'=>'username',
-								'class'=>'form-control input-sm',
-								'value'=>$person_info->username)
-								);?>
+									'name'=>'username',
+									'id'=>'username',
+									'class'=>'form-control input-sm',
+									'value'=>$person_info->username)
+									);?>
 						</div>
 					</div>
 				</div>
@@ -47,10 +47,10 @@
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
 							<?php echo form_password(array(
-								'name'=>'password',
-								'id'=>'password',
-								'class'=>'form-control input-sm')
-								);?>
+									'name'=>'password',
+									'id'=>'password',
+									'class'=>'form-control input-sm')
+									);?>
 						</div>
 					</div>
 				</div>
@@ -61,10 +61,10 @@
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
 							<?php echo form_password(array(
-								'name'=>'repeat_password',
-								'id'=>'repeat_password',
-								'class'=>'form-control input-sm')
-								);?>
+									'name'=>'repeat_password',
+									'id'=>'repeat_password',
+									'class'=>'form-control input-sm')
+									);?>
 						</div>
 					</div>
 				</div>

@@ -137,7 +137,7 @@ class Customers extends Person_controller
 	
 	function excel_import()
 	{
-		$this->load->view("customers/excel_import", null);
+		$this->load->view("customers/form_excel_import", null);
 	}
 
 	function do_excel_import()

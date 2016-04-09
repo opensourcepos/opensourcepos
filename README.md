@@ -1,19 +1,25 @@
 Introduction
 ------------
-
 Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.
 
-This is vs 3.0.0 and based on Bootstrap 3 using Bootswatch theme Flatly as default. This version also contains CodeIgniter 3.0.5.
-
-Please be aware that at least PHP 5.5 is required.
+This is the latest version 3.0.0 and it's based on Bootstrap 3 using Bootswatch theme Flatly as default, and CodeIgniter 3.0.6.
 
 Badges
 ------
-
 [![Build Status](https://travis-ci.org/jekkos/opensourcepos.svg?branch=master)](https://travis-ci.org/jekkos/opensourcepos)
 
-How to Install
---------------
+Keep the Machine Running
+------------------------
+If you like the project, and you are making money out of it on a daily basis, then consider buying me a coffee so I can keep adding features.
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
+
+Server Requirements
+-------------------
+PHP version 5.5 or newer is recommended.
+
+Installation
+------------
 1. Create/locate a new mysql database to install open source point of sale into
 2. Execute the file database/database.sql to create the tables needed
 3. unzip and upload Open Source Point of Sale files to web server
@@ -31,7 +37,7 @@ FAQ
 If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
 13/01/2016: Install using Docker
--------------------------------
+--------------------------------
 From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
 To build and run the image, issue following commands in a terminal with docker installed
@@ -49,8 +55,4 @@ After stopping the created container for the first time, this command will be re
 
 Both the data and mysql directories will be persisted in a separate docker container and can be mounted within any other container using the last command. A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
 
-If you like the project, and you are making money out of it on a daily basis, then consider to buy me a coffee so I can keep adding features.
-
-
-[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
