@@ -5,7 +5,7 @@
     "jekkos <jeroen.peelaerts - at - gmail.com>",
     "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
   ],
-  "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface",
+  "description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
   "main": "dist/opensourcepos.js",
   "keywords": [
     "point-of-sale"
