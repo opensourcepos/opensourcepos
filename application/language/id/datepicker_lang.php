@@ -1,7 +1,7 @@
 <?php 
 
 $lang["datepicker_today"] = "Hari ini";
-$lang["datepicker_weekstart"] = "";
+$lang["datepicker_weekstart"] = "0";
 $lang["datepicker_all_time"] = "Semua Waktu";
 $lang["datepicker_last_7"] = "7 Hari Terakhir";
 $lang["datepicker_last_30"] = "30 Hari Terakhir";

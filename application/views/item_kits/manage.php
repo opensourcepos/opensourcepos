@@ -8,15 +8,15 @@ $(document).ready(function()
     enable_checkboxes();
     enable_row_selection();
     enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest_search")?>',
-		confirm_message: '<?php echo $this->lang->line("common_confirm_search")?>'});
-    enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
+		confirm_message: "<?php echo $this->lang->line("common_confirm_search")?>"});
+    enable_delete("<?php echo $this->lang->line($controller_name."_confirm_delete")?>","<?php echo $this->lang->line($controller_name."_none_selected")?>");
 
     $('#generate_barcodes').click(function()
     {
     	var selected = get_selected_values();
     	if (selected.length == 0)
     	{
-    		alert('<?php echo $this->lang->line('items_must_select_item_for_barcode'); ?>');
+    		alert("<?php echo $this->lang->line('items_must_select_item_for_barcode'); ?>");
     		return false;
     	}
 
