@@ -1,7 +1,7 @@
 <?php 
 
 $lang["datepicker_today"] = "сегодня";
-$lang["datepicker_weekstart"] = "";
+$lang["datepicker_weekstart"] = "0";
 $lang["datepicker_all_time"] = "за все время";
 $lang["datepicker_last_7"] = "Последние 7 дней";
 $lang["datepicker_last_30"] = "Последние 30 дней";

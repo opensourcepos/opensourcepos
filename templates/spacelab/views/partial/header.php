@@ -7,20 +7,19 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
-		<link rel="stylesheet" href="../bower_components/jquery-ui/themes/base/jquery-ui.css" />
-		<link rel="stylesheet" href="../bower_components/tablesorter/dist/css/theme.blue.min.css" />
-		<link rel="stylesheet" href="../bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
-		<link rel="stylesheet" href="../bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
-		<link rel="stylesheet" href="../bower_components/bootswatch-dist/css/bootstrap.css" />
-		<link rel="stylesheet" href="../bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
-		<link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
-		<link rel="stylesheet" href="../bower_components/bootstrap-table/src/bootstrap-table.css" />
-		<link rel="stylesheet" href="../bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
+		<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
+		<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
+		<link rel="stylesheet" href="bower_components/bootswatch-dist/css/bootstrap.css" />
+		<link rel="stylesheet" href="bower_components/smalot-bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
-		<link rel="stylesheet" type="text/css" href="css/general.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
@@ -31,24 +30,23 @@
 		<link rel="stylesheet" type="text/css" href="css/tables.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
-		<script src="../bower_components/jquery/dist/jquery.js"></script>
-		<script src="../bower_components/jquery-form/jquery.form.js"></script>
-		<script src="../bower_components/jquery-validate/dist/jquery.validate.js"></script>
-		<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="../bower_components/swfobject-bower/swfobject/swfobject.js"></script>
-		<script src="../bower_components/tablesorter/dist/js/jquery.tablesorter.combined.js"></script>
-		<script src="../bower_components/bootstrap/dist/js/bootstrap.js"></script>
-		<script src="../bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
-		<script src="../bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
-		<script src="../bower_components/bootswatch-dist/js/bootstrap.js"></script>
-		<script src="../bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
-		<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
-		<script src="../bower_components/bootstrap-table/src/bootstrap-table.js"></script>
-		<script src="../bower_components/moment/moment.js"></script>
-		<script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="bower_components/jquery/dist/jquery.js"></script>
+		<script src="bower_components/jquery-form/jquery.form.js"></script>
+		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
+		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
+		<script src="bower_components/swfobject-bower/swfobject/swfobject.js"></script>
+		<script src="bower_components/tablesorter/dist/js/jquery.tablesorter.combined.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
+		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
+		<script src="bower_components/bootswatch-dist/js/bootstrap.js"></script>
+		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
+		<script src="bower_components/moment/moment.js"></script>
+		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.jkey-1.1.js" language="javascript"></script>
 		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
@@ -63,19 +61,18 @@
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=cb27b13a6b"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos_bower.css"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6ad34bf178"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a4b0e3d40c" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1bec5a999a" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
 	<script type="text/javascript">
 		// live clock
 	
-		function clockTick(){  
+		function clockTick() {  
 			setInterval('updateClock();', 1000);  
 		}
 

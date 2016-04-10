@@ -11,7 +11,8 @@
     "url": "https://github.com/jekkos/opensourcepos"
   },
   "keywords": [
-    "point-of-sale"
+    "point-of-sale",
+    "POS"
   ],
   "author": "jekkos",
   "license": "MIT",
