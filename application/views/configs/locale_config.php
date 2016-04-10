@@ -98,16 +98,17 @@
 					<?php echo form_dropdown('language', array(
 						'en' => 'English',
 						'es' => 'Spanish',
-						'ru' => 'Russian',
 						'nl-BE' => 'Dutch (Belgium)',
 						'de-CH' => 'German (Swiss)',
+						'fr' => 'French',
 						'zh' => 'Chinese',
 						'id' => 'Indonesian',
-						'fr' => 'French',
 						'th' => 'Thai',
 						'tr' => 'Turkish',
+						'ru' => 'Russian',
 						'hu-HU' => 'Hungarian',
-						'pt-BR' => 'Portugues (Brasil)'
+						'pt-BR' => 'Portuguese (Brazil)',
+						'hr-HR' => 'Croatian (Croatia)'
 					),
 					$this->config->item('language'), array('class'=>'form-control input-sm'));
 					?>
