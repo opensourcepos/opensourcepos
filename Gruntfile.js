@@ -17,7 +17,7 @@ module.exports = function(grunt) {
         bower_concat: {
             all: {
                 mainFiles: {
-                    'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js'],
+                    'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js']
                 },
                 dest: {
                     'js': 'tmp/opensourcepos_bower.js',
