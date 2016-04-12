@@ -47,9 +47,9 @@
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
+		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
 		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
 		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
@@ -65,7 +65,7 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1bec5a999a" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=593270d361" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

@@ -17,11 +17,11 @@ module.exports = function(grunt) {
         bower_concat: {
             all: {
                 mainFiles: {
-                    'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js']
+                    'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js'],
                 },
                 dest: {
-                    'js': 'dist/opensourcepos_bower.js',
-                    'css': 'dist/opensourcepos_bower.css'
+                    'js': 'tmp/opensourcepos_bower.js',
+                    'css': 'tmp/opensourcepos_bower.css'
                 }
             }
         },
@@ -30,20 +30,28 @@ module.exports = function(grunt) {
 				// Bower components folder will be removed afterwards 
 				// clean: true
 			},
-			bootstrap: {
+			targetdist: {
 				options: {
 					destPrefix: 'dist'
 				},
 				files: {
-                    'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
+					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
 					'bootstrap.min.css': 'bootswatch-dist/css/bootstrap.min.css'
 				}
-			}
+			}/*,
+			targettmp: {
+				options: {
+					destPrefix: 'tmp'
+				},
+				files: {
+					// add here anything that should be copied in a tmp directory
+				}
+			}*/
         },
         cssmin: {
             target: {
                 files: {
-                    'dist/<%= pkg.name %>.min.css': ['dist/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css']
+                    'dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css']
                 }
             }
         },
@@ -53,7 +61,7 @@ module.exports = function(grunt) {
                     separator: ';'
                 },
                 files: {
-                    'dist/<%= pkg.name %>.js': ['dist/opensourcepos_bower.js', 'js/jquery*', 'js/*.js']
+                    'dist/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'js/*.js']
                 }
             },
             sql: {
@@ -107,7 +115,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end mincss template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*.css', '!dist/opensourcepos_bower.css' ],
+                src: [ 'dist/*.css' ],
                 dest: 'application/views/partial/header.php',
             },
             mincss_header_templates: {
@@ -117,7 +125,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end mincss template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*.css', '!dist/bootstrap.min.css', '!dist/opensourcepos_bower.css' ],
+                src: [ 'dist/*.css', '!dist/bootstrap.min.css' ],
                 dest: 'templates/spacelab/views/partial/header.php'
             },
             css_login: {
@@ -127,7 +135,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end css template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/jquery-ui.min.css', 'dist/bootstrap.min.css', 'css/login.css' ],
+                src: [ 'dist/bootstrap.min.css', 'css/login.css' ],
                 dest: 'application/views/login.php'
             },
             js: {
@@ -137,7 +145,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end js template tags -->',
                     absolutePath: true
                 },
-                src: [ 'js/jquery*', 'js/*.js' ],
+                src: [ 'js/*.js' ],
                 dest: 'application/views/partial/header.php',
                 dest: 'templates/spacelab/views/partial/header.php'
             },

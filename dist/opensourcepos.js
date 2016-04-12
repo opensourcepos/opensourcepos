@@ -44052,7 +44052,7 @@ var swfobject=function(){var D="undefined",r="object",T="Shockwave Flash",Z="Sho
 aa+="SWFObjectNew";ab.setAttribute("id",aa);ah.parentNode.insertBefore(ab,ah);ah.style.display="none";y(ah)}u(ad,ae,aa)}}function b(ab){if(O.ie&&ab.readyState!=4){ab.style.display="none";var aa=C("div");ab.parentNode.insertBefore(aa,ab);aa.parentNode.replaceChild(J(ab),aa);y(ab)}else{ab.parentNode.replaceChild(J(ab),ab)}}function J(af){var ae=C("div");if(O.win&&O.ie){ae.innerHTML=af.innerHTML}else{var ab=af.getElementsByTagName(r)[0];if(ab){var ag=ab.childNodes;if(ag){var aa=ag.length;for(var ad=0;ad<aa;ad++){if(!(ag[ad].nodeType==1&&ag[ad].nodeName=="PARAM")&&!(ag[ad].nodeType==8)){ae.appendChild(ag[ad].cloneNode(true))}}}}}return ae}function k(aa,ab){var ac=C("div");ac.innerHTML="<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000'><param name='movie' value='"+aa+"'>"+ab+"</object>";return ac.firstChild}function u(ai,ag,ab){var aa,ad=c(ab);ab=W(ab);if(O.wk&&O.wk<312){return aa}if(ad){var ac=(O.ie)?C("div"):C(r),af,ah,ae;if(typeof ai.id==D){ai.id=ab}for(ae in ag){if(ag.hasOwnProperty(ae)&&ae.toLowerCase()!=="movie"){e(ac,ae,ag[ae])}}if(O.ie){ac=k(ai.data,ac.innerHTML)}for(af in ai){if(ai.hasOwnProperty(af)){ah=af.toLowerCase();if(ah==="styleclass"){ac.setAttribute("class",ai[af])}else{if(ah!=="classid"&&ah!=="data"){ac.setAttribute(af,ai[af])}}}}if(O.ie){P[P.length]=ai.id}else{ac.setAttribute("type",q);ac.setAttribute("data",ai.data)}ad.parentNode.replaceChild(ac,ad);aa=ac}return aa}function e(ac,aa,ab){var ad=C("param");ad.setAttribute("name",aa);ad.setAttribute("value",ab);ac.appendChild(ad)}function y(ac){var ab=c(ac);if(ab&&ab.nodeName.toUpperCase()=="OBJECT"){if(O.ie){ab.style.display="none";(function aa(){if(ab.readyState==4){for(var ad in ab){if(typeof ab[ad]=="function"){ab[ad]=null}}ab.parentNode.removeChild(ab)}else{setTimeout(aa,10)}}())}else{ab.parentNode.removeChild(ab)}}}function U(aa){return(aa&&aa.nodeType&&aa.nodeType===1)}function W(aa){return(U(aa))?aa.id:aa}function c(ac){if(U(ac)){return ac}var aa=null;try{aa=h.getElementById(ac)}catch(ab){}return aa}function C(aa){return h.createElement(aa)}function n(aa){return parseInt(aa,10)}function g(ac,aa,ab){ac.attachEvent(aa,ab);K[K.length]=[ac,aa,ab]}function F(ac){ac+="";var ab=O.pv,aa=ac.split(".");aa[0]=n(aa[0]);aa[1]=n(aa[1])||0;aa[2]=n(aa[2])||0;return(ab[0]>aa[0]||(ab[0]==aa[0]&&ab[1]>aa[1])||(ab[0]==aa[0]&&ab[1]==aa[1]&&ab[2]>=aa[2]))?true:false}function v(af,ab,ag,ae){var ad=h.getElementsByTagName("head")[0];if(!ad){return}var aa=(typeof ag=="string")?ag:"screen";if(ae){m=null;G=null}if(!m||G!=aa){var ac=C("style");ac.setAttribute("type","text/css");ac.setAttribute("media",aa);m=ad.appendChild(ac);if(O.ie&&typeof h.styleSheets!=D&&h.styleSheets.length>0){m=h.styleSheets[h.styleSheets.length-1]}G=aa}if(m){if(typeof m.addRule!=D){m.addRule(af,ab)}else{if(typeof h.createTextNode!=D){m.appendChild(h.createTextNode(af+" {"+ab+"}"))}}}}function w(ad,aa){if(!j){return}var ab=aa?"visible":"hidden",ac=c(ad);if(L&&ac){ac.style.visibility=ab}else{if(typeof ad==="string"){v("#"+ad,"visibility:"+ab)}}}function N(ab){var ac=/[\\\"<>\.;]/;var aa=ac.exec(ab)!=null;return aa&&typeof encodeURIComponent!=D?encodeURIComponent(ab):ab}var d=function(){if(O.ie){window.attachEvent("onunload",function(){var af=K.length;for(var ae=0;ae<af;ae++){K[ae][0].detachEvent(K[ae][1],K[ae][2])}var ac=P.length;for(var ad=0;ad<ac;ad++){y(P[ad])}for(var ab in O){O[ab]=null}O=null;for(var aa in swfobject){swfobject[aa]=null}swfobject=null})}}();return{registerObject:function(ae,aa,ad,ac){if(O.w3&&ae&&aa){var ab={};ab.id=ae;ab.swfVersion=aa;ab.expressInstall=ad;ab.callbackFn=ac;o[o.length]=ab;w(ae,false)}else{if(ac){ac({success:false,id:ae})}}},getObjectById:function(aa){if(O.w3){return z(aa)}},embedSWF:function(af,al,ai,ak,ab,ae,ad,ah,aj,ag){var ac=W(al),aa={success:false,id:ac};if(O.w3&&!(O.wk&&O.wk<312)&&af&&al&&ai&&ak&&ab){w(ac,false);M(function(){ai+="";ak+="";var an={};if(aj&&typeof aj===r){for(var aq in aj){an[aq]=aj[aq]}}an.data=af;an.width=ai;an.height=ak;var ar={};if(ah&&typeof ah===r){for(var ao in ah){ar[ao]=ah[ao]}}if(ad&&typeof ad===r){for(var am in ad){if(ad.hasOwnProperty(am)){var ap=(l)?encodeURIComponent(am):am,at=(l)?encodeURIComponent(ad[am]):ad[am];if(typeof ar.flashvars!=D){ar.flashvars+="&"+ap+"="+at}else{ar.flashvars=ap+"="+at}}}}if(F(ab)){var au=u(an,ar,al);if(an.id==ac){w(ac,true)}aa.success=true;aa.ref=au;aa.id=au.id}else{if(ae&&A()){an.data=ae;R(an,ar,al,ag);return}else{w(ac,true)}}if(ag){ag(aa)}})}else{if(ag){ag(aa)}}},switchOffAutoHideShow:function(){j=false},enableUriEncoding:function(aa){l=(typeof aa===D)?true:aa},ua:O,getFlashPlayerVersion:function(){return{major:O.pv[0],minor:O.pv[1],release:O.pv[2]}},hasFlashPlayerVersion:F,createSWF:function(ac,ab,aa){if(O.w3){return u(ac,ab,aa)}else{return undefined}},showExpressInstall:function(ac,ad,aa,ab){if(O.w3&&A()){R(ac,ad,aa,ab)}},removeSWF:function(aa){if(O.w3){y(aa)}},createCSS:function(ad,ac,ab,aa){if(O.w3){v(ad,ac,ab,aa)}},addDomLoadEvent:M,addLoadEvent:s,getQueryParamValue:function(ad){var ac=h.location.search||h.location.hash;
 if(ac){if(/\?/.test(ac)){ac=ac.split("?")[1]}if(ad==null){return N(ac)}var ab=ac.split("&");for(var aa=0;aa<ab.length;aa++){if(ab[aa].substring(0,ab[aa].indexOf("="))==ad){return N(ab[aa].substring((ab[aa].indexOf("=")+1)))}}}return""},expressInstallCallback:function(){if(a){var aa=c(S);if(aa&&I){aa.parentNode.replaceChild(I,aa);if(p){w(p,true);if(O.ie){I.style.display="block"}}if(E){E(B)}}a=false}},version:"2.3"}}();
 
-/*! tablesorter (FORK) - updated 04-01-2016 (v2.25.7)*/
+/*! tablesorter (FORK) - updated 04-11-2016 (v2.25.8)*/
 /* Includes widgets ( storage,uitheme,columns,filter,stickyHeaders,resizable,saveSort ) */
 (function(factory) {
 	if (typeof define === 'function' && define.amd) {
@@ -44064,7 +44064,7 @@ if(ac){if(/\?/.test(ac)){ac=ac.split("?")[1]}if(ad==null){return N(ac)}var ab=ac
 	}
 }(function($) {
 
-/*! TableSorter (FORK) v2.25.7 *//*
+/*! TableSorter (FORK) v2.25.8 *//*
 * Client-side table sorting with ease!
 * @requires jQuery v1.2.6+
 *
@@ -44087,7 +44087,7 @@ if(ac){if(/\?/.test(ac)){ac=ac.split("?")[1]}if(ad==null){return N(ac)}var ab=ac
 	'use strict';
 	var ts = $.tablesorter = {
 
-		version : '2.25.7',
+		version : '2.25.8',
 
 		parsers : [],
 		widgets : [],
@@ -45007,8 +45007,15 @@ if(ac){if(/\?/.test(ac)){ac=ac.split("?")[1]}if(ad==null){return N(ac)}var ab=ac
 								index = 0;
 								while ( index <= span ) {
 									// duplicate text (or not) to spanned columns
-									rowData.raw[ cacheIndex + index ] = c.duplicateSpan || index === 0 ? val : '';
-									cols[ cacheIndex + index ] = c.duplicateSpan || index === 0 ? val : '';
+									// instead of setting duplicate span to empty string, use textExtraction to try to get a value
+									// see http://stackoverflow.com/q/36449711/145346
+									txt = c.duplicateSpan || index === 0 ?
+										val :
+										typeof c.textExtraction !== 'string' ?
+											ts.getElementText( c, cell, cacheIndex + index ) || '' :
+											'';
+									rowData.raw[ cacheIndex + index ] = txt;
+									cols[ cacheIndex + index ] = txt;
 									index++;
 								}
 								cacheIndex += span;
@@ -49725,87 +49732,6 @@ if(ac){if(/\?/.test(ac)){ac=ac.split("?")[1]}if(ad==null){return N(ac)}var ab=ac
 
 return $.tablesorter;
 }));
-;/*
- *
- * StaticRow widget for jQuery TableSorter 2.0
- * Version 1.0
- *
- * Copyright (c) 2011 Nils Luxton
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/mit-license.php
- *
- */
-
-$.tablesorter.addWidget({
-
-    // Give the new Widget an ID to be used in the tablesorter() call, as follows:
-    // $('#myElement').tablesorter({ widgets: ['zebra','staticRow'] });
-    id: 'staticRow',
-
-    // "Format" is run on all widgets once when the tablesorter has finished initialising,
-    // and then again every time a sort has finished.
-    format: function(table) {
-
-        // Use a property of the function to determine
-        // whether this is the first run of "Format"
-        // (i.e. is this the table's default starting position,
-        //  or has it been sorted?)
-        if (typeof $(table).data('hasSorted') == 'undefined')
-        {
-            $(table).data('hasSorted', true); // This will force us into the "else" block the next time "Format" is run
-
-            // "Index" the static rows, saving their current (starting)
-            // position in the table inside a data() param on the
-            // <tr> element itself for later use.
-            $('tbody .static', table).each(function() {
-                $(this).data('tableindex', $(this).index());
-            });
-        }
-        else
-        {
-            // Loop the static rows, moving them to their
-            // original "indexed" position, and keep doing
-            // this until no more re-shuffling needs doing
-            var hasShuffled = true;
-
-            while (hasShuffled)
-            {
-                hasShuffled = false;
-                $('tbody .static', table).each(function() {
-                    var targetIndex = $(this).data('tableindex');
-                    if (targetIndex != $(this).index())
-                    {
-                        hasShuffled = true;
-                        var thisRow = $(this).detach();
-                        var numRows = $('tbody tr', table).length;
-
-                        // Are we trying to be the last row?
-                        if (targetIndex >= numRows)
-                        {
-                            thisRow.appendTo($('tbody', table));
-                        }
-                        // Are we trying to be the first row?
-                        else if (targetIndex == 0)
-                        {
-                            thisRow.prependTo($('tbody', table));
-                        }
-                        // No, we want to be somewhere in the middle!
-                        else
-                        {
-                            thisRow.insertBefore($('tbody tr:eq(' + targetIndex + ')', table));
-                        }
-                    }
-                });
-            }
-        }
-
-        $('tbody .static-last', table).each(function() {
-            var row = $(this).detach();
-            row.appendTo($('tbody', table));
-        });
-
-    }
-});
 ;function set_feedback(text, classname, keep_displayed)
 {
 	if(text)
@@ -49934,7 +49860,88 @@ $.tablesorter.addWidget({
         
     };
     
-})(jQuery);;function checkbox_click(event)
+})(jQuery);;/*
+ *
+ * StaticRow widget for jQuery TableSorter 2.0
+ * Version 1.0
+ *
+ * Copyright (c) 2011 Nils Luxton
+ * Licensed under the MIT license:
+ * http://www.opensource.org/licenses/mit-license.php
+ *
+ */
+
+$.tablesorter.addWidget({
+
+    // Give the new Widget an ID to be used in the tablesorter() call, as follows:
+    // $('#myElement').tablesorter({ widgets: ['zebra','staticRow'] });
+    id: 'staticRow',
+
+    // "Format" is run on all widgets once when the tablesorter has finished initialising,
+    // and then again every time a sort has finished.
+    format: function(table) {
+
+        // Use a property of the function to determine
+        // whether this is the first run of "Format"
+        // (i.e. is this the table's default starting position,
+        //  or has it been sorted?)
+        if (typeof $(table).data('hasSorted') == 'undefined')
+        {
+            $(table).data('hasSorted', true); // This will force us into the "else" block the next time "Format" is run
+
+            // "Index" the static rows, saving their current (starting)
+            // position in the table inside a data() param on the
+            // <tr> element itself for later use.
+            $('tbody .static', table).each(function() {
+                $(this).data('tableindex', $(this).index());
+            });
+        }
+        else
+        {
+            // Loop the static rows, moving them to their
+            // original "indexed" position, and keep doing
+            // this until no more re-shuffling needs doing
+            var hasShuffled = true;
+
+            while (hasShuffled)
+            {
+                hasShuffled = false;
+                $('tbody .static', table).each(function() {
+                    var targetIndex = $(this).data('tableindex');
+                    if (targetIndex != $(this).index())
+                    {
+                        hasShuffled = true;
+                        var thisRow = $(this).detach();
+                        var numRows = $('tbody tr', table).length;
+
+                        // Are we trying to be the last row?
+                        if (targetIndex >= numRows)
+                        {
+                            thisRow.appendTo($('tbody', table));
+                        }
+                        // Are we trying to be the first row?
+                        else if (targetIndex == 0)
+                        {
+                            thisRow.prependTo($('tbody', table));
+                        }
+                        // No, we want to be somewhere in the middle!
+                        else
+                        {
+                            thisRow.insertBefore($('tbody tr:eq(' + targetIndex + ')', table));
+                        }
+                    }
+                });
+            }
+        }
+
+        $('tbody .static-last', table).each(function() {
+            var row = $(this).detach();
+            row.appendTo($('tbody', table));
+        });
+
+    }
+});
+;function checkbox_click(event)
 {
 	event.stopPropagation();
 	do_email(enable_email.url);
