@@ -61,7 +61,7 @@ module.exports = function(grunt) {
                     separator: ';'
                 },
                 files: {
-                    'dist/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'js/*.js']
+                    'dist/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'js/jquery*', 'js/*.js']
                 }
             },
             sql: {
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
             }
         },
         jshint: {
-            files: [ 'Gruntfile.js', 'js/*.js' ],
+            files: ['Gruntfile.js', 'js/*.js'],
             options: {
                 // options here to override JSHint defaults
                 globals: {
@@ -104,7 +104,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end css template tags -->',
                     absolutePath: true
                 },
-                src: [ 'css/*.css', '!css/login.css', '!css/invoice_email.css' ],
+                src: ['css/*.css', '!css/login.css', '!css/invoice_email.css'],
                 dest: 'application/views/partial/header.php',
                 dest: 'templates/spacelab/views/partial/header.php'
             },
@@ -115,7 +115,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end mincss template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*.css' ],
+                src: ['dist/*.css'],
                 dest: 'application/views/partial/header.php',
             },
             mincss_header_templates: {
@@ -125,7 +125,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end mincss template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*.css', '!dist/bootstrap.min.css' ],
+                src: ['dist/*.css', '!dist/bootstrap.min.css'],
                 dest: 'templates/spacelab/views/partial/header.php'
             },
             css_login: {
@@ -135,7 +135,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end css template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/bootstrap.min.css', 'css/login.css' ],
+                src: ['dist/bootstrap.min.css', 'css/login.css'],
                 dest: 'application/views/login.php'
             },
             js: {
@@ -145,7 +145,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end js template tags -->',
                     absolutePath: true
                 },
-                src: [ 'js/*.js' ],
+                src: ['js/jquery*', 'js/*.js'],
                 dest: 'application/views/partial/header.php',
                 dest: 'templates/spacelab/views/partial/header.php'
             },
@@ -156,7 +156,7 @@ module.exports = function(grunt) {
                     closeTag: '<!-- end minjs template tags -->',
                     absolutePath: true
                 },
-                src: [ 'dist/*min.js' ],
+                src: ['dist/*min.js'],
                 dest: 'application/views/partial/header.php',
                 dest: 'templates/spacelab/views/partial/header.php'
             }
@@ -188,7 +188,7 @@ module.exports = function(grunt) {
                     replacement: 'md5'
                 },
                 files: {
-                    src: [ '**/header.php', '**/login.php' ]
+                    src: ['**/header.php', '**/login.php']
                 }
             }
         }
