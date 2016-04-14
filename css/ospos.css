@@ -29,6 +29,16 @@ a.none
 	background-color: #FFFFFF;
 }
 
+.alert
+{
+	margin-bottom: 0;
+}
+
+.jumbotron.push-spaces
+{
+	margin:0; /*add this*/
+}
+
 .navbar .menu-icon
 {
 	text-align: center;

@@ -171,7 +171,7 @@ function get_person_data_row($person, $controller) {
 		'id' => $person->person_id,
 		'last_name' => character_limiter($person->last_name,13),
 		'first_name' => character_limiter($person->first_name,13),
-		'email' => mailto($person->email,character_limiter($person->email,22)),
+		'email' => empty($person->email) ? '' : mailto($person->email,character_limiter($person->email,22)),
 		'phone_number' => character_limiter($person->phone_number,13),
 		'messages' => anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))),

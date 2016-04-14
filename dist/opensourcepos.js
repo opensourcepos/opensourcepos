@@ -24181,670 +24181,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Jasny Bootstrap\'s JavaScr
 }(window.jQuery);
 
 /*!
- * jQuery Color Animations v@VERSION
- * https://github.com/jquery/jquery-color
- *
- * Copyright 2013 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * Date: @DATE
- */
-(function( jQuery, undefined ) {
-
-	var stepHooks = "backgroundColor borderBottomColor borderLeftColor borderRightColor borderTopColor color columnRuleColor outlineColor textDecorationColor textEmphasisColor",
-
-	// plusequals test for += 100 -= 100
-	rplusequals = /^([\-+])=\s*(\d+\.?\d*)/,
-	// a set of RE's that can match strings and generate color tuples.
-	stringParsers = [{
-			re: /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
-			parse: function( execResult ) {
-				return [
-					execResult[ 1 ],
-					execResult[ 2 ],
-					execResult[ 3 ],
-					execResult[ 4 ]
-				];
-			}
-		}, {
-			re: /rgba?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
-			parse: function( execResult ) {
-				return [
-					execResult[ 1 ] * 2.55,
-					execResult[ 2 ] * 2.55,
-					execResult[ 3 ] * 2.55,
-					execResult[ 4 ]
-				];
-			}
-		}, {
-			// this regex ignores A-F because it's compared against an already lowercased string
-			re: /#([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/,
-			parse: function( execResult ) {
-				return [
-					parseInt( execResult[ 1 ], 16 ),
-					parseInt( execResult[ 2 ], 16 ),
-					parseInt( execResult[ 3 ], 16 )
-				];
-			}
-		}, {
-			// this regex ignores A-F because it's compared against an already lowercased string
-			re: /#([a-f0-9])([a-f0-9])([a-f0-9])/,
-			parse: function( execResult ) {
-				return [
-					parseInt( execResult[ 1 ] + execResult[ 1 ], 16 ),
-					parseInt( execResult[ 2 ] + execResult[ 2 ], 16 ),
-					parseInt( execResult[ 3 ] + execResult[ 3 ], 16 )
-				];
-			}
-		}, {
-			re: /hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
-			space: "hsla",
-			parse: function( execResult ) {
-				return [
-					execResult[ 1 ],
-					execResult[ 2 ] / 100,
-					execResult[ 3 ] / 100,
-					execResult[ 4 ]
-				];
-			}
-		}],
-
-	// jQuery.Color( )
-	color = jQuery.Color = function( color, green, blue, alpha ) {
-		return new jQuery.Color.fn.parse( color, green, blue, alpha );
-	},
-	spaces = {
-		rgba: {
-			props: {
-				red: {
-					idx: 0,
-					type: "byte"
-				},
-				green: {
-					idx: 1,
-					type: "byte"
-				},
-				blue: {
-					idx: 2,
-					type: "byte"
-				}
-			}
-		},
-
-		hsla: {
-			props: {
-				hue: {
-					idx: 0,
-					type: "degrees"
-				},
-				saturation: {
-					idx: 1,
-					type: "percent"
-				},
-				lightness: {
-					idx: 2,
-					type: "percent"
-				}
-			}
-		}
-	},
-	propTypes = {
-		"byte": {
-			floor: true,
-			max: 255
-		},
-		"percent": {
-			max: 1
-		},
-		"degrees": {
-			mod: 360,
-			floor: true
-		}
-	},
-	support = color.support = {},
-
-	// element for support tests
-	supportElem = jQuery( "<p>" )[ 0 ],
-
-	// colors = jQuery.Color.names
-	colors,
-
-	// local aliases of functions called often
-	each = jQuery.each;
-
-// determine rgba support immediately
-supportElem.style.cssText = "background-color:rgba(1,1,1,.5)";
-support.rgba = supportElem.style.backgroundColor.indexOf( "rgba" ) > -1;
-
-// define cache name and alpha properties
-// for rgba and hsla spaces
-each( spaces, function( spaceName, space ) {
-	space.cache = "_" + spaceName;
-	space.props.alpha = {
-		idx: 3,
-		type: "percent",
-		def: 1
-	};
-});
-
-function clamp( value, prop, allowEmpty ) {
-	var type = propTypes[ prop.type ] || {};
-
-	if ( value == null ) {
-		return (allowEmpty || !prop.def) ? null : prop.def;
-	}
-
-	// ~~ is an short way of doing floor for positive numbers
-	value = type.floor ? ~~value : parseFloat( value );
-
-	// IE will pass in empty strings as value for alpha,
-	// which will hit this case
-	if ( isNaN( value ) ) {
-		return prop.def;
-	}
-
-	if ( type.mod ) {
-		// we add mod before modding to make sure that negatives values
-		// get converted properly: -10 -> 350
-		return (value + type.mod) % type.mod;
-	}
-
-	// for now all property types without mod have min and max
-	return 0 > value ? 0 : type.max < value ? type.max : value;
-}
-
-function stringParse( string ) {
-	var inst = color(),
-		rgba = inst._rgba = [];
-
-	string = string.toLowerCase();
-
-	each( stringParsers, function( i, parser ) {
-		var parsed,
-			match = parser.re.exec( string ),
-			values = match && parser.parse( match ),
-			spaceName = parser.space || "rgba";
-
-		if ( values ) {
-			parsed = inst[ spaceName ]( values );
-
-			// if this was an rgba parse the assignment might happen twice
-			// oh well....
-			inst[ spaces[ spaceName ].cache ] = parsed[ spaces[ spaceName ].cache ];
-			rgba = inst._rgba = parsed._rgba;
-
-			// exit each( stringParsers ) here because we matched
-			return false;
-		}
-	});
-
-	// Found a stringParser that handled it
-	if ( rgba.length ) {
-
-		// if this came from a parsed string, force "transparent" when alpha is 0
-		// chrome, (and maybe others) return "transparent" as rgba(0,0,0,0)
-		if ( rgba.join() === "0,0,0,0" ) {
-			jQuery.extend( rgba, colors.transparent );
-		}
-		return inst;
-	}
-
-	// named colors
-	return colors[ string ];
-}
-
-color.fn = jQuery.extend( color.prototype, {
-	parse: function( red, green, blue, alpha ) {
-		if ( red === undefined ) {
-			this._rgba = [ null, null, null, null ];
-			return this;
-		}
-		if ( red.jquery || red.nodeType ) {
-			red = jQuery( red ).css( green );
-			green = undefined;
-		}
-
-		var inst = this,
-			type = jQuery.type( red ),
-			rgba = this._rgba = [];
-
-		// more than 1 argument specified - assume ( red, green, blue, alpha )
-		if ( green !== undefined ) {
-			red = [ red, green, blue, alpha ];
-			type = "array";
-		}
-
-		if ( type === "string" ) {
-			return this.parse( stringParse( red ) || colors._default );
-		}
-
-		if ( type === "array" ) {
-			each( spaces.rgba.props, function( key, prop ) {
-				rgba[ prop.idx ] = clamp( red[ prop.idx ], prop );
-			});
-			return this;
-		}
-
-		if ( type === "object" ) {
-			if ( red instanceof color ) {
-				each( spaces, function( spaceName, space ) {
-					if ( red[ space.cache ] ) {
-						inst[ space.cache ] = red[ space.cache ].slice();
-					}
-				});
-			} else {
-				each( spaces, function( spaceName, space ) {
-					var cache = space.cache;
-					each( space.props, function( key, prop ) {
-
-						// if the cache doesn't exist, and we know how to convert
-						if ( !inst[ cache ] && space.to ) {
-
-							// if the value was null, we don't need to copy it
-							// if the key was alpha, we don't need to copy it either
-							if ( key === "alpha" || red[ key ] == null ) {
-								return;
-							}
-							inst[ cache ] = space.to( inst._rgba );
-						}
-
-						// this is the only case where we allow nulls for ALL properties.
-						// call clamp with alwaysAllowEmpty
-						inst[ cache ][ prop.idx ] = clamp( red[ key ], prop, true );
-					});
-
-					// everything defined but alpha?
-					if ( inst[ cache ] && jQuery.inArray( null, inst[ cache ].slice( 0, 3 ) ) < 0 ) {
-						// use the default of 1
-						inst[ cache ][ 3 ] = 1;
-						if ( space.from ) {
-							inst._rgba = space.from( inst[ cache ] );
-						}
-					}
-				});
-			}
-			return this;
-		}
-	},
-	is: function( compare ) {
-		var is = color( compare ),
-			same = true,
-			inst = this;
-
-		each( spaces, function( _, space ) {
-			var localCache,
-				isCache = is[ space.cache ];
-			if (isCache) {
-				localCache = inst[ space.cache ] || space.to && space.to( inst._rgba ) || [];
-				each( space.props, function( _, prop ) {
-					if ( isCache[ prop.idx ] != null ) {
-						same = ( isCache[ prop.idx ] === localCache[ prop.idx ] );
-						return same;
-					}
-				});
-			}
-			return same;
-		});
-		return same;
-	},
-	_space: function() {
-		var used = [],
-			inst = this;
-		each( spaces, function( spaceName, space ) {
-			if ( inst[ space.cache ] ) {
-				used.push( spaceName );
-			}
-		});
-		return used.pop();
-	},
-	transition: function( other, distance ) {
-		var end = color( other ),
-			spaceName = end._space(),
-			space = spaces[ spaceName ],
-			startColor = this.alpha() === 0 ? color( "transparent" ) : this,
-			start = startColor[ space.cache ] || space.to( startColor._rgba ),
-			result = start.slice();
-
-		end = end[ space.cache ];
-		each( space.props, function( key, prop ) {
-			var index = prop.idx,
-				startValue = start[ index ],
-				endValue = end[ index ],
-				type = propTypes[ prop.type ] || {};
-
-			// if null, don't override start value
-			if ( endValue === null ) {
-				return;
-			}
-			// if null - use end
-			if ( startValue === null ) {
-				result[ index ] = endValue;
-			} else {
-				if ( type.mod ) {
-					if ( endValue - startValue > type.mod / 2 ) {
-						startValue += type.mod;
-					} else if ( startValue - endValue > type.mod / 2 ) {
-						startValue -= type.mod;
-					}
-				}
-				result[ index ] = clamp( ( endValue - startValue ) * distance + startValue, prop );
-			}
-		});
-		return this[ spaceName ]( result );
-	},
-	blend: function( opaque ) {
-		// if we are already opaque - return ourself
-		if ( this._rgba[ 3 ] === 1 ) {
-			return this;
-		}
-
-		var rgb = this._rgba.slice(),
-			a = rgb.pop(),
-			blend = color( opaque )._rgba;
-
-		return color( jQuery.map( rgb, function( v, i ) {
-			return ( 1 - a ) * blend[ i ] + a * v;
-		}));
-	},
-	toRgbaString: function() {
-		var prefix = "rgba(",
-			rgba = jQuery.map( this._rgba, function( v, i ) {
-				return v == null ? ( i > 2 ? 1 : 0 ) : v;
-			});
-
-		if ( rgba[ 3 ] === 1 ) {
-			rgba.pop();
-			prefix = "rgb(";
-		}
-
-		return prefix + rgba.join() + ")";
-	},
-	toHslaString: function() {
-		var prefix = "hsla(",
-			hsla = jQuery.map( this.hsla(), function( v, i ) {
-				if ( v == null ) {
-					v = i > 2 ? 1 : 0;
-				}
-
-				// catch 1 and 2
-				if ( i && i < 3 ) {
-					v = Math.round( v * 100 ) + "%";
-				}
-				return v;
-			});
-
-		if ( hsla[ 3 ] === 1 ) {
-			hsla.pop();
-			prefix = "hsl(";
-		}
-		return prefix + hsla.join() + ")";
-	},
-	toHexString: function( includeAlpha ) {
-		var rgba = this._rgba.slice(),
-			alpha = rgba.pop();
-
-		if ( includeAlpha ) {
-			rgba.push( ~~( alpha * 255 ) );
-		}
-
-		return "#" + jQuery.map( rgba, function( v ) {
-
-			// default to 0 when nulls exist
-			v = ( v || 0 ).toString( 16 );
-			return v.length === 1 ? "0" + v : v;
-		}).join("");
-	},
-	toString: function() {
-		return this._rgba[ 3 ] === 0 ? "transparent" : this.toRgbaString();
-	}
-});
-color.fn.parse.prototype = color.fn;
-
-// hsla conversions adapted from:
-// https://code.google.com/p/maashaack/source/browse/packages/graphics/trunk/src/graphics/colors/HUE2RGB.as?r=5021
-
-function hue2rgb( p, q, h ) {
-	h = ( h + 1 ) % 1;
-	if ( h * 6 < 1 ) {
-		return p + (q - p) * h * 6;
-	}
-	if ( h * 2 < 1) {
-		return q;
-	}
-	if ( h * 3 < 2 ) {
-		return p + (q - p) * ((2/3) - h) * 6;
-	}
-	return p;
-}
-
-spaces.hsla.to = function ( rgba ) {
-	if ( rgba[ 0 ] == null || rgba[ 1 ] == null || rgba[ 2 ] == null ) {
-		return [ null, null, null, rgba[ 3 ] ];
-	}
-	var r = rgba[ 0 ] / 255,
-		g = rgba[ 1 ] / 255,
-		b = rgba[ 2 ] / 255,
-		a = rgba[ 3 ],
-		max = Math.max( r, g, b ),
-		min = Math.min( r, g, b ),
-		diff = max - min,
-		add = max + min,
-		l = add * 0.5,
-		h, s;
-
-	if ( min === max ) {
-		h = 0;
-	} else if ( r === max ) {
-		h = ( 60 * ( g - b ) / diff ) + 360;
-	} else if ( g === max ) {
-		h = ( 60 * ( b - r ) / diff ) + 120;
-	} else {
-		h = ( 60 * ( r - g ) / diff ) + 240;
-	}
-
-	// chroma (diff) == 0 means greyscale which, by definition, saturation = 0%
-	// otherwise, saturation is based on the ratio of chroma (diff) to lightness (add)
-	if ( diff === 0 ) {
-		s = 0;
-	} else if ( l <= 0.5 ) {
-		s = diff / add;
-	} else {
-		s = diff / ( 2 - add );
-	}
-	return [ Math.round(h) % 360, s, l, a == null ? 1 : a ];
-};
-
-spaces.hsla.from = function ( hsla ) {
-	if ( hsla[ 0 ] == null || hsla[ 1 ] == null || hsla[ 2 ] == null ) {
-		return [ null, null, null, hsla[ 3 ] ];
-	}
-	var h = hsla[ 0 ] / 360,
-		s = hsla[ 1 ],
-		l = hsla[ 2 ],
-		a = hsla[ 3 ],
-		q = l <= 0.5 ? l * ( 1 + s ) : l + s - l * s,
-		p = 2 * l - q;
-
-	return [
-		Math.round( hue2rgb( p, q, h + ( 1 / 3 ) ) * 255 ),
-		Math.round( hue2rgb( p, q, h ) * 255 ),
-		Math.round( hue2rgb( p, q, h - ( 1 / 3 ) ) * 255 ),
-		a
-	];
-};
-
-
-each( spaces, function( spaceName, space ) {
-	var props = space.props,
-		cache = space.cache,
-		to = space.to,
-		from = space.from;
-
-	// makes rgba() and hsla()
-	color.fn[ spaceName ] = function( value ) {
-
-		// generate a cache for this space if it doesn't exist
-		if ( to && !this[ cache ] ) {
-			this[ cache ] = to( this._rgba );
-		}
-		if ( value === undefined ) {
-			return this[ cache ].slice();
-		}
-
-		var ret,
-			type = jQuery.type( value ),
-			arr = ( type === "array" || type === "object" ) ? value : arguments,
-			local = this[ cache ].slice();
-
-		each( props, function( key, prop ) {
-			var val = arr[ type === "object" ? key : prop.idx ];
-			if ( val == null ) {
-				val = local[ prop.idx ];
-			}
-			local[ prop.idx ] = clamp( val, prop );
-		});
-
-		if ( from ) {
-			ret = color( from( local ) );
-			ret[ cache ] = local;
-			return ret;
-		} else {
-			return color( local );
-		}
-	};
-
-	// makes red() green() blue() alpha() hue() saturation() lightness()
-	each( props, function( key, prop ) {
-		// alpha is included in more than one space
-		if ( color.fn[ key ] ) {
-			return;
-		}
-		color.fn[ key ] = function( value ) {
-			var vtype = jQuery.type( value ),
-				fn = ( key === "alpha" ? ( this._hsla ? "hsla" : "rgba" ) : spaceName ),
-				local = this[ fn ](),
-				cur = local[ prop.idx ],
-				match;
-
-			if ( vtype === "undefined" ) {
-				return cur;
-			}
-
-			if ( vtype === "function" ) {
-				value = value.call( this, cur );
-				vtype = jQuery.type( value );
-			}
-			if ( value == null && prop.empty ) {
-				return this;
-			}
-			if ( vtype === "string" ) {
-				match = rplusequals.exec( value );
-				if ( match ) {
-					value = cur + parseFloat( match[ 2 ] ) * ( match[ 1 ] === "+" ? 1 : -1 );
-				}
-			}
-			local[ prop.idx ] = value;
-			return this[ fn ]( local );
-		};
-	});
-});
-
-// add cssHook and .fx.step function for each named hook.
-// accept a space separated string of properties
-color.hook = function( hook ) {
-	var hooks = hook.split( " " );
-	each( hooks, function( i, hook ) {
-		jQuery.cssHooks[ hook ] = {
-			set: function( elem, value ) {
-				var parsed, curElem,
-					backgroundColor = "";
-
-				if ( value !== "transparent" && ( jQuery.type( value ) !== "string" || ( parsed = stringParse( value ) ) ) ) {
-					value = color( parsed || value );
-					if ( !support.rgba && value._rgba[ 3 ] !== 1 ) {
-						curElem = hook === "backgroundColor" ? elem.parentNode : elem;
-						while (
-							(backgroundColor === "" || backgroundColor === "transparent") &&
-							curElem && curElem.style
-						) {
-							try {
-								backgroundColor = jQuery.css( curElem, "backgroundColor" );
-								curElem = curElem.parentNode;
-							} catch ( e ) {
-							}
-						}
-
-						value = value.blend( backgroundColor && backgroundColor !== "transparent" ?
-							backgroundColor :
-							"_default" );
-					}
-
-					value = value.toRgbaString();
-				}
-				try {
-					elem.style[ hook ] = value;
-				} catch( e ) {
-					// wrapped to prevent IE from throwing errors on "invalid" values like 'auto' or 'inherit'
-				}
-			}
-		};
-		jQuery.fx.step[ hook ] = function( fx ) {
-			if ( !fx.colorInit ) {
-				fx.start = color( fx.elem, hook );
-				fx.end = color( fx.end );
-				fx.colorInit = true;
-			}
-			jQuery.cssHooks[ hook ].set( fx.elem, fx.start.transition( fx.end, fx.pos ) );
-		};
-	});
-
-};
-
-color.hook( stepHooks );
-
-jQuery.cssHooks.borderColor = {
-	expand: function( value ) {
-		var expanded = {};
-
-		each( [ "Top", "Right", "Bottom", "Left" ], function( i, part ) {
-			expanded[ "border" + part + "Color" ] = value;
-		});
-		return expanded;
-	}
-};
-
-// Basic color names only.
-// Usage of any of the other color names requires adding yourself or including
-// jquery.color.svg-names.js.
-colors = jQuery.Color.names = {
-	// 4.1. Basic color keywords
-	aqua: "#00ffff",
-	black: "#000000",
-	blue: "#0000ff",
-	fuchsia: "#ff00ff",
-	gray: "#808080",
-	green: "#008000",
-	lime: "#00ff00",
-	maroon: "#800000",
-	navy: "#000080",
-	olive: "#808000",
-	purple: "#800080",
-	red: "#ff0000",
-	silver: "#c0c0c0",
-	teal: "#008080",
-	white: "#ffffff",
-	yellow: "#ffff00",
-
-	// 4.2.3. "transparent" color keyword
-	transparent: [ null, null, null, 0 ],
-
-	_default: "#ffffff"
-};
-
-})( jQuery );
-
-/*!
  * jQuery Form Plugin
  * version: 3.46.0-2013.11.21
  * Requires jQuery v1.5 or later
@@ -49941,413 +49277,7 @@ $.tablesorter.addWidget({
         
     };
     
-})(jQuery);;function checkbox_click(event)
-{
-	event.stopPropagation();
-	do_email(enable_email.url);
-	if($(event.target).is(':checked'))
-	{
-		$(event.target).parent().parent().find("td").addClass('selected').css("backgroundColor","");		
-	}
-	else
-	{
-		$(event.target).parent().parent().find("td").removeClass();		
-	}
-}
-
-function enable_search(options)
-{
-	if (!options.format_item) {
-		format_item = function(results) {
-			return results[0];
-		};
-	}
-	//Keep track of enable_email has been called
-	if(!enable_search.enabled)
-		enable_search.enabled=true;
-
-	$('#search').click(function()
-    {
-    	$(this).attr('value','');
-    });
-
-    var widget = $("#search").autocomplete({
-		source: function (request, response) {
-			var extra_params = {limit: 100};
-			$.each(options.extra_params, function(key, param) {
-				extra_params[key] = typeof param == "function" ? param() : param;
-			});
-
-			$.ajax({
-				type: "POST",
-				url: options.suggest_url,
-				dataType: "json",
-				data: $.extend(request, extra_params),
-				success: function(data) {
-					response($.map(data, function(item) {
-						return {
-							value: item.label,
-						};
-				}))}
-			});
-		},
-		delay:10,
-		autoFocus: false,
-		select: function (a, ui) {
-			$(this).val(ui.item.value);
-			do_search(true, options.on_complete);
-		}
-	});
-
-    attach_search_listener();
-    
-	$('#search_form').submit(function(event)
-	{
-		event.preventDefault();
-        // reset page number when selecting a specific page number
-		$('#limit_from').val(0);
-		if(get_selected_values().length >0)
-		{
-			if(!confirm(options.confirm_search_message))
-				return;
-		}
-		do_search(true, options.on_complete);
-	});
-
-	return widget;
-}
-enable_search.enabled=false;
-
-function attach_search_listener() 
-{
-	 // prevent redirecting to link when search enabled
-    $("#pagination a").click(function(event) {
-    	  if ($("#search").val() || $("#search_form input:checked")) {
-    		  event.preventDefault();
-    		  // set limit_from to value included in the link
-    		  var uri_segments = event.currentTarget.href.split('/');
-    		  var limit_from = uri_segments.pop();
-    		  $('#limit_from').val(limit_from);
-    		  do_search(true);
-    	  }
-    });
-}
-
-function do_search(show_feedback,on_complete)
-{	
-	//If search is not enabled, don't do anything
-	if(!enable_search.enabled)
-		return;
-
-	if(show_feedback)
-		$('#search').addClass("ac_loading");
-		
-	$.post(
-		$('#search_form').attr('action'), 
-		// serialize all the input fields in the form
-		$('#search_form').serialize(),
-		function(response) {
-			$('#sortable_table tbody').html(response.rows);
-			if(typeof on_complete=='function')
-				on_complete(response);
-			$('#search').removeClass("ac_loading");
-			$('#pagination').html(response.pagination);
-			//re-init elements in new table, as table tbody children were replaced
-			dialog_support.init('#sortable_table a.modal-dlg');
-			$('#sortable_table tbody :checkbox').click(checkbox_click);
-			$("#select_all").prop('checked',false);
-			if (response.total_rows > 0)
-			{
-				update_sortable_table();	
-				enable_row_selection();	
-			}
-		    attach_search_listener();
-		}, "json"
-	);
-}
-
-function enable_email(email_url)
-{
-	//Keep track of enable_email has been called
-	if(!enable_email.enabled)
-		enable_email.enabled=true;
-
-	//store url in function cache
-	if(!enable_email.url)
-	{
-		enable_email.url=email_url;
-	}
-	
-	$('#select_all, #sortable_table tbody :checkbox').click(checkbox_click);
-}
-enable_email.enabled=false;
-enable_email.url=false;
-
-function do_email(url)
-{
-	//If email is not enabled, don't do anything
-	if(!enable_email.enabled)
-		return;
-
-	$.post(url, { 'ids[]': get_selected_values() },function(response)
-	{
-		$('#email').attr('href',response);
-	});
-
-}
-
-function enable_checkboxes()
-{
-	$('#sortable_table tbody :checkbox').click(checkbox_click);
-}
-
-function enable_delete(confirm_message,none_selected_message)
-{
-	//Keep track of enable_delete has been called
-	if(!enable_delete.enabled)
-		enable_delete.enabled=true;
-	
-	$("#delete").click(function(event)
-	{
-		event.preventDefault();
-		if($("#sortable_table tbody :checkbox:checked").length >0)
-		{
-			if(confirm(confirm_message))
-			{
-				do_delete($(this).attr('href'));
-			} else {
-				return false;
-			}
-		}
-		else
-		{
-			alert(none_selected_message);
-		}
-	});
-}
-enable_delete.enabled=false;
-
-function do_delete(url)
-{
-	//If delete is not enabled, don't do anything
-	if(!enable_delete.enabled)
-		return;
-	
-	var row_ids = get_selected_values();
-	var selected_rows = get_selected_rows();
-	$.post(url, { 'ids[]': row_ids },function(response)
-	{
-		//delete was successful, remove checkbox rows
-		if(response.success)
-		{
-			$(selected_rows).each(function(index, dom)
-			{
-				$(this).find("td").animate({backgroundColor:"green"},1200,"linear")
-				.end().animate({opacity:0},1200,"linear",function()
-				{
-					$(this).remove();
-					//Re-init sortable table as we removed a row
-					$("#sortable_table tbody tr").length > 0 && update_sortable_table();
-					
-				});
-			});
-			
-			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
-		}
-		else
-		{
-			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);	
-		}
-	},"json");
-}
-
-function enable_bulk_edit(none_selected_message)
-{
-	//Keep track of enable_bulk_edit has been called
-	if(!enable_bulk_edit.enabled)
-		enable_bulk_edit.enabled=true;
-	
-	$('#bulk_edit').click(function(event)
-	{
-		if($("#sortable_table tbody :checkbox:checked").length == 0)
-		{
-			alert(none_selected_message);
-			return false;
-		}
-		event.preventDefault();
-	});
-}
-enable_bulk_edit.enabled=false;
-
-function enable_select_all()
-{
-	//Keep track of enable_select_all has been called
-	if(!enable_select_all.enabled)
-		enable_select_all.enabled=true;
-
-	$('#select_all').click(function()
-	{
-		if($(this).is(':checked'))
-		{	
-			$("#sortable_table tbody :checkbox").each(function()
-			{
-				$(this).prop('checked',true);
-				$(this).parent().parent().find("td").addClass('selected').css("backgroundColor","");
-
-			});
-		}
-		else
-		{
-			$("#sortable_table tbody :checkbox").each(function()
-			{
-				$(this).prop('checked',false);
-				$(this).parent().parent().find("td").removeClass();				
-			});    	
-		}
-	 });	
-}
-enable_select_all.enabled=false;
-
-function enable_row_selection(rows)
-{
-	//Keep track of enable_row_selection has been called
-	if(!enable_row_selection.enabled)
-		enable_row_selection.enabled=true;
-	
-	if(typeof rows =="undefined")
-		rows=$("#sortable_table tbody tr");
-	
-	rows.hover(
-		function row_over()
-		{
-			$(this).find("td").addClass('over').css("backgroundColor","");
-			$(this).css("cursor","pointer");
-		},
-		
-		function row_out()
-		{
-			if(!$(this).find("td").hasClass("selected"))
-			{
-				$(this).find("td").removeClass();
-			}
-		}
-	);
-	
-	rows.click(function row_click(event)
-	{
-		var checkbox = $(this).find(":checkbox");
-		checkbox.prop('checked',!checkbox.is(':checked'));
-		do_email(enable_email.url);
-		
-		if(checkbox.is(':checked'))
-		{
-			$(this).find("td").addClass('selected').css("backgroundColor","");
-		}
-		else
-		{
-			$(this).find("td").removeClass();
-		}
-	});
-}
-enable_row_selection.enabled=false;
-
-function update_sortable_table()
-{
-	//let tablesorter know we changed <tbody> and then triger a resort
-	$("#sortable_table").trigger("update");
-	if(typeof $("#sortable_table")[0].config!="undefined")
-	{
-		var sorting = $("#sortable_table")[0].config.sortList; 		
-		$("#sortable_table").trigger("sorton",[sorting]);
-	}
-	else
-	{
-		window['init_table_sorting'] && init_table_sorting();
-	}
-}
-
-function get_table_row(id)
-{
-	id = id || $("input[name='sale_id']").val();
-	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
-	if ($element.length === 0) {
-		$element = $("#sortable_table tbody a[href*='/" + id + "/']");
-	}
-	return $element;
-}
-
-function update_row(row_id,url,callback)
-{
-	$.post(url, { 'row_id': row_id },function(response)
-	{
-		//Replace previous row
-		var row_to_update = get_table_row(row_id).parent().parent();
-		row_to_update.replaceWith(response);	
-		reinit_row(row_id);
-		hightlight_row(row_id);
-		callback && typeof(callback) == "function" && callback(); 
-	}, 'html');
-}
-
-function reinit_row(checkbox_id)
-{
-	var new_checkbox = $("#sortable_table tbody tr :checkbox[value="+checkbox_id+"]");
-	var new_row = new_checkbox.parent().parent();
-	enable_row_selection(new_row);
-	//Re-init some stuff as we replaced row
-	update_sortable_table();
-	dialog_support.init(new_row.find("a.modal-dlg"));
-	//re-enable email
-	new_checkbox.click(checkbox_click);	
-}
-
-function animate_row(row,color)
-{
-	color = color || "#e1ffdd";
-	row.find("td").css("backgroundColor", "#ffffff").animate({backgroundColor:color},"slow","linear")
-		.animate({backgroundColor:color},5000)
-		.animate({backgroundColor:"#ffffff"},"slow","linear");
-}
-
-function hightlight_row(checkbox_id)
-{
-	var new_checkbox = $("#sortable_table tbody tr :checkbox[value="+checkbox_id+"]");
-	var new_row = new_checkbox.parent().parent();
-	
-	animate_row(new_row);
-}
-
-function get_selected_values()
-{
-	var selected_values = new Array();
-	$("#sortable_table tbody :checkbox:checked").each(function()
-	{
-		selected_values.push($(this).val());
-	});
-	return selected_values;
-}
-
-function get_selected_rows() 
-{ 
-	var selected_rows = new Array(); 
-	$("#sortable_table tbody :checkbox:checked").each(function() 
-	{ 
-		selected_rows.push($(this).parent().parent()); 
-	}); 
-	return selected_rows; 
-}
-
-function get_visible_checkbox_ids()
-{
-	var row_ids = new Array();
-	$("#sortable_table tbody :checkbox").each(function()
-	{
-		row_ids.push($(this).val());
-	});
-	return row_ids;
-}
-
-dialog_support = (function() {
+})(jQuery);;(function(dialog_support, $) {
 
 	var btn_id, dialog_ref;
 
@@ -50360,23 +49290,21 @@ dialog_support = (function() {
 	};
 
 	var submit = function(button_id) {
-		return function(dlog_ref)
-		{
+		return function(dlog_ref) {
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
-			if (button_id == 'delete')
-			{
+
+			if (button_id == 'delete')	{
 				$("form[id*='delete_form']").submit();
-			}
-			else
-			{
+			} else {
 				$('form', dlog_ref.$modalBody).first().submit();
 			}
 		}
 	};
 
 	var init = function(selector) {
-		return $(selector).click(function(event) {
+
+		var buttons = function(event) {
 			var buttons = [];
 			var dialog_class = 'modal-dlg';
 			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
@@ -50406,53 +49334,226 @@ dialog_support = (function() {
 					dialog_ref.close();
 				}
 			});
+			return { buttons: buttons, cssClass: dialog_class};
+		};
 
-			var $link = $(event.target);
-			$link = $link.is("a") ? $link : $link.parents("a");
-			BootstrapDialog.show({
-				cssClass: dialog_class,
-				title: $link.attr('title'),
-				buttons: buttons,
-				message: (function() {
-					var node = $('<div></div>');
-					$.get($link.attr('href'), function(data) {
-						node.html(data);
-					});
-					return node;
-				})
+		$(selector).each(function(index, $element) {
+
+			return $(selector).off('click').on('click', function(event) {
+				var $link = $(event.target);
+				$link = !$link.is("a, button") ? $link.parents("a") : $link ;
+				BootstrapDialog.show($.extend({
+					title: $link.attr('title'),
+					message: (function() {
+						var node = $('<div></div>');
+						$.get($link.attr('href') || $link.data('href'), function(data) {
+							node.html(data);
+						});
+						return node;
+					})
+				}, buttons.call(this, event)));
+
+				event.preventDefault();
 			});
-
-			event.preventDefault();
 		});
 	};
 
-	$(document).ready(function() {
-		init("a.modal-dlg");
-	});
+	dialog_support.error = {
+		errorClass: "has-error",
+		errorLabelContainer: "#error_message_box",
+		wrapper: "li",
+		highlight: function (e) {
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		}
+	};
 
-	return {
-		hide: hide,
-		clicked_id: clicked_id,
+	$.extend(dialog_support, {
 		init: init,
 		submit: submit,
-		error: {
-			errorClass: "has-error",
-			errorLabelContainer: "#error_message_box",
-			wrapper: "li",
-			highlight: function (e)
-			{
-				$(e).closest('.form-group').addClass('has-error');
+		hide: hide,
+		clicked_id: clicked_id
+	});
+
+})(window.dialog_support = window.dialog_support || {}, jQuery);
+
+(function(table_support, $) {
+	var init_autocomplete = function () {
+
+		var widget = $("#search").autocomplete({
+			source: function (request, response) {
+				var extra_params = {limit: 100};
+				$.each(options.extra_params, function (key, param) {
+					extra_params[key] = typeof param == "function" ? param() : param;
+				});
+
+				$.ajax({
+					type: "POST",
+					url: options.suggest_url,
+					dataType: "json",
+					data: $.extend(request, extra_params),
+					success: function (data) {
+						response($.map(data, function (item) {
+							return {
+								value: item.label,
+							};
+						}))
+					}
+				});
 			},
-			unhighlight: function (e)
-			{
-				$(e).closest('.form-group').removeClass('has-error');
+			delay: 10,
+			autoFocus: false,
+			select: function (a, ui) {
+				$(this).val(ui.item.value);
+				do_search(true, options.on_complete);
+			}
+		});
+	};
+
+	var table = function() {
+		return $("#table").data('bootstrap.table');
+	}
+
+	var selected_ids = function () {
+		return $.map(table().getSelections(), function (element) {
+			return element.id;
+		});
+	};
+
+	var selected_rows = function () {
+		return $("#table input:checkbox:checked").parents("tr");
+	};
+
+	var do_delete = function (url) {
+		$.post(url, {'ids[]': selected_ids()}, function (response) {
+			//delete was successful, remove checkbox rows
+			if (response.success) {
+				table().remove({
+					field: 'id',
+					values: selected_ids()
+				});
+
+				// animated delete below
+				/*$(selected_rows()).each(function (index, dom) {
+					/*$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+						.end().animate({opacity: 0}, 1200, "linear", function () {
+							$(this).remove();
+						});
+				});*/
+				set_feedback(response.message, 'alert alert-dismissible alert-success', false);
+			} else {
+				set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+			}
+			enable_actions();
+		}, "json");
+	};
+
+	var do_email = function() {
+		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element) {
+			return $(element).attr('href').replace(/^mailto:/, '');
+		});
+		location.href = "mailto:" + recipients.join(",");
+	};
+
+	var highlight_rows = function (id, color) {
+		var original = $("tr.selected").css('backgroundColor');
+		var selector = ((id && "tr[data-uniqueid='" + id + "']")) || "tr.selected";
+		$(selector).removeClass("selected").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
+			.animate({backgroundColor: color || '#e1ffdd'}, 5000)
+			.animate({backgroundColor: original}, "slow", "linear");
+		$("tr input:checkbox:checked").prop("checked", false);
+	};
+
+	var init_email = function() {
+		$("#email").click(function(evvent) {
+			do_email();
+		});
+	};
+
+	var enable_actions = function() {
+		var delete_disabled = selected_rows().length == 0;
+		$("#delete").attr('disabled', delete_disabled);
+		var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
+		$("#email").attr('disabled', email_disabled);
+	};
+
+	var load_callback;
+
+	var load_success = function() {
+		typeof load_callback == 'function' && load_callback();
+		load_callback = undefined;
+		dialog_support.init("a.modal-dlg, button.modal-dlg");
+	};
+
+	var init = function (resource, headers) {
+		$('#table').bootstrapTable({
+			columns: headers,
+			url: resource + '/search',
+			sidePagination: 'server',
+			striped: true,
+			pagination: true,
+			search: true,
+			showColumns: true,
+			clickToSelect: true,
+			toolbar: '#toolbar',
+			uniqueId: 'id',
+			onCheck: enable_actions,
+			onUncheck: enable_actions,
+			onLoadSuccess: load_success
+		});
+		init_email();
+		enable_actions();
+	};
+
+	var init_delete = function (confirm_message) {
+		$("#delete").click(function (event) {
+			if (confirm(confirm_message)) {
+				do_delete($(this).attr('href') || $(this).data('href'));
+			} else {
+				return false;
+			}
+		});
+	};
+
+	var handle_submit = function (resource, response) {
+		var $table = $("#table").data('bootstrap.table');
+		var id = response.id;
+
+		if (!response.success) {
+			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+		} else {
+			//This is an update, just update one row
+			var message = response.message;
+
+			if (jQuery.inArray(id, selected_ids()) != -1) {
+				$.get({
+					url: resource + '/get_row/' + id,
+					success: function (response) {
+						$table.updateByUniqueId({id: response.id, row: response});
+						highlight_rows();
+						set_feedback(message, 'alert alert-dismissible alert-success', false);
+					},
+					dataType: 'json'
+				});
+			} else {
+				// call hightlight function once after refresh
+				load_callback = function() { highlight_rows(id); };
+				$table.refresh();
+				set_feedback(message, 'alert alert-dismissible alert-success', false);
 			}
 		}
 	};
 
-})();
+	$.extend(table_support, {
+		handle_submit: handle_submit,
+		init_delete: init_delete,
+		init: init,
+		init_email: init_email
+	});
 
-;(function($) {
+})(window.table_support = window.table_support || {}, jQuery);;(function($) {
 	
 	function http_s(url)
 	{
@@ -50461,13 +49562,13 @@ dialog_support = (function() {
 	
 	if (window.sessionStorage && !sessionStorage['country'])
 	{
-		$.ajax({
+		/*$.ajax({
 			type: "GET",
 			url: http_s('ipinfo.io/json'),
 			success: function(response) {
 				sessionStorage['country'] = response.country;
 			}, dataType: 'jsonp'
-		});
+		})*/;
 	}
 	
 	var url = http_s('nominatim.openstreetmap.org/search');

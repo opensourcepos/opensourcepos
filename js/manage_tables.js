@@ -1,58 +1,4 @@
-
-function do_delete(url)
-{
-	//If delete is not enabled, don't do anything
-	if(!enable_delete.enabled)
-		return;
-	
-	var row_ids = get_selected_values();
-	var selected_rows = get_selected_rows();
-	$.post(url, { 'ids[]': row_ids },function(response)
-	{
-		//delete was successful, remove checkbox rows
-		if(response.success)
-		{
-			$(selected_rows).each(function(index, dom)
-			{
-				$(this).find("td").animate({backgroundColor:"green"},1200,"linear")
-				.end().animate({opacity:0},1200,"linear",function()
-				{
-					$(this).remove();
-					//Re-init sortable table as we removed a row
-					$("#sortable_table tbody tr").length > 0 && update_sortable_table();
-					
-				});
-			});
-			
-			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
-		}
-		else
-		{
-			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);	
-		}
-	},"json");
-}
-
-function enable_bulk_edit(none_selected_message)
-{
-	//Keep track of enable_bulk_edit has been called
-	if(!enable_bulk_edit.enabled)
-		enable_bulk_edit.enabled=true;
-	
-	$('#bulk_edit').click(function(event)
-	{
-		if($("#sortable_table tbody :checkbox:checked").length == 0)
-		{
-			alert(none_selected_message);
-			return false;
-		}
-		event.preventDefault();
-	});
-}
-enable_bulk_edit.enabled=false;
-
-
-dialog_support = (function() {
+(function(dialog_support, $) {
 
 	var btn_id, dialog_ref;
 
@@ -78,90 +24,89 @@ dialog_support = (function() {
 	};
 
 	var init = function(selector) {
+
+		var buttons = function(event) {
+			var buttons = [];
+			var dialog_class = 'modal-dlg';
+			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
+				var width_class = className.split("modal-dlg-");
+				if (width_class && width_class.length > 1) {
+					dialog_class = className;
+				}
+				var btn_class = className.split("modal-btn-");
+				if (btn_class && btn_class.length > 1) {
+					var btn_name = btn_class[1];
+					var is_submit = btn_name == 'submit';
+					buttons.push({
+						id: btn_name,
+						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
+						cssClass: is_submit ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
+						hotkey: is_submit ? 13 : undefined, // Enter.
+						action: submit(btn_name)
+					});
+				}
+			});
+
+			!buttons.length && buttons.push({
+				id: 'close',
+				label: 'Close',
+				cssClass: 'btn-primary',
+				action: function(dialog_ref) {
+					dialog_ref.close();
+				}
+			});
+			return { buttons: buttons, cssClass: dialog_class};
+		};
+
 		$(selector).each(function(index, $element) {
+
 			return $(selector).off('click').on('click', function(event) {
-				var buttons = [];
-				var dialog_class = 'modal-dlg';
-				$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
-					var width_class = className.split("modal-dlg-");
-					if (width_class && width_class.length > 1) {
-						dialog_class = className;
-					}
-					var btn_class = className.split("modal-btn-");
-					if (btn_class && btn_class.length > 1) {
-						var btn_name = btn_class[1];
-						var is_submit = btn_name == 'submit';
-						buttons.push({
-							id: btn_name,
-							label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
-							cssClass: is_submit ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
-							hotkey: is_submit ? 13 : undefined, // Enter.
-							action: submit(btn_name)
-						});
-					}
-				});
-
-				!buttons.length && buttons.push({
-					id: 'close',
-					label: 'Close',
-					cssClass: 'btn-primary',
-					action: function(dialog_ref) {
-						dialog_ref.close();
-					}
-				});
-
 				var $link = $(event.target);
-				$link = $link.is("a") ? $link : $link.parents("a");
-				BootstrapDialog.show({
-					cssClass: dialog_class,
+				$link = !$link.is("a, button") ? $link.parents("a") : $link ;
+				BootstrapDialog.show($.extend({
 					title: $link.attr('title'),
-					buttons: buttons,
 					message: (function() {
 						var node = $('<div></div>');
-						$.get($link.attr('href'), function(data) {
+						$.get($link.attr('href') || $link.data('href'), function(data) {
 							node.html(data);
 						});
 						return node;
 					})
-				});
+				}, buttons.call(this, event)));
 
 				event.preventDefault();
 			});
 		});
 	};
 
-	$(document).ajaxComplete(function() {
-		init("a.modal-dlg");
-	});
-
-	return {
-		hide: hide,
-		clicked_id: clicked_id,
-		init: init,
-		submit: submit,
-		error: {
-			errorClass: "has-error",
-			errorLabelContainer: "#error_message_box",
-			wrapper: "li",
-			highlight: function (e) {
-				$(e).closest('.form-group').addClass('has-error');
-			},
-			unhighlight: function (e) {
-				$(e).closest('.form-group').removeClass('has-error');
-			}
+	dialog_support.error = {
+		errorClass: "has-error",
+		errorLabelContainer: "#error_message_box",
+		wrapper: "li",
+		highlight: function (e) {
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
 		}
 	};
 
-})();
+	$.extend(dialog_support, {
+		init: init,
+		submit: submit,
+		hide: hide,
+		clicked_id: clicked_id
+	});
 
-table_support = (function() {
+})(window.dialog_support = window.dialog_support || {}, jQuery);
 
-	var init_autocomplete = function() {
+(function(table_support, $) {
+	var init_autocomplete = function () {
 
 		var widget = $("#search").autocomplete({
 			source: function (request, response) {
 				var extra_params = {limit: 100};
-				$.each(options.extra_params, function(key, param) {
+				$.each(options.extra_params, function (key, param) {
 					extra_params[key] = typeof param == "function" ? param() : param;
 				});
 
@@ -170,15 +115,16 @@ table_support = (function() {
 					url: options.suggest_url,
 					dataType: "json",
 					data: $.extend(request, extra_params),
-					success: function(data) {
-						response($.map(data, function(item) {
+					success: function (data) {
+						response($.map(data, function (item) {
 							return {
 								value: item.label,
 							};
-						}))}
+						}))
+					}
 				});
 			},
-			delay:10,
+			delay: 10,
 			autoFocus: false,
 			select: function (a, ui) {
 				$(this).val(ui.item.value);
@@ -187,59 +133,145 @@ table_support = (function() {
 		});
 	};
 
-	var highlight_rows = function(id, color) {
+	var table = function() {
+		return $("#table").data('bootstrap.table');
+	}
+
+	var selected_ids = function () {
+		return $.map(table().getSelections(), function (element) {
+			return element.id;
+		});
+	};
+
+	var selected_rows = function () {
+		return $("#table input:checkbox:checked").parents("tr");
+	};
+
+	var do_delete = function (url) {
+		$.post(url, {'ids[]': selected_ids()}, function (response) {
+			//delete was successful, remove checkbox rows
+			if (response.success) {
+				table().remove({
+					field: 'id',
+					values: selected_ids()
+				});
+
+				// animated delete below
+				/*$(selected_rows()).each(function (index, dom) {
+					/*$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+						.end().animate({opacity: 0}, 1200, "linear", function () {
+							$(this).remove();
+						});
+				});*/
+				set_feedback(response.message, 'alert alert-dismissible alert-success', false);
+			} else {
+				set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+			}
+			enable_actions();
+		}, "json");
+	};
+
+	var do_email = function() {
+		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element) {
+			return $(element).attr('href').replace(/^mailto:/, '');
+		});
+		location.href = "mailto:" + recipients.join(",");
+	};
+
+	var highlight_rows = function (id, color) {
 		var original = $("tr.selected").css('backgroundColor');
 		var selector = ((id && "tr[data-uniqueid='" + id + "']")) || "tr.selected";
-		$(selector).removeClass("selected").animate({backgroundColor:color||'#e1ffdd'},"slow","linear")
-			.animate({backgroundColor:color||'#e1ffdd'},5000)
-			.animate({backgroundColor:original},"slow","linear");
+		$(selector).removeClass("selected").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
+			.animate({backgroundColor: color || '#e1ffdd'}, 5000)
+			.animate({backgroundColor: original}, "slow", "linear");
 		$("tr input:checkbox:checked").prop("checked", false);
 	};
 
-	return {
+	var init_email = function() {
+		$("#email").click(function(evvent) {
+			do_email();
+		});
+	};
 
-		init: function(resource, headers) {
-			$('#table').bootstrapTable({
-				columns: headers,
-				url: resource + '/search',
-				sidePagination: 'server',
-				striped: true,
-				pagination: true,
-				search: true,
-				showColumns: true,
-				clickToSelect: true,
-				toolbar: '#toolbar',
-				uniqueId: 'id'
-			});
-		},
+	var enable_actions = function() {
+		var delete_disabled = selected_rows().length == 0;
+		$("#delete").attr('disabled', delete_disabled);
+		var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
+		$("#email").attr('disabled', email_disabled);
+	};
 
-		handle_submit : function (resource, response) {
-			var $table = $("#table").data('bootstrap.table');
-			var id = response.id;
+	var load_callback;
 
-			if(!response.success) {
-				set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+	var load_success = function() {
+		typeof load_callback == 'function' && load_callback();
+		load_callback = undefined;
+		dialog_support.init("a.modal-dlg, button.modal-dlg");
+	};
+
+	var init = function (resource, headers) {
+		$('#table').bootstrapTable({
+			columns: headers,
+			url: resource + '/search',
+			sidePagination: 'server',
+			striped: true,
+			pagination: true,
+			search: true,
+			showColumns: true,
+			clickToSelect: true,
+			toolbar: '#toolbar',
+			uniqueId: 'id',
+			onCheck: enable_actions,
+			onUncheck: enable_actions,
+			onLoadSuccess: load_success
+		});
+		init_email();
+		enable_actions();
+	};
+
+	var init_delete = function (confirm_message) {
+		$("#delete").click(function (event) {
+			if (confirm(confirm_message)) {
+				do_delete($(this).attr('href') || $(this).data('href'));
 			} else {
-				//This is an update, just update one row
-				var message = response.message;
-				var selected_ids = $.map($table.getSelections(), function(element) {
-					return element.id;
-				});
+				return false;
+			}
+		});
+	};
 
-				if(jQuery.inArray(id, selected_ids) != -1) {
-					$.get(resource + '/get_row/' + id, function(response)
-					{
-						$table.updateByUniqueId({id: id, row: response});
+	var handle_submit = function (resource, response) {
+		var $table = $("#table").data('bootstrap.table');
+		var id = response.id;
+
+		if (!response.success) {
+			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+		} else {
+			//This is an update, just update one row
+			var message = response.message;
+
+			if (jQuery.inArray(id, selected_ids()) != -1) {
+				$.get({
+					url: resource + '/get_row/' + id,
+					success: function (response) {
+						$table.updateByUniqueId({id: response.id, row: response});
 						highlight_rows();
 						set_feedback(message, 'alert alert-dismissible alert-success', false);
-					});
-				} else {
-					$table.refresh();
-					hightlight_rows(response.id);
-					set_feedback(message, 'alert alert-dismissible alert-success', false);
-				}
+					},
+					dataType: 'json'
+				});
+			} else {
+				// call hightlight function once after refresh
+				load_callback = function() { highlight_rows(id); };
+				$table.refresh();
+				set_feedback(message, 'alert alert-dismissible alert-success', false);
 			}
 		}
-	}
+	};
 
-})();
+	$.extend(table_support, {
+		handle_submit: handle_submit,
+		init_delete: init_delete,
+		init: init,
+		init_email: init_email
+	});
+
+})(window.table_support = window.table_support || {}, jQuery);

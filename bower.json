@@ -24,7 +24,6 @@
     "tests"
   ],
   "dependencies": {
-    "jquery-color": "~2.1.2",
     "jquery-form": "~3.46.0",
     "jquery-validate": "~1.13.1",
     "jquery": "~1.12.3",
