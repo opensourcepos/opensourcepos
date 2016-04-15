@@ -143,9 +143,6 @@ function transform_headers($array)
 	}, $array));
 }
 
-/*
-Gets the html table to manage people.
-*/
 function get_people_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -195,87 +192,46 @@ function get_detailed_data_row($row, $controller)
 	return $table_data_row;
 }
 
-/*
-Gets the html table to manage suppliers.
-*/
-function get_supplier_manage_table($suppliers,$controller)
-{
-	$CI =& get_instance();
-	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
-	
-	$headers = array('<input type="checkbox" id="select_all" />',
-	$CI->lang->line('suppliers_company_name'),
-	$CI->lang->line('suppliers_agency_name'),
-	$CI->lang->line('common_last_name'),
-	$CI->lang->line('common_first_name'),
-	$CI->lang->line('common_email'),
-	$CI->lang->line('common_phone_number'),
-	$CI->lang->line('common_id'),
-	'&nbsp');
+function get_suppliers_manage_table_headers()
 	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
 	{
 		$headers[] = '&nbsp';
 	}
-	
-	$table.='<thead><tr>';
-	foreach($headers as $header)
-	{
-		$table.="<th>$header</th>";
-	}
-	$table.='</tr></thead><tbody>';
-	$table.=get_supplier_manage_table_data_rows($suppliers,$controller);
-	$table.='</tbody></table>';
-
-	return $table;
-}
-
-/*
-Gets the html data rows for the supplier.
-*/
-function get_supplier_manage_table_data_rows($suppliers,$controller)
 {
 	$CI =& get_instance();
-	$table_data_rows='';
-	
-	foreach($suppliers->result() as $supplier)
-	{
-		$table_data_rows.=get_supplier_data_row($supplier,$controller);
-	}
-	
-	if($suppliers->num_rows()==0)
-	{
-		$table_data_rows.="<tr><td colspan='9'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('common_no_persons_to_display')."</div></td></tr>";
-	}
-	
-	return $table_data_rows;
+
+	$headers = array(
+		array('checkbox' => 'select'),
+		array('id' => $CI->lang->line('common_id')),
+		array('company_name' => $CI->lang->line('suppliers_company_name')),
+		array('agency_name' => $CI->lang->line('suppliers_agency_name')),
+		array('last_name' => $CI->lang->line('common_last_name')),
+		array('first_name' => $CI->lang->line('common_first_name')),
+		array('email' => $CI->lang->line('common_email')),
+		array('phone_number' => $CI->lang->line('common_phone_number')),
+		array('edit' => '')
+	);
+
+	return transform_headers($headers);
 }
 
-function get_supplier_data_row($supplier,$controller)
-{
+function get_supplier_data_row($supplier, $controller) {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
-	$table_data_row='<tr>';
-	$table_data_row.="<td width='2%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
-	$table_data_row.='<td width="15%">'.character_limiter($supplier->company_name,13).'</td>';
-	$table_data_row.='<td width="14%">'.character_limiter($supplier->agency_name,13).'</td>';
-	$table_data_row.='<td width="15%">'.character_limiter($supplier->last_name,13).'</td>';
-	$table_data_row.='<td width="15%">'.character_limiter($supplier->first_name,13).'</td>';
-	$table_data_row.='<td width="20%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
-	$table_data_row.='<td width="10%">'.character_limiter($supplier->phone_number,13).'</td>';
-	$table_data_row.='<td width="3%">'.character_limiter($supplier->person_id,5).'</td>';
-	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
-	{
-		$table_data_row.='<td width="3%">'.anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))).'</td>';
-		$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	}
-	else
-	{
-		$table_data_row.='<td width="6%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
-	}
-	$table_data_row.='</tr>';
-	
-	return $table_data_row;
+	return array (
+		'id' => $supplier->person_id,
+		'company_name' => character_limiter($supplier->company_name,13),
+		'agency_name' => character_limiter($supplier->agency_name,13),
+		'last_name' => character_limiter($supplier->last_name,13),
+		'first_name' => character_limiter($supplier->first_name,13),
+		'email' => empty($supplier->email) ? '' : mailto($supplier->email,character_limiter($supplier->email,22)),
+		'phone_number' => character_limiter($supplier->phone_number,13),
+		'messages' => anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))),
+		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
 }
 
 /*

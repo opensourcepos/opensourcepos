@@ -10,12 +10,9 @@ class Suppliers extends Person_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$suppliers = $this->Supplier->get_all($lines_per_page);
-		
-		$data['links'] = $this->_initialize_pagination($this->Supplier, $lines_per_page, $limit_from);
-		$data['manage_table'] = get_supplier_manage_table($suppliers, $this);
-		$this->load->view('suppliers/manage', $data);
+		$data['table_headers'] = get_suppliers_manage_table_headers();
+
+		$this->load->view('people/manage', $data);
 	}
 	
 	/*
@@ -23,16 +20,20 @@ class Suppliers extends Person_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$suppliers = $this->Supplier->search($search, $lines_per_page, $limit_from);
+		$suppliers = $this->Supplier->search($search, $offset, $limit);
 		$total_rows = $this->Supplier->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Supplier, $lines_per_page, $limit_from, $total_rows);
-		$data_rows = get_supplier_manage_table_data_rows($suppliers, $this);
-
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$links = $this->_initialize_pagination($this->Employee, $lines_per_page, $limit, $total_rows);
+		$data_rows = array();
+		foreach($suppliers->result() as $supplier)
+		{
+			$data_rows[] = get_supplier_data_row($supplier, $this);
+		}
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
 	/*
@@ -89,18 +90,18 @@ class Suppliers extends Person_controller
 			if($supplier_id==-1)
 			{
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('suppliers_successful_adding').' '.
-				$supplier_data['company_name'],'person_id'=>$supplier_data['person_id']));
+				$supplier_data['company_name'],'id'=>$supplier_data['person_id']));
 			}
 			else //previous supplier
 			{
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('suppliers_successful_updating').' '.
-				$supplier_data['company_name'],'person_id'=>$supplier_id));
+				$supplier_data['company_name'],'id'=>$supplier_id));
 			}
 		}
 		else//failure
 		{	
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('suppliers_error_adding_updating').' '.
-			$supplier_data['company_name'],'person_id'=>-1));
+			$supplier_data['company_name'],'id'=>-1));
 		}
 	}
 	
@@ -122,14 +123,5 @@ class Suppliers extends Person_controller
 		}
 	}
 	
-	/*
-	Gets one row for a supplier manage table. This is called using AJAX to update one row.
-	*/
-	function get_row()
-	{
-		$person_id = $this->input->post('row_id');
-		$data_row=get_supplier_data_row($this->Supplier->get_info($person_id),$this);
-		echo $data_row;
-	}
 }
 ?>
