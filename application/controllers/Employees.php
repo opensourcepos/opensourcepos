@@ -11,10 +11,7 @@ class Employees extends Person_controller
 	function index($limit_from=0)
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$employees = $this->Employee->get_all($lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Employee, $lines_per_page, $limit_from);
-		$data['manage_table'] = get_people_manage_table($employees, $this);
+		$data['table_headers'] = get_people_manage_table_headers();
 		$this->load->view('people/manage',$data);
 	}
 	
@@ -23,16 +20,20 @@ class Employees extends Person_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$employees = $this->Employee->search($search, $limit_from, $lines_per_page);
+		$employees = $this->Employee->search($search, $offset, $limit);
 		$total_rows = $this->Employee->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Employee, $lines_per_page, $limit_from, $total_rows);
-		$data_rows = get_people_manage_table_data_rows($employees, $this);
-
-		echo json_encode(array('rows' => $data_rows, 'pagination' => $links));
+		$links = $this->_initialize_pagination($this->Employee, $lines_per_page, $limit, $total_rows);
+		$data_rows = array();
+		foreach($employees->result() as $person)
+		{
+			$data_rows[] = get_person_data_row($person, $this);
+		}
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
 	/*
@@ -95,18 +96,18 @@ class Employees extends Person_controller
 			if($employee_id==-1)
 			{
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('employees_successful_adding').' '.
-				$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>$employee_data['person_id']));
+				$person_data['first_name'].' '.$person_data['last_name'],'id'=>$employee_data['person_id']));
 			}
 			else //previous employee
 			{
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('employees_successful_updating').' '.
-				$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>$employee_id));
+				$person_data['first_name'].' '.$person_data['last_name'],'id'=>$employee_id));
 			}
 		}
 		else//failure
 		{	
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('employees_error_adding_updating').' '.
-			$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>-1));
+			$person_data['first_name'].' '.$person_data['last_name'],'id'=>-1));
 		}
 	}
 	

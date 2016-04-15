@@ -247,7 +247,6 @@
 		} else {
 			//This is an update, just update one row
 			var message = response.message;
-
 			if (jQuery.inArray(id, selected_ids()) != -1) {
 				$.get({
 					url: resource + '/get_row/' + id,
