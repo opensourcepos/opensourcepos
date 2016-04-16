@@ -28,7 +28,7 @@ $(document).ready(function()
 	});
 	
 	//$('#filters').selectpicker('val', [<?php echo "'" . implode("','", $selected) . "'" ?>]);
-	
+
 	// accept partial suggestion to trigger a search on enter press
     $('#search').keypress(function (e)
 	{
@@ -46,7 +46,7 @@ $(document).ready(function()
 		var $button = $("#update_invoice_numbers").parents("li");
 		$button.toggle(value === "1");
 	};
-	
+
 	$("#only_invoices").change(show_renumber);
 	show_renumber();
 
@@ -120,13 +120,13 @@ function post_bulk_form_submit(response)
 		set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 	}
 }
-    
+
 function init_table_sorting()
 {
 	$.tablesorter.addParser({
 	    id: "datetime",
 	    is: function(s) {
-	        return false; 
+	        return false;
 	    },
 	    format: function(s,table) {
 	        s = s.replace(/\-/g,"/");
@@ -167,7 +167,7 @@ function init_table_sorting()
 		},
 		type: "numeric"
 	});
-		
+
 	//Only init if there is more than one row
 	if($('.tablesorter tbody tr').length > 1)
 	{

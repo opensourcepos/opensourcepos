@@ -49473,8 +49473,8 @@ $.tablesorter.addWidget({
 	};
 
 	var enable_actions = function() {
-		var delete_disabled = selected_rows().length == 0;
-		$("#delete").attr('disabled', delete_disabled);
+		var selection_empty = selected_rows().length == 0;
+		$("#delete, #generate_barcodes").attr('disabled', selection_empty);
 		var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
 		$("#email").attr('disabled', email_disabled);
 	};
@@ -49526,7 +49526,6 @@ $.tablesorter.addWidget({
 		} else {
 			//This is an update, just update one row
 			var message = response.message;
-
 			if (jQuery.inArray(id, selected_ids()) != -1) {
 				$.get({
 					url: resource + '/get_row/' + id,

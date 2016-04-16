@@ -7,7 +7,7 @@ class Suppliers extends Person_controller
 		parent::__construct('suppliers');
 	}
 	
-	function index($limit_from=0)
+	function index()
 	{
 		$data['controller_name'] = $this->get_controller_name();
 		$data['table_headers'] = get_suppliers_manage_table_headers();

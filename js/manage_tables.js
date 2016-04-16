@@ -194,8 +194,8 @@
 	};
 
 	var enable_actions = function() {
-		var delete_disabled = selected_rows().length == 0;
-		$("#delete").attr('disabled', delete_disabled);
+		var selection_empty = selected_rows().length == 0;
+		$("#delete, #generate_barcodes").attr('disabled', selection_empty);
 		var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
 		$("#email").attr('disabled', email_disabled);
 	};

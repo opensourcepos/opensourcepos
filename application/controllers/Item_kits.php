@@ -26,46 +26,36 @@ class Item_kits extends Secure_area implements iData_controller
 		return $item_kit;
 	}
 	
-	function index($limit_from=0)
+	function index()
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$item_kits = $this->Item_kit->get_all($lines_per_page, $limit_from);
-		
-		foreach($item_kits->result() as $item_kit)
-		{
-			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
-			$item_kit = $this->add_totals_to_item_kit($item_kit);
-		}
-		
-		$data['links'] = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from);
-		$data['manage_table'] = get_item_kits_manage_table($item_kits, $this);
+		$data['table_headers'] = get_suppliers_manage_table_headers();
 
 		$this->load->view('item_kits/manage', $data);
 	}
-	
+
 	/*
 	Returns Item kits table data rows. This will be called with AJAX.
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$item_kits = $this->Item_kit->search($search, $lines_per_page, $limit_from);
+		$item_kits = $this->Item_kit->search($search, $offset, $limit);
 		$total_rows = $this->Item_kit->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit_from, $total_rows, 'search');
-
+		//$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit, $total_rows, 'search');
+		$data_rows = array();
 		foreach($item_kits->result() as $item_kit)
 		{
 			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
 			$item_kit = $this->add_totals_to_item_kit($item_kit);
+			$data_rows = get_item_kit_data_row($item_kits, $this);
 		}
 
-		$data_rows = get_item_kits_manage_table_data_rows($item_kits, $this);
-
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	function suggest_search()
@@ -74,14 +64,12 @@ class Item_kits extends Secure_area implements iData_controller
 		echo json_encode($suggestions);
 	}
 
-	function get_row()
+	function get_row($row_id)
 	{
-		$item_kit_id = $this->input->post('row_id');
-
 		// calculate the total cost and retail price of the Kit so it can be added to the table refresh
 		$item_kit = $this->add_totals_to_item_kit($this->Item_kit->get_info($item_kit_id));
 		
-		echo (get_item_kit_data_row($item_kit, $this));
+		echo json_encode(get_item_kit_data_row($item_kit, $this));
 	}
 
 	function view($item_kit_id=-1)
@@ -106,13 +94,13 @@ class Item_kits extends Secure_area implements iData_controller
 				
 				echo json_encode(array('success'=>true,
 									'message'=>$this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'],
-									'item_kit_id'=>$item_kit_id));
+									'id'=>$item_kit_id));
 			}
 			else //previous item
 			{
 				echo json_encode(array('success'=>true, 
 									'message'=>$this->lang->line('item_kits_successful_updating').' '.$item_kit_data['name'],
-									'item_kit_id'=>$item_kit_id));
+									'id'=>$item_kit_id));
 			}
 			
 			if ( $this->input->post('item_kit_item') != null )
@@ -133,7 +121,7 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			echo json_encode(array('success'=>false, 
 								'message'=>$this->lang->line('item_kits_error_adding_updating').' '.$item_kit_data['name'],
-								'item_kit_id'=>-1));
+								'id'=>-1));
 		}
 	}
 	
