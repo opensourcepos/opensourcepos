@@ -15,6 +15,7 @@ class Customers extends Person_controller
 		$customers = $this->Customer->get_all($lines_per_page, $limit_from);
 		$data['links'] = $this->_initialize_pagination($this->Customer, $lines_per_page, $limit_from);
 		$data['manage_table'] = get_people_manage_table($customers, $this);
+
 		$this->load->view('people/manage', $data);
 	}
 	
@@ -41,12 +42,14 @@ class Customers extends Person_controller
 	function suggest()
 	{
 		$suggestions = $this->Customer->get_search_suggestions($this->input->get('term'), TRUE);
+
 		echo json_encode($suggestions);
 	}
 
 	function suggest_search()
 	{
 		$suggestions = $this->Customer->get_search_suggestions($this->input->post('term'), FALSE);
+
 		echo json_encode($suggestions);
 	}
 	
@@ -55,8 +58,10 @@ class Customers extends Person_controller
 	*/
 	function view($customer_id=-1)
 	{
-		$data['person_info']=$this->Customer->get_info($customer_id);
-		$this->load->view("customers/form",$data);
+		$data['person_info'] = $this->Customer->get_info($customer_id);
+		$data['total'] = $this->Customer->get_totals($customer_id)->total;
+
+		$this->load->view("customers/form", $data);
 	}
 	
 	/*
@@ -81,6 +86,7 @@ class Customers extends Person_controller
 		$customer_data=array(
 			'account_number'=>$this->input->post('account_number') == '' ? null : $this->input->post('account_number'),
 			'company_name'=>$this->input->post('company_name') == '' ? null : $this->input->post('company_name'),
+			'discount_percent'=>$this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
 			'taxable'=>$this->input->post('taxable') != null
 		);
 		if($this->Customer->save_customer($person_data,$customer_data,$customer_id))
@@ -107,6 +113,7 @@ class Customers extends Person_controller
 	function check_account_number()
 	{
 		$exists = $this->Customer->account_number_exists($this->input->post('account_number'),$this->input->post('person_id'));
+
 		echo !$exists ? 'true' : 'false';
 	}
 	
@@ -176,11 +183,13 @@ class Customers extends Person_controller
 						'comments'=>$data[11]
 					);
 					
-					$customer_data=array(
-						'taxable'=>$data[13]=='' ? 0:1
+					$customer_data = array(
+						'company_name'=>$data[12],
+						'discount_percent'=>$data[14],
+						'taxable'=>$data[15]=='' ? 0 : 1
 					);
 					
-					$account_number = $data[12];
+					$account_number = $data[13];
 					$invalidated = false;
 					if ($account_number != "") 
 					{
@@ -188,7 +197,7 @@ class Customers extends Person_controller
 						$invalidated = $this->Customer->account_number_exists($account_number);
 					}
 					
-					if($invalidated || !$this->Customer->save_customer($person_data,$customer_data))
+					if($invalidated || !$this->Customer->save_customer($person_data, $customer_data))
 					{	
 						$failCodes[] = $i;
 					}

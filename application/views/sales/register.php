@@ -126,7 +126,7 @@ if (isset($success))
 							<td><?php echo anchor("sales/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align: center;">
-								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
+								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -221,7 +221,7 @@ if (isset($success))
 						</tr>
 					<?php echo form_close(); ?>
 			<?php					
-					$tabindex = $tabindex + 1;					
+					$tabindex++;					
 				}
 			}
 			?>
@@ -275,6 +275,14 @@ if (isset($success))
 				<?php
 				}
 				?>
+				<tr>
+					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_discount"); ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo $customer_discount_percent . ' %'; ?></th>
+				</tr>
+				<tr>
+					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_total"); ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
+				</tr>
 			</table>
 
 			<?php echo anchor("sales/remove_customer", $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),

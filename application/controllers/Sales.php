@@ -280,20 +280,36 @@ class Sales extends Secure_area
 		$quantity = ($mode == "return") ? -1 : 1;
 		$item_location = $this->sale_lib->get_sale_location();
 
+		$discount = 0;
+		
+		// check if any discount is assigned to the selected customer
+		$customer_id = $this->sale_lib->get_customer();
+		if($customer_id != -1)
+		{
+			// load the customer discount if any
+			$discount = $this->Customer->get_info($customer_id)->discount_percent == '' ? 0 : $this->Customer->get_info($customer_id)->discount_percent;
+		}
+		
+		// if the customer discount is 0 or no customer is selected apply the default sales discount
+		if($discount == 0)
+		{
+			$discount = $this->config->item('default_sales_discount');
+		}
+		
 		if($mode == 'return' && $this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
 		}
 		else if($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt,$item_location);
+			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location);
 		}
-		else if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt,$quantity,$item_location,$this->config->item('default_sales_discount')))
+		else if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
 		{
 			$data['error'] = $this->lang->line('sales_unable_to_add_item');
 		}
 		
-		$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt,$item_location);
+		$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
 
 		$this->_reload($data);
 	}
@@ -355,41 +371,20 @@ class Sales extends Secure_area
 		$data['transaction_time'] = date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$customer_id = $this->sale_lib->get_customer();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$data['comments'] = $this->sale_lib->get_comment();
-		$emp_info=$this->Employee->get_info($employee_id);
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
-		$data['employee'] = $emp_info->first_name.' '.$emp_info->last_name;
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$emp_info = $this->Employee->get_info($employee_id);
+		$data['employee'] = $emp_info->first_name  . ' ' . $emp_info->last_name;
 		$data['company_info'] = implode("\n", array(
 				$this->config->item('address'),
 				$this->config->item('phone'),
 				$this->config->item('account_number')
 		));
-		$cust_info = '';
-		if($customer_id != -1)
-		{
-			$cust_info = $this->Customer->get_info($customer_id);
-			if (isset($cust_info->company_name))
-			{
-				$data['customer'] = $cust_info->company_name;
-			}
-			else
-			{
-				$data['customer'] = $cust_info->first_name.' '.$cust_info->last_name;
-			}
-			$data['customer_address'] = $cust_info->address_1;
-			$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;
-			$data['account_number'] = $cust_info->account_number;
-			$data['customer_info'] = implode("\n", array(
-				$data['customer'],
-				$data['customer_address'],
-				$data['customer_location'],
-				$data['account_number']
-			));
-		}
+		$customer_id = $this->sale_lib->get_customer();
+		$cust_info = $this->_load_customer_data($customer_id, $data);
 		$invoice_number = $this->_substitute_invoice_number($cust_info);
 		if ($this->sale_lib->is_invoice_number_enabled() && $this->Sale->invoice_number_exists($invoice_number))
 		{
@@ -458,7 +453,7 @@ class Sales extends Secure_area
 		// load pdf helper
 		$this->load->helper(array('dompdf', 'file'));
 		$file_content  = pdf_create($html, '', false);
-		$filename = sys_get_temp_dir() . '/'. $this->lang->line('sales_invoice') .'-' . str_replace('/', '-' , $data["invoice_number"]) . '.pdf';
+		$filename = sys_get_temp_dir() . '/'. $this->lang->line('sales_invoice') . '-' . str_replace('/', '-' , $data["invoice_number"]) . '.pdf';
 		write_file($filename, $file_content);
 
 		return $filename;
@@ -521,7 +516,7 @@ class Sales extends Secure_area
 			{
 				$acronym .= $w[0];
 			}
-			$text = str_replace('$CI',$acronym,$text);
+			$text = str_replace('$CI', $acronym, $text);
 		}
 
 		return $text;
@@ -573,37 +568,15 @@ class Sales extends Secure_area
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
 		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$customer_id = $this->sale_lib->get_customer();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$emp_info = $this->Employee->get_info($employee_id);
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$emp_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $emp_info->first_name . ' ' . $emp_info->last_name;
-	
-		if($customer_id != -1)
-		{
-			$cust_info = $this->Customer->get_info($customer_id);
-			if (isset($cust_info->company_name))
-			{
-				$data['customer'] = $cust_info->company_name;
-			}
-			else
-			{
-				$data['customer'] = $cust_info->first_name.' '.$cust_info->last_name;
-			}
-			$data['first_name'] = $cust_info->first_name;
-			$data['last_name'] = $cust_info->last_name;
-			$data['customer_address'] = $cust_info->address_1;
-			$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;
-			$data['customer_email'] = $cust_info->email;
-			$data['account_number'] = $cust_info->account_number;
-			$data['customer_info'] = implode("\n", array(
-				$data['customer'],
-				$data['customer_address'],
-				$data['customer_location'],
-				$data['account_number']
-			));
-		}
+
+		$customer_id = $this->sale_lib->get_customer();
+		$cust_info = $this->_load_customer_data($customer_id, $data);
+		
 		$data['sale_id'] = 'POS ' . $sale_id;
 		$data['comments'] = $sale_info['comment'];
 		$data['invoice_number'] = $sale_info['invoice_number'];
@@ -716,7 +689,7 @@ class Sales extends Secure_area
 	}
 	
 	private function _reload($data=array())
-	{
+	{		
 		$person_info = $this->Employee->get_logged_in_employee_info();
 		$data['cart'] = $this->sale_lib->get_cart();	 
 		$data['modes'] = array('sale'=>$this->lang->line('sales_sale'), 'return'=>$this->lang->line('sales_return'));
@@ -745,11 +718,24 @@ class Sales extends Secure_area
 		);
 
 		$customer_id = $this->sale_lib->get_customer();
+		$cust_info = $this->_load_customer_data($customer_id, $data, true);
+		
+		$data['invoice_number'] = $this->_substitute_invoice_number($cust_info);
+		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
+		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['payments_cover_total'] = $this->_payments_cover_total();
+
+		$this->load->view("sales/register", $data);
+	}
+	
+	private function _load_customer_data($customer_id, &$data, $totals=false)
+	{	
 		$cust_info = '';
+		
 		if($customer_id != -1)
 		{
 			$cust_info = $this->Customer->get_info($customer_id);
-			if (isset($cust_info->company_name))
+			if(isset($cust_info->company_name))
 			{
 				$data['customer'] = $cust_info->company_name;
 			}
@@ -759,8 +745,9 @@ class Sales extends Secure_area
 			}
 			$data['first_name'] = $cust_info->first_name;
 			$data['last_name'] = $cust_info->last_name;
+			$data['customer_email'] = $cust_info->email;
 			$data['customer_address'] = $cust_info->address_1;
-			if (!empty($cust_info->zip) or !empty($cust_info->city))
+			if(!empty($cust_info->zip) or !empty($cust_info->city))
 			{
 				$data['customer_location'] = $cust_info->zip . ' ' . $cust_info->city;				
 			}
@@ -768,22 +755,23 @@ class Sales extends Secure_area
 			{
 				$data['customer_location'] = '';
 			}
-			$data['customer_email'] = $cust_info->email;
-			$data['account_number'] = $cust_info->account_number;
+			$data['customer_account_number'] = $cust_info->account_number;
+			$data['customer_discount_percent'] = $cust_info->discount_percent;
+			if($totals)
+			{
+				$cust_totals = $this->Customer->get_totals($customer_id);
+
+				$data['customer_total'] = $cust_totals->total;
+			}
 			$data['customer_info'] = implode("\n", array(
 				$data['customer'],
 				$data['customer_address'],
 				$data['customer_location'],
-				$data['account_number']
+				$data['customer_account_number']
 			));
 		}
 		
-		$data['invoice_number'] = $this->_substitute_invoice_number($cust_info);
-		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
-		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['payments_cover_total'] = $this->_payments_cover_total();
-
-		$this->load->view("sales/register", $data);
+		return $cust_info;
 	}
 
 	function cancel()
@@ -794,38 +782,27 @@ class Sales extends Secure_area
 	}
 	
 	function suspend()
-	{
+	{	
 		$data['cart'] = $this->sale_lib->get_cart();
 		$data['subtotal'] = $this->sale_lib->get_subtotal();
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['total'] = $this->sale_lib->get_total();
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
-		$customer_id = $this->sale_lib->get_customer();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$comment = $this->sale_lib->get_comment();
 		$invoice_number = $this->sale_lib->get_invoice_number();
 
-		$emp_info = $this->Employee->get_info($employee_id);
 		$data['payment_type'] = $this->input->post('payment_type');
 		// Multiple payments
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['amount_change'] = to_currency($this->sale_lib->get_amount_due() * -1);
-		$data['employee'] = $emp_info->first_name.' '.$emp_info->last_name;
 
-		$cust_info = '';
-		if($customer_id != -1)
-		{
-			$cust_info = $this->Customer->get_info($customer_id);
-			if (isset($cust_info->company_name))
-			{
-				$data['customer'] = $cust_info->company_name;
-			}
-			else
-			{
-				$data['customer'] = $cust_info->first_name.' '.$cust_info->last_name;
-			}
-		}
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		$emp_info = $this->Employee->get_info($employee_id);
+		$data['employee'] = $emp_info->first_name . ' ' . $emp_info->last_name;
+
+		$customer_id = $this->sale_lib->get_customer();
+		$cust_info = $this->_load_customer_data($customer_id, $data);
 
 		$is_set = $this->_is_custom_invoice_number($cust_info);
 		$invoice_number = $is_set ? $invoice_number : NULL;
@@ -850,7 +827,7 @@ class Sales extends Secure_area
 	}
 	
 	function suspended()
-	{
+	{	
 		$data = array();
 		$data['suspended_sales'] = $this->Sale_suspended->get_all()->result_array();
 

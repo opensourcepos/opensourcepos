@@ -23,10 +23,47 @@
 				<?php echo form_input(array(
 						'name'=>'account_number',
 						'id'=>'account_number',
-						'class'=>'account_number form-control',
+						'class'=>'form-control input-sm',
 						'value'=>$person_info->account_number)
 						);?>
 			</div>
+		</div>
+		
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
+			<div class="col-xs-6">
+				<div class="input-group input-group-sm">
+					<?php if (!$this->config->item('currency_side')): ?>
+					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php endif; ?>
+					<?php echo form_input(array(
+							'name'=>'total',
+							'id'=>'total',
+							'class'=>'form-control input-sm',
+							'value'=>to_currency_no_money($total),
+							'disabled'=>'')
+							);?>
+					<?php if ($this->config->item('currency_side')): ?>
+					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php endif; ?>
+				</div>
+			</div>
+			
+		</div>
+		
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('customers_discount'), 'discount_percent', array('class' => 'control-label col-xs-3')); ?>
+			<div class='col-xs-3'>
+				<div class="input-group input-group-sm">
+					<?php echo form_input(array(
+							'name'=>'discount_percent',
+							'id'=>'discount_percent',
+							'class'=>'form-control input-sm',
+							'value'=>$person_info->discount_percent)
+							);?>
+					<span class="input-group-addon input-sm"><b>%</b></span>
+				</div>
+			</div>	
 		</div>
 
 		<div class="form-group form-group-sm">
@@ -43,19 +80,17 @@
 //validation and submit handling
 $(document).ready(function()
 {
-
 	$('#customer_form').validate($.extend({
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				dialog_support.hide();
-				post_person_form_submit(response);
-			},
-			dataType:'json'
-		});
-
+				success:function(response)
+				{
+					dialog_support.hide();
+					post_person_form_submit(response);
+				},
+				dataType:'json'
+			});
 		},
 		rules:
 		{

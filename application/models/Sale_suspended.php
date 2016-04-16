@@ -47,7 +47,7 @@ class Sale_suspended extends CI_Model
 		return $success;
 	}
 	
-	function save ($items,$customer_id,$employee_id,$comment,$invoice_number,$payments,$sale_id=false)
+	function save($items,$customer_id,$employee_id,$comment,$invoice_number,$payments,$sale_id=false)
 	{
 		if(count($items)==0)
 			return -1;

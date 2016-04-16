@@ -29,4 +29,7 @@ ALTER TABLE `ospos_sales_suspended_items_taxes`
 ALTER TABLE `ospos_items_taxes`
  MODIFY COLUMN `percent` decimal(15,3) NOT NULL;
 
+ALTER TABLE `ospos_customer`
+ ADD COLUMN `discount_percent` decimal(15,2) NOT NULL DEFAULT '0.00';
+
  

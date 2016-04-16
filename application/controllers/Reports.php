@@ -760,7 +760,7 @@ class Reports extends Secure_area
 		$model = $this->Specific_customer;
 
 		$headers = $model->getDataColumns();
-		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'customer_id' =>$customer_id, 'sale_type'=>$sale_type));
+		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'customer_id'=>$customer_id, 'sale_type'=>$sale_type));
 
 		$summary_data = array();
 		$details_data = array();

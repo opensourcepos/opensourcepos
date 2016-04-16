@@ -14,7 +14,7 @@ class Summary_customers extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(first_name, " ",last_name) as customer, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit', false);
+		$this->db->select('CONCAT(first_name, " ", last_name) as customer, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit', false);
 		$this->db->from('sales_items_temp');
 		$this->db->join('customers', 'customers.person_id = sales_items_temp.customer_id');
 		$this->db->join('people', 'customers.person_id = people.person_id');
