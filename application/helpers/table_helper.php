@@ -333,69 +333,36 @@ function get_item_data_row($item,$controller)
 	return $table_data_row;
 }
 
-/*
-Gets the html table to manage giftcards.
-*/
-function get_giftcards_manage_table( $giftcards, $controller )
+function get_giftcards_manage_table_headers()
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
-	
-	$headers = array('<input type="checkbox" id="select_all" />', 
-	$CI->lang->line('common_last_name'),
-	$CI->lang->line('common_first_name'),
-	$CI->lang->line('giftcards_giftcard_number'),
-	$CI->lang->line('giftcards_card_value'),
-	'&nbsp');
-	
-	$table.='<thead><tr>';
-	foreach($headers as $header)
-	{
-		$table.="<th>$header</th>";
-	}
-	$table.='</tr></thead><tbody>';
-	$table.=get_giftcards_manage_table_data_rows( $giftcards, $controller );
-	$table.='</tbody></table>';
 
-	return $table;
+	$headers = array(
+		array('checkbox' => 'select'),
+		array('id' => $CI->lang->line('common_id')),
+		array('last_name' => $CI->lang->line('common_last_name')),
+		array('first_name' => $CI->lang->line('common_first_name')),
+		array('giftcard_number' => $CI->lang->line('giftcards_giftcard_number')),
+		array('giftcard_value' => $CI->lang->line('giftcards_card_value')),
+		array('edit' => '')
+	);
+
+	return transform_headers($headers);
 }
 
-/*
-Gets the html data rows for the giftcard.
-*/
-function get_giftcards_manage_table_data_rows( $giftcards, $controller )
-{
-	$CI =& get_instance();
-	$table_data_rows='';
-	
-	foreach($giftcards->result() as $giftcard)
-	{
-		$table_data_rows.=get_giftcard_data_row( $giftcard, $controller );
-	}
-	
-	if($giftcards->num_rows()==0)
-	{
-		$table_data_rows.="<tr><td colspan='6'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('giftcards_no_giftcards_to_display')."</div></td></tr>";
-	}
-	
-	return $table_data_rows;
-}
-
-function get_giftcard_data_row($giftcard,$controller)
-{
+function get_giftcard_data_row($giftcard, $controller) {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
-	$table_data_row='<tr>';
-	$table_data_row.="<td width='3%'><input type='checkbox' id='giftcard_$giftcard->giftcard_id' value='".$giftcard->giftcard_id."'/></td>";
-	$table_data_row.='<td width="15%">'.$giftcard->last_name.'</td>';
-	$table_data_row.='<td width="15%">'.$giftcard->first_name.'</td>';
-	$table_data_row.='<td width="15%">'.$giftcard->giftcard_number.'</td>';
-	$table_data_row.='<td width="20%">'.to_currency($giftcard->value).'</td>';
-	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	$table_data_row.='</tr>';
-
-	return $table_data_row;
+	return array (
+		'id' => $giftcard->giftcard_id,
+		'last_name' => character_limiter($giftcard->last_name,13),
+		'first_name' => character_limiter($giftcard->first_name,13),
+		'giftcard_number' => $giftcard->giftcard_number,
+		'giftcard_value' => to_currency($giftcard->value),
+		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
 }
 
 /*

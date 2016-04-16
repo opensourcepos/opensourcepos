@@ -217,8 +217,8 @@ class Giftcard extends CI_Model
 	{
 		$this->db->from('giftcards');
 		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
-		$this->db->like('first_name', $this->db->escape_like_str($search));
 		$this->db->or_group_start();
+		$this->db->like('first_name', $this->db->escape_like_str($search));
 		$this->db->or_like('last_name', $this->db->escape_like_str($search));
 		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
 		$this->db->or_like('giftcard_number', $this->db->escape_like_str($search));
@@ -239,8 +239,8 @@ class Giftcard extends CI_Model
 	{
 		$this->db->from('giftcards');
 		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
-		$this->db->like('first_name', $this->db->escape_like_str($search));
 		$this->db->or_group_start();
+		$this->db->like('first_name', $this->db->escape_like_str($search));
 		$this->db->or_like('last_name', $this->db->escape_like_str($search));
 		$this->db->or_like('CONCAT(first_name, " ", last_name)', $this->db->escape_like_str($search));
 		$this->db->or_like('giftcard_number', $this->db->escape_like_str($search));

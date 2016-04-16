@@ -80,11 +80,11 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_giftcard_form_submit(response);
+				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
 			{
-				post_giftcard_form_submit({message: errorThrown});
+				table_support.handle_submit('<?php echo site_url($controller_name); ?>', {message: errorThrown});
 			},
 			dataType:'json'
 		});

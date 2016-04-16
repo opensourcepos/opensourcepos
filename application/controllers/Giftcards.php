@@ -11,11 +11,10 @@ class Giftcards extends Secure_area implements iData_controller
 
 	function index($limit_from=0)
 	{
+
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$giftcards = $this->Giftcard->get_all($lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Giftcard, $lines_per_page, $limit_from);
-		$data['manage_table'] = get_giftcards_manage_table($giftcards, $this);
+		$data['table_headers'] = get_giftcards_manage_table_headers();
+
 		$this->load->view('giftcards/manage', $data);
 	}
 
@@ -24,16 +23,21 @@ class Giftcards extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$giftcards = $this->Giftcard->search($search, $lines_per_page, $limit_from);
+		$giftcards = $this->Giftcard->search($search, $offset, $limit);
 		$total_rows = $this->Giftcard->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Giftcard, $lines_per_page, $limit_from, $total_rows);
-		$data_rows = get_giftcards_manage_table_data_rows($giftcards, $this);
 
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$links = $this->_initialize_pagination($this->Giftcard, $lines_per_page, $limit, $total_rows);
+		$data_rows = array();
+		foreach($giftcards->result() as $giftcard)
+		{
+			$data_rows[] = get_giftcard_data_row($giftcard, $this);
+		}
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	/*
@@ -45,11 +49,10 @@ class Giftcards extends Secure_area implements iData_controller
 		echo json_encode($suggestions);
 	}
 
-	function get_row()
+	function get_row($row_id)
 	{
-		$giftcard_id = $this->input->post('row_id');
-		$data_row = get_giftcard_data_row($this->Giftcard->get_info($giftcard_id), $this);
-		echo $data_row;
+		$data_row = get_giftcard_data_row($this->Giftcard->get_info($row_id), $this);
+		echo json_encode($data_row);
 	}
 
 	function view($giftcard_id=-1)
@@ -78,19 +81,19 @@ class Giftcards extends Secure_area implements iData_controller
 			if($giftcard_id==-1)
 			{
 				echo json_encode(array('success'=>true, 'message'=>$this->lang->line('giftcards_successful_adding').' '.
-								$giftcard_data['giftcard_number'], 'giftcard_id'=>$giftcard_data['giftcard_id']));
+								$giftcard_data['giftcard_number'], 'id'=>$giftcard_data['giftcard_id']));
 				$giftcard_id = $giftcard_data['giftcard_id'];
 			}
 			else //previous giftcard
 			{
 				echo json_encode(array('success'=>true, 'message'=>$this->lang->line('giftcards_successful_updating').' '.
-								$giftcard_data['giftcard_number'], 'giftcard_id'=>$giftcard_id));
+								$giftcard_data['giftcard_number'], 'id'=>$giftcard_id));
 			}
 		}
 		else//failure
 		{
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('giftcards_error_adding_updating').' '.
-							$giftcard_data['giftcard_number'], 'giftcard_id'=>-1));
+							$giftcard_data['giftcard_number'], 'id'=>-1));
 		}
 	}
 
