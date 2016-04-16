@@ -48,7 +48,6 @@
 					<?php endif; ?>
 				</div>
 			</div>
-			
 		</div>
 		
 		<div class="form-group form-group-sm">
