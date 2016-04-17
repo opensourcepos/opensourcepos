@@ -10,7 +10,6 @@ class Sale extends CI_Model
 		$this->db->select('SUM(item_unit_price * quantity_purchased * (1 - discount_percent / 100)) AS amount_due');
 		$this->db->from('sales_items_temp');
 		$this->db->join('people', 'people.person_id = sales_items_temp.customer_id', 'left');
-
 		$this->db->where('sales_items_temp.sale_id', $sale_id);
 		$this->db->group_by('sale_id');
 		$this->db->order_by('sale_time', 'asc');
@@ -230,7 +229,7 @@ class Sale extends CI_Model
 		$this->db->where("invoice_number IS NOT ", "NULL", FALSE);
 		$result = $this->db->get()->row_array();
 
-		return ($start_from + $result[ 'invoice_number_year']);
+		return ($start_from + $result['invoice_number_year']);
 	}
 
 	public function exists($sale_id)
@@ -241,10 +240,29 @@ class Sale extends CI_Model
 		return ($this->db->get()->num_rows()==1);
 	}
 	
-	public function update($sale_data, $sale_id)
+	public function update($sale_id, $sale_data, $payments)
 	{
 		$this->db->where('sale_id', $sale_id);
 		$success = $this->db->update('sales', $sale_data);
+
+		// touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
+		if($success && !empty($payments))
+		{
+			// first delete all payments
+			$this->db->delete('sales_payments', array('sale_id'=>$sale_id));
+
+			// add new payments
+			foreach($payments as $payment)
+			{
+				$sales_payments_data = array(
+					'sale_id'=>$sale_id,
+					'payment_type'=>$payment['payment_type'],
+					'payment_amount'=>$payment['payment_amount']
+					);
+
+				$success = $this->db->insert('sales_payments', $sales_payments_data);
+			}
+		}
 		
 		return $success;
 	}
@@ -423,6 +441,23 @@ class Sale extends CI_Model
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->db->get();
+	}
+	
+	public function get_payment_options($giftcard=true)
+	{
+		$payments = array(
+				$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
+				$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+				$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
+				$this->lang->line('sales_check') => $this->lang->line('sales_check')
+				);
+		
+		if($giftcard)
+		{
+			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
+		}
+
+		return $payments;
 	}
 
 	public function get_customer($sale_id)

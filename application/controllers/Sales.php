@@ -526,6 +526,7 @@ class Sales extends Secure_area
 	{
 		$invoice_number = $this->config->config['sales_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number, $cust_info);
+
 		return $this->sale_lib->get_invoice_number() != $invoice_number;
 	}
 	
@@ -600,7 +601,7 @@ class Sales extends Secure_area
 	
 	function invoice($sale_id, $sale_info='')
 	{
-		if ($sale_info == '')
+		if($sale_info == '')
 		{
 			$sale_info = $this->_load_sale_data($sale_id);
 		}
@@ -622,9 +623,12 @@ class Sales extends Secure_area
 
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
-		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ?  $person_name : '';
+		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ? $person_name : '';
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
+		$data['payments'] = $this->Sale->get_sale_payments($sale_id);
+		// don't allow gift card to be a payment option in a sale transaction edit because it's a complex change
+		$data['payment_options'] = $this->Sale->get_payment_options(false);
 		
 		$this->load->view('sales/form', $data);
 	}
@@ -659,7 +663,37 @@ class Sales extends Secure_area
 			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : null
 		);
 		
-		if ($this->Sale->update($sale_data, $sale_id))
+		// go through all the payment type input from the form, make sure the form matches the name and iterator number
+		$payments = array();
+		for($i = 0; $i < $this->input->post('number_of_payments'); $i++)
+		{
+			$payment_amount = $this->input->post('payment_amount_'.$i);
+			$payment_type = $this->input->post('payment_type_'.$i);
+			// remove any 0 payment if by mistake any was introduced at sale time
+			if($payment_amount != 0)
+			{
+				// search for any payment of the same type that was already added, if that's the case add up the new payment amount
+				$key = FALSE;
+				if( !empty($payments) )
+				{
+					// search in the multi array the key of the entry containing the current payment_type (NOTE: in PHP5.5 the array_map could be replaced by an array_column)
+					$key = array_search($payment_type, array_map(function($v){return $v['payment_type'];}, $payments));
+				}
+
+				// if no previous payment is found add a new one
+				if( $key === FALSE )
+				{
+					$payments[] = array('payment_type'=>$payment_type, 'payment_amount'=>$payment_amount);
+				}
+				else
+				{
+					// add up the new payment amount to an existing payment type
+					$payments[$key]['payment_amount'] += $payment_amount;
+				}
+			}
+		}
+		
+		if($this->Sale->update($sale_id, $sale_data, $payments))
 		{
 			echo json_encode(array('success'=>true, 'message'=>$this->lang->line('sales_successfully_updated'), 'id'=>$sale_id));
 		}
@@ -709,13 +743,7 @@ class Sales extends Secure_area
 		$data['payments_total'] = $this->sale_lib->get_payments_total();
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$data['payments'] = $this->sale_lib->get_payments();
-		$data['payment_options'] = array(
-			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
-			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
-			$this->lang->line('sales_giftcard') => $this->lang->line('sales_giftcard'),
-			$this->lang->line('sales_check') => $this->lang->line('sales_check')
-		);
+		$data['payment_options'] = $this->Sale->get_payment_options();
 
 		$customer_id = $this->sale_lib->get_customer();
 		$cust_info = $this->_load_customer_data($customer_id, $data, true);

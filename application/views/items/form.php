@@ -58,7 +58,7 @@
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!$this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'cost_price',
@@ -67,7 +67,7 @@
 							'value'=>to_currency_no_money($item_info->cost_price))
 							);?>
 					<?php if ($this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -78,7 +78,7 @@
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!$this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'unit_price',
@@ -87,7 +87,7 @@
 							'value'=>to_currency_no_money($item_info->unit_price))
 							);?>
 					<?php if ($this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>

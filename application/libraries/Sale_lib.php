@@ -25,8 +25,8 @@ class Sale_lib
 	// Multiple Payments
 	function get_payments()
 	{
-		if( !$this->CI->session->userdata( 'payments' ) )
-			$this->set_payments( array( ) );
+		if(!$this->CI->session->userdata('payments'))
+			$this->set_payments(array());
 
 		return $this->CI->session->userdata('payments');
 	}

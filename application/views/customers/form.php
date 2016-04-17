@@ -34,7 +34,7 @@
 			<div class="col-xs-6">
 				<div class="input-group input-group-sm">
 					<?php if (!$this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'total',
@@ -44,7 +44,7 @@
 							'disabled'=>'')
 							);?>
 					<?php if ($this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>
