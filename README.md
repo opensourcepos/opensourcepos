@@ -1,6 +1,7 @@
 Introduction
 ------------
-Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.
+Open Source Point of Sale is a web based point of sale system written in the PHP language.
+It uses MySQL as the data storage back-end and has a simple user interface.
 
 This is the latest version 3.0.0 and it's based on Bootstrap 3 using Bootswatch theme Flatly as default, and CodeIgniter 3.0.6.
 
@@ -16,7 +17,26 @@ If you like the project, and you are making money out of it on a daily basis, th
 
 Server Requirements
 -------------------
-PHP version 5.5 or newer is recommended.
+PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
+
+Reporting Bugs
+--------------
+Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
+Please DO NOT post issues if you have not done that before running OSPOS 3.0.
+Please also make sure you have updated all the files from latest master.
+
+Bug reports must follow this schema:
+
+1. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
+2. Web Server name and version (e.g. Apache 2.4)
+3. Database name and version (e.g. MySQL 5.6)
+3. PHP version (e.g. PHP 5.5)
+4. Language selected in OSPOS (e.g. English, Spanish)
+5. Any configuration of OSPOS that you changed
+6. Exact steps to reproduce the issue (test case)
+
+If above information is not provided in full, your issue will be tagged as pending.
+If missing information is not provided within a week we will close your issue.
 
 Installation
 ------------
