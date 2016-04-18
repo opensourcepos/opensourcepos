@@ -66,7 +66,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-6'>
-					<?php echo form_input(array('name'=>'customer_name', 'value =>$selected_customer_name', 'id'=>'customer_name', 'class'=>'form-control input-sm'));?>
+					<?php echo form_input(array('name'=>'customer_name', 'value'=>$selected_customer_name, 'id'=>'customer_name', 'class'=>'form-control input-sm'));?>
 					<?php echo form_hidden('customer_id', $selected_customer_id);?>
 				</div>
 			</div>
