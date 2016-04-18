@@ -3,10 +3,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('item_kits/save/'.$item_kit_info->item_kit_id, array('id'=>'item_kit_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="item_kit_info">
+	<fieldset id="item_kit_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('item_kits_name'), 'name', array('class'=>'control-label col-xs-3 required')); ?>
-			<div class='col-xs-6'>
+			<?php echo form_label($this->lang->line('item_kits_name'), 'name', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
 						'id'=>'name',
@@ -18,7 +18,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('item_kits_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'description',
 						'id'=>'description',
@@ -30,7 +30,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('item_kits_add_item'), 'item', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'item',
 						'id'=>'item',

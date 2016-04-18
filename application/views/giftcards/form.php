@@ -6,7 +6,7 @@
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'person_name',
 						'id'=>'person_name',
@@ -19,7 +19,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'name', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'giftcard_number',
 						'id'=>'giftcard_number',
@@ -31,10 +31,10 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_card_value'), 'name', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!$this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'value',
@@ -43,7 +43,7 @@
 							'value'=>to_currency_no_money($giftcard_info->value))
 							);?>
 					<?php if ($this->config->item('currency_side')): ?>
-					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
 			</div>

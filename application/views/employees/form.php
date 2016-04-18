@@ -26,7 +26,7 @@
 			<fieldset>
 				<div class="form-group form-group-sm">	
 					<?php echo form_label($this->lang->line('employees_username'), 'username', array('class'=>'required control-label col-xs-3')); ?>
-					<div class='col-xs-6'>
+					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 							<?php echo form_input(array(
@@ -42,8 +42,8 @@
 				<?php $password_label_attributes = $person_info->person_id == "" ? array('class'=>'required') : array(); ?>
 
 				<div class="form-group form-group-sm">	
-					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'col-xs-3 control-label'))); ?>
-					<div class='col-xs-6'>
+					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
+					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
 							<?php echo form_password(array(
@@ -56,8 +56,8 @@
 				</div>
 
 				<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'col-xs-3 control-label'))); ?>
-					<div class='col-xs-6'>
+				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
+					<div class='col-xs-8'>
 						<div class="input-group">
 							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
 							<?php echo form_password(array(

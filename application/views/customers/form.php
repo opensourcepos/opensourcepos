@@ -8,7 +8,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_company_name'), 'company_name', array('class' => 'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'company_name',
 						'class'=>'form-control input-sm',
@@ -19,7 +19,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_account_number'), 'account_number', array('class' => 'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'account_number',
 						'id'=>'account_number',
@@ -31,7 +31,7 @@
 		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
-			<div class="col-xs-6">
+			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php if (!$this->config->item('currency_side')): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>

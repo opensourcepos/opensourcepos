@@ -2,95 +2,93 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<div id="edit_sale_wrapper">
+<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="sale_basic_info">
-		<?php echo form_open("sales/save/".$sale_info['sale_id'], array('id'=>'sales_edit_form', 'class'=>'form-horizontal')); ?>	
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_receipt_number'), 'receipt_number', array('class'=>'control-label col-xs-3')); ?>
-				<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], 'POS ' . $sale_info['sale_id'], array('target'=>'_blank', 'class'=>'control-label col-xs-6', "style"=>"text-align:left"));?>
-			</div>
-			
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
-				</div>
-			</div>
-			
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-6'>
-					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
-						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
-						<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
-					<?php else: ?>
-						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
-					<?php endif; ?>
-				</div>
-			</div>
-
-			<?php 
-			$i = 0;
-			foreach($payments->result() as $row)
-			{
-			?>
-				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('sales_payment'), 'payment_'.$i, array('class'=>'control-label col-xs-3')); ?>
-					<div class='col-xs-3'>
-							<?php // no editing of Gift Card payments as it's a complex change ?>
-							<?php if( !empty(strstr($row->payment_type, $this->lang->line('sales_giftcard'))) ): ?>
-								<?php echo form_input(array('name'=>'payment_type_'.$i, 'value'=>$row->payment_type, 'id'=>'payment_type_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
-							<?php else: ?>
-								<?php echo form_dropdown('payment_type_'.$i, $payment_options, $row->payment_type, array('id'=>'payment_types_'.$i, 'class'=>'form-control')); ?>
-							<?php endif; ?>
-					</div>
-					<div class='col-xs-3'>
-						<div class="input-group input-group-sm">
-							<?php if(!$this->config->item('currency_side')): ?>
-								<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
-							<?php endif; ?>
-							<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
-							<?php if ($this->config->item('currency_side')): ?>
-								<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
-							<?php endif; ?>
-						</div>
-					</div>
-				</div>
-			<?php 
-			$i++;
-			}
-			echo form_hidden('number_of_payments', $i);			
-			?>
-			
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array('name'=>'customer_name', 'value'=>$selected_customer_name, 'id'=>'customer_name', 'class'=>'form-control input-sm'));?>
-					<?php echo form_hidden('customer_id', $selected_customer_id);?>
-				</div>
-			</div>
-			
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
-				</div>
-			</div>
-			
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('sales_comment'), 'comment', array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class'=>'form-control input-sm'));?>
-				</div>
-			</div>
-		<?php echo form_close(); ?>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('sales_receipt_number'), 'receipt_number', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo anchor('sales/receipt/'.$sale_info['sale_id'], 'POS ' . $sale_info['sale_id'], array('target'=>'_blank', 'class'=>'control-label col-xs-8', "style"=>"text-align:left"));?>
+		</div>
 		
-		<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
-			<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
-		<?php echo form_close(); ?>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+			</div>
+		</div>
+		
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
+					isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
+					<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
+					<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
+				<?php else: ?>
+					<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
+				<?php endif; ?>
+			</div>
+		</div>
+
+		<?php 
+		$i = 0;
+		foreach($payments->result() as $row)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_payment'), 'payment_'.$i, array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-4'>
+						<?php // no editing of Gift Card payments as it's a complex change ?>
+						<?php if( !empty(strstr($row->payment_type, $this->lang->line('sales_giftcard'))) ): ?>
+							<?php echo form_input(array('name'=>'payment_type_'.$i, 'value'=>$row->payment_type, 'id'=>'payment_type_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+						<?php else: ?>
+							<?php echo form_dropdown('payment_type_'.$i, $payment_options, $row->payment_type, array('id'=>'payment_types_'.$i, 'class'=>'form-control')); ?>
+						<?php endif; ?>
+				</div>
+				<div class='col-xs-4'>
+					<div class="input-group input-group-sm">
+						<?php if(!$this->config->item('currency_side')): ?>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<?php endif; ?>
+						<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+						<?php if ($this->config->item('currency_side')): ?>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+		<?php 
+		$i++;
+		}
+		echo form_hidden('number_of_payments', $i);			
+		?>
+		
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array('name'=>'customer_name', 'value'=>$selected_customer_name, 'id'=>'customer_name', 'class'=>'form-control input-sm'));?>
+				<?php echo form_hidden('customer_id', $selected_customer_id);?>
+			</div>
+		</div>
+		
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('sales_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_dropdown('employee_id', $employees, $sale_info['employee_id'], 'id="employee_id" class="form-control"');?>
+			</div>
+		</div>
+		
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('sales_comment'), 'comment', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class'=>'form-control input-sm'));?>
+			</div>
+		</div>
 	</fieldset>
-</div>
+<?php echo form_close(); ?>
+		
+<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
+	<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
+<?php echo form_close(); ?>
 
 <script type="text/javascript" language="javascript">
 $(document).ready(function()

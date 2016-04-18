@@ -6,7 +6,7 @@
 	<fieldset id="supplier_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('suppliers_company_name'), 'company_name', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 					'name'=>'company_name',
 					'id'=>'company_name_input',
@@ -18,7 +18,7 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('suppliers_agency_name'), 'agency_name', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 					'name'=>'agency_name',
 					'id'=>'agency_name_input',
@@ -32,7 +32,7 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('suppliers_account_number'), 'account_number', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 					'name'=>'account_number',
 					'id'=>'account_number',

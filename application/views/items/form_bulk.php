@@ -3,10 +3,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('items/bulk_update/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="item_basic_info">
+	<fieldset id="bulk_item_basic_info">
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
 						'id'=>'name',
@@ -17,7 +17,7 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php echo form_input(array(
@@ -31,7 +31,7 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, '', array('class'=>'form-control'));?>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-sm-3'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_1',
@@ -84,7 +84,7 @@
 						'value'=>$this->config->item('default_tax_1_name'))
 						);?>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
@@ -99,7 +99,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-sm-3'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'tax_names[]',
 						'id'=>'tax_name_2',
@@ -107,7 +107,7 @@
 						'value'=>$this->config->item('default_tax_2_name'))
 						);?>
 			</div>
-			<div class="col-sm-3">
+			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
 					<?php echo form_input(array(
 							'name'=>'tax_percents[]',
@@ -122,7 +122,7 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-3'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'reorder_level',
 						'id'=>'reorder_level',
@@ -133,7 +133,7 @@
 
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('items_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-5'>
+			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'description',
 						'id'=>'description',
@@ -144,14 +144,14 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_allow_alt_description'), 'allow_alt_description', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-5'>
+			<div class='col-xs-8'>
 				<?php echo form_dropdown('allow_alt_description', $allow_alt_description_choices, '', array('class'=>'form-control'));?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_is_serialized'), 'is_serialized', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-5'>
+			<div class='col-xs-8'>
 				<?php echo form_dropdown('is_serialized', $serialization_choices, '', array('class'=>'form-control'));?>
 			</div>
 		</div>

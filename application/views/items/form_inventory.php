@@ -3,10 +3,10 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
 <?php echo form_open('items/save_inventory/'.$item_info->item_id, array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
-	<fieldset id="item_basic_info">
+	<fieldset id="inv_item_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_item_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
-			<div class="col-xs-6">
+			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-barcode"></span></span>
 					<?php echo form_input(array(
@@ -22,7 +22,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'name',
 						'id'=>'name',
@@ -35,7 +35,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<div class="input-group">
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-tag"></span></span>
 					<?php echo form_input(array(
@@ -51,14 +51,14 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_stock_location'), 'stock_location', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_dropdown('stock_location', $stock_locations, current($stock_locations), array('onchange'=>'fill_quantity(this.value)', 'class'=>'form-control'));	?>
 			</div>
 		</div>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_current_quantity'), 'quantity', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-3'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'quantity',
 						'id'=>'quantity',
@@ -71,7 +71,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_add_minus'), 'quantity', array('class'=>'required control-label col-xs-3')); ?>
-			<div class='col-xs-3'>
+			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'newquantity',
 						'id'=>'newquantity',
@@ -82,7 +82,7 @@
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_inventory_comments'), 'description', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-6'>
+			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
 						'name'=>'trans_comment',
 						'id'=>'trans_comment',
