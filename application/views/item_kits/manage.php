@@ -17,8 +17,8 @@ $(document).ready(function()
 <div id="title_bar" class="btn-toolbar">
 
 	<button class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url($controller_name."/view"); ?>'
-			title='<?php echo $this->lang->line('customers_new'); ?>'>
-		<span class="glyphicon glyphicon-user"></span><?php echo $this->lang->line($controller_name. '_new'); ?>
+			title='<?php echo $this->lang->line($controller_name. '_new'); ?>'>
+		<span class="glyphicon glyphicon-tags"></span><?php echo $this->lang->line($controller_name. '_new'); ?>
 	</button>
 
 </div>

@@ -98,7 +98,7 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('employees'); ?>', response);
+				table_support.handle_submit('<?php echo site_url('item_kits'); ?>', response);
 			},
 			dataType:'json'
 		});
