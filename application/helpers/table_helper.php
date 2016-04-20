@@ -291,13 +291,13 @@ function get_item_data_row($item, $controller) {
 		'quantity' => to_quantity_decimals($item->quantity),
 		'tax_percents' => $tax_percents,
 		'item_pic' => $image,
-		'inventory' => anchor($controller_name."/inventory/$item->person_id", '<span class="glyphicon glyphicon-pushpin"></span>',
+		'inventory' => anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>',
 			array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_count'))
 		),
-		'stock' => anchor($controller_name."/count_details/$item->person_id", '<span class="glyphicon glyphicon-list-alt"></span>',
+		'stock' => anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>',
 		array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_details_count'))
 		),
-		'edit' => anchor($controller_name."/view/$item->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_update'))
 		));
 }

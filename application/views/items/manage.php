@@ -84,32 +84,27 @@ function post_bulk_form_submit(response)
 </div>
 
 <div id="toolbar">
-    <div class="pull-left btn-toolbar" role="toolbar">
+    <div class="pull-left form-inline" role="toolbar">
         <button id="delete" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/delete"); ?>'>
             <span class="glyphicon glyphicon-trash"></span>
-            <?php echo $this->lang->line("common_delete");?></button>
+            <?php echo $this->lang->line("common_delete");?>
+        </button>
         <button id="bulk_edit" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/bulk_edit"); ?>' title='<?php $this->lang->line('items_edit_multiple_items');?>'>
             <span class="glyphicon glyphicon-edit"></span>
-            <?php echo $this->lang->line("items_bulk_edit"); ?></button>
+            <?php echo $this->lang->line("items_bulk_edit"); ?>
+        </button>
         <button id="generate_barcodes" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/generate_barcodes"); ?>' title='<?php echo $this->lang->line('items_generate_barcodes');?>'>
             <span class="glyphicon glyphicon-barcode"></span>
-            <?php echo $this->lang->line("items_generate_barcodes");?></button>
-        <div class="col-xs-4">
-            <?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
-        </div>
-        <div class="col-xs-2" style="vertical-align: none;">
-            <?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
-        </div>
-            <?php
-            if (count($stock_locations) > 1)
-            {
-                ?>
-                <div class="col-xs-2">
-                <?php echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id'=>'stock_location', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
-                </div>
-                <?php
-            }
-            ?>
+            <?php echo $this->lang->line("items_generate_barcodes");?>
+        </button>
+        <?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
+        <?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+        <?php
+        if (count($stock_locations) > 1)
+        {
+            echo form_dropdown('stock_location', $stock_locations, $stock_location, array('id'=>'stock_location', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit'));
+        }
+        ?>
     </div>
 </div>
 
