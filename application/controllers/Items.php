@@ -54,7 +54,8 @@ class Items extends Secure_area implements iData_controller
 						'is_deleted' => FALSE);
 		
 		// check if any filter is set in the multiselect dropdown
-		$filters = array_merge($filters, $this->input->get('filters'));
+		$filledup = array_fill_keys($this->input->get('filters'), true);
+		$filters = array_merge($filters, $filledup);
 
 		$items = $this->Item->search($search, $filters, $offset, $limit);
 		$total_rows = $this->Item->get_found_rows($search, $filters);

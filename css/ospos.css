@@ -142,6 +142,11 @@ a.rollover img
 	padding: 3px;	
 }
 
+#filters.btn-group
+{
+	vertical-align: none;
+}
+
 button.btn.dropdown-toggle.btn-sm
 {
 	background-color: white;
