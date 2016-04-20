@@ -10,27 +10,24 @@ class Items extends Secure_area implements iData_controller
 		$this->load->library('item_lib');
 	}
 	
-	function index($limit_from=0)
+	function index()
 	{
 		$stock_location = $this->item_lib->get_item_location();
 		$stock_locations = $this->Stock_location->get_allowed_locations();
-		
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);	
 
 		// filters that will be loaded in the multiselect dropdown
 		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
-								'low_inventory' => $this->lang->line('items_low_inventory_items'), 
-								'is_serialized' => $this->lang->line('items_serialized_items'),
-								'no_description' => $this->lang->line('items_no_description_items'),
-								'search_custom' => $this->lang->line('items_search_custom_items'),
-								'is_deleted' => $this->lang->line('items_is_deleted'));
+			'low_inventory' => $this->lang->line('items_low_inventory_items'),
+			'is_serialized' => $this->lang->line('items_serialized_items'),
+			'no_description' => $this->lang->line('items_no_description_items'),
+			'search_custom' => $this->lang->line('items_search_custom_items'),
+			'is_deleted' => $this->lang->line('items_is_deleted'));
 
 		$data['stock_location'] = $stock_location;
 		$data['stock_locations'] = $stock_locations;
-		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
+
+		$data['table_headers'] = get_items_manage_table_headers();
 
 		$this->load->view('items/manage', $data);
 	}
@@ -40,13 +37,14 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$this->item_lib->set_item_location($this->input->post('stock_location'));
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
 
-		$filters = array('start_date' => $this->input->post('start_date'), 
-						'end_date' => $this->input->post('end_date'),
+		$this->item_lib->set_item_location($this->input->get('stock_location'));
+
+		$filters = array('start_date' => $this->input->get('start_date'),
+						'end_date' => $this->input->get('end_date'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
 						'empty_upc' => FALSE,
 						'low_inventory' => FALSE, 
@@ -56,21 +54,17 @@ class Items extends Secure_area implements iData_controller
 						'is_deleted' => FALSE);
 		
 		// check if any filter is set in the multiselect dropdown
-		if( $this->input->post('filters') != null )
-		{
-			foreach($this->input->post('filters') as $key)
-			{
-				$filters[$key] = TRUE;
-			}
-		}
-	
-		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
-		$data_rows = get_items_manage_table_data_rows($items, $this);
-		$total_rows = $this->Item->get_found_rows($search, $filters);
-		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
-		$data_rows = get_items_manage_table_data_rows($items, $this);
+		$filters = array_merge($filters, $this->input->get('filters'));
 
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$items = $this->Item->search($search, $filters, $offset, $limit);
+		$total_rows = $this->Item->get_found_rows($search, $filters);
+
+		$data_rows = array();
+		foreach($items->result() as $item)
+		{
+			$data_rows[] = get_item_data_row($item, $this);
+		}
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
 	function pic_thumb($pic_id)
@@ -369,7 +363,7 @@ class Items extends Secure_area implements iData_controller
             foreach($stock_locations as $location_data)
             {
                 $updated_quantity = $this->input->post('quantity_' . $location_data['location_id']);
-                $location_detail = array('item_id'=>$item_id,
+                $location_detail = array('id'=>$item_id,
                                         'location_id'=>$location_data['location_id'],
                                         'quantity'=>$updated_quantity);  
                 $item_quantity = $this->Item_quantity->get_item_quantity($item_id, $location_data['location_id']);
@@ -393,7 +387,7 @@ class Items extends Secure_area implements iData_controller
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 
-            	echo json_encode(array('success'=>true, 'message'=>$success_message, 'item_id'=>$item_id));
+            	echo json_encode(array('success'=>true, 'message'=>$success_message, 'id'=>$item_id));
             }
             else
             {
@@ -401,7 +395,7 @@ class Items extends Secure_area implements iData_controller
 	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
     	        	$this->upload->display_errors(); 
 
-            	echo json_encode(array('success'=>false, 'message'=>$error_message, 'item_id'=>$item_id)); 
+            	echo json_encode(array('success'=>false, 'message'=>$error_message, 'id'=>$item_id));
             }
 		}
 		else//failure

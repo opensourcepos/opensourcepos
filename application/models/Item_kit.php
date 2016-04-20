@@ -11,22 +11,6 @@ class Item_kit extends CI_Model
 
 		return ($this->db->get()->num_rows()==1);
 	}
-
-	/*
-	Returns all the item kits
-	*/
-	function get_all($rows=0, $limit_from=0)
-	{
-		$this->db->from('item_kits');
-		$this->db->order_by('name', 'asc');
-
-		if ($rows > 0)
-		{
-			$this->db->limit($rows, $limit_from);
-		}
-
-		return $this->db->get();
-	}
 	
 	function get_total_rows()
 	{

@@ -26,12 +26,10 @@ class Giftcards extends Secure_area implements iData_controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
 		$giftcards = $this->Giftcard->search($search, $offset, $limit);
 		$total_rows = $this->Giftcard->get_found_rows($search);
 
-		$links = $this->_initialize_pagination($this->Giftcard, $lines_per_page, $limit, $total_rows);
 		$data_rows = array();
 		foreach($giftcards->result() as $giftcard)
 		{

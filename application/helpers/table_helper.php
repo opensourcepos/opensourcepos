@@ -234,64 +234,32 @@ function get_supplier_data_row($supplier, $controller) {
 		));
 }
 
-/*
-Gets the html table to manage items.
-*/
-function get_items_manage_table($items,$controller)
+function get_items_manage_table_headers()
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
-	
-	$headers = array('<input type="checkbox" id="select_all" />', 
-	$CI->lang->line('items_item_number'),
-	$CI->lang->line('items_name'),
-	$CI->lang->line('items_category'),
-	$CI->lang->line('suppliers_company_name'),
-	$CI->lang->line('items_cost_price'),
-	$CI->lang->line('items_unit_price'),
-	$CI->lang->line('items_quantity'),
-	$CI->lang->line('items_tax_percents'),
-	$CI->lang->line('items_image'),
-	'&nbsp;',
-	'&nbsp;',
-	'&nbsp;'	
+
+	$headers = array(
+		array('checkbox' => 'select'),
+		array('id' => $CI->lang->line('common_id')),
+		array('item_number' => $CI->lang->line('items_item_number')),
+		array('item_name' => $CI->lang->line('items_name')),
+		array('item_category' => $CI->lang->line('items_category')),
+		array('company_name' => $CI->lang->line('suppliers_company_name')),
+		array('cost_price' => $CI->lang->line('items_cost_price')),
+		array('unit_price' => $CI->lang->line('items_unit_price')),
+		array('quantity' => $CI->lang->line('items_quantity')),
+		array('tax_percents' => $CI->lang->line('items_tax_percents')),
+		array('item_pic' => $CI->lang->line('items_image')),
+		array('inventory' => ''),
+		array('stock' => ''),
+		array('edit' => '')
 	);
-	
-	$table.='<thead><tr>';
-	foreach($headers as $header)
-	{
-		$table.="<th>$header</th>";
-	}
-	$table.='</tr></thead><tbody>';
-	$table.=get_items_manage_table_data_rows($items,$controller);
-	$table.='</tbody></table>';
 
-	return $table;
+	return transform_headers($headers);
 }
 
-/*
-Gets the html data rows for the items.
-*/
-function get_items_manage_table_data_rows($items,$controller)
-{
-	$CI =& get_instance();
-	$table_data_rows='';
-	
-	foreach($items->result() as $item)
-	{
-		$table_data_rows.=get_item_data_row($item,$controller);
-	}
-	
-	if($items->num_rows()==0)
-	{
-		$table_data_rows.="<tr><td colspan='13'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('items_no_items_to_display')."</div></td></tr>";
-	}
-	
-	return $table_data_rows;
-}
+function get_item_data_row($item, $controller) {
 
-function get_item_data_row($item,$controller)
-{
 	$CI =& get_instance();
 	$item_tax_info=$CI->Item_taxes->get_info($item->item_id);
 	$tax_percents = '';
@@ -303,34 +271,35 @@ function get_item_data_row($item,$controller)
 	$tax_percents=substr($tax_percents, 0, -2);
 	$controller_name=strtolower(get_class($CI));
 
-    $item_quantity='';
-    
-	$table_data_row='<tr>';
-	$table_data_row.="<td width='2%'><input type='checkbox' id='item_$item->item_id' value='".$item->item_id."'/></td>";
-	$table_data_row.='<td width="10%">'.$item->item_number.'</td>';
-	$table_data_row.='<td width="15%">'.$item->name.'</td>';
-	$table_data_row.='<td width="10%">'.$item->category.'</td>';
-	$table_data_row.='<td width="10%">'.$item->company_name.'</td>';
-	$table_data_row.='<td width="10%">'.to_currency($item->cost_price).'</td>';
-	$table_data_row.='<td width="10%">'.to_currency($item->unit_price).'</td>';
-    $table_data_row.='<td width="8%">'.to_quantity_decimals($item->quantity).'</td>';
-	$table_data_row.='<td width="8%">'.$tax_percents.'</td>';
 	$image = '';
 	if (!empty($item->pic_id))
 	{
 		$images = glob("uploads/item_pics/" . $item->pic_id . ".*");
 		if (sizeof($images) > 0)
 		{
-			$image.='<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/'.$item->pic_id).'"></a>';
+			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/'.$item->pic_id).'"></a>';
 		}
 	}
-	$table_data_row.='<td align="center" width="8%">' . $image . '</td>';
-	$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-new modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	$table_data_row.='<td width="3%">'.anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_count'))).'</td>';//inventory count
-	$table_data_row.='<td width="3%">'.anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>"modal-dlg",'title'=>$CI->lang->line($controller_name.'_details_count'))).'</td>';//inventory details
-	$table_data_row.='</tr>';
 
-	return $table_data_row;
+	return array (
+		'id' => $item->item_id,
+		'item_number' => $item->item_number,
+		'item_name' => character_limiter($item->name,13),
+		'item_category' => character_limiter($item->category,13),
+		'cost_price' => to_currency($item->cost_price),
+		'unit_price' => to_currency($item->unit_price),
+		'quantity' => to_quantity_decimals($item->quantity),
+		'tax_percents' => $tax_percents,
+		'item_pic' => $image,
+		'inventory' => anchor($controller_name."/inventory/$item->person_id", '<span class="glyphicon glyphicon-pushpin"></span>',
+			array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_count'))
+		),
+		'stock' => anchor($controller_name."/count_details/$item->person_id", '<span class="glyphicon glyphicon-list-alt"></span>',
+		array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_details_count'))
+		),
+		'edit' => anchor($controller_name."/view/$item->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_update'))
+		));
 }
 
 function get_giftcards_manage_table_headers()

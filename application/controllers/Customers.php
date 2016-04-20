@@ -23,13 +23,10 @@ class Customers extends Person_controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$customers = $this->Customer->search($search, $lines_per_page, $offset);
+		$customers = $this->Customer->search($search, $limit, $offset);
 		$total_rows = $this->Customer->get_found_rows($search);
 
-		// updat pagination manually??
-		$links = $this->_initialize_pagination($this->Customer,$lines_per_page, $limit, $total_rows);
 		$data_rows = array();
 		foreach($customers->result() as $person)
 		{

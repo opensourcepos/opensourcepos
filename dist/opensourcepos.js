@@ -49474,7 +49474,7 @@ $.tablesorter.addWidget({
 
 	var enable_actions = function() {
 		var selection_empty = selected_rows().length == 0;
-		$("#delete, #generate_barcodes").attr('disabled', selection_empty);
+		$("#toolbar .btn-toolbar button").attr('disabled', selection_empty);
 		var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
 		$("#email").attr('disabled', email_disabled);
 	};
@@ -49487,7 +49487,7 @@ $.tablesorter.addWidget({
 		dialog_support.init("a.modal-dlg, button.modal-dlg");
 	};
 
-	var init = function (resource, headers) {
+	var init = function (resource, headers, queryParams) {
 		$('#table').bootstrapTable({
 			columns: headers,
 			url: resource + '/search',
@@ -49501,7 +49501,9 @@ $.tablesorter.addWidget({
 			uniqueId: 'id',
 			onCheck: enable_actions,
 			onUncheck: enable_actions,
-			onLoadSuccess: load_success
+			onLoadSuccess: load_success,
+			queryParams: queryParams,
+			queryParamsType: 'limit'
 		});
 		init_email();
 		enable_actions();
@@ -49517,8 +49519,11 @@ $.tablesorter.addWidget({
 		});
 	};
 
+	var refresh = function() {
+		table().refresh();
+	}
+
 	var handle_submit = function (resource, response) {
-		var $table = $("#table").data('bootstrap.table');
 		var id = response.id;
 
 		if (!response.success) {
@@ -49530,7 +49535,7 @@ $.tablesorter.addWidget({
 				$.get({
 					url: resource + '/get_row/' + id,
 					success: function (response) {
-						$table.updateByUniqueId({id: response.id, row: response});
+						table().updateByUniqueId({id: response.id, row: response});
 						highlight_rows();
 						set_feedback(message, 'alert alert-dismissible alert-success', false);
 					},
@@ -49539,7 +49544,7 @@ $.tablesorter.addWidget({
 			} else {
 				// call hightlight function once after refresh
 				load_callback = function() { highlight_rows(id); };
-				$table.refresh();
+				refresh();
 				set_feedback(message, 'alert alert-dismissible alert-success', false);
 			}
 		}
@@ -49549,7 +49554,8 @@ $.tablesorter.addWidget({
 		handle_submit: handle_submit,
 		init_delete: init_delete,
 		init: init,
-		init_email: init_email
+		init_email: init_email,
+		refresh : refresh
 	});
 
 })(window.table_support = window.table_support || {}, jQuery);;(function($) {

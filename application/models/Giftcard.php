@@ -26,24 +26,6 @@ class Giftcard extends CI_Model
 		return $this->db->count_all('giftcards');
 	}
 
-	/*
-	Returns all the giftcards
-	*/
-	function get_all($rows=0, $limit_from=0)
-	{
-		$this->db->from('giftcards');
-		$this->db->join('people', 'people.person_id=giftcards.person_id', 'left');
-		$this->db->where('deleted', 0);
-		$this->db->order_by('giftcard_number');
-
-		if ($rows > 0)
-		{
-			$this->db->limit($rows, $limit_from);
-		}
-
-		return $this->db->get();
-	}
-	
 	function count_all()
 	{
 		$this->db->from('giftcards');

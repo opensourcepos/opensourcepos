@@ -31,7 +31,7 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_item_form_submit(response);
+				table_support.handle_submit(response);
 			},
 			dataType:'json'
 		});
