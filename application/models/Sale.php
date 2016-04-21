@@ -248,6 +248,9 @@ class Sale extends CI_Model
 		// touch payment only if update sale is successful and there is a payments object otherwise the result would be to delete all the payments associated to the sale
 		if($success && !empty($payments))
 		{
+			//Run these queries as a transaction, we want to make sure we do all or nothing
+			$this->db->trans_start();
+			
 			// first delete all payments
 			$this->db->delete('sales_payments', array('sale_id'=>$sale_id));
 
@@ -262,6 +265,10 @@ class Sale extends CI_Model
 
 				$success = $this->db->insert('sales_payments', $sales_payments_data);
 			}
+			
+			$this->db->trans_complete();
+			
+			$success = $this->db->trans_status();
 		}
 		
 		return $success;
