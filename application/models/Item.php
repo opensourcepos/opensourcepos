@@ -218,16 +218,16 @@ class Item extends CI_Model
 	*/
 	public function save(&$item_data, $item_id=false)
 	{
-		if (!$item_id or !$this->exists($item_id))
+		if(!$item_id or !$this->exists($item_id))
 		{
-			if($this->db->insert('items',$item_data))
+			if($this->db->insert('items', $item_data))
 			{
-				$item_data['item_id']=$this->db->insert_id();
+				$item_data['item_id'] = $this->db->insert_id();
 				return true;
 			}
 			return false;
 		}
-
+		
 		$this->db->where('item_id', $item_id);
 
 		return $this->db->update('items', $item_data);
@@ -251,6 +251,16 @@ class Item extends CI_Model
 		$this->db->where('item_id', $item_id);
 
 		return $this->db->update('items', array('deleted' => 1));
+	}
+	
+	/*
+	Undeletes one item
+	*/
+	public function undelete($item_id)
+	{
+		$this->db->where('item_id', $item_id);
+
+		return $this->db->update('items', array('deleted' => 0));
 	}
 
 	/*

@@ -282,17 +282,17 @@ class Sale extends CI_Model
 		}
 
 		$sales_data = array(
-			'sale_time' => date('Y-m-d H:i:s'),
-			'customer_id'=> $this->Customer->exists($customer_id) ? $customer_id : null,
-			'employee_id'=>$employee_id,
-			'comment'=>$comment,
-			'invoice_number'=>$invoice_number
+			'sale_time'		=> date('Y-m-d H:i:s'),
+			'customer_id'	=> $this->Customer->exists($customer_id) ? $customer_id : null,
+			'employee_id'	=> $employee_id,
+			'comment'		=> $comment,
+			'invoice_number'=> $invoice_number
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		$this->db->insert('sales',$sales_data);
+		$this->db->insert('sales', $sales_data);
 		$sale_id = $this->db->insert_id();
 
 		foreach($payments as $payment_id=>$payment)
@@ -306,9 +306,9 @@ class Sale extends CI_Model
 			}
 
 			$sales_payments_data = array(
-				'sale_id'=>$sale_id,
-				'payment_type'=>$payment['payment_type'],
-				'payment_amount'=>$payment['payment_amount']
+				'sale_id'		=> $sale_id,
+				'payment_type'	=> $payment['payment_type'],
+				'payment_amount'=> $payment['payment_amount']
 			);
 			$this->db->insert('sales_payments',$sales_payments_data);
 		}
@@ -318,37 +318,41 @@ class Sale extends CI_Model
 			$cur_item_info = $this->Item->get_info($item['item_id']);
 
 			$sales_items_data = array(
-				'sale_id'=>$sale_id,
-				'item_id'=>$item['item_id'],
-				'line'=>$item['line'],
-				'description'=>character_limiter($item['description'], 30),
-				'serialnumber'=>character_limiter($item['serialnumber'], 30),
-				'quantity_purchased'=>$item['quantity'],
-				'discount_percent'=>$item['discount'],
-				'item_cost_price' => $cur_item_info->cost_price,
-				'item_unit_price'=>$item['price'],
-				'item_location'=>$item['item_location']
+				'sale_id'			=> $sale_id,
+				'item_id'			=> $item['item_id'],
+				'line'				=> $item['line'],
+				'description'		=> character_limiter($item['description'], 30),
+				'serialnumber'		=> character_limiter($item['serialnumber'], 30),
+				'quantity_purchased'=> $item['quantity'],
+				'discount_percent'	=> $item['discount'],
+				'item_cost_price'	=> $cur_item_info->cost_price,
+				'item_unit_price'	=> $item['price'],
+				'item_location'		=> $item['item_location']
 			);
 
 			$this->db->insert('sales_items',$sales_items_data);
 
-			//Update stock quantity
+			// Update stock quantity
 			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-			$this->Item_quantity->save(array('quantity'=>$item_quantity->quantity - $item['quantity'],
-                                              'item_id'=>$item['item_id'],
-                                              'location_id'=>$item['item_location']), $item['item_id'], $item['item_location']);
+			$this->Item_quantity->save(array('quantity'		=> $item_quantity->quantity - $item['quantity'],
+                                              'item_id'		=> $item['item_id'],
+                                              'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
 
-			//Inventory Count Details
-			$qty_buy = -$item['quantity'];
+			// if an items was deleted but later returned it's restored with this rule
+			if($item['quantity'] < 0)
+			{
+				$this->Item->undelete($item['item_id']);
+			}
+											  
+			// Inventory Count Details
 			$sale_remarks ='POS '.$sale_id;
-			$inv_data = array
-			(
-				'trans_date'=>date('Y-m-d H:i:s'),
-				'trans_items'=>$item['item_id'],
-				'trans_user'=>$employee_id,
-				'trans_location'=>$item['item_location'],
-				'trans_comment'=>$sale_remarks,
-				'trans_inventory'=>$qty_buy
+			$inv_data = array(
+				'trans_date'		=> date('Y-m-d H:i:s'),
+				'trans_items'		=> $item['item_id'],
+				'trans_user'		=> $employee_id,
+				'trans_location'	=> $item['item_location'],
+				'trans_comment'		=> $sale_remarks,
+				'trans_inventory'	=> -$item['quantity']
 			);
 			$this->Inventory->insert($inv_data);
 
@@ -358,11 +362,11 @@ class Sale extends CI_Model
 				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
 				{
 					$this->db->insert('sales_items_taxes', array(
-						'sale_id' 	=>$sale_id,
-						'item_id' 	=>$item['item_id'],
-						'line'      =>$item['line'],
-						'name'		=>$row['name'],
-						'percent' 	=>$row['percent']
+						'sale_id' 	=> $sale_id,
+						'item_id' 	=> $item['item_id'],
+						'line'      => $item['line'],
+						'name'		=> $row['name'],
+						'percent' 	=> $row['percent']
 					));
 				}
 			}
