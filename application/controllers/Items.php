@@ -153,9 +153,8 @@ class Items extends Secure_area implements iData_controller
 		echo json_encode($suggestions);
 	}
 
-	function get_row()
+	function get_row($item_id)
 	{
-		$item_id = $this->input->post('row_id');
 		$item_info = $this->Item->get_info($item_id);
 		$stock_location = $this->item_lib->get_item_location();
 		$item_quantity = $this->Item_quantity->get_item_quantity($item_id,$stock_location);
@@ -401,7 +400,7 @@ class Items extends Secure_area implements iData_controller
 		}
 		else//failure
 		{
-			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('items_error_adding_updating').' '.$item_data['name'], 'item_id'=>-1));
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('items_error_adding_updating').' '.$item_data['name'], 'id'=>-1));
 		}
 	}
 	
@@ -465,12 +464,12 @@ class Items extends Secure_area implements iData_controller
 		if($this->Item_quantity->save($item_quantity_data,$item_id,$location_id))
 		{			
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_updating').' '.
-			$cur_item_info->name,'item_id'=>$item_id));
+			$cur_item_info->name,'id'=>$item_id));
 		}
 		else//failure
 		{	
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('items_error_adding_updating').' '.
-			$cur_item_info->name,'item_id'=>-1));
+			$cur_item_info->name,'id'=>-1));
 		}
 	}
 

@@ -443,32 +443,32 @@ $(document).ready(function()
     		$('#finish_receiving_form').submit();
     	}
     });
+
+	table_support.handle_submit = function(resource, response, stay_open)
+	{
+		if(response.success)
+		{
+			if (resource.match(/customers$/).length > 0)
+			{
+				$("#item").attr("value",response.id);
+				if (stay_open)
+				{
+					$("#add_item_form").ajaxSubmit();
+				}
+				else
+				{
+					$("#add_item_form").submit();
+				}
+			}
+			else
+			{
+				$("#supplier").attr("value",response.id);
+				$("#select_supplier_form").submit();
+			}
+		}
+	}
 });
 
-function post_item_form_submit(response, stay_open)
-{
-	if(response.success)
-	{
-		$("#item").attr("value",response.item_id);
-		if (stay_open)
-		{
-			$("#add_item_form").ajaxSubmit();
-		}
-		else
-		{
-			$("#add_item_form").submit();
-		}
-	}
-}
-
-function post_person_form_submit(response)
-{
-	if(response.success)
-	{
-		$("#supplier").attr("value",response.person_id);
-		$("#select_supplier_form").submit();
-	}
-}
 </script>
 
 <?php $this->load->view("partial/footer"); ?>

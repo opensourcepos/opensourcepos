@@ -3,19 +3,12 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-    /*enable_search({suggest_url: '<?php echo site_url("$controller_name/suggest_search")?>',
-        confirm_search_message: "<?php echo $this->lang->line("common_confirm_search")?>",
-        extra_params: {
-            'is_deleted' : function () {
-				// the comparison is split in two parts: find the index of the selected and check the index against the index in the listed strings of the multiselect menu
-                return $("#multi_filter li.selected").attr("data-original-index") == $("#filters option[value='is_deleted']").index() ? 1 : 0;
-            }
-        }
-	});*/
-
     $('#generate_barcodes').click(function()
     {
-        $(this).attr('href','index.php/items/generate_barcodes/'+selected.join(':'));
+        window.open(
+            'index.php/items/generate_barcodes/'+table_support.selected_ids().join(':'),
+            '_blank' // <- This is what makes it open in a new window.
+        );
     });
 	
 	// when any filter is clicked and the dropdown window is closed
@@ -43,30 +36,11 @@ $(document).ready(function()
     });
     table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
 
-    resize_thumbs();
+    var resize_thumbs = function() {
+        $('a.rollover').imgPreview();
+    };
+
 });
-
-function resize_thumbs()
-{
-    $('a.rollover').imgPreview();
-}
-
-function post_bulk_form_submit(response)
-{
-    if(!response.success)
-    {
-        set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
-    }
-    else
-    {
-        var selected_item_ids=get_selected_values();
-        for(k=0;k<selected_item_ids.length;k++)
-        {
-            update_row(selected_item_ids[k],'<?php echo site_url("$controller_name/get_row")?>',resize_thumbs);
-        }
-        set_feedback(response.message, 'alert alert-dismissible alert-success', false);
-    }
-}
 </script>
 
 <div id="title_bar" class="btn-toolbar">
@@ -89,7 +63,7 @@ function post_bulk_form_submit(response)
             <span class="glyphicon glyphicon-trash"></span>
             <?php echo $this->lang->line("common_delete");?>
         </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/bulk_edit"); ?>' title='<?php $this->lang->line('items_edit_multiple_items');?>'>
+        <button id="bulk_edit" class="btn btn-default btn-sm model-dlg modal-btn-submit" data-href='<?php echo site_url($controller_name."/bulk_edit"); ?>' title='<?php $this->lang->line('items_edit_multiple_items');?>'>
             <span class="glyphicon glyphicon-edit"></span>
             <?php echo $this->lang->line("items_bulk_edit"); ?>
         </button>

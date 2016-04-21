@@ -133,6 +133,11 @@
 		});
 	};
 
+	var enable_actions = function() {
+		var selection_empty = selected_rows().length == 0;
+		$("#toolbar button").attr('disabled', selection_empty);
+	};
+
 	var table = function() {
 		return $("#table").data('bootstrap.table');
 	}
@@ -171,13 +176,6 @@
 		}, "json");
 	};
 
-	var do_email = function() {
-		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element) {
-			return $(element).attr('href').replace(/^mailto:/, '');
-		});
-		location.href = "mailto:" + recipients.join(",");
-	};
-
 	var highlight_rows = function (id, color) {
 		var original = $("tr.selected").css('backgroundColor');
 		var selector = ((id && "tr[data-uniqueid='" + id + "']")) || "tr.selected";
@@ -185,19 +183,6 @@
 			.animate({backgroundColor: color || '#e1ffdd'}, 5000)
 			.animate({backgroundColor: original}, "slow", "linear");
 		$("tr input:checkbox:checked").prop("checked", false);
-	};
-
-	var init_email = function() {
-		$("#email").click(function(evvent) {
-			do_email();
-		});
-	};
-
-	var enable_actions = function() {
-		var selection_empty = selected_rows().length == 0;
-		$("#toolbar .btn-toolbar button").attr('disabled', selection_empty);
-		var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
-		$("#email").attr('disabled', email_disabled);
 	};
 
 	var load_callback;
@@ -226,8 +211,7 @@
 			queryParams: queryParams,
 			queryParamsType: 'limit'
 		});
-		init_email();
-		enable_actions();
+		table_support.enable_actions();
 	};
 
 	var init_delete = function (confirm_message) {
@@ -250,17 +234,19 @@
 		if (!response.success) {
 			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
 		} else {
-			//This is an update, just update one row
 			var message = response.message;
-			if (jQuery.inArray(id, selected_ids()) != -1) {
-				$.get({
-					url: resource + '/get_row/' + id,
-					success: function (response) {
-						table().updateByUniqueId({id: response.id, row: response});
-						highlight_rows();
-						set_feedback(message, 'alert alert-dismissible alert-success', false);
-					},
-					dataType: 'json'
+
+			if (selected_ids().length > 0) {
+				selected_ids().each(function(id) {
+					$.get({
+						url: resource + '/get_row/' + id,
+						success: function (response) {
+							table().updateByUniqueId({id: response.id, row: response});
+							highlight_rows();s
+							set_feedback(message, 'alert alert-dismissible alert-success', false);
+						},
+						dataType: 'json'
+					});
 				});
 			} else {
 				// call hightlight function once after refresh
@@ -275,8 +261,9 @@
 		handle_submit: handle_submit,
 		init_delete: init_delete,
 		init: init,
-		init_email: init_email,
-		refresh : refresh
+		refresh : refresh,
+		selected_ids : selected_ids,
+		enable_actions : enable_actions
 	});
 
 })(window.table_support = window.table_support || {}, jQuery);

@@ -5,6 +5,28 @@ $(document).ready(function()
 {
 	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>);
 	table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
+
+	$("#email").click(function(evvent)
+	{
+		do_email();
+	});
+
+	var do_email = function()
+	{
+		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element)
+		{
+			return $(element).attr('href').replace(/^mailto:/, '');
+		});
+		location.href = "mailto:" + recipients.join(",");
+	};
+// TODO override enable_actions to enable/disable email HERE
+	var enable_actions = table_support.enable_actions;
+/*	table_support.enable_actions = function ()
+	{
+		enable_actions();
+
+	}
+*/
 });
 
 </script>

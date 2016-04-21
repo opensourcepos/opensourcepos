@@ -644,34 +644,32 @@ $(document).ready(function()
 			$('#finish_sale_form').submit();
 		}
 	});
+
+	table_support.handle_submit = function(resource, response, stay_open)
+	{
+		if(response.success) {
+			if (resource.match(/customers$/).length > 0)
+			{
+				$("#customer").val(response.id);
+				$("#select_customer_form").submit();
+			}
+			else
+			{
+				var $stock_location = $("select[name='stock_location']").val();
+				$("#item_location").val($stock_location);
+				$("#item").val(response.id);
+				if (stay_open)
+				{
+					$("#add_item_form").ajaxSubmit();
+				}
+				else
+				{
+					$("#add_item_form").submit();
+				}
+			}
+		}
+	}
 });
-
-function post_item_form_submit(response, stay_open)
-{
-	if(response.success)
-	{
-        var $stock_location = $("select[name='stock_location']").val();
-        $("#item_location").val($stock_location);
-		$("#item").val(response.item_id);
-		if (stay_open)
-		{
-			$("#add_item_form").ajaxSubmit();
-		}
-		else
-		{
-			$("#add_item_form").submit();	
-		}
-	}
-}
-
-function post_person_form_submit(response)
-{
-	if(response.success)
-	{
-		$("#customer").val(response.person_id);
-		$("#select_customer_form").submit();
-	}
-}
 
 function check_payment_type_giftcard()
 {
