@@ -166,12 +166,12 @@ class Item extends CI_Model
 		else
 		{
 			//Get empty base parent object, as $item_id is NOT an item
-			$item_obj=new stdClass();
+			$item_obj = new stdClass();
 
 			//Get all the fields from items table
 			$fields = $this->db->list_fields('items');
 
-			foreach ($fields as $field)
+			foreach($fields as $field)
 			{
 				$item_obj->$field='';
 			}
@@ -197,7 +197,7 @@ class Item extends CI_Model
 			return $query->row()->item_id;
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/*
@@ -216,16 +216,16 @@ class Item extends CI_Model
 	/*
 	Inserts or updates a item
 	*/
-	public function save(&$item_data, $item_id=false)
+	public function save(&$item_data, $item_id=FALSE)
 	{
 		if(!$item_id or !$this->exists($item_id))
 		{
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
-				return true;
+				return TRUE;
 			}
-			return false;
+			return FALSE;
 		}
 		
 		$this->db->where('item_id', $item_id);
@@ -238,9 +238,9 @@ class Item extends CI_Model
 	*/
 	public function update_multiple($item_data, $item_ids)
 	{
-		$this->db->where_in('item_id',$item_ids);
+		$this->db->where_in('item_id', $item_ids);
 
-		return $this->db->update('items',$item_data);
+		return $this->db->update('items', $item_data);
 	}
 
 	/*
@@ -249,8 +249,11 @@ class Item extends CI_Model
 	public function delete($item_id)
 	{
 		$this->db->where('item_id', $item_id);
+		
+		// set to 0 quantities
+		$this->Item_quantity->reset_quantity($item_id);
 
-		return $this->db->update('items', array('deleted' => 1));
+		return $this->db->update('items', array('deleted'=>1));
 	}
 	
 	/*
@@ -260,7 +263,7 @@ class Item extends CI_Model
 	{
 		$this->db->where('item_id', $item_id);
 
-		return $this->db->update('items', array('deleted' => 0));
+		return $this->db->update('items', array('deleted'=>0));
 	}
 
 	/*
@@ -268,9 +271,12 @@ class Item extends CI_Model
 	*/
 	public function delete_list($item_ids)
 	{
-		$this->db->where_in('item_id',$item_ids);
+		$this->db->where_in('item_id', $item_ids);
 
-		return $this->db->update('items', array('deleted' => 1));
+		// set to 0 quantities
+		$this->Item_quantity->reset_quantity_list($item_ids);
+		
+		return $this->db->update('items', array('deleted'=>1));
  	}
 
 	public function get_search_suggestions($search, $filters = array('is_deleted'=>FALSE, 'search_custom'=>FALSE), $unique = FALSE, $limit=25)

@@ -410,8 +410,7 @@ class Sale extends CI_Model
 			foreach($items as $item)
 			{
 				// create query to update inventory tracking
-				$inv_data = array
-				(
+				$inv_data = array(
 					'trans_date'=>date('Y-m-d H:i:s'),
 					'trans_items'=>$item['item_id'],
 					'trans_user'=>$employee_id,
