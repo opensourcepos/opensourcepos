@@ -49,7 +49,7 @@
 			<tr>
 				<td><?php echo ucfirst($item['name']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); ?></td>
+				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td style="text-align:right;"><?php echo to_currency($item[($this->Appconfig->get('show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
 			</tr>
 			<tr>
