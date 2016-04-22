@@ -164,18 +164,20 @@ class Config extends Secure_area
     function save_receipt()
     {
     	$batch_save_data = array (
-			'use_invoice_template' => $this->input->post ( 'use_invoice_template' ) != null,
-			'invoice_default_comments' => $this->input->post ( 'invoice_default_comments' ),
-			'invoice_email_message' => $this->input->post ( 'invoice_email_message' ),
-			'receipt_show_taxes' => $this->input->post ( 'receipt_show_taxes' ) != null,
-			'print_silently' => $this->input->post ( 'print_silently' ) != null,
-			'print_header' => $this->input->post ( 'print_header' ) != null,
-			'print_footer' => $this->input->post ( 'print_footer' ) != null,
-			'print_top_margin' => $this->input->post ( 'print_top_margin' ),
-			'print_left_margin' => $this->input->post ( 'print_left_margin' ),
-			'print_bottom_margin' => $this->input->post ( 'print_bottom_margin' ),
-			'print_right_margin' => $this->input->post ( 'print_right_margin' ),
-			'show_total_discount' => $this->input->post( 'show_total_discount' ) != null
+			'use_invoice_template' => $this->input->post('use_invoice_template') != null,
+			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
+			'invoice_email_message' => $this->input->post('invoice_email_message'),
+			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != null,
+			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != null,
+			'receipt_show_description' => $this->input->post('receipt_show_description') != null,
+			'receipt_show_serialnumber' => $this->input->post('receipt_show_serialnumber') != null,
+			'print_silently' => $this->input->post('print_silently') != null,
+			'print_header' => $this->input->post('print_header') != null,
+			'print_footer' => $this->input->post('print_footer') != null,
+			'print_top_margin' => $this->input->post('print_top_margin'),
+			'print_left_margin' => $this->input->post('print_left_margin'),
+			'print_bottom_margin' => $this->input->post('print_bottom_margin'),
+			'print_right_margin' => $this->input->post('print_right_margin')
 		);
     	$result = $this->Appconfig->batch_save( $batch_save_data );
     	$success = $result ? true : false;

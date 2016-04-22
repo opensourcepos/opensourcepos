@@ -49,13 +49,35 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
-			<?php echo form_label($this->lang->line('config_show_total_discount'), 'show_total_discount', array('class'=>'control-label col-xs-2')); ?>
+			<?php echo form_label($this->lang->line('config_receipt_show_total_discount'), 'receipt_show_total_discount', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 				<?php echo form_checkbox(array(
-					'name'=>'show_total_discount',
-					'value'=>'show_total_discount',
-					'id'=>'show_total_discount',
-					'checked'=>$this->config->item('show_total_discount')));?>
+					'name'=>'receipt_show_total_discount',
+					'value'=>'receipt_show_total_discount',
+					'id'=>'receipt_show_total_discount',
+					'checked'=>$this->config->item('receipt_show_total_discount')));?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_receipt_show_description'), 'receipt_show_description', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+				<?php echo form_checkbox(array(
+					'name'=>'receipt_show_description',
+					'value'=>'receipt_show_description',
+					'id'=>'receipt_show_description',
+					'checked'=>$this->config->item('receipt_show_description')));?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
+			<?php echo form_label($this->lang->line('config_receipt_show_serialnumber'), 'receipt_show_serialnumber', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+				<?php echo form_checkbox(array(
+					'name'=>'receipt_show_serialnumber',
+					'value'=>'receipt_show_serialnumber',
+					'id'=>'receipt_show_serialnumber',
+					'checked'=>$this->config->item('receipt_show_serialnumber')));?>
 				</div>
 			</div>
 

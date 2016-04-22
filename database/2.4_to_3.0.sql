@@ -32,4 +32,9 @@ ALTER TABLE `ospos_items_taxes`
 ALTER TABLE `ospos_customers`
  ADD COLUMN `discount_percent` decimal(15,2) NOT NULL DEFAULT '0.00';
 
+UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` = 'show_total_discount';
+ 
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+ ('receipt_show_description', '1'),
+ ('receipt_show_serialnumber', '1');
  

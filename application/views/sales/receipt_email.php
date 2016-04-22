@@ -50,11 +50,25 @@
 				<td><?php echo ucfirst($item['name']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-				<td style="text-align:right;"><?php echo to_currency($item[($this->Appconfig->get('show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
+				<td style="text-align:right;"><?php echo to_currency($item[($this->Appconfig->get('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
 			</tr>
 			<tr>
-				<td colspan="2"><?php echo $item['description']; ?></td>
-				<td><?php echo $item['serialnumber']; ?></td>
+				<?php
+				if($this->Appconfig->get('receipt_show_description'))
+				{
+				?>
+					<td colspan="2"><?php echo $item['description']; ?></td>
+				<?php
+				}
+				?>
+				<?php
+				if($this->Appconfig->get('receipt_show_serialnumber'))
+				{
+				?>
+					<td><?php echo $item['serialnumber']; ?></td>
+				<?php
+				}
+				?>
 			</tr>
 			<?php
 			if ($item['discount'] > 0)
@@ -72,7 +86,7 @@
 		?>
 	
 		<?php
-		if ($this->Appconfig->get('show_total_discount') && $discount > 0)
+		if ($this->Appconfig->get('receipt_show_total_discount') && $discount > 0)
 		{
 		?> 
 			<tr>
@@ -113,7 +127,7 @@
 		<tr>
 		</tr>
 		
-		<?php $border = (!$this->Appconfig->get('receipt_show_taxes') && !($this->Appconfig->get('show_total_discount') && $discount > 0)); ?> 
+		<?php $border = (!$this->Appconfig->get('receipt_show_taxes') && !($this->Appconfig->get('receipt_show_total_discount') && $discount > 0)); ?> 
 		<tr>
 			<td colspan="3" style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right;"><?php echo $this->lang->line('sales_total'); ?></td>
 			<td style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right"><?php echo to_currency($total); ?></td>
