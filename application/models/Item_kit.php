@@ -151,7 +151,7 @@ class Item_kit extends CI_Model
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
-		
+
 		//KIT #
 		if (stripos($search, 'KIT ') !== false)
 		{
@@ -173,7 +173,7 @@ class Item_kit extends CI_Model
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
-		
+
 		//KIT #
 		if (stripos($search, 'KIT ') !== false)
 		{

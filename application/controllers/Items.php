@@ -161,7 +161,7 @@ class Items extends Secure_area implements iData_controller
 		$item_info->quantity = $item_quantity->quantity; 
 		$data_row = get_item_data_row($item_info,$this);
 		
-		echo $data_row;
+		echo json_encode($data_row);
 	}
 
 	function view($item_id=-1)
@@ -363,7 +363,7 @@ class Items extends Secure_area implements iData_controller
             foreach($stock_locations as $location_data)
             {
                 $updated_quantity = $this->input->post('quantity_' . $location_data['location_id']);
-                $location_detail = array('id'=>$item_id,
+                $location_detail = array('item_id'=>$item_id,
                                         'location_id'=>$location_data['location_id'],
                                         'quantity'=>$updated_quantity);  
                 $item_quantity = $this->Item_quantity->get_item_quantity($item_id, $location_data['location_id']);

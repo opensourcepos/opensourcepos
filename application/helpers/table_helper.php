@@ -140,7 +140,7 @@ function transform_headers($array)
 {
  	return json_encode(array_map(function($v) {
 		return array('field' => key($v), 'title' => current($v), 'checkbox' => (key($v) == 'checkbox'));
-	}, $array));
+	}, array_merge(array(array('checkbox' => 'select')), $array, array(array('edit' => '')))));
 }
 
 function get_people_manage_table_headers()
@@ -148,13 +148,11 @@ function get_people_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('checkbox' => 'select'),
 		array('id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('email' => $CI->lang->line('common_email')),
-		array('phone_number' => $CI->lang->line('common_phone_number')),
-		array('edit' => '')
+		array('phone_number' => $CI->lang->line('common_phone_number'))
 	);
 	
 	return transform_headers($headers);
@@ -201,15 +199,13 @@ function get_suppliers_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('checkbox' => 'select'),
 		array('id' => $CI->lang->line('common_id')),
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
 		array('agency_name' => $CI->lang->line('suppliers_agency_name')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('email' => $CI->lang->line('common_email')),
-		array('phone_number' => $CI->lang->line('common_phone_number')),
-		array('edit' => '')
+		array('phone_number' => $CI->lang->line('common_phone_number'))
 	);
 
 	return transform_headers($headers);
@@ -239,7 +235,6 @@ function get_items_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('checkbox' => 'select'),
 		array('id' => $CI->lang->line('common_id')),
 		array('item_number' => $CI->lang->line('items_item_number')),
 		array('item_name' => $CI->lang->line('items_name')),
@@ -251,8 +246,7 @@ function get_items_manage_table_headers()
 		array('tax_percents' => $CI->lang->line('items_tax_percents')),
 		array('item_pic' => $CI->lang->line('items_image')),
 		array('inventory' => ''),
-		array('stock' => ''),
-		array('edit' => '')
+		array('stock' => '')
 	);
 
 	return transform_headers($headers);
@@ -286,6 +280,7 @@ function get_item_data_row($item, $controller) {
 		'item_number' => $item->item_number,
 		'item_name' => character_limiter($item->name,13),
 		'item_category' => character_limiter($item->category,13),
+		'company_name' => character_limiter($item->company_name,20),
 		'cost_price' => to_currency($item->cost_price),
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
@@ -307,13 +302,11 @@ function get_giftcards_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('checkbox' => 'select'),
 		array('id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('giftcard_number' => $CI->lang->line('giftcards_giftcard_number')),
-		array('giftcard_value' => $CI->lang->line('giftcards_card_value')),
-		array('edit' => '')
+		array('giftcard_value' => $CI->lang->line('giftcards_card_value'))
 	);
 
 	return transform_headers($headers);
@@ -339,13 +332,11 @@ function get_item_kits_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('checkbox' => 'select'),
 		array('id' => $CI->lang->line('item_kits_kit')),
 		array('kit_name' => $CI->lang->line('item_kits_name')),
 		array('kit_description' => $CI->lang->line('item_kits_description')),
 		array('cost_price' => $CI->lang->line('items_cost_price')),
-		array('unit_price' => $CI->lang->line('items_unit_price')),
-		array('edit' => '')
+		array('unit_price' => $CI->lang->line('items_unit_price'))
 	);
 
 	return transform_headers($headers);

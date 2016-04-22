@@ -135,7 +135,7 @@
 
 	var enable_actions = function() {
 		var selection_empty = selected_rows().length == 0;
-		$("#toolbar button").attr('disabled', selection_empty);
+		$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
 	};
 
 	var table = function() {
@@ -207,6 +207,8 @@
 			uniqueId: 'id',
 			onCheck: enable_actions,
 			onUncheck: enable_actions,
+			onCheckAll: enable_actions,
+			onUncheckAll: enable_actions,
 			onLoadSuccess: load_success,
 			queryParams: queryParams,
 			queryParamsType: 'limit'
@@ -237,12 +239,12 @@
 			var message = response.message;
 
 			if (selected_ids().length > 0) {
-				selected_ids().each(function(id) {
+				$.each(selected_ids(), function(element, id) {
 					$.get({
 						url: resource + '/get_row/' + id,
 						success: function (response) {
 							table().updateByUniqueId({id: response.id, row: response});
-							highlight_rows();s
+							highlight_rows();
 							set_feedback(message, 'alert alert-dismissible alert-success', false);
 						},
 						dataType: 'json'
@@ -250,7 +252,9 @@
 				});
 			} else {
 				// call hightlight function once after refresh
-				load_callback = function() { highlight_rows(id); };
+				load_callback = function()  {
+					highlight_rows(id);
+				};
 				refresh();
 				set_feedback(message, 'alert alert-dismissible alert-success', false);
 			}

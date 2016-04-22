@@ -29,7 +29,7 @@ class Item_kits extends Secure_area implements iData_controller
 	function index()
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$data['table_headers'] = get_suppliers_manage_table_headers();
+		$data['table_headers'] = get_item_kits_manage_table_headers();
 
 		$this->load->view('item_kits/manage', $data);
 	}
@@ -52,7 +52,7 @@ class Item_kits extends Secure_area implements iData_controller
 		{
 			// calculate the total cost and retail price of the Kit so it can be printed out in the manage table
 			$item_kit = $this->add_totals_to_item_kit($item_kit);
-			$data_rows = get_item_kit_data_row($item_kits, $this);
+			$data_rows[] = get_item_kit_data_row($item_kit, $this);
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));

@@ -36,9 +36,11 @@ $(document).ready(function()
     });
     table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
 
-    var resize_thumbs = function() {
-        $('a.rollover').imgPreview();
-    };
+    var handle_submit = table_support.handle_submit;
+    table_support.handle_submit = function() {
+        debugger;;
+        handle_submit.apply(this, arguments) && $('a.rollover').imgPreview();
+    }
 
 });
 </script>
@@ -63,7 +65,7 @@ $(document).ready(function()
             <span class="glyphicon glyphicon-trash"></span>
             <?php echo $this->lang->line("common_delete");?>
         </button>
-        <button id="bulk_edit" class="btn btn-default btn-sm model-dlg modal-btn-submit" data-href='<?php echo site_url($controller_name."/bulk_edit"); ?>' title='<?php $this->lang->line('items_edit_multiple_items');?>'>
+        <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg modal-btn-submit" data-href='<?php echo site_url($controller_name."/bulk_edit"); ?>' title='<?php $this->lang->line('items_edit_multiple_items');?>'>
             <span class="glyphicon glyphicon-edit"></span>
             <?php echo $this->lang->line("items_bulk_edit"); ?>
         </button>

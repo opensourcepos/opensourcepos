@@ -6,10 +6,13 @@ $(document).ready(function()
 	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>);
     table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
 
-    $('#generate_barcodes').click(function()
-    {
-    	$(this).attr('href','index.php/item_kits/generate_barcodes/'+selected.join(':'));
-    });
+	$('#generate_barcodes').click(function()
+	{
+		window.open(
+			'index.php/items/generate_barcodes/'+table_support.selected_ids().join(':'),
+			'_blank' // <- This is what makes it open in a new window.
+		);
+	});
 });
 
 </script>
