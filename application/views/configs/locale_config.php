@@ -11,7 +11,7 @@
 							'name'=>'currency_symbol',
 							'id'=>'currency_symbol',
 							'class'=>'form-control input-sm',
-							'value'=>$this->config->item('currency_symbol')));?>
+							'value'=>$this->config->item('currency_symbol'))); ?>
 				</div>
 				<div class='checkbox col-xs-2'>
 					<label>
@@ -19,8 +19,8 @@
 							'name'=>'currency_side',
 							'id'=>'currency_side',
 							'value'=>'currency_side',
-							'checked'=>$this->config->item('currency_side')));?>
-						<?php echo $this->lang->line('config_currency_side');?>
+							'checked'=>$this->config->item('currency_side'))); ?>
+						<?php echo $this->lang->line('config_currency_side'); ?>
 					</label>
 				</div>
 			</div>
@@ -243,15 +243,11 @@
 				</div>
 			</div>
 
-			<?php 
-			echo form_submit(array(
+			<?php echo form_submit(array(
 				'name'=>'submit_form',
 				'id'=>'submit_form',
 				'value'=>$this->lang->line('common_submit'),
-				'class'=>'btn btn-primary btn-sm pull-right'
-				)
-			);
-			?>
+				'class'=>'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
 <?php echo form_close(); ?>

@@ -18,7 +18,7 @@ class Config extends Secure_area
 		$this->load->view("configs/manage", $data);
 	}
 		
-	function save()
+	function save_info()
 	{
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();
@@ -29,15 +29,31 @@ class Config extends Secure_area
 			'phone'=>$this->input->post('phone'),
 			'email'=>$this->input->post('email'),
 			'fax'=>$this->input->post('fax'),
-			'website'=>$this->input->post('website'),
-			'default_tax_1_rate'=>$this->input->post('default_tax_1_rate'),		
-			'default_tax_1_name'=>$this->input->post('default_tax_1_name'),		
+			'website'=>$this->input->post('website'),	
+			'return_policy'=>$this->input->post('return_policy')
+		);
+		
+		if (!empty($upload_data['orig_name']))
+		{
+			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
+		}
+		
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $upload_success && $result ? true : false;
+		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
+		$message = $upload_success ? $message : $this->upload->display_errors();
+
+		echo json_encode(array('success'=>$success, 'message'=>$message));
+	}
+		
+	function save_general()
+	{
+		$batch_save_data=array(
+			'default_tax_1_rate'=>$this->input->post('default_tax_1_rate'),	
+			'default_tax_1_name'=>$this->input->post('default_tax_1_name'),	
 			'default_tax_2_rate'=>$this->input->post('default_tax_2_rate'),	
-			'default_tax_2_name'=>$this->input->post('default_tax_2_name'),		
-			'return_policy'=>$this->input->post('return_policy'),
+			'default_tax_2_name'=>$this->input->post('default_tax_2_name'),
 			'tax_included'=>$this->input->post('tax_included') != null,
-			'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
-			'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
 			'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price') != null,
 			'lines_per_page'=>$this->input->post('lines_per_page'),
 			'default_sales_discount'=>$this->input->post('default_sales_discount'),
@@ -53,19 +69,12 @@ class Config extends Secure_area
 			'custom10_name'=>$this->input->post('custom10_name')
 		);
 		
-		if (!empty($upload_data['orig_name']))
-		{
-			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
-		}
+        $result = $this->Appconfig->batch_save($batch_save_data);
+        $success = $result ? true : false;
 		
-		$result = $this->Appconfig->batch_save( $batch_save_data );
-		$success = $upload_success && $result ? true : false;
-		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
-		$message = $upload_success ? $message : $this->upload->display_errors();
-
-		echo json_encode(array('success'=>$success, 'message'=>$message));
+        echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
-	
+
 	function save_locale() 
 	{
 		$batch_save_data = array(	
@@ -92,7 +101,7 @@ class Config extends Secure_area
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
 
-		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
+		$this->load->view('partial/stock_locations', array('stock_locations'=>$stock_locations));
 	} 
 	
 	function _clear_session_state()
@@ -118,13 +127,14 @@ class Config extends Secure_area
 				$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
 				unset($deleted_locations[$location_id]);
 				// save or update
-				$location_data = array('location_name' => $value);
+				$location_data = array('location_name'=>$value);
 				if ($this->Stock_location->save($location_data, $location_id))
 				{
 					$this->_clear_session_state();
 				}
 			}
 		}
+
 		// all locations not available in post will be deleted now
 		foreach ($deleted_locations as $location_id => $location_name)
 		{
@@ -155,7 +165,7 @@ class Config extends Secure_area
 			'barcode_content'=>$this->input->post('barcode_content')
         );
         
-        $result = $this->Appconfig->batch_save( $batch_save_data );
+        $result = $this->Appconfig->batch_save($batch_save_data);
         $success = $result ? true : false;
 		
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
@@ -164,22 +174,37 @@ class Config extends Secure_area
     function save_receipt()
     {
     	$batch_save_data = array (
-			'use_invoice_template' => $this->input->post('use_invoice_template') != null,
-			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
-			'invoice_email_message' => $this->input->post('invoice_email_message'),
-			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != null,
-			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != null,
-			'receipt_show_description' => $this->input->post('receipt_show_description') != null,
-			'receipt_show_serialnumber' => $this->input->post('receipt_show_serialnumber') != null,
-			'print_silently' => $this->input->post('print_silently') != null,
-			'print_header' => $this->input->post('print_header') != null,
-			'print_footer' => $this->input->post('print_footer') != null,
-			'print_top_margin' => $this->input->post('print_top_margin'),
-			'print_left_margin' => $this->input->post('print_left_margin'),
-			'print_bottom_margin' => $this->input->post('print_bottom_margin'),
-			'print_right_margin' => $this->input->post('print_right_margin')
+			'receipt_show_taxes'=>$this->input->post('receipt_show_taxes') != null,
+			'receipt_show_total_discount'=>$this->input->post('receipt_show_total_discount') != null,
+			'receipt_show_description'=>$this->input->post('receipt_show_description') != null,
+			'receipt_show_serialnumber'=>$this->input->post('receipt_show_serialnumber') != null,
+			'print_silently'=>$this->input->post('print_silently') != null,
+			'print_header'=>$this->input->post('print_header') != null,
+			'print_footer'=>$this->input->post('print_footer') != null,
+			'print_top_margin'=>$this->input->post('print_top_margin'),
+			'print_left_margin'=>$this->input->post('print_left_margin'),
+			'print_bottom_margin'=>$this->input->post('print_bottom_margin'),
+			'print_right_margin'=>$this->input->post('print_right_margin')
 		);
-    	$result = $this->Appconfig->batch_save( $batch_save_data );
+
+    	$result = $this->Appconfig->batch_save($batch_save_data);
+    	$success = $result ? true : false;
+
+    	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+    }
+
+    function save_invoice()
+    {
+    	$batch_save_data = array (
+			'invoice_enable'=>$this->input->post('invoice_enable') != null,
+			'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
+			'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
+			'use_invoice_template'=>$this->input->post('use_invoice_template') != null,
+			'invoice_default_comments'=>$this->input->post('invoice_default_comments'),
+			'invoice_email_message'=>$this->input->post('invoice_email_message')
+		);
+
+    	$result = $this->Appconfig->batch_save($batch_save_data);
     	$success = $result ? true : false;
 
     	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
@@ -216,8 +241,8 @@ class Config extends Secure_area
     	{
     		$this->load->dbutil();
     		$prefs = array(
-				'format'      => 'zip',
-				'filename'    => 'ospos.sql'
+				'format' => 'zip',
+				'filename' => 'ospos.sql'
     		);
     		 
     		$backup =& $this->dbutil->backup($prefs);

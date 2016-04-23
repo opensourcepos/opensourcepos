@@ -8,14 +8,11 @@
 				<?php $this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations)); ?>
 			</div>
             
-            <?php 
-            echo form_submit(array(
+            <?php echo form_submit(array(
                 'name'=>'submit',
                 'id'=>'submit',
                 'value'=>$this->lang->line('common_submit'),
-                'class'=>'btn btn-primary btn-sm pull-right')
-            );
-            ?>
+                'class'=>'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
 <?php echo form_close(); ?>
@@ -87,7 +84,7 @@ $(document).ready(function()
 						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
 					}
 
-					$("#stock_locations").load('<?php echo site_url("config/stock_locations");?>', init_add_remove_locations);
+					$("#stock_locations").load('<?php echo site_url("config/stock_locations"); ?>', init_add_remove_locations);
 				},
 				dataType: 'json'
 			});

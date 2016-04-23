@@ -1,108 +1,8 @@
-<?php echo form_open('config/save/', array('id'=>'config_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('config/save_general/', array('id'=>'general_config_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 			<ul id="general_error_message_box" class="error_message_box"></ul>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_company'), 'company', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array(
-						'name'=>'company',
-						'id'=>'company',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('company')));?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_company_logo'), 'company_logo', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-xs-6'>
-					<div class="fileinput <?php echo $logo_exists ? 'fileinput-exists' : 'fileinput-new'; ?>" data-provides="fileinput">
-						<div class="fileinput-new thumbnail" style="width: 200px; height: 200px;"></div>
-						<div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 200px;">
-							<img data-src="holder.js/100%x100%" alt="<?php echo $this->lang->line('config_company_logo'); ?>"
-								 src="<?php if($logo_exists) echo base_url('uploads/' . $this->Appconfig->get('company_logo')); else echo ''; ?>"
-								 style="max-height: 100%; max-width: 100%;">
-						</div>
-						<div>
-							<span class="btn btn-default btn-sm btn-file">
-								<span class="fileinput-new"><?php echo $this->lang->line("config_company_select_image"); ?></span>
-								<span class="fileinput-exists"><?php echo $this->lang->line("config_company_change_image"); ?></span>
-								<input type="file" name="company_logo">
-							</span>
-							<a href="#" class="btn btn-default btn-sm fileinput-exists" data-dismiss="fileinput"><?php echo $this->lang->line("config_company_remove_image"); ?></a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_address'), 'address', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_textarea(array(
-						'name'=>'address',
-						'id'=>'address',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('address')));?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_website'), 'website', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array(
-						'name'=>'website',
-						'id'=>'website',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('website')));?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('common_email'), 'email', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array(
-						'name'=>'email',
-						'id'=>'email',
-						'type'=>'email',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('email')));?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_phone'), 'phone', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array(
-						'name'=>'phone',
-						'id'=>'phone',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('phone')));?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_fax'), 'fax', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_input(array(
-						'name'=>'fax',
-						'id'=>'fax',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('fax')));?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('common_return_policy'), 'return_policy', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-6'>
-					<?php echo form_textarea(array(
-						'name'=>'return_policy',
-						'id'=>'return_policy',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('return_policy')));?>
-				</div>
-			</div>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_default_tax_rate_1'), 'default_tax_1_rate', array('class'=>'control-label col-xs-2 required')); ?>
@@ -111,14 +11,14 @@
 						'name'=>'default_tax_1_name',
 						'id'=>'default_tax_1_name',
 						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : $this->lang->line('items_sales_tax_1')));?>
+						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : $this->lang->line('items_sales_tax_1'))); ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input(array(
 						'name'=>'default_tax_1_rate',
 						'id'=>'default_tax_1_rate',
 						'class'=>'form-control input-sm required',
-						'value'=>to_tax_decimals($this->config->item('default_tax_1_rate'))));?>
+						'value'=>to_tax_decimals($this->config->item('default_tax_1_rate')))); ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
 			</div>
@@ -130,14 +30,14 @@
 						'name'=>'default_tax_2_name',
 						'id'=>'default_tax_2_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('default_tax_2_name')!==FALSE ? $this->config->item('default_tax_2_name') : $this->lang->line('items_sales_tax_2')));?>
+						'value'=>$this->config->item('default_tax_2_name')!==FALSE ? $this->config->item('default_tax_2_name') : $this->lang->line('items_sales_tax_2'))); ?>
 				</div>
 				<div class="col-xs-1 input-group">
 					<?php echo form_input(array(
 						'name'=>'default_tax_2_rate',
 						'id'=>'default_tax_2_rate',
 						'class'=>'form-control input-sm',
-						'value'=>to_tax_decimals($this->config->item('default_tax_2_rate'))));?>
+						'value'=>to_tax_decimals($this->config->item('default_tax_2_rate')))); ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
 			</div>
@@ -149,7 +49,7 @@
 						'name'=>'tax_included',
 						'id'=>'tax_included',
 						'value'=>'tax_included',
-						'checked'=>$this->config->item('tax_included')));?>
+						'checked'=>$this->config->item('tax_included'))); ?>
 				</div>
 			</div>
 
@@ -164,31 +64,9 @@
 							'type'=>'number',
 							'min'=>0,
 							'max'=>100,
-							'value'=>$this->config->item('default_sales_discount')));?>
+							'value'=>$this->config->item('default_sales_discount'))); ?>
 						<span class="input-group-addon input-sm">%</span>
 					</div>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">    
-				<?php echo form_label($this->lang->line('config_sales_invoice_format'), 'sales_invoice_format', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name'=>'sales_invoice_format',
-						'id'=>'sales_invoice_format',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('sales_invoice_format'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">    
-				<?php echo form_label($this->lang->line('config_recv_invoice_format'), 'recv_invoice_format', array('class'=>'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name'=>'recv_invoice_format',
-						'id'=>'recv_invoice_format',
-						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('recv_invoice_format'))); ?>
 				</div>
 			</div>
 
@@ -199,7 +77,7 @@
 						'name'=>'receiving_calculate_average_price',
 						'id'=>'receiving_calculate_average_price',
 						'value'=>'receiving_calculate_average_price',
-						'checked'=>$this->config->item('receiving_calculate_average_price')));?>
+						'checked'=>$this->config->item('receiving_calculate_average_price'))); ?>
 				</div>
 			</div>
 
@@ -213,7 +91,7 @@
 						'type'=>'number',
 						'min'=>10,
 						'max'=>1000,
-						'value'=>$this->config->item('lines_per_page')));?>
+						'value'=>$this->config->item('lines_per_page'))); ?>
 				</div>
 			</div>
 
@@ -224,7 +102,7 @@
 						'name'=>'custom1_name',
 						'id'=>'custom1_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom1_name')));?>
+						'value'=>$this->config->item('custom1_name'))); ?>
 				</div>
 			</div>
 
@@ -235,7 +113,7 @@
 						'name'=>'custom2_name',
 						'id'=>'custom2_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom2_name')));?>
+						'value'=>$this->config->item('custom2_name'))); ?>
 				</div>
 			</div>
 
@@ -246,7 +124,7 @@
 						'name'=>'custom3_name',
 						'id'=>'custom3_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom3_name')));?>
+						'value'=>$this->config->item('custom3_name'))); ?>
 				</div>
 			</div>
 
@@ -257,7 +135,7 @@
 						'name'=>'custom4_name',
 						'id'=>'custom4_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom4_name')));?>
+						'value'=>$this->config->item('custom4_name'))); ?>
 				</div>
 			</div>
 
@@ -268,7 +146,7 @@
 						'name'=>'custom5_name',
 						'id'=>'custom5_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom5_name')));?>
+						'value'=>$this->config->item('custom5_name'))); ?>
 				</div>
 			</div>
 
@@ -279,7 +157,7 @@
 						'name'=>'custom6_name',
 						'id'=>'custom6_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom6_name')));?>
+						'value'=>$this->config->item('custom6_name'))); ?>
 				</div>
 			</div>
 
@@ -290,7 +168,7 @@
 						'name'=>'custom7_name',
 						'id'=>'custom7_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom7_name')));?>
+						'value'=>$this->config->item('custom7_name'))); ?>
 				</div>
 			</div>
 
@@ -301,7 +179,7 @@
 						'name'=>'custom8_name',
 						'id'=>'custom8_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom8_name')));?>
+						'value'=>$this->config->item('custom8_name'))); ?>
 				</div>
 			</div>
 
@@ -312,7 +190,7 @@
 						'name'=>'custom9_name',
 						'id'=>'custom9_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom9_name')));?>
+						'value'=>$this->config->item('custom9_name'))); ?>
 				</div>
 			</div>
 
@@ -323,7 +201,7 @@
 						'name'=>'custom10_name',
 						'id'=>'custom10_name',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('custom10_name')));?>
+						'value'=>$this->config->item('custom10_name'))); ?>
 				</div>
 			</div>
 
@@ -340,7 +218,7 @@
 				'name'=>'submit_form',
 				'id'=>'submit_form',
 				'value'=>$this->lang->line('common_submit'),
-				'class'=>'btn btn-primary btn-sm pull-right'));?>
+				'class'=>'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
 <?php echo form_close(); ?>
@@ -353,15 +231,7 @@ $(document).ready(function()
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
 
-	$("a.fileinput-exists").click(function() {
-		$.ajax({
-			type: "GET",
-			url: "<?php echo site_url("$controller_name/remove_logo"); ?>",
-			dataType: "json"
-		})
-	});
-
-	$('#config_form').validate({
+	$('#general_config_form').validate({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)	{
@@ -390,17 +260,12 @@ $(document).ready(function()
 
 		rules: 
 		{
-			company: "required",
-			address: "required",
-			phone: "required",
     		default_tax_1_rate:
     		{
     			required: true,
     			number: true
     		},
 			default_tax_1_name: "required",
-    		email: "email",
-    		return_policy: "required",
     		lines_per_page:
     		{
         		required: true,
@@ -415,9 +280,6 @@ $(document).ready(function()
 
 		messages: 
 		{
-			company: "<?php echo $this->lang->line('config_company_required'); ?>",
-			address: "<?php echo $this->lang->line('config_address_required'); ?>",
-			phone: "<?php echo $this->lang->line('config_phone_required'); ?>",
 			default_tax_1_rate:
 			{
 				required: "<?php echo $this->lang->line('config_default_tax_rate_required'); ?>",
@@ -428,8 +290,6 @@ $(document).ready(function()
 				required: "<?php echo $this->lang->line('config_default_tax_name_required'); ?>",
 				number: "<?php echo $this->lang->line('config_default_tax_name_number'); ?>"
 			},
-			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
-			return_policy: "<?php echo $this->lang->line('config_return_policy_required'); ?>",
 			default_sales_discount:
 			{
 				required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
