@@ -60,3 +60,6 @@ $lang["common_export_excel"] = "Excel Export";
 $lang["common_export_excel_yes"] = "Yes";
 $lang["common_export_excel_no"] = "No";
 $lang["common_required"] = "Required";
+$lang["common_send_msg"] = "SMS";
+$lang["common_update"] = "Update";
+

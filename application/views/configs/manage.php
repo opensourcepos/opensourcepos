@@ -16,6 +16,10 @@
     <li role="presentation">
         <a data-toggle="tab" href="#receipt" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>">Receipt</a>
     </li>
+    <li role="presentation">
+        <a data-toggle="tab" href="#message" title="<?php echo $this->lang->line('config_message_configuration'); ?>">Message</a>
+    </li>
+
 </ul>
 
 <div class="tab-content">
@@ -34,6 +38,10 @@
     <div class="tab-pane" id="receipt">
         <?php $this->load->view("configs/receipt_config"); ?>
     </div>
+    <div class="tab-pane" id="message">
+        <?php $this->load->view("configs/message_config"); ?>
+    </div>
+    
 </div>
 
 <?php $this->load->view("partial/footer"); ?>

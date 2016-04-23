@@ -43,9 +43,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_page_cellspacing', '20'),
 ('barcode_generate_if_empty', '0'),
 ('receipt_show_taxes', '0'),
-('receipt_show_total_discount', '1'),
-('receipt_show_description', '1'),
-('receipt_show_serialnumber', '1'),
 ('use_invoice_template', '1'),
 ('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
 ('print_silently', '1'),
@@ -57,15 +54,21 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('print_right_margin', '0'),
 ('default_sales_discount', '0'),
 ('lines_per_page', '25'),
+('show_total_discount', '1'),
 ('dateformat', 'm/d/Y'),
 ('timeformat', 'H:i:s'),
 ('currency_symbol', '$'),
 ('decimal_point', '.'),
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
-('quantity_decimals', '0');
+('quantity_decimals', '0'),
+('msg_msg','This field is optional'),
+('msg_uid', 'Put api userName'),
+('msg_pwd', 'Put api password');
+
 
 -- --------------------------------------------------------
+
 
 --
 -- Table structure for table `ospos_customers`
@@ -288,10 +291,11 @@ CREATE TABLE `ospos_modules` (
 --
 
 INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
-('module_config', 'module_config_desc', 100, 'config'),
+('module_config', 'module_config_desc', 110, 'config'),
 ('module_customers', 'module_customers_desc', 10, 'customers'),
 ('module_employees', 'module_employees_desc', 80, 'employees'),
 ('module_giftcards', 'module_giftcards_desc', 90, 'giftcards'),
+('module_messages', 'module_messages_desc', 100, 'messages'),
 ('module_items', 'module_items_desc', 20, 'items'),
 ('module_item_kits', 'module_item_kits_desc', 30, 'item_kits'),
 ('module_receivings', 'module_receivings_desc', 60, 'receivings'),
@@ -362,6 +366,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('customers', 'customers'),
 ('employees', 'employees'),
 ('giftcards', 'giftcards'),
+('messages', 'messages'),
 ('items', 'items'),
 ('item_kits', 'item_kits'),
 ('receivings', 'receivings'),
@@ -407,6 +412,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('customers', 1),
 ('employees', 1),
 ('giftcards', 1),
+('messages', 1),
 ('items', 1),
 ('item_kits', 1),
 ('receivings', 1),
@@ -563,6 +569,7 @@ CREATE TABLE `ospos_sales_payments` (
 
 
 -- --------------------------------------------------------
+
 
 --
 -- Table structure for table `ospos_sales_suspended`
