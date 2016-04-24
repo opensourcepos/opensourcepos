@@ -63,7 +63,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('decimal_point', '.'),
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
-('quantity_decimals', '0');
+('quantity_decimals', '0'),
 ('msg_msg',''),
 ('msg_uid', 'Put api userName'),
 ('msg_pwd', 'Put api password');
