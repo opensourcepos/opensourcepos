@@ -1,42 +1,25 @@
 <?php
 
-function get_sales_manage_table($sales, $controller)
+
+function get_sales_manage_table_headers()
 {
 	$CI =& get_instance();
-	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 
-	$headers = array('&nbsp;',
-		$CI->lang->line('sales_receipt_number'),
-		$CI->lang->line('sales_sale_time'),
-		$CI->lang->line('customers_customer'),
-		$CI->lang->line('sales_amount_tendered'),
-		$CI->lang->line('sales_amount_due'),
-		$CI->lang->line('sales_change_due'),
-		$CI->lang->line('sales_payment'));
-		
+	$headers = array(
+		array('id' => $CI->lang->line('common_id')),
+		array('receipt_number' => $CI->lang->line('sales_receipt_number')),
+		array('sale_time' => $CI->lang->line('sales_sale_time')),
+		array('customer' => $CI->lang->line('customers_customer')),
+		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
+		array('amount_due' => $CI->lang->line('sales_amount_due')),
+		array('change_due' => $CI->lang->line('sales_change_due'))
+	);
+	
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
 		$headers[] = $CI->lang->line('sales_invoice_number');
-		$headers[] = '&nbsp';
-		$headers[] = '&nbsp';
-		$headers[] = '&nbsp';
 	}
-	else
-	{
-		$headers[] = '&nbsp';
-		$headers[] = '&nbsp';
-	}
-
-	$table.='<thead><tr>';
-	foreach($headers as $header)
-	{
-		$table.="<th>$header</th>";
-	}
-	$table.='</tr></thead><tbody>';
-	$table.=get_sales_manage_table_data_rows($sales, $controller);
-	$table.='</tbody></table>';
-
-	return $table;
+	return transform_headers($headers);
 }
 
 /*
@@ -71,38 +54,34 @@ function get_sales_manage_table_data_rows($sales, $controller)
 	return $table_data_rows;
 }
 
-function get_sales_manage_sale_data_row($sale, $controller)
+function get_sale_data_row($sale, $controller)
 {
 	$CI =& get_instance();
 	$controller_name = $CI->uri->segment(1);
 
-	$table_data_row='<tr>';
-	$table_data_row.='<td width="3%"><input class="print_hide" type="checkbox" id="sale_' . $sale['sale_id'] . '" value="' . $sale['sale_id']. '" /></td>';
-	$table_data_row.='<td width="15%">'.'POS ' . $sale['sale_id'] . '</td>';
-	$table_data_row.='<td width="17%">'.date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale['sale_time']) ).'</td>';
-	$table_data_row.='<td width="23%">'.character_limiter( $sale['customer_name'], 25).'</td>';
-	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_tendered'] ).'</td>';
-	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_due'] ).'</td>';
-	$table_data_row.='<td width="8%">'.to_currency( $sale['change_due'] ).'</td>';
+	$row = array (
+		'id' => $sale->sale_id,
+		'receipt_number' => 'POS ' . $sale->sale_id,
+		'sale_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time) ),
+		'customer' => character_limiter( $sale->customer_name, 25),
+		'amount_tendered' => to_currency( $sale->amount_tendered ),
+		'amount_due' => to_currency($sale->amount_due),
+		'change_due' => to_currency($sale->chang_due),
+		'payment_type' => $sale->payment_type,
+		'invoice_number' => $sale->invoice_number,
+		'receipt' => anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-print"></span>',
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('sales_show_receipt'))
+		),
+		'edit' => anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line($controller_name.'_update'))
+		)
+	);
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
-		$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
-		$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
+		$row['invoice'] = anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
+			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('sales_show_invoice'))
+		);		
 	}
-	else
-	{
-		// this size includes the 8% of invoice number and 5% of the invoice glyphicon, plus of course the 12% for the field itself
-		$table_data_row.='<td width="25%">'.$sale['payment_type'].'</td>';
-	}
-	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/edit/" . $sale['sale_id'], '<span class="glyphicon glyphicon-edit"></span>', array('class'=>'modal-dlg modal-btn-delete modal-btn-submit print_hide', 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
-	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/receipt/" . $sale['sale_id'], '<span class="glyphicon glyphicon-print"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_receipt'))).'</td>';
-	if($CI->config->item('invoice_enable') == TRUE)
-	{
-		$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/invoice/" . $sale['sale_id'], '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_invoice'))).'</td>';
-	}
-	$table_data_row.='</tr>';
-
-	return $table_data_row;
 }
 
 /*
