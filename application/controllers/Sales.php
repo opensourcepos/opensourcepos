@@ -56,8 +56,15 @@ class Sales extends Secure_area
 			$total_rows = $this->Sale->get_found_rows($search, $filters);
 			
 			// filters that will be loaded in the multiselect dropdown
-			$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
-									'only_invoices' => $this->lang->line('sales_invoice_filter'));
+			if($this->config->item('invoice_enable') == TRUE)
+			{
+				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+										'only_invoices' => $this->lang->line('sales_invoice_filter'));
+			}
+			else
+			{
+				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'));
+			}
 			$data['selected'] = array( ($only_cash ? 'only_cash' : ''), ($only_invoices ? 'only_invoices' : '') );
 
 			$data['start_date'] = $start_date;
@@ -103,7 +110,14 @@ class Sales extends Secure_area
 
 		$sale_type = 'all';
 		$location_id = 'all';
-		$only_invoices = $this->input->post('only_invoices') != null;
+		if($this->config->item('invoice_enable') == TRUE)
+		{
+			$only_invoices = $this->input->post('only_invoices') != null;
+		}
+		else
+		{
+			$only_invoices = FALSE;
+		}
 		$only_cash = $this->input->post('only_cash') != null;
 
 		$filters = array('sale_type' => $sale_type,

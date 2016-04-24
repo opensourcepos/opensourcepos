@@ -36,5 +36,6 @@ UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` 
  
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  ('receipt_show_description', '1'),
- ('receipt_show_serialnumber', '1');
+ ('receipt_show_serialnumber', '1'),
+ ('invoice_enable', '1');
  

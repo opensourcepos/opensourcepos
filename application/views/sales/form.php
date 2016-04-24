@@ -16,18 +16,25 @@
 			</div>
 		</div>
 		
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
-				<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
-					isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
-					<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
-					<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
-				<?php else: ?>
-					<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
-				<?php endif; ?>
+		<?php
+		if($this->config->item('invoice_enable') == TRUE)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-8'>
+					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
+						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
+						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
+						<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
+					<?php else: ?>
+						<?php echo form_input(array('name'=>'invoice_number', 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
+					<?php endif; ?>
+				</div>
 			</div>
-		</div>
+		<?php
+		}
+		?>
 
 		<?php 
 		$i = 0;

@@ -476,7 +476,7 @@ if (isset($success))
 							</tr>
 						
 							<?php
-							if ($mode == "sale") 
+							if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE) 
 							{
 							?>
 								<tr>
@@ -564,29 +564,36 @@ $(document).ready(function()
 		$.post('<?php echo site_url("sales/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	$('#sales_invoice_number').keyup(function() 
+	<?php
+	if ($this->config->item('invoice_enable') == TRUE) 
 	{
-		$.post('<?php echo site_url("sales/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
-	});
+	?>
+		$('#sales_invoice_number').keyup(function() 
+		{
+			$.post('<?php echo site_url("sales/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
+		});
 
-	var enable_invoice_number = function() 
-	{
-		var enabled = $("#sales_invoice_enable").is(":checked");
-		$("#sales_invoice_number").prop("disabled", !enabled).parents('tr').show();
-		return enabled;
+		var enable_invoice_number = function() 
+		{
+			var enabled = $("#sales_invoice_enable").is(":checked");
+			$("#sales_invoice_number").prop("disabled", !enabled).parents('tr').show();
+			return enabled;
+		}
+
+		enable_invoice_number();
+		
+		$("#sales_invoice_enable").change(function()
+		{
+			var enabled = enable_invoice_number();
+			$.post('<?php echo site_url("sales/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
+		});
+	<?php
 	}
-
-	enable_invoice_number();
+	?>
 
 	$("#sales_print_after_sale").change(function()
 	{
 		$.post('<?php echo site_url("sales/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
-	});
-	
-	$("#sales_invoice_enable").change(function()
-	{
-		var enabled = enable_invoice_number();
-		$.post('<?php echo site_url("sales/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
 	});
 	
 	$('#email_receipt').change(function() 

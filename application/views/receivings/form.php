@@ -23,13 +23,20 @@
 				<?php echo form_hidden('supplier_id', $selected_supplier_id);?>
 			</div>
 		</div>
-		
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('recvs_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
-				<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number', 'class'=>'form-control input-sm'));?>
+
+		<?php
+		if($this->config->item('invoice_enable') == TRUE)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('recvs_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-8'>
+					<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number', 'class'=>'form-control input-sm'));?>
+				</div>
 			</div>
-		</div>
+		<?php
+		}
+		?>
 		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('recvs_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
@@ -125,26 +132,40 @@ $(document).ready(function()
 		},
 		rules:
 		{
-			invoice_number: {
+			<?php
+			if($this->config->item('invoice_enable') == TRUE)
+			{
+			?>
+				invoice_number: {
 
-				remote:
-				{
-					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
-					type: "POST",
-					data:
+					remote:
 					{
-						"receiving_id" : <?php echo $receiving_info['receiving_id']; ?>,
-						"invoice_number" : function()
+						url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
+						type: "POST",
+						data:
 						{
-							return $("#invoice_number").val();
+							"receiving_id" : <?php echo $receiving_info['receiving_id']; ?>,
+							"invoice_number" : function()
+							{
+								return $("#invoice_number").val();
+							}
 						}
 					}
 				}
+			<?php
 			}
+			?>
 		},
 		messages: 
 		{
-			invoice_number: '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>'
+			<?php
+			if($this->config->item('invoice_enable') == TRUE)
+			{
+			?>
+				invoice_number: '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>'
+			<?php
+			}
+			?>
 		}
 	}, dialog_support.error));
 	

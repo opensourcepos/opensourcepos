@@ -23,7 +23,7 @@ class Config extends Secure_area
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();
 		
-		$batch_save_data=array(
+		$batch_save_data = array(
 			'company'=>$this->input->post('company'),
 			'address'=>$this->input->post('address'),
 			'phone'=>$this->input->post('phone'),
@@ -48,7 +48,7 @@ class Config extends Secure_area
 		
 	function save_general()
 	{
-		$batch_save_data=array(
+		$batch_save_data = array(
 			'default_tax_1_rate'=>$this->input->post('default_tax_1_rate'),	
 			'default_tax_1_name'=>$this->input->post('default_tax_1_name'),	
 			'default_tax_2_rate'=>$this->input->post('default_tax_2_rate'),	
@@ -148,7 +148,7 @@ class Config extends Secure_area
 
     function save_barcode()
     {
-        $batch_save_data=array(
+        $batch_save_data = array(
 			'barcode_type'=>$this->input->post('barcode_type'),
 			'barcode_quality'=>$this->input->post('barcode_quality'),
 			'barcode_width'=>$this->input->post('barcode_width'),
@@ -197,8 +197,8 @@ class Config extends Secure_area
     {
     	$batch_save_data = array (
 			'invoice_enable'=>$this->input->post('invoice_enable') != null,
-			'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 			'sales_invoice_format'=>$this->input->post('sales_invoice_format'),
+			'recv_invoice_format'=>$this->input->post('recv_invoice_format'),
 			'use_invoice_template'=>$this->input->post('use_invoice_template') != null,
 			'invoice_default_comments'=>$this->input->post('invoice_default_comments'),
 			'invoice_email_message'=>$this->input->post('invoice_email_message')
@@ -236,7 +236,7 @@ class Config extends Secure_area
     
     function backup_db()
     {
-    	$employee_id=$this->Employee->get_logged_in_employee_info()->person_id;
+    	$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
     	if($this->Employee->has_module_grant('config',$employee_id))
     	{
     		$this->load->dbutil();

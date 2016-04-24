@@ -76,9 +76,15 @@ class Reports extends Secure_area
 				$report_data['employee_name'],
 				$report_data['supplier_name'],
 				to_currency($report_data['total']),
-				$report_data['payment_type'],
-				$report_data['invoice_number'],
-				$report_data['comment']);
+				$report_data['payment_type']
+		);
+
+		if($this->config->item('invoice_enable') == TRUE)
+		{
+			$summary_data[] = $report_data['invoice_number'];
+		}
+		
+		$summary_data[] = $report_data['comment'];
 
 		echo get_detailed_data_row($summary_data, $this);
 	}
@@ -949,7 +955,35 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('receivings/edit/'.$row['receiving_id'], 'RECV '.$row['receiving_id'], array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')), $row['receiving_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['supplier_name'], to_currency($row['total']), $row['payment_type'], $row['invoice_number'], $row['comment']);
+			if($this->config->item('invoice_enable') == TRUE)
+			{
+				$summary_data[] = array(
+					anchor('receivings/edit/'.$row['receiving_id'],
+					'RECV '.$row['receiving_id'],
+					array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')),
+					$row['receiving_date'],
+					to_quantity_decimals($row['items_purchased']),
+					$row['employee_name'], $row['supplier_name'],
+					to_currency($row['total']),
+					$row['payment_type'],
+					$row['invoice_number'],
+					$row['comment']
+				);
+			}
+			else
+			{				
+				$summary_data[] = array(
+					anchor('receivings/edit/'.$row['receiving_id'],
+					'RECV '.$row['receiving_id'],
+					array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')),
+					$row['receiving_date'],
+					to_quantity_decimals($row['items_purchased']),
+					$row['employee_name'], $row['supplier_name'],
+					to_currency($row['total']),
+					$row['payment_type'],
+					$row['comment']
+				);
+			}
 
 			foreach($report_data['details'][$key] as $drow)
 			{

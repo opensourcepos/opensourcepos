@@ -215,9 +215,7 @@ $(document).ready(function()
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					dialog_confirmed = dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>');
-					$("input:disabled, textarea:disabled").prop("disabled", false); 
-					return dialog_confirmed;
+					return ( dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>') );
 				},
 				success: function(response) {
 					if(response.success)
@@ -228,8 +226,6 @@ $(document).ready(function()
 					{
 						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
 					}
-					// set back disabled state
-					enable_disable_use_invoice_template();
 				},
 				dataType:'json'
 			});
@@ -238,6 +234,7 @@ $(document).ready(function()
 		errorClass: "has-error",
 		errorLabelContainer: "#receipt_error_message_box",
 		wrapper: "li",
+
 		highlight: function (e)	{
 			$(e).closest('.form-group').addClass('has-error');
 		},
@@ -274,22 +271,22 @@ $(document).ready(function()
 			print_top_margin:
 			{
 	            required:"<?php echo $this->lang->line('config_print_top_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_top_margin_number'); ?>",
+	            number:"<?php echo $this->lang->line('config_print_top_margin_number'); ?>"
 			},
 			print_left_margin:
 			{
 	            required:"<?php echo $this->lang->line('config_print_left_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_left_margin_number'); ?>",
+	            number:"<?php echo $this->lang->line('config_print_left_margin_number'); ?>"
 			},
 			print_bottom_margin:
 			{
 	            required:"<?php echo $this->lang->line('config_print_bottom_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_bottom_margin_number'); ?>",
+	            number:"<?php echo $this->lang->line('config_print_bottom_margin_number'); ?>"
 			},
 			print_right_margin:
 			{
 	            required:"<?php echo $this->lang->line('config_print_right_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_right_margin_number'); ?>",
+	            number:"<?php echo $this->lang->line('config_print_right_margin_number'); ?>"
 			}
 		}
 	});

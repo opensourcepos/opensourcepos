@@ -83,16 +83,14 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	var enable_disable_invoice_enable = (function() 
-	{
+	var enable_disable_invoice_enable = (function() {
 		var invoice_enable = $("#invoice_enable").is(":checked");
 		$("#sales_invoice_format, #recv_invoice_format, #use_invoice_template").prop('disabled', !invoice_enable);
 		return arguments.callee;
 	})();
 	$("#invoice_enable").change(enable_disable_invoice_enable);
 
-	var enable_disable_use_invoice_template = (function() 
-	{
+	var enable_disable_use_invoice_template = (function() {
 		var use_invoice_template = $("#use_invoice_template").is(":checked");
 		$("#invoice_default_comments, #invoice_email_message").prop('disabled', !use_invoice_template);
 		return arguments.callee;
@@ -102,6 +100,11 @@ $(document).ready(function()
 	$('#invoice_config_form').validate({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
+				beforeSerialize: function(arr, $form, options) {
+					//$("input:disabled, textarea:disabled").prop("disabled", false); 
+					$("#sales_invoice_format, #recv_invoice_format, #use_invoice_template, #invoice_default_comments, #invoice_email_message").prop("disabled", false); 
+					return true;
+				},
 				success: function(response) {
 					if(response.success)
 					{
@@ -112,6 +115,7 @@ $(document).ready(function()
 						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
 					}
 					// set back disabled state
+					enable_disable_invoice_enable();
 					enable_disable_use_invoice_template();
 				},
 				dataType:'json'

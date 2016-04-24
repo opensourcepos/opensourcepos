@@ -119,7 +119,7 @@ if (isset($error))
 						<tr>
 							<td><?php echo anchor("receivings/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td style="align:center;">
-								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . 'in' . $item['stock_name'] . ']'; ?>
+								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -301,7 +301,7 @@ if (isset($error))
 								</tr>
 
 								<?php
-								if ($mode == "receive") 
+								if ($mode == "receive" && $this->config->item('invoice_enable') == TRUE) 
 								{
 								?>
 									<tr>
@@ -376,31 +376,38 @@ $(document).ready(function()
 		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	$('#recv_invoice_number').keyup(function() 
+	<?php
+	if ($this->config->item('invoice_enable') == TRUE) 
 	{
-		$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
-	});
+	?>
+		$('#recv_invoice_number').keyup(function() 
+		{
+			$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
+		});
 
-	$("#recv_print_after_sale").change(function()
-	{
-		$.post('<?php echo site_url("receivings/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
-	});
+		$("#recv_print_after_sale").change(function()
+		{
+			$.post('<?php echo site_url("receivings/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
+		});
 
-	var enable_invoice_number = function() 
-	{
-		var enabled = $("#recv_invoice_enable").is(":checked");
-		$("#recv_invoice_number").prop("disabled", !enabled).parents('tr').show();
-		return enabled;
+		var enable_invoice_number = function() 
+		{
+			var enabled = $("#recv_invoice_enable").is(":checked");
+			$("#recv_invoice_number").prop("disabled", !enabled).parents('tr').show();
+			return enabled;
+		}
+
+		enable_invoice_number();
+
+		$("#recv_invoice_enable").change(function()
+		{
+			var enabled = enable_invoice_number();
+			$.post('<?php echo site_url("receivings/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
+			
+		});
+	<?php
 	}
-
-	enable_invoice_number();
-
-	$("#recv_invoice_enable").change(function()
-	{
-		var enabled = enable_invoice_number();
-		$.post('<?php echo site_url("receivings/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
-		
-	});
+	?>
 
 	$('#item,#supplier').click(function()
     {
