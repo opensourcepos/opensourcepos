@@ -43,6 +43,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_page_cellspacing', '20'),
 ('barcode_generate_if_empty', '0'),
 ('receipt_show_taxes', '0'),
+('receipt_show_total_discount', '1'),
+('receipt_show_description', '1'),
+('receipt_show_serialnumber', '1'),
 ('use_invoice_template', '1'),
 ('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
 ('print_silently', '1'),
@@ -54,15 +57,14 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('print_right_margin', '0'),
 ('default_sales_discount', '0'),
 ('lines_per_page', '25'),
-('show_total_discount', '1'),
 ('dateformat', 'm/d/Y'),
 ('timeformat', 'H:i:s'),
 ('currency_symbol', '$'),
 ('decimal_point', '.'),
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
-('quantity_decimals', '0'),
-('msg_msg','This field is optional'),
+('quantity_decimals', '0');
+('msg_msg',''),
 ('msg_uid', 'Put api userName'),
 ('msg_pwd', 'Put api password');
 
