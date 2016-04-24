@@ -101,7 +101,6 @@ $(document).ready(function()
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					//$("input:disabled, textarea:disabled").prop("disabled", false); 
 					$("#sales_invoice_format, #recv_invoice_format, #use_invoice_template, #invoice_default_comments, #invoice_email_message").prop("disabled", false); 
 					return true;
 				},
