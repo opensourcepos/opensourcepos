@@ -75,8 +75,10 @@ if (isset($error))
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
 				</li>
 				<li class="pull-right">
-					<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'), 
-							array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
+					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
+						title='<?php echo $this->lang->line('sales_new_item'); ?>'>
+						<span class="glyphicon glyphicon-tag"></span><?php echo $this->lang->line('sales_new_item'); ?>
+					</button>
 				</li>
 			</ul>
 		</div>
@@ -233,9 +235,12 @@ if (isset($error))
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
 					<?php echo form_input(array('name'=>'supplier', 'id'=>'supplier', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('recvs_start_typing_supplier_name'))); ?>
-					
-					<?php echo anchor("suppliers/view/-1", $this->lang->line('recvs_new_supplier'), 
-								array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-submit none', 'id'=>'new_supplier_button', 'title'=>$this->lang->line('recvs_new_supplier'))); ?>
+
+					<button id='new_supplier_button' class='btn btn-info btn-sm modal-dlg modal-btn-submit' data-href='<?php echo site_url("suppliers/view"); ?>'
+							title='<?php echo $this->lang->line('recvs_new_supplier'); ?>'>
+						<span class="glyphicon glyphicon-user"></span><?php echo $this->lang->line('recvs_new_supplier'); ?>
+					</button>
+
 				</div>
 			<?php echo form_close(); ?>
 		<?php
@@ -425,7 +430,9 @@ $(document).ready(function()
 		}
     });
 
-    $('#supplier').blur(function()
+	dialog_support.init("a.modal-dlg, button.modal-dlg");
+
+	$('#supplier').blur(function()
     {
     	$(this).attr('value',"<?php echo $this->lang->line('recvs_start_typing_supplier_name'); ?>");
     });
@@ -448,7 +455,12 @@ $(document).ready(function()
 	{
 		if(response.success)
 		{
-			if (resource.match(/customers$/).length > 0)
+			if (resource.match(/suppliers$/))
+			{
+				$("#supplier").attr("value",response.id);
+				$("#select_supplier_form").submit();
+			}
+			else
 			{
 				$("#item").attr("value",response.id);
 				if (stay_open)
@@ -459,11 +471,6 @@ $(document).ready(function()
 				{
 					$("#add_item_form").submit();
 				}
-			}
-			else
-			{
-				$("#supplier").attr("value",response.id);
-				$("#select_supplier_form").submit();
 			}
 		}
 	}

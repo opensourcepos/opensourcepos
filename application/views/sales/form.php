@@ -93,9 +93,6 @@
 	</fieldset>
 <?php echo form_close(); ?>
 		
-<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
-	<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
-<?php echo form_close(); ?>
 
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
@@ -159,6 +156,11 @@ $(document).ready(function()
 		focus: fill_value
 	});
 
+	$('button#delete').click(function() {
+		dialog_support.hide();
+		table_support.do_delete();
+	});
+
 	var submit_form = function()
 	{ 
 		$(this).ajaxSubmit(
@@ -167,10 +169,6 @@ $(document).ready(function()
 			{
 				dialog_support.hide();
 				table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
-			},
-			error: function(jqXHR, textStatus, errorThrown) 
-			{
-				table_support.handle_submit('<?php echo site_url('sales'); ?>', { message : errorThrown, success: false });;
 			},
 			dataType: 'json'
 		});
@@ -207,28 +205,5 @@ $(document).ready(function()
 		}
 	}, dialog_support.error));
 
-	$('#sales_delete_form').submit(function() 
-	{
-		if (confirm('<?php echo $this->lang->line("sales_delete_confirmation"); ?>'))
-		{
-			var id = $("input[name='sale_id']").val();
-			$(this).ajaxSubmit({
-				success: function(response)
-				{
-					dialog_support.hide();
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
-					table().remove({
-						field: 'id',
-						values: [id]
-					});
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					set_feedback(textStatus, 'alert alert-dismissible alert-danger', true);
-				},
-				dataType:'json'
-			});
-		}
-		return false;
-	});
 });
 </script>

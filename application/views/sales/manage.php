@@ -4,9 +4,8 @@
 $(document).ready(function()
 {
 	// when any filter is clicked and the dropdown window is closed
-	$('#filters').on('hidan.bs.select', function(e)
+	$('#filters').on('hidden.bs.select', function(e)
 	{
-        // reset page number when selecting a specific page number
 		table_support.refresh();
 	});
 	
@@ -20,14 +19,13 @@ $(document).ready(function()
 		table_support.refresh();
 	});
 
-	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, {
-
+	table_support.init({
+		resource: '<?php echo site_url($controller_name);?>',
+		headers: <?php echo $table_headers; ?>,
 		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
-
-		loadSuccess: function(response) {
+		onLoadSuccess: function(response) {
 			$("#payment_summary").html(response.payment_summary);
 		},
-
 		queryParams: function() {
 			return $.extend(arguments[0], {
 				start_date: start_date,
@@ -53,13 +51,13 @@ $(document).ready(function()
 
 <div id="toolbar">
 	<div class="pull-left form-inline" role="toolbar">
-		<button id="delete" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/delete"); ?>'>
+		<button id="delete" class="btn btn-default btn-sm">
 			<span class="glyphicon glyphicon-trash"></span>
 			<?php echo $this->lang->line("common_delete");?>
 		</button>
 
 		<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
-		<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 3', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+		<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 	</div>
 </div>
 

@@ -2,8 +2,10 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, {
-		confirmDeteleMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>'
+	table_support.init({
+		resource: '<?php echo site_url($controller_name);?>',
+		headers: <?php echo $table_headers; ?>,
+		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>'
 	});
 });
 </script>
@@ -17,7 +19,7 @@ $(document).ready(function()
 
 <div id="toolbar">
 	<div class="pull-left btn-toolbar">
-		<button id="delete" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/delete"); ?>'><span class="glyphicon glyphicon-trash"></span>
+		<button id="delete" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span>
 			<?php echo $this->lang->line("common_delete");?></button>
 	</div>
 </div>

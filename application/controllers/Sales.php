@@ -53,9 +53,6 @@ class Sales extends Secure_area
 		echo json_encode($data_row);
 	}
 	
-	/*
-	Returns Sales table data rows. This will be called with AJAX.
-	*/
 	function search()
 	{
 		$this->Sale->create_sales_items_temp_table();
@@ -78,7 +75,7 @@ class Sales extends Secure_area
 			
 
 		// check if any filter is set in the multiselect dropdown
-		$filledup = array_fill_keys($this->input->get('filters'), true);
+		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
 
 		$sales = $this->Sale->search($search, $filters, $offset, $limit);

@@ -27,20 +27,23 @@ $(document).ready(function()
         table_support.refresh();
     });
 
-    table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, function() {
-        return $.extend(arguments[0], {
-            start_date: start_date,
-            end_date: end_date,
-            filters: $("#filters").val() || [""]
-        });
+    table_support.init({
+        resource: '<?php echo site_url($controller_name);?>',
+        headers: <?php echo $table_headers; ?>,
+        confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
+        queryParams: function() {
+            return $.extend(arguments[0], {
+                start_date: start_date,
+                end_date: end_date,
+                filters: $("#filters").val() || [""]
+            });
+        }
     });
-    table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
 
     var handle_submit = table_support.handle_submit;
     table_support.handle_submit = function() {
-        debugger;;
         handle_submit.apply(this, arguments) && $('a.rollover').imgPreview();
-    }
+    };
 
 });
 </script>
@@ -61,7 +64,7 @@ $(document).ready(function()
 
 <div id="toolbar">
     <div class="pull-left form-inline" role="toolbar">
-        <button id="delete" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/delete"); ?>'>
+        <button id="delete" class="btn btn-default btn-sm">
             <span class="glyphicon glyphicon-trash"></span>
             <?php echo $this->lang->line("common_delete");?>
         </button>

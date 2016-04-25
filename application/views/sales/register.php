@@ -46,8 +46,13 @@ if (isset($success))
 				?>
 
 				<li class="pull-right">
-					<?php echo anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
-								array('class'=>'btn btn-default btn-sm modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales'))); ?>
+
+					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button'
+							data-href='<?php echo site_url($controller_name."/suspended"); ?>'
+							title='<?php echo $this->lang->line('sales_suspended_sales'); ?>'>
+						<span class="glyphicon glyphicon-star"></span><?php echo $this->lang->line('sales_suspended_sales'); ?>
+					</button>
+
 				</li>
 			
 				<?php
@@ -76,8 +81,10 @@ if (isset($success))
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-right">
-					<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
-							array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
+					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
+							title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
+						<span class="glyphicon glyphicon-tag"></span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
+					</button>
 				</li>
 			</ul>
 		</div>
@@ -297,9 +304,12 @@ if (isset($success))
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer'); ?></label>
 					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('sales_start_typing_customer_name')));?>
 
-					<?php echo anchor("customers/view/-1", $this->lang->line('sales_new_customer'),
-								array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-submit none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer'))); ?>
-				</div>			
+					<button class='btn btn-info btn-sm modal-dlg modal-btn-submit' data-href='<?php echo site_url("customers/view"); ?>'
+							title='<?php echo $this->lang->line($controller_name. '_new_customer'); ?>'>
+						<span class="glyphicon glyphicon-user"></span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
+					</button>
+
+				</div>
 			<?php echo form_close(); ?>
 		<?php
 		}
@@ -645,10 +655,13 @@ $(document).ready(function()
 		}
 	});
 
+	dialog_support.init("a.modal-dlg, button.modal-dlg");
+
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
+		debugger;;
 		if(response.success) {
-			if (resource.match(/customers$/).length > 0)
+			if (resource.match(/customers$/))
 			{
 				$("#customer").val(response.id);
 				$("#select_customer_form").submit();

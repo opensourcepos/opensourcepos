@@ -3,9 +3,13 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, {
+	table_support.init({
+		resource: '<?php echo site_url($controller_name);?>',
+		headers: <?php echo $table_headers; ?>,
 		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
-		enableActions: function() { }
+		enableActions: function() {
+			// should only enable if email filed in
+		}
 	});
 
 	$("#email").click(function(evvent)
@@ -46,7 +50,7 @@ $(document).ready(function()
 
 <div id="toolbar">
 	<div class="pull-left btn-toolbar">
-		<button id="delete" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/delete"); ?>'><span class="glyphicon glyphicon-trash"></span>
+		<button id="delete" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-trash"></span>
 			<?php echo $this->lang->line("common_delete");?></button>
 		<button id="email" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-envelope"></span>
 			<?php echo $this->lang->line("common_email");?></button>
