@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "您已成功新增供應商";
 $lang["suppliers_successful_deleted"] = "您已成功刪除供應商";
 $lang["suppliers_successful_updating"] = "您已成功更新供應商";
 $lang["suppliers_supplier"] = "供應商";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "更新供應商";

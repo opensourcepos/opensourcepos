@@ -13,7 +13,6 @@
 	var submit = function(button_id) {
 		return function(dlog_ref) {
 			btn_id = button_id;
-			debugger;;
 			dialog_ref = dlog_ref;
 			if (button_id == 'submit') {
 				$('form', dlog_ref.$modalBody).first().submit();

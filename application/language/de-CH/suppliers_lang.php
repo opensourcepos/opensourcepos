@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "Erfolgreich hinzugefügt";
 $lang["suppliers_successful_deleted"] = "Löschung erfolgreich";
 $lang["suppliers_successful_updating"] = "Änderung erfolgreich";
 $lang["suppliers_supplier"] = "Lieferant";
+$lang["suppliers_supplier_id"] = "ID";
 $lang["suppliers_update"] = "Ändere Lieferant";

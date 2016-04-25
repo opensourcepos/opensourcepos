@@ -32,6 +32,11 @@ $(document).ready(function()
 				end_date: end_date,
 				filters: $("#filters").val() || [""]
 			});
+		},
+		columns: {
+			'invoice': {
+				align: 'center'
+			}
 		}
 	});
 

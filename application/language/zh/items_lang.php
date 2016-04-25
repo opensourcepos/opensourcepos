@@ -44,7 +44,6 @@ $lang["items_location"] = "位置";
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "低庫存產品";
 $lang["items_manually_editing_of_quantity"] = "手動編輯數量";
-$lang["items_must_select_item_for_barcode"] = "您必須至少選擇一個產品生才能產生條碼";
 $lang["items_name"] = "產品名稱";
 $lang["items_name_required"] = "產品名稱為必填";
 $lang["items_new"] = "新增產品";

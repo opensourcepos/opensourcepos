@@ -71,9 +71,6 @@ class Sales extends Secure_area
 			'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
 			'is_valid_receipt' => $is_valid_receipt);
 
-
-			
-
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);

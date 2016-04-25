@@ -44,7 +44,6 @@ $lang["items_location"] = "место";
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "Низкий инвентаризации товары";
 $lang["items_manually_editing_of_quantity"] = "Руководство Изменить количество";
-$lang["items_must_select_item_for_barcode"] = "Вы должны выбрать хотя бы 1 товар для создания штрих-кодов";
 $lang["items_name"] = "название товара";
 $lang["items_name_required"] = "Название товара обязательное пробелья";
 $lang["items_new"] = "Новый Товар";

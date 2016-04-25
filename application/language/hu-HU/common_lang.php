@@ -60,3 +60,4 @@ $lang["common_export_excel"] = "Excel Export";
 $lang["common_export_excel_yes"] = "Igen";
 $lang["common_export_excel_no"] = "Nem";
 $lang["common_required"] = "Kötelező";
+$lang["common_id"] = "ID";

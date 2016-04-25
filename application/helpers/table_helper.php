@@ -17,7 +17,7 @@ function get_sales_manage_table_headers()
 	
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
-		$headers[] = $CI->lang->line('sales_invoice_number');
+		$headers[] = array('invoice' => $CI->lang->line('sales_invoice_number'));
 	}
 	return transform_headers($headers);
 }
@@ -25,7 +25,7 @@ function get_sales_manage_table_headers()
 /*
  Gets the html data rows for the sales.
  */
-function get_sales_manage_table_data_rows($sales, $controller)
+function get_sale_data_last_row($sales, $controller)
 {
 	$CI =& get_instance();
 	$table_data_rows = '';
@@ -35,23 +35,16 @@ function get_sales_manage_table_data_rows($sales, $controller)
 
 	foreach($sales as $key=>$sale)
 	{
-		$table_data_rows .= get_sales_manage_sale_data_row($sale, $controller);
-		
 		$sum_amount_tendered += $sale['amount_tendered'];
 		$sum_amount_due += $sale['amount_due'];
 		$sum_change_due += $sale['change_due'];
 	}
 
-	if($table_data_rows == '')
-	{
-		$table_data_rows .= "<tr><td colspan='12'><div class='alert alert-dismissible alert-info'>".$CI->lang->line('sales_no_sales_to_display')."</div></td></tr>";
-	}
-	else
-	{
-		$table_data_rows .= "<tr class='static-last'><td>&nbsp;</td><td>".$CI->lang->line('sales_total')."</td><td>&nbsp;</td><td>&nbsp;</td><td>".to_currency($sum_amount_tendered)."</td><td>".to_currency($sum_amount_due)."</td><td>".to_currency($sum_change_due)."</td><td colspan=\"5\"></td></tr>";
-	}
-
-	return $table_data_rows;
+	return array(
+		'receipt_number' => $CI->lang->line('sales_total'),
+		'amount_tendered' => to_currency($sum_amount_tendered),
+		'amount_due' => to_currency($sum_change_due)
+	);
 }
 
 function get_sale_data_row($sale, $controller)
@@ -70,18 +63,21 @@ function get_sale_data_row($sale, $controller)
 		'payment_type' => $sale->payment_type,
 		'invoice_number' => $sale->invoice_number,
 		'receipt' => anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-print"></span>',
-			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('sales_show_receipt'))
+			array('title'=>$CI->lang->line('sales_show_receipt'))
 		),
 		'edit' => anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line($controller_name.'_update'))
 		)
 	);
+
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
 		$row['invoice'] = anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('sales_show_invoice'))
+			array('title'=>$CI->lang->line('sales_show_invoice'))
 		);		
 	}
+
+	return $row;
 }
 
 /*

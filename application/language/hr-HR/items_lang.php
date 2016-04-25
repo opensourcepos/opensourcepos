@@ -44,7 +44,6 @@ $lang["items_location"] = "Mjesto";
 $lang["items_empty_upc_items"] = "UPC artikal";
 $lang["items_low_inventory_items"] = "Rasprodaja artikala";
 $lang["items_manually_editing_of_quantity"] = "Ručno uređivanje količine";
-$lang["items_must_select_item_for_barcode"] = "Morate odabrati barem jedan artikl da generirate barkod";
 $lang["items_name"] = "Naziv artikla";
 $lang["items_name_required"] = "Naziv artikla je potreban";
 $lang["items_new"] = "Novi artikal";

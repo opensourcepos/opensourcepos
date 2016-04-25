@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "Вы успешно добавили п�
 $lang["suppliers_successful_deleted"] = "Вы успешно удален";
 $lang["suppliers_successful_updating"] = "Вы успешно обновляли поставщиком";
 $lang["suppliers_supplier"] = "поставщик";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "Обновить поставщика";

@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "Has agregado el proveedor satisfactoriam
 $lang["suppliers_successful_deleted"] = "Has borrado satisfactoriamente a";
 $lang["suppliers_successful_updating"] = "Has actualizado el proveedor satisfactoriamente";
 $lang["suppliers_supplier"] = "Proveedor";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "Actualizar Proveedor";

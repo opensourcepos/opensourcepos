@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "Sağlayıcı eklendi";
 $lang["suppliers_successful_deleted"] = "Sağlayıcı silindi";
 $lang["suppliers_successful_updating"] = "Sağlayıcı düzenlendi";
 $lang["suppliers_supplier"] = "Sağlayıcı";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "Sağlayıcıyı Düzenle";

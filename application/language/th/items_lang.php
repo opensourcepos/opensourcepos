@@ -44,7 +44,6 @@ $lang["items_location"] = "ที่ตั้ง";
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "สินค้าคงเหลือน้อย";
 $lang["items_manually_editing_of_quantity"] = "แก้ไขจำนวน";
-$lang["items_must_select_item_for_barcode"] = "คุต้องเลือกสินค้าอย่างน้อยหนึ่งอย่างเพื่อจะสร้างบาร์โค๊ด";
 $lang["items_name"] = "ชื่อสินค้า";
 $lang["items_name_required"] = "ชื่อสินค้าต้องกรอก";
 $lang["items_new"] = "เพิ่มรายการสินค้า";
