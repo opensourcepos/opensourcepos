@@ -66,7 +66,7 @@ function get_sale_data_row($sale, $controller)
 		'customer' => character_limiter( $sale->customer_name, 25),
 		'amount_tendered' => to_currency( $sale->amount_tendered ),
 		'amount_due' => to_currency($sale->amount_due),
-		'change_due' => to_currency($sale->chang_due),
+		'change_due' => to_currency($sale->change_due),
 		'payment_type' => $sale->payment_type,
 		'invoice_number' => $sale->invoice_number,
 		'receipt' => anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-print"></span>',

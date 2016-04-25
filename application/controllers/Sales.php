@@ -47,10 +47,10 @@ class Sales extends Secure_area
 	{
 		$this->Sale->create_sales_items_temp_table();
 
-		$sale_info = $this->Sale->get_info($row_id)->result_array();
-		$data_row = get_sales_manage_sale_data_row($sale_info[0], $this);
+		$sale_info = $this->Sale->get_info($row_id)->row();
+		$data_row = get_sale_data_row($sale_info, $this);
 
-		echo $data_row;
+		echo json_encode($data_row);
 	}
 	
 	/*

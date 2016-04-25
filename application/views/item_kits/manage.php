@@ -3,8 +3,9 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>);
-    table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
+	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, {
+		confirmDeteleMessage: '<?php echo $this->lang->line($controller_name."_confirm_delete")?>'
+	});
 
 	$('#generate_barcodes').click(function()
 	{

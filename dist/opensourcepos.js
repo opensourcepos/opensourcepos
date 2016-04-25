@@ -49412,9 +49412,10 @@ $.tablesorter.addWidget({
 		});
 	};
 
-	var enable_actions = function() {
+	var enable_actions = function(callback) {
 		var selection_empty = selected_rows().length == 0;
 		$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
+		typeof callback == 'function' && callback();
 	};
 
 	var table = function() {
@@ -49466,13 +49467,16 @@ $.tablesorter.addWidget({
 
 	var load_callback;
 
-	var load_success = function() {
-		typeof load_callback == 'function' && load_callback();
-		load_callback = undefined;
-		dialog_support.init("a.modal-dlg, button.modal-dlg");
+	var load_success = function(callback) {
+		return function(response) {
+			typeof load_callback == 'function' && load_callback();
+			load_callback = undefined;
+			dialog_support.init("a.modal-dlg, button.modal-dlg");
+			typeof callback == 'function' && callback.call(this, response);
+		}
 	};
 
-	var init = function (resource, headers, queryParams) {
+	var init = function (resource, headers, options) {
 		$('#table').bootstrapTable({
 			columns: headers,
 			url: resource + '/search',
@@ -49488,11 +49492,12 @@ $.tablesorter.addWidget({
 			onUncheck: enable_actions,
 			onCheckAll: enable_actions,
 			onUncheckAll: enable_actions,
-			onLoadSuccess: load_success,
-			queryParams: queryParams,
+			onLoadSuccess: load_success(options.onLoadSuccess),
+			queryParams: options.queryParams,
 			queryParamsType: 'limit'
 		});
-		table_support.enable_actions();
+		enable_actions();
+		init_delete(options.confirmDeleteMessage)
 	};
 
 	var init_delete = function (confirm_message) {
@@ -49542,11 +49547,9 @@ $.tablesorter.addWidget({
 
 	$.extend(table_support, {
 		handle_submit: handle_submit,
-		init_delete: init_delete,
 		init: init,
 		refresh : refresh,
-		selected_ids : selected_ids,
-		enable_actions : enable_actions
+		selected_ids : selected_ids
 	});
 
 })(window.table_support = window.table_support || {}, jQuery);;(function($) {

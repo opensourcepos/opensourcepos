@@ -3,12 +3,6 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
-	// refresh payment summaries at page bottom when a search complete takes place
-	var on_complete = function(response)
-	{
-		$("#payment_summary").html(response.payment_summary);
-	};
-
 	// when any filter is clicked and the dropdown window is closed
 	$('#filters').on('hidan.bs.select', function(e)
 	{
@@ -26,14 +20,22 @@ $(document).ready(function()
 		table_support.refresh();
 	});
 
-	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, function() {
-		return $.extend(arguments[0], {
-			start_date: start_date,
-			end_date: end_date,
-			filters: $("#filters").val() || [""]
-		});
+	table_support.init('<?php echo site_url($controller_name);?>', <?php echo $table_headers; ?>, {
+
+		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
+
+		loadSuccess: function(response) {
+			$("#payment_summary").html(response.payment_summary);
+		},
+
+		queryParams: function() {
+			return $.extend(arguments[0], {
+				start_date: start_date,
+				end_date: end_date,
+				filters: $("#filters").val() || [""]
+			});
+		}
 	});
-	table_support.init_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>');
 
 });
 
@@ -66,7 +68,6 @@ $(document).ready(function()
 </div>
 
 <div id="payment_summary">
-	<?php //echo $payments_summary; ?>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>

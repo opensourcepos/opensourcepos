@@ -106,7 +106,7 @@ $(document).ready(function()
 				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
 						function(response) {
 							dialog_support.hide();
-							post_form_submit(response);
+							table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
 						}, "json"
 				);	
 			}
@@ -166,11 +166,11 @@ $(document).ready(function()
 			success: function(response)
 			{
 				dialog_support.hide();
-				post_form_submit(response);
+				table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
 			{
-				post_form_submit({message: errorThrown});
+				table_support.handle_submit('<?php echo site_url('sales'); ?>', { message : errorThrown, success: false });;
 			},
 			dataType: 'json'
 		});
@@ -217,14 +217,9 @@ $(document).ready(function()
 				{
 					dialog_support.hide();
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
-					var $element = get_table_row(id).parent().parent();
-					$element.find("td").animate({backgroundColor:"green"},1200,"linear")
-					.end().animate({opacity:0},1200,"linear",function()
-					{
-						$element.next().remove();
-						$(this).remove();
-						//Re-init sortable table as we removed a row
-						update_sortable_table();
+					table().remove({
+						field: 'id',
+						values: [id]
 					});
 				},
 				error: function(jqXHR, textStatus, errorThrown) {

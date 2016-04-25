@@ -106,7 +106,7 @@ class Sale extends CI_Model
 
 		if (empty($search))
 		{
-			$this->db->where('sale_time BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
+			//$this->db->where('sale_time BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
 		}
 		else
 		{
