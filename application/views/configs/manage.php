@@ -22,6 +22,9 @@
     <li role="presentation">
         <a data-toggle="tab" href="#invoice" title="<?php echo $this->lang->line('config_invoice_configuration'); ?>"><?php echo $this->lang->line('config_invoice'); ?></a>
     </li>
+    <li role="presentation">
+        <a data-toggle="tab" href="#message" title="<?php echo $this->lang->line('config_message_configuration'); ?>"><?php echo $this->lang->line('config_message'); ?></a>
+    </li>
 </ul>
 
 <div class="tab-content">
@@ -45,6 +48,9 @@
     </div>
     <div class="tab-pane" id="invoice">
         <?php $this->load->view("configs/invoice_config"); ?>
+    </div>
+    <div class="tab-pane" id="message">
+        <?php $this->load->view("configs/message_config"); ?>
     </div>
 </div>
 

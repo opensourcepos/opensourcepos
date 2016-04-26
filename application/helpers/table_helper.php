@@ -6,26 +6,17 @@ function get_sales_manage_table($sales, $controller)
 	$table='<table class="tablesorter table table-striped table-hover" id="sortable_table">';
 
 	$headers = array('&nbsp;',
-		$CI->lang->line('sales_receipt_number'),
-		$CI->lang->line('sales_sale_time'),
-		$CI->lang->line('customers_customer'),
-		$CI->lang->line('sales_amount_tendered'),
-		$CI->lang->line('sales_amount_due'),
-		$CI->lang->line('sales_change_due'),
-		$CI->lang->line('sales_payment'));
-		
-	if($CI->config->item('invoice_enable') == TRUE)
-	{
-		$headers[] = $CI->lang->line('sales_invoice_number');
-		$headers[] = '&nbsp';
-		$headers[] = '&nbsp';
-		$headers[] = '&nbsp';
-	}
-	else
-	{
-		$headers[] = '&nbsp';
-		$headers[] = '&nbsp';
-	}
+	$CI->lang->line('sales_receipt_number'),
+	$CI->lang->line('sales_sale_time'),
+	$CI->lang->line('customers_customer'),
+	$CI->lang->line('sales_amount_tendered'),
+	$CI->lang->line('sales_amount_due'),
+	$CI->lang->line('sales_change_due'),
+	$CI->lang->line('sales_payment'),
+	$CI->lang->line('sales_invoice_number'),
+	'&nbsp',
+	'&nbsp',
+	'&nbsp');
 
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -84,22 +75,11 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_tendered'] ).'</td>';
 	$table_data_row.='<td width="8%">'.to_currency( $sale['amount_due'] ).'</td>';
 	$table_data_row.='<td width="8%">'.to_currency( $sale['change_due'] ).'</td>';
-	if($CI->config->item('invoice_enable') == TRUE)
-	{
-		$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
-		$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
-	}
-	else
-	{
-		// this size includes the 8% of invoice number and 5% of the invoice gliphicon, pluf of course the 12% for the field itself
-		$table_data_row.='<td width="25%">'.$sale['payment_type'].'</td>';
-	}
+	$table_data_row.='<td width="12%">'.$sale['payment_type'].'</td>';
+	$table_data_row.='<td width="8%">'.$sale['invoice_number'].'</td>';
 	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/edit/" . $sale['sale_id'], '<span class="glyphicon glyphicon-edit"></span>', array('class'=>'modal-dlg modal-btn-delete modal-btn-submit print_hide', 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/receipt/" . $sale['sale_id'], '<span class="glyphicon glyphicon-print"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_receipt'))).'</td>';
-	if($CI->config->item('invoice_enable') == TRUE)
-	{
-		$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/invoice/" . $sale['sale_id'], '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_invoice'))).'</td>';
-	}
+	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/invoice/" . $sale['sale_id'], '<span class="glyphicon glyphicon-list-alt"></span>', array('class'=>'print_hide', 'title'=>$CI->lang->line('sales_show_invoice'))).'</td>';
 	$table_data_row.='</tr>';
 
 	return $table_data_row;
@@ -145,7 +125,8 @@ function get_people_manage_table($people,$controller)
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
-	'&nbsp');
+	$CI->lang->line('common_send_msg'),
+	$CI->lang->line('common_update'),);
 	
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -191,6 +172,7 @@ function get_person_data_row($person,$controller)
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
+	$table_data_row.='<td width="5%">'.anchor('Messages'."/view/$person->person_id", '<span class="glyphicon glyphicon-envelope"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_send_msg'))).'</td>';
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
@@ -212,6 +194,9 @@ function get_detailed_data_row($row, $controller)
 	return $table_data_row;
 }
 
+
+
+
 /*
 Gets the html table to manage suppliers.
 */
@@ -227,8 +212,9 @@ function get_supplier_manage_table($suppliers,$controller)
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
+	$CI->lang->line('common_send_msg'),
 	$CI->lang->line('suppliers_supplier_id'),
-	'&nbsp');
+	$CI->lang->line('common_update'),);
 	
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -276,12 +262,14 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.='<td width="15%">'.character_limiter($supplier->first_name,13).'</td>';
 	$table_data_row.='<td width="20%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="10%">'.character_limiter($supplier->phone_number,13).'</td>';
+	$table_data_row.='<td width="5%">'.anchor('Messages'."/view/$supplier->person_id", '<span class="glyphicon glyphicon-envelope"></span>', array('class'=>'modal-dlg modal-btn-submit' , 'title'=>$CI->lang->line('messages_send_msg'))).'</td>';
 	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
 	$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
 }
+
 
 /*
 Gets the html table to manage items.

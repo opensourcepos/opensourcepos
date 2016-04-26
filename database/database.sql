@@ -64,7 +64,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('decimal_point', '.'),
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
-('quantity_decimals', '0');
+('quantity_decimals', '0'),
+('msg_msg',''),
+('msg_uid', 'userName'),
+('msg_pwd', 'password');
 
 -- --------------------------------------------------------
 
@@ -289,12 +292,13 @@ CREATE TABLE `ospos_modules` (
 --
 
 INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
-('module_config', 'module_config_desc', 100, 'config'),
+('module_config', 'module_config_desc', 110, 'config'),
 ('module_customers', 'module_customers_desc', 10, 'customers'),
 ('module_employees', 'module_employees_desc', 80, 'employees'),
 ('module_giftcards', 'module_giftcards_desc', 90, 'giftcards'),
 ('module_items', 'module_items_desc', 20, 'items'),
 ('module_item_kits', 'module_item_kits_desc', 30, 'item_kits'),
+('module_messages', 'module_messages_desc', 100, 'messages'),
 ('module_receivings', 'module_receivings_desc', 60, 'receivings'),
 ('module_reports', 'module_reports_desc', 50, 'reports'),
 ('module_sales', 'module_sales_desc', 70, 'sales'),
@@ -365,6 +369,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('giftcards', 'giftcards'),
 ('items', 'items'),
 ('item_kits', 'item_kits'),
+('messages', 'messages'),
 ('receivings', 'receivings'),
 ('reports', 'reports'),
 ('sales', 'sales'),
@@ -410,6 +415,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('giftcards', 1),
 ('items', 1),
 ('item_kits', 1),
+('messages', 1),
 ('receivings', 1),
 ('reports', 1),
 ('sales', 1),
