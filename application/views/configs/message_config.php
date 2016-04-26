@@ -1,8 +1,8 @@
 <?php echo form_open('config/save_message/', array('id'=>'message_config_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
-	<div id="config_wrapper" style="background-color :#ffffff;">
+	<div id="config_wrapper">
 		<fieldset id="config_info">
 			
-				<h4 style="text-align:center;">Message settings</h4>
+		<h5 style="text-align:center; color: red;">Note : If you wish to use SMS template, save your message here. Otherwise keep the 'Saved Text Message' box blank.</h5>
 
 				</br>
 				</br>

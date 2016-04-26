@@ -24,7 +24,6 @@
 	      <label for="textArea" class="col-lg-2 control-label">Message:</label>
 	      <div class="col-lg-10">
 		<textarea class="form-control" rows="3"  name="msg"><?php echo $this->config->item('msg_msg'); ?></textarea>
-		<span class="help-block"style="text-align: center;">(Maximum 140 characters)</span>
 	      </div>
   	  </fieldset>
 

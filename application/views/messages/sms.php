@@ -9,7 +9,7 @@
 	      <div class="form-group">
 	      <label for="inputPhone" class="col-lg-2 control-label">Mobile:</label>
 	      <div class="col-lg-10">
-	         <input class="form-control", type="text", name="phone", placeholder="Put Mobile No Here !"></input>
+	         <input class="form-control", type="text", name="phone", placeholder="Put Mobile No(s) Here !"></input>
 		<span class="help-block" style="text-align:center;">( In case of multiple recipients, enter mobile numbers separated with comma )</span>
 	      </div>
 	    </div></br>
