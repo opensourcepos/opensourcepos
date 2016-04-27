@@ -221,6 +221,7 @@
 						url: resource + '/get_row/' + id,
 						success: function (response) {
 							table().updateByUniqueId({id: response.id, row: response});
+							dialog_support.init("tr.selected a.modal-dlg");
 							highlight_rows();
 							set_feedback(message, 'alert alert-dismissible alert-success', false);
 						},

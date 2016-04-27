@@ -49292,7 +49292,6 @@ $.tablesorter.addWidget({
 	var submit = function(button_id) {
 		return function(dlog_ref) {
 			btn_id = button_id;
-			debugger;;
 			dialog_ref = dlog_ref;
 			if (button_id == 'submit') {
 				$('form', dlog_ref.$modalBody).first().submit();
@@ -49501,6 +49500,7 @@ $.tablesorter.addWidget({
 						url: resource + '/get_row/' + id,
 						success: function (response) {
 							table().updateByUniqueId({id: response.id, row: response});
+							dialog_support.init("tr.selected a.modal-dlg");
 							highlight_rows();
 							set_feedback(message, 'alert alert-dismissible alert-success', false);
 						},

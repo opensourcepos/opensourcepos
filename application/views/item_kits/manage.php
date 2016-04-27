@@ -12,7 +12,7 @@ $(document).ready(function()
 	$('#generate_barcodes').click(function()
 	{
 		window.open(
-			'index.php/items/generate_barcodes/'+table_support.selected_ids().join(':'),
+			'index.php/item_kits/generate_barcodes/'+table_support.selected_ids().join(':'),
 			'_blank' // <- This is what makes it open in a new window.
 		);
 	});

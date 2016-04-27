@@ -27,6 +27,10 @@ $(document).ready(function()
         table_support.refresh();
     });
 
+    $("#stock_location").change(function() {
+       table_support.refresh();
+    });
+
     table_support.init({
         resource: '<?php echo site_url($controller_name);?>',
         headers: <?php echo $table_headers; ?>,
@@ -35,6 +39,7 @@ $(document).ready(function()
             return $.extend(arguments[0], {
                 start_date: start_date,
                 end_date: end_date,
+                stock_location: $("#stock_location").val(),
                 filters: $("#filters").val() || [""]
             });
         }

@@ -12,7 +12,8 @@ function get_sales_manage_table_headers()
 		array('customer' => $CI->lang->line('customers_customer')),
 		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
 		array('amount_due' => $CI->lang->line('sales_amount_due')),
-		array('change_due' => $CI->lang->line('sales_change_due'))
+		array('change_due' => $CI->lang->line('sales_change_due')),
+		array('receipt' => '&nbsp'),
 	);
 	
 	if($CI->config->item('invoice_enable') == TRUE)
@@ -33,17 +34,17 @@ function get_sale_data_last_row($sales, $controller)
 	$sum_amount_due = 0;
 	$sum_change_due = 0;
 
-	foreach($sales as $key=>$sale)
+	foreach($sales->result() as $key=>$sale)
 	{
-		$sum_amount_tendered += $sale['amount_tendered'];
-		$sum_amount_due += $sale['amount_due'];
-		$sum_change_due += $sale['change_due'];
+		$sum_amount_tendered += $sale->amount_tendered;
+		$sum_amount_due += $sale->amount_due;
+		$sum_change_due += $sale->change_due;
 	}
 
 	return array(
-		'receipt_number' => $CI->lang->line('sales_total'),
-		'amount_tendered' => to_currency($sum_amount_tendered),
-		'amount_due' => to_currency($sum_change_due)
+		'receipt_number' => '<b>'.$CI->lang->line('sales_total').'</b>',
+		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
+		'amount_due' => '<b>'.to_currency($sum_change_due).'</b>'
 	);
 }
 

@@ -85,6 +85,13 @@ class Sales extends Secure_area
 		{
 			$data_rows[] = get_sale_data_row($sale, $this);
 		}
+
+		if ($total_rows > 0)
+		{
+			$total_rows++;
+			$data_rows[] = get_sale_data_last_row($sales, $this);
+		}
+
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows,'payment_summary' => $payment_summary));
 	}
 
