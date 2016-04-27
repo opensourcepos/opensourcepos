@@ -191,7 +191,8 @@
 			onCheckAll: enable_actions,
 			onUncheckAll: enable_actions,
 			onLoadSuccess: load_success(options.onLoadSuccess),
-			queryParamsType: 'limit'
+			queryParamsType: 'limit',
+			iconSize: 'sm'
 		}));
 		enable_actions();
 		init_delete();
