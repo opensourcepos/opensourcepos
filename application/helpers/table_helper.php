@@ -229,6 +229,7 @@ function get_supplier_manage_table($suppliers,$controller)
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
+	$CI->lang->line('common_send_msg'),
 	$CI->lang->line('suppliers_supplier_id'),
 	$CI->lang->line('common_update'),);
 	
