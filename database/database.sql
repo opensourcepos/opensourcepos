@@ -65,9 +65,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
 ('quantity_decimals', '0'),
-('msg_msg',''),
-('msg_uid', 'userName'),
-('msg_pwd', 'password');
+('msg_msg', ''),
+('msg_uid', ''),
+('msg_src', ''),
+('msg_pwd', '');
 
 -- --------------------------------------------------------
 

@@ -98,6 +98,7 @@ $lang["config_message_configuration"] = "Message Configuration";
 $lang["config_msg_msg"] = "Saved Text Message:";
 $lang["config_msg_uid"] = "SMS-API UserName:";
 $lang["config_msg_pwd"] = "SMS-API Password:";
+$lang["config_msg_src"] = "SMS-API Sender ID:";
 $lang["config_number_format"] = "Number Format";
 $lang["config_phone"] = "Company Phone";
 $lang["config_phone_required"] = "Company phone is a required field";

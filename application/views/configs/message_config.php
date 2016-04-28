@@ -1,8 +1,8 @@
 <?php echo form_open('config/save_message/', array('id'=>'message_config_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
 	<div id="config_wrapper">
-		<fieldset id="config_info">
+		<fieldset id="message_config">
 			
-		<h5 style="text-align:center; color: red;">Note : If you wish to use SMS template, save your message here. Otherwise keep the 'Saved Text Message' box blank.</h5>
+   <h5 style="text-align:center; color: red;">Note : If you wish to use SMS template, save your message here. Otherwise keep the 'Saved Text Message' box blank.</h5>
 
 				</br>
 				</br>
@@ -18,14 +18,7 @@
 						'class'=>'form-control input-sm',
 						'value'=>$this->config->item('msg_msg')));?>
 				</div>
-
-			
-
-			
-			
 			</div>
-			
-			<div>
 
 
 				<div class="form-group form-group-sm">	
@@ -35,7 +28,7 @@
 						'name'=>'msg_uid',
 						'id'=>'msg_uid',
 						'class'=>'form-control input-sm',
-						'type'=>'password',
+						'type'=>'text',
 						'value'=>$this->config->item('msg_uid')));?>
 				</div>
 			</div>
@@ -50,8 +43,18 @@
 						'type'=>'password',
 						'value'=>$this->config->item('msg_pwd')));?>
 				</div>
+			</div>
 				
-			
+			<div class="form-group form-group-sm" >	
+				<?php echo form_label($this->lang->line('config_msg_src'), 'msg_src', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_input(array(
+						'name'=>'msg_src',
+						'id'=>'msg_src',
+						'class'=>'form-control input-sm',
+						'type'=>'text',
+						'value'=>$this->config->item('msg_src')));?>
+				</div>
 			</div>
 			<?php echo form_submit(array(
 				'name'=>'submit_form',

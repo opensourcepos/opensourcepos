@@ -19,7 +19,7 @@ class Messages extends Secure_area
 	function view($person_id=-1)
 	{ 
 		$data['person_info']=$this->Person->get_info($person_id);
-		$this->load->view('messages/sms-sender',$data);
+		$this->load->view('messages/sms-sender', $data);
 	}
 
 	
@@ -27,21 +27,11 @@ class Messages extends Secure_area
 	{	
 		$uid = $this->config->item('msg_uid');
 		$pwd = $this->config->item('msg_pwd');
+		$src = $this->config->item('msg_src');
 		$phone = $this->input->post('phone');
 		$msg = $this->input->post('msg');
-
-		$response = $this->sms->sendsms($uid,$pwd,$phone,$msg); 
+		$response = $this->sms->sendsms($uid, $pwd, $src, $phone, $msg); 
 		$this->load->view('messages/sms');
-
-		if('send')
-		{
-		    echo "Message Submitted Successfully";
-		}
-		else
-		{   
-		    echo "Message NOT Submitted Successfully";
-		}
-		
 	}
 }
 ?>

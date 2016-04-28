@@ -102,7 +102,8 @@ class Config extends Secure_area
 		$batch_save_data = array(	
 			'msg_msg'=>$this->input->post('msg_msg'),
 			'msg_uid'=>$this->input->post('msg_uid'),
-			'msg_pwd'=>$this->input->post('msg_pwd')
+			'msg_pwd'=>$this->input->post('msg_pwd'),
+			'msg_src'=>$this->input->post('msg_src')
 			
 		);
 	
