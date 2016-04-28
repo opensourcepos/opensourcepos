@@ -237,7 +237,7 @@ class Item extends CI_Model
 	*/
 	public function update_multiple($item_data, $item_ids)
 	{
-		$this->db->where_in('item_id', $item_ids);
+		$this->db->where_in('item_id', explode(',', $item_ids[0]));
 
 		return $this->db->update('items', $item_data);
 	}
