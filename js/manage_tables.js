@@ -76,7 +76,8 @@
 					})
 				}, buttons.call(this, event)));
 
-				event.preventDefault();
+				//event.stopPropagation();
+				return false;
 			});
 		});
 	};

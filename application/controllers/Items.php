@@ -492,7 +492,8 @@ class Items extends Secure_area implements iData_controller
 		}
 
 		//Item data could be empty if tax information is being updated
-		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
+		$item_ids = explode(",", $items_to_update);
+		if(empty($item_data) || $this->Item->update_multiple($item_data, $item_ids))
 		{
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
@@ -514,7 +515,7 @@ class Items extends Secure_area implements iData_controller
 				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
 			}
 
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit')));
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit'), 'id'=>$item_ids));
 		}
 		else
 		{

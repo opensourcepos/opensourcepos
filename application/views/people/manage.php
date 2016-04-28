@@ -3,6 +3,8 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
+	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
@@ -14,17 +16,12 @@ $(document).ready(function()
 
 	$("#email").click(function(evvent)
 	{
-		do_email();
-	});
-
-	var do_email = function()
-	{
 		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element)
 		{
 			return $(element).attr('href').replace(/^mailto:/, '');
 		});
 		location.href = "mailto:" + recipients.join(",");
-	};
+	});
 
 });
 

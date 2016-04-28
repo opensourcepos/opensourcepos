@@ -2,6 +2,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 {
+	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
