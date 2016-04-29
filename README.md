@@ -1,78 +1,78 @@
-Introduction
+Introdução
 ------------
-Open Source Point of Sale is a web based point of sale system written in the PHP language.
-It uses MySQL as the data storage back-end and has a simple user interface.
+Open Source Point of Sale é um ponto baseado na Web do sistema de venda escrito na linguagem PHP.
+Ele usa MySQL como o back-end de armazenamento de dados e tem uma interface de usuário simples.
 
-This is the latest version 3.0.0 and it's based on Bootstrap 3 using Bootswatch theme Flatly as default, and CodeIgniter 3.0.6.
+Esta é a última versão 3.0.0 e ele é baseado no Bootstrap 3 usando Bootswatch tema categoricamente como padrão, e CodeIgniter 3.0.6.
 
 Badges
 ------
 [![Build Status](https://travis-ci.org/jekkos/opensourcepos.svg?branch=master)](https://travis-ci.org/jekkos/opensourcepos)
 
-Keep the Machine Running
+Manter a máquina Rodando
 ------------------------
-If you like the project, and you are making money out of it on a daily basis, then consider buying me a coffee so I can keep adding features.
+Se você gosta do projeto, e você está fazendo dinheiro com isso em uma base diária, em seguida, considerar a compra-me um café que eu possa manter adicionando funcionalidades.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
-Server Requirements
+Requisitos do servidor
 -------------------
-PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
+PHP versão 5.5 ou mais recente é recomendado, mas PHP 7.x não é totalmente suportado ainda.
 
-Reporting Bugs
+relatar bugs
 --------------
-Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
-Please DO NOT post issues if you have not done that before running OSPOS 3.0.
-Please also make sure you have updated all the files from latest master.
+Desde OSPOS 3.0.0 é uma versão em desenvolvimento, por favor, certifique-se sempre executar o script de atualização de banco de dados 2.4_to_3.0.sql mais recente.
+Por favor, NÃO postar questões se você não tiver feito isso antes de executar OSPOS 3.0.
+Certifique-se também de ter actualizado todos os arquivos do mais recente mestre.
 
-Bug reports must follow this schema:
+relatórios de bugs deve seguir este esquema:
 
-1. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
-2. Web Server name and version (e.g. Apache 2.4)
-3. Database name and version (e.g. MySQL 5.6)
-3. PHP version (e.g. PHP 5.5)
-4. Language selected in OSPOS (e.g. English, Spanish)
-5. Any configuration of OSPOS that you changed
-6. Exact steps to reproduce the issue (test case)
+1. Nome do sistema operacional e versão em execução seu servidor Web (por exemplo Linux Ubuntu 15.0)
+2. Nome Web Server e versão (por exemplo Apache 2.4)
+3. nome de banco de dados e versão (por exemplo, MySQL 5.6)
+3. versão do PHP (por exemplo PHP 5.5)
+4. idioma selecionado no OSPOS (por exemplo, Inglês, Espanhol)
+5. Qualquer configuração de OSPOS que você mudou
+6. etapas exatas para reproduzir o (caso de teste) problema
 
-If above information is not provided in full, your issue will be tagged as pending.
-If missing information is not provided within a week we will close your issue.
+Se a informação acima não é fornecido na íntegra, o problema será marcado como pendente.
+Se as informações não forem fornecidas dentro de uma semana vamos fechar o seu problema.
 
-Installation
+Instalação
 ------------
-1. Create/locate a new mysql database to install open source point of sale into
-2. Execute the file database/database.sql to create the tables needed
-3. unzip and upload Open Source Point of Sale files to web server
-4. Copy application/config/database.php.tmpl to application/config/database.php
-5. Modify application/config/database.php to connect to your database
-6. Modify application/config/config.php encryption key with your own
-7. Go to your point of sale install via the browser
-8. LOGIN using
-username: admin 
-password:pointofsale
-9. Enjoy
-
+1. Crie / localizar um novo banco de dados mysql para instalar ponto de código aberto de venda em
+2. Execute o banco de dados de arquivo / database.sql para criar as tabelas necessárias
+3. Descompacte e faça o upload Abrir ponto de origem de arquivos de venda ao servidor web
+4. Aplicação copiar / config / database.php.tmpl para application / config / database.php
+5. Modificar application / config / database.php para se conectar ao seu banco de dados
+chave de criptografia / config / config.php 6. aplicação Modificar com seu próprio
+7. Vá para o seu ponto de venda instalar através do browser
+8. entre usando
+nome de usuário: admin
+senha: pointofsale
+9. Aprecie
 FAQ
 ---
-If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
+Se uma página em branco (status HTTP 500) mostra após a conclusão de busca ou geração de recebimento, em seguida, verifique a presença php5-gd na sua instalação php. No windows o check-in php.ini se a lib está instalado. No Ubuntu problema sudo `apt-get install php5-gd`. Também dê uma olhada na Dockerfile para obter uma lista completa de pacotes recomendados.
 
-13/01/2016: Install using Docker
+13/01/2016: instalar usando Docker
 --------------------------------
-From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
+A partir de agora ospos podem ser implantados usando Docker em Linux, Mac ou Windows. Esta configuração reduz drasticamente o número de possíveis problemas como toda a configuração está agora feito em um Dockerfile. Docker roda nativamente no Mac e Linux, mas vai exigir mais sobrecarga no Windows. Por favor consulte a documentação janela de encaixe para obter instruções sobre como configurá-lo em sua plataforma.
 
-To build and run the image, issue following commands in a terminal with docker installed
+Para criar e executar a imagem, emitir comandos seguinte em um terminal com janela de encaixe instalada
 
     docker build -t me/ospos https://github.com/jekkos/opensourcepos.git
     docker run -d -p 80:80 me/ospos
 
-Docker will clone the latest master into the image and start a LAMP stack with the application configured. If you like to persist your changes in this install, then you can use two docker data containers to store database and filesystem changes. In this case you will need following command (first time only)
+Docker irá clonar o último mestre na imagem e começar uma pilha LAMP com a aplicação configurada. Se você gosta de persistirem as alterações nesta instalar, em seguida, você pode usar dois recipientes de dados janela de encaixe para armazenar as alterações de banco de dados e sistema de arquivos. Neste caso, você precisará seguinte comando (primeiro única vez)
 
     docker run -d -v /app --name="ospos" -v /var/lib/mysql --name="ospos-sql" -p 127.0.0.1:80:80 me/ospos
 
-After stopping the created container for the first time, this command will be replaced with
+
+Depois de parar o recipiente criado pela primeira vez, este comando será substituído com
 
     docker run -d -v /app --volumes-from="ospos" -v /var/lib/mysql --volumes-from="ospos-sql" -p 127.0.0.1:80:80 me/ospos
 
-Both the data and mysql directories will be persisted in a separate docker container and can be mounted within any other container using the last command. A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
+Ambos os diretórios de dados MySQL e será mantido em um recipiente janela de encaixe separado e pode ser montado em qualquer outro recipiente utilizando o último comando. A guia de configuração mais extensa pode ser encontrada neste [site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
 
 
