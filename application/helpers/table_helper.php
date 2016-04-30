@@ -145,8 +145,11 @@ function get_people_manage_table($people,$controller)
 	$CI->lang->line('common_first_name'),
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
-	'&nbsp',
 	'&nbsp');
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$headers[] = '&nbsp';
+	}
 	
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -192,8 +195,15 @@ function get_person_data_row($person,$controller)
 	$table_data_row.='<td width="20%">'.character_limiter($person->first_name,13).'</td>';
 	$table_data_row.='<td width="30%">'.mailto($person->email,character_limiter($person->email,22)).'</td>';
 	$table_data_row.='<td width="20%">'.character_limiter($person->phone_number,13).'</td>';
-	$table_data_row.='<td width="3%">'.anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))).'</td>';
-	$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$table_data_row.='<td width="3%">'.anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))).'</td>';
+		$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	}
+	else
+	{
+		$table_data_row.='<td width="6%">'.anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
+	}
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
@@ -230,8 +240,11 @@ function get_supplier_manage_table($suppliers,$controller)
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
 	$CI->lang->line('suppliers_supplier_id'),
-	'&nbsp',
 	'&nbsp');
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$headers[] = '&nbsp';
+	}
 	
 	$table.='<thead><tr>';
 	foreach($headers as $header)
@@ -280,8 +293,15 @@ function get_supplier_data_row($supplier,$controller)
 	$table_data_row.='<td width="20%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="10%">'.character_limiter($supplier->phone_number,13).'</td>';
 	$table_data_row.='<td width="3%">'.character_limiter($supplier->person_id,5).'</td>';
-	$table_data_row.='<td width="3%">'.anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))).'</td>';
-	$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$table_data_row.='<td width="3%">'.anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))).'</td>';
+		$table_data_row.='<td width="3%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
+	}
+	else
+	{
+		$table_data_row.='<td width="6%">'.anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>', array('class'=>"modal-dlg modal-btn-submit",'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';		
+	}
 	$table_data_row.='</tr>';
 	
 	return $table_data_row;
