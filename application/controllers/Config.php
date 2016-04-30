@@ -91,10 +91,10 @@ class Config extends Secure_area
 			'quantity_decimals'=>$this->input->post('quantity_decimals')
 		);
 	
-        $result = $this->Appconfig->batch_save($batch_save_data);
-        $success = $result ? true : false;
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? true : false;
 		
-        echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 	
 	function save_message() 
@@ -104,7 +104,6 @@ class Config extends Secure_area
 			'msg_uid'=>$this->input->post('msg_uid'),
 			'msg_pwd'=>$this->input->post('msg_pwd'),
 			'msg_src'=>$this->input->post('msg_src')
-			
 		);
 	
         $result = $this->Appconfig->batch_save($batch_save_data);

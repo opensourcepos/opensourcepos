@@ -157,17 +157,16 @@ $(document).ready(function()
 	});
 	
 	$('#employee_form').validate($.extend({
-		submitHandler:function(form)
+		submitHandler:function(form) 
 		{
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				dialog_support.hide();
-				post_person_form_submit(response);
-			},
-			dataType:'json'
-		});
-
+				success:function(response)
+				{
+					dialog_support.hide();
+					post_person_form_submit(response);
+				},
+				dataType:'json'
+			});
 		},
 		rules:
 		{
