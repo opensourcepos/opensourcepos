@@ -69,13 +69,13 @@ class Config extends Secure_area
 			'custom10_name'=>$this->input->post('custom10_name')
 		);
 		
-        $result = $this->Appconfig->batch_save($batch_save_data);
-        $success = $result ? true : false;
-		
-        echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? true : false;
+
+		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
-	function save_locale() 
+	function save_locale()
 	{
 		$batch_save_data = array(	
 			'currency_symbol'=>$this->input->post('currency_symbol'),
@@ -91,10 +91,25 @@ class Config extends Secure_area
 			'quantity_decimals'=>$this->input->post('quantity_decimals')
 		);
 	
-        $result = $this->Appconfig->batch_save($batch_save_data);
-        $success = $result ? true : false;
-		
-        echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? true : false;
+
+		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
+	
+	function save_message()
+	{
+		$batch_save_data = array(	
+			'msg_msg'=>$this->input->post('msg_msg'),
+			'msg_uid'=>$this->input->post('msg_uid'),
+			'msg_pwd'=>$this->input->post('msg_pwd'),
+			'msg_src'=>$this->input->post('msg_src')
+		);
+	
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? true : false;
+
+		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 	
 	function stock_locations() 
