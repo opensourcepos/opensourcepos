@@ -17,15 +17,15 @@
 			</div>
 		</div> 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('messages_phone'), 'phone_label', array('for'=>'phone', 'class'=>'control-label col-xs-2')); ?>
+			<?php echo form_label($this->lang->line('messages_phone'), 'phone_label', array('for'=>'phone', 'class'=>'control-label col-xs-2 required')); ?>
 			<div class="col-xs-10">
-				<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'phone', 'value'=>$person_info->phone_number));?>
+				<?php echo form_input(array('class'=>'form-control input-sm required', 'type'=>'text', 'name'=>'phone', 'value'=>$person_info->phone_number));?>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('messages_message'), 'message_label', array('for'=>'message', 'class'=>'control-label col-xs-2')); ?>
+			<?php echo form_label($this->lang->line('messages_message'), 'message_label', array('for'=>'message', 'class'=>'control-label col-xs-2 required')); ?>
 			<div class="col-xs-10">
-				<?php echo form_textarea(array('class'=>'form-control input-sm', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->item('msg_msg')));?>
+				<?php echo form_textarea(array('class'=>'form-control input-sm required', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->item('msg_msg')));?>
 			</div>
 		</div>
 	</fieldset>
@@ -53,7 +53,7 @@ $(document).ready(function()
 				required:true,
 				number:true
 			},
-			msg:
+			message:
 			{
 				required:true,
 				number:false
@@ -66,7 +66,7 @@ $(document).ready(function()
 				required:"<?php echo $this->lang->line('messages_phone_number_required'); ?>",
 				number:"<?php echo $this->lang->line('messages_phone'); ?>"
 			},
-			msg:
+			message:
 			{
 				required:"<?php echo $this->lang->line('messages_message_required'); ?>"
 			}
