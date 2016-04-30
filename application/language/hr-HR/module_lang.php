@@ -21,3 +21,5 @@ $lang["module_sales"] = "Prodaja";
 $lang["module_sales_desc"] = "Procesi prodaje i povrata";
 $lang["module_suppliers"] = "Dobavljači";
 $lang["module_suppliers_desc"] = "Dodaj, ažuriraj, obriši ili traži dobavljače";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";

@@ -17,15 +17,15 @@
 			</div>
 		</div> 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('messages_mobile'), 'last_name_label', array('for'=>'phone', 'class'=>'control-label col-xs-2')); ?>
+			<?php echo form_label($this->lang->line('messages_phone'), 'phone_label', array('for'=>'phone', 'class'=>'control-label col-xs-2')); ?>
 			<div class="col-xs-10">
 				<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'phone', 'value'=>$person_info->phone_number));?>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('messages_mesage'), 'last_name_label', array('for'=>'msg', 'class'=>'control-label col-xs-2')); ?>
+			<?php echo form_label($this->lang->line('messages_message'), 'message_label', array('for'=>'message', 'class'=>'control-label col-xs-2')); ?>
 			<div class="col-xs-10">
-				<?php echo form_textarea(array('name'=>'msg', 'value'=>$this->config->item('msg_msg'), 'id'=>'msg', 'class'=>'form-control input-sm'));?>
+				<?php echo form_textarea(array('class'=>'form-control input-sm', 'name'=>'message', 'id'=>'message', 'value'=>$this->config->item('msg_msg')));?>
 			</div>
 		</div>
 	</fieldset>

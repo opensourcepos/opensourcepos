@@ -2,34 +2,38 @@
 	<div id="config_wrapper">
 		<fieldset id="config_message">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-
 			<ul id="general_error_message_box" class="error_message_box"></ul>
 
-			<h5 style="text-align:center; color: red;">Note : If you wish to use SMS template, save your message here. Otherwise keep the 'Saved Text Message' box blank.</h5>
-
-			</br>
-
 			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_msg_uid'), 'msg_uid', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_msg_uid'), 'msg_uid', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 						'name'=>'msg_uid',
 						'id'=>'msg_uid',
-						'class'=>'form-control input-sm',
-						'type'=>'password',
-						'value'=>$this->config->item('msg_uid')));?>
+						'class'=>'form-control input-sm required',
+						'value'=>$this->config->item('msg_uid'))); ?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm" >	
-				<?php echo form_label($this->lang->line('config_msg_pwd'), 'msg_pwd', array('class'=>'control-label col-xs-2')); ?>
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_msg_pwd'), 'msg_pwd', array('class'=>'control-label col-xs-2 required')); ?>
 				<div class='col-xs-4'>
-					<?php echo form_input(array(
+					<?php echo form_password(array(
 						'name'=>'msg_pwd',
 						'id'=>'msg_pwd',
-						'class'=>'form-control input-sm',
-						'type'=>'password',
-						'value'=>$this->config->item('msg_pwd')));?>
+						'class'=>'form-control input-sm required',
+						'value'=>$this->config->item('msg_pwd'))); ?>
+				</div>
+			</div>
+			
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_msg_src'), 'msg_src', array('class'=>'control-label col-xs-2 required')); ?>
+				<div class='col-xs-4'>
+					<?php echo form_input(array(
+						'name'=>'msg_src',
+						'id'=>'msg_src',
+						'class'=>'form-control input-sm required',
+						'value'=>$this->config->item('msg_src') == null ? $this->config->item('company') : $this->config->item('msg_src')));?>
 				</div>
 			</div>
 			
@@ -40,7 +44,8 @@
 						'name'=>'msg_msg',
 						'id'=>'msg_msg',
 						'class'=>'form-control input-sm',
-						'value'=>$this->config->item('msg_msg')));?>
+						'value'=>$this->config->item('msg_msg'),
+						'placeholder'=>"If you wish to use a SMS template save your message here. Otherwise leave the box blank."));?>
 				</div>
 			</div>
 
@@ -48,7 +53,7 @@
 				'name'=>'submit_form',
 				'id'=>'submit_form',
 				'value'=>$this->lang->line('common_submit'),
-				'class'=>'btn btn-primary btn-sm pull-right'));?>
+				'class'=>'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
 <?php echo form_close(); ?>
@@ -72,6 +77,30 @@ $(document).ready(function()
 				},
 				dataType: 'json'
 			});
+		},
+
+		errorClass: "has-error",
+		errorLabelContainer: "#general_error_message_box",
+		wrapper: "li",
+		highlight: function (e)	{
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		},
+
+		rules: 
+		{
+			msg_uid: "required",
+			msg_pwd: "required",
+			msg_src: "required"
+   		},
+
+		messages: 
+		{
+			msg_uid: "<?php echo $this->lang->line('config_msg_uid_required'); ?>",
+			msg_pwd: "<?php echo $this->lang->line('config_msg_pwd_required'); ?>",
+			msg_src: "<?php echo $this->lang->line('config_msg_src_required'); ?>"
 		}
 	});
 });

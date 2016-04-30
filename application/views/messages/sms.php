@@ -1,48 +1,55 @@
 <?php $this->load->view("partial/header"); ?>
-
-<?php
-if (isset($error))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
-}
-
-if (!empty($warning))
-{
-	echo "<div class='alert alert-dismissible alert-warning'>".$warning."</div>";
-}
-
-if (isset($success))
-{
-	echo "<div class='alert alert-dismissible alert-success'>".$success."</div>";
-}
-?>
 	      
-<div class="jumbotron" style="max-width: 57%; margin:0 auto">
+<div class="jumbotron" style="max-width: 60%; margin:auto">
 	<?php echo form_open("messages/send/", array('id'=>'send_sms_form', 'enctype'=>'multipart/form-data', 'method'=>'post', 'class'=>'form-horizontal')); ?>
 		<fieldset>
-			<legend style="text-align: center;">SEND SMS</legend>
-			<div class="form-group">
-				<div class="form-group">
-					<label for="inputPhone" class="col-lg-2 control-label">Mobile:</label>
-					<div class="col-lg-10">
-						<input class="form-control", type="text", name="phone", placeholder="Put Mobile No(s) Here !"></input>
-						<span class="help-block" style="text-align:center;">( In case of multiple recipients, enter mobile numbers separated with comma )</span>
-					</div>
-				</div></br>
-
-				<div class="form-group">
-					<label for="textArea" class="col-lg-2 control-label">Message:</label>
-					<div class="col-lg-10">
-						<textarea class="form-control" rows="3" id="textArea" name="msg" placeholder="Put Your Message Here !"></textarea>
-					</div>
-				</div>
-
-				<div class="col-lg-10 col-lg-offset-2">
-					<button type="submit" name="submit" class="btn btn-primary btn-md pull-right"  value="submit">Submit</button>
+			<legend style="text-align: center;"><?php echo $this->lang->line('messages_sms_send'); ?></legend>
+			<div class="form-group form-group-sm">
+				<label for="phone" class="col-xs-3 control-label"><?php echo $this->lang->line('messages_phone'); ?></label>
+				<div class="col-xs-9">
+					<input class="form-control input-sm", type="text", name="phone", placeholder="<?php echo $this->lang->line('messages_phone_placeholder'); ?>"></input>
+					<span class="help-block" style="text-align:center;"><?php echo $this->lang->line('messages_multiple_phones'); ?></span>
 				</div>
 			</div>
+
+			<div class="form-group form-group-sm">
+				<label for="message" class="col-xs-3 control-label"><?php echo $this->lang->line('messages_message'); ?></label>
+				<div class="col-xs-9">
+					<textarea class="form-control input-sm" rows="3" id="message" name="message" placeholder="<?php echo $this->lang->line('messages_message_placeholder'); ?>"></textarea>
+				</div>
+			</div>
+
+			<?php echo form_submit(array(
+				'name'=>'submit_form',
+				'id'=>'submit_form',
+				'value'=>$this->lang->line('common_submit'),
+				'class'=>'btn btn-primary btn-sm pull-right'));?>
 		</fieldset>
 	<?php echo form_close(); ?>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>
+
+<script type='text/javascript'>
+//validation and submit handling
+$(document).ready(function()
+{
+	$('#send_sms_form').validate({
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)	{
+					if(response.success)
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
+					}
+					else
+					{
+						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
+					}
+				},
+				dataType: 'json'
+			});
+		}
+	});
+});
+</script>

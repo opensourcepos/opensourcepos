@@ -21,3 +21,5 @@ $lang["module_sales"] = "Penjualan";
 $lang["module_sales_desc"] = "Proses Penjualan dan Retur";
 $lang["module_suppliers"] = "Pemasok";
 $lang["module_suppliers_desc"] = "Tambah, Rubah, Hapus, dan Cari Pemasok";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
