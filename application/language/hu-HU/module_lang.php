@@ -21,3 +21,5 @@ $lang["module_sales"] = "Értékesítés";
 $lang["module_sales_desc"] = "Termékek értékesítése és visszavétele";
 $lang["module_suppliers"] = "Beszállítók";
 $lang["module_suppliers_desc"] = "Beszállítók hozzáadása, módosítása, törlése és keresése";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";

@@ -21,3 +21,5 @@ $lang["module_sales"] = "Satış";
 $lang["module_sales_desc"] = "Satış ve iade";
 $lang["module_suppliers"] = "Sağlayıcılar";
 $lang["module_suppliers_desc"] = "Ekleme, değiştirme, silme ve arama";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";

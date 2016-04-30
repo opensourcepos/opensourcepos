@@ -38,4 +38,15 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  ('receipt_show_description', '1'),
  ('receipt_show_serialnumber', '1'),
  ('invoice_enable', '1');
+
+UPDATE `ospos_modules` SET `sort` = 110 WHERE `name_lang_key` = 'module_config';
+
+INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
+ ('module_messages', 'module_messages_desc', 100, 'messages');
+ 
+INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+ ('messages', 'messages');
+ 
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
+ ('messages', 1);
  

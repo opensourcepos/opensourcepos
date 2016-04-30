@@ -21,3 +21,5 @@ $lang["module_sales"] = "งานขาย";
 $lang["module_sales_desc"] = "งานขาย และ รับคืน";
 $lang["module_suppliers"] = "ผู้ผลิต";
 $lang["module_suppliers_desc"] = "เพิ่ม, อัพเดท, ลบ, และค้นหา ผู้ผลิต";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";

@@ -21,3 +21,5 @@ $lang["module_sales"] = "出貨";
 $lang["module_sales_desc"] = "出貨與退貨";
 $lang["module_suppliers"] = "供應商";
 $lang["module_suppliers_desc"] = "添加，更新，刪除，搜索供應商";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
