@@ -91,7 +91,7 @@ function get_sales_manage_sale_data_row($sale, $controller)
 	}
 	else
 	{
-		// this size includes the 8% of invoice number and 5% of the invoice gliphicon, pluf of course the 12% for the field itself
+		// this size includes the 8% of invoice number and 5% of the invoice glyphicon, plus of course the 12% for the field itself
 		$table_data_row.='<td width="25%">'.$sale['payment_type'].'</td>';
 	}
 	$table_data_row.='<td width="5%" class="print_hide">'.anchor($controller_name."/edit/" . $sale['sale_id'], '<span class="glyphicon glyphicon-edit"></span>', array('class'=>'modal-dlg modal-btn-delete modal-btn-submit print_hide', 'title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
