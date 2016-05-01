@@ -6,34 +6,43 @@
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_msg_uid'), 'msg_uid', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-4'>
-					<?php echo form_input(array(
-						'name'=>'msg_uid',
-						'id'=>'msg_uid',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('msg_uid'))); ?>
+				<div class="col-xs-4">
+					<div class="input-group">
+						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
+						<?php echo form_input(array(
+							'name'=>'msg_uid',
+							'id'=>'msg_uid',
+							'class'=>'form-control input-sm required',
+							'value'=>$this->config->item('msg_uid'))); ?>
+					</div>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_msg_pwd'), 'msg_pwd', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-4'>
-					<?php echo form_password(array(
-						'name'=>'msg_pwd',
-						'id'=>'msg_pwd',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('msg_pwd'))); ?>
+				<div class="col-xs-4">
+					<div class="input-group">
+						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+						<?php echo form_password(array(
+							'name'=>'msg_pwd',
+							'id'=>'msg_pwd',
+							'class'=>'form-control input-sm required',
+							'value'=>$this->config->item('msg_pwd'))); ?>
+					</div>
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_msg_src'), 'msg_src', array('class'=>'control-label col-xs-2 required')); ?>
-				<div class='col-xs-4'>
-					<?php echo form_input(array(
-						'name'=>'msg_src',
-						'id'=>'msg_src',
-						'class'=>'form-control input-sm required',
-						'value'=>$this->config->item('msg_src') == null ? $this->config->item('company') : $this->config->item('msg_src')));?>
+				<div class="col-xs-4">
+					<div class="input-group">
+						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-bullhorn"></span></span>
+						<?php echo form_input(array(
+							'name'=>'msg_src',
+							'id'=>'msg_src',
+							'class'=>'form-control input-sm required',
+							'value'=>$this->config->item('msg_src') == null ? $this->config->item('company') : $this->config->item('msg_src')));?>
+					</div>
 				</div>
 			</div>
 			
@@ -45,7 +54,7 @@
 						'id'=>'msg_msg',
 						'class'=>'form-control input-sm',
 						'value'=>$this->config->item('msg_msg'),
-						'placeholder'=>"If you wish to use a SMS template save your message here. Otherwise leave the box blank."));?>
+						'placeholder'=>$this->lang->line('config_msg_msg_placeholder')));?>
 				</div>
 			</div>
 
