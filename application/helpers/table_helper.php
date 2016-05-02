@@ -13,14 +13,15 @@ function get_sales_manage_table_headers()
 		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
 		array('amount_due' => $CI->lang->line('sales_amount_due')),
 		array('change_due' => $CI->lang->line('sales_change_due')),
-		array('receipt' => '&nbsp'),
+		array('payment_type' => $CI->lang->line('sales_payment_type'))
 	);
 	
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
-		$headers[] = array('invoice' => $CI->lang->line('sales_invoice_number'));
+		$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
 	}
-	return transform_headers($headers);
+
+	return transform_headers(array_merge($headers, array(array( 'receipt' => '&nbsp' ))));
 }
 
 /*
