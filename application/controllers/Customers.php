@@ -24,7 +24,7 @@ class Customers extends Person_controller
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
 
-		$customers = $this->Customer->search($search, $limit, $offset);
+		$customers = $this->Customer->search($search, $offset, $limit);
 		$total_rows = $this->Customer->get_found_rows($search);
 
 		$data_rows = array();

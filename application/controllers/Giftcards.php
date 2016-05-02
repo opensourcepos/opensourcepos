@@ -27,7 +27,7 @@ class Giftcards extends Secure_area implements iData_controller
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
 
-		$giftcards = $this->Giftcard->search($search, $offset, $limit);
+		$giftcards = $this->Giftcard->search($search, $limit, $offset);
 		$total_rows = $this->Giftcard->get_found_rows($search);
 
 		$data_rows = array();

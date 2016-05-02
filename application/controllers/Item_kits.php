@@ -44,7 +44,7 @@ class Item_kits extends Secure_area implements iData_controller
 		$offset = $this->input->get('offset');
 		$lines_per_page = $this->Appconfig->get('lines_per_page');
 
-		$item_kits = $this->Item_kit->search($search, $offset, $limit);
+		$item_kits = $this->Item_kit->search($search, $limit, $offset);
 		$total_rows = $this->Item_kit->get_found_rows($search);
 		//$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit, $total_rows, 'search');
 		$data_rows = array();
@@ -67,7 +67,7 @@ class Item_kits extends Secure_area implements iData_controller
 	function get_row($row_id)
 	{
 		// calculate the total cost and retail price of the Kit so it can be added to the table refresh
-		$item_kit = $this->add_totals_to_item_kit($this->Item_kit->get_info($item_kit_id));
+		$item_kit = $this->add_totals_to_item_kit($this->Item_kit->get_info($row_id));
 		
 		echo json_encode(get_item_kit_data_row($item_kit, $this));
 	}
@@ -88,21 +88,10 @@ class Item_kits extends Secure_area implements iData_controller
 		if ($this->Item_kit->save($item_kit_data, $item_kit_id))
 		{
 			//New item kit
-			if ($item_kit_id==-1)
-			{
+			if ($item_kit_id==-1) {
 				$item_kit_id = $item_kit_data['item_kit_id'];
-				
-				echo json_encode(array('success'=>true,
-									'message'=>$this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'],
-									'id'=>$item_kit_id));
 			}
-			else //previous item
-			{
-				echo json_encode(array('success'=>true, 
-									'message'=>$this->lang->line('item_kits_successful_updating').' '.$item_kit_data['name'],
-									'id'=>$item_kit_id));
-			}
-			
+
 			if ( $this->input->post('item_kit_item') != null )
 			{
 				$item_kit_items = array();
@@ -113,9 +102,12 @@ class Item_kits extends Secure_area implements iData_controller
 						'quantity' => $quantity
 					);
 				}
-			
-				$this->Item_kit_items->save($item_kit_items, $item_kit_id);
+
+				$success = $this->Item_kit_items->save($item_kit_items, $item_kit_id);
 			}
+			echo json_encode(array('success'=>$success,
+								'message'=>$this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'],
+								'id'=>$item_kit_id));
 		}
 		else//failure
 		{

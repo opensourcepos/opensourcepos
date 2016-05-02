@@ -75,7 +75,7 @@ class Sales extends Secure_area
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
 
-		$sales = $this->Sale->search($search, $filters, $offset, $limit);
+		$sales = $this->Sale->search($search, $filters, $limit, $offset);
 		$total_rows = $this->Sale->get_found_rows($search, $filters);
 		$payments = $this->Sale->get_payments_summary($search, $filters);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);

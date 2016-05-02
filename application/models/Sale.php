@@ -83,7 +83,7 @@ class Sale extends CI_Model
 		}
 		
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date', 'asc');
+		$this->db->order_by('sale_date', 'desc');
 		
 		if ($rows > 0)
 		{

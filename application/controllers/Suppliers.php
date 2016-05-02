@@ -24,7 +24,7 @@ class Suppliers extends Person_controller
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
 
-		$suppliers = $this->Supplier->search($search, $offset, $limit);
+		$suppliers = $this->Supplier->search($search, $limit, $offset);
 		$total_rows = $this->Supplier->get_found_rows($search);
 		$data_rows = array();
 		foreach($suppliers->result() as $supplier)

@@ -49355,7 +49355,6 @@ $.tablesorter.addWidget({
 					})
 				}, buttons.call(this, event)));
 
-				//event.stopPropagation();
 				return false;
 			});
 		});
@@ -49404,13 +49403,24 @@ $.tablesorter.addWidget({
 		return $("#table input:checkbox:checked").parents("tr");
 	};
 
-	var highlight_rows = function (id, color) {
-		var original = $("tr.selected").css('backgroundColor');
-		var selector = ((id && "tr[data-uniqueid='" + id + "']")) || "tr.selected";
-		$(selector).removeClass("selected").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
+	var row_selector = function(id) {
+		return "tr[data-uniqueid='" + id + "']";
+	};
+
+	var rows_selector = function(ids) {
+		var selectors = [];
+		ids = ids instanceof Array ? ids : ("" + ids).split(",");
+		$.each(ids, function(index, element) {
+			selectors.push(row_selector(element));
+		});
+		return selectors;;
+	};
+
+	var highlight_row = function (id, color) {
+		var original = $(row_selector(id,true)).css('backgroundColor');
+		$(row_selector(id)).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
 			.animate({backgroundColor: color || '#e1ffdd'}, 5000)
 			.animate({backgroundColor: original}, "slow", "linear");
-		$("tr input:checkbox:checked").prop("checked", false);
 	};
 
 	var do_delete = function () {
@@ -49418,24 +49428,21 @@ $.tablesorter.addWidget({
 			$.post(options.resource + '/delete', {'ids[]': selected_ids()}, function (response) {
 				//delete was successful, remove checkbox rows
 				if (response.success) {
-					table().remove({
-						field: 'id',
-						values: selected_ids()
+					$(selected_rows()).each(function (index, element) {
+						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+							.end().animate({opacity: 0}, 1200, "linear", function () {
+								table().remove({
+									field: 'id',
+									values: selected_ids()
+								});
+								//refresh();
+								enable_actions();
+							});
 					});
-
-					// animated delete below
-					/*$(selected_rows()).each(function (index, dom) {
-					 /*$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
-					 .end().animate({opacity: 0}, 1200, "linear", function () {
-					 $(this).remove();
-					 });
-					 });*/
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 				} else {
 					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
 				}
-				refresh();
-				enable_actions();
 			}, "json");
 		} else {
 			return false;
@@ -49445,7 +49452,7 @@ $.tablesorter.addWidget({
 	var load_success = function(callback) {
 		return function(response) {
 			typeof options.load_callback == 'function' && options.load_callback();
-			load_callback = undefined;
+			options.load_callback = undefined;
 			dialog_support.init("a.modal-dlg, button.modal-dlg");
 			typeof callback == 'function' && callback.call(this, response);
 		}
@@ -49472,7 +49479,8 @@ $.tablesorter.addWidget({
 			onUncheckAll: enable_actions,
 			onLoadSuccess: load_success(options.onLoadSuccess),
 			queryParamsType: 'limit',
-			iconSize: 'sm'
+			iconSize: 'sm',
+			silentSort: true
 		}));
 		enable_actions();
 		init_delete();
@@ -49495,30 +49503,32 @@ $.tablesorter.addWidget({
 			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
 		} else {
 			var message = response.message;
-
-			if (selected_ids().length > 0) {
-				$.each(selected_ids(), function(element, id) {
+			var selector = rows_selector(response.id);
+			if ($(selector.join(",")).length > 0) {
+				$.each(selector, function(index, element) {
+					var id = $(element).data('uniqueid');
 					$.get({
 						url: resource + '/get_row/' + id,
 						success: function (response) {
-							table().updateByUniqueId({id: response.id, row: response});
-							dialog_support.init("tr.selected a.modal-dlg");
-							highlight_rows();
-							set_feedback(message, 'alert alert-dismissible alert-success', false);
+							table().updateByUniqueId({id: id, row: response});
+
+							dialog_support.init("a.modal-dlg");
+							enable_actions();
+							highlight_row(id);
 						},
 						dataType: 'json'
 					});
 				});
 			} else {
 				// call hightlight function once after refresh
-				load_callback = function()  {
-					highlight_rows(id);
+				options.load_callback = function()  {
+					enable_actions();
+					highlight_row(id);
 				};
 				refresh();
-				set_feedback(message, 'alert alert-dismissible alert-success', false);
 			}
+			set_feedback(message, 'alert alert-dismissible alert-success', false);
 		}
-		enable_actions();
 	};
 
 	$.extend(table_support, {

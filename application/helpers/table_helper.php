@@ -42,6 +42,7 @@ function get_sale_data_last_row($sales, $controller)
 	}
 
 	return array(
+		'id' => '-',
 		'receipt_number' => '<b>'.$CI->lang->line('sales_total').'</b>',
 		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'amount_due' => '<b>'.to_currency($sum_change_due).'</b>'
@@ -97,7 +98,7 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 		// therefore we remove from the total cash amount any change due
 		if( $payment['payment_type'] == $CI->lang->line('sales_cash') )
 		{
-			foreach($sales as $key=>$sale)
+			foreach($sales->result_array() as $key=>$sale)
 			{
 				$amount -= $sale['change_due'];
 			}
@@ -324,7 +325,7 @@ function get_item_kit_data_row($item_kit, $controller) {
 	$controller_name=strtolower(get_class($CI));
 
 	return array (
-		'id' => 'KIT '.$item_kit->item_kit_id,
+		'id' => $item_kit->item_kit_id,
 		'kit_name' => character_limiter($item_kit->name,13),
 		'kit_description' => character_limiter($item_kit->description,13),
 		'cost_price' => character_limiter($item_kit->total_cost_price,13),

@@ -57,7 +57,7 @@ class Items extends Secure_area implements iData_controller
 		$filledup = array_fill_keys($this->input->get('filters'), true);
 		$filters = array_merge($filters, $filledup);
 
-		$items = $this->Item->search($search, $filters, $offset, $limit);
+		$items = $this->Item->search($search, $filters, $limit, $offset);
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 
 		$data_rows = array();
@@ -492,8 +492,7 @@ class Items extends Secure_area implements iData_controller
 		}
 
 		//Item data could be empty if tax information is being updated
-		$item_ids = explode(",", $items_to_update);
-		if(empty($item_data) || $this->Item->update_multiple($item_data, $item_ids))
+		if(empty($item_data) || $this->Item->update_multiple($item_data, $items_to_update))
 		{
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
@@ -515,7 +514,7 @@ class Items extends Secure_area implements iData_controller
 				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
 			}
 
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit'), 'id'=>$item_ids));
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit'), 'id'=>$items_to_update));
 		}
 		else
 		{

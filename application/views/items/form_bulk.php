@@ -177,13 +177,16 @@ $(document).ready(function()
 		{
 			if(!confirm_message || confirm(confirm_message))
 			{
-				$('<input>').attr({
+/*				$('<input>').attr({
 					type: 'hidden',
-					name: 'item_ids[]',
-					value: table_support.selected_ids().join(",")
+					name: 'item_ids',
+					value: $(table_support.selected_ids())
 				}).appendTo(form);
-
+*/
 				$(form).ajaxSubmit({
+					beforeSubmit: function(arr, $form, options) {
+						arr.push({name: 'item_ids', value: table_support.selected_ids()});
+					},
 					success:function(response)
 					{
 						dialog_support.hide();
