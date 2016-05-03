@@ -249,7 +249,7 @@ class Item extends CI_Model
 	public function delete($item_id)
 	{
 		$this->db->where('item_id', $item_id);
-		
+
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity($item_id);
 
@@ -271,11 +271,9 @@ class Item extends CI_Model
 	*/
 	public function delete_list($item_ids)
 	{
-		$this->db->where_in('item_id', $item_ids);
-
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity_list($item_ids);
-		
+		$this->db->where_in('item_id', $item_ids);
 		return $this->db->update('items', array('deleted'=>1));
  	}
 
