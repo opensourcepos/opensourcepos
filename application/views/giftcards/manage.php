@@ -6,6 +6,7 @@ $(document).ready(function()
 	table_support.init({
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
+		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>'
 	});
 });

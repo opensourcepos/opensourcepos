@@ -49468,6 +49468,7 @@ $.tablesorter.addWidget({
 			columns: options.headers,
 			url: options.resource + '/search',
 			sidePagination: 'server',
+			pageSize: options.pageSize,
 			striped: true,
 			pagination: true,
 			search: true,
