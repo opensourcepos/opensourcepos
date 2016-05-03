@@ -15,7 +15,8 @@
         return '<?php echo $this->lang->line('common_search'); ?>';
     },
     formatNoMatches: function () {
-        return '<?php echo $this->lang->line($controller_name . '_no_' . $controller_name .'_to_display'); ?>';
+        return '<?php echo $this->lang->line(preg_match('(customers|suppliers|employees)', $controller_name) ?
+            'common_no_persons_to_display' : $controller_name . '_no_' . $controller_name .'_to_display'); ?>';
     },
     formatPaginationSwitch: function () {
         return '<?php echo $this->lang->line('tables_hide_show_pagination'); ?>';

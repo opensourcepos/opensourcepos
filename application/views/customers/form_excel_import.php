@@ -31,7 +31,7 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				table_support.handle_submit('customers', response);
+				table_support.handle_submit('<?php echo site_url('customers'); ?>', response);
 			},
 			dataType:'json'
 		});

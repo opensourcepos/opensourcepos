@@ -19,6 +19,7 @@ function get_sales_manage_table_headers()
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
 		$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
+		$headers[] = array('invoice' => '&nbsp');
 	}
 
 	return transform_headers(array_merge($headers, array(array( 'receipt' => '&nbsp' ))));
