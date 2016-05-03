@@ -49384,9 +49384,11 @@ $.tablesorter.addWidget({
 (function(table_support, $) {
 
 	var enable_actions = function(callback) {
-		var selection_empty = selected_rows().length == 0;
-		$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
-		typeof callback == 'function' && callback();
+		return function() {
+			var selection_empty = selected_rows().length == 0;
+			$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
+			typeof callback == 'function' && callback();
+		}
 	};
 
 	var table = function() {
@@ -49417,7 +49419,7 @@ $.tablesorter.addWidget({
 	};
 
 	var highlight_row = function (id, color) {
-		var original = $(row_selector(id,true)).css('backgroundColor');
+		var original = $(row_selector(id)).css('backgroundColor');
 		$(row_selector(id)).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
 			.animate({backgroundColor: color || '#e1ffdd'}, 5000)
 			.animate({backgroundColor: original}, "slow", "linear");
@@ -49435,7 +49437,6 @@ $.tablesorter.addWidget({
 									field: 'id',
 									values: selected_ids()
 								});
-								//refresh();
 								enable_actions();
 							});
 					});
@@ -49462,6 +49463,7 @@ $.tablesorter.addWidget({
 
 	var init = function (_options) {
 		options = _options;
+		enable_actions = enable_actions(options.enableActions);
 		$('#table').bootstrapTable($.extend(options, {
 			columns: options.headers,
 			url: options.resource + '/search',
@@ -49480,7 +49482,8 @@ $.tablesorter.addWidget({
 			onLoadSuccess: load_success(options.onLoadSuccess),
 			queryParamsType: 'limit',
 			iconSize: 'sm',
-			silentSort: true
+			silentSort: true,
+			paginationVAlign: 'bottom'
 		}));
 		enable_actions();
 		init_delete();
@@ -49511,7 +49514,6 @@ $.tablesorter.addWidget({
 						url: resource + '/get_row/' + id,
 						success: function (response) {
 							table().updateByUniqueId({id: id, row: response});
-
 							dialog_support.init("a.modal-dlg");
 							enable_actions();
 							highlight_row(id);

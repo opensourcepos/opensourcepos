@@ -9,8 +9,10 @@ $(document).ready(function()
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
 		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
-		enableActions: function() {
-			// should only enable if email filed in
+		enableActions: function()
+		{
+			var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
+			$("#email").attr('disabled', email_disabled);
 		}
 	});
 

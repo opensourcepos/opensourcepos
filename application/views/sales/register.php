@@ -659,7 +659,6 @@ $(document).ready(function()
 
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
-		debugger;;
 		if(response.success) {
 			if (resource.match(/customers$/))
 			{

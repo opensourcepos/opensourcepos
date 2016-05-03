@@ -125,7 +125,8 @@ else
 	if (isset($editable))
 	{
 	?>
-		function post_form_submit(response, row_id)
+
+		table_support.handle_submit = function(resource, response)
 		{
 			if(!response.success)
 			{
@@ -142,7 +143,7 @@ else
 					row.replaceWith(response);	
 					row = get_table_row(row_id).parent().parent();
 					update_sortable_table();
-					animate_row(row);
+					highligh(row);
 					row.find("a.expand").click(expand_handler).text(sign);
 					dialog_support.init(row.find("a.modal"));
 				});

@@ -73,7 +73,7 @@ function get_sale_data_row($sale, $controller)
 		)
 	);
 
-	if($CI->config->item('invoice_enable') == TRUE)
+	if ($CI->config->item('invoice_enable'))
 	{
 		$row['invoice'] = anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
 			array('title'=>$CI->lang->line('sales_show_invoice'))
@@ -111,10 +111,6 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 }
 
 function transform_headers($array)
-	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
-	{
-		$headers[] = '&nbsp';
-	}
 {
  	return json_encode(array_map(function($v) {
 		return array('field' => key($v), 'title' => current($v), 'checkbox' => (key($v) == 'checkbox'));
@@ -132,6 +128,11 @@ function get_people_manage_table_headers()
 		array('email' => $CI->lang->line('common_email')),
 		array('phone_number' => $CI->lang->line('common_phone_number'))
 	);
+
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$headers[] = array('messages' => '');
+	}
 	
 	return transform_headers($headers);
 }
@@ -140,7 +141,7 @@ function get_person_data_row($person, $controller) {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
-	$row = array (
+	return array (
 		'id' => $person->person_id,
 		'last_name' => character_limiter($person->last_name,13),
 		'first_name' => character_limiter($person->first_name,13),
@@ -169,10 +170,6 @@ function get_detailed_data_row($row, $controller)
 }
 
 function get_suppliers_manage_table_headers()
-	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
-	{
-		$headers[] = '&nbsp';
-	}
 {
 	$CI =& get_instance();
 
@@ -185,6 +182,11 @@ function get_suppliers_manage_table_headers()
 		array('email' => $CI->lang->line('common_email')),
 		array('phone_number' => $CI->lang->line('common_phone_number'))
 	);
+
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$headers[] = array('messages' => '');
+	}
 
 	return transform_headers($headers);
 }

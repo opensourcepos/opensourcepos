@@ -43,7 +43,7 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataBySaleId($sale_id);
 
-		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'],
+		$summary_data = array(anchor('#',
 				'POS '.$report_data['sale_id'],
 				array('class'=>'modal-dlg modal-btn-submit')),
 				$report_data['sale_date'],
@@ -68,9 +68,7 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
-		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'],
-				'RECV '.$report_data['receiving_id'],
-				array('class'=>'modal-dlg modal-btn-submit')),
+		$summary_data = array('RECV '.$report_data['receiving_id'],
 				$report_data['receiving_date'],
 				to_quantity_decimals($report_data['items_purchased']),
 				$report_data['employee_name'],
@@ -912,7 +910,7 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array('POS '.$row['sale_id'], $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -958,9 +956,7 @@ class Reports extends Secure_area
 			if($this->config->item('invoice_enable') == TRUE)
 			{
 				$summary_data[] = array(
-					anchor('receivings/edit/'.$row['receiving_id'],
 					'RECV '.$row['receiving_id'],
-					array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')),
 					$row['receiving_date'],
 					to_quantity_decimals($row['items_purchased']),
 					$row['employee_name'], $row['supplier_name'],
@@ -973,9 +969,7 @@ class Reports extends Secure_area
 			else
 			{				
 				$summary_data[] = array(
-					anchor('receivings/edit/'.$row['receiving_id'],
 					'RECV '.$row['receiving_id'],
-					array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')),
 					$row['receiving_date'],
 					to_quantity_decimals($row['items_purchased']),
 					$row['employee_name'], $row['supplier_name'],
