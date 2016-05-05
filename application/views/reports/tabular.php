@@ -16,39 +16,7 @@
 <div id="page_subtitle"><?php echo $subtitle ?></div>
 
 <div id="table_holder">
-	<table class="tablesorter report" id="sortable_table">
-		<thead>
-			<tr>
-				<?php 
-				foreach ($headers as $header) 
-				{ 
-				?>
-					<th><?php echo $header; ?></th>
-				<?php
-				} 
-				?>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-			foreach ($data as $row)
-			{
-			?>
-				<tr>
-					<?php
-					foreach ($row as $cell)
-					{
-					?>
-						<td><?php echo $cell; ?></td>
-					<?php
-					}
-					?>
-				</tr>
-			<?php
-			}
-			?>
-		</tbody>
-	</table>
+	<table id="table"></table>
 </div>
 
 <div id="report_summary">
@@ -79,22 +47,28 @@ if($export_excel == 1)
 }
 else
 {
+	?>
+	<script type="text/javascript" language="javascript">
+		$(document).ready(function()
+		{
+			<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+
+			$('#table').bootstrapTable({
+				columns: <?php echo transform_headers_readonly($headers); ?>,
+				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+				striped: true,
+				pagination: true,
+				showColumns: true,
+				data: <?php echo json_encode($data); ?>,
+				iconSize: 'sm',
+				paginationVAlign: 'bottom'
+			});
+
+		});
+	</script>
+	<?php
 	$this->load->view("partial/footer"); 
 ?>
-	<script type="text/javascript" language="javascript">
-	function init_table_sorting()
-	{
-		//Only init if there is more than one row
-		if($('.tablesorter tbody tr').length > 1)
-		{
-			$("#sortable_table").tablesorter(); 
-		}
-	}
-	$(document).ready(function()
-	{
-		init_table_sorting();
-	});
-	</script>
-<?php 
+<?php
 } // end if not is excel export 
 ?>

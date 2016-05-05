@@ -111,6 +111,16 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 	return $table;
 }
 
+function transform_headers_readonly($array)
+{
+	$result = array();
+	foreach($array as $key => $value)
+	{
+		$result[] = array('field' => $key, 'title' => $value);
+	}
+	return json_encode($result);
+}
+
 function transform_headers($array)
 {
  	return json_encode(array_map(function($v) {
@@ -153,21 +163,6 @@ function get_person_data_row($person, $controller) {
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
 	));
-}
-
-function get_detailed_data_row($row, $controller)
-{
-	$table_data_row='<tr>';
-	$table_data_row.='<td><a href="#" class="expand">+</a></td>';
-	foreach($row as $cell)
-	{
-		$table_data_row.='<td>';
-		$table_data_row.=$cell;
-		$table_data_row.='</td>';
-	}
-	$table_data_row.='</tr>';
-
-	return $table_data_row;
 }
 
 function get_suppliers_manage_table_headers()

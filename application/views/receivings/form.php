@@ -115,11 +115,8 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_form_submit(response);
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				post_form_submit({message: errorThrown});
-			},
+				table_support.handle_submit('<?php echo site_url('receivings'); ?>', response);
+			}
 			dataType:'json'
 		});
 	};

@@ -43,22 +43,25 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataBySaleId($sale_id);
 
-		$summary_data = array(anchor('#',
-				'POS '.$report_data['sale_id'],
-				array('class'=>'modal-dlg modal-btn-submit')),
-				$report_data['sale_date'],
-				to_quantity_decimals($report_data['items_purchased']),
-				$report_data['employee_name'],
-				$report_data['customer_name'],
-				to_currency($report_data['subtotal']),
-				to_currency($report_data['total']),
-				to_currency($report_data['tax']),
-				to_currency($report_data['cost']),
-				to_currency($report_data['profit']),
-				$report_data['payment_type'],
-				$report_data['comment']);
+		$summary_data = array(
+			'id' => $report_data['sale_id'],
+			'sale_date' => $report_data['sale_date'],
+			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'employee' => $report_data['employee_name'],
+			'customer' => $report_data['customer_name'],
+			'subtotal' => to_currency($report_data['subtotal']),
+			'total' => to_currency($report_data['total']),
+			'tax' => to_currency($report_data['tax']),
+			'cost' => to_currency($report_data['cost']),
+			'profit' => to_currency($report_data['profit']),
+			'payment_type' => $report_data['payment_type'],
+			'comment' => $report_data['comment'],
+			'edit' => anchor("sales/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line('sales_update'))
+			)
+		);
 
-		echo get_detailed_data_row($summary_data, $this);
+		echo json_encode($summary_data);
 	}
 
 	function get_detailed_receivings_row($receiving_id)
@@ -68,23 +71,27 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
-		$summary_data = array('RECV '.$report_data['receiving_id'],
-				$report_data['receiving_date'],
-				to_quantity_decimals($report_data['items_purchased']),
-				$report_data['employee_name'],
-				$report_data['supplier_name'],
-				to_currency($report_data['total']),
-				$report_data['payment_type']
+		$summary_data = array(
+			'id' => $report_data['receiving_id'],
+			'receiving_date' => $report_data['receiving_date'],
+			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'employee' => $report_data['employee_name'],
+			'supplier' => $report_data['supplier_name'],
+			'total' => to_currency($report_data['total']),
+			'payment_type' => $report_data['payment_type'],
+			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line('receivings_update'))
+			)
 		);
 
 		if($this->config->item('invoice_enable') == TRUE)
 		{
-			$summary_data[] = $report_data['invoice_number'];
+			$summary_data[]['invoice_number'] = $report_data['invoice_number'];
 		}
 		
 		$summary_data[] = $report_data['comment'];
 
-		echo get_detailed_data_row($summary_data, $this);
+		echo json_encode($summary_data);
 	}
 
 	function get_summary_data($start_date, $end_date=null, $sale_type=0)
@@ -110,12 +117,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['sale_date'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['sale_date'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -141,12 +148,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['category'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['category'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -172,12 +179,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['customer'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['customer'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -203,12 +210,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['supplier'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['supplier'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -234,12 +241,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array(character_limiter($row['name'], 40), 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array(character_limiter($row['name'], 40),
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -265,12 +272,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['employee'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['employee'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -325,7 +332,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['discount_percent'], 
+			$tabular_data[] = array($row['discount_percent'],
 				$row['count']);
 		}
 
@@ -351,8 +358,8 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['payment_type'], 
-				$row['count'], 
+			$tabular_data[] = array($row['payment_type'],
+				$row['count'],
 				to_currency($row['payment_amount']));
 		}
 
@@ -786,7 +793,6 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -837,7 +843,6 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers)),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -887,7 +892,6 @@ class Reports extends Secure_area
 			"headers" => $headers,
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'discount' =>$discount, 'sale_type'=>$sale_type)),
 			"export_excel" => $export_excel
 		);
@@ -910,7 +914,23 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array('POS '.$row['sale_id'], $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(
+				'id' => $row['sale_id'],
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee' => $row['employee_name'],
+				'customer' => $row['customer_name'],
+				'subtotal' => to_currency($row['subtotal']),
+				'total' => to_currency($row['total']),
+				'tax' => to_currency($row['tax']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit']),
+				'payment_type' => $row['payment_type'],
+				'comment' => $row['comment'],
+				'edit' => anchor("sales/edit/".$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('sales_update'))
+				)
+			);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -930,7 +950,6 @@ class Reports extends Secure_area
 			"editable" => "sales",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type, 'location_id'=>$location_id)),
 			"export_excel" => $export_excel
 		);
@@ -953,30 +972,22 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			if($this->config->item('invoice_enable') == TRUE)
+			$summary_data[] = array(
+				'id' => $row['receiving_id'],
+				'receiving_date' => $row['receiving_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee' => $row['employee_name'], $row['supplier_name'],
+				'total' => to_currency($row['total']),
+				'payment_type' => $row['payment_type'],
+				'invoice_number' => $row['invoice_number'],
+				'comment' => $row['comment'],
+				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class' => "modal-dlg modal-btn-submit print_hide", 'title' => $this->lang->line('receivings_update'))
+				)
+			);
+			if($this->config->item('invoice_enable'))
 			{
-				$summary_data[] = array(
-					'RECV '.$row['receiving_id'],
-					$row['receiving_date'],
-					to_quantity_decimals($row['items_purchased']),
-					$row['employee_name'], $row['supplier_name'],
-					to_currency($row['total']),
-					$row['payment_type'],
-					$row['invoice_number'],
-					$row['comment']
-				);
-			}
-			else
-			{				
-				$summary_data[] = array(
-					'RECV '.$row['receiving_id'],
-					$row['receiving_date'],
-					to_quantity_decimals($row['items_purchased']),
-					$row['employee_name'], $row['supplier_name'],
-					to_currency($row['total']),
-					$row['payment_type'],
-					$row['comment']
-				);
+				unset($summary_data['invoice_number']);
 			}
 
 			foreach($report_data['details'][$key] as $drow)
@@ -994,11 +1005,9 @@ class Reports extends Secure_area
 			"title" => $this->lang->line('reports_detailed_receivings_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
-			"header_width" => intval(100 / count($headers['summary'])),
 			"editable" => "receivings",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
 			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'location_id'=>$location_id)),
 			"export_excel" => $export_excel
 		);

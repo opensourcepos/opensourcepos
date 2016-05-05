@@ -192,7 +192,7 @@
 			pageSize: options.pageSize,
 			striped: true,
 			pagination: true,
-			search: true,
+			search: options.resource || false,
 			showColumns: true,
 			clickToSelect: true,
 			toolbar: '#toolbar',
@@ -221,46 +221,54 @@
 		table().refresh();
 	}
 
-	var handle_submit = function (resource, response) {
-		var id = response.id;
+	var submit_handler = function(url) {
+		return function (resource, response) {
+			var id = response.id;
 
-		if (!response.success) {
-			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
-		} else {
-			var message = response.message;
-			var selector = rows_selector(response.id);
-			if ($(selector.join(",")).length > 0) {
-				$.each(selector, function(index, element) {
-					var id = $(element).data('uniqueid');
-					$.get({
-						url: resource + '/get_row/' + id,
-						success: function (response) {
-							table().updateByUniqueId({id: id, row: response});
-							dialog_support.init("a.modal-dlg");
-							enable_actions();
-							highlight_row(id);
-						},
-						dataType: 'json'
-					});
-				});
+			if (!response.success) {
+				set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
 			} else {
-				// call hightlight function once after refresh
-				options.load_callback = function()  {
-					enable_actions();
-					highlight_row(id);
-				};
-				refresh();
+				var message = response.message;
+				var selector = rows_selector(response.id);
+				if ($(selector.join(",")).length > 0) {
+					$.each(selector, function (index, element) {
+						var id = $(element).data('uniqueid');
+						$.get({
+							url: url + id || resource + '/get_row/' + id,
+							success: function (response) {
+								table().updateByUniqueId({id: id, row: response});
+								// TODO make selector more specific?
+								dialog_support.init("a.modal-dlg");
+								enable_actions();
+								highlight_row(id);
+							},
+							dataType: 'json'
+						});
+					});
+				} else {
+					// call hightlight function once after refresh
+					options.load_callback = function () {
+						enable_actions();
+						highlight_row(id);
+					};
+					refresh();
+				}
+				set_feedback(message, 'alert alert-dismissible alert-success', false);
 			}
-			set_feedback(message, 'alert alert-dismissible alert-success', false);
-		}
+		};
 	};
 
+	var handle_submit = submit_handler();
+
 	$.extend(table_support, {
+		submit_handler: function(url) {
+			handle_submit = submit_handler(url);
+		},
 		handle_submit: handle_submit,
 		init: init,
 		do_delete: do_delete,
 		refresh : refresh,
-		selected_ids : selected_ids
+		selected_ids : selected_ids,
 	});
 
 })(window.table_support = window.table_support || {}, jQuery);

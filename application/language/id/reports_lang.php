@@ -94,3 +94,4 @@ $lang["reports_sub_total_value"] = "Sub Total";
 $lang["reports_total_inventory_value"] = "Total Nilai Persediaan";
 $lang["reports_zero_and_less"] = "Stok habis dan minus";
 $lang["reports_more_than_zero"] = "Stok belum habis";
+$lang["reports_no_reports_to_display"] = "Tidak ada item untuk ditampilkan";

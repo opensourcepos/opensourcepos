@@ -16,79 +16,7 @@
 <div id="page_subtitle"><?php echo $subtitle ?></div>
 
 <div id="table_holder">
-	<table class="tablesorter report" id="sortable_table">
-		<thead>
-			<tr>
-				<th><a href="#" class="expand_all">+</a></th>
-				<?php
-				foreach ($headers['summary'] as $header)
-				{
-				?>
-					<th width="<?php echo $header_width; ?>%"><?php echo $header; ?></th>
-				<?php
-				}
-				?>
-			</tr>
-		</thead>
-		<tbody>
-			<?php
-			foreach ($summary_data as $key=>$row) 
-			{
-			?>
-				<tr>
-					<td><a href="#" class="expand">+</a></td>
-					<?php
-					foreach ($row as $cell)
-					{
-					?>
-						<td><?php echo $cell; ?></td>
-					<?php
-					}
-					?>
-				</tr>
-				<tr>
-					<td colspan="100">
-					<table class="innertable">
-						<thead>
-							<tr>
-								<?php
-								foreach ($headers['details'] as $header)
-								{
-								?>
-									<th><?php echo $header; ?></th>
-								<?php
-								}
-								?>
-							</tr>
-						</thead>
-					
-						<tbody>
-							<?php
-							foreach ($details_data[$key] as $row2)
-							{
-							?>
-								<tr>
-									<?php
-									foreach ($row2 as $cell)
-									{
-									?>
-										<td><?php echo $cell; ?></td>
-									<?php
-									}
-									?>
-								</tr>
-							<?php
-							}
-							?>
-						</tbody>
-					</table>
-					</td>
-				</tr>
-			<?php
-			}
-			?>
-		</tbody>
-	</table>
+	<table id="table"></table>
 </div>
 
 <div id="report_summary">
@@ -118,78 +46,45 @@ if($export_excel == 1)
 }
 else
 {
-	$this->load->view("partial/footer"); 
-?>
+	?>
 	<script type="text/javascript" language="javascript">
-	<?php
-	if (isset($editable))
-	{
-	?>
-
-		table_support.handle_submit = function(resource, response)
+		$(document).ready(function()
 		{
-			if(!response.success)
-			{
-				set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
-			}
-			else
-			{
-				var row_id = response.id
-				$.get('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>/'+row_id, function(response)
-				{
-					//Replace previous row
-					var row = get_table_row(row_id).parent().parent();
-					var sign = row.find("a.expand").text();
-					row.replaceWith(response);	
-					row = get_table_row(row_id).parent().parent();
-					update_sortable_table();
-					highligh(row);
-					row.find("a.expand").click(expand_handler).text(sign);
-					dialog_support.init(row.find("a.modal"));
-				});
-				set_feedback(response.message, 'alert alert-dismissible alert-success', false);
-			}
-		}
-	<?php
-	}
-	?>
 
-	function expand_handler(event)
-	{
-		$(event.target).parent().parent().next().find('.innertable').toggle();
+			var detail_data = <?php echo json_encode($details_data); ?>;
 
-		if ($(event.target).text() == '+')
-		{
-			$(event.target).text('-');
-		}
-		else
-		{
-			$(event.target).text('+');
-		}
-		return false;
-	};
+			$('#table').bootstrapTable({
+				columns: <?php echo transform_headers_readonly($headers['summary']); ?>,
+				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+				striped: true,
+				pagination: true,
+				showColumns: true,
+				uniqueId: 'id',
+				data: <?php echo json_encode($summary_data); ?>,
+				iconSize: 'sm',
+				paginationVAlign: 'bottom',
+				detailView: true,
+				onExpandRow: function (index, row, $detail) {
+					$detail.html('<table></table>').find("table").bootstrapTable({
+						columns: <?php echo transform_headers_readonly($headers['details']); ?>,
+						data: detail_data[index]
+					});
+				}
+			});
 
-	$(document).ready(function()
-	{
-		$(".tablesorter a.expand_all").click(function(event)
-		{
-			var $inner_elements = $(".tablesorter .innertable");
-			if ($inner_elements.is(":visible")) 
-			{
-				$inner_elements.hide();
-				$("a.expand, a.expand_all").text('+');
-			} 
-			else 
-			{
-				$inner_elements.show();
-				$("a.expand, a.expand_all").text('-');
-			} 
-			return false;
+			<?php
+        if (isset($editable))
+        {
+            ?>
+			table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
+			dialog_support.init("a.modal-dlg");
+			<?php
+        }
+        ?>
+
 		});
-		
-		$(".tablesorter a.expand").click(expand_handler);
-	});
 	</script>
-<?php 
+	<?php $this->load->view("partial/footer"); ?>
+<?php
 } // end if not is excel export 
 ?>

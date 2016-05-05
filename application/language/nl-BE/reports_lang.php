@@ -94,3 +94,4 @@ $lang["reports_sub_total_value"] = "Subtotaal";
 $lang["reports_total_inventory_value"] = "Totale waarde stock";
 $lang["reports_zero_and_less"] = "Nul en minder";
 $lang["reports_more_than_zero"] = "Meer dan nul";
+$lang["reports_no_reports_to_display"] = "Er werden geen producten gevonden";

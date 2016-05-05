@@ -94,3 +94,4 @@ $lang["reports_sub_total_value"] = "Zwischentotal";
 $lang["reports_total_inventory_value"] = "Total Inventarwert";
 $lang["reports_zero_and_less"] = "Null und weniger";
 $lang["reports_more_than_zero"] = "Mehr als Null";
+$lang["reports_no_reports_to_display"] = "Keine Artikel zum Anzeigen";
