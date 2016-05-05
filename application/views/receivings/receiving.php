@@ -11,7 +11,7 @@ if (isset($error))
 
 <!-- Top register controls -->
 
-	<?php echo form_open("receivings/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -50,7 +50,7 @@ if (isset($error))
 		</div>
 	<?php echo form_close(); ?>
 
-	<?php echo form_open("receivings/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	<?php echo form_open($controller_name."add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -77,7 +77,7 @@ if (isset($error))
 				<li class="pull-right">
 					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
 						title='<?php echo $this->lang->line('sales_new_item'); ?>'>
-						<span class="glyphicon glyphicon-tag"></span><?php echo $this->lang->line('sales_new_item'); ?>
+						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line('sales_new_item'); ?>
 					</button>
 				</li>
 			</ul>
@@ -117,9 +117,9 @@ if (isset($error))
 				foreach(array_reverse($cart, true) as $line=>$item)
 				{
 			?>
-					<?php echo form_open("receivings/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
-							<td><?php echo anchor("receivings/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td style="align:center;">
 								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
@@ -225,20 +225,21 @@ if (isset($error))
 		<?php
 		if(isset($supplier))
 		{
-			echo $this->lang->line("recvs_supplier").': <b>'.$supplier. '</b><br />';
-			echo anchor("receivings/delete_supplier",'['.$this->lang->line('common_delete').' '.$this->lang->line('suppliers_supplier').']');
+			echo $this->lang->line("recvs_supplier").': <b>'.$supplier. '</b><br />';			
+			echo anchor($controller_name."/delete_supplier", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
+								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_supplier_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier')));
 		}
 		else
 		{
 		?>
-			<?php echo form_open("receivings/select_supplier", array('id'=>'select_supplier_form', 'class'=>'form-horizontal')); ?>
+			<?php echo form_open($controller_name."/select_supplier", array('id'=>'select_supplier_form', 'class'=>'form-horizontal')); ?>
 				<div class="form-group" id="select_customer">
 					<label id="supplier_label" for="supplier" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
 					<?php echo form_input(array('name'=>'supplier', 'id'=>'supplier', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('recvs_start_typing_supplier_name'))); ?>
 
 					<button id='new_supplier_button' class='btn btn-info btn-sm modal-dlg modal-btn-submit' data-href='<?php echo site_url("suppliers/view"); ?>'
 							title='<?php echo $this->lang->line('recvs_new_supplier'); ?>'>
-						<span class="glyphicon glyphicon-user"></span><?php echo $this->lang->line('recvs_new_supplier'); ?>
+						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line('recvs_new_supplier'); ?>
 					</button>
 
 				</div>
@@ -277,14 +278,14 @@ if (isset($error))
 				if($mode == 'requisition')
 				{
 				?>
-					<?php echo form_open("receivings/requisition_complete", array('id'=>'finish_receiving_form', 'class'=>'form-horizontal')); ?>
+					<?php echo form_open($controller_name."/requisition_complete", array('id'=>'finish_receiving_form', 'class'=>'form-horizontal')); ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
 							<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4')); ?>
 
-							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><?php echo $this->lang->line('recvs_cancel_receiving'); ?></div>
+							<div class="btn btn-sm btn-danger pull-left" id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('recvs_cancel_receiving'); ?></div>
 							
-							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><?php echo $this->lang->line('recvs_complete_receiving'); ?></div>
+							<div class="btn btn-sm btn-success pull-right" id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('recvs_complete_receiving'); ?></div>
 						</div>
 					<?php echo form_close(); ?>
 				<?php
@@ -292,7 +293,7 @@ if (isset($error))
 				else
 				{
 				?>
-					<?php echo form_open("receivings/complete", array('id'=>'finish_receiving_form', 'class'=>'form-horizontal')); ?>
+					<?php echo form_open($controller_name."/complete", array('id'=>'finish_receiving_form', 'class'=>'form-horizontal')); ?>
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
 							<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4'));?>
@@ -339,9 +340,9 @@ if (isset($error))
 								</tr>
 							</table>
 
-							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><?php echo $this->lang->line('recvs_cancel_receiving') ?></div>
+							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('recvs_cancel_receiving') ?></div>
 							
-							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><?php echo $this->lang->line('recvs_complete_receiving') ?></div>
+							<div class='btn btn-sm btn-success pull-right' id='finish_receiving_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('recvs_complete_receiving') ?></div>
 						</div>
 					<?php echo form_close(); ?>
 				<?php
@@ -359,7 +360,7 @@ $(document).ready(function()
 {
     $("#item").autocomplete(
     {
-		source: '<?php echo site_url("receivings/item_search"); ?>',
+		source: '<?php echo site_url($controller_name."/item_search"); ?>',
     	minChars:0,
        	delay:10,
        	autoFocus: false,
@@ -378,7 +379,7 @@ $(document).ready(function()
 
 	$('#comment').keyup(function() 
 	{
-		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
+		$.post('<?php echo site_url($controller_name."/set_comment");?>', {comment: $('#comment').val()});
 	});
 
 	<?php
@@ -387,12 +388,12 @@ $(document).ready(function()
 	?>
 		$('#recv_invoice_number').keyup(function() 
 		{
-			$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
+			$.post('<?php echo site_url($controller_name."/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
 		});
 
 		$("#recv_print_after_sale").change(function()
 		{
-			$.post('<?php echo site_url("receivings/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
+			$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
 		});
 
 		var enable_invoice_number = function() 
@@ -407,7 +408,7 @@ $(document).ready(function()
 		$("#recv_invoice_enable").change(function()
 		{
 			var enabled = enable_invoice_number();
-			$.post('<?php echo site_url("receivings/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
+			$.post('<?php echo site_url($controller_name."/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
 			
 		});
 	<?php
@@ -446,7 +447,7 @@ $(document).ready(function()
     {
     	if (confirm('<?php echo $this->lang->line("recvs_confirm_cancel_receiving"); ?>'))
     	{
-			$('#finish_receiving_form').attr('action', '<?php echo site_url("receivings/cancel_receiving"); ?>');
+			$('#finish_receiving_form').attr('action', '<?php echo site_url($controller_name."/cancel_receiving"); ?>');
     		$('#finish_receiving_form').submit();
     	}
     });

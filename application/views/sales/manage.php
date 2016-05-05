@@ -50,18 +50,15 @@ $(document).ready(function()
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
 
 <div id="title_bar" class="print_hide btn-toolbar">
-
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
-		<span class="glyphicon glyphicon-print"></span><?php echo $this->lang->line('common_print'); ?>
+		<span class="glyphicon glyphicon-print">&nbsp</span><?php echo $this->lang->line('common_print'); ?>
 	</button>
-
 </div>
 
 <div id="toolbar">
 	<div class="pull-left form-inline" role="toolbar">
 		<button id="delete" class="btn btn-default btn-sm">
-			<span class="glyphicon glyphicon-trash"></span>
-			<?php echo $this->lang->line("common_delete");?>
+			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
 		</button>
 
 		<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>

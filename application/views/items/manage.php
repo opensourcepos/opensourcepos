@@ -57,32 +57,27 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar">
-
     <button class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url($controller_name."/excel_import"); ?>'
             title='<?php echo $this->lang->line('customers_import_items_excel'); ?>'>
-        <span class="glyphicon glyphicon-import"></span><?php echo $this->lang->line('common_import_excel'); ?>
+        <span class="glyphicon glyphicon-import">&nbsp</span><?php echo $this->lang->line('common_import_excel'); ?>
     </button>
 
     <button class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url($controller_name."/view"); ?>'
             title='<?php echo $this->lang->line($controller_name . '_new'); ?>'>
-        <span class="glyphicon glyphicon-tag"></span><?php echo $this->lang->line($controller_name. '_new'); ?>
+        <span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new'); ?>
     </button>
-
 </div>
 
 <div id="toolbar">
     <div class="pull-left form-inline" role="toolbar">
         <button id="delete" class="btn btn-default btn-sm">
-            <span class="glyphicon glyphicon-trash"></span>
-            <?php echo $this->lang->line("common_delete");?>
+            <span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete"); ?>
         </button>
         <button id="bulk_edit" class="btn btn-default btn-sm modal-dlg modal-btn-submit" data-href='<?php echo site_url($controller_name."/bulk_edit"); ?>' title='<?php $this->lang->line('items_edit_multiple_items');?>'>
-            <span class="glyphicon glyphicon-edit"></span>
-            <?php echo $this->lang->line("items_bulk_edit"); ?>
+            <span class="glyphicon glyphicon-edit">&nbsp</span><?php echo $this->lang->line("items_bulk_edit"); ?>
         </button>
         <button id="generate_barcodes" class="btn btn-default btn-sm" data-href='<?php echo site_url($controller_name."/generate_barcodes"); ?>' title='<?php echo $this->lang->line('items_generate_barcodes');?>'>
-            <span class="glyphicon glyphicon-barcode"></span>
-            <?php echo $this->lang->line("items_generate_barcodes");?>
+            <span class="glyphicon glyphicon-barcode">&nbsp</span><?php echo $this->lang->line("items_generate_barcodes"); ?>
         </button>
         <?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
         <?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
