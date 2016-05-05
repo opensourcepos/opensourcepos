@@ -50,7 +50,7 @@ if (isset($error))
 		</div>
 	<?php echo form_close(); ?>
 
-	<?php echo form_open($controller_name."add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
