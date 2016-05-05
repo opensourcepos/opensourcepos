@@ -11,10 +11,7 @@ $(document).ready(function()
 	
 	// load the preset datarange picker
 	<?php $this->load->view('partial/daterangepicker'); ?>
-	// set the beginning of time as starting date
-	$('#daterangepicker').data('daterangepicker').setStartDate("<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>");
-	// update the hidden inputs with the selected dates before submitting the search data
-	var start_date = "<?php echo date('Y-m-d', mktime(0,0,0,01,01,2010));?>";
+
 	$("#daterangepicker").on('apply.daterangepicker', function(ev, picker) {
 		table_support.refresh();
 	});
