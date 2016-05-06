@@ -96,6 +96,7 @@ $lang["config_logout"] = "Želite napraviti arhivu prije nego izađete? Pritisni
 $lang["config_message"] = "Message";
 $lang["config_message_configuration"] = "Message Configuration";
 $lang["config_msg_msg"] = "Saved Text Message";
+$lang["config_msg_msg_placeholder"] = "If you wish to use a SMS template save your message here. Otherwise leave the box blank.";
 $lang["config_msg_uid"] = "SMS-API Username";
 $lang["config_msg_uid_required"] = "SMS-API Username is a required field";
 $lang["config_msg_pwd"] = "SMS-API Password";
