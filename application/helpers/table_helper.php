@@ -1,6 +1,5 @@
 <?php
 
-
 function get_sales_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -108,6 +107,7 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 		$table.='<div class="summary_row">'.$payment['payment_type'].': '.to_currency( $amount ) . '</div>';
 	}
 	$table.='</div>';
+
 	return $table;
 }
 
@@ -118,6 +118,7 @@ function transform_headers_readonly($array)
 	{
 		$result[] = array('field' => $key, 'title' => $value);
 	}
+
 	return json_encode($result);
 }
 
@@ -148,7 +149,8 @@ function get_people_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_person_data_row($person, $controller) {
+function get_person_data_row($person, $controller)
+{
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
@@ -187,7 +189,8 @@ function get_suppliers_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_supplier_data_row($supplier, $controller) {
+function get_supplier_data_row($supplier, $controller)
+{
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
@@ -228,8 +231,8 @@ function get_items_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_item_data_row($item, $controller) {
-
+function get_item_data_row($item, $controller)
+{
 	$CI =& get_instance();
 	$item_tax_info=$CI->Item_taxes->get_info($item->item_id);
 	$tax_percents = '';
@@ -288,7 +291,8 @@ function get_giftcards_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_giftcard_data_row($giftcard, $controller) {
+function get_giftcard_data_row($giftcard, $controller)
+{
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
@@ -318,8 +322,8 @@ function get_item_kits_manage_table_headers()
 	return transform_headers($headers);
 }
 
-
-function get_item_kit_data_row($item_kit, $controller) {
+function get_item_kit_data_row($item_kit, $controller)
+{
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
@@ -327,8 +331,8 @@ function get_item_kit_data_row($item_kit, $controller) {
 		'id' => $item_kit->item_kit_id,
 		'kit_name' => character_limiter($item_kit->name,13),
 		'kit_description' => character_limiter($item_kit->description,13),
-		'cost_price' => character_limiter($item_kit->total_cost_price,13),
-		'unit_price' => character_limiter($item_kit->total_unit_price,13),
+		'cost_price' => to_currency($item_kit->total_cost_price),
+		'unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
