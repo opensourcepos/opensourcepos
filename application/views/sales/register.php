@@ -547,7 +547,7 @@ $(document).ready(function()
 
     $("#customer").autocomplete(
     {
-		source: '<?php echo site_url($controller_name."/suggest"); ?>',
+		source: '<?php echo site_url("customers/suggest"); ?>',
     	minChars:0,
     	delay:10,
 		select: function (a, ui) {
