@@ -56,7 +56,7 @@ class Reports extends Secure_area
 			'profit' => to_currency($report_data['profit']),
 			'payment_type' => $report_data['payment_type'],
 			'comment' => $report_data['comment'],
-			'edit' => anchor("sales/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
 				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line('sales_update'))
 			)
 		);
