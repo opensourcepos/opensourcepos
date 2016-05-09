@@ -146,7 +146,7 @@ class Item_kit extends CI_Model
 	/*
 	Perform a search on items
 	*/
-	function search($search, $rows=0, $limit_from=0)
+	function search($search, $rows=0, $limit_from=0, $sort='name', $order='asc')
 	{
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
@@ -158,7 +158,7 @@ class Item_kit extends CI_Model
 			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
 		}
 
-		$this->db->order_by('name', 'asc');
+		$this->db->order_by($sort, $order);
 
 		if ($rows > 0)
 		{

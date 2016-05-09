@@ -42,11 +42,12 @@ class Item_kits extends Secure_area implements iData_controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
-		$item_kits = $this->Item_kit->search($search, $limit, $offset);
+		$item_kits = $this->Item_kit->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Item_kit->get_found_rows($search);
-		//$links = $this->_initialize_pagination($this->Item_kit, $lines_per_page, $limit, $total_rows, 'search');
+
 		$data_rows = array();
 		foreach($item_kits->result() as $item_kit)
 		{

@@ -40,6 +40,8 @@ class Items extends Secure_area implements iData_controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
 		$this->item_lib->set_item_location($this->input->get('stock_location'));
 
@@ -57,7 +59,7 @@ class Items extends Secure_area implements iData_controller
 		$filledup = array_fill_keys($this->input->get('filters'), true);
 		$filters = array_merge($filters, $filledup);
 
-		$items = $this->Item->search($search, $filters, $limit, $offset);
+		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 
 		$data_rows = array();

@@ -58,6 +58,7 @@ else
 				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 				striped: true,
 				pagination: true,
+				sortable: true,
 				showColumns: true,
 				uniqueId: 'id',
 				data: <?php echo json_encode($summary_data); ?>,

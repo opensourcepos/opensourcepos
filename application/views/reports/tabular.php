@@ -57,6 +57,7 @@ else
 				columns: <?php echo transform_headers_readonly($headers); ?>,
 				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 				striped: true,
+				sortable: true,
 				pagination: true,
 				showColumns: true,
 				data: <?php echo json_encode($data); ?>,

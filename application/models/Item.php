@@ -45,7 +45,7 @@ class Item extends CI_Model
 	/*
 	 Perform a search on items
 	*/
-	public function search($search, $filters, $rows=0, $limit_from=0)
+	public function search($search, $filters, $rows=0, $limit_from=0, $sort='items.name', $order='asc')
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -108,7 +108,7 @@ class Item extends CI_Model
 		$this->db->group_by('items.item_id');
 		
 		// order by name of item
-		$this->db->order_by('items.name', 'asc');
+		$this->db->order_by($sort, $order);
 
 		if ($rows > 0) 
 		{	

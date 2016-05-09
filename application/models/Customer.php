@@ -241,7 +241,7 @@ class Customer extends Person
 	/*
 	Perform a search on customers
 	*/
-	function search($search, $rows = 0, $limit_from = 0)
+	function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc')
 	{
 		$this->db->from('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id');		
@@ -252,7 +252,7 @@ class Customer extends Person
 			account_number LIKE '%".$this->db->escape_like_str($search)."%' or 
 			CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and 
 			deleted = 0");		
-		$this->db->order_by("last_name", "asc");
+		$this->db->order_by($sort, $order);
 		if ($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);

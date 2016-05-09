@@ -5,7 +5,7 @@ function get_sales_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('id' => $CI->lang->line('common_id')),
+		array('sale_id' => $CI->lang->line('common_id')),
 		array('receipt_number' => $CI->lang->line('sales_receipt_number')),
 		array('sale_time' => $CI->lang->line('sales_sale_time')),
 		array('customer' => $CI->lang->line('customers_customer')),
@@ -43,7 +43,7 @@ function get_sale_data_last_row($sales, $controller)
 	}
 
 	return array(
-		'id' => '-',
+		'sale_id' => '-',
 		'receipt_number' => '<b>'.$CI->lang->line('sales_total').'</b>',
 		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'amount_due' => '<b>'.to_currency($sum_change_due).'</b>'
@@ -56,7 +56,7 @@ function get_sale_data_row($sale, $controller)
 	$controller_name = $CI->uri->segment(1);
 
 	$row = array (
-		'id' => $sale->sale_id,
+		'sale_id' => $sale->sale_id,
 		'receipt_number' => 'POS ' . $sale->sale_id,
 		'sale_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time) ),
 		'customer' => character_limiter( $sale->customer_name, 25),
@@ -116,7 +116,7 @@ function transform_headers_readonly($array)
 	$result = array();
 	foreach($array as $key => $value)
 	{
-		$result[] = array('field' => $key, 'title' => $value);
+		$result[] = array('field' => $key, 'title' => $value, 'sortable' => $value != '');
 	}
 
 	return json_encode($result);
@@ -125,7 +125,8 @@ function transform_headers_readonly($array)
 function transform_headers($array)
 {
  	return json_encode(array_map(function($v) {
-		return array('field' => key($v), 'title' => current($v), 'checkbox' => (key($v) == 'checkbox'));
+		return array('field' => key($v), 'title' => current($v), 'checkbox' => (key($v) == 'checkbox'), 'sortable' => current($v) != ''
+			&& current($v) != 'select' && key($v) != 'item_pic' && current($v) != '&nbsp');
 	}, array_merge(array(array('checkbox' => 'select')), $array, array(array('edit' => '')))));
 }
 
@@ -134,7 +135,7 @@ function get_people_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('id' => $CI->lang->line('common_id')),
+		array('people.person_id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('email' => $CI->lang->line('common_email')),
@@ -155,7 +156,7 @@ function get_person_data_row($person, $controller)
 	$controller_name=strtolower(get_class($CI));
 
 	return array (
-		'id' => $person->person_id,
+		'people.person_id' => $person->person_id,
 		'last_name' => character_limiter($person->last_name,13),
 		'first_name' => character_limiter($person->first_name,13),
 		'email' => empty($person->email) ? '' : mailto($person->email,character_limiter($person->email,22)),
@@ -172,7 +173,7 @@ function get_suppliers_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('id' => $CI->lang->line('common_id')),
+		array('people.person_id' => $CI->lang->line('common_id')),
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
 		array('agency_name' => $CI->lang->line('suppliers_agency_name')),
 		array('last_name' => $CI->lang->line('common_last_name')),
@@ -195,7 +196,7 @@ function get_supplier_data_row($supplier, $controller)
 	$controller_name=strtolower(get_class($CI));
 
 	return array (
-		'id' => $supplier->person_id,
+		'people.person_id' => $supplier->person_id,
 		'company_name' => character_limiter($supplier->company_name,13),
 		'agency_name' => character_limiter($supplier->agency_name,13),
 		'last_name' => character_limiter($supplier->last_name,13),
@@ -214,10 +215,10 @@ function get_items_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('id' => $CI->lang->line('common_id')),
+		array('items.item_id' => $CI->lang->line('common_id')),
 		array('item_number' => $CI->lang->line('items_item_number')),
-		array('item_name' => $CI->lang->line('items_name')),
-		array('item_category' => $CI->lang->line('items_category')),
+		array('name' => $CI->lang->line('items_name')),
+		array('category' => $CI->lang->line('items_category')),
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
 		array('cost_price' => $CI->lang->line('items_cost_price')),
 		array('unit_price' => $CI->lang->line('items_unit_price')),
@@ -255,10 +256,10 @@ function get_item_data_row($item, $controller)
 	}
 
 	return array (
-		'id' => $item->item_id,
+		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
-		'item_name' => character_limiter($item->name,13),
-		'item_category' => character_limiter($item->category,13),
+		'name' => character_limiter($item->name,13),
+		'category' => character_limiter($item->category,13),
 		'company_name' => character_limiter($item->company_name,20),
 		'cost_price' => to_currency($item->cost_price),
 		'unit_price' => to_currency($item->unit_price),
@@ -312,9 +313,9 @@ function get_item_kits_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('id' => $CI->lang->line('item_kits_kit')),
-		array('kit_name' => $CI->lang->line('item_kits_name')),
-		array('kit_description' => $CI->lang->line('item_kits_description')),
+		array('item_kit_id' => $CI->lang->line('item_kits_kit')),
+		array('name' => $CI->lang->line('item_kits_name')),
+		array('description' => $CI->lang->line('item_kits_description')),
 		array('cost_price' => $CI->lang->line('items_cost_price')),
 		array('unit_price' => $CI->lang->line('items_unit_price'))
 	);
@@ -328,9 +329,9 @@ function get_item_kit_data_row($item_kit, $controller)
 	$controller_name=strtolower(get_class($CI));
 
 	return array (
-		'id' => $item_kit->item_kit_id,
-		'kit_name' => character_limiter($item_kit->name,13),
-		'kit_description' => character_limiter($item_kit->description,13),
+		'item_kit_id' => $item_kit->item_kit_id,
+		'name' => character_limiter($item_kit->name),
+		'description' => character_limiter($item_kit->description,13),
 		'cost_price' => to_currency($item_kit->total_cost_price),
 		'unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
