@@ -8,7 +8,6 @@
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
-		<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
 		<link rel="stylesheet" href="bower_components/bootswatch-dist/css/bootstrap.css" />
@@ -35,7 +34,6 @@
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
 		<script src="bower_components/swfobject-bower/swfobject/swfobject.js"></script>
-		<script src="bower_components/tablesorter/dist/js/jquery.tablesorter.combined.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
@@ -59,12 +57,12 @@
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
+		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=9a77a9a885"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=4919801f0e"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=c2fa948de2" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=05f25623a7" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

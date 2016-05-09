@@ -47,7 +47,6 @@
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
@@ -58,14 +57,14 @@
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=50ab19585f"/>
+		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=9a77a9a885"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=4919801f0e"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=c2fa948de2" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=05f25623a7" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
