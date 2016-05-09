@@ -60,7 +60,7 @@ $(document).ready(function()
 		var sale_type = $("#sale_type").val();
 		var location = window.location + '/' + start_date + '/' + end_date + '/' + sale_type;
 
-		if ($("#export_excel_yes").attr('checked'))
+		if ($("input[name='export_excel']").is(':checked'))
 		{
 			location += '/' + 1;
 		}
