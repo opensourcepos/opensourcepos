@@ -118,7 +118,7 @@
 
 	var selected_ids = function () {
 		return $.map(table().getSelections(), function (element) {
-			return element.id;
+			return element[options.uniqueId];
 		});
 	};
 
@@ -146,9 +146,9 @@
 			.animate({backgroundColor: original}, "slow", "linear");
 	};
 
-	var do_delete = function () {
+	var do_delete = function (url, ids) {
 		if (confirm(options.confirmDeleteMessage)) {
-			$.post(options.resource + '/delete', {'ids[]': selected_ids()}, function (response) {
+			$.post((url || options.resource) + '/delete', {'ids[]': ids || selected_ids()}, function (response) {
 				//delete was successful, remove checkbox rows
 				if (response.success) {
 					$(selected_rows()).each(function (index, element) {
@@ -196,7 +196,7 @@
 			showColumns: true,
 			clickToSelect: true,
 			toolbar: '#toolbar',
-			uniqueId: 'id',
+			uniqueId: options.uniqueId || 'id',
 			onCheck: enable_actions,
 			onUncheck: enable_actions,
 			onCheckAll: enable_actions,

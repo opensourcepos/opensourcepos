@@ -60,6 +60,8 @@ class Sales extends Secure_area
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
@@ -75,7 +77,7 @@ class Sales extends Secure_area
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
 
-		$sales = $this->Sale->search($search, $filters, $limit, $offset);
+		$sales = $this->Sale->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Sale->get_found_rows($search, $filters);
 		$payments = $this->Sale->get_payments_summary($search, $filters);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);

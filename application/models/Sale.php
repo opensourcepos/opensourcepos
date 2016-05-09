@@ -28,7 +28,7 @@ class Sale extends CI_Model
 	/*
 	 Get the sales data for the takings (sales/manage) view
 	*/
-	public function search($search, $filters, $rows=0, $limit_from=0)
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
 		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
 						CONCAT(customer.first_name, " ", customer.last_name) AS customer_name, 
@@ -83,7 +83,7 @@ class Sale extends CI_Model
 		}
 		
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date', 'desc');
+		$this->db->order_by($sort, $order);
 		
 		if ($rows > 0)
 		{

@@ -158,7 +158,7 @@ $(document).ready(function()
 
 	$('button#delete').click(function() {
 		dialog_support.hide();
-		table_support.do_delete();
+		table_support.do_delete('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
 	});
 
 	var submit_form = function()

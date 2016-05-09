@@ -195,7 +195,7 @@ class Giftcard extends CI_Model
 	/*
 	Preform a search on giftcards
 	*/
-	function search($search, $rows = 0, $limit_from = 0)
+	function search($search, $rows = 0, $limit_from = 0, $sort = 'giftcard_number', $order = 'asc')
 	{
 		$this->db->from('giftcards');
 		$this->db->join('people', 'giftcards.person_id=people.person_id', 'left');
@@ -207,7 +207,7 @@ class Giftcard extends CI_Model
 		$this->db->or_like('giftcards.person_id', $this->db->escape_like_str($search));
 		$this->db->group_end();
 		$this->db->where('giftcards.deleted', 0);
-		$this->db->order_by('giftcard_number', 'asc');
+		$this->db->order_by($sort, $order);
 
 		if ($rows > 0)
 		{

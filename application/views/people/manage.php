@@ -9,6 +9,7 @@ $(document).ready(function()
 		resource: '<?php echo site_url($controller_name);?>',
 		headers: <?php echo $table_headers; ?>,
 		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+		uniqueId: 'person_id',
 		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
 		enableActions: function()
 		{
