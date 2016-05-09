@@ -271,7 +271,7 @@ function get_item_data_row($item, $controller)
 		'cost_price' => to_currency($item->cost_price),
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
-		'tax_percents' => $tax_percents,
+		'tax_percents' => !$tax_percents ? '-' : $tax_percents,
 		'item_pic' => $image,
 		'inventory' => anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>',
 			array('class' => "modal-dlg modal-btn-submit", 'title' => $CI->lang->line($controller_name.'_count'))
