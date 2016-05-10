@@ -59,15 +59,7 @@ $(document).ready(function()
 	{
 		var sale_type = $("#sale_type").val();
 		var location = window.location + '/' + start_date + '/' + end_date + '/' + sale_type;
-
-		if ($("input[name='export_excel']").is(':checked'))
-		{
-			location += '/' + 1;
-		}
-		else
-		{
-			location += '/' + 0;	
-		}
+		location += '/' + $("input[name='export_excel']:checked").val();
 
 		window.location = location;
 	});

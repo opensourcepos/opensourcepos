@@ -41,11 +41,13 @@
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="bower_components/table-export/tableExport.js"></script>
+		<script src="bower_components/jquery.base64/index.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
@@ -59,10 +61,10 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=4919801f0e"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=11a1576e8b"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=05f25623a7" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2e0c3d028c" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

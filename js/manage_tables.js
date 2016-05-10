@@ -195,6 +195,7 @@
 			search: options.resource || false,
 			showColumns: true,
 			clickToSelect: true,
+			showExport: true,
 			toolbar: '#toolbar',
 			uniqueId: options.uniqueId || 'id',
 			onCheck: enable_actions,

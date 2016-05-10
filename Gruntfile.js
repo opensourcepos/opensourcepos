@@ -17,7 +17,8 @@ module.exports = function(grunt) {
         bower_concat: {
             all: {
                 mainFiles: {
-                    'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js']
+                    'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js'],
+                    'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js"]
                 },
                 dest: {
                     'js': 'tmp/opensourcepos_bower.js',
@@ -146,8 +147,7 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: ['js/jquery*', 'js/*.js'],
-                dest: 'application/views/partial/header.php',
-                dest: 'templates/spacelab/views/partial/header.php'
+                dest: 'application/views/partial/header.php'
             },
             minjs: {
                 options: {
@@ -157,8 +157,7 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: ['dist/*min.js'],
-                dest: 'application/views/partial/header.php',
-                dest: 'templates/spacelab/views/partial/header.php'
+                dest: 'application/views/partial/header.php'
             }
         },
         mochaWebdriver: {

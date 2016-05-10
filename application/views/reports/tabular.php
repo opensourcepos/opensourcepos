@@ -1,14 +1,5 @@
 <?php 
-	// Check if for excel export process
-	if($export_excel == 1)
-	{
-		ob_start();
-		$this->load->view("partial/header_excel");
-	}
-	else
-	{
-		$this->load->view("partial/header");
-	} 
+	$this->load->view("partial/header");
 ?>
 
 <div id="page_title"><?php echo $title ?></div>
@@ -30,46 +21,25 @@
 	?>
 </div>
 
-<?php 
-if($export_excel == 1)
-{
-	$this->load->view("partial/footer_excel");
-	$content = ob_end_flush();
-	
-	$filename = trim($filename);
-	$filename = str_replace(array(' ', '/', '\\'), '', $title);
-	$filename .= "_Export.xls";
-	header('Content-type: application/ms-excel');
-	header('Content-Disposition: attachment; filename='.$filename);
-	echo $content;
+<script type="text/javascript" language="javascript">
+	$(document).ready(function()
+	{
+		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
-	die();
-}
-else
-{
-	?>
-	<script type="text/javascript" language="javascript">
-		$(document).ready(function()
-		{
-			<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
-
-			$('#table').bootstrapTable({
-				columns: <?php echo transform_headers_readonly($headers); ?>,
-				pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
-				striped: true,
-				sortable: true,
-				pagination: true,
-				showColumns: true,
-				data: <?php echo json_encode($data); ?>,
-				iconSize: 'sm',
-				paginationVAlign: 'bottom'
-			});
-
+		$('#table').bootstrapTable({
+			columns: <?php echo transform_headers_readonly($headers); ?>,
+			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
+			striped: true,
+			sortable: true,
+			pagination: true,
+			showColumns: true,
+			data: <?php echo json_encode($data); ?>,
+			iconSize: 'sm',
+			paginationVAlign: 'bottom'
 		});
-	</script>
-	<?php
-	$this->load->view("partial/footer"); 
-?>
+
+	});
+</script>
 <?php
-} // end if not is excel export 
+	$this->load->view("partial/footer");
 ?>

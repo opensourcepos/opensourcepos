@@ -47,6 +47,7 @@
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
+		<script type="text/javascript" src="js/bootstrap-table-export.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
@@ -60,11 +61,11 @@
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=4919801f0e"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=11a1576e8b"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=05f25623a7" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2e0c3d028c" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
