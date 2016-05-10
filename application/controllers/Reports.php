@@ -29,13 +29,6 @@ class Reports extends Secure_area
 		$this->load->view("reports/listing", $data);
 	}
 
-	//Input for reports that require only a date range and an export to excel. (see routes.php to see that all summary reports route here)
-	function date_input_excel_export()
-	{
-		$data = array();
-		$this->load->view("reports/date_input_excel_export", $data);
-	}
-
  	function get_detailed_sales_row($sale_id)
 	{
 		$this->load->model('reports/Detailed_sales');
@@ -108,7 +101,7 @@ class Reports extends Secure_area
 	}
 
 	//Summary sales report
-	function summary_sales($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_sales($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
@@ -131,15 +124,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary categories report
-	function summary_categories($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_categories($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
@@ -162,15 +154,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary customers report
-	function summary_customers($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_customers($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
@@ -193,15 +184,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary suppliers report
-	function summary_suppliers($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_suppliers($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
@@ -224,15 +214,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary items report
-	function summary_items($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_items($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
@@ -255,15 +244,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary employees report
-	function summary_employees($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_employees($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
@@ -286,15 +274,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary taxes report
-	function summary_taxes($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_taxes($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
@@ -315,15 +302,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary discounts report
-	function summary_discounts($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_discounts($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
@@ -341,15 +327,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary payments report
-	function summary_payments($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_payments($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
@@ -368,8 +353,7 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
@@ -765,7 +749,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/specific_input", $data);
 	}
 
-	function specific_customer($start_date, $end_date, $customer_id, $sale_type, $export_excel=0)
+	function specific_customer($start_date, $end_date, $customer_id, $sale_type)
 	{
 		$this->load->model('reports/Specific_customer');
 		$model = $this->Specific_customer;
@@ -793,8 +777,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
@@ -815,7 +798,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/specific_input", $data);
 	}
 
-	function specific_employee($start_date, $end_date, $employee_id, $sale_type, $export_excel=0)
+	function specific_employee($start_date, $end_date, $employee_id, $sale_type)
 	{
 		$this->load->model('reports/Specific_employee');
 		$model = $this->Specific_employee;
@@ -843,8 +826,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
@@ -865,7 +847,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/specific_input", $data);
 	}
 
-	function specific_discount($start_date, $end_date, $discount, $sale_type, $export_excel = 0)
+	function specific_discount($start_date, $end_date, $discount, $sale_type)
 	{
 		$this->load->model('reports/Specific_discount');
 		$model = $this->Specific_discount;
@@ -892,14 +874,13 @@ class Reports extends Secure_area
 			"headers" => $headers,
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'discount' =>$discount, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'discount' =>$discount, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
 	}
 
-	function detailed_sales($start_date, $end_date, $sale_type, $location_id='all', $export_excel=0)
+	function detailed_sales($start_date, $end_date, $sale_type, $location_id='all')
 	{
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
@@ -950,14 +931,13 @@ class Reports extends Secure_area
 			"editable" => "sales",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type, 'location_id'=>$location_id)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type, 'location_id'=>$location_id))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
 	}
 
-	function detailed_receivings($start_date, $end_date, $receiving_type, $location_id='all', $export_excel=0)
+	function detailed_receivings($start_date, $end_date, $receiving_type, $location_id='all')
 	{
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
@@ -1008,19 +988,13 @@ class Reports extends Secure_area
 			"editable" => "receivings",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'location_id'=>$location_id)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'location_id'=>$location_id))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
 	}
 
-	function excel_export()
-	{
-		$this->load->view("reports/excel_export", array());
-	}
-
-	function inventory_low($export_excel=0)
+	function inventory_low()
 	{
 		$this->load->model('reports/Inventory_low');
 		$model = $this->Inventory_low;
@@ -1041,8 +1015,7 @@ class Reports extends Secure_area
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array()),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array())
 		);
 
 		$this->load->view("reports/tabular", $data);
@@ -1063,7 +1036,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/inventory_summary_input", $data);
 	}
 
-	function inventory_summary($export_excel=0, $location_id='all', $item_count='all')
+	function inventory_summary($location_id='all', $item_count='all')
 	{
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
@@ -1087,8 +1060,7 @@ class Reports extends Secure_area
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData($report_data),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData($report_data)
 		);
 
 		$this->load->view("reports/tabular", $data);

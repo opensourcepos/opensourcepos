@@ -78,21 +78,7 @@ $(document).ready(function()
 
 	$("#generate_report").click(function()
 	{		
-		var input_type = $("#input_type").val();
-		var location_id = $("#location_id").val();
-		var location = window.location + '/' + start_date + '/' + end_date;
-
-		if (input_type)
-		{
-			location += '/' + input_type;
-		}
-
-		if (location_id)
-		{
-			location += '/' + location_id;
-		}
-
-		window.location = location;
+		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val()].join("/");
 	});
 });
 </script>
