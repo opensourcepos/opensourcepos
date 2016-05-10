@@ -39,13 +39,7 @@ $(document).ready(function()
 {
 	$("#generate_report").click(function()
 	{
-		var export_excel = 0;
-		if ($("#export_excel_yes").attr('checked'))
-		{
-			export_excel = 1;
-		}
-		
-		window.location = window.location+'/' + export_excel;
+		window.location = [window.location, $("input[name='export_excel']").val()].join("/");
 	});	
 });
 </script>

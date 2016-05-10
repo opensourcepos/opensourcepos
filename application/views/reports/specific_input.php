@@ -64,19 +64,7 @@ $(document).ready(function()
 
 	$("#generate_report").click(function()
 	{
-		var sale_type = $("#sale_type").val();
-		var location = window.location + '/' + start_date + '/' + end_date + '/' + $('#specific_input_data').val() + '/' + sale_type;
-
-		if ($("#export_excel_yes").attr('checked'))
-		{
-			location += '/' + 1;
-		}
-		else
-		{
-			location += '/' + 0;	
-		}
-
-		window.location = location;
+		window.location = [window.location, start_date, end_date, $('#specific_input_data').val(), $("#sale_type").val(), $("input[name='export_excel']").val()].join("/");
 	});
 });
 </script>

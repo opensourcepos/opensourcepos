@@ -53,13 +53,7 @@ $(document).ready(function()
 {
 	$("#generate_report").click(function()
 	{
-		var export_excel = 0;
-		if ($("#export_excel_yes").attr('checked'))
-		{
-			export_excel = 1;
-		}
-		
-		window.location = window.location+'/' + export_excel + '/' + $("#location_id").val() + '/' + $("#item_count").val();
+		window.location = [window.location, $("input[name='export_excel']").is(':checked'), $("#location_id").val(), $("#item_count").val()].join("/");
 	});	
 });
 </script>

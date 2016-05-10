@@ -57,11 +57,7 @@ $(document).ready(function()
 
 	$("#generate_report").click(function()
 	{
-		var sale_type = $("#sale_type").val();
-		var location = window.location + '/' + start_date + '/' + end_date + '/' + sale_type;
-		location += '/' + $("input[name='export_excel']:checked").val();
-
-		window.location = location;
+		window.location = [window.location, start_date, end_date, $("#sale_type").val() || 0, $("input[name='export_excel']:checked").val()].join("/");
 	});
 });
 </script>
