@@ -31,6 +31,7 @@
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			sortable: true,
+			showExport: true,
 			pagination: true,
 			showColumns: true,
 			showExport: true,

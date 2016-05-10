@@ -196,6 +196,7 @@
 			showColumns: true,
 			clickToSelect: true,
 			showExport: true,
+			onPageChange: load_success(options.onLoadSuccess),
 			toolbar: '#toolbar',
 			uniqueId: options.uniqueId || 'id',
 			onCheck: enable_actions,
