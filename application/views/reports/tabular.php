@@ -33,6 +33,7 @@
 			sortable: true,
 			pagination: true,
 			showColumns: true,
+			showExport: true,
 			data: <?php echo json_encode($data); ?>,
 			iconSize: 'sm',
 			paginationVAlign: 'bottom'
