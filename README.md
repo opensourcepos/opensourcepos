@@ -1,5 +1,7 @@
 Introduction
 ------------
+
+[![Join the chat at https://gitter.im/jekkos/opensourcepos](https://badges.gitter.im/jekkos/opensourcepos.svg)](https://gitter.im/jekkos/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Open Source Point of Sale is a web based point of sale system written in the PHP language.
 It uses MySQL as the data storage back-end and has a simple user interface.
 
