@@ -44328,11 +44328,12 @@ THE SOFTWARE.*/
 	};
 
 	var do_delete = function (url, ids) {
-		if (confirm(options.confirmDeleteMessage)) {
+		if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
 			$.post((url || options.resource) + '/delete', {'ids[]': ids || selected_ids()}, function (response) {
 				//delete was successful, remove checkbox rows
 				if (response.success) {
-					$(selected_rows()).each(function (index, element) {
+					var selector = ids ? row_selector(ids) : selected_rows();
+					$(selector).each(function (index, element) {
 						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
 							.end().animate({opacity: 0}, 1200, "linear", function () {
 								table().remove({
@@ -44340,6 +44341,7 @@ THE SOFTWARE.*/
 									values: selected_ids()
 								});
 								enable_actions();
+								$(this).remove();
 							});
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
@@ -44377,6 +44379,7 @@ THE SOFTWARE.*/
 			showColumns: true,
 			clickToSelect: true,
 			showExport: true,
+			onPageChange: load_success(options.onLoadSuccess),
 			toolbar: '#toolbar',
 			uniqueId: options.uniqueId || 'id',
 			onCheck: enable_actions,
@@ -44416,7 +44419,7 @@ THE SOFTWARE.*/
 					$.each(selector, function (index, element) {
 						var id = $(element).data('uniqueid');
 						$.get({
-							url: url + id || resource + '/get_row/' + id,
+							url: url + '/' + id || resource + '/get_row/' + id,
 							success: function (response) {
 								table().updateByUniqueId({id: id, row: response});
 								// TODO make selector more specific?
@@ -44444,7 +44447,7 @@ THE SOFTWARE.*/
 
 	$.extend(table_support, {
 		submit_handler: function(url) {
-			handle_submit = submit_handler(url);
+			this.handle_submit = submit_handler(url);
 		},
 		handle_submit: handle_submit,
 		init: init,

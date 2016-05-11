@@ -86,7 +86,8 @@ $(document).ready(function()
 		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
-	var fill_value =  function(event, ui) {
+	var fill_value =  function(event, ui)
+	{
 		event.preventDefault();
 		$("input[name='supplier_id']").val(ui.item.value);
 		$("input[name='supplier_name']").val(ui.item.label);
@@ -103,16 +104,22 @@ $(document).ready(function()
 		focus: fill_value
     });
 
+	$('button#delete').click(function()
+	{
+		dialog_support.hide();
+		table_support.do_delete('<?php echo site_url('receivings'); ?>', <?php echo $receiving_info['receiving_id']; ?>);
+	});
+
 	// declare submitHandler as an object.. will be reused
 	var submit_form = function()
-	{ 
+	{
 		$(this).ajaxSubmit(
 		{
 			success:function(response)
 			{
 				dialog_support.hide();
 				table_support.handle_submit('<?php echo site_url('receivings'); ?>', response);
-			}
+			},
 			dataType:'json'
 		});
 	};
@@ -162,9 +169,5 @@ $(document).ready(function()
 		}
 	}, dialog_support.error));
 
-	$('button#delete').click(function() {
-		dialog_support.hide();
-		table_support.do_delete('<?php echo site_url('receivings'); ?>', <?php echo $receiving_info['receiving_id']; ?>);
-	});
 });
 </script>

@@ -19,7 +19,7 @@ class Detailed_receivings extends Report
 				'total' => $this->lang->line('reports_total'),
 				'payment_type' => $this->lang->line('reports_payment_type'),
 				'invoice_number' => $this->lang->line('recvs_invoice_number'),
-				'comments' => $this->lang->line('reports_comments'),
+				'comment' => $this->lang->line('reports_comments'),
 				'edit' => ''),
 			'details' => array(
 				$this->lang->line('reports_item_number'),
@@ -30,7 +30,7 @@ class Detailed_receivings extends Report
 				$this->lang->line('reports_discount'))
 		);
 
-		if (get_instance()->config->item('invoice_enable') == TRUE)
+		if (!get_instance()->config->item('invoice_enable'))
 		{
 			unset($columns['summary']['invoice_number']);
 		}

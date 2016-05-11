@@ -22,6 +22,8 @@
 <script type="text/javascript" language="javascript">
 	$(document).ready(function()
 	{
+	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
+
 		var detail_data = <?php echo json_encode($details_data); ?>;
 
 		var init_dialog = function()

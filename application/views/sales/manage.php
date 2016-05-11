@@ -23,7 +23,6 @@ $(document).ready(function()
 		headers: <?php echo $table_headers; ?>,
 		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 		uniqueId: 'sale_id',
-		confirmDeleteMessage : '<?php echo $this->lang->line($controller_name."_confirm_delete")?>',
 		onLoadSuccess: function(response) {
 			$("#payment_summary").html(response.payment_summary);
 		},

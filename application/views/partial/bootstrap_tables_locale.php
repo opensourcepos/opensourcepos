@@ -32,6 +32,9 @@
     },
     formatAllRows: function () {
         return '<?php echo $this->lang->line('tables_all'); ?>';
+    },
+    formatConfirmDelete : function() {
+        return '<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_delete")?>';
     }
     };
 

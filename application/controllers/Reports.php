@@ -37,7 +37,7 @@ class Reports extends Secure_area
 		$report_data = $model->getDataBySaleId($sale_id);
 
 		$summary_data = array(
-			'id' => $report_data['sale_id'],
+			'sale_id' => $report_data['sale_id'],
 			'sale_date' => $report_data['sale_date'],
 			'quantity' => to_quantity_decimals($report_data['items_purchased']),
 			'employee' => $report_data['employee_name'],
@@ -50,7 +50,7 @@ class Reports extends Secure_area
 			'payment_type' => $report_data['payment_type'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line('sales_update'))
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$this->lang->line('sales_update'))
 			)
 		);
 
@@ -65,15 +65,17 @@ class Reports extends Secure_area
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
 		$summary_data = array(
-			'id' => $report_data['receiving_id'],
+			'receiving_id' => $report_data['receiving_id'],
 			'receiving_date' => $report_data['receiving_date'],
 			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'invoice_number' => $report_data['invoice_number'],
 			'employee' => $report_data['employee_name'],
 			'supplier' => $report_data['supplier_name'],
 			'total' => to_currency($report_data['total']),
+			'comment' => $report_data['comment'],
 			'payment_type' => $report_data['payment_type'],
 			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line('receivings_update'))
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$this->lang->line('recvs_update'))
 			)
 		);
 
@@ -962,10 +964,10 @@ class Reports extends Secure_area
 				'invoice_number' => $row['invoice_number'],
 				'comment' => $row['comment'],
 				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => "modal-dlg modal-btn-submit print_hide", 'title' => $this->lang->line('receivings_update'))
+					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('receivings_update'))
 				)
 			);
-			if($this->config->item('invoice_enable'))
+			if(!$this->config->item('invoice_enable'))
 			{
 				unset($summary_data['invoice_number']);
 			}
@@ -1025,8 +1027,8 @@ class Reports extends Secure_area
 	{
 		$data = array();
 
-		$this->load->model('reports/Inventory_Summary');
-		$model = $this->Inventory_Summary;
+		$this->load->model('reports/Inventory_summary');
+		$model = $this->Inventory_summary;
 		$data['item_count'] = $model->getItemCountDropdownArray();
 
 		$stock_locations = $this->Stock_location->get_allowed_locations();
