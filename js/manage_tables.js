@@ -159,9 +159,9 @@
 									field: 'id',
 									values: selected_ids()
 								});
-								enable_actions();
-								$(this).remove();
 							});
+						enable_actions();
+						$(this).remove().siblings(".detail-view").remove();
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 				} else {

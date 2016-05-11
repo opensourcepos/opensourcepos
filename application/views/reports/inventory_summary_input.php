@@ -36,3 +36,13 @@ if(isset($error))
 <?php echo form_close(); ?>
 
 <?php $this->load->view("partial/footer"); ?>
+
+<script type="text/javascript" language="javascript">
+$(document).ready(function()
+{
+	$("#generate_report").click(function()
+	{
+		window.location = [window.location, $("#location_id").val(), $("#item_count").val()].join("/");
+	});
+});
+</script>

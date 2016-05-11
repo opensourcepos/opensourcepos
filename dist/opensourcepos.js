@@ -44342,6 +44342,7 @@ THE SOFTWARE.*/
 								});
 								enable_actions();
 								$(this).remove();
+								$(this).siblings(".detail-view").remove();
 							});
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);

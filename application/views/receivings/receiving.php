@@ -96,7 +96,7 @@ if (isset($error))
 				<th style="width:5%;"></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_total'); ?></th>
-				<th style="width:5%;"><?php echo $this->lang->line('recvs_update'); ?></th>
+				<th style="width:5%;"><?php echo $this->lang->line('receivings_update'); ?></th>
 			</tr>
 		</thead>
 
