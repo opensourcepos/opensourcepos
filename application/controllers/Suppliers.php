@@ -23,8 +23,10 @@ class Suppliers extends Person_controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
-		$suppliers = $this->Supplier->search($search, $limit, $offset);
+		$suppliers = $this->Supplier->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Supplier->get_found_rows($search);
 		$data_rows = array();
 		foreach($suppliers->result() as $supplier)

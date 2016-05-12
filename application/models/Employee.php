@@ -255,7 +255,7 @@ class Employee extends Person
 	/*
 	Preform a search on employees
 	*/
-	function search($search, $rows = 0, $limit_from = 0)
+	function search($search, $rows = 0, $limit_from = 0, $sort = "last_name", $order = "asc")
 	{
 		$this->db->from('employees');
 		$this->db->join('people','employees.person_id=people.person_id');		
@@ -265,7 +265,7 @@ class Employee extends Person
 		phone_number LIKE '%".$this->db->escape_like_str($search)."%' or 
 		username LIKE '%".$this->db->escape_like_str($search)."%' or 
 		CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and deleted=0");		
-		$this->db->order_by("last_name", "asc");
+		$this->db->order_by($sort, $order);
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}

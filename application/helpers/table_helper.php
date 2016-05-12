@@ -291,7 +291,7 @@ function get_giftcards_manage_table_headers()
 	$CI =& get_instance();
 
 	$headers = array(
-		array('id' => $CI->lang->line('common_id')),
+		array('giftcard_id' => $CI->lang->line('common_id')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('giftcard_number' => $CI->lang->line('giftcards_giftcard_number')),
@@ -307,7 +307,7 @@ function get_giftcard_data_row($giftcard, $controller)
 	$controller_name=strtolower(get_class($CI));
 
 	return array (
-		'id' => $giftcard->giftcard_id,
+		'giftcard_id' => $giftcard->giftcard_id,
 		'last_name' => character_limiter($giftcard->last_name,13),
 		'first_name' => character_limiter($giftcard->first_name,13),
 		'giftcard_number' => $giftcard->giftcard_number,

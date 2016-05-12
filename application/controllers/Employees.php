@@ -23,8 +23,10 @@ class Employees extends Person_controller
 		$search = $this->input->get('search');
 		$limit = $this->input->get('limit');
 		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
-		$employees = $this->Employee->search($search, $limit, $offset);
+		$employees = $this->Employee->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Employee->get_found_rows($search);
 		$data_rows = array();
 		foreach($employees->result() as $person)
