@@ -30,7 +30,7 @@ var ospos = function() {
 
     create_item : function(browser, item)
     {
-        return browser.get(this.url("/index.php/items")).elementByCssSelector("a[title='New Item']", 5000).click()
+        return browser.get(this.url("/index.php/items")).elementByCssSelector("a[title*='New Item']", 5000).click()
         .waitForElementByName("name", 10000).type(item.name).elementById("category").type(item.category)
         .elementById('cost_price', 2000).clear().type(item.cost_price).elementById("unit_price", 2000).type(item.unit_price)
         .elementById('tax_name_1', 2000).type('VAT').elementById("tax_percent_name_1", 2000).type("21")
