@@ -6,7 +6,7 @@
 	<title>Open Source Point Of Sale <?php echo $this->lang->line('login_login'); ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<!-- start css template tags -->
-	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=50ab19585f"/>
+	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 	<link rel="stylesheet" type="text/css" href="css/login.css"/>
 	<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 	<!-- end css template tags -->

@@ -123,7 +123,7 @@
 	};
 
 	var selected_rows = function () {
-		return $("#table input:checkbox:checked").parents("tr");
+		return $("#table td input:checkbox:checked").parents("tr");
 	};
 
 	var row_selector = function(id) {
@@ -159,10 +159,9 @@
 									field: 'id',
 									values: selected_ids()
 								});
+								refresh();
 							});
 						enable_actions();
-						table().collapseAllRows();
-						$(this).remove();
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 				} else {
