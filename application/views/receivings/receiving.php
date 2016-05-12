@@ -372,6 +372,13 @@ $(document).ready(function()
 
     $('#item').focus();
 
+	$('#item').keypress(function (e) {
+		if (e.which == 13) {
+			$('#add_item_form').submit();
+			return false;
+		}
+	});
+
 	$('#item').blur(function()
     {
     	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");

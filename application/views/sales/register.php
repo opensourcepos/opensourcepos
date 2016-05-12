@@ -68,24 +68,25 @@ if (isset($success))
 	<?php echo form_close(); ?>
 
 	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
-		<div class="panel-body form-group">
-			<ul>
-				<li class="pull-left first_li">
-					<label for="item", class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
-				</li>
-				<li class="pull-left">
-					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
-					<span class="ui-helper-hidden-accessible" role="status"></span>
-				</li>
-				<li class="pull-right">
-					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
-							title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
-						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
-					</button>
-				</li>
-			</ul>
-		</div>
+	<div class="panel-body form-group">
+		<ul>
+			<li class="pull-left first_li">
+				<label for="item" class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
+			</li>
+			<li class="pull-left">
+				<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
+				<span class="ui-helper-hidden-accessible" role="status"></span>
+			</li>
+			<li class="pull-right">
+				<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
+						title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
+					<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
+				</button>
+			</li>
+		</ul>
+	</div>
 	<?php echo form_close(); ?>
+
 
 <!-- Sale Items List -->
 	
@@ -527,6 +528,13 @@ $(document).ready(function()
     });
 
 	$('#item').focus();
+
+	$('#item').keypress(function (e) {
+		if (e.which == 13) {
+			$('#add_item_form').submit();
+			return false;
+		}
+	});
 
     $('#item').blur(function()
     {
