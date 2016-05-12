@@ -152,6 +152,7 @@
 				//delete was successful, remove checkbox rows
 				if (response.success) {
 					var selector = ids ? row_selector(ids) : selected_rows();
+					table().collapseAllRows();
 					$(selector).each(function (index, element) {
 						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
 							.end().animate({opacity: 0}, 1200, "linear", function () {
@@ -159,6 +160,7 @@
 									field: 'id',
 									values: selected_ids()
 								});
+								$(this).remove();
 								refresh();
 							});
 						enable_actions();
