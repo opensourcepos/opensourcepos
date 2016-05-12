@@ -59,12 +59,12 @@
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
+		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c264ea5ebc"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=de9ff66f03"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=fcdf6cabb2" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a2cb7f5170" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
