@@ -16,7 +16,9 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->get('term'));
+		$suggestions = $this->Item->get_search_suggestions($this->input->get('term'), array(
+			'search_custom' => FALSE, 'is_deleted' => FALSE
+		), TRUE);
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->get('term')));
 		echo json_encode($suggestions);
 	}
