@@ -133,7 +133,7 @@ function transform_headers($array)
 				$element['sortable'] : current($element) != '',
 			'checkbox' => isset($element['checkbox']) ?
 				$element['checkbox'] : FALSE,
-			'class' => isset($element['checkbox']) || current($element) == '' ?
+			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ?
 				'print_hide' : '');
 	}
 	return json_encode($result);

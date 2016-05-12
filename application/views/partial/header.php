@@ -61,10 +61,10 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=d260cbcc2a"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c264ea5ebc"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=faf76c76c4" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=fcdf6cabb2" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

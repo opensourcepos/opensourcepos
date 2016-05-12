@@ -161,7 +161,8 @@
 								});
 							});
 						enable_actions();
-						$(this).remove().siblings(".detail-view").remove();
+						table().collapseAllRows();
+						$(this).remove();
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 				} else {

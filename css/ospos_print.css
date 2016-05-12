@@ -74,4 +74,14 @@
 	{
 		display:none !important;
 	}
+
+	.fixed-table-container
+	{
+		border: none;
+	}
+
+	.fixed-table-container thead th .sortable
+	{
+		padding-right: 10px;
+	}
 }

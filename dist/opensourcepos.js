@@ -44340,10 +44340,10 @@ THE SOFTWARE.*/
 									field: 'id',
 									values: selected_ids()
 								});
-								enable_actions();
-								$(this).remove();
-								$(this).siblings(".detail-view").remove();
 							});
+						enable_actions();
+						table().collapseAllRows();
+						$(this).remove();
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 				} else {

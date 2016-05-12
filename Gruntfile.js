@@ -194,6 +194,7 @@ module.exports = function(grunt) {
     });
 
     require('load-grunt-tasks')(grunt);
+    grunt.loadNpmTasks('grunt-mocha-webdriver');
 
     grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
 
