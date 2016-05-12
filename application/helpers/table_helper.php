@@ -132,7 +132,9 @@ function transform_headers($array)
 			'sortable' => isset($element['sortable']) ?
 				$element['sortable'] : current($element) != '',
 			'checkbox' => isset($element['checkbox']) ?
-				$element['checkbox'] : FALSE);
+				$element['checkbox'] : FALSE,
+			'class' => isset($element['checkbox']) || current($element) == '' ?
+				'print_hide' : '');
 	}
 	return json_encode($result);
 }
