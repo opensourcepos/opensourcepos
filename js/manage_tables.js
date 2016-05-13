@@ -162,9 +162,10 @@
 									values: selected_ids()
 								});
 								$(this).remove();
-								$("input:checked").prop("checked", false);
-								refresh();
-								enable_actions();
+								if (index == $(selector).length - 1) {
+									refresh();
+									enable_actions();
+								}
 							});
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
@@ -226,6 +227,8 @@
 	};
 
 	var refresh = function() {
+		// issue #554: uncheck all checkboxes
+		$("input:checked").prop("checked", false);
 		table().refresh();
 	}
 
