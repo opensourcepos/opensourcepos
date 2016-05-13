@@ -44696,7 +44696,6 @@ THE SOFTWARE.*/
 								$(this).remove();
 								refresh();
 							});
-						enable_actions();
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
 				} else {
@@ -44773,7 +44772,7 @@ THE SOFTWARE.*/
 					$.each(selector, function (index, element) {
 						var id = $(element).data('uniqueid');
 						$.get({
-							url: url + '/' + id || resource + '/get_row/' + id,
+							url: [url || resource + '/get_row', id].join("/"),
 							success: function (response) {
 								table().updateByUniqueId({id: id, row: response});
 								// TODO make selector more specific?
