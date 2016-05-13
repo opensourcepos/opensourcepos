@@ -70,6 +70,7 @@
 					message: (function() {
 						var node = $('<div></div>');
 						$.get($link.attr('href') || $link.data('href'), function(data) {
+							console.log("getting data from " + ($link.attr('href') || $link.data('href')));
 							node.html(data);
 						});
 						return node;
@@ -161,7 +162,9 @@
 									values: selected_ids()
 								});
 								$(this).remove();
+								$("input:checked").prop("checked", false);
 								refresh();
+								enable_actions();
 							});
 					});
 					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
