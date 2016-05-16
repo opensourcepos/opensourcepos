@@ -27,11 +27,6 @@
 		text-align:center;
 	}
 
-	.short_name
-	{
-		display:inline;
-	}
-
 	#receipt_items td
 	{
 		white-space:nowrap;
