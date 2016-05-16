@@ -25,6 +25,8 @@ $(document).ready(function()
 		uniqueId: 'sale_id',
 		onLoadSuccess: function(response) {
 			$("#payment_summary").html(response.payment_summary);
+			$("#table tbody tr").length > 1 && $("#table tbody tr:last td:first").html("");
+
 		},
 		queryParams: function() {
 			return $.extend(arguments[0], {

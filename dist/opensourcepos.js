@@ -44760,8 +44760,6 @@ THE SOFTWARE.*/
 	};
 
 	var refresh = function() {
-		// issue #554: uncheck all checkboxes
-		$("input:checked").prop("checked", false);
 		table().refresh();
 	}
 

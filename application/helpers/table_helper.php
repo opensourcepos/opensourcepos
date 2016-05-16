@@ -45,7 +45,8 @@ function get_sale_data_last_row($sales, $controller)
 		'sale_id' => '-',
 		'sale_time' => '<b>'.$CI->lang->line('sales_total').'</b>',
 		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
-		'amount_due' => '<b>'.to_currency($sum_change_due).'</b>'
+		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
+		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
 	);
 }
 
