@@ -28,8 +28,10 @@
 
 		var init_dialog = function()
 		{
+			<?php if (isset($editable)): ?>
 			table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
 			dialog_support.init("a.modal-dlg");
+			<?php endif; ?>
 		};
 
 		$('#table').bootstrapTable({
@@ -45,7 +47,7 @@
 			iconSize: 'sm',
 			paginationVAlign: 'bottom',
 			detailView: true,
-			onPageChange: <?php echo isset($editable); ?> && init_dialog,
+			onPageChange: init_dialog,
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
@@ -54,7 +56,7 @@
 			}
 		});
 
-		<?php echo isset($editable); ?> && init_dialog();
+		init_dialog();
 	});
 </script>
 <?php $this->load->view("partial/footer"); ?>
