@@ -130,6 +130,8 @@ function transform_headers($array)
 	{
 		$result[] = array('field' => key($element),
 			'title' => current($element),
+			'switchable' => isset($element['switchable']) ?
+				$element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
 			'sortable' => isset($element['sortable']) ?
 				$element['sortable'] : current($element) != '',
 			'checkbox' => isset($element['checkbox']) ?
