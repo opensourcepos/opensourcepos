@@ -11,10 +11,10 @@ describe("giftcard numbering test", function () {
     it.skip("issue #65: giftcard numbering should add properly", function(done) {
         return this.browser.get(ospos.url("/index.php/giftcards")).waitForElementByCss(".modal-dlg").click()
             .waitForElementByName("value", 10000).type("100").elementById('giftcard_number').clear().type("10")
-            .elementById("submit").click().waitForElementByXPath("//table/tbody/tr[td/text()='10']/td[4]", 2000).text().then(function (value) {
+            .elementById("submit").click().waitForElementByXPath("//table/tbody/tr[td/text()='10']", 2000).text().then(function (value) {
                 assert.ok(value, "giftcard failed to be added properly!");
-            }).elementByCss(".modal-dlg").click().waitForElementByName("value", 4000).type("100").elementById("submit").click()
-            .waitForElementByXPath("//table/tbody/tr[td/text()='11']/td[4]").text().then(function (value) {
+            }).waitForElementByCss(".modal-dlg").click().waitForElementByName("value", 4000).type("100").elementById("submit").click()
+            .waitForElementByXPath("//table/tbody/tr[td/text()='11']").text().then(function (value) {
                 assert.equal(value, "11", "giftcard number not incrementing properly!!");
             }).then(done, done);
     });

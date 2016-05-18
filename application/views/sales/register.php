@@ -350,12 +350,12 @@ if (isset($success))
 			</table>
 
 			<div id="payment_details">
-				<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>						
 					<?php
 					// Show Complete sale button instead of Add Payment if there is no amount due left
 					if( $payments_cover_total )
 					{
 					?>
+						<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
@@ -370,13 +370,15 @@ if (isset($success))
 								</td>
 							</tr>
 						</table>
-					
+						<?php echo form_close(); ?>
+
 						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo $tabindex+1; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 					<?php
 					}
 					else
 					{
 					?>
+						<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
@@ -393,10 +395,11 @@ if (isset($success))
 						</table>
 
 						<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo $tabindex+2; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
-					<?php
+						<?php echo form_close(); ?>
+
+						<?php
 					}
 					?>
-				<?php echo form_close(); ?>
 
 				<?php
 				// Only show this part if there is at least one payment entered.
