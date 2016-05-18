@@ -70,7 +70,6 @@
 					message: (function() {
 						var node = $('<div></div>');
 						$.get($link.attr('href') || $link.data('href'), function(data) {
-							console.log("getting data from " + ($link.attr('href') || $link.data('href')));
 							node.html(data);
 						});
 						return node;
@@ -189,6 +188,15 @@
 
 	var options;
 
+	var toggle_column_visbility = function() {
+		if (localStorage[options.employee_id]) {
+			var user_settings = JSON.parse(localStorage[options.employee_id]);
+			user_settings[options.resource] && $.each(user_settings[options.resource], function(index, element) {
+				element ? table().showColumn(index) : table().hideColumn(index);
+			});
+		}
+	};
+
 	var init = function (_options) {
 		options = _options;
 		enable_actions = enable_actions(options.enableActions);
@@ -211,6 +219,13 @@
 			onCheckAll: enable_actions,
 			onUncheckAll: enable_actions,
 			onLoadSuccess: load_success(options.onLoadSuccess),
+			onColumnSwitch : function(field, checked) {
+				var user_settings = localStorage[options.employee_id];
+				user_settings = (user_settings && JSON.parse(user_settings)) || {};
+				user_settings[options.resource] = user_settings[options.resource] || {};
+				user_settings[options.resource][field] = checked;
+				localStorage[options.employee_id] = JSON.stringify(user_settings);
+			},
 			queryParamsType: 'limit',
 			iconSize: 'sm',
 			silentSort: true,
@@ -218,6 +233,7 @@
 		}));
 		enable_actions();
 		init_delete();
+		toggle_column_visbility();
 	};
 
 	var init_delete = function (confirmMessage) {
