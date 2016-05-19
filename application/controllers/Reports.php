@@ -768,14 +768,14 @@ class Reports extends Secure_area
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
 		$customer_info = $this->Customer->get_info($customer_id);
 		$data = array(
 			"title" => $customer_info->first_name .' '. $customer_info->last_name.' '.$this->lang->line('reports_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->itrowem('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
@@ -817,7 +817,7 @@ class Reports extends Secure_area
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -866,7 +866,7 @@ class Reports extends Secure_area
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
 			}
 		}
 
@@ -922,7 +922,7 @@ class Reports extends Secure_area
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -979,7 +979,7 @@ class Reports extends Secure_area
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$key][] = array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%');
+				$details_data[$row['receiving_id']][] = array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%');
 			}
 		}
 

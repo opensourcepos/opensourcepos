@@ -39,7 +39,7 @@
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			pagination: true,
-			sortable: true,
+			sortable: <?php echo empty($editable) ? 'false' : 'true'; ?>,
 			showColumns: true,
 			uniqueId: 'id',
 			showExport: true,
@@ -47,11 +47,12 @@
 			iconSize: 'sm',
 			paginationVAlign: 'bottom',
 			detailView: true,
+			uniqueId: 'id',
 			onPageChange: init_dialog,
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
-					data: detail_data[index]
+					data: detail_data[row.id || index]
 				});
 			}
 		});
