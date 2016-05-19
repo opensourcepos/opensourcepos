@@ -31,7 +31,9 @@ a.none
 
 .alert
 {
-	margin-bottom: 0;
+	margin-bottom: 0.1em;
+	padding: 10px;
+	width: 99%;
 }
 
 .jumbotron.push-spaces
