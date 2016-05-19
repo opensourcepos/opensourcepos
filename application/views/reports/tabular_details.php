@@ -39,7 +39,7 @@
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			pagination: true,
-			sortable: <?php echo empty($editable) ? 'false' : 'true'; ?>,
+			sortable: true,
 			showColumns: true,
 			uniqueId: 'id',
 			showExport: true,
@@ -52,7 +52,7 @@
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
-					data: detail_data[row.id || index]
+					data: detail_data[row.id || $(row[0]).text().replace(/(POS|RECV)\s*/g, '')]
 				});
 			}
 		});
