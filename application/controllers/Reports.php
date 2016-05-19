@@ -775,7 +775,7 @@ class Reports extends Secure_area
 		$customer_info = $this->Customer->get_info($customer_id);
 		$data = array(
 			"title" => $customer_info->first_name .' '. $customer_info->last_name.' '.$this->lang->line('reports_report'),
-			"subtitle" => date($this->config->itrowem('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
