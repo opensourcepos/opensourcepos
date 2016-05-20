@@ -44714,7 +44714,6 @@ THE SOFTWARE.*/
 		return function(response) {
 			typeof options.load_callback == 'function' && options.load_callback();
 			options.load_callback = undefined;
-			dialog_support.init("a.modal-dlg, button.modal-dlg");
 			typeof callback == 'function' && callback.call(this, response);
 		}
 	};
@@ -44752,6 +44751,9 @@ THE SOFTWARE.*/
 			onCheckAll: enable_actions,
 			onUncheckAll: enable_actions,
 			onLoadSuccess: load_success(options.onLoadSuccess),
+			onPostBody: function() {
+				dialog_support.init("a.modal-dlg, button.modal-dlg");
+			},
 			onColumnSwitch : function(field, checked) {
 				var user_settings = localStorage[options.employee_id];
 				user_settings = (user_settings && JSON.parse(user_settings)) || {};

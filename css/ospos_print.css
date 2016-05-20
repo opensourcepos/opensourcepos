@@ -5,7 +5,7 @@
 		display: none !important;
 	}
 
-	#receipt_wrapper
+	#receipt_wrapper, #table
 	{
 		/*background-color:#FFFFFF;*/
 		font-size:75%;
