@@ -115,7 +115,7 @@ function transform_headers_readonly($array)
 	$result = array();
 	foreach($array as $key => $value)
 	{
-		$result[] = array('field' => $key, 'title' => $value, 'sortable' => $value != '');
+		$result[] = array('field' => $key, 'title' => $value, 'sortable' => $value != '', 'switchable' => !preg_match('(^$|&nbsp)', $value));
 	}
 
 	return json_encode($result);
