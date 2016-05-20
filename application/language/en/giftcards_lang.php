@@ -4,7 +4,6 @@ $lang["giftcards_add_minus"] = "Inventory to add/subtract";
 $lang["giftcards_allow_alt_description"] = "Allow Alt Description";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
-$lang["giftcards_basic_information"] = "Giftcard Information";
 $lang["giftcards_bulk_edit"] = "Bulk Edit";
 $lang["giftcards_cannot_be_deleted"] = "Could not deleted selected giftcards, one or more of the selected giftcards has sales.";
 $lang["giftcards_cannot_find_giftcard"] = "Cannot find any information about giftcard";

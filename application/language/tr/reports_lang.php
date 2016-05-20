@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "Hepsi";
-$lang["reports_all_time"] = "Tüm Zamanlar";
 $lang["reports_categories"] = "Kategoriler";
 $lang["reports_categories_summary_report"] = "Kategori Özet Raporu";
 $lang["reports_category"] = "Kategori";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "Ürünler";
 $lang["reports_items_purchased"] = "Satın Alınan Ürünler";
 $lang["reports_items_received"] = "Alınan Ürünler";
 $lang["reports_items_summary_report"] = "Ürün Özet Raporu";
-$lang["reports_last_7"] = "Son 7 Gün";
-$lang["reports_last_month"] = "Geçen Ay";
-$lang["reports_last_year"] = "Geçen Yıl";
 $lang["reports_low_inventory"] = "Düşük Stok";
 $lang["reports_low_inventory_report"] = "Düşük Stok Raporu";
 $lang["reports_name"] = "İsim";
@@ -88,17 +84,8 @@ $lang["reports_tax"] = "Vergi";
 $lang["reports_tax_percent"] = "Vergi Oranı";
 $lang["reports_taxes"] = "Vergiler";
 $lang["reports_taxes_summary_report"] = "Vergi Özet Raporu";
-$lang["reports_this_month"] = "Bu Ay";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "Bu Yıl";
-$lang["reports_today"] = "Bugün";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "Toplam";
 $lang["reports_type"] = "Tür";
-$lang["reports_welcome_message"] = "Rapor paneline hoş geldiniz. Görmek istediğiniz raporu seçiniz.";
-$lang["reports_yesterday"] = "Dün";
 $lang["reports_item_count"] = "Filter Stok Habis/Belum Habis/Minus";
 $lang["reports_cost_price"] = "Maliyet Fiyatı";
 $lang["reports_unit_price"] = "Satış Fiyatı";

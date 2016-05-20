@@ -1,22 +1,28 @@
 <?php
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author CodeIgniter community
+ * @author Mutasim Ridlo, S.Kom
+ * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @license http://opensource.org/licenses/MIT MIT License
+ * @link http://codeigniter.com
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['upload_userfile_not_set'] = "Unable to find a post variable called userfile.";
-$lang['upload_file_exceeds_limit'] = "The uploaded file exceeds the maximum allowed size in your PHP configuration file.";
-$lang['upload_file_exceeds_form_limit'] = "The uploaded file exceeds the maximum size allowed by the submission form.";
-$lang['upload_file_partial'] = "The file was only partially uploaded.";
-$lang['upload_no_temp_directory'] = "The temporary folder is missing.";
-$lang['upload_unable_to_write_file'] = "The file could not be written to disk.";
-$lang['upload_stopped_by_extension'] = "The file upload was stopped by extension.";
-$lang['upload_no_file_selected'] = "You did not select a file to upload.";
-$lang['upload_invalid_filetype'] = "The filetype you are attempting to upload is not allowed.";
-$lang['upload_invalid_filesize'] = "The file you are attempting to upload is larger than the permitted size.";
-$lang['upload_invalid_dimensions'] = "The image you are attempting to upload exceeds the maximum height or width.";
-$lang['upload_destination_error'] = "A problem was encountered while attempting to move the uploaded file to the final destination.";
-$lang['upload_no_filepath'] = "The upload path does not appear to be valid.";
-$lang['upload_no_file_types'] = "You have not specified any allowed file types.";
-$lang['upload_bad_filename'] = "The file name you submitted already exists on the server.";
-$lang['upload_not_writable'] = "The upload destination folder does not appear to be writable.";
-
-
-/* End of file upload_lang.php */
-/* Location: ./system/language/english/upload_lang.php */
+$lang['upload_userfile_not_set'] = 'Tidak dapat menemukan variabel pos yang disebut userfile.';
+$lang['upload_file_exceeds_limit'] = 'Berkas yang diunggah melebihi ukuran maksimum yang diperbolehkan dalam berkas konfigurasi PHP Anda.';
+$lang['upload_file_exceeds_form_limit'] = 'Berkas yang diunggah melebihi ukuran maksimum yang diperbolehkan oleh formulir pengajuan.';
+$lang['upload_file_partial'] = 'File ini hanya sebagian terunggah.';
+$lang['upload_no_temp_directory'] = 'Folder sementara hilang.';
+$lang['upload_unable_to_write_file'] = 'File tidak dapat ditulis ke disk.';
+$lang['upload_stopped_by_extension'] = 'Upload berkas dihentikan oleh ekstensi.';
+$lang['upload_no_file_selected'] = 'Anda tidak memilih berkas untuk mengunggah.';
+$lang['upload_invalid_filetype'] = 'Jenis berkas yang Anda coba untuk mengunggah tidak diperbolehkan.';
+$lang['upload_invalid_filesize'] = 'Berkas yang Anda mencoba untuk mengunggah lebih besar dari ukuran yang diizinkan.';
+$lang['upload_invalid_dimensions'] = 'Gambar yang Anda sedang berusaha untuk mengunggah tidak sesuai dengan dimensi yang diperbolehkan.';
+$lang['upload_destination_error'] = 'Masalah terjadi ketika mencoba untuk memindahkan berkas terunggah ke tujuan akhir.';
+$lang['upload_no_filepath'] = 'Jalur Unggah tampaknya tidak sah.';
+$lang['upload_no_file_types'] = 'Anda belum ditentukan jenis berkas yang diijinkan.';
+$lang['upload_bad_filename'] = 'Nama berkas yang Anda kirimkan sudah ada di server.';
+$lang['upload_not_writable'] = 'Folder tujuan unggah sepertinya tidak dapat ditulis.';

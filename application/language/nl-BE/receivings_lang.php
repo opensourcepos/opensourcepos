@@ -1,7 +1,6 @@
 <?php 
 
 $lang["receivings_transaction_failed"] = "Order transactie mislukt";
-$lang["recvs_basic_information"] = "Order informatie";
 $lang["recvs_cancel_receiving"] = "Annuleer";
 $lang["recvs_cannot_be_deleted"] = "Order(s) konden niet verwijderd worden";
 $lang["recvs_comments"] = "Commentaar";
@@ -49,3 +48,4 @@ $lang["recvs_supplier"] = "Leverancier";
 $lang["recvs_total"] = "Totaal";
 $lang["recvs_unable_to_add_item"] = "Onmogelijk om product aan order toe te voegen";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
+$lang["recvs_update"] = "Bewerk";

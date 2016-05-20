@@ -1,7 +1,6 @@
 <?php 
 
 $lang["suppliers_account_number"] = "帳號 #";
-$lang["suppliers_basic_information"] = "供應商資料";
 $lang["suppliers_cannot_be_deleted"] = "無法刪除所選擇的供應商，選定的供應商中至少有一家已有銷售紀錄。";
 $lang["suppliers_company_name"] = "公司名稱";
 $lang["suppliers_company_name_required"] = "公司名稱是必填欄位";

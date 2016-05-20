@@ -1,142 +1,115 @@
-@import url(autocomplete.css);
-@import url(menubar.css);
-@import url(general.css);
-@import url(popupbox.css);
-@import url(register.css);
-@import url(receipt.css);
-@import url(reports.css);
-@import url(tables.css);
-@import url(thickbox.css);
-@import url(datepicker.css);
-@import url(invoice.css);
-@import url(jquery-ui.structure.css);
-@import url(jquery-ui.theme.css);
-@import url(jquery-ui-timepicker-addon.css);
-
-body
+html, body
 {
-	margin:0px;
-	padding:0px;
-	background-color:#f7f7f7;
-	font-family: Arial, sans-serif, "Lucida Grande", "Trebuchet MS", Tahoma, Verdana;
-	font-size: 0.9em;
+	height: 100%;
 }
 
 a.none
 {
-	text-decoration:none;
+	text-decoration: none;
 }
 
-
-#content_area_wrapper
+.topbar
 {
-	position:relative;
-	width:100%;
-	background-color:#FFFFFF;	
-	margin:0px;
-	padding-bottom: 10px;
-	border-bottom:1px solid #CCCCCC;
-	text-align:center;	
-
+	color: #eee;
+	font-size: 12px;
+	background: #182735;
+	padding: 0.2em;
 }
 
-#content_area
+.navbar
 {
-	position:relative;
-	margin:0 auto;
-	width:875px;
-	text-align:left;
-	
+	border-radius: 0;
+}
+
+.navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > .active > a:focus
+{
+	color: #2C3E50;
+	background-color: #FFFFFF;
+}
+
+.navbar .menu-icon
+{
+	text-align: center;
+	font-size: 12px;
+}
+
+.navbar .menu-icon img
+{
+	width: 24px;
+}
+
+.wrapper
+{
+	font-size: 14px;
+}
+
+.pagination
+{
+	margin: 0 !important;
 }
 
 #title_bar
 {
-	position:relative;
-	margin-top:10px;
-	margin-bottom:10px;
-	width:100%;
-	height:50px;
+	position: relative;
+	width: 100%;
+	height: 3em;
 }
-
-#title
-{
-	position:absolute;
-	bottom:0px;
-	left:0px;
-	font-size:30px;
-	font-weight:bold;
-	color:#000000;
-}	
 
 #page_title
 {
-	margin-top:8px;
-	font-size:30px;
-	font-weight:bold;
-	color:#000000;
-	text-align:center;
-
+	font-size: 22px;
+	font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-weight: 400;
 }
 
 #page_subtitle
 {
-	margin-top:8px;
-	font-size:16px;
-	font-weight:bold;
-	color:#000000;
-	text-align:center;
-}
-
-#new_button
-{
-	position:absolute;
-	bottom:-5px;
-	right:0px;
-}
-
-#spinner
-{
-        float:right;	
-	display:none;
+	margin-bottom: 0.5em;
+	font-size: 16px;
+	font-weight: bold;
+	text-align: center;
 }
 
 #feedback_bar
 {
-	position:fixed;
-	bottom:0;
-	left:0;
-	width:100%;
-	height:55px;	
-	position:fixed;
-	opacity: 0;
-	filter: alpha(opacity=0);
-	z-index:1;
-	line-height:3.3;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	z-index: 1;
+	line-height: 3.3;
+	text-align: center;
 }
 
 #home_module_list
 {
 	position: relative;
+	padding: 2em 0;
+	text-align: center;
 }
 
 .module_item
 {
-	padding: 10px;
+	min-width: 7em;
+	display: inline-block;
+	text-align: center;
+}
+
+.module_item a
+{
+	display: block;
 }
 
 #config_wrapper
 {
-	text-align:center;
+	text-align: center;
 }
 
 #config_info
 {
-	width:93%;
-	margin:0 auto;
-	padding:10px;
-	margin-bottom:30px;
-	margin-top:10px;
-	text-align:left;
+	text-align: left;
 }
 
 #config_info .wide
@@ -146,37 +119,64 @@ a.none
 
 #footer
 {
-	position:relative;
-	margin-top:25px;
-	margin-bottom:15px;	
-	text-align:center;
-	font-size:11px;
-	color:#777777;
-	clear:both;
-	
-}
-
-input#search
-{
-	padding: 0px;
-}
-
-select#stock_location
-{
-	border: none;
-}
-
-#select_customer_form input, #select_supplier_form input
-{
-	width: 95%;
-}
-
-input.quantity, input.discount
-{
-	width: 40px;
+	margin-top: 5em;
+	position: relative;
+	text-align: center;
+	font-size: 11px;
+	color: #777777;
+	clear: both;
 }
 
 a.rollover img
 {
-	padding: 3px;	
+	padding: 3px;
+}
+
+button.btn.dropdown-toggle.btn-sm
+{
+	background-color: white;
+	color: black;
+	border: 2px solid #dce4ec;
+}
+
+.dropdown-menu
+{
+	font-size: 13px;
+}
+
+label.required
+{
+	color:red;
+}
+
+@media (min-width: 768px)
+{
+	.navbar-nav > li > a
+	{
+		padding: 10px 10px 9px;
+	}
+
+	.modal-dlg .modal-dialog
+	{
+		width: 500px;
+	}
+
+	.modal-dlg-wide .modal-dialog
+	{
+		width: 750px;
+	}
+}
+
+@media print
+{
+    .no-print, .no-print *
+	{
+        display: none !important;
+    }
+}
+
+.modal-body
+{
+	max-height: calc(100vh - 212px);
+	overflow-y: auto;
 }

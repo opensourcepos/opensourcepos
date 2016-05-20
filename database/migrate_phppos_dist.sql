@@ -57,7 +57,11 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('show_total_discount', '1'),
 ('dateformat', 'm/d/Y'),
 ('timeformat', 'H:i:s'),
-('currency_symbol', '$');
+('currency_symbol', '$'),
+('decimal_point', '.'),
+('currency_decimals', '2'),
+('tax_decimals', '2'),
+('quantity_decimals', '0');
 
 -- --------------------------------------------------------
 
@@ -164,8 +168,8 @@ CREATE TABLE `ospos_items` (
   `description` varchar(255) NOT NULL,
   `cost_price` decimal(15,2) NOT NULL,
   `unit_price` decimal(15,2) NOT NULL,
-  `reorder_level` decimal(15,2) NOT NULL DEFAULT '0',
-  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
+  `reorder_level` decimal(15,3) NOT NULL DEFAULT '0',
+  `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `pic_id` int(10) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
@@ -200,7 +204,7 @@ CREATE TABLE `ospos_items` (
 CREATE TABLE `ospos_items_taxes` (
   `item_id` int(10) NOT NULL,
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,2) NOT NULL,
+  `percent` decimal(15,3) NOT NULL,
   PRIMARY KEY (`item_id`,`name`,`percent`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -236,7 +240,7 @@ CREATE TABLE `ospos_item_kits` (
 CREATE TABLE `ospos_item_kit_items` (
   `item_kit_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  `quantity` decimal(15,2) NOT NULL,
+  `quantity` decimal(15,3) NOT NULL,
   PRIMARY KEY (`item_kit_id`,`item_id`,`quantity`),
   KEY `ospos_item_kit_items_ibfk_2` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -244,7 +248,6 @@ CREATE TABLE `ospos_item_kit_items` (
 --
 -- Dumping data for table `ospos_item_kit_items`
 --
-
 
 -- --------------------------------------------------------
 
@@ -255,7 +258,7 @@ CREATE TABLE `ospos_item_kit_items` (
 CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   `item_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL DEFAULT '0',
+  `quantity` decimal(15,3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
@@ -447,12 +450,12 @@ CREATE TABLE `ospos_receivings_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL,
-  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0',
+  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `item_location` int(11) NOT NULL,
-  `receiving_quantity` int(11) NOT NULL DEFAULT '1',
+  `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -499,7 +502,7 @@ CREATE TABLE `ospos_sales_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
@@ -526,7 +529,7 @@ CREATE TABLE `ospos_sales_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,2) NOT NULL,
+  `percent` decimal(15,3) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)
@@ -591,7 +594,7 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `description` varchar(30) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
@@ -617,7 +620,7 @@ CREATE TABLE `ospos_sales_suspended_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,2) NOT NULL,
+  `percent` decimal(15,3) NOT NULL,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `item_id` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -652,18 +655,16 @@ CREATE TABLE `ospos_sales_suspended_payments` (
 --
 
 CREATE TABLE `ospos_sessions` (
-  `session_id` varchar(40) NOT NULL DEFAULT '0',
+  `id` varchar(40) NOT NULL DEFAULT '0',
   `ip_address` varchar(45) NOT NULL DEFAULT '0',
-  `user_agent` varchar(120) NOT NULL,
-  `last_activity` int(10) unsigned NOT NULL DEFAULT '0',
-  `user_data` text,
-  PRIMARY KEY (`session_id`)
+  `data` blob NOT NULL,
+  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sessions`
 --
-
 
 -- --------------------------------------------------------
 
@@ -707,8 +708,6 @@ CREATE TABLE `ospos_suppliers` (
 
 --
 -- This migration script should be run after creating tables with the regular database script and before applying the constraints.
---
--- This script migrates data from phppos to ospos 2.3.4
 --
 
 --
@@ -872,6 +871,11 @@ SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.ph
 
 --
 -- Add constraints on copied data
+--
+
+
+--
+-- Constraints for dumped tables
 --
 
 --

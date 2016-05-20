@@ -1,7 +1,6 @@
 <?php 
 
 $lang["suppliers_account_number"] = "Nomor Akun Pemasok";
-$lang["suppliers_basic_information"] = "Informasi Pemasok ";
 $lang["suppliers_cannot_be_deleted"] = "Tidak bisa dihapus pemasok yang dipilih, satu atau lebih dari pemasok yang dipilih memiliki penjualan.";
 $lang["suppliers_company_name"] = "Nama Perusahaan";
 $lang["suppliers_company_name_required"] = "Nama Perusahaan wajib diisi";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["suppliers_account_number"] = "№ счета";
-$lang["suppliers_basic_information"] = "Информация о поставщике";
 $lang["suppliers_cannot_be_deleted"] = "Не удалось удалить выбранные поставщиков, один или более из выбранных поставщиков имеет продаж.";
 $lang["suppliers_company_name"] = "Название компании";
 $lang["suppliers_company_name_required"] = "Название компании является обязательным полем";

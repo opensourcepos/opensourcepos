@@ -1,104 +1,95 @@
 <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+
 <ul id="error_message_box" class="error_message_box"></ul>
-<?php
-echo form_open('giftcards/save/'.$giftcard_info->giftcard_id,array('id'=>'giftcard_form'));
-?>
-<fieldset id="giftcard_basic_info" style="padding: 5px;">
-<legend><?php echo $this->lang->line("giftcards_basic_information"); ?></legend>
 
-<div class="field_row clearfix">
-<?php echo form_label($this->lang->line('giftcards_person_id').':', 'name',array('class'=>'wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'person_id',
-		'id'=>'person_id',
-		'value'=>$selected_person)
-	);?>
-	</div>
-</div>
+<?php echo form_open('giftcards/save/'.$giftcard_info->giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
+	<fieldset id="giftcard_basic_info" style="padding: 5px;">
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+					'name'=>'person_name',
+					'id'=>'person_name',
+					'class'=>'form-control input-sm',
+					'value'=>$selected_person_name)
+					);?>
+				<?php echo form_hidden('person_id', $selected_person_id);?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">
-<?php echo form_label($this->lang->line('giftcards_giftcard_number').':', 'name',array('class'=>'required wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'giftcard_number',
-		'id'=>'giftcard_number',
-		'value'=>$giftcard_number)
-	);?>
-	</div>
-</div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'name', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+					'name'=>'giftcard_number',
+					'id'=>'giftcard_number',
+					'class'=>'form-control input-sm',
+					'value'=>$giftcard_number)
+					);?>
+			</div>
+		</div>
 
-<div class="field_row clearfix">
-<?php echo form_label($this->lang->line('giftcards_card_value').':', 'name',array('class'=>'required wide')); ?>
-	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'value',
-		'id'=>'value',
-		'value'=>$giftcard_info->value)
-	);?>
-	</div>
-</div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('giftcards_card_value'), 'name', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php echo form_input(array(
+							'name'=>'value',
+							'id'=>'value',
+							'class'=>'form-control input-sm',
+							'value'=>to_currency_no_money($giftcard_info->value))
+							);?>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+<?php echo form_close(); ?>
 
-<?php
-echo form_submit(array(
-	'name'=>'submit',
-	'id'=>'submit',
-	'value'=>$this->lang->line('common_submit'),
-	'class'=>'submit_button float_right')
-);
-?>
-</fieldset>
-<?php
-echo form_close();
-?>
 <script type='text/javascript'>
-
 //validation and submit handling
 $(document).ready(function()
 {
-	var format_item = function(row) 
-	{
-    	return [row[0], "|", row[1]].join("");
+	var fill_value =  function(event, ui) {
+		event.preventDefault();
+		$("input[name='person_id']").val(ui.item.value);
+		$("input[name='person_name']").val(ui.item.label);
 	};
-	var autocompleter = $("#person_id").autocomplete('<?php echo site_url("giftcards/person_search"); ?>', 
+
+	var autocompleter = $("#person_name").autocomplete(
 	{
+		source: '<?php echo site_url("customers/suggest"); ?>',
     	minChars:0,
     	delay:15, 
-    	max:100,
        	cacheLength: 1,
-        formatItem: format_item,
-        formatResult : format_item
+		appendTo: '.modal-content',
+		select: fill_value,
+		focus: fill_value
     });
 
 	// declare submitHandler as an object.. will be reused
-	var submit_form = function(selected_person) 
+	var submit_form = function()
 	{ 
 		$(this).ajaxSubmit(
 		{
 			success:function(response)
 			{
-				tb_remove();
+				dialog_support.hide();
 				post_giftcard_form_submit(response);
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
 			{
-				selected_customer && autocompleter.val(selected_person);
 				post_giftcard_form_submit({message: errorThrown});
 			},
 			dataType:'json'
 		});
 	};
 	
-	$('#giftcard_form').validate({
+	$('#giftcard_form').validate($.extend({
 		submitHandler:function(form)
 		{
-			var selected_person = autocompleter.val();
-			var selected_person_id = selected_person && selected_person.replace(/(\w)\|.*/, "$1");
-			selected_person_id && autocompleter.val(selected_person_id);
-			submit_form.call(form, selected_person);
+			submit_form.call(form)
 		},
-		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
 		rules:
 		{
 			giftcard_number:
@@ -125,6 +116,6 @@ $(document).ready(function()
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
-	});
+	}, dialog_support.error));
 });
 </script>

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "Semua";
-$lang["reports_all_time"] = "Semua Waktu";
 $lang["reports_categories"] = "Kategori";
 $lang["reports_categories_summary_report"] = "Laporan Ringkasan Kategori";
 $lang["reports_category"] = "Kategori";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "Produk/Item";
 $lang["reports_items_purchased"] = "Produk Dibeli";
 $lang["reports_items_received"] = "Barang Masuk";
 $lang["reports_items_summary_report"] = "Laporan Ringkasan Produk/Item";
-$lang["reports_last_7"] = "7 Hari Terakhir";
-$lang["reports_last_month"] = "Bulan lalu";
-$lang["reports_last_year"] = "Tahun lalu";
 $lang["reports_low_inventory"] = "Kurang Persediaan";
 $lang["reports_low_inventory_report"] = "Laporan Persediaan Kurang";
 $lang["reports_name"] = "Nama";
@@ -88,17 +84,8 @@ $lang["reports_tax"] = "Pajak";
 $lang["reports_tax_percent"] = "Persentase Pajak";
 $lang["reports_taxes"] = "Pajak";
 $lang["reports_taxes_summary_report"] = "Laporan Ringkasan Pajak";
-$lang["reports_this_month"] = "Bulan ini";
-$lang["reports_this_month_last_year"] = "This Month Last Year";
-$lang["reports_this_month_to_today"] = "This Month To Today";
-$lang["reports_this_month_to_today_last_year"] = "This Month To Today Last Year";
-$lang["reports_this_year"] = "Tahun ini";
-$lang["reports_today"] = "Hari ini";
-$lang["reports_today_last_year"] = "Today Last Year";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Tipe";
-$lang["reports_welcome_message"] = "Selamat Datang ke panel laporan. Silakan pilih laporan untuk melihat/cetak.";
-$lang["reports_yesterday"] = "Kemarin";
 $lang["reports_item_count"] = "";
 $lang["reports_cost_price"] = "Harga Pokok";
 $lang["reports_unit_price"] = "Harga Jual";

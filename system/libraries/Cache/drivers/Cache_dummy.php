@@ -1,19 +1,41 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php
 /**
  * CodeIgniter
  *
- * An open source application development framework for PHP 5.1.6 or newer
+ * An open source application development framework for PHP
  *
- * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2006 - 2014 EllisLab, Inc.
- * @license		http://codeigniter.com/user_guide/license.html
- * @link		http://codeigniter.com
- * @since		Version 2.0
+ * This content is released under the MIT License (MIT)
+ *
+ * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * @package	CodeIgniter
+ * @author	EllisLab Dev Team
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @license	http://opensource.org/licenses/MIT	MIT License
+ * @link	https://codeigniter.com
+ * @since	Version 2.0
  * @filesource
  */
-
-// ------------------------------------------------------------------------
+defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
  * CodeIgniter Dummy Caching Class
@@ -21,10 +43,9 @@
  * @package		CodeIgniter
  * @subpackage	Libraries
  * @category	Core
- * @author		ExpressionEngine Dev Team
+ * @author		EllisLab Dev Team
  * @link
  */
-
 class CI_Cache_dummy extends CI_Driver {
 
 	/**
@@ -32,8 +53,8 @@ class CI_Cache_dummy extends CI_Driver {
 	 *
 	 * Since this is the dummy class, it's always going to return FALSE.
 	 *
-	 * @param 	string
-	 * @return 	Boolean		FALSE
+	 * @param	string
+	 * @return	bool	FALSE
 	 */
 	public function get($id)
 	{
@@ -45,13 +66,13 @@ class CI_Cache_dummy extends CI_Driver {
 	/**
 	 * Cache Save
 	 *
-	 * @param 	string		Unique Key
-	 * @param 	mixed		Data to store
-	 * @param 	int			Length of time (in seconds) to cache the data
-	 *
-	 * @return 	boolean		TRUE, Simulating success
+	 * @param	string	Unique Key
+	 * @param	mixed	Data to store
+	 * @param	int	Length of time (in seconds) to cache the data
+	 * @param	bool	Whether to store the raw value
+	 * @return	bool	TRUE, Simulating success
 	 */
-	public function save($id, $data, $ttl = 60)
+	public function save($id, $data, $ttl = 60, $raw = FALSE)
 	{
 		return TRUE;
 	}
@@ -61,8 +82,8 @@ class CI_Cache_dummy extends CI_Driver {
 	/**
 	 * Delete from Cache
 	 *
-	 * @param 	mixed		unique identifier of the item in the cache
-	 * @param 	boolean		TRUE, simulating success
+	 * @param	mixed	unique identifier of the item in the cache
+	 * @return	bool	TRUE, simulating success
 	 */
 	public function delete($id)
 	{
@@ -72,9 +93,37 @@ class CI_Cache_dummy extends CI_Driver {
 	// ------------------------------------------------------------------------
 
 	/**
+	 * Increment a raw value
+	 *
+	 * @param	string	$id	Cache ID
+	 * @param	int	$offset	Step/value to add
+	 * @return	mixed	New value on success or FALSE on failure
+	 */
+	public function increment($id, $offset = 1)
+	{
+		return TRUE;
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Decrement a raw value
+	 *
+	 * @param	string	$id	Cache ID
+	 * @param	int	$offset	Step/value to reduce by
+	 * @return	mixed	New value on success or FALSE on failure
+	 */
+	public function decrement($id, $offset = 1)
+	{
+		return TRUE;
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
 	 * Clean the cache
 	 *
-	 * @return 	boolean		TRUE, simulating success
+	 * @return	bool	TRUE, simulating success
 	 */
 	public function clean()
 	{
@@ -86,8 +135,8 @@ class CI_Cache_dummy extends CI_Driver {
 	/**
 	 * Cache Info
 	 *
-	 * @param 	string		user/filehits
-	 * @return 	boolean		FALSE
+	 * @param	string	user/filehits
+	 * @return	bool	FALSE
 	 */
 	 public function cache_info($type = NULL)
 	 {
@@ -99,8 +148,8 @@ class CI_Cache_dummy extends CI_Driver {
 	/**
 	 * Get Cache Metadata
 	 *
-	 * @param 	mixed		key to get cache metadata on
-	 * @return 	boolean		FALSE
+	 * @param	mixed	key to get cache metadata on
+	 * @return	bool	FALSE
 	 */
 	public function get_metadata($id)
 	{
@@ -113,7 +162,7 @@ class CI_Cache_dummy extends CI_Driver {
 	 * Is this caching driver supported on the system?
 	 * Of course this one is.
 	 *
-	 * @return TRUE;
+	 * @return	bool	TRUE
 	 */
 	public function is_supported()
 	{
@@ -121,6 +170,3 @@ class CI_Cache_dummy extends CI_Driver {
 	}
 
 }
-
-/* End of file Cache_dummy.php */
-/* Location: ./system/libraries/Cache/drivers/Cache_dummy.php */

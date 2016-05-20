@@ -2,7 +2,6 @@
 
 $lang["customers_account_number"] = "Konto-Nr.";
 $lang["customers_account_number_duplicate"] = "Diese Konto-Nr. existiert bereits";
-$lang["customers_basic_information"] = "Kundeninformation";
 $lang["customers_cannot_be_deleted"] = "Kunde kann nicht gelöscht werden, ein oder mehrere Kunden weisen Verkäufe auf";
 $lang["customers_company_name"] = "Firmenname";
 $lang["customers_confirm_delete"] = "Wollen Sie die gewählten Kunden wirklich löschen?";

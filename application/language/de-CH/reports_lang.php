@@ -1,7 +1,6 @@
 <?php 
 
 $lang["reports_all"] = "Alle";
-$lang["reports_all_time"] = "Von Beginn weg";
 $lang["reports_categories"] = "Kategorien";
 $lang["reports_categories_summary_report"] = "Bericht: Kategorien (summarisch)";
 $lang["reports_category"] = "Kategorie";
@@ -38,9 +37,6 @@ $lang["reports_items"] = "Artikel";
 $lang["reports_items_purchased"] = "Gekaufte Artikel";
 $lang["reports_items_received"] = "Erhaltene Artikel";
 $lang["reports_items_summary_report"] = "Bericht: Artikel (summarisch)";
-$lang["reports_last_7"] = "Letzte 7 Tage";
-$lang["reports_last_month"] = "Letzter Monat";
-$lang["reports_last_year"] = "Letztes Jahr";
 $lang["reports_low_inventory"] = "Lager mit Unterbestand";
 $lang["reports_low_inventory_report"] = "Bericht: Inventar";
 $lang["reports_name"] = "Name";
@@ -88,17 +84,8 @@ $lang["reports_tax"] = "MWSt";
 $lang["reports_tax_percent"] = "MWSt %";
 $lang["reports_taxes"] = "Steuern";
 $lang["reports_taxes_summary_report"] = "Bericht: Steuern (summarisch)";
-$lang["reports_this_month"] = "Dieser Monat";
-$lang["reports_this_month_last_year"] = "Dieser Monat letzten Jahres";
-$lang["reports_this_month_to_today"] = "Dieser Monat bis heute";
-$lang["reports_this_month_to_today_last_year"] = "Dieser Monat bis Heute letzten Jahres";
-$lang["reports_this_year"] = "Dieses Jahr";
-$lang["reports_today"] = "Heute";
-$lang["reports_today_last_year"] = "Heute letzten Jahres";
 $lang["reports_total"] = "Total";
 $lang["reports_type"] = "Typ";
-$lang["reports_welcome_message"] = "Willkommen bei Berichtsmodul";
-$lang["reports_yesterday"] = "Gestern";
 $lang["reports_item_count"] = "Filter nach Artikelzahl";
 $lang["reports_cost_price"] = "Einstandspreis";
 $lang["reports_unit_price"] = "Verkaufspreis";
