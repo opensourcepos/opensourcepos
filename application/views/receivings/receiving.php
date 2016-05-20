@@ -459,6 +459,14 @@ $(document).ready(function()
     	}
     });
 
+	$("#cart_contents input").keypress(function(event)
+	{
+		if (event.which == 13)
+		{
+			$('#cart_' + (1 + $(this).index() / 2 )).submit();
+		}
+	});
+
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
 		if(response.success)

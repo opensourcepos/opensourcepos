@@ -641,8 +641,16 @@ $(document).ready(function()
 		$('#add_payment_form').submit();
     });
 
-	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard)
-	
+	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard);
+
+	$("#cart_contents input").keypress(function(event)
+	{
+		if (event.which == 13)
+		{
+			$('#cart_' + (1 + $(this).index() / 2 )).submit();
+		}
+	});
+
 	$("#amount_tendered").keypress(function(event)
 	{
 		if( event.which == 13 )
