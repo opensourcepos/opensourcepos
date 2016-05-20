@@ -49,6 +49,9 @@
 			detailView: true,
 			uniqueId: 'id',
 			onPageChange: init_dialog,
+			onPostBody: function() {
+				dialog_support.init("a.modal-dlg");
+			},
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
