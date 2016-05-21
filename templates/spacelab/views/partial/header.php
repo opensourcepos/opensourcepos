@@ -58,14 +58,14 @@
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
+		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=50ab19585f"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=709203adf0"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=feb26bc97a"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=086db78c1a" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=e9ecd30fd8" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
