@@ -48,6 +48,8 @@
 		<script src="bower_components/table-export/tableExport.js"></script>
 		<script src="bower_components/jquery.base64/index.js"></script>
 		<script src="bower_components/chartist/dist/chartist.min.js"></script>
+		<script src="bower_components/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
+		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
@@ -66,7 +68,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=feb26bc97a"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=e9ecd30fd8" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8349c83640" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
