@@ -398,77 +398,64 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
+		
+		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+
+		$labels = '';
+		$series = '';
+		foreach($report_data as $row)
+		{
+			$labels .= "'" . date($this->config->item('dateformat'), strtotime($row['sale_date'])) . "', ";
+			$series .= $row['total'] . ", ";
+		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_sales_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_sales_graph/$start_date/$end_date/$sale_type"),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
+			"chart_type" => "reports/graphs/line",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_revenue'),
+			"xaxis_title" => $this->lang->line('reports_date')
 		);
 
 		$this->load->view("reports/graphical", $data);
 	}
 
-	//The actual graph data
-	function graphical_summary_sales_graph($start_date, $end_date, $sale_type)
+	private function _escapeJavaScriptText($string)
 	{
-		$this->load->model('reports/Summary_sales');
-		$model = $this->Summary_sales;
-		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
-
-		$graph_data = array();
-		foreach($report_data as $row)
-		{
-			$graph_data[date($this->config->item('dateformat'), strtotime($row['sale_date']))] = $row['total'];
-		}
-
-		$data = array(
-			"title" => $this->lang->line('reports_sales_summary_report'),
-			"yaxis_label"=>$this->lang->line('reports_revenue'),
-			"xaxis_label"=>$this->lang->line('reports_date'),
-			"data" => $graph_data
-		);
-
-		$this->load->view("reports/graphs/line", $data);
+		return str_replace("\n", '\n', str_replace('"', '\"', addcslashes(str_replace("\r", '', (string)$string), "\0..\37'\\")));
 	}
-
+	
 	//Graphical summary items report
 	function graphical_summary_items($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
-
-		$data = array(
-			"title" => $this->lang->line('reports_items_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_items_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_items_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_items');
-		$model = $this->Summary_items;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['name']] = $row['total'];
+			$labels .= "'" . $this->_escapeJavaScriptText($row['name']) . "', ";
+			$series .= $row['total'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_items_summary_report'),
-			"xaxis_label"=>$this->lang->line('reports_revenue'),
-			"yaxis_label"=>$this->lang->line('reports_items'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/hbar",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_items'),
+			"xaxis_title" => $this->lang->line('reports_revenue')
 		);
 
-		$this->load->view("reports/graphs/hbar", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary customers report
@@ -476,36 +463,27 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
-
-		$data = array(
-			"title" => $this->lang->line('reports_categories_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_categories_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_categories_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_categories');
-		$model = $this->Summary_categories;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['category']] = $row['total'];
+			$labels .= "'" . $row['category'] . "', ";
+			$series .= $row['total'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_categories_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary suppliers report
@@ -513,36 +491,27 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
-
-		$data = array(
-			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_suppliers_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_suppliers_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_suppliers');
-		$model = $this->Summary_suppliers;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['supplier']] = $row['total'];
+			$labels .= "'" . $row['supplier'] . "', ";
+			$series .= $row['total'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary employees report
@@ -550,36 +519,27 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
-
-		$data = array(
-			"title" => $this->lang->line('reports_employees_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_employees_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_employees_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_employees');
-		$model = $this->Summary_employees;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['employee']] = $row['total'];
+			$labels .= "'" . $row['employee'] . "', ";
+			$series .= $row['total'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_employees_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary taxes report
@@ -587,36 +547,27 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
-
-		$data = array(
-			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_taxes_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_taxes_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_taxes');
-		$model = $this->Summary_taxes;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['percent']] = $row['total'];
+			$labels .= "'" . $row['percent'] . "', ";
+			$series .= $row['total'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary customers report
@@ -624,38 +575,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
-
-		$data = array(
-			"title" => $this->lang->line('reports_customers_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_customers_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_customers_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_customers');
-		$model = $this->Summary_customers;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['customer']] = $row['total'];
+			$labels .= "'" . $row['customer'] . "', ";
+			$series .= $row['total'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_customers_summary_report'),
-			"xaxis_label"=>$this->lang->line('reports_revenue'),
-			"yaxis_label"=>$this->lang->line('reports_customers'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/hbar",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_customers'),
+			"xaxis_title" => $this->lang->line('reports_revenue')
 		);
 
-		$this->load->view("reports/graphs/hbar", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary discounts report
@@ -663,38 +605,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
-
-		$data = array(
-			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_discounts_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_discounts_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_discounts');
-		$model = $this->Summary_discounts;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['discount_percent']] = $row['count'];
+			$labels .= "'" . $row['discount_percent'] . "', ";
+			$series .= $row['count'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"yaxis_label"=>$this->lang->line('reports_count'),
-			"xaxis_label"=>$this->lang->line('reports_discount_percent'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/bar",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_count'),
+			"xaxis_title" => $this->lang->line('reports_discount_percent')
 		);
 
-		$this->load->view("reports/graphs/bar", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary payments report
@@ -702,38 +635,27 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
-
-		$data = array(
-			"title" => $this->lang->line('reports_payments_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_payments_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_payments_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_payments');
-		$model = $this->Summary_payments;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = '';
+		$series = '';
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['payment_type']] = $row['payment_amount'];
+			$labels .= "'" . $row['payment_type'] . "', ";
+			$series .= $row['payment_amount'] . ", ";
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_payments_summary_report'),
-			"yaxis_label"=>$this->lang->line('reports_revenue'),
-			"xaxis_label"=>$this->lang->line('reports_payment_type'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => rtrim($labels, ", "),
+			"series_data_1" => rtrim($series, ", "),
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	function specific_customer_input()

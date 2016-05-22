@@ -1,46 +1,88 @@
-<?php
-$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
-$this->output->set_header("Pragma: public");
-$bar = new bar_filled( '#4386a1', '#577261' );
+<style>
+/* style X axis labels to be rotated of 60 degrees */
+.ct-label.ct-horizontal {
+	/* Safari */
+	-webkit-transform: rotate(-60deg);
 
-$bar_labels = array();
-$bar_values = array();
+	/* Firefox */
+	-moz-transform: rotate(-60deg);
 
-foreach($data as $label=>$value)
-{
-	$bar_labels[] = (string)$label;
-	$bar_values[] = (float)$value;
+	/* IE */
+	-ms-transform: rotate(-60deg);
+
+	/* Opera */
+	-o-transform: rotate(-60deg);
+
+	/* Internet Explorer */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-$bar->set_values($bar_values);
-
-$chart = new open_flash_chart();
-$chart->set_title(new title($title));
-$x = new x_axis();
-$x->steps(1);
-$x->set_labels_from_array($bar_labels);
-$chart->set_x_axis( $x );
-
-$y = new y_axis();
-$y->set_tick_length(7);
-$y->set_range(0, (count($data) > 0 ? max($data) : 0) + 25, ((count($data) > 0 ? max($data) : 0)+25)/10);
-$chart->set_y_axis( $y );
-$chart->set_bg_colour("#f3f3f3");
-
-$chart->add_element($bar);
-
-if (isset($yaxis_label))
-{
-	$y_legend = new y_legend($yaxis_label );
-	$y_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_y_legend( $y_legend );
+/* set all lables to be black with font size 1.2rem */
+.ct-label {
+	fill: rgba(0,0,0,1);
+	color: rgba(0,0,0,1);
+	font-size: 1.2rem;
 }
+</style>
 
-if (isset($xaxis_label))
-{
-	$x_legend = new x_legend($xaxis_label );
-	$x_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_x_legend( $x_legend );
-}
-echo $chart->toPrettyString();
-?>
+<script>
+	// Labels and data series
+	var data = {
+		labels: [<?php echo $labels_1; ?>],
+		series: [{
+			name: '<?php echo $yaxis_title; ?>',
+			data: [<?php echo $series_data_1; ?>]
+		}]
+	};
+
+	// We are setting a few options for our chart and override the defaults
+	var options = {
+		// X-Axis specific configuration
+		axisX: {
+			// Lets offset the chart a bit from the labels
+			offset: 120,
+			position: 'end'
+		},
+
+		// Y-Axis specific configuration
+		axisY: {
+			// Lets offset the chart a bit from the labels
+			offset: 60,
+			// The label interpolation function enables you to modify the values
+			// used for the labels on each axis.
+//			labelInterpolationFnc: function(value) {
+//				return '$' + value;
+//			}
+		},
+
+		// plugins configuration
+		plugins: [
+			Chartist.plugins.ctAxisTitle({
+				axisX: {
+					axisTitle: '<?php echo $xaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: 0,
+						y: 100
+					},
+					textAnchor: 'middle'
+				},
+				axisY: {
+					axisTitle: '<?php echo $yaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: 0,
+						y: 0
+					},
+					textAnchor: 'middle',
+					flipTitle: false
+				}
+			}),
+			Chartist.plugins.ctPointLabels({
+				textAnchor: 'middle'
+			})
+		]
+	};
+
+	new Chartist.Bar('#chart1', data, options);
+</script>

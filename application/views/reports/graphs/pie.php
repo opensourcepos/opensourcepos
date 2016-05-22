@@ -1,25 +1,45 @@
-<?php
-$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
-$this->output->set_header("Pragma: public");
-$title = new title($title);
-
-$pie = new pie();
-$pie->set_alpha(0.6);
-$pie->set_start_angle( 35 );
-$pie->add_animation( new pie_fade() );
-$pie->set_tooltip( '#val# of #total#<br>#percent# of 100%' );
-$pie->set_colours(get_random_colors(count($data)));
-
-$pie_values = array();
-foreach($data as $label=>$value)
-{
-	$pie_values[] = new pie_value((float)$value, (string)$label);
+<style>
+/* set all lables to be black with font size 1.2rem */
+.ct-label {
+	fill: rgba(0,0,0,1);
+	color: rgba(0,0,0,1);
+	font-size: 1.2rem;
 }
-$pie->set_values($pie_values);
-$chart = new open_flash_chart();
-$chart->set_title( $title );
-$chart->set_bg_colour("#f3f3f3");
-$chart->add_element( $pie );
-$chart->x_axis = null;
-echo $chart->toPrettyString();
-?>
+</style>
+
+<script>
+	// Labels and data series
+	var data = {
+		labels: [<?php echo $labels_1; ?>],
+		series: [<?php echo $series_data_1; ?>]
+	};
+
+	var sum = function(a, b) { return a + b };
+	
+	// We are setting a few options for our chart and override the defaults
+	var options = {
+		chartPadding: 50,
+		labelPosition: 'outside',
+		// interpolate labels to show lable, value and %
+		labelInterpolationFnc: function(label, index) {
+			return label + ": " + data.series[index] + " / " + Math.round(data.series[index] / data.series.reduce(sum) * 100) + '%';
+		}
+	};
+	
+/*	var responsiveOptions = [
+		['screen and (min-width: 640px)', {
+			chartPadding: 30,
+			labelOffset: 100,
+			labelDirection: 'explode',
+			labelInterpolationFnc: function(value) {
+				return value;
+			}
+		}],
+		['screen and (min-width: 1024px)', {
+			labelOffset: 80,
+			chartPadding: 20
+		}]
+	];*/
+
+	new Chartist.Pie('#chart1', data, options/*, responsiveOptions*/);
+</script>

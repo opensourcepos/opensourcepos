@@ -1,49 +1,102 @@
-<?php
-$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
-$this->output->set_header("Pragma: public");
-$line_data = array();
-$labels = array();
-foreach($data as $label=>$value)
-{
-    $line_data[] = (float)$value;
-	$labels[] = (string)$label;
+<style>
+/* style X axis labels to be rotated of 60 degrees */
+.ct-label.ct-horizontal {
+	/* Safari */
+	-webkit-transform: rotate(-60deg);
+
+	/* Firefox */
+	-moz-transform: rotate(-60deg);
+
+	/* IE */
+	-ms-transform: rotate(-60deg);
+
+	/* Opera */
+	-o-transform: rotate(-60deg);
+
+	/* Internet Explorer */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-$hol = new hollow_dot();
-$hol->size(3)->halo_size(1)->tooltip('#x_label#<br>#val#');
-
-$line = new line();
-$line->set_default_dot_style($hol); 
-$line->set_values($line_data);
-
-$chart = new open_flash_chart();
-$chart->set_title(new title($title));
-$chart->add_element($line);
-
-$x = new x_axis();
-$x->steps(count($data) > 10 ? (int)(count($data)/4) : 1);
-$x->set_labels_from_array($labels);
-$chart->set_x_axis( $x );
-
-$y = new y_axis();
-$y->set_tick_length(7);
-$y->set_range(0, (count($data) > 0 ? max($data) : 0) + 25, ((count($data) > 0 ? max($data) : 0)+25)/10);
-$chart->set_y_axis( $y );
-$chart->set_bg_colour("#f3f3f3");
-
-if (isset($yaxis_label))
-{
-	$y_legend = new y_legend($yaxis_label );
-	$y_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_y_legend( $y_legend );
+/* set all lables to be black with font size 1.2rem */
+.ct-label {
+	fill: rgba(0,0,0,1);
+	color: rgba(0,0,0,1);
+	font-size: 1.2rem;
 }
+</style>
 
-if (isset($xaxis_label))
-{
-	$x_legend = new x_legend($xaxis_label );
-	$x_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_x_legend( $x_legend );
-}
+<script>
+	// Labels and data series
+	var data = {
+		labels: [<?php echo $labels_1; ?>],
+		series: [{
+			name: '<?php echo $yaxis_title; ?>',
+			data: [<?php echo $series_data_1; ?>]
+		}]
+	};
 
-echo $chart->toPrettyString();
-?>
+	// We are setting a few options for our chart and override the defaults
+	var options = {
+		// Draw the line chart points
+		showPoint: true,
+
+		// Disable line smoothing
+		lineSmooth: false,
+
+		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
+		/*chartPadding: {
+			top: 15,
+			right: 15,
+			bottom: 20,
+			left: 10
+		},*/
+
+		// X-Axis specific configuration
+		axisX: {
+			// Lets offset the chart a bit from the labels
+			offset: 120,
+			position: 'end'
+		},
+
+		// Y-Axis specific configuration
+		axisY: {
+			// Lets offset the chart a bit from the labels
+			offset: 60,
+			// The label interpolation function enables you to modify the values
+			// used for the labels on each axis.
+//			labelInterpolationFnc: function(value) {
+//				return '$' + value;
+//			}
+		},
+
+		// plugins configuration
+		plugins: [
+			Chartist.plugins.ctAxisTitle({
+				axisX: {
+					axisTitle: '<?php echo $xaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: 0,
+						y: 100
+					},
+					textAnchor: 'middle'
+				},
+				axisY: {
+					axisTitle: '<?php echo $yaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: 0,
+						y: 0
+					},
+					textAnchor: 'middle',
+					flipTitle: false
+				}
+			}),
+			Chartist.plugins.ctPointLabels({
+				textAnchor: 'middle'
+			})
+		]
+	};
+
+	new Chartist.Line('#chart1', data, options);
+</script>
