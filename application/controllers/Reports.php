@@ -1,6 +1,5 @@
 <?php
 require_once ("Secure_area.php");
-require_once (APPPATH."libraries/ofc-library/Open-flash-chart.php");
 
 class Reports extends Secure_area
 {

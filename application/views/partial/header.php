@@ -34,7 +34,6 @@
 		<script src="bower_components/jquery-form/jquery.form.js"></script>
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="bower_components/swfobject-bower/swfobject/swfobject.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
@@ -68,7 +67,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=feb26bc97a"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=8349c83640" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2236ceec88" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
