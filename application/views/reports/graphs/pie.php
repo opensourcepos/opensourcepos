@@ -1,12 +1,3 @@
-<style>
-/* set all lables to be black with font size 1.2rem */
-.ct-label {
-	fill: rgba(0,0,0,1);
-	color: rgba(0,0,0,1);
-	font-size: 1.2rem;
-}
-</style>
-
 <script>
 	// Labels and data series
 	var data = {
@@ -19,7 +10,9 @@
 	// We are setting a few options for our chart and override the defaults
 	var options = {
 		chartPadding: 50,
+
 		labelPosition: 'outside',
+
 		// interpolate labels to show lable, value and %
 		labelInterpolationFnc: function(label, index) {
 			return label + ": " + data.series[index] + " / " + Math.round(data.series[index] / data.series.reduce(sum) * 100) + '%';

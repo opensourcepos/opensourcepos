@@ -23,7 +23,35 @@
 {
 }
 
-#chart_wrapper
+/* set the chart to be centered */
+.ct-chart
 {
 	text-align: center;
+}
+
+/* style chart X axis labels to be rotated of 60 degrees */
+.ct-label.ct-horizontal
+{
+	/* Safari */
+	-webkit-transform: rotate(-60deg);
+
+	/* Firefox */
+	-moz-transform: rotate(-60deg);
+
+	/* IE */
+	-ms-transform: rotate(-60deg);
+
+	/* Opera */
+	-o-transform: rotate(-60deg);
+
+	/* Internet Explorer */
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+/* set all lables to be black with font size 1.2rem */
+.ct-label
+{
+	fill: rgba(0,0,0,1);
+	color: rgba(0,0,0,1);
+	font-size: 1.2rem;
 }

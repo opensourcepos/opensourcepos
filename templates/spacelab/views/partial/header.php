@@ -61,7 +61,7 @@
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=50ab19585f"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=feb26bc97a"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=8a467f3c3b"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->

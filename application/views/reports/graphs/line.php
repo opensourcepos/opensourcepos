@@ -1,30 +1,3 @@
-<style>
-/* style X axis labels to be rotated of 60 degrees */
-.ct-label.ct-horizontal {
-	/* Safari */
-	-webkit-transform: rotate(-60deg);
-
-	/* Firefox */
-	-moz-transform: rotate(-60deg);
-
-	/* IE */
-	-ms-transform: rotate(-60deg);
-
-	/* Opera */
-	-o-transform: rotate(-60deg);
-
-	/* Internet Explorer */
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-
-/* set all lables to be black with font size 1.2rem */
-.ct-label {
-	fill: rgba(0,0,0,1);
-	color: rgba(0,0,0,1);
-	font-size: 1.2rem;
-}
-</style>
-
 <script>
 	// Labels and data series
 	var data = {
@@ -36,7 +9,7 @@
 	};
 
 	// We are setting a few options for our chart and override the defaults
-	var options = {
+	var options = {	
 		// Draw the line chart points
 		showPoint: true,
 
@@ -92,6 +65,7 @@
 					flipTitle: false
 				}
 			}),
+
 			Chartist.plugins.ctPointLabels({
 				textAnchor: 'middle'
 			})

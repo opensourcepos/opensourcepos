@@ -64,7 +64,7 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=feb26bc97a"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=8a467f3c3b"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
 		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2236ceec88" language="javascript"></script>

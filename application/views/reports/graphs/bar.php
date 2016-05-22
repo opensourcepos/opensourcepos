@@ -1,30 +1,3 @@
-<style>
-/* style X axis labels to be rotated of 60 degrees */
-.ct-label.ct-horizontal {
-	/* Safari */
-	-webkit-transform: rotate(-60deg);
-
-	/* Firefox */
-	-moz-transform: rotate(-60deg);
-
-	/* IE */
-	-ms-transform: rotate(-60deg);
-
-	/* Opera */
-	-o-transform: rotate(-60deg);
-
-	/* Internet Explorer */
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
-}
-
-/* set all lables to be black with font size 1.2rem */
-.ct-label {
-	fill: rgba(0,0,0,1);
-	color: rgba(0,0,0,1);
-	font-size: 1.2rem;
-}
-</style>
-
 <script>
 	// Labels and data series
 	var data = {
@@ -47,12 +20,7 @@
 		// Y-Axis specific configuration
 		axisY: {
 			// Lets offset the chart a bit from the labels
-			offset: 60,
-			// The label interpolation function enables you to modify the values
-			// used for the labels on each axis.
-//			labelInterpolationFnc: function(value) {
-//				return '$' + value;
-//			}
+			offset: 60
 		},
 
 		// plugins configuration
@@ -78,6 +46,7 @@
 					flipTitle: false
 				}
 			}),
+
 			Chartist.plugins.ctPointLabels({
 				textAnchor: 'middle'
 			})

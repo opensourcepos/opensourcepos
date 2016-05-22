@@ -422,6 +422,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/graphical", $data);
 	}
 
+	// escape js text to avoid any issue with php strings having only one \ where js requires \\
 	private function _escapeJavaScriptText($string)
 	{
 		return str_replace("\n", '\n', str_replace('"', '\"', addcslashes(str_replace("\r", '', (string)$string), "\0..\37'\\")));
@@ -469,7 +470,7 @@ class Reports extends Secure_area
 		$series = '';
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['category'] . "', ";
+			$labels .= "'" . $this->_escapeJavaScriptText($row['category']) . "', ";
 			$series .= $row['total'] . ", ";
 		}
 
@@ -497,7 +498,7 @@ class Reports extends Secure_area
 		$series = '';
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['supplier'] . "', ";
+			$labels .= "'" . $this->_escapeJavaScriptText($row['supplier']) . "', ";
 			$series .= $row['total'] . ", ";
 		}
 
@@ -525,7 +526,7 @@ class Reports extends Secure_area
 		$series = '';
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['employee'] . "', ";
+			$labels .= "'" . $this->_escapeJavaScriptText($row['employee']) . "', ";
 			$series .= $row['total'] . ", ";
 		}
 
@@ -581,7 +582,7 @@ class Reports extends Secure_area
 		$series = '';
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['customer'] . "', ";
+			$labels .= "'" . $this->_escapeJavaScriptText($row['customer']) . "', ";
 			$series .= $row['total'] . ", ";
 		}
 
