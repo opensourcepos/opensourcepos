@@ -9,7 +9,14 @@
 	};
 
 	// We are setting a few options for our chart and override the defaults
-	var options = {	
+	var options = {
+
+		// Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
+//		width: '80%',
+		
+		// Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
+//		height: '80%',
+		
 		// Draw the line chart points
 		showPoint: true,
 

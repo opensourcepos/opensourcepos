@@ -27,6 +27,7 @@
 .ct-chart
 {
 	text-align: center;
+	margin: 0 auto;
 }
 
 /* style chart X axis labels to be rotated of 60 degrees */
@@ -48,7 +49,7 @@
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 
-/* set all lables to be black with font size 1.2rem */
+/* set all labels to be black with font size 1.2rem */
 .ct-label
 {
 	fill: rgba(0,0,0,1);
