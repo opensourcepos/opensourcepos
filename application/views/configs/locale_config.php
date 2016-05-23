@@ -26,7 +26,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_currency_decimals'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_currency_decimals'), 'currency_decimals', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('currency_decimals', array(
 						'0' => '0',
@@ -53,7 +53,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_decimal_point'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_decimal_point'), 'decimal_point', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('decimal_point', array(
 						'.' => '. (dot)',
@@ -65,7 +65,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_thousands_separator'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_thousands_separator'), 'thousands_separator', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('thousands_separator', array(
 						'&apos;' => '&apos; (apostrophe)',
@@ -79,7 +79,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_quantity_decimals'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_quantity_decimals'), 'quantity_decimals', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('quantity_decimals', array(
 						'0' => '0',
@@ -89,6 +89,14 @@
 					),
 					$this->config->item('quantity_decimals'), array('class'=>'form-control input-sm'));
 					?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span>
+				<?php echo form_label($this->lang->line('config_country_codes'), 'country_codes', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class'=>'form-control input-sm')); ?>
 				</div>
 			</div>
 
@@ -256,6 +264,8 @@
 //validation and submit handling
 $(document).ready(function()
 {
+	$("span").tooltip();
+
 	$('#locale_config_form').validate({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({

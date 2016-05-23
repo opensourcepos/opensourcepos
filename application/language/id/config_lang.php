@@ -148,3 +148,5 @@ $lang["config_timezone"] = "Zona Waktu";
 $lang["config_use_invoice_template"] = "Use Invoice Template";
 $lang["config_website"] = "Situs Perusahaan";
 $lang["config_datetimeformat"] = "Date and Time format";
+$lang["config_country_codes"] = "Country codes";
+$lang["config_country_codes_tooltip"] = "";
