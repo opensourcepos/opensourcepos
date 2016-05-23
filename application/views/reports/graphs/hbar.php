@@ -25,6 +25,9 @@
 			offset: 120
 		},
 
+		width: '80%',
+		height: '80%',
+
 		// plugins configuration
 		plugins: [
 			Chartist.plugins.ctAxisTitle({

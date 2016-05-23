@@ -1,15 +1,17 @@
 <script>
 	// Labels and data series
 	var data = {
-		labels: [<?php echo $labels_1; ?>],
-		series: [<?php echo $series_data_1; ?>]
+		labels: <?php echo json_encode($labels_1); ?>,
+		series: <?php echo json_encode($series_data_1); ?>
 	};
 
 	var sum = function(a, b) { return a + b };
 	
 	// We are setting a few options for our chart and override the defaults
 	var options = {
-		chartPadding: 50,
+
+		width: '100%',
+		height: '80%',
 
 		labelPosition: 'outside',
 

@@ -574,7 +574,7 @@ class Reports extends Secure_area
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
 		$labels = array();
-		$series = '';
+		$series = array();
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['customer'];
@@ -615,8 +615,8 @@ class Reports extends Secure_area
 			"title" => $this->lang->line('reports_discounts_summary_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"chart_type" => "reports/graphs/bar",
-			"labels_1" => rtrim($labels, ", "),
-			"series_data_1" => rtrim($series, ", "),
+			"labels_1" => $labels,
+			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_count'),
 			"xaxis_title" => $this->lang->line('reports_discount_percent')
@@ -633,20 +633,20 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['payment_type'] . "', ";
-			$series .= $row['payment_amount'] . ", ";
+			$labels[] = $row['payment_type'];
+			$series[]= $row['payment_amount'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_payments_summary_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"chart_type" => "reports/graphs/pie",
-			"labels_1" => rtrim($labels, ", "),
-			"series_data_1" => rtrim($series, ", "),
+			"labels_1" => $labels,
+			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 

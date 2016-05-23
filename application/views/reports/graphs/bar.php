@@ -23,6 +23,9 @@
 			offset: 60
 		},
 
+		width: '100%',
+		height: '75%',
+
 		// plugins configuration
 		plugins: [
 			Chartist.plugins.ctAxisTitle({
@@ -31,7 +34,7 @@
 					axisClass: 'ct-axis-title',
 					offset: {
 						x: 0,
-						y: 100
+						y: 80
 					},
 					textAnchor: 'middle'
 				},
