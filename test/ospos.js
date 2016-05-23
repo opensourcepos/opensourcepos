@@ -2,7 +2,7 @@ var assert = require('assert');
 
 var ospos = function() {
 
-    var server = "http://localhost/pos";
+    var server = "http://localhost";
 
     return {
 
