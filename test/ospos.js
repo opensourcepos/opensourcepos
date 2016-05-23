@@ -38,7 +38,7 @@ var ospos = function() {
         .elementById("category", 2000).clear().type(item.category)
         .elementById('receiving_quantity', 2000).type(item.receiving_quantity || 1)
         .elementById("quantity_1", 2000).type("1").elementById("reorder_level", 2000).type("0").elementById("submit", 2000).click()
-        .waitForElementByXPath("//table/tbody/tr[td/text()='anItem']", 3000).text().then(function (value) {
+        .waitForElementByXPath("//table/tbody/tr[td/text()='anItem']", 5000).text().then(function (value) {
             assert.equal(value, "1 - anItem aCategory - $10.00 $20.00 1 21.00%");
         });
     }

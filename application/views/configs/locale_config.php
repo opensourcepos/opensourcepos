@@ -93,7 +93,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span>
+				<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
 				<?php echo form_label($this->lang->line('config_country_codes'), 'country_codes', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class'=>'form-control input-sm')); ?>

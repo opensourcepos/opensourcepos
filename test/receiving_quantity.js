@@ -3,7 +3,7 @@ var ospos = require('./ospos');
 
 describe("test receiving quantity", function() {
 
-    var def_timeout = 5000;
+    var def_timeout = 10000;
 
     var item = {
         name: "recvQty",
