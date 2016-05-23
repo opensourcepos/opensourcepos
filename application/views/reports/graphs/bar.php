@@ -1,10 +1,10 @@
 <script>
 	// Labels and data series
 	var data = {
-		labels: [<?php echo $labels_1; ?>],
+		labels: <?php echo json_encode($labels_1); ?>,
 		series: [{
 			name: '<?php echo $yaxis_title; ?>',
-			data: [<?php echo $series_data_1; ?>]
+			data: <?php echo json_encode($series_data_1); ?>
 		}]
 	};
 

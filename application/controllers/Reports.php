@@ -400,20 +400,20 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . date($this->config->item('dateformat'), strtotime($row['sale_date'])) . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = date($this->config->item('dateformat'), strtotime($row['sale_date']));
+			$series[] = $row['total'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_sales_summary_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"chart_type" => "reports/graphs/line",
-			"labels_1" => rtrim($labels, ", "),
-			"series_data_1" => rtrim($series, ", "),
+			"labels_1" => $labels,
+			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_revenue'),
 			"xaxis_title" => $this->lang->line('reports_date')
@@ -421,13 +421,8 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/graphical", $data);
 	}
-
-	// escape js text to avoid any issue with php strings having only one \ where js requires \\
-	private function _escapeJavaScriptText($string)
-	{
-		return str_replace("\n", '\n', str_replace('"', '\"', addcslashes(str_replace("\r", '', (string)$string), "\0..\37'\\")));
-	}
 	
+	// escape js text to avoid any issue with php strings having only one \ where js requires \\
 	//Graphical summary items report
 	function graphical_summary_items($start_date, $end_date, $sale_type)
 	{
@@ -436,20 +431,20 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $this->_escapeJavaScriptText($row['name']) . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = $row['name'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_items_summary_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"chart_type" => "reports/graphs/hbar",
-			"labels_1" => rtrim($labels, ", "),
-			"series_data_1" => rtrim($series, ", "),
+			"labels_1" => $labels,
+			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_items'),
 			"xaxis_title" => $this->lang->line('reports_revenue')
@@ -466,20 +461,20 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $this->_escapeJavaScriptText($row['category']) . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = $row['category'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_categories_summary_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"chart_type" => "reports/graphs/pie",
-			"labels_1" => rtrim($labels, ", "),
-			"series_data_1" => rtrim($series, ", "),
+			"labels_1" => $labels,
+			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
@@ -494,12 +489,12 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $this->_escapeJavaScriptText($row['supplier']) . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = $row['supplier'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
@@ -522,12 +517,12 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $this->_escapeJavaScriptText($row['employee']) . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = $row['employee'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
@@ -550,12 +545,12 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['percent'] . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = $row['percent'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
@@ -578,20 +573,20 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
+		$labels = array();
 		$series = '';
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $this->_escapeJavaScriptText($row['customer']) . "', ";
-			$series .= $row['total'] . ", ";
+			$labels[] = $row['customer'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_customers_summary_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"chart_type" => "reports/graphs/hbar",
-			"labels_1" => rtrim($labels, ", "),
-			"series_data_1" => rtrim($series, ", "),
+			"labels_1" => $labels,
+			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_customers'),
 			"xaxis_title" => $this->lang->line('reports_revenue')
@@ -608,12 +603,12 @@ class Reports extends Secure_area
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$labels = '';
-		$series = '';
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels .= "'" . $row['discount_percent'] . "', ";
-			$series .= $row['count'] . ", ";
+			$labels[] = $row['discount_percent'];
+			$series[] = $row['count'];
 		}
 
 		$data = array(
