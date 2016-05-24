@@ -15,7 +15,6 @@
 
 #report_summary
 {
-	margin: 2em 0 auto;
 	text-align: center;
 }
 
@@ -23,11 +22,8 @@
 {
 }
 
-/* set the chart to be centered */
 .ct-chart
 {
-	text-align: center;
-	margin: 0 auto;
 }
 
 /* style chart X axis labels to be rotated of 60 degrees */

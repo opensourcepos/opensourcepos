@@ -1,10 +1,10 @@
 <script>
 	// Labels and data series
 	var data = {
-		labels: [<?php echo $labels_1; ?>],
+		labels: <?php echo json_encode($labels_1); ?>,
 		series: [{
 			name: '<?php echo $yaxis_title; ?>',
-			data: [<?php echo $series_data_1; ?>]
+			data: <?php echo json_encode($series_data_1); ?>
 		}]
 	};
 
@@ -12,11 +12,11 @@
 	var options = {
 
 		// Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
-//		width: '80%',
-		
+		width: '100%',
+
 		// Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
-//		height: '80%',
-		
+		height: '80%',
+
 		// Draw the line chart points
 		showPoint: true,
 
@@ -24,12 +24,12 @@
 		lineSmooth: false,
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
-		/*chartPadding: {
-			top: 15,
-			right: 15,
-			bottom: 20,
-			left: 10
-		},*/
+		chartPadding: {
+			top: 10,
+//			right: 15,
+//			bottom: 10,
+//			left: 10
+		},
 
 		// X-Axis specific configuration
 		axisX: {
