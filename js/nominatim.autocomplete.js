@@ -9,7 +9,7 @@
 
 	var handle_auto_completion = function(fields) {
 		return function(event, ui) {
-			var results = ui.item.results;a
+			var results = ui.item.results;
 			if (results != null && results.length > 0) {
 				// handle auto completion
 				for(var i in fields) {
