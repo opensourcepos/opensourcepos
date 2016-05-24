@@ -148,5 +148,5 @@ $lang["config_timezone"] = "Tijdzone";
 $lang["config_use_invoice_template"] = "Gebruik template voor facturen";
 $lang["config_website"] = "Website";
 $lang["config_datetimeformat"] = "Date and Time format";
-$lang["config_country_codes"] = "Country codes";
+$lang["config_country_codes"] = "Country Codes";
 $lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";

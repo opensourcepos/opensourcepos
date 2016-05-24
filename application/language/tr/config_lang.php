@@ -148,5 +148,5 @@ $lang["config_timezone"] = "Saat Dilimi";
 $lang["config_use_invoice_template"] = "Use Invoice Template";
 $lang["config_website"] = "Website";
 $lang["config_datetimeformat"] = "Date and Time format";
-$lang["config_country_codes"] = "Country codes";
-$lang["config_country_codes_tooltip"] = "";
+$lang["config_country_codes"] = "Country Codes";
+$lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";

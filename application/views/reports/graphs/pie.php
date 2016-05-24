@@ -29,6 +29,7 @@
 
 		// interpolate labels to show lable, value and %
 		labelInterpolationFnc: function(label, index) {
+			debugger;;
 			return label + ": " + data.series[index] + " / " + Math.round(data.series[index] / data.series.reduce(sum) * 100) + '%';
 		}
 	};
