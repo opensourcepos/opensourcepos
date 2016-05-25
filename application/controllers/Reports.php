@@ -404,8 +404,9 @@ class Reports extends Secure_area
 		$series = array();
 		foreach($report_data as $row)
 		{
-			$labels[] = date($this->config->item('dateformat'), strtotime($row['sale_date']));
-			$series[] = $row['total'];
+			$date = date($this->config->item('dateformat'), strtotime($row['sale_date']));
+			$labels[] = $date;
+			$series[] = array('meta' => $date, 'value' => $row['total']);
 		}
 
 		$data = array(
@@ -421,8 +422,7 @@ class Reports extends Secure_area
 
 		$this->load->view("reports/graphical", $data);
 	}
-	
-	// escape js text to avoid any issue with php strings having only one \ where js requires \\
+
 	//Graphical summary items report
 	function graphical_summary_items($start_date, $end_date, $sale_type)
 	{
@@ -460,13 +460,14 @@ class Reports extends Secure_area
 		$model = $this->Summary_categories;
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
 		$labels = array();
 		$series = array();
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['category'];
-			$series[] = $row['total'];
+			$series[] = array('meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
@@ -475,7 +476,7 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
+			"summary_data_1" => $summary
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -488,13 +489,14 @@ class Reports extends Secure_area
 		$model = $this->Summary_suppliers;
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
 		$labels = array();
 		$series = array();
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['supplier'];
-			$series[] = $row['total'];
+			$series[] = array('meta' => $row['supplier'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
@@ -503,7 +505,7 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
+			"summary_data_1" => $summary
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -516,13 +518,14 @@ class Reports extends Secure_area
 		$model = $this->Summary_employees;
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
 		$labels = array();
 		$series = array();
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['employee'];
-			$series[] = $row['total'];
+			$series[] = array('meta' => $row['employee'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
@@ -531,7 +534,7 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
+			"summary_data_1" => $summary
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -544,13 +547,14 @@ class Reports extends Secure_area
 		$model = $this->Summary_taxes;
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
 		$labels = array();
 		$series = array();
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['percent'];
-			$series[] = $row['total'];
+			$series[] = array('meta' => $row['percent'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
@@ -559,7 +563,7 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
+			"summary_data_1" => $summary
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -632,13 +636,14 @@ class Reports extends Secure_area
 		$model = $this->Summary_payments;
 		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
 		$labels = array();
 		$series = array();
 		foreach($report_data as $row)
 		{
 			$labels[] = $row['payment_type'];
-			$series[]= $row['payment_amount'];
+			$series[] = array('meta' => $row['payment_type'] . ' ' . round($row['payment_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['payment_amount']);
 		}
 
 		$data = array(
@@ -647,7 +652,7 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
+			"summary_data_1" => $summary
 		);
 
 		$this->load->view("reports/graphical", $data);

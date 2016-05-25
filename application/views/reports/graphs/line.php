@@ -25,10 +25,7 @@
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
 		chartPadding: {
-			top: 10,
-//			right: 15,
-//			bottom: 10,
-//			left: 10
+			top: 20
 		},
 
 		// X-Axis specific configuration
@@ -44,9 +41,22 @@
 			offset: 60,
 			// The label interpolation function enables you to modify the values
 			// used for the labels on each axis.
-//			labelInterpolationFnc: function(value) {
-//				return '$' + value;
-//			}
+			labelInterpolationFnc: function(value) {
+				<?php
+				if( $this->config->item('currency_side') )
+				{
+				?>
+					return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+				<?php
+				}
+				else
+				{
+				?>
+					return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+				<?php
+				}
+				?>
+			}
 		},
 
 		// plugins configuration
@@ -56,7 +66,7 @@
 					axisTitle: '<?php echo $xaxis_title; ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
-						x: 0,
+						x: -100,
 						y: 100
 					},
 					textAnchor: 'middle'
@@ -74,10 +84,64 @@
 			}),
 
 			Chartist.plugins.ctPointLabels({
-				textAnchor: 'middle'
+				textAnchor: 'middle',
+				labelInterpolationFnc: function(value) {
+					<?php
+					if( $this->config->item('currency_side') )
+					{
+					?>
+						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+					<?php
+					}
+					else
+					{
+					?>
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+					<?php
+					}
+					?>
+				}
+			}),
+			
+			Chartist.plugins.tooltip({
+				pointClass: 'ct-tooltip-point',
+				transformTooltipTextFnc: function(value) {
+					<?php
+					if( $this->config->item('currency_side') )
+					{
+					?>
+						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+					<?php
+					}
+					else
+					{
+					?>
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+					<?php
+					}
+					?>
+				}
 			})
 		]
 	};
 
-	new Chartist.Line('#chart1', data, options);
+	chart = new Chartist.Line('#chart1', data, options);
+	
+	chart.on('draw', function(data) {
+		// If the draw event was triggered from drawing a point on the line chart
+		if(data.type === 'point') {
+			// We are creating a new path SVG element that draws a triangle around the point coordinates
+			var circle = new Chartist.Svg('circle', {
+				cx: [data.x],
+				cy: [data.y],
+				r: [5], 
+				'ct:value': data.value.y,
+				'ct:meta': data.meta,
+				class: 'ct-tooltip-point',
+			}, 'ct-area');
+
+			// With data.element we get the Chartist SVG wrapper and we can replace the original point drawn by Chartist with our newly created triangle
+			data.element.replace(circle);
+		}
+	});
 </script>

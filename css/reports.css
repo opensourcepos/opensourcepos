@@ -52,3 +52,18 @@
 	color: rgba(0,0,0,1);
 	font-size: 1.2rem;
 }
+
+.ct-tooltip-point
+{
+	fill-opacity: 1!important;
+	stroke-width: 0px;
+	stroke: red;
+	transition: all 0.2s linear;
+}
+
+.ct-tooltip-point:hover
+{
+	r: 7;
+	stroke-opacity: 0.2;
+	stroke-width: 20px;
+}

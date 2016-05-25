@@ -39,7 +39,8 @@
     "jquery.base64": "https://raw.githubusercontent.com/carlo/jquery-base64/master/jquery.base64.js",
     "chartist": "^0.9.7",
     "chartist-plugin-axistitle": "^0.1.0",
-    "chartist-plugin-pointlabels": "^0.0.4"
+    "chartist-plugin-pointlabels": "^0.0.4",
+    "chartist-plugin-tooltip": "https://github.com/Globegitter/chartist-plugin-tooltip/archive/master.zip"
   },
   "overrides": {
     "bootswatch-dist": {

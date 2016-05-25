@@ -4,8 +4,6 @@
 		labels: <?php echo json_encode($labels_1); ?>,
 		series: <?php echo json_encode($series_data_1); ?>
 	};
-
-	var sum = function(a, b) { return a + b };
 	
 	// We are setting a few options for our chart and override the defaults
 	var options = {
@@ -18,20 +16,17 @@
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
 		chartPadding: {
-			top: 10,
-//			right: 15,
-//			bottom: 10,
-//			left: 10
+			top: 20
 		},
 
 		// show the labels on the border with the pie chart
 		labelPosition: 'outside',
-
-		// interpolate labels to show lable, value and %
-		labelInterpolationFnc: function(label, index) {
-			debugger;;
-			return label + ": " + data.series[index] + " / " + Math.round(data.series[index] / data.series.reduce(sum) * 100) + '%';
-		}
+		
+		plugins: [
+			Chartist.plugins.tooltip({
+				currency: '<?php echo $this->config->item('currency_symbol'); ?>'
+			})
+		]
 	};
 	
 /*	var responsiveOptions = [

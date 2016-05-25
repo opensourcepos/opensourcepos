@@ -19,10 +19,7 @@
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
 		chartPadding: {
-			top: 10,
-//			right: 15,
-//			bottom: 10,
-//			left: 10
+			top: 20
 		},
 
 		// Set the bar chart to be horizontal
@@ -48,7 +45,7 @@
 					axisTitle: '<?php echo $xaxis_title; ?>',
 					axisClass: 'ct-axis-title',
 					offset: {
-						x: 0,
+						x: -100,
 						y: 100
 					},
 					textAnchor: 'middle'
