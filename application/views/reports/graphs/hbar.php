@@ -29,7 +29,25 @@
 		axisX: {
 			// Lets offset the chart a bit from the labels
 			offset: 120,
-			position: 'end'
+			position: 'end',
+			// The label interpolation function enables you to modify the values
+			// used for the labels on each axis.
+			labelInterpolationFnc: function(value) {
+				<?php
+				if( $this->config->item('currency_side') )
+				{
+				?>
+					return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+				<?php
+				}
+				else
+				{
+				?>
+					return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+				<?php
+				}
+				?>
+			}
 		},
 
 		// Y-Axis specific configuration
