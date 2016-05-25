@@ -34,16 +34,25 @@
 			// used for the labels on each axis.
 			labelInterpolationFnc: function(value) {
 				<?php
-				if( $this->config->item('currency_side') )
+				if( $show_currency )
 				{
+					if( $this->config->item('currency_side') )
+					{
 				?>
-					return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+					<?php
+					}
+					else
+					{
+					?>
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
 				<?php
+					}
 				}
 				else
 				{
 				?>
-					return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+					return value;
 				<?php
 				}
 				?>

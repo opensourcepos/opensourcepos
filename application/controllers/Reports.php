@@ -417,7 +417,8 @@ class Reports extends Secure_area
 			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_revenue'),
-			"xaxis_title" => $this->lang->line('reports_date')
+			"xaxis_title" => $this->lang->line('reports_date'),
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -447,7 +448,8 @@ class Reports extends Secure_area
 			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_items'),
-			"xaxis_title" => $this->lang->line('reports_revenue')
+			"xaxis_title" => $this->lang->line('reports_revenue'),
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -476,7 +478,8 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $summary
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -505,7 +508,8 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $summary
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -534,7 +538,8 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $summary
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -563,7 +568,8 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $summary
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -593,7 +599,8 @@ class Reports extends Secure_area
 			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_customers'),
-			"xaxis_title" => $this->lang->line('reports_revenue')
+			"xaxis_title" => $this->lang->line('reports_revenue'),
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -623,7 +630,8 @@ class Reports extends Secure_area
 			"series_data_1" => $series,
 			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
 			"yaxis_title" => $this->lang->line('reports_count'),
-			"xaxis_title" => $this->lang->line('reports_discount_percent')
+			"xaxis_title" => $this->lang->line('reports_discount_percent'),
+			"show_currency" => false
 		);
 
 		$this->load->view("reports/graphical", $data);
@@ -652,7 +660,8 @@ class Reports extends Secure_area
 			"chart_type" => "reports/graphs/pie",
 			"labels_1" => $labels,
 			"series_data_1" => $series,
-			"summary_data_1" => $summary
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
 		$this->load->view("reports/graphical", $data);
