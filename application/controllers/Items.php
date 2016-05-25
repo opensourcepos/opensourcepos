@@ -155,15 +155,15 @@ class Items extends Secure_area implements iData_controller
 		echo json_encode($suggestions);
 	}
 
-	function get_row($item_id)
+	function get_row($item_ids)
 	{
-		$item_info = $this->Item->get_info($item_id);
-		$stock_location = $this->item_lib->get_item_location();
-		$item_quantity = $this->Item_quantity->get_item_quantity($item_id,$stock_location);
-		$item_info->quantity = $item_quantity->quantity; 
-		$data_row = get_item_data_row($item_info,$this);
-		
-		echo json_encode($data_row);
+		$item_infos = $this->Item->get_multiple_info(explode(":", $item_ids), $this->item_lib->get_item_location());
+		$result = array();
+		foreach($item_infos->result() as $item_info)
+		{
+			$result[$item_info->item_id] = get_item_data_row($item_info,$this);
+		}
+		echo json_encode($result);
 	}
 
 	function view($item_id=-1)
@@ -245,7 +245,7 @@ class Items extends Secure_area implements iData_controller
 		$result = array();
 
 		$item_ids = explode(':', $item_ids);
-		$result = $this->Item->get_multiple_info($item_ids)->result_array();
+		$result = $this->Item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->result_array();
 		$config = $this->barcode_lib->get_barcode_config();
 
 		$data['barcode_config'] = $config;
@@ -289,7 +289,7 @@ class Items extends Secure_area implements iData_controller
 			''=>$this->lang->line('items_do_nothing'), 
 			1 =>$this->lang->line('items_change_all_to_allow_alt_desc'),
 			0 =>$this->lang->line('items_change_all_to_not_allow_allow_desc'));
-				
+
 		$data['serialization_choices'] = array(
 			''=>$this->lang->line('items_do_nothing'), 
 			1 =>$this->lang->line('items_change_all_to_serialized'),

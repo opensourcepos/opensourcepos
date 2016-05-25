@@ -44685,7 +44685,7 @@ THE SOFTWARE.*/
 
 	var rows_selector = function(ids) {
 		var selectors = [];
-		ids = ids instanceof Array ? ids : ("" + ids).split(",");
+		ids = ids instanceof Array ? ids : ("" + ids).split(":");
 		$.each(ids, function(index, element) {
 			selectors.push(row_selector(element));
 		});
@@ -44693,10 +44693,12 @@ THE SOFTWARE.*/
 	};
 
 	var highlight_row = function (id, color) {
-		var original = $(row_selector(id)).css('backgroundColor');
-		$(row_selector(id)).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
-			.animate({backgroundColor: color || '#e1ffdd'}, 5000)
-			.animate({backgroundColor: original}, "slow", "linear");
+		$(rows_selector(id)).each(function(index, element) {
+			var original = $(element).css('backgroundColor');
+			$(element).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
+				.animate({backgroundColor: color || '#e1ffdd'}, 5000)
+				.animate({backgroundColor: original}, "slow", "linear");
+		});
 	};
 
 	var do_delete = function (url, ids) {
@@ -44811,19 +44813,18 @@ THE SOFTWARE.*/
 				var message = response.message;
 				var selector = rows_selector(response.id);
 				if ($(selector.join(",")).length > 0) {
-					$.each(selector, function (index, element) {
-						var id = $(element).data('uniqueid');
-						$.get({
-							url: [url || resource + '/get_row', id].join("/"),
-							success: function (response) {
-								table().updateByUniqueId({id: id, row: response});
-								// TODO make selector more specific?
-								dialog_support.init("a.modal-dlg");
-								enable_actions();
-								highlight_row(id);
-							},
-							dataType: 'json'
-						});
+					var ids = response.id.split(":");
+				    $.get({
+						url: [url || resource + '/get_row', id].join("/"),
+						success: function (response) {
+							$.each(selector, function (index, element) {
+								var id = $(element).data('uniqueid');
+								table().updateByUniqueId({id: id, row: response[id]});
+								dialog_support.init(element + " a.modal-dlg");
+							});
+							highlight_row(ids);
+						},
+						dataType: 'json'
 					});
 				} else {
 					// call hightlight function once after refresh

@@ -53,7 +53,7 @@ class Reports extends Secure_area
 			)
 		);
 
-		echo json_encode($summary_data);
+		echo json_encode(array($sale_id => $summary_data));
 	}
 
 	function get_detailed_receivings_row($receiving_id)
@@ -85,7 +85,7 @@ class Reports extends Secure_area
 		
 		$summary_data[] = $report_data['comment'];
 
-		echo json_encode($summary_data);
+		echo json_encode(array($receiving_id => $summary_data));
 	}
 
 	function get_summary_data($start_date, $end_date=null, $sale_type=0)

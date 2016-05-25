@@ -202,12 +202,13 @@ class Item extends CI_Model
 	/*
 	Gets information about multiple items
 	*/
-	public function get_multiple_info($item_ids)
+	public function get_multiple_info($item_ids, $location_id)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where_in('item_id', $item_ids);
-		$this->db->order_by('item_id', 'asc');
+		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+		$this->db->where('location_id', $location_id);
+		$this->db->where_in('items.item_id', $item_ids);
 
 		return $this->db->get();
 	}
@@ -237,7 +238,7 @@ class Item extends CI_Model
 	*/
 	public function update_multiple($item_data, $item_ids)
 	{
-		$this->db->where_in('item_id', explode(',', $item_ids));
+		$this->db->where_in('item_id', explode(':', $item_ids));
 
 		return $this->db->update('items', $item_data);
 	}
