@@ -24,7 +24,22 @@
 		
 		plugins: [
 			Chartist.plugins.tooltip({
-				currency: '<?php echo $this->config->item('currency_symbol'); ?>'
+				transformTooltipTextFnc: function(value) {
+					<?php
+					if( $this->config->item('currency_side') )
+					{
+					?>
+						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+					<?php
+					}
+					else
+					{
+					?>
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+					<?php
+					}
+					?>
+				}
 			})
 		]
 	};
