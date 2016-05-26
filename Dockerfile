@@ -13,8 +13,7 @@ RUN apt-get install -y --no-install-recommends software-properties-common
 RUN apt-get install -y python git
 
 # Get latest Ospos source from Git
-RUN git clone https://github.com/jekkos/opensourcepos.git /app
-RUN cd app && git checkout origin/master
+ADD . /app
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN cd app && npm install
 RUN npm install -g grunt-cli
