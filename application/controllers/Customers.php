@@ -171,12 +171,7 @@ class Customers extends Person_controller
 				while (($data = fgetcsv($handle)) !== FALSE) 
 				{
 					// XSS file data sanity check
-					if ($this->security->xss_clean($data) === FALSE)
-					{
-						echo json_encode( array('success'=>false, 'message'=>'Your uploaded file contains malicious data') );
-
-						return;
-					}
+					$data = $this->security->xss_clean($data);
 					
 					$person_data = array(
 						'first_name'=>$data[0],

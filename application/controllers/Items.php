@@ -578,12 +578,7 @@ class Items extends Secure_area implements iData_controller
                 while (($data = fgetcsv($handle)) !== FALSE)
                 {
 					// XSS file data sanity check
-					if ($this->security->xss_clean($data) === FALSE)
-					{
-						echo json_encode( array('success'=>false, 'message'=>'Your uploaded file contains malicious data') );
-
-						return;
-					}
+					$data = $this->security->xss_clean($data);
 					
 					if (sizeof($data) >= 23)
 					{
