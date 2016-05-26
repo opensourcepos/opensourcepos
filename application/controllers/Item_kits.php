@@ -88,6 +88,7 @@ class Item_kits extends Secure_area implements iData_controller
 		
 		if ($this->Item_kit->save($item_kit_data, $item_kit_id))
 		{
+			$success = TRUE;
 			//New item kit
 			if ($item_kit_id==-1) {
 				$item_kit_id = $item_kit_data['item_kit_id'];
