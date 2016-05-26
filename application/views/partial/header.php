@@ -43,6 +43,7 @@
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
 		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<script src="bower_components/table-export/tableExport.js"></script>
@@ -64,12 +65,12 @@
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
+		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a9769acab5"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=28f1496971"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ac10c15522" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=01b7af18a8" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

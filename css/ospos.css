@@ -184,3 +184,9 @@ label.required
 	max-height: calc(100vh - 212px);
 	overflow-y: auto;
 }
+
+#payment_summary
+{
+	position: relative;
+	top: 100px;
+}

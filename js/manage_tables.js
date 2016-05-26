@@ -64,7 +64,7 @@
 
 			return $(selector).off('click').on('click', function(event) {
 				var $link = $(event.target);
-				$link = !$link.is("a, button") ? $link.parents("a") : $link ;
+				$link = !$link.is("a, button") ? $link.parents("a, button") : $link ;
 				BootstrapDialog.show($.extend({
 					title: $link.attr('title'),
 					message: (function() {
@@ -183,6 +183,7 @@
 		return function(response) {
 			typeof options.load_callback == 'function' && options.load_callback();
 			options.load_callback = undefined;
+			dialog_support.init("a.modal-dlg, button.modal-dlg");
 			typeof callback == 'function' && callback.call(this, response);
 		}
 	};
@@ -220,9 +221,6 @@
 			onCheckAll: enable_actions,
 			onUncheckAll: enable_actions,
 			onLoadSuccess: load_success(options.onLoadSuccess),
-			onPostBody: function() {
-				dialog_support.init("a.modal-dlg, button.modal-dlg");
-			},
 			onColumnSwitch : function(field, checked) {
 				var user_settings = localStorage[options.employee_id];
 				user_settings = (user_settings && JSON.parse(user_settings)) || {};
@@ -259,7 +257,8 @@
 			} else {
 				var message = response.message;
 				var selector = rows_selector(response.id);
-				if ($(selector.join(",")).length > 0) {
+				var rows = $(selector.join(",")).length;
+				if (rows > 0 && rows < 15) {
 					var ids = response.id.split(":");
 				    $.get({
 						url: [url || resource + '/get_row', id].join("/"),

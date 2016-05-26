@@ -24,9 +24,11 @@ $(document).ready(function()
 		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 		uniqueId: 'sale_id',
 		onLoadSuccess: function(response) {
-			$("#payment_summary").html(response.payment_summary);
-			$("#table tbody tr").length > 1 && $("#table tbody tr:last td:first").html("");
-
+			if ($("#table tbody tr").length > 1)
+			{
+				$("#payment_summary").html(response.payment_summary);
+				$("#table tbody tr:last td:first").html("");
+			}
 		},
 		queryParams: function() {
 			return $.extend(arguments[0], {
@@ -71,5 +73,7 @@ $(document).ready(function()
 
 <div id="payment_summary">
 </div>
+
+
 
 <?php $this->load->view("partial/footer"); ?>

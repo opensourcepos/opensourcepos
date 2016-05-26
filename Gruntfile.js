@@ -18,7 +18,7 @@ module.exports = function(grunt) {
             all: {
                 mainFiles: {
                     'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js'],
-                    'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js"]
+                    'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js", "dist/extensions/mobile/bootstrap-table-mobile.js"]
                 },
                 dest: {
                     'js': 'tmp/opensourcepos_bower.js',
