@@ -15,7 +15,7 @@
 		width: '100%',
 
 		// Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
-		height: '80%',
+		height: '100%',
 
 		// Draw the line chart points
 		showPoint: true,
@@ -25,7 +25,8 @@
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
 		chartPadding: {
-			top: 20
+			top: 20,
+			bottom: 120
 		},
 
 		// X-Axis specific configuration
@@ -151,8 +152,22 @@
 			})
 		]
 	};
+	
+	var responsiveOptions = [
+		['screen and (min-width: 640px)', {
+			height: '80%',
+			chartPadding: {
+				top: 20,
+				bottom: 0
+			},
+		}] /*,
+		['screen and (min-width: 1024px)', {
+			labelOffset: 80,
+			chartPadding: 20
+		}]*/
+	];
 
-	chart = new Chartist.Line('#chart1', data, options);
+	chart = new Chartist.Line('#chart1', data, options, responsiveOptions);
 	
 	chart.on('draw', function(data) {
 		// If the draw event was triggered from drawing a point on the line chart

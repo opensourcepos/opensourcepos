@@ -16,6 +16,7 @@
 #report_summary
 {
 	text-align: center;
+	margin-top: -100px;
 }
 
 #report_summary .summary_row
@@ -29,19 +30,10 @@
 /* style chart X axis labels to be rotated of 60 degrees */
 .ct-label.ct-horizontal
 {
-	/* Safari */
 	-webkit-transform: rotate(-60deg);
-
-	/* Firefox */
 	-moz-transform: rotate(-60deg);
-
-	/* IE */
 	-ms-transform: rotate(-60deg);
-
-	/* Opera */
 	-o-transform: rotate(-60deg);
-
-	/* Internet Explorer */
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 }
 

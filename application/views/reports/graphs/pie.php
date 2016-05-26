@@ -12,15 +12,18 @@
 		width: '100%',
 
 		// Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
-		height: '80%',
+		height: '100%',
 
 		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
 		chartPadding: {
-			top: 20
+			top: 20,
+			bottom: 100
 		},
 
+		// This option can be set to 'inside', 'outside' or 'center'. 
 		// show the labels on the border with the pie chart
 		labelPosition: 'outside',
+		labelDirection: 'explode',
 		
 		plugins: [
 			Chartist.plugins.tooltip({
@@ -53,20 +56,19 @@
 		]
 	};
 	
-/*	var responsiveOptions = [
+	var responsiveOptions = [
 		['screen and (min-width: 640px)', {
-			chartPadding: 30,
-			labelOffset: 100,
-			labelDirection: 'explode',
-			labelInterpolationFnc: function(value) {
-				return value;
-			}
-		}],
+			height: '80%',
+			chartPadding: {
+				top: 20,
+				bottom: 20
+			},
+		}] /*,
 		['screen and (min-width: 1024px)', {
 			labelOffset: 80,
 			chartPadding: 20
-		}]
-	];*/
+		}]*/
+	];
 
-	new Chartist.Pie('#chart1', data, options/*, responsiveOptions*/);
+	new Chartist.Pie('#chart1', data, options, responsiveOptions);
 </script>
