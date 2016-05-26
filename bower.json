@@ -34,7 +34,7 @@
     "smalot-bootstrap-datetimepicker": "^2.3.11",
     "bootstrap-select": "^1.10.0",
     "bootstrap-table": "^1.10.1",
-    "bootstrap-daterangepicker": "^2.1.19",
+    "bootstrap-daterangepicker": "^2.1.20",
     "table-export": "*",
     "jquery.base64": "https://raw.githubusercontent.com/carlo/jquery-base64/master/jquery.base64.js",
     "chartist": "^0.9.7",
