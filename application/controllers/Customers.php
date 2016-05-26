@@ -152,7 +152,8 @@ class Customers extends Person_controller
 	{
 		$msg = 'do_excel_import';
 		$failCodes = array();
-		if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
+
+		if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
 			$msg = $this->lang->line('items_excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
@@ -163,12 +164,20 @@ class Customers extends Person_controller
 		{
 			if (($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
 			{
-				//Skip first row
+                // Skip the first row as it's the table description
 				fgetcsv($handle);
 				
 				$i=1;
 				while (($data = fgetcsv($handle)) !== FALSE) 
 				{
+					// XSS file data sanity check
+					if ($this->security->xss_clean($data) === FALSE)
+					{
+						echo json_encode( array('success'=>false, 'message'=>'Your uploaded file contains malicious data') );
+
+						return;
+					}
+					
 					$person_data = array(
 						'first_name'=>$data[0],
 						'last_name'=>$data[1],
@@ -208,7 +217,7 @@ class Customers extends Person_controller
 			}
 			else 
 			{
-				echo json_encode( array('success'=>false, 'message'=>'Your upload file has no data or not in supported format.') );
+                echo json_encode( array('success'=>false, 'message'=>'Your uploaded file has no data or wrong format') );
 
 				return;
 			}
@@ -222,7 +231,7 @@ class Customers extends Person_controller
 		}
 		else
 		{
-			$msg = "Import Customers successful";
+			$msg = "Import of Customers successful";
 		}
 
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );

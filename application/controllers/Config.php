@@ -35,7 +35,11 @@ class Config extends Secure_area
 		
 		if (!empty($upload_data['orig_name']))
 		{
-			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
+			// XSS file image sanity check
+			if ($this->security->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			{
+				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
+			}
 		}
 		
 		$result = $this->Appconfig->batch_save($batch_save_data);

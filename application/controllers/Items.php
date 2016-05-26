@@ -331,7 +331,11 @@ class Items extends Secure_area implements iData_controller
 		
 		if (!empty($upload_data['orig_name']))
 		{
-			$item_data['pic_id'] = $upload_data['raw_name'];
+			// XSS file image sanity check
+			if ($this->security->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			{
+				$item_data['pic_id'] = $upload_data['raw_name'];
+			}
 		}
 		
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -555,10 +559,11 @@ class Items extends Secure_area implements iData_controller
     {
         $msg = 'do_excel_import';
         $failCodes = array();
-        if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
+
+        if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
         {
             $msg = $this->lang->line('items_excel_import_failed');
-            echo json_encode( array('success'=>false,'message'=>$msg) );
+            echo json_encode( array('success'=>false, 'message'=>$msg) );
 
             return;
         }
@@ -566,13 +571,22 @@ class Items extends Secure_area implements iData_controller
 		{
             if (($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
             {
-                //Skip first row
+                // Skip the first row as it's the table description
                 fgetcsv($handle);
 
                 $i=1;
                 while (($data = fgetcsv($handle)) !== FALSE)
                 {
-					if (sizeof($data) >= 23) {
+					// XSS file data sanity check
+					if ($this->security->xss_clean($data) === FALSE)
+					{
+						echo json_encode( array('success'=>false, 'message'=>'Your uploaded file contains malicious data') );
+
+						return;
+					}
+					
+					if (sizeof($data) >= 23)
+					{
 	                    $item_data = array(
 	                        'name'			=>	$data[1],
 	                        'description'	=>	$data[11],
@@ -606,6 +620,7 @@ class Items extends Secure_area implements iData_controller
 					{
 						$invalidated = true;
 					}
+
                     if(!$invalidated && $this->Item->save($item_data)) 
                     {
                         $items_taxes_data = null;
@@ -675,18 +690,17 @@ class Items extends Secure_area implements iData_controller
                             );
                             $this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $data[$col]);
 
-                            $excel_data = array
-                                (
-                                    'trans_items'=>$item_data['item_id'],
-                                    'trans_user'=>$employee_id,
-                                    'trans_comment'=>$comment,
-                                    'trans_location'=>$location_id,
-                                    'trans_inventory'=>0
-                                );
+                            $excel_data = array(
+								'trans_items'=>$item_data['item_id'],
+								'trans_user'=>$employee_id,
+								'trans_comment'=>$comment,
+								'trans_location'=>$location_id,
+								'trans_inventory'=>0
+							);
                             $this->db->insert('inventory',$excel_data);
                         }
                     }
-                    else//insert or update item failure
+                    else //insert or update item failure
                     {
                         $failCodes[] = $i;
                     }
@@ -696,7 +710,7 @@ class Items extends Secure_area implements iData_controller
             }
             else 
             {
-                echo json_encode( array('success'=>false, 'message'=>'Your upload file has no data or not in supported format.') );
+                echo json_encode( array('success'=>false, 'message'=>'Your uploaded file has no data or wrong format') );
 
                 return;
             }
@@ -705,12 +719,12 @@ class Items extends Secure_area implements iData_controller
 		$success = true;
 		if(count($failCodes) > 0)
 		{
-			$msg = "Most items imported. But some were not, here is list of their CODE (" .count($failCodes) ."): ".implode(", ", $failCodes);
+			$msg = "Most items imported. But some were not, here is list of their CODE (" . count($failCodes) ."): ". implode(", ", $failCodes);
 			$success = false;
 		}
 		else
 		{
-			$msg = "Import items successful";
+			$msg = "Import of Items successful";
 		}
 
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );
