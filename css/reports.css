@@ -15,11 +15,21 @@
 
 #report_summary
 {
+	margin: 2em 0 auto;
+	text-align: center;
+}
+
+#report_summary .summary_row
+{
+}
+
+#chart_report_summary
+{
 	text-align: center;
 	margin-top: -100px;
 }
 
-#report_summary .summary_row
+#chart_report_summary .summary_row
 {
 }
 

@@ -8,7 +8,7 @@
 
 <?php $this->load->view($chart_type); ?>
 
-<div id="report_summary">
+<div id="chart_report_summary">
 	<?php
 	foreach($summary_data_1 as $name=>$value)
 	{
