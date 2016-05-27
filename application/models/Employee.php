@@ -93,36 +93,34 @@ class Employee extends Person
 			if (!$employee_id or !$this->exists($employee_id))
 			{
 				$employee_data['person_id'] = $employee_id = $person_data['person_id'];
-				$success = $this->db->insert('employees',$employee_data);
+				$success = $this->db->insert('employees', $employee_data);
 			}
 			else
 			{
 				$this->db->where('person_id', $employee_id);
-				$success = $this->db->update('employees',$employee_data);		
+				$success = $this->db->update('employees', $employee_data);
 			}
 			
 			//We have either inserted or updated a new employee, now lets set permissions. 
 			if($success)
 			{
 				//First lets clear out any grants the employee currently has.
-				$success=$this->db->delete('grants', array('person_id' => $employee_id));
+				$success = $this->db->delete('grants', array('person_id' => $employee_id));
 				
 				//Now insert the new grants
 				if($success)
 				{
 					foreach($grants_data as $permission_id)
 					{
-						$success = $this->db->insert('grants',
-						array(
-						'permission_id'=>$permission_id,
-						'person_id'=>$employee_id));
+						$success = $this->db->insert('grants', array('permission_id' => $permission_id, 'person_id' => $employee_id));
 					}
 				}
 			}
 			
 		}
 		
-		$this->db->trans_complete();		
+		$this->db->trans_complete();
+		
 		return $success;
 	}
 	

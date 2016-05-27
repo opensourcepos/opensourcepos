@@ -223,8 +223,10 @@ class Item extends CI_Model
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
+
 				return TRUE;
 			}
+
 			return FALSE;
 		}
 		

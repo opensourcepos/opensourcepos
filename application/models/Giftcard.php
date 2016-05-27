@@ -118,7 +118,7 @@ class Giftcard extends CI_Model
 
 		$this->db->where('giftcard_id', $giftcard_id);
 
-		return $this->db->update('giftcards',$giftcard_data);
+		return $this->db->update('giftcards', $giftcard_data);
 	}
 
 	/*

@@ -692,7 +692,8 @@ class Items extends Secure_area implements iData_controller
 								'trans_location'=>$location_id,
 								'trans_inventory'=>0
 							);
-                            $this->db->insert('inventory',$excel_data);
+
+                            $this->Inventory->insert($excel_data);
                         }
                     }
                     else //insert or update item failure

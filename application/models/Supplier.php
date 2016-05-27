@@ -84,7 +84,8 @@ class Supplier extends Person
 		$this->db->join('people', 'people.person_id = suppliers.person_id');		
 		$this->db->where_in('suppliers.person_id',$suppliers_ids);
 		$this->db->order_by("last_name", "asc");
-		return $this->db->get();		
+
+		return $this->db->get();
 	}
 	
 	/*
@@ -93,6 +94,7 @@ class Supplier extends Person
 	function save_supplier(&$person_data, &$supplier_data,$supplier_id=false)
 	{
 		$success=false;
+
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
@@ -101,17 +103,18 @@ class Supplier extends Person
 			if (!$supplier_id or !$this->exists($supplier_id))
 			{
 				$supplier_data['person_id'] = $person_data['person_id'];
-				$success = $this->db->insert('suppliers',$supplier_data);				
+				$success = $this->db->insert('suppliers', $supplier_data);
 			}
 			else
 			{
 				$this->db->where('person_id', $supplier_id);
-				$success = $this->db->update('suppliers',$supplier_data);
+				$success = $this->db->update('suppliers', $supplier_data);
 			}
 			
 		}
 		
-		$this->db->trans_complete();		
+		$this->db->trans_complete();
+
 		return $success;
 	}
 	

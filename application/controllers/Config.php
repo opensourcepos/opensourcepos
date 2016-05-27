@@ -161,7 +161,9 @@ class Config extends Secure_area
 			$this->Stock_location->delete($location_id);
 		}
 
-		$success = $this->db->trans_complete();
+		$this->db->trans_complete();
+		
+		$success = $this->db->trans_status();
 		
 		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}

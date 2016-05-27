@@ -85,11 +85,12 @@ class Stock_location extends CI_Model
     function save(&$location_data,$location_id) 
     {
 		$location_name = $location_data['location_name'];
+
     	if (!$this->exists($location_name))
     	{
     		$this->db->trans_start();
-    		$location_data = array('location_name'=>$location_name,'deleted'=>0);
-   			$this->db->insert('stock_locations',$location_data);
+    		$location_data = array('location_name'=>$location_name, 'deleted'=>0);
+   			$this->db->insert('stock_locations', $location_data);
    			$location_id = $this->db->insert_id();
    			 
    			$this->_insert_new_permission('items', $location_id, $location_name);
@@ -105,10 +106,13 @@ class Stock_location extends CI_Model
    				$this->db->insert('item_quantities', $quantity_data);
    			}
    			$this->db->trans_complete();
+			
+			return $this->db->trans_status();
    		}
     	else 
     	{
     		$this->db->where('location_id', $location_id);
+
     		return $this->db->update('stock_locations',$location_data);
     	}
     }
@@ -117,7 +121,7 @@ class Stock_location extends CI_Model
     {
     	// insert new permission for stock location
     	$permission_id = $module."_".$location_name;
-    	$permission_data = array('permission_id'=>$permission_id,'module_id'=>$module,'location_id' => $location_id);
+    	$permission_data = array('permission_id'=>$permission_id, 'module_id'=>$module, 'location_id' => $location_id);
     	$this->db->insert('permissions', $permission_data);
     	
     	// insert grants for new permission
@@ -127,7 +131,6 @@ class Stock_location extends CI_Model
     		$grants_data = array('permission_id' => $permission_id, 'person_id' => $employee['person_id']);
     		$this->db->insert('grants', $grants_data);
     	}
-    	
     }
     
     /*

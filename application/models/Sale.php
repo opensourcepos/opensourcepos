@@ -310,7 +310,7 @@ class Sale extends CI_Model
 				'payment_type'	=> $payment['payment_type'],
 				'payment_amount'=> $payment['payment_amount']
 			);
-			$this->db->insert('sales_payments',$sales_payments_data);
+			$this->db->insert('sales_payments', $sales_payments_data);
 		}
 
 		foreach($items as $line=>$item)
@@ -330,7 +330,7 @@ class Sale extends CI_Model
 				'item_location'		=> $item['item_location']
 			);
 
-			$this->db->insert('sales_items',$sales_items_data);
+			$this->db->insert('sales_items', $sales_items_data);
 
 			// Update stock quantity
 			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);

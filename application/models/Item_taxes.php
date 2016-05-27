@@ -25,10 +25,11 @@ class Item_taxes extends CI_Model
 		foreach ($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$result &= $this->db->insert('items_taxes',$row);		
+			$result &= $this->db->insert('items_taxes', $row);		
 		}
 		
 		$this->db->trans_complete();
+
 		return $result;
 	}
 	

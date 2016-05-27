@@ -115,7 +115,6 @@ class Customer extends Person
 	*/
 	function save_customer(&$person_data, &$customer_data, $customer_id=false)
 	{
-		$success=false;
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
@@ -124,18 +123,18 @@ class Customer extends Person
 			if (!$customer_id or !$this->exists($customer_id))
 			{
 				$customer_data['person_id'] = $person_data['person_id'];
-				$success = $this->db->insert('customers', $customer_data);				
+				$this->db->insert('customers', $customer_data);
 			}
 			else
 			{
 				$this->db->where('person_id', $customer_id);
-				$success = $this->db->update('customers', $customer_data);
+				$this->db->update('customers', $customer_data);
 			}
 		}
 		
 		$this->db->trans_complete();
 		
-		return $success;
+		return $this->db->trans_status();
 	}
 	
 	/*
