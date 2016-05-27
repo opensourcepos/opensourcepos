@@ -19,7 +19,7 @@ class Specific_employee extends Report
 		$this->db->select('sale_id, sale_date, sum(quantity_purchased) as items_purchased, CONCAT(first_name, " ", last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit, payment_type, comment', false);
 		$this->db->from('sales_items_temp');
 		$this->db->join('people', 'sales_items_temp.customer_id = people.person_id', 'left');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'" and employee_id='.$inputs['employee_id']);
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND employee_id=" . $this->db->escape($inputs['employee_id']));
 		
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -53,7 +53,7 @@ class Specific_employee extends Report
 	{
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'" and employee_id='.$inputs['employee_id']);
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND employee_id=" . $this->db->escape($inputs['employee_id']));
 
 		if ($inputs['sale_type'] == 'sales')
         {
