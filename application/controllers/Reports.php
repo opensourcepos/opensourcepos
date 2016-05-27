@@ -1,6 +1,5 @@
 <?php
 require_once ("Secure_area.php");
-require_once (APPPATH."libraries/ofc-library/Open-flash-chart.php");
 
 class Reports extends Secure_area
 {
@@ -29,13 +28,6 @@ class Reports extends Secure_area
 		$this->load->view("reports/listing", $data);
 	}
 
-	//Input for reports that require only a date range and an export to excel. (see routes.php to see that all summary reports route here)
-	function date_input_excel_export()
-	{
-		$data = array();
-		$this->load->view("reports/date_input_excel_export", $data);
-	}
-
  	function get_detailed_sales_row($sale_id)
 	{
 		$this->load->model('reports/Detailed_sales');
@@ -43,22 +35,25 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataBySaleId($sale_id);
 
-		$summary_data = array(anchor('sales/edit/'.$report_data['sale_id'],
-				'POS '.$report_data['sale_id'],
-				array('class'=>'modal-dlg modal-btn-submit')),
-				$report_data['sale_date'],
-				to_quantity_decimals($report_data['items_purchased']),
-				$report_data['employee_name'],
-				$report_data['customer_name'],
-				to_currency($report_data['subtotal']),
-				to_currency($report_data['total']),
-				to_currency($report_data['tax']),
-				to_currency($report_data['cost']),
-				to_currency($report_data['profit']),
-				$report_data['payment_type'],
-				$report_data['comment']);
+		$summary_data = array(
+			'sale_id' => $report_data['sale_id'],
+			'sale_date' => $report_data['sale_date'],
+			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'employee' => $report_data['employee_name'],
+			'customer' => $report_data['customer_name'],
+			'subtotal' => to_currency($report_data['subtotal']),
+			'total' => to_currency($report_data['total']),
+			'tax' => to_currency($report_data['tax']),
+			'cost' => to_currency($report_data['cost']),
+			'profit' => to_currency($report_data['profit']),
+			'payment_type' => $report_data['payment_type'],
+			'comment' => $report_data['comment'],
+			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$this->lang->line('sales_update'))
+			)
+		);
 
-		echo get_detailed_data_row($summary_data, $this);
+		echo json_encode(array($sale_id => $summary_data));
 	}
 
 	function get_detailed_receivings_row($receiving_id)
@@ -68,25 +63,29 @@ class Reports extends Secure_area
 
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
-		$summary_data = array(anchor('receivings/edit/'.$report_data['receiving_id'],
-				'RECV '.$report_data['receiving_id'],
-				array('class'=>'modal-dlg modal-btn-submit')),
-				$report_data['receiving_date'],
-				to_quantity_decimals($report_data['items_purchased']),
-				$report_data['employee_name'],
-				$report_data['supplier_name'],
-				to_currency($report_data['total']),
-				$report_data['payment_type']
+		$summary_data = array(
+			'receiving_id' => $report_data['receiving_id'],
+			'receiving_date' => $report_data['receiving_date'],
+			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'invoice_number' => $report_data['invoice_number'],
+			'employee' => $report_data['employee_name'],
+			'supplier' => $report_data['supplier_name'],
+			'total' => to_currency($report_data['total']),
+			'comment' => $report_data['comment'],
+			'payment_type' => $report_data['payment_type'],
+			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$this->lang->line('recvs_update'))
+			)
 		);
 
 		if($this->config->item('invoice_enable') == TRUE)
 		{
-			$summary_data[] = $report_data['invoice_number'];
+			$summary_data[]['invoice_number'] = $report_data['invoice_number'];
 		}
 		
 		$summary_data[] = $report_data['comment'];
 
-		echo get_detailed_data_row($summary_data, $this);
+		echo json_encode(array($receiving_id => $summary_data));
 	}
 
 	function get_summary_data($start_date, $end_date=null, $sale_type=0)
@@ -103,7 +102,7 @@ class Reports extends Secure_area
 	}
 
 	//Summary sales report
-	function summary_sales($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_sales($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
@@ -112,12 +111,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['sale_date'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['sale_date'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -126,15 +125,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary categories report
-	function summary_categories($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_categories($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
@@ -143,12 +141,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['category'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['category'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -157,15 +155,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary customers report
-	function summary_customers($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_customers($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
@@ -174,12 +171,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['customer'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['customer'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -188,15 +185,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary suppliers report
-	function summary_suppliers($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_suppliers($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
@@ -205,12 +201,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['supplier'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['supplier'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -219,15 +215,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary items report
-	function summary_items($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_items($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
@@ -236,12 +231,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array(character_limiter($row['name'], 40), 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array(character_limiter($row['name'], 40),
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -250,15 +245,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary employees report
-	function summary_employees($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_employees($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
@@ -267,12 +261,12 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['employee'], 
-				to_quantity_decimals($row['quantity_purchased']), 
-				to_currency($row['subtotal']), 
-				to_currency($row['total']), 
-				to_currency($row['tax']), 
-				to_currency($row['cost']), 
+			$tabular_data[] = array($row['employee'],
+				to_quantity_decimals($row['quantity_purchased']),
+				to_currency($row['subtotal']),
+				to_currency($row['total']),
+				to_currency($row['tax']),
+				to_currency($row['cost']),
 				to_currency($row['profit']));
 		}
 
@@ -281,15 +275,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary taxes report
-	function summary_taxes($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_taxes($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
@@ -310,15 +303,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary discounts report
-	function summary_discounts($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_discounts($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
@@ -327,7 +319,7 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['discount_percent'], 
+			$tabular_data[] = array($row['discount_percent'],
 				$row['count']);
 		}
 
@@ -336,15 +328,14 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
 	}
 
 	//Summary payments report
-	function summary_payments($start_date, $end_date, $sale_type, $export_excel=0)
+	function summary_payments($start_date, $end_date, $sale_type)
 	{
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
@@ -353,8 +344,8 @@ class Reports extends Secure_area
 
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = array($row['payment_type'], 
-				$row['count'], 
+			$tabular_data[] = array($row['payment_type'],
+				$row['count'],
 				to_currency($row['payment_amount']));
 		}
 
@@ -363,8 +354,7 @@ class Reports extends Secure_area
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular", $data);
@@ -407,38 +397,31 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
-
-		$data = array(
-			"title" => $this->lang->line('reports_sales_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_sales_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_sales_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_sales');
-		$model = $this->Summary_sales;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[date($this->config->item('dateformat'), strtotime($row['sale_date']))] = $row['total'];
+			$date = date($this->config->item('dateformat'), strtotime($row['sale_date']));
+			$labels[] = $date;
+			$series[] = array('meta' => $date, 'value' => $row['total']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_sales_summary_report'),
-			"yaxis_label"=>$this->lang->line('reports_revenue'),
-			"xaxis_label"=>$this->lang->line('reports_date'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/line",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_revenue'),
+			"xaxis_title" => $this->lang->line('reports_date'),
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/line", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary items report
@@ -446,38 +429,30 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
-
-		$data = array(
-			"title" => $this->lang->line('reports_items_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_items_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_items_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_items');
-		$model = $this->Summary_items;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['name']] = $row['total'];
+			$labels[] = $row['name'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_items_summary_report'),
-			"xaxis_label"=>$this->lang->line('reports_revenue'),
-			"yaxis_label"=>$this->lang->line('reports_items'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/hbar",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_items'),
+			"xaxis_title" => $this->lang->line('reports_revenue'),
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/hbar", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary customers report
@@ -485,36 +460,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
-
-		$data = array(
-			"title" => $this->lang->line('reports_categories_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_categories_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_categories_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_categories');
-		$model = $this->Summary_categories;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['category']] = $row['total'];
+			$labels[] = $row['category'];
+			$series[] = array('meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_categories_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary suppliers report
@@ -522,36 +490,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
-
-		$data = array(
-			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_suppliers_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_suppliers_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_suppliers');
-		$model = $this->Summary_suppliers;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['supplier']] = $row['total'];
+			$labels[] = $row['supplier'];
+			$series[] = array('meta' => $row['supplier'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary employees report
@@ -559,36 +520,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
-
-		$data = array(
-			"title" => $this->lang->line('reports_employees_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_employees_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_employees_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_employees');
-		$model = $this->Summary_employees;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['employee']] = $row['total'];
+			$labels[] = $row['employee'];
+			$series[] = array('meta' => $row['employee'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_employees_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary taxes report
@@ -596,36 +550,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
-
-		$data = array(
-			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_taxes_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_taxes_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_taxes');
-		$model = $this->Summary_taxes;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['percent']] = $row['total'];
+			$labels[] = $row['percent'];
+			$series[] = array('meta' => $row['percent'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary customers report
@@ -633,38 +580,30 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
-
-		$data = array(
-			"title" => $this->lang->line('reports_customers_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_customers_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_customers_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_customers');
-		$model = $this->Summary_customers;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['customer']] = $row['total'];
+			$labels[] = $row['customer'];
+			$series[] = $row['total'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_customers_summary_report'),
-			"xaxis_label"=>$this->lang->line('reports_revenue'),
-			"yaxis_label"=>$this->lang->line('reports_customers'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/hbar",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_customers'),
+			"xaxis_title" => $this->lang->line('reports_revenue'),
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/hbar", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary discounts report
@@ -672,38 +611,30 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
-
-		$data = array(
-			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_discounts_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_discounts_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_discounts');
-		$model = $this->Summary_discounts;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['discount_percent']] = $row['count'];
+			$labels[] = $row['discount_percent'];
+			$series[] = $row['count'];
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"yaxis_label"=>$this->lang->line('reports_count'),
-			"xaxis_label"=>$this->lang->line('reports_discount_percent'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/bar",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type)),
+			"yaxis_title" => $this->lang->line('reports_count'),
+			"xaxis_title" => $this->lang->line('reports_discount_percent'),
+			"show_currency" => false
 		);
 
-		$this->load->view("reports/graphs/bar", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	//Graphical summary payments report
@@ -711,38 +642,29 @@ class Reports extends Secure_area
 	{
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
-
-		$data = array(
-			"title" => $this->lang->line('reports_payments_summary_report'),
-			"data_file" => site_url("reports/graphical_summary_payments_graph/$start_date/$end_date/$sale_type"),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type))
-		);
-
-		$this->load->view("reports/graphical", $data);
-	}
-
-	//The actual graph data
-	function graphical_summary_payments_graph($start_date, $end_date, $sale_type)
-	{
-		$this->load->model('reports/Summary_payments');
-		$model = $this->Summary_payments;
+		
 		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
+		$summary = $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type));
 
-		$graph_data = array();
+		$labels = array();
+		$series = array();
 		foreach($report_data as $row)
 		{
-			$graph_data[$row['payment_type']] = $row['payment_amount'];
+			$labels[] = $row['payment_type'];
+			$series[] = array('meta' => $row['payment_type'] . ' ' . round($row['payment_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['payment_amount']);
 		}
 
 		$data = array(
 			"title" => $this->lang->line('reports_payments_summary_report'),
-			"yaxis_label"=>$this->lang->line('reports_revenue'),
-			"xaxis_label"=>$this->lang->line('reports_payment_type'),
-			"data" => $graph_data
+			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			"chart_type" => "reports/graphs/pie",
+			"labels_1" => $labels,
+			"series_data_1" => $series,
+			"summary_data_1" => $summary,
+			"show_currency" => true
 		);
 
-		$this->load->view("reports/graphs/pie", $data);
+		$this->load->view("reports/graphical", $data);
 	}
 
 	function specific_customer_input()
@@ -760,7 +682,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/specific_input", $data);
 	}
 
-	function specific_customer($start_date, $end_date, $customer_id, $sale_type, $export_excel=0)
+	function specific_customer($start_date, $end_date, $customer_id, $sale_type)
 	{
 		$this->load->model('reports/Specific_customer');
 		$model = $this->Specific_customer;
@@ -777,7 +699,7 @@ class Reports extends Secure_area
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -788,9 +710,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'customer_id' =>$customer_id, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
@@ -811,7 +731,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/specific_input", $data);
 	}
 
-	function specific_employee($start_date, $end_date, $employee_id, $sale_type, $export_excel=0)
+	function specific_employee($start_date, $end_date, $employee_id, $sale_type)
 	{
 		$this->load->model('reports/Specific_employee');
 		$model = $this->Specific_employee;
@@ -828,7 +748,7 @@ class Reports extends Secure_area
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -839,9 +759,7 @@ class Reports extends Secure_area
 			"headers" => $model->getDataColumns(),
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers)),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'employee_id' =>$employee_id, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
@@ -862,7 +780,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/specific_input", $data);
 	}
 
-	function specific_discount($start_date, $end_date, $discount, $sale_type, $export_excel = 0)
+	function specific_discount($start_date, $end_date, $discount, $sale_type)
 	{
 		$this->load->model('reports/Specific_discount');
 		$model = $this->Specific_discount;
@@ -879,7 +797,7 @@ class Reports extends Secure_area
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']),/*to_currency($drow['profit']),*/ $drow['discount_percent'].'%');
 			}
 		}
 
@@ -889,15 +807,13 @@ class Reports extends Secure_area
 			"headers" => $headers,
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'discount' =>$discount, 'sale_type'=>$sale_type)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date,'discount' =>$discount, 'sale_type'=>$sale_type))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
 	}
 
-	function detailed_sales($start_date, $end_date, $sale_type, $location_id='all', $export_excel=0)
+	function detailed_sales($start_date, $end_date, $sale_type, $location_id='all')
 	{
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
@@ -912,7 +828,23 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			$summary_data[] = array(anchor('sales/edit/'.$row['sale_id'], 'POS '.$row['sale_id'], array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], $row['customer_name'], to_currency($row['subtotal']), to_currency($row['total']), to_currency($row['tax']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']);
+			$summary_data[] = array(
+				'id' => $row['sale_id'],
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee' => $row['employee_name'],
+				'customer' => $row['customer_name'],
+				'subtotal' => to_currency($row['subtotal']),
+				'total' => to_currency($row['total']),
+				'tax' => to_currency($row['tax']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit']),
+				'payment_type' => $row['payment_type'],
+				'comment' => $row['comment'],
+				'edit' => anchor("sales/edit/".$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('sales_update'))
+				)
+			);
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -921,7 +853,7 @@ class Reports extends Secure_area
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$key][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
+				$details_data[$row['sale_id']][] = array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['total']), to_currency($drow['tax']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -932,15 +864,13 @@ class Reports extends Secure_area
 			"editable" => "sales",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type, 'location_id'=>$location_id)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'sale_type'=>$sale_type, 'location_id'=>$location_id))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
 	}
 
-	function detailed_receivings($start_date, $end_date, $receiving_type, $location_id='all', $export_excel=0)
+	function detailed_receivings($start_date, $end_date, $receiving_type, $location_id='all')
 	{
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
@@ -955,34 +885,22 @@ class Reports extends Secure_area
 
 		foreach($report_data['summary'] as $key=>$row)
 		{
-			if($this->config->item('invoice_enable') == TRUE)
+			$summary_data[] = array(
+				'id' => $row['receiving_id'],
+				'receiving_date' => $row['receiving_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee' => $row['employee_name'], $row['supplier_name'],
+				'total' => to_currency($row['total']),
+				'payment_type' => $row['payment_type'],
+				'invoice_number' => $row['invoice_number'],
+				'comment' => $row['comment'],
+				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('receivings_update'))
+				)
+			);
+			if(!$this->config->item('invoice_enable'))
 			{
-				$summary_data[] = array(
-					anchor('receivings/edit/'.$row['receiving_id'],
-					'RECV '.$row['receiving_id'],
-					array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')),
-					$row['receiving_date'],
-					to_quantity_decimals($row['items_purchased']),
-					$row['employee_name'], $row['supplier_name'],
-					to_currency($row['total']),
-					$row['payment_type'],
-					$row['invoice_number'],
-					$row['comment']
-				);
-			}
-			else
-			{				
-				$summary_data[] = array(
-					anchor('receivings/edit/'.$row['receiving_id'],
-					'RECV '.$row['receiving_id'],
-					array('class'=>'modal-dlg modal-btn-delete modal-btn-submit')),
-					$row['receiving_date'],
-					to_quantity_decimals($row['items_purchased']),
-					$row['employee_name'], $row['supplier_name'],
-					to_currency($row['total']),
-					$row['payment_type'],
-					$row['comment']
-				);
+				unset($summary_data['invoice_number']);
 			}
 
 			foreach($report_data['details'][$key] as $drow)
@@ -992,7 +910,7 @@ class Reports extends Secure_area
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$key][] = array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%');
+				$details_data[$row['receiving_id']][] = array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%');
 			}
 		}
 
@@ -1000,24 +918,16 @@ class Reports extends Secure_area
 			"title" => $this->lang->line('reports_detailed_receivings_report'),
 			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			"headers" => $model->getDataColumns(),
-			"header_width" => intval(100 / count($headers['summary'])),
 			"editable" => "receivings",
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
-			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'location_id'=>$location_id)),
-			"export_excel" => $export_excel
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'location_id'=>$location_id))
 		);
 
 		$this->load->view("reports/tabular_details", $data);
 	}
 
-	function excel_export()
-	{
-		$this->load->view("reports/excel_export", array());
-	}
-
-	function inventory_low($export_excel=0)
+	function inventory_low()
 	{
 		$this->load->model('reports/Inventory_low');
 		$model = $this->Inventory_low;
@@ -1038,8 +948,7 @@ class Reports extends Secure_area
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData(array()),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData(array())
 		);
 
 		$this->load->view("reports/tabular", $data);
@@ -1049,8 +958,8 @@ class Reports extends Secure_area
 	{
 		$data = array();
 
-		$this->load->model('reports/Inventory_Summary');
-		$model = $this->Inventory_Summary;
+		$this->load->model('reports/Inventory_summary');
+		$model = $this->Inventory_summary;
 		$data['item_count'] = $model->getItemCountDropdownArray();
 
 		$stock_locations = $this->Stock_location->get_allowed_locations();
@@ -1060,7 +969,7 @@ class Reports extends Secure_area
 		$this->load->view("reports/inventory_summary_input", $data);
 	}
 
-	function inventory_summary($export_excel=0, $location_id='all', $item_count='all')
+	function inventory_summary($location_id='all', $item_count='all')
 	{
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
@@ -1084,8 +993,7 @@ class Reports extends Secure_area
 			"subtitle" => '',
 			"headers" => $model->getDataColumns(),
 			"data" => $tabular_data,
-			"summary_data" => $model->getSummaryData($report_data),
-			"export_excel" => $export_excel
+			"summary_data" => $model->getSummaryData($report_data)
 		);
 
 		$this->load->view("reports/tabular", $data);

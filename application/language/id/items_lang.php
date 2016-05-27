@@ -44,7 +44,6 @@ $lang["items_location"] = "Lokasi Barang";
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "Daftar Stock Rendah";
 $lang["items_manually_editing_of_quantity"] = "Perubahan jumlah Stok secara manual";
-$lang["items_must_select_item_for_barcode"] = "Anda harus memilih minimal 1 item untuk membuat barcode";
 $lang["items_name"] = "Nama Barang";
 $lang["items_name_required"] = "Nama item wajib diisi";
 $lang["items_new"] = "Buat Item Baru";

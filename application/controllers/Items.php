@@ -10,27 +10,24 @@ class Items extends Secure_area implements iData_controller
 		$this->load->library('item_lib');
 	}
 	
-	function index($limit_from=0)
+	function index()
 	{
 		$stock_location = $this->item_lib->get_item_location();
 		$stock_locations = $this->Stock_location->get_allowed_locations();
-		
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$items = $this->Item->get_all($stock_location, $lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from);	
 
 		// filters that will be loaded in the multiselect dropdown
 		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
-								'low_inventory' => $this->lang->line('items_low_inventory_items'), 
-								'is_serialized' => $this->lang->line('items_serialized_items'),
-								'no_description' => $this->lang->line('items_no_description_items'),
-								'search_custom' => $this->lang->line('items_search_custom_items'),
-								'is_deleted' => $this->lang->line('items_is_deleted'));
+			'low_inventory' => $this->lang->line('items_low_inventory_items'),
+			'is_serialized' => $this->lang->line('items_serialized_items'),
+			'no_description' => $this->lang->line('items_no_description_items'),
+			'search_custom' => $this->lang->line('items_search_custom_items'),
+			'is_deleted' => $this->lang->line('items_is_deleted'));
 
 		$data['stock_location'] = $stock_location;
 		$data['stock_locations'] = $stock_locations;
-		$data['manage_table'] = get_items_manage_table( $this->Item->get_all($stock_location, $lines_per_page, $limit_from), $this );
+
+		$data['table_headers'] = get_items_manage_table_headers();
 
 		$this->load->view('items/manage', $data);
 	}
@@ -40,13 +37,16 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$this->item_lib->set_item_location($this->input->post('stock_location'));
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
-		$filters = array('start_date' => $this->input->post('start_date'), 
-						'end_date' => $this->input->post('end_date'),
+		$this->item_lib->set_item_location($this->input->get('stock_location'));
+
+		$filters = array('start_date' => $this->input->get('start_date'),
+						'end_date' => $this->input->get('end_date'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
 						'empty_upc' => FALSE,
 						'low_inventory' => FALSE, 
@@ -56,21 +56,18 @@ class Items extends Secure_area implements iData_controller
 						'is_deleted' => FALSE);
 		
 		// check if any filter is set in the multiselect dropdown
-		if( $this->input->post('filters') != null )
-		{
-			foreach($this->input->post('filters') as $key)
-			{
-				$filters[$key] = TRUE;
-			}
-		}
-	
-		$items = $this->Item->search($search, $filters, $lines_per_page, $limit_from);
-		$data_rows = get_items_manage_table_data_rows($items, $this);
-		$total_rows = $this->Item->get_found_rows($search, $filters);
-		$links = $this->_initialize_pagination($this->Item, $lines_per_page, $limit_from, $total_rows, 'search');
-		$data_rows = get_items_manage_table_data_rows($items, $this);
+		$filledup = array_fill_keys($this->input->get('filters'), true);
+		$filters = array_merge($filters, $filledup);
 
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
+		$total_rows = $this->Item->get_found_rows($search, $filters);
+
+		$data_rows = array();
+		foreach($items->result() as $item)
+		{
+			$data_rows[] = get_item_data_row($item, $this);
+		}
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
 	function pic_thumb($pic_id)
@@ -158,16 +155,15 @@ class Items extends Secure_area implements iData_controller
 		echo json_encode($suggestions);
 	}
 
-	function get_row()
+	function get_row($item_ids)
 	{
-		$item_id = $this->input->post('row_id');
-		$item_info = $this->Item->get_info($item_id);
-		$stock_location = $this->item_lib->get_item_location();
-		$item_quantity = $this->Item_quantity->get_item_quantity($item_id,$stock_location);
-		$item_info->quantity = $item_quantity->quantity; 
-		$data_row = get_item_data_row($item_info,$this);
-		
-		echo $data_row;
+		$item_infos = $this->Item->get_multiple_info(explode(":", $item_ids), $this->item_lib->get_item_location());
+		$result = array();
+		foreach($item_infos->result() as $item_info)
+		{
+			$result[$item_info->item_id] = get_item_data_row($item_info,$this);
+		}
+		echo json_encode($result);
 	}
 
 	function view($item_id=-1)
@@ -249,7 +245,7 @@ class Items extends Secure_area implements iData_controller
 		$result = array();
 
 		$item_ids = explode(':', $item_ids);
-		$result = $this->Item->get_multiple_info($item_ids)->result_array();
+		$result = $this->Item->get_multiple_info($item_ids, $this->item_lib->get_item_location())->result_array();
 		$config = $this->barcode_lib->get_barcode_config();
 
 		$data['barcode_config'] = $config;
@@ -293,7 +289,7 @@ class Items extends Secure_area implements iData_controller
 			''=>$this->lang->line('items_do_nothing'), 
 			1 =>$this->lang->line('items_change_all_to_allow_alt_desc'),
 			0 =>$this->lang->line('items_change_all_to_not_allow_allow_desc'));
-				
+
 		$data['serialization_choices'] = array(
 			''=>$this->lang->line('items_do_nothing'), 
 			1 =>$this->lang->line('items_change_all_to_serialized'),
@@ -335,7 +331,11 @@ class Items extends Secure_area implements iData_controller
 		
 		if (!empty($upload_data['orig_name']))
 		{
-			$item_data['pic_id'] = $upload_data['raw_name'];
+			// XSS file image sanity check
+			if ($this->security->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			{
+				$item_data['pic_id'] = $upload_data['raw_name'];
+			}
 		}
 		
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -393,7 +393,7 @@ class Items extends Secure_area implements iData_controller
             {
             	$success_message = $this->lang->line('items_successful_' . ($new_item ? 'adding' : 'updating')) .' '. $item_data['name'];
 
-            	echo json_encode(array('success'=>true, 'message'=>$success_message, 'item_id'=>$item_id));
+            	echo json_encode(array('success'=>true, 'message'=>$success_message, 'id'=>$item_id));
             }
             else
             {
@@ -401,12 +401,12 @@ class Items extends Secure_area implements iData_controller
 	            	$this->lang->line('items_error_adding_updating') .' '. $item_data['name'] : 
     	        	$this->upload->display_errors(); 
 
-            	echo json_encode(array('success'=>false, 'message'=>$error_message, 'item_id'=>$item_id)); 
+            	echo json_encode(array('success'=>false, 'message'=>$error_message, 'id'=>$item_id));
             }
 		}
 		else//failure
 		{
-			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('items_error_adding_updating').' '.$item_data['name'], 'item_id'=>-1));
+			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('items_error_adding_updating').' '.$item_data['name'], 'id'=>-1));
 		}
 	}
 	
@@ -470,12 +470,12 @@ class Items extends Secure_area implements iData_controller
 		if($this->Item_quantity->save($item_quantity_data,$item_id,$location_id))
 		{			
 			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_updating').' '.
-			$cur_item_info->name,'item_id'=>$item_id));
+			$cur_item_info->name,'id'=>$item_id));
 		}
 		else//failure
 		{	
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('items_error_adding_updating').' '.
-			$cur_item_info->name,'item_id'=>-1));
+			$cur_item_info->name,'id'=>-1));
 		}
 	}
 
@@ -520,7 +520,7 @@ class Items extends Secure_area implements iData_controller
 				$this->Item_taxes->save_multiple($items_taxes_data, $items_to_update);
 			}
 
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit')));
+			echo json_encode(array('success'=>true,'message'=>$this->lang->line('items_successful_bulk_edit'), 'id'=>$items_to_update));
 		}
 		else
 		{
@@ -559,10 +559,11 @@ class Items extends Secure_area implements iData_controller
     {
         $msg = 'do_excel_import';
         $failCodes = array();
-        if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
+
+        if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
         {
             $msg = $this->lang->line('items_excel_import_failed');
-            echo json_encode( array('success'=>false,'message'=>$msg) );
+            echo json_encode( array('success'=>false, 'message'=>$msg) );
 
             return;
         }
@@ -570,13 +571,17 @@ class Items extends Secure_area implements iData_controller
 		{
             if (($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
             {
-                //Skip first row
+                // Skip the first row as it's the table description
                 fgetcsv($handle);
 
                 $i=1;
                 while (($data = fgetcsv($handle)) !== FALSE)
                 {
-					if (sizeof($data) >= 23) {
+					// XSS file data sanity check
+					$data = $this->security->xss_clean($data);
+					
+					if (sizeof($data) >= 23)
+					{
 	                    $item_data = array(
 	                        'name'			=>	$data[1],
 	                        'description'	=>	$data[11],
@@ -610,6 +615,7 @@ class Items extends Secure_area implements iData_controller
 					{
 						$invalidated = true;
 					}
+
                     if(!$invalidated && $this->Item->save($item_data)) 
                     {
                         $items_taxes_data = null;
@@ -679,18 +685,18 @@ class Items extends Secure_area implements iData_controller
                             );
                             $this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $data[$col]);
 
-                            $excel_data = array
-                                (
-                                    'trans_items'=>$item_data['item_id'],
-                                    'trans_user'=>$employee_id,
-                                    'trans_comment'=>$comment,
-                                    'trans_location'=>$location_id,
-                                    'trans_inventory'=>0
-                                );
-                            $this->db->insert('inventory',$excel_data);
+                            $excel_data = array(
+								'trans_items'=>$item_data['item_id'],
+								'trans_user'=>$employee_id,
+								'trans_comment'=>$comment,
+								'trans_location'=>$location_id,
+								'trans_inventory'=>0
+							);
+
+                            $this->Inventory->insert($excel_data);
                         }
                     }
-                    else//insert or update item failure
+                    else //insert or update item failure
                     {
                         $failCodes[] = $i;
                     }
@@ -700,7 +706,7 @@ class Items extends Secure_area implements iData_controller
             }
             else 
             {
-                echo json_encode( array('success'=>false, 'message'=>'Your upload file has no data or not in supported format.') );
+                echo json_encode( array('success'=>false, 'message'=>'Your uploaded file has no data or wrong format') );
 
                 return;
             }
@@ -709,12 +715,12 @@ class Items extends Secure_area implements iData_controller
 		$success = true;
 		if(count($failCodes) > 0)
 		{
-			$msg = "Most items imported. But some were not, here is list of their CODE (" .count($failCodes) ."): ".implode(", ", $failCodes);
+			$msg = "Most items imported. But some were not, here is list of their CODE (" . count($failCodes) ."): ". implode(", ", $failCodes);
 			$success = false;
 		}
 		else
 		{
-			$msg = "Import items successful";
+			$msg = "Import of Items successful";
 		}
 
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );

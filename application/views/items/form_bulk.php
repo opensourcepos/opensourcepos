@@ -177,18 +177,14 @@ $(document).ready(function()
 		{
 			if(!confirm_message || confirm(confirm_message))
 			{
-				//Get the selected ids and create hidden fields to send with ajax submit.
-				var selected_item_ids=get_selected_values();
-				for(k=0;k<selected_item_ids.length;k++)
-				{
-					$(form).append("<input type='hidden' name='item_ids[]' value='"+selected_item_ids[k]+"' />");
-				}
-
 				$(form).ajaxSubmit({
+					beforeSubmit: function(arr, $form, options) {
+						arr.push({name: 'item_ids', value: table_support.selected_ids().join(":")});
+					},
 					success:function(response)
 					{
 						dialog_support.hide();
-						post_bulk_form_submit(response);
+						table_support.handle_submit('<?php echo site_url('items'); ?>', response);
 					},
 					dataType:'json'
 				});

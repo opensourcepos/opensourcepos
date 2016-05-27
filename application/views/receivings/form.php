@@ -54,10 +54,6 @@
 	</fieldset>
 <?php echo form_close(); ?>
 		
-<?php echo form_open("receivings/delete/".$receiving_info['receiving_id'], array('id'=>'recvs_delete_form')); ?>
-	<?php echo form_hidden('receiving_id', $receiving_info['receiving_id']);?>
-<?php echo form_close(); ?>
-
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {
@@ -90,7 +86,8 @@ $(document).ready(function()
 		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
-	var fill_value =  function(event, ui) {
+	var fill_value =  function(event, ui)
+	{
 		event.preventDefault();
 		$("input[name='supplier_id']").val(ui.item.value);
 		$("input[name='supplier_name']").val(ui.item.label);
@@ -107,18 +104,21 @@ $(document).ready(function()
 		focus: fill_value
     });
 
+	$('button#delete').click(function()
+	{
+		dialog_support.hide();
+		table_support.do_delete('<?php echo site_url('receivings'); ?>', <?php echo $receiving_info['receiving_id']; ?>);
+	});
+
 	// declare submitHandler as an object.. will be reused
 	var submit_form = function()
-	{ 
+	{
 		$(this).ajaxSubmit(
 		{
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_form_submit(response);
-			},
-			error: function(jqXHR, textStatus, errorThrown) {
-				post_form_submit({message: errorThrown});
+				table_support.handle_submit('<?php echo site_url('receivings'); ?>', response);
 			},
 			dataType:'json'
 		});
@@ -168,34 +168,6 @@ $(document).ready(function()
 			?>
 		}
 	}, dialog_support.error));
-	
-	$('#recvs_delete_form').submit(function() 
-	{
-		if (confirm('<?php echo $this->lang->line("recvs_delete_confirmation"); ?>'))
-		{
-			var id = $("input[name='receiving_id']").val();
-			$(this).ajaxSubmit({
-				success: function(response)
-				{
-					dialog_support.hide();
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
-					var $element = get_table_row(id).parent().parent();
-					$element.find("td").animate({backgroundColor:"green"},1200,"linear")
-					.end().animate({opacity:0},1200,"linear",function()
-					{
-						$element.next().remove();
-						$(this).remove();
-						//Re-init sortable table as we removed a row
-						update_sortable_table();
-					});
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					set_feedback(textStatus, 'alert alert-dismissible alert-danger', true);
-				},
-				dataType:'json'
-			});
-		}
-		return false;
-	});
+
 });
 </script>

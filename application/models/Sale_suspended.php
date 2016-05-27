@@ -63,7 +63,7 @@ class Sale_suspended extends CI_Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		$this->db->insert('sales_suspended',$sales_data);
+		$this->db->insert('sales_suspended', $sales_data);
 		$sale_id = $this->db->insert_id();
 
 		foreach($payments as $payment_id=>$payment)
@@ -74,7 +74,7 @@ class Sale_suspended extends CI_Model
 				'payment_type'=>$payment['payment_type'],
 				'payment_amount'=>$payment['payment_amount']
 			);
-			$this->db->insert('sales_suspended_payments',$sales_payments_data);
+			$this->db->insert('sales_suspended_payments', $sales_payments_data);
 		}
 
 		foreach($items as $line=>$item)
@@ -95,7 +95,7 @@ class Sale_suspended extends CI_Model
 				'item_location'=>$item['item_location']
 			);
 
-			$this->db->insert('sales_suspended_items',$sales_items_data);
+			$this->db->insert('sales_suspended_items', $sales_items_data);
 
 			$customer = $this->Customer->get_info($customer_id);
  			if ($customer_id == -1 or $customer->taxable)

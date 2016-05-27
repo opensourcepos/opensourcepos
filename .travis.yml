@@ -14,3 +14,7 @@ before_install:
 
 script:
     - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "while ! curl http://localhost/index.php | grep username; do sleep 1; done; cd app && grunt mochaWebdriver:test" 
+
+after_success:
+    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - docker push jekkos/opensourcepos

@@ -9,8 +9,33 @@ class Detailed_sales extends Report
 	
 	public function getDataColumns()
 	{
-		return array('summary' => array($this->lang->line('reports_sale_id'), $this->lang->line('reports_date'), $this->lang->line('reports_quantity'), $this->lang->line('reports_sold_by'), $this->lang->line('reports_sold_to'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'), $this->lang->line('reports_payment_type'), $this->lang->line('reports_comments')),
-					 'details' => array($this->lang->line('reports_name'), $this->lang->line('reports_category'), $this->lang->line('reports_serial_number'), $this->lang->line('reports_description'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'), $this->lang->line('reports_discount'))
+		return array(
+			'summary' => array(
+				'id' => $this->lang->line('reports_sale_id'),
+				'sale_date' => $this->lang->line('reports_date'),
+				'quantity' => $this->lang->line('reports_quantity'),
+				'employee' => $this->lang->line('reports_sold_by'),
+				'customer' => $this->lang->line('reports_sold_to'),
+				'subtotal' => $this->lang->line('reports_subtotal'),
+				'total' => $this->lang->line('reports_total'),
+				'tax' => $this->lang->line('reports_tax'),
+				'cost' => $this->lang->line('reports_cost'),
+				'profit' => $this->lang->line('reports_profit'),
+				'payment_type' => $this->lang->line('reports_payment_type'),
+				'comment' => $this->lang->line('reports_comments'),
+				'edit' => ''),
+			 'details' => array(
+				 $this->lang->line('reports_name'),
+				 $this->lang->line('reports_category'),
+				 $this->lang->line('reports_serial_number'),
+				 $this->lang->line('reports_description'),
+				 $this->lang->line('reports_quantity'),
+				 $this->lang->line('reports_subtotal'),
+				 $this->lang->line('reports_total'),
+				 $this->lang->line('reports_tax'),
+				 $this->lang->line('reports_cost'),
+				 $this->lang->line('reports_profit'),
+				 $this->lang->line('reports_discount'))
 		);		
 	}
 	
@@ -31,7 +56,7 @@ class Detailed_sales extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('people as employee', 'sales_items_temp.employee_id = employee.person_id');
 		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -70,7 +95,7 @@ class Detailed_sales extends Report
 	{
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{

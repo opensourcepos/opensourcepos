@@ -37,7 +37,8 @@ UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  ('receipt_show_description', '1'),
  ('receipt_show_serialnumber', '1'),
- ('invoice_enable', '1');
+ ('invoice_enable', '1'),
+ ('country_codes', 'us');
 
 UPDATE `ospos_modules` SET `sort` = 110 WHERE `name_lang_key` = 'module_config';
 

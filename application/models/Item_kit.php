@@ -11,22 +11,6 @@ class Item_kit extends CI_Model
 
 		return ($this->db->get()->num_rows()==1);
 	}
-
-	/*
-	Returns all the item kits
-	*/
-	function get_all($rows=0, $limit_from=0)
-	{
-		$this->db->from('item_kits');
-		$this->db->order_by('name', 'asc');
-
-		if ($rows > 0)
-		{
-			$this->db->limit($rows, $limit_from);
-		}
-
-		return $this->db->get();
-	}
 	
 	function get_total_rows()
 	{
@@ -162,19 +146,19 @@ class Item_kit extends CI_Model
 	/*
 	Perform a search on items
 	*/
-	function search($search, $rows=0, $limit_from=0)
+	function search($search, $rows=0, $limit_from=0, $sort='name', $order='asc')
 	{
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
-		
+
 		//KIT #
 		if (stripos($search, 'KIT ') !== false)
 		{
 			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
 		}
 
-		$this->db->order_by('name', 'asc');
+		$this->db->order_by($sort, $order);
 
 		if ($rows > 0)
 		{
@@ -189,7 +173,7 @@ class Item_kit extends CI_Model
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
-		
+
 		//KIT #
 		if (stripos($search, 'KIT ') !== false)
 		{

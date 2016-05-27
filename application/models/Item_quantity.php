@@ -15,11 +15,7 @@ class Item_quantity extends CI_Model
     {
         if (!$this->exists($item_id, $location_id))
         {
-            if($this->db->insert('item_quantities', $location_detail))
-            {
-                return true;
-            }
-            return false;
+            return $this->db->insert('item_quantities', $location_detail);
         }
 
         $this->db->where('item_id', $item_id);

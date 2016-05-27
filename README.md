@@ -1,5 +1,6 @@
 Introduction
 ------------
+
 Open Source Point of Sale is a web based point of sale system written in the PHP language.
 It uses MySQL as the data storage back-end and has a simple user interface.
 
@@ -8,6 +9,7 @@ This is the latest version 3.0.0 and it's based on Bootstrap 3 using Bootswatch 
 Badges
 ------
 [![Build Status](https://travis-ci.org/jekkos/opensourcepos.svg?branch=master)](https://travis-ci.org/jekkos/opensourcepos)
+[![Join the chat at https://gitter.im/jekkos/opensourcepos](https://badges.gitter.im/jekkos/opensourcepos.svg)](https://gitter.im/jekkos/opensourcepos?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Keep the Machine Running
 ------------------------

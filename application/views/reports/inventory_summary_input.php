@@ -10,17 +10,6 @@ if(isset($error))
 ?>
 
 <?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
-	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('common_export_excel'), 'export_excel', !empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class'=>'control-label col-xs-2')); ?>
-		<div class="col-xs-4">
-			<label class="radio-inline">
-				<input type="radio" name="export_excel" id="export_excel_yes" value='1' /> <?php echo $this->lang->line('common_export_excel_yes'); ?>
-			</label>
-			<label class="radio-inline">
-				<input type="radio" name="export_excel" id="export_excel_no" value='0' checked='checked' /> <?php echo $this->lang->line('common_export_excel_no'); ?>
-			</label>
-		</div>
-	</div>
 
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
@@ -53,13 +42,7 @@ $(document).ready(function()
 {
 	$("#generate_report").click(function()
 	{
-		var export_excel = 0;
-		if ($("#export_excel_yes").attr('checked'))
-		{
-			export_excel = 1;
-		}
-		
-		window.location = window.location+'/' + export_excel + '/' + $("#location_id").val() + '/' + $("#item_count").val();
-	});	
+		window.location = [window.location, $("#location_id").val(), $("#item_count").val()].join("/");
+	});
 });
 </script>

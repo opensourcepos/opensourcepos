@@ -346,7 +346,7 @@
 						{
 							dialog_support.hide();
 						}
-						post_item_form_submit(response, stay_open);
+						table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
 					},
 					dataType: 'json'
 				});

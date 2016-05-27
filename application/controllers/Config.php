@@ -35,7 +35,11 @@ class Config extends Secure_area
 		
 		if (!empty($upload_data['orig_name']))
 		{
-			$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
+			// XSS file image sanity check
+			if ($this->security->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			{
+				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
+			}
 		}
 		
 		$result = $this->Appconfig->batch_save($batch_save_data);
@@ -88,7 +92,8 @@ class Config extends Secure_area
 			'decimal_point'=>$this->input->post('decimal_point'),
 			'currency_decimals'=>$this->input->post('currency_decimals'),
 			'tax_decimals'=>$this->input->post('tax_decimals'),
-			'quantity_decimals'=>$this->input->post('quantity_decimals')
+			'quantity_decimals'=>$this->input->post('quantity_decimals'),
+			'country_codes'=>$this->input->post('country_codes')
 		);
 	
 		$result = $this->Appconfig->batch_save($batch_save_data);
@@ -156,7 +161,9 @@ class Config extends Secure_area
 			$this->Stock_location->delete($location_id);
 		}
 
-		$success = $this->db->trans_complete();
+		$this->db->trans_complete();
+		
+		$success = $this->db->trans_status();
 		
 		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}

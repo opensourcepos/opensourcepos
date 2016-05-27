@@ -57,13 +57,12 @@ $route['sales/index/([^/]+)'] = 'sales/manage/$1';
 $route['sales/index/([^/]+)/([^/]+)'] = 'sales/manage/$1/$2';
 $route['sales/index/([^/]+)/([^/]+)/([^/]+)'] = 'sales/manage/$1/$2/$3';
 $route['reports/(summary_:any)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3';
-$route['reports/summary_:any'] = 'reports/date_input_excel_export';
+$route['reports/summary_:any'] = 'reports/date_input';
 $route['reports/(graphical_:any)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3';
 $route['reports/graphical_:any'] = 'reports/date_input';
 $route['reports/(inventory_:any)/([^/]+)'] = 'reports/$1/$2';
-$route['reports/inventory_:any'] = 'reports/excel_export';
 $route['reports/inventory_summary'] = 'reports/inventory_summary_input';
-$route['reports/(inventory_summary)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3/$4';
+$route['reports/(inventory_summary)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2';
 
 $route['reports/(detailed_sales)/([^/]+)/([^/]+)/([^/]+)'] = 'reports/$1/$2/$3$/$4';
 $route['reports/detailed_sales'] = 'reports/date_input_sales';

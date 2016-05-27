@@ -45,7 +45,7 @@ class Item extends CI_Model
 	/*
 	 Perform a search on items
 	*/
-	public function search($search, $filters, $rows=0, $limit_from=0)
+	public function search($search, $filters, $rows=0, $limit_from=0, $sort='items.name', $order='asc')
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -104,12 +104,11 @@ class Item extends CI_Model
 		{
 			$this->db->where('items.description', '');
 		}
-
 		// avoid duplicate entry with same name because of inventory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.item_id');
 		
 		// order by name of item
-		$this->db->order_by('items.name', 'asc');
+		$this->db->order_by($sort, $order);
 
 		if ($rows > 0) 
 		{	
@@ -134,7 +133,7 @@ class Item extends CI_Model
 		}
 
 		$this->db->where('items.deleted', 0);
-		
+
 		// order by name of item
 		$this->db->order_by('items.name', 'asc');
 
@@ -145,7 +144,7 @@ class Item extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	/*
 	Gets information about a particular item
 	*/
@@ -203,12 +202,13 @@ class Item extends CI_Model
 	/*
 	Gets information about multiple items
 	*/
-	public function get_multiple_info($item_ids)
+	public function get_multiple_info($item_ids, $location_id)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where_in('item_id', $item_ids);
-		$this->db->order_by('item_id', 'asc');
+		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+		$this->db->where('location_id', $location_id);
+		$this->db->where_in('items.item_id', $item_ids);
 
 		return $this->db->get();
 	}
@@ -223,8 +223,10 @@ class Item extends CI_Model
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
+
 				return TRUE;
 			}
+
 			return FALSE;
 		}
 		
@@ -238,7 +240,7 @@ class Item extends CI_Model
 	*/
 	public function update_multiple($item_data, $item_ids)
 	{
-		$this->db->where_in('item_id', $item_ids);
+		$this->db->where_in('item_id', explode(':', $item_ids));
 
 		return $this->db->update('items', $item_data);
 	}
@@ -248,11 +250,9 @@ class Item extends CI_Model
 	*/
 	public function delete($item_id)
 	{
-		$this->db->where('item_id', $item_id);
-		
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity($item_id);
-
+		$this->db->where('item_id', $item_id);
 		return $this->db->update('items', array('deleted'=>1));
 	}
 	
@@ -271,11 +271,10 @@ class Item extends CI_Model
 	*/
 	public function delete_list($item_ids)
 	{
-		$this->db->where_in('item_id', $item_ids);
-
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity_list($item_ids);
-		
+
+		$this->db->where_in('item_id', $item_ids);
 		return $this->db->update('items', array('deleted'=>1));
  	}
 

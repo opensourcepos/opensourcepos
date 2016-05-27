@@ -19,11 +19,14 @@ class Sms
 		{
 			$response = TRUE;
 			
+			// make sure passed string is url encoded
+			$message = rawurlencode($message);
+			
 			// add call to send a message via 3rd party API here
 			// Some examples
 
 			/*
-			$url = "https://xxx.xxx.xxx.xxx/send_sms?username=$username&password=$password&src=$originator&dst=$phone&msg=$message&dr=1";
+			$url = "http://xxx.xxx.xxx.xxx/send_sms?username=$username&password=$password&src=$originator&dst=$phone&msg=$message&dr=1";
 			 
 			$c = curl_init(); 
 			curl_setopt($c, CURLOPT_RETURNTRANSFER, 1); 

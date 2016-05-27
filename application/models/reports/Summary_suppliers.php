@@ -18,7 +18,7 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -41,7 +41,7 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
         {

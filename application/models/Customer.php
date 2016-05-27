@@ -115,7 +115,6 @@ class Customer extends Person
 	*/
 	function save_customer(&$person_data, &$customer_data, $customer_id=false)
 	{
-		$success=false;
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
@@ -124,18 +123,18 @@ class Customer extends Person
 			if (!$customer_id or !$this->exists($customer_id))
 			{
 				$customer_data['person_id'] = $person_data['person_id'];
-				$success = $this->db->insert('customers', $customer_data);				
+				$this->db->insert('customers', $customer_data);
 			}
 			else
 			{
 				$this->db->where('person_id', $customer_id);
-				$success = $this->db->update('customers', $customer_data);
+				$this->db->update('customers', $customer_data);
 			}
 		}
 		
 		$this->db->trans_complete();
 		
-		return $success;
+		return $this->db->trans_status();
 	}
 	
 	/*
@@ -241,7 +240,7 @@ class Customer extends Person
 	/*
 	Perform a search on customers
 	*/
-	function search($search, $rows = 0, $limit_from = 0)
+	function search($search, $rows = 0, $limit_from = 0, $sort = 'last_name', $order = 'asc')
 	{
 		$this->db->from('customers');
 		$this->db->join('people', 'customers.person_id = people.person_id');		
@@ -252,7 +251,7 @@ class Customer extends Person
 			account_number LIKE '%".$this->db->escape_like_str($search)."%' or 
 			CONCAT(`first_name`,' ',`last_name`) LIKE '%".$this->db->escape_like_str($search)."%') and 
 			deleted = 0");		
-		$this->db->order_by("last_name", "asc");
+		$this->db->order_by($sort, $order);
 		if ($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);

@@ -44,7 +44,6 @@ $lang["items_location"] = "Helyszín";
 $lang["items_empty_upc_items"] = "Üres UPC term.";
 $lang["items_low_inventory_items"] = "Kifogyott term.";
 $lang["items_manually_editing_of_quantity"] = "Mennyiség módosítása manuálisan";
-$lang["items_must_select_item_for_barcode"] = "Legalább 1 (egy) terméket ki kell választania vonalkód generálásához";
 $lang["items_name"] = "Terméknév";
 $lang["items_name_required"] = "Terméknév kötelező mező";
 $lang["items_new"] = "Új termék";

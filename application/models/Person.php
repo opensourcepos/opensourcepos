@@ -72,9 +72,9 @@ class Person extends CI_Model
 	{		
 		if (!$person_id or !$this->exists($person_id))
 		{
-			if ($this->db->insert('people',$person_data))
+			if ($this->db->insert('people', $person_data))
 			{
-				$person_data['person_id']=$this->db->insert_id();
+				$person_data['person_id'] = $this->db->insert_id();
 				return true;
 			}
 			

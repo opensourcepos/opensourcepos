@@ -60,3 +60,4 @@ $lang["common_export_excel"] = "Excel izvoz";
 $lang["common_export_excel_yes"] = "Da";
 $lang["common_export_excel_no"] = "Ne";
 $lang["common_required"] = "Potreban";
+$lang["common_id"] = "Id";

@@ -44,7 +44,6 @@ $lang["items_location"] = "Ort";
 $lang["items_empty_upc_items"] = "Leere UPC Artikel";
 $lang["items_low_inventory_items"] = "nicht am Lager";
 $lang["items_manually_editing_of_quantity"] = "Manuelle Bestandesänderung";
-$lang["items_must_select_item_for_barcode"] = "Sie müssen mindestens einen Artikel wählen, um Barcodes zu generieren";
 $lang["items_name"] = "Artikelname";
 $lang["items_name_required"] = "Artikelname ist erforderlich";
 $lang["items_new"] = "Neuer Artikel";

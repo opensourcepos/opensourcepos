@@ -17,7 +17,7 @@ class Summary_categories extends Report
 		$this->db->select('category, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -39,7 +39,7 @@ class Summary_categories extends Report
 		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
         {

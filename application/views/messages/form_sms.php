@@ -7,19 +7,22 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('messages_first_name'), 'first_name_label', array('for'=>'first_name', 'class'=>'control-label col-xs-2')); ?>
 			<div class="col-xs-10">
-				<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'first_name', 'value'=>$person_info->first_name));?>
+				<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'first_name', 'value'=>$person_info->first_name, 'readonly'=>'true'));?>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('messages_last_name'), 'last_name_label', array('for'=>'last_name', 'class'=>'control-label col-xs-2')); ?>
 			<div class="col-xs-10">
-				<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'last_name', 'value'=>$person_info->last_name));?>
+				<?php echo form_input(array('class'=>'form-control input-sm', 'type'=>'text', 'name'=>'last_name', 'value'=>$person_info->last_name, 'readonly'=>'true'));?>
 			</div>
 		</div> 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('messages_phone'), 'phone_label', array('for'=>'phone', 'class'=>'control-label col-xs-2 required')); ?>
 			<div class="col-xs-10">
-				<?php echo form_input(array('class'=>'form-control input-sm required', 'type'=>'text', 'name'=>'phone', 'value'=>$person_info->phone_number));?>
+				<div class="input-group">
+					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-phone-alt"></span></span>
+					<?php echo form_input(array('class'=>'form-control input-sm required', 'type'=>'text', 'name'=>'phone', 'value'=>$person_info->phone_number));?>
+				</div>
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
@@ -41,7 +44,7 @@ $(document).ready(function()
 				success:function(response)
 				{
 					dialog_support.hide();
-					post_person_form_submit(response);
+					table_support.handle_submit('<?php echo site_url('messages'); ?>', response);
 				},
 				dataType:'json'
 			});

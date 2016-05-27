@@ -44,7 +44,6 @@ $lang["items_location"] = "Locatie";
 $lang["items_empty_upc_items"] = "Zonder barcode";
 $lang["items_low_inventory_items"] = "Niet in stock";
 $lang["items_manually_editing_of_quantity"] = "Manuele aanpassing hoeveelheid";
-$lang["items_must_select_item_for_barcode"] = "U moet ten minste 1 product selecteren om een barcode te genereren";
 $lang["items_name"] = "Productnaam";
 $lang["items_name_required"] = "Productnaam moet ingevuld worden";
 $lang["items_new"] = "Nieuw Product";

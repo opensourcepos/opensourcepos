@@ -21,5 +21,5 @@ $lang["module_sales"] = "Vendas";
 $lang["module_sales_desc"] = "Processar vendas e devoluções";
 $lang["module_suppliers"] = "Fornecedores";
 $lang["module_suppliers_desc"] = "Adicionar,  atualizar,  excluir e Pesquisar fornecedores";
-$lang["module_messages"] = "Messages";
-$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
+$lang["module_messages"] = "Mensagens";
+$lang["module_messages_desc"] = "Enviar mensagens para os clientes, fornecedores, colaboradores etc.";

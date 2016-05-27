@@ -1,6 +1,5 @@
 <?php
 require_once ("Person_controller.php");
-
 class Customers extends Person_controller
 {
 	function __construct()
@@ -8,13 +7,10 @@ class Customers extends Person_controller
 		parent::__construct('customers');
 	}
 	
-	function index($limit_from=0)
+	function index()
 	{
 		$data['controller_name'] = $this->get_controller_name();
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-		$customers = $this->Customer->get_all($lines_per_page, $limit_from);
-		$data['links'] = $this->_initialize_pagination($this->Customer, $lines_per_page, $limit_from);
-		$data['manage_table'] = get_people_manage_table($customers, $this);
+		$data['table_headers'] = get_people_manage_table_headers();
 
 		$this->load->view('people/manage', $data);
 	}
@@ -24,16 +20,21 @@ class Customers extends Person_controller
 	*/
 	function search()
 	{
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
-		$customers = $this->Customer->search($search, $lines_per_page, $limit_from);
+		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
-		$links = $this->_initialize_pagination($this->Customer,$lines_per_page, $limit_from, $total_rows);
-		$data_rows = get_people_manage_table_data_rows($customers, $this);
 
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $data_rows, 'pagination' => $links));
+		$data_rows = array();
+		foreach($customers->result() as $person)
+		{
+			$data_rows[] = get_person_data_row($person, $this);
+		}
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
 	/*
@@ -95,18 +96,18 @@ class Customers extends Person_controller
 			if($customer_id==-1)
 			{
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('customers_successful_adding').' '.
-				$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>$customer_data['person_id']));
+				$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_data['person_id']));
 			}
 			else //previous customer
 			{
 				echo json_encode(array('success'=>true,'message'=>$this->lang->line('customers_successful_updating').' '.
-				$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>$customer_id));
+				$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_id));
 			}
 		}
 		else//failure
 		{	
 			echo json_encode(array('success'=>false,'message'=>$this->lang->line('customers_error_adding_updating').' '.
-			$person_data['first_name'].' '.$person_data['last_name'],'person_id'=>-1));
+			$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
 		}
 	}
 	
@@ -151,7 +152,8 @@ class Customers extends Person_controller
 	{
 		$msg = 'do_excel_import';
 		$failCodes = array();
-		if ($_FILES['file_path']['error']!=UPLOAD_ERR_OK)
+
+		if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
 			$msg = $this->lang->line('items_excel_import_failed');
 			echo json_encode( array('success'=>false,'message'=>$msg) );
@@ -162,12 +164,15 @@ class Customers extends Person_controller
 		{
 			if (($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
 			{
-				//Skip first row
+                // Skip the first row as it's the table description
 				fgetcsv($handle);
 				
 				$i=1;
 				while (($data = fgetcsv($handle)) !== FALSE) 
 				{
+					// XSS file data sanity check
+					$data = $this->security->xss_clean($data);
+					
 					$person_data = array(
 						'first_name'=>$data[0],
 						'last_name'=>$data[1],
@@ -207,7 +212,7 @@ class Customers extends Person_controller
 			}
 			else 
 			{
-				echo json_encode( array('success'=>false, 'message'=>'Your upload file has no data or not in supported format.') );
+                echo json_encode( array('success'=>false, 'message'=>'Your uploaded file has no data or wrong format') );
 
 				return;
 			}
@@ -221,7 +226,7 @@ class Customers extends Person_controller
 		}
 		else
 		{
-			$msg = "Import Customers successful";
+			$msg = "Import of Customers successful";
 		}
 
 		echo json_encode( array('success'=>$success, 'message'=>$msg) );

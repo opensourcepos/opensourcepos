@@ -28,7 +28,7 @@ class Sale extends CI_Model
 	/*
 	 Get the sales data for the takings (sales/manage) view
 	*/
-	public function search($search, $filters, $rows=0, $limit_from=0)
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
 		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
 						CONCAT(customer.first_name, " ", customer.last_name) AS customer_name, 
@@ -40,7 +40,7 @@ class Sale extends CI_Model
 
 		if (empty($search))
 		{
-			$this->db->where('sale_time BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
@@ -83,7 +83,7 @@ class Sale extends CI_Model
 		}
 		
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date', 'asc');
+		$this->db->order_by($sort, $order);
 		
 		if ($rows > 0)
 		{
@@ -106,7 +106,7 @@ class Sale extends CI_Model
 
 		if (empty($search))
 		{
-			$this->db->where('sale_time BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
+			$this->db->where('DATE(sale_time) BETWEEN '. $this->db->escape($filters['start_date']). ' AND '. $this->db->escape($filters['end_date']));
 		}
 		else
 		{
@@ -310,7 +310,7 @@ class Sale extends CI_Model
 				'payment_type'	=> $payment['payment_type'],
 				'payment_amount'=> $payment['payment_amount']
 			);
-			$this->db->insert('sales_payments',$sales_payments_data);
+			$this->db->insert('sales_payments', $sales_payments_data);
 		}
 
 		foreach($items as $line=>$item)
@@ -330,7 +330,7 @@ class Sale extends CI_Model
 				'item_location'		=> $item['item_location']
 			);
 
-			$this->db->insert('sales_items',$sales_items_data);
+			$this->db->insert('sales_items', $sales_items_data);
 
 			// Update stock quantity
 			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);

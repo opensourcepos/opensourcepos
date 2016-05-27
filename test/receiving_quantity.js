@@ -3,7 +3,7 @@ var ospos = require('./ospos');
 
 describe("test receiving quantity", function() {
 
-    var def_timeout = 5000;
+    var def_timeout = 10000;
 
     var item = {
         name: "recvQty",
@@ -18,8 +18,9 @@ describe("test receiving quantity", function() {
     });
 
     it("should be able to receive quantities with multiplier", function(done) {
-        this.browser.get(ospos.url('/index.php/receivings')).elementById("item").type(item.name)
-            .waitForElementByCssSelector(".ac_even", def_timeout).click().waitForElementByName("quantity", def_timeout)
+        this.browser.get(ospos.url('/index.php/receivings')).elementById("item").clear().type(item.name)
+            .waitForElementByCss(".ui-autocomplete .ui-menu-item", def_timeout).click()
+            .waitForElementByName("quantity")
             .elementByCssSelector("#cart_contents tr td:nth-child(5)").text().then(function(value) {
                 assert(value, "x "  + item.receiving_quantity, "receiving quantity " + item.receiving_quantity + " is not displayed correctly in receivings module!");
             }).elementById("finish_receiving_button", def_timeout).submit()

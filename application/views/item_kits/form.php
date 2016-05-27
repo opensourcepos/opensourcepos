@@ -98,7 +98,7 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_item_kit_form_submit(response);
+				table_support.handle_submit('<?php echo site_url('item_kits'); ?>', response);
 			},
 			dataType:'json'
 		});

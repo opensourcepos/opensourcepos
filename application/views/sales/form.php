@@ -93,9 +93,6 @@
 	</fieldset>
 <?php echo form_close(); ?>
 		
-<?php echo form_open("sales/delete/".$sale_info['sale_id'], array('id'=>'sales_delete_form')); ?>
-	<?php echo form_hidden('sale_id', $sale_info['sale_id']);?>
-<?php echo form_close(); ?>
 
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
@@ -106,7 +103,7 @@ $(document).ready(function()
 				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
 						function(response) {
 							dialog_support.hide();
-							post_form_submit(response);
+							table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
 						}, "json"
 				);	
 			}
@@ -159,6 +156,11 @@ $(document).ready(function()
 		focus: fill_value
 	});
 
+	$('button#delete').click(function() {
+		dialog_support.hide();
+		table_support.do_delete('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
+	});
+
 	var submit_form = function()
 	{ 
 		$(this).ajaxSubmit(
@@ -166,11 +168,7 @@ $(document).ready(function()
 			success: function(response)
 			{
 				dialog_support.hide();
-				post_form_submit(response);
-			},
-			error: function(jqXHR, textStatus, errorThrown) 
-			{
-				post_form_submit({message: errorThrown});
+				table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
 			},
 			dataType: 'json'
 		});
@@ -207,33 +205,5 @@ $(document).ready(function()
 		}
 	}, dialog_support.error));
 
-	$('#sales_delete_form').submit(function() 
-	{
-		if (confirm('<?php echo $this->lang->line("sales_delete_confirmation"); ?>'))
-		{
-			var id = $("input[name='sale_id']").val();
-			$(this).ajaxSubmit({
-				success: function(response)
-				{
-					dialog_support.hide();
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
-					var $element = get_table_row(id).parent().parent();
-					$element.find("td").animate({backgroundColor:"green"},1200,"linear")
-					.end().animate({opacity:0},1200,"linear",function()
-					{
-						$element.next().remove();
-						$(this).remove();
-						//Re-init sortable table as we removed a row
-						update_sortable_table();
-					});
-				},
-				error: function(jqXHR, textStatus, errorThrown) {
-					set_feedback(textStatus, 'alert alert-dismissible alert-danger', true);
-				},
-				dataType:'json'
-			});
-		}
-		return false;
-	});
 });
 </script>

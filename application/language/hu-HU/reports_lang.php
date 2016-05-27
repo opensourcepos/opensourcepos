@@ -94,3 +94,4 @@ $lang["reports_sub_total_value"] = "Sub Total";
 $lang["reports_total_inventory_value"] = "Total Inventory Value";
 $lang["reports_zero_and_less"] = "Nulla és kevesebb";
 $lang["reports_more_than_zero"] = "Több mint nulla";
+$lang["reports_no_reports_to_display"] = "Nincsenek megjeleníthető termékek";

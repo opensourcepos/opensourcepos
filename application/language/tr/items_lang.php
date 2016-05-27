@@ -44,7 +44,6 @@ $lang["items_location"] = "Yer";
 $lang["items_empty_upc_items"] = "Empty UPC Items";
 $lang["items_low_inventory_items"] = "";
 $lang["items_manually_editing_of_quantity"] = "Elle adet düzeltme";
-$lang["items_must_select_item_for_barcode"] = "Barkod üretmek için en az bir ürün seçmelisiniz";
 $lang["items_name"] = "Ürün Adı";
 $lang["items_name_required"] = "Ürün Adı zorunlu alandır";
 $lang["items_new"] = "Yeni Ürün";

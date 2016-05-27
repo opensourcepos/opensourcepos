@@ -31,40 +31,42 @@ class Appconfig extends CI_Model
 		
 	}
 	
-	function save($key,$value)
+	function save($key, $value)
 	{
-		$config_data=array(
-		'key'=>$key,
-		'value'=>$value
+		$config_data = array(
+			'key'=>$key,
+			'value'=>$value
 		);
 				
 		if (!$this->exists($key))
 		{
-			return $this->db->insert('app_config',$config_data);
+			return $this->db->insert('app_config', $config_data);
 		}
 		
 		$this->db->where('key', $key);
-		return $this->db->update('app_config',$config_data);		
+
+		return $this->db->update('app_config', $config_data);
 	}
 	
 	function batch_save($data)
 	{
-		$success=true;
+		$success = true;
 		
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
+
 		foreach($data as $key=>$value)
 		{
-			if(!$this->save($key,$value))
+			if(!$this->save($key, $value))
 			{
-				$success=false;
+				$success = false;
 				break;
 			}
 		}
 		
-		$this->db->trans_complete();		
-		return $success;
+		$this->db->trans_complete();
 		
+		return $success;
 	}
 		
 	function delete($key)

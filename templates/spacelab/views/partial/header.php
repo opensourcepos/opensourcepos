@@ -27,7 +27,6 @@
 		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
 		<link rel="stylesheet" type="text/css" href="css/register.css"/>
 		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
-		<link rel="stylesheet" type="text/css" href="css/tables.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -47,7 +46,7 @@
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap-table-export.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
@@ -58,14 +57,14 @@
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
+		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=50ab19585f"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6ad34bf178"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a9769acab5"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=3d8bf015a8" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ac10c15522" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

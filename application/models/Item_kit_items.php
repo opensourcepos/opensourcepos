@@ -31,7 +31,7 @@ class Item_kit_items extends CI_Model
 		
 		$this->db->trans_complete();
 
-		return true;
+		return $this->db->trans_status();
 	}
 	
 	/*
