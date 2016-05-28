@@ -4,15 +4,18 @@ class Item_kit extends CI_Model
 	/*
 	Determines if a given item_id is an item kit
 	*/
-	function exists($item_kit_id)
+	public function exists($item_kit_id)
 	{
 		$this->db->from('item_kits');
 		$this->db->where('item_kit_id', $item_kit_id);
 
-		return ($this->db->get()->num_rows()==1);
+		return ($this->db->get()->num_rows() == 1);
 	}
-	
-	function get_total_rows()
+
+	/*
+	Gets total of rows
+	*/
+	public function get_total_rows()
 	{
 		$this->db->from('item_kits');
 
@@ -22,7 +25,7 @@ class Item_kit extends CI_Model
 	/*
 	Gets information about a particular item kit
 	*/
-	function get_info($item_kit_id)
+	public function get_info($item_kit_id)
 	{
 		$this->db->from('item_kits');
 		$this->db->where('item_kit_id', $item_kit_id);
@@ -41,7 +44,7 @@ class Item_kit extends CI_Model
 			//Get all the fields from items table
 			$fields = $this->db->list_fields('item_kits');
 
-			foreach ($fields as $field)
+			foreach($fields as $field)
 			{
 				$item_obj->$field = '';
 			}
@@ -53,7 +56,7 @@ class Item_kit extends CI_Model
 	/*
 	Gets information about multiple item kits
 	*/
-	function get_multiple_info($item_kit_ids)
+	public function get_multiple_info($item_kit_ids)
 	{
 		$this->db->from('item_kits');
 		$this->db->where_in('item_kit_id', $item_kit_ids);
@@ -65,18 +68,18 @@ class Item_kit extends CI_Model
 	/*
 	Inserts or updates an item kit
 	*/
-	function save(&$item_kit_data, $item_kit_id=false)
+	public function save(&$item_kit_data, $item_kit_id = FALSE)
 	{
-		if (!$item_kit_id or !$this->exists($item_kit_id))
+		if(!$item_kit_id or !$this->exists($item_kit_id))
 		{
 			if($this->db->insert('item_kits', $item_kit_data))
 			{
 				$item_kit_data['item_kit_id'] = $this->db->insert_id();
 
-				return true;
+				return TRUE;
 			}
 
-			return false;
+			return FALSE;
 		}
 
 		$this->db->where('item_kit_id', $item_kit_id);
@@ -87,7 +90,7 @@ class Item_kit extends CI_Model
 	/*
 	Deletes one item kit
 	*/
-	function delete($item_kit_id)
+	public function delete($item_kit_id)
 	{
 		return $this->db->delete('item_kits', array('item_kit_id' => $id)); 	
 	}
@@ -95,28 +98,26 @@ class Item_kit extends CI_Model
 	/*
 	Deletes a list of item kits
 	*/
-	function delete_list($item_kit_ids)
+	public function delete_list($item_kit_ids)
 	{
 		$this->db->where_in('item_kit_id', $item_kit_ids);
 
 		return $this->db->delete('item_kits');		
  	}
 
-	function get_search_suggestions($search, $limit=25)
+	public function get_search_suggestions($search, $limit = 25)
 	{
 		$suggestions = array();
 
 		$this->db->from('item_kits');
 
 		//KIT #
-		if (stripos($search, 'KIT ') !== false)
+		if(stripos($search, 'KIT ') !== FALSE)
 		{
 			$this->db->like('item_kit_id', str_ireplace('KIT ', '', $search));
-
 			$this->db->order_by('item_kit_id', 'asc');
-			$by_name = $this->db->get();
 
-			foreach($by_name->result() as $row)
+			foreach($this->db->get()->result() as $row)
 			{
 				$suggestions[] = array('value' => 'KIT '. $row->item_kit_id, 'label' => 'KIT ' . $row->item_kit_id);
 			}
@@ -124,11 +125,9 @@ class Item_kit extends CI_Model
 		else
 		{
 			$this->db->like('name', $search);
-
 			$this->db->order_by('name', 'asc');
-			$by_name = $this->db->get();
 
-			foreach($by_name->result() as $row)
+			foreach($this->db->get()->result() as $row)
 			{
 				$suggestions[] = array('value' => 'KIT ' . $row->item_kit_id, 'label' => $row->name);
 			}
@@ -146,21 +145,21 @@ class Item_kit extends CI_Model
 	/*
 	Perform a search on items
 	*/
-	function search($search, $rows=0, $limit_from=0, $sort='name', $order='asc')
+	public function search($search, $rows=0, $limit_from=0, $sort='name', $order='asc')
 	{
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
 
 		//KIT #
-		if (stripos($search, 'KIT ') !== false)
+		if(stripos($search, 'KIT ') !== FALSE)
 		{
 			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
 		}
 
 		$this->db->order_by($sort, $order);
 
-		if ($rows > 0)
+		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
@@ -168,14 +167,14 @@ class Item_kit extends CI_Model
 		return $this->db->get();	
 	}
 	
-	function get_found_rows($search)
+	public function get_found_rows($search)
 	{
 		$this->db->from('item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
 
 		//KIT #
-		if (stripos($search, 'KIT ') !== false)
+		if(stripos($search, 'KIT ') !== FALSE)
 		{
 			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
 		}
