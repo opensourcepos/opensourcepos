@@ -173,7 +173,7 @@ function get_person_data_row($person, $controller)
 		'first_name' => character_limiter($person->first_name,13),
 		'email' => empty($person->email) ? '' : mailto($person->email,character_limiter($person->email,22)),
 		'phone_number' => character_limiter($person->phone_number,13),
-		'messages' => anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
@@ -215,7 +215,7 @@ function get_supplier_data_row($supplier, $controller)
 		'first_name' => character_limiter($supplier->first_name,13),
 		'email' => empty($supplier->email) ? '' : mailto($supplier->email,character_limiter($supplier->email,22)),
 		'phone_number' => character_limiter($supplier->phone_number,13),
-		'messages' => anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+		'messages' => empty($supplier->phone_number) ? '' : anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>"modal-dlg modal-btn-submit", 'title'=>$CI->lang->line($controller_name.'_update'))
