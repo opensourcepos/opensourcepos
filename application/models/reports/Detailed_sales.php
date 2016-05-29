@@ -41,10 +41,10 @@ class Detailed_sales extends Report
 	
 	public function getDataBySaleId($sale_id)
 	{
-		$this->db->select('sale_id, DATE_FORMAT(sale_time, "%d-%m-%Y") AS sale_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name, " ", employee.last_name) as employee_name, CONCAT(customer.first_name," ",customer.last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit, payment_type, comment', false);
+		$this->db->select('sale_id, DATE_FORMAT(sale_time, "%d-%m-%Y") AS sale_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name, " ", employee.last_name) AS employee_name, CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->join('people as employee', 'sales_items_temp.employee_id = employee.person_id');
-		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
+		$this->db->join('people AS employee', 'sales_items_temp.employee_id = employee.person_id');
+		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->db->get()->row_array();
@@ -52,10 +52,10 @@ class Detailed_sales extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(customer.first_name," ",customer.last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit, payment_type, comment', false);
+		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, CONCAT(customer.first_name," ",customer.last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->join('people as employee', 'sales_items_temp.employee_id = employee.person_id');
-		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
+		$this->db->join('people AS employee', 'sales_items_temp.employee_id = employee.person_id');
+		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
 		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
@@ -93,7 +93,7 @@ class Detailed_sales extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 

@@ -78,7 +78,7 @@ class Person extends CI_Model
 	*/
 	public function save(&$person_data, $person_id = FALSE)
 	{		
-		if(!$person_id or !$this->exists($person_id))
+		if(!$person_id || !$this->exists($person_id))
 		{
 			if($this->db->insert('people', $person_data))
 			{
@@ -114,9 +114,8 @@ class Person extends CI_Model
 //			$this->db->or_like('phone_number', $search);
 //			$this->db->group_end();
 //		$this->db->order_by('last_name', 'asc');
-		$by_person_id = $this->db->get();
 
-		foreach($by_person_id->result() as $row)
+		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->person_id);
 		}

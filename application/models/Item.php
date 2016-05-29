@@ -177,9 +177,7 @@ class Item extends CI_Model
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			$fields = $this->db->list_fields('items');
-
-			foreach($fields as $field)
+			foreach($this->db->list_fields('items') as $field)
 			{
 				$item_obj->$field = '';
 			}
@@ -227,7 +225,7 @@ class Item extends CI_Model
 	*/
 	public function save(&$item_data, $item_id = FALSE)
 	{
-		if(!$item_id or !$this->exists($item_id))
+		if(!$item_id || !$this->exists($item_id))
 		{
 			if($this->db->insert('items', $item_data))
 			{
@@ -265,11 +263,13 @@ class Item extends CI_Model
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity($item_id);
 		$this->db->where('item_id', $item_id);
-		$this->db->update('items', array('deleted'=>1));
+		$success = $this->db->update('items', array('deleted'=>1));
 		
 		$this->db->trans_complete();
 		
-		return $this->db->trans_status();
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 	
 	/*
@@ -293,11 +293,13 @@ class Item extends CI_Model
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity_list($item_ids);
 		$this->db->where_in('item_id', $item_ids);
-		$this->db->update('items', array('deleted'=>1));
-
+		$success = $this->db->update('items', array('deleted'=>1));
+		
 		$this->db->trans_complete();
 		
-		return $this->db->trans_status();
+		$success &= $this->db->trans_status();
+
+		return $success;
  	}
 
 	public function get_search_suggestions($search, $filters = array('is_deleted'=>FALSE, 'search_custom'=>FALSE), $unique = FALSE, $limit = 25)

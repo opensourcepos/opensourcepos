@@ -14,7 +14,7 @@ class Summary_payments extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount', false);
+		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
 		$this->db->where("date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
@@ -57,7 +57,7 @@ class Summary_payments extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) AS subtotal, sum(total) AS total, sum(tax) AS tax, sum(cost) AS cost, sum(profit) AS profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));

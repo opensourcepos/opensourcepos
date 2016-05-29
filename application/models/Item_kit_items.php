@@ -18,6 +18,8 @@ class Item_kit_items extends CI_Model
 	*/
 	public function save(&$item_kit_items_data, $item_kit_id)
 	{
+		$success = TRUE;
+		
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
@@ -26,12 +28,14 @@ class Item_kit_items extends CI_Model
 		foreach($item_kit_items_data as $row)
 		{
 			$row['item_kit_id'] = $item_kit_id;
-			$this->db->insert('item_kit_items', $row);		
+			$success &= $this->db->insert('item_kit_items', $row);		
 		}
 		
 		$this->db->trans_complete();
 
-		return $this->db->trans_status();
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 	
 	/*

@@ -42,9 +42,7 @@ class Item_kit extends CI_Model
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			$fields = $this->db->list_fields('item_kits');
-
-			foreach($fields as $field)
+			foreach($this->db->list_fields('item_kits') as $field)
 			{
 				$item_obj->$field = '';
 			}
@@ -70,7 +68,7 @@ class Item_kit extends CI_Model
 	*/
 	public function save(&$item_kit_data, $item_kit_id = FALSE)
 	{
-		if(!$item_kit_id or !$this->exists($item_kit_id))
+		if(!$item_kit_id || !$this->exists($item_kit_id))
 		{
 			if($this->db->insert('item_kits', $item_kit_data))
 			{

@@ -14,7 +14,7 @@ class Summary_suppliers extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(company_name, " (", first_name, " ",last_name, ")") as supplier, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit', false);
+		$this->db->select('CONCAT(company_name, " (", first_name, " ", last_name, ")") AS supplier, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
@@ -37,7 +37,7 @@ class Summary_suppliers extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');

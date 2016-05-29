@@ -94,7 +94,7 @@ class Employee extends Person
 
 		if(parent::save($person_data, $employee_id))
 		{
-			if(!$employee_id or !$this->exists($employee_id))
+			if(!$employee_id || !$this->exists($employee_id))
 			{
 				$employee_data['person_id'] = $employee_id = $person_data['person_id'];
 				$success = $this->db->insert('employees', $employee_data);
@@ -123,6 +123,8 @@ class Employee extends Person
 		}
 
 		$this->db->trans_complete();
+
+		$success &= $this->db->trans_status();
 
 		return $success;
 	}

@@ -18,6 +18,8 @@ class Item_taxes extends CI_Model
 	*/
 	public function save(&$items_taxes_data, $item_id)
 	{
+		$success = TRUE;
+		
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
@@ -26,12 +28,14 @@ class Item_taxes extends CI_Model
 		foreach($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$this->db->insert('items_taxes', $row);		
+			$success &= $this->db->insert('items_taxes', $row);		
 		}
 		
 		$this->db->trans_complete();
 
-		return $this->db->trans_status();
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 
 	/*
@@ -39,6 +43,8 @@ class Item_taxes extends CI_Model
 	*/
 	public function save_multiple(&$items_taxes_data, $item_ids)
 	{
+		$success = TRUE;
+		
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
@@ -49,13 +55,15 @@ class Item_taxes extends CI_Model
 			foreach($items_taxes_data as $row)
 			{
 				$row['item_id'] = $item_id;
-				$this->db->insert('items_taxes', $row);		
+				$success &= $this->db->insert('items_taxes', $row);		
 			}
 		}
 
 		$this->db->trans_complete();
 
-		return $this->db->trans_status();
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 
 	/*

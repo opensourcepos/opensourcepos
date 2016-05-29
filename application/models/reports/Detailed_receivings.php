@@ -39,10 +39,10 @@ class Detailed_receivings extends Report
 	
 	public function getDataByReceivingId($receiving_id)
 	{
-		$this->db->select('receiving_id, DATE_FORMAT(receiving_date, "%d-%m-%Y") AS receiving_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name, " ", employee.last_name) as employee_name, suppliers.company_name as supplier_name, sum(subtotal) as subtotal, sum(total) as total, sum(profit) as profit, payment_type, comment, invoice_number', false);
+		$this->db->select('receiving_id, DATE_FORMAT(receiving_date, "%d-%m-%Y") AS receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name, " ", employee.last_name) AS employee_name, suppliers.company_name AS supplier_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
 		$this->db->from('receivings_items_temp');
-		$this->db->join('people as employee', 'receivings_items_temp.employee_id = employee.person_id');
-		$this->db->join('suppliers as suppliers', 'receivings_items_temp.supplier_id = suppliers.person_id', 'left');
+		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
+		$this->db->join('suppliers AS suppliers', 'receivings_items_temp.supplier_id = suppliers.person_id', 'left');
 		$this->db->where('receiving_id', $receiving_id);
 
 		return $this->db->get()->row_array();
@@ -50,10 +50,10 @@ class Detailed_receivings extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, receiving_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(supplier.first_name," ",supplier.last_name) as supplier_name, sum(total) as total, sum(profit) as profit, payment_type, comment, invoice_number', false);
+		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, CONCAT(supplier.first_name," ",supplier.last_name) AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
 		$this->db->from('receivings_items_temp');
-		$this->db->join('people as employee', 'receivings_items_temp.employee_id = employee.person_id');
-		$this->db->join('people as supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
+		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
+		$this->db->join('people AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
@@ -94,9 +94,9 @@ class Detailed_receivings extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(total) as total');
+		$this->db->select('SUM(total) AS total');
 		$this->db->from('receivings_items_temp');
-		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{

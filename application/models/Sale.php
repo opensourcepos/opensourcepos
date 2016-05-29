@@ -278,7 +278,7 @@ class Sale extends CI_Model
 			
 			$this->db->trans_complete();
 			
-			$success = $this->db->trans_status();
+			$success &= $this->db->trans_status();
 		}
 		
 		return $success;
@@ -367,7 +367,7 @@ class Sale extends CI_Model
 			$this->Inventory->insert($inv_data);
 
 			$customer = $this->Customer->get_info($customer_id);
- 			if($customer_id == -1 or $customer->taxable)
+ 			if($customer_id == -1 || $customer->taxable)
  			{
 				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
 				{
@@ -381,6 +381,7 @@ class Sale extends CI_Model
 				}
 			}
 		}
+
 		$this->db->trans_complete();
 		
 		if($this->db->trans_status() === FALSE)

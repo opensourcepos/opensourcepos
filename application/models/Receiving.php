@@ -58,7 +58,7 @@ class Receiving extends CI_Model
 
 	public function save($items, $supplier_id, $employee_id, $comment, $invoice_number, $payment_type, $receiving_id = FALSE)
 	{
-		if(count($items)==0)
+		if(count($items) == 0)
 		{
 			return -1;
 		}
@@ -141,18 +141,22 @@ class Receiving extends CI_Model
 	
 	public function delete_list($receiving_ids, $employee_id, $update_inventory = TRUE)
 	{
+		$success = TRUE;
+
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
 
 		foreach($receiving_ids as $receiving_id)
 		{
-			$this->delete($receiving_id, $employee_id, $update_inventory);
+			$success &= $this->delete($receiving_id, $employee_id, $update_inventory);
 		}
 
 		// execute transaction
 		$this->db->trans_complete();
-	
-		return $this->db->trans_status();
+
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 	
 	public function delete($receiving_id, $employee_id, $update_inventory = TRUE)

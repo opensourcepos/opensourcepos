@@ -93,7 +93,7 @@ class Customer extends Person
 	*/
 	public function get_totals($customer_id)
 	{
-		$this->db->select('SUM(payment_amount) as total');
+		$this->db->select('SUM(payment_amount) AS total');
 		$this->db->from('sales');
 		$this->db->join('sales_payments', 'sales.sale_id = sales_payments.sale_id');
 		$this->db->where('sales.customer_id', $customer_id);
@@ -119,26 +119,30 @@ class Customer extends Person
 	*/
 	public function save_customer(&$person_data, &$customer_data, $customer_id = FALSE)
 	{
+		$success = FALSE;
+
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
 		if(parent::save($person_data, $customer_id))
 		{
-			if(!$customer_id or !$this->exists($customer_id))
+			if(!$customer_id || !$this->exists($customer_id))
 			{
 				$customer_data['person_id'] = $person_data['person_id'];
-				$this->db->insert('customers', $customer_data);
+				$success = $this->db->insert('customers', $customer_data);
 			}
 			else
 			{
 				$this->db->where('person_id', $customer_id);
-				$this->db->update('customers', $customer_data);
+				$success = $this->db->update('customers', $customer_data);
 			}
 		}
 		
 		$this->db->trans_complete();
 		
-		return $this->db->trans_status();
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 	
 	/*

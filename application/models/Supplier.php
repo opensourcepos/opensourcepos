@@ -89,26 +89,30 @@ class Supplier extends Person
 	*/
 	public function save_supplier(&$person_data, &$supplier_data, $supplier_id = FALSE)
 	{
+		$success = FALSE;
+
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
 		if(parent::save($person_data,$supplier_id))
 		{
-			if(!$supplier_id or !$this->exists($supplier_id))
+			if(!$supplier_id || !$this->exists($supplier_id))
 			{
 				$supplier_data['person_id'] = $person_data['person_id'];
-				$this->db->insert('suppliers', $supplier_data);
+				$success = $this->db->insert('suppliers', $supplier_data);
 			}
 			else
 			{
 				$this->db->where('person_id', $supplier_id);
-				$this->db->update('suppliers', $supplier_data);
+				$success = $this->db->update('suppliers', $supplier_data);
 			}
 		}
 		
 		$this->db->trans_complete();
+		
+		$success &= $this->db->trans_status();
 
-		return $this->db->trans_status();
+		return $success;
 	}
 	
 	/*

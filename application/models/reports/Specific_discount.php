@@ -16,9 +16,9 @@ class Specific_discount extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, DATE_FORMAT(sale_time, "%d-%m-%Y") AS sale_date, sum(quantity_purchased) as items_purchased, CONCAT(first_name, " ", last_name) as customer_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit, payment_type, comment', false);
+		$this->db->select('sale_id, DATE_FORMAT(sale_time, "%d-%m-%Y") AS sale_date, SUM(quantity_purchased) AS items_purchased, CONCAT(first_name, " ", last_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->join('people as customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
+		$this->db->join('people AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND discount_percent >=" . $this->db->escape($inputs['discount']));
 		
 		if ($inputs['sale_type'] == 'sales')
@@ -51,7 +51,7 @@ class Specific_discount extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND discount_percent >=" . $this->db->escape($inputs['discount']));
 				

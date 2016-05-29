@@ -104,7 +104,7 @@ class Sale_suspended extends CI_Model
 			$this->db->insert('sales_suspended_items', $sales_items_data);
 
 			$customer = $this->Customer->get_info($customer_id);
- 			if($customer_id == -1 or $customer->taxable)
+ 			if($customer_id == -1 || $customer->taxable)
  			{
 				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
 				{

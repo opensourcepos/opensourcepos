@@ -102,7 +102,7 @@ class Giftcard extends CI_Model
 	*/
 	public function save(&$giftcard_data, $giftcard_id = FALSE)
 	{
-		if(!$giftcard_id or !$this->exists($giftcard_id))
+		if(!$giftcard_id || !$this->exists($giftcard_id))
 		{
 			if($this->db->insert('giftcards', $giftcard_data))
 			{
