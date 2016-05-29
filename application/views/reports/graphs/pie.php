@@ -70,5 +70,18 @@
 		}]*/
 	];
 
-	new Chartist.Pie('#chart1', data, options, responsiveOptions);
+	chart = new Chartist.Pie('#chart1', data, options, responsiveOptions);
+
+	// generate random colours for the pie sliced because Chartist is currently limited to 15 colours
+	chart.on('draw', function(data) {
+		if(data.type === 'slice') {
+			var r = Math.floor(Math.random() * 256);
+			var g = Math.floor(Math.random() * 256);
+			var b = Math.floor(Math.random() * 256);
+
+			data.element.attr({
+				style: 'fill: #' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)
+			});
+		}
+	});
 </script>
