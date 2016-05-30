@@ -43,10 +43,10 @@ class Giftcard extends CI_Model
 		$this->db->join('people', 'people.person_id = giftcards.person_id', 'left');
 		$this->db->where('giftcard_id', $giftcard_id);
 		$this->db->where('deleted', 0);
-		
+
 		$query = $this->db->get();
 
-		if($query->num_rows()==1)
+		if($query->num_rows() == 1)
 		{
 			return $query->row();
 		}
@@ -100,9 +100,9 @@ class Giftcard extends CI_Model
 	/*
 	Inserts or updates a giftcard
 	*/
-	public function save(&$giftcard_data, $giftcard_id = FALSE)
+	public function save(&$giftcard_data, $giftcard_id = -1)
 	{
-		if(!$giftcard_id || !$this->exists($giftcard_id))
+		if($giftcard_id == -1 || !$this->exists($giftcard_id))
 		{
 			if($this->db->insert('giftcards', $giftcard_data))
 			{
