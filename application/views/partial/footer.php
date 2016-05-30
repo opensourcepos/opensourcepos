@@ -1,4 +1,3 @@
-			<div id="feedback_bar"></div>
 		</div>
 	</div>
 

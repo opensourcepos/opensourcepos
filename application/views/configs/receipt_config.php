@@ -211,38 +211,22 @@ $(document).ready(function()
 
 	var dialog_confirmed = window.jsPrintSetup;
 			
-	$('#receipt_config_form').validate({
+	$('#receipt_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
 					return ( dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>') );
 				},
 				success: function(response) {
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
+					$.notify(response.message, { type: response.success} );
 				},
 				dataType:'json'
 			});
 		},
 
-		errorClass: "has-error",
 		errorLabelContainer: "#receipt_error_message_box",
-		wrapper: "li",
 
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
-
-		rules: 
+		rules:
 		{
 			print_top_margin:
     		{
@@ -289,6 +273,6 @@ $(document).ready(function()
 	            number:"<?php echo $this->lang->line('config_print_right_margin_number'); ?>"
 			}
 		}
-	});
+	}));
 });
 </script>

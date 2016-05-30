@@ -71,32 +71,9 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$('#message_config_form').validate({
-		submitHandler: function(form) {
-			$(form).ajaxSubmit({
-				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
-				},
-				dataType: 'json'
-			});
-		},
+	$('#message_config_form').validate($.extend(form_support.base, {
 
-		errorClass: "has-error",
 		errorLabelContainer: "#general_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
 
 		rules: 
 		{
@@ -111,6 +88,6 @@ $(document).ready(function()
 			msg_pwd: "<?php echo $this->lang->line('config_msg_pwd_required'); ?>",
 			msg_src: "<?php echo $this->lang->line('config_msg_src_required'); ?>"
 		}
-	});
+	}));
 });
 </script>

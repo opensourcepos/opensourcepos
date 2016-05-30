@@ -140,34 +140,11 @@ $(document).ready(function()
 		})
 	});
 
-	$('#info_config_form').validate({
-		submitHandler: function(form) {
-			$(form).ajaxSubmit({
-				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
-				},
-				dataType: 'json'
-			});
-		},
+	$('#info_config_form').validate($.extend(form_support.handler, {
 
-		errorClass: "has-error",
 		errorLabelContainer: "#general_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
 
-		rules: 
+		rules:
 		{
 			company: "required",
 			address: "required",
@@ -184,6 +161,6 @@ $(document).ready(function()
 			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
 			return_policy: "<?php echo $this->lang->line('config_return_policy_required'); ?>"
 		}
-	});
+	}));
 });
 </script>

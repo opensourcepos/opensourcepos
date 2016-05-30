@@ -267,43 +267,8 @@
 $(document).ready(function()
 {
 	$("span").tooltip();
-
-	$('#locale_config_form').validate({
-		submitHandler: function(form) {
-			$(form).ajaxSubmit({
-				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
-				},
-				dataType: 'json'
-			});
-		},
-
-		errorClass: "has-error",
-		errorLabelContainer: "#locale_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
-
-		rules: 
-		{
- 		
-   		},
-
-		messages: 
-		{
-
-		}
-	});
+	$('#locale_config_form').validate($.extend(form_support.handler, {
+		errorLabelContainer: "#locale_error_message_box"
+	}));
 });
 </script>

@@ -81,18 +81,6 @@
 		});
 	};
 
-	dialog_support.error = {
-		errorClass: "has-error",
-		errorLabelContainer: "#error_message_box",
-		wrapper: "li",
-		highlight: function (e) {
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		}
-	};
-
 	$.extend(dialog_support, {
 		init: init,
 		submit: submit,
@@ -169,9 +157,9 @@
 								}
 							});
 					});
-					set_feedback(response.message, 'alert alert-dismissible alert-success', false);
+					$.notify(response.message, { type: 'success' });
 				} else {
-					set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+					$.notify(response.message, { type: 'pastel-danger' });
 				}
 			}, "json");
 		} else {
@@ -183,7 +171,7 @@
 		return function(response) {
 			typeof options.load_callback == 'function' && options.load_callback();
 			options.load_callback = undefined;
-			dialog_support.init("a.modal-dlg, button.modal-dlg");
+			dialog_support.init("a.modal-dlg");
 			typeof callback == 'function' && callback.call(this, response);
 		}
 	};
@@ -236,6 +224,7 @@
 		enable_actions();
 		init_delete();
 		toggle_column_visbility();
+		dialog_support.init("button.modal-dlg");
 	};
 
 	var init_delete = function (confirmMessage) {
@@ -253,7 +242,7 @@
 			var id = response.id;
 
 			if (!response.success) {
-				set_feedback(response.message, 'alert alert-dismissible alert-danger', true);
+				$.notify(response.text, { type: 'danger' });
 			} else {
 				var message = response.message;
 				var selector = rows_selector(response.id);
@@ -266,8 +255,8 @@
 							$.each(selector, function (index, element) {
 								var id = $(element).data('uniqueid');
 								table().updateByUniqueId({id: id, row: response[id]});
-								dialog_support.init(element + " a.modal-dlg");
 							});
+							dialog_support.init("a.modal-dlg");
 							highlight_row(ids);
 						},
 						dataType: 'json'
@@ -280,7 +269,7 @@
 					};
 					refresh();
 				}
-				set_feedback(message, 'alert alert-dismissible alert-success', false);
+				$.notify(message, {type: 'success' });
 			}
 		};
 	};
@@ -299,3 +288,42 @@
 	});
 
 })(window.table_support = window.table_support || {}, jQuery);
+
+(function(form_support, $) {
+
+	form_support.error = {
+		errorClass: "has-error",
+		errorLabelContainer: "#error_message_box",
+		wrapper: "li",
+		highlight: function (e) {
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		}
+	};
+
+	form_support.handler = $.extend(form_support.error, {
+
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					$.notify(response.message, { type: response.success ? 'success' : 'danger', delay: 100000});
+				},
+				dataType: 'json'
+			});
+		},
+
+		rules:
+		{
+
+		},
+
+		messages:
+		{
+
+		}
+	});
+
+})(window.form_support = window.form_support || {}, jQuery);
