@@ -70,9 +70,9 @@ class Giftcards extends Secure_area implements iData_controller
 	{
 		$giftcard_data = array(
 			'record_time' => date('Y-m-d H:i:s'),
-			'giftcard_number'=>$this->input->post('giftcard_number', TRUE),
-			'value'=>$this->input->post('value', TRUE),
-			'person_id'=>$this->input->post('person_id', TRUE) ? $this->input->post('person_id') : null
+			'giftcard_number'=>$this->input->post('giftcard_number'),
+			'value'=>$this->input->post('value'),
+			'person_id'=>$this->input->post('person_id') ? $this->input->post('person_id') : null
 		);
 
 		if( $this->Giftcard->save( $giftcard_data, $giftcard_id ) )

@@ -136,10 +136,10 @@ class Sales extends Secure_area
 
 	function change_mode()
 	{
-		$stock_location = $this->input->post("stock_location");
+		$stock_location = $this->input->post('stock_location');
 		if (!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
-			$mode = $this->input->post("mode");
+			$mode = $this->input->post('mode');
 			$this->sale_lib->set_mode($mode);
 		} 
 		else if ($this->Stock_location->is_allowed_location($stock_location, 'sales'))
