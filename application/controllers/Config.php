@@ -1,24 +1,27 @@
 <?php
 require_once ("Secure_area.php");
+
 class Config extends Secure_area 
 {
 	function __construct()
 	{
 		parent::__construct('config');
+
 		$this->load->library('barcode_lib');
 	}
 	
-	function index()
+	public function index()
 	{
-		$location_names = array();
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
+		
+		$data = $this->security->xss_clean($data);
 
 		$this->load->view("configs/manage", $data);
 	}
 		
-	function save_info()
+	public function save_info()
 	{
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();
@@ -50,7 +53,7 @@ class Config extends Secure_area
 		echo json_encode(array('success'=>$success, 'message'=>$message));
 	}
 		
-	function save_general()
+	public function save_general()
 	{
 		$batch_save_data = array(
 			'default_tax_1_rate'=>$this->input->post('default_tax_1_rate'),	
@@ -102,7 +105,7 @@ class Config extends Secure_area
 		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 	
-	function save_message()
+	public function save_message()
 	{
 		$batch_save_data = array(	
 			'msg_msg'=>$this->input->post('msg_msg'),
@@ -117,14 +120,16 @@ class Config extends Secure_area
 		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 	
-	function stock_locations() 
+	public function stock_locations() 
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
+		
+		$stock_locations = $this->security->xss_clean($stock_locations);
 
 		$this->load->view('partial/stock_locations', array('stock_locations'=>$stock_locations));
 	} 
 	
-	function _clear_session_state()
+	private function _clear_session_state()
 	{
 		$this->load->library('sale_lib');
 		$this->sale_lib->clear_sale_location();
@@ -135,7 +140,7 @@ class Config extends Secure_area
 		$this->receiving_lib->clear_all();
 	}
 	
-	function save_locations() 
+	public function save_locations() 
 	{
 		$this->db->trans_start();
 		
@@ -168,7 +173,7 @@ class Config extends Secure_area
 		echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
-    function save_barcode()
+    public function save_barcode()
     {
         $batch_save_data = array(
 			'barcode_type'=>$this->input->post('barcode_type'),
@@ -193,7 +198,7 @@ class Config extends Secure_area
         echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
     
-    function save_receipt()
+    public function save_receipt()
     {
     	$batch_save_data = array (
 			'receipt_show_taxes'=>$this->input->post('receipt_show_taxes') != null,
@@ -215,7 +220,7 @@ class Config extends Secure_area
     	echo json_encode(array('success'=>$success, 'message'=>$this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
     }
 
-    function save_invoice()
+    public function save_invoice()
     {
     	$batch_save_data = array (
 			'invoice_enable'=>$this->input->post('invoice_enable') != null,
@@ -256,12 +261,13 @@ class Config extends Secure_area
     	return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
     }
     
-    function backup_db()
+    public function backup_db()
     {
     	$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-    	if($this->Employee->has_module_grant('config',$employee_id))
+    	if($this->Employee->has_module_grant('config', $employee_id))
     	{
     		$this->load->dbutil();
+
     		$prefs = array(
 				'format' => 'zip',
 				'filename' => 'ospos.sql'
@@ -270,12 +276,13 @@ class Config extends Secure_area
     		$backup =& $this->dbutil->backup($prefs);
     		 
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
-    		$save = 'uploads/'.$file_name;
+    		$save = 'uploads/' . $file_name;
     		$this->load->helper('download');
-    		while (ob_get_level())
+    		while(ob_get_level())
 			{
     			ob_end_clean();
     		}
+
     		force_download($file_name, $backup);
     	}
     	else 

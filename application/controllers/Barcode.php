@@ -1,5 +1,6 @@
 <?php
 require_once ("Secure_area.php");
+
 class Barcode extends Secure_area 
 {
 	function __construct()
@@ -11,6 +12,5 @@ class Barcode extends Secure_area
 	{		
 		$this->load->view('barcode');
 	}	
-	
 }
 ?>
