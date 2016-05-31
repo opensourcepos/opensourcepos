@@ -16,6 +16,8 @@
 		<link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+		<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css" />
+		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
@@ -44,6 +46,13 @@
 		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="bower_components/table-export/tableExport.js"></script>
+		<script src="bower_components/jquery.base64/index.js"></script>
+		<script src="bower_components/chartist/dist/chartist.min.js"></script>
+		<script src="bower_components/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
+		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
+		<script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
+		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/bootstrap-table-export.js" language="javascript"></script>
@@ -64,7 +73,7 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ed189b766b" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2e3ca5bece" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

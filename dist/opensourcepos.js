@@ -45302,7 +45302,7 @@ THE SOFTWARE.*/
 						success: function (response) {
 							$.each(selector, function (index, element) {
 								var id = $(element).data('uniqueid');
-								table().updateByUniqueId({id: id, row: response[id]});
+								table().updateByUniqueId({id: id, row: response[id] || response});
 							});
 							dialog_support.init("a.modal-dlg");
 							highlight_row(ids);
