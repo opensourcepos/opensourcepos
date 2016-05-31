@@ -218,7 +218,7 @@ $(document).ready(function()
 					return ( dialog_confirmed || confirm('<?php echo $this->lang->line('config_jsprintsetup_required'); ?>') );
 				},
 				success: function(response) {
-					$.notify(response.message, { type: response.success} );
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
 				},
 				dataType:'json'
 			});

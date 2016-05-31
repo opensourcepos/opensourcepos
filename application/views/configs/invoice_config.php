@@ -105,7 +105,7 @@ $(document).ready(function()
 					return true;
 				},
 				success: function(response) {
-					$.notify(response.message, { type: response.sucecss } );
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
 					// set back disabled state
 					enable_disable_invoice_enable();
 					enable_disable_use_invoice_template();

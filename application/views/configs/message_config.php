@@ -71,7 +71,7 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$('#message_config_form').validate($.extend(form_support.base, {
+	$('#message_config_form').validate($.extend(form_support.handler, {
 
 		errorLabelContainer: "#general_error_message_box",
 

@@ -309,7 +309,7 @@
 			$(form).ajaxSubmit({
 				success: function(response)
 				{
-					$.notify(response.message, { type: response.success ? 'success' : 'danger', delay: 100000});
+					$.notify(response.message, { type: response.success ? 'success' : 'danger' });
 				},
 				dataType: 'json'
 			});

@@ -25,7 +25,7 @@ class Config extends Secure_area
 	{
 		$upload_success = $this->_handle_logo_upload();
 		$upload_data = $this->upload->data();
-		
+
 		$batch_save_data = array(
 			'company'=>$this->input->post('company'),
 			'address'=>$this->input->post('address'),
