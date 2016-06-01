@@ -45351,7 +45351,7 @@ THE SOFTWARE.*/
 		}
 	};
 
-	form_support.handler = $.extend(form_support.error, {
+	form_support.handler = $.extend({
 
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -45372,7 +45372,7 @@ THE SOFTWARE.*/
 		{
 
 		}
-	});
+	}, form_support.error);
 
 })(window.form_support = window.form_support || {}, jQuery);;(function($) {
 	

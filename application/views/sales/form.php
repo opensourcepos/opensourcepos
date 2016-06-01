@@ -203,7 +203,7 @@ $(document).ready(function()
 		{
 			invoice_number: '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>'
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 
 });
 </script>

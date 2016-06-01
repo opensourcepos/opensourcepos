@@ -47,6 +47,6 @@ $(document).ready(function()
 		{
    			file_path:"<?php echo $this->lang->line('common_import_full_path'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

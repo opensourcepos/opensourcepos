@@ -167,7 +167,7 @@ $(document).ready(function()
 			}
 			?>
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 
 });
 </script>

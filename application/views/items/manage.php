@@ -46,14 +46,11 @@ $(document).ready(function()
                 stock_location: $("#stock_location").val(),
                 filters: $("#filters").val() || [""]
             });
+        },
+        onLoadSuccess: function(response) {
+            $('a.rollover').imgPreview()
         }
     });
-
-    var handle_submit = table_support.handle_submit;
-    table_support.handle_submit = function() {
-        handle_submit.apply(this, arguments) && $('a.rollover').imgPreview();
-    };
-
 });
 </script>
 

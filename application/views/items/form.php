@@ -455,7 +455,7 @@
 					number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
 				}
 			}
-		}, dialog_support.error));
+		}, form_support.error));
 	});
 </script>
 

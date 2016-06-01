@@ -74,6 +74,6 @@ $(document).ready(function()
 				required:"<?php echo $this->lang->line('messages_message_required'); ?>"
 			}
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

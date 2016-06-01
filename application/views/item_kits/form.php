@@ -114,7 +114,7 @@ $(document).ready(function()
 			name:"<?php echo $this->lang->line('items_name_required'); ?>",
 			category:"<?php echo $this->lang->line('items_category_required'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 
 function delete_item_kit_row(link)

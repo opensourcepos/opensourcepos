@@ -121,6 +121,6 @@ $(document).ready(function()
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

@@ -73,7 +73,7 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=e29115a1fc" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=4c4f6f548e" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

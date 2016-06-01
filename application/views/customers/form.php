@@ -120,6 +120,6 @@ $(document).ready(function()
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
 			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>
