@@ -48,7 +48,10 @@ $(document).ready(function()
             });
         },
         onLoadSuccess: function(response) {
-            $('a.rollover').imgPreview()
+            $('a.rollover').imgPreview({
+				imgCSS: { width: 200 },
+				distanceFromCursor: { top:10, left:-210 }
+			})
         }
     });
 });
