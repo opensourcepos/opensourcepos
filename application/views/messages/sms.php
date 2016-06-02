@@ -38,14 +38,7 @@ $(document).ready(function()
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
 				},
 				dataType: 'json'
 			});
