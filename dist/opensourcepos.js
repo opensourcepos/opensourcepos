@@ -15048,7 +15048,7 @@ return jQuery;
 
 }));
 /**
-* @version: 2.1.20
+* @version: 2.1.21
 * @author: Dan Grossman http://www.dangrossman.info/
 * @copyright: Copyright (c) 2012-2016 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
@@ -15612,7 +15612,7 @@ return jQuery;
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
             }
-            if (this.maxDate && this.linkedCalendars && this.rightCalendar.month > this.maxDate) {
+            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
               this.rightCalendar.month = this.maxDate.clone().date(2);
               this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
             }
