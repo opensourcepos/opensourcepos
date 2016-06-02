@@ -65,10 +65,13 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
 ('quantity_decimals', '0'),
+('country_codes', 'us'),
 ('msg_msg', ''),
 ('msg_uid', ''),
 ('msg_src', ''),
-('msg_pwd', '');
+('msg_pwd', ''),
+('notify_horziontal_position', 'right'),
+('notify_vertical_position', 'top');
 
 
 -- --------------------------------------------------------
