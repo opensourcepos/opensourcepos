@@ -64,6 +64,8 @@ class Config extends Secure_area
 			'receiving_calculate_average_price'=>$this->input->post('receiving_calculate_average_price') != null,
 			'lines_per_page'=>$this->input->post('lines_per_page'),
 			'default_sales_discount'=>$this->input->post('default_sales_discount'),
+			'config_notify_horizontal_position'=>$this->input->post('config_notify_horizontal_position'),
+			'config_notify_vertical_position'=>$this->input->post('config_notify_vertical_position'),
 			'custom1_name'=>$this->input->post('custom1_name'),
 			'custom2_name'=>$this->input->post('custom2_name'),
 			'custom3_name'=>$this->input->post('custom3_name'),

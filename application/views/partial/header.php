@@ -66,10 +66,10 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c7aa3101ab"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=baddd589ff"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=4c4f6f548e" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=104339e3c2" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -90,6 +90,12 @@
 			
 			document.getElementById('liveclock').innerHTML = phpjsDate("<?php echo $this->config->item('dateformat').' '.$this->config->item('timeformat') ?>", now);
 		}
+
+		$.notifyDefaults({ placement: {
+			align: '<?php echo $this->config->item('config_notify_horizontal_position'); ?>',
+			from: '<?php echo $this->config->item('config_notify_vertical_position'); ?>'
+		}});
+
 	</script>
 
 	<style type="text/css">

@@ -150,3 +150,4 @@ $lang["config_website"] = "web strana";
 $lang["config_datetimeformat"] = "Oblik datuma i vremena";
 $lang["config_country_codes"] = "Country Codes";
 $lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";
+$lang["config_notify_alignment"] = "Notification Popup Position";

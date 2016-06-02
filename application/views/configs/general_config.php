@@ -95,6 +95,29 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_notify_alignment'), 'config_notify_horizontal_position', array('class'=>'control-label col-xs-2')); ?>
+				<div class="col-sm-10">
+					<div class="form-group form-group-sm row">
+						<div class='col-sm-2'>
+							<?php echo form_dropdown('config_notify_vertical_position', array(
+								'top'        => 'Top',
+								'bottom'        => 'Bottom'
+							),
+								$this->config->item('config_notify_vertical_position'), array('class'=>'form-control input-sm')); ?>
+						</div>
+						<div class='col-sm-2'>
+							<?php echo form_dropdown('config_notify_horizontal_position', array(
+								'left'        => 'Left',
+								'center'        => 'Center',
+								'right'   => 'Right'
+							),
+								$this->config->item('config_notify_horizontal_position'), array('class'=>'form-control input-sm')); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_custom1'), 'config_custom1', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
@@ -227,6 +250,7 @@
 //validation and submit handling
 $(document).ready(function()
 {
+
 	$("#backup_db").click(function() {
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});

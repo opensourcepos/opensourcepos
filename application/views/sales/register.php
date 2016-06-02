@@ -360,13 +360,13 @@ if (isset($success))
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'')); ?>
+									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'disabled')); ?>
 								</td>
 							</tr>
 							<tr>
 								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 								<td>
-									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>$tabindex)); ?>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>$tabindex)); ?>
 								</td>
 							</tr>
 						</table>

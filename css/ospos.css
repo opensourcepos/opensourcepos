@@ -172,3 +172,7 @@ label.required
 	position: relative;
 	top: 100px;
 }
+
+.no-gutter [class*="-1"] {
+	padding-right:0;
+}

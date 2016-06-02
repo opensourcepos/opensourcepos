@@ -38,7 +38,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  ('receipt_show_description', '1'),
  ('receipt_show_serialnumber', '1'),
  ('invoice_enable', '1'),
- ('country_codes', 'us');
+ ('country_codes', 'us'),
+ ('notify_horziontal_position', 'right'),
+ ('notify_vertical_position', 'top');
 
 UPDATE `ospos_modules` SET `sort` = 110 WHERE `name_lang_key` = 'module_config';
 

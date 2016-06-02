@@ -10,7 +10,7 @@ function load_config()
     }
     
     //Set language from config database
-	$language = $CI->security->xss_clean($CI->config->item('language'));
+	$language = $CI->config->item('language');
 	
     //Loads all the language files from the language directory
     if(!empty($language))
@@ -36,7 +36,7 @@ function load_config()
     //Set timezone from config database
     if($CI->config->item('timezone'))
     {
-        date_default_timezone_set($CI->security->xss_clean($CI->config->item('timezone')));
+        date_default_timezone_set($CI->config->item('timezone'));
     }
     else
     {
