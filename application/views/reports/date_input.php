@@ -55,6 +55,10 @@ if(isset($error))
     elseif($mode == 'receiving')
     {
     ?>
+		<?php echo form_label($specific_input_name, 'specific_input_name_label', array('class'=>'required')); ?>
+		<div id='report_specific_input_data'>
+			<?php echo form_dropdown('specific_input_data',$specific_input_data, '', 'id="specific_input_data"'); ?>
+		</div>
         <?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required')); ?>
         <div id='report_receiving_type'>
      	   <?php echo form_dropdown('receiving_type',array('all' => $this->lang->line('reports_all'),
@@ -91,11 +95,12 @@ $(document).ready(function()
 	$("#generate_report").click(function()
 	{		
 		var input_type = $("#input_type").val();
+		var supplier_id = $("#specific_input_data").val();
 		var location_id = $("#location_id").val();
 		var location = window.location;
 		if ($("#simple_radio").attr('checked'))
 		{
-			location += '/'+$("#report_date_range_simple option:selected").val() + '/' + input_type;
+			location += '/'+$("#report_date_range_simple option:selected").val() + '/' + input_type + '/' + supplier_id;
 		}
 		else
 		{
@@ -103,16 +108,16 @@ $(document).ready(function()
 			var end_date = $("#end_year").val()+'-'+$("#end_month").val()+'-'+$('#end_day').val();
 	        if(!input_type)
 	        {
-	            location += '/'+start_date + '/'+ end_date;
+				location += '/'+start_date + '/'+ end_date + '/' + supplier_id;
 	        }
 	        else
 	        {
-				location += '/'+start_date + '/'+ end_date+ '/' + input_type;
+				location += '/'+start_date + '/'+ end_date+ '/' + input_type + '/' + supplier_id;
 			}
 		}
 		if (location_id)
 		{
-			location += '/' + location_id;
+			location += '/' + location_id + '/' + supplier_id; // BN TODO Validate
 		}
 		window.location = location;
 	});

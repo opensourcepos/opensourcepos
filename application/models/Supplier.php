@@ -29,7 +29,8 @@ class Supplier extends Person
 		$this->db->from('suppliers');
 		$this->db->join('people','suppliers.person_id=people.person_id');			
 		$this->db->where('deleted', 0);
-		$this->db->order_by("company_name", "asc");
+		$this->db->order_by("first_name", "asc");
+		//$this->db->order_by("company_name", "asc");
 		if ($rows > 0) {
 			$this->db->limit($rows, $limit_from);
 		}

@@ -739,6 +739,11 @@ class Sales extends Secure_area
 			$this->lang->line('sales_check') => $this->lang->line('sales_check'),
 			$this->lang->line('sales_giftcard') => $this->lang->line('sales_giftcard'),
 			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
+			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+			$this->lang->line('sales_layaway_bal') => $this->lang->line('sales_layaway_bal'),
+			$this->lang->line('sales_oos_pmt') => $this->lang->line('sales_oos_pmt'),
+			$this->lang->line('sales_deposit') => $this->lang->line('sales_deposit'),
+			$this->lang->line('sales_house_acct') => $this->lang->line('sales_house_acct')
 			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
 		);
 

@@ -110,6 +110,7 @@ class Receivings extends Secure_area
     	$description = $this->input->post('description');
     	$serialnumber = $this->input->post('serialnumber');
 		$price = $this->input->post('price');
+		$unit_price = $this->input->post("unit_price");
 		$quantity = $this->input->post('quantity');
 		$discount = $this->input->post('discount');
 		$item_location = $this->input->post('location');
@@ -203,7 +204,12 @@ class Receivings extends Secure_area
 		if($supplier_id!=-1)
 		{
 			$suppl_info=$this->Supplier->get_info($supplier_id);
-			$data['supplier']=$suppl_info->company_name;  //   first_name.' '.$suppl_info->last_name;
+			$data['supplier']=$suppl_info->first_name.' '.$suppl_info->last_name;
+			$data['supplier_2']=$suppl_info->address_1;
+			$data['supplier_3']=$suppl_info->city.', '.$suppl_info->state.' '.$suppl_info->zip;
+			if ( $data['supplier_3'] == ',  ' ) $data['supplier_3'] = '';
+			$data['supplier_4']=$suppl_info->phone_number;
+			$data['supplier_5']=$suppl_info->account_number;
 		}
 		$invoice_number=$this->_substitute_invoice_number($suppl_info);
 		if ($this->receiving_lib->is_invoice_number_enabled() && $this->Receiving->invoice_number_exists($invoice_number))
@@ -348,7 +354,11 @@ class Receivings extends Secure_area
 			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
 			$this->lang->line('sales_check') => $this->lang->line('sales_check'),
 			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
+			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+			$this->lang->line('sales_layaway_bal') => $this->lang->line('sales_layaway_bal'),
+			$this->lang->line('sales_oos_pmt') => $this->lang->line('sales_oos_pmt'),
+			$this->lang->line('sales_deposit') => $this->lang->line('sales_deposit'),
+			$this->lang->line('sales_house_acct') => $this->lang->line('sales_house_acct')
 		);
 		
 		$supplier_id=$this->receiving_lib->get_supplier();

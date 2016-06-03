@@ -34,7 +34,13 @@ if (isset($error_message))
 		<?php if(isset($supplier))
 		{
 		?>
-		<div id="customer"><?php echo $this->lang->line('suppliers_supplier').": ".$supplier; ?></div>
+			<div id="customer"><?php echo $this->lang->line('suppliers_supplier').": ".$supplier; ?><br>
+			<?php if (!empty($supplier_2) ) echo $supplier_2."<br>"; ?>
+			<?php if (!empty($supplier_3) ) echo $supplier_3."<br>"; ?>
+			<?php if (!empty($supplier_4) ) echo $supplier_4."<br>"; ?>
+			<?php if (!empty($supplier_5) ) echo "ACCT: ".$supplier_5."<br>"; ?>
+			</div>
+			<br>
 		<?php
 		}
 		?>
@@ -52,7 +58,7 @@ if (isset($error_message))
 	<table id="receipt_items">
 	<tr>
 	<th style="width:40%;"><?php echo $this->lang->line('items_item'); ?></th>
-	<th style="width:20%;"><?php echo $this->lang->line('common_price'); ?></th>
+	<th style="width:17%;">Cost/Price</th>
 	<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
 	<th style="width:15%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
 	</tr>
@@ -61,8 +67,8 @@ if (isset($error_message))
 	{
 	?>
 		<tr>
-		<td><span class='long_name'><?php echo $item['name']; ?></span><span class='short_name'><?php echo character_limiter($item['name'],10); ?></span></td>
-		<td><?php echo to_currency($item['price']); ?></td>
+		<td><span class='long_name'><?php echo $item['name']; ?></span><span class='short_name'><?php echo character_limiter($item['name'],70); ?></span></td>
+		<td><?php echo to_currency($item['price'])."/".to_currency($item['unit_price']); ?></td>
 		<td><?php 
 			echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 		?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1; ?></td>
