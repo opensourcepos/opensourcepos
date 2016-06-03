@@ -43,7 +43,7 @@ reports_payment_type,Fizetési mód,Zahlungsart,Betaald,Tipo de Pago,Payment Typ
 reports_payments,Fizetések,Zahlungen,Betalingen,Pagos,Payments,Paiements,付款,Оплаты,รายจ่าย,Ödemeler,Pembayaran,Pagamentos,Plaćanja
 reports_payments_summary_report,Fizetések összefoglaló riport,Bericht: Zahlungen (summarisch),Overzicht Betalingen,Reporte de Resumen de Pagos,Payments Summary Report,Rapport: Résumé des Paiements,收入報告摘要,Платежей Сводный отчет,รายงานสรุปการจ่าย,Ödeme Özet Raporu,Laporan Ringkasan Pembayaran,Relatório Resumido de Pagamentos,Zbrojni izvještaj plaćanja
 reports_profit,Profit,Gewinn,Winst,Ganancia,Profit,Bénéfice,利潤,прибыль,กำไร,Kâr,Keuntungan/Laba,Lucro,RUC
-reports_cost,Kiadás,Kosten,Cost,Cost,Cost,Cost,Cost,Cost,Cost,,,Custo,Cijena
+reports_cost,Kiadás,Kosten,Cost,Costo,Cost,Cost,Cost,Cost,Cost,,,Custo,Cijena
 reports_quantity,Mennyiség,Menge,Stock,Cantidad,Quantity,Quantité,數量,Количество,จำนวน,Adet,Jumlah,Quantidade,Količina
 reports_quantity_purchased,Vásárolt mennyiség,Menge gekauft,Aangekochte Hoeveelheid,Cantidad Comprada,Quantity Purchased,Quantité Achetée,銷售金額,купенный количество,จำนวนการช์้อ,Satın Alınan Adet,Jumlah Dibeli,Quantidade Comprada,Nabavna količina
 reports_received_by,Átvéve,Erhalten von,Ontvangen door,Recibido por,Received By,Recu par,收款人,получило за,รับโดย,Alım Yapan,Diterima Oleh,Recebido por,Primljeno od
