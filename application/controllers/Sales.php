@@ -100,16 +100,14 @@ class Sales extends Secure_area
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->get('term') != '' ? $this->input->get('term') : null;
+		$receipt = $search = $this->input->get('term') != '' ? $this->input->get('term') : null;
 
-		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
+		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($receipt) )
 		{
-			$suggestions[] = $search;
+			// if a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
+			$suggestions[] = $receipt;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array(
-			'search_custom' => FALSE,
-			'is_deleted' => FALSE
-		), TRUE));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
 		echo json_encode($suggestions);

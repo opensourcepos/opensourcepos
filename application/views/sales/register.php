@@ -68,23 +68,23 @@ if (isset($success))
 	<?php echo form_close(); ?>
 
 	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
-	<div class="panel-body form-group">
-		<ul>
-			<li class="pull-left first_li">
-				<label for="item" class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
-			</li>
-			<li class="pull-left">
-				<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
-				<span class="ui-helper-hidden-accessible" role="status"></span>
-			</li>
-			<li class="pull-right">
-				<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
-						title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
-					<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
-				</button>
-			</li>
-		</ul>
-	</div>
+		<div class="panel-body form-group">
+			<ul>
+				<li class="pull-left first_li">
+					<label for="item" class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
+				</li>
+				<li class="pull-left">
+					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
+					<span class="ui-helper-hidden-accessible" role="status"></span>
+				</li>
+				<li class="pull-right">
+					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
+							title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
+						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
+					</button>
+				</li>
+			</ul>
+		</div>
 	<?php echo form_close(); ?>
 
 
@@ -483,7 +483,7 @@ if (isset($success))
 							</tr>
 						
 							<?php
-							if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE) 
+							if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
 							{
 							?>
 								<tr>
@@ -519,11 +519,11 @@ if (isset($success))
 $(document).ready(function()
 {
     $("#item").autocomplete(
-    {
+	{
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
-    	minChars:0,
+    	minChars: 0,
     	autoFocus: false,
-       	delay:10,
+       	delay: 10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
@@ -555,8 +555,8 @@ $(document).ready(function()
     $("#customer").autocomplete(
     {
 		source: '<?php echo site_url("customers/suggest"); ?>',
-    	minChars:0,
-    	delay:10,
+    	minChars: 0,
+    	delay: 10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#select_customer_form").submit();
