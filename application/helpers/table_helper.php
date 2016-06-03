@@ -205,10 +205,11 @@ function get_supplier_manage_table($suppliers,$controller)
 	$table='<table class="tablesorter" id="sortable_table">';
 	
 	$headers = array('<input type="checkbox" id="select_all" />',
-	$CI->lang->line('suppliers_company_name'),
-	$CI->lang->line('suppliers_agency_name'),
-	$CI->lang->line('common_last_name'),
-	$CI->lang->line('common_first_name'),
+	//$CI->lang->line('suppliers_company_name'),
+	//$CI->lang->line('suppliers_agency_name'),
+	//$CI->lang->line('common_last_name'),
+	//$CI->lang->line('common_first_name'),
+    "Name",
 	$CI->lang->line('common_email'),
 	$CI->lang->line('common_phone_number'),
 	$CI->lang->line('suppliers_supplier_id'),
@@ -255,9 +256,9 @@ function get_supplier_data_row($supplier,$controller)
 
 	$table_data_row='<tr>';
 	$table_data_row.="<td width='5%'><input type='checkbox' id='person_$supplier->person_id' value='".$supplier->person_id."'/></td>";
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->company_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->agency_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->last_name,13).'</td>';
+	//$table_data_row.='<td width="17%">'.character_limiter($supplier->company_name,13).'</td>';
+	//$table_data_row.='<td width="17%">'.character_limiter($supplier->agency_name,13).'</td>';
+	//$table_data_row.='<td width="17%">'.character_limiter($supplier->last_name,13).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
 	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';

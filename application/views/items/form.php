@@ -32,11 +32,7 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'encty
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_category').':', 'category',array('class'=>'required wide')); ?>
 	<div class='form_field'>
-	<?php echo form_input(array(
-		'name'=>'category',
-		'id'=>'category',
-		'value'=>$item_info->category)
-	);?>
+	<?php echo form_dropdown('category', $categories, $selected_category);?>
 	</div>
 </div>
 
@@ -273,7 +269,7 @@ $(document).ready(function()
     });
 	
 	var no_op = function(event, data, formatted){};
-	$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10}).result(no_op).search();
+	//$("#category").autocomplete("<?php echo site_url('items/suggest_category');?>",{max:100,minChars:0,delay:10}).result(no_op).search();
 
 	<?php for ($i = 0; $i < 11; $i++) 
 	{ 

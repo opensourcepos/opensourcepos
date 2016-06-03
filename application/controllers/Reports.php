@@ -356,10 +356,18 @@ class Reports extends Secure_area
     function date_input_recv()
     {
         $data = $this->_get_common_report_data();
+        $data['specific_input_name'] = "Suppliers";
 		$stock_locations = $this->Stock_location->get_allowed_locations('receivings');
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
  		$data['mode'] = 'receiving';
+	    $suppliers = array();
+	    $suppliers[-1]=' ';
+	    foreach($this->Supplier->get_all()->result() as $supplier)
+	    {
+		    $suppliers[$supplier->person_id]=$supplier->first_name." ".$supplier->last_name;
+	    }
+	    $data['specific_input_data']=$suppliers;
         $this->load->view("reports/date_input",$data);
     }
 
@@ -900,13 +908,13 @@ class Reports extends Secure_area
 		$this->load->view("reports/tabular_details",$data);
 	}
 
-	function detailed_receivings($start_date, $end_date, $receiving_type, $location_id='all', $export_excel=0)
+	function detailed_receivings($start_date, $end_date, $receiving_type, $supplier_id, $location_id='all', $export_excel=0)
 	{
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 
 		$headers = $model->getDataColumns();
-		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'location_id' => $location_id));
+		$report_data = $model->getData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type'=>$receiving_type, 'supplier_id' => $supplier_id, 'location_id' => $location_id));
 
 		$summary_data = array();
 		$details_data = array();
@@ -937,7 +945,7 @@ class Reports extends Secure_area
 			"summary_data" => $summary_data,
 			"details_data" => $details_data,
 			"header_width" => intval(100 / count($headers['summary'])),
-			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id)),
+			"overall_summary_data" => $model->getSummaryData(array('start_date'=>$start_date, 'end_date'=>$end_date, 'receiving_type' => $receiving_type, 'supplier_id' => $supplier_id, 'location_id' => $location_id)),
 			"export_excel" => $export_excel
 		);
 

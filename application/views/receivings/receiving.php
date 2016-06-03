@@ -63,6 +63,7 @@ if(isset($error))
 <tr>
 	<th style="width:11%;"><?php echo $this->lang->line('common_delete'); ?></th>
 	<th style="width:30%;"><?php echo $this->lang->line('recvs_item_name'); ?></th>
+	<th>Price</th>
 	<th style="width:11%;"><?php echo $this->lang->line('recvs_cost'); ?></th>
 	<th style="width:5%;"><?php echo $this->lang->line('recvs_quantity'); ?></th>
 	<th style="width:6%;"></th>
@@ -92,7 +93,7 @@ else
 	    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
 		<td style="align:center;"><?php echo $item['name']; ?><br /> [<?php echo $item['in_stock']; ?> in <?php echo $item['stock_name']; ?>]
             <?php echo form_hidden('location', $item['item_location']); ?></td>
-
+        <td><?php echo $item['unit_price']; ?></td>
 		<?php if ($items_module_allowed && $mode !='requisition')
 		{
 		?>
@@ -107,8 +108,8 @@ else
 		<?php
 		}
 		?>
-		
-		<td>
+    		<?php echo form_hidden('unit_price',$item['unit_price']); ?>
+    		<td>
 		<?php
             echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
             if ($item['receiving_quantity'] > 1) 

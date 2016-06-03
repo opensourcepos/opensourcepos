@@ -208,7 +208,11 @@ class Receiving_lib
             'quantity'=>$quantity,
             'discount'=>$discount,
             'in_stock'=>$this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
-            'price'=>$price,
+            //'price'=>$price,
+// TEST
+            // BN Potential candidate
+            'price'=>$price!=null ? $price: $this->CI->Item->get_info($item_id)->cost_price,
+            'unit_price' => $this->CI->Item->get_info($item_id)->unit_price,
             'receiving_quantity'=>$receiving_quantity!=null ? $receiving_quantity : $item_info->receiving_quantity,
             'total'=>$this->get_item_total($quantity, $price, $discount)
             )

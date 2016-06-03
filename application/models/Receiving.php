@@ -91,7 +91,14 @@ class Receiving extends CI_Model
 			);
 
 			$this->db->insert('receivings_items',$receivings_items_data);
-
+			// Update Receivings -> Items Receiving screen to allow cost field from screen to update item cost in database
+// test
+			$items_data = array
+			(
+				'item_id'=>$item['item_id'],
+				'cost_price'=>$item['price']
+			);
+			$this->Item->save($items_data,$item['item_id']);
 			$items_received = $item['receiving_quantity'] != 0 ? $item['quantity'] * $item['receiving_quantity'] : $item['quantity'];
 
 			// update cost price, if changed AND is set in config as wanted

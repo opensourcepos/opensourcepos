@@ -341,6 +341,19 @@ class Sale extends CI_Model
 					));
 				}
 			}
+
+			// Update items table if item_number starts with PGS or BBN
+			if (preg_match('/^(PGS|BBN)/', $item['item_number']) == 1)
+			{
+				$items_data = array
+				(
+					'item_id'=>$item['item_id'],
+					'unit_price'=>$item['price']
+				);
+				//file_put_contents("tmp/logfile",var_export($items_data,true),FILE_APPEND);
+				$this->Item->save($items_data,$item['item_id']);
+			}
+
 		}
 		$this->db->trans_complete();
 		

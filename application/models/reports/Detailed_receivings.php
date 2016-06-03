@@ -27,11 +27,16 @@ class Detailed_receivings extends Report
 	
 	public function getData(array $inputs)
 	{
+		$supplier_id = $inputs['supplier_id'];
 		$this->db->select('receiving_id, receiving_date, sum(quantity_purchased) as items_purchased, CONCAT(employee.first_name," ",employee.last_name) as employee_name, CONCAT(supplier.first_name," ",supplier.last_name) as supplier_name, sum(total) as total, sum(profit) as profit, payment_type, comment, invoice_number', false);
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people as employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('people as supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
+		if ($supplier_id != -1)
+		{
+			$this->db->where('receivings_items_temp.supplier_id = "'.$supplier_id.'"');
+		}
 		if ($inputs['location_id'] != 'all')
 		{
 			$this->db->where('item_location', $inputs['location_id']);
@@ -70,10 +75,15 @@ class Detailed_receivings extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
+		$supplier_id = $inputs['supplier_id'];
 		$this->db->select('sum(total) as total');
 		$this->db->from('receivings_items_temp');
 		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' and '. $this->db->escape($inputs['end_date']));
 
+		if ($supplier_id != -1)
+		{
+			$this->db->where('receivings_items_temp.supplier_id = "'.$supplier_id.'"');
+		}
 		if ($inputs['location_id'] != 'all')
 		{
 			$this->db->where('item_location', $inputs['location_id']);

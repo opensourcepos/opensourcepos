@@ -269,10 +269,20 @@ class Items extends Secure_area implements iData_controller
 	{
 		$data['item_info']=$this->Item->get_info($item_id);
 		$data['item_tax_info']=$this->Item_taxes->get_info($item_id);
+
+		$categories_rs = $this->Item->get_category_suggestions($this->input->post('q'));
+		$categories = array();
+		foreach($categories_rs as $category)
+		{
+			$categories[$category] = $category;
+		}
+		$data['categories']=$categories;
+		$data['selected_category']=$this->Item->get_info($item_id)->category;
 		$suppliers = array('' => $this->lang->line('items_none'));
 		foreach($this->Supplier->get_all()->result_array() as $row)
 		{
-			$suppliers[$row['person_id']] = $row['company_name'];
+			//$suppliers[$row['person_id']] = $row['company_name'] .' ('.$row['first_name'] .' '. $row['last_name'].')';
+			$suppliers[$row['person_id']] = $row['first_name'] .' '. $row['last_name'];
 		}
 
 		$data['suppliers']=$suppliers;
@@ -794,7 +804,7 @@ class Items extends Secure_area implements iData_controller
 	*/
 	function get_form_width()
 	{
-		return 450;
+		return 560;
 	}
 }
 ?>
