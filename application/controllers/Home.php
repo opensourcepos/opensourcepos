@@ -8,12 +8,12 @@ class Home extends Secure_area
 		parent::__construct();	
 	}
 	
-	function index()
+	public function index()
 	{
 		$this->load->view("home");
 	}
 	
-	function logout()
+	public function logout()
 	{
 		$this->Employee->logout();
 	}

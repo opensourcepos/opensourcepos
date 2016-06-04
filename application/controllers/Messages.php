@@ -1,6 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
+<?php
 require_once ("Secure_area.php");
+
 class Messages extends Secure_area
 {
 	function __construct()
@@ -10,55 +10,63 @@ class Messages extends Secure_area
 	
 	public function index()
 	{
-		$data['controller_name'] = $this->get_controller_name();
-
 		$this->load->view('messages/sms');
 	}
 
-	function view($person_id=-1)
+	public function view($person_id = -1)
 	{ 
-		$data['person_info'] = $this->Person->get_info($person_id);
+		$info = $this->Person->get_info($person_id);
+		foreach(get_object_vars($info) as $property => $value)
+		{
+			$info->$property = $this->security->xss_clean($value);
+		}
+		$data['person_info'] = $info;
 
 		$this->load->view('messages/form_sms', $data);
 	}
 
-	function send()
+	public function send()
 	{	
-		$username = $this->config->item('msg_uid');
-		$password = $this->config->item('msg_pwd');
-		$phone = $this->input->post('phone');
-		$message = $this->input->post('message');
+		$username   = $this->config->item('msg_uid');
+		$password   = $this->config->item('msg_pwd');
+		$phone      = $this->input->post('phone');
+		$message    = $this->input->post('message');
 		$originator = $this->config->item('msg_src');
 
 		$response = $this->sms->sendSMS($username, $password, $phone, $message, $originator);
+		
+		$phone = $this->security->xss_clean($phone);
 
 		if($response)
 		{
-			echo json_encode(array('success'=>true, 'message'=>$this->lang->line('messages_successfully_sent') . ' ' . $phone));
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone));
 		}
 	}
 	
-	function send_form($person_id=-1)
+	public function send_form($person_id = -1)
 	{	
-		$username = $this->config->item('msg_uid');
-		$password = $this->config->item('msg_pwd');
-		$phone = $this->input->post('phone');
-		$message = $this->input->post('message');
+		$username   = $this->config->item('msg_uid');
+		$password   = $this->config->item('msg_pwd');
+		$phone      = $this->input->post('phone');
+		$message    = $this->input->post('message');
 		$originator = $this->config->item('msg_src');
 
 		$response = $this->sms->sendSMS($username, $password, $phone, $message, $originator); 
+		
+		$phone = $this->security->xss_clean($phone);
+		$person_id = $this->security->xss_clean($person_id);
 
 		if($response)
 		{
-			echo json_encode(array('success'=>true, 'message'=>$this->lang->line('messages_successfully_sent') . ' ' . $phone, 'person_id'=>$person_id));
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('messages_successfully_sent') . ' ' . $phone, 'person_id' => $person_id));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false, 'message'=>$this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone, 'person_id'=>-1));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('messages_unsuccessfully_sent') . ' ' . $phone, 'person_id' => -1));
 		}
 	}
 }
