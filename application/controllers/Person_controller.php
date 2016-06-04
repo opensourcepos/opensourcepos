@@ -1,8 +1,9 @@
 <?php
 require_once ("Secure_area.php");
+
 abstract class Person_controller extends Secure_area
 {
-	function __construct($module_id=null)
+	function __construct($module_id = NULL)
 	{
 		parent::__construct($module_id);		
 	}
@@ -10,18 +11,20 @@ abstract class Person_controller extends Secure_area
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
-	function suggest()
+	public function suggest()
 	{
-		$suggestions = $this->Person->get_search_suggestions($this->input->post('q'),$this->input->post('limit'));
-		echo implode("\n",$suggestions);
+		$suggestions = $this->security->xss_clean($this->Person->get_search_suggestions($this->input->post('term')));
+
+		echo json_encode($suggestions);
 	}
 		
 	/*
 	Gets one row for a person manage table. This is called using AJAX to update one row.
 	*/
-	function get_row($row_id)
+	public function get_row($row_id)
 	{
-		$data_row=get_person_data_row($this->Person->get_info($row_id),$this);
+		$data_row = $this->security->xss_clean(get_person_data_row($this->Person->get_info($row_id), $this));
+
 		echo json_encode($data_row);
 	}
 }

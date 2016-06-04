@@ -1,5 +1,6 @@
 <?php
 require_once ("Person_controller.php");
+
 class Customers extends Person_controller
 {
 	function __construct()
@@ -7,10 +8,12 @@ class Customers extends Person_controller
 		parent::__construct('customers');
 	}
 	
-	function index()
+	public function index()
 	{
 		$data['controller_name'] = $this->get_controller_name();
 		$data['table_headers'] = get_people_manage_table_headers();
+		
+		$data = $this->security->xss_clean($data);
 
 		$this->load->view('people/manage', $data);
 	}
@@ -18,13 +21,13 @@ class Customers extends Person_controller
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
-	function search()
+	public function search()
 	{
 		$search = $this->input->get('search');
-		$limit = $this->input->get('limit');
+		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
-		$sort = $this->input->get('sort');
-		$order = $this->input->get('order');
+		$sort   = $this->input->get('sort');
+		$order  = $this->input->get('order');
 
 		$customers = $this->Customer->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Customer->get_found_rows($search);
@@ -34,22 +37,25 @@ class Customers extends Person_controller
 		{
 			$data_rows[] = get_person_data_row($person, $this);
 		}
+
+		$data_rows = $this->security->xss_clean($data_rows);
+
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
-	function suggest()
+	public function suggest()
 	{
-		$suggestions = $this->Customer->get_search_suggestions($this->input->get('term'), TRUE);
+		$suggestions = $this->security->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
-	function suggest_search()
+	public function suggest_search()
 	{
-		$suggestions = $this->Customer->get_search_suggestions($this->input->post('term'), FALSE);
+		$suggestions = $this->security->xss_clean($this->Customer->get_search_suggestions($this->input->post('term'), FALSE));
 
 		echo json_encode($suggestions);
 	}
@@ -57,10 +63,16 @@ class Customers extends Person_controller
 	/*
 	Loads the customer edit form
 	*/
-	function view($customer_id=-1)
+	public function view($customer_id = -1)
 	{
-		$data['person_info'] = $this->Customer->get_info($customer_id);
-		$data['total'] = $this->Customer->get_totals($customer_id)->total;
+		$info = $this->Customer->get_info($customer_id);
+		foreach(get_object_vars($info) as $property => $value)
+		{
+			$info->$property = $this->security->xss_clean($value);
+		}
+		$data['person_info'] = $info;
+
+		$data['total'] = $this->security->xss_clean($this->Customer->get_totals($customer_id)->total);
 
 		$this->load->view("customers/form", $data);
 	}
@@ -68,135 +80,140 @@ class Customers extends Person_controller
 	/*
 	Inserts/updates a customer
 	*/
-	function save($customer_id=-1)
+	public function save($customer_id = -1)
 	{
 		$person_data = array(
-			'first_name'=>$this->input->post('first_name'),
-			'last_name'=>$this->input->post('last_name'),
-			'gender'=>$this->input->post('gender'),
-			'email'=>$this->input->post('email'),
-			'phone_number'=>$this->input->post('phone_number'),
-			'address_1'=>$this->input->post('address_1'),
-			'address_2'=>$this->input->post('address_2'),
-			'city'=>$this->input->post('city'),
-			'state'=>$this->input->post('state'),
-			'zip'=>$this->input->post('zip'),
-			'country'=>$this->input->post('country'),
-			'comments'=>$this->input->post('comments')
+			'first_name' => $this->input->post('first_name'),
+			'last_name' => $this->input->post('last_name'),
+			'gender' => $this->input->post('gender'),
+			'email' => $this->input->post('email'),
+			'phone_number' => $this->input->post('phone_number'),
+			'address_1' => $this->input->post('address_1'),
+			'address_2' => $this->input->post('address_2'),
+			'city' => $this->input->post('city'),
+			'state' => $this->input->post('state'),
+			'zip' => $this->input->post('zip'),
+			'country' => $this->input->post('country'),
+			'comments' => $this->input->post('comments')
 		);
-		$customer_data=array(
-			'account_number'=>$this->input->post('account_number') == '' ? null : $this->input->post('account_number'),
-			'company_name'=>$this->input->post('company_name') == '' ? null : $this->input->post('company_name'),
-			'discount_percent'=>$this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
-			'taxable'=>$this->input->post('taxable') != null
+		$customer_data = array(
+			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
+			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
+			'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
+			'taxable' => $this->input->post('taxable') != NULL
 		);
-		if($this->Customer->save_customer($person_data,$customer_data,$customer_id))
+
+		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
 		{
+			$person_data = $this->security->xss_clean($person_data);
+			$customer_data = $this->security->xss_clean($customer_data);
+			
 			//New customer
-			if($customer_id==-1)
+			if($customer_id == -1)
 			{
-				echo json_encode(array('success'=>true,'message'=>$this->lang->line('customers_successful_adding').' '.
-				$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_data['person_id']));
+				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_adding').' '.
+								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_data['person_id']));
 			}
-			else //previous customer
+			else //Existing customer
 			{
-				echo json_encode(array('success'=>true,'message'=>$this->lang->line('customers_successful_updating').' '.
-				$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_id));
+				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_updating').' '.
+								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_id));
 			}
 		}
 		else//failure
-		{	
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('customers_error_adding_updating').' '.
-			$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+		{
+			$person_data = $this->security->xss_clean($person_data);
+
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_error_adding_updating').' '.
+							$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
 		}
 	}
 	
-	function check_account_number()
+	public function check_account_number()
 	{
-		$exists = $this->Customer->account_number_exists($this->input->post('account_number'),$this->input->post('person_id'));
+		$exists = $this->Customer->account_number_exists($this->input->post('account_number'), $this->input->post('person_id'));
 
-		echo !$exists ? 'true' : 'false';
+		echo !$exists ? 'TRUE' : 'FALSE';
 	}
 	
 	/*
 	This deletes customers from the customers table
 	*/
-	function delete()
+	public function delete()
 	{
-		$customers_to_delete=$this->input->post('ids');
-		
+		$customers_to_delete = $this->security->xss_clean($this->input->post('ids'));
+
 		if($this->Customer->delete_list($customers_to_delete))
 		{
-			echo json_encode(array('success'=>true,'message'=>$this->lang->line('customers_successful_deleted').' '.
-			count($customers_to_delete).' '.$this->lang->line('customers_one_or_multiple')));
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_deleted').' '.
+							count($customers_to_delete).' '.$this->lang->line('customers_one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success'=>false,'message'=>$this->lang->line('customers_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_cannot_be_deleted')));
 		}
 	}
-	
-	function excel()
+
+	/*
+	Customer import from excel spreadsheet
+	*/
+	public function excel()
 	{
 		$data = file_get_contents("import_customers.csv");
 		$name = 'import_customers.csv';
 		force_download($name, $data);
 	}
 	
-	function excel_import()
+	public function excel_import()
 	{
-		$this->load->view("customers/form_excel_import", null);
+		$this->load->view("customers/form_excel_import", NULL);
 	}
 
-	function do_excel_import()
+	public function do_excel_import()
 	{
-		$msg = 'do_excel_import';
-		$failCodes = array();
-
-		if ($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
+		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			$msg = $this->lang->line('items_excel_import_failed');
-			echo json_encode( array('success'=>false,'message'=>$msg) );
-
-			return;
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_failed')));
 		}
 		else
 		{
-			if (($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
+			if(($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
 			{
                 // Skip the first row as it's the table description
 				fgetcsv($handle);
-				
-				$i=1;
-				while (($data = fgetcsv($handle)) !== FALSE) 
+				$i = 1;
+
+				$failCodes = array();
+
+				while(($data = fgetcsv($handle)) !== FALSE) 
 				{
 					// XSS file data sanity check
 					$data = $this->security->xss_clean($data);
 					
 					$person_data = array(
-						'first_name'=>$data[0],
-						'last_name'=>$data[1],
-						'gender'=>$data[2],
-						'email'=>$data[3],
-						'phone_number'=>$data[4],
-						'address_1'=>$data[5],
-						'address_2'=>$data[6],
-						'city'=>$data[7],
-						'state'=>$data[8],
-						'zip'=>$data[9],
-						'country'=>$data[10],
-						'comments'=>$data[11]
+						'first_name' => $data[0],
+						'last_name' => $data[1],
+						'gender' => $data[2],
+						'email' => $data[3],
+						'phone_number' => $data[4],
+						'address_1' => $data[5],
+						'address_2' => $data[6],
+						'city' => $data[7],
+						'state' => $data[8],
+						'zip' => $data[9],
+						'country' => $data[10],
+						'comments' => $data[11]
 					);
 					
 					$customer_data = array(
-						'company_name'=>$data[12],
-						'discount_percent'=>$data[14],
-						'taxable'=>$data[15]=='' ? 0 : 1
+						'company_name' => $data[12],
+						'discount_percent' => $data[14],
+						'taxable' => $data[15]=='' ? 0 : 1
 					);
 					
 					$account_number = $data[13];
-					$invalidated = false;
-					if ($account_number != "") 
+					$invalidated = FALSE;
+					if($account_number != "") 
 					{
 						$customer_data['account_number'] = $account_number;
 						$invalidated = $this->Customer->account_number_exists($account_number);
@@ -209,27 +226,23 @@ class Customers extends Person_controller
 					
 					$i++;
 				}
+				
+				if(count($failCodes) > 0)
+				{
+					$msg = 'Most customers imported. But some were not, here is list of their CODE (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					
+					echo json_encode(array('success' => FALSE, 'message' => $msg));
+				}
+				else
+				{
+					echo json_encode(array('success' => TRUE, 'message' => 'Import of Customers successful'));
+				}
 			}
 			else 
 			{
-                echo json_encode( array('success'=>false, 'message'=>'Your uploaded file has no data or wrong format') );
-
-				return;
+                echo json_encode(array('success' => FALSE, 'message' => 'Your uploaded file has no data or wrong format'));
 			}
 		}
-
-		$success = true;
-		if(count($failCodes) > 0)
-		{
-			$msg = "Most customers imported. But some were not, here is list of their CODE (" .count($failCodes) ."): ".implode(", ", $failCodes);
-			$success = false;
-		}
-		else
-		{
-			$msg = "Import of Customers successful";
-		}
-
-		echo json_encode( array('success'=>$success, 'message'=>$msg) );
 	}
 }
 ?>
