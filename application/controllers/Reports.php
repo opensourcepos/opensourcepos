@@ -25,6 +25,7 @@ class Reports extends Secure_area
 	//Initial report listing screen
 	public function index()
 	{
+		$data = array();
 		$data['grants'] = $this->Employee->get_employee_grants($this->session->userdata('person_id'));
 		
 		$data = $this->security->xss_clean($data);
@@ -90,17 +91,6 @@ class Reports extends Secure_area
 		$summary_data[] = $this->security->xss_clean($report_data['comment']);
 
 		echo json_encode(array($receiving_id => $summary_data));
-	}
-
-	public function get_summary_data($start_date, $end_date = NULL, $sale_type = 0)
-	{	
-		$this->load->model('reports/Summary_sales');
-		$model = $this->Summary_sales;
-
-		$end_date = $end_date ? $end_date : $start_date;
-		$summary = $this->security->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)));
-
-		echo get_sales_summary_totals($summary, $this);
 	}
 
 	//Summary sales report

@@ -219,7 +219,8 @@
 			queryParamsType: 'limit',
 			iconSize: 'sm',
 			silentSort: true,
-			paginationVAlign: 'bottom'
+			paginationVAlign: 'bottom',
+			escape: false
 		}));
 		enable_actions();
 		init_delete();
