@@ -577,14 +577,9 @@ class Items extends Secure_Controller
 
     public function do_excel_import()
     {
-        $message = 'do_excel_import';
-        $failCodes = array();
-
         if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
         {
             echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_failed')));
-
-            return;
         }
         else
 		{
@@ -592,8 +587,10 @@ class Items extends Secure_Controller
             {
                 // Skip the first row as it's the table description
                 fgetcsv($handle);
-
                 $i = 1;
+				
+				$failCodes = array();
+		
                 while(($data = fgetcsv($handle)) !== FALSE)
                 {
 					// XSS file data sanity check
@@ -722,27 +719,23 @@ class Items extends Secure_Controller
 
 					$i++;
                 }
+				
+				if(count($failCodes) > 0)
+				{
+					$message = 'Most Items imported. But some were not, here is the list (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					
+					echo json_encode(array('success' => FALSE, 'message' => $message));
+				}
+				else
+				{
+					echo json_encode(array('success' => TRUE, 'message' => 'Import of Items successful'));
+				}
             }
             else 
             {
                 echo json_encode(array('success' => FALSE, 'message' => 'Your uploaded file has no data or wrong format'));
-
-                return;
             }
         }
-
-		$success = TRUE;
-		if(count($failCodes) > 0)
-		{
-			$message = 'Most items imported. But some were not, here is list of their codes (' . count($failCodes) . '): ' . implode(', ', $failCodes);
-			$success = FALSE;
-		}
-		else
-		{
-			$message = 'Import of Items successful';
-		}
-
-		echo json_encode(array('success' => $success, 'message' => $message));
 	}
 }
 ?>

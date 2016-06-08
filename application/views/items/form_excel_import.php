@@ -1,6 +1,6 @@
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open_multipart('items/do_excel_import/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open_multipart('items/do_excel_import/', array('id'=>'excel_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="item_basic_info">
 		<div class="form-group form-group-sm">
 			<div class="col-xs-12">
@@ -24,28 +24,26 @@
 //validation and submit handling
 $(document).ready(function()
 {	
-	$('#item_form').validate($.extend({
-		submitHandler:function(form)
-		{
+	$('#excel_form').validate($.extend({
+		submitHandler:function(form) {
 			$(form).ajaxSubmit({
-			success:function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('items'); ?>', response);
-			},
-			dataType:'json'
-		});
-
+				success:function(response)
+				{
+					dialog_support.hide();
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+				},
+				dataType: 'json'
+			});
 		},
 		errorLabelContainer: "#error_message_box",
  		wrapper: "li",
 		rules: 
 		{
-			file_path:"required"
+			file_path: "required"
    		},
 		messages: 
 		{
-   			file_path:"<?php echo $this->lang->line('common_import_full_path'); ?>"
+   			file_path: "<?php echo $this->lang->line('common_import_full_path'); ?>"
 		}
 	}, form_support.error));
 });

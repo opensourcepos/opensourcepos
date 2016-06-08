@@ -227,9 +227,9 @@ class Customers extends Persons
 				
 				if(count($failCodes) > 0)
 				{
-					$msg = 'Most customers imported. But some were not, here is list of their CODE (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					$message = 'Most customers imported. But some were not, here is the list (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 					
-					echo json_encode(array('success' => FALSE, 'message' => $msg));
+					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
