@@ -1,6 +1,4 @@
-<?php 
-	$this->load->view("partial/header");
-?>
+<?php $this->load->view("partial/header"); ?>
 
 <div id="page_title"><?php echo $title ?></div>
 
@@ -37,11 +35,11 @@
 			showExport: true,
 			data: <?php echo json_encode($data); ?>,
 			iconSize: 'sm',
-			paginationVAlign: 'bottom'
+			paginationVAlign: 'bottom',
+			escape: false
 		});
 
 	});
 </script>
-<?php
-	$this->load->view("partial/footer");
-?>
+
+<?php $this->load->view("partial/footer"); ?>

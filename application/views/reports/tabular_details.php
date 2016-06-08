@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header");?>
+<?php $this->load->view("partial/header"); ?>
 
 <div id="page_title"><?php echo $title ?></div>
 
@@ -48,6 +48,7 @@
 			paginationVAlign: 'bottom',
 			detailView: true,
 			uniqueId: 'id',
+			escape: false,
 			onPageChange: init_dialog,
 			onPostBody: function() {
 				dialog_support.init("a.modal-dlg");
@@ -63,4 +64,5 @@
 		init_dialog();
 	});
 </script>
+
 <?php $this->load->view("partial/footer"); ?>
