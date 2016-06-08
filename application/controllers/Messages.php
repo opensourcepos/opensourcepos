@@ -1,9 +1,10 @@
-<?php
-require_once ("Secure_area.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Messages extends Secure_area
+require_once("Secure_Controller.php");
+
+class Messages extends Secure_Controller
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct('messages');
 	}
@@ -18,7 +19,7 @@ class Messages extends Secure_area
 		$info = $this->Person->get_info($person_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->security->xss_clean($value);
+			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
 
@@ -35,7 +36,7 @@ class Messages extends Secure_area
 
 		$response = $this->sms->sendSMS($username, $password, $phone, $message, $originator);
 		
-		$phone = $this->security->xss_clean($phone);
+		$phone = $this->xss_clean($phone);
 
 		if($response)
 		{
@@ -57,8 +58,8 @@ class Messages extends Secure_area
 
 		$response = $this->sms->sendSMS($username, $password, $phone, $message, $originator); 
 		
-		$phone = $this->security->xss_clean($phone);
-		$person_id = $this->security->xss_clean($person_id);
+		$phone = $this->xss_clean($phone);
+		$person_id = $this->xss_clean($person_id);
 
 		if($response)
 		{

@@ -1,11 +1,13 @@
-<?php
-require_once ("Secure_area.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Sales extends Secure_area
+require_once("Secure_Controller.php");
+
+class Sales extends Secure_Controller
 {
 	function __construct()
 	{
 		parent::__construct('sales');
+
 		$this->load->library('sale_lib');
 		$this->load->library('barcode_lib');
 	}
@@ -614,7 +616,7 @@ class Sales extends Secure_area
 		}
 	}
 	
-	function save($sale_id)
+	function save($sale_id = -1)
 	{
 		$newdate = $this->input->post('date');
 		

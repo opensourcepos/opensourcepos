@@ -1,9 +1,10 @@
-<?php
-require_once ("Person_controller.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Customers extends Person_controller
+require_once("Persons.php");
+
+class Customers extends Persons
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct('customers');
 	}
@@ -13,7 +14,7 @@ class Customers extends Person_controller
 		$data['controller_name'] = $this->get_controller_name();
 		$data['table_headers'] = get_people_manage_table_headers();
 		
-		$data = $this->security->xss_clean($data);
+		$data = $this->xss_clean($data);
 
 		$this->load->view('people/manage', $data);
 	}
@@ -38,7 +39,7 @@ class Customers extends Person_controller
 			$data_rows[] = get_person_data_row($person, $this);
 		}
 
-		$data_rows = $this->security->xss_clean($data_rows);
+		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
@@ -48,14 +49,14 @@ class Customers extends Person_controller
 	*/
 	public function suggest()
 	{
-		$suggestions = $this->security->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
+		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->get('term'), TRUE));
 
 		echo json_encode($suggestions);
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->security->xss_clean($this->Customer->get_search_suggestions($this->input->post('term'), FALSE));
+		$suggestions = $this->xss_clean($this->Customer->get_search_suggestions($this->input->post('term'), FALSE));
 
 		echo json_encode($suggestions);
 	}
@@ -68,11 +69,11 @@ class Customers extends Person_controller
 		$info = $this->Customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->security->xss_clean($value);
+			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
 
-		$data['total'] = $this->security->xss_clean($this->Customer->get_totals($customer_id)->total);
+		$data['total'] = $this->xss_clean($this->Customer->get_totals($customer_id)->total);
 
 		$this->load->view("customers/form", $data);
 	}
@@ -105,8 +106,8 @@ class Customers extends Person_controller
 
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
 		{
-			$person_data = $this->security->xss_clean($person_data);
-			$customer_data = $this->security->xss_clean($customer_data);
+			$person_data = $this->xss_clean($person_data);
+			$customer_data = $this->xss_clean($customer_data);
 			
 			//New customer
 			if($customer_id == -1)
@@ -122,7 +123,7 @@ class Customers extends Person_controller
 		}
 		else//failure
 		{
-			$person_data = $this->security->xss_clean($person_data);
+			$person_data = $this->xss_clean($person_data);
 
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_error_adding_updating').' '.
 							$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
@@ -141,7 +142,7 @@ class Customers extends Person_controller
 	*/
 	public function delete()
 	{
-		$customers_to_delete = $this->security->xss_clean($this->input->post('ids'));
+		$customers_to_delete = $this->xss_clean($this->input->post('ids'));
 
 		if($this->Customer->delete_list($customers_to_delete))
 		{
@@ -188,7 +189,7 @@ class Customers extends Person_controller
 				while(($data = fgetcsv($handle)) !== FALSE) 
 				{
 					// XSS file data sanity check
-					$data = $this->security->xss_clean($data);
+					$data = $this->xss_clean($data);
 					
 					$person_data = array(
 						'first_name' => $data[0],

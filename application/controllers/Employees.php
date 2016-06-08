@@ -1,9 +1,10 @@
-<?php
-require_once ("Person_controller.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Employees extends Person_controller
+require_once("Persons.php");
+
+class Employees extends Persons
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct('employees');
 	}
@@ -13,7 +14,7 @@ class Employees extends Person_controller
 		$data['controller_name'] = $this->get_controller_name();
 		$data['table_headers'] = get_people_manage_table_headers();
 
-		$data = $this->security->xss_clean($data);
+		$data = $this->xss_clean($data);
 
 		$this->load->view('people/manage', $data);
 	}
@@ -38,7 +39,7 @@ class Employees extends Person_controller
 			$data_rows[] = get_person_data_row($person, $this);
 		}
 
-		$data_rows = $this->security->xss_clean($data_rows);
+		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
@@ -48,7 +49,7 @@ class Employees extends Person_controller
 	*/
 	public function suggest_search()
 	{
-		$suggestions = $this->security->xss_clean($this->Employee->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Employee->get_search_suggestions($this->input->post('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -61,15 +62,15 @@ class Employees extends Person_controller
 		$person_info = $this->Employee->get_info($employee_id);
 		foreach(get_object_vars($person_info) as $property => $value)
 		{
-			$person_info->$property = $this->security->xss_clean($value);
+			$person_info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $person_info;
 
 		$modules = array();
 		foreach($this->Module->get_all_modules()->result() as $module)
 		{
-			$module->module_id = $this->security->xss_clean($module->module_id);
-			$module->grant = $this->security->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
+			$module->module_id = $this->xss_clean($module->module_id);
+			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
 			
 			$modules[] = $module;
 		}
@@ -78,9 +79,9 @@ class Employees extends Person_controller
 		$permissions = array();
 		foreach($this->Module->get_all_subpermissions()->result() as $permission)
 		{
-			$permission->module_id = $this->security->xss_clean($permission->module_id);
-			$permission->permission_id = $this->security->xss_clean($permission->permission_id);
-			$permission->grant = $this->security->xss_clean($this->Employee->has_grant($permission->permission_id, $person_info->person_id));
+			$permission->module_id = $this->xss_clean($permission->module_id);
+			$permission->permission_id = $this->xss_clean($permission->permission_id);
+			$permission->grant = $this->xss_clean($this->Employee->has_grant($permission->permission_id, $person_info->person_id));
 			
 			$permissions[] = $permission;
 		}
@@ -125,8 +126,8 @@ class Employees extends Person_controller
 		
 		if($this->Employee->save_employee($person_data, $employee_data, $grants_data, $employee_id))
 		{
-			$person_data = $this->security->xss_clean($person_data);
-			$employee_data = $this->security->xss_clean($employee_data);
+			$person_data = $this->xss_clean($person_data);
+			$employee_data = $this->xss_clean($employee_data);
 
 			//New employee
 			if($employee_id == -1)
@@ -142,7 +143,7 @@ class Employees extends Person_controller
 		}
 		else//failure
 		{
-			$person_data = $this->security->xss_clean($person_data);
+			$person_data = $this->xss_clean($person_data);
 
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating').' '.
 							$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
@@ -154,7 +155,7 @@ class Employees extends Person_controller
 	*/
 	public function delete()
 	{
-		$employees_to_delete = $this->security->xss_clean($this->input->post('ids'));
+		$employees_to_delete = $this->xss_clean($this->input->post('ids'));
 
 		if($this->Employee->delete_list($employees_to_delete))
 		{

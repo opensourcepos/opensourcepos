@@ -1,9 +1,10 @@
-<?php
-require_once ("Secure_area.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Config extends Secure_area 
+require_once("Secure_Controller.php");
+
+class Config extends Secure_Controller 
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct('config');
 
@@ -16,7 +17,7 @@ class Config extends Secure_area
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
 		
-		$data = $this->security->xss_clean($data);
+		$data = $this->xss_clean($data);
 
 		$this->load->view("configs/manage", $data);
 	}
@@ -39,7 +40,7 @@ class Config extends Secure_area
 		if (!empty($upload_data['orig_name']))
 		{
 			// XSS file image sanity check
-			if ($this->security->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			if ($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
 			{
 				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
 			}
@@ -126,7 +127,7 @@ class Config extends Secure_area
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
 		
-		$stock_locations = $this->security->xss_clean($stock_locations);
+		$stock_locations = $this->xss_clean($stock_locations);
 
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
 	} 

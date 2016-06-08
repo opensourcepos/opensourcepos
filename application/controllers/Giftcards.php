@@ -1,20 +1,20 @@
-<?php
-require_once ("Secure_area.php");
-require_once ("interfaces/Idata_controller.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Giftcards extends Secure_area implements iData_controller
+require_once("Secure_Controller.php");
+
+class Giftcards extends Secure_Controller
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct('giftcards');
 	}
 
-	public function index($limit_from = 0)
+	public function index()
 	{
 		$data['controller_name'] = $this->get_controller_name();
 		$data['table_headers'] = get_giftcards_manage_table_headers();
 
-		$data = $this->security->xss_clean($data);
+		$data = $this->xss_clean($data);
 
 		$this->load->view('giftcards/manage', $data);
 	}
@@ -39,7 +39,7 @@ class Giftcards extends Secure_area implements iData_controller
 			$data_rows[] = get_giftcard_data_row($giftcard, $this);
 		}
 
-		$data_rows = $this->security->xss_clean($data_rows);
+		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
@@ -49,14 +49,14 @@ class Giftcards extends Secure_area implements iData_controller
 	*/
 	public function suggest_search()
 	{
-		$suggestions = $this->security->xss_clean($this->Giftcard->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Giftcard->get_search_suggestions($this->input->post('term')));
 
 		echo json_encode($suggestions);
 	}
 
 	public function get_row($row_id)
 	{
-		$data_row = $this->security->xss_clean(get_giftcard_data_row($this->Giftcard->get_info($row_id), $this));
+		$data_row = $this->xss_clean(get_giftcard_data_row($this->Giftcard->get_info($row_id), $this));
 
 		echo json_encode($data_row);
 	}
@@ -71,7 +71,7 @@ class Giftcards extends Secure_area implements iData_controller
 		$data['giftcard_id']          = $giftcard_id;
 		$data['giftcard_value']       = $giftcard_info->value;
 
-		$data = $this->security->xss_clean($data);
+		$data = $this->xss_clean($data);
 
 		$this->load->view("giftcards/form", $data);
 	}
@@ -87,7 +87,7 @@ class Giftcards extends Secure_area implements iData_controller
 
 		if($this->Giftcard->save($giftcard_data, $giftcard_id))
 		{
-			$giftcard_data = $this->security->xss_clean($giftcard_data);
+			$giftcard_data = $this->xss_clean($giftcard_data);
 			
 			//New giftcard
 			if($giftcard_id == -1)
@@ -103,7 +103,7 @@ class Giftcards extends Secure_area implements iData_controller
 		}
 		else //failure
 		{
-			$giftcard_data = $this->security->xss_clean($giftcard_data);
+			$giftcard_data = $this->xss_clean($giftcard_data);
 			
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('giftcards_error_adding_updating').' '.
 							$giftcard_data['giftcard_number'], 'id' => -1));
@@ -112,7 +112,7 @@ class Giftcards extends Secure_area implements iData_controller
 
 	public function delete()
 	{
-		$giftcards_to_delete = $this->security->xss_clean($this->input->post('ids'));
+		$giftcards_to_delete = $this->xss_clean($this->input->post('ids'));
 
 		if($this->Giftcard->delete_list($giftcards_to_delete))
 		{

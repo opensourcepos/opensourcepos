@@ -1,12 +1,13 @@
-<?php
-require_once ("Secure_area.php");
-require_once ("interfaces/Idata_controller.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Items extends Secure_area implements iData_controller
+require_once("Secure_Controller.php");
+
+class Items extends Secure_Controller
 {
 	function __construct()
 	{
 		parent::__construct('items');
+
 		$this->load->library('item_lib');
 	}
 	
@@ -332,7 +333,7 @@ class Items extends Secure_area implements iData_controller
 		if (!empty($upload_data['orig_name']))
 		{
 			// XSS file image sanity check
-			if ($this->security->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			if ($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
 			{
 				$item_data['pic_id'] = $upload_data['raw_name'];
 			}
@@ -578,7 +579,7 @@ class Items extends Secure_area implements iData_controller
                 while (($data = fgetcsv($handle)) !== FALSE)
                 {
 					// XSS file data sanity check
-					$data = $this->security->xss_clean($data);
+					$data = $this->xss_clean($data);
 					
 					if (sizeof($data) >= 23)
 					{

@@ -1,10 +1,13 @@
-<?php
-require_once ("Secure_area.php");
-class Receivings extends Secure_area
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+require_once("Secure_Controller.php");
+
+class Receivings extends Secure_Controller
 {
 	function __construct()
 	{
 		parent::__construct('receivings');
+
 		$this->load->library('receiving_lib');
 		$this->load->library('barcode_lib');
 	}
@@ -360,7 +363,7 @@ class Receivings extends Secure_area
 		$this->load->view("receivings/receiving",$data);
 	}
 	
-	function save($receiving_id)
+	function save($receiving_id = -1)
 	{
 		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
 

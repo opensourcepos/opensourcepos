@@ -1,10 +1,10 @@
-<?php
-require_once ("Secure_area.php");
-require_once ("interfaces/Idata_controller.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Item_kits extends Secure_area implements iData_controller
+require_once("Secure_Controller.php");
+
+class Item_kits extends Secure_Controller
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct('item_kits');
 	}
@@ -20,7 +20,7 @@ class Item_kits extends Secure_area implements iData_controller
 			$item_info = $this->Item->get_info($item_kit_item['item_id']);
 			foreach(get_object_vars($item_info) as $property => $value)
 			{
-				$item_info->$property = $this->security->xss_clean($value);
+				$item_info->$property = $this->xss_clean($value);
 			}
 			
 			$item_kit->total_cost_price += $item_info->cost_price * $item_kit_item['quantity'];
@@ -35,7 +35,7 @@ class Item_kits extends Secure_area implements iData_controller
 		$data['controller_name'] = $this->get_controller_name();
 		$data['table_headers'] = get_item_kits_manage_table_headers();
 
-		$data = $this->security->xss_clean($data);
+		$data = $this->xss_clean($data);
 
 		$this->load->view('item_kits/manage', $data);
 	}
@@ -62,14 +62,14 @@ class Item_kits extends Secure_area implements iData_controller
 			$data_rows[] = get_item_kit_data_row($item_kit, $this);
 		}
 
-		$data_rows = $this->security->xss_clean($data_rows);
+		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 
 	public function suggest_search()
 	{
-		$suggestions = $this->security->xss_clean($this->Item_kit->get_search_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Item_kit->get_search_suggestions($this->input->post('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -87,16 +87,16 @@ class Item_kits extends Secure_area implements iData_controller
 		$info = $this->Item_kit->get_info($item_kit_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
-			$info->$property = $this->security->xss_clean($value);
+			$info->$property = $this->xss_clean($value);
 		}
 		$data['item_kit_info']  = $info;
 		
 		$items = array();
 		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$item['name'] = $this->security->xss_clean($this->Item->get_info($item_kit_item['item_id'])->name);
-			$item['item_id'] = $this->security->xss_clean($item_kit_item['item_id']);
-			$item['quantity'] = $this->security->xss_clean($item_kit_item['quantity']);
+			$item['name'] = $this->xss_clean($this->Item->get_info($item_kit_item['item_id'])->name);
+			$item['item_id'] = $this->xss_clean($item_kit_item['item_id']);
+			$item['quantity'] = $this->xss_clean($item_kit_item['quantity']);
 			
 			$items[] = $item;
 		}
@@ -135,14 +135,14 @@ class Item_kits extends Secure_area implements iData_controller
 				$success = $this->Item_kit_items->save($item_kit_items, $item_kit_id);
 			}
 
-			$item_kit_data = $this->security->xss_clean($item_kit_data);
+			$item_kit_data = $this->xss_clean($item_kit_data);
 
 			echo json_encode(array('success' => $success,
 								'message' => $this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
 		}
 		else//failure
 		{
-			$item_kit_data = $this->security->xss_clean($item_kit_data);
+			$item_kit_data = $this->xss_clean($item_kit_data);
 
 			echo json_encode(array('success' => FALSE, 
 								'message' => $this->lang->line('item_kits_error_adding_updating').' '.$item_kit_data['name'], 'id' => -1));
@@ -151,7 +151,7 @@ class Item_kits extends Secure_area implements iData_controller
 	
 	public function delete()
 	{
-		$item_kits_to_delete = $this->security->xss_clean($this->input->post('ids'));
+		$item_kits_to_delete = $this->xss_clean($this->input->post('ids'));
 
 		if($this->Item_kit->delete_list($item_kits_to_delete))
 		{

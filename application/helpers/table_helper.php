@@ -20,7 +20,7 @@ function get_sales_manage_table_headers()
 		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
 	}
 
-	return transform_headers(array_merge($headers, array(array( 'receipt' => '&nbsp', 'sortable' => FALSE ))));
+	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE))));
 }
 
 /*
