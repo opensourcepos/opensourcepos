@@ -1,15 +1,27 @@
-sudo: false
+sudo: true                  # Required to install packages
 
-services:
-    - docker
+env:
+    global:
+        - DOCKER_VERSION=1.7.1  # Install Docker version 1.7.1
+        - DOCKER_VERSION=get.docker.com  # Install Docker using get.docker.com (may break)
 
+        - BRANCH=stable         # Use 'stable' branch
+        - BRANCH=develop        # Use 'develop' branch
+
+        - QUIET=1               # Less verbose logging
+        - UML_FIG=0             # Don't install fig
+        - UML_DOCKERCOMPOSE=1   # Install docker-compose
+
+    install:
+        # Install https://github.com/moul/travis-docker toolchain
+        #   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 before_install:
-    - docker-compose build
-    - docker-compose up -d
+    - ./run docker-compose build
+    - ./run docker-compose up -d
 
 script:
-    - docker-wait opensourcepos_php_1
+    - ./run docker-wait opensourcepos_php_1
 
 after_success:
-    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker push jekkos/opensourcepos
+    - ./run docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - ./run docker push jekkos/opensourcepos
