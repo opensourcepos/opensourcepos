@@ -1,19 +1,14 @@
 sudo: false
 
-language: node_js
-
-node_js:
-      - "4.1"
-
 services:
     - docker
 
 before_install:
-    - docker build -t jekkos/opensourcepos .
-    - docker run -d jekkos/opensourcepos 
+    - docker-compose build
+    - docker-compose up -d
 
 script:
-    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "while ! curl http://localhost/index.php | grep username; do sleep 1; done; cd app && grunt mochaWebdriver:test" 
+    - docker-wait opensourcepos_php_1
 
 after_success:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
