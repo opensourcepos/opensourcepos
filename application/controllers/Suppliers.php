@@ -11,10 +11,7 @@ class Suppliers extends Persons
 	
 	public function index()
 	{
-		$data['controller_name'] = $this->get_controller_name();
-		$data['table_headers'] = get_suppliers_manage_table_headers();
-
-		$data = $this->xss_clean($data);
+		$data['table_headers'] = $this->xss_clean(get_suppliers_manage_table_headers());
 
 		$this->load->view('people/manage', $data);
 	}

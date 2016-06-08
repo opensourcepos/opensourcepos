@@ -2,8 +2,6 @@
 
 class Secure_Controller extends CI_Controller 
 {
-	private $controller_name;
-	
 	/*
 	* Controllers that are considered secure extend Secure_Controller, optionally a $module_id can
 	* be set to also check if a user can access a particular module in the system.
@@ -27,21 +25,12 @@ class Secure_Controller extends CI_Controller
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
 		}
 		
-		//load up global data
+		// load up global data visible to all the loaded views
 		$data['allowed_modules'] = $this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		$data['user_info'] = $logged_in_employee_info;
 		$data['controller_name'] = $module_id;
-		$this->controller_name = $module_id;
 
 		$this->load->vars($data);
-	}
-
-	/*
-	* Get the controller name stored at construction time
-	*/
-	protected function get_controller_name()
-	{
-		return strtolower($this->controller_name);
 	}
 	
 	/*

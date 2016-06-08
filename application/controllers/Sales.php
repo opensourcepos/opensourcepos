@@ -27,7 +27,6 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$data['controller_name'] = $this->get_controller_name();
 			$data['table_headers'] = get_sales_manage_table_headers();
 
 			// filters that will be loaded in the multiselect dropdown
@@ -41,7 +40,7 @@ class Sales extends Secure_Controller
 				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'));
 			}
 
-			$this->load->view($data['controller_name'] . '/manage', $data);
+			$this->load->view('sales/manage', $data);
 		}
 	}
 	
@@ -393,7 +392,7 @@ class Sales extends Secure_Controller
 					}
 					else
 					{
-						$this->email->message($this->load->view("sales/receipt_email", $data, true));	
+						$this->email->message($this->load->view('sales/receipt_email', $data, true));	
 					}
 					$this->email->send();
 				}
@@ -402,11 +401,11 @@ class Sales extends Secure_Controller
 			$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 			if ($this->sale_lib->is_invoice_number_enabled() && $this->config->item('use_invoice_template'))
 			{
-				$this->load->view("sales/invoice", $data);
+				$this->load->view('sales/invoice', $data);
 			}
 			else
 			{
-				$this->load->view("sales/receipt", $data);
+				$this->load->view('sales/receipt', $data);
 			}
 
 			$this->sale_lib->clear_all();
@@ -562,7 +561,7 @@ class Sales extends Secure_Controller
 	function receipt($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);	
-		$this->load->view("sales/receipt", $data);
+		$this->load->view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
 	
@@ -573,7 +572,7 @@ class Sales extends Secure_Controller
 			$sale_info = $this->_load_sale_data($sale_id);
 		}
 
-		$this->load->view("sales/invoice", $sale_info);
+		$this->load->view('sales/invoice', $sale_info);
 		$this->sale_lib->clear_all();
 	}
 	

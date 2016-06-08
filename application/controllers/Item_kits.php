@@ -32,10 +32,7 @@ class Item_kits extends Secure_Controller
 	
 	public function index()
 	{
-		$data['controller_name'] = $this->get_controller_name();
-		$data['table_headers'] = get_item_kits_manage_table_headers();
-
-		$data = $this->xss_clean($data);
+		$data['table_headers'] = $this->xss_clean(get_item_kits_manage_table_headers());
 
 		$this->load->view('item_kits/manage', $data);
 	}

@@ -15,7 +15,6 @@ class Items extends Secure_Controller
 	{
 		$stock_location = $this->item_lib->get_item_location();
 		$stock_locations = $this->Stock_location->get_allowed_locations();
-		$data['controller_name'] = $this->get_controller_name();
 
 		// filters that will be loaded in the multiselect dropdown
 		$data['filters'] = array('empty_upc' => $this->lang->line('items_empty_upc_items'),
