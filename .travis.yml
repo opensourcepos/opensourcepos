@@ -1,5 +1,8 @@
 sudo: true                  # Required to install packages
 
+services:
+  - docker
+
 env:
     global:
         - DOCKER_VERSION=1.7.1  # Install Docker version 1.7.1
