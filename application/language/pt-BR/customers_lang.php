@@ -18,3 +18,7 @@ $lang["customers_taxable"] = "Tributável";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Atualizar Cliente";
 $lang["customers_import_items_excel"] = "Importar clientes com planilha do Excel";
+$lang["customers_excel_import_failed"] = "Importação do Excel falhou";
+$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["customers_excel_import_success"] = "Import of Customers successful";
+$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";

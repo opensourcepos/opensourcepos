@@ -157,25 +157,25 @@ class Customers extends Persons
 	*/
 	public function excel()
 	{
-		$data = file_get_contents("import_customers.csv");
 		$name = 'import_customers.csv';
+		$data = file_get_contents($name);
 		force_download($name, $data);
 	}
 	
 	public function excel_import()
 	{
-		$this->load->view("customers/form_excel_import", NULL);
+		$this->load->view('customers/form_excel_import', NULL);
 	}
 
 	public function do_excel_import()
 	{
 		if($_FILES['file_path']['error'] != UPLOAD_ERR_OK)
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_failed')));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_failed')));
 		}
 		else
 		{
-			if(($handle = fopen($_FILES['file_path']['tmp_name'], "r")) !== FALSE)
+			if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
 			{
                 // Skip the first row as it's the table description
 				fgetcsv($handle);
@@ -187,36 +187,43 @@ class Customers extends Persons
 				{
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
-					
-					$person_data = array(
-						'first_name' => $data[0],
-						'last_name' => $data[1],
-						'gender' => $data[2],
-						'email' => $data[3],
-						'phone_number' => $data[4],
-						'address_1' => $data[5],
-						'address_2' => $data[6],
-						'city' => $data[7],
-						'state' => $data[8],
-						'zip' => $data[9],
-						'country' => $data[10],
-						'comments' => $data[11]
-					);
-					
-					$customer_data = array(
-						'company_name' => $data[12],
-						'discount_percent' => $data[14],
-						'taxable' => $data[15]=='' ? 0 : 1
-					);
-					
-					$account_number = $data[13];
-					$invalidated = FALSE;
-					if($account_number != "") 
+
+					if(sizeof($data) >= 15)
 					{
-						$customer_data['account_number'] = $account_number;
-						$invalidated = $this->Customer->account_number_exists($account_number);
+						$person_data = array(
+							'first_name'	=> $data[0],
+							'last_name'		=> $data[1],
+							'gender'		=> $data[2],
+							'email'			=> $data[3],
+							'phone_number'	=> $data[4],
+							'address_1'		=> $data[5],
+							'address_2'		=> $data[6],
+							'city'			=> $data[7],
+							'state'			=> $data[8],
+							'zip'			=> $data[9],
+							'country'		=> $data[10],
+							'comments'		=> $data[11]
+						);
+						
+						$customer_data = array(
+							'company_name'		=> $data[12],
+							'discount_percent'	=> $data[14],
+							'taxable'			=> $data[15] == '' ? 0 : 1
+						);
+						
+						$account_number = $data[13];
+						$invalidated = FALSE;
+						if($account_number != '') 
+						{
+							$customer_data['account_number'] = $account_number;
+							$invalidated = $this->Customer->account_number_exists($account_number);
+						}
 					}
-					
+					else 
+					{
+						$invalidated = TRUE;
+					}
+
 					if($invalidated || !$this->Customer->save_customer($person_data, $customer_data))
 					{	
 						$failCodes[] = $i;
@@ -227,18 +234,18 @@ class Customers extends Persons
 				
 				if(count($failCodes) > 0)
 				{
-					$message = 'Most customers imported. But some were not, here is the list (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					$message = $this->lang->line('customers_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 					
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
-					echo json_encode(array('success' => TRUE, 'message' => 'Import of Customers successful'));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_excel_import_success')));
 				}
 			}
 			else 
 			{
-                echo json_encode(array('success' => FALSE, 'message' => 'Your uploaded file has no data or wrong format'));
+                echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_nodata_wrongformat')));
 			}
 		}
 	}

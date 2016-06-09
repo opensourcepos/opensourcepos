@@ -599,25 +599,25 @@ class Items extends Secure_Controller
 					if(sizeof($data) >= 23)
 					{
 	                    $item_data = array(
-	                        'name'			=> $data[1],
-	                        'description'	=> $data[11],
-	                        'category'		=> $data[2],
-	                        'cost_price'	=> $data[4],
-	                        'unit_price'	=> $data[5],
-	                        'reorder_level'	=> $data[10],
-	                        'supplier_id'	=>  $this->Supplier->exists($data[3]) ? $data[3] : NULL,
+	                        'name'					=> $data[1],
+	                        'description'			=> $data[11],
+	                        'category'				=> $data[2],
+	                        'cost_price'			=> $data[4],
+	                        'unit_price'			=> $data[5],
+	                        'reorder_level'			=> $data[10],
+	                        'supplier_id'			=> $this->Supplier->exists($data[3]) ? $data[3] : NULL,
 	                        'allow_alt_description'	=> $data[12] != '' ? '1' : '0',
-	                        'is_serialized'	=> $data[13] != '' ? '1' : '0',
-	                        'custom1'		=> $data[14],
-	                        'custom2'		=> $data[15],
-	                        'custom3'		=> $data[16],
-	                        'custom4'		=> $data[17],
-	                        'custom5'		=> $data[18],
-	                        'custom6'		=> $data[19],
-	                        'custom7'		=> $data[20],
-	                        'custom8'		=> $data[21],
-	                        'custom9'		=> $data[22],
-	                        'custom10'		=> $data[23]
+	                        'is_serialized'			=> $data[13] != '' ? '1' : '0',
+	                        'custom1'				=> $data[14],
+	                        'custom2'				=> $data[15],
+	                        'custom3'				=> $data[16],
+	                        'custom4'				=> $data[17],
+	                        'custom5'				=> $data[18],
+	                        'custom6'				=> $data[19],
+	                        'custom7'				=> $data[20],
+	                        'custom8'				=> $data[21],
+	                        'custom9'				=> $data[22],
+	                        'custom10'				=> $data[23]
 	                    );
 	                    $item_number = $data[0];
 	                    $invalidated = FALSE;
@@ -653,7 +653,7 @@ class Items extends Secure_Controller
                             $this->Item_taxes->save($items_taxes_data, $item_data['item_id']);
                         }
 
-                        // quantities   & inventory Info
+                        // quantities & inventory Info
                         $employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
                         $emp_info = $this->Employee->get_info($employee_id);
                         $comment ='Qty CSV Imported';
@@ -719,22 +719,22 @@ class Items extends Secure_Controller
 
 					$i++;
                 }
-				
+
 				if(count($failCodes) > 0)
 				{
-					$message = 'Most Items imported. But some were not, here is the list (' . count($failCodes) . '): ' . implode(', ', $failCodes);
+					$message = $this->lang->line('items_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 					
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
 				{
-					echo json_encode(array('success' => TRUE, 'message' => 'Import of Items successful'));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
 				}
-            }
-            else 
-            {
-                echo json_encode(array('success' => FALSE, 'message' => 'Your uploaded file has no data or wrong format'));
-            }
+			}
+			else 
+			{
+                echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_nodata_wrongformat')));
+			}
         }
 	}
 }
