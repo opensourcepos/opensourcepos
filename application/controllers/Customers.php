@@ -131,7 +131,7 @@ class Customers extends Persons
 	{
 		$exists = $this->Customer->account_number_exists($this->input->post('account_number'), $this->input->post('person_id'));
 
-		echo !$exists ? 'TRUE' : 'FALSE';
+		echo !$exists ? 'true' : 'false';
 	}
 	
 	/*
