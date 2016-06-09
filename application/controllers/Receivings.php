@@ -268,10 +268,9 @@ class Receivings extends Secure_Controller
 	
 	private function _substitute_invoice_number($supplier_info='')
 	{
-		$invoice_number=$this->receiving_lib->get_invoice_number();
 		$invoice_number=$this->config->config['recv_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number,$supplier_info);
-		$this->receiving_lib->set_invoice_number($invoice_number);
+		$this->receiving_lib->set_invoice_number($invoice_number, TRUE);
 		return $this->receiving_lib->get_invoice_number();
 	}
 
