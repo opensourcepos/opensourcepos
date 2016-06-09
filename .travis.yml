@@ -1,11 +1,11 @@
 sudo: true                  # Required to install packages
 
-services:
-  - docker
+services: - docker
 
 env:
     global:
         - DOCKER_VERSION=1.7.1  # Install Docker version 1.7.1
+        - DOCKER_COMPOSE_VERSION=1.7.1
         - DOCKER_VERSION=get.docker.com  # Install Docker using get.docker.com (may break)
 
         - BRANCH=stable         # Use 'stable' branch
@@ -19,6 +19,10 @@ env:
         # Install https://github.com/moul/travis-docker toolchain
         #   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 before_install:
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
     - docker-compose build
     - docker-compose up -d
 
