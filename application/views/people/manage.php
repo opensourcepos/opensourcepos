@@ -12,8 +12,8 @@ $(document).ready(function()
 		uniqueId: 'people.person_id',
 		enableActions: function()
 		{
-			var email_disabled = $("tr.selected a[href^='mailto:']").length == 0;
-			$("#email").attr('disabled', email_disabled);
+			var email_disabled = $("td input:checkbox:checked").parents("tr").find("td a[href^='mailto:']").length == 0;
+			$("#email").prop('disabled', email_disabled);
 		}
 	});
 
