@@ -148,3 +148,6 @@ $lang["config_timezone"] = "Zona Horaria";
 $lang["config_use_invoice_template"] = "Use plantilla de factura";
 $lang["config_website"] = "Sitio Web";
 $lang["config_datetimeformat"] = "Date and Time format";
+$lang["config_country_codes"] = "Country Codes";
+$lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";
+$lang["config_notify_alignment"] = "Notification Popup Position";

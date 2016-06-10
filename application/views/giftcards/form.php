@@ -2,7 +2,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('giftcards/save/'.$giftcard_info->giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('giftcards/save/'.$giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
@@ -40,7 +40,7 @@
 							'name'=>'value',
 							'id'=>'value',
 							'class'=>'form-control input-sm',
-							'value'=>to_currency_no_money($giftcard_info->value))
+							'value'=>to_currency_no_money($giftcard_value))
 							);?>
 					<?php if ($this->config->item('currency_side')): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
@@ -80,11 +80,11 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_giftcard_form_submit(response);
+				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
 			},
 			error: function(jqXHR, textStatus, errorThrown) 
 			{
-				post_giftcard_form_submit({message: errorThrown});
+				table_support.handle_submit('<?php echo site_url($controller_name); ?>', {message: errorThrown});
 			},
 			dataType:'json'
 		});
@@ -121,6 +121,6 @@ $(document).ready(function()
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

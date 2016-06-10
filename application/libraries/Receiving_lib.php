@@ -353,6 +353,7 @@ class Receiving_lib
 
     function clear_all()
     {
+        $this->set_invoice_number_enabled(FALSE);
         $this->clear_mode();
         $this->empty_cart();
         $this->delete_supplier();

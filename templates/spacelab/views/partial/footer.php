@@ -1,9 +1,8 @@
-			<div id="feedback_bar"></div>
 		</div>
 	</div>
 
 	<div id="footer">
-		<div class="jumbotron">
+		<div class="jumbotron push-spaces">
 			<?php echo $this->lang->line('common_you_are_using_ospos'); ?>
 			<?php echo $this->config->item('application_version'); ?>.
 			<?php echo $this->lang->line('common_please_visit_my'); ?>

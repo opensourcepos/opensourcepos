@@ -194,39 +194,15 @@
         </fieldset>
     </div>
 <?php echo form_close(); ?>
-
 <script type='text/javascript'>
 //validation and submit handling
 $(document).ready(function()
 {
-    $('#barcode_config_form').validate({
-		submitHandler: function(form) {
-			$(form).ajaxSubmit({
-				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
-				},
-				dataType: 'json'
-			});
-		},
+    $('#barcode_config_form').validate($.extend(form_support.handler, {
 
-		errorClass: "has-error",
-		errorLabelContainer: "#barcode_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
+        errorLabelContainer: "#barcode_error_message_box",
 
-        rules: 
+        rules:
         {
             barcode_width: 
             {
@@ -303,6 +279,6 @@ $(document).ready(function()
                 number:"<?php echo $this->lang->line('config_default_barcode_page_cellspacing_number'); ?>"
             }                            
         }
-    });
+    }));
 });
 </script>

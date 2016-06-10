@@ -94,3 +94,4 @@ $lang["reports_sub_total_value"] = "ยอดรวมหักภาษี ";
 $lang["reports_total_inventory_value"] = "Total Inventory Value";
 $lang["reports_zero_and_less"] = "Zero and less";
 $lang["reports_more_than_zero"] = "More than zero";
+$lang["reports_no_reports_to_display"] = "ไม่มีสินค้าแสดง";

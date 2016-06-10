@@ -97,7 +97,7 @@ $(document).ready(function()
 	})();
 	$("#use_invoice_template").change(enable_disable_use_invoice_template);
 	
-	$('#invoice_config_form').validate({
+	$('#invoice_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
@@ -105,14 +105,7 @@ $(document).ready(function()
 					return true;
 				},
 				success: function(response) {
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
 					// set back disabled state
 					enable_disable_invoice_enable();
 					enable_disable_use_invoice_template();
@@ -121,25 +114,8 @@ $(document).ready(function()
 			});
 		},
 
-		errorClass: "has-error",
-		errorLabelContainer: "#receipt_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
+		errorLabelContainer: "#receipt_error_message_box"
 
-		rules: 
-		{
-	
-   		},
-
-		messages: 
-		{
-
-		}
-	});
+	}));
 });
 </script>

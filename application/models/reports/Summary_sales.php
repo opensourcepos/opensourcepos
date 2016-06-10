@@ -14,8 +14,9 @@ class Summary_sales extends Report
 	
 	public function getData(array $inputs)
 	{		
-		$this->db->select('sale_date, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('sale_date, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -27,7 +28,6 @@ class Summary_sales extends Report
         }    
         
 		$this->db->group_by('sale_date');
-		$this->db->having('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
 		$this->db->order_by('sale_date');
 
 		return $this->db->get()->result_array();
@@ -35,9 +35,9 @@ class Summary_sales extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
         {

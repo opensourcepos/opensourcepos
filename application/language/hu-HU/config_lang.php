@@ -148,3 +148,6 @@ $lang["config_timezone"] = "Időzóna";
 $lang["config_use_invoice_template"] = "Számla sablon használata";
 $lang["config_website"] = "Weboldal";
 $lang["config_datetimeformat"] = "Dátum és idő formátum";
+$lang["config_country_codes"] = "Country Codes";
+$lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";
+$lang["config_notify_alignment"] = "Notification Popup Position";

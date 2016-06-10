@@ -29,6 +29,11 @@ a.none
 	background-color: #FFFFFF;
 }
 
+.jumbotron.push-spaces
+{
+	margin:0; /*add this*/
+}
+
 .navbar .menu-icon
 {
 	text-align: center;
@@ -43,11 +48,6 @@ a.none
 .wrapper
 {
 	font-size: 14px;
-}
-
-.pagination
-{
-	margin: 0 !important;
 }
 
 #title_bar
@@ -69,17 +69,6 @@ a.none
 	margin-bottom: 0.5em;
 	font-size: 16px;
 	font-weight: bold;
-	text-align: center;
-}
-
-#feedback_bar
-{
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	width: 100%;
-	z-index: 1;
-	line-height: 3.3;
 	text-align: center;
 }
 
@@ -132,6 +121,11 @@ a.rollover img
 	padding: 3px;	
 }
 
+#filters.btn-group
+{
+	vertical-align: none;
+}
+
 button.btn.dropdown-toggle.btn-sm
 {
 	background-color: white;
@@ -171,4 +165,14 @@ label.required
 {
 	max-height: calc(100vh - 212px);
 	overflow-y: auto;
+}
+
+#payment_summary
+{
+	position: relative;
+	top: 100px;
+}
+
+.no-gutter [class*="-1"] {
+	padding-right:0;
 }

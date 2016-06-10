@@ -1,10 +1,13 @@
-<?php
-require_once ("Secure_area.php");
-class Receivings extends Secure_area
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+require_once("Secure_Controller.php");
+
+class Receivings extends Secure_Controller
 {
 	function __construct()
 	{
 		parent::__construct('receivings');
+
 		$this->load->library('receiving_lib');
 		$this->load->library('barcode_lib');
 	}
@@ -16,7 +19,9 @@ class Receivings extends Secure_area
 
 	function item_search()
 	{
-		$suggestions = $this->Item->get_search_suggestions($this->input->get('term'));
+		$suggestions = $this->Item->get_search_suggestions($this->input->get('term'), array(
+			'search_custom' => FALSE, 'is_deleted' => FALSE
+		), TRUE);
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->get('term')));
 		echo json_encode($suggestions);
 	}
@@ -263,10 +268,9 @@ class Receivings extends Secure_area
 	
 	private function _substitute_invoice_number($supplier_info='')
 	{
-		$invoice_number=$this->receiving_lib->get_invoice_number();
 		$invoice_number=$this->config->config['recv_invoice_format'];
 		$invoice_number = $this->_substitute_variables($invoice_number,$supplier_info);
-		$this->receiving_lib->set_invoice_number($invoice_number);
+		$this->receiving_lib->set_invoice_number($invoice_number, TRUE);
 		return $this->receiving_lib->get_invoice_number();
 	}
 
@@ -358,13 +362,13 @@ class Receivings extends Secure_area
 		$this->load->view("receivings/receiving",$data);
 	}
 	
-	function save($receiving_id)
+	function save($receiving_id = -1)
 	{
-		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date', TRUE));
+		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
 
 		$receiving_data = array(
 			'receiving_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => $this->input->post('supplier_id', TRUE) ? $this->input->post('supplier_id') : null,
+			'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : null,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number')

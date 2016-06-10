@@ -33,18 +33,6 @@ if(isset($error))
 		</div>
 	</div>
 
-	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('common_export_excel'), 'export_excel', !empty($basic_version) ? array('class'=>'control-label required col-xs-3') : array('class'=>'control-label col-xs-2')); ?>
-		<div class="col-xs-3">
-			<label class="radio-inline">
-				<input type="radio" name="export_excel" id="export_excel_yes" value='1' /> <?php echo $this->lang->line('common_export_excel_yes'); ?>
-			</label>
-			<label class="radio-inline">
-				<input type="radio" name="export_excel" id="export_excel_no" value='0' checked='checked' /> <?php echo $this->lang->line('common_export_excel_no'); ?>
-			</label>
-		</div>
-	</div>
-
 	<?php 
 	echo form_button(array(
 			'name'=>'generate_report',
@@ -64,7 +52,7 @@ $(document).ready(function()
 
 	$("#generate_report").click(function()
 	{
-		window.location = [window.location, start_date, end_date, $('#specific_input_data').val(), $("#sale_type").val(), $("input[name='export_excel']").val()].join("/");
+		window.location = [window.location, start_date, end_date, $('#specific_input_data').val(), $("#sale_type").val() || 0].join("/");
 	});
 });
 </script>

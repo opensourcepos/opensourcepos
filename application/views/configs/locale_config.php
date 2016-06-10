@@ -26,7 +26,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_currency_decimals'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_currency_decimals'), 'currency_decimals', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('currency_decimals', array(
 						'0' => '0',
@@ -53,7 +53,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_decimal_point'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_decimal_point'), 'decimal_point', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('decimal_point', array(
 						'.' => '. (dot)',
@@ -65,7 +65,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_thousands_separator'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_thousands_separator'), 'thousands_separator', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('thousands_separator', array(
 						'&apos;' => '&apos; (apostrophe)',
@@ -79,7 +79,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_quantity_decimals'), 'language', array('class'=>'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_quantity_decimals'), 'quantity_decimals', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('quantity_decimals', array(
 						'0' => '0',
@@ -89,6 +89,16 @@
 					),
 					$this->config->item('quantity_decimals'), array('class'=>'form-control input-sm'));
 					?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm no-gutter">
+				<?php echo form_label($this->lang->line('config_country_codes'), 'country_codes', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class'=>'form-control input-sm')); ?>
+				</div>
+				<div class="checkbox col-xs-1">
+					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
 				</div>
 			</div>
 
@@ -256,42 +266,9 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$('#locale_config_form').validate({
-		submitHandler: function(form) {
-			$(form).ajaxSubmit({
-				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
-				},
-				dataType: 'json'
-			});
-		},
-
-		errorClass: "has-error",
-		errorLabelContainer: "#locale_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
-
-		rules: 
-		{
- 		
-   		},
-
-		messages: 
-		{
-
-		}
-	});
+	$("span").tooltip();
+	$('#locale_config_form').validate($.extend(form_support.handler, {
+		errorLabelContainer: "#locale_error_message_box"
+	}));
 });
 </script>

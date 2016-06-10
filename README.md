@@ -58,23 +58,14 @@ FAQ
 ---
 If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
-13/01/2016: Install using Docker
+08/06/2014: Install using Docker
 --------------------------------
 From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
 To build and run the image, issue following commands in a terminal with docker installed
 
-    docker build -t me/ospos https://github.com/jekkos/opensourcepos.git
-    docker run -d -p 80:80 me/ospos
+    docker-compose build
+    docker-commpose up 
 
-Docker will clone the latest master into the image and start a LAMP stack with the application configured. If you like to persist your changes in this install, then you can use two docker data containers to store database and filesystem changes. In this case you will need following command (first time only)
-
-    docker run -d -v /app --name="ospos" -v /var/lib/mysql --name="ospos-sql" -p 127.0.0.1:80:80 me/ospos
-
-After stopping the created container for the first time, this command will be replaced with
-
-    docker run -d -v /app --volumes-from="ospos" -v /var/lib/mysql --volumes-from="ospos-sql" -p 127.0.0.1:80:80 me/ospos
-
-Both the data and mysql directories will be persisted in a separate docker container and can be mounted within any other container using the last command. A more extensive setup guide can be found at [this site](http://www.opensourceposguide.com/guide/gettingstarted/installation)
 
 

@@ -1,5 +1,5 @@
 /*!
- * jQuery JavaScript Library v1.12.3
+ * jQuery JavaScript Library v1.12.4
  * http://jquery.com/
  *
  * Includes Sizzle.js
@@ -9,7 +9,7 @@
  * Released under the MIT license
  * http://jquery.org/license
  *
- * Date: 2016-04-05T19:16Z
+ * Date: 2016-05-20T17:17Z
  */
 
 (function( global, factory ) {
@@ -65,7 +65,7 @@ var support = {};
 
 
 var
-	version = "1.12.3",
+	version = "1.12.4",
 
 	// Define a local copy of jQuery
 	jQuery = function( selector, context ) {
@@ -6672,6 +6672,7 @@ var documentElement = document.documentElement;
 		if ( reliableHiddenOffsetsVal ) {
 			div.style.display = "";
 			div.innerHTML = "<table><tr><td></td><td>t</td></tr></table>";
+			div.childNodes[ 0 ].style.borderCollapse = "separate";
 			contents = div.getElementsByTagName( "td" );
 			contents[ 0 ].style.cssText = "margin:0;border:0;padding:0;display:none";
 			reliableHiddenOffsetsVal = contents[ 0 ].offsetHeight === 0;
@@ -6995,19 +6996,6 @@ function getWidthOrHeight( elem, name, extra ) {
 		styles = getStyles( elem ),
 		isBorderBox = support.boxSizing &&
 			jQuery.css( elem, "boxSizing", false, styles ) === "border-box";
-
-	// Support: IE11 only
-	// In IE 11 fullscreen elements inside of an iframe have
-	// 100x too small dimensions (gh-1764).
-	if ( document.msFullscreenElement && window.top !== window ) {
-
-		// Support: IE11 only
-		// Running getBoundingClientRect on a disconnected node
-		// in IE throws an error.
-		if ( elem.getClientRects().length ) {
-			val = Math.round( elem.getBoundingClientRect()[ name ] * 100 );
-		}
-	}
 
 	// some non-html elements return undefined for offsetWidth, so check for null/undefined
 	// svg - https://bugzilla.mozilla.org/show_bug.cgi?id=649285
@@ -9999,6 +9987,11 @@ function getDisplay( elem ) {
 }
 
 function filterHidden( elem ) {
+
+	// Disconnected elements are considered hidden
+	if ( !jQuery.contains( elem.ownerDocument || document, elem ) ) {
+		return true;
+	}
 	while ( elem && elem.nodeType === 1 ) {
 		if ( getDisplay( elem ) === "none" || elem.type === "hidden" ) {
 			return true;
@@ -11015,7 +11008,7 @@ return jQuery;
 }));
 
 //! moment.js
-//! version : 2.12.0
+//! version : 2.13.0
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -11092,7 +11085,9 @@ return jQuery;
             invalidMonth    : null,
             invalidFormat   : false,
             userInvalidated : false,
-            iso             : false
+            iso             : false,
+            parsedDateParts : [],
+            meridiem        : null
         };
     }
 
@@ -11103,9 +11098,30 @@ return jQuery;
         return m._pf;
     }
 
+    var some;
+    if (Array.prototype.some) {
+        some = Array.prototype.some;
+    } else {
+        some = function (fun) {
+            var t = Object(this);
+            var len = t.length >>> 0;
+
+            for (var i = 0; i < len; i++) {
+                if (i in t && fun.call(this, t[i], i, t)) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+    }
+
     function valid__isValid(m) {
         if (m._isValid == null) {
             var flags = getParsingFlags(m);
+            var parsedParts = some.call(flags.parsedDateParts, function (i) {
+                return i != null;
+            });
             m._isValid = !isNaN(m._d.getTime()) &&
                 flags.overflow < 0 &&
                 !flags.empty &&
@@ -11113,7 +11129,8 @@ return jQuery;
                 !flags.invalidWeekday &&
                 !flags.nullInput &&
                 !flags.invalidFormat &&
-                !flags.userInvalidated;
+                !flags.userInvalidated &&
+                (!flags.meridiem || (flags.meridiem && parsedParts));
 
             if (m._strict) {
                 m._isValid = m._isValid &&
@@ -11256,6 +11273,9 @@ return jQuery;
         var firstTime = true;
 
         return extend(function () {
+            if (utils_hooks__hooks.deprecationHandler != null) {
+                utils_hooks__hooks.deprecationHandler(null, msg);
+            }
             if (firstTime) {
                 warn(msg + '\nArguments: ' + Array.prototype.slice.call(arguments).join(', ') + '\n' + (new Error()).stack);
                 firstTime = false;
@@ -11267,6 +11287,9 @@ return jQuery;
     var deprecations = {};
 
     function deprecateSimple(name, msg) {
+        if (utils_hooks__hooks.deprecationHandler != null) {
+            utils_hooks__hooks.deprecationHandler(name, msg);
+        }
         if (!deprecations[name]) {
             warn(msg);
             deprecations[name] = true;
@@ -11274,6 +11297,7 @@ return jQuery;
     }
 
     utils_hooks__hooks.suppressDeprecationWarnings = false;
+    utils_hooks__hooks.deprecationHandler = null;
 
     function isFunction(input) {
         return input instanceof Function || Object.prototype.toString.call(input) === '[object Function]';
@@ -11321,6 +11345,22 @@ return jQuery;
         if (config != null) {
             this.set(config);
         }
+    }
+
+    var keys;
+
+    if (Object.keys) {
+        keys = Object.keys;
+    } else {
+        keys = function (obj) {
+            var i, res = [];
+            for (i in obj) {
+                if (hasOwnProp(obj, i)) {
+                    res.push(i);
+                }
+            }
+            return res;
+        };
     }
 
     // internal storage for locale config files
@@ -11477,7 +11517,7 @@ return jQuery;
     }
 
     function locale_locales__listLocales() {
-        return Object.keys(locales);
+        return keys(locales);
     }
 
     var aliases = {};
@@ -11556,7 +11596,7 @@ return jQuery;
             Math.pow(10, Math.max(0, zerosToFill)).toString().substr(1) + absNumber;
     }
 
-    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
+    var formattingTokens = /(\[[^\[]*\])|(\\)?([Hh]mm(ss)?|Mo|MM?M?M?|Do|DDDo|DD?D?D?|ddd?d?|do?|w[o|w]?|W[o|W]?|Qo?|YYYYYY|YYYYY|YYYY|YY|gg(ggg?)?|GG(GGG?)?|e|E|a|A|hh?|HH?|kk?|mm?|ss?|S{1,9}|x|X|zz?|ZZ?|.)/g;
 
     var localFormattingTokens = /(\[[^\[]*\])|(\\)?(LTS|LT|LL?L?L?|l{1,4})/g;
 
@@ -11609,7 +11649,7 @@ return jQuery;
         }
 
         return function (mom) {
-            var output = '';
+            var output = '', i;
             for (i = 0; i < length; i++) {
                 output += array[i] instanceof Function ? array[i].call(mom, format) : array[i];
             }
@@ -11738,6 +11778,23 @@ return jQuery;
     var WEEK = 7;
     var WEEKDAY = 8;
 
+    var indexOf;
+
+    if (Array.prototype.indexOf) {
+        indexOf = Array.prototype.indexOf;
+    } else {
+        indexOf = function (o) {
+            // I know
+            var i;
+            for (i = 0; i < this.length; ++i) {
+                if (this[i] === o) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
+
     function daysInMonth(year, month) {
         return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
     }
@@ -11800,8 +11857,53 @@ return jQuery;
             this._monthsShort[MONTHS_IN_FORMAT.test(format) ? 'format' : 'standalone'][m.month()];
     }
 
+    function units_month__handleStrictParse(monthName, format, strict) {
+        var i, ii, mom, llc = monthName.toLocaleLowerCase();
+        if (!this._monthsParse) {
+            // this is not used
+            this._monthsParse = [];
+            this._longMonthsParse = [];
+            this._shortMonthsParse = [];
+            for (i = 0; i < 12; ++i) {
+                mom = create_utc__createUTC([2000, i]);
+                this._shortMonthsParse[i] = this.monthsShort(mom, '').toLocaleLowerCase();
+                this._longMonthsParse[i] = this.months(mom, '').toLocaleLowerCase();
+            }
+        }
+
+        if (strict) {
+            if (format === 'MMM') {
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._longMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        } else {
+            if (format === 'MMM') {
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._longMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._longMonthsParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortMonthsParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        }
+    }
+
     function localeMonthsParse (monthName, format, strict) {
         var i, mom, regex;
+
+        if (this._monthsParseExact) {
+            return units_month__handleStrictParse.call(this, monthName, format, strict);
+        }
 
         if (!this._monthsParse) {
             this._monthsParse = [];
@@ -11809,6 +11911,9 @@ return jQuery;
             this._shortMonthsParse = [];
         }
 
+        // TODO: add sorting
+        // Sorting makes sure if one month (or abbr) is a prefix of another
+        // see sorting in computeMonthsParse
         for (i = 0; i < 12; i++) {
             // make the regex if we don't have it already
             mom = create_utc__createUTC([2000, i]);
@@ -11934,8 +12039,8 @@ return jQuery;
 
         this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
         this._monthsShortRegex = this._monthsRegex;
-        this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')$', 'i');
-        this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')$', 'i');
+        this._monthsStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+        this._monthsShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
     }
 
     function checkOverflow (m) {
@@ -12162,7 +12267,7 @@ return jQuery;
 
     // MOMENTS
 
-    var getSetYear = makeGetSet('FullYear', false);
+    var getSetYear = makeGetSet('FullYear', true);
 
     function getIsLeapYear () {
         return isLeapYear(this.year());
@@ -12431,6 +12536,9 @@ return jQuery;
                 config._a[HOUR] > 0) {
             getParsingFlags(config).bigHour = undefined;
         }
+
+        getParsingFlags(config).parsedDateParts = config._a.slice(0);
+        getParsingFlags(config).meridiem = config._meridiem;
         // handle meridiem
         config._a[HOUR] = meridiemFixWrap(config._locale, config._a[HOUR], config._meridiem);
 
@@ -12571,7 +12679,7 @@ return jQuery;
         if (input === undefined) {
             config._d = new Date(utils_hooks__hooks.now());
         } else if (isDate(input)) {
-            config._d = new Date(+input);
+            config._d = new Date(input.valueOf());
         } else if (typeof input === 'string') {
             configFromString(config);
         } else if (isArray(input)) {
@@ -12691,7 +12799,7 @@ return jQuery;
         this._milliseconds = +milliseconds +
             seconds * 1e3 + // 1000
             minutes * 6e4 + // 1000 * 60
-            hours * 36e5; // 1000 * 60 * 60
+            hours * 1000 * 60 * 60; //using 1000 * 60 * 60 instead of 36e5 to avoid floating point rounding errors https://github.com/moment/moment/issues/2978
         // Because of dateAddRemove treats 24 hours as different from a
         // day when working around DST, we need to store them separately
         this._days = +days +
@@ -12761,9 +12869,9 @@ return jQuery;
         var res, diff;
         if (model._isUTC) {
             res = model.clone();
-            diff = (isMoment(input) || isDate(input) ? +input : +local__createLocal(input)) - (+res);
+            diff = (isMoment(input) || isDate(input) ? input.valueOf() : local__createLocal(input).valueOf()) - res.valueOf();
             // Use low-level api, because this fn is low-level api.
-            res._d.setTime(+res._d + diff);
+            res._d.setTime(res._d.valueOf() + diff);
             utils_hooks__hooks.updateOffset(res, false);
             return res;
         } else {
@@ -12924,7 +13032,7 @@ return jQuery;
     // from http://docs.closure-library.googlecode.com/git/closure_goog_date_date.js.source.html
     // somewhat more in line with 4.4.3.2 2004 spec, but allows decimal anywhere
     // and further modified to allow for strings containing both week and day
-    var isoRegex = /^(-)?P(?:([0-9,.]*)Y)?(?:([0-9,.]*)M)?(?:([0-9,.]*)W)?(?:([0-9,.]*)D)?(?:T(?:([0-9,.]*)H)?(?:([0-9,.]*)M)?(?:([0-9,.]*)S)?)?$/;
+    var isoRegex = /^(-)?P(?:(-?[0-9,.]*)Y)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)W)?(?:(-?[0-9,.]*)D)?(?:T(?:(-?[0-9,.]*)H)?(?:(-?[0-9,.]*)M)?(?:(-?[0-9,.]*)S)?)?$/;
 
     function create__createDuration (input, key) {
         var duration = input,
@@ -13068,7 +13176,7 @@ return jQuery;
         updateOffset = updateOffset == null ? true : updateOffset;
 
         if (milliseconds) {
-            mom._d.setTime(+mom._d + milliseconds * isAdding);
+            mom._d.setTime(mom._d.valueOf() + milliseconds * isAdding);
         }
         if (days) {
             get_set__set(mom, 'Date', get_set__get(mom, 'Date') + days * isAdding);
@@ -13113,9 +13221,9 @@ return jQuery;
         }
         units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
         if (units === 'millisecond') {
-            return +this > +localInput;
+            return this.valueOf() > localInput.valueOf();
         } else {
-            return +localInput < +this.clone().startOf(units);
+            return localInput.valueOf() < this.clone().startOf(units).valueOf();
         }
     }
 
@@ -13126,14 +13234,16 @@ return jQuery;
         }
         units = normalizeUnits(!isUndefined(units) ? units : 'millisecond');
         if (units === 'millisecond') {
-            return +this < +localInput;
+            return this.valueOf() < localInput.valueOf();
         } else {
-            return +this.clone().endOf(units) < +localInput;
+            return this.clone().endOf(units).valueOf() < localInput.valueOf();
         }
     }
 
-    function isBetween (from, to, units) {
-        return this.isAfter(from, units) && this.isBefore(to, units);
+    function isBetween (from, to, units, inclusivity) {
+        inclusivity = inclusivity || '()';
+        return (inclusivity[0] === '(' ? this.isAfter(from, units) : !this.isBefore(from, units)) &&
+            (inclusivity[1] === ')' ? this.isBefore(to, units) : !this.isAfter(to, units));
     }
 
     function isSame (input, units) {
@@ -13144,10 +13254,10 @@ return jQuery;
         }
         units = normalizeUnits(units || 'millisecond');
         if (units === 'millisecond') {
-            return +this === +localInput;
+            return this.valueOf() === localInput.valueOf();
         } else {
-            inputMs = +localInput;
-            return +(this.clone().startOf(units)) <= inputMs && inputMs <= +(this.clone().endOf(units));
+            inputMs = localInput.valueOf();
+            return this.clone().startOf(units).valueOf() <= inputMs && inputMs <= this.clone().endOf(units).valueOf();
         }
     }
 
@@ -13214,10 +13324,12 @@ return jQuery;
             adjust = (b - anchor) / (anchor2 - anchor);
         }
 
-        return -(wholeMonthDiff + adjust);
+        //check for negative zero, return zero if negative zero
+        return -(wholeMonthDiff + adjust) || 0;
     }
 
     utils_hooks__hooks.defaultFormat = 'YYYY-MM-DDTHH:mm:ssZ';
+    utils_hooks__hooks.defaultFormatUtc = 'YYYY-MM-DDTHH:mm:ss[Z]';
 
     function toString () {
         return this.clone().locale('en').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ');
@@ -13238,7 +13350,10 @@ return jQuery;
     }
 
     function format (inputString) {
-        var output = formatMoment(this, inputString || utils_hooks__hooks.defaultFormat);
+        if (!inputString) {
+            inputString = this.isUtc() ? utils_hooks__hooks.defaultFormatUtc : utils_hooks__hooks.defaultFormat;
+        }
+        var output = formatMoment(this, inputString);
         return this.localeData().postformat(output);
     }
 
@@ -13317,6 +13432,7 @@ return jQuery;
         case 'week':
         case 'isoWeek':
         case 'day':
+        case 'date':
             this.hours(0);
             /* falls through */
         case 'hour':
@@ -13350,19 +13466,25 @@ return jQuery;
         if (units === undefined || units === 'millisecond') {
             return this;
         }
+
+        // 'date' is an alias for 'day', so it should be considered as such.
+        if (units === 'date') {
+            units = 'day';
+        }
+
         return this.startOf(units).add(1, (units === 'isoWeek' ? 'week' : units)).subtract(1, 'ms');
     }
 
     function to_type__valueOf () {
-        return +this._d - ((this._offset || 0) * 60000);
+        return this._d.valueOf() - ((this._offset || 0) * 60000);
     }
 
     function unix () {
-        return Math.floor(+this / 1000);
+        return Math.floor(this.valueOf() / 1000);
     }
 
     function toDate () {
-        return this._offset ? new Date(+this) : this._d;
+        return this._offset ? new Date(this.valueOf()) : this._d;
     }
 
     function toArray () {
@@ -13631,9 +13753,15 @@ return jQuery;
     addRegexToken('d',    match1to2);
     addRegexToken('e',    match1to2);
     addRegexToken('E',    match1to2);
-    addRegexToken('dd',   matchWord);
-    addRegexToken('ddd',  matchWord);
-    addRegexToken('dddd', matchWord);
+    addRegexToken('dd',   function (isStrict, locale) {
+        return locale.weekdaysMinRegex(isStrict);
+    });
+    addRegexToken('ddd',   function (isStrict, locale) {
+        return locale.weekdaysShortRegex(isStrict);
+    });
+    addRegexToken('dddd',   function (isStrict, locale) {
+        return locale.weekdaysRegex(isStrict);
+    });
 
     addWeekParseToken(['dd', 'ddd', 'dddd'], function (input, week, config, token) {
         var weekday = config._locale.weekdaysParse(input, token, config._strict);
@@ -13686,8 +13814,76 @@ return jQuery;
         return this._weekdaysMin[m.day()];
     }
 
+    function day_of_week__handleStrictParse(weekdayName, format, strict) {
+        var i, ii, mom, llc = weekdayName.toLocaleLowerCase();
+        if (!this._weekdaysParse) {
+            this._weekdaysParse = [];
+            this._shortWeekdaysParse = [];
+            this._minWeekdaysParse = [];
+
+            for (i = 0; i < 7; ++i) {
+                mom = create_utc__createUTC([2000, 1]).day(i);
+                this._minWeekdaysParse[i] = this.weekdaysMin(mom, '').toLocaleLowerCase();
+                this._shortWeekdaysParse[i] = this.weekdaysShort(mom, '').toLocaleLowerCase();
+                this._weekdaysParse[i] = this.weekdays(mom, '').toLocaleLowerCase();
+            }
+        }
+
+        if (strict) {
+            if (format === 'dddd') {
+                ii = indexOf.call(this._weekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else if (format === 'ddd') {
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        } else {
+            if (format === 'dddd') {
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else if (format === 'ddd') {
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            } else {
+                ii = indexOf.call(this._minWeekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._weekdaysParse, llc);
+                if (ii !== -1) {
+                    return ii;
+                }
+                ii = indexOf.call(this._shortWeekdaysParse, llc);
+                return ii !== -1 ? ii : null;
+            }
+        }
+    }
+
     function localeWeekdaysParse (weekdayName, format, strict) {
         var i, mom, regex;
+
+        if (this._weekdaysParseExact) {
+            return day_of_week__handleStrictParse.call(this, weekdayName, format, strict);
+        }
 
         if (!this._weekdaysParse) {
             this._weekdaysParse = [];
@@ -13699,7 +13895,7 @@ return jQuery;
         for (i = 0; i < 7; i++) {
             // make the regex if we don't have it already
 
-            mom = local__createLocal([2000, 1]).day(i);
+            mom = create_utc__createUTC([2000, 1]).day(i);
             if (strict && !this._fullWeekdaysParse[i]) {
                 this._fullWeekdaysParse[i] = new RegExp('^' + this.weekdays(mom, '').replace('.', '\.?') + '$', 'i');
                 this._shortWeekdaysParse[i] = new RegExp('^' + this.weekdaysShort(mom, '').replace('.', '\.?') + '$', 'i');
@@ -13755,6 +13951,99 @@ return jQuery;
         return input == null ? this.day() || 7 : this.day(this.day() % 7 ? input : input - 7);
     }
 
+    var defaultWeekdaysRegex = matchWord;
+    function weekdaysRegex (isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysStrictRegex;
+            } else {
+                return this._weekdaysRegex;
+            }
+        } else {
+            return this._weekdaysStrictRegex && isStrict ?
+                this._weekdaysStrictRegex : this._weekdaysRegex;
+        }
+    }
+
+    var defaultWeekdaysShortRegex = matchWord;
+    function weekdaysShortRegex (isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysShortStrictRegex;
+            } else {
+                return this._weekdaysShortRegex;
+            }
+        } else {
+            return this._weekdaysShortStrictRegex && isStrict ?
+                this._weekdaysShortStrictRegex : this._weekdaysShortRegex;
+        }
+    }
+
+    var defaultWeekdaysMinRegex = matchWord;
+    function weekdaysMinRegex (isStrict) {
+        if (this._weekdaysParseExact) {
+            if (!hasOwnProp(this, '_weekdaysRegex')) {
+                computeWeekdaysParse.call(this);
+            }
+            if (isStrict) {
+                return this._weekdaysMinStrictRegex;
+            } else {
+                return this._weekdaysMinRegex;
+            }
+        } else {
+            return this._weekdaysMinStrictRegex && isStrict ?
+                this._weekdaysMinStrictRegex : this._weekdaysMinRegex;
+        }
+    }
+
+
+    function computeWeekdaysParse () {
+        function cmpLenRev(a, b) {
+            return b.length - a.length;
+        }
+
+        var minPieces = [], shortPieces = [], longPieces = [], mixedPieces = [],
+            i, mom, minp, shortp, longp;
+        for (i = 0; i < 7; i++) {
+            // make the regex if we don't have it already
+            mom = create_utc__createUTC([2000, 1]).day(i);
+            minp = this.weekdaysMin(mom, '');
+            shortp = this.weekdaysShort(mom, '');
+            longp = this.weekdays(mom, '');
+            minPieces.push(minp);
+            shortPieces.push(shortp);
+            longPieces.push(longp);
+            mixedPieces.push(minp);
+            mixedPieces.push(shortp);
+            mixedPieces.push(longp);
+        }
+        // Sorting makes sure if one weekday (or abbr) is a prefix of another it
+        // will match the longer piece.
+        minPieces.sort(cmpLenRev);
+        shortPieces.sort(cmpLenRev);
+        longPieces.sort(cmpLenRev);
+        mixedPieces.sort(cmpLenRev);
+        for (i = 0; i < 7; i++) {
+            shortPieces[i] = regexEscape(shortPieces[i]);
+            longPieces[i] = regexEscape(longPieces[i]);
+            mixedPieces[i] = regexEscape(mixedPieces[i]);
+        }
+
+        this._weekdaysRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
+        this._weekdaysShortRegex = this._weekdaysRegex;
+        this._weekdaysMinRegex = this._weekdaysRegex;
+
+        this._weekdaysStrictRegex = new RegExp('^(' + longPieces.join('|') + ')', 'i');
+        this._weekdaysShortStrictRegex = new RegExp('^(' + shortPieces.join('|') + ')', 'i');
+        this._weekdaysMinStrictRegex = new RegExp('^(' + minPieces.join('|') + ')', 'i');
+    }
+
     // FORMATTING
 
     addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
@@ -13786,8 +14075,13 @@ return jQuery;
         return this.hours() % 12 || 12;
     }
 
+    function kFormat() {
+        return this.hours() || 24;
+    }
+
     addFormatToken('H', ['HH', 2], 0, 'hour');
     addFormatToken('h', ['hh', 2], 0, hFormat);
+    addFormatToken('k', ['kk', 2], 0, kFormat);
 
     addFormatToken('hmm', 0, 0, function () {
         return '' + hFormat.apply(this) + zeroFill(this.minutes(), 2);
@@ -14248,6 +14542,13 @@ return jQuery;
     prototype__proto._weekdaysShort = defaultLocaleWeekdaysShort;
     prototype__proto.weekdaysParse  =        localeWeekdaysParse;
 
+    prototype__proto._weekdaysRegex      = defaultWeekdaysRegex;
+    prototype__proto.weekdaysRegex       =        weekdaysRegex;
+    prototype__proto._weekdaysShortRegex = defaultWeekdaysShortRegex;
+    prototype__proto.weekdaysShortRegex  =        weekdaysShortRegex;
+    prototype__proto._weekdaysMinRegex   = defaultWeekdaysMinRegex;
+    prototype__proto.weekdaysMinRegex    =        weekdaysMinRegex;
+
     // Hours
     prototype__proto.isPM = localeIsPM;
     prototype__proto._meridiemParse = defaultLocaleMeridiemParse;
@@ -14259,7 +14560,7 @@ return jQuery;
         return locale[field](utc, format);
     }
 
-    function list (format, index, field, count, setter) {
+    function listMonthsImpl (format, index, field) {
         if (typeof format === 'number') {
             index = format;
             format = undefined;
@@ -14268,35 +14569,79 @@ return jQuery;
         format = format || '';
 
         if (index != null) {
-            return lists__get(format, index, field, setter);
+            return lists__get(format, index, field, 'month');
         }
 
         var i;
         var out = [];
-        for (i = 0; i < count; i++) {
-            out[i] = lists__get(format, i, field, setter);
+        for (i = 0; i < 12; i++) {
+            out[i] = lists__get(format, i, field, 'month');
+        }
+        return out;
+    }
+
+    // ()
+    // (5)
+    // (fmt, 5)
+    // (fmt)
+    // (true)
+    // (true, 5)
+    // (true, fmt, 5)
+    // (true, fmt)
+    function listWeekdaysImpl (localeSorted, format, index, field) {
+        if (typeof localeSorted === 'boolean') {
+            if (typeof format === 'number') {
+                index = format;
+                format = undefined;
+            }
+
+            format = format || '';
+        } else {
+            format = localeSorted;
+            index = format;
+            localeSorted = false;
+
+            if (typeof format === 'number') {
+                index = format;
+                format = undefined;
+            }
+
+            format = format || '';
+        }
+
+        var locale = locale_locales__getLocale(),
+            shift = localeSorted ? locale._week.dow : 0;
+
+        if (index != null) {
+            return lists__get(format, (index + shift) % 7, field, 'day');
+        }
+
+        var i;
+        var out = [];
+        for (i = 0; i < 7; i++) {
+            out[i] = lists__get(format, (i + shift) % 7, field, 'day');
         }
         return out;
     }
 
     function lists__listMonths (format, index) {
-        return list(format, index, 'months', 12, 'month');
+        return listMonthsImpl(format, index, 'months');
     }
 
     function lists__listMonthsShort (format, index) {
-        return list(format, index, 'monthsShort', 12, 'month');
+        return listMonthsImpl(format, index, 'monthsShort');
     }
 
-    function lists__listWeekdays (format, index) {
-        return list(format, index, 'weekdays', 7, 'day');
+    function lists__listWeekdays (localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdays');
     }
 
-    function lists__listWeekdaysShort (format, index) {
-        return list(format, index, 'weekdaysShort', 7, 'day');
+    function lists__listWeekdaysShort (localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysShort');
     }
 
-    function lists__listWeekdaysMin (format, index) {
-        return list(format, index, 'weekdaysMin', 7, 'day');
+    function lists__listWeekdaysMin (localeSorted, format, index) {
+        return listWeekdaysImpl(localeSorted, format, index, 'weekdaysMin');
     }
 
     locale_locales__getSetGlobalLocale('en', {
@@ -14667,7 +15012,7 @@ return jQuery;
     // Side effect imports
 
 
-    utils_hooks__hooks.version = '2.12.0';
+    utils_hooks__hooks.version = '2.13.0';
 
     setHookCallback(local__createLocal);
 
@@ -14703,41 +15048,33 @@ return jQuery;
 
 }));
 /**
-* @version: 2.1.19
+* @version: 2.1.21
 * @author: Dan Grossman http://www.dangrossman.info/
-* @copyright: Copyright (c) 2012-2015 Dan Grossman. All rights reserved.
+* @copyright: Copyright (c) 2012-2016 Dan Grossman. All rights reserved.
 * @license: Licensed under the MIT license. See http://www.opensource.org/licenses/mit-license.php
 * @website: https://www.improvely.com/
 */
-
-(function(root, factory) {
-
-  if (typeof define === 'function' && define.amd) {
-    define(['moment', 'jquery', 'exports'], function(momentjs, $, exports) {
-      root.daterangepicker = factory(root, exports, momentjs, $);
-    });
-
-  } else if (typeof exports !== 'undefined') {
-      var momentjs = require('moment');
-      var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;  //isomorphic issue
-      if (!jQuery) {
-          try {
-              jQuery = require('jquery');
-              if (!jQuery.fn) jQuery.fn = {}; //isomorphic issue
-          } catch (err) {
-              if (!jQuery) throw new Error('jQuery dependency not found');
-          }
-      }
-
-    factory(root, exports, momentjs, jQuery);
-
-  // Finally, as a browser global.
-  } else {
-    root.daterangepicker = factory(root, {}, root.moment || moment, (root.jQuery || root.Zepto || root.ender || root.$));
-  }
-
-}(this || {}, function(root, daterangepicker, moment, $) { // 'this' doesn't exist on a server
-
+// Follow the UMD template https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Make globaly available as well
+        define(['moment', 'jquery'], function (moment, jquery) {
+            return (root.daterangepicker = factory(moment, jquery));
+        });
+    } else if (typeof module === 'object' && module.exports) {
+        // Node / Browserify
+        //isomorphic issue
+        var jQuery = (typeof window != 'undefined') ? window.jQuery : undefined;
+        if (!jQuery) {
+            jQuery = require('jquery');
+            if (!jQuery.fn) jQuery.fn = {};
+        }
+        module.exports = factory(require('moment'), jQuery);
+    } else {
+        // Browser globals
+        root.daterangepicker = factory(root.moment, root.jQuery);
+    }
+}(this, function(moment, $) {
     var DateRangePicker = function(element, options, cb) {
 
         //default settings for options
@@ -14775,6 +15112,7 @@ return jQuery;
         this.cancelClass = 'btn-default';
 
         this.locale = {
+            direction: 'ltr',
             format: 'MM/DD/YYYY',
             separator: ' - ',
             applyLabel: 'Apply',
@@ -14806,7 +15144,7 @@ return jQuery;
             options.template = '<div class="daterangepicker dropdown-menu">' +
                 '<div class="calendar left">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini" type="text" name="daterangepicker_start" value="" />' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_start" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
@@ -14817,7 +15155,7 @@ return jQuery;
                 '</div>' +
                 '<div class="calendar right">' +
                     '<div class="daterangepicker_input">' +
-                      '<input class="input-mini" type="text" name="daterangepicker_end" value="" />' +
+                      '<input class="input-mini form-control" type="text" name="daterangepicker_end" value="" />' +
                       '<i class="fa fa-calendar glyphicon glyphicon-calendar"></i>' +
                       '<div class="calendar-time">' +
                         '<div></div>' +
@@ -14842,6 +15180,9 @@ return jQuery;
         //
 
         if (typeof options.locale === 'object') {
+
+            if (typeof options.locale.direction === 'string')
+                this.locale.direction = options.locale.direction;
 
             if (typeof options.locale.format === 'string')
                 this.locale.format = options.locale.format;
@@ -14871,6 +15212,7 @@ return jQuery;
               this.locale.customRangeLabel = options.locale.customRangeLabel;
 
         }
+        this.container.addClass(this.locale.direction);
 
         if (typeof options.startDate === 'string')
             this.startDate = moment(options.startDate, this.locale.format);
@@ -14964,6 +15306,9 @@ return jQuery;
         if (typeof options.isInvalidDate === 'function')
             this.isInvalidDate = options.isInvalidDate;
 
+        if (typeof options.isCustomDate === 'function')
+            this.isCustomDate = options.isCustomDate;
+
         if (typeof options.alwaysShowCalendars === 'boolean')
             this.alwaysShowCalendars = options.alwaysShowCalendars;
 
@@ -15019,16 +15364,17 @@ return jQuery;
                     start = this.minDate.clone();
 
                 var maxDate = this.maxDate;
-                if (this.dateLimit && start.clone().add(this.dateLimit).isAfter(maxDate))
+                if (this.dateLimit && maxDate && start.clone().add(this.dateLimit).isAfter(maxDate))
                     maxDate = start.clone().add(this.dateLimit);
                 if (maxDate && end.isAfter(maxDate))
                     end = maxDate.clone();
 
                 // If the end of the range is before the minimum or the start of the range is
                 // after the maximum, don't display this range option at all.
-                if ((this.minDate && end.isBefore(this.minDate)) || (maxDate && start.isAfter(maxDate)))
+                if ((this.minDate && end.isBefore(this.minDate, this.timepicker ? 'minute' : 'day')) 
+                  || (maxDate && start.isAfter(maxDate, this.timepicker ? 'minute' : 'day')))
                     continue;
-                
+
                 //Support unicode chars in the range names.
                 var elem = document.createElement('textarea');
                 elem.innerHTML = range;
@@ -15071,7 +15417,7 @@ return jQuery;
             this.container.find('.calendar.left').addClass('single');
             this.container.find('.calendar.left').show();
             this.container.find('.calendar.right').hide();
-            this.container.find('.daterangepicker_input input, .daterangepicker_input i').hide();
+            this.container.find('.daterangepicker_input input, .daterangepicker_input > i').hide();
             if (!this.timePicker) {
                 this.container.find('.ranges').hide();
             }
@@ -15085,10 +15431,7 @@ return jQuery;
 
         //swap the position of the predefined ranges if opens right
         if (typeof options.ranges !== 'undefined' && this.opens == 'right') {
-            var ranges = this.container.find('.ranges');
-            var html = ranges.clone();
-            ranges.remove();
-            this.container.find('.calendar.left').parent().prepend(html);
+            this.container.find('.ranges').prependTo( this.container.find('.calendar.left').parent() );
         }
 
         //apply CSS classes and labels to buttons
@@ -15124,7 +15467,7 @@ return jQuery;
             .on('mouseenter.daterangepicker', 'li', $.proxy(this.hoverRange, this))
             .on('mouseleave.daterangepicker', 'li', $.proxy(this.updateFormInputs, this));
 
-        if (this.element.is('input')) {
+        if (this.element.is('input') || this.element.is('button')) {
             this.element.on({
                 'click.daterangepicker': $.proxy(this.show, this),
                 'focus.daterangepicker': $.proxy(this.show, this),
@@ -15166,11 +15509,17 @@ return jQuery;
             if (this.timePicker && this.timePickerIncrement)
                 this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
 
-            if (this.minDate && this.startDate.isBefore(this.minDate))
+            if (this.minDate && this.startDate.isBefore(this.minDate)) {
                 this.startDate = this.minDate;
+                if (this.timePicker && this.timePickerIncrement)
+                    this.startDate.minute(Math.round(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
 
-            if (this.maxDate && this.startDate.isAfter(this.maxDate))
+            if (this.maxDate && this.startDate.isAfter(this.maxDate)) {
                 this.startDate = this.maxDate;
+                if (this.timePicker && this.timePickerIncrement)
+                    this.startDate.minute(Math.floor(this.startDate.minute() / this.timePickerIncrement) * this.timePickerIncrement);
+            }
 
             if (!this.isShowing)
                 this.updateElement();
@@ -15209,6 +15558,10 @@ return jQuery;
         },
 
         isInvalidDate: function() {
+            return false;
+        },
+
+        isCustomDate: function() {
             return false;
         },
 
@@ -15252,12 +15605,16 @@ return jQuery;
                 } else {
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
-                
+
             } else {
                 if (this.leftCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM') && this.rightCalendar.month.format('YYYY-MM') != this.startDate.format('YYYY-MM')) {
                     this.leftCalendar.month = this.startDate.clone().date(2);
                     this.rightCalendar.month = this.startDate.clone().date(2).add(1, 'month');
                 }
+            }
+            if (this.maxDate && this.linkedCalendars && !this.singleDatePicker && this.rightCalendar.month > this.maxDate) {
+              this.rightCalendar.month = this.maxDate.clone().date(2);
+              this.leftCalendar.month = this.maxDate.clone().date(2).subtract(1, 'month');
             }
         },
 
@@ -15374,6 +15731,7 @@ return jQuery;
             var minDate = side == 'left' ? this.minDate : this.startDate;
             var maxDate = this.maxDate;
             var selected = side == 'left' ? this.startDate : this.endDate;
+            var arrow = this.locale.direction == 'ltr' ? {left: 'chevron-left', right: 'chevron-right'} : {left: 'chevron-right', right: 'chevron-left'};
 
             var html = '<table class="table-condensed">';
             html += '<thead>';
@@ -15384,7 +15742,7 @@ return jQuery;
                 html += '<th></th>';
 
             if ((!minDate || minDate.isBefore(calendar.firstDay)) && (!this.linkedCalendars || side == 'left')) {
-                html += '<th class="prev available"><i class="fa fa-chevron-left glyphicon glyphicon-chevron-left"></i></th>';
+                html += '<th class="prev available"><i class="fa fa-' + arrow.left + ' glyphicon glyphicon-' + arrow.left + '"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -15426,7 +15784,7 @@ return jQuery;
 
             html += '<th colspan="5" class="month">' + dateHtml + '</th>';
             if ((!maxDate || maxDate.isAfter(calendar.lastDay)) && (!this.linkedCalendars || side == 'right' || this.singleDatePicker)) {
-                html += '<th class="next available"><i class="fa fa-chevron-right glyphicon glyphicon-chevron-right"></i></th>';
+                html += '<th class="next available"><i class="fa fa-' + arrow.right + ' glyphicon glyphicon-' + arrow.right + '"></i></th>';
             } else {
                 html += '<th></th>';
             }
@@ -15504,6 +15862,15 @@ return jQuery;
                     if (this.endDate != null && calendar[row][col] > this.startDate && calendar[row][col] < this.endDate)
                         classes.push('in-range');
 
+                    //apply custom classes for this date
+                    var isCustom = this.isCustomDate(calendar[row][col]);
+                    if (isCustom !== false) {
+                        if (typeof isCustom === 'string')
+                            classes.push(isCustom);
+                        else
+                            Array.prototype.push.apply(classes, isCustom);
+                    }
+
                     var cname = '', disabled = false;
                     for (var i = 0; i < classes.length; i++) {
                         cname += classes[i] + ' ';
@@ -15559,7 +15926,7 @@ return jQuery;
                     if (selected.isBefore(this.startDate))
                         selected = this.startDate.clone();
 
-                    if (selected.isAfter(maxDate))
+                    if (maxDate && selected.isAfter(maxDate))
                         selected = maxDate.clone();
 
                 }
@@ -15858,7 +16225,7 @@ return jQuery;
                 this.container.find('input[name=daterangepicker_start]').val(dates[0].format(this.locale.format));
                 this.container.find('input[name=daterangepicker_end]').val(dates[1].format(this.locale.format));
             }
-            
+
         },
 
         clickRange: function(e) {
@@ -15944,7 +16311,7 @@ return jQuery;
                     var cal = $(el).parents('.calendar');
                     var dt = cal.hasClass('left') ? leftCalendar.calendar[row][col] : rightCalendar.calendar[row][col];
 
-                    if (dt.isAfter(startDate) && dt.isBefore(date)) {
+                    if ((dt.isAfter(startDate) && dt.isBefore(date)) || dt.isSame(date, 'day')) {
                         $(el).addClass('in-range');
                     } else {
                         $(el).removeClass('in-range');
@@ -15990,7 +16357,7 @@ return jQuery;
                 this.endDate = null;
                 this.setStartDate(date.clone());
             } else if (!this.endDate && date.isBefore(this.startDate)) {
-                //special case: clicking the same date for start/end, 
+                //special case: clicking the same date for start/end,
                 //but the time of the end date is before the start date
                 this.setEndDate(this.startDate.clone());
             } else {
@@ -16240,7 +16607,7 @@ return jQuery;
         });
         return this;
     };
-    
+
     return DateRangePicker;
 
 }));
@@ -20790,6 +21157,256 @@ return jQuery;
     });
 }(jQuery);
 
+/**
+ * @author zhixin wen <wenzhixin2010@gmail.com>
+ * extensions: https://github.com/kayalshri/tableExport.jquery.plugin
+ */
+
+(function ($) {
+    'use strict';
+    var sprintf = $.fn.bootstrapTable.utils.sprintf;
+
+    var TYPE_NAME = {
+        json: 'JSON',
+        xml: 'XML',
+        png: 'PNG',
+        csv: 'CSV',
+        txt: 'TXT',
+        sql: 'SQL',
+        doc: 'MS-Word',
+        excel: 'MS-Excel',
+        powerpoint: 'MS-Powerpoint',
+        pdf: 'PDF'
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, {
+        showExport: false,
+        exportDataType: 'basic', // basic, all, selected
+        // 'json', 'xml', 'png', 'csv', 'txt', 'sql', 'doc', 'excel', 'powerpoint', 'pdf'
+        exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel'],
+        exportOptions: {}
+    });
+
+    $.extend($.fn.bootstrapTable.defaults.icons, {
+        export: 'glyphicon-export icon-share'
+    });
+
+    var BootstrapTable = $.fn.bootstrapTable.Constructor,
+        _initToolbar = BootstrapTable.prototype.initToolbar;
+
+    BootstrapTable.prototype.initToolbar = function () {
+        this.showToolbar = this.options.showExport;
+
+        _initToolbar.apply(this, Array.prototype.slice.apply(arguments));
+
+        if (this.options.showExport) {
+            var that = this,
+                $btnGroup = this.$toolbar.find('>.btn-group'),
+                $export = $btnGroup.find('div.export');
+
+            if (!$export.length) {
+                $export = $([
+                    '<div class="export btn-group">',
+                        '<button class="btn btn-default' +
+                            sprintf(' btn-%s', this.options.iconSize) +
+                            ' dropdown-toggle" ' +
+                            'data-toggle="dropdown" type="button">',
+                            sprintf('<i class="%s %s"></i> ', this.options.iconsPrefix, this.options.icons.export),
+                            '<span class="caret"></span>',
+                        '</button>',
+                        '<ul class="dropdown-menu" role="menu">',
+                        '</ul>',
+                    '</div>'].join('')).appendTo($btnGroup);
+
+                var $menu = $export.find('.dropdown-menu'),
+                    exportTypes = this.options.exportTypes;
+
+                if (typeof this.options.exportTypes === 'string') {
+                    var types = this.options.exportTypes.slice(1, -1).replace(/ /g, '').split(',');
+
+                    exportTypes = [];
+                    $.each(types, function (i, value) {
+                        exportTypes.push(value.slice(1, -1));
+                    });
+                }
+                $.each(exportTypes, function (i, type) {
+                    if (TYPE_NAME.hasOwnProperty(type)) {
+                        $menu.append(['<li data-type="' + type + '">',
+                                '<a href="javascript:void(0)">',
+                                    TYPE_NAME[type],
+                                '</a>',
+                            '</li>'].join(''));
+                    }
+                });
+
+                $menu.find('li').click(function () {
+                    var type = $(this).data('type'),
+                        doExport = function () {
+                            that.$el.tableExport($.extend({}, that.options.exportOptions, {
+                                type: type,
+                                escape: false
+                            }));
+                        };
+
+                    if (that.options.exportDataType === 'all' && that.options.pagination) {
+                        that.$el.one('load-success.bs.table page-change.bs.table', function () {
+                            doExport();
+                            that.togglePagination();
+                        });
+                        that.togglePagination();
+                    } else if (that.options.exportDataType === 'selected') {
+                        var data = that.getData(),
+                            selectedData = that.getAllSelections();
+
+                        that.load(selectedData);
+                        doExport();
+                        that.load(data);
+                    } else {
+                        doExport();
+                    }
+                });
+            }
+        }
+    };
+})(jQuery);
+
+/**
+ * @author: Dennis Hernández
+ * @webSite: http://djhvscf.github.io/Blog
+ * @version: v1.1.0
+ */
+
+!function ($) {
+
+    'use strict';
+
+    var showHideColumns = function (that, checked) {
+        if (that.options.columnsHidden.length > 0 ) {
+            $.each(that.columns, function (i, column) {
+                if (that.options.columnsHidden.indexOf(column.field) !== -1) {
+                    if (column.visible !== checked) {
+                        that.toggleColumn($.fn.bootstrapTable.utils.getFieldIndex(that.columns, column.field), checked, true);
+                    }
+                }
+            });
+        }
+    };
+
+    var resetView = function (that) {
+        if (that.options.height || that.options.showFooter) {
+            setTimeout(function(){
+                that.resetView.call(that);
+            }, 1);
+        }
+    };
+
+    var changeView = function (that, width, height) {
+        if (that.options.minHeight) {
+            if ((width <= that.options.minWidth) && (height <= that.options.minHeight)) {
+                conditionCardView(that);
+            } else if ((width > that.options.minWidth) && (height > that.options.minHeight)) {
+                conditionFullView(that);
+            }
+        } else {
+            if (width <= that.options.minWidth) {
+                conditionCardView(that);
+            } else if (width > that.options.minWidth) {
+                conditionFullView(that);
+            }
+        }
+
+        resetView(that);
+    };
+
+    var conditionCardView = function (that) {
+        changeTableView(that, false);
+        showHideColumns(that, false);
+    };
+
+    var conditionFullView = function (that) {
+        changeTableView(that, true);
+        showHideColumns(that, true);
+    };
+
+    var changeTableView = function (that, cardViewState) {
+        that.options.cardView = cardViewState;
+        that.toggleView();
+    };
+
+    var debounce = function(func,wait) {
+        var timeout;
+        return function() {
+            var context = this,
+                args = arguments;
+            var later = function() {
+                timeout = null;
+                func.apply(context,args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    };
+
+    $.extend($.fn.bootstrapTable.defaults, {
+        mobileResponsive: false,
+        minWidth: 562,
+        minHeight: undefined,
+        heightThreshold: 100, // just slightly larger than mobile chrome's auto-hiding toolbar
+        checkOnInit: true,
+        columnsHidden: []
+    });
+
+    var BootstrapTable = $.fn.bootstrapTable.Constructor,
+        _init = BootstrapTable.prototype.init;
+
+    BootstrapTable.prototype.init = function () {
+        _init.apply(this, Array.prototype.slice.apply(arguments));
+
+        if (!this.options.mobileResponsive) {
+            return;
+        }
+
+        if (!this.options.minWidth) {
+            return;
+        }
+
+        if (this.options.minWidth < 100 && this.options.resizable) {
+            console.log("The minWidth when the resizable extension is active should be greater or equal than 100");
+            this.options.minWidth = 100;
+        }
+
+        var that = this,
+            old = {
+                width: $(window).width(),
+                height: $(window).height()
+            };
+
+        $(window).on('resize orientationchange',debounce(function (evt) {
+            // reset view if height has only changed by at least the threshold.
+            var height = $(this).height(),
+                width = $(this).width();
+
+            if (Math.abs(old.height - height) > that.options.heightThreshold || old.width != width) {
+                changeView(that, width, height);
+                old = {
+                    width: width,
+                    height: height
+                };
+            }
+        },200));
+
+        if (this.options.checkOnInit) {
+            var height = $(window).height(),
+                width = $(window).width();
+            changeView(this, width, height);
+            old = {
+                width: width,
+                height: height
+            };
+        }
+    };
+}(jQuery);
+
 /*!
  * Bootstrap v3.3.6 (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
@@ -23155,6 +23772,40 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 !function(t,e){"use strict";if("undefined"!=typeof module&&module.exports){var n="undefined"!=typeof process,o=n&&"electron"in process.versions;o?t.BootstrapDialog=e(t.jQuery):module.exports=e(require("jquery"),require("bootstrap"))}else"function"==typeof define&&define.amd?define("bootstrap-dialog",["jquery","bootstrap"],function(t){return e(t)}):t.BootstrapDialog=e(t.jQuery)}(this,function(t){"use strict";var e=t.fn.modal.Constructor,n=function(t,n){e.call(this,t,n)};n.getModalVersion=function(){var e=null;return e="undefined"==typeof t.fn.modal.Constructor.VERSION?"v3.1":/3\.2\.\d+/.test(t.fn.modal.Constructor.VERSION)?"v3.2":/3\.3\.[1,2]/.test(t.fn.modal.Constructor.VERSION)?"v3.3":"v3.3.4"},n.ORIGINAL_BODY_PADDING=parseInt(t("body").css("padding-right")||0,10),n.METHODS_TO_OVERRIDE={},n.METHODS_TO_OVERRIDE["v3.1"]={},n.METHODS_TO_OVERRIDE["v3.2"]={hide:function(e){if(e&&e.preventDefault(),e=t.Event("hide.bs.modal"),this.$element.trigger(e),this.isShown&&!e.isDefaultPrevented()){this.isShown=!1;var n=this.getGlobalOpenedDialogs();0===n.length&&this.$body.removeClass("modal-open"),this.resetScrollbar(),this.escape(),t(document).off("focusin.bs.modal"),this.$element.removeClass("in").attr("aria-hidden",!0).off("click.dismiss.bs.modal"),t.support.transition&&this.$element.hasClass("fade")?this.$element.one("bsTransitionEnd",t.proxy(this.hideModal,this)).emulateTransitionEnd(300):this.hideModal()}}},n.METHODS_TO_OVERRIDE["v3.3"]={setScrollbar:function(){var t=n.ORIGINAL_BODY_PADDING;this.bodyIsOverflowing&&this.$body.css("padding-right",t+this.scrollbarWidth)},resetScrollbar:function(){var t=this.getGlobalOpenedDialogs();0===t.length&&this.$body.css("padding-right",n.ORIGINAL_BODY_PADDING)},hideModal:function(){this.$element.hide(),this.backdrop(t.proxy(function(){var t=this.getGlobalOpenedDialogs();0===t.length&&this.$body.removeClass("modal-open"),this.resetAdjustments(),this.resetScrollbar(),this.$element.trigger("hidden.bs.modal")},this))}},n.METHODS_TO_OVERRIDE["v3.3.4"]=t.extend({},n.METHODS_TO_OVERRIDE["v3.3"]),n.prototype={constructor:n,getGlobalOpenedDialogs:function(){var e=[];return t.each(o.dialogs,function(t,n){n.isRealized()&&n.isOpened()&&e.push(n)}),e}},n.prototype=t.extend(n.prototype,e.prototype,n.METHODS_TO_OVERRIDE[n.getModalVersion()]);var o=function(e){this.defaultOptions=t.extend(!0,{id:o.newGuid(),buttons:[],data:{},onshow:null,onshown:null,onhide:null,onhidden:null},o.defaultOptions),this.indexedButtons={},this.registeredButtonHotkeys={},this.draggableData={isMouseDown:!1,mouseOffset:{}},this.realized=!1,this.opened=!1,this.initOptions(e),this.holdThisInstance()};return o.BootstrapDialogModal=n,o.NAMESPACE="bootstrap-dialog",o.TYPE_DEFAULT="type-default",o.TYPE_INFO="type-info",o.TYPE_PRIMARY="type-primary",o.TYPE_SUCCESS="type-success",o.TYPE_WARNING="type-warning",o.TYPE_DANGER="type-danger",o.DEFAULT_TEXTS={},o.DEFAULT_TEXTS[o.TYPE_DEFAULT]="Information",o.DEFAULT_TEXTS[o.TYPE_INFO]="Information",o.DEFAULT_TEXTS[o.TYPE_PRIMARY]="Information",o.DEFAULT_TEXTS[o.TYPE_SUCCESS]="Success",o.DEFAULT_TEXTS[o.TYPE_WARNING]="Warning",o.DEFAULT_TEXTS[o.TYPE_DANGER]="Danger",o.DEFAULT_TEXTS.OK="OK",o.DEFAULT_TEXTS.CANCEL="Cancel",o.DEFAULT_TEXTS.CONFIRM="Confirmation",o.SIZE_NORMAL="size-normal",o.SIZE_SMALL="size-small",o.SIZE_WIDE="size-wide",o.SIZE_LARGE="size-large",o.BUTTON_SIZES={},o.BUTTON_SIZES[o.SIZE_NORMAL]="",o.BUTTON_SIZES[o.SIZE_SMALL]="",o.BUTTON_SIZES[o.SIZE_WIDE]="",o.BUTTON_SIZES[o.SIZE_LARGE]="btn-lg",o.ICON_SPINNER="glyphicon glyphicon-asterisk",o.defaultOptions={type:o.TYPE_PRIMARY,size:o.SIZE_NORMAL,cssClass:"",title:null,message:null,nl2br:!0,closable:!0,closeByBackdrop:!0,closeByKeyboard:!0,spinicon:o.ICON_SPINNER,autodestroy:!0,draggable:!1,animate:!0,description:"",tabindex:-1},o.configDefaultOptions=function(e){o.defaultOptions=t.extend(!0,o.defaultOptions,e)},o.dialogs={},o.openAll=function(){t.each(o.dialogs,function(t,e){e.open()})},o.closeAll=function(){t.each(o.dialogs,function(t,e){e.close()})},o.getDialog=function(t){var e=null;return"undefined"!=typeof o.dialogs[t]&&(e=o.dialogs[t]),e},o.setDialog=function(t){return o.dialogs[t.getId()]=t,t},o.addDialog=function(t){return o.setDialog(t)},o.moveFocus=function(){var e=null;t.each(o.dialogs,function(t,n){n.isRealized()&&n.isOpened()&&(e=n)}),null!==e&&e.getModal().focus()},o.METHODS_TO_OVERRIDE={},o.METHODS_TO_OVERRIDE["v3.1"]={handleModalBackdropEvent:function(){return this.getModal().on("click",{dialog:this},function(t){t.target===this&&t.data.dialog.isClosable()&&t.data.dialog.canCloseByBackdrop()&&t.data.dialog.close()}),this},updateZIndex:function(){if(this.isOpened()){var e=1040,n=1050,i=0;t.each(o.dialogs,function(t,e){e.isRealized()&&e.isOpened()&&i++});var s=this.getModal(),a=s.data("bs.modal").$backdrop;s.css("z-index",n+20*(i-1)),a.css("z-index",e+20*(i-1))}return this},open:function(){return!this.isRealized()&&this.realize(),this.getModal().modal("show"),this.updateZIndex(),this}},o.METHODS_TO_OVERRIDE["v3.2"]={handleModalBackdropEvent:o.METHODS_TO_OVERRIDE["v3.1"].handleModalBackdropEvent,updateZIndex:o.METHODS_TO_OVERRIDE["v3.1"].updateZIndex,open:o.METHODS_TO_OVERRIDE["v3.1"].open},o.METHODS_TO_OVERRIDE["v3.3"]={},o.METHODS_TO_OVERRIDE["v3.3.4"]=t.extend({},o.METHODS_TO_OVERRIDE["v3.1"]),o.prototype={constructor:o,initOptions:function(e){return this.options=t.extend(!0,this.defaultOptions,e),this},holdThisInstance:function(){return o.addDialog(this),this},initModalStuff:function(){return this.setModal(this.createModal()).setModalDialog(this.createModalDialog()).setModalContent(this.createModalContent()).setModalHeader(this.createModalHeader()).setModalBody(this.createModalBody()).setModalFooter(this.createModalFooter()),this.getModal().append(this.getModalDialog()),this.getModalDialog().append(this.getModalContent()),this.getModalContent().append(this.getModalHeader()).append(this.getModalBody()).append(this.getModalFooter()),this},createModal:function(){var e=t('<div class="modal" role="dialog" aria-hidden="true"></div>');return e.prop("id",this.getId()),e.attr("aria-labelledby",this.getId()+"_title"),e},getModal:function(){return this.$modal},setModal:function(t){return this.$modal=t,this},createModalDialog:function(){return t('<div class="modal-dialog"></div>')},getModalDialog:function(){return this.$modalDialog},setModalDialog:function(t){return this.$modalDialog=t,this},createModalContent:function(){return t('<div class="modal-content"></div>')},getModalContent:function(){return this.$modalContent},setModalContent:function(t){return this.$modalContent=t,this},createModalHeader:function(){return t('<div class="modal-header"></div>')},getModalHeader:function(){return this.$modalHeader},setModalHeader:function(t){return this.$modalHeader=t,this},createModalBody:function(){return t('<div class="modal-body"></div>')},getModalBody:function(){return this.$modalBody},setModalBody:function(t){return this.$modalBody=t,this},createModalFooter:function(){return t('<div class="modal-footer"></div>')},getModalFooter:function(){return this.$modalFooter},setModalFooter:function(t){return this.$modalFooter=t,this},createDynamicContent:function(t){var e=null;return e="function"==typeof t?t.call(t,this):t,"string"==typeof e&&(e=this.formatStringContent(e)),e},formatStringContent:function(t){return this.options.nl2br?t.replace(/\r\n/g,"<br />").replace(/[\r\n]/g,"<br />"):t},setData:function(t,e){return this.options.data[t]=e,this},getData:function(t){return this.options.data[t]},setId:function(t){return this.options.id=t,this},getId:function(){return this.options.id},getType:function(){return this.options.type},setType:function(t){return this.options.type=t,this.updateType(),this},updateType:function(){if(this.isRealized()){var t=[o.TYPE_DEFAULT,o.TYPE_INFO,o.TYPE_PRIMARY,o.TYPE_SUCCESS,o.TYPE_WARNING,o.TYPE_DANGER];this.getModal().removeClass(t.join(" ")).addClass(this.getType())}return this},getSize:function(){return this.options.size},setSize:function(t){return this.options.size=t,this.updateSize(),this},updateSize:function(){if(this.isRealized()){var e=this;this.getModal().removeClass(o.SIZE_NORMAL).removeClass(o.SIZE_SMALL).removeClass(o.SIZE_WIDE).removeClass(o.SIZE_LARGE),this.getModal().addClass(this.getSize()),this.getModalDialog().removeClass("modal-sm"),this.getSize()===o.SIZE_SMALL&&this.getModalDialog().addClass("modal-sm"),this.getModalDialog().removeClass("modal-lg"),this.getSize()===o.SIZE_WIDE&&this.getModalDialog().addClass("modal-lg"),t.each(this.options.buttons,function(n,o){var i=e.getButton(o.id),s=["btn-lg","btn-sm","btn-xs"],a=!1;if("string"==typeof o.cssClass){var d=o.cssClass.split(" ");t.each(d,function(e,n){-1!==t.inArray(n,s)&&(a=!0)})}a||(i.removeClass(s.join(" ")),i.addClass(e.getButtonSize()))})}return this},getCssClass:function(){return this.options.cssClass},setCssClass:function(t){return this.options.cssClass=t,this},getTitle:function(){return this.options.title},setTitle:function(t){return this.options.title=t,this.updateTitle(),this},updateTitle:function(){if(this.isRealized()){var t=null!==this.getTitle()?this.createDynamicContent(this.getTitle()):this.getDefaultText();this.getModalHeader().find("."+this.getNamespace("title")).html("").append(t).prop("id",this.getId()+"_title")}return this},getMessage:function(){return this.options.message},setMessage:function(t){return this.options.message=t,this.updateMessage(),this},updateMessage:function(){if(this.isRealized()){var t=this.createDynamicContent(this.getMessage());this.getModalBody().find("."+this.getNamespace("message")).html("").append(t)}return this},isClosable:function(){return this.options.closable},setClosable:function(t){return this.options.closable=t,this.updateClosable(),this},setCloseByBackdrop:function(t){return this.options.closeByBackdrop=t,this},canCloseByBackdrop:function(){return this.options.closeByBackdrop},setCloseByKeyboard:function(t){return this.options.closeByKeyboard=t,this},canCloseByKeyboard:function(){return this.options.closeByKeyboard},isAnimate:function(){return this.options.animate},setAnimate:function(t){return this.options.animate=t,this},updateAnimate:function(){return this.isRealized()&&this.getModal().toggleClass("fade",this.isAnimate()),this},getSpinicon:function(){return this.options.spinicon},setSpinicon:function(t){return this.options.spinicon=t,this},addButton:function(t){return this.options.buttons.push(t),this},addButtons:function(e){var n=this;return t.each(e,function(t,e){n.addButton(e)}),this},getButtons:function(){return this.options.buttons},setButtons:function(t){return this.options.buttons=t,this.updateButtons(),this},getButton:function(t){return"undefined"!=typeof this.indexedButtons[t]?this.indexedButtons[t]:null},getButtonSize:function(){return"undefined"!=typeof o.BUTTON_SIZES[this.getSize()]?o.BUTTON_SIZES[this.getSize()]:""},updateButtons:function(){return this.isRealized()&&(0===this.getButtons().length?this.getModalFooter().hide():this.getModalFooter().show().find("."+this.getNamespace("footer")).html("").append(this.createFooterButtons())),this},isAutodestroy:function(){return this.options.autodestroy},setAutodestroy:function(t){this.options.autodestroy=t},getDescription:function(){return this.options.description},setDescription:function(t){return this.options.description=t,this},setTabindex:function(t){return this.options.tabindex=t,this},getTabindex:function(){return this.options.tabindex},updateTabindex:function(){return this.isRealized()&&this.getModal().attr("tabindex",this.getTabindex()),this},getDefaultText:function(){return o.DEFAULT_TEXTS[this.getType()]},getNamespace:function(t){return o.NAMESPACE+"-"+t},createHeaderContent:function(){var e=t("<div></div>");return e.addClass(this.getNamespace("header")),e.append(this.createTitleContent()),e.prepend(this.createCloseButton()),e},createTitleContent:function(){var e=t("<div></div>");return e.addClass(this.getNamespace("title")),e},createCloseButton:function(){var e=t("<div></div>");e.addClass(this.getNamespace("close-button"));var n=t('<button class="close">&times;</button>');return e.append(n),e.on("click",{dialog:this},function(t){t.data.dialog.close()}),e},createBodyContent:function(){var e=t("<div></div>");return e.addClass(this.getNamespace("body")),e.append(this.createMessageContent()),e},createMessageContent:function(){var e=t("<div></div>");return e.addClass(this.getNamespace("message")),e},createFooterContent:function(){var e=t("<div></div>");return e.addClass(this.getNamespace("footer")),e},createFooterButtons:function(){var e=this,n=t("<div></div>");return n.addClass(this.getNamespace("footer-buttons")),this.indexedButtons={},t.each(this.options.buttons,function(t,i){i.id||(i.id=o.newGuid());var s=e.createButton(i);e.indexedButtons[i.id]=s,n.append(s)}),n},createButton:function(e){var n=t('<button class="btn"></button>');return n.prop("id",e.id),n.data("button",e),"undefined"!=typeof e.icon&&""!==t.trim(e.icon)&&n.append(this.createButtonIcon(e.icon)),"undefined"!=typeof e.label&&n.append(e.label),n.addClass("undefined"!=typeof e.cssClass&&""!==t.trim(e.cssClass)?e.cssClass:"btn-default"),"undefined"!=typeof e.hotkey&&(this.registeredButtonHotkeys[e.hotkey]=n),n.on("click",{dialog:this,$button:n,button:e},function(t){var e=t.data.dialog,n=t.data.$button,o=n.data("button");return o.autospin&&n.toggleSpin(!0),"function"==typeof o.action?o.action.call(n,e,t):void 0}),this.enhanceButton(n),"undefined"!=typeof e.enabled&&n.toggleEnable(e.enabled),n},enhanceButton:function(t){return t.dialog=this,t.toggleEnable=function(t){var e=this;return"undefined"!=typeof t?e.prop("disabled",!t).toggleClass("disabled",!t):e.prop("disabled",!e.prop("disabled")),e},t.enable=function(){var t=this;return t.toggleEnable(!0),t},t.disable=function(){var t=this;return t.toggleEnable(!1),t},t.toggleSpin=function(e){var n=this,o=n.dialog,i=n.find("."+o.getNamespace("button-icon"));return"undefined"==typeof e&&(e=!(t.find(".icon-spin").length>0)),e?(i.hide(),t.prepend(o.createButtonIcon(o.getSpinicon()).addClass("icon-spin"))):(i.show(),t.find(".icon-spin").remove()),n},t.spin=function(){var t=this;return t.toggleSpin(!0),t},t.stopSpin=function(){var t=this;return t.toggleSpin(!1),t},this},createButtonIcon:function(e){var n=t("<span></span>");return n.addClass(this.getNamespace("button-icon")).addClass(e),n},enableButtons:function(e){return t.each(this.indexedButtons,function(t,n){n.toggleEnable(e)}),this},updateClosable:function(){return this.isRealized()&&this.getModalHeader().find("."+this.getNamespace("close-button")).toggle(this.isClosable()),this},onShow:function(t){return this.options.onshow=t,this},onShown:function(t){return this.options.onshown=t,this},onHide:function(t){return this.options.onhide=t,this},onHidden:function(t){return this.options.onhidden=t,this},isRealized:function(){return this.realized},setRealized:function(t){return this.realized=t,this},isOpened:function(){return this.opened},setOpened:function(t){return this.opened=t,this},handleModalEvents:function(){return this.getModal().on("show.bs.modal",{dialog:this},function(t){var e=t.data.dialog;if(e.setOpened(!0),e.isModalEvent(t)&&"function"==typeof e.options.onshow){var n=e.options.onshow(e);return n===!1&&e.setOpened(!1),n}}),this.getModal().on("shown.bs.modal",{dialog:this},function(t){var e=t.data.dialog;e.isModalEvent(t)&&"function"==typeof e.options.onshown&&e.options.onshown(e)}),this.getModal().on("hide.bs.modal",{dialog:this},function(t){var e=t.data.dialog;if(e.setOpened(!1),e.isModalEvent(t)&&"function"==typeof e.options.onhide){var n=e.options.onhide(e);return n===!1&&e.setOpened(!0),n}}),this.getModal().on("hidden.bs.modal",{dialog:this},function(e){var n=e.data.dialog;n.isModalEvent(e)&&"function"==typeof n.options.onhidden&&n.options.onhidden(n),n.isAutodestroy()&&(n.setRealized(!1),delete o.dialogs[n.getId()],t(this).remove()),o.moveFocus()}),this.handleModalBackdropEvent(),this.getModal().on("keyup",{dialog:this},function(t){27===t.which&&t.data.dialog.isClosable()&&t.data.dialog.canCloseByKeyboard()&&t.data.dialog.close()}),this.getModal().on("keyup",{dialog:this},function(e){var n=e.data.dialog;if("undefined"!=typeof n.registeredButtonHotkeys[e.which]){var o=t(n.registeredButtonHotkeys[e.which]);!o.prop("disabled")&&o.focus().trigger("click")}}),this},handleModalBackdropEvent:function(){return this.getModal().on("click",{dialog:this},function(e){t(e.target).hasClass("modal-backdrop")&&e.data.dialog.isClosable()&&e.data.dialog.canCloseByBackdrop()&&e.data.dialog.close()}),this},isModalEvent:function(t){return"undefined"!=typeof t.namespace&&"bs.modal"===t.namespace},makeModalDraggable:function(){return this.options.draggable&&(this.getModalHeader().addClass(this.getNamespace("draggable")).on("mousedown",{dialog:this},function(t){var e=t.data.dialog;e.draggableData.isMouseDown=!0;var n=e.getModalDialog().offset();e.draggableData.mouseOffset={top:t.clientY-n.top,left:t.clientX-n.left}}),this.getModal().on("mouseup mouseleave",{dialog:this},function(t){t.data.dialog.draggableData.isMouseDown=!1}),t("body").on("mousemove",{dialog:this},function(t){var e=t.data.dialog;e.draggableData.isMouseDown&&e.getModalDialog().offset({top:t.clientY-e.draggableData.mouseOffset.top,left:t.clientX-e.draggableData.mouseOffset.left})})),this},realize:function(){return this.initModalStuff(),this.getModal().addClass(o.NAMESPACE).addClass(this.getCssClass()),this.updateSize(),this.getDescription()&&this.getModal().attr("aria-describedby",this.getDescription()),this.getModalFooter().append(this.createFooterContent()),this.getModalHeader().append(this.createHeaderContent()),this.getModalBody().append(this.createBodyContent()),this.getModal().data("bs.modal",new n(this.getModal(),{backdrop:"static",keyboard:!1,show:!1})),this.makeModalDraggable(),this.handleModalEvents(),this.setRealized(!0),this.updateButtons(),this.updateType(),this.updateTitle(),this.updateMessage(),this.updateClosable(),this.updateAnimate(),this.updateSize(),this.updateTabindex(),this},open:function(){return!this.isRealized()&&this.realize(),this.getModal().modal("show"),this},close:function(){return!this.isRealized()&&this.realize(),this.getModal().modal("hide"),this}},o.prototype=t.extend(o.prototype,o.METHODS_TO_OVERRIDE[n.getModalVersion()]),o.newGuid=function(){return"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g,function(t){var e=16*Math.random()|0,n="x"===t?e:3&e|8;return n.toString(16)})},o.show=function(t){return new o(t).open()},o.alert=function(){var e={},n={type:o.TYPE_PRIMARY,title:null,message:null,closable:!1,draggable:!1,buttonLabel:o.DEFAULT_TEXTS.OK,callback:null};e="object"==typeof arguments[0]&&arguments[0].constructor==={}.constructor?t.extend(!0,n,arguments[0]):t.extend(!0,n,{message:arguments[0],callback:"undefined"!=typeof arguments[1]?arguments[1]:null});var i=new o(e);return i.setData("callback",e.callback),i.addButton({label:e.buttonLabel,action:function(t){return"function"==typeof t.getData("callback")&&t.getData("callback").call(this,!0)===!1?!1:(t.setData("btnClicked",!0),t.close())}}),i.onHide("function"==typeof i.options.onhide?function(t){var e=!0;return!t.getData("btnClicked")&&t.isClosable()&&"function"==typeof t.getData("callback")&&(e=t.getData("callback")(!1)),e===!1?!1:e=this.onhide(t)}.bind({onhide:i.options.onhide}):function(t){var e=!0;return!t.getData("btnClicked")&&t.isClosable()&&"function"==typeof t.getData("callback")&&(e=t.getData("callback")(!1)),e}),i.open()},o.confirm=function(){var e={},n={type:o.TYPE_PRIMARY,title:null,message:null,closable:!1,draggable:!1,btnCancelLabel:o.DEFAULT_TEXTS.CANCEL,btnCancelClass:null,btnOKLabel:o.DEFAULT_TEXTS.OK,btnOKClass:null,callback:null};e="object"==typeof arguments[0]&&arguments[0].constructor==={}.constructor?t.extend(!0,n,arguments[0]):t.extend(!0,n,{message:arguments[0],callback:"undefined"!=typeof arguments[1]?arguments[1]:null}),null===e.btnOKClass&&(e.btnOKClass=["btn",e.type.split("-")[1]].join("-"));var i=new o(e);return i.setData("callback",e.callback),i.addButton({label:e.btnCancelLabel,cssClass:e.btnCancelClass,action:function(t){return"function"==typeof t.getData("callback")&&t.getData("callback").call(this,!1)===!1?!1:t.close()}}),i.addButton({label:e.btnOKLabel,cssClass:e.btnOKClass,action:function(t){return"function"==typeof t.getData("callback")&&t.getData("callback").call(this,!0)===!1?!1:t.close()}}),i.open()},o.warning=function(t,e){return new o({type:o.TYPE_WARNING,message:t}).open()},o.danger=function(t,e){return new o({type:o.TYPE_DANGER,message:t}).open()},o.success=function(t,e){return new o({type:o.TYPE_SUCCESS,message:t}).open()},o});
+/* Chartist.js 0.9.7
+ * Copyright © 2016 Gion Kunz
+ * Free to use under either the WTFPL license or the MIT license.
+ * https://raw.githubusercontent.com/gionkunz/chartist-js/master/LICENSE-WTFPL
+ * https://raw.githubusercontent.com/gionkunz/chartist-js/master/LICENSE-MIT
+ */
+
+!function(a,b){"function"==typeof define&&define.amd?define([],function(){return a.Chartist=b()}):"object"==typeof exports?module.exports=b():a.Chartist=b()}(this,function(){var a={version:"0.9.7"};return function(a,b,c){"use strict";c.namespaces={svg:"http://www.w3.org/2000/svg",xmlns:"http://www.w3.org/2000/xmlns/",xhtml:"http://www.w3.org/1999/xhtml",xlink:"http://www.w3.org/1999/xlink",ct:"http://gionkunz.github.com/chartist-js/ct"},c.noop=function(a){return a},c.alphaNumerate=function(a){return String.fromCharCode(97+a%26)},c.extend=function(a){a=a||{};var b=Array.prototype.slice.call(arguments,1);return b.forEach(function(b){for(var d in b)"object"!=typeof b[d]||null===b[d]||b[d]instanceof Array?a[d]=b[d]:a[d]=c.extend({},a[d],b[d])}),a},c.replaceAll=function(a,b,c){return a.replace(new RegExp(b,"g"),c)},c.ensureUnit=function(a,b){return"number"==typeof a&&(a+=b),a},c.quantity=function(a){if("string"==typeof a){var b=/^(\d+)\s*(.*)$/g.exec(a);return{value:+b[1],unit:b[2]||void 0}}return{value:a}},c.querySelector=function(a){return a instanceof Node?a:b.querySelector(a)},c.times=function(a){return Array.apply(null,new Array(a))},c.sum=function(a,b){return a+(b?b:0)},c.mapMultiply=function(a){return function(b){return b*a}},c.mapAdd=function(a){return function(b){return b+a}},c.serialMap=function(a,b){var d=[],e=Math.max.apply(null,a.map(function(a){return a.length}));return c.times(e).forEach(function(c,e){var f=a.map(function(a){return a[e]});d[e]=b.apply(null,f)}),d},c.roundWithPrecision=function(a,b){var d=Math.pow(10,b||c.precision);return Math.round(a*d)/d},c.precision=8,c.escapingMap={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"},c.serialize=function(a){return null===a||void 0===a?a:("number"==typeof a?a=""+a:"object"==typeof a&&(a=JSON.stringify({data:a})),Object.keys(c.escapingMap).reduce(function(a,b){return c.replaceAll(a,b,c.escapingMap[b])},a))},c.deserialize=function(a){if("string"!=typeof a)return a;a=Object.keys(c.escapingMap).reduce(function(a,b){return c.replaceAll(a,c.escapingMap[b],b)},a);try{a=JSON.parse(a),a=void 0!==a.data?a.data:a}catch(b){}return a},c.createSvg=function(a,b,d,e){var f;return b=b||"100%",d=d||"100%",Array.prototype.slice.call(a.querySelectorAll("svg")).filter(function(a){return a.getAttributeNS(c.namespaces.xmlns,"ct")}).forEach(function(b){a.removeChild(b)}),f=new c.Svg("svg").attr({width:b,height:d}).addClass(e).attr({style:"width: "+b+"; height: "+d+";"}),a.appendChild(f._node),f},c.normalizeData=function(a){if(a=a||{series:[],labels:[]},a.series=a.series||[],a.labels=a.labels||[],a.series.length>0&&0===a.labels.length){var b,d=c.getDataArray(a);b=d.every(function(a){return a instanceof Array})?Math.max.apply(null,d.map(function(a){return a.length})):d.length,a.labels=c.times(b).map(function(){return""})}return a},c.reverseData=function(a){a.labels.reverse(),a.series.reverse();for(var b=0;b<a.series.length;b++)"object"==typeof a.series[b]&&void 0!==a.series[b].data?a.series[b].data.reverse():a.series[b]instanceof Array&&a.series[b].reverse()},c.getDataArray=function(a,b,d){function e(a){if(!c.isFalseyButZero(a)){if((a.data||a)instanceof Array)return(a.data||a).map(e);if(a.hasOwnProperty("value"))return e(a.value);if(d){var b={};return"string"==typeof d?b[d]=c.getNumberOrUndefined(a):b.y=c.getNumberOrUndefined(a),b.x=a.hasOwnProperty("x")?c.getNumberOrUndefined(a.x):b.x,b.y=a.hasOwnProperty("y")?c.getNumberOrUndefined(a.y):b.y,b}return c.getNumberOrUndefined(a)}}return(b&&!a.reversed||!b&&a.reversed)&&(c.reverseData(a),a.reversed=!a.reversed),a.series.map(e)},c.normalizePadding=function(a,b){return b=b||0,"number"==typeof a?{top:a,right:a,bottom:a,left:a}:{top:"number"==typeof a.top?a.top:b,right:"number"==typeof a.right?a.right:b,bottom:"number"==typeof a.bottom?a.bottom:b,left:"number"==typeof a.left?a.left:b}},c.getMetaData=function(a,b){var d=a.data?a.data[b]:a[b];return d?c.serialize(d.meta):void 0},c.orderOfMagnitude=function(a){return Math.floor(Math.log(Math.abs(a))/Math.LN10)},c.projectLength=function(a,b,c){return b/c.range*a},c.getAvailableHeight=function(a,b){return Math.max((c.quantity(b.height).value||a.height())-(b.chartPadding.top+b.chartPadding.bottom)-b.axisX.offset,0)},c.getHighLow=function(a,b,d){function e(a){if(void 0!==a)if(a instanceof Array)for(var b=0;b<a.length;b++)e(a[b]);else{var c=d?+a[d]:+a;g&&c>f.high&&(f.high=c),h&&c<f.low&&(f.low=c)}}b=c.extend({},b,d?b["axis"+d.toUpperCase()]:{});var f={high:void 0===b.high?-Number.MAX_VALUE:+b.high,low:void 0===b.low?Number.MAX_VALUE:+b.low},g=void 0===b.high,h=void 0===b.low;return(g||h)&&e(a),(b.referenceValue||0===b.referenceValue)&&(f.high=Math.max(b.referenceValue,f.high),f.low=Math.min(b.referenceValue,f.low)),f.high<=f.low&&(0===f.low?f.high=1:f.low<0?f.high=0:f.high>0?f.low=0:(f.high=1,f.low=0)),f},c.isNum=function(a){return!isNaN(a)&&isFinite(a)},c.isFalseyButZero=function(a){return!a&&0!==a},c.getNumberOrUndefined=function(a){return isNaN(+a)?void 0:+a},c.getMultiValue=function(a,b){return c.isNum(a)?+a:a?a[b||"y"]||0:0},c.rho=function(a){function b(a,c){return a%c===0?c:b(c,a%c)}function c(a){return a*a+1}if(1===a)return a;var d,e=2,f=2;if(a%2===0)return 2;do e=c(e)%a,f=c(c(f))%a,d=b(Math.abs(e-f),a);while(1===d);return d},c.getBounds=function(a,b,d,e){var f,g,h,i=0,j={high:b.high,low:b.low};j.valueRange=j.high-j.low,j.oom=c.orderOfMagnitude(j.valueRange),j.step=Math.pow(10,j.oom),j.min=Math.floor(j.low/j.step)*j.step,j.max=Math.ceil(j.high/j.step)*j.step,j.range=j.max-j.min,j.numberOfSteps=Math.round(j.range/j.step);var k=c.projectLength(a,j.step,j),l=d>k,m=e?c.rho(j.range):0;if(e&&c.projectLength(a,1,j)>=d)j.step=1;else if(e&&m<j.step&&c.projectLength(a,m,j)>=d)j.step=m;else for(;;){if(l&&c.projectLength(a,j.step,j)<=d)j.step*=2;else{if(l||!(c.projectLength(a,j.step/2,j)>=d))break;if(j.step/=2,e&&j.step%1!==0){j.step*=2;break}}if(i++>1e3)throw new Error("Exceeded maximum number of iterations while optimizing scale step!")}for(g=j.min,h=j.max;g+j.step<=j.low;)g+=j.step;for(;h-j.step>=j.high;)h-=j.step;for(j.min=g,j.max=h,j.range=j.max-j.min,j.values=[],f=j.min;f<=j.max;f+=j.step)j.values.push(c.roundWithPrecision(f));return j},c.polarToCartesian=function(a,b,c,d){var e=(d-90)*Math.PI/180;return{x:a+c*Math.cos(e),y:b+c*Math.sin(e)}},c.createChartRect=function(a,b,d){var e=!(!b.axisX&&!b.axisY),f=e?b.axisY.offset:0,g=e?b.axisX.offset:0,h=a.width()||c.quantity(b.width).value||0,i=a.height()||c.quantity(b.height).value||0,j=c.normalizePadding(b.chartPadding,d);h=Math.max(h,f+j.left+j.right),i=Math.max(i,g+j.top+j.bottom);var k={padding:j,width:function(){return this.x2-this.x1},height:function(){return this.y1-this.y2}};return e?("start"===b.axisX.position?(k.y2=j.top+g,k.y1=Math.max(i-j.bottom,k.y2+1)):(k.y2=j.top,k.y1=Math.max(i-j.bottom-g,k.y2+1)),"start"===b.axisY.position?(k.x1=j.left+f,k.x2=Math.max(h-j.right,k.x1+1)):(k.x1=j.left,k.x2=Math.max(h-j.right-f,k.x1+1))):(k.x1=j.left,k.x2=Math.max(h-j.right,k.x1+1),k.y2=j.top,k.y1=Math.max(i-j.bottom,k.y2+1)),k},c.createGrid=function(a,b,d,e,f,g,h,i){var j={};j[d.units.pos+"1"]=a,j[d.units.pos+"2"]=a,j[d.counterUnits.pos+"1"]=e,j[d.counterUnits.pos+"2"]=e+f;var k=g.elem("line",j,h.join(" "));i.emit("draw",c.extend({type:"grid",axis:d,index:b,group:g,element:k},j))},c.createLabel=function(a,b,d,e,f,g,h,i,j,k,l){var m,n={};if(n[f.units.pos]=a+h[f.units.pos],n[f.counterUnits.pos]=h[f.counterUnits.pos],n[f.units.len]=b,n[f.counterUnits.len]=g-10,k){var o='<span class="'+j.join(" ")+'" style="'+f.units.len+": "+Math.round(n[f.units.len])+"px; "+f.counterUnits.len+": "+Math.round(n[f.counterUnits.len])+'px">'+e[d]+"</span>";m=i.foreignObject(o,c.extend({style:"overflow: visible;"},n))}else m=i.elem("text",n,j.join(" ")).text(e[d]);l.emit("draw",c.extend({type:"label",axis:f,index:d,group:i,element:m,text:e[d]},n))},c.getSeriesOption=function(a,b,c){if(a.name&&b.series&&b.series[a.name]){var d=b.series[a.name];return d.hasOwnProperty(c)?d[c]:b[c]}return b[c]},c.optionsProvider=function(b,d,e){function f(b){var f=h;if(h=c.extend({},j),d)for(i=0;i<d.length;i++){var g=a.matchMedia(d[i][0]);g.matches&&(h=c.extend(h,d[i][1]))}e&&!b&&e.emit("optionsChanged",{previousOptions:f,currentOptions:h})}function g(){k.forEach(function(a){a.removeListener(f)})}var h,i,j=c.extend({},b),k=[];if(!a.matchMedia)throw"window.matchMedia not found! Make sure you're using a polyfill.";if(d)for(i=0;i<d.length;i++){var l=a.matchMedia(d[i][0]);l.addListener(f),k.push(l)}return f(!0),{removeMediaQueryListeners:g,getCurrentOptions:function(){return c.extend({},h)}}}}(window,document,a),function(a,b,c){"use strict";c.Interpolation={},c.Interpolation.none=function(a){var b={fillHoles:!1};return a=c.extend({},b,a),function(b,d){for(var e=new c.Svg.Path,f=!0,g=0;g<b.length;g+=2){var h=b[g],i=b[g+1],j=d[g/2];void 0!==j.value?(f?e.move(h,i,!1,j):e.line(h,i,!1,j),f=!1):a.fillHoles||(f=!0)}return e}},c.Interpolation.simple=function(a){var b={divisor:2,fillHoles:!1};a=c.extend({},b,a);var d=1/Math.max(1,a.divisor);return function(b,e){for(var f,g,h,i=new c.Svg.Path,j=0;j<b.length;j+=2){var k=b[j],l=b[j+1],m=(k-f)*d,n=e[j/2];void 0!==n.value?(void 0===h?i.move(k,l,!1,n):i.curve(f+m,g,k-m,l,k,l,!1,n),f=k,g=l,h=n):a.fillHoles||(f=k=h=void 0)}return i}},c.Interpolation.cardinal=function(a){function b(b,c){for(var d=[],e=!0,f=0;f<b.length;f+=2)void 0===c[f/2].value?a.fillHoles||(e=!0):(e&&(d.push({pathCoordinates:[],valueData:[]}),e=!1),d[d.length-1].pathCoordinates.push(b[f],b[f+1]),d[d.length-1].valueData.push(c[f/2]));return d}var d={tension:1,fillHoles:!1};a=c.extend({},d,a);var e=Math.min(1,Math.max(0,a.tension)),f=1-e;return function g(a,d){var h=b(a,d);if(h.length){if(h.length>1){var i=[];return h.forEach(function(a){i.push(g(a.pathCoordinates,a.valueData))}),c.Svg.Path.join(i)}if(a=h[0].pathCoordinates,d=h[0].valueData,a.length<=4)return c.Interpolation.none()(a,d);for(var j,k=(new c.Svg.Path).move(a[0],a[1],!1,d[0]),l=0,m=a.length;m-2*!j>l;l+=2){var n=[{x:+a[l-2],y:+a[l-1]},{x:+a[l],y:+a[l+1]},{x:+a[l+2],y:+a[l+3]},{x:+a[l+4],y:+a[l+5]}];j?l?m-4===l?n[3]={x:+a[0],y:+a[1]}:m-2===l&&(n[2]={x:+a[0],y:+a[1]},n[3]={x:+a[2],y:+a[3]}):n[0]={x:+a[m-2],y:+a[m-1]}:m-4===l?n[3]=n[2]:l||(n[0]={x:+a[l],y:+a[l+1]}),k.curve(e*(-n[0].x+6*n[1].x+n[2].x)/6+f*n[2].x,e*(-n[0].y+6*n[1].y+n[2].y)/6+f*n[2].y,e*(n[1].x+6*n[2].x-n[3].x)/6+f*n[2].x,e*(n[1].y+6*n[2].y-n[3].y)/6+f*n[2].y,n[2].x,n[2].y,!1,d[(l+2)/2])}return k}return c.Interpolation.none()([])}},c.Interpolation.step=function(a){var b={postpone:!0,fillHoles:!1};return a=c.extend({},b,a),function(b,d){for(var e,f,g,h=new c.Svg.Path,i=0;i<b.length;i+=2){var j=b[i],k=b[i+1],l=d[i/2];void 0!==l.value?(void 0===g?h.move(j,k,!1,l):(a.postpone?h.line(j,f,!1,g):h.line(e,k,!1,l),h.line(j,k,!1,l)),e=j,f=k,g=l):a.fillHoles||(e=f=g=void 0)}return h}}}(window,document,a),function(a,b,c){"use strict";c.EventEmitter=function(){function a(a,b){d[a]=d[a]||[],d[a].push(b)}function b(a,b){d[a]&&(b?(d[a].splice(d[a].indexOf(b),1),0===d[a].length&&delete d[a]):delete d[a])}function c(a,b){d[a]&&d[a].forEach(function(a){a(b)}),d["*"]&&d["*"].forEach(function(c){c(a,b)})}var d=[];return{addEventHandler:a,removeEventHandler:b,emit:c}}}(window,document,a),function(a,b,c){"use strict";function d(a){var b=[];if(a.length)for(var c=0;c<a.length;c++)b.push(a[c]);return b}function e(a,b){var d=b||this.prototype||c.Class,e=Object.create(d);c.Class.cloneDefinitions(e,a);var f=function(){var a,b=e.constructor||function(){};return a=this===c?Object.create(e):this,b.apply(a,Array.prototype.slice.call(arguments,0)),a};return f.prototype=e,f["super"]=d,f.extend=this.extend,f}function f(){var a=d(arguments),b=a[0];return a.splice(1,a.length-1).forEach(function(a){Object.getOwnPropertyNames(a).forEach(function(c){delete b[c],Object.defineProperty(b,c,Object.getOwnPropertyDescriptor(a,c))})}),b}c.Class={extend:e,cloneDefinitions:f}}(window,document,a),function(a,b,c){"use strict";function d(a,b,d){return a&&(this.data=a,this.eventEmitter.emit("data",{type:"update",data:this.data})),b&&(this.options=c.extend({},d?this.options:this.defaultOptions,b),this.initializeTimeoutId||(this.optionsProvider.removeMediaQueryListeners(),this.optionsProvider=c.optionsProvider(this.options,this.responsiveOptions,this.eventEmitter))),this.initializeTimeoutId||this.createChart(this.optionsProvider.getCurrentOptions()),this}function e(){return this.initializeTimeoutId?a.clearTimeout(this.initializeTimeoutId):(a.removeEventListener("resize",this.resizeListener),this.optionsProvider.removeMediaQueryListeners()),this}function f(a,b){return this.eventEmitter.addEventHandler(a,b),this}function g(a,b){return this.eventEmitter.removeEventHandler(a,b),this}function h(){a.addEventListener("resize",this.resizeListener),this.optionsProvider=c.optionsProvider(this.options,this.responsiveOptions,this.eventEmitter),this.eventEmitter.addEventHandler("optionsChanged",function(){this.update()}.bind(this)),this.options.plugins&&this.options.plugins.forEach(function(a){a instanceof Array?a[0](this,a[1]):a(this)}.bind(this)),this.eventEmitter.emit("data",{type:"initial",data:this.data}),this.createChart(this.optionsProvider.getCurrentOptions()),this.initializeTimeoutId=void 0}function i(a,b,d,e,f){this.container=c.querySelector(a),this.data=b,this.defaultOptions=d,this.options=e,this.responsiveOptions=f,this.eventEmitter=c.EventEmitter(),this.supportsForeignObject=c.Svg.isSupported("Extensibility"),this.supportsAnimations=c.Svg.isSupported("AnimationEventsAttribute"),this.resizeListener=function(){this.update()}.bind(this),this.container&&(this.container.__chartist__&&this.container.__chartist__.detach(),this.container.__chartist__=this),this.initializeTimeoutId=setTimeout(h.bind(this),0)}c.Base=c.Class.extend({constructor:i,optionsProvider:void 0,container:void 0,svg:void 0,eventEmitter:void 0,createChart:function(){throw new Error("Base chart type can't be instantiated!")},update:d,detach:e,on:f,off:g,version:c.version,supportsForeignObject:!1})}(window,document,a),function(a,b,c){"use strict";function d(a,d,e,f,g){a instanceof Element?this._node=a:(this._node=b.createElementNS(c.namespaces.svg,a),"svg"===a&&this.attr({"xmlns:ct":c.namespaces.ct})),d&&this.attr(d),e&&this.addClass(e),f&&(g&&f._node.firstChild?f._node.insertBefore(this._node,f._node.firstChild):f._node.appendChild(this._node))}function e(a,b){return"string"==typeof a?b?this._node.getAttributeNS(b,a):this._node.getAttribute(a):(Object.keys(a).forEach(function(b){if(void 0!==a[b])if(-1!==b.indexOf(":")){var d=b.split(":");this._node.setAttributeNS(c.namespaces[d[0]],b,a[b])}else this._node.setAttribute(b,a[b])}.bind(this)),this)}function f(a,b,d,e){return new c.Svg(a,b,d,this,e)}function g(){return this._node.parentNode instanceof SVGElement?new c.Svg(this._node.parentNode):null}function h(){for(var a=this._node;"svg"!==a.nodeName;)a=a.parentNode;return new c.Svg(a)}function i(a){var b=this._node.querySelector(a);return b?new c.Svg(b):null}function j(a){var b=this._node.querySelectorAll(a);return b.length?new c.Svg.List(b):null}function k(a,d,e,f){if("string"==typeof a){var g=b.createElement("div");g.innerHTML=a,a=g.firstChild}a.setAttribute("xmlns",c.namespaces.xmlns);var h=this.elem("foreignObject",d,e,f);return h._node.appendChild(a),h}function l(a){return this._node.appendChild(b.createTextNode(a)),this}function m(){for(;this._node.firstChild;)this._node.removeChild(this._node.firstChild);return this}function n(){return this._node.parentNode.removeChild(this._node),this.parent()}function o(a){return this._node.parentNode.replaceChild(a._node,this._node),a}function p(a,b){return b&&this._node.firstChild?this._node.insertBefore(a._node,this._node.firstChild):this._node.appendChild(a._node),this}function q(){return this._node.getAttribute("class")?this._node.getAttribute("class").trim().split(/\s+/):[]}function r(a){return this._node.setAttribute("class",this.classes(this._node).concat(a.trim().split(/\s+/)).filter(function(a,b,c){return c.indexOf(a)===b}).join(" ")),this}function s(a){var b=a.trim().split(/\s+/);return this._node.setAttribute("class",this.classes(this._node).filter(function(a){return-1===b.indexOf(a)}).join(" ")),this}function t(){return this._node.setAttribute("class",""),this}function u(){return this._node.getBoundingClientRect().height}function v(){return this._node.getBoundingClientRect().width}function w(a,b,d){return void 0===b&&(b=!0),Object.keys(a).forEach(function(e){function f(a,b){var f,g,h,i={};a.easing&&(h=a.easing instanceof Array?a.easing:c.Svg.Easing[a.easing],delete a.easing),a.begin=c.ensureUnit(a.begin,"ms"),a.dur=c.ensureUnit(a.dur,"ms"),h&&(a.calcMode="spline",a.keySplines=h.join(" "),a.keyTimes="0;1"),b&&(a.fill="freeze",i[e]=a.from,this.attr(i),g=c.quantity(a.begin||0).value,a.begin="indefinite"),f=this.elem("animate",c.extend({attributeName:e},a)),b&&setTimeout(function(){try{f._node.beginElement()}catch(b){i[e]=a.to,this.attr(i),f.remove()}}.bind(this),g),d&&f._node.addEventListener("beginEvent",function(){d.emit("animationBegin",{element:this,animate:f._node,params:a})}.bind(this)),f._node.addEventListener("endEvent",function(){d&&d.emit("animationEnd",{element:this,animate:f._node,params:a}),b&&(i[e]=a.to,this.attr(i),f.remove())}.bind(this))}a[e]instanceof Array?a[e].forEach(function(a){f.bind(this)(a,!1)}.bind(this)):f.bind(this)(a[e],b)}.bind(this)),this}function x(a){var b=this;this.svgElements=[];for(var d=0;d<a.length;d++)this.svgElements.push(new c.Svg(a[d]));Object.keys(c.Svg.prototype).filter(function(a){return-1===["constructor","parent","querySelector","querySelectorAll","replace","append","classes","height","width"].indexOf(a)}).forEach(function(a){b[a]=function(){var d=Array.prototype.slice.call(arguments,0);return b.svgElements.forEach(function(b){c.Svg.prototype[a].apply(b,d)}),b}})}c.Svg=c.Class.extend({constructor:d,attr:e,elem:f,parent:g,root:h,querySelector:i,querySelectorAll:j,foreignObject:k,text:l,empty:m,remove:n,replace:o,append:p,classes:q,addClass:r,removeClass:s,removeAllClasses:t,height:u,width:v,animate:w}),c.Svg.isSupported=function(a){return b.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#"+a,"1.1")};var y={easeInSine:[.47,0,.745,.715],easeOutSine:[.39,.575,.565,1],easeInOutSine:[.445,.05,.55,.95],easeInQuad:[.55,.085,.68,.53],easeOutQuad:[.25,.46,.45,.94],easeInOutQuad:[.455,.03,.515,.955],easeInCubic:[.55,.055,.675,.19],easeOutCubic:[.215,.61,.355,1],easeInOutCubic:[.645,.045,.355,1],easeInQuart:[.895,.03,.685,.22],easeOutQuart:[.165,.84,.44,1],easeInOutQuart:[.77,0,.175,1],easeInQuint:[.755,.05,.855,.06],easeOutQuint:[.23,1,.32,1],easeInOutQuint:[.86,0,.07,1],easeInExpo:[.95,.05,.795,.035],easeOutExpo:[.19,1,.22,1],easeInOutExpo:[1,0,0,1],easeInCirc:[.6,.04,.98,.335],easeOutCirc:[.075,.82,.165,1],easeInOutCirc:[.785,.135,.15,.86],easeInBack:[.6,-.28,.735,.045],easeOutBack:[.175,.885,.32,1.275],easeInOutBack:[.68,-.55,.265,1.55]};c.Svg.Easing=y,c.Svg.List=c.Class.extend({constructor:x})}(window,document,a),function(a,b,c){"use strict";function d(a,b,d,e,f,g){var h=c.extend({command:f?a.toLowerCase():a.toUpperCase()},b,g?{data:g}:{});d.splice(e,0,h)}function e(a,b){a.forEach(function(c,d){u[c.command.toLowerCase()].forEach(function(e,f){b(c,e,d,f,a)})})}function f(a,b){this.pathElements=[],this.pos=0,this.close=a,this.options=c.extend({},v,b)}function g(a){return void 0!==a?(this.pos=Math.max(0,Math.min(this.pathElements.length,a)),this):this.pos}function h(a){return this.pathElements.splice(this.pos,a),this}function i(a,b,c,e){return d("M",{x:+a,y:+b},this.pathElements,this.pos++,c,e),this}function j(a,b,c,e){return d("L",{x:+a,y:+b},this.pathElements,this.pos++,c,e),this}function k(a,b,c,e,f,g,h,i){return d("C",{x1:+a,y1:+b,x2:+c,y2:+e,x:+f,y:+g},this.pathElements,this.pos++,h,i),this}function l(a,b,c,e,f,g,h,i,j){return d("A",{rx:+a,ry:+b,xAr:+c,lAf:+e,sf:+f,x:+g,y:+h},this.pathElements,this.pos++,i,j),this}function m(a){var b=a.replace(/([A-Za-z])([0-9])/g,"$1 $2").replace(/([0-9])([A-Za-z])/g,"$1 $2").split(/[\s,]+/).reduce(function(a,b){return b.match(/[A-Za-z]/)&&a.push([]),a[a.length-1].push(b),a},[]);"Z"===b[b.length-1][0].toUpperCase()&&b.pop();var d=b.map(function(a){var b=a.shift(),d=u[b.toLowerCase()];return c.extend({command:b},d.reduce(function(b,c,d){return b[c]=+a[d],b},{}))}),e=[this.pos,0];return Array.prototype.push.apply(e,d),Array.prototype.splice.apply(this.pathElements,e),this.pos+=d.length,this}function n(){var a=Math.pow(10,this.options.accuracy);return this.pathElements.reduce(function(b,c){var d=u[c.command.toLowerCase()].map(function(b){return this.options.accuracy?Math.round(c[b]*a)/a:c[b]}.bind(this));return b+c.command+d.join(",")}.bind(this),"")+(this.close?"Z":"")}function o(a,b){return e(this.pathElements,function(c,d){c[d]*="x"===d[0]?a:b}),this}function p(a,b){return e(this.pathElements,function(c,d){c[d]+="x"===d[0]?a:b}),this}function q(a){return e(this.pathElements,function(b,c,d,e,f){var g=a(b,c,d,e,f);(g||0===g)&&(b[c]=g)}),this}function r(a){var b=new c.Svg.Path(a||this.close);return b.pos=this.pos,b.pathElements=this.pathElements.slice().map(function(a){return c.extend({},a)}),b.options=c.extend({},this.options),b}function s(a){var b=[new c.Svg.Path];return this.pathElements.forEach(function(d){d.command===a.toUpperCase()&&0!==b[b.length-1].pathElements.length&&b.push(new c.Svg.Path),b[b.length-1].pathElements.push(d)}),b}function t(a,b,d){for(var e=new c.Svg.Path(b,d),f=0;f<a.length;f++)for(var g=a[f],h=0;h<g.pathElements.length;h++)e.pathElements.push(g.pathElements[h]);return e}var u={m:["x","y"],l:["x","y"],c:["x1","y1","x2","y2","x","y"],a:["rx","ry","xAr","lAf","sf","x","y"]},v={accuracy:3};c.Svg.Path=c.Class.extend({constructor:f,position:g,remove:h,move:i,line:j,curve:k,arc:l,scale:o,translate:p,transform:q,parse:m,stringify:n,clone:r,splitByCommand:s}),c.Svg.Path.elementDescriptions=u,c.Svg.Path.join=t}(window,document,a),function(a,b,c){"use strict";function d(a,b,c,d){this.units=a,this.counterUnits=a===f.x?f.y:f.x,this.chartRect=b,this.axisLength=b[a.rectEnd]-b[a.rectStart],this.gridOffset=b[a.rectOffset],this.ticks=c,this.options=d}function e(a,b,d,e,f){var g=e["axis"+this.units.pos.toUpperCase()],h=this.ticks.map(this.projectValue.bind(this)),i=this.ticks.map(g.labelInterpolationFnc);h.forEach(function(j,k){var l,m={x:0,y:0};l=h[k+1]?h[k+1]-j:Math.max(this.axisLength-j,30),c.isFalseyButZero(i[k])&&""!==i[k]||("x"===this.units.pos?(j=this.chartRect.x1+j,m.x=e.axisX.labelOffset.x,"start"===e.axisX.position?m.y=this.chartRect.padding.top+e.axisX.labelOffset.y+(d?5:20):m.y=this.chartRect.y1+e.axisX.labelOffset.y+(d?5:20)):(j=this.chartRect.y1-j,m.y=e.axisY.labelOffset.y-(d?l:0),"start"===e.axisY.position?m.x=d?this.chartRect.padding.left+e.axisY.labelOffset.x:this.chartRect.x1-10:m.x=this.chartRect.x2+e.axisY.labelOffset.x+10),g.showGrid&&c.createGrid(j,k,this,this.gridOffset,this.chartRect[this.counterUnits.len](),a,[e.classNames.grid,e.classNames[this.units.dir]],f),g.showLabel&&c.createLabel(j,l,k,i,this,g.offset,m,b,[e.classNames.label,e.classNames[this.units.dir],e.classNames[g.position]],d,f))}.bind(this))}var f={x:{pos:"x",len:"width",dir:"horizontal",rectStart:"x1",rectEnd:"x2",rectOffset:"y2"},y:{pos:"y",len:"height",dir:"vertical",rectStart:"y2",rectEnd:"y1",rectOffset:"x1"}};c.Axis=c.Class.extend({constructor:d,createGridAndLabels:e,projectValue:function(a,b,c){throw new Error("Base axis can't be instantiated!")}}),c.Axis.units=f}(window,document,a),function(a,b,c){"use strict";function d(a,b,d,e){var f=e.highLow||c.getHighLow(b.normalized,e,a.pos);this.bounds=c.getBounds(d[a.rectEnd]-d[a.rectStart],f,e.scaleMinSpace||20,e.onlyInteger),this.range={min:this.bounds.min,max:this.bounds.max},c.AutoScaleAxis["super"].constructor.call(this,a,d,this.bounds.values,e)}function e(a){return this.axisLength*(+c.getMultiValue(a,this.units.pos)-this.bounds.min)/this.bounds.range}c.AutoScaleAxis=c.Axis.extend({constructor:d,projectValue:e})}(window,document,a),function(a,b,c){"use strict";function d(a,b,d,e){var f=e.highLow||c.getHighLow(b.normalized,e,a.pos);this.divisor=e.divisor||1,this.ticks=e.ticks||c.times(this.divisor).map(function(a,b){return f.low+(f.high-f.low)/this.divisor*b}.bind(this)),this.ticks.sort(function(a,b){return a-b}),this.range={min:f.low,max:f.high},c.FixedScaleAxis["super"].constructor.call(this,a,d,this.ticks,e),this.stepLength=this.axisLength/this.divisor}function e(a){return this.axisLength*(+c.getMultiValue(a,this.units.pos)-this.range.min)/(this.range.max-this.range.min)}c.FixedScaleAxis=c.Axis.extend({constructor:d,projectValue:e})}(window,document,a),function(a,b,c){"use strict";function d(a,b,d,e){c.StepAxis["super"].constructor.call(this,a,d,e.ticks,e),this.stepLength=this.axisLength/(e.ticks.length-(e.stretch?1:0))}function e(a,b){return this.stepLength*b}c.StepAxis=c.Axis.extend({constructor:d,projectValue:e})}(window,document,a),function(a,b,c){"use strict";function d(a){this.data=c.normalizeData(this.data);var b={raw:this.data,normalized:c.getDataArray(this.data,a.reverseData,!0)};this.svg=c.createSvg(this.container,a.width,a.height,a.classNames.chart);var d,e,g=this.svg.elem("g").addClass(a.classNames.gridGroup),h=this.svg.elem("g"),i=this.svg.elem("g").addClass(a.classNames.labelGroup),j=c.createChartRect(this.svg,a,f.padding);d=void 0===a.axisX.type?new c.StepAxis(c.Axis.units.x,b,j,c.extend({},a.axisX,{ticks:b.raw.labels,stretch:a.fullWidth})):a.axisX.type.call(c,c.Axis.units.x,b,j,a.axisX),e=void 0===a.axisY.type?new c.AutoScaleAxis(c.Axis.units.y,b,j,c.extend({},a.axisY,{high:c.isNum(a.high)?a.high:a.axisY.high,low:c.isNum(a.low)?a.low:a.axisY.low})):a.axisY.type.call(c,c.Axis.units.y,b,j,a.axisY),d.createGridAndLabels(g,i,this.supportsForeignObject,a,this.eventEmitter),e.createGridAndLabels(g,i,this.supportsForeignObject,a,this.eventEmitter),b.raw.series.forEach(function(f,g){var i=h.elem("g");i.attr({"ct:series-name":f.name,"ct:meta":c.serialize(f.meta)}),i.addClass([a.classNames.series,f.className||a.classNames.series+"-"+c.alphaNumerate(g)].join(" "));var k=[],l=[];b.normalized[g].forEach(function(a,h){var i={x:j.x1+d.projectValue(a,h,b.normalized[g]),y:j.y1-e.projectValue(a,h,b.normalized[g])};k.push(i.x,i.y),l.push({value:a,valueIndex:h,meta:c.getMetaData(f,h)})}.bind(this));var m={lineSmooth:c.getSeriesOption(f,a,"lineSmooth"),showPoint:c.getSeriesOption(f,a,"showPoint"),showLine:c.getSeriesOption(f,a,"showLine"),showArea:c.getSeriesOption(f,a,"showArea"),areaBase:c.getSeriesOption(f,a,"areaBase")},n="function"==typeof m.lineSmooth?m.lineSmooth:m.lineSmooth?c.Interpolation.cardinal():c.Interpolation.none(),o=n(k,l);if(m.showPoint&&o.pathElements.forEach(function(b){var h=i.elem("line",{x1:b.x,y1:b.y,x2:b.x+.01,y2:b.y},a.classNames.point).attr({"ct:value":[b.data.value.x,b.data.value.y].filter(c.isNum).join(","),"ct:meta":b.data.meta});this.eventEmitter.emit("draw",{type:"point",value:b.data.value,index:b.data.valueIndex,meta:b.data.meta,series:f,seriesIndex:g,axisX:d,axisY:e,group:i,element:h,x:b.x,y:b.y})}.bind(this)),m.showLine){var p=i.elem("path",{d:o.stringify()},a.classNames.line,!0);this.eventEmitter.emit("draw",{type:"line",values:b.normalized[g],path:o.clone(),chartRect:j,index:g,series:f,seriesIndex:g,axisX:d,axisY:e,group:i,element:p})}if(m.showArea&&e.range){var q=Math.max(Math.min(m.areaBase,e.range.max),e.range.min),r=j.y1-e.projectValue(q);o.splitByCommand("M").filter(function(a){return a.pathElements.length>1}).map(function(a){var b=a.pathElements[0],c=a.pathElements[a.pathElements.length-1];return a.clone(!0).position(0).remove(1).move(b.x,r).line(b.x,b.y).position(a.pathElements.length+1).line(c.x,r)}).forEach(function(c){var h=i.elem("path",{d:c.stringify()},a.classNames.area,!0);this.eventEmitter.emit("draw",{type:"area",values:b.normalized[g],path:c.clone(),series:f,seriesIndex:g,axisX:d,axisY:e,chartRect:j,index:g,group:i,element:h})}.bind(this))}}.bind(this)),this.eventEmitter.emit("created",{bounds:e.bounds,chartRect:j,axisX:d,axisY:e,svg:this.svg,options:a})}function e(a,b,d,e){c.Line["super"].constructor.call(this,a,b,f,c.extend({},f,d),e)}var f={axisX:{offset:30,position:"end",labelOffset:{x:0,y:0},showLabel:!0,showGrid:!0,labelInterpolationFnc:c.noop,type:void 0},axisY:{offset:40,position:"start",labelOffset:{x:0,y:0},showLabel:!0,showGrid:!0,labelInterpolationFnc:c.noop,type:void 0,scaleMinSpace:20,onlyInteger:!1},width:void 0,height:void 0,showLine:!0,showPoint:!0,showArea:!1,areaBase:0,lineSmooth:!0,low:void 0,high:void 0,chartPadding:{top:15,right:15,bottom:5,left:10},fullWidth:!1,reverseData:!1,classNames:{chart:"ct-chart-line",label:"ct-label",labelGroup:"ct-labels",series:"ct-series",line:"ct-line",point:"ct-point",area:"ct-area",grid:"ct-grid",gridGroup:"ct-grids",vertical:"ct-vertical",horizontal:"ct-horizontal",start:"ct-start",end:"ct-end"}};c.Line=c.Base.extend({constructor:e,createChart:d})}(window,document,a),function(a,b,c){"use strict";function d(a){this.data=c.normalizeData(this.data);var b,d={raw:this.data,normalized:a.distributeSeries?c.getDataArray(this.data,a.reverseData,a.horizontalBars?"x":"y").map(function(a){return[a]}):c.getDataArray(this.data,a.reverseData,a.horizontalBars?"x":"y")};this.svg=c.createSvg(this.container,a.width,a.height,a.classNames.chart+(a.horizontalBars?" "+a.classNames.horizontalBars:""));var e=this.svg.elem("g").addClass(a.classNames.gridGroup),g=this.svg.elem("g"),h=this.svg.elem("g").addClass(a.classNames.labelGroup);if(a.stackBars&&0!==d.normalized.length){var i=c.serialMap(d.normalized,function(){return Array.prototype.slice.call(arguments).map(function(a){return a}).reduce(function(a,b){return{x:a.x+(b&&b.x)||0,y:a.y+(b&&b.y)||0}},{x:0,y:0})});b=c.getHighLow([i],c.extend({},a,{referenceValue:0}),a.horizontalBars?"x":"y")}else b=c.getHighLow(d.normalized,c.extend({},a,{referenceValue:0}),a.horizontalBars?"x":"y");b.high=+a.high||(0===a.high?0:b.high),b.low=+a.low||(0===a.low?0:b.low);var j,k,l,m,n,o=c.createChartRect(this.svg,a,f.padding);k=a.distributeSeries&&a.stackBars?d.raw.labels.slice(0,1):d.raw.labels,a.horizontalBars?(j=m=void 0===a.axisX.type?new c.AutoScaleAxis(c.Axis.units.x,d,o,c.extend({},a.axisX,{highLow:b,referenceValue:0})):a.axisX.type.call(c,c.Axis.units.x,d,o,c.extend({},a.axisX,{highLow:b,referenceValue:0})),l=n=void 0===a.axisY.type?new c.StepAxis(c.Axis.units.y,d,o,{ticks:k}):a.axisY.type.call(c,c.Axis.units.y,d,o,a.axisY)):(l=m=void 0===a.axisX.type?new c.StepAxis(c.Axis.units.x,d,o,{ticks:k}):a.axisX.type.call(c,c.Axis.units.x,d,o,a.axisX),j=n=void 0===a.axisY.type?new c.AutoScaleAxis(c.Axis.units.y,d,o,c.extend({},a.axisY,{highLow:b,referenceValue:0})):a.axisY.type.call(c,c.Axis.units.y,d,o,c.extend({},a.axisY,{highLow:b,referenceValue:0})));var p=a.horizontalBars?o.x1+j.projectValue(0):o.y1-j.projectValue(0),q=[];l.createGridAndLabels(e,h,this.supportsForeignObject,a,this.eventEmitter),j.createGridAndLabels(e,h,this.supportsForeignObject,a,this.eventEmitter),d.raw.series.forEach(function(b,e){var f,h,i=e-(d.raw.series.length-1)/2;f=a.distributeSeries&&!a.stackBars?l.axisLength/d.normalized.length/2:a.distributeSeries&&a.stackBars?l.axisLength/2:l.axisLength/d.normalized[e].length/2,h=g.elem("g"),h.attr({"ct:series-name":b.name,"ct:meta":c.serialize(b.meta)}),h.addClass([a.classNames.series,b.className||a.classNames.series+"-"+c.alphaNumerate(e)].join(" ")),d.normalized[e].forEach(function(g,k){var r,s,t,u;if(u=a.distributeSeries&&!a.stackBars?e:a.distributeSeries&&a.stackBars?0:k,r=a.horizontalBars?{x:o.x1+j.projectValue(g&&g.x?g.x:0,k,d.normalized[e]),y:o.y1-l.projectValue(g&&g.y?g.y:0,u,d.normalized[e])}:{x:o.x1+l.projectValue(g&&g.x?g.x:0,u,d.normalized[e]),y:o.y1-j.projectValue(g&&g.y?g.y:0,k,d.normalized[e])},l instanceof c.StepAxis&&(l.options.stretch||(r[l.units.pos]+=f*(a.horizontalBars?-1:1)),r[l.units.pos]+=a.stackBars||a.distributeSeries?0:i*a.seriesBarDistance*(a.horizontalBars?-1:1)),t=q[k]||p,q[k]=t-(p-r[l.counterUnits.pos]),
+void 0!==g){var v={};v[l.units.pos+"1"]=r[l.units.pos],v[l.units.pos+"2"]=r[l.units.pos],!a.stackBars||"accumulate"!==a.stackMode&&a.stackMode?(v[l.counterUnits.pos+"1"]=p,v[l.counterUnits.pos+"2"]=r[l.counterUnits.pos]):(v[l.counterUnits.pos+"1"]=t,v[l.counterUnits.pos+"2"]=q[k]),v.x1=Math.min(Math.max(v.x1,o.x1),o.x2),v.x2=Math.min(Math.max(v.x2,o.x1),o.x2),v.y1=Math.min(Math.max(v.y1,o.y2),o.y1),v.y2=Math.min(Math.max(v.y2,o.y2),o.y1),s=h.elem("line",v,a.classNames.bar).attr({"ct:value":[g.x,g.y].filter(c.isNum).join(","),"ct:meta":c.getMetaData(b,k)}),this.eventEmitter.emit("draw",c.extend({type:"bar",value:g,index:k,meta:c.getMetaData(b,k),series:b,seriesIndex:e,axisX:m,axisY:n,chartRect:o,group:h,element:s},v))}}.bind(this))}.bind(this)),this.eventEmitter.emit("created",{bounds:j.bounds,chartRect:o,axisX:m,axisY:n,svg:this.svg,options:a})}function e(a,b,d,e){c.Bar["super"].constructor.call(this,a,b,f,c.extend({},f,d),e)}var f={axisX:{offset:30,position:"end",labelOffset:{x:0,y:0},showLabel:!0,showGrid:!0,labelInterpolationFnc:c.noop,scaleMinSpace:30,onlyInteger:!1},axisY:{offset:40,position:"start",labelOffset:{x:0,y:0},showLabel:!0,showGrid:!0,labelInterpolationFnc:c.noop,scaleMinSpace:20,onlyInteger:!1},width:void 0,height:void 0,high:void 0,low:void 0,chartPadding:{top:15,right:15,bottom:5,left:10},seriesBarDistance:15,stackBars:!1,stackMode:"accumulate",horizontalBars:!1,distributeSeries:!1,reverseData:!1,classNames:{chart:"ct-chart-bar",horizontalBars:"ct-horizontal-bars",label:"ct-label",labelGroup:"ct-labels",series:"ct-series",bar:"ct-bar",grid:"ct-grid",gridGroup:"ct-grids",vertical:"ct-vertical",horizontal:"ct-horizontal",start:"ct-start",end:"ct-end"}};c.Bar=c.Base.extend({constructor:e,createChart:d})}(window,document,a),function(a,b,c){"use strict";function d(a,b,c){var d=b.x>a.x;return d&&"explode"===c||!d&&"implode"===c?"start":d&&"implode"===c||!d&&"explode"===c?"end":"middle"}function e(a){this.data=c.normalizeData(this.data);var b,e,f,h,i,j=[],k=a.startAngle,l=c.getDataArray(this.data,a.reverseData);this.svg=c.createSvg(this.container,a.width,a.height,a.donut?a.classNames.chartDonut:a.classNames.chartPie),e=c.createChartRect(this.svg,a,g.padding),f=Math.min(e.width()/2,e.height()/2),i=a.total||l.reduce(function(a,b){return a+b},0);var m=c.quantity(a.donutWidth);"%"===m.unit&&(m.value*=f/100),f-=a.donut?m.value/2:0,h="outside"===a.labelPosition||a.donut?f:"center"===a.labelPosition?0:f/2,h+=a.labelOffset;var n={x:e.x1+e.width()/2,y:e.y2+e.height()/2},o=1===this.data.series.filter(function(a){return a.hasOwnProperty("value")?0!==a.value:0!==a}).length;a.showLabel&&(b=this.svg.elem("g",null,null,!0));for(var p=0;p<this.data.series.length;p++)if(0!==l[p]||!a.ignoreEmptyValues){var q=this.data.series[p];j[p]=this.svg.elem("g",null,null,!0),j[p].attr({"ct:series-name":q.name}),j[p].addClass([a.classNames.series,q.className||a.classNames.series+"-"+c.alphaNumerate(p)].join(" "));var r=k+l[p]/i*360,s=Math.max(0,k-(0===p||o?0:.2));r-s>=359.99&&(r=s+359.99);var t=c.polarToCartesian(n.x,n.y,f,s),u=c.polarToCartesian(n.x,n.y,f,r),v=new c.Svg.Path(!a.donut).move(u.x,u.y).arc(f,f,0,r-k>180,0,t.x,t.y);a.donut||v.line(n.x,n.y);var w=j[p].elem("path",{d:v.stringify()},a.donut?a.classNames.sliceDonut:a.classNames.slicePie);if(w.attr({"ct:value":l[p],"ct:meta":c.serialize(q.meta)}),a.donut&&w.attr({style:"stroke-width: "+m.value+"px"}),this.eventEmitter.emit("draw",{type:"slice",value:l[p],totalDataSum:i,index:p,meta:q.meta,series:q,group:j[p],element:w,path:v.clone(),center:n,radius:f,startAngle:k,endAngle:r}),a.showLabel){var x=c.polarToCartesian(n.x,n.y,h,k+(r-k)/2),y=a.labelInterpolationFnc(this.data.labels&&!c.isFalseyButZero(this.data.labels[p])?this.data.labels[p]:l[p],p);if(y||0===y){var z=b.elem("text",{dx:x.x,dy:x.y,"text-anchor":d(n,x,a.labelDirection)},a.classNames.label).text(""+y);this.eventEmitter.emit("draw",{type:"label",index:p,group:b,element:z,text:""+y,x:x.x,y:x.y})}}k=r}this.eventEmitter.emit("created",{chartRect:e,svg:this.svg,options:a})}function f(a,b,d,e){c.Pie["super"].constructor.call(this,a,b,g,c.extend({},g,d),e)}var g={width:void 0,height:void 0,chartPadding:5,classNames:{chartPie:"ct-chart-pie",chartDonut:"ct-chart-donut",series:"ct-series",slicePie:"ct-slice-pie",sliceDonut:"ct-slice-donut",label:"ct-label"},startAngle:0,total:void 0,donut:!1,donutWidth:60,showLabel:!0,labelOffset:0,labelPosition:"inside",labelInterpolationFnc:c.noop,labelDirection:"neutral",reverseData:!1,ignoreEmptyValues:!1};c.Pie=c.Base.extend({constructor:f,createChart:e,determineAnchorPosition:d})}(window,document,a),a});
+//# sourceMappingURL=chartist.min.js.map
+/* chartist-plugin-axistitle 0.0.1
+ * Copyright © 2015 Alex Stanbury
+ * Free to use under the WTFPL license.
+ * http://www.wtfpl.net/
+ */
+
+!function(a,b){"function"==typeof define&&define.amd?define([],function(){return a.returnExportsGlobal=b()}):"object"==typeof exports?module.exports=b():a["Chartist.plugins.ctAxisTitle"]=b()}(this,function(){return function(a,b,c){"use strict";var d={axisTitle:"",axisClass:"ct-axis-title",offset:{x:0,y:0},textAnchor:"middle",flipText:!1},e={xAxis:d,yAxis:d};c.plugins=c.plugins||{},c.plugins.ctAxisTitle=function(a){return a=c.extend({},e,a),function(b){b.on("created",function(b){if(!a.axisX.axisTitle&&!a.axisY.axisTitle)throw new Error("ctAxisTitle plugin - You must provide at least one axis title");if(!b.axisX&&!b.axisY)throw new Error("ctAxisTitle plugin can only be used on charts that have at least one axis");var d,e,f;if(a.axisX.axisTitle&&b.axisX&&(d=b.axisX.axisLength/2+b.options.axisX.offset+b.options.chartPadding.left,e=b.options.chartPadding.top,"end"===b.options.axisX.position&&(e+=b.axisY.axisLength),f=new c.Svg("text"),f.addClass(a.axisX.axisClass),f.text(a.axisX.axisTitle),f.attr({x:d+a.axisX.offset.x,y:e+a.axisX.offset.y,"text-anchor":a.axisX.textAnchor}),b.svg.append(f,!0)),a.axisY.axisTitle&&b.axisY){d=0,e=b.axisY.axisLength/2+b.options.chartPadding.top,"end"===b.options.axisY.position&&(d=b.axisX.axisLength);var g="rotate("+(a.axisY.flipTitle?-90:90)+", "+d+", "+e+")";f=new c.Svg("text"),f.addClass(a.axisY.axisClass),f.text(a.axisY.axisTitle),f.attr({x:d+a.axisY.offset.x,y:e+a.axisY.offset.y,transform:g,"text-anchor":a.axisY.textAnchor}),b.svg.append(f,!0)}})}}}(window,document,Chartist),Chartist.plugins.ctAxisTitle});
+//# sourceMappingURL=chartist-plugin-axistitle.min.js.map
+/* chartist-plugin-pointlabels 0.0.4
+ * Copyright © 2015 Gion Kunz
+ * Free to use under the WTFPL license.
+ * http://www.wtfpl.net/
+ */
+
+!function(a,b){"function"==typeof define&&define.amd?define([],function(){return a.returnExportsGlobal=b()}):"object"==typeof exports?module.exports=b():a["Chartist.plugins.ctPointLabels"]=b()}(this,function(){return function(a,b,c){"use strict";var d={labelClass:"ct-label",labelOffset:{x:0,y:-10},textAnchor:"middle",labelInterpolationFnc:c.noop};c.plugins=c.plugins||{},c.plugins.ctPointLabels=function(a){return a=c.extend({},d,a),function(b){b instanceof c.Line&&b.on("draw",function(b){"point"===b.type&&b.group.elem("text",{x:b.x+a.labelOffset.x,y:b.y+a.labelOffset.y,style:"text-anchor: "+a.textAnchor},a.labelClass).text(a.labelInterpolationFnc(void 0===b.value.x?b.value.y:b.value.x+", "+b.value.y))})}}}(window,document,Chartist),Chartist.plugins.ctPointLabels});
+//# sourceMappingURL=chartist-plugin-pointlabels.min.js.map
+/* chartist-plugin-pointlabels 0.0.12
+ * Copyright © 2016 Gion Kunz
+ * Free to use under the WTFPL license.
+ * http://www.wtfpl.net/
+ */
+
+!function(a,b){"function"==typeof define&&define.amd?define(["chartist"],function(c){return a.returnExportsGlobal=b(c)}):"object"==typeof exports?module.exports=b(require("chartist")):a["Chartist.plugins.tooltips"]=b(Chartist)}(this,function(a){return function(a,b,c){"use strict";function d(a){f(a,"tooltip-show")||(a.className=a.className+" tooltip-show")}function e(a){var b=new RegExp("tooltip-show\\s*","gi");a.className=a.className.replace(b,"").trim()}function f(a,b){return(" "+a.getAttribute("class")+" ").indexOf(" "+b+" ")>-1}function g(a,b){do a=a.nextSibling;while(a&&!f(a,b));return a}function h(a){return a.innerText||a.textContent}var i={currency:void 0,tooltipOffset:{x:0,y:-20},appendToBody:!1,"class":void 0,pointClass:"ct-point"};c.plugins=c.plugins||{},c.plugins.tooltip=function(a){return a=c.extend({},i,a),function(i){function j(a,b,c){m.addEventListener(a,function(a){b&&!f(a.target,b)||c(a)})}function k(b){o=o||n.offsetHeight,p=p||n.offsetWidth,a.appendToBody?(n.style.top=b.pageY-o+a.tooltipOffset.y+"px",n.style.left=b.pageX-p/2+a.tooltipOffset.x+"px"):(n.style.top=(b.layerY||b.offsetY)-o+a.tooltipOffset.y+"px",n.style.left=(b.layerX||b.offsetX)-p/2+a.tooltipOffset.x+"px")}var l=a.pointClass;i instanceof c.Bar?l="ct-bar":i instanceof c.Pie&&(l=i.options.donut?"ct-slice-donut":"ct-slice-pie");var m=i.container,n=m.querySelector(".chartist-tooltip");n||(n=b.createElement("div"),n.className=a["class"]?"chartist-tooltip "+a["class"]:"chartist-tooltip",a.appendToBody?b.body.appendChild(n):m.appendChild(n));var o=n.offsetHeight,p=n.offsetWidth;e(n),j("mouseover",l,function(e){var f=e.target,j="",l=i instanceof c.Pie?f:f.parentNode,m=l?f.parentNode.getAttribute("ct:meta")||f.parentNode.getAttribute("ct:series-name"):"",q=f.getAttribute("ct:meta")||m||"",r=!!q,s=f.getAttribute("ct:value");if(a.transformTooltipTextFnc&&"function"==typeof a.transformTooltipTextFnc&&(s=a.transformTooltipTextFnc(s)),a.tooltipFnc&&"function"==typeof a.tooltipFnc)j=a.tooltipFnc(q,s);else{if(a.metaIsHTML){var t=b.createElement("textarea");t.innerHTML=q,q=t.value}if(q='<span class="chartist-tooltip-meta">'+q+"</span>",r)j+=q+"<br>";else if(i instanceof c.Pie){var u=g(f,"ct-label");u&&(j+=h(u)+"<br>")}s&&(a.currency&&(s=a.currency+s.replace(/(\d)(?=(\d{3})+(?:\.\d+)?$)/g,"$1,")),s='<span class="chartist-tooltip-value">'+s+"</span>",j+=s)}j&&(n.innerHTML=j,k(e),d(n),o=n.offsetHeight,p=n.offsetWidth)}),j("mouseout",l,function(){e(n)}),j("mousemove",null,function(a){k(a)})}}}(window,document,a),a.plugins.tooltips});
+//# sourceMappingURL=chartist-plugin-tooltip.min.js.map
 /*!
  * Jasny Bootstrap v3.1.3 (http://jasny.github.io/bootstrap)
  * Copyright 2012-2014 Arnold Daniels
@@ -24179,670 +24830,6 @@ if (typeof jQuery === 'undefined') { throw new Error('Jasny Bootstrap\'s JavaScr
   })
 
 }(window.jQuery);
-
-/*!
- * jQuery Color Animations v@VERSION
- * https://github.com/jquery/jquery-color
- *
- * Copyright 2013 jQuery Foundation and other contributors
- * Released under the MIT license.
- * http://jquery.org/license
- *
- * Date: @DATE
- */
-(function( jQuery, undefined ) {
-
-	var stepHooks = "backgroundColor borderBottomColor borderLeftColor borderRightColor borderTopColor color columnRuleColor outlineColor textDecorationColor textEmphasisColor",
-
-	// plusequals test for += 100 -= 100
-	rplusequals = /^([\-+])=\s*(\d+\.?\d*)/,
-	// a set of RE's that can match strings and generate color tuples.
-	stringParsers = [{
-			re: /rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
-			parse: function( execResult ) {
-				return [
-					execResult[ 1 ],
-					execResult[ 2 ],
-					execResult[ 3 ],
-					execResult[ 4 ]
-				];
-			}
-		}, {
-			re: /rgba?\(\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
-			parse: function( execResult ) {
-				return [
-					execResult[ 1 ] * 2.55,
-					execResult[ 2 ] * 2.55,
-					execResult[ 3 ] * 2.55,
-					execResult[ 4 ]
-				];
-			}
-		}, {
-			// this regex ignores A-F because it's compared against an already lowercased string
-			re: /#([a-f0-9]{2})([a-f0-9]{2})([a-f0-9]{2})/,
-			parse: function( execResult ) {
-				return [
-					parseInt( execResult[ 1 ], 16 ),
-					parseInt( execResult[ 2 ], 16 ),
-					parseInt( execResult[ 3 ], 16 )
-				];
-			}
-		}, {
-			// this regex ignores A-F because it's compared against an already lowercased string
-			re: /#([a-f0-9])([a-f0-9])([a-f0-9])/,
-			parse: function( execResult ) {
-				return [
-					parseInt( execResult[ 1 ] + execResult[ 1 ], 16 ),
-					parseInt( execResult[ 2 ] + execResult[ 2 ], 16 ),
-					parseInt( execResult[ 3 ] + execResult[ 3 ], 16 )
-				];
-			}
-		}, {
-			re: /hsla?\(\s*(\d+(?:\.\d+)?)\s*,\s*(\d+(?:\.\d+)?)\%\s*,\s*(\d+(?:\.\d+)?)\%\s*(?:,\s*(\d?(?:\.\d+)?)\s*)?\)/,
-			space: "hsla",
-			parse: function( execResult ) {
-				return [
-					execResult[ 1 ],
-					execResult[ 2 ] / 100,
-					execResult[ 3 ] / 100,
-					execResult[ 4 ]
-				];
-			}
-		}],
-
-	// jQuery.Color( )
-	color = jQuery.Color = function( color, green, blue, alpha ) {
-		return new jQuery.Color.fn.parse( color, green, blue, alpha );
-	},
-	spaces = {
-		rgba: {
-			props: {
-				red: {
-					idx: 0,
-					type: "byte"
-				},
-				green: {
-					idx: 1,
-					type: "byte"
-				},
-				blue: {
-					idx: 2,
-					type: "byte"
-				}
-			}
-		},
-
-		hsla: {
-			props: {
-				hue: {
-					idx: 0,
-					type: "degrees"
-				},
-				saturation: {
-					idx: 1,
-					type: "percent"
-				},
-				lightness: {
-					idx: 2,
-					type: "percent"
-				}
-			}
-		}
-	},
-	propTypes = {
-		"byte": {
-			floor: true,
-			max: 255
-		},
-		"percent": {
-			max: 1
-		},
-		"degrees": {
-			mod: 360,
-			floor: true
-		}
-	},
-	support = color.support = {},
-
-	// element for support tests
-	supportElem = jQuery( "<p>" )[ 0 ],
-
-	// colors = jQuery.Color.names
-	colors,
-
-	// local aliases of functions called often
-	each = jQuery.each;
-
-// determine rgba support immediately
-supportElem.style.cssText = "background-color:rgba(1,1,1,.5)";
-support.rgba = supportElem.style.backgroundColor.indexOf( "rgba" ) > -1;
-
-// define cache name and alpha properties
-// for rgba and hsla spaces
-each( spaces, function( spaceName, space ) {
-	space.cache = "_" + spaceName;
-	space.props.alpha = {
-		idx: 3,
-		type: "percent",
-		def: 1
-	};
-});
-
-function clamp( value, prop, allowEmpty ) {
-	var type = propTypes[ prop.type ] || {};
-
-	if ( value == null ) {
-		return (allowEmpty || !prop.def) ? null : prop.def;
-	}
-
-	// ~~ is an short way of doing floor for positive numbers
-	value = type.floor ? ~~value : parseFloat( value );
-
-	// IE will pass in empty strings as value for alpha,
-	// which will hit this case
-	if ( isNaN( value ) ) {
-		return prop.def;
-	}
-
-	if ( type.mod ) {
-		// we add mod before modding to make sure that negatives values
-		// get converted properly: -10 -> 350
-		return (value + type.mod) % type.mod;
-	}
-
-	// for now all property types without mod have min and max
-	return 0 > value ? 0 : type.max < value ? type.max : value;
-}
-
-function stringParse( string ) {
-	var inst = color(),
-		rgba = inst._rgba = [];
-
-	string = string.toLowerCase();
-
-	each( stringParsers, function( i, parser ) {
-		var parsed,
-			match = parser.re.exec( string ),
-			values = match && parser.parse( match ),
-			spaceName = parser.space || "rgba";
-
-		if ( values ) {
-			parsed = inst[ spaceName ]( values );
-
-			// if this was an rgba parse the assignment might happen twice
-			// oh well....
-			inst[ spaces[ spaceName ].cache ] = parsed[ spaces[ spaceName ].cache ];
-			rgba = inst._rgba = parsed._rgba;
-
-			// exit each( stringParsers ) here because we matched
-			return false;
-		}
-	});
-
-	// Found a stringParser that handled it
-	if ( rgba.length ) {
-
-		// if this came from a parsed string, force "transparent" when alpha is 0
-		// chrome, (and maybe others) return "transparent" as rgba(0,0,0,0)
-		if ( rgba.join() === "0,0,0,0" ) {
-			jQuery.extend( rgba, colors.transparent );
-		}
-		return inst;
-	}
-
-	// named colors
-	return colors[ string ];
-}
-
-color.fn = jQuery.extend( color.prototype, {
-	parse: function( red, green, blue, alpha ) {
-		if ( red === undefined ) {
-			this._rgba = [ null, null, null, null ];
-			return this;
-		}
-		if ( red.jquery || red.nodeType ) {
-			red = jQuery( red ).css( green );
-			green = undefined;
-		}
-
-		var inst = this,
-			type = jQuery.type( red ),
-			rgba = this._rgba = [];
-
-		// more than 1 argument specified - assume ( red, green, blue, alpha )
-		if ( green !== undefined ) {
-			red = [ red, green, blue, alpha ];
-			type = "array";
-		}
-
-		if ( type === "string" ) {
-			return this.parse( stringParse( red ) || colors._default );
-		}
-
-		if ( type === "array" ) {
-			each( spaces.rgba.props, function( key, prop ) {
-				rgba[ prop.idx ] = clamp( red[ prop.idx ], prop );
-			});
-			return this;
-		}
-
-		if ( type === "object" ) {
-			if ( red instanceof color ) {
-				each( spaces, function( spaceName, space ) {
-					if ( red[ space.cache ] ) {
-						inst[ space.cache ] = red[ space.cache ].slice();
-					}
-				});
-			} else {
-				each( spaces, function( spaceName, space ) {
-					var cache = space.cache;
-					each( space.props, function( key, prop ) {
-
-						// if the cache doesn't exist, and we know how to convert
-						if ( !inst[ cache ] && space.to ) {
-
-							// if the value was null, we don't need to copy it
-							// if the key was alpha, we don't need to copy it either
-							if ( key === "alpha" || red[ key ] == null ) {
-								return;
-							}
-							inst[ cache ] = space.to( inst._rgba );
-						}
-
-						// this is the only case where we allow nulls for ALL properties.
-						// call clamp with alwaysAllowEmpty
-						inst[ cache ][ prop.idx ] = clamp( red[ key ], prop, true );
-					});
-
-					// everything defined but alpha?
-					if ( inst[ cache ] && jQuery.inArray( null, inst[ cache ].slice( 0, 3 ) ) < 0 ) {
-						// use the default of 1
-						inst[ cache ][ 3 ] = 1;
-						if ( space.from ) {
-							inst._rgba = space.from( inst[ cache ] );
-						}
-					}
-				});
-			}
-			return this;
-		}
-	},
-	is: function( compare ) {
-		var is = color( compare ),
-			same = true,
-			inst = this;
-
-		each( spaces, function( _, space ) {
-			var localCache,
-				isCache = is[ space.cache ];
-			if (isCache) {
-				localCache = inst[ space.cache ] || space.to && space.to( inst._rgba ) || [];
-				each( space.props, function( _, prop ) {
-					if ( isCache[ prop.idx ] != null ) {
-						same = ( isCache[ prop.idx ] === localCache[ prop.idx ] );
-						return same;
-					}
-				});
-			}
-			return same;
-		});
-		return same;
-	},
-	_space: function() {
-		var used = [],
-			inst = this;
-		each( spaces, function( spaceName, space ) {
-			if ( inst[ space.cache ] ) {
-				used.push( spaceName );
-			}
-		});
-		return used.pop();
-	},
-	transition: function( other, distance ) {
-		var end = color( other ),
-			spaceName = end._space(),
-			space = spaces[ spaceName ],
-			startColor = this.alpha() === 0 ? color( "transparent" ) : this,
-			start = startColor[ space.cache ] || space.to( startColor._rgba ),
-			result = start.slice();
-
-		end = end[ space.cache ];
-		each( space.props, function( key, prop ) {
-			var index = prop.idx,
-				startValue = start[ index ],
-				endValue = end[ index ],
-				type = propTypes[ prop.type ] || {};
-
-			// if null, don't override start value
-			if ( endValue === null ) {
-				return;
-			}
-			// if null - use end
-			if ( startValue === null ) {
-				result[ index ] = endValue;
-			} else {
-				if ( type.mod ) {
-					if ( endValue - startValue > type.mod / 2 ) {
-						startValue += type.mod;
-					} else if ( startValue - endValue > type.mod / 2 ) {
-						startValue -= type.mod;
-					}
-				}
-				result[ index ] = clamp( ( endValue - startValue ) * distance + startValue, prop );
-			}
-		});
-		return this[ spaceName ]( result );
-	},
-	blend: function( opaque ) {
-		// if we are already opaque - return ourself
-		if ( this._rgba[ 3 ] === 1 ) {
-			return this;
-		}
-
-		var rgb = this._rgba.slice(),
-			a = rgb.pop(),
-			blend = color( opaque )._rgba;
-
-		return color( jQuery.map( rgb, function( v, i ) {
-			return ( 1 - a ) * blend[ i ] + a * v;
-		}));
-	},
-	toRgbaString: function() {
-		var prefix = "rgba(",
-			rgba = jQuery.map( this._rgba, function( v, i ) {
-				return v == null ? ( i > 2 ? 1 : 0 ) : v;
-			});
-
-		if ( rgba[ 3 ] === 1 ) {
-			rgba.pop();
-			prefix = "rgb(";
-		}
-
-		return prefix + rgba.join() + ")";
-	},
-	toHslaString: function() {
-		var prefix = "hsla(",
-			hsla = jQuery.map( this.hsla(), function( v, i ) {
-				if ( v == null ) {
-					v = i > 2 ? 1 : 0;
-				}
-
-				// catch 1 and 2
-				if ( i && i < 3 ) {
-					v = Math.round( v * 100 ) + "%";
-				}
-				return v;
-			});
-
-		if ( hsla[ 3 ] === 1 ) {
-			hsla.pop();
-			prefix = "hsl(";
-		}
-		return prefix + hsla.join() + ")";
-	},
-	toHexString: function( includeAlpha ) {
-		var rgba = this._rgba.slice(),
-			alpha = rgba.pop();
-
-		if ( includeAlpha ) {
-			rgba.push( ~~( alpha * 255 ) );
-		}
-
-		return "#" + jQuery.map( rgba, function( v ) {
-
-			// default to 0 when nulls exist
-			v = ( v || 0 ).toString( 16 );
-			return v.length === 1 ? "0" + v : v;
-		}).join("");
-	},
-	toString: function() {
-		return this._rgba[ 3 ] === 0 ? "transparent" : this.toRgbaString();
-	}
-});
-color.fn.parse.prototype = color.fn;
-
-// hsla conversions adapted from:
-// https://code.google.com/p/maashaack/source/browse/packages/graphics/trunk/src/graphics/colors/HUE2RGB.as?r=5021
-
-function hue2rgb( p, q, h ) {
-	h = ( h + 1 ) % 1;
-	if ( h * 6 < 1 ) {
-		return p + (q - p) * h * 6;
-	}
-	if ( h * 2 < 1) {
-		return q;
-	}
-	if ( h * 3 < 2 ) {
-		return p + (q - p) * ((2/3) - h) * 6;
-	}
-	return p;
-}
-
-spaces.hsla.to = function ( rgba ) {
-	if ( rgba[ 0 ] == null || rgba[ 1 ] == null || rgba[ 2 ] == null ) {
-		return [ null, null, null, rgba[ 3 ] ];
-	}
-	var r = rgba[ 0 ] / 255,
-		g = rgba[ 1 ] / 255,
-		b = rgba[ 2 ] / 255,
-		a = rgba[ 3 ],
-		max = Math.max( r, g, b ),
-		min = Math.min( r, g, b ),
-		diff = max - min,
-		add = max + min,
-		l = add * 0.5,
-		h, s;
-
-	if ( min === max ) {
-		h = 0;
-	} else if ( r === max ) {
-		h = ( 60 * ( g - b ) / diff ) + 360;
-	} else if ( g === max ) {
-		h = ( 60 * ( b - r ) / diff ) + 120;
-	} else {
-		h = ( 60 * ( r - g ) / diff ) + 240;
-	}
-
-	// chroma (diff) == 0 means greyscale which, by definition, saturation = 0%
-	// otherwise, saturation is based on the ratio of chroma (diff) to lightness (add)
-	if ( diff === 0 ) {
-		s = 0;
-	} else if ( l <= 0.5 ) {
-		s = diff / add;
-	} else {
-		s = diff / ( 2 - add );
-	}
-	return [ Math.round(h) % 360, s, l, a == null ? 1 : a ];
-};
-
-spaces.hsla.from = function ( hsla ) {
-	if ( hsla[ 0 ] == null || hsla[ 1 ] == null || hsla[ 2 ] == null ) {
-		return [ null, null, null, hsla[ 3 ] ];
-	}
-	var h = hsla[ 0 ] / 360,
-		s = hsla[ 1 ],
-		l = hsla[ 2 ],
-		a = hsla[ 3 ],
-		q = l <= 0.5 ? l * ( 1 + s ) : l + s - l * s,
-		p = 2 * l - q;
-
-	return [
-		Math.round( hue2rgb( p, q, h + ( 1 / 3 ) ) * 255 ),
-		Math.round( hue2rgb( p, q, h ) * 255 ),
-		Math.round( hue2rgb( p, q, h - ( 1 / 3 ) ) * 255 ),
-		a
-	];
-};
-
-
-each( spaces, function( spaceName, space ) {
-	var props = space.props,
-		cache = space.cache,
-		to = space.to,
-		from = space.from;
-
-	// makes rgba() and hsla()
-	color.fn[ spaceName ] = function( value ) {
-
-		// generate a cache for this space if it doesn't exist
-		if ( to && !this[ cache ] ) {
-			this[ cache ] = to( this._rgba );
-		}
-		if ( value === undefined ) {
-			return this[ cache ].slice();
-		}
-
-		var ret,
-			type = jQuery.type( value ),
-			arr = ( type === "array" || type === "object" ) ? value : arguments,
-			local = this[ cache ].slice();
-
-		each( props, function( key, prop ) {
-			var val = arr[ type === "object" ? key : prop.idx ];
-			if ( val == null ) {
-				val = local[ prop.idx ];
-			}
-			local[ prop.idx ] = clamp( val, prop );
-		});
-
-		if ( from ) {
-			ret = color( from( local ) );
-			ret[ cache ] = local;
-			return ret;
-		} else {
-			return color( local );
-		}
-	};
-
-	// makes red() green() blue() alpha() hue() saturation() lightness()
-	each( props, function( key, prop ) {
-		// alpha is included in more than one space
-		if ( color.fn[ key ] ) {
-			return;
-		}
-		color.fn[ key ] = function( value ) {
-			var vtype = jQuery.type( value ),
-				fn = ( key === "alpha" ? ( this._hsla ? "hsla" : "rgba" ) : spaceName ),
-				local = this[ fn ](),
-				cur = local[ prop.idx ],
-				match;
-
-			if ( vtype === "undefined" ) {
-				return cur;
-			}
-
-			if ( vtype === "function" ) {
-				value = value.call( this, cur );
-				vtype = jQuery.type( value );
-			}
-			if ( value == null && prop.empty ) {
-				return this;
-			}
-			if ( vtype === "string" ) {
-				match = rplusequals.exec( value );
-				if ( match ) {
-					value = cur + parseFloat( match[ 2 ] ) * ( match[ 1 ] === "+" ? 1 : -1 );
-				}
-			}
-			local[ prop.idx ] = value;
-			return this[ fn ]( local );
-		};
-	});
-});
-
-// add cssHook and .fx.step function for each named hook.
-// accept a space separated string of properties
-color.hook = function( hook ) {
-	var hooks = hook.split( " " );
-	each( hooks, function( i, hook ) {
-		jQuery.cssHooks[ hook ] = {
-			set: function( elem, value ) {
-				var parsed, curElem,
-					backgroundColor = "";
-
-				if ( value !== "transparent" && ( jQuery.type( value ) !== "string" || ( parsed = stringParse( value ) ) ) ) {
-					value = color( parsed || value );
-					if ( !support.rgba && value._rgba[ 3 ] !== 1 ) {
-						curElem = hook === "backgroundColor" ? elem.parentNode : elem;
-						while (
-							(backgroundColor === "" || backgroundColor === "transparent") &&
-							curElem && curElem.style
-						) {
-							try {
-								backgroundColor = jQuery.css( curElem, "backgroundColor" );
-								curElem = curElem.parentNode;
-							} catch ( e ) {
-							}
-						}
-
-						value = value.blend( backgroundColor && backgroundColor !== "transparent" ?
-							backgroundColor :
-							"_default" );
-					}
-
-					value = value.toRgbaString();
-				}
-				try {
-					elem.style[ hook ] = value;
-				} catch( e ) {
-					// wrapped to prevent IE from throwing errors on "invalid" values like 'auto' or 'inherit'
-				}
-			}
-		};
-		jQuery.fx.step[ hook ] = function( fx ) {
-			if ( !fx.colorInit ) {
-				fx.start = color( fx.elem, hook );
-				fx.end = color( fx.end );
-				fx.colorInit = true;
-			}
-			jQuery.cssHooks[ hook ].set( fx.elem, fx.start.transition( fx.end, fx.pos ) );
-		};
-	});
-
-};
-
-color.hook( stepHooks );
-
-jQuery.cssHooks.borderColor = {
-	expand: function( value ) {
-		var expanded = {};
-
-		each( [ "Top", "Right", "Bottom", "Left" ], function( i, part ) {
-			expanded[ "border" + part + "Color" ] = value;
-		});
-		return expanded;
-	}
-};
-
-// Basic color names only.
-// Usage of any of the other color names requires adding yourself or including
-// jquery.color.svg-names.js.
-colors = jQuery.Color.names = {
-	// 4.1. Basic color keywords
-	aqua: "#00ffff",
-	black: "#000000",
-	blue: "#0000ff",
-	fuchsia: "#ff00ff",
-	gray: "#808080",
-	green: "#008000",
-	lime: "#00ff00",
-	maroon: "#800000",
-	navy: "#000080",
-	olive: "#808000",
-	purple: "#800080",
-	red: "#ff0000",
-	silver: "#c0c0c0",
-	teal: "#008080",
-	white: "#ffffff",
-	yellow: "#ffff00",
-
-	// 4.2.3. "transparent" color keyword
-	transparent: [ null, null, null, 0 ],
-
-	_default: "#ffffff"
-};
-
-})( jQuery );
 
 /*!
  * jQuery Form Plugin
@@ -44044,5791 +44031,907 @@ $.extend($.fn, {
 });
 
 }));
-(function(a){if(typeof define==="function"&&define.amd){define(["jquery"],a)}else{if(typeof exports==="object"){a(require("jquery"))}else{a(jQuery)}}}(function(f,c){if(!("indexOf" in Array.prototype)){Array.prototype.indexOf=function(k,j){if(j===c){j=0}if(j<0){j+=this.length}if(j<0){j=0}for(var l=this.length;j<l;j++){if(j in this&&this[j]===k){return j}}return -1}}function e(l){var k=f(l);var j=k.add(k.parents());var m=false;j.each(function(){if(f(this).css("position")==="fixed"){m=true;return false}});return m}function h(){return new Date(Date.UTC.apply(Date,arguments))}function d(){var j=new Date();return h(j.getUTCFullYear(),j.getUTCMonth(),j.getUTCDate(),j.getUTCHours(),j.getUTCMinutes(),j.getUTCSeconds(),0)}var i=function(l,k){var n=this;this.element=f(l);this.container=k.container||"body";this.language=k.language||this.element.data("date-language")||"en";this.language=this.language in a?this.language:this.language.split("-")[0];this.language=this.language in a?this.language:"en";this.isRTL=a[this.language].rtl||false;this.formatType=k.formatType||this.element.data("format-type")||"standard";this.format=g.parseFormat(k.format||this.element.data("date-format")||a[this.language].format||g.getDefaultFormat(this.formatType,"input"),this.formatType);this.isInline=false;this.isVisible=false;this.isInput=this.element.is("input");this.fontAwesome=k.fontAwesome||this.element.data("font-awesome")||false;this.bootcssVer=k.bootcssVer||(this.isInput?(this.element.is(".form-control")?3:2):(this.bootcssVer=this.element.is(".input-group")?3:2));this.component=this.element.is(".date")?(this.bootcssVer==3?this.element.find(".input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-remove, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o").parent():this.element.find(".add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar, .add-on .fa-calendar, .add-on .fa-clock-o").parent()):false;this.componentReset=this.element.is(".date")?(this.bootcssVer==3?this.element.find(".input-group-addon .glyphicon-remove, .input-group-addon .fa-times").parent():this.element.find(".add-on .icon-remove, .add-on .fa-times").parent()):false;this.hasInput=this.component&&this.element.find("input").length;if(this.component&&this.component.length===0){this.component=false}this.linkField=k.linkField||this.element.data("link-field")||false;this.linkFormat=g.parseFormat(k.linkFormat||this.element.data("link-format")||g.getDefaultFormat(this.formatType,"link"),this.formatType);this.minuteStep=k.minuteStep||this.element.data("minute-step")||5;this.pickerPosition=k.pickerPosition||this.element.data("picker-position")||"bottom-right";this.showMeridian=k.showMeridian||this.element.data("show-meridian")||false;this.initialDate=k.initialDate||new Date();this.zIndex=k.zIndex||this.element.data("z-index")||c;this.title=typeof k.title==="undefined"?false:k.title;this.icons={leftArrow:this.fontAwesome?"fa-arrow-left":(this.bootcssVer===3?"glyphicon-arrow-left":"icon-arrow-left"),rightArrow:this.fontAwesome?"fa-arrow-right":(this.bootcssVer===3?"glyphicon-arrow-right":"icon-arrow-right")};this.icontype=this.fontAwesome?"fa":"glyphicon";this._attachEvents();this.clickedOutside=function(o){if(f(o.target).closest(".datetimepicker").length===0){n.hide()}};this.formatViewType="datetime";if("formatViewType" in k){this.formatViewType=k.formatViewType}else{if("formatViewType" in this.element.data()){this.formatViewType=this.element.data("formatViewType")}}this.minView=0;if("minView" in k){this.minView=k.minView}else{if("minView" in this.element.data()){this.minView=this.element.data("min-view")}}this.minView=g.convertViewMode(this.minView);this.maxView=g.modes.length-1;if("maxView" in k){this.maxView=k.maxView}else{if("maxView" in this.element.data()){this.maxView=this.element.data("max-view")}}this.maxView=g.convertViewMode(this.maxView);this.wheelViewModeNavigation=false;if("wheelViewModeNavigation" in k){this.wheelViewModeNavigation=k.wheelViewModeNavigation}else{if("wheelViewModeNavigation" in this.element.data()){this.wheelViewModeNavigation=this.element.data("view-mode-wheel-navigation")}}this.wheelViewModeNavigationInverseDirection=false;if("wheelViewModeNavigationInverseDirection" in k){this.wheelViewModeNavigationInverseDirection=k.wheelViewModeNavigationInverseDirection}else{if("wheelViewModeNavigationInverseDirection" in this.element.data()){this.wheelViewModeNavigationInverseDirection=this.element.data("view-mode-wheel-navigation-inverse-dir")}}this.wheelViewModeNavigationDelay=100;if("wheelViewModeNavigationDelay" in k){this.wheelViewModeNavigationDelay=k.wheelViewModeNavigationDelay}else{if("wheelViewModeNavigationDelay" in this.element.data()){this.wheelViewModeNavigationDelay=this.element.data("view-mode-wheel-navigation-delay")}}this.startViewMode=2;if("startView" in k){this.startViewMode=k.startView}else{if("startView" in this.element.data()){this.startViewMode=this.element.data("start-view")}}this.startViewMode=g.convertViewMode(this.startViewMode);this.viewMode=this.startViewMode;this.viewSelect=this.minView;if("viewSelect" in k){this.viewSelect=k.viewSelect}else{if("viewSelect" in this.element.data()){this.viewSelect=this.element.data("view-select")}}this.viewSelect=g.convertViewMode(this.viewSelect);this.forceParse=true;if("forceParse" in k){this.forceParse=k.forceParse}else{if("dateForceParse" in this.element.data()){this.forceParse=this.element.data("date-force-parse")}}var m=this.bootcssVer===3?g.templateV3:g.template;while(m.indexOf("{iconType}")!==-1){m=m.replace("{iconType}",this.icontype)}while(m.indexOf("{leftArrow}")!==-1){m=m.replace("{leftArrow}",this.icons.leftArrow)}while(m.indexOf("{rightArrow}")!==-1){m=m.replace("{rightArrow}",this.icons.rightArrow)}this.picker=f(m).appendTo(this.isInline?this.element:this.container).on({click:f.proxy(this.click,this),mousedown:f.proxy(this.mousedown,this)});if(this.wheelViewModeNavigation){if(f.fn.mousewheel){this.picker.on({mousewheel:f.proxy(this.mousewheel,this)})}else{console.log("Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option")}}if(this.isInline){this.picker.addClass("datetimepicker-inline")}else{this.picker.addClass("datetimepicker-dropdown-"+this.pickerPosition+" dropdown-menu")}if(this.isRTL){this.picker.addClass("datetimepicker-rtl");var j=this.bootcssVer===3?".prev span, .next span":".prev i, .next i";this.picker.find(j).toggleClass(this.icons.leftArrow+" "+this.icons.rightArrow)}f(document).on("mousedown",this.clickedOutside);this.autoclose=false;if("autoclose" in k){this.autoclose=k.autoclose}else{if("dateAutoclose" in this.element.data()){this.autoclose=this.element.data("date-autoclose")}}this.keyboardNavigation=true;if("keyboardNavigation" in k){this.keyboardNavigation=k.keyboardNavigation}else{if("dateKeyboardNavigation" in this.element.data()){this.keyboardNavigation=this.element.data("date-keyboard-navigation")}}this.todayBtn=(k.todayBtn||this.element.data("date-today-btn")||false);this.clearBtn=(k.clearBtn||this.element.data("date-clear-btn")||false);this.todayHighlight=(k.todayHighlight||this.element.data("date-today-highlight")||false);this.weekStart=((k.weekStart||this.element.data("date-weekstart")||a[this.language].weekStart||0)%7);this.weekEnd=((this.weekStart+6)%7);this.startDate=-Infinity;this.endDate=Infinity;this.datesDisabled=[];this.daysOfWeekDisabled=[];this.setStartDate(k.startDate||this.element.data("date-startdate"));this.setEndDate(k.endDate||this.element.data("date-enddate"));this.setDatesDisabled(k.datesDisabled||this.element.data("date-dates-disabled"));this.setDaysOfWeekDisabled(k.daysOfWeekDisabled||this.element.data("date-days-of-week-disabled"));this.setMinutesDisabled(k.minutesDisabled||this.element.data("date-minute-disabled"));this.setHoursDisabled(k.hoursDisabled||this.element.data("date-hour-disabled"));this.fillDow();this.fillMonths();this.update();this.showMode();if(this.isInline){this.show()}};i.prototype={constructor:i,_events:[],_attachEvents:function(){this._detachEvents();if(this.isInput){this._events=[[this.element,{focus:f.proxy(this.show,this),keyup:f.proxy(this.update,this),keydown:f.proxy(this.keydown,this)}]]}else{if(this.component&&this.hasInput){this._events=[[this.element.find("input"),{focus:f.proxy(this.show,this),keyup:f.proxy(this.update,this),keydown:f.proxy(this.keydown,this)}],[this.component,{click:f.proxy(this.show,this)}]];if(this.componentReset){this._events.push([this.componentReset,{click:f.proxy(this.reset,this)}])}}else{if(this.element.is("div")){this.isInline=true}else{this._events=[[this.element,{click:f.proxy(this.show,this)}]]}}}for(var j=0,k,l;j<this._events.length;j++){k=this._events[j][0];l=this._events[j][1];k.on(l)}},_detachEvents:function(){for(var j=0,k,l;j<this._events.length;j++){k=this._events[j][0];l=this._events[j][1];k.off(l)}this._events=[]},show:function(j){this.picker.show();this.height=this.component?this.component.outerHeight():this.element.outerHeight();if(this.forceParse){this.update()}this.place();f(window).on("resize",f.proxy(this.place,this));if(j){j.stopPropagation();j.preventDefault()}this.isVisible=true;this.element.trigger({type:"show",date:this.date})},hide:function(j){if(!this.isVisible){return}if(this.isInline){return}this.picker.hide();f(window).off("resize",this.place);this.viewMode=this.startViewMode;this.showMode();if(!this.isInput){f(document).off("mousedown",this.hide)}if(this.forceParse&&(this.isInput&&this.element.val()||this.hasInput&&this.element.find("input").val())){this.setValue()}this.isVisible=false;this.element.trigger({type:"hide",date:this.date})},remove:function(){this._detachEvents();f(document).off("mousedown",this.clickedOutside);this.picker.remove();delete this.picker;delete this.element.data().datetimepicker},getDate:function(){var j=this.getUTCDate();return new Date(j.getTime()+(j.getTimezoneOffset()*60000))},getUTCDate:function(){return this.date},getInitialDate:function(){return this.initialDate},setInitialDate:function(j){this.initialDate=j},setDate:function(j){this.setUTCDate(new Date(j.getTime()-(j.getTimezoneOffset()*60000)))},setUTCDate:function(j){if(j>=this.startDate&&j<=this.endDate){this.date=j;this.setValue();this.viewDate=this.date;this.fill()}else{this.element.trigger({type:"outOfRange",date:j,startDate:this.startDate,endDate:this.endDate})}},setFormat:function(k){this.format=g.parseFormat(k,this.formatType);var j;if(this.isInput){j=this.element}else{if(this.component){j=this.element.find("input")}}if(j&&j.val()){this.setValue()}},setValue:function(){var j=this.getFormattedDate();if(!this.isInput){if(this.component){this.element.find("input").val(j)}this.element.data("date",j)}else{this.element.val(j)}if(this.linkField){f("#"+this.linkField).val(this.getFormattedDate(this.linkFormat))}},getFormattedDate:function(j){if(j==c){j=this.format}return g.formatDate(this.date,j,this.language,this.formatType)},setStartDate:function(j){this.startDate=j||-Infinity;if(this.startDate!==-Infinity){this.startDate=g.parseDate(this.startDate,this.format,this.language,this.formatType)}this.update();this.updateNavArrows()},setEndDate:function(j){this.endDate=j||Infinity;if(this.endDate!==Infinity){this.endDate=g.parseDate(this.endDate,this.format,this.language,this.formatType)}this.update();this.updateNavArrows()},setDatesDisabled:function(j){this.datesDisabled=j||[];if(!f.isArray(this.datesDisabled)){this.datesDisabled=this.datesDisabled.split(/,\s*/)}this.datesDisabled=f.map(this.datesDisabled,function(k){return g.parseDate(k,this.format,this.language,this.formatType).toDateString()});this.update();this.updateNavArrows()},setTitle:function(j,k){return this.picker.find(j).find("th:eq(1)").text(this.title===false?k:this.title)},setDaysOfWeekDisabled:function(j){this.daysOfWeekDisabled=j||[];if(!f.isArray(this.daysOfWeekDisabled)){this.daysOfWeekDisabled=this.daysOfWeekDisabled.split(/,\s*/)}this.daysOfWeekDisabled=f.map(this.daysOfWeekDisabled,function(k){return parseInt(k,10)});this.update();this.updateNavArrows()},setMinutesDisabled:function(j){this.minutesDisabled=j||[];if(!f.isArray(this.minutesDisabled)){this.minutesDisabled=this.minutesDisabled.split(/,\s*/)}this.minutesDisabled=f.map(this.minutesDisabled,function(k){return parseInt(k,10)});this.update();this.updateNavArrows()},setHoursDisabled:function(j){this.hoursDisabled=j||[];if(!f.isArray(this.hoursDisabled)){this.hoursDisabled=this.hoursDisabled.split(/,\s*/)}this.hoursDisabled=f.map(this.hoursDisabled,function(k){return parseInt(k,10)});this.update();this.updateNavArrows()},place:function(){if(this.isInline){return}if(!this.zIndex){var k=0;f("div").each(function(){var p=parseInt(f(this).css("zIndex"),10);if(p>k){k=p}});this.zIndex=k+10}var o,n,m,l;if(this.container instanceof f){l=this.container.offset()}else{l=f(this.container).offset()}if(this.component){o=this.component.offset();m=o.left;if(this.pickerPosition=="bottom-left"||this.pickerPosition=="top-left"){m+=this.component.outerWidth()-this.picker.outerWidth()}}else{o=this.element.offset();m=o.left;if(this.pickerPosition=="bottom-left"||this.pickerPosition=="top-left"){m+=this.element.outerWidth()-this.picker.outerWidth()}}var j=document.body.clientWidth||window.innerWidth;if(m+220>j){m=j-220}if(this.pickerPosition=="top-left"||this.pickerPosition=="top-right"){n=o.top-this.picker.outerHeight()}else{n=o.top+this.height}n=n-l.top;m=m-l.left;this.picker.css({top:n,left:m,zIndex:this.zIndex})},update:function(){var j,k=false;if(arguments&&arguments.length&&(typeof arguments[0]==="string"||arguments[0] instanceof Date)){j=arguments[0];k=true}else{j=(this.isInput?this.element.val():this.element.find("input").val())||this.element.data("date")||this.initialDate;if(typeof j=="string"||j instanceof String){j=j.replace(/^\s+|\s+$/g,"")}}if(!j){j=new Date();k=false}this.date=g.parseDate(j,this.format,this.language,this.formatType);if(k){this.setValue()}if(this.date<this.startDate){this.viewDate=new Date(this.startDate)}else{if(this.date>this.endDate){this.viewDate=new Date(this.endDate)}else{this.viewDate=new Date(this.date)}}this.fill()},fillDow:function(){var j=this.weekStart,k="<tr>";while(j<this.weekStart+7){k+='<th class="dow">'+a[this.language].daysMin[(j++)%7]+"</th>"}k+="</tr>";this.picker.find(".datetimepicker-days thead").append(k)},fillMonths:function(){var k="",j=0;while(j<12){k+='<span class="month">'+a[this.language].monthsShort[j++]+"</span>"}this.picker.find(".datetimepicker-months td").html(k)},fill:function(){if(this.date==null||this.viewDate==null){return}var H=new Date(this.viewDate),u=H.getUTCFullYear(),I=H.getUTCMonth(),n=H.getUTCDate(),D=H.getUTCHours(),y=H.getUTCMinutes(),z=this.startDate!==-Infinity?this.startDate.getUTCFullYear():-Infinity,E=this.startDate!==-Infinity?this.startDate.getUTCMonth()+1:-Infinity,q=this.endDate!==Infinity?this.endDate.getUTCFullYear():Infinity,A=this.endDate!==Infinity?this.endDate.getUTCMonth()+1:Infinity,r=(new h(this.date.getUTCFullYear(),this.date.getUTCMonth(),this.date.getUTCDate())).valueOf(),G=new Date();this.setTitle(".datetimepicker-days",a[this.language].months[I]+" "+u);if(this.formatViewType=="time"){var k=this.getFormattedDate();this.setTitle(".datetimepicker-hours",k);this.setTitle(".datetimepicker-minutes",k)}else{this.setTitle(".datetimepicker-hours",n+" "+a[this.language].months[I]+" "+u);this.setTitle(".datetimepicker-minutes",n+" "+a[this.language].months[I]+" "+u)}this.picker.find("tfoot th.today").text(a[this.language].today||a.en.today).toggle(this.todayBtn!==false);this.picker.find("tfoot th.clear").text(a[this.language].clear||a.en.clear).toggle(this.clearBtn!==false);this.updateNavArrows();this.fillMonths();var K=h(u,I-1,28,0,0,0,0),C=g.getDaysInMonth(K.getUTCFullYear(),K.getUTCMonth());K.setUTCDate(C);K.setUTCDate(C-(K.getUTCDay()-this.weekStart+7)%7);var j=new Date(K);j.setUTCDate(j.getUTCDate()+42);j=j.valueOf();var s=[];var v;while(K.valueOf()<j){if(K.getUTCDay()==this.weekStart){s.push("<tr>")}v="";if(K.getUTCFullYear()<u||(K.getUTCFullYear()==u&&K.getUTCMonth()<I)){v+=" old"}else{if(K.getUTCFullYear()>u||(K.getUTCFullYear()==u&&K.getUTCMonth()>I)){v+=" new"}}if(this.todayHighlight&&K.getUTCFullYear()==G.getFullYear()&&K.getUTCMonth()==G.getMonth()&&K.getUTCDate()==G.getDate()){v+=" today"}if(K.valueOf()==r){v+=" active"}if((K.valueOf()+86400000)<=this.startDate||K.valueOf()>this.endDate||f.inArray(K.getUTCDay(),this.daysOfWeekDisabled)!==-1||f.inArray(K.toDateString(),this.datesDisabled)!==-1){v+=" disabled"}s.push('<td class="day'+v+'">'+K.getUTCDate()+"</td>");if(K.getUTCDay()==this.weekEnd){s.push("</tr>")}K.setUTCDate(K.getUTCDate()+1)}this.picker.find(".datetimepicker-days tbody").empty().append(s.join(""));s=[];var w="",F="",t="";var l=this.hoursDisabled||[];for(var B=0;B<24;B++){if(l.indexOf(B)!==-1){continue}var x=h(u,I,n,B);v="";if((x.valueOf()+3600000)<=this.startDate||x.valueOf()>this.endDate){v+=" disabled"}else{if(D==B){v+=" active"}}if(this.showMeridian&&a[this.language].meridiem.length==2){F=(B<12?a[this.language].meridiem[0]:a[this.language].meridiem[1]);if(F!=t){if(t!=""){s.push("</fieldset>")}s.push('<fieldset class="hour"><legend>'+F.toUpperCase()+"</legend>")}t=F;w=(B%12?B%12:12);s.push('<span class="hour'+v+" hour_"+(B<12?"am":"pm")+'">'+w+"</span>");if(B==23){s.push("</fieldset>")}}else{w=B+":00";s.push('<span class="hour'+v+'">'+w+"</span>")}}this.picker.find(".datetimepicker-hours td").html(s.join(""));s=[];w="",F="",t="";var m=this.minutesDisabled||[];for(var B=0;B<60;B+=this.minuteStep){if(m.indexOf(B)!==-1){continue}var x=h(u,I,n,D,B,0);v="";if(x.valueOf()<this.startDate||x.valueOf()>this.endDate){v+=" disabled"}else{if(Math.floor(y/this.minuteStep)==Math.floor(B/this.minuteStep)){v+=" active"}}if(this.showMeridian&&a[this.language].meridiem.length==2){F=(D<12?a[this.language].meridiem[0]:a[this.language].meridiem[1]);if(F!=t){if(t!=""){s.push("</fieldset>")}s.push('<fieldset class="minute"><legend>'+F.toUpperCase()+"</legend>")}t=F;w=(D%12?D%12:12);s.push('<span class="minute'+v+'">'+w+":"+(B<10?"0"+B:B)+"</span>");if(B==59){s.push("</fieldset>")}}else{w=B+":00";s.push('<span class="minute'+v+'">'+D+":"+(B<10?"0"+B:B)+"</span>")}}this.picker.find(".datetimepicker-minutes td").html(s.join(""));var L=this.date.getUTCFullYear();var p=this.setTitle(".datetimepicker-months",u).end().find("span").removeClass("active");if(L==u){var o=p.length-12;p.eq(this.date.getUTCMonth()+o).addClass("active")}if(u<z||u>q){p.addClass("disabled")}if(u==z){p.slice(0,E+1).addClass("disabled")}if(u==q){p.slice(A).addClass("disabled")}s="";u=parseInt(u/10,10)*10;var J=this.setTitle(".datetimepicker-years",u+"-"+(u+9)).end().find("td");u-=1;for(var B=-1;B<11;B++){s+='<span class="year'+(B==-1||B==10?" old":"")+(L==u?" active":"")+(u<z||u>q?" disabled":"")+'">'+u+"</span>";u+=1}J.html(s);this.place()},updateNavArrows:function(){var n=new Date(this.viewDate),l=n.getUTCFullYear(),m=n.getUTCMonth(),k=n.getUTCDate(),j=n.getUTCHours();switch(this.viewMode){case 0:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()&&m<=this.startDate.getUTCMonth()&&k<=this.startDate.getUTCDate()&&j<=this.startDate.getUTCHours()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()&&m>=this.endDate.getUTCMonth()&&k>=this.endDate.getUTCDate()&&j>=this.endDate.getUTCHours()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break;case 1:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()&&m<=this.startDate.getUTCMonth()&&k<=this.startDate.getUTCDate()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()&&m>=this.endDate.getUTCMonth()&&k>=this.endDate.getUTCDate()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break;case 2:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()&&m<=this.startDate.getUTCMonth()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()&&m>=this.endDate.getUTCMonth()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break;case 3:case 4:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break}},mousewheel:function(k){k.preventDefault();k.stopPropagation();if(this.wheelPause){return}this.wheelPause=true;var j=k.originalEvent;var m=j.wheelDelta;var l=m>0?1:(m===0)?0:-1;if(this.wheelViewModeNavigationInverseDirection){l=-l}this.showMode(l);setTimeout(f.proxy(function(){this.wheelPause=false},this),this.wheelViewModeNavigationDelay)},click:function(n){n.stopPropagation();n.preventDefault();var o=f(n.target).closest("span, td, th, legend");if(o.is("."+this.icontype)){o=f(o).parent().closest("span, td, th, legend")}if(o.length==1){if(o.is(".disabled")){this.element.trigger({type:"outOfRange",date:this.viewDate,startDate:this.startDate,endDate:this.endDate});return}switch(o[0].nodeName.toLowerCase()){case"th":switch(o[0].className){case"switch":this.showMode(1);break;case"prev":case"next":var j=g.modes[this.viewMode].navStep*(o[0].className=="prev"?-1:1);switch(this.viewMode){case 0:this.viewDate=this.moveHour(this.viewDate,j);break;case 1:this.viewDate=this.moveDate(this.viewDate,j);break;case 2:this.viewDate=this.moveMonth(this.viewDate,j);break;case 3:case 4:this.viewDate=this.moveYear(this.viewDate,j);break}this.fill();this.element.trigger({type:o[0].className+":"+this.convertViewModeText(this.viewMode),date:this.viewDate,startDate:this.startDate,endDate:this.endDate});break;case"clear":this.reset();if(this.autoclose){this.hide()}break;case"today":var k=new Date();k=h(k.getFullYear(),k.getMonth(),k.getDate(),k.getHours(),k.getMinutes(),k.getSeconds(),0);if(k<this.startDate){k=this.startDate}else{if(k>this.endDate){k=this.endDate}}this.viewMode=this.startViewMode;this.showMode(0);this._setDate(k);this.fill();if(this.autoclose){this.hide()}break}break;case"span":if(!o.is(".disabled")){var q=this.viewDate.getUTCFullYear(),p=this.viewDate.getUTCMonth(),r=this.viewDate.getUTCDate(),s=this.viewDate.getUTCHours(),l=this.viewDate.getUTCMinutes(),t=this.viewDate.getUTCSeconds();if(o.is(".month")){this.viewDate.setUTCDate(1);p=o.parent().find("span").index(o);r=this.viewDate.getUTCDate();this.viewDate.setUTCMonth(p);this.element.trigger({type:"changeMonth",date:this.viewDate});if(this.viewSelect>=3){this._setDate(h(q,p,r,s,l,t,0))}}else{if(o.is(".year")){this.viewDate.setUTCDate(1);q=parseInt(o.text(),10)||0;this.viewDate.setUTCFullYear(q);this.element.trigger({type:"changeYear",date:this.viewDate});if(this.viewSelect>=4){this._setDate(h(q,p,r,s,l,t,0))}}else{if(o.is(".hour")){s=parseInt(o.text(),10)||0;if(o.hasClass("hour_am")||o.hasClass("hour_pm")){if(s==12&&o.hasClass("hour_am")){s=0}else{if(s!=12&&o.hasClass("hour_pm")){s+=12}}}this.viewDate.setUTCHours(s);this.element.trigger({type:"changeHour",date:this.viewDate});if(this.viewSelect>=1){this._setDate(h(q,p,r,s,l,t,0))}}else{if(o.is(".minute")){l=parseInt(o.text().substr(o.text().indexOf(":")+1),10)||0;this.viewDate.setUTCMinutes(l);this.element.trigger({type:"changeMinute",date:this.viewDate});if(this.viewSelect>=0){this._setDate(h(q,p,r,s,l,t,0))}}}}}if(this.viewMode!=0){var m=this.viewMode;this.showMode(-1);this.fill();if(m==this.viewMode&&this.autoclose){this.hide()}}else{this.fill();if(this.autoclose){this.hide()}}}break;case"td":if(o.is(".day")&&!o.is(".disabled")){var r=parseInt(o.text(),10)||1;var q=this.viewDate.getUTCFullYear(),p=this.viewDate.getUTCMonth(),s=this.viewDate.getUTCHours(),l=this.viewDate.getUTCMinutes(),t=this.viewDate.getUTCSeconds();if(o.is(".old")){if(p===0){p=11;q-=1}else{p-=1}}else{if(o.is(".new")){if(p==11){p=0;q+=1}else{p+=1}}}this.viewDate.setUTCFullYear(q);this.viewDate.setUTCMonth(p,r);this.element.trigger({type:"changeDay",date:this.viewDate});if(this.viewSelect>=2){this._setDate(h(q,p,r,s,l,t,0))}}var m=this.viewMode;this.showMode(-1);this.fill();if(m==this.viewMode&&this.autoclose){this.hide()}break}}},_setDate:function(j,l){if(!l||l=="date"){this.date=j}if(!l||l=="view"){this.viewDate=j}this.fill();this.setValue();var k;if(this.isInput){k=this.element}else{if(this.component){k=this.element.find("input")}}if(k){k.change();if(this.autoclose&&(!l||l=="date")){}}this.element.trigger({type:"changeDate",date:this.getDate()});if(j==null){this.date=this.viewDate}},moveMinute:function(k,j){if(!j){return k}var l=new Date(k.valueOf());l.setUTCMinutes(l.getUTCMinutes()+(j*this.minuteStep));return l},moveHour:function(k,j){if(!j){return k}var l=new Date(k.valueOf());l.setUTCHours(l.getUTCHours()+j);return l},moveDate:function(k,j){if(!j){return k}var l=new Date(k.valueOf());l.setUTCDate(l.getUTCDate()+j);return l},moveMonth:function(j,k){if(!k){return j}var n=new Date(j.valueOf()),r=n.getUTCDate(),o=n.getUTCMonth(),m=Math.abs(k),q,p;k=k>0?1:-1;if(m==1){p=k==-1?function(){return n.getUTCMonth()==o}:function(){return n.getUTCMonth()!=q};q=o+k;n.setUTCMonth(q);if(q<0||q>11){q=(q+12)%12}}else{for(var l=0;l<m;l++){n=this.moveMonth(n,k)}q=n.getUTCMonth();n.setUTCDate(r);p=function(){return q!=n.getUTCMonth()}}while(p()){n.setUTCDate(--r);n.setUTCMonth(q)}return n},moveYear:function(k,j){return this.moveMonth(k,j*12)},dateWithinRange:function(j){return j>=this.startDate&&j<=this.endDate},keydown:function(n){if(this.picker.is(":not(:visible)")){if(n.keyCode==27){this.show()}return}var p=false,k,q,o,r,j;switch(n.keyCode){case 27:this.hide();n.preventDefault();break;case 37:case 39:if(!this.keyboardNavigation){break}k=n.keyCode==37?-1:1;viewMode=this.viewMode;if(n.ctrlKey){viewMode+=2}else{if(n.shiftKey){viewMode+=1}}if(viewMode==4){r=this.moveYear(this.date,k);j=this.moveYear(this.viewDate,k)}else{if(viewMode==3){r=this.moveMonth(this.date,k);j=this.moveMonth(this.viewDate,k)}else{if(viewMode==2){r=this.moveDate(this.date,k);j=this.moveDate(this.viewDate,k)}else{if(viewMode==1){r=this.moveHour(this.date,k);j=this.moveHour(this.viewDate,k)}else{if(viewMode==0){r=this.moveMinute(this.date,k);j=this.moveMinute(this.viewDate,k)}}}}}if(this.dateWithinRange(r)){this.date=r;this.viewDate=j;this.setValue();this.update();n.preventDefault();p=true}break;case 38:case 40:if(!this.keyboardNavigation){break}k=n.keyCode==38?-1:1;viewMode=this.viewMode;if(n.ctrlKey){viewMode+=2}else{if(n.shiftKey){viewMode+=1}}if(viewMode==4){r=this.moveYear(this.date,k);j=this.moveYear(this.viewDate,k)}else{if(viewMode==3){r=this.moveMonth(this.date,k);j=this.moveMonth(this.viewDate,k)}else{if(viewMode==2){r=this.moveDate(this.date,k*7);j=this.moveDate(this.viewDate,k*7)}else{if(viewMode==1){if(this.showMeridian){r=this.moveHour(this.date,k*6);j=this.moveHour(this.viewDate,k*6)}else{r=this.moveHour(this.date,k*4);j=this.moveHour(this.viewDate,k*4)}}else{if(viewMode==0){r=this.moveMinute(this.date,k*4);j=this.moveMinute(this.viewDate,k*4)}}}}}if(this.dateWithinRange(r)){this.date=r;this.viewDate=j;this.setValue();this.update();n.preventDefault();p=true}break;case 13:if(this.viewMode!=0){var m=this.viewMode;this.showMode(-1);this.fill();if(m==this.viewMode&&this.autoclose){this.hide()}}else{this.fill();if(this.autoclose){this.hide()}}n.preventDefault();break;case 9:this.hide();break}if(p){var l;if(this.isInput){l=this.element}else{if(this.component){l=this.element.find("input")}}if(l){l.change()}this.element.trigger({type:"changeDate",date:this.getDate()})}},showMode:function(j){if(j){var k=Math.max(0,Math.min(g.modes.length-1,this.viewMode+j));if(k>=this.minView&&k<=this.maxView){this.element.trigger({type:"changeMode",date:this.viewDate,oldViewMode:this.viewMode,newViewMode:k});this.viewMode=k}}this.picker.find(">div").hide().filter(".datetimepicker-"+g.modes[this.viewMode].clsName).css("display","block");this.updateNavArrows()},reset:function(j){this._setDate(null,"date")},convertViewModeText:function(j){switch(j){case 4:return"decade";case 3:return"year";case 2:return"month";case 1:return"day";case 0:return"hour"}}};var b=f.fn.datetimepicker;f.fn.datetimepicker=function(l){var j=Array.apply(null,arguments);j.shift();var k;this.each(function(){var o=f(this),n=o.data("datetimepicker"),m=typeof l=="object"&&l;if(!n){o.data("datetimepicker",(n=new i(this,f.extend({},f.fn.datetimepicker.defaults,m))))}if(typeof l=="string"&&typeof n[l]=="function"){k=n[l].apply(n,j);if(k!==c){return false}}});if(k!==c){return k}else{return this}};f.fn.datetimepicker.defaults={};f.fn.datetimepicker.Constructor=i;var a=f.fn.datetimepicker.dates={en:{days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],daysShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"],daysMin:["Su","Mo","Tu","We","Th","Fr","Sa","Su"],months:["January","February","March","April","May","June","July","August","September","October","November","December"],monthsShort:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],meridiem:["am","pm"],suffix:["st","nd","rd","th"],today:"Today",clear:"Clear"}};var g={modes:[{clsName:"minutes",navFnc:"Hours",navStep:1},{clsName:"hours",navFnc:"Date",navStep:1},{clsName:"days",navFnc:"Month",navStep:1},{clsName:"months",navFnc:"FullYear",navStep:1},{clsName:"years",navFnc:"FullYear",navStep:10}],isLeapYear:function(j){return(((j%4===0)&&(j%100!==0))||(j%400===0))},getDaysInMonth:function(j,k){return[31,(g.isLeapYear(j)?29:28),31,30,31,30,31,31,30,31,30,31][k]},getDefaultFormat:function(j,k){if(j=="standard"){if(k=="input"){return"yyyy-mm-dd hh:ii"}else{return"yyyy-mm-dd hh:ii:ss"}}else{if(j=="php"){if(k=="input"){return"Y-m-d H:i"}else{return"Y-m-d H:i:s"}}else{throw new Error("Invalid format type.")}}},validParts:function(j){if(j=="standard"){return/t|hh?|HH?|p|P|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g}else{if(j=="php"){return/[dDjlNwzFmMnStyYaABgGhHis]/g}else{throw new Error("Invalid format type.")}}},nonpunctuation:/[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,parseFormat:function(m,k){var j=m.replace(this.validParts(k),"\0").split("\0"),l=m.match(this.validParts(k));if(!j||!j.length||!l||l.length==0){throw new Error("Invalid date format.")}return{separators:j,parts:l}},parseDate:function(n,w,q,u){if(n instanceof Date){var y=new Date(n.valueOf()-n.getTimezoneOffset()*60000);y.setMilliseconds(0);return y}if(/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(n)){w=this.parseFormat("yyyy-mm-dd",u)}if(/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}$/.test(n)){w=this.parseFormat("yyyy-mm-dd hh:ii",u)}if(/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}\:\d{1,2}[Z]{0,1}$/.test(n)){w=this.parseFormat("yyyy-mm-dd hh:ii:ss",u)}if(/^[-+]\d+[dmwy]([\s,]+[-+]\d+[dmwy])*$/.test(n)){var z=/([-+]\d+)([dmwy])/,o=n.match(/([-+]\d+)([dmwy])/g),j,m;n=new Date();for(var p=0;p<o.length;p++){j=z.exec(o[p]);m=parseInt(j[1]);switch(j[2]){case"d":n.setUTCDate(n.getUTCDate()+m);break;case"m":n=i.prototype.moveMonth.call(i.prototype,n,m);break;case"w":n.setUTCDate(n.getUTCDate()+m*7);break;case"y":n=i.prototype.moveYear.call(i.prototype,n,m);break}}return h(n.getUTCFullYear(),n.getUTCMonth(),n.getUTCDate(),n.getUTCHours(),n.getUTCMinutes(),n.getUTCSeconds(),0)}var o=n&&n.toString().match(this.nonpunctuation)||[],n=new Date(0,0,0,0,0,0,0),t={},v=["hh","h","ii","i","ss","s","yyyy","yy","M","MM","m","mm","D","DD","d","dd","H","HH","p","P"],x={hh:function(B,s){return B.setUTCHours(s)},h:function(B,s){return B.setUTCHours(s)},HH:function(B,s){return B.setUTCHours(s==12?0:s)},H:function(B,s){return B.setUTCHours(s==12?0:s)},ii:function(B,s){return B.setUTCMinutes(s)},i:function(B,s){return B.setUTCMinutes(s)},ss:function(B,s){return B.setUTCSeconds(s)},s:function(B,s){return B.setUTCSeconds(s)},yyyy:function(B,s){return B.setUTCFullYear(s)},yy:function(B,s){return B.setUTCFullYear(2000+s)},m:function(B,s){s-=1;while(s<0){s+=12}s%=12;B.setUTCMonth(s);while(B.getUTCMonth()!=s){if(isNaN(B.getUTCMonth())){return B}else{B.setUTCDate(B.getUTCDate()-1)}}return B},d:function(B,s){return B.setUTCDate(s)},p:function(B,s){return B.setUTCHours(s==1?B.getUTCHours()+12:B.getUTCHours())}},l,r,j;x.M=x.MM=x.mm=x.m;x.dd=x.d;x.P=x.p;n=h(n.getFullYear(),n.getMonth(),n.getDate(),n.getHours(),n.getMinutes(),n.getSeconds());if(o.length==w.parts.length){for(var p=0,k=w.parts.length;p<k;p++){l=parseInt(o[p],10);j=w.parts[p];if(isNaN(l)){switch(j){case"MM":r=f(a[q].months).filter(function(){var s=this.slice(0,o[p].length),B=o[p].slice(0,s.length);return s==B});l=f.inArray(r[0],a[q].months)+1;break;case"M":r=f(a[q].monthsShort).filter(function(){var s=this.slice(0,o[p].length),B=o[p].slice(0,s.length);return s.toLowerCase()==B.toLowerCase()});l=f.inArray(r[0],a[q].monthsShort)+1;break;case"p":case"P":l=f.inArray(o[p].toLowerCase(),a[q].meridiem);break}}t[j]=l}for(var p=0,A;p<v.length;p++){A=v[p];if(A in t&&!isNaN(t[A])){x[A](n,t[A])}}}return n},formatDate:function(j,o,q,m){if(j==null){return""}var p;if(m=="standard"){p={t:j.getTime(),yy:j.getUTCFullYear().toString().substring(2),yyyy:j.getUTCFullYear(),m:j.getUTCMonth()+1,M:a[q].monthsShort[j.getUTCMonth()],MM:a[q].months[j.getUTCMonth()],d:j.getUTCDate(),D:a[q].daysShort[j.getUTCDay()],DD:a[q].days[j.getUTCDay()],p:(a[q].meridiem.length==2?a[q].meridiem[j.getUTCHours()<12?0:1]:""),h:j.getUTCHours(),i:j.getUTCMinutes(),s:j.getUTCSeconds()};if(a[q].meridiem.length==2){p.H=(p.h%12==0?12:p.h%12)}else{p.H=p.h}p.HH=(p.H<10?"0":"")+p.H;p.P=p.p.toUpperCase();p.hh=(p.h<10?"0":"")+p.h;p.ii=(p.i<10?"0":"")+p.i;p.ss=(p.s<10?"0":"")+p.s;p.dd=(p.d<10?"0":"")+p.d;p.mm=(p.m<10?"0":"")+p.m}else{if(m=="php"){p={y:j.getUTCFullYear().toString().substring(2),Y:j.getUTCFullYear(),F:a[q].months[j.getUTCMonth()],M:a[q].monthsShort[j.getUTCMonth()],n:j.getUTCMonth()+1,t:g.getDaysInMonth(j.getUTCFullYear(),j.getUTCMonth()),j:j.getUTCDate(),l:a[q].days[j.getUTCDay()],D:a[q].daysShort[j.getUTCDay()],w:j.getUTCDay(),N:(j.getUTCDay()==0?7:j.getUTCDay()),S:(j.getUTCDate()%10<=a[q].suffix.length?a[q].suffix[j.getUTCDate()%10-1]:""),a:(a[q].meridiem.length==2?a[q].meridiem[j.getUTCHours()<12?0:1]:""),g:(j.getUTCHours()%12==0?12:j.getUTCHours()%12),G:j.getUTCHours(),i:j.getUTCMinutes(),s:j.getUTCSeconds()};p.m=(p.n<10?"0":"")+p.n;p.d=(p.j<10?"0":"")+p.j;p.A=p.a.toString().toUpperCase();p.h=(p.g<10?"0":"")+p.g;p.H=(p.G<10?"0":"")+p.G;p.i=(p.i<10?"0":"")+p.i;p.s=(p.s<10?"0":"")+p.s}else{throw new Error("Invalid format type.")}}var j=[],n=f.extend([],o.separators);for(var l=0,k=o.parts.length;l<k;l++){if(n.length){j.push(n.shift())}j.push(p[o.parts[l]])}if(n.length){j.push(n.shift())}return j.join("")},convertViewMode:function(j){switch(j){case 4:case"decade":j=4;break;case 3:case"year":j=3;break;case 2:case"month":j=2;break;case 1:case"day":j=1;break;case 0:case"hour":j=0;break}return j},headTemplate:'<thead><tr><th class="prev"><i class="{iconType} {leftArrow}"/></th><th colspan="5" class="switch"></th><th class="next"><i class="{iconType} {rightArrow}"/></th></tr></thead>',headTemplateV3:'<thead><tr><th class="prev"><span class="{iconType} {leftArrow}"></span> </th><th colspan="5" class="switch"></th><th class="next"><span class="{iconType} {rightArrow}"></span> </th></tr></thead>',contTemplate:'<tbody><tr><td colspan="7"></td></tr></tbody>',footTemplate:'<tfoot><tr><th colspan="7" class="today"></th></tr><tr><th colspan="7" class="clear"></th></tr></tfoot>'};g.template='<div class="datetimepicker"><div class="datetimepicker-minutes"><table class=" table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-hours"><table class=" table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-days"><table class=" table-condensed">'+g.headTemplate+"<tbody></tbody>"+g.footTemplate+'</table></div><div class="datetimepicker-months"><table class="table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-years"><table class="table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+"</table></div></div>";g.templateV3='<div class="datetimepicker"><div class="datetimepicker-minutes"><table class=" table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-hours"><table class=" table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-days"><table class=" table-condensed">'+g.headTemplateV3+"<tbody></tbody>"+g.footTemplate+'</table></div><div class="datetimepicker-months"><table class="table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-years"><table class="table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+"</table></div></div>";f.fn.datetimepicker.DPGlobal=g;f.fn.datetimepicker.noConflict=function(){f.fn.datetimepicker=b;return this};f(document).on("focus.datetimepicker.data-api click.datetimepicker.data-api",'[data-provide="datetimepicker"]',function(k){var j=f(this);if(j.data("datetimepicker")){return}k.preventDefault();j.datetimepicker("show")});f(function(){f('[data-provide="datetimepicker-inline"]').datetimepicker()})}));
-/*!    SWFObject v2.3.20130521 <http://github.com/swfobject/swfobject>
-    is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
-*/
-var swfobject=function(){var D="undefined",r="object",T="Shockwave Flash",Z="ShockwaveFlash.ShockwaveFlash",q="application/x-shockwave-flash",S="SWFObjectExprInst",x="onreadystatechange",Q=window,h=document,t=navigator,V=false,X=[],o=[],P=[],K=[],I,p,E,B,L=false,a=false,m,G,j=true,l=false,O=function(){var ad=typeof h.getElementById!=D&&typeof h.getElementsByTagName!=D&&typeof h.createElement!=D,ak=t.userAgent.toLowerCase(),ab=t.platform.toLowerCase(),ah=ab?/win/.test(ab):/win/.test(ak),af=ab?/mac/.test(ab):/mac/.test(ak),ai=/webkit/.test(ak)?parseFloat(ak.replace(/^.*webkit\/(\d+(\.\d+)?).*$/,"$1")):false,aa=t.appName==="Microsoft Internet Explorer",aj=[0,0,0],ae=null;if(typeof t.plugins!=D&&typeof t.plugins[T]==r){ae=t.plugins[T].description;if(ae&&(typeof t.mimeTypes!=D&&t.mimeTypes[q]&&t.mimeTypes[q].enabledPlugin)){V=true;aa=false;ae=ae.replace(/^.*\s+(\S+\s+\S+$)/,"$1");aj[0]=n(ae.replace(/^(.*)\..*$/,"$1"));aj[1]=n(ae.replace(/^.*\.(.*)\s.*$/,"$1"));aj[2]=/[a-zA-Z]/.test(ae)?n(ae.replace(/^.*[a-zA-Z]+(.*)$/,"$1")):0}}else{if(typeof Q.ActiveXObject!=D){try{var ag=new ActiveXObject(Z);if(ag){ae=ag.GetVariable("$version");if(ae){aa=true;ae=ae.split(" ")[1].split(",");aj=[n(ae[0]),n(ae[1]),n(ae[2])]}}}catch(ac){}}}return{w3:ad,pv:aj,wk:ai,ie:aa,win:ah,mac:af}}(),i=function(){if(!O.w3){return}if((typeof h.readyState!=D&&(h.readyState==="complete"||h.readyState==="interactive"))||(typeof h.readyState==D&&(h.getElementsByTagName("body")[0]||h.body))){f()}if(!L){if(typeof h.addEventListener!=D){h.addEventListener("DOMContentLoaded",f,false)}if(O.ie){h.attachEvent(x,function aa(){if(h.readyState=="complete"){h.detachEvent(x,aa);f()}});if(Q==top){(function ac(){if(L){return}try{h.documentElement.doScroll("left")}catch(ad){setTimeout(ac,0);return}f()}())}}if(O.wk){(function ab(){if(L){return}if(!/loaded|complete/.test(h.readyState)){setTimeout(ab,0);return}f()}())}}}();function f(){if(L||!document.getElementsByTagName("body")[0]){return}try{var ac,ad=C("span");ad.style.display="none";ac=h.getElementsByTagName("body")[0].appendChild(ad);ac.parentNode.removeChild(ac);ac=null;ad=null}catch(ae){return}L=true;var aa=X.length;for(var ab=0;ab<aa;ab++){X[ab]()}}function M(aa){if(L){aa()}else{X[X.length]=aa}}function s(ab){if(typeof Q.addEventListener!=D){Q.addEventListener("load",ab,false)}else{if(typeof h.addEventListener!=D){h.addEventListener("load",ab,false)}else{if(typeof Q.attachEvent!=D){g(Q,"onload",ab)}else{if(typeof Q.onload=="function"){var aa=Q.onload;Q.onload=function(){aa();ab()}}else{Q.onload=ab}}}}}function Y(){var aa=h.getElementsByTagName("body")[0];var ae=C(r);ae.setAttribute("style","visibility: hidden;");ae.setAttribute("type",q);var ad=aa.appendChild(ae);if(ad){var ac=0;(function ab(){if(typeof ad.GetVariable!=D){try{var ag=ad.GetVariable("$version");if(ag){ag=ag.split(" ")[1].split(",");O.pv=[n(ag[0]),n(ag[1]),n(ag[2])]}}catch(af){O.pv=[8,0,0]}}else{if(ac<10){ac++;setTimeout(ab,10);return}}aa.removeChild(ae);ad=null;H()}())}else{H()}}function H(){var aj=o.length;if(aj>0){for(var ai=0;ai<aj;ai++){var ab=o[ai].id;var ae=o[ai].callbackFn;var ad={success:false,id:ab};if(O.pv[0]>0){var ah=c(ab);if(ah){if(F(o[ai].swfVersion)&&!(O.wk&&O.wk<312)){w(ab,true);if(ae){ad.success=true;ad.ref=z(ab);ad.id=ab;ae(ad)}}else{if(o[ai].expressInstall&&A()){var al={};al.data=o[ai].expressInstall;al.width=ah.getAttribute("width")||"0";al.height=ah.getAttribute("height")||"0";if(ah.getAttribute("class")){al.styleclass=ah.getAttribute("class")}if(ah.getAttribute("align")){al.align=ah.getAttribute("align")}var ak={};var aa=ah.getElementsByTagName("param");var af=aa.length;for(var ag=0;ag<af;ag++){if(aa[ag].getAttribute("name").toLowerCase()!="movie"){ak[aa[ag].getAttribute("name")]=aa[ag].getAttribute("value")}}R(al,ak,ab,ae)}else{b(ah);if(ae){ae(ad)}}}}}else{w(ab,true);if(ae){var ac=z(ab);if(ac&&typeof ac.SetVariable!=D){ad.success=true;ad.ref=ac;ad.id=ac.id}ae(ad)}}}}}X[0]=function(){if(V){Y()}else{H()}};function z(ac){var aa=null,ab=c(ac);if(ab&&ab.nodeName.toUpperCase()==="OBJECT"){if(typeof ab.SetVariable!==D){aa=ab}else{aa=ab.getElementsByTagName(r)[0]||ab}}return aa}function A(){return !a&&F("6.0.65")&&(O.win||O.mac)&&!(O.wk&&O.wk<312)}function R(ad,ae,aa,ac){var ah=c(aa);aa=W(aa);a=true;E=ac||null;B={success:false,id:aa};if(ah){if(ah.nodeName.toUpperCase()=="OBJECT"){I=J(ah);p=null}else{I=ah;p=aa}ad.id=S;if(typeof ad.width==D||(!/%$/.test(ad.width)&&n(ad.width)<310)){ad.width="310"}if(typeof ad.height==D||(!/%$/.test(ad.height)&&n(ad.height)<137)){ad.height="137"}var ag=O.ie?"ActiveX":"PlugIn",af="MMredirectURL="+encodeURIComponent(Q.location.toString().replace(/&/g,"%26"))+"&MMplayerType="+ag+"&MMdoctitle="+encodeURIComponent(h.title.slice(0,47)+" - Flash Player Installation");if(typeof ae.flashvars!=D){ae.flashvars+="&"+af}else{ae.flashvars=af}if(O.ie&&ah.readyState!=4){var ab=C("div");
-aa+="SWFObjectNew";ab.setAttribute("id",aa);ah.parentNode.insertBefore(ab,ah);ah.style.display="none";y(ah)}u(ad,ae,aa)}}function b(ab){if(O.ie&&ab.readyState!=4){ab.style.display="none";var aa=C("div");ab.parentNode.insertBefore(aa,ab);aa.parentNode.replaceChild(J(ab),aa);y(ab)}else{ab.parentNode.replaceChild(J(ab),ab)}}function J(af){var ae=C("div");if(O.win&&O.ie){ae.innerHTML=af.innerHTML}else{var ab=af.getElementsByTagName(r)[0];if(ab){var ag=ab.childNodes;if(ag){var aa=ag.length;for(var ad=0;ad<aa;ad++){if(!(ag[ad].nodeType==1&&ag[ad].nodeName=="PARAM")&&!(ag[ad].nodeType==8)){ae.appendChild(ag[ad].cloneNode(true))}}}}}return ae}function k(aa,ab){var ac=C("div");ac.innerHTML="<object classid='clsid:D27CDB6E-AE6D-11cf-96B8-444553540000'><param name='movie' value='"+aa+"'>"+ab+"</object>";return ac.firstChild}function u(ai,ag,ab){var aa,ad=c(ab);ab=W(ab);if(O.wk&&O.wk<312){return aa}if(ad){var ac=(O.ie)?C("div"):C(r),af,ah,ae;if(typeof ai.id==D){ai.id=ab}for(ae in ag){if(ag.hasOwnProperty(ae)&&ae.toLowerCase()!=="movie"){e(ac,ae,ag[ae])}}if(O.ie){ac=k(ai.data,ac.innerHTML)}for(af in ai){if(ai.hasOwnProperty(af)){ah=af.toLowerCase();if(ah==="styleclass"){ac.setAttribute("class",ai[af])}else{if(ah!=="classid"&&ah!=="data"){ac.setAttribute(af,ai[af])}}}}if(O.ie){P[P.length]=ai.id}else{ac.setAttribute("type",q);ac.setAttribute("data",ai.data)}ad.parentNode.replaceChild(ac,ad);aa=ac}return aa}function e(ac,aa,ab){var ad=C("param");ad.setAttribute("name",aa);ad.setAttribute("value",ab);ac.appendChild(ad)}function y(ac){var ab=c(ac);if(ab&&ab.nodeName.toUpperCase()=="OBJECT"){if(O.ie){ab.style.display="none";(function aa(){if(ab.readyState==4){for(var ad in ab){if(typeof ab[ad]=="function"){ab[ad]=null}}ab.parentNode.removeChild(ab)}else{setTimeout(aa,10)}}())}else{ab.parentNode.removeChild(ab)}}}function U(aa){return(aa&&aa.nodeType&&aa.nodeType===1)}function W(aa){return(U(aa))?aa.id:aa}function c(ac){if(U(ac)){return ac}var aa=null;try{aa=h.getElementById(ac)}catch(ab){}return aa}function C(aa){return h.createElement(aa)}function n(aa){return parseInt(aa,10)}function g(ac,aa,ab){ac.attachEvent(aa,ab);K[K.length]=[ac,aa,ab]}function F(ac){ac+="";var ab=O.pv,aa=ac.split(".");aa[0]=n(aa[0]);aa[1]=n(aa[1])||0;aa[2]=n(aa[2])||0;return(ab[0]>aa[0]||(ab[0]==aa[0]&&ab[1]>aa[1])||(ab[0]==aa[0]&&ab[1]==aa[1]&&ab[2]>=aa[2]))?true:false}function v(af,ab,ag,ae){var ad=h.getElementsByTagName("head")[0];if(!ad){return}var aa=(typeof ag=="string")?ag:"screen";if(ae){m=null;G=null}if(!m||G!=aa){var ac=C("style");ac.setAttribute("type","text/css");ac.setAttribute("media",aa);m=ad.appendChild(ac);if(O.ie&&typeof h.styleSheets!=D&&h.styleSheets.length>0){m=h.styleSheets[h.styleSheets.length-1]}G=aa}if(m){if(typeof m.addRule!=D){m.addRule(af,ab)}else{if(typeof h.createTextNode!=D){m.appendChild(h.createTextNode(af+" {"+ab+"}"))}}}}function w(ad,aa){if(!j){return}var ab=aa?"visible":"hidden",ac=c(ad);if(L&&ac){ac.style.visibility=ab}else{if(typeof ad==="string"){v("#"+ad,"visibility:"+ab)}}}function N(ab){var ac=/[\\\"<>\.;]/;var aa=ac.exec(ab)!=null;return aa&&typeof encodeURIComponent!=D?encodeURIComponent(ab):ab}var d=function(){if(O.ie){window.attachEvent("onunload",function(){var af=K.length;for(var ae=0;ae<af;ae++){K[ae][0].detachEvent(K[ae][1],K[ae][2])}var ac=P.length;for(var ad=0;ad<ac;ad++){y(P[ad])}for(var ab in O){O[ab]=null}O=null;for(var aa in swfobject){swfobject[aa]=null}swfobject=null})}}();return{registerObject:function(ae,aa,ad,ac){if(O.w3&&ae&&aa){var ab={};ab.id=ae;ab.swfVersion=aa;ab.expressInstall=ad;ab.callbackFn=ac;o[o.length]=ab;w(ae,false)}else{if(ac){ac({success:false,id:ae})}}},getObjectById:function(aa){if(O.w3){return z(aa)}},embedSWF:function(af,al,ai,ak,ab,ae,ad,ah,aj,ag){var ac=W(al),aa={success:false,id:ac};if(O.w3&&!(O.wk&&O.wk<312)&&af&&al&&ai&&ak&&ab){w(ac,false);M(function(){ai+="";ak+="";var an={};if(aj&&typeof aj===r){for(var aq in aj){an[aq]=aj[aq]}}an.data=af;an.width=ai;an.height=ak;var ar={};if(ah&&typeof ah===r){for(var ao in ah){ar[ao]=ah[ao]}}if(ad&&typeof ad===r){for(var am in ad){if(ad.hasOwnProperty(am)){var ap=(l)?encodeURIComponent(am):am,at=(l)?encodeURIComponent(ad[am]):ad[am];if(typeof ar.flashvars!=D){ar.flashvars+="&"+ap+"="+at}else{ar.flashvars=ap+"="+at}}}}if(F(ab)){var au=u(an,ar,al);if(an.id==ac){w(ac,true)}aa.success=true;aa.ref=au;aa.id=au.id}else{if(ae&&A()){an.data=ae;R(an,ar,al,ag);return}else{w(ac,true)}}if(ag){ag(aa)}})}else{if(ag){ag(aa)}}},switchOffAutoHideShow:function(){j=false},enableUriEncoding:function(aa){l=(typeof aa===D)?true:aa},ua:O,getFlashPlayerVersion:function(){return{major:O.pv[0],minor:O.pv[1],release:O.pv[2]}},hasFlashPlayerVersion:F,createSWF:function(ac,ab,aa){if(O.w3){return u(ac,ab,aa)}else{return undefined}},showExpressInstall:function(ac,ad,aa,ab){if(O.w3&&A()){R(ac,ad,aa,ab)}},removeSWF:function(aa){if(O.w3){y(aa)}},createCSS:function(ad,ac,ab,aa){if(O.w3){v(ad,ac,ab,aa)}},addDomLoadEvent:M,addLoadEvent:s,getQueryParamValue:function(ad){var ac=h.location.search||h.location.hash;
-if(ac){if(/\?/.test(ac)){ac=ac.split("?")[1]}if(ad==null){return N(ac)}var ab=ac.split("&");for(var aa=0;aa<ab.length;aa++){if(ab[aa].substring(0,ab[aa].indexOf("="))==ad){return N(ab[aa].substring((ab[aa].indexOf("=")+1)))}}}return""},expressInstallCallback:function(){if(a){var aa=c(S);if(aa&&I){aa.parentNode.replaceChild(I,aa);if(p){w(p,true);if(O.ie){I.style.display="block"}}if(E){E(B)}}a=false}},version:"2.3"}}();
+/*jslint adsafe: false, bitwise: true, browser: true, cap: false, css: false,
+  debug: false, devel: true, eqeqeq: true, es5: false, evil: false,
+  forin: false, fragment: false, immed: true, laxbreak: false, newcap: true,
+  nomen: false, on: false, onevar: true, passfail: false, plusplus: true,
+  regexp: false, rhino: true, safe: false, strict: false, sub: false,
+  undef: true, white: false, widget: false, windows: false */
+/*global jQuery: false, window: false */
+"use strict";
 
-/*! tablesorter (FORK) - updated 04-11-2016 (v2.25.8)*/
-/* Includes widgets ( storage,uitheme,columns,filter,stickyHeaders,resizable,saveSort ) */
-(function(factory) {
+/*
+ * Original code (c) 2010 Nick Galbreath
+ * http://code.google.com/p/stringencoders/source/browse/#svn/trunk/javascript
+ *
+ * jQuery port (c) 2010 Carlo Zottmann
+ * http://github.com/carlo/jquery-base64
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+/* base64 encode/decode compatible with window.btoa/atob
+ *
+ * window.atob/btoa is a Firefox extension to convert binary data (the "b")
+ * to base64 (ascii, the "a").
+ *
+ * It is also found in Safari and Chrome.  It is not available in IE.
+ *
+ * if (!window.btoa) window.btoa = $.base64.encode
+ * if (!window.atob) window.atob = $.base64.decode
+ *
+ * The original spec's for atob/btoa are a bit lacking
+ * https://developer.mozilla.org/en/DOM/window.atob
+ * https://developer.mozilla.org/en/DOM/window.btoa
+ *
+ * window.btoa and $.base64.encode takes a string where charCodeAt is [0,255]
+ * If any character is not [0,255], then an exception is thrown.
+ *
+ * window.atob and $.base64.decode take a base64-encoded string
+ * If the input length is not a multiple of 4, or contains invalid characters
+ *   then an exception is thrown.
+ */
+ 
+jQuery.base64 = ( function( $ ) {
+  
+  var _PADCHAR = "=",
+    _ALPHA = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/",
+    _VERSION = "1.0";
+
+
+  function _getbyte64( s, i ) {
+    // This is oddly fast, except on Chrome/V8.
+    // Minimal or no improvement in performance by using a
+    // object with properties mapping chars to value (eg. 'A': 0)
+
+    var idx = _ALPHA.indexOf( s.charAt( i ) );
+
+    if ( idx === -1 ) {
+      throw "Cannot decode base64";
+    }
+
+    return idx;
+  }
+  
+  
+  function _decode( s ) {
+    var pads = 0,
+      i,
+      b10,
+      imax = s.length,
+      x = [];
+
+    s = String( s );
+    
+    if ( imax === 0 ) {
+      return s;
+    }
+
+    if ( imax % 4 !== 0 ) {
+      throw "Cannot decode base64";
+    }
+
+    if ( s.charAt( imax - 1 ) === _PADCHAR ) {
+      pads = 1;
+
+      if ( s.charAt( imax - 2 ) === _PADCHAR ) {
+        pads = 2;
+      }
+
+      // either way, we want to ignore this last block
+      imax -= 4;
+    }
+
+    for ( i = 0; i < imax; i += 4 ) {
+      b10 = ( _getbyte64( s, i ) << 18 ) | ( _getbyte64( s, i + 1 ) << 12 ) | ( _getbyte64( s, i + 2 ) << 6 ) | _getbyte64( s, i + 3 );
+      x.push( String.fromCharCode( b10 >> 16, ( b10 >> 8 ) & 0xff, b10 & 0xff ) );
+    }
+
+    switch ( pads ) {
+      case 1:
+        b10 = ( _getbyte64( s, i ) << 18 ) | ( _getbyte64( s, i + 1 ) << 12 ) | ( _getbyte64( s, i + 2 ) << 6 );
+        x.push( String.fromCharCode( b10 >> 16, ( b10 >> 8 ) & 0xff ) );
+        break;
+
+      case 2:
+        b10 = ( _getbyte64( s, i ) << 18) | ( _getbyte64( s, i + 1 ) << 12 );
+        x.push( String.fromCharCode( b10 >> 16 ) );
+        break;
+    }
+
+    return x.join( "" );
+  }
+  
+  
+  function _getbyte( s, i ) {
+    var x = s.charCodeAt( i );
+
+    if ( x > 255 ) {
+      throw "INVALID_CHARACTER_ERR: DOM Exception 5";
+    }
+    
+    return x;
+  }
+
+
+  function _encode( s ) {
+    if ( arguments.length !== 1 ) {
+      throw "SyntaxError: exactly one argument required";
+    }
+
+    s = String( s );
+
+    var i,
+      b10,
+      x = [],
+      imax = s.length - s.length % 3;
+
+    if ( s.length === 0 ) {
+      return s;
+    }
+
+    for ( i = 0; i < imax; i += 3 ) {
+      b10 = ( _getbyte( s, i ) << 16 ) | ( _getbyte( s, i + 1 ) << 8 ) | _getbyte( s, i + 2 );
+      x.push( _ALPHA.charAt( b10 >> 18 ) );
+      x.push( _ALPHA.charAt( ( b10 >> 12 ) & 0x3F ) );
+      x.push( _ALPHA.charAt( ( b10 >> 6 ) & 0x3f ) );
+      x.push( _ALPHA.charAt( b10 & 0x3f ) );
+    }
+
+    switch ( s.length - imax ) {
+      case 1:
+        b10 = _getbyte( s, i ) << 16;
+        x.push( _ALPHA.charAt( b10 >> 18 ) + _ALPHA.charAt( ( b10 >> 12 ) & 0x3F ) + _PADCHAR + _PADCHAR );
+        break;
+
+      case 2:
+        b10 = ( _getbyte( s, i ) << 16 ) | ( _getbyte( s, i + 1 ) << 8 );
+        x.push( _ALPHA.charAt( b10 >> 18 ) + _ALPHA.charAt( ( b10 >> 12 ) & 0x3F ) + _ALPHA.charAt( ( b10 >> 6 ) & 0x3f ) + _PADCHAR );
+        break;
+    }
+
+    return x.join( "" );
+  }
+
+
+  return {
+    decode: _decode,
+    encode: _encode,
+    VERSION: _VERSION
+  };
+      
+}( jQuery ) );
+
+
+/* 
+* Project: Bootstrap Notify = v3.1.3
+* Description: Turns standard Bootstrap alerts into "Growl-like" notifications.
+* Author: Mouse0270 aka Robert McIntosh
+* License: MIT License
+* Website: https://github.com/mouse0270/bootstrap-growl
+*/
+(function (factory) {
 	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
 		define(['jquery'], factory);
-	} else if (typeof module === 'object' && typeof module.exports === 'object') {
-		module.exports = factory(require('jquery'));
+	} else if (typeof exports === 'object') {
+		// Node/CommonJS
+		factory(require('jquery'));
 	} else {
+		// Browser globals
 		factory(jQuery);
 	}
-}(function($) {
-
-/*! TableSorter (FORK) v2.25.8 *//*
-* Client-side table sorting with ease!
-* @requires jQuery v1.2.6+
-*
-* Copyright (c) 2007 Christian Bach
-* fork maintained by Rob Garrison
-*
-* Examples and docs at: http://tablesorter.com
-* Dual licensed under the MIT and GPL licenses:
-* http://www.opensource.org/licenses/mit-license.php
-* http://www.gnu.org/licenses/gpl.html
-*
-* @type jQuery
-* @name tablesorter (FORK)
-* @cat Plugins/Tablesorter
-* @author Christian Bach - christian.bach@polyester.se
-* @contributor Rob Garrison - https://github.com/Mottie/tablesorter
-*/
-/*jshint browser:true, jquery:true, unused:false, expr: true */
-;( function( $ ) {
-	'use strict';
-	var ts = $.tablesorter = {
-
-		version : '2.25.8',
-
-		parsers : [],
-		widgets : [],
-		defaults : {
-
-			// *** appearance
-			theme            : 'default',  // adds tablesorter-{theme} to the table for styling
-			widthFixed       : false,      // adds colgroup to fix widths of columns
-			showProcessing   : false,      // show an indeterminate timer icon in the header when the table is sorted or filtered.
-
-			headerTemplate   : '{content}',// header layout template (HTML ok); {content} = innerHTML, {icon} = <i/> // class from cssIcon
-			onRenderTemplate : null,       // function( index, template ){ return template; }, // template is a string
-			onRenderHeader   : null,       // function( index ){}, // nothing to return
-
-			// *** functionality
-			cancelSelection  : true,       // prevent text selection in the header
-			tabIndex         : true,       // add tabindex to header for keyboard accessibility
-			dateFormat       : 'mmddyyyy', // other options: 'ddmmyyy' or 'yyyymmdd'
-			sortMultiSortKey : 'shiftKey', // key used to select additional columns
-			sortResetKey     : 'ctrlKey',  // key used to remove sorting on a column
-			usNumberFormat   : true,       // false for German '1.234.567,89' or French '1 234 567,89'
-			delayInit        : false,      // if false, the parsed table contents will not update until the first sort
-			serverSideSorting: false,      // if true, server-side sorting should be performed because client-side sorting will be disabled, but the ui and events will still be used.
-			resort           : true,       // default setting to trigger a resort after an 'update', 'addRows', 'updateCell', etc has completed
-
-			// *** sort options
-			headers          : {},         // set sorter, string, empty, locked order, sortInitialOrder, filter, etc.
-			ignoreCase       : true,       // ignore case while sorting
-			sortForce        : null,       // column(s) first sorted; always applied
-			sortList         : [],         // Initial sort order; applied initially; updated when manually sorted
-			sortAppend       : null,       // column(s) sorted last; always applied
-			sortStable       : false,      // when sorting two rows with exactly the same content, the original sort order is maintained
-
-			sortInitialOrder : 'asc',      // sort direction on first click
-			sortLocaleCompare: false,      // replace equivalent character (accented characters)
-			sortReset        : false,      // third click on the header will reset column to default - unsorted
-			sortRestart      : false,      // restart sort to 'sortInitialOrder' when clicking on previously unsorted columns
-
-			emptyTo          : 'bottom',   // sort empty cell to bottom, top, none, zero, emptyMax, emptyMin
-			stringTo         : 'max',      // sort strings in numerical column as max, min, top, bottom, zero
-			duplicateSpan    : true,       // colspan cells in the tbody will have duplicated content in the cache for each spanned column
-			textExtraction   : 'basic',    // text extraction method/function - function( node, table, cellIndex ){}
-			textAttribute    : 'data-text',// data-attribute that contains alternate cell text (used in default textExtraction function)
-			textSorter       : null,       // choose overall or specific column sorter function( a, b, direction, table, columnIndex ) [alt: ts.sortText]
-			numberSorter     : null,       // choose overall numeric sorter function( a, b, direction, maxColumnValue )
-
-			// *** widget options
-			widgets: [],                   // method to add widgets, e.g. widgets: ['zebra']
-			widgetOptions    : {
-				zebra : [ 'even', 'odd' ]    // zebra widget alternating row class names
+}(function ($) {
+	// Create the defaults once
+	var defaults = {
+			element: 'body',
+			position: null,
+			type: "info",
+			allow_dismiss: true,
+			newest_on_top: false,
+			showProgressbar: false,
+			placement: {
+				from: "top",
+				align: "right"
 			},
-			initWidgets      : true,       // apply widgets on tablesorter initialization
-			widgetClass      : 'widget-{name}', // table class name template to match to include a widget
-
-			// *** callbacks
-			initialized      : null,       // function( table ){},
-
-			// *** extra css class names
-			tableClass       : '',
-			cssAsc           : '',
-			cssDesc          : '',
-			cssNone          : '',
-			cssHeader        : '',
-			cssHeaderRow     : '',
-			cssProcessing    : '', // processing icon applied to header during sort/filter
-
-			cssChildRow      : 'tablesorter-childRow', // class name indiciating that a row is to be attached to the its parent
-			cssInfoBlock     : 'tablesorter-infoOnly', // don't sort tbody with this class name (only one class name allowed here!)
-			cssNoSort        : 'tablesorter-noSort',      // class name added to element inside header; clicking on it won't cause a sort
-			cssIgnoreRow     : 'tablesorter-ignoreRow',   // header row to ignore; cells within this row will not be added to c.$headers
-
-			cssIcon          : 'tablesorter-icon', // if this class does not exist, the {icon} will not be added from the headerTemplate
-			cssIconNone      : '', // class name added to the icon when there is no column sort
-			cssIconAsc       : '', // class name added to the icon when the column has an ascending sort
-			cssIconDesc      : '', // class name added to the icon when the column has a descending sort
-
-			// *** events
-			pointerClick     : 'click',
-			pointerDown      : 'mousedown',
-			pointerUp        : 'mouseup',
-
-			// *** selectors
-			selectorHeaders  : '> thead th, > thead td',
-			selectorSort     : 'th, td',   // jQuery selector of content within selectorHeaders that is clickable to trigger a sort
-			selectorRemove   : '.remove-me',
-
-			// *** advanced
-			debug            : false,
-
-			// *** Internal variables
-			headerList: [],
-			empties: {},
-			strings: {},
-			parsers: []
-
-			// removed: widgetZebra: { css: ['even', 'odd'] }
-
-		},
-
-		// internal css classes - these will ALWAYS be added to
-		// the table and MUST only contain one class name - fixes #381
-		css : {
-			table      : 'tablesorter',
-			cssHasChild: 'tablesorter-hasChildRow',
-			childRow   : 'tablesorter-childRow',
-			colgroup   : 'tablesorter-colgroup',
-			header     : 'tablesorter-header',
-			headerRow  : 'tablesorter-headerRow',
-			headerIn   : 'tablesorter-header-inner',
-			icon       : 'tablesorter-icon',
-			processing : 'tablesorter-processing',
-			sortAsc    : 'tablesorter-headerAsc',
-			sortDesc   : 'tablesorter-headerDesc',
-			sortNone   : 'tablesorter-headerUnSorted'
-		},
-
-		// labels applied to sortable headers for accessibility (aria) support
-		language : {
-			sortAsc      : 'Ascending sort applied, ',
-			sortDesc     : 'Descending sort applied, ',
-			sortNone     : 'No sort applied, ',
-			sortDisabled : 'sorting is disabled',
-			nextAsc      : 'activate to apply an ascending sort',
-			nextDesc     : 'activate to apply a descending sort',
-			nextNone     : 'activate to remove the sort'
-		},
-
-		regex : {
-			templateContent : /\{content\}/g,
-			templateIcon    : /\{icon\}/g,
-			templateName    : /\{name\}/i,
-			spaces          : /\s+/g,
-			nonWord         : /\W/g,
-			formElements    : /(input|select|button|textarea)/i,
-
-			// *** sort functions ***
-			// regex used in natural sort
-			// chunk/tokenize numbers & letters
-			chunk  : /(^([+\-]?(?:\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
-			// replace chunks @ ends
-			chunks : /(^\\0|\\0$)/,
-			hex    : /^0x[0-9a-f]+$/i,
-
-			// *** formatFloat ***
-			comma                : /,/g,
-			digitNonUS           : /[\s|\.]/g,
-			digitNegativeTest    : /^\s*\([.\d]+\)/,
-			digitNegativeReplace : /^\s*\(([.\d]+)\)/,
-
-			// *** isDigit ***
-			digitTest    : /^[\-+(]?\d+[)]?$/,
-			digitReplace : /[,.'"\s]/g
-
-		},
-
-		// digit sort, text location
-		string : {
-			max      : 1,
-			min      : -1,
-			emptymin : 1,
-			emptymax : -1,
-			zero     : 0,
-			none     : 0,
-			'null'   : 0,
-			top      : true,
-			bottom   : false
-		},
-
-		keyCodes : {
-			enter : 13
-		},
-
-		// placeholder date parser data (globalize)
-		dates : {},
-
-		// These methods can be applied on table.config instance
-		instanceMethods : {},
-
-		/*
-		▄█████ ██████ ██████ ██  ██ █████▄
-		▀█▄    ██▄▄     ██   ██  ██ ██▄▄██
-		   ▀█▄ ██▀▀     ██   ██  ██ ██▀▀▀
-		█████▀ ██████   ██   ▀████▀ ██
-		*/
-
-		setup : function( table, c ) {
-			// if no thead or tbody, or tablesorter is already present, quit
-			if ( !table || !table.tHead || table.tBodies.length === 0 || table.hasInitialized === true ) {
-				if ( c.debug ) {
-					if ( table.hasInitialized ) {
-						console.warn( 'Stopping initialization. Tablesorter has already been initialized' );
-					} else {
-						console.error( 'Stopping initialization! No table, thead or tbody', table );
-					}
-				}
-				return;
-			}
-
-			var tmp = '',
-				$table = $( table ),
-				meta = $.metadata;
-			// initialization flag
-			table.hasInitialized = false;
-			// table is being processed flag
-			table.isProcessing = true;
-			// make sure to store the config object
-			table.config = c;
-			// save the settings where they read
-			$.data( table, 'tablesorter', c );
-			if ( c.debug ) {
-				console[ console.group ? 'group' : 'log' ]( 'Initializing tablesorter' );
-				$.data( table, 'startoveralltimer', new Date() );
-			}
-
-			// removing this in version 3 (only supports jQuery 1.7+)
-			c.supportsDataObject = ( function( version ) {
-				version[ 0 ] = parseInt( version[ 0 ], 10 );
-				return ( version[ 0 ] > 1 ) || ( version[ 0 ] === 1 && parseInt( version[ 1 ], 10 ) >= 4 );
-			})( $.fn.jquery.split( '.' ) );
-			// ensure case insensitivity
-			c.emptyTo = c.emptyTo.toLowerCase();
-			c.stringTo = c.stringTo.toLowerCase();
-			c.last = { sortList : [], clickedIndex : -1 };
-			// add table theme class only if there isn't already one there
-			if ( !/tablesorter\-/.test( $table.attr( 'class' ) ) ) {
-				tmp = ( c.theme !== '' ? ' tablesorter-' + c.theme : '' );
-			}
-			c.table = table;
-			c.$table = $table
-				.addClass( ts.css.table + ' ' + c.tableClass + tmp )
-				.attr( 'role', 'grid' );
-			c.$headers = $table.find( c.selectorHeaders );
-
-			// give the table a unique id, which will be used in namespace binding
-			if ( !c.namespace ) {
-				c.namespace = '.tablesorter' + Math.random().toString( 16 ).slice( 2 );
-			} else {
-				// make sure namespace starts with a period & doesn't have weird characters
-				c.namespace = '.' + c.namespace.replace( ts.regex.nonWord, '' );
-			}
-
-			c.$table.children().children( 'tr' ).attr( 'role', 'row' );
-			c.$tbodies = $table.children( 'tbody:not(.' + c.cssInfoBlock + ')' ).attr({
-				'aria-live' : 'polite',
-				'aria-relevant' : 'all'
-			});
-			if ( c.$table.children( 'caption' ).length ) {
-				tmp = c.$table.children( 'caption' )[ 0 ];
-				if ( !tmp.id ) { tmp.id = c.namespace.slice( 1 ) + 'caption'; }
-				c.$table.attr( 'aria-labelledby', tmp.id );
-			}
-			c.widgetInit = {}; // keep a list of initialized widgets
-			// change textExtraction via data-attribute
-			c.textExtraction = c.$table.attr( 'data-text-extraction' ) || c.textExtraction || 'basic';
-			// build headers
-			ts.buildHeaders( c );
-			// fixate columns if the users supplies the fixedWidth option
-			// do this after theme has been applied
-			ts.fixColumnWidth( table );
-			// add widgets from class name
-			ts.addWidgetFromClass( table );
-			// add widget options before parsing (e.g. grouping widget has parser settings)
-			ts.applyWidgetOptions( table );
-			// try to auto detect column type, and store in tables config
-			ts.setupParsers( c );
-			// start total row count at zero
-			c.totalRows = 0;
-			// build the cache for the tbody cells
-			// delayInit will delay building the cache until the user starts a sort
-			if ( !c.delayInit ) { ts.buildCache( c ); }
-			// bind all header events and methods
-			ts.bindEvents( table, c.$headers, true );
-			ts.bindMethods( c );
-			// get sort list from jQuery data or metadata
-			// in jQuery < 1.4, an error occurs when calling $table.data()
-			if ( c.supportsDataObject && typeof $table.data().sortlist !== 'undefined' ) {
-				c.sortList = $table.data().sortlist;
-			} else if ( meta && ( $table.metadata() && $table.metadata().sortlist ) ) {
-				c.sortList = $table.metadata().sortlist;
-			}
-			// apply widget init code
-			ts.applyWidget( table, true );
-			// if user has supplied a sort list to constructor
-			if ( c.sortList.length > 0 ) {
-				ts.sortOn( c, c.sortList, {}, !c.initWidgets );
-			} else {
-				ts.setHeadersCss( c );
-				if ( c.initWidgets ) {
-					// apply widget format
-					ts.applyWidget( table, false );
-				}
-			}
-
-			// show processesing icon
-			if ( c.showProcessing ) {
-				$table
-				.unbind( 'sortBegin' + c.namespace + ' sortEnd' + c.namespace )
-				.bind( 'sortBegin' + c.namespace + ' sortEnd' + c.namespace, function( e ) {
-					clearTimeout( c.timerProcessing );
-					ts.isProcessing( table );
-					if ( e.type === 'sortBegin' ) {
-						c.timerProcessing = setTimeout( function() {
-							ts.isProcessing( table, true );
-						}, 500 );
-					}
-				});
-			}
-
-			// initialized
-			table.hasInitialized = true;
-			table.isProcessing = false;
-			if ( c.debug ) {
-				console.log( 'Overall initialization time: ' + ts.benchmark( $.data( table, 'startoveralltimer' ) ) );
-				if ( c.debug && console.groupEnd ) { console.groupEnd(); }
-			}
-			$table.triggerHandler( 'tablesorter-initialized', table );
-			if ( typeof c.initialized === 'function' ) {
-				c.initialized( table );
-			}
-		},
-
-		bindMethods : function( c ) {
-			var $table = c.$table,
-				namespace = c.namespace,
-				events = ( 'sortReset update updateRows updateAll updateHeaders addRows updateCell updateComplete ' +
-					'sorton appendCache updateCache applyWidgetId applyWidgets refreshWidgets destroy mouseup ' +
-					'mouseleave ' ).split( ' ' )
-					.join( namespace + ' ' );
-			// apply easy methods that trigger bound events
-			$table
-			.unbind( events.replace( ts.regex.spaces, ' ' ) )
-			.bind( 'sortReset' + namespace, function( e, callback ) {
-				e.stopPropagation();
-				// using this.config to ensure functions are getting a non-cached version of the config
-				ts.sortReset( this.config, callback );
-			})
-			.bind( 'updateAll' + namespace, function( e, resort, callback ) {
-				e.stopPropagation();
-				ts.updateAll( this.config, resort, callback );
-			})
-			.bind( 'update' + namespace + ' updateRows' + namespace, function( e, resort, callback ) {
-				e.stopPropagation();
-				ts.update( this.config, resort, callback );
-			})
-			.bind( 'updateHeaders' + namespace, function( e, callback ) {
-				e.stopPropagation();
-				ts.updateHeaders( this.config, callback );
-			})
-			.bind( 'updateCell' + namespace, function( e, cell, resort, callback ) {
-				e.stopPropagation();
-				ts.updateCell( this.config, cell, resort, callback );
-			})
-			.bind( 'addRows' + namespace, function( e, $row, resort, callback ) {
-				e.stopPropagation();
-				ts.addRows( this.config, $row, resort, callback );
-			})
-			.bind( 'updateComplete' + namespace, function() {
-				this.isUpdating = false;
-			})
-			.bind( 'sorton' + namespace, function( e, list, callback, init ) {
-				e.stopPropagation();
-				ts.sortOn( this.config, list, callback, init );
-			})
-			.bind( 'appendCache' + namespace, function( e, callback, init ) {
-				e.stopPropagation();
-				ts.appendCache( this.config, init );
-				if ( $.isFunction( callback ) ) {
-					callback( this );
-				}
-			})
-			// $tbodies variable is used by the tbody sorting widget
-			.bind( 'updateCache' + namespace, function( e, callback, $tbodies ) {
-				e.stopPropagation();
-				ts.updateCache( this.config, callback, $tbodies );
-			})
-			.bind( 'applyWidgetId' + namespace, function( e, id ) {
-				e.stopPropagation();
-				ts.applyWidgetId( this, id );
-			})
-			.bind( 'applyWidgets' + namespace, function( e, init ) {
-				e.stopPropagation();
-				// apply widgets
-				ts.applyWidget( this, init );
-			})
-			.bind( 'refreshWidgets' + namespace, function( e, all, dontapply ) {
-				e.stopPropagation();
-				ts.refreshWidgets( this, all, dontapply );
-			})
-			.bind( 'removeWidget' + namespace, function( e, name, refreshing ) {
-				e.stopPropagation();
-				ts.removeWidget( this, name, refreshing );
-			})
-			.bind( 'destroy' + namespace, function( e, removeClasses, callback ) {
-				e.stopPropagation();
-				ts.destroy( this, removeClasses, callback );
-			})
-			.bind( 'resetToLoadState' + namespace, function( e ) {
-				e.stopPropagation();
-				// remove all widgets
-				ts.removeWidget( this, true, false );
-				// restore original settings; this clears out current settings, but does not clear
-				// values saved to storage.
-				c = $.extend( true, ts.defaults, c.originalSettings );
-				this.hasInitialized = false;
-				// setup the entire table again
-				ts.setup( this, c );
-			});
-		},
-
-		bindEvents : function( table, $headers, core ) {
-			table = $( table )[ 0 ];
-			var tmp,
-				c = table.config,
-				namespace = c.namespace,
-				downTarget = null;
-			if ( core !== true ) {
-				$headers.addClass( namespace.slice( 1 ) + '_extra_headers' );
-				tmp = $.fn.closest ? $headers.closest( 'table' )[ 0 ] : $headers.parents( 'table' )[ 0 ];
-				if ( tmp && tmp.nodeName === 'TABLE' && tmp !== table ) {
-					$( tmp ).addClass( namespace.slice( 1 ) + '_extra_table' );
-				}
-			}
-			tmp = ( c.pointerDown + ' ' + c.pointerUp + ' ' + c.pointerClick + ' sort keyup ' )
-				.replace( ts.regex.spaces, ' ' )
-				.split( ' ' )
-				.join( namespace + ' ' );
-			// apply event handling to headers and/or additional headers (stickyheaders, scroller, etc)
-			$headers
-			// http://stackoverflow.com/questions/5312849/jquery-find-self;
-			.find( c.selectorSort )
-			.add( $headers.filter( c.selectorSort ) )
-			.unbind( tmp )
-			.bind( tmp, function( e, external ) {
-				var $cell, cell, temp,
-					$target = $( e.target ),
-					// wrap event type in spaces, so the match doesn't trigger on inner words
-					type = ' ' + e.type + ' ';
-				// only recognize left clicks
-				if ( ( ( e.which || e.button ) !== 1 && !type.match( ' ' + c.pointerClick + ' | sort | keyup ' ) ) ||
-					// allow pressing enter
-					( type === ' keyup ' && e.which !== ts.keyCodes.enter ) ||
-					// allow triggering a click event (e.which is undefined) & ignore physical clicks
-					( type.match( ' ' + c.pointerClick + ' ' ) && typeof e.which !== 'undefined' ) ) {
-					return;
-				}
-				// ignore mouseup if mousedown wasn't on the same target
-				if ( type.match( ' ' + c.pointerUp + ' ' ) && downTarget !== e.target && external !== true ) {
-					return;
-				}
-				// set target on mousedown
-				if ( type.match( ' ' + c.pointerDown + ' ' ) ) {
-					downTarget = e.target;
-					// preventDefault needed or jQuery v1.3.2 and older throws an
-					// "Uncaught TypeError: handler.apply is not a function" error
-					temp = $target.jquery.split( '.' );
-					if ( temp[ 0 ] === '1' && temp[ 1 ] < 4 ) { e.preventDefault(); }
-					return;
-				}
-				downTarget = null;
-				// prevent sort being triggered on form elements
-				if ( ts.regex.formElements.test( e.target.nodeName ) ||
-					// nosort class name, or elements within a nosort container
-					$target.hasClass( c.cssNoSort ) || $target.parents( '.' + c.cssNoSort ).length > 0 ||
-					// elements within a button
-					$target.parents( 'button' ).length > 0 ) {
-					return !c.cancelSelection;
-				}
-				if ( c.delayInit && ts.isEmptyObject( c.cache ) ) {
-					ts.buildCache( c );
-				}
-				// jQuery v1.2.6 doesn't have closest()
-				$cell = $.fn.closest ? $( this ).closest( 'th, td' ) :
-					/TH|TD/.test( this.nodeName ) ? $( this ) : $( this ).parents( 'th, td' );
-				// reference original table headers and find the same cell
-				// don't use $headers or IE8 throws an error - see #987
-				temp = $headers.index( $cell );
-				c.last.clickedIndex = ( temp < 0 ) ? $cell.attr( 'data-column' ) : temp;
-				// use column index if $headers is undefined
-				cell = c.$headers[ c.last.clickedIndex ];
-				if ( cell && !cell.sortDisabled ) {
-					ts.initSort( c, cell, e );
-				}
-			});
-			if ( c.cancelSelection ) {
-				// cancel selection
-				$headers
-					.attr( 'unselectable', 'on' )
-					.bind( 'selectstart', false )
-					.css({
-						'user-select' : 'none',
-						'MozUserSelect' : 'none' // not needed for jQuery 1.8+
-					});
-			}
-		},
-
-		buildHeaders : function( c ) {
-			var $temp, icon, timer, indx;
-			c.headerList = [];
-			c.headerContent = [];
-			c.sortVars = [];
-			if ( c.debug ) {
-				timer = new Date();
-			}
-			// children tr in tfoot - see issue #196 & #547
-			// don't pass table.config to computeColumnIndex here - widgets (math) pass it to "quickly" index tbody cells
-			c.columns = ts.computeColumnIndex( c.$table.children( 'thead, tfoot' ).children( 'tr' ) );
-			// add icon if cssIcon option exists
-			icon = c.cssIcon ?
-				'<i class="' + ( c.cssIcon === ts.css.icon ? ts.css.icon : c.cssIcon + ' ' + ts.css.icon ) + '"></i>' :
-				'';
-			// redefine c.$headers here in case of an updateAll that replaces or adds an entire header cell - see #683
-			c.$headers = $( $.map( c.$table.find( c.selectorHeaders ), function( elem, index ) {
-				var configHeaders, header, column, template, tmp,
-					$elem = $( elem );
-				// ignore cell (don't add it to c.$headers) if row has ignoreRow class
-				if ( $elem.parent().hasClass( c.cssIgnoreRow ) ) { return; }
-				// make sure to get header cell & not column indexed cell
-				configHeaders = ts.getColumnData( c.table, c.headers, index, true );
-				// save original header content
-				c.headerContent[ index ] = $elem.html();
-				// if headerTemplate is empty, don't reformat the header cell
-				if ( c.headerTemplate !== '' && !$elem.find( '.' + ts.css.headerIn ).length ) {
-					// set up header template
-					template = c.headerTemplate
-						.replace( ts.regex.templateContent, $elem.html() )
-						.replace( ts.regex.templateIcon, $elem.find( '.' + ts.css.icon ).length ? '' : icon );
-					if ( c.onRenderTemplate ) {
-						header = c.onRenderTemplate.apply( $elem, [ index, template ] );
-						// only change t if something is returned
-						if ( header && typeof header === 'string' ) {
-							template = header;
-						}
-					}
-					$elem.html( '<div class="' + ts.css.headerIn + '">' + template + '</div>' ); // faster than wrapInner
-				}
-				if ( c.onRenderHeader ) {
-					c.onRenderHeader.apply( $elem, [ index, c, c.$table ] );
-				}
-				column = parseInt( $elem.attr( 'data-column' ), 10 );
-				elem.column = column;
-				tmp = ts.getData( $elem, configHeaders, 'sortInitialOrder' ) || c.sortInitialOrder;
-				// this may get updated numerous times if there are multiple rows
-				c.sortVars[ column ] = {
-					count : -1, // set to -1 because clicking on the header automatically adds one
-					order: ts.getOrder( tmp ) ?
-						[ 1, 0, 2 ] : // desc, asc, unsorted
-						[ 0, 1, 2 ],  // asc, desc, unsorted
-					lockedOrder : false
-				};
-				tmp = ts.getData( $elem, configHeaders, 'lockedOrder' ) || false;
-				if ( typeof tmp !== 'undefined' && tmp !== false ) {
-					c.sortVars[ column ].lockedOrder = true;
-					c.sortVars[ column ].order = ts.getOrder( tmp ) ? [ 1, 1, 1 ] : [ 0, 0, 0 ];
-				}
-				// add cell to headerList
-				c.headerList[ index ] = elem;
-				// add to parent in case there are multiple rows
-				$elem
-					.addClass( ts.css.header + ' ' + c.cssHeader )
-					.parent()
-					.addClass( ts.css.headerRow + ' ' + c.cssHeaderRow )
-					.attr( 'role', 'row' );
-				// allow keyboard cursor to focus on element
-				if ( c.tabIndex ) {
-					$elem.attr( 'tabindex', 0 );
-				}
-				return elem;
-			}) );
-			// cache headers per column
-			c.$headerIndexed = [];
-			for ( indx = 0; indx < c.columns; indx++ ) {
-				// colspan in header making a column undefined
-				if ( ts.isEmptyObject( c.sortVars[ indx ] ) ) {
-					c.sortVars[ indx ] = {};
-				}
-				$temp = c.$headers.filter( '[data-column="' + indx + '"]' );
-				// target sortable column cells, unless there are none, then use non-sortable cells
-				// .last() added in jQuery 1.4; use .filter(':last') to maintain compatibility with jQuery v1.2.6
-				c.$headerIndexed[ indx ] = $temp.length ?
-					$temp.not( '.sorter-false' ).length ?
-						$temp.not( '.sorter-false' ).filter( ':last' ) :
-						$temp.filter( ':last' ) :
-					$();
-			}
-			c.$table.find( c.selectorHeaders ).attr({
-				scope: 'col',
-				role : 'columnheader'
-			});
-			// enable/disable sorting
-			ts.updateHeader( c );
-			if ( c.debug ) {
-				console.log( 'Built headers:' + ts.benchmark( timer ) );
-				console.log( c.$headers );
-			}
-		},
-
-		// Use it to add a set of methods to table.config which will be available for all tables.
-		// This should be done before table initialization
-		addInstanceMethods : function( methods ) {
-			$.extend( ts.instanceMethods, methods );
-		},
-
-		/*
-		█████▄ ▄████▄ █████▄ ▄█████ ██████ █████▄ ▄█████
-		██▄▄██ ██▄▄██ ██▄▄██ ▀█▄    ██▄▄   ██▄▄██ ▀█▄
-		██▀▀▀  ██▀▀██ ██▀██     ▀█▄ ██▀▀   ██▀██     ▀█▄
-		██     ██  ██ ██  ██ █████▀ ██████ ██  ██ █████▀
-		*/
-		setupParsers : function( c, $tbodies ) {
-			var rows, list, span, max, colIndex, indx, header, configHeaders,
-				noParser, parser, extractor, time, tbody, len,
-				table = c.table,
-				tbodyIndex = 0,
-				debug = {};
-			// update table bodies in case we start with an empty table
-			c.$tbodies = c.$table.children( 'tbody:not(.' + c.cssInfoBlock + ')' );
-			tbody = typeof $tbodies === 'undefined' ? c.$tbodies : $tbodies;
-			len = tbody.length;
-			if ( len === 0 ) {
-				return c.debug ? console.warn( 'Warning: *Empty table!* Not building a parser cache' ) : '';
-			} else if ( c.debug ) {
-				time = new Date();
-				console[ console.group ? 'group' : 'log' ]( 'Detecting parsers for each column' );
-			}
-			list = {
-				extractors: [],
-				parsers: []
-			};
-			while ( tbodyIndex < len ) {
-				rows = tbody[ tbodyIndex ].rows;
-				if ( rows.length ) {
-					colIndex = 0;
-					max = c.columns;
-					for ( indx = 0; indx < max; indx++ ) {
-						header = c.$headerIndexed[ colIndex ];
-						if ( header && header.length ) {
-							// get column indexed table cell
-							configHeaders = ts.getColumnData( table, c.headers, colIndex );
-							// get column parser/extractor
-							extractor = ts.getParserById( ts.getData( header, configHeaders, 'extractor' ) );
-							parser = ts.getParserById( ts.getData( header, configHeaders, 'sorter' ) );
-							noParser = ts.getData( header, configHeaders, 'parser' ) === 'false';
-							// empty cells behaviour - keeping emptyToBottom for backwards compatibility
-							c.empties[colIndex] = (
-								ts.getData( header, configHeaders, 'empty' ) ||
-								c.emptyTo || ( c.emptyToBottom ? 'bottom' : 'top' ) ).toLowerCase();
-							// text strings behaviour in numerical sorts
-							c.strings[colIndex] = (
-								ts.getData( header, configHeaders, 'string' ) ||
-								c.stringTo ||
-								'max' ).toLowerCase();
-							if ( noParser ) {
-								parser = ts.getParserById( 'no-parser' );
-							}
-							if ( !extractor ) {
-								// For now, maybe detect someday
-								extractor = false;
-							}
-							if ( !parser ) {
-								parser = ts.detectParserForColumn( c, rows, -1, colIndex );
-							}
-							if ( c.debug ) {
-								debug[ '(' + colIndex + ') ' + header.text() ] = {
-									parser : parser.id,
-									extractor : extractor ? extractor.id : 'none',
-									string : c.strings[ colIndex ],
-									empty  : c.empties[ colIndex ]
-								};
-							}
-							list.parsers[ colIndex ] = parser;
-							list.extractors[ colIndex ] = extractor;
-							span = header[ 0 ].colSpan - 1;
-							if ( span > 0 ) {
-								colIndex += span;
-								max += span;
-								while ( span + 1 > 0 ) {
-									// set colspan columns to use the same parsers & extractors
-									list.parsers[ colIndex - span ] = parser;
-									list.extractors[ colIndex - span ] = extractor;
-									span--;
-								}
-							}
-						}
-						colIndex++;
-					}
-				}
-				tbodyIndex += ( list.parsers.length ) ? len : 1;
-			}
-			if ( c.debug ) {
-				if ( !ts.isEmptyObject( debug ) ) {
-					console[ console.table ? 'table' : 'log' ]( debug );
-				} else {
-					console.warn( '  No parsers detected!' );
-				}
-				console.log( 'Completed detecting parsers' + ts.benchmark( time ) );
-				if ( console.groupEnd ) { console.groupEnd(); }
-			}
-			c.parsers = list.parsers;
-			c.extractors = list.extractors;
-		},
-
-		addParser : function( parser ) {
-			var indx,
-				len = ts.parsers.length,
-				add = true;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( ts.parsers[ indx ].id.toLowerCase() === parser.id.toLowerCase() ) {
-					add = false;
-				}
-			}
-			if ( add ) {
-				ts.parsers[ ts.parsers.length ] = parser;
-			}
-		},
-
-		getParserById : function( name ) {
-			/*jshint eqeqeq:false */
-			if ( name == 'false' ) { return false; }
-			var indx,
-				len = ts.parsers.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( ts.parsers[ indx ].id.toLowerCase() === ( name.toString() ).toLowerCase() ) {
-					return ts.parsers[ indx ];
-				}
-			}
-			return false;
-		},
-
-		detectParserForColumn : function( c, rows, rowIndex, cellIndex ) {
-			var cur, $node, row,
-				indx = ts.parsers.length,
-				node = false,
-				nodeValue = '',
-				keepLooking = true;
-			while ( nodeValue === '' && keepLooking ) {
-				rowIndex++;
-				row = rows[ rowIndex ];
-				// stop looking after 50 empty rows
-				if ( row && rowIndex < 50 ) {
-					if ( row.className.indexOf( ts.cssIgnoreRow ) < 0 ) {
-						node = rows[ rowIndex ].cells[ cellIndex ];
-						nodeValue = ts.getElementText( c, node, cellIndex );
-						$node = $( node );
-						if ( c.debug ) {
-							console.log( 'Checking if value was empty on row ' + rowIndex + ', column: ' +
-								cellIndex + ': "' + nodeValue + '"' );
-						}
-					}
-				} else {
-					keepLooking = false;
-				}
-			}
-			while ( --indx >= 0 ) {
-				cur = ts.parsers[ indx ];
-				// ignore the default text parser because it will always be true
-				if ( cur && cur.id !== 'text' && cur.is && cur.is( nodeValue, c.table, node, $node ) ) {
-					return cur;
-				}
-			}
-			// nothing found, return the generic parser (text)
-			return ts.getParserById( 'text' );
-		},
-
-		getElementText : function( c, node, cellIndex ) {
-			if ( !node ) { return ''; }
-			var tmp,
-				extract = c.textExtraction || '',
-				// node could be a jquery object
-				// http://jsperf.com/jquery-vs-instanceof-jquery/2
-				$node = node.jquery ? node : $( node );
-			if ( typeof extract === 'string' ) {
-				// check data-attribute first when set to 'basic'; don't use node.innerText - it's really slow!
-				// http://www.kellegous.com/j/2013/02/27/innertext-vs-textcontent/
-				if ( extract === 'basic' && typeof ( tmp = $node.attr( c.textAttribute ) ) !== 'undefined' ) {
-					return $.trim( tmp );
-				}
-				return $.trim( node.textContent || $node.text() );
-			} else {
-				if ( typeof extract === 'function' ) {
-					return $.trim( extract( $node[ 0 ], c.table, cellIndex ) );
-				} else if ( typeof ( tmp = ts.getColumnData( c.table, extract, cellIndex ) ) === 'function' ) {
-					return $.trim( tmp( $node[ 0 ], c.table, cellIndex ) );
-				}
-			}
-			// fallback
-			return $.trim( $node[ 0 ].textContent || $node.text() );
-		},
-
-		// centralized function to extract/parse cell contents
-		getParsedText : function( c, cell, colIndex, txt ) {
-			if ( typeof txt === 'undefined' ) {
-				txt = ts.getElementText( c, cell, colIndex );
-			}
-			// if no parser, make sure to return the txt
-			var val = '' + txt,
-				parser = c.parsers[ colIndex ],
-				extractor = c.extractors[ colIndex ];
-			if ( parser ) {
-				// do extract before parsing, if there is one
-				if ( extractor && typeof extractor.format === 'function' ) {
-					txt = extractor.format( txt, c.table, cell, colIndex );
-				}
-				// allow parsing if the string is empty, previously parsing would change it to zero,
-				// in case the parser needs to extract data from the table cell attributes
-				val = parser.id === 'no-parser' ? '' :
-					// make sure txt is a string (extractor may have converted it)
-					parser.format( '' + txt, c.table, cell, colIndex );
-				if ( c.ignoreCase && typeof val === 'string' ) {
-					val = val.toLowerCase();
-				}
-			}
-			return val;
-		},
-
-		/*
-		▄████▄ ▄████▄ ▄████▄ ██  ██ ██████
-		██  ▀▀ ██▄▄██ ██  ▀▀ ██▄▄██ ██▄▄
-		██  ▄▄ ██▀▀██ ██  ▄▄ ██▀▀██ ██▀▀
-		▀████▀ ██  ██ ▀████▀ ██  ██ ██████
-		*/
-		buildCache : function( c, callback, $tbodies ) {
-			var cache, val, txt, rowIndex, colIndex, tbodyIndex, $tbody, $row,
-				cols, $cells, cell, cacheTime, totalRows, rowData, prevRowData,
-				colMax, span, cacheIndex, hasParser, max, len, index,
-				table = c.table,
-				parsers = c.parsers;
-			// update tbody variable
-			c.$tbodies = c.$table.children( 'tbody:not(.' + c.cssInfoBlock + ')' );
-			$tbody = typeof $tbodies === 'undefined' ? c.$tbodies : $tbodies,
-			c.cache = {};
-			c.totalRows = 0;
-			// if no parsers found, return - it's an empty table.
-			if ( !parsers ) {
-				return c.debug ? console.warn( 'Warning: *Empty table!* Not building a cache' ) : '';
-			}
-			if ( c.debug ) {
-				cacheTime = new Date();
-			}
-			// processing icon
-			if ( c.showProcessing ) {
-				ts.isProcessing( table, true );
-			}
-			for ( tbodyIndex = 0; tbodyIndex < $tbody.length; tbodyIndex++ ) {
-				colMax = []; // column max value per tbody
-				cache = c.cache[ tbodyIndex ] = {
-					normalized: [] // array of normalized row data; last entry contains 'rowData' above
-					// colMax: #   // added at the end
-				};
-
-				totalRows = ( $tbody[ tbodyIndex ] && $tbody[ tbodyIndex ].rows.length ) || 0;
-				for ( rowIndex = 0; rowIndex < totalRows; ++rowIndex ) {
-					rowData = {
-						// order: original row order #
-						// $row : jQuery Object[]
-						child: [], // child row text (filter widget)
-						raw: []    // original row text
-					};
-					/** Add the table data to main data array */
-					$row = $( $tbody[ tbodyIndex ].rows[ rowIndex ] );
-					cols = [];
-					// if this is a child row, add it to the last row's children and continue to the next row
-					// ignore child row class, if it is the first row
-					if ( $row.hasClass( c.cssChildRow ) && rowIndex !== 0 ) {
-						len = cache.normalized.length - 1;
-						prevRowData = cache.normalized[ len ][ c.columns ];
-						prevRowData.$row = prevRowData.$row.add( $row );
-						// add 'hasChild' class name to parent row
-						if ( !$row.prev().hasClass( c.cssChildRow ) ) {
-							$row.prev().addClass( ts.css.cssHasChild );
-						}
-						// save child row content (un-parsed!)
-						$cells = $row.children( 'th, td' );
-						len = prevRowData.child.length;
-						prevRowData.child[ len ] = [];
-						// child row content does not account for colspans/rowspans; so indexing may be off
-						cacheIndex = 0;
-						max = c.columns;
-						for ( colIndex = 0; colIndex < max; colIndex++ ) {
-							cell = $cells[ colIndex ];
-							if ( cell ) {
-								prevRowData.child[ len ][ colIndex ] = ts.getParsedText( c, cell, colIndex );
-								span = $cells[ colIndex ].colSpan - 1;
-								if ( span > 0 ) {
-									cacheIndex += span;
-									max += span;
-								}
-							}
-							cacheIndex++;
-						}
-						// go to the next for loop
-						continue;
-					}
-					rowData.$row = $row;
-					rowData.order = rowIndex; // add original row position to rowCache
-					cacheIndex = 0;
-					max = c.columns;
-					for ( colIndex = 0; colIndex < max; ++colIndex ) {
-						cell = $row[ 0 ].cells[ colIndex ];
-						if ( cell && cacheIndex < c.columns ) {
-							hasParser = typeof parsers[ cacheIndex ] !== 'undefined';
-							if ( !hasParser && c.debug ) {
-								console.warn( 'No parser found for row: ' + rowIndex + ', column: ' + colIndex +
-									'; cell containing: "' + $(cell).text() + '"; does it have a header?' );
-							}
-							val = ts.getElementText( c, cell, cacheIndex );
-							rowData.raw[ cacheIndex ] = val; // save original row text
-							// save raw column text even if there is no parser set
-							txt = ts.getParsedText( c, cell, cacheIndex, val );
-							cols[ cacheIndex ] = txt;
-							if ( hasParser && ( parsers[ cacheIndex ].type || '' ).toLowerCase() === 'numeric' ) {
-								// determine column max value (ignore sign)
-								colMax[ cacheIndex ] = Math.max( Math.abs( txt ) || 0, colMax[ cacheIndex ] || 0 );
-							}
-							// allow colSpan in tbody
-							span = cell.colSpan - 1;
-							if ( span > 0 ) {
-								index = 0;
-								while ( index <= span ) {
-									// duplicate text (or not) to spanned columns
-									// instead of setting duplicate span to empty string, use textExtraction to try to get a value
-									// see http://stackoverflow.com/q/36449711/145346
-									txt = c.duplicateSpan || index === 0 ?
-										val :
-										typeof c.textExtraction !== 'string' ?
-											ts.getElementText( c, cell, cacheIndex + index ) || '' :
-											'';
-									rowData.raw[ cacheIndex + index ] = txt;
-									cols[ cacheIndex + index ] = txt;
-									index++;
-								}
-								cacheIndex += span;
-								max += span;
-							}
-						}
-						cacheIndex++;
-					}
-					// ensure rowData is always in the same location (after the last column)
-					cols[ c.columns ] = rowData;
-					cache.normalized[ cache.normalized.length ] = cols;
-				}
-				cache.colMax = colMax;
-				// total up rows, not including child rows
-				c.totalRows += cache.normalized.length;
-
-			}
-			if ( c.showProcessing ) {
-				ts.isProcessing( table ); // remove processing icon
-			}
-			if ( c.debug ) {
-				len = Math.min( 5, c.cache[ 0 ].normalized.length );
-				console[ console.group ? 'group' : 'log' ]( 'Building cache for ' + c.totalRows +
-					' rows (showing ' + len + ' rows in log)' + ts.benchmark( cacheTime ) );
-				val = {};
-				for ( colIndex = 0; colIndex < c.columns; colIndex++ ) {
-					for ( cacheIndex = 0; cacheIndex < len; cacheIndex++ ) {
-						if ( !val[ 'row: ' + cacheIndex ] ) {
-							val[ 'row: ' + cacheIndex ] = {};
-						}
-						val[ 'row: ' + cacheIndex ][ c.$headerIndexed[ colIndex ].text() ] =
-							c.cache[ 0 ].normalized[ cacheIndex ][ colIndex ];
-					}
-				}
-				console[ console.table ? 'table' : 'log' ]( val );
-				if ( console.groupEnd ) { console.groupEnd(); }
-			}
-			if ( $.isFunction( callback ) ) {
-				callback( table );
-			}
-		},
-
-		getColumnText : function( table, column, callback, rowFilter ) {
-			table = $( table )[0];
-			var tbodyIndex, rowIndex, cache, row, tbodyLen, rowLen, raw, parsed, $cell, result,
-				hasCallback = typeof callback === 'function',
-				allColumns = column === 'all',
-				data = { raw : [], parsed: [], $cell: [] },
-				c = table.config;
-			if ( ts.isEmptyObject( c ) ) {
-				if ( c.debug ) {
-					console.warn( 'No cache found - aborting getColumnText function!' );
-				}
-			} else {
-				tbodyLen = c.$tbodies.length;
-				for ( tbodyIndex = 0; tbodyIndex < tbodyLen; tbodyIndex++ ) {
-					cache = c.cache[ tbodyIndex ].normalized;
-					rowLen = cache.length;
-					for ( rowIndex = 0; rowIndex < rowLen; rowIndex++ ) {
-						row = cache[ rowIndex ];
-						if ( rowFilter && !row[ c.columns ].$row.is( rowFilter ) ) {
-							continue;
-						}
-						result = true;
-						parsed = ( allColumns ) ? row.slice( 0, c.columns ) : row[ column ];
-						row = row[ c.columns ];
-						raw = ( allColumns ) ? row.raw : row.raw[ column ];
-						$cell = ( allColumns ) ? row.$row.children() : row.$row.children().eq( column );
-						if ( hasCallback ) {
-							result = callback({
-								tbodyIndex : tbodyIndex,
-								rowIndex : rowIndex,
-								parsed : parsed,
-								raw : raw,
-								$row : row.$row,
-								$cell : $cell
-							});
-						}
-						if ( result !== false ) {
-							data.parsed[ data.parsed.length ] = parsed;
-							data.raw[ data.raw.length ] = raw;
-							data.$cell[ data.$cell.length ] = $cell;
-						}
-					}
-				}
-				// return everything
-				return data;
-			}
-		},
-
-		/*
-		██  ██ █████▄ █████▄ ▄████▄ ██████ ██████
-		██  ██ ██▄▄██ ██  ██ ██▄▄██   ██   ██▄▄
-		██  ██ ██▀▀▀  ██  ██ ██▀▀██   ██   ██▀▀
-		▀████▀ ██     █████▀ ██  ██   ██   ██████
-		*/
-		setHeadersCss : function( c ) {
-			var $sorted, indx, column,
-				list = c.sortList,
-				len = list.length,
-				none = ts.css.sortNone + ' ' + c.cssNone,
-				css = [ ts.css.sortAsc + ' ' + c.cssAsc, ts.css.sortDesc + ' ' + c.cssDesc ],
-				cssIcon = [ c.cssIconAsc, c.cssIconDesc, c.cssIconNone ],
-				aria = [ 'ascending', 'descending' ],
-				// find the footer
-				$headers = c.$table
-					.find( 'tfoot tr' )
-					.children( 'td, th' )
-					.add( $( c.namespace + '_extra_headers' ) )
-					.removeClass( css.join( ' ' ) );
-			// remove all header information
-			c.$headers
-				.removeClass( css.join( ' ' ) )
-				.addClass( none )
-				.attr( 'aria-sort', 'none' )
-				.find( '.' + ts.css.icon )
-				.removeClass( cssIcon.join( ' ' ) )
-				.addClass( cssIcon[ 2 ] );
-			for ( indx = 0; indx < len; indx++ ) {
-				// direction = 2 means reset!
-				if ( list[ indx ][ 1 ] !== 2 ) {
-					// multicolumn sorting updating - see #1005
-					// .not(function(){}) needs jQuery 1.4
-					// filter(function(i, el){}) <- el is undefined in jQuery v1.2.6
-					$sorted = c.$headers.filter( function( i ) {
-						// only include headers that are in the sortList (this includes colspans)
-						var include = true,
-							$el = c.$headers.eq( i ),
-							col = parseInt( $el.attr( 'data-column' ), 10 ),
-							end = col + c.$headers[ i ].colSpan;
-						for ( ; col < end; col++ ) {
-							include = include ? include || ts.isValueInArray( col, c.sortList ) > -1 : false;
-						}
-						return include;
-					});
-
-					// choose the :last in case there are nested columns
-					$sorted = $sorted
-						.not( '.sorter-false' )
-						.filter( '[data-column="' + list[ indx ][ 0 ] + '"]' + ( len === 1 ? ':last' : '' ) );
-					if ( $sorted.length ) {
-						for ( column = 0; column < $sorted.length; column++ ) {
-							if ( !$sorted[ column ].sortDisabled ) {
-								$sorted
-									.eq( column )
-									.removeClass( none )
-									.addClass( css[ list[ indx ][ 1 ] ] )
-									.attr( 'aria-sort', aria[ list[ indx ][ 1 ] ] )
-									.find( '.' + ts.css.icon )
-									.removeClass( cssIcon[ 2 ] )
-									.addClass( cssIcon[ list[ indx ][ 1 ] ] );
-							}
-						}
-						// add sorted class to footer & extra headers, if they exist
-						if ( $headers.length ) {
-							$headers
-								.filter( '[data-column="' + list[ indx ][ 0 ] + '"]' )
-								.removeClass( none )
-								.addClass( css[ list[ indx ][ 1 ] ] );
-						}
-					}
-				}
-			}
-			// add verbose aria labels
-			len = c.$headers.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				ts.setColumnAriaLabel( c, c.$headers.eq( indx ) );
-			}
-		},
-
-		// nextSort (optional), lets you disable next sort text
-		setColumnAriaLabel : function( c, $header, nextSort ) {
-			if ( $header.length ) {
-				var column = parseInt( $header.attr( 'data-column' ), 10 ),
-					tmp = $header.hasClass( ts.css.sortAsc ) ?
-						'sortAsc' :
-						$header.hasClass( ts.css.sortDesc ) ? 'sortDesc' : 'sortNone',
-					txt = $.trim( $header.text() ) + ': ' + ts.language[ tmp ];
-				if ( $header.hasClass( 'sorter-false' ) || nextSort === false ) {
-					txt += ts.language.sortDisabled;
-				} else {
-					nextSort = c.sortVars[ column ].order[ ( c.sortVars[ column ].count + 1 ) % ( c.sortReset ? 3 : 2 ) ];
-					// if nextSort
-					txt += ts.language[ nextSort === 0 ? 'nextAsc' : nextSort === 1 ? 'nextDesc' : 'nextNone' ];
-				}
-				$header.attr( 'aria-label', txt );
-			}
-		},
-
-		updateHeader : function( c ) {
-			var index, isDisabled, $header, col,
-				table = c.table,
-				len = c.$headers.length;
-			for ( index = 0; index < len; index++ ) {
-				$header = c.$headers.eq( index );
-				col = ts.getColumnData( table, c.headers, index, true );
-				// add 'sorter-false' class if 'parser-false' is set
-				isDisabled = ts.getData( $header, col, 'sorter' ) === 'false' || ts.getData( $header, col, 'parser' ) === 'false';
-				ts.setColumnSort( c, $header, isDisabled );
-			}
-		},
-
-		setColumnSort : function( c, $header, isDisabled ) {
-			var id = c.table.id;
-			$header[ 0 ].sortDisabled = isDisabled;
-			$header[ isDisabled ? 'addClass' : 'removeClass' ]( 'sorter-false' )
-				.attr( 'aria-disabled', '' + isDisabled );
-			// disable tab index on disabled cells
-			if ( c.tabIndex ) {
-				if ( isDisabled ) {
-					$header.removeAttr( 'tabindex' );
-				} else {
-					$header.attr( 'tabindex', '0' );
-				}
-			}
-			// aria-controls - requires table ID
-			if ( id ) {
-				if ( isDisabled ) {
-					$header.removeAttr( 'aria-controls' );
-				} else {
-					$header.attr( 'aria-controls', id );
-				}
-			}
-		},
-
-		updateHeaderSortCount : function( c, list ) {
-			var col, dir, group, indx, primary, temp, val, order,
-				sortList = list || c.sortList,
-				len = sortList.length;
-			c.sortList = [];
-			for ( indx = 0; indx < len; indx++ ) {
-				val = sortList[ indx ];
-				// ensure all sortList values are numeric - fixes #127
-				col = parseInt( val[ 0 ], 10 );
-				// prevents error if sorton array is wrong
-				if ( col < c.columns ) {
-
-					// set order if not already defined - due to colspan header without associated header cell
-					// adding this check prevents a javascript error
-					if ( !c.sortVars[ col ].order ) {
-						order = c.sortVars[ col ].order = ts.getOrder( c.sortInitialOrder ) ? [ 1, 0, 2 ] : [ 0, 1, 2 ];
-						c.sortVars[ col ].count = 0;
-					}
-
-					order = c.sortVars[ col ].order;
-					dir = ( '' + val[ 1 ] ).match( /^(1|d|s|o|n)/ );
-					dir = dir ? dir[ 0 ] : '';
-					// 0/(a)sc (default), 1/(d)esc, (s)ame, (o)pposite, (n)ext
-					switch ( dir ) {
-						case '1' : case 'd' : // descending
-							dir = 1;
-							break;
-						case 's' : // same direction (as primary column)
-							// if primary sort is set to 's', make it ascending
-							dir = primary || 0;
-							break;
-						case 'o' :
-							temp = order[ ( primary || 0 ) % ( c.sortReset ? 3 : 2 ) ];
-							// opposite of primary column; but resets if primary resets
-							dir = temp === 0 ? 1 : temp === 1 ? 0 : 2;
-							break;
-						case 'n' :
-							dir = order[ ( ++c.sortVars[ col ].count ) % ( c.sortReset ? 3 : 2 ) ];
-							break;
-						default : // ascending
-							dir = 0;
-							break;
-					}
-					primary = indx === 0 ? dir : primary;
-					group = [ col, parseInt( dir, 10 ) || 0 ];
-					c.sortList[ c.sortList.length ] = group;
-					dir = $.inArray( group[ 1 ], order ); // fixes issue #167
-					c.sortVars[ col ].count = dir >= 0 ? dir : group[ 1 ] % ( c.sortReset ? 3 : 2 );
-				}
-			}
-		},
-
-		updateAll : function( c, resort, callback ) {
-			var table = c.table;
-			table.isUpdating = true;
-			ts.refreshWidgets( table, true, true );
-			ts.buildHeaders( c );
-			ts.bindEvents( table, c.$headers, true );
-			ts.bindMethods( c );
-			ts.commonUpdate( c, resort, callback );
-		},
-
-		update : function( c, resort, callback ) {
-			var table = c.table;
-			table.isUpdating = true;
-			// update sorting (if enabled/disabled)
-			ts.updateHeader( c );
-			ts.commonUpdate( c, resort, callback );
-		},
-
-		// simple header update - see #989
-		updateHeaders : function( c, callback ) {
-			c.table.isUpdating = true;
-			ts.buildHeaders( c );
-			ts.bindEvents( c.table, c.$headers, true );
-			ts.resortComplete( c, callback );
-		},
-
-		updateCell : function( c, cell, resort, callback ) {
-			if ( ts.isEmptyObject( c.cache ) ) {
-				// empty table, do an update instead - fixes #1099
-				ts.updateHeader( c );
-				ts.commonUpdate( c, resort, callback );
-				return;
-			}
-			c.table.isUpdating = true;
-			c.$table.find( c.selectorRemove ).remove();
-			// get position from the dom
-			var tmp, indx, row, icell, cache, len,
-				$tbodies = c.$tbodies,
-				$cell = $( cell ),
-				// update cache - format: function( s, table, cell, cellIndex )
-				// no closest in jQuery v1.2.6
-				tbodyIndex = $tbodies
-					.index( $.fn.closest ? $cell.closest( 'tbody' ) : $cell.parents( 'tbody' ).filter( ':first' ) ),
-				tbcache = c.cache[ tbodyIndex ],
-				$row = $.fn.closest ? $cell.closest( 'tr' ) : $cell.parents( 'tr' ).filter( ':first' );
-			cell = $cell[ 0 ]; // in case cell is a jQuery object
-			// tbody may not exist if update is initialized while tbody is removed for processing
-			if ( $tbodies.length && tbodyIndex >= 0 ) {
-				row = $tbodies.eq( tbodyIndex ).find( 'tr' ).index( $row );
-				cache = tbcache.normalized[ row ];
-				len = $row[ 0 ].cells.length;
-				if ( len !== c.columns ) {
-					// colspan in here somewhere!
-					icell = 0;
-					tmp = false;
-					for ( indx = 0; indx < len; indx++ ) {
-						if ( !tmp && $row[ 0 ].cells[ indx ] !== cell ) {
-							icell += $row[ 0 ].cells[ indx ].colSpan;
-						} else {
-							tmp = true;
-						}
-					}
-				} else {
-					icell = $cell.index();
-				}
-				tmp = ts.getElementText( c, cell, icell ); // raw
-				cache[ c.columns ].raw[ icell ] = tmp;
-				tmp = ts.getParsedText( c, cell, icell, tmp );
-				cache[ icell ] = tmp; // parsed
-				cache[ c.columns ].$row = $row;
-				if ( ( c.parsers[ icell ].type || '' ).toLowerCase() === 'numeric' ) {
-					// update column max value (ignore sign)
-					tbcache.colMax[ icell ] = Math.max( Math.abs( tmp ) || 0, tbcache.colMax[ icell ] || 0 );
-				}
-				tmp = resort !== 'undefined' ? resort : c.resort;
-				if ( tmp !== false ) {
-					// widgets will be reapplied
-					ts.checkResort( c, tmp, callback );
-				} else {
-					// don't reapply widgets is resort is false, just in case it causes
-					// problems with element focus
-					ts.resortComplete( c, callback );
-				}
-			} else {
-				if ( c.debug ) {
-					console.error( 'updateCell aborted, tbody missing or not within the indicated table' );
-				}
-				c.table.isUpdating = false;
-			}
-		},
-
-		addRows : function( c, $row, resort, callback ) {
-			var txt, val, tbodyIndex, rowIndex, rows, cellIndex, len, order,
-				cacheIndex, rowData, cells, cell, span,
-				// allow passing a row string if only one non-info tbody exists in the table
-				valid = typeof $row === 'string' && c.$tbodies.length === 1 && /<tr/.test( $row || '' ),
-				table = c.table;
-			if ( valid ) {
-				$row = $( $row );
-				c.$tbodies.append( $row );
-			} else if ( !$row ||
-				// row is a jQuery object?
-				!( $row instanceof jQuery ) ||
-				// row contained in the table?
-				( $.fn.closest ? $row.closest( 'table' )[ 0 ] : $row.parents( 'table' )[ 0 ] ) !== c.table ) {
-				if ( c.debug ) {
-					console.error( 'addRows method requires (1) a jQuery selector reference to rows that have already ' +
-						'been added to the table, or (2) row HTML string to be added to a table with only one tbody' );
-				}
-				return false;
-			}
-			table.isUpdating = true;
-			if ( ts.isEmptyObject( c.cache ) ) {
-				// empty table, do an update instead - fixes #450
-				ts.updateHeader( c );
-				ts.commonUpdate( c, resort, callback );
-			} else {
-				rows = $row.filter( 'tr' ).attr( 'role', 'row' ).length;
-				tbodyIndex = c.$tbodies.index( $row.parents( 'tbody' ).filter( ':first' ) );
-				// fixes adding rows to an empty table - see issue #179
-				if ( !( c.parsers && c.parsers.length ) ) {
-					ts.setupParsers( c );
-				}
-				// add each row
-				for ( rowIndex = 0; rowIndex < rows; rowIndex++ ) {
-					cacheIndex = 0;
-					len = $row[ rowIndex ].cells.length;
-					order = c.cache[ tbodyIndex ].normalized.length;
-					cells = [];
-					rowData = {
-						child : [],
-						raw : [],
-						$row : $row.eq( rowIndex ),
-						order : order
-					};
-					// add each cell
-					for ( cellIndex = 0; cellIndex < len; cellIndex++ ) {
-						cell = $row[ rowIndex ].cells[ cellIndex ];
-						txt = ts.getElementText( c, cell, cacheIndex );
-						rowData.raw[ cacheIndex ] = txt;
-						val = ts.getParsedText( c, cell, cacheIndex, txt );
-						cells[ cacheIndex ] = val;
-						if ( ( c.parsers[ cacheIndex ].type || '' ).toLowerCase() === 'numeric' ) {
-							// update column max value (ignore sign)
-							c.cache[ tbodyIndex ].colMax[ cacheIndex ] =
-								Math.max( Math.abs( val ) || 0, c.cache[ tbodyIndex ].colMax[ cacheIndex ] || 0 );
-						}
-						span = cell.colSpan - 1;
-						if ( span > 0 ) {
-							cacheIndex += span;
-						}
-						cacheIndex++;
-					}
-					// add the row data to the end
-					cells[ c.columns ] = rowData;
-					// update cache
-					c.cache[ tbodyIndex ].normalized[ order ] = cells;
-				}
-				// resort using current settings
-				ts.checkResort( c, resort, callback );
-			}
-		},
-
-		updateCache : function( c, callback, $tbodies ) {
-			// rebuild parsers
-			if ( !( c.parsers && c.parsers.length ) ) {
-				ts.setupParsers( c, $tbodies );
-			}
-			// rebuild the cache map
-			ts.buildCache( c, callback, $tbodies );
-		},
-
-		// init flag (true) used by pager plugin to prevent widget application
-		// renamed from appendToTable
-		appendCache : function( c, init ) {
-			var parsed, totalRows, $tbody, $curTbody, rowIndex, tbodyIndex, appendTime,
-				table = c.table,
-				wo = c.widgetOptions,
-				$tbodies = c.$tbodies,
-				rows = [],
-				cache = c.cache;
-			// empty table - fixes #206/#346
-			if ( ts.isEmptyObject( cache ) ) {
-				// run pager appender in case the table was just emptied
-				return c.appender ? c.appender( table, rows ) :
-					table.isUpdating ? c.$table.triggerHandler( 'updateComplete', table ) : ''; // Fixes #532
-			}
-			if ( c.debug ) {
-				appendTime = new Date();
-			}
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = $tbodies.eq( tbodyIndex );
-				if ( $tbody.length ) {
-					// detach tbody for manipulation
-					$curTbody = ts.processTbody( table, $tbody, true );
-					parsed = cache[ tbodyIndex ].normalized;
-					totalRows = parsed.length;
-					for ( rowIndex = 0; rowIndex < totalRows; rowIndex++ ) {
-						rows[rows.length] = parsed[ rowIndex ][ c.columns ].$row;
-						// removeRows used by the pager plugin; don't render if using ajax - fixes #411
-						if ( !c.appender || ( c.pager && ( !c.pager.removeRows || !wo.pager_removeRows ) && !c.pager.ajax ) ) {
-							$curTbody.append( parsed[ rowIndex ][ c.columns ].$row );
-						}
-					}
-					// restore tbody
-					ts.processTbody( table, $curTbody, false );
-				}
-			}
-			if ( c.appender ) {
-				c.appender( table, rows );
-			}
-			if ( c.debug ) {
-				console.log( 'Rebuilt table' + ts.benchmark( appendTime ) );
-			}
-			// apply table widgets; but not before ajax completes
-			if ( !init && !c.appender ) {
-				ts.applyWidget( table );
-			}
-			if ( table.isUpdating ) {
-				c.$table.triggerHandler( 'updateComplete', table );
-			}
-		},
-
-		commonUpdate : function( c, resort, callback ) {
-			// remove rows/elements before update
-			c.$table.find( c.selectorRemove ).remove();
-			// rebuild parsers
-			ts.setupParsers( c );
-			// rebuild the cache map
-			ts.buildCache( c );
-			ts.checkResort( c, resort, callback );
-		},
-
-		/*
-		▄█████ ▄████▄ █████▄ ██████ ██ █████▄ ▄████▄
-		▀█▄    ██  ██ ██▄▄██   ██   ██ ██  ██ ██ ▄▄▄
-		   ▀█▄ ██  ██ ██▀██    ██   ██ ██  ██ ██ ▀██
-		█████▀ ▀████▀ ██  ██   ██   ██ ██  ██ ▀████▀
-		*/
-		initSort : function( c, cell, event ) {
-			if ( c.table.isUpdating ) {
-				// let any updates complete before initializing a sort
-				return setTimeout( function(){
-					ts.initSort( c, cell, event );
-				}, 50 );
-			}
-
-			var arry, indx, headerIndx, dir, temp, tmp, $header,
-				notMultiSort = !event[ c.sortMultiSortKey ],
-				table = c.table,
-				len = c.$headers.length,
-				// get current column index
-				col = parseInt( $( cell ).attr( 'data-column' ), 10 ),
-				order = c.sortVars[ col ].order;
-
-			// Only call sortStart if sorting is enabled
-			c.$table.triggerHandler( 'sortStart', table );
-			// get current column sort order
-			c.sortVars[ col ].count =
-				event[ c.sortResetKey ] ? 2 : ( c.sortVars[ col ].count + 1 ) % ( c.sortReset ? 3 : 2 );
-			// reset all sorts on non-current column - issue #30
-			if ( c.sortRestart ) {
-				for ( headerIndx = 0; headerIndx < len; headerIndx++ ) {
-					$header = c.$headers.eq( headerIndx );
-					tmp = parseInt( $header.attr( 'data-column' ), 10 );
-					// only reset counts on columns that weren't just clicked on and if not included in a multisort
-					if ( col !== tmp && ( notMultiSort || $header.hasClass( ts.css.sortNone ) ) ) {
-						c.sortVars[ tmp ].count = -1;
-					}
-				}
-			}
-			// user only wants to sort on one column
-			if ( notMultiSort ) {
-				// flush the sort list
-				c.sortList = [];
-				c.last.sortList = [];
-				if ( c.sortForce !== null ) {
-					arry = c.sortForce;
-					for ( indx = 0; indx < arry.length; indx++ ) {
-						if ( arry[ indx ][ 0 ] !== col ) {
-							c.sortList[ c.sortList.length ] = arry[ indx ];
-						}
-					}
-				}
-				// add column to sort list
-				dir = order[ c.sortVars[ col ].count ];
-				if ( dir < 2 ) {
-					c.sortList[ c.sortList.length ] = [ col, dir ];
-					// add other columns if header spans across multiple
-					if ( cell.colSpan > 1 ) {
-						for ( indx = 1; indx < cell.colSpan; indx++ ) {
-							c.sortList[ c.sortList.length ] = [ col + indx, dir ];
-							// update count on columns in colSpan
-							c.sortVars[ col + indx ].count = $.inArray( dir, order );
-						}
-					}
-				}
-				// multi column sorting
-			} else {
-				// get rid of the sortAppend before adding more - fixes issue #115 & #523
-				c.sortList = $.extend( [], c.last.sortList );
-
-				// the user has clicked on an already sorted column
-				if ( ts.isValueInArray( col, c.sortList ) >= 0 ) {
-					// reverse the sorting direction
-					for ( indx = 0; indx < c.sortList.length; indx++ ) {
-						tmp = c.sortList[ indx ];
-						if ( tmp[ 0 ] === col ) {
-							// order.count seems to be incorrect when compared to cell.count
-							tmp[ 1 ] = order[ c.sortVars[ col ].count ];
-							if ( tmp[1] === 2 ) {
-								c.sortList.splice( indx, 1 );
-								c.sortVars[ col ].count = -1;
-							}
-						}
-					}
-				} else {
-					// add column to sort list array
-					dir = order[ c.sortVars[ col ].count ];
-					if ( dir < 2 ) {
-						c.sortList[ c.sortList.length ] = [ col, dir ];
-						// add other columns if header spans across multiple
-						if ( cell.colSpan > 1 ) {
-							for ( indx = 1; indx < cell.colSpan; indx++ ) {
-								c.sortList[ c.sortList.length ] = [ col + indx, dir ];
-								// update count on columns in colSpan
-								c.sortVars[ col + indx ].count = $.inArray( dir, order );
-							}
-						}
-					}
-				}
-			}
-			// save sort before applying sortAppend
-			c.last.sortList = $.extend( [], c.sortList );
-			if ( c.sortList.length && c.sortAppend ) {
-				arry = $.isArray( c.sortAppend ) ? c.sortAppend : c.sortAppend[ c.sortList[ 0 ][ 0 ] ];
-				if ( !ts.isEmptyObject( arry ) ) {
-					for ( indx = 0; indx < arry.length; indx++ ) {
-						if ( arry[ indx ][ 0 ] !== col && ts.isValueInArray( arry[ indx ][ 0 ], c.sortList ) < 0 ) {
-							dir = arry[ indx ][ 1 ];
-							temp = ( '' + dir ).match( /^(a|d|s|o|n)/ );
-							if ( temp ) {
-								tmp = c.sortList[ 0 ][ 1 ];
-								switch ( temp[ 0 ] ) {
-									case 'd' :
-										dir = 1;
-										break;
-									case 's' :
-										dir = tmp;
-										break;
-									case 'o' :
-										dir = tmp === 0 ? 1 : 0;
-										break;
-									case 'n' :
-										dir = ( tmp + 1 ) % ( c.sortReset ? 3 : 2 );
-										break;
-									default:
-										dir = 0;
-										break;
-								}
-							}
-							c.sortList[ c.sortList.length ] = [ arry[ indx ][ 0 ], dir ];
-						}
-					}
-				}
-			}
-			// sortBegin event triggered immediately before the sort
-			c.$table.triggerHandler( 'sortBegin', table );
-			// setTimeout needed so the processing icon shows up
-			setTimeout( function() {
-				// set css for headers
-				ts.setHeadersCss( c );
-				ts.multisort( c );
-				ts.appendCache( c );
-				c.$table.triggerHandler( 'sortBeforeEnd', table );
-				c.$table.triggerHandler( 'sortEnd', table );
-			}, 1 );
-		},
-
-		// sort multiple columns
-		multisort : function( c ) { /*jshint loopfunc:true */
-			var tbodyIndex, sortTime, colMax, rows,
-				table = c.table,
-				dir = 0,
-				textSorter = c.textSorter || '',
-				sortList = c.sortList,
-				sortLen = sortList.length,
-				len = c.$tbodies.length;
-			if ( c.serverSideSorting || ts.isEmptyObject( c.cache ) ) {
-				// empty table - fixes #206/#346
-				return;
-			}
-			if ( c.debug ) { sortTime = new Date(); }
-			for ( tbodyIndex = 0; tbodyIndex < len; tbodyIndex++ ) {
-				colMax = c.cache[ tbodyIndex ].colMax;
-				rows = c.cache[ tbodyIndex ].normalized;
-
-				rows.sort( function( a, b ) {
-					var sortIndex, num, col, order, sort, x, y;
-					// rows is undefined here in IE, so don't use it!
-					for ( sortIndex = 0; sortIndex < sortLen; sortIndex++ ) {
-						col = sortList[ sortIndex ][ 0 ];
-						order = sortList[ sortIndex ][ 1 ];
-						// sort direction, true = asc, false = desc
-						dir = order === 0;
-
-						if ( c.sortStable && a[ col ] === b[ col ] && sortLen === 1 ) {
-							return a[ c.columns ].order - b[ c.columns ].order;
-						}
-
-						// fallback to natural sort since it is more robust
-						num = /n/i.test( ts.getSortType( c.parsers, col ) );
-						if ( num && c.strings[ col ] ) {
-							// sort strings in numerical columns
-							if ( typeof ( ts.string[ c.strings[ col ] ] ) === 'boolean' ) {
-								num = ( dir ? 1 : -1 ) * ( ts.string[ c.strings[ col ] ] ? -1 : 1 );
-							} else {
-								num = ( c.strings[ col ] ) ? ts.string[ c.strings[ col ] ] || 0 : 0;
-							}
-							// fall back to built-in numeric sort
-							// var sort = $.tablesorter['sort' + s]( a[col], b[col], dir, colMax[col], table );
-							sort = c.numberSorter ? c.numberSorter( a[ col ], b[ col ], dir, colMax[ col ], table ) :
-								ts[ 'sortNumeric' + ( dir ? 'Asc' : 'Desc' ) ]( a[ col ], b[ col ], num, colMax[ col ], col, c );
-						} else {
-							// set a & b depending on sort direction
-							x = dir ? a : b;
-							y = dir ? b : a;
-							// text sort function
-							if ( typeof textSorter === 'function' ) {
-								// custom OVERALL text sorter
-								sort = textSorter( x[ col ], y[ col ], dir, col, table );
-							} else if ( typeof textSorter === 'object' && textSorter.hasOwnProperty( col ) ) {
-								// custom text sorter for a SPECIFIC COLUMN
-								sort = textSorter[ col ]( x[ col ], y[ col ], dir, col, table );
-							} else {
-								// fall back to natural sort
-								sort = ts[ 'sortNatural' + ( dir ? 'Asc' : 'Desc' ) ]( a[ col ], b[ col ], col, c );
-							}
-						}
-						if ( sort ) { return sort; }
-					}
-					return a[ c.columns ].order - b[ c.columns ].order;
-				});
-			}
-			if ( c.debug ) {
-				console.log( 'Applying sort ' + sortList.toString() + ts.benchmark( sortTime ) );
-			}
-		},
-
-		resortComplete : function( c, callback ) {
-			if ( c.table.isUpdating ) {
-				c.$table.triggerHandler( 'updateComplete', c.table );
-			}
-			if ( $.isFunction( callback ) ) {
-				callback( c.table );
-			}
-		},
-
-		checkResort : function( c, resort, callback ) {
-			var sortList = $.isArray( resort ) ? resort : c.sortList,
-				// if no resort parameter is passed, fallback to config.resort (true by default)
-				resrt = typeof resort === 'undefined' ? c.resort : resort;
-			// don't try to resort if the table is still processing
-			// this will catch spamming of the updateCell method
-			if ( resrt !== false && !c.serverSideSorting && !c.table.isProcessing ) {
-				if ( sortList.length ) {
-					ts.sortOn( c, sortList, function() {
-						ts.resortComplete( c, callback );
-					}, true );
-				} else {
-					ts.sortReset( c, function() {
-						ts.resortComplete( c, callback );
-						ts.applyWidget( c.table, false );
-					} );
-				}
-			} else {
-				ts.resortComplete( c, callback );
-				ts.applyWidget( c.table, false );
-			}
-		},
-
-		sortOn : function( c, list, callback, init ) {
-			var table = c.table;
-			c.$table.triggerHandler( 'sortStart', table );
-			// update header count index
-			ts.updateHeaderSortCount( c, list );
-			// set css for headers
-			ts.setHeadersCss( c );
-			// fixes #346
-			if ( c.delayInit && ts.isEmptyObject( c.cache ) ) {
-				ts.buildCache( c );
-			}
-			c.$table.triggerHandler( 'sortBegin', table );
-			// sort the table and append it to the dom
-			ts.multisort( c );
-			ts.appendCache( c, init );
-			c.$table.triggerHandler( 'sortBeforeEnd', table );
-			c.$table.triggerHandler( 'sortEnd', table );
-			ts.applyWidget( table );
-			if ( $.isFunction( callback ) ) {
-				callback( table );
-			}
-		},
-
-		sortReset : function( c, callback ) {
-			c.sortList = [];
-			ts.setHeadersCss( c );
-			ts.multisort( c );
-			ts.appendCache( c );
-			if ( $.isFunction( callback ) ) {
-				callback( c.table );
-			}
-		},
-
-		getSortType : function( parsers, column ) {
-			return ( parsers && parsers[ column ] ) ? parsers[ column ].type || '' : '';
-		},
-
-		getOrder : function( val ) {
-			// look for 'd' in 'desc' order; return true
-			return ( /^d/i.test( val ) || val === 1 );
-		},
-
-		// Natural sort - https://github.com/overset/javascript-natural-sort (date sorting removed)
-		// this function will only accept strings, or you'll see 'TypeError: undefined is not a function'
-		// I could add a = a.toString(); b = b.toString(); but it'll slow down the sort overall
-		sortNatural : function( a, b ) {
-			if ( a === b ) { return 0; }
-			var aNum, bNum, aFloat, bFloat, indx, max,
-				regex = ts.regex;
-			// first try and sort Hex codes
-			if ( regex.hex.test( b ) ) {
-				aNum = parseInt( a.match( regex.hex ), 16 );
-				bNum = parseInt( b.match( regex.hex ), 16 );
-				if ( aNum < bNum ) { return -1; }
-				if ( aNum > bNum ) { return 1; }
-			}
-			// chunk/tokenize
-			aNum = a.replace( regex.chunk, '\\0$1\\0' ).replace( regex.chunks, '' ).split( '\\0' );
-			bNum = b.replace( regex.chunk, '\\0$1\\0' ).replace( regex.chunks, '' ).split( '\\0' );
-			max = Math.max( aNum.length, bNum.length );
-			// natural sorting through split numeric strings and default strings
-			for ( indx = 0; indx < max; indx++ ) {
-				// find floats not starting with '0', string or 0 if not defined
-				aFloat = isNaN( aNum[ indx ] ) ? aNum[ indx ] || 0 : parseFloat( aNum[ indx ] ) || 0;
-				bFloat = isNaN( bNum[ indx ] ) ? bNum[ indx ] || 0 : parseFloat( bNum[ indx ] ) || 0;
-				// handle numeric vs string comparison - number < string - (Kyle Adams)
-				if ( isNaN( aFloat ) !== isNaN( bFloat ) ) { return isNaN( aFloat ) ? 1 : -1; }
-				// rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
-				if ( typeof aFloat !== typeof bFloat ) {
-					aFloat += '';
-					bFloat += '';
-				}
-				if ( aFloat < bFloat ) { return -1; }
-				if ( aFloat > bFloat ) { return 1; }
-			}
-			return 0;
-		},
-
-		sortNaturalAsc : function( a, b, col, c ) {
-			if ( a === b ) { return 0; }
-			var empty = ts.string[ ( c.empties[ col ] || c.emptyTo ) ];
-			if ( a === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? -1 : 1 ) : -empty || -1; }
-			if ( b === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? 1 : -1 ) : empty || 1; }
-			return ts.sortNatural( a, b );
-		},
-
-		sortNaturalDesc : function( a, b, col, c ) {
-			if ( a === b ) { return 0; }
-			var empty = ts.string[ ( c.empties[ col ] || c.emptyTo ) ];
-			if ( a === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? -1 : 1 ) : empty || 1; }
-			if ( b === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? 1 : -1 ) : -empty || -1; }
-			return ts.sortNatural( b, a );
-		},
-
-		// basic alphabetical sort
-		sortText : function( a, b ) {
-			return a > b ? 1 : ( a < b ? -1 : 0 );
-		},
-
-		// return text string value by adding up ascii value
-		// so the text is somewhat sorted when using a digital sort
-		// this is NOT an alphanumeric sort
-		getTextValue : function( val, num, max ) {
-			if ( max ) {
-				// make sure the text value is greater than the max numerical value (max)
-				var indx,
-					len = val ? val.length : 0,
-					n = max + num;
-				for ( indx = 0; indx < len; indx++ ) {
-					n += val.charCodeAt( indx );
-				}
-				return num * n;
-			}
-			return 0;
-		},
-
-		sortNumericAsc : function( a, b, num, max, col, c ) {
-			if ( a === b ) { return 0; }
-			var empty = ts.string[ ( c.empties[ col ] || c.emptyTo ) ];
-			if ( a === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? -1 : 1 ) : -empty || -1; }
-			if ( b === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? 1 : -1 ) : empty || 1; }
-			if ( isNaN( a ) ) { a = ts.getTextValue( a, num, max ); }
-			if ( isNaN( b ) ) { b = ts.getTextValue( b, num, max ); }
-			return a - b;
-		},
-
-		sortNumericDesc : function( a, b, num, max, col, c ) {
-			if ( a === b ) { return 0; }
-			var empty = ts.string[ ( c.empties[ col ] || c.emptyTo ) ];
-			if ( a === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? -1 : 1 ) : empty || 1; }
-			if ( b === '' && empty !== 0 ) { return typeof empty === 'boolean' ? ( empty ? 1 : -1 ) : -empty || -1; }
-			if ( isNaN( a ) ) { a = ts.getTextValue( a, num, max ); }
-			if ( isNaN( b ) ) { b = ts.getTextValue( b, num, max ); }
-			return b - a;
-		},
-
-		sortNumeric : function( a, b ) {
-			return a - b;
-		},
-
-		/*
-		██ ██ ██ ██ █████▄ ▄████▄ ██████ ██████ ▄█████
-		██ ██ ██ ██ ██  ██ ██ ▄▄▄ ██▄▄     ██   ▀█▄
-		██ ██ ██ ██ ██  ██ ██ ▀██ ██▀▀     ██      ▀█▄
-		███████▀ ██ █████▀ ▀████▀ ██████   ██   █████▀
-		*/
-		addWidget : function( widget ) {
-			if ( widget.id && !ts.isEmptyObject( ts.getWidgetById( widget.id ) ) ) {
-				console.warn( '"' + widget.id + '" widget was loaded more than once!' );
-			}
-			ts.widgets[ ts.widgets.length ] = widget;
-		},
-
-		hasWidget : function( $table, name ) {
-			$table = $( $table );
-			return $table.length && $table[ 0 ].config && $table[ 0 ].config.widgetInit[ name ] || false;
-		},
-
-		getWidgetById : function( name ) {
-			var indx, widget,
-				len = ts.widgets.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				widget = ts.widgets[ indx ];
-				if ( widget && widget.id && widget.id.toLowerCase() === name.toLowerCase() ) {
-					return widget;
-				}
-			}
-		},
-
-		applyWidgetOptions : function( table ) {
-			var indx, widget,
-				c = table.config,
-				len = c.widgets.length;
-			if ( len ) {
-				for ( indx = 0; indx < len; indx++ ) {
-					widget = ts.getWidgetById( c.widgets[ indx ] );
-					if ( widget && widget.options ) {
-						c.widgetOptions = $.extend( true, {}, widget.options, c.widgetOptions );
-					}
-				}
-			}
-		},
-
-		addWidgetFromClass : function( table ) {
-			var len, indx,
-				c = table.config,
-				// look for widgets to apply from table class
-				// don't match from 'ui-widget-content'; use \S instead of \w to include widgets
-				// with dashes in the name, e.g. "widget-test-2" extracts out "test-2"
-				regex = '^' + c.widgetClass.replace( ts.regex.templateName, '(\\S+)+' ) + '$',
-				widgetClass = new RegExp( regex, 'g' ),
-				// split up table class (widget id's can include dashes) - stop using match
-				// otherwise only one widget gets extracted, see #1109
-				widgets = ( table.className || '' ).split( ts.regex.spaces );
-			if ( widgets.length ) {
-				len = widgets.length;
-				for ( indx = 0; indx < len; indx++ ) {
-					if ( widgets[ indx ].match( widgetClass ) ) {
-						c.widgets[ c.widgets.length ] = widgets[ indx ].replace( widgetClass, '$1' );
-					}
-				}
-			}
-		},
-
-		applyWidgetId : function( table, id, init ) {
-			table = $(table)[0];
-			var applied, time, name,
-				c = table.config,
-				wo = c.widgetOptions,
-				widget = ts.getWidgetById( id );
-			if ( widget ) {
-				name = widget.id;
-				applied = false;
-				// add widget name to option list so it gets reapplied after sorting, filtering, etc
-				if ( $.inArray( name, c.widgets ) < 0 ) {
-					c.widgets[ c.widgets.length ] = name;
-				}
-				if ( c.debug ) { time = new Date(); }
-
-				if ( init || !( c.widgetInit[ name ] ) ) {
-					// set init flag first to prevent calling init more than once (e.g. pager)
-					c.widgetInit[ name ] = true;
-					if ( table.hasInitialized ) {
-						// don't reapply widget options on tablesorter init
-						ts.applyWidgetOptions( table );
-					}
-					if ( typeof widget.init === 'function' ) {
-						applied = true;
-						if ( c.debug ) {
-							console[ console.group ? 'group' : 'log' ]( 'Initializing ' + name + ' widget' );
-						}
-						widget.init( table, widget, c, wo );
-					}
-				}
-				if ( !init && typeof widget.format === 'function' ) {
-					applied = true;
-					if ( c.debug ) {
-						console[ console.group ? 'group' : 'log' ]( 'Updating ' + name + ' widget' );
-					}
-					widget.format( table, c, wo, false );
-				}
-				if ( c.debug ) {
-					if ( applied ) {
-						console.log( 'Completed ' + ( init ? 'initializing ' : 'applying ' ) + name + ' widget' + ts.benchmark( time ) );
-						if ( console.groupEnd ) { console.groupEnd(); }
-					}
-				}
-			}
-		},
-
-		applyWidget : function( table, init, callback ) {
-			table = $( table )[ 0 ]; // in case this is called externally
-			var indx, len, names, widget, time,
-				c = table.config,
-				widgets = [];
-			// prevent numerous consecutive widget applications
-			if ( init !== false && table.hasInitialized && ( table.isApplyingWidgets || table.isUpdating ) ) {
-				return;
-			}
-			if ( c.debug ) { time = new Date(); }
-			ts.addWidgetFromClass( table );
-			// prevent "tablesorter-ready" from firing multiple times in a row
-			clearTimeout( c.timerReady );
-			if ( c.widgets.length ) {
-				table.isApplyingWidgets = true;
-				// ensure unique widget ids
-				c.widgets = $.grep( c.widgets, function( val, index ) {
-					return $.inArray( val, c.widgets ) === index;
-				});
-				names = c.widgets || [];
-				len = names.length;
-				// build widget array & add priority as needed
-				for ( indx = 0; indx < len; indx++ ) {
-					widget = ts.getWidgetById( names[ indx ] );
-					if ( widget && widget.id ) {
-						// set priority to 10 if not defined
-						if ( !widget.priority ) { widget.priority = 10; }
-						widgets[ indx ] = widget;
-					} else if ( c.debug ) {
-						console.warn( '"' + names[ indx ] + '" widget code does not exist!' );
-					}
-				}
-				// sort widgets by priority
-				widgets.sort( function( a, b ) {
-					return a.priority < b.priority ? -1 : a.priority === b.priority ? 0 : 1;
-				});
-				// add/update selected widgets
-				len = widgets.length;
-				if ( c.debug ) {
-					console[ console.group ? 'group' : 'log' ]( 'Start ' + ( init ? 'initializing' : 'applying' ) + ' widgets' );
-				}
-				for ( indx = 0; indx < len; indx++ ) {
-					widget = widgets[ indx ];
-					if ( widget && widget.id ) {
-						ts.applyWidgetId( table, widget.id, init );
-					}
-				}
-				if ( c.debug && console.groupEnd ) { console.groupEnd(); }
-				// callback executed on init only
-				if ( !init && typeof callback === 'function' ) {
-					callback( table );
-				}
-			}
-			c.timerReady = setTimeout( function() {
-				table.isApplyingWidgets = false;
-				$.data( table, 'lastWidgetApplication', new Date() );
-				c.$table.triggerHandler( 'tablesorter-ready' );
-			}, 10 );
-			if ( c.debug ) {
-				widget = c.widgets.length;
-				console.log( 'Completed ' +
-					( init === true ? 'initializing ' : 'applying ' ) + widget +
-					' widget' + ( widget !== 1 ? 's' : '' ) + ts.benchmark( time ) );
-			}
-		},
-
-		removeWidget : function( table, name, refreshing ) {
-			table = $( table )[ 0 ];
-			var index, widget, indx, len,
-				c = table.config;
-			// if name === true, add all widgets from $.tablesorter.widgets
-			if ( name === true ) {
-				name = [];
-				len = ts.widgets.length;
-				for ( indx = 0; indx < len; indx++ ) {
-					widget = ts.widgets[ indx ];
-					if ( widget && widget.id ) {
-						name[ name.length ] = widget.id;
-					}
-				}
-			} else {
-				// name can be either an array of widgets names,
-				// or a space/comma separated list of widget names
-				name = ( $.isArray( name ) ? name.join( ',' ) : name || '' ).toLowerCase().split( /[\s,]+/ );
-			}
-			len = name.length;
-			for ( index = 0; index < len; index++ ) {
-				widget = ts.getWidgetById( name[ index ] );
-				indx = $.inArray( name[ index ], c.widgets );
-				// don't remove the widget from config.widget if refreshing
-				if ( indx >= 0 && refreshing !== true ) {
-					c.widgets.splice( indx, 1 );
-				}
-				if ( widget && widget.remove ) {
-					if ( c.debug ) {
-						console.log( ( refreshing ? 'Refreshing' : 'Removing' ) + ' "' + name[ index ] + '" widget' );
-					}
-					widget.remove( table, c, c.widgetOptions, refreshing );
-					c.widgetInit[ name[ index ] ] = false;
-				}
-			}
-		},
-
-		refreshWidgets : function( table, doAll, dontapply ) {
-			table = $( table )[ 0 ]; // see issue #243
-			var indx, widget,
-				c = table.config,
-				curWidgets = c.widgets,
-				widgets = ts.widgets,
-				len = widgets.length,
-				list = [],
-				callback = function( table ) {
-					$( table ).triggerHandler( 'refreshComplete' );
-				};
-			// remove widgets not defined in config.widgets, unless doAll is true
-			for ( indx = 0; indx < len; indx++ ) {
-				widget = widgets[ indx ];
-				if ( widget && widget.id && ( doAll || $.inArray( widget.id, curWidgets ) < 0 ) ) {
-					list[ list.length ] = widget.id;
-				}
-			}
-			ts.removeWidget( table, list.join( ',' ), true );
-			if ( dontapply !== true ) {
-				// call widget init if
-				ts.applyWidget( table, doAll || false, callback );
-				if ( doAll ) {
-					// apply widget format
-					ts.applyWidget( table, false, callback );
-				}
-			} else {
-				callback( table );
-			}
-		},
-
-		/*
-		██  ██ ██████ ██ ██     ██ ██████ ██ ██████ ▄█████
-		██  ██   ██   ██ ██     ██   ██   ██ ██▄▄   ▀█▄
-		██  ██   ██   ██ ██     ██   ██   ██ ██▀▀      ▀█▄
-		▀████▀   ██   ██ ██████ ██   ██   ██ ██████ █████▀
-		*/
-		benchmark : function( diff ) {
-			return ( ' ( ' + ( new Date().getTime() - diff.getTime() ) + 'ms )' );
-		},
-		// deprecated ts.log
-		log : function() {
-			console.log( arguments );
-		},
-
-		// $.isEmptyObject from jQuery v1.4
-		isEmptyObject : function( obj ) {
-			/*jshint forin: false */
-			for ( var name in obj ) {
-				return false;
-			}
-			return true;
-		},
-
-		isValueInArray : function( column, arry ) {
-			var indx,
-				len = arry && arry.length || 0;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( arry[ indx ][ 0 ] === column ) {
-					return indx;
-				}
-			}
-			return -1;
-		},
-
-		formatFloat : function( str, table ) {
-			if ( typeof str !== 'string' || str === '' ) { return str; }
-			// allow using formatFloat without a table; defaults to US number format
-			var num,
-				usFormat = table && table.config ? table.config.usNumberFormat !== false :
-					typeof table !== 'undefined' ? table : true;
-			if ( usFormat ) {
-				// US Format - 1,234,567.89 -> 1234567.89
-				str = str.replace( ts.regex.comma, '' );
-			} else {
-				// German Format = 1.234.567,89 -> 1234567.89
-				// French Format = 1 234 567,89 -> 1234567.89
-				str = str.replace( ts.regex.digitNonUS, '' ).replace( ts.regex.comma, '.' );
-			}
-			if ( ts.regex.digitNegativeTest.test( str ) ) {
-				// make (#) into a negative number -> (10) = -10
-				str = str.replace( ts.regex.digitNegativeReplace, '-$1' );
-			}
-			num = parseFloat( str );
-			// return the text instead of zero
-			return isNaN( num ) ? $.trim( str ) : num;
-		},
-
-		isDigit : function( str ) {
-			// replace all unwanted chars and match
-			return isNaN( str ) ?
-				ts.regex.digitTest.test( str.toString().replace( ts.regex.digitReplace, '' ) ) :
-				str !== '';
-		},
-
-		// computeTableHeaderCellIndexes from:
-		// http://www.javascripttoolbox.com/lib/table/examples.php
-		// http://www.javascripttoolbox.com/temp/table_cellindex.html
-		computeColumnIndex : function( $rows, c ) {
-			var i, j, k, l, cell, cells, rowIndex, rowSpan, colSpan, firstAvailCol,
-				// total columns has been calculated, use it to set the matrixrow
-				columns = c && c.columns || 0,
-				matrix = [],
-				matrixrow = new Array( columns );
-			for ( i = 0; i < $rows.length; i++ ) {
-				cells = $rows[ i ].cells;
-				for ( j = 0; j < cells.length; j++ ) {
-					cell = cells[ j ];
-					rowIndex = cell.parentNode.rowIndex;
-					rowSpan = cell.rowSpan || 1;
-					colSpan = cell.colSpan || 1;
-					if ( typeof matrix[ rowIndex ] === 'undefined' ) {
-						matrix[ rowIndex ] = [];
-					}
-					// Find first available column in the first row
-					for ( k = 0; k < matrix[ rowIndex ].length + 1; k++ ) {
-						if ( typeof matrix[ rowIndex ][ k ] === 'undefined' ) {
-							firstAvailCol = k;
-							break;
-						}
-					}
-					// jscs:disable disallowEmptyBlocks
-					if ( columns && cell.cellIndex === firstAvailCol ) {
-						// don't to anything
-					} else if ( cell.setAttribute ) {
-						// jscs:enable disallowEmptyBlocks
-						// add data-column (setAttribute = IE8+)
-						cell.setAttribute( 'data-column', firstAvailCol );
-					} else {
-						// remove once we drop support for IE7 - 1/12/2016
-						$( cell ).attr( 'data-column', firstAvailCol );
-					}
-					for ( k = rowIndex; k < rowIndex + rowSpan; k++ ) {
-						if ( typeof matrix[ k ] === 'undefined' ) {
-							matrix[ k ] = [];
-						}
-						matrixrow = matrix[ k ];
-						for ( l = firstAvailCol; l < firstAvailCol + colSpan; l++ ) {
-							matrixrow[ l ] = 'x';
-						}
-					}
-				}
-			}
-			return matrixrow.length;
-		},
-
-		// automatically add a colgroup with col elements set to a percentage width
-		fixColumnWidth : function( table ) {
-			table = $( table )[ 0 ];
-			var overallWidth, percent, $tbodies, len, index,
-				c = table.config,
-				$colgroup = c.$table.children( 'colgroup' );
-			// remove plugin-added colgroup, in case we need to refresh the widths
-			if ( $colgroup.length && $colgroup.hasClass( ts.css.colgroup ) ) {
-				$colgroup.remove();
-			}
-			if ( c.widthFixed && c.$table.children( 'colgroup' ).length === 0 ) {
-				$colgroup = $( '<colgroup class="' + ts.css.colgroup + '">' );
-				overallWidth = c.$table.width();
-				// only add col for visible columns - fixes #371
-				$tbodies = c.$tbodies.find( 'tr:first' ).children( ':visible' );
-				len = $tbodies.length;
-				for ( index = 0; index < len; index++ ) {
-					percent = parseInt( ( $tbodies.eq( index ).width() / overallWidth ) * 1000, 10 ) / 10 + '%';
-					$colgroup.append( $( '<col>' ).css( 'width', percent ) );
-				}
-				c.$table.prepend( $colgroup );
-			}
-		},
-
-		// get sorter, string, empty, etc options for each column from
-		// jQuery data, metadata, header option or header class name ('sorter-false')
-		// priority = jQuery data > meta > headers option > header class name
-		getData : function( header, configHeader, key ) {
-			var meta, cl4ss,
-				val = '',
-				$header = $( header );
-			if ( !$header.length ) { return ''; }
-			meta = $.metadata ? $header.metadata() : false;
-			cl4ss = ' ' + ( $header.attr( 'class' ) || '' );
-			if ( typeof $header.data( key ) !== 'undefined' ||
-				typeof $header.data( key.toLowerCase() ) !== 'undefined' ) {
-				// 'data-lockedOrder' is assigned to 'lockedorder'; but 'data-locked-order' is assigned to 'lockedOrder'
-				// 'data-sort-initial-order' is assigned to 'sortInitialOrder'
-				val += $header.data( key ) || $header.data( key.toLowerCase() );
-			} else if ( meta && typeof meta[ key ] !== 'undefined' ) {
-				val += meta[ key ];
-			} else if ( configHeader && typeof configHeader[ key ] !== 'undefined' ) {
-				val += configHeader[ key ];
-			} else if ( cl4ss !== ' ' && cl4ss.match( ' ' + key + '-' ) ) {
-				// include sorter class name 'sorter-text', etc; now works with 'sorter-my-custom-parser'
-				val = cl4ss.match( new RegExp( '\\s' + key + '-([\\w-]+)' ) )[ 1 ] || '';
-			}
-			return $.trim( val );
-		},
-
-		getColumnData : function( table, obj, indx, getCell, $headers ) {
-			if ( typeof obj === 'undefined' || obj === null ) { return; }
-			table = $( table )[ 0 ];
-			var $header, key,
-				c = table.config,
-				$cells = ( $headers || c.$headers ),
-				// c.$headerIndexed is not defined initially
-				$cell = c.$headerIndexed && c.$headerIndexed[ indx ] ||
-					$cells.filter( '[data-column="' + indx + '"]:last' );
-			if ( obj[ indx ] ) {
-				return getCell ? obj[ indx ] : obj[ $cells.index( $cell ) ];
-			}
-			for ( key in obj ) {
-				if ( typeof key === 'string' ) {
-					$header = $cell
-						// header cell with class/id
-						.filter( key )
-						// find elements within the header cell with cell/id
-						.add( $cell.find( key ) );
-					if ( $header.length ) {
-						return obj[ key ];
-					}
-				}
-			}
-			return;
-		},
-
-		// *** Process table ***
-		// add processing indicator
-		isProcessing : function( $table, toggle, $headers ) {
-			$table = $( $table );
-			var c = $table[ 0 ].config,
-				// default to all headers
-				$header = $headers || $table.find( '.' + ts.css.header );
-			if ( toggle ) {
-				// don't use sortList if custom $headers used
-				if ( typeof $headers !== 'undefined' && c.sortList.length > 0 ) {
-					// get headers from the sortList
-					$header = $header.filter( function() {
-						// get data-column from attr to keep compatibility with jQuery 1.2.6
-						return this.sortDisabled ?
-							false :
-							ts.isValueInArray( parseFloat( $( this ).attr( 'data-column' ) ), c.sortList ) >= 0;
-					});
-				}
-				$table.add( $header ).addClass( ts.css.processing + ' ' + c.cssProcessing );
-			} else {
-				$table.add( $header ).removeClass( ts.css.processing + ' ' + c.cssProcessing );
-			}
-		},
-
-		// detach tbody but save the position
-		// don't use tbody because there are portions that look for a tbody index (updateCell)
-		processTbody : function( table, $tb, getIt ) {
-			table = $( table )[ 0 ];
-			if ( getIt ) {
-				table.isProcessing = true;
-				$tb.before( '<colgroup class="tablesorter-savemyplace"/>' );
-				return $.fn.detach ? $tb.detach() : $tb.remove();
-			}
-			var holdr = $( table ).find( 'colgroup.tablesorter-savemyplace' );
-			$tb.insertAfter( holdr );
-			holdr.remove();
-			table.isProcessing = false;
-		},
-
-		clearTableBody : function( table ) {
-			$( table )[ 0 ].config.$tbodies.children().detach();
-		},
-
-		// used when replacing accented characters during sorting
-		characterEquivalents : {
-			'a' : '\u00e1\u00e0\u00e2\u00e3\u00e4\u0105\u00e5', // áàâãäąå
-			'A' : '\u00c1\u00c0\u00c2\u00c3\u00c4\u0104\u00c5', // ÁÀÂÃÄĄÅ
-			'c' : '\u00e7\u0107\u010d', // çćč
-			'C' : '\u00c7\u0106\u010c', // ÇĆČ
-			'e' : '\u00e9\u00e8\u00ea\u00eb\u011b\u0119', // éèêëěę
-			'E' : '\u00c9\u00c8\u00ca\u00cb\u011a\u0118', // ÉÈÊËĚĘ
-			'i' : '\u00ed\u00ec\u0130\u00ee\u00ef\u0131', // íìİîïı
-			'I' : '\u00cd\u00cc\u0130\u00ce\u00cf', // ÍÌİÎÏ
-			'o' : '\u00f3\u00f2\u00f4\u00f5\u00f6\u014d', // óòôõöō
-			'O' : '\u00d3\u00d2\u00d4\u00d5\u00d6\u014c', // ÓÒÔÕÖŌ
-			'ss': '\u00df', // ß (s sharp)
-			'SS': '\u1e9e', // ẞ (Capital sharp s)
-			'u' : '\u00fa\u00f9\u00fb\u00fc\u016f', // úùûüů
-			'U' : '\u00da\u00d9\u00db\u00dc\u016e' // ÚÙÛÜŮ
-		},
-
-		replaceAccents : function( str ) {
-			var chr,
-				acc = '[',
-				eq = ts.characterEquivalents;
-			if ( !ts.characterRegex ) {
-				ts.characterRegexArray = {};
-				for ( chr in eq ) {
-					if ( typeof chr === 'string' ) {
-						acc += eq[ chr ];
-						ts.characterRegexArray[ chr ] = new RegExp( '[' + eq[ chr ] + ']', 'g' );
-					}
-				}
-				ts.characterRegex = new RegExp( acc + ']' );
-			}
-			if ( ts.characterRegex.test( str ) ) {
-				for ( chr in eq ) {
-					if ( typeof chr === 'string' ) {
-						str = str.replace( ts.characterRegexArray[ chr ], chr );
-					}
-				}
-			}
-			return str;
-		},
-
-		// restore headers
-		restoreHeaders : function( table ) {
-			var index, $cell,
-				c = $( table )[ 0 ].config,
-				$headers = c.$table.find( c.selectorHeaders ),
-				len = $headers.length;
-			// don't use c.$headers here in case header cells were swapped
-			for ( index = 0; index < len; index++ ) {
-				$cell = $headers.eq( index );
-				// only restore header cells if it is wrapped
-				// because this is also used by the updateAll method
-				if ( $cell.find( '.' + ts.css.headerIn ).length ) {
-					$cell.html( c.headerContent[ index ] );
-				}
-			}
-		},
-
-		destroy : function( table, removeClasses, callback ) {
-			table = $( table )[ 0 ];
-			if ( !table.hasInitialized ) { return; }
-			// remove all widgets
-			ts.removeWidget( table, true, false );
-			var events,
-				$t = $( table ),
-				c = table.config,
-				debug = c.debug,
-				$h = $t.find( 'thead:first' ),
-				$r = $h.find( 'tr.' + ts.css.headerRow ).removeClass( ts.css.headerRow + ' ' + c.cssHeaderRow ),
-				$f = $t.find( 'tfoot:first > tr' ).children( 'th, td' );
-			if ( removeClasses === false && $.inArray( 'uitheme', c.widgets ) >= 0 ) {
-				// reapply uitheme classes, in case we want to maintain appearance
-				$t.triggerHandler( 'applyWidgetId', [ 'uitheme' ] );
-				$t.triggerHandler( 'applyWidgetId', [ 'zebra' ] );
-			}
-			// remove widget added rows, just in case
-			$h.find( 'tr' ).not( $r ).remove();
-			// disable tablesorter - not using .unbind( namespace ) because namespacing was
-			// added in jQuery v1.4.3 - see http://api.jquery.com/event.namespace/
-			events = 'sortReset update updateRows updateAll updateHeaders updateCell addRows updateComplete sorton ' +
-				'appendCache updateCache applyWidgetId applyWidgets refreshWidgets removeWidget destroy mouseup mouseleave ' +
-				'keypress sortBegin sortEnd resetToLoadState '.split( ' ' )
-				.join( c.namespace + ' ' );
-			$t
-				.removeData( 'tablesorter' )
-				.unbind( events.replace( ts.regex.spaces, ' ' ) );
-			c.$headers
-				.add( $f )
-				.removeClass( [ ts.css.header, c.cssHeader, c.cssAsc, c.cssDesc, ts.css.sortAsc, ts.css.sortDesc, ts.css.sortNone ].join( ' ' ) )
-				.removeAttr( 'data-column' )
-				.removeAttr( 'aria-label' )
-				.attr( 'aria-disabled', 'true' );
-			$r
-				.find( c.selectorSort )
-				.unbind( ( 'mousedown mouseup keypress '.split( ' ' ).join( c.namespace + ' ' ) ).replace( ts.regex.spaces, ' ' ) );
-			ts.restoreHeaders( table );
-			$t.toggleClass( ts.css.table + ' ' + c.tableClass + ' tablesorter-' + c.theme, removeClasses === false );
-			// clear flag in case the plugin is initialized again
-			table.hasInitialized = false;
-			delete table.config.cache;
-			if ( typeof callback === 'function' ) {
-				callback( table );
-			}
-			if ( debug ) {
-				console.log( 'tablesorter has been removed' );
-			}
-		}
-
-	};
-
-	$.fn.tablesorter = function( settings ) {
-		return this.each( function() {
-			var table = this,
-			// merge & extend config options
-			c = $.extend( true, {}, ts.defaults, settings, ts.instanceMethods );
-			// save initial settings
-			c.originalSettings = settings;
-			// create a table from data (build table widget)
-			if ( !table.hasInitialized && ts.buildTable && this.nodeName !== 'TABLE' ) {
-				// return the table (in case the original target is the table's container)
-				ts.buildTable( table, c );
-			} else {
-				ts.setup( table, c );
-			}
-		});
-	};
-
-	// set up debug logs
-	if ( !( window.console && window.console.log ) ) {
-		// access $.tablesorter.logs for browsers that don't have a console...
-		ts.logs = [];
-		/*jshint -W020 */
-		console = {};
-		console.log = console.warn = console.error = console.table = function() {
-			var arg = arguments.length > 1 ? arguments : arguments[0];
-			ts.logs[ ts.logs.length ] = { date: Date.now(), log: arg };
+			offset: 20,
+			spacing: 10,
+			z_index: 1031,
+			delay: 5000,
+			timer: 1000,
+			url_target: '_blank',
+			mouse_over: null,
+			animate: {
+				enter: 'animated fadeInDown',
+				exit: 'animated fadeOutUp'
+			},
+			onShow: null,
+			onShown: null,
+			onClose: null,
+			onClosed: null,
+			icon_type: 'class',
+			template: '<div data-notify="container" class="col-xs-11 col-sm-4 alert alert-{0}" role="alert"><button type="button" aria-hidden="true" class="close" data-notify="dismiss">&times;</button><span data-notify="icon"></span> <span data-notify="title">{1}</span> <span data-notify="message">{2}</span><div class="progress" data-notify="progressbar"><div class="progress-bar progress-bar-{0}" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div><a href="{3}" target="{4}" data-notify="url"></a></div>'
 		};
-	}
 
-	// add default parsers
-	ts.addParser({
-		id : 'no-parser',
-		is : function() {
-			return false;
-		},
-		format : function() {
-			return '';
-		},
-		type : 'text'
-	});
-
-	ts.addParser({
-		id : 'text',
-		is : function() {
-			return true;
-		},
-		format : function( str, table ) {
-			var c = table.config;
-			if ( str ) {
-				str = $.trim( c.ignoreCase ? str.toLocaleLowerCase() : str );
-				str = c.sortLocaleCompare ? ts.replaceAccents( str ) : str;
-			}
-			return str;
-		},
-		type : 'text'
-	});
-
-	ts.regex.nondigit = /[^\w,. \-()]/g;
-	ts.addParser({
-		id : 'digit',
-		is : function( str ) {
-			return ts.isDigit( str );
-		},
-		format : function( str, table ) {
-			var num = ts.formatFloat( ( str || '' ).replace( ts.regex.nondigit, '' ), table );
-			return str && typeof num === 'number' ? num :
-				str ? $.trim( str && table.config.ignoreCase ? str.toLocaleLowerCase() : str ) : str;
-		},
-		type : 'numeric'
-	});
-
-	ts.regex.currencyReplace = /[+\-,. ]/g;
-	ts.regex.currencyTest = /^\(?\d+[\u00a3$\u20ac\u00a4\u00a5\u00a2?.]|[\u00a3$\u20ac\u00a4\u00a5\u00a2?.]\d+\)?$/;
-	ts.addParser({
-		id : 'currency',
-		is : function( str ) {
-			str = ( str || '' ).replace( ts.regex.currencyReplace, '' );
-			// test for £$€¤¥¢
-			return ts.regex.currencyTest.test( str );
-		},
-		format : function( str, table ) {
-			var num = ts.formatFloat( ( str || '' ).replace( ts.regex.nondigit, '' ), table );
-			return str && typeof num === 'number' ? num :
-				str ? $.trim( str && table.config.ignoreCase ? str.toLocaleLowerCase() : str ) : str;
-		},
-		type : 'numeric'
-	});
-
-	// too many protocols to add them all https://en.wikipedia.org/wiki/URI_scheme
-	// now, this regex can be updated before initialization
-	ts.regex.urlProtocolTest =   /^(https?|ftp|file):\/\//;
-	ts.regex.urlProtocolReplace = /(https?|ftp|file):\/\//;
-	ts.addParser({
-		id : 'url',
-		is : function( str ) {
-			return ts.regex.urlProtocolTest.test( str );
-		},
-		format : function( str ) {
-			return str ? $.trim( str.replace( ts.regex.urlProtocolReplace, '' ) ) : str;
-		},
-		parsed : true, // filter widget flag
-		type : 'text'
-	});
-
-	ts.regex.dash = /-/g;
-	ts.regex.isoDate = /^\d{4}[\/\-]\d{1,2}[\/\-]\d{1,2}/;
-	ts.addParser({
-		id : 'isoDate',
-		is : function( str ) {
-			return ts.regex.isoDate.test( str );
-		},
-		format : function( str, table ) {
-			var date = str ? new Date( str.replace( ts.regex.dash, '/' ) ) : str;
-			return date instanceof Date && isFinite( date ) ? date.getTime() : str;
-		},
-		type : 'numeric'
-	});
-
-	ts.regex.percent = /%/g;
-	ts.regex.percentTest = /(\d\s*?%|%\s*?\d)/;
-	ts.addParser({
-		id : 'percent',
-		is : function( str ) {
-			return ts.regex.percentTest.test( str ) && str.length < 15;
-		},
-		format : function( str, table ) {
-			return str ? ts.formatFloat( str.replace( ts.regex.percent, '' ), table ) : str;
-		},
-		type : 'numeric'
-	});
-
-	// added image parser to core v2.17.9
-	ts.addParser({
-		id : 'image',
-		is : function( str, table, node, $node ) {
-			return $node.find( 'img' ).length > 0;
-		},
-		format : function( str, table, cell ) {
-			return $( cell ).find( 'img' ).attr( table.config.imgAttr || 'alt' ) || str;
-		},
-		parsed : true, // filter widget flag
-		type : 'text'
-	});
-
-	ts.regex.dateReplace = /(\S)([AP]M)$/i; // used by usLongDate & time parser
-	ts.regex.usLongDateTest1 = /^[A-Z]{3,10}\.?\s+\d{1,2},?\s+(\d{4})(\s+\d{1,2}:\d{2}(:\d{2})?(\s+[AP]M)?)?$/i;
-	ts.regex.usLongDateTest2 = /^\d{1,2}\s+[A-Z]{3,10}\s+\d{4}/i;
-	ts.addParser({
-		id : 'usLongDate',
-		is : function( str ) {
-			// two digit years are not allowed cross-browser
-			// Jan 01, 2013 12:34:56 PM or 01 Jan 2013
-			return ts.regex.usLongDateTest1.test( str ) || ts.regex.usLongDateTest2.test( str );
-		},
-		format : function( str, table ) {
-			var date = str ? new Date( str.replace( ts.regex.dateReplace, '$1 $2' ) ) : str;
-			return date instanceof Date && isFinite( date ) ? date.getTime() : str;
-		},
-		type : 'numeric'
-	});
-
-	// testing for ##-##-#### or ####-##-##, so it's not perfect; time can be included
-	ts.regex.shortDateTest = /(^\d{1,2}[\/\s]\d{1,2}[\/\s]\d{4})|(^\d{4}[\/\s]\d{1,2}[\/\s]\d{1,2})/;
-	// escaped "-" because JSHint in Firefox was showing it as an error
-	ts.regex.shortDateReplace = /[\-.,]/g;
-	// XXY covers MDY & DMY formats
-	ts.regex.shortDateXXY = /(\d{1,2})[\/\s](\d{1,2})[\/\s](\d{4})/;
-	ts.regex.shortDateYMD = /(\d{4})[\/\s](\d{1,2})[\/\s](\d{1,2})/;
-	ts.convertFormat = function( dateString, format ) {
-		dateString = ( dateString || '' )
-			.replace( ts.regex.spaces, ' ' )
-			.replace( ts.regex.shortDateReplace, '/' );
-		if ( format === 'mmddyyyy' ) {
-			dateString = dateString.replace( ts.regex.shortDateXXY, '$3/$1/$2' );
-		} else if ( format === 'ddmmyyyy' ) {
-			dateString = dateString.replace( ts.regex.shortDateXXY, '$3/$2/$1' );
-		} else if ( format === 'yyyymmdd' ) {
-			dateString = dateString.replace( ts.regex.shortDateYMD, '$1/$2/$3' );
+	String.format = function() {
+		var str = arguments[0];
+		for (var i = 1; i < arguments.length; i++) {
+			str = str.replace(RegExp("\\{" + (i - 1) + "\\}", "gm"), arguments[i]);
 		}
-		var date = new Date( dateString );
-		return date instanceof Date && isFinite( date ) ? date.getTime() : '';
+		return str;
 	};
 
-	ts.addParser({
-		id : 'shortDate', // 'mmddyyyy', 'ddmmyyyy' or 'yyyymmdd'
-		is : function( str ) {
-			str = ( str || '' ).replace( ts.regex.spaces, ' ' ).replace( ts.regex.shortDateReplace, '/' );
-			return ts.regex.shortDateTest.test( str );
-		},
-		format : function( str, table, cell, cellIndex ) {
-			if ( str ) {
-				var c = table.config,
-					$header = c.$headerIndexed[ cellIndex ],
-					format = $header.length && $header.data( 'dateFormat' ) ||
-						ts.getData( $header, ts.getColumnData( table, c.headers, cellIndex ), 'dateFormat' ) ||
-						c.dateFormat;
-				// save format because getData can be slow...
-				if ( $header.length ) {
-					$header.data( 'dateFormat', format );
-				}
-				return ts.convertFormat( str, format ) || str;
+	function Notify ( element, content, options ) {
+		// Setup Content of Notify
+		var content = {
+			content: {
+				message: typeof content == 'object' ? content.message : content,
+				title: content.title ? content.title : '',
+				icon: content.icon ? content.icon : '',
+				url: content.url ? content.url : '#',
+				target: content.target ? content.target : '-'
 			}
-			return str;
-		},
-		type : 'numeric'
-	});
+		};
 
-	// match 24 hour time & 12 hours time + am/pm - see http://regexr.com/3c3tk
-	ts.regex.timeTest = /^([1-9]|1[0-2]):([0-5]\d)(\s[AP]M)$|^((?:[01]\d|[2][0-4]):[0-5]\d)$/i;
-	ts.regex.timeMatch = /([1-9]|1[0-2]):([0-5]\d)(\s[AP]M)|((?:[01]\d|[2][0-4]):[0-5]\d)/i;
-	ts.addParser({
-		id : 'time',
-		is : function( str ) {
-			return ts.regex.timeTest.test( str );
-		},
-		format : function( str, table ) {
-			// isolate time... ignore month, day and year
-			var temp,
-				timePart = ( str || '' ).match( ts.regex.timeMatch ),
-				orig = new Date( str ),
-				// no time component? default to 00:00 by leaving it out, but only if str is defined
-				time = str && ( timePart !== null ? timePart[ 0 ] : '00:00 AM' ),
-				date = time ? new Date( '2000/01/01 ' + time.replace( ts.regex.dateReplace, '$1 $2' ) ) : time;
-			if ( date instanceof Date && isFinite( date ) ) {
-				temp = orig instanceof Date && isFinite( orig ) ? orig.getTime() : 0;
-				// if original string was a valid date, add it to the decimal so the column sorts in some kind of order
-				// luckily new Date() ignores the decimals
-				return temp ? parseFloat( date.getTime() + '.' + orig.getTime() ) : date.getTime();
-			}
-			return str;
-		},
-		type : 'numeric'
-	});
-
-	ts.addParser({
-		id : 'metadata',
-		is : function() {
-			return false;
-		},
-		format : function( str, table, cell ) {
-			var c = table.config,
-			p = ( !c.parserMetadataName ) ? 'sortValue' : c.parserMetadataName;
-			return $( cell ).metadata()[ p ];
-		},
-		type : 'numeric'
-	});
-
-	/*
-		██████ ██████ █████▄ █████▄ ▄████▄
-		  ▄█▀  ██▄▄   ██▄▄██ ██▄▄██ ██▄▄██
-		▄█▀    ██▀▀   ██▀▀██ ██▀▀█  ██▀▀██
-		██████ ██████ █████▀ ██  ██ ██  ██
-		*/
-	// add default widgets
-	ts.addWidget({
-		id : 'zebra',
-		priority : 90,
-		format : function( table, c, wo ) {
-			var $visibleRows, $row, count, isEven, tbodyIndex, rowIndex, len,
-				child = new RegExp( c.cssChildRow, 'i' ),
-				$tbodies = c.$tbodies.add( $( c.namespace + '_extra_table' ).children( 'tbody:not(.' + c.cssInfoBlock + ')' ) );
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				// loop through the visible rows
-				count = 0;
-				$visibleRows = $tbodies.eq( tbodyIndex ).children( 'tr:visible' ).not( c.selectorRemove );
-				len = $visibleRows.length;
-				for ( rowIndex = 0; rowIndex < len; rowIndex++ ) {
-					$row = $visibleRows.eq( rowIndex );
-					// style child rows the same way the parent row was styled
-					if ( !child.test( $row[ 0 ].className ) ) { count++; }
-					isEven = ( count % 2 === 0 );
-					$row
-						.removeClass( wo.zebra[ isEven ? 1 : 0 ] )
-						.addClass( wo.zebra[ isEven ? 0 : 1 ] );
-				}
-			}
-		},
-		remove : function( table, c, wo, refreshing ) {
-			if ( refreshing ) { return; }
-			var tbodyIndex, $tbody,
-				$tbodies = c.$tbodies,
-				toRemove = ( wo.zebra || [ 'even', 'odd' ] ).join( ' ' );
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ){
-				$tbody = ts.processTbody( table, $tbodies.eq( tbodyIndex ), true ); // remove tbody
-				$tbody.children().removeClass( toRemove );
-				ts.processTbody( table, $tbody, false ); // restore tbody
-			}
+		options = $.extend(true, {}, content, options);
+		this.settings = $.extend(true, {}, defaults, options);
+		this._defaults = defaults;
+		if (this.settings.content.target == "-") {
+			this.settings.content.target = this.settings.url_target;
 		}
-	});
-
-})( jQuery );
-
-/*! Widget: storage - updated 3/1/2016 (v2.25.5) */
-/*global JSON:false */
-;(function ($, window, document) {
-	'use strict';
-
-	var ts = $.tablesorter || {};
-	// *** Store data in local storage, with a cookie fallback ***
-	/* IE7 needs JSON library for JSON.stringify - (http://caniuse.com/#search=json)
-	   if you need it, then include https://github.com/douglascrockford/JSON-js
-
-	   $.parseJSON is not available is jQuery versions older than 1.4.1, using older
-	   versions will only allow storing information for one page at a time
-
-	   // *** Save data (JSON format only) ***
-	   // val must be valid JSON... use http://jsonlint.com/ to ensure it is valid
-	   var val = { "mywidget" : "data1" }; // valid JSON uses double quotes
-	   // $.tablesorter.storage(table, key, val);
-	   $.tablesorter.storage(table, 'tablesorter-mywidget', val);
-
-	   // *** Get data: $.tablesorter.storage(table, key); ***
-	   v = $.tablesorter.storage(table, 'tablesorter-mywidget');
-	   // val may be empty, so also check for your data
-	   val = (v && v.hasOwnProperty('mywidget')) ? v.mywidget : '';
-	   alert(val); // 'data1' if saved, or '' if not
-	*/
-	ts.storage = function(table, key, value, options) {
-		table = $(table)[0];
-		var cookieIndex, cookies, date,
-			hasStorage = false,
-			values = {},
-			c = table.config,
-			wo = c && c.widgetOptions,
-			storageType = ( options && options.useSessionStorage ) || ( wo && wo.storage_useSessionStorage ) ?
-				'sessionStorage' : 'localStorage',
-			$table = $(table),
-			// id from (1) options ID, (2) table 'data-table-group' attribute, (3) widgetOptions.storage_tableId,
-			// (4) table ID, then (5) table index
-			id = options && options.id ||
-				$table.attr( options && options.group || wo && wo.storage_group || 'data-table-group') ||
-				wo && wo.storage_tableId || table.id || $('.tablesorter').index( $table ),
-			// url from (1) options url, (2) table 'data-table-page' attribute, (3) widgetOptions.storage_fixedUrl,
-			// (4) table.config.fixedUrl (deprecated), then (5) window location path
-			url = options && options.url ||
-				$table.attr(options && options.page || wo && wo.storage_page || 'data-table-page') ||
-				wo && wo.storage_fixedUrl || c && c.fixedUrl || window.location.pathname;
-		// https://gist.github.com/paulirish/5558557
-		if (storageType in window) {
-			try {
-				window[storageType].setItem('_tmptest', 'temp');
-				hasStorage = true;
-				window[storageType].removeItem('_tmptest');
-			} catch (error) {
-				if (c && c.debug) {
-					console.warn( storageType + ' is not supported in this browser' );
-				}
-			}
+		this.animations = {
+			start: 'webkitAnimationStart oanimationstart MSAnimationStart animationstart',
+			end: 'webkitAnimationEnd oanimationend MSAnimationEnd animationend'
 		}
-		// *** get value ***
-		if ($.parseJSON) {
-			if (hasStorage) {
-				values = $.parseJSON( window[storageType][key] || 'null' ) || {};
-			} else {
-				// old browser, using cookies
-				cookies = document.cookie.split(/[;\s|=]/);
-				// add one to get from the key to the value
-				cookieIndex = $.inArray(key, cookies) + 1;
-				values = (cookieIndex !== 0) ? $.parseJSON(cookies[cookieIndex] || 'null') || {} : {};
-			}
+
+		if (typeof this.settings.offset == 'number') {
+		    this.settings.offset = {
+		    	x: this.settings.offset,
+		    	y: this.settings.offset
+		    };
 		}
-		// allow value to be an empty string too
-		if (typeof value !== 'undefined' && window.JSON && JSON.hasOwnProperty('stringify')) {
-			// add unique identifiers = url pathname > table ID/index on page > data
-			if (!values[url]) {
-				values[url] = {};
-			}
-			values[url][id] = value;
-			// *** set value ***
-			if (hasStorage) {
-				window[storageType][key] = JSON.stringify(values);
-			} else {
-				date = new Date();
-				date.setTime(date.getTime() + (31536e+6)); // 365 days
-				document.cookie = key + '=' + (JSON.stringify(values)).replace(/\"/g, '\"') + '; expires=' + date.toGMTString() + '; path=/';
-			}
-		} else {
-			return values && values[url] ? values[url][id] : '';
-		}
+
+		this.init();
 	};
 
-})(jQuery, window, document);
+	$.extend(Notify.prototype, {
+		init: function () {
+			var self = this;
 
-/*! Widget: uitheme - updated 3/26/2015 (v2.21.3) */
-;(function ($) {
-	'use strict';
-	var ts = $.tablesorter || {};
-
-	ts.themes = {
-		'bootstrap' : {
-			table        : 'table table-bordered table-striped',
-			caption      : 'caption',
-			// header class names
-			header       : 'bootstrap-header', // give the header a gradient background (theme.bootstrap_2.css)
-			sortNone     : '',
-			sortAsc      : '',
-			sortDesc     : '',
-			active       : '', // applied when column is sorted
-			hover        : '', // custom css required - a defined bootstrap style may not override other classes
-			// icon class names
-			icons        : '', // add 'icon-white' to make them white; this icon class is added to the <i> in the header
-			iconSortNone : 'bootstrap-icon-unsorted', // class name added to icon when column is not sorted
-			iconSortAsc  : 'icon-chevron-up glyphicon glyphicon-chevron-up', // class name added to icon when column has ascending sort
-			iconSortDesc : 'icon-chevron-down glyphicon glyphicon-chevron-down', // class name added to icon when column has descending sort
-			filterRow    : '', // filter row class
-			footerRow    : '',
-			footerCells  : '',
-			even         : '', // even row zebra striping
-			odd          : ''  // odd row zebra striping
-		},
-		'jui' : {
-			table        : 'ui-widget ui-widget-content ui-corner-all', // table classes
-			caption      : 'ui-widget-content',
-			// header class names
-			header       : 'ui-widget-header ui-corner-all ui-state-default', // header classes
-			sortNone     : '',
-			sortAsc      : '',
-			sortDesc     : '',
-			active       : 'ui-state-active', // applied when column is sorted
-			hover        : 'ui-state-hover',  // hover class
-			// icon class names
-			icons        : 'ui-icon', // icon class added to the <i> in the header
-			iconSortNone : 'ui-icon-carat-2-n-s', // class name added to icon when column is not sorted
-			iconSortAsc  : 'ui-icon-carat-1-n', // class name added to icon when column has ascending sort
-			iconSortDesc : 'ui-icon-carat-1-s', // class name added to icon when column has descending sort
-			filterRow    : '',
-			footerRow    : '',
-			footerCells  : '',
-			even         : 'ui-widget-content', // even row zebra striping
-			odd          : 'ui-state-default'   // odd row zebra striping
-		}
-	};
-
-	$.extend(ts.css, {
-		wrapper : 'tablesorter-wrapper' // ui theme & resizable
-	});
-
-	ts.addWidget({
-		id: 'uitheme',
-		priority: 10,
-		format: function(table, c, wo) {
-			var i, hdr, icon, time, $header, $icon, $tfoot, $h, oldtheme, oldremove, oldIconRmv, hasOldTheme,
-				themesAll = ts.themes,
-				$table = c.$table.add( $( c.namespace + '_extra_table' ) ),
-				$headers = c.$headers.add( $( c.namespace + '_extra_headers' ) ),
-				theme = c.theme || 'jui',
-				themes = themesAll[theme] || {},
-				remove = $.trim( [ themes.sortNone, themes.sortDesc, themes.sortAsc, themes.active ].join( ' ' ) ),
-				iconRmv = $.trim( [ themes.iconSortNone, themes.iconSortDesc, themes.iconSortAsc ].join( ' ' ) );
-			if (c.debug) { time = new Date(); }
-			// initialization code - run once
-			if (!$table.hasClass('tablesorter-' + theme) || c.theme !== c.appliedTheme || !wo.uitheme_applied) {
-				wo.uitheme_applied = true;
-				oldtheme = themesAll[c.appliedTheme] || {};
-				hasOldTheme = !$.isEmptyObject(oldtheme);
-				oldremove =  hasOldTheme ? [ oldtheme.sortNone, oldtheme.sortDesc, oldtheme.sortAsc, oldtheme.active ].join( ' ' ) : '';
-				oldIconRmv = hasOldTheme ? [ oldtheme.iconSortNone, oldtheme.iconSortDesc, oldtheme.iconSortAsc ].join( ' ' ) : '';
-				if (hasOldTheme) {
-					wo.zebra[0] = $.trim( ' ' + wo.zebra[0].replace(' ' + oldtheme.even, '') );
-					wo.zebra[1] = $.trim( ' ' + wo.zebra[1].replace(' ' + oldtheme.odd, '') );
-					c.$tbodies.children().removeClass( [ oldtheme.even, oldtheme.odd ].join(' ') );
-				}
-				// update zebra stripes
-				if (themes.even) { wo.zebra[0] += ' ' + themes.even; }
-				if (themes.odd) { wo.zebra[1] += ' ' + themes.odd; }
-				// add caption style
-				$table.children('caption')
-					.removeClass(oldtheme.caption || '')
-					.addClass(themes.caption);
-				// add table/footer class names
-				$tfoot = $table
-					// remove other selected themes
-					.removeClass( (c.appliedTheme ? 'tablesorter-' + (c.appliedTheme || '') : '') + ' ' + (oldtheme.table || '') )
-					.addClass('tablesorter-' + theme + ' ' + (themes.table || '')) // add theme widget class name
-					.children('tfoot');
-				c.appliedTheme = c.theme;
-
-				if ($tfoot.length) {
-					$tfoot
-						// if oldtheme.footerRow or oldtheme.footerCells are undefined, all class names are removed
-						.children('tr').removeClass(oldtheme.footerRow || '').addClass(themes.footerRow)
-						.children('th, td').removeClass(oldtheme.footerCells || '').addClass(themes.footerCells);
-				}
-				// update header classes
-				$headers
-					.removeClass( (hasOldTheme ? [ oldtheme.header, oldtheme.hover, oldremove ].join(' ') : '') || '' )
-					.addClass(themes.header)
-					.not('.sorter-false')
-					.unbind('mouseenter.tsuitheme mouseleave.tsuitheme')
-					.bind('mouseenter.tsuitheme mouseleave.tsuitheme', function(event) {
-						// toggleClass with switch added in jQuery 1.3
-						$(this)[ event.type === 'mouseenter' ? 'addClass' : 'removeClass' ](themes.hover || '');
-					});
-
-				$headers.each(function(){
-					var $this = $(this);
-					if (!$this.find('.' + ts.css.wrapper).length) {
-						// Firefox needs this inner div to position the icon & resizer correctly
-						$this.wrapInner('<div class="' + ts.css.wrapper + '" style="position:relative;height:100%;width:100%"></div>');
-					}
-				});
-				if (c.cssIcon) {
-					// if c.cssIcon is '', then no <i> is added to the header
-					$headers
-						.find('.' + ts.css.icon)
-						.removeClass(hasOldTheme ? [ oldtheme.icons, oldIconRmv ].join(' ') : '')
-						.addClass(themes.icons || '');
-				}
-				if ($table.hasClass('hasFilters')) {
-					$table.children('thead').children('.' + ts.css.filterRow)
-						.removeClass(hasOldTheme ? oldtheme.filterRow || '' : '')
-						.addClass(themes.filterRow || '');
-				}
+			this.buildNotify();
+			if (this.settings.content.icon) {
+				this.setIcon();
 			}
-			for (i = 0; i < c.columns; i++) {
-				$header = c.$headers
-					.add($(c.namespace + '_extra_headers'))
-					.not('.sorter-false')
-					.filter('[data-column="' + i + '"]');
-				$icon = (ts.css.icon) ? $header.find('.' + ts.css.icon) : $();
-				$h = $headers.not('.sorter-false').filter('[data-column="' + i + '"]:last');
-				if ($h.length) {
-					$header.removeClass(remove);
-					$icon.removeClass(iconRmv);
-					if ($h[0].sortDisabled) {
-						// no sort arrows for disabled columns!
-						$icon.removeClass(themes.icons || '');
-					} else {
-						hdr = themes.sortNone;
-						icon = themes.iconSortNone;
-						if ($h.hasClass(ts.css.sortAsc)) {
-							hdr = [ themes.sortAsc, themes.active ].join(' ');
-							icon = themes.iconSortAsc;
-						} else if ($h.hasClass(ts.css.sortDesc)) {
-							hdr = [ themes.sortDesc, themes.active ].join(' ');
-							icon = themes.iconSortDesc;
-						}
-						$header.addClass(hdr);
-						$icon.addClass(icon || '');
-					}
-				}
+			if (this.settings.content.url != "#") {
+				this.styleURL();
 			}
-			if (c.debug) {
-				console.log('Applying ' + theme + ' theme' + ts.benchmark(time));
-			}
-		},
-		remove: function(table, c, wo, refreshing) {
-			if (!wo.uitheme_applied) { return; }
-			var $table = c.$table,
-				theme = c.appliedTheme || 'jui',
-				themes = ts.themes[ theme ] || ts.themes.jui,
-				$headers = $table.children('thead').children(),
-				remove = themes.sortNone + ' ' + themes.sortDesc + ' ' + themes.sortAsc,
-				iconRmv = themes.iconSortNone + ' ' + themes.iconSortDesc + ' ' + themes.iconSortAsc;
-			$table.removeClass('tablesorter-' + theme + ' ' + themes.table);
-			wo.uitheme_applied = false;
-			if (refreshing) { return; }
-			$table.find(ts.css.header).removeClass(themes.header);
-			$headers
-				.unbind('mouseenter.tsuitheme mouseleave.tsuitheme') // remove hover
-				.removeClass(themes.hover + ' ' + remove + ' ' + themes.active)
-				.filter('.' + ts.css.filterRow)
-				.removeClass(themes.filterRow);
-			$headers.find('.' + ts.css.icon).removeClass(themes.icons + ' ' + iconRmv);
-		}
-	});
+			this.placement();
+			this.bind();
 
-})(jQuery);
-
-/*! Widget: columns */
-;(function ($) {
-	'use strict';
-	var ts = $.tablesorter || {};
-
-	ts.addWidget({
-		id: 'columns',
-		priority: 30,
-		options : {
-			columns : [ 'primary', 'secondary', 'tertiary' ]
-		},
-		format: function(table, c, wo) {
-			var $tbody, tbodyIndex, $rows, rows, $row, $cells, remove, indx,
-			$table = c.$table,
-			$tbodies = c.$tbodies,
-			sortList = c.sortList,
-			len = sortList.length,
-			// removed c.widgetColumns support
-			css = wo && wo.columns || [ 'primary', 'secondary', 'tertiary' ],
-			last = css.length - 1;
-			remove = css.join(' ');
-			// check if there is a sort (on initialization there may not be one)
-			for (tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody(table, $tbodies.eq(tbodyIndex), true); // detach tbody
-				$rows = $tbody.children('tr');
-				// loop through the visible rows
-				$rows.each(function() {
-					$row = $(this);
-					if (this.style.display !== 'none') {
-						// remove all columns class names
-						$cells = $row.children().removeClass(remove);
-						// add appropriate column class names
-						if (sortList && sortList[0]) {
-							// primary sort column class
-							$cells.eq(sortList[0][0]).addClass(css[0]);
-							if (len > 1) {
-								for (indx = 1; indx < len; indx++) {
-									// secondary, tertiary, etc sort column classes
-									$cells.eq(sortList[indx][0]).addClass( css[indx] || css[last] );
-								}
-							}
-						}
+			this.notify = {
+				$ele: this.$ele,
+				update: function(command, update) {
+					var commands = {};
+					if (typeof command == "string") {					
+						commands[command] = update;
+					}else{
+						commands = command;
 					}
-				});
-				ts.processTbody(table, $tbody, false);
-			}
-			// add classes to thead and tfoot
-			rows = wo.columns_thead !== false ? [ 'thead tr' ] : [];
-			if (wo.columns_tfoot !== false) {
-				rows.push('tfoot tr');
-			}
-			if (rows.length) {
-				$rows = $table.find( rows.join(',') ).children().removeClass(remove);
-				if (len) {
-					for (indx = 0; indx < len; indx++) {
-						// add primary. secondary, tertiary, etc sort column classes
-						$rows.filter('[data-column="' + sortList[indx][0] + '"]').addClass(css[indx] || css[last]);
-					}
-				}
-			}
-		},
-		remove: function(table, c, wo) {
-			var tbodyIndex, $tbody,
-				$tbodies = c.$tbodies,
-				remove = (wo.columns || [ 'primary', 'secondary', 'tertiary' ]).join(' ');
-			c.$headers.removeClass(remove);
-			c.$table.children('tfoot').children('tr').children('th, td').removeClass(remove);
-			for (tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody(table, $tbodies.eq(tbodyIndex), true); // remove tbody
-				$tbody.children('tr').each(function() {
-					$(this).children().removeClass(remove);
-				});
-				ts.processTbody(table, $tbody, false); // restore tbody
-			}
-		}
-	});
-
-})(jQuery);
-
-/*! Widget: filter - updated 4/1/2016 (v2.25.7) *//*
- * Requires tablesorter v2.8+ and jQuery 1.7+
- * by Rob Garrison
- */
-;( function ( $ ) {
-	'use strict';
-	var tsf, tsfRegex,
-		ts = $.tablesorter || {},
-		tscss = ts.css,
-		tskeyCodes = ts.keyCodes;
-
-	$.extend( tscss, {
-		filterRow      : 'tablesorter-filter-row',
-		filter         : 'tablesorter-filter',
-		filterDisabled : 'disabled',
-		filterRowHide  : 'hideme'
-	});
-
-	$.extend( tskeyCodes, {
-		backSpace : 8,
-		escape : 27,
-		space : 32,
-		left : 37,
-		down : 40
-	});
-
-	ts.addWidget({
-		id: 'filter',
-		priority: 50,
-		options : {
-			filter_childRows     : false, // if true, filter includes child row content in the search
-			filter_childByColumn : false, // ( filter_childRows must be true ) if true = search child rows by column; false = search all child row text grouped
-			filter_childWithSibs : true,  // if true, include matching child row siblings
-			filter_columnFilters : true,  // if true, a filter will be added to the top of each table column
-			filter_columnAnyMatch: true,  // if true, allows using '#:{query}' in AnyMatch searches ( column:query )
-			filter_cellFilter    : '',    // css class name added to the filter cell ( string or array )
-			filter_cssFilter     : '',    // css class name added to the filter row & each input in the row ( tablesorter-filter is ALWAYS added )
-			filter_defaultFilter : {},    // add a default column filter type '~{query}' to make fuzzy searches default; '{q1} AND {q2}' to make all searches use a logical AND.
-			filter_excludeFilter : {},    // filters to exclude, per column
-			filter_external      : '',    // jQuery selector string ( or jQuery object ) of external filters
-			filter_filteredRow   : 'filtered', // class added to filtered rows; define in css with "display:none" to hide the filtered-out rows
-			filter_formatter     : null,  // add custom filter elements to the filter row
-			filter_functions     : null,  // add custom filter functions using this option
-			filter_hideEmpty     : true,  // hide filter row when table is empty
-			filter_hideFilters   : false, // collapse filter row when mouse leaves the area
-			filter_ignoreCase    : true,  // if true, make all searches case-insensitive
-			filter_liveSearch    : true,  // if true, search column content while the user types ( with a delay )
-			filter_matchType     : { 'input': 'exact', 'select': 'exact' }, // global query settings ('exact' or 'match'); overridden by "filter-match" or "filter-exact" class
-			filter_onlyAvail     : 'filter-onlyAvail', // a header with a select dropdown & this class name will only show available ( visible ) options within the drop down
-			filter_placeholder   : { search : '', select : '' }, // default placeholder text ( overridden by any header 'data-placeholder' setting )
-			filter_reset         : null,  // jQuery selector string of an element used to reset the filters
-			filter_resetOnEsc    : true,  // Reset filter input when the user presses escape - normalized across browsers
-			filter_saveFilters   : false, // Use the $.tablesorter.storage utility to save the most recent filters
-			filter_searchDelay   : 300,   // typing delay in milliseconds before starting a search
-			filter_searchFiltered: true,  // allow searching through already filtered rows in special circumstances; will speed up searching in large tables if true
-			filter_selectSource  : null,  // include a function to return an array of values to be added to the column filter select
-			filter_startsWith    : false, // if true, filter start from the beginning of the cell contents
-			filter_useParsedData : false, // filter all data using parsed content
-			filter_serversideFiltering : false, // if true, must perform server-side filtering b/c client-side filtering is disabled, but the ui and events will still be used.
-			filter_defaultAttrib : 'data-value', // data attribute in the header cell that contains the default filter value
-			filter_selectSourceSeparator : '|' // filter_selectSource array text left of the separator is added to the option value, right into the option text
-		},
-		format: function( table, c, wo ) {
-			if ( !c.$table.hasClass( 'hasFilters' ) ) {
-				tsf.init( table, c, wo );
-			}
-		},
-		remove: function( table, c, wo, refreshing ) {
-			var tbodyIndex, $tbody,
-				$table = c.$table,
-				$tbodies = c.$tbodies,
-				events = 'addRows updateCell update updateRows updateComplete appendCache filterReset filterEnd search '
-					.split( ' ' ).join( c.namespace + 'filter ' );
-			$table
-				.removeClass( 'hasFilters' )
-				// add filter namespace to all BUT search
-				.unbind( events.replace( ts.regex.spaces, ' ' ) )
-				// remove the filter row even if refreshing, because the column might have been moved
-				.find( '.' + tscss.filterRow ).remove();
-			if ( refreshing ) { return; }
-			for ( tbodyIndex = 0; tbodyIndex < $tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody( table, $tbodies.eq( tbodyIndex ), true ); // remove tbody
-				$tbody.children().removeClass( wo.filter_filteredRow ).show();
-				ts.processTbody( table, $tbody, false ); // restore tbody
-			}
-			if ( wo.filter_reset ) {
-				$( document ).undelegate( wo.filter_reset, 'click' + c.namespace + 'filter' );
-			}
-		}
-	});
-
-	tsf = ts.filter = {
-
-		// regex used in filter 'check' functions - not for general use and not documented
-		regex: {
-			regex     : /^\/((?:\\\/|[^\/])+)\/([mig]{0,3})?$/, // regex to test for regex
-			child     : /tablesorter-childRow/, // child row class name; this gets updated in the script
-			filtered  : /filtered/, // filtered (hidden) row class name; updated in the script
-			type      : /undefined|number/, // check type
-			exact     : /(^[\"\'=]+)|([\"\'=]+$)/g, // exact match (allow '==')
-			operators : /[<>=]/g, // replace operators
-			query     : '(q|query)', // replace filter queries
-			wild01    : /\?/g, // wild card match 0 or 1
-			wild0More : /\*/g, // wild care match 0 or more
-			quote     : /\"/g,
-			isNeg1    : /(>=?\s*-\d)/,
-			isNeg2    : /(<=?\s*\d)/
-		},
-		// function( c, data ) { }
-		// c = table.config
-		// data.$row = jQuery object of the row currently being processed
-		// data.$cells = jQuery object of all cells within the current row
-		// data.filters = array of filters for all columns ( some may be undefined )
-		// data.filter = filter for the current column
-		// data.iFilter = same as data.filter, except lowercase ( if wo.filter_ignoreCase is true )
-		// data.exact = table cell text ( or parsed data if column parser enabled; may be a number & not a string )
-		// data.iExact = same as data.exact, except lowercase ( if wo.filter_ignoreCase is true; may be a number & not a string )
-		// data.cache = table cell text from cache, so it has been parsed ( & in all lower case if c.ignoreCase is true )
-		// data.cacheArray = An array of parsed content from each table cell in the row being processed
-		// data.index = column index; table = table element ( DOM )
-		// data.parsed = array ( by column ) of boolean values ( from filter_useParsedData or 'filter-parsed' class )
-		types: {
-			or : function( c, data, vars ) {
-				// look for "|", but not if it is inside of a regular expression
-				if ( ( tsfRegex.orTest.test( data.iFilter ) || tsfRegex.orSplit.test( data.filter ) ) &&
-					// this test for regex has potential to slow down the overall search
-					!tsfRegex.regex.test( data.filter ) ) {
-					var indx, filterMatched, query, regex,
-						// duplicate data but split filter
-						data2 = $.extend( {}, data ),
-						filter = data.filter.split( tsfRegex.orSplit ),
-						iFilter = data.iFilter.split( tsfRegex.orSplit ),
-						len = filter.length;
-					for ( indx = 0; indx < len; indx++ ) {
-						data2.nestedFilters = true;
-						data2.filter = '' + ( tsf.parseFilter( c, filter[ indx ], data ) || '' );
-						data2.iFilter = '' + ( tsf.parseFilter( c, iFilter[ indx ], data ) || '' );
-						query = '(' + ( tsf.parseFilter( c, data2.filter, data ) || '' ) + ')';
-						try {
-							// use try/catch, because query may not be a valid regex if "|" is contained within a partial regex search,
-							// e.g "/(Alex|Aar" -> Uncaught SyntaxError: Invalid regular expression: /(/(Alex)/: Unterminated group
-							regex = new RegExp( data.isMatch ? query : '^' + query + '$', c.widgetOptions.filter_ignoreCase ? 'i' : '' );
-							// filterMatched = data2.filter === '' && indx > 0 ? true
-							// look for an exact match with the 'or' unless the 'filter-match' class is found
-							filterMatched = regex.test( data2.exact ) || tsf.processTypes( c, data2, vars );
-							if ( filterMatched ) {
-								return filterMatched;
-							}
-						} catch ( error ) {
-							return null;
-						}
-					}
-					// may be null from processing types
-					return filterMatched || false;
-				}
-				return null;
-			},
-			// Look for an AND or && operator ( logical and )
-			and : function( c, data, vars ) {
-				if ( tsfRegex.andTest.test( data.filter ) ) {
-					var indx, filterMatched, result, query, regex,
-						// duplicate data but split filter
-						data2 = $.extend( {}, data ),
-						filter = data.filter.split( tsfRegex.andSplit ),
-						iFilter = data.iFilter.split( tsfRegex.andSplit ),
-						len = filter.length;
-					for ( indx = 0; indx < len; indx++ ) {
-						data2.nestedFilters = true;
-						data2.filter = '' + ( tsf.parseFilter( c, filter[ indx ], data ) || '' );
-						data2.iFilter = '' + ( tsf.parseFilter( c, iFilter[ indx ], data ) || '' );
-						query = ( '(' + ( tsf.parseFilter( c, data2.filter, data ) || '' ) + ')' )
-							// replace wild cards since /(a*)/i will match anything
-							.replace( tsfRegex.wild01, '\\S{1}' ).replace( tsfRegex.wild0More, '\\S*' );
-						try {
-							// use try/catch just in case RegExp is invalid
-							regex = new RegExp( data.isMatch ? query : '^' + query + '$', c.widgetOptions.filter_ignoreCase ? 'i' : '' );
-							// look for an exact match with the 'and' unless the 'filter-match' class is found
-							result = ( regex.test( data2.exact ) || tsf.processTypes( c, data2, vars ) );
-							if ( indx === 0 ) {
-								filterMatched = result;
-							} else {
-								filterMatched = filterMatched && result;
-							}
-						} catch ( error ) {
-							return null;
-						}
-					}
-					// may be null from processing types
-					return filterMatched || false;
-				}
-				return null;
-			},
-			// Look for regex
-			regex: function( c, data ) {
-				if ( tsfRegex.regex.test( data.filter ) ) {
-					var matches,
-						// cache regex per column for optimal speed
-						regex = data.filter_regexCache[ data.index ] || tsfRegex.regex.exec( data.filter ),
-						isRegex = regex instanceof RegExp;
-					try {
-						if ( !isRegex ) {
-							// force case insensitive search if ignoreCase option set?
-							// if ( c.ignoreCase && !regex[2] ) { regex[2] = 'i'; }
-							data.filter_regexCache[ data.index ] = regex = new RegExp( regex[1], regex[2] );
-						}
-						matches = regex.test( data.exact );
-					} catch ( error ) {
-						matches = false;
-					}
-					return matches;
-				}
-				return null;
-			},
-			// Look for operators >, >=, < or <=
-			operators: function( c, data ) {
-				// ignore empty strings... because '' < 10 is true
-				if ( tsfRegex.operTest.test( data.iFilter ) && data.iExact !== '' ) {
-					var cachedValue, result, txt,
-						table = c.table,
-						parsed = data.parsed[ data.index ],
-						query = ts.formatFloat( data.iFilter.replace( tsfRegex.operators, '' ), table ),
-						parser = c.parsers[ data.index ] || {},
-						savedSearch = query;
-					// parse filter value in case we're comparing numbers ( dates )
-					if ( parsed || parser.type === 'numeric' ) {
-						txt = $.trim( '' + data.iFilter.replace( tsfRegex.operators, '' ) );
-						result = tsf.parseFilter( c, txt, data, true );
-						query = ( typeof result === 'number' && result !== '' && !isNaN( result ) ) ? result : query;
-					}
-					// iExact may be numeric - see issue #149;
-					// check if cached is defined, because sometimes j goes out of range? ( numeric columns )
-					if ( ( parsed || parser.type === 'numeric' ) && !isNaN( query ) &&
-						typeof data.cache !== 'undefined' ) {
-						cachedValue = data.cache;
-					} else {
-						txt = isNaN( data.iExact ) ? data.iExact.replace( ts.regex.nondigit, '' ) : data.iExact;
-						cachedValue = ts.formatFloat( txt, table );
-					}
-					if ( tsfRegex.gtTest.test( data.iFilter ) ) {
-						result = tsfRegex.gteTest.test( data.iFilter ) ? cachedValue >= query : cachedValue > query;
-					} else if ( tsfRegex.ltTest.test( data.iFilter ) ) {
-						result = tsfRegex.lteTest.test( data.iFilter ) ? cachedValue <= query : cachedValue < query;
-					}
-					// keep showing all rows if nothing follows the operator
-					if ( !result && savedSearch === '' ) {
-						result = true;
-					}
-					return result;
-				}
-				return null;
-			},
-			// Look for a not match
-			notMatch: function( c, data ) {
-				if ( tsfRegex.notTest.test( data.iFilter ) ) {
-					var indx,
-						txt = data.iFilter.replace( '!', '' ),
-						filter = tsf.parseFilter( c, txt, data ) || '';
-					if ( tsfRegex.exact.test( filter ) ) {
-						// look for exact not matches - see #628
-						filter = filter.replace( tsfRegex.exact, '' );
-						return filter === '' ? true : $.trim( filter ) !== data.iExact;
-					} else {
-						indx = data.iExact.search( $.trim( filter ) );
-						return filter === '' ? true : !( c.widgetOptions.filter_startsWith ? indx === 0 : indx >= 0 );
-					}
-				}
-				return null;
-			},
-			// Look for quotes or equals to get an exact match; ignore type since iExact could be numeric
-			exact: function( c, data ) {
-				/*jshint eqeqeq:false */
-				if ( tsfRegex.exact.test( data.iFilter ) ) {
-					var txt = data.iFilter.replace( tsfRegex.exact, '' ),
-						filter = tsf.parseFilter( c, txt, data ) || '';
-					return data.anyMatch ? $.inArray( filter, data.rowArray ) >= 0 : filter == data.iExact;
-				}
-				return null;
-			},
-			// Look for a range ( using ' to ' or ' - ' ) - see issue #166; thanks matzhu!
-			range : function( c, data ) {
-				if ( tsfRegex.toTest.test( data.iFilter ) ) {
-					var result, tmp, range1, range2,
-						table = c.table,
-						index = data.index,
-						parsed = data.parsed[index],
-						// make sure the dash is for a range and not indicating a negative number
-						query = data.iFilter.split( tsfRegex.toSplit );
-
-					tmp = query[0].replace( ts.regex.nondigit, '' ) || '';
-					range1 = ts.formatFloat( tsf.parseFilter( c, tmp, data ), table );
-					tmp = query[1].replace( ts.regex.nondigit, '' ) || '';
-					range2 = ts.formatFloat( tsf.parseFilter( c, tmp, data ), table );
-					// parse filter value in case we're comparing numbers ( dates )
-					if ( parsed || c.parsers[ index ].type === 'numeric' ) {
-						result = c.parsers[ index ].format( '' + query[0], table, c.$headers.eq( index ), index );
-						range1 = ( result !== '' && !isNaN( result ) ) ? result : range1;
-						result = c.parsers[ index ].format( '' + query[1], table, c.$headers.eq( index ), index );
-						range2 = ( result !== '' && !isNaN( result ) ) ? result : range2;
-					}
-					if ( ( parsed || c.parsers[ index ].type === 'numeric' ) && !isNaN( range1 ) && !isNaN( range2 ) ) {
-						result = data.cache;
-					} else {
-						tmp = isNaN( data.iExact ) ? data.iExact.replace( ts.regex.nondigit, '' ) : data.iExact;
-						result = ts.formatFloat( tmp, table );
-					}
-					if ( range1 > range2 ) {
-						tmp = range1; range1 = range2; range2 = tmp; // swap
-					}
-					return ( result >= range1 && result <= range2 ) || ( range1 === '' || range2 === '' );
-				}
-				return null;
-			},
-			// Look for wild card: ? = single, * = multiple, or | = logical OR
-			wild : function( c, data ) {
-				if ( tsfRegex.wildOrTest.test( data.iFilter ) ) {
-					var query = '' + ( tsf.parseFilter( c, data.iFilter, data ) || '' );
-					// look for an exact match with the 'or' unless the 'filter-match' class is found
-					if ( !tsfRegex.wildTest.test( query ) && data.nestedFilters ) {
-						query = data.isMatch ? query : '^(' + query + ')$';
-					}
-					// parsing the filter may not work properly when using wildcards =/
-					try {
-						return new RegExp(
-							query.replace( tsfRegex.wild01, '\\S{1}' ).replace( tsfRegex.wild0More, '\\S*' ),
-							c.widgetOptions.filter_ignoreCase ? 'i' : ''
-						)
-						.test( data.exact );
-					} catch ( error ) {
-						return null;
-					}
-				}
-				return null;
-			},
-			// fuzzy text search; modified from https://github.com/mattyork/fuzzy ( MIT license )
-			fuzzy: function( c, data ) {
-				if ( tsfRegex.fuzzyTest.test( data.iFilter ) ) {
-					var indx,
-						patternIndx = 0,
-						len = data.iExact.length,
-						txt = data.iFilter.slice( 1 ),
-						pattern = tsf.parseFilter( c, txt, data ) || '';
-					for ( indx = 0; indx < len; indx++ ) {
-						if ( data.iExact[ indx ] === pattern[ patternIndx ] ) {
-							patternIndx += 1;
-						}
-					}
-					return patternIndx === pattern.length;
-				}
-				return null;
-			}
-		},
-		init: function( table, c, wo ) {
-			// filter language options
-			ts.language = $.extend( true, {}, {
-				to  : 'to',
-				or  : 'or',
-				and : 'and'
-			}, ts.language );
-
-			var options, string, txt, $header, column, filters, val, fxn, noSelect;
-			c.$table.addClass( 'hasFilters' );
-			c.lastSearch = [];
-
-			// define timers so using clearTimeout won't cause an undefined error
-			wo.filter_searchTimer = null;
-			wo.filter_initTimer = null;
-			wo.filter_formatterCount = 0;
-			wo.filter_formatterInit = [];
-			wo.filter_anyColumnSelector = '[data-column="all"],[data-column="any"]';
-			wo.filter_multipleColumnSelector = '[data-column*="-"],[data-column*=","]';
-
-			val = '\\{' + tsfRegex.query + '\\}';
-			$.extend( tsfRegex, {
-				child : new RegExp( c.cssChildRow ),
-				filtered : new RegExp( wo.filter_filteredRow ),
-				alreadyFiltered : new RegExp( '(\\s+(' + ts.language.or + '|-|' + ts.language.to + ')\\s+)', 'i' ),
-				toTest : new RegExp( '\\s+(-|' + ts.language.to + ')\\s+', 'i' ),
-				toSplit : new RegExp( '(?:\\s+(?:-|' + ts.language.to + ')\\s+)', 'gi' ),
-				andTest : new RegExp( '\\s+(' + ts.language.and + '|&&)\\s+', 'i' ),
-				andSplit : new RegExp( '(?:\\s+(?:' + ts.language.and + '|&&)\\s+)', 'gi' ),
-				orTest : new RegExp( '(\\||\\s+' + ts.language.or + '\\s+)', 'i' ),
-				orSplit : new RegExp( '(?:\\s+(?:' + ts.language.or + ')\\s+|\\|)', 'gi' ),
-				iQuery : new RegExp( val, 'i' ),
-				igQuery : new RegExp( val, 'ig' ),
-				operTest : /^[<>]=?/,
-				gtTest  : />/,
-				gteTest : />=/,
-				ltTest  : /</,
-				lteTest : /<=/,
-				notTest : /^\!/,
-				wildOrTest : /[\?\*\|]/,
-				wildTest : /\?\*/,
-				fuzzyTest : /^~/,
-				exactTest : /[=\"\|!]/
-			});
-
-			// don't build filter row if columnFilters is false or all columns are set to 'filter-false'
-			// see issue #156
-			val = c.$headers.filter( '.filter-false, .parser-false' ).length;
-			if ( wo.filter_columnFilters !== false && val !== c.$headers.length ) {
-				// build filter row
-				tsf.buildRow( table, c, wo );
-			}
-
-			txt = 'addRows updateCell update updateRows updateComplete appendCache filterReset ' +
-				'filterResetSaved filterEnd search '.split( ' ' ).join( c.namespace + 'filter ' );
-			c.$table.bind( txt, function( event, filter ) {
-				val = wo.filter_hideEmpty &&
-					$.isEmptyObject( c.cache ) &&
-					!( c.delayInit && event.type === 'appendCache' );
-				// hide filter row using the 'filtered' class name
-				c.$table.find( '.' + tscss.filterRow ).toggleClass( wo.filter_filteredRow, val ); // fixes #450
-				if ( !/(search|filter)/.test( event.type ) ) {
-					event.stopPropagation();
-					tsf.buildDefault( table, true );
-				}
-				if ( event.type === 'filterReset' ) {
-					c.$table.find( '.' + tscss.filter ).add( wo.filter_$externalFilters ).val( '' );
-					tsf.searching( table, [] );
-				} else if ( event.type === 'filterResetSaved' ) {
-					ts.storage( table, 'tablesorter-filters', '' );
-				} else if ( event.type === 'filterEnd' ) {
-					tsf.buildDefault( table, true );
-				} else {
-					// send false argument to force a new search; otherwise if the filter hasn't changed,
-					// it will return
-					filter = event.type === 'search' ? filter :
-						event.type === 'updateComplete' ? c.$table.data( 'lastSearch' ) : '';
-					if ( /(update|add)/.test( event.type ) && event.type !== 'updateComplete' ) {
-						// force a new search since content has changed
-						c.lastCombinedFilter = null;
-						c.lastSearch = [];
-					}
-					// pass true ( skipFirst ) to prevent the tablesorter.setFilters function from skipping the first
-					// input ensures all inputs are updated when a search is triggered on the table
-					// $( 'table' ).trigger( 'search', [...] );
-					tsf.searching( table, filter, true );
-				}
-				return false;
-			});
-
-			// reset button/link
-			if ( wo.filter_reset ) {
-				if ( wo.filter_reset instanceof $ ) {
-					// reset contains a jQuery object, bind to it
-					wo.filter_reset.click( function() {
-						c.$table.triggerHandler( 'filterReset' );
-					});
-				} else if ( $( wo.filter_reset ).length ) {
-					// reset is a jQuery selector, use event delegation
-					$( document )
-						.undelegate( wo.filter_reset, 'click' + c.namespace + 'filter' )
-						.delegate( wo.filter_reset, 'click' + c.namespace + 'filter', function() {
-							// trigger a reset event, so other functions ( filter_formatter ) know when to reset
-							c.$table.triggerHandler( 'filterReset' );
-						});
-				}
-			}
-			if ( wo.filter_functions ) {
-				for ( column = 0; column < c.columns; column++ ) {
-					fxn = ts.getColumnData( table, wo.filter_functions, column );
-					if ( fxn ) {
-						// remove 'filter-select' from header otherwise the options added here are replaced with
-						// all options
-						$header = c.$headerIndexed[ column ].removeClass( 'filter-select' );
-						// don't build select if 'filter-false' or 'parser-false' set
-						noSelect = !( $header.hasClass( 'filter-false' ) || $header.hasClass( 'parser-false' ) );
-						options = '';
-						if ( fxn === true && noSelect ) {
-							tsf.buildSelect( table, column );
-						} else if ( typeof fxn === 'object' && noSelect ) {
-							// add custom drop down list
-							for ( string in fxn ) {
-								if ( typeof string === 'string' ) {
-									options += options === '' ?
-										'<option value="">' +
-											( $header.data( 'placeholder' ) ||
-												$header.attr( 'data-placeholder' ) ||
-												wo.filter_placeholder.select ||
-												''
-											) +
-										'</option>' : '';
-									val = string;
-									txt = string;
-									if ( string.indexOf( wo.filter_selectSourceSeparator ) >= 0 ) {
-										val = string.split( wo.filter_selectSourceSeparator );
-										txt = val[1];
-										val = val[0];
+					for (var command in commands) {
+						switch (command) {
+							case "type":
+								this.$ele.removeClass('alert-' + self.settings.type);
+								this.$ele.find('[data-notify="progressbar"] > .progress-bar').removeClass('progress-bar-' + self.settings.type);
+								self.settings.type = commands[command];
+								this.$ele.addClass('alert-' + commands[command]).find('[data-notify="progressbar"] > .progress-bar').addClass('progress-bar-' + commands[command]);
+								break;
+							case "icon":
+								var $icon = this.$ele.find('[data-notify="icon"]');
+								if (self.settings.icon_type.toLowerCase() == 'class') {
+									$icon.removeClass(self.settings.content.icon).addClass(commands[command]);
+								}else{
+									if (!$icon.is('img')) {
+										$icon.find('img');
 									}
-									options += '<option ' +
-										( txt === val ? '' : 'data-function-name="' + string + '" ' ) +
-										'value="' + val + '">' + txt + '</option>';
+									$icon.attr('src', commands[command]);
 								}
-							}
-							c.$table
-								.find( 'thead' )
-								.find( 'select.' + tscss.filter + '[data-column="' + column + '"]' )
-								.append( options );
-							txt = wo.filter_selectSource;
-							fxn = typeof txt === 'function' ? true : ts.getColumnData( table, txt, column );
-							if ( fxn ) {
-								// updating so the extra options are appended
-								tsf.buildSelect( c.table, column, '', true, $header.hasClass( wo.filter_onlyAvail ) );
-							}
-						}
-					}
-				}
-			}
-			// not really updating, but if the column has both the 'filter-select' class &
-			// filter_functions set to true, it would append the same options twice.
-			tsf.buildDefault( table, true );
-
-			tsf.bindSearch( table, c.$table.find( '.' + tscss.filter ), true );
-			if ( wo.filter_external ) {
-				tsf.bindSearch( table, wo.filter_external );
-			}
-
-			if ( wo.filter_hideFilters ) {
-				tsf.hideFilters( c );
-			}
-
-			// show processing icon
-			if ( c.showProcessing ) {
-				txt = 'filterStart filterEnd '.split( ' ' ).join( c.namespace + 'filter ' );
-				c.$table
-					.unbind( txt.replace( ts.regex.spaces, ' ' ) )
-					.bind( txt, function( event, columns ) {
-					// only add processing to certain columns to all columns
-					$header = ( columns ) ?
-						c.$table
-							.find( '.' + tscss.header )
-							.filter( '[data-column]' )
-							.filter( function() {
-								return columns[ $( this ).data( 'column' ) ] !== '';
-							}) : '';
-					ts.isProcessing( table, event.type === 'filterStart', columns ? $header : '' );
-				});
-			}
-
-			// set filtered rows count ( intially unfiltered )
-			c.filteredRows = c.totalRows;
-
-			// add default values
-			txt = 'tablesorter-initialized pagerBeforeInitialized '.split( ' ' ).join( c.namespace + 'filter ' );
-			c.$table
-			.unbind( txt.replace( ts.regex.spaces, ' ' ) )
-			.bind( txt, function() {
-				// redefine 'wo' as it does not update properly inside this callback
-				var wo = this.config.widgetOptions;
-				filters = tsf.setDefaults( table, c, wo ) || [];
-				if ( filters.length ) {
-					// prevent delayInit from triggering a cache build if filters are empty
-					if ( !( c.delayInit && filters.join( '' ) === '' ) ) {
-						ts.setFilters( table, filters, true );
-					}
-				}
-				c.$table.triggerHandler( 'filterFomatterUpdate' );
-				// trigger init after setTimeout to prevent multiple filterStart/End/Init triggers
-				setTimeout( function() {
-					if ( !wo.filter_initialized ) {
-						tsf.filterInitComplete( c );
-					}
-				}, 100 );
-			});
-			// if filter widget is added after pager has initialized; then set filter init flag
-			if ( c.pager && c.pager.initialized && !wo.filter_initialized ) {
-				c.$table.triggerHandler( 'filterFomatterUpdate' );
-				setTimeout( function() {
-					tsf.filterInitComplete( c );
-				}, 100 );
-			}
-		},
-		// $cell parameter, but not the config, is passed to the filter_formatters,
-		// so we have to work with it instead
-		formatterUpdated: function( $cell, column ) {
-			// prevent error if $cell is undefined - see #1056
-			var wo = $cell && $cell.closest( 'table' )[0].config.widgetOptions;
-			if ( wo && !wo.filter_initialized ) {
-				// add updates by column since this function
-				// may be called numerous times before initialization
-				wo.filter_formatterInit[ column ] = 1;
-			}
-		},
-		filterInitComplete: function( c ) {
-			var indx, len,
-				wo = c.widgetOptions,
-				count = 0,
-				completed = function() {
-					wo.filter_initialized = true;
-					c.$table.triggerHandler( 'filterInit', c );
-					tsf.findRows( c.table, c.$table.data( 'lastSearch' ) || [] );
-				};
-			if ( $.isEmptyObject( wo.filter_formatter ) ) {
-				completed();
-			} else {
-				len = wo.filter_formatterInit.length;
-				for ( indx = 0; indx < len; indx++ ) {
-					if ( wo.filter_formatterInit[ indx ] === 1 ) {
-						count++;
-					}
-				}
-				clearTimeout( wo.filter_initTimer );
-				if ( !wo.filter_initialized && count === wo.filter_formatterCount ) {
-					// filter widget initialized
-					completed();
-				} else if ( !wo.filter_initialized ) {
-					// fall back in case a filter_formatter doesn't call
-					// $.tablesorter.filter.formatterUpdated( $cell, column ), and the count is off
-					wo.filter_initTimer = setTimeout( function() {
-						completed();
-					}, 500 );
-				}
-			}
-		},
-		// encode or decode filters for storage; see #1026
-		processFilters: function( filters, encode ) {
-			var indx,
-				mode = encode ? encodeURIComponent : decodeURIComponent,
-				len = filters.length;
-			for ( indx = 0; indx < len; indx++ ) {
-				if ( filters[ indx ] ) {
-					filters[ indx ] = mode( filters[ indx ] );
-				}
-			}
-			return filters;
-		},
-		setDefaults: function( table, c, wo ) {
-			var isArray, saved, indx, col, $filters,
-				// get current ( default ) filters
-				filters = ts.getFilters( table ) || [];
-			if ( wo.filter_saveFilters && ts.storage ) {
-				saved = ts.storage( table, 'tablesorter-filters' ) || [];
-				isArray = $.isArray( saved );
-				// make sure we're not just getting an empty array
-				if ( !( isArray && saved.join( '' ) === '' || !isArray ) ) {
-					filters = tsf.processFilters( saved );
-				}
-			}
-			// if no filters saved, then check default settings
-			if ( filters.join( '' ) === '' ) {
-				// allow adding default setting to external filters
-				$filters = c.$headers.add( wo.filter_$externalFilters )
-					.filter( '[' + wo.filter_defaultAttrib + ']' );
-				for ( indx = 0; indx <= c.columns; indx++ ) {
-					// include data-column='all' external filters
-					col = indx === c.columns ? 'all' : indx;
-					filters[ indx ] = $filters
-						.filter( '[data-column="' + col + '"]' )
-						.attr( wo.filter_defaultAttrib ) || filters[indx] || '';
-				}
-			}
-			c.$table.data( 'lastSearch', filters );
-			return filters;
-		},
-		parseFilter: function( c, filter, data, parsed ) {
-			return parsed || data.parsed[ data.index ] ?
-				c.parsers[ data.index ].format( filter, c.table, [], data.index ) :
-				filter;
-		},
-		buildRow: function( table, c, wo ) {
-			var $filter, col, column, $header, makeSelect, disabled, name, ffxn, tmp,
-				// c.columns defined in computeThIndexes()
-				cellFilter = wo.filter_cellFilter,
-				columns = c.columns,
-				arry = $.isArray( cellFilter ),
-				buildFilter = '<tr role="row" class="' + tscss.filterRow + ' ' + c.cssIgnoreRow + '">';
-			for ( column = 0; column < columns; column++ ) {
-				if ( c.$headerIndexed[ column ].length ) {
-					// account for entire column set with colspan. See #1047
-					tmp = c.$headerIndexed[ column ] && c.$headerIndexed[ column ][0].colSpan || 0;
-					if ( tmp > 1 ) {
-						buildFilter += '<td data-column="' + column + '-' + ( column + tmp - 1 ) + '" colspan="' + tmp + '"';
-					} else {
-						buildFilter += '<td data-column="' + column + '"';
-					}
-					if ( arry ) {
-						buildFilter += ( cellFilter[ column ] ? ' class="' + cellFilter[ column ] + '"' : '' );
-					} else {
-						buildFilter += ( cellFilter !== '' ? ' class="' + cellFilter + '"' : '' );
-					}
-					buildFilter += '></td>';
-				}
-			}
-			c.$filters = $( buildFilter += '</tr>' )
-				.appendTo( c.$table.children( 'thead' ).eq( 0 ) )
-				.children( 'td' );
-			// build each filter input
-			for ( column = 0; column < columns; column++ ) {
-				disabled = false;
-				// assuming last cell of a column is the main column
-				$header = c.$headerIndexed[ column ];
-				if ( $header && $header.length ) {
-					// $filter = c.$filters.filter( '[data-column="' + column + '"]' );
-					$filter = tsf.getColumnElm( c, c.$filters, column );
-					ffxn = ts.getColumnData( table, wo.filter_functions, column );
-					makeSelect = ( wo.filter_functions && ffxn && typeof ffxn !== 'function' ) ||
-						$header.hasClass( 'filter-select' );
-					// get data from jQuery data, metadata, headers option or header class name
-					col = ts.getColumnData( table, c.headers, column );
-					disabled = ts.getData( $header[0], col, 'filter' ) === 'false' ||
-						ts.getData( $header[0], col, 'parser' ) === 'false';
-
-					if ( makeSelect ) {
-						buildFilter = $( '<select>' ).appendTo( $filter );
-					} else {
-						ffxn = ts.getColumnData( table, wo.filter_formatter, column );
-						if ( ffxn ) {
-							wo.filter_formatterCount++;
-							buildFilter = ffxn( $filter, column );
-							// no element returned, so lets go find it
-							if ( buildFilter && buildFilter.length === 0 ) {
-								buildFilter = $filter.children( 'input' );
-							}
-							// element not in DOM, so lets attach it
-							if ( buildFilter && ( buildFilter.parent().length === 0 ||
-								( buildFilter.parent().length && buildFilter.parent()[0] !== $filter[0] ) ) ) {
-								$filter.append( buildFilter );
-							}
-						} else {
-							buildFilter = $( '<input type="search">' ).appendTo( $filter );
-						}
-						if ( buildFilter ) {
-							tmp = $header.data( 'placeholder' ) ||
-								$header.attr( 'data-placeholder' ) ||
-								wo.filter_placeholder.search || '';
-							buildFilter.attr( 'placeholder', tmp );
-						}
-					}
-					if ( buildFilter ) {
-						// add filter class name
-						name = ( $.isArray( wo.filter_cssFilter ) ?
-							( typeof wo.filter_cssFilter[column] !== 'undefined' ? wo.filter_cssFilter[column] || '' : '' ) :
-							wo.filter_cssFilter ) || '';
-						// copy data-column from table cell (it will include colspan)
-						buildFilter.addClass( tscss.filter + ' ' + name ).attr( 'data-column', $filter.attr( 'data-column' ) );
-						if ( disabled ) {
-							buildFilter.attr( 'placeholder', '' ).addClass( tscss.filterDisabled )[0].disabled = true;
-						}
-					}
-				}
-			}
-		},
-		bindSearch: function( table, $el, internal ) {
-			table = $( table )[0];
-			$el = $( $el ); // allow passing a selector string
-			if ( !$el.length ) { return; }
-			var tmp,
-				c = table.config,
-				wo = c.widgetOptions,
-				namespace = c.namespace + 'filter',
-				$ext = wo.filter_$externalFilters;
-			if ( internal !== true ) {
-				// save anyMatch element
-				tmp = wo.filter_anyColumnSelector + ',' + wo.filter_multipleColumnSelector;
-				wo.filter_$anyMatch = $el.filter( tmp );
-				if ( $ext && $ext.length ) {
-					wo.filter_$externalFilters = wo.filter_$externalFilters.add( $el );
-				} else {
-					wo.filter_$externalFilters = $el;
-				}
-				// update values ( external filters added after table initialization )
-				ts.setFilters( table, c.$table.data( 'lastSearch' ) || [], internal === false );
-			}
-			// unbind events
-			tmp = ( 'keypress keyup keydown search change input '.split( ' ' ).join( namespace + ' ' ) );
-			$el
-			// use data attribute instead of jQuery data since the head is cloned without including
-			// the data/binding
-			.attr( 'data-lastSearchTime', new Date().getTime() )
-			.unbind( tmp.replace( ts.regex.spaces, ' ' ) )
-			.bind( 'keydown' + namespace, function( event ) {
-				if ( event.which === tskeyCodes.escape && !wo.filter_resetOnEsc ) {
-					// prevent keypress event
-					return false;
-				}
-			})
-			.bind( 'keyup' + namespace, function( event ) {
-				var column = parseInt( $( this ).attr( 'data-column' ), 10 );
-				$( this ).attr( 'data-lastSearchTime', new Date().getTime() );
-				// emulate what webkit does.... escape clears the filter
-				if ( event.which === tskeyCodes.escape ) {
-					// make sure to restore the last value on escape
-					this.value = wo.filter_resetOnEsc ? '' : c.lastSearch[column];
-				// live search
-				} else if ( wo.filter_liveSearch === false ) {
-					return;
-					// don't return if the search value is empty ( all rows need to be revealed )
-				} else if ( this.value !== '' && (
-					// liveSearch can contain a min value length; ignore arrow and meta keys, but allow backspace
-					( typeof wo.filter_liveSearch === 'number' && this.value.length < wo.filter_liveSearch ) ||
-					// let return & backspace continue on, but ignore arrows & non-valid characters
-					( event.which !== tskeyCodes.enter && event.which !== tskeyCodes.backSpace &&
-						( event.which < tskeyCodes.space || ( event.which >= tskeyCodes.left && event.which <= tskeyCodes.down ) ) ) ) ) {
-					return;
-				}
-				// change event = no delay; last true flag tells getFilters to skip newest timed input
-				tsf.searching( table, true, true );
-			})
-			// include change for select - fixes #473
-			.bind( 'search change keypress input '.split( ' ' ).join( namespace + ' ' ), function( event ) {
-				// don't get cached data, in case data-column changes dynamically
-				var column = parseInt( $( this ).attr( 'data-column' ), 10 );
-				// don't allow 'change' event to process if the input value is the same - fixes #685
-				if ( wo.filter_initialized && ( event.which === tskeyCodes.enter || event.type === 'search' ||
-					( event.type === 'change' ) && this.value !== c.lastSearch[column] ) ||
-					// only "input" event fires in MS Edge when clicking the "x" to clear the search
-					( event.type === 'input' && this.value === '' ) ) {
-					event.preventDefault();
-					// init search with no delay
-					$( this ).attr( 'data-lastSearchTime', new Date().getTime() );
-					tsf.searching( table, event.type !== 'keypress', true );
-				}
-			});
-		},
-		searching: function( table, filter, skipFirst ) {
-			var wo = table.config.widgetOptions;
-			clearTimeout( wo.filter_searchTimer );
-			if ( typeof filter === 'undefined' || filter === true ) {
-				// delay filtering
-				wo.filter_searchTimer = setTimeout( function() {
-					tsf.checkFilters( table, filter, skipFirst );
-				}, wo.filter_liveSearch ? wo.filter_searchDelay : 10 );
-			} else {
-				// skip delay
-				tsf.checkFilters( table, filter, skipFirst );
-			}
-		},
-		checkFilters: function( table, filter, skipFirst ) {
-			var c = table.config,
-				wo = c.widgetOptions,
-				filterArray = $.isArray( filter ),
-				filters = ( filterArray ) ? filter : ts.getFilters( table, true ),
-				combinedFilters = ( filters || [] ).join( '' ); // combined filter values
-			// prevent errors if delay init is set
-			if ( $.isEmptyObject( c.cache ) ) {
-				// update cache if delayInit set & pager has initialized ( after user initiates a search )
-				if ( c.delayInit && ( !c.pager || c.pager && c.pager.initialized ) ) {
-					ts.updateCache( c, function() {
-						tsf.checkFilters( table, false, skipFirst );
-					});
-				}
-				return;
-			}
-			// add filter array back into inputs
-			if ( filterArray ) {
-				ts.setFilters( table, filters, false, skipFirst !== true );
-				if ( !wo.filter_initialized ) { c.lastCombinedFilter = ''; }
-			}
-			if ( wo.filter_hideFilters ) {
-				// show/hide filter row as needed
-				c.$table
-					.find( '.' + tscss.filterRow )
-					.triggerHandler( combinedFilters === '' ? 'mouseleave' : 'mouseenter' );
-			}
-			// return if the last search is the same; but filter === false when updating the search
-			// see example-widget-filter.html filter toggle buttons
-			if ( c.lastCombinedFilter === combinedFilters && filter !== false ) {
-				return;
-			} else if ( filter === false ) {
-				// force filter refresh
-				c.lastCombinedFilter = null;
-				c.lastSearch = [];
-			}
-			// define filter inside it is false
-			filters = filters || [];
-			// convert filters to strings - see #1070
-			filters = Array.prototype.map ?
-				filters.map( String ) :
-				// for IE8 & older browsers - maybe not the best method
-				filters.join( '\ufffd' ).split( '\ufffd' );
-
-			if ( wo.filter_initialized ) {
-				c.$table.triggerHandler( 'filterStart', [ filters ] );
-			}
-			if ( c.showProcessing ) {
-				// give it time for the processing icon to kick in
-				setTimeout( function() {
-					tsf.findRows( table, filters, combinedFilters );
-					return false;
-				}, 30 );
-			} else {
-				tsf.findRows( table, filters, combinedFilters );
-				return false;
-			}
-		},
-		hideFilters: function( c, $table ) {
-			var timer,
-				$row = ( $table || c.$table ).find( '.' + tscss.filterRow ).addClass( tscss.filterRowHide );
-			$row
-				.bind( 'mouseenter mouseleave', function( e ) {
-					// save event object - http://bugs.jquery.com/ticket/12140
-					var event = e,
-						$filterRow = $( this );
-					clearTimeout( timer );
-					timer = setTimeout( function() {
-						if ( /enter|over/.test( event.type ) ) {
-							$filterRow.removeClass( tscss.filterRowHide );
-						} else {
-							// don't hide if input has focus
-							// $( ':focus' ) needs jQuery 1.6+
-							if ( $( document.activeElement ).closest( 'tr' )[0] !== $filterRow[0] ) {
-								// don't hide row if any filter has a value
-								if ( c.lastCombinedFilter === '' ) {
-									$filterRow.addClass( tscss.filterRowHide );
-								}
-							}
-						}
-					}, 200 );
-				})
-				.find( 'input, select' ).bind( 'focus blur', function( e ) {
-					var event = e,
-						$row = $( this ).closest( 'tr' );
-					clearTimeout( timer );
-					timer = setTimeout( function() {
-						clearTimeout( timer );
-						// don't hide row if any filter has a value
-						if ( ts.getFilters( c.$table ).join( '' ) === '' ) {
-							$row.toggleClass( tscss.filterRowHide, event.type !== 'focus' );
-						}
-					}, 200 );
-				});
-		},
-		defaultFilter: function( filter, mask ) {
-			if ( filter === '' ) { return filter; }
-			var regex = tsfRegex.iQuery,
-				maskLen = mask.match( tsfRegex.igQuery ).length,
-				query = maskLen > 1 ? $.trim( filter ).split( /\s/ ) : [ $.trim( filter ) ],
-				len = query.length - 1,
-				indx = 0,
-				val = mask;
-			if ( len < 1 && maskLen > 1 ) {
-				// only one 'word' in query but mask has >1 slots
-				query[1] = query[0];
-			}
-			// replace all {query} with query words...
-			// if query = 'Bob', then convert mask from '!{query}' to '!Bob'
-			// if query = 'Bob Joe Frank', then convert mask '{q} OR {q}' to 'Bob OR Joe OR Frank'
-			while ( regex.test( val ) ) {
-				val = val.replace( regex, query[indx++] || '' );
-				if ( regex.test( val ) && indx < len && ( query[indx] || '' ) !== '' ) {
-					val = mask.replace( regex, val );
-				}
-			}
-			return val;
-		},
-		getLatestSearch: function( $input ) {
-			if ( $input ) {
-				return $input.sort( function( a, b ) {
-					return $( b ).attr( 'data-lastSearchTime' ) - $( a ).attr( 'data-lastSearchTime' );
-				});
-			}
-			return $input || $();
-		},
-		findRange: function( c, val, ignoreRanges ) {
-			// look for multiple columns '1-3,4-6,8' in data-column
-			var temp, ranges, range, start, end, singles, i, indx, len,
-				columns = [];
-			if ( /^[0-9]+$/.test( val ) ) {
-				// always return an array
-				return [ parseInt( val, 10 ) ];
-			}
-			// process column range
-			if ( !ignoreRanges && /-/.test( val ) ) {
-				ranges = val.match( /(\d+)\s*-\s*(\d+)/g );
-				len = ranges ? ranges.length : 0;
-				for ( indx = 0; indx < len; indx++ ) {
-					range = ranges[indx].split( /\s*-\s*/ );
-					start = parseInt( range[0], 10 ) || 0;
-					end = parseInt( range[1], 10 ) || ( c.columns - 1 );
-					if ( start > end ) {
-						temp = start; start = end; end = temp; // swap
-					}
-					if ( end >= c.columns ) {
-						end = c.columns - 1;
-					}
-					for ( ; start <= end; start++ ) {
-						columns[ columns.length ] = start;
-					}
-					// remove processed range from val
-					val = val.replace( ranges[ indx ], '' );
-				}
-			}
-			// process single columns
-			if ( !ignoreRanges && /,/.test( val ) ) {
-				singles = val.split( /\s*,\s*/ );
-				len = singles.length;
-				for ( i = 0; i < len; i++ ) {
-					if ( singles[ i ] !== '' ) {
-						indx = parseInt( singles[ i ], 10 );
-						if ( indx < c.columns ) {
-							columns[ columns.length ] = indx;
-						}
-					}
-				}
-			}
-			// return all columns
-			if ( !columns.length ) {
-				for ( indx = 0; indx < c.columns; indx++ ) {
-					columns[ columns.length ] = indx;
-				}
-			}
-			return columns;
-		},
-		getColumnElm: function( c, $elements, column ) {
-			// data-column may contain multiple columns '1-3,5-6,8'
-			// replaces: c.$filters.filter( '[data-column="' + column + '"]' );
-			return $elements.filter( function() {
-				var cols = tsf.findRange( c, $( this ).attr( 'data-column' ) );
-				return $.inArray( column, cols ) > -1;
-			});
-		},
-		multipleColumns: function( c, $input ) {
-			// look for multiple columns '1-3,4-6,8' in data-column
-			var wo = c.widgetOptions,
-				// only target 'all' column inputs on initialization
-				// & don't target 'all' column inputs if they don't exist
-				targets = wo.filter_initialized || !$input.filter( wo.filter_anyColumnSelector ).length,
-				val = $.trim( tsf.getLatestSearch( $input ).attr( 'data-column' ) || '' );
-			return tsf.findRange( c, val, !targets );
-		},
-		processTypes: function( c, data, vars ) {
-			var ffxn,
-				filterMatched = null,
-				matches = null;
-			for ( ffxn in tsf.types ) {
-				if ( $.inArray( ffxn, vars.excludeMatch ) < 0 && matches === null ) {
-					matches = tsf.types[ffxn]( c, data, vars );
-					if ( matches !== null ) {
-						filterMatched = matches;
-					}
-				}
-			}
-			return filterMatched;
-		},
-		matchType: function( c, columnIndex ) {
-			var isMatch,
-				wo = c.widgetOptions,
-				$el = c.$headerIndexed[ columnIndex ];
-			// filter-exact > filter-match > filter_matchType for type
-			if ( $el.hasClass( 'filter-exact' ) ) {
-				isMatch = false;
-			} else if ( $el.hasClass( 'filter-match' ) ) {
-				isMatch = true;
-			} else {
-				// filter-select is not applied when filter_functions are used, so look for a select
-				if ( wo.filter_columnFilters ) {
-					$el = c.$filters
-						.find( '.' + tscss.filter )
-						.add( wo.filter_$externalFilters )
-						.filter( '[data-column="' + columnIndex + '"]' );
-				} else if ( wo.filter_$externalFilters ) {
-					$el = wo.filter_$externalFilters.filter( '[data-column="' + columnIndex + '"]' );
-				}
-				isMatch = $el.length ?
-					c.widgetOptions.filter_matchType[ ( $el[ 0 ].nodeName || '' ).toLowerCase() ] === 'match' :
-					// default to exact, if no inputs found
-					false;
-			}
-			return isMatch;
-		},
-		processRow: function( c, data, vars ) {
-			var result, filterMatched,
-				fxn, ffxn, txt,
-				wo = c.widgetOptions,
-				showRow = true,
-
-				// if wo.filter_$anyMatch data-column attribute is changed dynamically
-				// we don't want to do an "anyMatch" search on one column using data
-				// for the entire row - see #998
-				columnIndex = wo.filter_$anyMatch && wo.filter_$anyMatch.length ?
-					// look for multiple columns '1-3,4-6,8'
-					tsf.multipleColumns( c, wo.filter_$anyMatch ) :
-					[];
-
-			data.$cells = data.$row.children();
-
-			if ( data.anyMatchFlag && columnIndex.length > 1 ) {
-				data.anyMatch = true;
-				data.isMatch = true;
-				data.rowArray = data.$cells.map( function( i ) {
-					if ( $.inArray( i, columnIndex ) > -1 ) {
-						if ( data.parsed[ i ] ) {
-							txt = data.cacheArray[ i ];
-						} else {
-							txt = data.rawArray[ i ];
-							txt = $.trim( wo.filter_ignoreCase ? txt.toLowerCase() : txt );
-							if ( c.sortLocaleCompare ) {
-								txt = ts.replaceAccents( txt );
-							}
-						}
-						return txt;
-					}
-				}).get();
-				data.filter = data.anyMatchFilter;
-				data.iFilter = data.iAnyMatchFilter;
-				data.exact = data.rowArray.join( ' ' );
-				data.iExact = wo.filter_ignoreCase ? data.exact.toLowerCase() : data.exact;
-				data.cache = data.cacheArray.slice( 0, -1 ).join( ' ' );
-
-				vars.excludeMatch = vars.noAnyMatch;
-				filterMatched = tsf.processTypes( c, data, vars );
-				if ( filterMatched !== null ) {
-					showRow = filterMatched;
-				} else {
-					if ( wo.filter_startsWith ) {
-						showRow = false;
-						// data.rowArray may not contain all columns
-						columnIndex = Math.min( c.columns, data.rowArray.length );
-						while ( !showRow && columnIndex > 0 ) {
-							columnIndex--;
-							showRow = showRow || data.rowArray[ columnIndex ].indexOf( data.iFilter ) === 0;
-						}
-					} else {
-						showRow = ( data.iExact + data.childRowText ).indexOf( data.iFilter ) >= 0;
-					}
-				}
-				data.anyMatch = false;
-				// no other filters to process
-				if ( data.filters.join( '' ) === data.filter ) {
-					return showRow;
-				}
-			}
-
-			for ( columnIndex = 0; columnIndex < c.columns; columnIndex++ ) {
-				data.filter = data.filters[ columnIndex ];
-				data.index = columnIndex;
-
-				// filter types to exclude, per column
-				vars.excludeMatch = vars.excludeFilter[ columnIndex ];
-
-				// ignore if filter is empty or disabled
-				if ( data.filter ) {
-					data.cache = data.cacheArray[ columnIndex ];
-					result = data.parsed[ columnIndex ] ? data.cache : data.rawArray[ columnIndex ] || '';
-					data.exact = c.sortLocaleCompare ? ts.replaceAccents( result ) : result; // issue #405
-					data.iExact = !tsfRegex.type.test( typeof data.exact ) && wo.filter_ignoreCase ?
-						data.exact.toLowerCase() : data.exact;
-					data.isMatch = tsf.matchType( c, columnIndex );
-
-					result = showRow; // if showRow is true, show that row
-
-					// in case select filter option has a different value vs text 'a - z|A through Z'
-					ffxn = wo.filter_columnFilters ?
-						c.$filters.add( wo.filter_$externalFilters )
-							.filter( '[data-column="' + columnIndex + '"]' )
-							.find( 'select option:selected' )
-							.attr( 'data-function-name' ) || '' : '';
-					// replace accents - see #357
-					if ( c.sortLocaleCompare ) {
-						data.filter = ts.replaceAccents( data.filter );
-					}
-
-					// replace column specific default filters - see #1088
-					if ( wo.filter_defaultFilter && tsfRegex.iQuery.test( vars.defaultColFilter[ columnIndex ] ) ) {
-						data.filter = tsf.defaultFilter( data.filter, vars.defaultColFilter[ columnIndex ] );
-					}
-
-					// data.iFilter = case insensitive ( if wo.filter_ignoreCase is true ),
-					// data.filter = case sensitive
-					data.iFilter = wo.filter_ignoreCase ? ( data.filter || '' ).toLowerCase() : data.filter;
-					fxn = vars.functions[ columnIndex ];
-					filterMatched = null;
-					if ( fxn ) {
-						if ( fxn === true ) {
-							// default selector uses exact match unless 'filter-match' class is found
-							filterMatched = data.isMatch ?
-								// data.iExact may be a number
-								( '' + data.iExact ).search( data.iFilter ) >= 0 :
-								data.filter === data.exact;
-						} else if ( typeof fxn === 'function' ) {
-							// filter callback( exact cell content, parser normalized content,
-							// filter input value, column index, jQuery row object )
-							filterMatched = fxn( data.exact, data.cache, data.filter, columnIndex, data.$row, c, data );
-						} else if ( typeof fxn[ ffxn || data.filter ] === 'function' ) {
-							// selector option function
-							txt = ffxn || data.filter;
-							filterMatched =
-								fxn[ txt ]( data.exact, data.cache, data.filter, columnIndex, data.$row, c, data );
-						}
-					}
-					if ( filterMatched === null ) {
-						// cycle through the different filters
-						// filters return a boolean or null if nothing matches
-						filterMatched = tsf.processTypes( c, data, vars );
-						if ( filterMatched !== null ) {
-							result = filterMatched;
-						// Look for match, and add child row data for matching
-						} else {
-							txt = ( data.iExact + data.childRowText ).indexOf( tsf.parseFilter( c, data.iFilter, data ) );
-							result = ( ( !wo.filter_startsWith && txt >= 0 ) || ( wo.filter_startsWith && txt === 0 ) );
-						}
-					} else {
-						result = filterMatched;
-					}
-					showRow = ( result ) ? showRow : false;
-				}
-			}
-			return showRow;
-		},
-		findRows: function( table, filters, combinedFilters ) {
-			if ( table.config.lastCombinedFilter === combinedFilters ||
-				!table.config.widgetOptions.filter_initialized ) {
-				return;
-			}
-			var len, norm_rows, rowData, $rows, $row, rowIndex, tbodyIndex, $tbody, columnIndex,
-				isChild, childRow, lastSearch, showRow, showParent, time, val, indx,
-				notFiltered, searchFiltered, query, injected, res, id, txt,
-				storedFilters = $.extend( [], filters ),
-				c = table.config,
-				wo = c.widgetOptions,
-				// data object passed to filters; anyMatch is a flag for the filters
-				data = {
-					anyMatch: false,
-					filters: filters,
-					// regex filter type cache
-					filter_regexCache : []
-				},
-				vars = {
-					// anyMatch really screws up with these types of filters
-					noAnyMatch: [ 'range', 'notMatch',  'operators' ],
-					// cache filter variables that use ts.getColumnData in the main loop
-					functions : [],
-					excludeFilter : [],
-					defaultColFilter : [],
-					defaultAnyFilter : ts.getColumnData( table, wo.filter_defaultFilter, c.columns, true ) || ''
-				};
-
-			// parse columns after formatter, in case the class is added at that point
-			data.parsed = [];
-			for ( columnIndex = 0; columnIndex < c.columns; columnIndex++ ) {
-				data.parsed[ columnIndex ] = wo.filter_useParsedData ||
-					// parser has a "parsed" parameter
-					( c.parsers && c.parsers[ columnIndex ] && c.parsers[ columnIndex ].parsed ||
-					// getData may not return 'parsed' if other 'filter-' class names exist
-					// ( e.g. <th class="filter-select filter-parsed"> )
-					ts.getData && ts.getData( c.$headerIndexed[ columnIndex ],
-						ts.getColumnData( table, c.headers, columnIndex ), 'filter' ) === 'parsed' ||
-					c.$headerIndexed[ columnIndex ].hasClass( 'filter-parsed' ) );
-
-				vars.functions[ columnIndex ] =
-					ts.getColumnData( table, wo.filter_functions, columnIndex ) ||
-					c.$headerIndexed[ columnIndex ].hasClass( 'filter-select' );
-				vars.defaultColFilter[ columnIndex ] =
-					ts.getColumnData( table, wo.filter_defaultFilter, columnIndex ) || '';
-				vars.excludeFilter[ columnIndex ] =
-					( ts.getColumnData( table, wo.filter_excludeFilter, columnIndex, true ) || '' ).split( /\s+/ );
-			}
-
-			if ( c.debug ) {
-				console.log( 'Filter: Starting filter widget search', filters );
-				time = new Date();
-			}
-			// filtered rows count
-			c.filteredRows = 0;
-			c.totalRows = 0;
-			// combindedFilters are undefined on init
-			combinedFilters = ( storedFilters || [] ).join( '' );
-
-			for ( tbodyIndex = 0; tbodyIndex < c.$tbodies.length; tbodyIndex++ ) {
-				$tbody = ts.processTbody( table, c.$tbodies.eq( tbodyIndex ), true );
-				// skip child rows & widget added ( removable ) rows - fixes #448 thanks to @hempel!
-				// $rows = $tbody.children( 'tr' ).not( c.selectorRemove );
-				columnIndex = c.columns;
-				// convert stored rows into a jQuery object
-				norm_rows = c.cache[ tbodyIndex ].normalized;
-				$rows = $( $.map( norm_rows, function( el ) {
-					return el[ columnIndex ].$row.get();
-				}) );
-
-				if ( combinedFilters === '' || wo.filter_serversideFiltering ) {
-					$rows
-						.removeClass( wo.filter_filteredRow )
-						.not( '.' + c.cssChildRow )
-						.css( 'display', '' );
-				} else {
-					// filter out child rows
-					$rows = $rows.not( '.' + c.cssChildRow );
-					len = $rows.length;
-
-					if ( ( wo.filter_$anyMatch && wo.filter_$anyMatch.length ) ||
-						typeof filters[c.columns] !== 'undefined' ) {
-						data.anyMatchFlag = true;
-						data.anyMatchFilter = '' + (
-							filters[ c.columns ] ||
-							wo.filter_$anyMatch && tsf.getLatestSearch( wo.filter_$anyMatch ).val() ||
-							''
-						);
-						if ( wo.filter_columnAnyMatch ) {
-							// specific columns search
-							query = data.anyMatchFilter.split( tsfRegex.andSplit );
-							injected = false;
-							for ( indx = 0; indx < query.length; indx++ ) {
-								res = query[ indx ].split( ':' );
-								if ( res.length > 1 ) {
-									// make the column a one-based index ( non-developers start counting from one :P )
-									id = parseInt( res[0], 10 ) - 1;
-									if ( id >= 0 && id < c.columns ) { // if id is an integer
-										filters[ id ] = res[1];
-										query.splice( indx, 1 );
-										indx--;
-										injected = true;
-									}
-								}
-							}
-							if ( injected ) {
-								data.anyMatchFilter = query.join( ' && ' );
-							}
-						}
-					}
-
-					// optimize searching only through already filtered rows - see #313
-					searchFiltered = wo.filter_searchFiltered;
-					lastSearch = c.lastSearch || c.$table.data( 'lastSearch' ) || [];
-					if ( searchFiltered ) {
-						// cycle through all filters; include last ( columnIndex + 1 = match any column ). Fixes #669
-						for ( indx = 0; indx < columnIndex + 1; indx++ ) {
-							val = filters[indx] || '';
-							// break out of loop if we've already determined not to search filtered rows
-							if ( !searchFiltered ) { indx = columnIndex; }
-							// search already filtered rows if...
-							searchFiltered = searchFiltered && lastSearch.length &&
-								// there are no changes from beginning of filter
-								val.indexOf( lastSearch[indx] || '' ) === 0 &&
-								// if there is NOT a logical 'or', or range ( 'to' or '-' ) in the string
-								!tsfRegex.alreadyFiltered.test( val ) &&
-								// if we are not doing exact matches, using '|' ( logical or ) or not '!'
-								!tsfRegex.exactTest.test( val ) &&
-								// don't search only filtered if the value is negative
-								// ( '> -10' => '> -100' will ignore hidden rows )
-								!( tsfRegex.isNeg1.test( val ) || tsfRegex.isNeg2.test( val ) ) &&
-								// if filtering using a select without a 'filter-match' class ( exact match ) - fixes #593
-								!( val !== '' && c.$filters && c.$filters.filter( '[data-column="' + indx + '"]' ).find( 'select' ).length &&
-									!tsf.matchType( c, indx ) );
-						}
-					}
-					notFiltered = $rows.not( '.' + wo.filter_filteredRow ).length;
-					// can't search when all rows are hidden - this happens when looking for exact matches
-					if ( searchFiltered && notFiltered === 0 ) { searchFiltered = false; }
-					if ( c.debug ) {
-						console.log( 'Filter: Searching through ' +
-							( searchFiltered && notFiltered < len ? notFiltered : 'all' ) + ' rows' );
-					}
-					if ( data.anyMatchFlag ) {
-						if ( c.sortLocaleCompare ) {
-							// replace accents
-							data.anyMatchFilter = ts.replaceAccents( data.anyMatchFilter );
-						}
-						if ( wo.filter_defaultFilter && tsfRegex.iQuery.test( vars.defaultAnyFilter ) ) {
-							data.anyMatchFilter = tsf.defaultFilter( data.anyMatchFilter, vars.defaultAnyFilter );
-							// clear search filtered flag because default filters are not saved to the last search
-							searchFiltered = false;
-						}
-						// make iAnyMatchFilter lowercase unless both filter widget & core ignoreCase options are true
-						// when c.ignoreCase is true, the cache contains all lower case data
-						data.iAnyMatchFilter = !( wo.filter_ignoreCase && c.ignoreCase ) ?
-							data.anyMatchFilter :
-							data.anyMatchFilter.toLowerCase();
-					}
-
-					// loop through the rows
-					for ( rowIndex = 0; rowIndex < len; rowIndex++ ) {
-
-						txt = $rows[ rowIndex ].className;
-						// the first row can never be a child row
-						isChild = rowIndex && tsfRegex.child.test( txt );
-						// skip child rows & already filtered rows
-						if ( isChild || ( searchFiltered && tsfRegex.filtered.test( txt ) ) ) {
-							continue;
-						}
-
-						data.$row = $rows.eq( rowIndex );
-						data.cacheArray = norm_rows[ rowIndex ];
-						rowData = data.cacheArray[ c.columns ];
-						data.rawArray = rowData.raw;
-						data.childRowText = '';
-
-						if ( !wo.filter_childByColumn ) {
-							txt = '';
-							// child row cached text
-							childRow = rowData.child;
-							// so, if 'table.config.widgetOptions.filter_childRows' is true and there is
-							// a match anywhere in the child row, then it will make the row visible
-							// checked here so the option can be changed dynamically
-							for ( indx = 0; indx < childRow.length; indx++ ) {
-								txt += ' ' + childRow[indx].join( ' ' ) || '';
-							}
-							data.childRowText = wo.filter_childRows ?
-								( wo.filter_ignoreCase ? txt.toLowerCase() : txt ) :
-								'';
-						}
-
-						showRow = false;
-						showParent = tsf.processRow( c, data, vars );
-						$row = rowData.$row;
-
-						// don't pass reference to val
-						val = showParent ? true : false;
-						childRow = rowData.$row.filter( ':gt(0)' );
-						if ( wo.filter_childRows && childRow.length ) {
-							if ( wo.filter_childByColumn ) {
-								if ( !wo.filter_childWithSibs ) {
-									// hide all child rows
-									childRow.addClass( wo.filter_filteredRow );
-									// if only showing resulting child row, only include parent
-									$row = $row.eq( 0 );
-								}
-								// cycle through each child row
-								for ( indx = 0; indx < childRow.length; indx++ ) {
-									data.$row = childRow.eq( indx );
-									data.cacheArray = rowData.child[ indx ];
-									data.rawArray = data.cacheArray;
-									val = tsf.processRow( c, data, vars );
-									// use OR comparison on child rows
-									showRow = showRow || val;
-									if ( !wo.filter_childWithSibs && val ) {
-										childRow.eq( indx ).removeClass( wo.filter_filteredRow );
-									}
-								}
-							}
-							// keep parent row match even if no child matches... see #1020
-							showRow = showRow || showParent;
-						} else {
-							showRow = val;
-						}
-						$row
-							.toggleClass( wo.filter_filteredRow, !showRow )[0]
-							.display = showRow ? '' : 'none';
-					}
-				}
-				c.filteredRows += $rows.not( '.' + wo.filter_filteredRow ).length;
-				c.totalRows += $rows.length;
-				ts.processTbody( table, $tbody, false );
-			}
-			c.lastCombinedFilter = combinedFilters; // save last search
-			// don't save 'filters' directly since it may have altered ( AnyMatch column searches )
-			c.lastSearch = storedFilters;
-			c.$table.data( 'lastSearch', storedFilters );
-			if ( wo.filter_saveFilters && ts.storage ) {
-				ts.storage( table, 'tablesorter-filters', tsf.processFilters( storedFilters, true ) );
-			}
-			if ( c.debug ) {
-				console.log( 'Completed filter widget search' + ts.benchmark(time) );
-			}
-			if ( wo.filter_initialized ) {
-				c.$table.triggerHandler( 'filterBeforeEnd', c );
-				c.$table.triggerHandler( 'filterEnd', c );
-			}
-			setTimeout( function() {
-				ts.applyWidget( c.table ); // make sure zebra widget is applied
-			}, 0 );
-		},
-		getOptionSource: function( table, column, onlyAvail ) {
-			table = $( table )[0];
-			var c = table.config,
-				wo = c.widgetOptions,
-				arry = false,
-				source = wo.filter_selectSource,
-				last = c.$table.data( 'lastSearch' ) || [],
-				fxn = typeof source === 'function' ? true : ts.getColumnData( table, source, column );
-
-			if ( onlyAvail && last[column] !== '' ) {
-				onlyAvail = false;
-			}
-
-			// filter select source option
-			if ( fxn === true ) {
-				// OVERALL source
-				arry = source( table, column, onlyAvail );
-			} else if ( fxn instanceof $ || ( $.type( fxn ) === 'string' && fxn.indexOf( '</option>' ) >= 0 ) ) {
-				// selectSource is a jQuery object or string of options
-				return fxn;
-			} else if ( $.isArray( fxn ) ) {
-				arry = fxn;
-			} else if ( $.type( source ) === 'object' && fxn ) {
-				// custom select source function for a SPECIFIC COLUMN
-				arry = fxn( table, column, onlyAvail );
-			}
-			if ( arry === false ) {
-				// fall back to original method
-				arry = tsf.getOptions( table, column, onlyAvail );
-			}
-
-			return tsf.processOptions( table, column, arry );
-
-		},
-		processOptions: function( table, column, arry ) {
-			if ( !$.isArray( arry ) ) {
-				return false;
-			}
-			table = $( table )[0];
-			var cts, txt, indx, len, parsedTxt, str,
-				c = table.config,
-				validColumn = typeof column !== 'undefined' && column !== null && column >= 0 && column < c.columns,
-				parsed = [];
-			// get unique elements and sort the list
-			// if $.tablesorter.sortText exists ( not in the original tablesorter ),
-			// then natural sort the list otherwise use a basic sort
-			arry = $.grep( arry, function( value, indx ) {
-				if ( value.text ) {
-					return true;
-				}
-				return $.inArray( value, arry ) === indx;
-			});
-			if ( validColumn && c.$headerIndexed[ column ].hasClass( 'filter-select-nosort' ) ) {
-				// unsorted select options
-				return arry;
-			} else {
-				len = arry.length;
-				// parse select option values
-				for ( indx = 0; indx < len; indx++ ) {
-					txt = arry[ indx ];
-					// check for object
-					str = txt.text ? txt.text : txt;
-					// sortNatural breaks if you don't pass it strings
-					parsedTxt = ( validColumn && c.parsers && c.parsers.length &&
-						c.parsers[ column ].format( str, table, [], column ) || str ).toString();
-					parsedTxt = c.widgetOptions.filter_ignoreCase ? parsedTxt.toLowerCase() : parsedTxt;
-					// parse array data using set column parser; this DOES NOT pass the original
-					// table cell to the parser format function
-					if ( txt.text ) {
-						txt.parsed = parsedTxt;
-						parsed[ parsed.length ] = txt;
-					} else {
-						parsed[ parsed.length ] = {
-							text : txt,
-							// check parser length - fixes #934
-							parsed : parsedTxt
+								break;
+							case "progress":
+								var newDelay = self.settings.delay - (self.settings.delay * (commands[command] / 100));
+								this.$ele.data('notify-delay', newDelay);
+								this.$ele.find('[data-notify="progressbar"] > div').attr('aria-valuenow', commands[command]).css('width', commands[command] + '%');
+								break;
+							case "url":
+								this.$ele.find('[data-notify="url"]').attr('href', commands[command]);
+								break;
+							case "target":
+								this.$ele.find('[data-notify="url"]').attr('target', commands[command]);
+								break;
+							default:
+								this.$ele.find('[data-notify="' + command +'"]').html(commands[command]);
 						};
 					}
-				}
-				// sort parsed select options
-				cts = c.textSorter || '';
-				parsed.sort( function( a, b ) {
-					var x = a.parsed,
-						y = b.parsed;
-					if ( validColumn && typeof cts === 'function' ) {
-						// custom OVERALL text sorter
-						return cts( x, y, true, column, table );
-					} else if ( validColumn && typeof cts === 'object' && cts.hasOwnProperty( column ) ) {
-						// custom text sorter for a SPECIFIC COLUMN
-						return cts[column]( x, y, true, column, table );
-					} else if ( ts.sortNatural ) {
-						// fall back to natural sort
-						return ts.sortNatural( x, y );
-					}
-					// using an older version! do a basic sort
-					return true;
-				});
-				// rebuild arry from sorted parsed data
-				arry = [];
-				len = parsed.length;
-				for ( indx = 0; indx < len; indx++ ) {
-					arry[ arry.length ] = parsed[indx];
-				}
-				return arry;
-			}
-		},
-		getOptions: function( table, column, onlyAvail ) {
-			table = $( table )[0];
-			var rowIndex, tbodyIndex, len, row, cache, indx, child, childLen,
-				c = table.config,
-				wo = c.widgetOptions,
-				arry = [];
-			for ( tbodyIndex = 0; tbodyIndex < c.$tbodies.length; tbodyIndex++ ) {
-				cache = c.cache[tbodyIndex];
-				len = c.cache[tbodyIndex].normalized.length;
-				// loop through the rows
-				for ( rowIndex = 0; rowIndex < len; rowIndex++ ) {
-					// get cached row from cache.row ( old ) or row data object
-					// ( new; last item in normalized array )
-					row = cache.row ?
-						cache.row[ rowIndex ] :
-						cache.normalized[ rowIndex ][ c.columns ].$row[0];
-					// check if has class filtered
-					if ( onlyAvail && row.className.match( wo.filter_filteredRow ) ) {
-						continue;
-					}
-					// get non-normalized cell content
-					if ( wo.filter_useParsedData ||
-						c.parsers[column].parsed ||
-						c.$headerIndexed[column].hasClass( 'filter-parsed' ) ) {
-						arry[ arry.length ] = '' + cache.normalized[ rowIndex ][ column ];
-						// child row parsed data
-						if ( wo.filter_childRows && wo.filter_childByColumn ) {
-							childLen = cache.normalized[ rowIndex ][ c.columns ].$row.length - 1;
-							for ( indx = 0; indx < childLen; indx++ ) {
-								arry[ arry.length ] = '' + cache.normalized[ rowIndex ][ c.columns ].child[ indx ][ column ];
-							}
-						}
-					} else {
-						// get raw cached data instead of content directly from the cells
-						arry[ arry.length ] = cache.normalized[ rowIndex ][ c.columns ].raw[ column ];
-						// child row unparsed data
-						if ( wo.filter_childRows && wo.filter_childByColumn ) {
-							childLen = cache.normalized[ rowIndex ][ c.columns ].$row.length;
-							for ( indx = 1; indx < childLen; indx++ ) {
-								child =  cache.normalized[ rowIndex ][ c.columns ].$row.eq( indx ).children().eq( column );
-								arry[ arry.length ] = '' + ts.getElementText( c, child, column );
-							}
-						}
-					}
-				}
-			}
-			return arry;
-		},
-		buildSelect: function( table, column, arry, updating, onlyAvail ) {
-			table = $( table )[0];
-			column = parseInt( column, 10 );
-			if ( !table.config.cache || $.isEmptyObject( table.config.cache ) ) {
-				return;
-			}
-
-			var indx, val, txt, t, $filters, $filter, option,
-				c = table.config,
-				wo = c.widgetOptions,
-				node = c.$headerIndexed[ column ],
-				// t.data( 'placeholder' ) won't work in jQuery older than 1.4.3
-				options = '<option value="">' +
-					( node.data( 'placeholder' ) ||
-						node.attr( 'data-placeholder' ) ||
-						wo.filter_placeholder.select || ''
-					) + '</option>',
-				// Get curent filter value
-				currentValue = c.$table
-					.find( 'thead' )
-					.find( 'select.' + tscss.filter + '[data-column="' + column + '"]' )
-					.val();
-
-			// nothing included in arry ( external source ), so get the options from
-			// filter_selectSource or column data
-			if ( typeof arry === 'undefined' || arry === '' ) {
-				arry = tsf.getOptionSource( table, column, onlyAvail );
-			}
-
-			if ( $.isArray( arry ) ) {
-				// build option list
-				for ( indx = 0; indx < arry.length; indx++ ) {
-					option = arry[ indx ];
-					if ( option.text ) {
-						// OBJECT!! add data-function-name in case the value is set in filter_functions
-						option['data-function-name'] = typeof option.value === 'undefined' ? option.text : option.value;
-
-						// support jQuery < v1.8, otherwise the below code could be shortened to
-						// options += $( '<option>', option )[ 0 ].outerHTML;
-						options += '<option';
-						for ( val in option ) {
-							if ( option.hasOwnProperty( val ) && val !== 'text' ) {
-								options += ' ' + val + '="' + option[ val ] + '"';
-							}
-						}
-						if ( !option.value ) {
-							options += ' value="' + option.text + '"';
-						}
-						options += '>' + option.text + '</option>';
-						// above code is needed in jQuery < v1.8
-
-						// make sure we don't turn an object into a string (objects without a "text" property)
-					} else if ( '' + option !== '[object Object]' ) {
-						txt = option = ( '' + option ).replace( tsfRegex.quote, '&quot;' );
-						val = txt;
-						// allow including a symbol in the selectSource array
-						// 'a-z|A through Z' so that 'a-z' becomes the option value
-						// and 'A through Z' becomes the option text
-						if ( txt.indexOf( wo.filter_selectSourceSeparator ) >= 0 ) {
-							t = txt.split( wo.filter_selectSourceSeparator );
-							val = t[0];
-							txt = t[1];
-						}
-						// replace quotes - fixes #242 & ignore empty strings
-						// see http://stackoverflow.com/q/14990971/145346
-						options += option !== '' ?
-							'<option ' +
-								( val === txt ? '' : 'data-function-name="' + option + '" ' ) +
-								'value="' + val + '">' + txt +
-							'</option>' : '';
-					}
-				}
-				// clear arry so it doesn't get appended twice
-				arry = [];
-			}
-
-			// update all selects in the same column ( clone thead in sticky headers &
-			// any external selects ) - fixes 473
-			$filters = ( c.$filters ? c.$filters : c.$table.children( 'thead' ) )
-				.find( '.' + tscss.filter );
-			if ( wo.filter_$externalFilters ) {
-				$filters = $filters && $filters.length ?
-					$filters.add( wo.filter_$externalFilters ) :
-					wo.filter_$externalFilters;
-			}
-			$filter = $filters.filter( 'select[data-column="' + column + '"]' );
-
-			// make sure there is a select there!
-			if ( $filter.length ) {
-				$filter[ updating ? 'html' : 'append' ]( options );
-				if ( !$.isArray( arry ) ) {
-					// append options if arry is provided externally as a string or jQuery object
-					// options ( default value ) was already added
-					$filter.append( arry ).val( currentValue );
-				}
-				$filter.val( currentValue );
-			}
-		},
-		buildDefault: function( table, updating ) {
-			var columnIndex, $header, noSelect,
-				c = table.config,
-				wo = c.widgetOptions,
-				columns = c.columns;
-			// build default select dropdown
-			for ( columnIndex = 0; columnIndex < columns; columnIndex++ ) {
-				$header = c.$headerIndexed[columnIndex];
-				noSelect = !( $header.hasClass( 'filter-false' ) || $header.hasClass( 'parser-false' ) );
-				// look for the filter-select class; build/update it if found
-				if ( ( $header.hasClass( 'filter-select' ) ||
-					ts.getColumnData( table, wo.filter_functions, columnIndex ) === true ) && noSelect ) {
-					tsf.buildSelect( table, columnIndex, '', updating, $header.hasClass( wo.filter_onlyAvail ) );
-				}
-			}
-		}
-	};
-
-	// filter regex variable
-	tsfRegex = tsf.regex;
-
-	ts.getFilters = function( table, getRaw, setFilters, skipFirst ) {
-		var i, $filters, $column, cols,
-			filters = false,
-			c = table ? $( table )[0].config : '',
-			wo = c ? c.widgetOptions : '';
-		if ( ( getRaw !== true && wo && !wo.filter_columnFilters ) ||
-			// setFilters called, but last search is exactly the same as the current
-			// fixes issue #733 & #903 where calling update causes the input values to reset
-			( $.isArray(setFilters) && setFilters.join('') === c.lastCombinedFilter ) ) {
-			return $( table ).data( 'lastSearch' );
-		}
-		if ( c ) {
-			if ( c.$filters ) {
-				$filters = c.$filters.find( '.' + tscss.filter );
-			}
-			if ( wo.filter_$externalFilters ) {
-				$filters = $filters && $filters.length ?
-					$filters.add( wo.filter_$externalFilters ) :
-					wo.filter_$externalFilters;
-			}
-			if ( $filters && $filters.length ) {
-				filters = setFilters || [];
-				for ( i = 0; i < c.columns + 1; i++ ) {
-					cols = ( i === c.columns ?
-						// 'all' columns can now include a range or set of columms ( data-column='0-2,4,6-7' )
-						wo.filter_anyColumnSelector + ',' + wo.filter_multipleColumnSelector :
-						'[data-column="' + i + '"]' );
-					$column = $filters.filter( cols );
-					if ( $column.length ) {
-						// move the latest search to the first slot in the array
-						$column = tsf.getLatestSearch( $column );
-						if ( $.isArray( setFilters ) ) {
-							// skip first ( latest input ) to maintain cursor position while typing
-							if ( skipFirst && $column.length > 1 ) {
-								$column = $column.slice( 1 );
-							}
-							if ( i === c.columns ) {
-								// prevent data-column='all' from filling data-column='0,1' ( etc )
-								cols = $column.filter( wo.filter_anyColumnSelector );
-								$column = cols.length ? cols : $column;
-							}
-							$column
-								.val( setFilters[ i ] )
-								// must include a namespace here; but not c.namespace + 'filter'?
-								.trigger( 'change' + c.namespace );
-						} else {
-							filters[i] = $column.val() || '';
-							// don't change the first... it will move the cursor
-							if ( i === c.columns ) {
-								// don't update range columns from 'all' setting
-								$column
-									.slice( 1 )
-									.filter( '[data-column*="' + $column.attr( 'data-column' ) + '"]' )
-									.val( filters[ i ] );
-							} else {
-								$column
-									.slice( 1 )
-									.val( filters[ i ] );
-							}
-						}
-						// save any match input dynamically
-						if ( i === c.columns && $column.length ) {
-							wo.filter_$anyMatch = $column;
-						}
-					}
-				}
-			}
-		}
-		if ( filters.length === 0 ) {
-			filters = false;
-		}
-		return filters;
-	};
-
-	ts.setFilters = function( table, filter, apply, skipFirst ) {
-		var c = table ? $( table )[0].config : '',
-			valid = ts.getFilters( table, true, filter, skipFirst );
-		// default apply to "true"
-		if ( typeof apply === 'undefined' ) {
-			apply = true;
-		}
-		if ( c && apply ) {
-			// ensure new set filters are applied, even if the search is the same
-			c.lastCombinedFilter = null;
-			c.lastSearch = [];
-			tsf.searching( c.table, filter, skipFirst );
-			c.$table.triggerHandler( 'filterFomatterUpdate' );
-		}
-		return !!valid;
-	};
-
-})( jQuery );
-
-/*! Widget: stickyHeaders - updated 4/1/2016 (v2.25.7) *//*
- * Requires tablesorter v2.8+ and jQuery 1.4.3+
- * by Rob Garrison
- */
-;(function ($, window) {
-	'use strict';
-	var ts = $.tablesorter || {};
-
-	$.extend(ts.css, {
-		sticky    : 'tablesorter-stickyHeader', // stickyHeader
-		stickyVis : 'tablesorter-sticky-visible',
-		stickyHide: 'tablesorter-sticky-hidden',
-		stickyWrap: 'tablesorter-sticky-wrapper'
-	});
-
-	// Add a resize event to table headers
-	ts.addHeaderResizeEvent = function(table, disable, settings) {
-		table = $(table)[0]; // make sure we're using a dom element
-		if ( !table.config ) { return; }
-		var defaults = {
-				timer : 250
-			},
-			options = $.extend({}, defaults, settings),
-			c = table.config,
-			wo = c.widgetOptions,
-			checkSizes = function( triggerEvent ) {
-				var index, headers, $header, sizes, width, height,
-					len = c.$headers.length;
-				wo.resize_flag = true;
-				headers = [];
-				for ( index = 0; index < len; index++ ) {
-					$header = c.$headers.eq( index );
-					sizes = $header.data( 'savedSizes' ) || [ 0, 0 ]; // fixes #394
-					width = $header[0].offsetWidth;
-					height = $header[0].offsetHeight;
-					if ( width !== sizes[0] || height !== sizes[1] ) {
-						$header.data( 'savedSizes', [ width, height ] );
-						headers.push( $header[0] );
-					}
-				}
-				if ( headers.length && triggerEvent !== false ) {
-					c.$table.triggerHandler( 'resize', [ headers ] );
-				}
-				wo.resize_flag = false;
-			};
-		clearInterval(wo.resize_timer);
-		if (disable) {
-			wo.resize_flag = false;
-			return false;
-		}
-		checkSizes( false );
-		wo.resize_timer = setInterval(function() {
-			if (wo.resize_flag) { return; }
-			checkSizes();
-		}, options.timer);
-	};
-
-	// Sticky headers based on this awesome article:
-	// http://css-tricks.com/13465-persistent-headers/
-	// and https://github.com/jmosbech/StickyTableHeaders by Jonas Mosbech
-	// **************************
-	ts.addWidget({
-		id: 'stickyHeaders',
-		priority: 60, // sticky widget must be initialized after the filter widget!
-		options: {
-			stickyHeaders : '',       // extra class name added to the sticky header row
-			stickyHeaders_attachTo : null, // jQuery selector or object to attach sticky header to
-			stickyHeaders_xScroll : null, // jQuery selector or object to monitor horizontal scroll position (defaults: xScroll > attachTo > window)
-			stickyHeaders_yScroll : null, // jQuery selector or object to monitor vertical scroll position (defaults: yScroll > attachTo > window)
-			stickyHeaders_offset : 0, // number or jquery selector targeting the position:fixed element
-			stickyHeaders_filteredToTop: true, // scroll table top into view after filtering
-			stickyHeaders_cloneId : '-sticky', // added to table ID, if it exists
-			stickyHeaders_addResizeEvent : true, // trigger 'resize' event on headers
-			stickyHeaders_includeCaption : true, // if false and a caption exist, it won't be included in the sticky header
-			stickyHeaders_zIndex : 2 // The zIndex of the stickyHeaders, allows the user to adjust this to their needs
-		},
-		format: function(table, c, wo) {
-			// filter widget doesn't initialize on an empty table. Fixes #449
-			if ( c.$table.hasClass('hasStickyHeaders') || ($.inArray('filter', c.widgets) >= 0 && !c.$table.hasClass('hasFilters')) ) {
-				return;
-			}
-			var index, len, $t,
-				$table = c.$table,
-				// add position: relative to attach element, hopefully it won't cause trouble.
-				$attach = $(wo.stickyHeaders_attachTo),
-				namespace = c.namespace + 'stickyheaders ',
-				// element to watch for the scroll event
-				$yScroll = $(wo.stickyHeaders_yScroll || wo.stickyHeaders_attachTo || window),
-				$xScroll = $(wo.stickyHeaders_xScroll || wo.stickyHeaders_attachTo || window),
-				$thead = $table.children('thead:first'),
-				$header = $thead.children('tr').not('.sticky-false').children(),
-				$tfoot = $table.children('tfoot'),
-				$stickyOffset = isNaN(wo.stickyHeaders_offset) ? $(wo.stickyHeaders_offset) : '',
-				stickyOffset = $stickyOffset.length ? $stickyOffset.height() || 0 : parseInt(wo.stickyHeaders_offset, 10) || 0,
-				// is this table nested? If so, find parent sticky header wrapper (div, not table)
-				$nestedSticky = $table.parent().closest('.' + ts.css.table).hasClass('hasStickyHeaders') ?
-					$table.parent().closest('table.tablesorter')[0].config.widgetOptions.$sticky.parent() : [],
-				nestedStickyTop = $nestedSticky.length ? $nestedSticky.height() : 0,
-				// clone table, then wrap to make sticky header
-				$stickyTable = wo.$sticky = $table.clone()
-					.addClass('containsStickyHeaders ' + ts.css.sticky + ' ' + wo.stickyHeaders + ' ' + c.namespace.slice(1) + '_extra_table' )
-					.wrap('<div class="' + ts.css.stickyWrap + '">'),
-				$stickyWrap = $stickyTable.parent()
-					.addClass(ts.css.stickyHide)
-					.css({
-						position   : $attach.length ? 'absolute' : 'fixed',
-						padding    : parseInt( $stickyTable.parent().parent().css('padding-left'), 10 ),
-						top        : stickyOffset + nestedStickyTop,
-						left       : 0,
-						visibility : 'hidden',
-						zIndex     : wo.stickyHeaders_zIndex || 2
-					}),
-				$stickyThead = $stickyTable.children('thead:first'),
-				$stickyCells,
-				laststate = '',
-				spacing = 0,
-				setWidth = function($orig, $clone){
-					var index, width, border, $cell, $this,
-						$cells = $orig.filter(':visible'),
-						len = $cells.length;
-					for ( index = 0; index < len; index++ ) {
-						$cell = $clone.filter(':visible').eq(index);
-						$this = $cells.eq(index);
-						// code from https://github.com/jmosbech/StickyTableHeaders
-						if ($this.css('box-sizing') === 'border-box') {
-							width = $this.outerWidth();
-						} else {
-							if ($cell.css('border-collapse') === 'collapse') {
-								if (window.getComputedStyle) {
-									width = parseFloat( window.getComputedStyle($this[0], null).width );
-								} else {
-									// ie8 only
-									border = parseFloat( $this.css('border-width') );
-									width = $this.outerWidth() - parseFloat( $this.css('padding-left') ) - parseFloat( $this.css('padding-right') ) - border;
-								}
-							} else {
-								width = $this.width();
-							}
-						}
-						$cell.css({
-							'width': width,
-							'min-width': width,
-							'max-width': width
-						});
-					}
+					var posX = this.$ele.outerHeight() + parseInt(self.settings.spacing) + parseInt(self.settings.offset.y);
+					self.reposition(posX);
 				},
-				resizeHeader = function() {
-					stickyOffset = $stickyOffset.length ? $stickyOffset.height() || 0 : parseInt(wo.stickyHeaders_offset, 10) || 0;
-					spacing = 0;
-					$stickyWrap.css({
-						left : $attach.length ? parseInt($attach.css('padding-left'), 10) || 0 :
-								$table.offset().left - parseInt($table.css('margin-left'), 10) - $xScroll.scrollLeft() - spacing,
-						width: $table.outerWidth()
-					});
-					setWidth( $table, $stickyTable );
-					setWidth( $header, $stickyCells );
-				},
-				scrollSticky = function( resizing ) {
-					if (!$table.is(':visible')) { return; } // fixes #278
-					// Detect nested tables - fixes #724
-					nestedStickyTop = $nestedSticky.length ? $nestedSticky.offset().top - $yScroll.scrollTop() + $nestedSticky.height() : 0;
-					var offset = $table.offset(),
-						yWindow = $.isWindow( $yScroll[0] ), // $.isWindow needs jQuery 1.4.3
-						xWindow = $.isWindow( $xScroll[0] ),
-						// scrollTop = ( $attach.length ? $attach.offset().top : $yScroll.scrollTop() ) + stickyOffset + nestedStickyTop,
-						scrollTop = ( $attach.length ? ( yWindow ? $yScroll.scrollTop() : $yScroll.offset().top ) : $yScroll.scrollTop() ) + stickyOffset + nestedStickyTop,
-						tableHeight = $table.height() - ($stickyWrap.height() + ($tfoot.height() || 0)),
-						isVisible = ( scrollTop > offset.top ) && ( scrollTop < offset.top + tableHeight ) ? 'visible' : 'hidden',
-						cssSettings = { visibility : isVisible };
-
-					if ($attach.length) {
-						cssSettings.top = yWindow ? scrollTop - $attach.offset().top : $attach.scrollTop();
-					}
-					if (xWindow) {
-						// adjust when scrolling horizontally - fixes issue #143
-						cssSettings.left = $table.offset().left - parseInt($table.css('margin-left'), 10) - $xScroll.scrollLeft() - spacing;
-					}
-					if ($nestedSticky.length) {
-						cssSettings.top = ( cssSettings.top || 0 ) + stickyOffset + nestedStickyTop;
-					}
-					$stickyWrap
-						.removeClass( ts.css.stickyVis + ' ' + ts.css.stickyHide )
-						.addClass( isVisible === 'visible' ? ts.css.stickyVis : ts.css.stickyHide )
-						.css(cssSettings);
-					if (isVisible !== laststate || resizing) {
-						// make sure the column widths match
-						resizeHeader();
-						laststate = isVisible;
-					}
-				};
-			// only add a position relative if a position isn't already defined
-			if ($attach.length && !$attach.css('position')) {
-				$attach.css('position', 'relative');
-			}
-			// fix clone ID, if it exists - fixes #271
-			if ($stickyTable.attr('id')) { $stickyTable[0].id += wo.stickyHeaders_cloneId; }
-			// clear out cloned table, except for sticky header
-			// include caption & filter row (fixes #126 & #249) - don't remove cells to get correct cell indexing
-			$stickyTable.find('thead:gt(0), tr.sticky-false').hide();
-			$stickyTable.find('tbody, tfoot').remove();
-			$stickyTable.find('caption').toggle(wo.stickyHeaders_includeCaption);
-			// issue #172 - find td/th in sticky header
-			$stickyCells = $stickyThead.children().children();
-			$stickyTable.css({ height:0, width:0, margin: 0 });
-			// remove resizable block
-			$stickyCells.find('.' + ts.css.resizer).remove();
-			// update sticky header class names to match real header after sorting
-			$table
-				.addClass('hasStickyHeaders')
-				.bind('pagerComplete' + namespace, function() {
-					resizeHeader();
-				});
-
-			ts.bindEvents(table, $stickyThead.children().children('.' + ts.css.header));
-
-			// add stickyheaders AFTER the table. If the table is selected by ID, the original one (first) will be returned.
-			$table.after( $stickyWrap );
-
-			// onRenderHeader is defined, we need to do something about it (fixes #641)
-			if (c.onRenderHeader) {
-				$t = $stickyThead.children('tr').children();
-				len = $t.length;
-				for ( index = 0; index < len; index++ ) {
-					// send second parameter
-					c.onRenderHeader.apply( $t.eq( index ), [ index, c, $stickyTable ] );
+				close: function() {
+					self.close();
 				}
-			}
-
-			// make it sticky!
-			$xScroll.add($yScroll)
-				.unbind( ('scroll resize '.split(' ').join( namespace )).replace(/\s+/g, ' ') )
-				.bind('scroll resize '.split(' ').join( namespace ), function( event ) {
-					scrollSticky( event.type === 'resize' );
-				});
-			c.$table
-				.unbind('stickyHeadersUpdate' + namespace)
-				.bind('stickyHeadersUpdate' + namespace, function(){
-					scrollSticky( true );
-				});
-
-			if (wo.stickyHeaders_addResizeEvent) {
-				ts.addHeaderResizeEvent(table);
-			}
-
-			// look for filter widget
-			if ($table.hasClass('hasFilters') && wo.filter_columnFilters) {
-				// scroll table into view after filtering, if sticky header is active - #482
-				$table.bind('filterEnd' + namespace, function() {
-					// $(':focus') needs jQuery 1.6+
-					var $td = $(document.activeElement).closest('td'),
-						column = $td.parent().children().index($td);
-					// only scroll if sticky header is active
-					if ($stickyWrap.hasClass(ts.css.stickyVis) && wo.stickyHeaders_filteredToTop) {
-						// scroll to original table (not sticky clone)
-						window.scrollTo(0, $table.position().top);
-						// give same input/select focus; check if c.$filters exists; fixes #594
-						if (column >= 0 && c.$filters) {
-							c.$filters.eq(column).find('a, select, input').filter(':visible').focus();
-						}
-					}
-				});
-				ts.filter.bindSearch( $table, $stickyCells.find('.' + ts.css.filter) );
-				// support hideFilters
-				if (wo.filter_hideFilters) {
-					ts.filter.hideFilters(c, $stickyTable);
-				}
-			}
-
-			// resize table (Firefox)
-			if (wo.stickyHeaders_addResizeEvent) {
-				$table.bind('resize' + c.namespace + 'stickyheaders', function() {
-					resizeHeader();
-				});
-			}
-
-			$table.triggerHandler('stickyHeadersInit');
-
-		},
-		remove: function(table, c, wo) {
-			var namespace = c.namespace + 'stickyheaders ';
-			c.$table
-				.removeClass('hasStickyHeaders')
-				.unbind( ('pagerComplete resize filterEnd stickyHeadersUpdate '.split(' ').join(namespace)).replace(/\s+/g, ' ') )
-				.next('.' + ts.css.stickyWrap).remove();
-			if (wo.$sticky && wo.$sticky.length) { wo.$sticky.remove(); } // remove cloned table
-			$(window)
-				.add(wo.stickyHeaders_xScroll)
-				.add(wo.stickyHeaders_yScroll)
-				.add(wo.stickyHeaders_attachTo)
-				.unbind( ('scroll resize '.split(' ').join(namespace)).replace(/\s+/g, ' ') );
-			ts.addHeaderResizeEvent(table, true);
-		}
-	});
-
-})(jQuery, window);
-
-/*! Widget: resizable - updated 11/4/2015 (v2.24.3) */
-/*jshint browser:true, jquery:true, unused:false */
-;(function ($, window) {
-	'use strict';
-	var ts = $.tablesorter || {};
-
-	$.extend(ts.css, {
-		resizableContainer : 'tablesorter-resizable-container',
-		resizableHandle    : 'tablesorter-resizable-handle',
-		resizableNoSelect  : 'tablesorter-disableSelection',
-		resizableStorage   : 'tablesorter-resizable'
-	});
-
-	// Add extra scroller css
-	$(function(){
-		var s = '<style>' +
-			'body.' + ts.css.resizableNoSelect + ' { -ms-user-select: none; -moz-user-select: -moz-none;' +
-				'-khtml-user-select: none; -webkit-user-select: none; user-select: none; }' +
-			'.' + ts.css.resizableContainer + ' { position: relative; height: 1px; }' +
-			// make handle z-index > than stickyHeader z-index, so the handle stays above sticky header
-			'.' + ts.css.resizableHandle + ' { position: absolute; display: inline-block; width: 8px;' +
-				'top: 1px; cursor: ew-resize; z-index: 3; user-select: none; -moz-user-select: none; }' +
-			'</style>';
-		$(s).appendTo('body');
-	});
-
-	ts.resizable = {
-		init : function( c, wo ) {
-			if ( c.$table.hasClass( 'hasResizable' ) ) { return; }
-			c.$table.addClass( 'hasResizable' );
-
-			var noResize, $header, column, storedSizes, tmp,
-				$table = c.$table,
-				$parent = $table.parent(),
-				marginTop = parseInt( $table.css( 'margin-top' ), 10 ),
-
-			// internal variables
-			vars = wo.resizable_vars = {
-				useStorage : ts.storage && wo.resizable !== false,
-				$wrap : $parent,
-				mouseXPosition : 0,
-				$target : null,
-				$next : null,
-				overflow : $parent.css('overflow') === 'auto' ||
-					$parent.css('overflow') === 'scroll' ||
-					$parent.css('overflow-x') === 'auto' ||
-					$parent.css('overflow-x') === 'scroll',
-				storedSizes : []
 			};
-
-			// set default widths
-			ts.resizableReset( c.table, true );
-
-			// now get measurements!
-			vars.tableWidth = $table.width();
-			// attempt to autodetect
-			vars.fullWidth = Math.abs( $parent.width() - vars.tableWidth ) < 20;
-
-			/*
-			// Hacky method to determine if table width is set to 'auto'
-			// http://stackoverflow.com/a/20892048/145346
-			if ( !vars.fullWidth ) {
-				tmp = $table.width();
-				$header = $table.wrap('<span>').parent(); // temp variable
-				storedSizes = parseInt( $table.css( 'margin-left' ), 10 ) || 0;
-				$table.css( 'margin-left', storedSizes + 50 );
-				vars.tableWidth = $header.width() > tmp ? 'auto' : tmp;
-				$table.css( 'margin-left', storedSizes ? storedSizes : '' );
-				$header = null;
-				$table.unwrap('<span>');
-			}
-			*/
-
-			if ( vars.useStorage && vars.overflow ) {
-				// save table width
-				ts.storage( c.table, 'tablesorter-table-original-css-width', vars.tableWidth );
-				tmp = ts.storage( c.table, 'tablesorter-table-resized-width' ) || 'auto';
-				ts.resizable.setWidth( $table, tmp, true );
-			}
-			wo.resizable_vars.storedSizes = storedSizes = ( vars.useStorage ?
-				ts.storage( c.table, ts.css.resizableStorage ) :
-				[] ) || [];
-			ts.resizable.setWidths( c, wo, storedSizes );
-			ts.resizable.updateStoredSizes( c, wo );
-
-			wo.$resizable_container = $( '<div class="' + ts.css.resizableContainer + '">' )
-				.css({ top : marginTop })
-				.insertBefore( $table );
-			// add container
-			for ( column = 0; column < c.columns; column++ ) {
-				$header = c.$headerIndexed[ column ];
-				tmp = ts.getColumnData( c.table, c.headers, column );
-				noResize = ts.getData( $header, tmp, 'resizable' ) === 'false';
-				if ( !noResize ) {
-					$( '<div class="' + ts.css.resizableHandle + '">' )
-						.appendTo( wo.$resizable_container )
-						.attr({
-							'data-column' : column,
-							'unselectable' : 'on'
-						})
-						.data( 'header', $header )
-						.bind( 'selectstart', false );
-				}
-			}
-			ts.resizable.setHandlePosition( c, wo );
-			ts.resizable.bindings( c, wo );
 		},
-
-		updateStoredSizes : function( c, wo ) {
-			var column, $header,
-				len = c.columns,
-				vars = wo.resizable_vars;
-			vars.storedSizes = [];
-			for ( column = 0; column < len; column++ ) {
-				$header = c.$headerIndexed[ column ];
-				vars.storedSizes[ column ] = $header.is(':visible') ? $header.width() : 0;
+		buildNotify: function () {
+			var content = this.settings.content;
+			this.$ele = $(String.format(this.settings.template, this.settings.type, content.title, content.message, content.url, content.target));
+			this.$ele.attr('data-notify-position', this.settings.placement.from + '-' + this.settings.placement.align);		
+			if (!this.settings.allow_dismiss) {
+				this.$ele.find('[data-notify="dismiss"]').css('display', 'none');
+			}
+			if ((this.settings.delay <= 0 && !this.settings.showProgressbar) || !this.settings.showProgressbar) {
+				this.$ele.find('[data-notify="progressbar"]').remove();
 			}
 		},
-
-		setWidth : function( $el, width, overflow ) {
-			// overflow tables need min & max width set as well
-			$el.css({
-				'width' : width,
-				'min-width' : overflow ? width : '',
-				'max-width' : overflow ? width : ''
+		setIcon: function() {
+			if (this.settings.icon_type.toLowerCase() == 'class') {
+				this.$ele.find('[data-notify="icon"]').addClass(this.settings.content.icon);
+			}else{
+				if (this.$ele.find('[data-notify="icon"]').is('img')) {
+					this.$ele.find('[data-notify="icon"]').attr('src', this.settings.content.icon);
+				}else{
+					this.$ele.find('[data-notify="icon"]').append('<img src="'+this.settings.content.icon+'" alt="Notify Icon" />');
+				}	
+			}
+		},
+		styleURL: function() {
+			this.$ele.find('[data-notify="url"]').css({
+				backgroundImage: 'url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)',
+				height: '100%',
+				left: '0px',
+				position: 'absolute',
+				top: '0px',
+				width: '100%',
+				zIndex: this.settings.z_index + 1
+			});
+			this.$ele.find('[data-notify="dismiss"]').css({
+				position: 'absolute',
+				right: '10px',
+				top: '5px',
+				zIndex: this.settings.z_index + 2
 			});
 		},
+		placement: function() {
+			var self = this,
+				offsetAmt = this.settings.offset.y,
+				css = {
+					display: 'inline-block',
+					margin: '0px auto',
+					position: this.settings.position ?  this.settings.position : (this.settings.element === 'body' ? 'fixed' : 'absolute'),
+					transition: 'all .5s ease-in-out',
+					zIndex: this.settings.z_index
+				},
+				hasAnimation = false,
+				settings = this.settings;
 
-		setWidths : function( c, wo, storedSizes ) {
-			var column, $temp,
-				vars = wo.resizable_vars,
-				$extra = $( c.namespace + '_extra_headers' ),
-				$col = c.$table.children( 'colgroup' ).children( 'col' );
-			storedSizes = storedSizes || vars.storedSizes || [];
-			// process only if table ID or url match
-			if ( storedSizes.length ) {
-				for ( column = 0; column < c.columns; column++ ) {
-					// set saved resizable widths
-					ts.resizable.setWidth( c.$headerIndexed[ column ], storedSizes[ column ], vars.overflow );
-					if ( $extra.length ) {
-						// stickyHeaders needs to modify min & max width as well
-						$temp = $extra.eq( column ).add( $col.eq( column ) );
-						ts.resizable.setWidth( $temp, storedSizes[ column ], vars.overflow );
+			$('[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])').each(function() {
+				return offsetAmt = Math.max(offsetAmt, parseInt($(this).css(settings.placement.from)) +  parseInt($(this).outerHeight()) +  parseInt(settings.spacing));
+			});
+			if (this.settings.newest_on_top == true) {
+				offsetAmt = this.settings.offset.y;
+			}
+			css[this.settings.placement.from] = offsetAmt+'px';
+
+			switch (this.settings.placement.align) {
+				case "left":
+				case "right":
+					css[this.settings.placement.align] = this.settings.offset.x+'px';
+					break;
+				case "center":
+					css.left = 0;
+					css.right = 0;
+					break;
+			}
+			this.$ele.css(css).addClass(this.settings.animate.enter);
+			$.each(Array('webkit', 'moz', 'o', 'ms', ''), function(index, prefix) {
+				self.$ele[0].style[prefix+'AnimationIterationCount'] = 1;
+			});
+
+			$(this.settings.element).append(this.$ele);
+
+			if (this.settings.newest_on_top == true) {
+				offsetAmt = (parseInt(offsetAmt)+parseInt(this.settings.spacing)) + this.$ele.outerHeight();
+				this.reposition(offsetAmt);
+			}
+			
+			if ($.isFunction(self.settings.onShow)) {
+				self.settings.onShow.call(this.$ele);
+			}
+
+			this.$ele.one(this.animations.start, function(event) {
+				hasAnimation = true;
+			}).one(this.animations.end, function(event) {
+				if ($.isFunction(self.settings.onShown)) {
+					self.settings.onShown.call(this);
+				}
+			});
+
+			setTimeout(function() {
+				if (!hasAnimation) {
+					if ($.isFunction(self.settings.onShown)) {
+						self.settings.onShown.call(this);
 					}
 				}
-				$temp = $( c.namespace + '_extra_table' );
-				if ( $temp.length && !ts.hasWidget( c.table, 'scroller' ) ) {
-					ts.resizable.setWidth( $temp, c.$table.outerWidth(), vars.overflow );
-				}
-			}
+			}, 600);
 		},
+		bind: function() {
+			var self = this;
 
-		setHandlePosition : function( c, wo ) {
-			var startPosition,
-				hasScroller = ts.hasWidget( c.table, 'scroller' ),
-				tableHeight = c.$table.height(),
-				$handles = wo.$resizable_container.children(),
-				handleCenter = Math.floor( $handles.width() / 2 );
+			this.$ele.find('[data-notify="dismiss"]').on('click', function() {		
+				self.close();
+			})
 
-			if ( hasScroller ) {
-				tableHeight = 0;
-				c.$table.closest( '.' + ts.css.scrollerWrap ).children().each(function(){
-					var $this = $(this);
-					// center table has a max-height set
-					tableHeight += $this.filter('[style*="height"]').length ? $this.height() : $this.children('table').height();
-				});
-			}
-			// subtract out table left position from resizable handles. Fixes #864
-			startPosition = c.$table.position().left;
-			$handles.each( function() {
-				var $this = $(this),
-					column = parseInt( $this.attr( 'data-column' ), 10 ),
-					columns = c.columns - 1,
-					$header = $this.data( 'header' );
-				if ( !$header ) { return; } // see #859
-				if ( !$header.is(':visible') ) {
-					$this.hide();
-				} else if ( column < columns || column === columns && wo.resizable_addLastColumn ) {
-					$this.css({
-						display: 'inline-block',
-						height : tableHeight,
-						left : $header.position().left - startPosition + $header.outerWidth() - handleCenter
-					});
-				}
+			this.$ele.mouseover(function(e) {
+				$(this).data('data-hover', "true");
+			}).mouseout(function(e) {
+				$(this).data('data-hover', "false");
 			});
-		},
+			this.$ele.data('data-hover', "false");
 
-		// prevent text selection while dragging resize bar
-		toggleTextSelection : function( c, wo, toggle ) {
-			var namespace = c.namespace + 'tsresize';
-			wo.resizable_vars.disabled = toggle;
-			$( 'body' ).toggleClass( ts.css.resizableNoSelect, toggle );
-			if ( toggle ) {
-				$( 'body' )
-					.attr( 'unselectable', 'on' )
-					.bind( 'selectstart' + namespace, false );
-			} else {
-				$( 'body' )
-					.removeAttr( 'unselectable' )
-					.unbind( 'selectstart' + namespace );
-			}
-		},
-
-		bindings : function( c, wo ) {
-			var namespace = c.namespace + 'tsresize';
-			wo.$resizable_container.children().bind( 'mousedown', function( event ) {
-				// save header cell and mouse position
-				var column,
-					vars = wo.resizable_vars,
-					$extras = $( c.namespace + '_extra_headers' ),
-					$header = $( event.target ).data( 'header' );
-
-				column = parseInt( $header.attr( 'data-column' ), 10 );
-				vars.$target = $header = $header.add( $extras.filter('[data-column="' + column + '"]') );
-				vars.target = column;
-
-				// if table is not as wide as it's parent, then resize the table
-				vars.$next = event.shiftKey || wo.resizable_targetLast ?
-					$header.parent().children().not( '.resizable-false' ).filter( ':last' ) :
-					$header.nextAll( ':not(.resizable-false)' ).eq( 0 );
-
-				column = parseInt( vars.$next.attr( 'data-column' ), 10 );
-				vars.$next = vars.$next.add( $extras.filter('[data-column="' + column + '"]') );
-				vars.next = column;
-
-				vars.mouseXPosition = event.pageX;
-				ts.resizable.updateStoredSizes( c, wo );
-				ts.resizable.toggleTextSelection(c, wo, true );
-			});
-
-			$( document )
-				.bind( 'mousemove' + namespace, function( event ) {
-					var vars = wo.resizable_vars;
-					// ignore mousemove if no mousedown
-					if ( !vars.disabled || vars.mouseXPosition === 0 || !vars.$target ) { return; }
-					if ( wo.resizable_throttle ) {
-						clearTimeout( vars.timer );
-						vars.timer = setTimeout( function() {
-							ts.resizable.mouseMove( c, wo, event );
-						}, isNaN( wo.resizable_throttle ) ? 5 : wo.resizable_throttle );
-					} else {
-						ts.resizable.mouseMove( c, wo, event );
+			if (this.settings.delay > 0) {
+				self.$ele.data('notify-delay', self.settings.delay);
+				var timer = setInterval(function() {
+					var delay = parseInt(self.$ele.data('notify-delay')) - self.settings.timer;
+					if ((self.$ele.data('data-hover') === 'false' && self.settings.mouse_over == "pause") || self.settings.mouse_over != "pause") {
+						var percent = ((self.settings.delay - delay) / self.settings.delay) * 100;
+						self.$ele.data('notify-delay', delay);
+						self.$ele.find('[data-notify="progressbar"] > div').attr('aria-valuenow', percent).css('width', percent + '%');
 					}
-				})
-				.bind( 'mouseup' + namespace, function() {
-					if (!wo.resizable_vars.disabled) { return; }
-					ts.resizable.toggleTextSelection( c, wo, false );
-					ts.resizable.stopResize( c, wo );
-					ts.resizable.setHandlePosition( c, wo );
-				});
+					if (delay <= -(self.settings.timer)) {
+						clearInterval(timer);
+						self.close();
+					}
+				}, self.settings.timer);
+			}
+		},
+		close: function() {
+			var self = this,
+				$successors = null,
+				posX = parseInt(this.$ele.css(this.settings.placement.from)),
+				hasAnimation = false;
 
-			// resizeEnd event triggered by scroller widget
-			$( window ).bind( 'resize' + namespace + ' resizeEnd' + namespace, function() {
-				ts.resizable.setHandlePosition( c, wo );
+			this.$ele.data('closing', 'true').addClass(this.settings.animate.exit);
+			self.reposition(posX);			
+			
+			if ($.isFunction(self.settings.onClose)) {
+				self.settings.onClose.call(this.$ele);
+			}
+
+			this.$ele.one(this.animations.start, function(event) {
+				hasAnimation = true;
+			}).one(this.animations.end, function(event) {
+				$(this).remove();
+				if ($.isFunction(self.settings.onClosed)) {
+					self.settings.onClosed.call(this);
+				}
 			});
 
-			// right click to reset columns to default widths
-			c.$table
-				.bind( 'columnUpdate' + namespace, function() {
-					ts.resizable.setHandlePosition( c, wo );
-				})
-				.find( 'thead:first' )
-				.add( $( c.namespace + '_extra_table' ).find( 'thead:first' ) )
-				.bind( 'contextmenu' + namespace, function() {
-					// $.isEmptyObject() needs jQuery 1.4+; allow right click if already reset
-					var allowClick = wo.resizable_vars.storedSizes.length === 0;
-					ts.resizableReset( c.table );
-					ts.resizable.setHandlePosition( c, wo );
-					wo.resizable_vars.storedSizes = [];
-					return allowClick;
-				});
-
-		},
-
-		mouseMove : function( c, wo, event ) {
-			if ( wo.resizable_vars.mouseXPosition === 0 || !wo.resizable_vars.$target ) { return; }
-			// resize columns
-			var column,
-				total = 0,
-				vars = wo.resizable_vars,
-				$next = vars.$next,
-				tar = vars.storedSizes[ vars.target ],
-				leftEdge = event.pageX - vars.mouseXPosition;
-			if ( vars.overflow ) {
-				if ( tar + leftEdge > 0 ) {
-					vars.storedSizes[ vars.target ] += leftEdge;
-					ts.resizable.setWidth( vars.$target, vars.storedSizes[ vars.target ], true );
-					// update the entire table width
-					for ( column = 0; column < c.columns; column++ ) {
-						total += vars.storedSizes[ column ];
+			setTimeout(function() {
+				if (!hasAnimation) {
+					self.$ele.remove();
+					if (self.settings.onClosed) {
+						self.settings.onClosed(self.$ele);
 					}
-					ts.resizable.setWidth( c.$table.add( $( c.namespace + '_extra_table' ) ), total );
 				}
-				if ( !$next.length ) {
-					// if expanding right-most column, scroll the wrapper
-					vars.$wrap[0].scrollLeft = c.$table.width();
-				}
-			} else if ( vars.fullWidth ) {
-				vars.storedSizes[ vars.target ] += leftEdge;
-				vars.storedSizes[ vars.next ] -= leftEdge;
-				ts.resizable.setWidths( c, wo );
-			} else {
-				vars.storedSizes[ vars.target ] += leftEdge;
-				ts.resizable.setWidths( c, wo );
-			}
-			vars.mouseXPosition = event.pageX;
-			// dynamically update sticky header widths
-			c.$table.triggerHandler('stickyHeadersUpdate');
+			}, 600);
 		},
-
-		stopResize : function( c, wo ) {
-			var vars = wo.resizable_vars;
-			ts.resizable.updateStoredSizes( c, wo );
-			if ( vars.useStorage ) {
-				// save all column widths
-				ts.storage( c.table, ts.css.resizableStorage, vars.storedSizes );
-				ts.storage( c.table, 'tablesorter-table-resized-width', c.$table.width() );
+		reposition: function(posX) {
+			var self = this,
+				notifies = '[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])',
+				$elements = this.$ele.nextAll(notifies);
+			if (this.settings.newest_on_top == true) {
+				$elements = this.$ele.prevAll(notifies);
 			}
-			vars.mouseXPosition = 0;
-			vars.$target = vars.$next = null;
-			// will update stickyHeaders, just in case, see #912
-			c.$table.triggerHandler('stickyHeadersUpdate');
-		}
-	};
-
-	// this widget saves the column widths if
-	// $.tablesorter.storage function is included
-	// **************************
-	ts.addWidget({
-		id: 'resizable',
-		priority: 40,
-		options: {
-			resizable : true, // save column widths to storage
-			resizable_addLastColumn : false,
-			resizable_widths : [],
-			resizable_throttle : false, // set to true (5ms) or any number 0-10 range
-			resizable_targetLast : false,
-			resizable_fullWidth : null
-		},
-		init: function(table, thisWidget, c, wo) {
-			ts.resizable.init( c, wo );
-		},
-		remove: function( table, c, wo, refreshing ) {
-			if (wo.$resizable_container) {
-				var namespace = c.namespace + 'tsresize';
-				c.$table.add( $( c.namespace + '_extra_table' ) )
-					.removeClass('hasResizable')
-					.children( 'thead' )
-					.unbind( 'contextmenu' + namespace );
-
-				wo.$resizable_container.remove();
-				ts.resizable.toggleTextSelection( c, wo, false );
-				ts.resizableReset( table, refreshing );
-				$( document ).unbind( 'mousemove' + namespace + ' mouseup' + namespace );
-			}
+			$elements.each(function() {
+				$(this).css(self.settings.placement.from, posX);
+				posX = (parseInt(posX)+parseInt(self.settings.spacing)) + $(this).outerHeight();
+			});
 		}
 	});
 
-	ts.resizableReset = function( table, refreshing ) {
-		$( table ).each(function(){
-			var index, $t,
-				c = this.config,
-				wo = c && c.widgetOptions,
-				vars = wo.resizable_vars;
-			if ( table && c && c.$headerIndexed.length ) {
-				// restore the initial table width
-				if ( vars.overflow && vars.tableWidth ) {
-					ts.resizable.setWidth( c.$table, vars.tableWidth, true );
-					if ( vars.useStorage ) {
-						ts.storage( table, 'tablesorter-table-resized-width', 'auto' );
-					}
-				}
-				for ( index = 0; index < c.columns; index++ ) {
-					$t = c.$headerIndexed[ index ];
-					if ( wo.resizable_widths && wo.resizable_widths[ index ] ) {
-						ts.resizable.setWidth( $t, wo.resizable_widths[ index ], vars.overflow );
-					} else if ( !$t.hasClass( 'resizable-false' ) ) {
-						// don't clear the width of any column that is not resizable
-						ts.resizable.setWidth( $t, '', vars.overflow );
-					}
-				}
-
-				// reset stickyHeader widths
-				c.$table.triggerHandler( 'stickyHeadersUpdate' );
-				if ( ts.storage && !refreshing ) {
-					ts.storage( this, ts.css.resizableStorage, {} );
-				}
-			}
-		});
+	$.notify = function ( content, options ) {
+		var plugin = new Notify( this, content, options );
+		return plugin.notify;
+	};
+	$.notifyDefaults = function( options ) {
+		defaults = $.extend(true, {}, defaults, options);
+		return defaults;
+	};
+	$.notifyClose = function( command ) {
+		if (typeof command === "undefined" || command == "all") {
+			$('[data-notify]').find('[data-notify="dismiss"]').trigger('click');
+		}else{
+			$('[data-notify-position="'+command+'"]').find('[data-notify="dismiss"]').trigger('click');
+		}
 	};
 
-})( jQuery, window );
-
-/*! Widget: saveSort - updated 10/31/2015 (v2.24.0) *//*
-* Requires tablesorter v2.16+
-* by Rob Garrison
-*/
-;(function ($) {
-	'use strict';
-	var ts = $.tablesorter || {};
-
-	// this widget saves the last sort only if the
-	// saveSort widget option is true AND the
-	// $.tablesorter.storage function is included
-	// **************************
-	ts.addWidget({
-		id: 'saveSort',
-		priority: 20,
-		options: {
-			saveSort : true
-		},
-		init: function(table, thisWidget, c, wo) {
-			// run widget format before all other widgets are applied to the table
-			thisWidget.format(table, c, wo, true);
-		},
-		format: function(table, c, wo, init) {
-			var stored, time,
-				$table = c.$table,
-				saveSort = wo.saveSort !== false, // make saveSort active/inactive; default to true
-				sortList = { 'sortList' : c.sortList };
-			if (c.debug) {
-				time = new Date();
-			}
-			if ($table.hasClass('hasSaveSort')) {
-				if (saveSort && table.hasInitialized && ts.storage) {
-					ts.storage( table, 'tablesorter-savesort', sortList );
-					if (c.debug) {
-						console.log('saveSort widget: Saving last sort: ' + c.sortList + ts.benchmark(time));
-					}
-				}
-			} else {
-				// set table sort on initial run of the widget
-				$table.addClass('hasSaveSort');
-				sortList = '';
-				// get data
-				if (ts.storage) {
-					stored = ts.storage( table, 'tablesorter-savesort' );
-					sortList = (stored && stored.hasOwnProperty('sortList') && $.isArray(stored.sortList)) ? stored.sortList : '';
-					if (c.debug) {
-						console.log('saveSort: Last sort loaded: "' + sortList + '"' + ts.benchmark(time));
-					}
-					$table.bind('saveSortReset', function(event) {
-						event.stopPropagation();
-						ts.storage( table, 'tablesorter-savesort', '' );
-					});
-				}
-				// init is true when widget init is run, this will run this widget before all other widgets have initialized
-				// this method allows using this widget in the original tablesorter plugin; but then it will run all widgets twice.
-				if (init && sortList && sortList.length > 0) {
-					c.sortList = sortList;
-				} else if (table.hasInitialized && sortList && sortList.length > 0) {
-					// update sort change
-					ts.sortOn( c, sortList );
-				}
-			}
-		},
-		remove: function(table, c) {
-			c.$table.removeClass('hasSaveSort');
-			// clear storage
-			if (ts.storage) { ts.storage( table, 'tablesorter-savesort', '' ); }
-		}
-	});
-
-})(jQuery);
-
-return $.tablesorter;
 }));
-;/*
- *
- * StaticRow widget for jQuery TableSorter 2.0
- * Version 1.0
- *
- * Copyright (c) 2011 Nils Luxton
- * Licensed under the MIT license:
- * http://www.opensource.org/licenses/mit-license.php
- *
- */
+(function(a){if(typeof define==="function"&&define.amd){define(["jquery"],a)}else{if(typeof exports==="object"){a(require("jquery"))}else{a(jQuery)}}}(function(f,c){if(!("indexOf" in Array.prototype)){Array.prototype.indexOf=function(k,j){if(j===c){j=0}if(j<0){j+=this.length}if(j<0){j=0}for(var l=this.length;j<l;j++){if(j in this&&this[j]===k){return j}}return -1}}function e(l){var k=f(l);var j=k.add(k.parents());var m=false;j.each(function(){if(f(this).css("position")==="fixed"){m=true;return false}});return m}function h(){return new Date(Date.UTC.apply(Date,arguments))}function d(){var j=new Date();return h(j.getUTCFullYear(),j.getUTCMonth(),j.getUTCDate(),j.getUTCHours(),j.getUTCMinutes(),j.getUTCSeconds(),0)}var i=function(l,k){var n=this;this.element=f(l);this.container=k.container||"body";this.language=k.language||this.element.data("date-language")||"en";this.language=this.language in a?this.language:this.language.split("-")[0];this.language=this.language in a?this.language:"en";this.isRTL=a[this.language].rtl||false;this.formatType=k.formatType||this.element.data("format-type")||"standard";this.format=g.parseFormat(k.format||this.element.data("date-format")||a[this.language].format||g.getDefaultFormat(this.formatType,"input"),this.formatType);this.isInline=false;this.isVisible=false;this.isInput=this.element.is("input");this.fontAwesome=k.fontAwesome||this.element.data("font-awesome")||false;this.bootcssVer=k.bootcssVer||(this.isInput?(this.element.is(".form-control")?3:2):(this.bootcssVer=this.element.is(".input-group")?3:2));this.component=this.element.is(".date")?(this.bootcssVer==3?this.element.find(".input-group-addon .glyphicon-th, .input-group-addon .glyphicon-time, .input-group-addon .glyphicon-remove, .input-group-addon .glyphicon-calendar, .input-group-addon .fa-calendar, .input-group-addon .fa-clock-o").parent():this.element.find(".add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar, .add-on .fa-calendar, .add-on .fa-clock-o").parent()):false;this.componentReset=this.element.is(".date")?(this.bootcssVer==3?this.element.find(".input-group-addon .glyphicon-remove, .input-group-addon .fa-times").parent():this.element.find(".add-on .icon-remove, .add-on .fa-times").parent()):false;this.hasInput=this.component&&this.element.find("input").length;if(this.component&&this.component.length===0){this.component=false}this.linkField=k.linkField||this.element.data("link-field")||false;this.linkFormat=g.parseFormat(k.linkFormat||this.element.data("link-format")||g.getDefaultFormat(this.formatType,"link"),this.formatType);this.minuteStep=k.minuteStep||this.element.data("minute-step")||5;this.pickerPosition=k.pickerPosition||this.element.data("picker-position")||"bottom-right";this.showMeridian=k.showMeridian||this.element.data("show-meridian")||false;this.initialDate=k.initialDate||new Date();this.zIndex=k.zIndex||this.element.data("z-index")||c;this.title=typeof k.title==="undefined"?false:k.title;this.defaultTimeZone=(new Date).toString().split("(")[1].slice(0,-1);this.timezone=k.timezone||this.defaultTimeZone;this.icons={leftArrow:this.fontAwesome?"fa-arrow-left":(this.bootcssVer===3?"glyphicon-arrow-left":"icon-arrow-left"),rightArrow:this.fontAwesome?"fa-arrow-right":(this.bootcssVer===3?"glyphicon-arrow-right":"icon-arrow-right")};this.icontype=this.fontAwesome?"fa":"glyphicon";this._attachEvents();this.clickedOutside=function(o){if(f(o.target).closest(".datetimepicker").length===0){n.hide()}};this.formatViewType="datetime";if("formatViewType" in k){this.formatViewType=k.formatViewType}else{if("formatViewType" in this.element.data()){this.formatViewType=this.element.data("formatViewType")}}this.minView=0;if("minView" in k){this.minView=k.minView}else{if("minView" in this.element.data()){this.minView=this.element.data("min-view")}}this.minView=g.convertViewMode(this.minView);this.maxView=g.modes.length-1;if("maxView" in k){this.maxView=k.maxView}else{if("maxView" in this.element.data()){this.maxView=this.element.data("max-view")}}this.maxView=g.convertViewMode(this.maxView);this.wheelViewModeNavigation=false;if("wheelViewModeNavigation" in k){this.wheelViewModeNavigation=k.wheelViewModeNavigation}else{if("wheelViewModeNavigation" in this.element.data()){this.wheelViewModeNavigation=this.element.data("view-mode-wheel-navigation")}}this.wheelViewModeNavigationInverseDirection=false;if("wheelViewModeNavigationInverseDirection" in k){this.wheelViewModeNavigationInverseDirection=k.wheelViewModeNavigationInverseDirection}else{if("wheelViewModeNavigationInverseDirection" in this.element.data()){this.wheelViewModeNavigationInverseDirection=this.element.data("view-mode-wheel-navigation-inverse-dir")}}this.wheelViewModeNavigationDelay=100;if("wheelViewModeNavigationDelay" in k){this.wheelViewModeNavigationDelay=k.wheelViewModeNavigationDelay}else{if("wheelViewModeNavigationDelay" in this.element.data()){this.wheelViewModeNavigationDelay=this.element.data("view-mode-wheel-navigation-delay")}}this.startViewMode=2;if("startView" in k){this.startViewMode=k.startView}else{if("startView" in this.element.data()){this.startViewMode=this.element.data("start-view")}}this.startViewMode=g.convertViewMode(this.startViewMode);this.viewMode=this.startViewMode;this.viewSelect=this.minView;if("viewSelect" in k){this.viewSelect=k.viewSelect}else{if("viewSelect" in this.element.data()){this.viewSelect=this.element.data("view-select")}}this.viewSelect=g.convertViewMode(this.viewSelect);this.forceParse=true;if("forceParse" in k){this.forceParse=k.forceParse}else{if("dateForceParse" in this.element.data()){this.forceParse=this.element.data("date-force-parse")}}var m=this.bootcssVer===3?g.templateV3:g.template;while(m.indexOf("{iconType}")!==-1){m=m.replace("{iconType}",this.icontype)}while(m.indexOf("{leftArrow}")!==-1){m=m.replace("{leftArrow}",this.icons.leftArrow)}while(m.indexOf("{rightArrow}")!==-1){m=m.replace("{rightArrow}",this.icons.rightArrow)}this.picker=f(m).appendTo(this.isInline?this.element:this.container).on({click:f.proxy(this.click,this),mousedown:f.proxy(this.mousedown,this)});if(this.wheelViewModeNavigation){if(f.fn.mousewheel){this.picker.on({mousewheel:f.proxy(this.mousewheel,this)})}else{console.log("Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option")}}if(this.isInline){this.picker.addClass("datetimepicker-inline")}else{this.picker.addClass("datetimepicker-dropdown-"+this.pickerPosition+" dropdown-menu")}if(this.isRTL){this.picker.addClass("datetimepicker-rtl");var j=this.bootcssVer===3?".prev span, .next span":".prev i, .next i";this.picker.find(j).toggleClass(this.icons.leftArrow+" "+this.icons.rightArrow)}f(document).on("mousedown",this.clickedOutside);this.autoclose=false;if("autoclose" in k){this.autoclose=k.autoclose}else{if("dateAutoclose" in this.element.data()){this.autoclose=this.element.data("date-autoclose")}}this.keyboardNavigation=true;if("keyboardNavigation" in k){this.keyboardNavigation=k.keyboardNavigation}else{if("dateKeyboardNavigation" in this.element.data()){this.keyboardNavigation=this.element.data("date-keyboard-navigation")}}this.todayBtn=(k.todayBtn||this.element.data("date-today-btn")||false);this.clearBtn=(k.clearBtn||this.element.data("date-clear-btn")||false);this.todayHighlight=(k.todayHighlight||this.element.data("date-today-highlight")||false);this.weekStart=((k.weekStart||this.element.data("date-weekstart")||a[this.language].weekStart||0)%7);this.weekEnd=((this.weekStart+6)%7);this.startDate=-Infinity;this.endDate=Infinity;this.datesDisabled=[];this.daysOfWeekDisabled=[];this.setStartDate(k.startDate||this.element.data("date-startdate"));this.setEndDate(k.endDate||this.element.data("date-enddate"));this.setDatesDisabled(k.datesDisabled||this.element.data("date-dates-disabled"));this.setDaysOfWeekDisabled(k.daysOfWeekDisabled||this.element.data("date-days-of-week-disabled"));this.setMinutesDisabled(k.minutesDisabled||this.element.data("date-minute-disabled"));this.setHoursDisabled(k.hoursDisabled||this.element.data("date-hour-disabled"));this.fillDow();this.fillMonths();this.update();this.showMode();if(this.isInline){this.show()}};i.prototype={constructor:i,_events:[],_attachEvents:function(){this._detachEvents();if(this.isInput){this._events=[[this.element,{focus:f.proxy(this.show,this),keyup:f.proxy(this.update,this),keydown:f.proxy(this.keydown,this)}]]}else{if(this.component&&this.hasInput){this._events=[[this.element.find("input"),{focus:f.proxy(this.show,this),keyup:f.proxy(this.update,this),keydown:f.proxy(this.keydown,this)}],[this.component,{click:f.proxy(this.show,this)}]];if(this.componentReset){this._events.push([this.componentReset,{click:f.proxy(this.reset,this)}])}}else{if(this.element.is("div")){this.isInline=true}else{this._events=[[this.element,{click:f.proxy(this.show,this)}]]}}}for(var j=0,k,l;j<this._events.length;j++){k=this._events[j][0];l=this._events[j][1];k.on(l)}},_detachEvents:function(){for(var j=0,k,l;j<this._events.length;j++){k=this._events[j][0];l=this._events[j][1];k.off(l)}this._events=[]},show:function(j){this.picker.show();this.height=this.component?this.component.outerHeight():this.element.outerHeight();if(this.forceParse){this.update()}this.place();f(window).on("resize",f.proxy(this.place,this));if(j){j.stopPropagation();j.preventDefault()}this.isVisible=true;this.element.trigger({type:"show",date:this.date})},hide:function(j){if(!this.isVisible){return}if(this.isInline){return}this.picker.hide();f(window).off("resize",this.place);this.viewMode=this.startViewMode;this.showMode();if(!this.isInput){f(document).off("mousedown",this.hide)}if(this.forceParse&&(this.isInput&&this.element.val()||this.hasInput&&this.element.find("input").val())){this.setValue()}this.isVisible=false;this.element.trigger({type:"hide",date:this.date})},remove:function(){this._detachEvents();f(document).off("mousedown",this.clickedOutside);this.picker.remove();delete this.picker;delete this.element.data().datetimepicker},getDate:function(){var j=this.getUTCDate();return new Date(j.getTime()+(j.getTimezoneOffset()*60000))},getUTCDate:function(){return this.date},getInitialDate:function(){return this.initialDate},setInitialDate:function(j){this.initialDate=j},setDate:function(j){this.setUTCDate(new Date(j.getTime()-(j.getTimezoneOffset()*60000)))},setUTCDate:function(j){if(j>=this.startDate&&j<=this.endDate){this.date=j;this.setValue();this.viewDate=this.date;this.fill()}else{this.element.trigger({type:"outOfRange",date:j,startDate:this.startDate,endDate:this.endDate})}},setFormat:function(k){this.format=g.parseFormat(k,this.formatType);var j;if(this.isInput){j=this.element}else{if(this.component){j=this.element.find("input")}}if(j&&j.val()){this.setValue()}},setValue:function(){var j=this.getFormattedDate();if(!this.isInput){if(this.component){this.element.find("input").val(j)}this.element.data("date",j)}else{this.element.val(j)}if(this.linkField){f("#"+this.linkField).val(this.getFormattedDate(this.linkFormat))}},getFormattedDate:function(j){if(j==c){j=this.format}return g.formatDate(this.date,j,this.language,this.formatType,this.timezone)},setStartDate:function(j){this.startDate=j||-Infinity;if(this.startDate!==-Infinity){this.startDate=g.parseDate(this.startDate,this.format,this.language,this.formatType,this.timezone)}this.update();this.updateNavArrows()},setEndDate:function(j){this.endDate=j||Infinity;if(this.endDate!==Infinity){this.endDate=g.parseDate(this.endDate,this.format,this.language,this.formatType,this.timezone)}this.update();this.updateNavArrows()},setDatesDisabled:function(j){this.datesDisabled=j||[];if(!f.isArray(this.datesDisabled)){this.datesDisabled=this.datesDisabled.split(/,\s*/)}this.datesDisabled=f.map(this.datesDisabled,function(k){return g.parseDate(k,this.format,this.language,this.formatType,this.timezone).toDateString()});this.update();this.updateNavArrows()},setTitle:function(j,k){return this.picker.find(j).find("th:eq(1)").text(this.title===false?k:this.title)},setDaysOfWeekDisabled:function(j){this.daysOfWeekDisabled=j||[];if(!f.isArray(this.daysOfWeekDisabled)){this.daysOfWeekDisabled=this.daysOfWeekDisabled.split(/,\s*/)}this.daysOfWeekDisabled=f.map(this.daysOfWeekDisabled,function(k){return parseInt(k,10)});this.update();this.updateNavArrows()},setMinutesDisabled:function(j){this.minutesDisabled=j||[];if(!f.isArray(this.minutesDisabled)){this.minutesDisabled=this.minutesDisabled.split(/,\s*/)}this.minutesDisabled=f.map(this.minutesDisabled,function(k){return parseInt(k,10)});this.update();this.updateNavArrows()},setHoursDisabled:function(j){this.hoursDisabled=j||[];if(!f.isArray(this.hoursDisabled)){this.hoursDisabled=this.hoursDisabled.split(/,\s*/)}this.hoursDisabled=f.map(this.hoursDisabled,function(k){return parseInt(k,10)});this.update();this.updateNavArrows()},place:function(){if(this.isInline){return}if(!this.zIndex){var k=0;f("div").each(function(){var p=parseInt(f(this).css("zIndex"),10);if(p>k){k=p}});this.zIndex=k+10}var o,n,m,l;if(this.container instanceof f){l=this.container.offset()}else{l=f(this.container).offset()}if(this.component){o=this.component.offset();m=o.left;if(this.pickerPosition=="bottom-left"||this.pickerPosition=="top-left"){m+=this.component.outerWidth()-this.picker.outerWidth()}}else{o=this.element.offset();m=o.left;if(this.pickerPosition=="bottom-left"||this.pickerPosition=="top-left"){m+=this.element.outerWidth()-this.picker.outerWidth()}}var j=document.body.clientWidth||window.innerWidth;if(m+220>j){m=j-220}if(this.pickerPosition=="top-left"||this.pickerPosition=="top-right"){n=o.top-this.picker.outerHeight()}else{n=o.top+this.height}n=n-l.top;m=m-l.left;this.picker.css({top:n,left:m,zIndex:this.zIndex})},update:function(){var j,k=false;if(arguments&&arguments.length&&(typeof arguments[0]==="string"||arguments[0] instanceof Date)){j=arguments[0];k=true}else{j=(this.isInput?this.element.val():this.element.find("input").val())||this.element.data("date")||this.initialDate;if(typeof j=="string"||j instanceof String){j=j.replace(/^\s+|\s+$/g,"")}}if(!j){j=new Date();k=false}this.date=g.parseDate(j,this.format,this.language,this.formatType,this.timezone);if(k){this.setValue()}if(this.date<this.startDate){this.viewDate=new Date(this.startDate)}else{if(this.date>this.endDate){this.viewDate=new Date(this.endDate)}else{this.viewDate=new Date(this.date)}}this.fill()},fillDow:function(){var j=this.weekStart,k="<tr>";while(j<this.weekStart+7){k+='<th class="dow">'+a[this.language].daysMin[(j++)%7]+"</th>"}k+="</tr>";this.picker.find(".datetimepicker-days thead").append(k)},fillMonths:function(){var k="",j=0;while(j<12){k+='<span class="month">'+a[this.language].monthsShort[j++]+"</span>"}this.picker.find(".datetimepicker-months td").html(k)},fill:function(){if(this.date==null||this.viewDate==null){return}var H=new Date(this.viewDate),u=H.getUTCFullYear(),I=H.getUTCMonth(),n=H.getUTCDate(),D=H.getUTCHours(),y=H.getUTCMinutes(),z=this.startDate!==-Infinity?this.startDate.getUTCFullYear():-Infinity,E=this.startDate!==-Infinity?this.startDate.getUTCMonth():-Infinity,q=this.endDate!==Infinity?this.endDate.getUTCFullYear():Infinity,A=this.endDate!==Infinity?this.endDate.getUTCMonth()+1:Infinity,r=(new h(this.date.getUTCFullYear(),this.date.getUTCMonth(),this.date.getUTCDate())).valueOf(),G=new Date();this.setTitle(".datetimepicker-days",a[this.language].months[I]+" "+u);if(this.formatViewType=="time"){var k=this.getFormattedDate();this.setTitle(".datetimepicker-hours",k);this.setTitle(".datetimepicker-minutes",k)}else{this.setTitle(".datetimepicker-hours",n+" "+a[this.language].months[I]+" "+u);this.setTitle(".datetimepicker-minutes",n+" "+a[this.language].months[I]+" "+u)}this.picker.find("tfoot th.today").text(a[this.language].today||a.en.today).toggle(this.todayBtn!==false);this.picker.find("tfoot th.clear").text(a[this.language].clear||a.en.clear).toggle(this.clearBtn!==false);this.updateNavArrows();this.fillMonths();var K=h(u,I-1,28,0,0,0,0),C=g.getDaysInMonth(K.getUTCFullYear(),K.getUTCMonth());K.setUTCDate(C);K.setUTCDate(C-(K.getUTCDay()-this.weekStart+7)%7);var j=new Date(K);j.setUTCDate(j.getUTCDate()+42);j=j.valueOf();var s=[];var v;while(K.valueOf()<j){if(K.getUTCDay()==this.weekStart){s.push("<tr>")}v="";if(K.getUTCFullYear()<u||(K.getUTCFullYear()==u&&K.getUTCMonth()<I)){v+=" old"}else{if(K.getUTCFullYear()>u||(K.getUTCFullYear()==u&&K.getUTCMonth()>I)){v+=" new"}}if(this.todayHighlight&&K.getUTCFullYear()==G.getFullYear()&&K.getUTCMonth()==G.getMonth()&&K.getUTCDate()==G.getDate()){v+=" today"}if(K.valueOf()==r){v+=" active"}if((K.valueOf()+86400000)<=this.startDate||K.valueOf()>this.endDate||f.inArray(K.getUTCDay(),this.daysOfWeekDisabled)!==-1||f.inArray(K.toDateString(),this.datesDisabled)!==-1){v+=" disabled"}s.push('<td class="day'+v+'">'+K.getUTCDate()+"</td>");if(K.getUTCDay()==this.weekEnd){s.push("</tr>")}K.setUTCDate(K.getUTCDate()+1)}this.picker.find(".datetimepicker-days tbody").empty().append(s.join(""));s=[];var w="",F="",t="";var l=this.hoursDisabled||[];for(var B=0;B<24;B++){if(l.indexOf(B)!==-1){continue}var x=h(u,I,n,B);v="";if((x.valueOf()+3600000)<=this.startDate||x.valueOf()>this.endDate){v+=" disabled"}else{if(D==B){v+=" active"}}if(this.showMeridian&&a[this.language].meridiem.length==2){F=(B<12?a[this.language].meridiem[0]:a[this.language].meridiem[1]);if(F!=t){if(t!=""){s.push("</fieldset>")}s.push('<fieldset class="hour"><legend>'+F.toUpperCase()+"</legend>")}t=F;w=(B%12?B%12:12);s.push('<span class="hour'+v+" hour_"+(B<12?"am":"pm")+'">'+w+"</span>");if(B==23){s.push("</fieldset>")}}else{w=B+":00";s.push('<span class="hour'+v+'">'+w+"</span>")}}this.picker.find(".datetimepicker-hours td").html(s.join(""));s=[];w="",F="",t="";var m=this.minutesDisabled||[];for(var B=0;B<60;B+=this.minuteStep){if(m.indexOf(B)!==-1){continue}var x=h(u,I,n,D,B,0);v="";if(x.valueOf()<this.startDate||x.valueOf()>this.endDate){v+=" disabled"}else{if(Math.floor(y/this.minuteStep)==Math.floor(B/this.minuteStep)){v+=" active"}}if(this.showMeridian&&a[this.language].meridiem.length==2){F=(D<12?a[this.language].meridiem[0]:a[this.language].meridiem[1]);if(F!=t){if(t!=""){s.push("</fieldset>")}s.push('<fieldset class="minute"><legend>'+F.toUpperCase()+"</legend>")}t=F;w=(D%12?D%12:12);s.push('<span class="minute'+v+'">'+w+":"+(B<10?"0"+B:B)+"</span>");if(B==59){s.push("</fieldset>")}}else{w=B+":00";s.push('<span class="minute'+v+'">'+D+":"+(B<10?"0"+B:B)+"</span>")}}this.picker.find(".datetimepicker-minutes td").html(s.join(""));var L=this.date.getUTCFullYear();var p=this.setTitle(".datetimepicker-months",u).end().find("span").removeClass("active");if(L==u){var o=p.length-12;p.eq(this.date.getUTCMonth()+o).addClass("active")}if(u<z||u>q){p.addClass("disabled")}if(u==z){p.slice(0,E).addClass("disabled")}if(u==q){p.slice(A).addClass("disabled")}s="";u=parseInt(u/10,10)*10;var J=this.setTitle(".datetimepicker-years",u+"-"+(u+9)).end().find("td");u-=1;for(var B=-1;B<11;B++){s+='<span class="year'+(B==-1||B==10?" old":"")+(L==u?" active":"")+(u<z||u>q?" disabled":"")+'">'+u+"</span>";u+=1}J.html(s);this.place()},updateNavArrows:function(){var n=new Date(this.viewDate),l=n.getUTCFullYear(),m=n.getUTCMonth(),k=n.getUTCDate(),j=n.getUTCHours();switch(this.viewMode){case 0:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()&&m<=this.startDate.getUTCMonth()&&k<=this.startDate.getUTCDate()&&j<=this.startDate.getUTCHours()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()&&m>=this.endDate.getUTCMonth()&&k>=this.endDate.getUTCDate()&&j>=this.endDate.getUTCHours()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break;case 1:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()&&m<=this.startDate.getUTCMonth()&&k<=this.startDate.getUTCDate()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()&&m>=this.endDate.getUTCMonth()&&k>=this.endDate.getUTCDate()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break;case 2:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()&&m<=this.startDate.getUTCMonth()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()&&m>=this.endDate.getUTCMonth()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break;case 3:case 4:if(this.startDate!==-Infinity&&l<=this.startDate.getUTCFullYear()){this.picker.find(".prev").css({visibility:"hidden"})}else{this.picker.find(".prev").css({visibility:"visible"})}if(this.endDate!==Infinity&&l>=this.endDate.getUTCFullYear()){this.picker.find(".next").css({visibility:"hidden"})}else{this.picker.find(".next").css({visibility:"visible"})}break}},mousewheel:function(k){k.preventDefault();k.stopPropagation();if(this.wheelPause){return}this.wheelPause=true;var j=k.originalEvent;var m=j.wheelDelta;var l=m>0?1:(m===0)?0:-1;if(this.wheelViewModeNavigationInverseDirection){l=-l}this.showMode(l);setTimeout(f.proxy(function(){this.wheelPause=false},this),this.wheelViewModeNavigationDelay)},click:function(n){n.stopPropagation();n.preventDefault();var o=f(n.target).closest("span, td, th, legend");if(o.is("."+this.icontype)){o=f(o).parent().closest("span, td, th, legend")}if(o.length==1){if(o.is(".disabled")){this.element.trigger({type:"outOfRange",date:this.viewDate,startDate:this.startDate,endDate:this.endDate});return}switch(o[0].nodeName.toLowerCase()){case"th":switch(o[0].className){case"switch":this.showMode(1);break;case"prev":case"next":var j=g.modes[this.viewMode].navStep*(o[0].className=="prev"?-1:1);switch(this.viewMode){case 0:this.viewDate=this.moveHour(this.viewDate,j);break;case 1:this.viewDate=this.moveDate(this.viewDate,j);break;case 2:this.viewDate=this.moveMonth(this.viewDate,j);break;case 3:case 4:this.viewDate=this.moveYear(this.viewDate,j);break}this.fill();this.element.trigger({type:o[0].className+":"+this.convertViewModeText(this.viewMode),date:this.viewDate,startDate:this.startDate,endDate:this.endDate});break;case"clear":this.reset();if(this.autoclose){this.hide()}break;case"today":var k=new Date();k=h(k.getFullYear(),k.getMonth(),k.getDate(),k.getHours(),k.getMinutes(),k.getSeconds(),0);if(k<this.startDate){k=this.startDate}else{if(k>this.endDate){k=this.endDate}}this.viewMode=this.startViewMode;this.showMode(0);this._setDate(k);this.fill();if(this.autoclose){this.hide()}break}break;case"span":if(!o.is(".disabled")){var q=this.viewDate.getUTCFullYear(),p=this.viewDate.getUTCMonth(),r=this.viewDate.getUTCDate(),s=this.viewDate.getUTCHours(),l=this.viewDate.getUTCMinutes(),t=this.viewDate.getUTCSeconds();if(o.is(".month")){this.viewDate.setUTCDate(1);p=o.parent().find("span").index(o);r=this.viewDate.getUTCDate();this.viewDate.setUTCMonth(p);this.element.trigger({type:"changeMonth",date:this.viewDate});if(this.viewSelect>=3){this._setDate(h(q,p,r,s,l,t,0))}}else{if(o.is(".year")){this.viewDate.setUTCDate(1);q=parseInt(o.text(),10)||0;this.viewDate.setUTCFullYear(q);this.element.trigger({type:"changeYear",date:this.viewDate});if(this.viewSelect>=4){this._setDate(h(q,p,r,s,l,t,0))}}else{if(o.is(".hour")){s=parseInt(o.text(),10)||0;if(o.hasClass("hour_am")||o.hasClass("hour_pm")){if(s==12&&o.hasClass("hour_am")){s=0}else{if(s!=12&&o.hasClass("hour_pm")){s+=12}}}this.viewDate.setUTCHours(s);this.element.trigger({type:"changeHour",date:this.viewDate});if(this.viewSelect>=1){this._setDate(h(q,p,r,s,l,t,0))}}else{if(o.is(".minute")){l=parseInt(o.text().substr(o.text().indexOf(":")+1),10)||0;this.viewDate.setUTCMinutes(l);this.element.trigger({type:"changeMinute",date:this.viewDate});if(this.viewSelect>=0){this._setDate(h(q,p,r,s,l,t,0))}}}}}if(this.viewMode!=0){var m=this.viewMode;this.showMode(-1);this.fill();if(m==this.viewMode&&this.autoclose){this.hide()}}else{this.fill();if(this.autoclose){this.hide()}}}break;case"td":if(o.is(".day")&&!o.is(".disabled")){var r=parseInt(o.text(),10)||1;var q=this.viewDate.getUTCFullYear(),p=this.viewDate.getUTCMonth(),s=this.viewDate.getUTCHours(),l=this.viewDate.getUTCMinutes(),t=this.viewDate.getUTCSeconds();if(o.is(".old")){if(p===0){p=11;q-=1}else{p-=1}}else{if(o.is(".new")){if(p==11){p=0;q+=1}else{p+=1}}}this.viewDate.setUTCFullYear(q);this.viewDate.setUTCMonth(p,r);this.element.trigger({type:"changeDay",date:this.viewDate});if(this.viewSelect>=2){this._setDate(h(q,p,r,s,l,t,0))}}var m=this.viewMode;this.showMode(-1);this.fill();if(m==this.viewMode&&this.autoclose){this.hide()}break}}},_setDate:function(j,l){if(!l||l=="date"){this.date=j}if(!l||l=="view"){this.viewDate=j}this.fill();this.setValue();var k;if(this.isInput){k=this.element}else{if(this.component){k=this.element.find("input")}}if(k){k.change();if(this.autoclose&&(!l||l=="date")){}}this.element.trigger({type:"changeDate",date:this.getDate()});if(j==null){this.date=this.viewDate}},moveMinute:function(k,j){if(!j){return k}var l=new Date(k.valueOf());l.setUTCMinutes(l.getUTCMinutes()+(j*this.minuteStep));return l},moveHour:function(k,j){if(!j){return k}var l=new Date(k.valueOf());l.setUTCHours(l.getUTCHours()+j);return l},moveDate:function(k,j){if(!j){return k}var l=new Date(k.valueOf());l.setUTCDate(l.getUTCDate()+j);return l},moveMonth:function(j,k){if(!k){return j}var n=new Date(j.valueOf()),r=n.getUTCDate(),o=n.getUTCMonth(),m=Math.abs(k),q,p;k=k>0?1:-1;if(m==1){p=k==-1?function(){return n.getUTCMonth()==o}:function(){return n.getUTCMonth()!=q};q=o+k;n.setUTCMonth(q);if(q<0||q>11){q=(q+12)%12}}else{for(var l=0;l<m;l++){n=this.moveMonth(n,k)}q=n.getUTCMonth();n.setUTCDate(r);p=function(){return q!=n.getUTCMonth()}}while(p()){n.setUTCDate(--r);n.setUTCMonth(q)}return n},moveYear:function(k,j){return this.moveMonth(k,j*12)},dateWithinRange:function(j){return j>=this.startDate&&j<=this.endDate},keydown:function(n){if(this.picker.is(":not(:visible)")){if(n.keyCode==27){this.show()}return}var p=false,k,q,o,r,j;switch(n.keyCode){case 27:this.hide();n.preventDefault();break;case 37:case 39:if(!this.keyboardNavigation){break}k=n.keyCode==37?-1:1;viewMode=this.viewMode;if(n.ctrlKey){viewMode+=2}else{if(n.shiftKey){viewMode+=1}}if(viewMode==4){r=this.moveYear(this.date,k);j=this.moveYear(this.viewDate,k)}else{if(viewMode==3){r=this.moveMonth(this.date,k);j=this.moveMonth(this.viewDate,k)}else{if(viewMode==2){r=this.moveDate(this.date,k);j=this.moveDate(this.viewDate,k)}else{if(viewMode==1){r=this.moveHour(this.date,k);j=this.moveHour(this.viewDate,k)}else{if(viewMode==0){r=this.moveMinute(this.date,k);j=this.moveMinute(this.viewDate,k)}}}}}if(this.dateWithinRange(r)){this.date=r;this.viewDate=j;this.setValue();this.update();n.preventDefault();p=true}break;case 38:case 40:if(!this.keyboardNavigation){break}k=n.keyCode==38?-1:1;viewMode=this.viewMode;if(n.ctrlKey){viewMode+=2}else{if(n.shiftKey){viewMode+=1}}if(viewMode==4){r=this.moveYear(this.date,k);j=this.moveYear(this.viewDate,k)}else{if(viewMode==3){r=this.moveMonth(this.date,k);j=this.moveMonth(this.viewDate,k)}else{if(viewMode==2){r=this.moveDate(this.date,k*7);j=this.moveDate(this.viewDate,k*7)}else{if(viewMode==1){if(this.showMeridian){r=this.moveHour(this.date,k*6);j=this.moveHour(this.viewDate,k*6)}else{r=this.moveHour(this.date,k*4);j=this.moveHour(this.viewDate,k*4)}}else{if(viewMode==0){r=this.moveMinute(this.date,k*4);j=this.moveMinute(this.viewDate,k*4)}}}}}if(this.dateWithinRange(r)){this.date=r;this.viewDate=j;this.setValue();this.update();n.preventDefault();p=true}break;case 13:if(this.viewMode!=0){var m=this.viewMode;this.showMode(-1);this.fill();if(m==this.viewMode&&this.autoclose){this.hide()}}else{this.fill();if(this.autoclose){this.hide()}}n.preventDefault();break;case 9:this.hide();break}if(p){var l;if(this.isInput){l=this.element}else{if(this.component){l=this.element.find("input")}}if(l){l.change()}this.element.trigger({type:"changeDate",date:this.getDate()})}},showMode:function(j){if(j){var k=Math.max(0,Math.min(g.modes.length-1,this.viewMode+j));if(k>=this.minView&&k<=this.maxView){this.element.trigger({type:"changeMode",date:this.viewDate,oldViewMode:this.viewMode,newViewMode:k});this.viewMode=k}}this.picker.find(">div").hide().filter(".datetimepicker-"+g.modes[this.viewMode].clsName).css("display","block");this.updateNavArrows()},reset:function(j){this._setDate(null,"date")},convertViewModeText:function(j){switch(j){case 4:return"decade";case 3:return"year";case 2:return"month";case 1:return"day";case 0:return"hour"}}};var b=f.fn.datetimepicker;f.fn.datetimepicker=function(l){var j=Array.apply(null,arguments);j.shift();var k;this.each(function(){var o=f(this),n=o.data("datetimepicker"),m=typeof l=="object"&&l;if(!n){o.data("datetimepicker",(n=new i(this,f.extend({},f.fn.datetimepicker.defaults,m))))}if(typeof l=="string"&&typeof n[l]=="function"){k=n[l].apply(n,j);if(k!==c){return false}}});if(k!==c){return k}else{return this}};f.fn.datetimepicker.defaults={};f.fn.datetimepicker.Constructor=i;var a=f.fn.datetimepicker.dates={en:{days:["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],daysShort:["Sun","Mon","Tue","Wed","Thu","Fri","Sat","Sun"],daysMin:["Su","Mo","Tu","We","Th","Fr","Sa","Su"],months:["January","February","March","April","May","June","July","August","September","October","November","December"],monthsShort:["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],meridiem:["am","pm"],suffix:["st","nd","rd","th"],today:"Today",clear:"Clear"}};var g={modes:[{clsName:"minutes",navFnc:"Hours",navStep:1},{clsName:"hours",navFnc:"Date",navStep:1},{clsName:"days",navFnc:"Month",navStep:1},{clsName:"months",navFnc:"FullYear",navStep:1},{clsName:"years",navFnc:"FullYear",navStep:10}],isLeapYear:function(j){return(((j%4===0)&&(j%100!==0))||(j%400===0))},getDaysInMonth:function(j,k){return[31,(g.isLeapYear(j)?29:28),31,30,31,30,31,31,30,31,30,31][k]},getDefaultFormat:function(j,k){if(j=="standard"){if(k=="input"){return"yyyy-mm-dd hh:ii"}else{return"yyyy-mm-dd hh:ii:ss"}}else{if(j=="php"){if(k=="input"){return"Y-m-d H:i"}else{return"Y-m-d H:i:s"}}else{throw new Error("Invalid format type.")}}},validParts:function(j){if(j=="standard"){return/t|hh?|HH?|p|P|z|Z|ii?|ss?|dd?|DD?|mm?|MM?|yy(?:yy)?/g}else{if(j=="php"){return/[dDjlNwzFmMnStyYaABgGhHis]/g}else{throw new Error("Invalid format type.")}}},nonpunctuation:/[^ -\/:-@\[-`{-~\t\n\rTZ]+/g,parseFormat:function(m,k){var j=m.replace(this.validParts(k),"\0").split("\0"),l=m.match(this.validParts(k));if(!j||!j.length||!l||l.length==0){throw new Error("Invalid date format.")}return{separators:j,parts:l}},parseDate:function(A,y,v,j,r){if(A instanceof Date){var u=new Date(A.valueOf()-A.getTimezoneOffset()*60000);u.setMilliseconds(0);return u}if(/^\d{4}\-\d{1,2}\-\d{1,2}$/.test(A)){y=this.parseFormat("yyyy-mm-dd",j)}if(/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}$/.test(A)){y=this.parseFormat("yyyy-mm-dd hh:ii",j)}if(/^\d{4}\-\d{1,2}\-\d{1,2}[T ]\d{1,2}\:\d{1,2}\:\d{1,2}[Z]{0,1}$/.test(A)){y=this.parseFormat("yyyy-mm-dd hh:ii:ss",j)}if(/^[-+]\d+[dmwy]([\s,]+[-+]\d+[dmwy])*$/.test(A)){var l=/([-+]\d+)([dmwy])/,q=A.match(/([-+]\d+)([dmwy])/g),t,p;A=new Date();for(var x=0;x<q.length;x++){t=l.exec(q[x]);p=parseInt(t[1]);switch(t[2]){case"d":A.setUTCDate(A.getUTCDate()+p);break;case"m":A=i.prototype.moveMonth.call(i.prototype,A,p);break;case"w":A.setUTCDate(A.getUTCDate()+p*7);break;case"y":A=i.prototype.moveYear.call(i.prototype,A,p);break}}return h(A.getUTCFullYear(),A.getUTCMonth(),A.getUTCDate(),A.getUTCHours(),A.getUTCMinutes(),A.getUTCSeconds(),0)}var q=A&&A.toString().match(this.nonpunctuation)||[],A=new Date(0,0,0,0,0,0,0),m={},z=["hh","h","ii","i","ss","s","yyyy","yy","M","MM","m","mm","D","DD","d","dd","H","HH","p","P","z","Z"],o={hh:function(C,s){return C.setUTCHours(s)},h:function(C,s){return C.setUTCHours(s)},HH:function(C,s){return C.setUTCHours(s==12?0:s)},H:function(C,s){return C.setUTCHours(s==12?0:s)},ii:function(C,s){return C.setUTCMinutes(s)},i:function(C,s){return C.setUTCMinutes(s)},ss:function(C,s){return C.setUTCSeconds(s)},s:function(C,s){return C.setUTCSeconds(s)},yyyy:function(C,s){return C.setUTCFullYear(s)},yy:function(C,s){return C.setUTCFullYear(2000+s)},m:function(C,s){s-=1;while(s<0){s+=12}s%=12;C.setUTCMonth(s);while(C.getUTCMonth()!=s){if(isNaN(C.getUTCMonth())){return C}else{C.setUTCDate(C.getUTCDate()-1)}}return C},d:function(C,s){return C.setUTCDate(s)},p:function(C,s){return C.setUTCHours(s==1?C.getUTCHours()+12:C.getUTCHours())},z:function(){return r}},B,k,t;o.M=o.MM=o.mm=o.m;o.dd=o.d;o.P=o.p;o.Z=o.z;A=h(A.getFullYear(),A.getMonth(),A.getDate(),A.getHours(),A.getMinutes(),A.getSeconds());if(q.length==y.parts.length){for(var x=0,w=y.parts.length;x<w;x++){B=parseInt(q[x],10);t=y.parts[x];if(isNaN(B)){switch(t){case"MM":k=f(a[v].months).filter(function(){var s=this.slice(0,q[x].length),C=q[x].slice(0,s.length);return s==C});B=f.inArray(k[0],a[v].months)+1;break;case"M":k=f(a[v].monthsShort).filter(function(){var s=this.slice(0,q[x].length),C=q[x].slice(0,s.length);return s.toLowerCase()==C.toLowerCase()});B=f.inArray(k[0],a[v].monthsShort)+1;break;case"p":case"P":B=f.inArray(q[x].toLowerCase(),a[v].meridiem);break;case"z":case"Z":r;break}}m[t]=B}for(var x=0,n;x<z.length;x++){n=z[x];if(n in m&&!isNaN(m[n])){o[n](A,m[n])}}}return A},formatDate:function(l,q,m,p,o){if(l==null){return""}var k;if(p=="standard"){k={t:l.getTime(),yy:l.getUTCFullYear().toString().substring(2),yyyy:l.getUTCFullYear(),m:l.getUTCMonth()+1,M:a[m].monthsShort[l.getUTCMonth()],MM:a[m].months[l.getUTCMonth()],d:l.getUTCDate(),D:a[m].daysShort[l.getUTCDay()],DD:a[m].days[l.getUTCDay()],p:(a[m].meridiem.length==2?a[m].meridiem[l.getUTCHours()<12?0:1]:""),h:l.getUTCHours(),i:l.getUTCMinutes(),s:l.getUTCSeconds(),z:o};if(a[m].meridiem.length==2){k.H=(k.h%12==0?12:k.h%12)}else{k.H=k.h}k.HH=(k.H<10?"0":"")+k.H;k.P=k.p.toUpperCase();k.Z=k.z;k.hh=(k.h<10?"0":"")+k.h;k.ii=(k.i<10?"0":"")+k.i;k.ss=(k.s<10?"0":"")+k.s;k.dd=(k.d<10?"0":"")+k.d;k.mm=(k.m<10?"0":"")+k.m}else{if(p=="php"){k={y:l.getUTCFullYear().toString().substring(2),Y:l.getUTCFullYear(),F:a[m].months[l.getUTCMonth()],M:a[m].monthsShort[l.getUTCMonth()],n:l.getUTCMonth()+1,t:g.getDaysInMonth(l.getUTCFullYear(),l.getUTCMonth()),j:l.getUTCDate(),l:a[m].days[l.getUTCDay()],D:a[m].daysShort[l.getUTCDay()],w:l.getUTCDay(),N:(l.getUTCDay()==0?7:l.getUTCDay()),S:(l.getUTCDate()%10<=a[m].suffix.length?a[m].suffix[l.getUTCDate()%10-1]:""),a:(a[m].meridiem.length==2?a[m].meridiem[l.getUTCHours()<12?0:1]:""),g:(l.getUTCHours()%12==0?12:l.getUTCHours()%12),G:l.getUTCHours(),i:l.getUTCMinutes(),s:l.getUTCSeconds()};k.m=(k.n<10?"0":"")+k.n;k.d=(k.j<10?"0":"")+k.j;k.A=k.a.toString().toUpperCase();k.h=(k.g<10?"0":"")+k.g;k.H=(k.G<10?"0":"")+k.G;k.i=(k.i<10?"0":"")+k.i;k.s=(k.s<10?"0":"")+k.s}else{throw new Error("Invalid format type.")}}var l=[],r=f.extend([],q.separators);for(var n=0,j=q.parts.length;n<j;n++){if(r.length){l.push(r.shift())}l.push(k[q.parts[n]])}if(r.length){l.push(r.shift())}return l.join("")},convertViewMode:function(j){switch(j){case 4:case"decade":j=4;break;case 3:case"year":j=3;break;case 2:case"month":j=2;break;case 1:case"day":j=1;break;case 0:case"hour":j=0;break}return j},headTemplate:'<thead><tr><th class="prev"><i class="{iconType} {leftArrow}"/></th><th colspan="5" class="switch"></th><th class="next"><i class="{iconType} {rightArrow}"/></th></tr></thead>',headTemplateV3:'<thead><tr><th class="prev"><span class="{iconType} {leftArrow}"></span> </th><th colspan="5" class="switch"></th><th class="next"><span class="{iconType} {rightArrow}"></span> </th></tr></thead>',contTemplate:'<tbody><tr><td colspan="7"></td></tr></tbody>',footTemplate:'<tfoot><tr><th colspan="7" class="today"></th></tr><tr><th colspan="7" class="clear"></th></tr></tfoot>'};g.template='<div class="datetimepicker"><div class="datetimepicker-minutes"><table class=" table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-hours"><table class=" table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-days"><table class=" table-condensed">'+g.headTemplate+"<tbody></tbody>"+g.footTemplate+'</table></div><div class="datetimepicker-months"><table class="table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-years"><table class="table-condensed">'+g.headTemplate+g.contTemplate+g.footTemplate+"</table></div></div>";g.templateV3='<div class="datetimepicker"><div class="datetimepicker-minutes"><table class=" table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-hours"><table class=" table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-days"><table class=" table-condensed">'+g.headTemplateV3+"<tbody></tbody>"+g.footTemplate+'</table></div><div class="datetimepicker-months"><table class="table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+'</table></div><div class="datetimepicker-years"><table class="table-condensed">'+g.headTemplateV3+g.contTemplate+g.footTemplate+"</table></div></div>";f.fn.datetimepicker.DPGlobal=g;f.fn.datetimepicker.noConflict=function(){f.fn.datetimepicker=b;return this};f(document).on("focus.datetimepicker.data-api click.datetimepicker.data-api",'[data-provide="datetimepicker"]',function(k){var j=f(this);if(j.data("datetimepicker")){return}k.preventDefault();j.datetimepicker("show")});f(function(){f('[data-provide="datetimepicker-inline"]').datetimepicker()})}));
+/*The MIT License (MIT)
 
-$.tablesorter.addWidget({
+Copyright (c) 2014 https://github.com/kayalshri/
 
-    // Give the new Widget an ID to be used in the tablesorter() call, as follows:
-    // $('#myElement').tablesorter({ widgets: ['zebra','staticRow'] });
-    id: 'staticRow',
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-    // "Format" is run on all widgets once when the tablesorter has finished initialising,
-    // and then again every time a sort has finished.
-    format: function(table) {
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-        // Use a property of the function to determine
-        // whether this is the first run of "Format"
-        // (i.e. is this the table's default starting position,
-        //  or has it been sorted?)
-        if (typeof $(table).data('hasSorted') == 'undefined')
-        {
-            $(table).data('hasSorted', true); // This will force us into the "else" block the next time "Format" is run
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
 
-            // "Index" the static rows, saving their current (starting)
-            // position in the table inside a data() param on the
-            // <tr> element itself for later use.
-            $('tbody .static', table).each(function() {
-                $(this).data('tableindex', $(this).index());
-            });
-        }
-        else
-        {
-            // Loop the static rows, moving them to their
-            // original "indexed" position, and keep doing
-            // this until no more re-shuffling needs doing
-            var hasShuffled = true;
+(function($){
+        $.fn.extend({
+            tableExport: function(options) {
+                var defaults = {
+						separator: ',',
+						ignoreColumn: [],
+						tableName:'yourTableName',
+						type:'csv',
+						pdfFontSize:14,
+						pdfLeftMargin:20,
+						escape:'true',
+						htmlContent:'false',
+						consoleLog:'false'
+				};
+                
+				var options = $.extend(defaults, options);
+				var el = this;
+				
+				if(defaults.type == 'csv' || defaults.type == 'txt'){
+				
+					// Header
+					var tdData ="";
+					$(el).find('thead').find('tr').each(function() {
+					tdData += "\n";					
+						$(this).filter(':visible').find('th').each(function(index,data) {
+							if ($(this).css('display') != 'none'){
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									tdData += '"' + parseString($(this)) + '"' + defaults.separator;									
+								}
+							}
+							
+						});
+						tdData = $.trim(tdData);
+						tdData = $.trim(tdData).substring(0, tdData.length -1);
+					});
+					
+					// Row vs Column
+					$(el).find('tbody').find('tr').each(function() {
+					tdData += "\n";
+						$(this).filter(':visible').find('td').each(function(index,data) {
+							if ($(this).css('display') != 'none'){
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									tdData += '"'+ parseString($(this)) + '"'+ defaults.separator;
+								}
+							}
+						});
+						//tdData = $.trim(tdData);
+						tdData = $.trim(tdData).substring(0, tdData.length -1);
+					});
+					
+					//output
+					if(defaults.consoleLog == 'true'){
+						console.log(tdData);
+					}
+					var base64data = "base64," + $.base64.encode(tdData);
+					window.open('data:application/'+defaults.type+';filename=exportData;' + base64data);
+				}else if(defaults.type == 'sql'){
+				
+					// Header
+					var tdData ="INSERT INTO `"+defaults.tableName+"` (";
+					$(el).find('thead').find('tr').each(function() {
+					
+						$(this).filter(':visible').find('th').each(function(index,data) {
+							if ($(this).css('display') != 'none'){
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									tdData += '`' + parseString($(this)) + '`,' ;									
+								}
+							}
+							
+						});
+						tdData = $.trim(tdData);
+						tdData = $.trim(tdData).substring(0, tdData.length -1);
+					});
+					tdData += ") VALUES ";
+					// Row vs Column
+					$(el).find('tbody').find('tr').each(function() {
+					tdData += "(";
+						$(this).filter(':visible').find('td').each(function(index,data) {
+							if ($(this).css('display') != 'none'){
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									tdData += '"'+ parseString($(this)) + '",';
+								}
+							}
+						});
+						
+						tdData = $.trim(tdData).substring(0, tdData.length -1);
+						tdData += "),";
+					});
+					tdData = $.trim(tdData).substring(0, tdData.length -1);
+					tdData += ";";
+					
+					//output
+					//console.log(tdData);
+					
+					if(defaults.consoleLog == 'true'){
+						console.log(tdData);
+					}
+					
+					var base64data = "base64," + $.base64.encode(tdData);
+					window.open('data:application/sql;filename=exportData;' + base64data);
+					
+				
+				}else if(defaults.type == 'json'){
+				
+					var jsonHeaderArray = [];
+					$(el).find('thead').find('tr').each(function() {
+						var tdData ="";	
+						var jsonArrayTd = [];
+					
+						$(this).filter(':visible').find('th').each(function(index,data) {
+							if ($(this).css('display') != 'none'){
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									jsonArrayTd.push(parseString($(this)));									
+								}
+							}
+						});									
+						jsonHeaderArray.push(jsonArrayTd);						
+						
+					});
+					
+					var jsonArray = [];
+					$(el).find('tbody').find('tr').each(function() {
+						var tdData ="";	
+						var jsonArrayTd = [];
+					
+						$(this).filter(':visible').find('td').each(function(index,data) {
+							if ($(this).css('display') != 'none'){
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									jsonArrayTd.push(parseString($(this)));									
+								}
+							}
+						});									
+						jsonArray.push(jsonArrayTd);									
+						
+					});
+					
+					var jsonExportArray =[];
+					jsonExportArray.push({header:jsonHeaderArray,data:jsonArray});
+					
+					//Return as JSON
+					//console.log(JSON.stringify(jsonExportArray));
+					
+					//Return as Array
+					//console.log(jsonExportArray);
+					if(defaults.consoleLog == 'true'){
+						console.log(JSON.stringify(jsonExportArray));
+					}
+					var base64data = "base64," + $.base64.encode(JSON.stringify(jsonExportArray));
+					window.open('data:application/json;filename=exportData;' + base64data);
+				}else if(defaults.type == 'xml'){
+				
+					var xml = '<?xml version="1.0" encoding="utf-8"?>';
+					xml += '<tabledata><fields>';
 
-            while (hasShuffled)
-            {
-                hasShuffled = false;
-                $('tbody .static', table).each(function() {
-                    var targetIndex = $(this).data('tableindex');
-                    if (targetIndex != $(this).index())
-                    {
-                        hasShuffled = true;
-                        var thisRow = $(this).detach();
-                        var numRows = $('tbody tr', table).length;
+					// Header
+					$(el).find('thead').find('tr').each(function() {
+						$(this).filter(':visible').find('th').each(function(index,data) {
+							if ($(this).css('display') != 'none'){					
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									xml += "<field>" + parseString($(this)) + "</field>";
+								}
+							}
+						});									
+					});					
+					xml += '</fields><data>';
+					
+					// Row Vs Column
+					var rowCount=1;
+					$(el).find('tbody').find('tr').each(function() {
+						xml += '<row id="'+rowCount+'">';
+						var colCount=0;
+						$(this).filter(':visible').find('td').each(function(index,data) {
+							if ($(this).css('display') != 'none'){	
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									xml += "<column-"+colCount+">"+parseString($(this))+"</column-"+colCount+">";
+								}
+							}
+							colCount++;
+						});															
+						rowCount++;
+						xml += '</row>';
+					});					
+					xml += '</data></tabledata>'
+					
+					if(defaults.consoleLog == 'true'){
+						console.log(xml);
+					}
+					
+					var base64data = "base64," + $.base64.encode(xml);
+					window.open('data:application/xml;filename=exportData;' + base64data);
 
-                        // Are we trying to be the last row?
-                        if (targetIndex >= numRows)
-                        {
-                            thisRow.appendTo($('tbody', table));
-                        }
-                        // Are we trying to be the first row?
-                        else if (targetIndex == 0)
-                        {
-                            thisRow.prependTo($('tbody', table));
-                        }
-                        // No, we want to be somewhere in the middle!
-                        else
-                        {
-                            thisRow.insertBefore($('tbody tr:eq(' + targetIndex + ')', table));
-                        }
-                    }
-                });
-            }
-        }
+				}else if(defaults.type == 'excel' || defaults.type == 'doc'|| defaults.type == 'powerpoint'  ){
+					//console.log($(this).html());
+					var excel="<table>";
+					// Header
+					$(el).find('thead').find('tr').each(function() {
+						excel += "<tr>";
+						$(this).filter(':visible').find('th').each(function(index,data) {
+							if ($(this).css('display') != 'none'){					
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									excel += "<td>" + parseString($(this))+ "</td>";
+								}
+							}
+						});	
+						excel += '</tr>';						
+						
+					});					
+					
+					
+					// Row Vs Column
+					var rowCount=1;
+					$(el).find('tbody').find('tr').each(function() {
+						excel += "<tr>";
+						var colCount=0;
+						$(this).filter(':visible').find('td').each(function(index,data) {
+							if ($(this).css('display') != 'none'){	
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									excel += "<td>"+parseString($(this))+"</td>";
+								}
+							}
+							colCount++;
+						});															
+						rowCount++;
+						excel += '</tr>';
+					});					
+					excel += '</table>'
+					
+					if(defaults.consoleLog == 'true'){
+						console.log(excel);
+					}
+					
+					var excelFile = "<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:x='urn:schemas-microsoft-com:office:"+defaults.type+"' xmlns='http://www.w3.org/TR/REC-html40'>";
+					excelFile += "<head>";
+					excelFile += "<!--[if gte mso 9]>";
+					excelFile += "<xml>";
+					excelFile += "<x:ExcelWorkbook>";
+					excelFile += "<x:ExcelWorksheets>";
+					excelFile += "<x:ExcelWorksheet>";
+					excelFile += "<x:Name>";
+					excelFile += "{worksheet}";
+					excelFile += "</x:Name>";
+					excelFile += "<x:WorksheetOptions>";
+					excelFile += "<x:DisplayGridlines/>";
+					excelFile += "</x:WorksheetOptions>";
+					excelFile += "</x:ExcelWorksheet>";
+					excelFile += "</x:ExcelWorksheets>";
+					excelFile += "</x:ExcelWorkbook>";
+					excelFile += "</xml>";
+					excelFile += "<![endif]-->";
+					excelFile += "</head>";
+					excelFile += "<body>";
+					excelFile += excel;
+					excelFile += "</body>";
+					excelFile += "</html>";
 
-        $('tbody .static-last', table).each(function() {
-            var row = $(this).detach();
-            row.appendTo($('tbody', table));
+					var base64data = "base64," + $.base64.encode(excelFile);
+					window.open('data:application/vnd.ms-'+defaults.type+';filename=exportData.doc;' + base64data);
+					
+				}else if(defaults.type == 'png'){
+					html2canvas($(el), {
+						onrendered: function(canvas) {										
+							var img = canvas.toDataURL("image/png");
+							window.open(img);
+							
+							
+						}
+					});		
+				}else if(defaults.type == 'pdf'){
+	
+					var doc = new jsPDF('p','pt', 'a4', true);
+					doc.setFontSize(defaults.pdfFontSize);
+					
+					// Header
+					var startColPosition=defaults.pdfLeftMargin;
+					$(el).find('thead').find('tr').each(function() {
+						$(this).filter(':visible').find('th').each(function(index,data) {
+							if ($(this).css('display') != 'none'){					
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									var colPosition = startColPosition+ (index * 50);									
+									doc.text(colPosition,20, parseString($(this)));
+								}
+							}
+						});									
+					});					
+				
+				
+					// Row Vs Column
+					var startRowPosition = 20; var page =1;var rowPosition=0;
+					$(el).find('tbody').find('tr').each(function(index,data) {
+						rowCalc = index+1;
+						
+					if (rowCalc % 26 == 0){
+						doc.addPage();
+						page++;
+						startRowPosition=startRowPosition+10;
+					}
+					rowPosition=(startRowPosition + (rowCalc * 10)) - ((page -1) * 280);
+						
+						$(this).filter(':visible').find('td').each(function(index,data) {
+							if ($(this).css('display') != 'none'){	
+								if(defaults.ignoreColumn.indexOf(index) == -1){
+									var colPosition = startColPosition+ (index * 50);									
+									doc.text(colPosition,rowPosition, parseString($(this)));
+								}
+							}
+							
+						});															
+						
+					});					
+										
+					// Output as Data URI
+					doc.output('datauri');
+	
+				}
+				
+				
+				function parseString(data){
+				
+					if(defaults.htmlContent == 'true'){
+						content_data = data.html().trim();
+					}else{
+						content_data = data.text().trim();
+					}
+					
+					if(defaults.escape == 'true'){
+						content_data = escape(content_data);
+					}
+					
+					
+					
+					return content_data;
+				}
+			
+			}
         });
-
-    }
-});
-;function set_feedback(text, classname, keep_displayed)
-{
-	if(text)
-	{
-		$('#feedback_bar').removeClass().addClass(classname).html(text).css('opacity','1');
-
-		if(!keep_displayed)
-		{
-			$('#feedback_bar').fadeTo(5000, 1).fadeTo("fast",0);
-		}
-	}
-	else
-	{
-		$('#feedback_bar').css('opacity','0');
-	}
-}
+    })(jQuery);
+        
 ;/*
  * imgPreview jQuery plugin
  * Copyright (c) 2009 James Padolsey
@@ -49941,413 +45044,7 @@ $.tablesorter.addWidget({
         
     };
     
-})(jQuery);;function checkbox_click(event)
-{
-	event.stopPropagation();
-	do_email(enable_email.url);
-	if($(event.target).is(':checked'))
-	{
-		$(event.target).parent().parent().find("td").addClass('selected').css("backgroundColor","");		
-	}
-	else
-	{
-		$(event.target).parent().parent().find("td").removeClass();		
-	}
-}
-
-function enable_search(options)
-{
-	if (!options.format_item) {
-		format_item = function(results) {
-			return results[0];
-		};
-	}
-	//Keep track of enable_email has been called
-	if(!enable_search.enabled)
-		enable_search.enabled=true;
-
-	$('#search').click(function()
-    {
-    	$(this).attr('value','');
-    });
-
-    var widget = $("#search").autocomplete({
-		source: function (request, response) {
-			var extra_params = {limit: 100};
-			$.each(options.extra_params, function(key, param) {
-				extra_params[key] = typeof param == "function" ? param() : param;
-			});
-
-			$.ajax({
-				type: "POST",
-				url: options.suggest_url,
-				dataType: "json",
-				data: $.extend(request, extra_params),
-				success: function(data) {
-					response($.map(data, function(item) {
-						return {
-							value: item.label,
-						};
-				}))}
-			});
-		},
-		delay:10,
-		autoFocus: false,
-		select: function (a, ui) {
-			$(this).val(ui.item.value);
-			do_search(true, options.on_complete);
-		}
-	});
-
-    attach_search_listener();
-    
-	$('#search_form').submit(function(event)
-	{
-		event.preventDefault();
-        // reset page number when selecting a specific page number
-		$('#limit_from').val(0);
-		if(get_selected_values().length >0)
-		{
-			if(!confirm(options.confirm_search_message))
-				return;
-		}
-		do_search(true, options.on_complete);
-	});
-
-	return widget;
-}
-enable_search.enabled=false;
-
-function attach_search_listener() 
-{
-	 // prevent redirecting to link when search enabled
-    $("#pagination a").click(function(event) {
-    	  if ($("#search").val() || $("#search_form input:checked")) {
-    		  event.preventDefault();
-    		  // set limit_from to value included in the link
-    		  var uri_segments = event.currentTarget.href.split('/');
-    		  var limit_from = uri_segments.pop();
-    		  $('#limit_from').val(limit_from);
-    		  do_search(true);
-    	  }
-    });
-}
-
-function do_search(show_feedback,on_complete)
-{	
-	//If search is not enabled, don't do anything
-	if(!enable_search.enabled)
-		return;
-
-	if(show_feedback)
-		$('#search').addClass("ac_loading");
-		
-	$.post(
-		$('#search_form').attr('action'), 
-		// serialize all the input fields in the form
-		$('#search_form').serialize(),
-		function(response) {
-			$('#sortable_table tbody').html(response.rows);
-			if(typeof on_complete=='function')
-				on_complete(response);
-			$('#search').removeClass("ac_loading");
-			$('#pagination').html(response.pagination);
-			//re-init elements in new table, as table tbody children were replaced
-			dialog_support.init('#sortable_table a.modal-dlg');
-			$('#sortable_table tbody :checkbox').click(checkbox_click);
-			$("#select_all").prop('checked',false);
-			if (response.total_rows > 0)
-			{
-				update_sortable_table();	
-				enable_row_selection();	
-			}
-		    attach_search_listener();
-		}, "json"
-	);
-}
-
-function enable_email(email_url)
-{
-	//Keep track of enable_email has been called
-	if(!enable_email.enabled)
-		enable_email.enabled=true;
-
-	//store url in function cache
-	if(!enable_email.url)
-	{
-		enable_email.url=email_url;
-	}
-	
-	$('#select_all, #sortable_table tbody :checkbox').click(checkbox_click);
-}
-enable_email.enabled=false;
-enable_email.url=false;
-
-function do_email(url)
-{
-	//If email is not enabled, don't do anything
-	if(!enable_email.enabled)
-		return;
-
-	$.post(url, { 'ids[]': get_selected_values() },function(response)
-	{
-		$('#email').attr('href',response);
-	});
-
-}
-
-function enable_checkboxes()
-{
-	$('#sortable_table tbody :checkbox').click(checkbox_click);
-}
-
-function enable_delete(confirm_message,none_selected_message)
-{
-	//Keep track of enable_delete has been called
-	if(!enable_delete.enabled)
-		enable_delete.enabled=true;
-	
-	$("#delete").click(function(event)
-	{
-		event.preventDefault();
-		if($("#sortable_table tbody :checkbox:checked").length >0)
-		{
-			if(confirm(confirm_message))
-			{
-				do_delete($(this).attr('href'));
-			} else {
-				return false;
-			}
-		}
-		else
-		{
-			alert(none_selected_message);
-		}
-	});
-}
-enable_delete.enabled=false;
-
-function do_delete(url)
-{
-	//If delete is not enabled, don't do anything
-	if(!enable_delete.enabled)
-		return;
-	
-	var row_ids = get_selected_values();
-	var selected_rows = get_selected_rows();
-	$.post(url, { 'ids[]': row_ids },function(response)
-	{
-		//delete was successful, remove checkbox rows
-		if(response.success)
-		{
-			$(selected_rows).each(function(index, dom)
-			{
-				$(this).find("td").animate({backgroundColor:"green"},1200,"linear")
-				.end().animate({opacity:0},1200,"linear",function()
-				{
-					$(this).remove();
-					//Re-init sortable table as we removed a row
-					$("#sortable_table tbody tr").length > 0 && update_sortable_table();
-					
-				});
-			});
-			
-			set_feedback(response.message, 'alert alert-dismissible alert-success', false);	
-		}
-		else
-		{
-			set_feedback(response.message, 'alert alert-dismissible alert-danger', true);	
-		}
-	},"json");
-}
-
-function enable_bulk_edit(none_selected_message)
-{
-	//Keep track of enable_bulk_edit has been called
-	if(!enable_bulk_edit.enabled)
-		enable_bulk_edit.enabled=true;
-	
-	$('#bulk_edit').click(function(event)
-	{
-		if($("#sortable_table tbody :checkbox:checked").length == 0)
-		{
-			alert(none_selected_message);
-			return false;
-		}
-		event.preventDefault();
-	});
-}
-enable_bulk_edit.enabled=false;
-
-function enable_select_all()
-{
-	//Keep track of enable_select_all has been called
-	if(!enable_select_all.enabled)
-		enable_select_all.enabled=true;
-
-	$('#select_all').click(function()
-	{
-		if($(this).is(':checked'))
-		{	
-			$("#sortable_table tbody :checkbox").each(function()
-			{
-				$(this).prop('checked',true);
-				$(this).parent().parent().find("td").addClass('selected').css("backgroundColor","");
-
-			});
-		}
-		else
-		{
-			$("#sortable_table tbody :checkbox").each(function()
-			{
-				$(this).prop('checked',false);
-				$(this).parent().parent().find("td").removeClass();				
-			});    	
-		}
-	 });	
-}
-enable_select_all.enabled=false;
-
-function enable_row_selection(rows)
-{
-	//Keep track of enable_row_selection has been called
-	if(!enable_row_selection.enabled)
-		enable_row_selection.enabled=true;
-	
-	if(typeof rows =="undefined")
-		rows=$("#sortable_table tbody tr");
-	
-	rows.hover(
-		function row_over()
-		{
-			$(this).find("td").addClass('over').css("backgroundColor","");
-			$(this).css("cursor","pointer");
-		},
-		
-		function row_out()
-		{
-			if(!$(this).find("td").hasClass("selected"))
-			{
-				$(this).find("td").removeClass();
-			}
-		}
-	);
-	
-	rows.click(function row_click(event)
-	{
-		var checkbox = $(this).find(":checkbox");
-		checkbox.prop('checked',!checkbox.is(':checked'));
-		do_email(enable_email.url);
-		
-		if(checkbox.is(':checked'))
-		{
-			$(this).find("td").addClass('selected').css("backgroundColor","");
-		}
-		else
-		{
-			$(this).find("td").removeClass();
-		}
-	});
-}
-enable_row_selection.enabled=false;
-
-function update_sortable_table()
-{
-	//let tablesorter know we changed <tbody> and then triger a resort
-	$("#sortable_table").trigger("update");
-	if(typeof $("#sortable_table")[0].config!="undefined")
-	{
-		var sorting = $("#sortable_table")[0].config.sortList; 		
-		$("#sortable_table").trigger("sorton",[sorting]);
-	}
-	else
-	{
-		window['init_table_sorting'] && init_table_sorting();
-	}
-}
-
-function get_table_row(id)
-{
-	id = id || $("input[name='sale_id']").val();
-	var $element = $("#sortable_table tbody :checkbox[value='" + id + "']");
-	if ($element.length === 0) {
-		$element = $("#sortable_table tbody a[href*='/" + id + "/']");
-	}
-	return $element;
-}
-
-function update_row(row_id,url,callback)
-{
-	$.post(url, { 'row_id': row_id },function(response)
-	{
-		//Replace previous row
-		var row_to_update = get_table_row(row_id).parent().parent();
-		row_to_update.replaceWith(response);	
-		reinit_row(row_id);
-		hightlight_row(row_id);
-		callback && typeof(callback) == "function" && callback(); 
-	}, 'html');
-}
-
-function reinit_row(checkbox_id)
-{
-	var new_checkbox = $("#sortable_table tbody tr :checkbox[value="+checkbox_id+"]");
-	var new_row = new_checkbox.parent().parent();
-	enable_row_selection(new_row);
-	//Re-init some stuff as we replaced row
-	update_sortable_table();
-	dialog_support.init(new_row.find("a.modal-dlg"));
-	//re-enable email
-	new_checkbox.click(checkbox_click);	
-}
-
-function animate_row(row,color)
-{
-	color = color || "#e1ffdd";
-	row.find("td").css("backgroundColor", "#ffffff").animate({backgroundColor:color},"slow","linear")
-		.animate({backgroundColor:color},5000)
-		.animate({backgroundColor:"#ffffff"},"slow","linear");
-}
-
-function hightlight_row(checkbox_id)
-{
-	var new_checkbox = $("#sortable_table tbody tr :checkbox[value="+checkbox_id+"]");
-	var new_row = new_checkbox.parent().parent();
-	
-	animate_row(new_row);
-}
-
-function get_selected_values()
-{
-	var selected_values = new Array();
-	$("#sortable_table tbody :checkbox:checked").each(function()
-	{
-		selected_values.push($(this).val());
-	});
-	return selected_values;
-}
-
-function get_selected_rows() 
-{ 
-	var selected_rows = new Array(); 
-	$("#sortable_table tbody :checkbox:checked").each(function() 
-	{ 
-		selected_rows.push($(this).parent().parent()); 
-	}); 
-	return selected_rows; 
-}
-
-function get_visible_checkbox_ids()
-{
-	var row_ids = new Array();
-	$("#sortable_table tbody :checkbox").each(function()
-	{
-		row_ids.push($(this).val());
-	});
-	return row_ids;
-}
-
-dialog_support = (function() {
+})(jQuery);;(function(dialog_support, $) {
 
 	var btn_id, dialog_ref;
 
@@ -50360,23 +45057,23 @@ dialog_support = (function() {
 	};
 
 	var submit = function(button_id) {
-		return function(dlog_ref)
-		{
+		return function(dlog_ref) {
 			btn_id = button_id;
 			dialog_ref = dlog_ref;
-			if (button_id == 'delete')
-			{
-				$("form[id*='delete_form']").submit();
-			}
-			else
-			{
+			if (button_id == 'submit') {
 				$('form', dlog_ref.$modalBody).first().submit();
 			}
 		}
 	};
 
+	var button_class = {
+		'submit' : 'btn-primary',
+		'delete' : 'btn-danger'
+	};
+
 	var init = function(selector) {
-		return $(selector).click(function(event) {
+
+		var buttons = function(event) {
 			var buttons = [];
 			var dialog_class = 'modal-dlg';
 			$.each($(this).attr('class').split(/\s+/), function(classIndex, className) {
@@ -50391,7 +45088,7 @@ dialog_support = (function() {
 					buttons.push({
 						id: btn_name,
 						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
-						cssClass: is_submit ? 'btn-primary' : (btn_name == 'delete' ? 'btn-danger' : ''),
+						cssClass: button_class[btn_name],
 						hotkey: is_submit ? 13 : undefined, // Enter.
 						action: submit(btn_name)
 					});
@@ -50406,68 +45103,281 @@ dialog_support = (function() {
 					dialog_ref.close();
 				}
 			});
+			return { buttons: buttons, cssClass: dialog_class};
+		};
 
-			var $link = $(event.target);
-			$link = $link.is("a") ? $link : $link.parents("a");
-			BootstrapDialog.show({
-				cssClass: dialog_class,
-				title: $link.attr('title'),
-				buttons: buttons,
-				message: (function() {
-					var node = $('<div></div>');
-					$.get($link.attr('href'), function(data) {
-						node.html(data);
-					});
-					return node;
-				})
+		$(selector).each(function(index, $element) {
+
+			return $(selector).off('click').on('click', function(event) {
+				var $link = $(event.target);
+				$link = !$link.is("a, button") ? $link.parents("a, button") : $link ;
+				BootstrapDialog.show($.extend({
+					title: $link.attr('title'),
+					message: (function() {
+						var node = $('<div></div>');
+						$.get($link.attr('href') || $link.data('href'), function(data) {
+							node.html(data);
+						});
+						return node;
+					})
+				}, buttons.call(this, event)));
+
+				return false;
 			});
-
-			event.preventDefault();
 		});
 	};
 
-	$(document).ready(function() {
-		init("a.modal-dlg");
-	});
-
-	return {
-		hide: hide,
-		clicked_id: clicked_id,
+	$.extend(dialog_support, {
 		init: init,
 		submit: submit,
-		error: {
-			errorClass: "has-error",
-			errorLabelContainer: "#error_message_box",
-			wrapper: "li",
-			highlight: function (e)
-			{
-				$(e).closest('.form-group').addClass('has-error');
-			},
-			unhighlight: function (e)
-			{
-				$(e).closest('.form-group').removeClass('has-error');
-			}
+		hide: hide,
+		clicked_id: clicked_id
+	});
+
+})(window.dialog_support = window.dialog_support || {}, jQuery);
+
+(function(table_support, $) {
+
+	var enable_actions = function(callback) {
+		return function() {
+			var selection_empty = selected_rows().length == 0;
+			$("#toolbar button:not(.dropdown-toggle)").attr('disabled', selection_empty);
+			typeof callback == 'function' && callback();
 		}
 	};
 
-})();
+	var table = function() {
+		return $("#table").data('bootstrap.table');
+	}
 
-;(function($) {
+	var selected_ids = function () {
+		return $.map(table().getSelections(), function (element) {
+			return element[options.uniqueId || 'id'];
+		});
+	};
+
+	var selected_rows = function () {
+		return $("#table td input:checkbox:checked").parents("tr");
+	};
+
+	var row_selector = function(id) {
+		return "tr[data-uniqueid='" + id + "']";
+	};
+
+	var rows_selector = function(ids) {
+		var selectors = [];
+		ids = ids instanceof Array ? ids : ("" + ids).split(":");
+		$.each(ids, function(index, element) {
+			selectors.push(row_selector(element));
+		});
+		return selectors;;
+	};
+
+	var highlight_row = function (id, color) {
+		$(rows_selector(id)).each(function(index, element) {
+			var original = $(element).css('backgroundColor');
+			$(element).find("td").animate({backgroundColor: color || '#e1ffdd'}, "slow", "linear")
+				.animate({backgroundColor: color || '#e1ffdd'}, 5000)
+				.animate({backgroundColor: original}, "slow", "linear");
+		});
+	};
+
+	var do_delete = function (url, ids) {
+		if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
+			$.post((url || options.resource) + '/delete', {'ids[]': ids || selected_ids()}, function (response) {
+				//delete was successful, remove checkbox rows
+				if (response.success) {
+					var selector = ids ? row_selector(ids) : selected_rows();
+					table().collapseAllRows();
+					$(selector).each(function (index, element) {
+						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+							.end().animate({opacity: 0}, 1200, "linear", function () {
+								table().remove({
+									field: 'id',
+									values: selected_ids()
+								});
+								$(this).remove();
+								if (index == $(selector).length - 1) {
+									refresh();
+									enable_actions();
+								}
+							});
+					});
+					$.notify(response.message, { type: 'success' });
+				} else {
+					$.notify(response.message, { type: 'pastel-danger' });
+				}
+			}, "json");
+		} else {
+			return false;
+		}
+	};
+
+	var load_success = function(callback) {
+		return function(response) {
+			typeof options.load_callback == 'function' && options.load_callback();
+			options.load_callback = undefined;
+			dialog_support.init("a.modal-dlg");
+			typeof callback == 'function' && callback.call(this, response);
+		}
+	};
+
+	var options;
+
+	var toggle_column_visbility = function() {
+		if (localStorage[options.employee_id]) {
+			var user_settings = JSON.parse(localStorage[options.employee_id]);
+			user_settings[options.resource] && $.each(user_settings[options.resource], function(index, element) {
+				element ? table().showColumn(index) : table().hideColumn(index);
+			});
+		}
+	};
+
+	var init = function (_options) {
+		options = _options;
+		enable_actions = enable_actions(options.enableActions);
+		$('#table').bootstrapTable($.extend(options, {
+			columns: options.headers,
+			url: options.resource + '/search',
+			sidePagination: 'server',
+			pageSize: options.pageSize,
+			striped: true,
+			pagination: true,
+			search: options.resource || false,
+			showColumns: true,
+			clickToSelect: true,
+			showExport: true,
+			onPageChange: load_success(options.onLoadSuccess),
+			toolbar: '#toolbar',
+			uniqueId: options.uniqueId || 'id',
+			onCheck: enable_actions,
+			onUncheck: enable_actions,
+			onCheckAll: enable_actions,
+			onUncheckAll: enable_actions,
+			onLoadSuccess: load_success(options.onLoadSuccess),
+			onColumnSwitch : function(field, checked) {
+				var user_settings = localStorage[options.employee_id];
+				user_settings = (user_settings && JSON.parse(user_settings)) || {};
+				user_settings[options.resource] = user_settings[options.resource] || {};
+				user_settings[options.resource][field] = checked;
+				localStorage[options.employee_id] = JSON.stringify(user_settings);
+			},
+			queryParamsType: 'limit',
+			iconSize: 'sm',
+			silentSort: true,
+			paginationVAlign: 'bottom',
+			escape: false
+		}));
+		enable_actions();
+		init_delete();
+		toggle_column_visbility();
+		dialog_support.init("button.modal-dlg");
+	};
+
+	var init_delete = function (confirmMessage) {
+		$("#delete").click(function (event) {
+			do_delete();
+		});
+	};
+
+	var refresh = function() {
+		table().refresh();
+	}
+
+	var submit_handler = function(url) {
+		return function (resource, response) {
+			var id = response.id;
+
+			if (!response.success) {
+				$.notify(response.text, { type: 'danger' });
+			} else {
+				var message = response.message;
+				var selector = rows_selector(response.id);
+				var rows = $(selector.join(",")).length;
+				if (rows > 0 && rows < 15) {
+					var ids = response.id.split(":");
+				    $.get({
+						url: [url || resource + '/get_row', id].join("/"),
+						success: function (response) {
+							$.each(selector, function (index, element) {
+								var id = $(element).data('uniqueid');
+								table().updateByUniqueId({id: id, row: response[id] || response});
+							});
+							dialog_support.init("a.modal-dlg");
+							highlight_row(ids);
+						},
+						dataType: 'json'
+					});
+				} else {
+					// call hightlight function once after refresh
+					options.load_callback = function () {
+						enable_actions();
+						highlight_row(id);
+					};
+					refresh();
+				}
+				$.notify(message, {type: 'success' });
+			}
+		};
+	};
+
+	var handle_submit = submit_handler();
+
+	$.extend(table_support, {
+		submit_handler: function(url) {
+			this.handle_submit = submit_handler(url);
+		},
+		handle_submit: handle_submit,
+		init: init,
+		do_delete: do_delete,
+		refresh : refresh,
+		selected_ids : selected_ids,
+	});
+
+})(window.table_support = window.table_support || {}, jQuery);
+
+(function(form_support, $) {
+
+	form_support.error = {
+		errorClass: "has-error",
+		errorLabelContainer: "#error_message_box",
+		wrapper: "li",
+		highlight: function (e) {
+			$(e).closest('.form-group').addClass('has-error');
+		},
+		unhighlight: function (e) {
+			$(e).closest('.form-group').removeClass('has-error');
+		}
+	};
+
+	form_support.handler = $.extend({
+
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					$.notify(response.message, { type: response.success ? 'success' : 'danger' });
+				},
+				dataType: 'json'
+			});
+		},
+
+		rules:
+		{
+
+		},
+
+		messages:
+		{
+
+		}
+	}, form_support.error);
+
+})(window.form_support = window.form_support || {}, jQuery);;(function($) {
 	
 	function http_s(url)
 	{
 		return document.location.protocol + '//' + url;
-	}
-	
-	if (window.sessionStorage && !sessionStorage['country'])
-	{
-		$.ajax({
-			type: "GET",
-			url: http_s('ipinfo.io/json'),
-			success: function(response) {
-				sessionStorage['country'] = response.country;
-			}, dataType: 'jsonp'
-		});
 	}
 	
 	var url = http_s('nominatim.openstreetmap.org/search');
@@ -50531,7 +45441,7 @@ dialog_support = (function() {
 					format: 'json',
 					limit: 5,
 					addressdetails: 1,
-					countrycodes: window['sessionStorage'] ? sessionStorage['country'] : 'be',
+					countrycodes: options.country_codes,
 					'accept-language' : language || navigator.language
 				};
 				result[key || id] = $("#"+id).val();

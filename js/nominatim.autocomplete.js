@@ -5,17 +5,6 @@
 		return document.location.protocol + '//' + url;
 	}
 	
-	if (window.sessionStorage && !sessionStorage['country'])
-	{
-		$.ajax({
-			type: "GET",
-			url: http_s('ipinfo.io/json'),
-			success: function(response) {
-				sessionStorage['country'] = response.country;
-			}, dataType: 'jsonp'
-		});
-	}
-	
 	var url = http_s('nominatim.openstreetmap.org/search');
 
 	var handle_auto_completion = function(fields) {
@@ -77,7 +66,7 @@
 					format: 'json',
 					limit: 5,
 					addressdetails: 1,
-					countrycodes: window['sessionStorage'] ? sessionStorage['country'] : 'be',
+					countrycodes: options.country_codes,
 					'accept-language' : language || navigator.language
 				};
 				result[key || id] = $("#"+id).val();

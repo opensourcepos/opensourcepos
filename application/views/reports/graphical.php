@@ -4,19 +4,13 @@
 
 <div id="page_subtitle"><?php echo $subtitle ?></div>
 
-<div style="text-align: center;">
-	<script type="text/javascript">
-		swfobject.embedSWF("<?php echo base_url(); ?>open-flash-chart.swf", "chart", "800", "400", "9.0.0", "expressInstall.swf", {"data-file": "<?php echo $data_file; ?>"} );
-	</script>
-</div>
+<div class="ct-chart ct-golden-section" id="chart1"></div>
 
-<div id="chart_wrapper">
-	<div id="chart"></div>
-</div>
+<?php $this->load->view($chart_type); ?>
 
-<div id="report_summary">
+<div id="chart_report_summary">
 	<?php
-	foreach($summary_data as $name=>$value)
+	foreach($summary_data_1 as $name=>$value)
 	{
 	?>
 		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': ' . to_currency($value); ?></div>

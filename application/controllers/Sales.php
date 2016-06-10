@@ -1,11 +1,13 @@
-<?php
-require_once ("Secure_area.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Sales extends Secure_area
+require_once("Secure_Controller.php");
+
+class Sales extends Secure_Controller
 {
 	function __construct()
 	{
 		parent::__construct('sales');
+
 		$this->load->library('sale_lib');
 		$this->load->library('barcode_lib');
 	}
@@ -15,7 +17,7 @@ class Sales extends Secure_area
 		$this->_reload();
 	}
 	
-	function manage($only_invoices = FALSE, $only_cash = FALSE, $limit_from = 0)
+	function manage()
 	{
 		$person_id = $this->session->userdata('person_id');
 
@@ -25,36 +27,8 @@ class Sales extends Secure_area
 		}
 		else
 		{
-			$this->Sale->create_sales_items_temp_table();
+			$data['table_headers'] = get_sales_manage_table_headers();
 
-			$data['controller_name'] = $this->get_controller_name();
-			$lines_per_page = $this->Appconfig->get('lines_per_page');
-
-			$today_start = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0));
-			$today_end = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(23, 59, 59));
-			
-			$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today_start;
-			$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $start_date);
-			$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today_end;
-			$end_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $end_date);
-
-			$sale_type = 'all';
-			$location_id = 'all';
-			$is_valid_receipt = FALSE;
-			$search = null;
-
-			$filters = array('sale_type' => $sale_type,
-							'location_id' => $location_id,
-							'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
-							'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
-							'only_cash' => $only_cash,
-							'only_invoices' => $only_invoices,
-							'is_valid_receipt' => $is_valid_receipt);
-
-			$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
-			$payments = $this->Sale->get_payments_summary($search, $filters);
-			$total_rows = $this->Sale->get_found_rows($search, $filters);
-			
 			// filters that will be loaded in the multiselect dropdown
 			if($this->config->item('invoice_enable') == TRUE)
 			{
@@ -65,98 +39,76 @@ class Sales extends Secure_area
 			{
 				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'));
 			}
-			$data['selected'] = array( ($only_cash ? 'only_cash' : ''), ($only_invoices ? 'only_invoices' : '') );
 
-			$data['start_date'] = $start_date;
-			$data['end_date'] = $end_date;
-			$data['links'] = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'manage', $only_invoices);
-			$data['manage_table'] = get_sales_manage_table($sales, $this);
-			$data['payments_summary'] = get_sales_manage_payments_summary($payments, $sales, $this);
-
-			$this->load->view($data['controller_name'] . '/manage', $data);
+			$this->load->view('sales/manage', $data);
 		}
 	}
 	
-	function get_row()
+	function get_row($row_id)
 	{
 		$this->Sale->create_sales_items_temp_table();
 
-		$sale_id = $this->input->post('row_id');
-		$sale_info = $this->Sale->get_info($sale_id)->result_array();
-		$data_row = get_sales_manage_sale_data_row($sale_info[0], $this);
+		$sale_info = $this->Sale->get_info($row_id)->row();
+		$data_row = get_sale_data_row($sale_info, $this);
 
-		echo $data_row;
+		echo json_encode($data_row);
 	}
 	
-	/*
-	Returns Sales table data rows. This will be called with AJAX.
-	*/
 	function search()
 	{
 		$this->Sale->create_sales_items_temp_table();
 
-		$search = $this->input->post('search') != '' ? $this->input->post('search') : null;
-		$limit_from = $this->input->post('limit_from');
-		$lines_per_page = $this->Appconfig->get('lines_per_page');
-
-		$today = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
-
-		$start_date = $this->input->post('start_date') != null ? $this->input->post('start_date') : $today;
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $start_date);
-		$end_date = $this->input->post('end_date') != null ? $this->input->post('end_date') : $today;
-		$end_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $end_date);
+		$search = $this->input->get('search');
+		$limit = $this->input->get('limit');
+		$offset = $this->input->get('offset');
+		$sort = $this->input->get('sort');
+		$order = $this->input->get('order');
 
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
-		$sale_type = 'all';
-		$location_id = 'all';
-		if($this->config->item('invoice_enable') == TRUE)
-		{
-			$only_invoices = $this->input->post('only_invoices') != null;
-		}
-		else
-		{
-			$only_invoices = FALSE;
-		}
-		$only_cash = $this->input->post('only_cash') != null;
+		$filters = array('sale_type' => 'all',
+			'location_id' => 'all',
+			'start_date' => $this->input->get('start_date'),
+			'end_date' => $this->input->get('end_date'),
+			'only_cash' => FALSE,
+			'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
+			'is_valid_receipt' => $is_valid_receipt);
 
-		$filters = array('sale_type' => $sale_type,
-						'location_id' => $location_id,
-						'start_date' => $start_date_formatter->format('Y-m-d H:i:s'),
-						'end_date' => $end_date_formatter->format('Y-m-d H:i:s'),
-						'only_cash' => FALSE,
-						'only_invoices' => FALSE,
-						'is_valid_receipt' => $is_valid_receipt);
-						
 		// check if any filter is set in the multiselect dropdown
-		if( $this->input->post('filters') != null )
-		{
-			foreach($this->input->post('filters') as $key)
-			{
-				$filters[$key] = TRUE;
-			}
-		}
+		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
+		$filters = array_merge($filters, $filledup);
 
-		$sales = $this->Sale->search($search, $filters, $lines_per_page, $limit_from)->result_array();
-		$payments = $this->Sale->get_payments_summary($search, $filters);
+		$sales = $this->Sale->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Sale->get_found_rows($search, $filters);
-		$links = $this->_initialize_pagination($this->Sale, $lines_per_page, $limit_from, $total_rows, 'search', $only_invoices);
-		$sale_rows = get_sales_manage_table_data_rows($sales, $this);
+		$payments = $this->Sale->get_payments_summary($search, $filters);
 		$payment_summary = get_sales_manage_payments_summary($payments, $sales, $this);
 
-		echo json_encode(array('total_rows' => $total_rows, 'rows' => $sale_rows, 'pagination' => $links, 'payment_summary' => $payment_summary));
+		$data_rows = array();
+		foreach($sales->result() as $sale)
+		{
+			$data_rows[] = get_sale_data_row($sale, $this);
+		}
+
+		if ($total_rows > 0)
+		{
+			$total_rows++;
+			$data_rows[] = get_sale_data_last_row($sales, $this);
+		}
+
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows,'payment_summary' => $payment_summary));
 	}
 
 	function item_search()
 	{
 		$suggestions = array();
-		$search = $this->input->get('term') != '' ? $this->input->get('term') : null;
+		$receipt = $search = $this->input->get('term') != '' ? $this->input->get('term') : null;
 
-		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($search) )
+		if ($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($receipt) )
 		{
-			$suggestions[] = $search;
+			// if a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
+			$suggestions[] = $receipt;
 		}
-		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search));
+		$suggestions = array_merge($suggestions, $this->Item->get_search_suggestions($search, array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
 		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($search));
 
 		echo json_encode($suggestions);
@@ -183,10 +135,10 @@ class Sales extends Secure_area
 
 	function change_mode()
 	{
-		$stock_location = $this->input->post("stock_location");
+		$stock_location = $this->input->post('stock_location');
 		if (!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
-			$mode = $this->input->post("mode");
+			$mode = $this->input->post('mode');
 			$this->sale_lib->set_mode($mode);
 		} 
 		else if ($this->Stock_location->is_allowed_location($stock_location, 'sales'))
@@ -440,7 +392,7 @@ class Sales extends Secure_area
 					}
 					else
 					{
-						$this->email->message($this->load->view("sales/receipt_email", $data, true));	
+						$this->email->message($this->load->view('sales/receipt_email', $data, true));	
 					}
 					$this->email->send();
 				}
@@ -449,11 +401,11 @@ class Sales extends Secure_area
 			$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 			if ($this->sale_lib->is_invoice_number_enabled() && $this->config->item('use_invoice_template'))
 			{
-				$this->load->view("sales/invoice", $data);
+				$this->load->view('sales/invoice', $data);
 			}
 			else
 			{
-				$this->load->view("sales/receipt", $data);
+				$this->load->view('sales/receipt', $data);
 			}
 
 			$this->sale_lib->clear_all();
@@ -609,7 +561,7 @@ class Sales extends Secure_area
 	function receipt($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);	
-		$this->load->view("sales/receipt", $data);
+		$this->load->view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
 	
@@ -620,7 +572,7 @@ class Sales extends Secure_area
 			$sale_info = $this->_load_sale_data($sale_id);
 		}
 
-		$this->load->view("sales/invoice", $sale_info);
+		$this->load->view('sales/invoice', $sale_info);
 		$this->sale_lib->clear_all();
 	}
 	
@@ -663,7 +615,7 @@ class Sales extends Secure_area
 		}
 	}
 	
-	function save($sale_id)
+	function save($sale_id = -1)
 	{
 		$newdate = $this->input->post('date');
 		

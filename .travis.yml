@@ -1,16 +1,34 @@
-sudo: false
+sudo: true                  # Required to install packages
 
-language: node_js
+services: - docker
 
-node_js:
-      - "4.1"
+env:
+    global:
+        - DOCKER_VERSION=1.7.1  # Install Docker version 1.7.1
+        - DOCKER_COMPOSE_VERSION=1.7.1
+        - DOCKER_VERSION=get.docker.com  # Install Docker using get.docker.com (may break)
 
-services:
-    - docker
+        - BRANCH=stable         # Use 'stable' branch
+        - BRANCH=develop        # Use 'develop' branch
 
+        - QUIET=1               # Less verbose logging
+        - UML_FIG=0             # Don't install fig
+        - UML_DOCKERCOMPOSE=1   # Install docker-compose
+
+    install:
+        # Install https://github.com/moul/travis-docker toolchain
+        #   - curl -sLo - http://j.mp/install-travis-docker | sh -xe
 before_install:
-    - docker build -t jekkos/opensourcepos .
-    - docker run -d jekkos/opensourcepos 
+    - sudo rm /usr/local/bin/docker-compose
+    - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
+    - docker-compose build
+    - docker-compose up -d
 
 script:
-    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "while ! curl http://localhost/index.php | grep username; do sleep 1; done; cd app && grunt mochaWebdriver:test" 
+    - docker-wait opensourcepos_php_1
+
+after_success:
+    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+    - docker push jekkos/opensourcepos

@@ -86,7 +86,7 @@ $(document).ready(function()
 				success:function(response)
 				{
 					dialog_support.hide();
-					post_person_form_submit(response);
+				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
 				},
 				dataType:'json'
 			});
@@ -120,6 +120,6 @@ $(document).ready(function()
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
 			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

@@ -16,6 +16,8 @@
 		<link rel="stylesheet" href="bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-table/src/bootstrap-table.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css" />
+		<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css" />
+		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
@@ -27,7 +29,6 @@
 		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
 		<link rel="stylesheet" type="text/css" href="css/register.css"/>
 		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
-		<link rel="stylesheet" type="text/css" href="css/tables.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -45,9 +46,16 @@
 		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
+		<script src="bower_components/table-export/tableExport.js"></script>
+		<script src="bower_components/jquery.base64/index.js"></script>
+		<script src="bower_components/chartist/dist/chartist.min.js"></script>
+		<script src="bower_components/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
+		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
+		<script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
+		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/jquery.tablesorter.staticrow.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap-table-export.js" language="javascript"></script>
 		<script type="text/javascript" src="js/common.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
@@ -58,14 +66,14 @@
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
-		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
+		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=50ab19585f"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6ad34bf178"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=869909486d"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=3d8bf015a8" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=cf381eb07c" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

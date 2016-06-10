@@ -18,3 +18,7 @@ $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";
 $lang["customers_import_items_excel"] = "Importar Clientes desde Excel";
+$lang["customers_excel_import_failed"] = "Falló la importación de Hoja de Cálculo";
+$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["customers_excel_import_success"] = "Import of Customers successful";
+$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";

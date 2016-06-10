@@ -4,7 +4,7 @@
  * Currency locale
  */
 
-function to_currency($number, $escape=FALSE)
+function to_currency($number, $escape = FALSE)
 {
 	$CI =& get_instance();
 
@@ -14,26 +14,40 @@ function to_currency($number, $escape=FALSE)
 	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
 	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
 
+	// the conversion function needs a non null var, so if the number is null set it to 0
+	if(empty($number))
+	{
+		$number = 0;
+	}
+	
 	if($number >= 0)
 	{
 		if(!$CI->config->item('currency_side'))
+		{
 			return $currency_symbol.number_format($number, $decimals, $decimal_point, $thousands_separator);
+		}
 		else
+		{
 			return number_format($number, $decimals, $decimal_point, $thousands_separator).$currency_symbol;
+		}
 	}
     else
     {
     	if(!$CI->config->item('currency_side'))
+		{
     		return '-'.$currency_symbol.number_format(abs($number), $decimals, $decimal_point, $thousands_separator);
+		}
     	else
+		{
     		return '-'.number_format(abs($number), $decimals, $decimal_point, $thousands_separator).$currency_symbol;
+		}
     }
 }
 
 function to_currency_no_money($number)
 {
 	// ignore empty strings as they are just for empty input
-	if( empty($number) )
+	if(empty($number))
 	{
 		return $number;
 	}

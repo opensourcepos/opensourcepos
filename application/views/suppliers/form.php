@@ -55,7 +55,7 @@ $(document).ready(function()
 			success:function(response)
 			{
 				dialog_support.hide();
-				post_person_form_submit(response);
+				table_support.handle_submit('<?php echo site_url('suppliers'); ?>', response);
 			},
 			dataType:'json'
 		});
@@ -75,7 +75,7 @@ $(document).ready(function()
 			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
 			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 
 </script>

@@ -1,19 +1,20 @@
-<?php
-require_once ("Secure_area.php");
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Home extends Secure_area 
+require_once("Secure_Controller.php");
+
+class Home extends Secure_Controller 
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();	
 	}
 	
-	function index()
+	public function index()
 	{
-		$this->load->view("home");
+		$this->load->view('home');
 	}
 	
-	function logout()
+	public function logout()
 	{
 		$this->Employee->logout();
 	}

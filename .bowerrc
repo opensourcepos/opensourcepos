@@ -1,5 +1,6 @@
 {
     "scripts": {
-        "postinstall": "grunt"
+        "postinstall": "grunt",
+        "postuninstall": "grunt"
     }
 }

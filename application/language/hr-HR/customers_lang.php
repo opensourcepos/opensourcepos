@@ -18,3 +18,7 @@ $lang["customers_taxable"] = "Oporezivo";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Ažuriraj kupca";
 $lang["customers_import_items_excel"] = "Učitaj kupce iz excel datoteke";
+$lang["customers_excel_import_failed"] = "Greška kod uvoza iz Excel-a";
+$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["customers_excel_import_success"] = "Import of Customers successful";
+$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";

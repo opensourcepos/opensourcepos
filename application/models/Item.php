@@ -8,24 +8,28 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 		$this->db->where('item_id', $item_id);
-		$query = $this->db->get();
 
-		return ($query->num_rows() == 1);
+		return ($this->db->get()->num_rows() == 1);
 	}
-	
-	public function item_number_exists($item_number, $item_id='')
+
+	/*
+	Determines if a given item_number exists
+	*/
+	public function item_number_exists($item_number, $item_id = '')
 	{
 		$this->db->from('items');
 		$this->db->where('item_number', $item_number);
-		if (!empty($item_id))
+		if(!empty($item_id))
 		{
 			$this->db->where('item_id !=', $item_id);
 		}
-		$query=$this->db->get();
 
-		return ($query->num_rows() == 1);
+		return ($this->db->get()->num_rows() == 1);
 	}
-	
+
+	/*
+	Gets total of rows
+	*/
 	public function get_total_rows()
 	{
 		$this->db->from('items');
@@ -35,7 +39,7 @@ class Item extends CI_Model
 	}
 
 	/*
-	 Get number of rows
+	Get number of rows
 	*/
 	public function get_found_rows($search, $filters)
 	{
@@ -43,75 +47,79 @@ class Item extends CI_Model
 	}
 
 	/*
-	 Perform a search on items
+	Perform a search on items
 	*/
-	public function search($search, $filters, $rows=0, $limit_from=0)
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
 
-		if ($filters['stock_location_id'] > -1)
+		if($filters['stock_location_id'] > -1)
 		{
 			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
 
-		if (empty($search))
+		if(empty($search))
 		{
 			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
 		else
 		{
-			if ($filters['search_custom'] == FALSE)
+			if($filters['search_custom'] == FALSE)
 			{
-				$this->db->where("(name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"item_number LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								$this->db->dbprefix('items').".item_id LIKE '" . $this->db->escape_like_str($search) . "%' OR " .
-								"company_name LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"category LIKE '%" . $this->db->escape_like_str($search) . "%')");
+				$this->db->group_start();
+					$this->db->like('name', $search);
+					$this->db->or_like('item_number', $search);
+					$this->db->or_like('items.item_id', $search);
+					$this->db->or_like('company_name', $search);
+					$this->db->or_like('category', $search);
+				$this->db->group_end();
 			}
 			else
 			{
-				$this->db->where("(custom1 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom2 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom3 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom4 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom5 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom6 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom7 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom8 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom9 LIKE '%" . $this->db->escape_like_str($search) . "%' OR " .
-								"custom10 LIKE '%" . $this->db->escape_like_str($search) . "%')");
+				$this->db->group_start();
+					$this->db->like('custom1', $search);
+					$this->db->or_like('custom2', $search);
+					$this->db->or_like('custom3', $search);
+					$this->db->or_like('custom4', $search);
+					$this->db->or_like('custom5', $search);
+					$this->db->or_like('custom6', $search);
+					$this->db->or_like('custom7', $search);
+					$this->db->or_like('custom8', $search);
+					$this->db->or_like('custom9', $search);
+					$this->db->or_like('custom10', $search);
+				$this->db->group_end();
 			}
 		}
 
 		$this->db->where('items.deleted', $filters['is_deleted']);
 
-		if ($filters['empty_upc'] != FALSE)
+		if($filters['empty_upc'] != FALSE)
 		{
-			$this->db->where('item_number', null);
+			$this->db->where('item_number', NULL);
 		}
-		if ($filters['low_inventory'] != FALSE)
+		if($filters['low_inventory'] != FALSE)
 		{
 			$this->db->where('quantity <=', 'reorder_level');
 		}
-		if ($filters['is_serialized'] != FALSE)
+		if($filters['is_serialized'] != FALSE)
 		{
 			$this->db->where('is_serialized', 1);
 		}
-		if ($filters['no_description'] != FALSE)
+		if($filters['no_description'] != FALSE)
 		{
 			$this->db->where('items.description', '');
 		}
 
-		// avoid duplicate entry with same name because of inventory reporting multiple changes on the same item in the same date range
+		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.item_id');
 		
 		// order by name of item
-		$this->db->order_by('items.name', 'asc');
+		$this->db->order_by($sort, $order);
 
-		if ($rows > 0) 
+		if($rows > 0) 
 		{	
 			$this->db->limit($rows, $limit_from);
 		}
@@ -120,32 +128,32 @@ class Item extends CI_Model
 	}
 	
 	/*
-	 Returns all the items
+	Returns all the items
 	*/
-	public function get_all($stock_location_id=-1, $rows=0, $limit_from=0)
+	public function get_all($stock_location_id = -1, $rows = 0, $limit_from = 0)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 
-		if ($stock_location_id > -1)
+		if($stock_location_id > -1)
 		{
 			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
 			$this->db->where('location_id', $stock_location_id);
 		}
 
 		$this->db->where('items.deleted', 0);
-		
+
 		// order by name of item
 		$this->db->order_by('items.name', 'asc');
 
-		if ($rows > 0)
+		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
 		return $this->db->get();
 	}
-	
+
 	/*
 	Gets information about a particular item
 	*/
@@ -156,7 +164,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_id', $item_id);
-		
+
 		$query = $this->db->get();
 
 		if($query->num_rows() == 1)
@@ -169,11 +177,9 @@ class Item extends CI_Model
 			$item_obj = new stdClass();
 
 			//Get all the fields from items table
-			$fields = $this->db->list_fields('items');
-
-			foreach($fields as $field)
+			foreach($this->db->list_fields('items') as $field)
 			{
-				$item_obj->$field='';
+				$item_obj->$field = '';
 			}
 
 			return $item_obj;
@@ -192,7 +198,7 @@ class Item extends CI_Model
         
 		$query = $this->db->get();
 
-		if($query->num_rows()==1)
+		if($query->num_rows() == 1)
 		{
 			return $query->row()->item_id;
 		}
@@ -203,12 +209,13 @@ class Item extends CI_Model
 	/*
 	Gets information about multiple items
 	*/
-	public function get_multiple_info($item_ids)
+	public function get_multiple_info($item_ids, $location_id)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where_in('item_id', $item_ids);
-		$this->db->order_by('item_id', 'asc');
+		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+		$this->db->where('location_id', $location_id);
+		$this->db->where_in('items.item_id', $item_ids);
 
 		return $this->db->get();
 	}
@@ -216,15 +223,17 @@ class Item extends CI_Model
 	/*
 	Inserts or updates a item
 	*/
-	public function save(&$item_data, $item_id=FALSE)
+	public function save(&$item_data, $item_id = FALSE)
 	{
-		if(!$item_id or !$this->exists($item_id))
+		if(!$item_id || !$this->exists($item_id))
 		{
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
+
 				return TRUE;
 			}
+
 			return FALSE;
 		}
 		
@@ -238,7 +247,7 @@ class Item extends CI_Model
 	*/
 	public function update_multiple($item_data, $item_ids)
 	{
-		$this->db->where_in('item_id', $item_ids);
+		$this->db->where_in('item_id', explode(':', $item_ids));
 
 		return $this->db->update('items', $item_data);
 	}
@@ -248,10 +257,19 @@ class Item extends CI_Model
 	*/
 	public function delete($item_id)
 	{
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
+
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity($item_id);
 		$this->db->where('item_id', $item_id);
-		return $this->db->update('items', array('deleted'=>1));
+		$success = $this->db->update('items', array('deleted'=>1));
+		
+		$this->db->trans_complete();
+		
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 	
 	/*
@@ -269,13 +287,22 @@ class Item extends CI_Model
 	*/
 	public function delete_list($item_ids)
 	{
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
+
 		// set to 0 quantities
 		$this->Item_quantity->reset_quantity_list($item_ids);
 		$this->db->where_in('item_id', $item_ids);
-		return $this->db->update('items', array('deleted'=>1));
+		$success = $this->db->update('items', array('deleted'=>1));
+		
+		$this->db->trans_complete();
+		
+		$success &= $this->db->trans_status();
+
+		return $success;
  	}
 
-	public function get_search_suggestions($search, $filters = array('is_deleted'=>FALSE, 'search_custom'=>FALSE), $unique = FALSE, $limit=25)
+	public function get_search_suggestions($search, $filters = array('is_deleted'=>FALSE, 'search_custom'=>FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
 
@@ -284,8 +311,7 @@ class Item extends CI_Model
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
-		$by_name = $this->db->get();
-		foreach($by_name->result() as $row)
+		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 		}
@@ -295,35 +321,34 @@ class Item extends CI_Model
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
-		$by_item_number = $this->db->get();
-		foreach($by_item_number->result() as $row)
+		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
 		}
 
-		if (!$unique)
+		if(!$unique)
 		{
+			//Search by category
 			$this->db->select('category');
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
 			$this->db->like('category', $search);
 			$this->db->order_by('category', 'asc');
-			$by_category = $this->db->get();
-			foreach($by_category->result() as $row)
+			foreach($this->db->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->category);
 			}
 
+			//Search by supplier
 			$this->db->select('company_name');
 			$this->db->from('suppliers');
 			$this->db->like('company_name', $search);
-			// restrict to non deleted companies only if is_deleted if false
+			// restrict to non deleted companies only if is_deleted is FALSE
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->distinct();
 			$this->db->order_by('company_name', 'asc');
-			$by_company_name = $this->db->get();
-			foreach($by_company_name->result() as $row)
+			foreach($this->db->get()->result() as $row)
 			{
 				$suggestions[] = array('label' => $row->company_name);
 			}
@@ -334,34 +359,33 @@ class Item extends CI_Model
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->like('description', $search);
 			$this->db->order_by('description', 'asc');
-			$by_description = $this->db->get();
-			foreach($by_description->result() as $row)
+			foreach($this->db->get()->result() as $row)
 			{
 				$entry = array('value' => $row->item_id, 'label' => $row->name);
-				if (!array_walk($suggestions, function($value, $label) use ($entry) {
-					return $entry['label'] != $label;
-				})) {
+				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
+				{
 					$suggestions[] = $entry;
 				}
 			}
 
 			//Search by custom fields
-			if ($filters['search_custom'] != FALSE)
+			if($filters['search_custom'] != FALSE)
 			{
 				$this->db->from('items');
+				$this->db->group_start();
+					$this->db->like('custom1', $search);
+					$this->db->or_like('custom2', $search);
+					$this->db->or_like('custom3', $search);
+					$this->db->or_like('custom4', $search);
+					$this->db->or_like('custom5', $search);
+					$this->db->or_like('custom6', $search);
+					$this->db->or_like('custom7', $search);
+					$this->db->or_like('custom8', $search);
+					$this->db->or_like('custom9', $search);
+					$this->db->or_like('custom10', $search);
+				$this->db->group_end();
 				$this->db->where('deleted', $filters['is_deleted']);
-				$this->db->like('custom1', $search);
-				$this->db->or_like('custom2', $search);
-				$this->db->or_like('custom3', $search);
-				$this->db->or_like('custom4', $search);
-				$this->db->or_like('custom5', $search);
-				$this->db->or_like('custom6', $search);
-				$this->db->or_like('custom7', $search);
-				$this->db->or_like('custom8', $search);
-				$this->db->or_like('custom9', $search);
-				$this->db->or_like('custom10', $search);
-				$by_description = $this->db->get();
-				foreach($by_description->result() as $row)
+				foreach($this->db->get()->result() as $row)
 				{
 					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
 				}
@@ -386,8 +410,7 @@ class Item extends CI_Model
 		$this->db->like('category', $search);
 		$this->db->where('deleted', 0);
 		$this->db->order_by('category', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
+		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->category);
 		}
@@ -404,8 +427,7 @@ class Item extends CI_Model
 		$this->db->like('location', $search);
 		$this->db->where('deleted', 0);
 		$this->db->order_by('location', 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
+		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->location);
 		}
@@ -422,8 +444,7 @@ class Item extends CI_Model
 		$this->db->like('custom'.$field_no, $search);
 		$this->db->where('deleted', 0);
 		$this->db->order_by('custom'.$field_no, 'asc');
-		$by_category = $this->db->get();
-		foreach($by_category->result() as $row)
+		foreach($this->db->get()->result() as $row)
 		{
 			$row_array = (array) $row;
 			$suggestions[] = array('label' => $row_array['custom'.$field_no]);

@@ -22,16 +22,9 @@
     <li role="presentation">
         <a data-toggle="tab" href="#invoice" title="<?php echo $this->lang->line('config_invoice_configuration'); ?>"><?php echo $this->lang->line('config_invoice'); ?></a>
     </li>
-	<?php
-	if($this->Employee->has_grant('messages', $this->session->userdata('person_id')))
-	{
-	?>
-		<li role="presentation">
-			<a data-toggle="tab" href="#message" title="<?php echo $this->lang->line('config_message_configuration'); ?>"><?php echo $this->lang->line('config_message'); ?></a>
-		</li>
-	<?php
-	}
-	?>
+	<li role="presentation">
+		<a data-toggle="tab" href="#message" title="<?php echo $this->lang->line('config_message_configuration'); ?>"><?php echo $this->lang->line('config_message'); ?></a>
+	</li>
 </ul>
 
 <div class="tab-content">
@@ -56,16 +49,9 @@
     <div class="tab-pane" id="invoice">
         <?php $this->load->view("configs/invoice_config"); ?>
     </div>
-	<?php
-	if($this->Employee->has_grant('messages', $this->session->userdata('person_id')))
-	{
-	?>
-		<div class="tab-pane" id="message">
-			<?php $this->load->view("configs/message_config"); ?>
-		</div>
-	<?php
-	}
-	?>
+	<div class="tab-pane" id="message">
+		<?php $this->load->view("configs/message_config"); ?>
+	</div>
 </div>
 
 <?php $this->load->view("partial/footer"); ?>

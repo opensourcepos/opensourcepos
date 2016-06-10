@@ -16,10 +16,10 @@ class Specific_customer extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, sum(quantity_purchased) as items_purchased, CONCAT(first_name, " ", last_name) as employee_name, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit, payment_type, comment', false);
+		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, CONCAT(first_name, " ", last_name) AS employee_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
 		$this->db->join('people', 'sales_items_temp.employee_id = people.person_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'" and customer_id='.$inputs['customer_id']);
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND customer_id=" . $this->db->escape($inputs['customer_id']));
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -51,9 +51,9 @@ class Specific_customer extends Report
 	
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'" and customer_id='.$inputs['customer_id']);
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND customer_id=" . $this->db->escape($inputs['customer_id']));
 
 		if ($inputs['sale_type'] == 'sales')
         {

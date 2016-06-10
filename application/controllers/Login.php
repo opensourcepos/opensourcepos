@@ -1,12 +1,13 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 class Login extends CI_Controller 
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 	}
 	
-	function index()
+	public function index()
 	{
 		if($this->Employee->is_logged_in())
 		{
@@ -28,7 +29,7 @@ class Login extends CI_Controller
 		}
 	}
 	
-	function login_check($username)
+	public function login_check($username)
 	{
 		$password = $this->input->post('password');	
 		
@@ -36,10 +37,10 @@ class Login extends CI_Controller
 		{
 			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_username_and_password'));
 
-			return false;
+			return FALSE;
 		}
 
-		return true;		
+		return TRUE;		
 	}
 }
 ?>

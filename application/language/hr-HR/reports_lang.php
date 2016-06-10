@@ -94,3 +94,4 @@ $lang["reports_sub_total_value"] = "Iznos međuzbroja";
 $lang["reports_total_inventory_value"] = "Ukupan iznos inventure";
 $lang["reports_zero_and_less"] = "Nula i manje";
 $lang["reports_more_than_zero"] = "Više od nule";
+$lang["reports_no_reports_to_display"] = "Nema artikla za prikazati";

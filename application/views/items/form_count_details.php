@@ -66,7 +66,7 @@
 		</div>
 	</fieldset>
 <?php echo form_close(); ?>
-	
+
 <table id="items_count_details" class="table table-striped table-hover">
 	<thead>
 		<tr style="background-color: #999 !important;">

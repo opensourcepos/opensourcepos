@@ -8,10 +8,10 @@ function printdoc()
 		if (window.jsPrintSetup) 
 		{
 			// set top margins in millimeters
-			jsPrintSetup.setOption('marginTop', <?php echo $this->Appconfig->get('print_top_margin'); ?>);
-			jsPrintSetup.setOption('marginLeft', <?php echo $this->Appconfig->get('print_left_margin'); ?>);
-			jsPrintSetup.setOption('marginBottom', <?php echo $this->Appconfig->get('print_bottom_margin'); ?>);
-			jsPrintSetup.setOption('marginRight', <?php echo $this->Appconfig->get('print_right_margin'); ?>);
+			jsPrintSetup.setOption('marginTop', '<?php echo $this->Appconfig->get('print_top_margin'); ?>');
+			jsPrintSetup.setOption('marginLeft', '<?php echo $this->Appconfig->get('print_left_margin'); ?>');
+			jsPrintSetup.setOption('marginBottom', '<?php echo $this->Appconfig->get('print_bottom_margin'); ?>');
+			jsPrintSetup.setOption('marginRight', '<?php echo $this->Appconfig->get('print_right_margin'); ?>');
 
 			<?php if (!$this->Appconfig->get('print_header'))
 			{

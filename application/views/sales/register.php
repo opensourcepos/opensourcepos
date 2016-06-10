@@ -21,7 +21,7 @@ if (isset($success))
 
 <!-- Top register controls -->
 
-	<?php echo form_open("sales/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	<?php echo form_open($controller_name."/change_mode", array('id'=>'mode_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
@@ -46,16 +46,18 @@ if (isset($success))
 				?>
 
 				<li class="pull-right">
-					<?php echo anchor("sales/suspended", $this->lang->line('sales_suspended_sales'),
-								array('class'=>'btn btn-default btn-sm modal-dlg none', 'id'=>'show_suspended_sales_button', 'title'=>$this->lang->line('sales_suspended_sales'))); ?>
+					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href='<?php echo site_url($controller_name."/suspended"); ?>'
+							title='<?php echo $this->lang->line('sales_suspended_sales'); ?>'>
+						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspended_sales'); ?>
+					</button>
 				</li>
 			
 				<?php
 				if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
 				{
 				?>
-					<li class="pull-right">
-						<?php echo anchor("sales/manage", $this->lang->line('sales_takings'), 
+					<li class="pull-right">						
+						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), 
 									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
 					</li>
 				<?php
@@ -65,23 +67,26 @@ if (isset($success))
 		</div>
 	<?php echo form_close(); ?>
 
-	<?php echo form_open("sales/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
+	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
 				<li class="pull-left first_li">
-					<label for="item", class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
+					<label for="item" class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
 				</li>
 				<li class="pull-left">
 					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-right">
-					<?php echo anchor("items/view/-1", $this->lang->line('sales_new_item'),
-							array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-new modal-btn-submit', 'id'=>'new_item_button', 'title'=>$this->lang->line('sales_new_item'))); ?>
+					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url("items/view"); ?>'
+							title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
+						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
+					</button>
 				</li>
 			</ul>
 		</div>
 	<?php echo form_close(); ?>
+
 
 <!-- Sale Items List -->
 	
@@ -113,17 +118,13 @@ if (isset($success))
 			}
 			else
 			{				
-				$tabindex = 2;				
+				$tabindex = 2;
 				foreach(array_reverse($cart, true) as $line=>$item)
 				{					
-					if($tabindex == 3) 
-					{
-						$tabindex = 5;
-					}
 			?>
-					<?php echo form_open("sales/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
+					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
-							<td><?php echo anchor("sales/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align: center;">
 								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
@@ -285,21 +286,24 @@ if (isset($success))
 				</tr>
 			</table>
 
-			<?php echo anchor("sales/remove_customer", $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
-								array('class'=>'btn btn-danger btn-xs', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
+			<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
+								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
 		<?php
 		}
 		else
 		{
 		?>
-			<?php echo form_open("sales/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
+			<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
 				<div class="form-group" id="select_customer">
 					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer'); ?></label>
 					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('sales_start_typing_customer_name')));?>
 
-					<?php echo anchor("customers/view/-1", $this->lang->line('sales_new_customer'),
-								array('class'=>'btn btn-info btn-sm modal-dlg modal-btn-submit none', 'id'=>'new_customer_button', 'title'=>$this->lang->line('sales_new_customer'))); ?>
-				</div>			
+					<button class='btn btn-info btn-sm modal-dlg modal-btn-submit' data-href='<?php echo site_url("customers/view"); ?>'
+							title='<?php echo $this->lang->line($controller_name. '_new_customer'); ?>'>
+						<span class="glyphicon glyphicon-user">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_customer'); ?>
+					</button>
+
+				</div>
 			<?php echo form_close(); ?>
 		<?php
 		}
@@ -346,33 +350,35 @@ if (isset($success))
 			</table>
 
 			<div id="payment_details">
-				<?php echo form_open("sales/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>						
 					<?php
 					// Show Complete sale button instead of Add Payment if there is no amount due left
 					if( $payments_cover_total )
 					{
 					?>
+						<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'')); ?>
+									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'disabled')); ?>
 								</td>
 							</tr>
 							<tr>
 								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 								<td>
-									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>3)); ?>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>$tabindex)); ?>
 								</td>
 							</tr>
 						</table>
-					
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='4'><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<?php echo form_close(); ?>
+
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo $tabindex+1; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 					<?php
 					}
 					else
 					{
 					?>
+						<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
 						<table class="sales_table_100">
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
@@ -383,16 +389,17 @@ if (isset($success))
 							<tr>
 								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 								<td>
-									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>3)); ?>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>5)); ?>
 								</td>
 							</tr>
 						</table>
 
-						<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='4'><?php echo $this->lang->line('sales_add_payment'); ?></div>
-					<?php
+						<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo $tabindex+2; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
+						<?php echo form_close(); ?>
+
+						<?php
 					}
 					?>
-				<?php echo form_close(); ?>
 
 				<?php
 				// Only show this part if there is at least one payment entered.
@@ -414,7 +421,7 @@ if (isset($success))
 							{
 							?>
 								<tr>
-									<td><?php echo anchor( "sales/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>' ); ?></td>
+									<td><?php echo anchor($controller_name."/delete_payment/$payment_id", '<span class="glyphicon glyphicon-trash"></span>'); ?></td>
 									<td><?php echo $payment['payment_type']; ?></td>
 									<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
 								</tr>
@@ -428,11 +435,11 @@ if (isset($success))
 				?>
 			</div>
 
-			<?php echo form_open("sales/cancel", array('id'=>'buttons_form', 'class'=>'form-horizontal')); ?>
+			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form', 'class'=>'form-horizontal')); ?>
 				<div class="form-group" id="buttons_sale">
-					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
 
-					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
+					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				</div>
 				
 				<?php
@@ -476,7 +483,7 @@ if (isset($success))
 							</tr>
 						
 							<?php
-							if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE) 
+							if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
 							{
 							?>
 								<tr>
@@ -512,11 +519,11 @@ if (isset($success))
 $(document).ready(function()
 {
     $("#item").autocomplete(
-    {
-		source: '<?php echo site_url("sales/item_search"); ?>',
-    	minChars:0,
+	{
+		source: '<?php echo site_url($controller_name."/item_search"); ?>',
+    	minChars: 0,
     	autoFocus: false,
-       	delay:10,
+       	delay: 10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
@@ -524,6 +531,13 @@ $(document).ready(function()
     });
 
 	$('#item').focus();
+
+	$('#item').keypress(function (e) {
+		if (e.which == 13) {
+			$('#add_item_form').submit();
+			return false;
+		}
+	});
 
     $('#item').blur(function()
     {
@@ -541,8 +555,8 @@ $(document).ready(function()
     $("#customer").autocomplete(
     {
 		source: '<?php echo site_url("customers/suggest"); ?>',
-    	minChars:0,
-    	delay:10,
+    	minChars: 0,
+    	delay: 10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#select_customer_form").submit();
@@ -561,7 +575,7 @@ $(document).ready(function()
 
 	$('#comment').keyup(function() 
 	{
-		$.post('<?php echo site_url("sales/set_comment");?>', {comment: $('#comment').val()});
+		$.post('<?php echo site_url($controller_name."/set_comment");?>', {comment: $('#comment').val()});
 	});
 
 	<?php
@@ -570,7 +584,7 @@ $(document).ready(function()
 	?>
 		$('#sales_invoice_number').keyup(function() 
 		{
-			$.post('<?php echo site_url("sales/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
+			$.post('<?php echo site_url($controller_name."/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
 		});
 
 		var enable_invoice_number = function() 
@@ -585,7 +599,7 @@ $(document).ready(function()
 		$("#sales_invoice_enable").change(function()
 		{
 			var enabled = enable_invoice_number();
-			$.post('<?php echo site_url("sales/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
+			$.post('<?php echo site_url($controller_name."/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
 		});
 	<?php
 	}
@@ -593,23 +607,23 @@ $(document).ready(function()
 
 	$("#sales_print_after_sale").change(function()
 	{
-		$.post('<?php echo site_url("sales/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
+		$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
 	});
 	
 	$('#email_receipt').change(function() 
 	{
-		$.post('<?php echo site_url("sales/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
+		$.post('<?php echo site_url($controller_name."/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
 	});
 	
     $("#finish_sale_button").click(function()
     {
-		$('#buttons_form').attr('action', '<?php echo site_url("sales/complete"); ?>');
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
 		$('#buttons_form').submit();
     });
 
 	$("#suspend_sale_button").click(function()
 	{ 	
-		$('#buttons_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/suspend"); ?>');
 		$('#buttons_form').submit();
 	});
 
@@ -617,7 +631,7 @@ $(document).ready(function()
     {
     	if (confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
     	{
-			$('#buttons_form').attr('action', '<?php echo site_url("sales/cancel"); ?>');
+			$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/cancel"); ?>');
     		$('#buttons_form').submit();
     	}
     });
@@ -627,8 +641,16 @@ $(document).ready(function()
 		$('#add_payment_form').submit();
     });
 
-	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard)
-	
+	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard);
+
+	$("#cart_contents input").keypress(function(event)
+	{
+		if (event.which == 13)
+		{
+			$('#cart_' + (1 + $(this).index() / 2 )).submit();
+		}
+	});
+
 	$("#amount_tendered").keypress(function(event)
 	{
 		if( event.which == 13 )
@@ -644,34 +666,34 @@ $(document).ready(function()
 			$('#finish_sale_form').submit();
 		}
 	});
+
+	dialog_support.init("a.modal-dlg, button.modal-dlg");
+
+	table_support.handle_submit = function(resource, response, stay_open)
+	{
+		if(response.success) {
+			if (resource.match(/customers$/))
+			{
+				$("#customer").val(response.id);
+				$("#select_customer_form").submit();
+			}
+			else
+			{
+				var $stock_location = $("select[name='stock_location']").val();
+				$("#item_location").val($stock_location);
+				$("#item").val(response.id);
+				if (stay_open)
+				{
+					$("#add_item_form").ajaxSubmit();
+				}
+				else
+				{
+					$("#add_item_form").submit();
+				}
+			}
+		}
+	}
 });
-
-function post_item_form_submit(response, stay_open)
-{
-	if(response.success)
-	{
-        var $stock_location = $("select[name='stock_location']").val();
-        $("#item_location").val($stock_location);
-		$("#item").val(response.item_id);
-		if (stay_open)
-		{
-			$("#add_item_form").ajaxSubmit();
-		}
-		else
-		{
-			$("#add_item_form").submit();	
-		}
-	}
-}
-
-function post_person_form_submit(response)
-{
-	if(response.success)
-	{
-		$("#customer").val(response.person_id);
-		$("#select_customer_form").submit();
-	}
-}
 
 function check_payment_type_giftcard()
 {

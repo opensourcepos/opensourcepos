@@ -18,3 +18,7 @@ $lang["customers_taxable"] = "應課稅";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "更新客戶";
 $lang["customers_import_items_excel"] = "Import customers from Excel sheet";
+$lang["customers_excel_import_failed"] = "Excel匯入失敗";
+$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["customers_excel_import_success"] = "Import of Customers successful";
+$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";

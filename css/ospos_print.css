@@ -5,7 +5,7 @@
 		display: none !important;
 	}
 
-	#receipt_wrapper
+	#receipt_wrapper, #table
 	{
 		/*background-color:#FFFFFF;*/
 		font-size:75%;
@@ -25,11 +25,6 @@
 	{
 		width:100%;
 		text-align:center;
-	}
-
-	.short_name
-	{
-		display:inline;
 	}
 
 	#receipt_items td
@@ -73,5 +68,15 @@
 	.print_hide
 	{
 		display:none !important;
+	}
+
+	.fixed-table-container
+	{
+		border: none;
+	}
+
+	.fixed-table-container thead th .sortable
+	{
+		padding-right: 10px;
 	}
 }
