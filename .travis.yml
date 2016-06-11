@@ -1,6 +1,7 @@
 sudo: true                  # Required to install packages
 
-services: - docker
+services: 
+    - docker
 
 env:
     global:
