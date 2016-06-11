@@ -65,7 +65,7 @@ From now on ospos can be deployed using Docker on Linux, Mac or Windows. This se
 To build and run the image, issue following commands in a terminal with docker installed
 
     docker-compose build
-    docker-commpose up 
+    docker-compose up 
 
 
 
