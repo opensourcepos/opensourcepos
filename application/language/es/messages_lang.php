@@ -1,14 +1,14 @@
 <?php 
 
-$lang["messages_sms_send"] = "Send SMS";
-$lang["messages_first_name"] = "First name";
-$lang["messages_last_name"] = "Last name";
-$lang["messages_phone"] = "Phone number";
-$lang["messages_phone_placeholder"] = "Mobile Number(s) here...";
-$lang["messages_phone_number_required"] = "Phone number required";
-$lang["messages_message"] = "Message";
-$lang["messages_message_placeholder"] = "Your Message here...";
-$lang["messages_message_required"] = "Message required";
-$lang["messages_multiple_phones"] = "(In case of multiple recipients, enter mobile numbers separated by commas)";
-$lang["messages_successfully_sent"] = "Message successfully sent to: ";
-$lang["messages_unsuccessfully_sent"] = "Message unsuccessfully sent to: ";
+$lang["messages_sms_send"] = "Enviar SMS";
+$lang["messages_first_name"] = "Nombre";
+$lang["messages_last_name"] = "Apellidos";
+$lang["messages_phone"] = "Numero de Telefono";
+$lang["messages_phone_placeholder"] = "Numero de Celular aquí…";
+$lang["messages_phone_number_required"] = "El Telefono es requerido";
+$lang["messages_message"] = "Mensaje";
+$lang["messages_message_placeholder"] = "Su mensaje aquí…";
+$lang["messages_message_required"] = "Mensaje es requerido";
+$lang["messages_multiple_phones"] = "(En Caso de varios destinatarios, ingresar los numeros de telefono separados por comas)";
+$lang["messages_successfully_sent"] = "Mensaje exitosamente enviado a:";
+$lang["messages_unsuccessfully_sent"] = "Mensaje no pudo ser enviado a:";
