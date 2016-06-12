@@ -38,7 +38,7 @@
 
 		<?php 
 		$i = 0;
-		foreach($payments->result() as $row)
+		foreach($payments as $row)
 		{
 		?>
 			<div class="form-group form-group-sm">
@@ -97,14 +97,14 @@
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {	
-	<?php if (isset($sale_info['email'])): ?>
+	<?php if(isset($sale_info['email'])): ?>
 		$("#send_invoice").click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
 				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
-						function(response) {
-							dialog_support.hide();
-							table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
-						}, "json"
+					function(response) {
+						dialog_support.hide();
+						table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
+					}, "json"
 				);	
 			}
 		});

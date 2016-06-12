@@ -19,7 +19,7 @@ if (isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-		        <?php if ($this->Appconfig->get('company_logo') == '') 
+		        <?php if($this->Appconfig->get('company_logo') == '') 
 		        { 
 		        ?>
 					<div id="company_name"><?php echo $this->config->item('company'); ?></div>
@@ -28,7 +28,7 @@ if (isset($error_message))
 				else 
 				{ 
 				?>
-					<img id="image" src="<?php echo $image_prefix. 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
+					<img id="image" src="<?php echo 'uploads/' . $this->Appconfig->get('company_logo'); ?>" alt="company_logo" />			
 				<?php
 				}
 				?>

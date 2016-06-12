@@ -501,7 +501,7 @@ class Sale extends CI_Model
 			$this->db->where('sale_id !=', $sale_id);
 		}
 		
-		return ($this->db->get()->num_rows()==1);
+		return ($this->db->get()->num_rows() == 1);
 	}
 	
 	public function get_giftcard_value($giftcardNumber)

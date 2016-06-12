@@ -62,22 +62,23 @@ function get_sale_data_row($sale, $controller)
 		'amount_tendered' => to_currency( $sale->amount_tendered ),
 		'amount_due' => to_currency($sale->amount_due),
 		'change_due' => to_currency($sale->change_due),
-		'payment_type' => $sale->payment_type,
-		'invoice_number' => $sale->invoice_number,
-		'receipt' => anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-print"></span>',
-			array('title'=>$CI->lang->line('sales_show_receipt'))
-		),
-		'edit' => anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line($controller_name.'_update'))
-		)
+		'payment_type' => $sale->payment_type
 	);
 
-	if ($CI->config->item('invoice_enable'))
+	if($CI->config->item('invoice_enable'))
 	{
-		$row['invoice'] = anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
+		$row['invoice_number'] = $sale->invoice_number;
+		$row['invoice'] = empty($sale->invoice_number) ? '' : anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
 			array('title'=>$CI->lang->line('sales_show_invoice'))
-		);		
+		);
 	}
+
+	$row['receipt'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
+		array('title'=>$CI->lang->line('sales_show_receipt'))
+	);
+	$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
+		array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title'=>$CI->lang->line($controller_name.'_update'))
+	);
 
 	return $row;
 }

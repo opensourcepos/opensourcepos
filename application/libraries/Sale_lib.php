@@ -20,7 +20,7 @@ class Sale_lib
 
 	function set_cart($cart_data)
 	{
-		$this->CI->session->set_userdata('cart',$cart_data);
+		$this->CI->session->set_userdata('cart', $cart_data);
 	}
 
 	// Multiple Payments
@@ -79,8 +79,9 @@ class Sale_lib
 	
 	function is_invoice_number_enabled() 
 	{
-		return $this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
-			$this->CI->session->userdata('sales_invoice_number_enabled') == '1';
+		return ($this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
+				$this->CI->session->userdata('sales_invoice_number_enabled') == '1') &&
+				$this->CI->config->item('invoice_enable') == TRUE;
 	}
 	
 	function set_invoice_number_enabled($invoice_number_enabled)
@@ -90,8 +91,8 @@ class Sale_lib
 	
 	function is_print_after_sale() 
 	{
-		return $this->CI->session->userdata('sales_print_after_sale') == 'true' ||
-			$this->CI->session->userdata('sales_print_after_sale') == '1';
+		return ($this->CI->session->userdata('sales_print_after_sale') == 'true' ||
+				$this->CI->session->userdata('sales_print_after_sale') == '1');
 	}
 	
 	function set_print_after_sale($print_after_sale)
@@ -125,7 +126,7 @@ class Sale_lib
 		else
 		{
 			//add to existing array
-			$payment = array($payment_id=>array('payment_type' => $payment_id, 'payment_amount' => $payment_amount));
+			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount));
 			
 			$payments += $payment;
 		}
@@ -272,7 +273,7 @@ class Sale_lib
         $itemalreadyinsale = FALSE;        //We did not find the item yet.
 		$insertkey = 0;                    //Key to use for new entry.
 		$updatekey = 0;                    //Key to use to update(quantity)
-        $item_info = $this->CI->Item->get_info($item_id,$item_location);
+        $item_info = $this->CI->Item->get_info($item_id, $item_location);
 		foreach($items as $item)
 		{
             //We primed the loop so maxkey is 0 the first time.
@@ -283,7 +284,7 @@ class Sale_lib
 				$maxkey = $item['line'];
 			}
 
-			if($item['item_id'] == $item_id && $item['item_location']==$item_location)
+			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)
 			{
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];
@@ -302,8 +303,7 @@ class Sale_lib
 		//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
-            $item = array(($insertkey)=>
-                array(
+            $item = array($insertkey => array(
                     'item_id'=>$item_id,
                     'item_location'=>$item_location,
                     'stock_name'=>$this->CI->Stock_location->get_location_name($item_location),
@@ -513,7 +513,7 @@ class Sale_lib
 
 	function delete_item($line)
 	{
-		$items=$this->get_cart();
+		$items = $this->get_cart();
 		unset($items[$line]);
 		$this->set_cart($items);
 	}
@@ -589,7 +589,7 @@ class Sale_lib
 		$discount = 0;
 		foreach($this->get_cart() as $line=>$item)
 		{
-			if ($item['discount'] > 0)
+			if($item['discount'] > 0)
 			{
 				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
 				$discount = bcadd($discount, $item_discount, PRECISION); 
@@ -622,7 +622,7 @@ class Sale_lib
 	function get_item_total($quantity, $price, $discount_percentage, $include_discount=FALSE)  
 	{
 		$total = bcmul($quantity, $price, PRECISION);
-		if ($include_discount)
+		if($include_discount)
 		{
 			$discount_amount = $this->get_item_discount($quantity, $price, $discount_percentage);
 
@@ -662,7 +662,7 @@ class Sale_lib
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
-			if ($exclude_tax && $this->CI->config->config['tax_included'])
+			if($exclude_tax && $this->CI->config->config['tax_included'])
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
 			}
@@ -678,7 +678,7 @@ class Sale_lib
 	function get_total()
 	{
 		$total = $this->calculate_subtotal(TRUE);		
-		if (!$this->CI->config->config['tax_included'])
+		if(!$this->CI->config->config['tax_included'])
 		{
 			foreach($this->get_taxes() as $tax)
 			{

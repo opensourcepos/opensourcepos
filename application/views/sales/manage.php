@@ -4,8 +4,7 @@
 $(document).ready(function()
 {
 	// when any filter is clicked and the dropdown window is closed
-	$('#filters').on('hidden.bs.select', function(e)
-	{
+	$('#filters').on('hidden.bs.select', function(e) {
 		table_support.refresh();
 	});
 	
@@ -24,8 +23,7 @@ $(document).ready(function()
 		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 		uniqueId: 'sale_id',
 		onLoadSuccess: function(response) {
-			if ($("#table tbody tr").length > 1)
-			{
+			if($("#table tbody tr").length > 1) {
 				$("#payment_summary").html(response.payment_summary);
 				$("#table tbody tr:last td:first").html("");
 			}
@@ -43,9 +41,7 @@ $(document).ready(function()
 			}
 		}
 	});
-
 });
-
 </script>
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
@@ -73,7 +69,5 @@ $(document).ready(function()
 
 <div id="payment_summary">
 </div>
-
-
 
 <?php $this->load->view("partial/footer"); ?>
