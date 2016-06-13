@@ -58,19 +58,15 @@ $(document).ready(function()
 		</div>
 
         <div id="logo">
-	        <?php if ($this->Appconfig->get('company_logo') == '') 
+	        <?php if($this->Appconfig->get('company_logo') != '') 
 	        { 
-	        ?>
-				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
-			<?php 
-			}
-			else 
-			{ 
 			?>
 				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
 			<?php
 			}
 			?>
+			<div>&nbsp</div>
+			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
         </div>
 	</div>
 

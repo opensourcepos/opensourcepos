@@ -19,14 +19,8 @@ if (isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-		        <?php if($this->Appconfig->get('company_logo') == '') 
+		        <?php if($this->Appconfig->get('company_logo') != '') 
 		        { 
-		        ?>
-					<div id="company_name"><?php echo $this->config->item('company'); ?></div>
-				<?php 
-				}
-				else 
-				{ 
 				?>
 					<img id="image" src="<?php echo 'uploads/' . $this->Appconfig->get('company_logo'); ?>" alt="company_logo" />			
 				<?php
@@ -34,15 +28,14 @@ if (isset($error_message))
 				?>
 			</td>
 			<td id="customer-title">
-				<pre><?php if(isset($customer))
-				{
-					echo $customer_info;
-				}
-				?></pre>
+	            <pre><?php if(isset($customer)) { echo $customer_info; } ?></pre>
 			</td>
 		</tr>
 		<tr>
-	       	<td id="company-title"><pre><?php echo $company_info; ?></pre></td>
+	       	<td id="company-title">
+	            <pre><?php echo $this->config->item('company'); ?></pre>
+	            <pre><?php echo $company_info; ?></pre>
+			</td>
 	        <td id="meta">
 	        	<table align="right">
 	            <tr>
