@@ -145,7 +145,6 @@ $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "Dikenakan Pajak";
 $lang["config_thousands_separator"] = "Pemisah Ribuan";
 $lang["config_timezone"] = "Zona Waktu";
-$lang["config_use_invoice_template"] = "Use Invoice Template";
 $lang["config_website"] = "Situs Perusahaan";
 $lang["config_datetimeformat"] = "Date and Time format";
 $lang["config_country_codes"] = "Country Codes";

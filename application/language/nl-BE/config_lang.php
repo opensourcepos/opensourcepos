@@ -145,7 +145,6 @@ $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "VAT Inbegrepen";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Tijdzone";
-$lang["config_use_invoice_template"] = "Gebruik template voor facturen";
 $lang["config_website"] = "Website";
 $lang["config_datetimeformat"] = "Date and Time format";
 $lang["config_country_codes"] = "Country Codes";

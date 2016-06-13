@@ -145,7 +145,6 @@ $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "Tax Included";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Часовой пояс";
-$lang["config_use_invoice_template"] = "Use Invoice Template";
 $lang["config_website"] = "Веб-сайт";
 $lang["config_datetimeformat"] = "Date and Time format";
 $lang["config_country_codes"] = "Country Codes";

@@ -229,7 +229,6 @@ class Config extends Secure_Controller
 			'invoice_enable' => $this->input->post('invoice_enable') != NULL,
 			'sales_invoice_format' => $this->input->post('sales_invoice_format'),
 			'recv_invoice_format' => $this->input->post('recv_invoice_format'),
-			'use_invoice_template' => $this->input->post('use_invoice_template') != NULL,
 			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
 			'invoice_email_message' => $this->input->post('invoice_email_message')
 		);

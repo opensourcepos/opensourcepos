@@ -67,7 +67,6 @@ if (isset($error_message))
 	        </td>
 		</tr>
 	</table>
-	
 
 	<table id="items">
 	  <tr>

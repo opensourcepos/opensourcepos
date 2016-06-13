@@ -145,7 +145,6 @@ $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "MWSt inbegriffen";
 $lang["config_thousands_separator"] = "Tausendertrennzeichen";
 $lang["config_timezone"] = "Zeitzone";
-$lang["config_use_invoice_template"] = "Verwende Rechnungsvorlage";
 $lang["config_website"] = "Website";
 $lang["config_datetimeformat"] = "Datum und Zeit";
 $lang["config_country_codes"] = "Country Codes";

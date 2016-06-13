@@ -145,7 +145,6 @@ $lang["config_tax_decimals"] = "Porezne decimale";
 $lang["config_tax_included"] = "Uključuje porez";
 $lang["config_thousands_separator"] = "Razdjelnik za tisućice";
 $lang["config_timezone"] = "Vremenska zona";
-$lang["config_use_invoice_template"] = "Koristi predložak za fakture";
 $lang["config_website"] = "web strana";
 $lang["config_datetimeformat"] = "Oblik datuma i vremena";
 $lang["config_country_codes"] = "Country Codes";

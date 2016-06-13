@@ -145,7 +145,6 @@ $lang["config_tax_decimals"] = "Decimales de impuestos";
 $lang["config_tax_included"] = "Impuestos incluidos";
 $lang["config_thousands_separator"] = "Separador de miles";
 $lang["config_timezone"] = "Zona Horaria";
-$lang["config_use_invoice_template"] = "Use plantilla de factura";
 $lang["config_website"] = "Sitio Web";
 $lang["config_datetimeformat"] = "Formato de fecha y hora";
 $lang["config_country_codes"] = "Codigo de pais";

@@ -41,6 +41,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  ('country_codes', 'us'),
  ('notify_horziontal_position', 'right'),
  ('notify_vertical_position', 'top');
+ 
+DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
 
 UPDATE `ospos_modules` SET `sort` = 110 WHERE `name_lang_key` = 'module_config';
 
