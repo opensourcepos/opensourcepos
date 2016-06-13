@@ -39,8 +39,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  ('receipt_show_serialnumber', '1'),
  ('invoice_enable', '1'),
  ('country_codes', 'us'),
- ('notify_horziontal_position', 'right'),
- ('notify_vertical_position', 'top');
+ ('notify_horizontal_position', 'right'),
+ ('notify_vertical_position', 'top'),
+ ('payment_options_order', 'cashdebitcredit');
  
 DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
 

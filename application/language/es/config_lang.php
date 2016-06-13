@@ -104,6 +104,7 @@ $lang["config_msg_pwd_required"] = "SMS-API Password es un campo requerido";
 $lang["config_msg_src"] = "SMS-API ID remitente";
 $lang["config_msg_src_required"] = "SMS-API ID remitente es un campo requerido";
 $lang["config_number_format"] = "Formato de número";
+$lang["config_payment_options_order"] = "Payment Options Order";
 $lang["config_phone"] = "Teléfono del Comercio";
 $lang["config_phone_required"] = "Teléfono del Comercio es requerido";
 $lang["config_print_bottom_margin"] = "Margen Inferior";

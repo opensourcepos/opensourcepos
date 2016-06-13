@@ -69,8 +69,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('msg_uid', ''),
 ('msg_src', ''),
 ('msg_pwd', ''),
-('notify_horziontal_position', 'right'),
-('notify_vertical_position', 'top');
+('notify_horizontal_position', 'right'),
+('notify_vertical_position', 'top'),
+('payment_options_order', 'cashdebitcredit');
 
 
 -- --------------------------------------------------------

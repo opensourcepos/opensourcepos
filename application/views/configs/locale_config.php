@@ -92,6 +92,19 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_payment_options_order'), 'payment_options_order', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_dropdown('payment_options_order', array(
+						'cashdebitcredit' => 'Cash/Debit/Credit',
+						'debitcreditcash' => 'Debit/Credit/Cash',
+						'debitcashcredit' => 'Debit/Cash/Credit'
+					),
+					$this->config->item('payment_options_order'), array('class'=>'form-control input-sm'));
+					?>
+				</div>
+			</div>
+
 			<div class="form-group form-group-sm no-gutter">
 				<?php echo form_label($this->lang->line('config_country_codes'), 'country_codes', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>

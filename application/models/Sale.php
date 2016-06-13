@@ -469,13 +469,29 @@ class Sale extends CI_Model
 	
 	public function get_payment_options($giftcard = TRUE)
 	{
-		$payments = array(
-			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
-			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
-			$this->lang->line('sales_check') => $this->lang->line('sales_check')
-		);
+		$payments = array();
 		
+		if($this->config->item('payment_options_order') == 'debitcreditcash')
+		{
+			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
+			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
+			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
+		}
+		else if($this->config->item('payment_options_order') == 'debitcashcredit')
+		{
+			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
+			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
+			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
+		}
+		else // default: if($this->config->item('payment_options_order') == 'cashdebitcredit')
+		{
+			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
+			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
+			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
+		}
+
+		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
+
 		if($giftcard)
 		{
 			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
