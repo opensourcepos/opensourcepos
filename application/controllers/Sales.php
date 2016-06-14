@@ -91,7 +91,6 @@ class Sales extends Secure_Controller
 
 		if($total_rows > 0)
 		{
-			$total_rows++;
 			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales, $this));
 		}
 
