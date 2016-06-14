@@ -16,7 +16,8 @@ before_install:
     - docker-compose -v
     - docker -v
 script:
-    - docker-wait opensourcepos_php_1
+    - docker-compose build
+    - docker-compose up
 
 after_success:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
