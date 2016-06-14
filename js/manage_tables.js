@@ -147,10 +147,9 @@
 						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
 							.end().animate({opacity: 0}, 1200, "linear", function () {
 								table().remove({
-									field: 'id',
+									field: options.uniqueId,
 									values: selected_ids()
 								});
-								$(this).remove();
 								if (index == $(selector).length - 1) {
 									refresh();
 									enable_actions();
