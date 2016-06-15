@@ -16,9 +16,9 @@ before_install:
     - docker-compose -v
     - docker -v
 script:
-    - docker-compose -f docker-compose.test.yml build
-    - docker-compose -f docker-compose.test.yml up -d
-    - while ! curl localhost/index.php | grep username; do sleep 1; done;
+    - docker-compose build
+    - docker-compose up -d
+    - while ! curl 127.0.0.1/index.php | grep username; do sleep 1; done;
 
 after_success:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
