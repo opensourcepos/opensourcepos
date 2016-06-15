@@ -16,8 +16,8 @@ before_install:
     - docker-compose -v
     - docker -v
 script:
-    - docker-compose build
-    - docker-compose up
+    - docker-compose -f docker-compose.test.yml build
+    - docker-compose -f docker-compose.test.yml up
 
 after_success:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
