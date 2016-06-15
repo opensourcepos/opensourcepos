@@ -9,7 +9,7 @@ class Summary_payments extends Report
 	
 	public function getDataColumns()
 	{
-		return array($this->lang->line('reports_payment_type'), $this->lang->line('reports_count'), $this->lang->line('reports_total'));
+		return array($this->lang->line('reports_payment_type'), $this->lang->line('reports_count'), $this->lang->line('sales_amount_tendered'));
 	}
 	
 	public function getData(array $inputs)

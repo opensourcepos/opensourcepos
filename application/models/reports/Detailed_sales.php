@@ -21,7 +21,7 @@ class Detailed_sales extends Report
 				'tax' => $this->lang->line('reports_tax'),
 				'cost' => $this->lang->line('reports_cost'),
 				'profit' => $this->lang->line('reports_profit'),
-				'payment_type' => $this->lang->line('reports_payment_type'),
+				'payment_type' => $this->lang->line('sales_amount_tendered'),
 				'comment' => $this->lang->line('reports_comments'),
 				'edit' => ''),
 			 'details' => array(
