@@ -282,7 +282,7 @@ class Receiving_lib
     {
         //POS #
         $pieces = explode(' ',$receipt_receiving_id);
-        if ($pieces[0] == "RECV")
+        if (preg_match("/(RECV|KIT)/", $pieces[0]))
         {
             $receiving_id = $pieces[1];
         } 
