@@ -25,4 +25,4 @@ $lang["employees_update"] = "Actualizar Empleado";
 $lang["employees_username"] = "Usuario";
 $lang["employees_username_minlength"] = "El Usuario debe tener, por lo menos, 5 caracteres";
 $lang["employees_username_required"] = "Usuario es requerido";
-$lang["employees_subpermission_required"] = "Add at least one grant for each module";
+$lang["employees_subpermission_required"] = "Agregar al menos un permiso para cada modulo.";
