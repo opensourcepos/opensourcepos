@@ -274,15 +274,11 @@ class Items extends Secure_Controller
 				// get the newly generated barcode
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);
 				$item['item_number'] = $barcode_instance->getData();
-				// remove from item any suppliers table info to avoid save failure because of unknown fields
-				// WARNING: if suppliers table is changed this list needs to be upgraded, which makes the matter a bit tricky to maintain
-				unset($item['person_id']);
-				unset($item['company_name']);
-				unset($item['account_number']);
-				unset($item['agency_name']);
 				
+				$save_item = array('item_number' => $item['item_number']);
+
 				// update the item in the database in order to save the UPC/EAN/ISBN field
-				$this->Item->save($item, $item['item_id']);
+				$this->Item->save($save_item, $item['item_id']);
 			}
 		}
 		$data['items'] = $result;
