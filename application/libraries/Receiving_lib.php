@@ -251,9 +251,9 @@ class Receiving_lib
     function is_valid_receipt($receipt_receiving_id)
     {
         //RECV #
-        $pieces = explode(' ',$receipt_receiving_id);
+        $pieces = explode(' ', $receipt_receiving_id);
 
-        if(count($pieces)==2)
+        if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[1]);
         {
             return $this->CI->Receiving->exists($pieces[1]);
         }
@@ -262,7 +262,7 @@ class Receiving_lib
             return $this->CI->Receiving->get_receiving_by_invoice_number($receipt_receiving_id)->num_rows() > 0;
         }
 
-        return false;
+        return FALSE;
     }
     
     function is_valid_item_kit($item_kit_id)
