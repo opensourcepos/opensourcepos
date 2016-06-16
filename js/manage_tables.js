@@ -151,7 +151,7 @@
 									values: selected_ids()
 								});
 								if (index == $(selector).length - 1) {
-									//refresh();
+									refresh();
 									enable_actions();
 								}
 							});
