@@ -18,7 +18,6 @@ before_install:
 script:
     - docker-compose build
     - docker-compose up -d
-    - while ! curl 127.0.0.1/index.php | grep username; do sleep 1; done;
 
 after_success:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
