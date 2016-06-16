@@ -91,7 +91,7 @@ class Barcode_lib
 
 	private static function barcode_seed($item, $barcode_instance, $barcode_config)
 	{
-		$seed = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
+		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']) ? $item['item_number'] : $item['item_id'];
 
 		if( $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))
 		{
