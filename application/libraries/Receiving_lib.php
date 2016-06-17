@@ -253,7 +253,7 @@ class Receiving_lib
         //RECV #
         $pieces = explode(' ', $receipt_receiving_id);
 
-        if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[1]);
+        if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[1]))
         {
             return $this->CI->Receiving->exists($pieces[1]);
         }

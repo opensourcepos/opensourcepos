@@ -21,6 +21,6 @@ script:
 
 after_success:
     - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker tag opensourcepos_php_1 jekkos/opensourcepos:latest
+    - docker tag opensourcepos_php jekkos/opensourcepos:latest
     - docker push jekkos/opensourcepos
 
