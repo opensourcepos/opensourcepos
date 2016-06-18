@@ -23,8 +23,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
-					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
-						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
+					<?php if(!empty($sale_info["invoice_number"]) && isset($sale_info['customer_id']) && !empty($sale_info['email'])): ?>
 						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
 						<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
 					<?php else: ?>
@@ -97,7 +96,7 @@
 <script type="text/javascript" language="javascript">
 $(document).ready(function()
 {	
-	<?php if(isset($sale_info['email'])): ?>
+	<?php if(!empty($sale_info['email'])): ?>
 		$("#send_invoice").click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
 				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
