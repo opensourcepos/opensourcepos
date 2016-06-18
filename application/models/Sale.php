@@ -55,7 +55,7 @@ class Sale extends CI_Model
 			{
 				$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 				$this->db->group_start();
-					$this->db->or_like('CONCAT(first_name, last_name)', $search);
+					$this->db->like('CONCAT(first_name, last_name)', $search);
 					$this->db->or_like('company_name', $search);
 				$this->db->group_end();
 			}
@@ -122,7 +122,7 @@ class Sale extends CI_Model
 			{
 				$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 				$this->db->group_start();
-					$this->db->or_like('CONCAT(first_name, last_name)', $search);
+					$this->db->like('CONCAT(first_name, last_name)', $search);
 					$this->db->or_like('company_name', $search);
 				$this->db->group_end();
 			}
