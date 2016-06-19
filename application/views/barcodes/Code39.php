@@ -128,7 +128,7 @@ class Code39 extends BarcodeBase
 		// Do we have degenerate rectangles?
 		if ($narrowBar < 1 || $wideBar < 1 || $quietBar < 1 || $narrowBar == $quietBar || $narrowBar == $wideBar || $wideBar == $quietBar)
 		{
-			throw new \OverflowException("You need to spcify a bigger width to properly display this barcode");
+			throw new \OverflowException("You need to specify a bigger width to properly display this barcode");
 		}
 
 		$currentBarX = (int)(($this->x - $imageWidth) / 2);
