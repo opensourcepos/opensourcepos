@@ -53,7 +53,7 @@ class Sales extends Secure_Controller
 
 		echo json_encode($data_row);
 	}
-	
+
 	public function search()
 	{
 		$this->Sale->create_sales_items_temp_table();
@@ -67,12 +67,12 @@ class Sales extends Secure_Controller
 		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
 		$filters = array('sale_type' => 'all',
-			'location_id' => 'all',
-			'start_date' => $this->input->get('start_date'),
-			'end_date' => $this->input->get('end_date'),
-			'only_cash' => FALSE,
-			'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
-			'is_valid_receipt' => $is_valid_receipt);
+						'location_id' => 'all',
+						'start_date' => $this->input->get('start_date'),
+						'end_date' => $this->input->get('end_date'),
+						'only_cash' => FALSE,
+						'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
+						'is_valid_receipt' => $is_valid_receipt);
 
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
@@ -94,7 +94,7 @@ class Sales extends Secure_Controller
 			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales, $this));
 		}
 
-		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows,'payment_summary' => $payment_summary));
+		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary));
 	}
 
 	public function item_search()
