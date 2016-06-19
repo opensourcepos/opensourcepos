@@ -53,6 +53,7 @@ class Sale extends CI_Model
 
 			else
 			{
+				$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 				$this->db->group_start();
 					$this->db->like('last_name', $search);
 					$this->db->or_like('first_name', $search);
@@ -121,6 +122,7 @@ class Sale extends CI_Model
 			}
 			else
 			{
+				$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 				$this->db->group_start();
 					$this->db->like('last_name', $search);
 					$this->db->or_like('first_name', $search);
