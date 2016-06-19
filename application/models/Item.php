@@ -4,11 +4,14 @@ class Item extends CI_Model
 	/*
 	Determines if a given item_id is an item
 	*/
-	public function exists($item_id, $deleted = FALSE)
+	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
 		$this->db->from('items');
 		$this->db->where('item_id', $item_id);
-		$this->db->where('deleted', $deleted);
+		if($ignore_deleted == FALSE)
+		{
+			$this->db->where('deleted', $deleted);
+		}
 
 		return ($this->db->get()->num_rows() == 1);
 	}
