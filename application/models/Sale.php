@@ -51,10 +51,10 @@ class Sale extends CI_Model
 			else
 			{
 				$this->db->group_start();
-					$this->db->like('last_name', $search);
-					$this->db->or_like('first_name', $search);
-					$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
-					$this->db->or_like('company_name', $search);
+					$this->db->like('person.last_name', $search);
+					$this->db->or_like('person.first_name', $search);
+					$this->db->or_like('CONCAT(person.first_name, " ", person.last_name)', $search);
+					$this->db->or_like('customer.company_name', $search);
 				$this->db->group_end();
 			}
 		}

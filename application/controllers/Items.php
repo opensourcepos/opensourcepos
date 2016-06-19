@@ -57,7 +57,7 @@ class Items extends Secure_Controller
 		$filters = array_merge($filters, $filledup);
 
 		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
-		$total_rows = $this->xss_clean($this->Item->get_found_rows($search, $filters));
+		$total_rows = $this->Item->get_found_rows($search, $filters);
 
 		$data_rows = array();
 		foreach($items->result() as $item)
