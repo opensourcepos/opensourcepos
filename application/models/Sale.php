@@ -39,18 +39,15 @@ class Sale extends CI_Model
 		$this->db->join('people AS person', 'sales_items_temp.customer_id = person.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales_items_temp.customer_id = customer.person_id', 'left');
 
-		if(empty($search))
-		{
-			$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-		}
-		else
+		$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+
+		if(!empty($search))
 		{
 			if($filters['is_valid_receipt'] != FALSE)
 			{
 				$pieces = explode(' ', $search);
 				$this->db->where('sales_items_temp.sale_id', $pieces[1]);
 			}
-
 			else
 			{
 				$this->db->group_start();
@@ -108,11 +105,9 @@ class Sale extends CI_Model
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
 
-		if(empty($search))
-		{
-			$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-		}
-		else
+		$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+
+		if(!empty($search))
 		{
 			if($filters['is_valid_receipt'] != FALSE)
 			{

@@ -62,11 +62,9 @@ class Item extends CI_Model
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty($search))
-		{
-			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-		}
-		else
+		$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+
+		if(!empty($search))
 		{
 			if($filters['search_custom'] == FALSE)
 			{
