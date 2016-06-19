@@ -9,7 +9,7 @@ class Item_kits extends Secure_Controller
 		parent::__construct('item_kits');
 	}
 	
-	// add the total cost and retail price to a passed items kit retrieving the data from each singolar item part of the kit
+	// add the total cost and retail price to a passed items kit retriegeneving the data from each singolar item part of the kit
 	private function _add_totals_to_item_kit($item_kit)
 	{
 		$item_kit->total_cost_price = 0;
@@ -173,7 +173,7 @@ class Item_kits extends Secure_Controller
 			// calculate the total cost and retail price of the Kit so it can be added to the barcode text at the bottom
 			$item_kit = $this->_add_totals_to_item_kit($this->Item_kit->get_info($item_kid_id));
 
-			$result[] = array('name' => $item_kit->name, 'item_id' => urldecode($item_kid_id), 'item_number' => urldecode($item_kid_id),
+			$result[] = array('name' => $item_kit->name, 'item_id' => 'KIT '. urldecode($item_kid_id), 'item_number' => 'KIT '. urldecode($item_kid_id),
 							'cost_price' => $item_kit->total_cost_price, 'unit_price' => $item_kit->total_unit_price);
 		}
 
