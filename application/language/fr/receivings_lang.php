@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Échec d'opération d'arrivage";
+$lang["recvs_transaction_failed"] = "Échec d'opération d'arrivage";
 $lang["recvs_cancel_receiving"] = "";
 $lang["recvs_cannot_be_deleted"] = "";
 $lang["recvs_comments"] = "";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Cout";
 $lang["recvs_date"] = "";
 $lang["recvs_date_required"] = "";
 $lang["recvs_date_type"] = "";
-$lang["receivings_confirm_delete"] = "";
+$lang["recvs_confirm_delete"] = "";
 $lang["recvs_delete_entire_sale"] = "Delete entire sale";
 $lang["recvs_discount"] = "Remise %";
 $lang["recvs_edit"] = "Éditer";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Stock source";
 $lang["recvs_successfully_deleted"] = "You have successfully deleted";
 $lang["recvs_successfully_updated"] = "Receiving successfully updated";
 $lang["recvs_supplier"] = "Fournisseur";
+$lang["recvs_supplier_email"] = "Fournisseur Email";
+$lang["recvs_supplier_address"] = "Fournisseur Address";
+$lang["recvs_supplier_location"] = "Fournisseur Location";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Impossible d'ajouter l'item aux arrivages";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
-$lang["receivings_update"] = "Éditer";
+$lang["recvs_update"] = "Éditer";

@@ -920,13 +920,14 @@ class Reports extends Secure_Controller
 				'id' => $row['receiving_id'],
 				'receiving_date' => $row['receiving_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
-				'employee' => $row['employee_name'], $row['supplier_name'],
+				'employee' => $row['employee_name'],
+				'supplier' => $row['supplier_name'],
 				'total' => to_currency($row['total']),
 				'payment_type' => $row['payment_type'],
 				'invoice_number' => $row['invoice_number'],
 				'comment' => $row['comment'],
 				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('receivings_update'))
+					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('recvs_update'))
 				)
 			));
 

@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "進貨交易失敗";
+$lang["recvs_transaction_failed"] = "進貨交易失敗";
 $lang["recvs_cancel_receiving"] = "";
 $lang["recvs_cannot_be_deleted"] = "";
 $lang["recvs_comments"] = "";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "成本";
 $lang["recvs_date"] = "";
 $lang["recvs_date_required"] = "";
 $lang["recvs_date_type"] = "";
-$lang["receivings_confirm_delete"] = "";
+$lang["recvs_confirm_delete"] = "";
 $lang["recvs_delete_entire_sale"] = "Delete entire sale";
 $lang["recvs_discount"] = "折古 %";
 $lang["recvs_edit"] = "編輯";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Stock source";
 $lang["recvs_successfully_deleted"] = "You have successfully deleted";
 $lang["recvs_successfully_updated"] = "Receiving successfully updated";
 $lang["recvs_supplier"] = "供應商";
+$lang["recvs_supplier_email"] = "Email";
+$lang["recvs_supplier_address"] = "Address";
+$lang["recvs_supplier_location"] = "Location";
 $lang["recvs_total"] = "總數量";
 $lang["recvs_unable_to_add_item"] = "無法新增進貨資料";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
-$lang["receivings_update"] = "編輯";
+$lang["recvs_update"] = "編輯";

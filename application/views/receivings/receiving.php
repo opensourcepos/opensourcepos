@@ -5,6 +5,16 @@ if (isset($error))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
+
+if (!empty($warning))
+{
+	echo "<div class='alert alert-dismissible alert-warning'>".$warning."</div>";
+}
+
+if (isset($success))
+{
+	echo "<div class='alert alert-dismissible alert-success'>".$success."</div>";
+}
 ?>
 
 <div id="register_wrapper">
@@ -96,7 +106,7 @@ if (isset($error))
 				<th style="width:5%;"></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_discount'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('recvs_total'); ?></th>
-				<th style="width:5%;"><?php echo $this->lang->line('receivings_update'); ?></th>
+				<th style="width:5%;"><?php echo $this->lang->line('recvs_update'); ?></th>
 			</tr>
 		</thead>
 
@@ -175,7 +185,7 @@ if (isset($error))
 							}
 							?>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('recvs_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php 
@@ -225,9 +235,50 @@ if (isset($error))
 		<?php
 		if(isset($supplier))
 		{
-			echo $this->lang->line("recvs_supplier").': <b>'.$supplier. '</b><br />';			
-			echo anchor($controller_name."/delete_supplier", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
-								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_supplier_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier')));
+		?>
+			<table class="sales_table_100">
+				<tr>
+					<th style='width: 55%;'><?php echo $this->lang->line("recvs_supplier"); ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo $supplier; ?></th>
+				</tr>
+				<?php
+				if(!empty($supplier_email))
+				{
+				?>
+					<tr>
+						<th style='width: 55%;'><?php echo $this->lang->line("recvs_supplier_email"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $supplier_email; ?></th>
+					</tr>
+				<?php
+				}
+				?>
+				<?php
+				if(!empty($supplier_address))
+				{
+				?>
+					<tr>
+						<th style='width: 55%;'><?php echo $this->lang->line("recvs_supplier_address"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $supplier_address; ?></th>
+					</tr>
+				<?php
+				}
+				?>
+				<?php
+				if(!empty($supplier_location))
+				{
+				?>
+					<tr>
+						<th style='width: 55%;'><?php echo $this->lang->line("recvs_supplier_location"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $supplier_location; ?></th>
+					</tr>
+				<?php
+				}
+				?>
+			</table>
+			
+			<?php echo anchor($controller_name."/remove_supplier", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'),
+								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_supplier_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('suppliers_supplier'))); ?>
+		<?php
 		}
 		else
 		{

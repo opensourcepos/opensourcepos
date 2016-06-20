@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Receivings Transactions Failed";
+$lang["recvs_transaction_failed"] = "Receivings Transactions Failed";
 $lang["recvs_cancel_receiving"] = "Cancel";
 $lang["recvs_cannot_be_deleted"] = "Receiving(s) could not be deleted";
 $lang["recvs_comments"] = "Comments";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Cost";
 $lang["recvs_date"] = "Receiving Date";
 $lang["recvs_date_required"] = "A correct date needs to be filled in";
 $lang["recvs_date_type"] = "Date field is required";
-$lang["receivings_confirm_delete"] = "Are you sure you want to delete this receiving, this action cannot be undone";
+$lang["recvs_confirm_delete"] = "Are you sure you want to delete this receiving, this action cannot be undone";
 $lang["recvs_delete_entire_sale"] = "Delete entire sale";
 $lang["recvs_discount"] = "Disc %";
 $lang["recvs_edit"] = "Edit";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Stock source";
 $lang["recvs_successfully_deleted"] = "You have successfully deleted";
 $lang["recvs_successfully_updated"] = "Receiving successfully updated";
 $lang["recvs_supplier"] = "Supplier";
+$lang["recvs_supplier_email"] = "Email";
+$lang["recvs_supplier_address"] = "Address";
+$lang["recvs_supplier_location"] = "Location";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Unable to add item to receiving";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
-$lang["receivings_update"] = "Update";
+$lang["recvs_update"] = "Update";

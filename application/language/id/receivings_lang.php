@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Transaksi Penerimaan Salah";
+$lang["recvs_transaction_failed"] = "Transaksi Penerimaan Salah";
 $lang["recvs_cancel_receiving"] = "Batal";
 $lang["recvs_cannot_be_deleted"] = "Tidak bisa dihapus";
 $lang["recvs_comments"] = "Keterangan";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Harga";
 $lang["recvs_date"] = "Tanggal";
 $lang["recvs_date_required"] = "Tanngalnya harus diisi";
 $lang["recvs_date_type"] = "Model Tanggal";
-$lang["receivings_confirm_delete"] = "Konfirmasi Hapus";
+$lang["recvs_confirm_delete"] = "Konfirmasi Hapus";
 $lang["recvs_delete_entire_sale"] = "Hapus Semua Penjualan";
 $lang["recvs_discount"] = "Diskon %";
 $lang["recvs_edit"] = "Ubah";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Asal Stok";
 $lang["recvs_successfully_deleted"] = "Berhasil Dihapus";
 $lang["recvs_successfully_updated"] = "Berhasil Diperbaharui";
 $lang["recvs_supplier"] = "Pemasok";
+$lang["recvs_supplier_email"] = "Email";
+$lang["recvs_supplier_address"] = "Address";
+$lang["recvs_supplier_location"] = "Location";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "Item tidak dapat ditambahkan ke penerimaan barang masuk";
 $lang["recvs_unsuccessfully_updated"] = "Tidak Berhasil Diperbaharui";
-$lang["receivings_update"] = "Ubah";
+$lang["recvs_update"] = "Ubah";

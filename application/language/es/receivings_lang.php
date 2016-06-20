@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Las Transacciones de Entrada Fallaron";
+$lang["recvs_transaction_failed"] = "Las Transacciones de Entrada Fallaron";
 $lang["recvs_cancel_receiving"] = "Cancelar";
 $lang["recvs_cannot_be_deleted"] = "Ingreso(s) no pueden borrarse";
 $lang["recvs_comments"] = "Comentarios";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Costo";
 $lang["recvs_date"] = "Fecha de Recepción";
 $lang["recvs_date_required"] = "Una fecha correcta debe ser ingresada";
 $lang["recvs_date_type"] = "Campo Fecha es requerido";
-$lang["receivings_confirm_delete"] = "¿Seguro(a) que desea borrar este ingreso? Esta acción no se puede deshacer";
+$lang["recvs_confirm_delete"] = "¿Seguro(a) que desea borrar este ingreso? Esta acción no se puede deshacer";
 $lang["recvs_delete_entire_sale"] = "Borrar venta completa";
 $lang["recvs_discount"] = "Descuento %";
 $lang["recvs_edit"] = "Editar";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Inventario de Origen";
 $lang["recvs_successfully_deleted"] = "Borro exitosamente";
 $lang["recvs_successfully_updated"] = "Recepción exitosamente actualizada";
 $lang["recvs_supplier"] = "Proveedor";
+$lang["recvs_supplier_email"] = "Email";
+$lang["recvs_supplier_address"] = "Direccion";
+$lang["recvs_supplier_location"] = "Ubicacion";
 $lang["recvs_total"] = "Total";
 $lang["recvs_unable_to_add_item"] = "No se puede agregar el artículo a la entrada";
 $lang["recvs_unsuccessfully_updated"] = "Recepción actualizada sin exito";
-$lang["receivings_update"] = "Editar";
+$lang["recvs_update"] = "Editar";

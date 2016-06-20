@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Átvételi tranzakció sikertelen";
+$lang["recvs_transaction_failed"] = "Átvételi tranzakció sikertelen";
 $lang["recvs_cancel_receiving"] = "Mégsem";
 $lang["recvs_cannot_be_deleted"] = "Átvétel(ek) nem törölhető(ek)";
 $lang["recvs_comments"] = "Megjegyzések";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Költség";
 $lang["recvs_date"] = "Beérkezés dátuma";
 $lang["recvs_date_required"] = "Korrekt dátumot kell megadni";
 $lang["recvs_date_type"] = "Dátum mező kötelező";
-$lang["receivings_confirm_delete"] = "Biztos, hogy törli az átvételt? Nem lehet visszavonni!";
+$lang["recvs_confirm_delete"] = "Biztos, hogy törli az átvételt? Nem lehet visszavonni!";
 $lang["recvs_delete_entire_sale"] = "Teljes értékesités törlése";
 $lang["recvs_discount"] = "Kedv. %";
 $lang["recvs_edit"] = "Szerkeszt";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Raktár forrás";
 $lang["recvs_successfully_deleted"] = "Sikeres törlés";
 $lang["recvs_successfully_updated"] = "Átvétel sikeresen módositva";
 $lang["recvs_supplier"] = "Szállitó";
+$lang["recvs_supplier_email"] = "Szállitó e-mail";
+$lang["recvs_supplier_address"] = "Szállitó cím";
+$lang["recvs_supplier_location"] = "Szállitó hely";
 $lang["recvs_total"] = "Összesen";
 $lang["recvs_unable_to_add_item"] = "Nem sikerült terméket hozzáadni";
 $lang["recvs_unsuccessfully_updated"] = "Átvétel sikertelenül módositva";
-$lang["receivings_update"] = "Módosít";
+$lang["recvs_update"] = "Módosít";

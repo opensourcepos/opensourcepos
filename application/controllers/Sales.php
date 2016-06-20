@@ -245,7 +245,7 @@ class Sales extends Secure_Controller
 
 		$mode = $this->sale_lib->get_mode();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$quantity = ($mode == "return") ? -1 : 1;
+		$quantity = ($mode == 'return') ? -1 : 1;
 		$item_location = $this->sale_lib->get_sale_location();
 
 		$discount = 0;
@@ -282,7 +282,7 @@ class Sales extends Secure_Controller
 		$this->_reload($data);
 	}
 
-	public function edit_item($line)
+	public function edit_item($item_id)
 	{
 		$data = array();
 
@@ -299,14 +299,14 @@ class Sales extends Secure_Controller
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->sale_lib->edit_item($line, $description, $serialnumber, $quantity, $discount, $price);
+			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price);
 		}
 		else
 		{
 			$data['error'] = $this->lang->line('sales_error_editing_item');
 		}
 
-		$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($line), $item_location);
+		$data['warning'] = $this->sale_lib->out_of_stock($this->sale_lib->get_item_id($item_id), $item_location);
 
 		$this->_reload($data);
 	}
@@ -350,9 +350,9 @@ class Sales extends Secure_Controller
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name  . ' ' . $employee_info->last_name;
 		$data['company_info'] = implode("\n", array(
-				$this->config->item('address'),
-				$this->config->item('phone'),
-				$this->config->item('account_number')
+			$this->config->item('address'),
+			$this->config->item('phone'),
+			$this->config->item('account_number')
 		));
 		$customer_id = $this->sale_lib->get_customer();
 		$customer_info = $this->_load_customer_data($customer_id, $data);
@@ -687,6 +687,7 @@ class Sales extends Secure_Controller
 	public function edit($sale_id)
 	{
 		$data = array();
+
 		$data['employees'] = array();
 		foreach($this->Employee->get_all()->result() as $employee)
 		{
@@ -695,13 +696,13 @@ class Sales extends Secure_Controller
 				$employee->$property = $this->xss_clean($value);
 			}
 			
-			$data['employees'][$employee->person_id] = $employee->first_name . ' '. $employee->last_name;
+			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
 		}
 
 		$this->Sale->create_sales_items_temp_table();
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());	
-		$person_name = $sale_info['first_name'] . " " . $sale_info['last_name'];
+		$person_name = $sale_info['first_name'] . ' ' . $sale_info['last_name'];
 		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ? $person_name : '';
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
@@ -730,8 +731,8 @@ class Sales extends Secure_Controller
 
 		if($this->Sale->delete_list($sale_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_deleted').' '.
-							count($sale_ids).' '.$this->lang->line('sales_one_or_multiple'), 'ids' => $sale_ids));
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_deleted') . ' ' .
+							count($sale_ids) . ' ' . $this->lang->line('sales_one_or_multiple'), 'ids' => $sale_ids));
 		}
 		else
 		{
@@ -743,10 +744,10 @@ class Sales extends Secure_Controller
 	{
 		$newdate = $this->input->post('date');
 		
-		$start_date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
+		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
 
 		$sale_data = array(
-			'sale_time' => $start_date_formatter->format('Y-m-d H:i:s'),
+			'sale_time' => $date_formatter->format('Y-m-d H:i:s'),
 			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),

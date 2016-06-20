@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Greška kod transakcije primki";
+$lang["recvs_transaction_failed"] = "Greška kod transakcije primki";
 $lang["recvs_cancel_receiving"] = "Otkaži";
 $lang["recvs_cannot_be_deleted"] = "Primka(e) ne mogu biti obrisane";
 $lang["recvs_comments"] = "Komentar";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Cijena";
 $lang["recvs_date"] = "Datum";
 $lang["recvs_date_required"] = "Potrebno je unijeti ispravan datum";
 $lang["recvs_date_type"] = "Datum je potreban";
-$lang["receivings_confirm_delete"] = "Želite li obrisati ovu primku? To ne ne može vratiti.";
+$lang["recvs_confirm_delete"] = "Želite li obrisati ovu primku? To ne ne može vratiti.";
 $lang["recvs_delete_entire_sale"] = "Obrisati cijelu prodaju";
 $lang["recvs_discount"] = "Rabat %";
 $lang["recvs_edit"] = "Urediti";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Iz skladišta";
 $lang["recvs_successfully_deleted"] = "Uspješno ste obrisali primku";
 $lang["recvs_successfully_updated"] = "Uspješno ste ažurirali primku";
 $lang["recvs_supplier"] = "Dobavljač";
+$lang["recvs_supplier_email"] = "e-mail";
+$lang["recvs_supplier_address"] = "Adresa";
+$lang["recvs_supplier_location"] = "Mjesto";
 $lang["recvs_total"] = "Ukupno";
 $lang["recvs_unable_to_add_item"] = "Ne mogu dodati artikal u primku";
 $lang["recvs_unsuccessfully_updated"] = "Neuspješno ažurirana primka";
-$lang["receivings_update"] = "Ažuriraj";
+$lang["recvs_update"] = "Ažuriraj";

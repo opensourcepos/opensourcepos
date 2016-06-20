@@ -42,7 +42,7 @@ class Detailed_receivings extends Report
 		$this->db->select('receiving_id, DATE_FORMAT(receiving_date, "%d-%m-%Y") AS receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name, " ", employee.last_name) AS employee_name, suppliers.company_name AS supplier_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
-		$this->db->join('suppliers AS suppliers', 'receivings_items_temp.supplier_id = suppliers.person_id', 'left');
+		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$this->db->where('receiving_id', $receiving_id);
 
 		return $this->db->get()->row_array();
@@ -50,10 +50,10 @@ class Detailed_receivings extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, CONCAT(supplier.first_name," ",supplier.last_name) AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
+		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, supplier.company_name AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
-		$this->db->join('people AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
+		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')

@@ -293,7 +293,7 @@ class Receiving_lib
         }
 
         $this->empty_cart();
-        $this->delete_supplier();
+        $this->remove_supplier();
         $this->clear_comment();
 
         foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
@@ -318,7 +318,7 @@ class Receiving_lib
     function copy_entire_receiving($receiving_id)
     {
         $this->empty_cart();
-        $this->delete_supplier();
+        $this->remove_supplier();
 
         foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
         {
@@ -341,7 +341,7 @@ class Receiving_lib
         $this->CI->session->unset_userdata('cartRecv');
     }
 
-    function delete_supplier()
+    function remove_supplier()
     {
         $this->CI->session->unset_userdata('supplier');
     }
@@ -356,7 +356,7 @@ class Receiving_lib
         $this->set_invoice_number_enabled(FALSE);
         $this->clear_mode();
         $this->empty_cart();
-        $this->delete_supplier();
+        $this->remove_supplier();
         $this->clear_comment();
         $this->clear_invoice_number();
     }

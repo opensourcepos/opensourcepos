@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_transaction_failed"] = "Order transactie mislukt";
+$lang["recvs_transaction_failed"] = "Order transactie mislukt";
 $lang["recvs_cancel_receiving"] = "Annuleer";
 $lang["recvs_cannot_be_deleted"] = "Order(s) konden niet verwijderd worden";
 $lang["recvs_comments"] = "Commentaar";
@@ -11,7 +11,7 @@ $lang["recvs_cost"] = "Kost";
 $lang["recvs_date"] = "Order Datum";
 $lang["recvs_date_required"] = "Er moet een correcte datum ingevuld worden";
 $lang["recvs_date_type"] = "Datum is vereist";
-$lang["receivings_confirm_delete"] = "Bent u zeker dat u dit order wil verwijderen? Dit kan niet ongedaan gemaakt worden.";
+$lang["recvs_confirm_delete"] = "Bent u zeker dat u dit order wil verwijderen? Dit kan niet ongedaan gemaakt worden.";
 $lang["recvs_delete_entire_sale"] = "Verwijder";
 $lang["recvs_discount"] = "Korting %";
 $lang["recvs_edit"] = "Bewerk";
@@ -45,7 +45,10 @@ $lang["recvs_stock_source"] = "Stock bron";
 $lang["recvs_successfully_deleted"] = "Er werd(en)";
 $lang["recvs_successfully_updated"] = "Order werd geupdatet";
 $lang["recvs_supplier"] = "Leverancier";
+$lang["recvs_supplier_email"] = "Leverancier Email";
+$lang["recvs_supplier_address"] = "Leverancier Address";
+$lang["recvs_supplier_location"] = "Leverancier Location";
 $lang["recvs_total"] = "Totaal";
 $lang["recvs_unable_to_add_item"] = "Onmogelijk om product aan order toe te voegen";
 $lang["recvs_unsuccessfully_updated"] = "Receiving unsuccessfully updated";
-$lang["receivings_update"] = "Bewerk";
+$lang["recvs_update"] = "Bewerk";
