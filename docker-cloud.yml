@@ -1,0 +1,10 @@
+web:
+    image: jekkos/opensourcepos
+    links:
+        - mysql
+    ports:
+        - "80:80"
+    roles:
+        - global
+mysql:
+    image: mysql
