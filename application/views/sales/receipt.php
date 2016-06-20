@@ -87,10 +87,9 @@ $(document).ready(function()
 
 	<table id="receipt_items">
 		<tr>
-			<th style="width:40%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('sales_price'); ?></th>
-			<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-			<th style="width:20%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
+			<th style="width:50%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
+			<th style="width:25%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+			<th colspan="4" style="width:25%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 		<?php
 		foreach(array_reverse($cart, true) as $line=>$item)
@@ -98,6 +97,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td><?php echo ucfirst($item['name']); ?></td>
+			</tr>
+			<tr>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td class="total-value"><?php echo to_currency($item[($this->Appconfig->get('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
@@ -125,7 +126,7 @@ $(document).ready(function()
 			{
 			?>
 				<tr>
-					<td colspan="3" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?></td>
+					<td colspan="2" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?></td>
 					<td class="total-value"><?php echo to_currency($item['discounted_total']) ; ?></td>
 				</tr>
 			<?php
@@ -140,11 +141,11 @@ $(document).ready(function()
 		{
 		?> 
 			<tr>
-				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
+				<td colspan="2" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
 				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 			</tr>
 			<tr>
-				<td colspan="3" class="total-value"><?php echo $this->lang->line('sales_discount'); ?>:</td>
+				<td colspan="2" class="total-value"><?php echo $this->lang->line('sales_discount'); ?>:</td>
 				<td class="total-value"><?php echo to_currency($discount * -1); ?></td>
 			</tr>
 		<?php
@@ -156,7 +157,7 @@ $(document).ready(function()
 		{
 		?> 
 			<tr>
-				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
+				<td colspan="2" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
 				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $discounted_subtotal); ?></td>
 			</tr>
 			<?php
@@ -164,7 +165,7 @@ $(document).ready(function()
 			{
 			?>
 				<tr>
-					<td colspan="3" class="total-value"><?php echo $name; ?>:</td>
+					<td colspan="2" class="total-value"><?php echo $name; ?>:</td>
 					<td class="total-value"><?php echo to_currency($value); ?></td>
 				</tr>
 			<?php
@@ -179,13 +180,10 @@ $(document).ready(function()
 		
 		<?php $border = (!$this->Appconfig->get('receipt_show_taxes') && !($this->Appconfig->get('receipt_show_total_discount') && $discount > 0)); ?> 
 		<tr>
-			<td colspan="3" style="text-align:right;<?php echo $border? 'border-top: 2px solid black;' :''; ?>"><?php echo $this->lang->line('sales_total'); ?></td>
+			<td colspan="2" style="text-align:right;<?php echo $border? 'border-top: 2px solid black;' :''; ?>"><?php echo $this->lang->line('sales_total'); ?></td>
 			<td style="text-align:right;<?php echo $border? 'border-top: 2px solid black;' :''; ?>"><?php echo to_currency($total); ?></td>
 		</tr>
 
-		<tr>
-			<td colspan="4">&nbsp;</td>
-		</tr>
 
 		<?php
 		$only_sale_check = TRUE;
@@ -197,30 +195,26 @@ $(document).ready(function()
 			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
 		?>
 			<tr>
-				<td colspan="3" style="text-align:right;"><?php echo $splitpayment[0]; ?> </td>
+				<td colspan="2" style="text-align:right;"><?php echo $splitpayment[0]; ?> </td>
 				<td class="total-value"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></td>
 			</tr>
 		<?php
 		}
 		?>
 
-		<tr>
-			<td colspan="4">&nbsp;</td>
-		</tr>
-
 		<?php 
 		if (isset($cur_giftcard_value) && $show_giftcard_remainder)
 		{
 		?>
 		<tr>
-			<td colspan="3" style="text-align:right;"><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
+			<td colspan="2" style="text-align:right;"><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
 			<td class="total-value"><?php echo to_currency($cur_giftcard_value); ?></td>
 		</tr>
 		<?php 
 		}
 		?>
 		<tr>
-			<td colspan="3" style="text-align:right;"> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
+			<td colspan="2" style="text-align:right;"> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
 			<td class="total-value"><?php echo to_currency($amount_change); ?></td>
 		</tr>
 	</table>
