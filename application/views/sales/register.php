@@ -435,7 +435,7 @@ if (isset($success))
 				?>
 			</div>
 
-			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form', 'class'=>'form-horizontal')); ?>
+			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 				<div class="form-group" id="buttons_sale">
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
 
@@ -447,64 +447,60 @@ if (isset($success))
 				if (count($payments) > 0)
 				{
 				?>
-					<div class="form-group form-group-sm">
-						<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
-						<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
+					<div class="container-fluid">
+						<div class="form-group form-group-sm">
+							<div class="col-xs-12">
+								<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
+								<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
+							</div>
+						</div>
 
-						<table class="sales_table_100">
-							<tr>
-								<td style="width: 30%; text-align: left;">
-									<?php echo form_label($this->lang->line('sales_print_after_sale'), 'print_after_sale', array('class'=>'control-label')); ?>
-								</td>
-								<td style="width: 20%; text-align: center; display: inline-block;">
-									<?php echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'class'=>'checkbox', 'value'=>1, 'checked'=>$print_after_sale)); ?>
-								</td>
+						<div class="form-group form-group-sm">
+							<div class="col-xs-6">
+								<label for="sales_print_after_sale" class="control-label checkbox">
+									<?php echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'value'=>1, 'checked'=>$print_after_sale)); ?>
+									<?php echo $this->lang->line('sales_print_after_sale')?>
+								</label>
+							</div>
 
-								<?php 
-								if(!empty($customer_email))
-								{
-								?>
-									<td style="width: 30%; text-align: left;">
-										<?php echo form_label($this->lang->line('sales_email_receipt'), 'email_receipt', array('class'=>'control-label')); ?>
-									</td>
-									<td style="width: 20%; text-align: center; display: inline-block;">
-										<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'class'=>'checkbox', 'value'=>1, 'checked'=>$email_receipt)); ?>
-									</td>
-								<?php
-								}
-								else
-								{
-								?>
-									<td style="width: 30%; text-align: left;"></td>
-									<td style="width: 20%; text-align: center; display: inline-block;"></td>
-								<?php
-								}
-								?>
-							</tr>
-						
 							<?php
-							if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
+							if(!empty($customer_email))
 							{
 							?>
-								<tr>
-									<td style="width: 30%; text-align: left;">
-										<?php echo form_label($this->lang->line('sales_invoice_enable'), 'invoice_enable', array('class'=>'control-label')); ?>
-									</td>
-									<td style="width: 20%; text-align: center; display: inline-block;">
-										<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'class'=>'checkbox', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
-									</td>
-									<td style="width: 30%; text-align: left;">
-										<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label')); ?>
-									</td>
-									<td style="width: 20%; text-align: right;">
-										<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>5));?>
-									</td>
-								</tr>
-							<?php 
+								<div class="col-xs-6">
+									<label for="email-receipt" class="control-label checkbox">
+										<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'value'=>1, 'checked'=>$email_receipt)); ?>
+										<?php echo $this->lang->line('sales_email_receipt');?>
+									</label>
+								</div>
+							<?php
 							}
 							?>
-						</table>
-					</div>
+						</div>
+					<?php
+					if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
+					{
+					?>
+
+						<div class="form-group form-group-sm">
+							<div class="col-xs-6">
+								<label class="control-label checkbox" for="sales_invoice_enable">
+									<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
+									<?php echo $this->lang->line('sales_invoice_enable');?>
+								</label>
+							</div>
+
+							<div class="col-xs-6">
+								<div class="input-group input-group-sm">
+									<span class="input-group-addon input-sm">#</span>
+									<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number));?>
+								</div>
+							</div>
+						</div>
+					<?php
+					}
+					?>
+					</div
 				<?php
 				}
 				?>
