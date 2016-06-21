@@ -200,6 +200,9 @@
 			showColumns: true,
 			clickToSelect: true,
 			showExport: true,
+			exportOptions: {
+				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
+			},
 			onPageChange: load_success(options.onLoadSuccess),
 			toolbar: '#toolbar',
 			uniqueId: options.uniqueId || 'id',

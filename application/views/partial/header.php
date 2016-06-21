@@ -45,8 +45,11 @@
 		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-		<script src="bower_components/table-export/tableExport.js"></script>
-		<script src="bower_components/jquery.base64/index.js"></script>
+		<script src="bower_components/file-saver.js/FileSaver.js"></script>
+		<script src="bower_components/html2canvas/build/html2canvas.js"></script>
+		<script src="bower_components/jspdf/dist/jspdf.min.js"></script>
+		<script src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
+		<script src="bower_components/tableExport.jquery.plugin/tableExport.min.js"></script>
 		<script src="bower_components/chartist/dist/chartist.min.js"></script>
 		<script src="bower_components/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
 		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
@@ -69,7 +72,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=725a0444ad"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=736f65c367" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=057f34d35e" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
