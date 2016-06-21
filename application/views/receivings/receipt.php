@@ -48,10 +48,10 @@ if (isset($error_message))
 		?>
 		<div id="sale_id"><?php echo $this->lang->line('recvs_id').": ".$receiving_id; ?></div>
 		<?php 
-		if (!empty($invoice_number))
+		if (!empty($reference))
 		{
 		?>
-			<div id="invoice_number"><?php echo $this->lang->line('recvs_invoice_number').": ".$invoice_number; ?></div>	
+			<div id="reference"><?php echo $this->lang->line('recvs_reference').": ".$reference; ?></div>	
 		<?php 
 		}
 		?>

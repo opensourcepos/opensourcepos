@@ -9,6 +9,11 @@ ALTER TABLE `ospos_item_kit_items`
 
 ALTER TABLE `ospos_item_quantities`
  MODIFY COLUMN `quantity` decimal(15,3) NOT NULL DEFAULT '0';
+ 
+ALTER TABLE `ospos_receivings`
+ DROP KEY `invoice_number`,
+ CHANGE COLUMN `invoice_number` `reference` varchar(32) DEFAULT NULL,
+ ADD KEY `reference` (`reference`);
 
 ALTER TABLE `ospos_receivings_items`
  MODIFY COLUMN `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',

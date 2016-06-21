@@ -34,66 +34,6 @@ class Reports extends Secure_Controller
 		$this->load->view("reports/listing", $data);
 	}
 
- 	public function get_detailed_sales_row($sale_id)
-	{
-		$this->load->model('reports/Detailed_sales');
-		$model = $this->Detailed_sales;
-
-		$report_data = $model->getDataBySaleId($sale_id);
-
-		$summary_data = $this->xss_clean(array(
-			'sale_id' => $report_data['sale_id'],
-			'sale_date' => $report_data['sale_date'],
-			'quantity' => to_quantity_decimals($report_data['items_purchased']),
-			'employee' => $report_data['employee_name'],
-			'customer' => $report_data['customer_name'],
-			'subtotal' => to_currency($report_data['subtotal']),
-			'total' => to_currency($report_data['total']),
-			'tax' => to_currency($report_data['tax']),
-			'cost' => to_currency($report_data['cost']),
-			'profit' => to_currency($report_data['profit']),
-			'payment_type' => $report_data['payment_type'],
-			'comment' => $report_data['comment'],
-			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('sales_update'))
-			)
-		));
-
-		echo json_encode(array($sale_id => $summary_data));
-	}
-
-	public function get_detailed_receivings_row($receiving_id)
-	{
-		$this->load->model('reports/Detailed_receivings');
-		$model = $this->Detailed_receivings;
-
-		$report_data = $model->getDataByReceivingId($receiving_id);
-
-		$summary_data = $this->xss_clean(array(
-			'receiving_id' => $report_data['receiving_id'],
-			'receiving_date' => $report_data['receiving_date'],
-			'quantity' => to_quantity_decimals($report_data['items_purchased']),
-			'invoice_number' => $report_data['invoice_number'],
-			'employee' => $report_data['employee_name'],
-			'supplier' => $report_data['supplier_name'],
-			'total' => to_currency($report_data['total']),
-			'comment' => $report_data['comment'],
-			'payment_type' => $report_data['payment_type'],
-			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('recvs_update'))
-			)
-		));
-
-		if($this->config->item('invoice_enable') == TRUE)
-		{
-			$summary_data[]['invoice_number'] = $this->xss_clean($report_data['invoice_number']);
-		}
-		
-		$summary_data[] = $this->xss_clean($report_data['comment']);
-
-		echo json_encode(array($receiving_id => $summary_data));
-	}
-
 	//Summary sales report
 	public function summary_sales($start_date, $end_date, $sale_type)
 	{
@@ -844,6 +784,34 @@ class Reports extends Secure_Controller
 		$this->load->view("reports/tabular_details", $data);
 	}
 
+ 	public function get_detailed_sales_row($sale_id)
+	{
+		$this->load->model('reports/Detailed_sales');
+		$model = $this->Detailed_sales;
+
+		$report_data = $model->getDataBySaleId($sale_id);
+
+		$summary_data = $this->xss_clean(array(
+			'sale_id' => $report_data['sale_id'],
+			'sale_date' => $report_data['sale_date'],
+			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'employee' => $report_data['employee_name'],
+			'customer' => $report_data['customer_name'],
+			'subtotal' => to_currency($report_data['subtotal']),
+			'total' => to_currency($report_data['total']),
+			'tax' => to_currency($report_data['tax']),
+			'cost' => to_currency($report_data['cost']),
+			'profit' => to_currency($report_data['profit']),
+			'payment_type' => $report_data['payment_type'],
+			'comment' => $report_data['comment'],
+			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('sales_update'))
+			)
+		));
+
+		echo json_encode(array($sale_id => $summary_data));
+	}
+
 	public function detailed_sales($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$this->load->model('reports/Detailed_sales');
@@ -901,6 +869,31 @@ class Reports extends Secure_Controller
 		$this->load->view("reports/tabular_details", $data);
 	}
 
+	public function get_detailed_receivings_row($receiving_id)
+	{
+		$this->load->model('reports/Detailed_receivings');
+		$model = $this->Detailed_receivings;
+
+		$report_data = $model->getDataByReceivingId($receiving_id);
+
+		$summary_data = $this->xss_clean(array(
+			'receiving_id' => $report_data['receiving_id'],
+			'receiving_date' => $report_data['receiving_date'],
+			'quantity' => to_quantity_decimals($report_data['items_purchased']),
+			'employee' => $report_data['employee_name'],
+			'supplier' => $report_data['supplier_name'],
+			'total' => to_currency($report_data['total']),
+			'payment_type' => $report_data['payment_type'],
+			'reference' => $report_data['reference'],
+			'comment' => $report_data['comment'],
+			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('recvs_update'))
+			)
+		));
+
+		echo json_encode(array($receiving_id => $summary_data));
+	}
+
 	public function detailed_receivings($start_date, $end_date, $receiving_type, $location_id = 'all')
 	{
 		$this->load->model('reports/Detailed_receivings');
@@ -924,17 +917,12 @@ class Reports extends Secure_Controller
 				'supplier' => $row['supplier_name'],
 				'total' => to_currency($row['total']),
 				'payment_type' => $row['payment_type'],
-				'invoice_number' => $row['invoice_number'],
+				'reference' => $row['reference'],
 				'comment' => $row['comment'],
 				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
 					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('recvs_update'))
 				)
 			));
-
-			if(!$this->config->item('invoice_enable'))
-			{
-				unset($summary_data['invoice_number']);
-			}
 
 			foreach($report_data['details'][$key] as $drow)
 			{

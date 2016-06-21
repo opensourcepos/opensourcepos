@@ -24,19 +24,12 @@
 			</div>
 		</div>
 
-		<?php
-		if($this->config->item('invoice_enable') == TRUE)
-		{
-		?>
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('recvs_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
-				<div class='col-xs-8'>
-					<?php echo form_input(array('name' => 'invoice_number', 'value' => $receiving_info['invoice_number'], 'id' => 'invoice_number', 'class'=>'form-control input-sm'));?>
-				</div>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('recvs_reference'), 'reference', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array('name' => 'reference', 'value' => $receiving_info['reference'], 'id' => 'reference', 'class'=>'form-control input-sm'));?>
 			</div>
-		<?php
-		}
-		?>
+		</div>
 		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('recvs_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
@@ -59,7 +52,8 @@ $(document).ready(function()
 {
 	<?php $this->load->view('partial/datepicker_locale'); ?>
 	
-	$('#datetime').datetimepicker({
+	$('#datetime').datetimepicker(
+	{
 		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
 		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
@@ -86,7 +80,7 @@ $(document).ready(function()
 		language: "<?php echo $this->config->item('language'); ?>"
 	});
 
-	var fill_value =  function(event, ui)
+	var fill_value = function(event, ui)
 	{
 		event.preventDefault();
 		$("input[name='supplier_id']").val(ui.item.value);
@@ -132,40 +126,11 @@ $(document).ready(function()
 		},
 		rules:
 		{
-			<?php
-			if($this->config->item('invoice_enable') == TRUE)
-			{
-			?>
-				invoice_number: {
 
-					remote:
-					{
-						url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
-						type: "POST",
-						data:
-						{
-							"receiving_id" : <?php echo $receiving_info['receiving_id']; ?>,
-							"invoice_number" : function()
-							{
-								return $("#invoice_number").val();
-							}
-						}
-					}
-				}
-			<?php
-			}
-			?>
 		},
 		messages: 
 		{
-			<?php
-			if($this->config->item('invoice_enable') == TRUE)
-			{
-			?>
-				invoice_number: '<?php echo $this->lang->line("recvs_invoice_number_duplicate"); ?>'
-			<?php
-			}
-			?>
+
 		}
 	}, form_support.error));
 

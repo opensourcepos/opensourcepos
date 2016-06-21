@@ -18,7 +18,7 @@ class Detailed_receivings extends Report
 				'supplier' => $this->lang->line('reports_supplied_by'),
 				'total' => $this->lang->line('reports_total'),
 				'payment_type' => $this->lang->line('reports_payment_type'),
-				'invoice_number' => $this->lang->line('recvs_invoice_number'),
+				'reference' => $this->lang->line('recvs_reference'),
 				'comment' => $this->lang->line('reports_comments'),
 				'edit' => ''),
 			'details' => array(
@@ -30,16 +30,12 @@ class Detailed_receivings extends Report
 				$this->lang->line('reports_discount'))
 		);
 
-		if (!get_instance()->config->item('invoice_enable'))
-		{
-			unset($columns['summary']['invoice_number']);
-		}
 		return $columns;
 	}
 	
 	public function getDataByReceivingId($receiving_id)
 	{
-		$this->db->select('receiving_id, DATE_FORMAT(receiving_date, "%d-%m-%Y") AS receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name, " ", employee.last_name) AS employee_name, suppliers.company_name AS supplier_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
+		$this->db->select('receiving_id, DATE_FORMAT(receiving_date, "%d-%m-%Y") AS receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name, " ", employee.last_name) AS employee_name, suppliers.company_name AS supplier_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, reference');
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
@@ -50,7 +46,7 @@ class Detailed_receivings extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, supplier.company_name AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, invoice_number');
+		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, supplier.company_name AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, reference');
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');

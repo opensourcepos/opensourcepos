@@ -358,19 +358,13 @@ if (isset($success))
 								</tr>
 
 								<?php
-								if ($mode == "receive" && $this->config->item('invoice_enable') == TRUE) 
+								if ($mode == "receive") 
 								{
 								?>
 									<tr>
-										<td><?php echo $this->lang->line('recvs_invoice_enable'); ?></td>
+										<td><?php echo $this->lang->line('recvs_reference');?></td>
 										<td>
-											<?php echo form_checkbox(array('name'=>'recv_invoice_enable', 'id'=>'recv_invoice_enable', 'class'=>'checkbox', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
-										</td>
-									</tr>
-									<tr>
-										<td><?php echo $this->lang->line('recvs_invoice_number');?></td>
-										<td>
-											<?php echo form_input(array('name'=>'recv_invoice_number', 'id'=>'recv_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number, 'size'=>5));?>
+											<?php echo form_input(array('name'=>'recv_reference', 'id'=>'recv_reference', 'class'=>'form-control input-sm', 'value'=>$reference, 'size'=>5));?>
 										</td>
 									</tr>
 								<?php 
@@ -440,38 +434,15 @@ $(document).ready(function()
 		$.post('<?php echo site_url($controller_name."/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	<?php
-	if ($this->config->item('invoice_enable') == TRUE) 
+	$('#recv_reference').keyup(function() 
 	{
-	?>
-		$('#recv_invoice_number').keyup(function() 
-		{
-			$.post('<?php echo site_url($controller_name."/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
-		});
+		$.post('<?php echo site_url($controller_name."/set_reference");?>', {recv_reference: $('#recv_reference').val()});
+	});
 
-		$("#recv_print_after_sale").change(function()
-		{
-			$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
-		});
-
-		var enable_invoice_number = function() 
-		{
-			var enabled = $("#recv_invoice_enable").is(":checked");
-			$("#recv_invoice_number").prop("disabled", !enabled).parents('tr').show();
-			return enabled;
-		}
-
-		enable_invoice_number();
-
-		$("#recv_invoice_enable").change(function()
-		{
-			var enabled = enable_invoice_number();
-			$.post('<?php echo site_url($controller_name."/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
-			
-		});
-	<?php
-	}
-	?>
+	$("#recv_print_after_sale").change(function()
+	{
+		$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
+	});
 
 	$('#item,#supplier').click(function()
     {

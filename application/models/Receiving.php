@@ -11,37 +11,14 @@ class Receiving extends CI_Model
 		return $this->db->get();
 	}
 
-	/*
-	Gets total of invoice rows
-	*/
-	public function get_invoice_count()
+	public function get_receiving_by_reference($reference)
 	{
 		$this->db->from('receivings');
-		$this->db->where('invoice_number IS NOT NULL');
-
-		return $this->db->count_all_results();
-	}
-	
-	public function get_receiving_by_invoice_number($invoice_number)
-	{
-		$this->db->from('receivings');
-		$this->db->where('invoice_number', $invoice_number);
+		$this->db->where('reference', $reference);
 
 		return $this->db->get();
 	}
-	
-	public function get_invoice_number_for_year($year = '', $start_from = 0)
-	{
-		$year = $year == '' ? date('Y') : $year;
-		$this->db->select('COUNT( 1 ) AS invoice_number_year');
-		$this->db->from('receivings');
-		$this->db->where('DATE_FORMAT(receiving_time, "%Y" ) = ', $year);
-		$this->db->where('invoice_number IS NOT NULL');
-		$result = $this->db->get()->row_array();
 
-		return ($start_from + $result['invoice_number_year'] + 1);
-	}
-	
 	public function exists($receiving_id)
 	{
 		$this->db->from('receivings');
@@ -57,7 +34,7 @@ class Receiving extends CI_Model
 		return $this->db->update('receivings', $receiving_data);
 	}
 
-	public function save($items, $supplier_id, $employee_id, $comment, $invoice_number, $payment_type, $receiving_id = FALSE)
+	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE)
 	{
 		if(count($items) == 0)
 		{
@@ -69,7 +46,7 @@ class Receiving extends CI_Model
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
 			'comment' => $comment,
-			'invoice_number' => $invoice_number
+			'reference' => $reference
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -211,19 +188,6 @@ class Receiving extends CI_Model
 
 		return $this->Supplier->get_info($this->db->get()->row()->supplier_id);
 	}
-	
-	public function invoice_number_exists($invoice_number, $receiving_id = '')
-	{
-		$this->db->from('receivings');
-		$this->db->where('invoice_number', $invoice_number);
-		if(!empty($receiving_id))
-		{
-			$this->db->where('receiving_id !=', $receiving_id);
-		}
-		$query = $this->db->get();
-
-		return ($query->num_rows() == 1);
-	}
 
 	public function get_payment_options()
 	{
@@ -246,7 +210,7 @@ class Receiving extends CI_Model
 				" . $this->db->dbprefix('receivings_items') . " . receiving_id,
 				comment,
 				item_location,
-				invoice_number,
+				reference,
 				payment_type,
 				employee_id, 
 				" . $this->db->dbprefix('items') . " . item_id,

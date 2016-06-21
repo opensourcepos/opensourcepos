@@ -46,7 +46,7 @@ class Receivings extends Secure_Controller
 		if((!$stock_source || $stock_source == $this->receiving_lib->get_stock_source()) &&
 			(!$stock_destination || $stock_destination == $this->receiving_lib->get_stock_destination()))
 		{
-			$this->receiving_lib->clear_invoice_number();
+			$this->receiving_lib->clear_reference();
 			$mode = $this->input->post('mode');
 			$this->receiving_lib->set_mode($mode);
 		}
@@ -63,20 +63,15 @@ class Receivings extends Secure_Controller
 	{
 		$this->receiving_lib->set_comment($this->input->post('comment'));
 	}
-	
-	public function set_invoice_number_enabled()
-	{
-		$this->receiving_lib->set_invoice_number_enabled($this->input->post('recv_invoice_number_enabled'));
-	}
-	
+
 	public function set_print_after_sale()
 	{
 		$this->receiving_lib->set_print_after_sale($this->input->post('recv_print_after_sale'));
 	}
 	
-	public function set_invoice_number()
+	public function set_reference()
 	{
-		$this->receiving_lib->set_invoice_number($this->input->post('recv_invoice_number'));
+		$this->receiving_lib->set_reference($this->input->post('recv_reference'));
 	}
 	
 	public function add()
@@ -180,7 +175,7 @@ class Receivings extends Secure_Controller
 
 	public function remove_supplier()
 	{
-		$this->receiving_lib->clear_invoice_number();
+		$this->receiving_lib->clear_reference();
 		$this->receiving_lib->remove_supplier();
 
 		$this->_reload();
@@ -195,7 +190,8 @@ class Receivings extends Secure_Controller
 		$data['receipt_title'] = $this->lang->line('recvs_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['mode'] = $this->receiving_lib->get_mode();
-		$data['comment'] = $this->input->post('comment');
+		$data['comment'] = $this->receiving_lib->get_comment();
+		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_type'] = $this->input->post('payment_type');
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
 		$data['stock_location'] = $this->receiving_lib->get_stock_source();
@@ -228,86 +224,26 @@ class Receivings extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
-		$invoice_number = $this->_substitute_invoice_number($supplier_info);
-		if($this->receiving_lib->is_invoice_number_enabled() && $this->Receiving->invoice_number_exists($invoice_number))
-		{
-			$data['error'] = $this->lang->line('recvs_invoice_number_duplicate');
 
-			$this->_reload($data);
+		//SAVE receiving to database
+		$data['receiving_id'] = 'RECV ' . $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $data['reference'], $data['payment_type'], $data['stock_location']);
+
+		$data = $this->xss_clean($data);
+
+		if($data['receiving_id'] == 'RECV -1')
+		{
+			$data['error_message'] = $this->lang->line('recvs_transaction_failed');
 		}
 		else
 		{
-			$invoice_number = $this->receiving_lib->is_invoice_number_enabled() ? $invoice_number : NULL;
-			$data['invoice_number'] = $invoice_number;
-			//SAVE receiving to database
-			$data['receiving_id'] = 'RECV ' . $this->Receiving->save($data['cart'], $supplier_id, $employee_id, $data['comment'], $invoice_number, $data['payment_type'], $data['stock_location']);
-
-			$data = $this->xss_clean($data);
-
-			if($data['receiving_id'] == 'RECV -1')
-			{
-				$data['error_message'] = $this->lang->line('recvs_transaction_failed');
-			}
-			else
-			{
-				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);				
-			}
-
-			$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
-
-			$this->load->view("receivings/receipt",$data);
-
-			$this->receiving_lib->clear_all();
-		}
-	}
-	
-	private function _substitute_variable($text, $variable, $object, $function)
-	{
-		// don't query if this variable isn't used
-		if(strstr($text, $variable))
-		{
-			$value = call_user_func(array($object, $function));
-			$text = str_replace($variable, $value, $text);
+			$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);				
 		}
 
-		return $text;
-	}
-	
-	private function _substitute_variables($text, $supplier_info)
-	{
-		$text = $this->_substitute_variable($text, '$YCO', $this->Receiving, 'get_invoice_number_for_year');
-		$text = $this->_substitute_variable($text, '$CO', $this->Receiving, 'get_invoice_count');
-		$text = strftime($text);
-		$text = $this->_substitute_supplier($text, $supplier_info);
+		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
-		return $text;
-	}
+		$this->load->view("receivings/receipt",$data);
 
-	private function _substitute_supplier($text, $supplier_info)
-	{
-		$supplier_id = $this->receiving_lib->get_supplier();
-		if($supplier_id != -1)
-		{
-			$text = str_replace('$SU', $supplier_info->company_name,$text);
-			$words = preg_split("/\s+/", trim($supplier_info->company_name));
-			$acronym = '';
-			foreach($words as $w)
-			{
-				$acronym .= $w[0];
-			}
-			$text = str_replace('$SI', $acronym, $text);
-		}
-
-		return $text;
-	}
-	
-	private function _substitute_invoice_number($supplier_info = '')
-	{
-		$invoice_number = $this->config->config['recv_invoice_format'];
-		$invoice_number = $this->_substitute_variables($invoice_number, $supplier_info);
-		$this->receiving_lib->set_invoice_number($invoice_number, TRUE);
-
-		return $this->receiving_lib->get_invoice_number();
+		$this->receiving_lib->clear_all();
 	}
 
 	public function requisition_complete()
@@ -342,7 +278,7 @@ class Receivings extends Secure_Controller
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
 		$data['payment_type'] = $receiving_info['payment_type'];
-		$data['invoice_number'] = $this->receiving_lib->get_invoice_number();
+		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['receiving_id'] = 'RECV ' . $receiving_id;
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['receiving_id']);
 		$employee_info = $this->Employee->get_info($receiving_info['employee_id']);
@@ -366,6 +302,7 @@ class Receivings extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
+
 		$data['print_after_sale'] = FALSE;
 
 		$data = $this->xss_clean($data);
@@ -392,6 +329,7 @@ class Receivings extends Secure_Controller
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 		$data['comment'] = $this->receiving_lib->get_comment();
+		$data['reference'] = $this->receiving_lib->get_reference();
 		$data['payment_options'] = $this->Receiving->get_payment_options();
 
 		$supplier_id = $this->receiving_lib->get_supplier();
@@ -413,8 +351,7 @@ class Receivings extends Secure_Controller
 				$data['supplier_location'] = '';
 			}
 		}
-		$data['invoice_number'] = $this->_substitute_invoice_number($supplier_info);
-		$data['invoice_number_enabled'] = $this->receiving_lib->is_invoice_number_enabled();
+		
 		$data['print_after_sale'] = $this->receiving_lib->is_print_after_sale();
 
 		$data = $this->xss_clean($data);
@@ -433,7 +370,7 @@ class Receivings extends Secure_Controller
 			'supplier_id' => $this->input->post('supplier_id') ? $this->input->post('supplier_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
+			'reference' => $this->input->post('reference') != '' ? $this->input->post('reference') : NULL
 		);
 	
 		if($this->Receiving->update($receiving_data, $receiving_id))
@@ -451,15 +388,6 @@ class Receivings extends Secure_Controller
 		$this->receiving_lib->clear_all();
 
 		$this->_reload();
-	}
-	
-	public function check_invoice_number()
-	{
-		$receiving_id = $this->input->post('receiving_id');
-		$invoice_number = $this->input->post('invoice_number');
-		$exists =! empty($invoice_number) && $this->Receiving->invoice_number_exists($invoice_number, $receiving_id);
-
-		echo !$exists ? 'true' : 'false';
 	}
 }
 ?>
