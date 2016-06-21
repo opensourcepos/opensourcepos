@@ -20,7 +20,5 @@ script:
     - docker-compose up -d
 
 after_success:
-    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker tag opensourcepos_php jekkos/opensourcepos:$TRAVIS_BRANCH
-    - docker push jekkos/opensourcepos
+    - [ -z ${$DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag opensourcepos_php jekkos/opensourcepos:$TRAVIS_BRANCH && docker push jekkos/opensourcepos
 

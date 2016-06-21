@@ -36,7 +36,7 @@
     "bootstrap-table": "^1.10.1",
     "bootstrap-daterangepicker": "^2.1.22",
     "table-export": "*",
-    "jquery.base64": "https://raw.githubusercontent.com/carlo/jquery-base64/master/jquery.base64.js",
+    "jquery.base64": "https://gist.github.com/wenzhixin/09e218c884f4f380b68a/raw/5d258d2f78225a4ac1a72d54a34cc7976d630df1/jquery.base64.js",
     "chartist": "^0.9.7",
     "chartist-plugin-axistitle": "^0.1.0",
     "chartist-plugin-pointlabels": "^0.0.4",
