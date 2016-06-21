@@ -38,7 +38,17 @@ class Secure_Controller extends CI_Controller
 	*/
 	protected function xss_clean($str, $is_image = FALSE)
 	{
-		return $this->security->xss_clean($str, $is_image);
+		// This setting is configurable in application/config/config.php.
+		// Users can disable the XSS clean for performance reasons
+		// (cases like intranet installation with no Internet access)
+		if($this->config->item('ospos_xss_clean') == FALSE)
+		{
+			return $str;
+		}
+		else
+		{
+			return $this->security->xss_clean($str, $is_image);
+		}
 	}
 	
 	// this is the basic set of methods most OSPOS Controllers will implement
