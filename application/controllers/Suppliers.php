@@ -17,6 +17,16 @@ class Suppliers extends Persons
 	}
 	
 	/*
+	Gets one row for a supplier manage table. This is called using AJAX to update one row.
+	*/
+	public function get_row($row_id)
+	{
+		$data_row = $this->xss_clean(get_supplier_data_row($this->Supplier->get_info($row_id), $this));
+
+		echo json_encode($data_row);
+	}
+	
+	/*
 	Returns Supplier table data rows. This will be called with AJAX.
 	*/
 	public function search()
