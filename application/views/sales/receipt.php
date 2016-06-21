@@ -8,14 +8,12 @@ if (isset($error_message))
 }
 ?>
 
-<?php if(isset($customer_email) && !empty($customer_email)): ?>
+<?php if(!empty($customer_email)): ?>
 <script type='text/javascript'>
-
 $(document).ready(function()
 {
 	var send_mail = function()
 	{
-		debugger;;
 		$.get('<?php echo site_url() . "/sales/send_receipt/" . $sale_id_num; ?>',
 			function(response)
 			{
@@ -26,8 +24,8 @@ $(document).ready(function()
 
 	$("#show_email_button").click(send_mail);
 
-	<?php if(!empty($customer_email)): ?>
-	send_email();
+	<?php if(!empty($email_receipt)): ?>
+		send_email();
 	<?php endif; ?>
 });
 </script>
