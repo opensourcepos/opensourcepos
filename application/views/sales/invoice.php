@@ -8,28 +8,28 @@ if (isset($error_message))
 }
 ?>
 
+<?php if(!empty($customer_email)): ?>
 <script type='text/javascript'>
-function send_email() {
-	$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_id_num; ?>',
-		function(response) {
-			$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
-		}, 'json'
-	);
-}
-
 $(document).ready(function()
 {
-	<?php if(isset($email_receipt) && !empty($email_receipt)): ?>
-		send_email();
-	<?php endif; ?>
+	var send_email = function()
+	{
+		$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_id_num; ?>',
+			function(response)
+			{
+				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+			}, 'json'
+		);
+	};
 
-	<?php if(isset($customer_email) && !empty($customer_email)): ?>
-		$("#show_email_button").click(function(event) {
-			send_email();
-		});
+	$("#show_email_button").click(send_email);
+
+	<?php if(!empty($email_receipt)): ?>
+		send_email();
 	<?php endif; ?>
 });
 </script>
+<?php endif; ?>
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
