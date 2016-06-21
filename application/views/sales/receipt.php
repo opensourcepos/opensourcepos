@@ -15,6 +15,7 @@ $(document).ready(function()
 {
 	var send_mail = function()
 	{
+		debugger;;
 		$.get('<?php echo site_url() . "/sales/send_receipt/" . $sale_id_num; ?>',
 			function(response)
 			{
@@ -24,7 +25,10 @@ $(document).ready(function()
 	};
 
 	$("#show_email_button").click(send_mail);
-	<?php echo (isset($email_receipt) && !empty($email_receipt)) ? 1 : 0; ?> && send_email();
+
+	<?php if(!empty($customer_email)): ?>
+	send_email();
+	<?php endif; ?>
 });
 </script>
 <?php endif; ?>

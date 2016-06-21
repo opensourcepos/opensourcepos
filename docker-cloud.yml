@@ -1,10 +1,26 @@
 web:
-    image: jekkos/opensourcepos
+    image: jekkos/opensourcepos:master
     links:
         - mysql
     ports:
         - "80:80"
     roles:
         - global
+    volumes:
+        - ospos:/var/www/html
+        - ospos:/app
+    environment:
+        - MYSQL_USERNAME=admin
+        - MYSQL_PASSWORD=pointofsale
+        - MYSQL_DB_NAME=ospos
+        - MYSQL_HOST_NAME=mysql
 mysql:
-    image: mysql
+    image: mysql:5.6
+    environment:
+        - MYSQL_ROOT_PASSWORD=pointofsale
+        - MYSQL_DATABASE=ospos
+        - MYSQL_USER=admin
+        - MYSQL_PASSWORD=pointofsale
+    ports:
+        - 3306:3306
+

@@ -448,59 +448,64 @@ if (isset($success))
 				{
 				?>
 					<div class="container-fluid">
-						<div class="form-group form-group-sm">
-							<div class="col-xs-12">
-								<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
-								<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
+						<div class="no-gutter row">
+							<div class="form-group form-group-sm">
+								<div class="col-xs-12">
+									<?php echo form_label($this->lang->line('common_comments'), 'comments', array('class'=>'control-label', 'id'=>'comment_label', 'for'=>'comment')); ?>
+									<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'2')); ?>
+								</div>
 							</div>
 						</div>
+						<div class="row">
 
-						<div class="form-group form-group-sm">
-							<div class="col-xs-6">
-								<label for="sales_print_after_sale" class="control-label checkbox">
-									<?php echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'value'=>1, 'checked'=>$print_after_sale)); ?>
-									<?php echo $this->lang->line('sales_print_after_sale')?>
-								</label>
-							</div>
-
-							<?php
-							if(!empty($customer_email))
-							{
-							?>
+							<div class="form-group form-group-sm">
 								<div class="col-xs-6">
-									<label for="email-receipt" class="control-label checkbox">
-										<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'value'=>1, 'checked'=>$email_receipt)); ?>
-										<?php echo $this->lang->line('sales_email_receipt');?>
+									<label for="sales_print_after_sale" class="control-label checkbox">
+										<?php echo form_checkbox(array('name'=>'sales_print_after_sale', 'id'=>'sales_print_after_sale', 'value'=>1, 'checked'=>$print_after_sale)); ?>
+										<?php echo $this->lang->line('sales_print_after_sale')?>
 									</label>
 								</div>
-							<?php
-							}
-							?>
+
+								<?php
+								if(!empty($customer_email))
+								{
+								?>
+									<div class="col-xs-6">
+										<label for="email-receipt" class="control-label checkbox">
+											<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'value'=>1, 'checked'=>$email_receipt)); ?>
+											<?php echo $this->lang->line('sales_email_receipt');?>
+										</label>
+									</div>
+								<?php
+								}
+								?>
+							</div>
 						</div>
 					<?php
 					if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
 					{
 					?>
+						<div class="row">
+							<div class="form-group form-group-sm">
+								<div class="col-xs-6">
+									<label class="control-label checkbox" for="sales_invoice_enable">
+										<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
+										<?php echo $this->lang->line('sales_invoice_enable');?>
+									</label>
+								</div>
 
-						<div class="form-group form-group-sm">
-							<div class="col-xs-6">
-								<label class="control-label checkbox" for="sales_invoice_enable">
-									<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
-									<?php echo $this->lang->line('sales_invoice_enable');?>
-								</label>
-							</div>
-
-							<div class="col-xs-6">
-								<div class="input-group input-group-sm">
-									<span class="input-group-addon input-sm">#</span>
-									<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number));?>
+								<div class="col-xs-6">
+									<div class="input-group input-group-sm">
+										<span class="input-group-addon input-sm">#</span>
+										<?php echo form_input(array('name'=>'sales_invoice_number', 'id'=>'sales_invoice_number', 'class'=>'form-control input-sm', 'value'=>$invoice_number));?>
+									</div>
 								</div>
 							</div>
 						</div>
 					<?php
 					}
 					?>
-					</div
+					</div>
 				<?php
 				}
 				?>

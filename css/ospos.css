@@ -167,6 +167,8 @@ label.required
 	overflow-y: auto;
 }
 
-.no-gutter [class*="-1"] {
+.no-gutter [class*="-1"]
+{
 	padding-right:0;
+	padding-left: 0;
 }

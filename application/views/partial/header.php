@@ -66,10 +66,10 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=0a2ee6807c"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=725a0444ad"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ac39c5dc2e" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=7f178569bd" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
