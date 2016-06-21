@@ -212,15 +212,14 @@ class Sale_lib
 
 	function set_mode($mode)
 	{
-		$this->CI->session->set_userdata('sale_mode',$mode);
+		$this->CI->session->set_userdata('sale_mode', $mode);
 	}
 
     function get_sale_location()
     {
         if(!$this->CI->session->userdata('sale_location'))
         {
-			$location_id = $this->CI->Stock_location->get_default_location_id();
-			$this->set_sale_location($location_id);
+			$this->set_sale_location($this->CI->Stock_location->get_default_location_id());
         }
 
         return $this->CI->session->userdata('sale_location');
@@ -228,7 +227,7 @@ class Sale_lib
 
     function set_sale_location($location)
     {
-        $this->CI->session->set_userdata('sale_location',$location);
+        $this->CI->session->set_userdata('sale_location', $location);
     }
     
     function clear_sale_location()
@@ -238,7 +237,7 @@ class Sale_lib
     
     function set_giftcard_remainder($value)
     {
-    	$this->CI->session->set_userdata('giftcard_remainder',$value);
+    	$this->CI->session->set_userdata('giftcard_remainder', $value);
     }
     
     function get_giftcard_remainder()
@@ -251,7 +250,7 @@ class Sale_lib
     	$this->CI->session->unset_userdata('giftcard_remainder');
     }
     
-	function add_item($item_id, $quantity=1, $item_location, $discount=0, $price=NULL, $description=NULL, $serialnumber=NULL)
+	function add_item($item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL)
 	{
 		//make sure item exists	     
 		if($this->validate_item($item_id) == FALSE)
@@ -304,22 +303,22 @@ class Sale_lib
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
             $item = array($insertkey => array(
-                    'item_id'=>$item_id,
-                    'item_location'=>$item_location,
-                    'stock_name'=>$this->CI->Stock_location->get_location_name($item_location),
-                    'line'=>$insertkey,
-                    'name'=>$item_info->name,
-                    'item_number'=>$item_info->item_number,
-                    'description'=>$description!=NULL ? $description: $item_info->description,
-                    'serialnumber'=>$serialnumber!=NULL ? $serialnumber: '',
-                    'allow_alt_description'=>$item_info->allow_alt_description,
-                    'is_serialized'=>$item_info->is_serialized,
-                    'quantity'=>$quantity,
-                    'discount'=>$discount,
-                    'in_stock'=>$this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
-                    'price'=>$price,
-                    'total'=>$total,
-                    'discounted_total'=>$discounted_total,
+                    'item_id' => $item_id,
+                    'item_location' => $item_location,
+                    'stock_name' => $this->CI->Stock_location->get_location_name($item_location),
+                    'line' => $insertkey,
+                    'name' => $item_info->name,
+                    'item_number' => $item_info->item_number,
+                    'description' => $description!=NULL ? $description: $item_info->description,
+                    'serialnumber' => $serialnumber!=NULL ? $serialnumber: '',
+                    'allow_alt_description' => $item_info->allow_alt_description,
+                    'is_serialized' => $item_info->is_serialized,
+                    'quantity' => $quantity,
+                    'discount' => $discount,
+                    'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
+                    'price' => $price,
+                    'total' => $total,
+                    'discounted_total' => $discounted_total,
                 )
             );
 			//add to existing array
@@ -464,7 +463,7 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
-	function add_item_kit($external_item_kit_id,$item_location)
+	function add_item_kit($external_item_kit_id, $item_location)
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
@@ -605,7 +604,7 @@ class Sale_lib
 		return to_currency_no_money($subtotal);
 	}
 	
-	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount=FALSE) 
+	function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE) 
 	{
 		$tax_info = $this->CI->Item_taxes->get_info($item_id);
 		$item_price = $this->get_item_total($quantity, $price, $discount_percentage, $include_discount);
@@ -619,7 +618,7 @@ class Sale_lib
 		return $item_price;
 	}
 	
-	function get_item_total($quantity, $price, $discount_percentage, $include_discount=FALSE)  
+	function get_item_total($quantity, $price, $discount_percentage, $include_discount = FALSE)  
 	{
 		$total = bcmul($quantity, $price, PRECISION);
 		if($include_discount)
@@ -657,7 +656,7 @@ class Sale_lib
 		return bcmul($price, $tax_fraction, PRECISION);
 	}
 
-	function calculate_subtotal($include_discount=FALSE, $exclude_tax=FALSE) 
+	function calculate_subtotal($include_discount = FALSE, $exclude_tax = FALSE) 
 	{
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
