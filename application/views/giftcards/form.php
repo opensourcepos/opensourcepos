@@ -55,17 +55,22 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	var fill_value =  function(event, ui) {
+	$("input[name='person_name']").change(function() {
+		if( ! $("input[name='person_name']").val() ) {
+			$("input[name='person_id']").val('');
+		}
+	});
+	
+	var fill_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='person_id']").val(ui.item.value);
 		$("input[name='person_name']").val(ui.item.label);
 	};
 
-	var autocompleter = $("#person_name").autocomplete(
-	{
+	var autocompleter = $("#person_name").autocomplete({
 		source: '<?php echo site_url("customers/suggest"); ?>',
-    	minChars:0,
-    	delay:15, 
+    	minChars: 0,
+    	delay: 15, 
        	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
@@ -73,11 +78,9 @@ $(document).ready(function()
     });
 
 	// declare submitHandler as an object.. will be reused
-	var submit_form = function()
-	{ 
-		$(this).ajaxSubmit(
-		{
-			success:function(response)
+	var submit_form = function() { 
+		$(this).ajaxSubmit({
+			success: function(response)
 			{
 				dialog_support.hide();
 				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
