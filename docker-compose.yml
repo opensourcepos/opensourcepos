@@ -14,7 +14,6 @@ services:
         ports:
             - "80:80"
         volumes:
-            - ospos:/var/www/html
             - ospos:/app
         environment:
             - MYSQL_USERNAME=admin

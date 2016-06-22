@@ -10,6 +10,7 @@ RUN docker-php-ext-install mysql mysqli bcmath
 
 WORKDIR /app
 COPY . /app
+RUN ln -s /app /var/www/html
 
 RUN cp application/config/database.php.tmpl application/config/database.php && \
     sed -i -e "s/\(localhost\)/web/g" test/ospos.js && \
