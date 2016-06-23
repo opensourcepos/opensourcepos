@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 use emberlabs\Barcode\BarcodeBase;
 require APPPATH.'/views/barcodes/BarcodeBase.php';
@@ -229,4 +229,5 @@ class Barcode_lib
 		return substr($font_file_name, 0, -4);
 	}
 }
+
 ?>

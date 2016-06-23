@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 class Sale_lib
 {
 	var $CI;
@@ -706,4 +707,5 @@ class Sale_lib
         return TRUE;
     }
 }
+
 ?>

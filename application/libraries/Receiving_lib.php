@@ -1,4 +1,5 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
 class Receiving_lib
 {
 	var $CI;
@@ -370,4 +371,5 @@ class Receiving_lib
 		return $total;
 	}
 }
+
 ?>
