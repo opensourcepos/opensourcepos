@@ -105,7 +105,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm no-gutter">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_country_codes'), 'country_codes', array('class'=>'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class'=>'form-control input-sm')); ?>

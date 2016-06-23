@@ -2,7 +2,7 @@
 	<div id="config_wrapper">
 		<fieldset id="config_message">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-			<ul id="general_error_message_box" class="error_message_box"></ul>
+			<ul id="message_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_msg_uid'), 'msg_uid', array('class'=>'control-label col-xs-2 required')); ?>
@@ -73,7 +73,7 @@ $(document).ready(function()
 {
 	$('#message_config_form').validate($.extend(form_support.handler, {
 
-		errorLabelContainer: "#general_error_message_box",
+		errorLabelContainer: "#message_error_message_box",
 
 		rules: 
 		{

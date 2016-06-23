@@ -10,6 +10,7 @@ class Sales extends Secure_Controller
 
 		$this->load->library('sale_lib');
 		$this->load->library('barcode_lib');
+		$this->load->library('email_lib');
 	}
 
 	public function index()
@@ -413,32 +414,32 @@ class Sales extends Secure_Controller
 
 		$result = FALSE;
 		$message = $this->lang->line('sales_invoice_no_email');
-		if(isset($sale_data["customer_email"]) && !empty($sale_data["customer_email"]))
+
+		if(!empty($sale_data['customer_email']))
 		{
-			$this->load->library('email');
-			$this->email->from($this->config->item('email'), $this->config->item('company'));
-			$this->email->to($sale_data['customer_email']);
-			$this->email->subject($this->lang->line('sales_invoice') . ' ' . $sale_data['invoice_number']);
+			$to = $sale_data['customer_email'];
+			$subject = $this->lang->line('sales_invoice') . ' ' . $sale_data['invoice_number'];
+
 			$text = $this->config->item('invoice_email_message');
 			$text = str_replace('$INV', $sale_data['invoice_number'], $text);
 			$text = str_replace('$CO', 'POS ' . $sale_data['sale_id'], $text);
-			$text = $this->_substitute_customer($text,(object) $sale_data);
-			$this->email->message($text);
+			$text = $this->_substitute_customer($text, (object) $sale_data);
 
 			// generate email attachment: invoice in pdf format
 			$html = $this->load->view('sales/invoice_email', $sale_data, TRUE);
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
 			$file_content = pdf_create($html, '', FALSE);
-			$filename = sys_get_temp_dir() . '/'. $this->lang->line('sales_invoice') . '-' . str_replace('/', '-' , $sale_data["invoice_number"]) . '.pdf';
+			$filename = sys_get_temp_dir() . '/' . $this->lang->line('sales_invoice') . '-' . str_replace('/', '-' , $sale_data['invoice_number']) . '.pdf';
 			write_file($filename, $file_content);
+			
+			$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
 
-			$this->email->attach($filename);
-			$result = $this->email->send();
-			$message = $this->lang->line($result ? 'sales_invoice_sent' : 'sales_invoice_unsent') . ' ' . $sale_data["customer_email"];
+			$message = $this->lang->line($result ? 'sales_invoice_sent' : 'sales_invoice_unsent') . ' ' . $to;
 		}
 
 		echo json_encode(array('success' => $result, 'message' => $message, 'id' => $sale_id));
+
 		$this->sale_lib->clear_all();
 
 		return $result;
@@ -450,22 +451,23 @@ class Sales extends Secure_Controller
 
 		$result = FALSE;
 		$message = $this->lang->line('sales_receipt_no_email');
-		if(isset($sale_data["customer_email"]) && !empty( $sale_data["customer_email"]))
+
+		if(!empty($sale_data['customer_email']))
 		{
 			$sale_data['barcode'] = $this->barcode_lib->generate_receipt_barcode($sale_data['sale_id']);
 
-			$this->load->library('email');
-			$config['mailtype'] = 'html';
-			$this->email->initialize($config);
-			$this->email->from($this->config->item('email'), $this->config->item('company'));
-			$this->email->to($sale_data['customer_email']);
-			$this->email->subject($this->lang->line('sales_receipt'));
-			$this->email->message($this->load->view('sales/receipt_email', $sale_data, TRUE));	
-			$result = $this->email->send();
-			$message = $this->lang->line($result ? 'sales_receipt_sent' : 'sales_receipt_unsent') . ' ' . $sale_data["customer_email"];
+			$to = $sale_data['customer_email'];
+			$subject = $this->lang->line('sales_receipt');
+
+			$text = $this->load->view('sales/receipt_email', $sale_data, TRUE);
+			
+			$result = $this->email_lib->sendEmail($to, $subject, $text);
+
+			$message = $this->lang->line($result ? 'sales_receipt_sent' : 'sales_receipt_unsent') . ' ' . $to;
 		}
 
 		echo json_encode(array('success' => $result, 'message' => $message, 'id' => $sale_id));
+
 		$this->sale_lib->clear_all();
 
 		return $result;

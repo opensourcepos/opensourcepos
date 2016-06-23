@@ -71,7 +71,12 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('msg_pwd', ''),
 ('notify_horizontal_position', 'right'),
 ('notify_vertical_position', 'top'),
-('payment_options_order', 'cashdebitcredit');
+('payment_options_order', 'cashdebitcredit'),
+('protocol', 'mail'),
+('mailpath', '/usr/sbin/sendmail'),
+('smtp_port', '465'),
+('smtp_timeout', '5'),
+('smtp_crypto', 'ssl');
 
 
 -- --------------------------------------------------------

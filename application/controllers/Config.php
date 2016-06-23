@@ -108,7 +108,26 @@ class Config extends Secure_Controller
 
 		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
-	
+
+	public function save_email()
+	{
+		$batch_save_data = array(
+			'protocol' => $this->input->post('protocol'),
+			'mailpath' => $this->input->post('mailpath'),
+			'smtp_host' => $this->input->post('smtp_host'),
+			'smtp_user' => $this->input->post('smtp_user'),
+			'smtp_pass' => $this->input->post('smtp_pass'),
+			'smtp_port' => $this->input->post('smtp_port'),
+			'smtp_timeout' => $this->input->post('smtp_timeout'),
+			'smtp_crypto' => $this->input->post('smtp_crypto')
+		);
+
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
+
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
+
 	public function save_message()
 	{
 		$batch_save_data = array(	
