@@ -77,8 +77,9 @@ $(document).ready(function()
 		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message").prop('disabled', !invoice_enable);
 		return arguments.callee;
 	})();
+
 	$("#invoice_enable").change(enable_disable_invoice_enable);
-	
+
 	$('#invoice_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({

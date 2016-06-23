@@ -115,10 +115,6 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$('#email_config_form').validate($.extend(form_support.handler, {
-		errorLabelContainer: "#email_error_message_box"
-	}));
-	
 	var check_protocol = function() {
 		if($("#protocol").val() == 'sendmail')
 		{
@@ -137,5 +133,24 @@ $(document).ready(function()
 	};
 
 	$("#protocol").change(check_protocol).ready(check_protocol);
+
+	$('#email_config_form').validate($.extend(form_support.handler, {
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				beforeSerialize: function(arr, $form, options) {
+					$("#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop("disabled", false); 
+					return true;
+				},
+				success: function(response) {
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+					// set back disabled state
+					check_protocol();
+				},
+				dataType:'json'
+			});
+		},
+		
+		errorLabelContainer: "#email_error_message_box"
+	}));
 });
 </script>
