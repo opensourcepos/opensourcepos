@@ -400,14 +400,6 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function invoice_email($sale_id)
-	{
-		$sale_data = $this->_load_sale_data($sale_id);
-
-		$this->load->view('sales/invoice_email', $sale_data);
-		$this->sale_lib->clear_all();
-	}
-
 	public function send_invoice($sale_id)
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
