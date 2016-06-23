@@ -14,7 +14,7 @@ RUN ln -s /app/* /var/www/html
 
 RUN cp application/config/database.php.tmpl application/config/database.php && \
     sed -i -e "s/\(localhost\)/web/g" test/ospos.js && \
-    sed -i -e "s/\(user.*\?=.\).*\(.\)$/\1'${MYSQL_USERNAME}'\2/g" application/config/database.php && \
-    sed -i -e "s/\(password.*\?=.\).*\(.\)$/\1'${MYSQL_PASSWORD}'\2/g" application/config/database.php && \
-    sed -i -e "s/\(database.*\?=.\).*\(.\)$/\1'${MYSQL_DB_NAME}'\2/g" application/config/database.php && \
-    sed -i -e "s/\(hostname.*\?=.\).*\(.\)$/\1'${MYSQL_HOST_NAME}'\2/g" application/config/database.php
+    sed -i -e "s/\(user.*\?=.\).*\(.\)$/\1getenv('MYSQL_USERNAME')\2/g" application/config/database.php && \
+    sed -i -e "s/\(password.*\?=.\).*\(.\)$/\1getenv('MYSQL_PASSWORD')\2/g" application/config/database.php && \
+    sed -i -e "s/\(database.*\?=.\).*\(.\)$/\1getenv('MYSQL_DB_NAME')\2/g" application/config/database.php && \
+    sed -i -e "s/\(hostname.*\?=.\).*\(.\)$/\1getenv('MYSQL_HOST_NAME')\2/g" application/config/database.php

@@ -40,8 +40,32 @@ Bug reports must follow this schema:
 If above information is not provided in full, your issue will be tagged as pending.
 If missing information is not provided within a week we will close your issue.
 
-Installation
-------------
+Cloud install
+--------------
+
+If you just want to run a quick demo of ospos or run it permanently in the cloud, then we
+suggest using Docker cloud together with the DigitalOcean hosting platform. This way all the
+configuration is done automatically and the install will just work. 
+
+If you choose *DigitalOcean* [through this link](https://m.do.co/c/ac38c262507b), you will get a *$10 credit* for a first
+month of uptime on the platform. A full setup will only take about 2 minutes by following steps below.
+
+1. Create a [digital ocean account](https://m.do.co/c/ac38c262507b)
+2. Create a [docker cloud account](https://cloud.docker.com)
+3. Login to docker cloud
+4. Associate your docker cloud account with your previously created digital ocean account under settings
+5. Create a new node on DigitalOcean through the `Infrastructure > Nodes` tab. Fill in a name (ospos) and choose a region near to you
+6. Click this link [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/) or Create a new stack under `Applications > Stacks` and paste the [contents of docker-cloud.yml](https://github.com/jekkos/opensourcepos/blob/master/docker-cloud.yml) from the source repository in the text field and click `Create and deploy` 
+7. Find your website url under `Infrastructure > Nodes > <yournode> > Endpoints > web`
+8. Login with default username/password admin/pointofsale and profit!
+9. DNS name for this server can be easily configured in the DigitalOcean control panel
+
+Another option would be to install directly to [digitalocean](https://m.do.co/c/ac38c262507b) without docker using their preconfigured LAMP stack. 
+Just create a DO account, add a droplet with preconfigured LAMP and follow the instructions below. You will be running a fully provisioned VPS within minutes.
+
+Local install
+----------------
+
 1. Create/locate a new mysql database to install open source point of sale into
 2. Execute the file database/database.sql to create the tables needed
 3. unzip and upload Open Source Point of Sale files to web server
@@ -53,6 +77,8 @@ Installation
 username: admin 
 password:pointofsale
 9. Enjoy
+
+
 
 FAQ
 ---

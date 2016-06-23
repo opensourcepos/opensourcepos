@@ -7,7 +7,7 @@ web:
     roles:
         - global
     volumes:
-        - ospos:/app
+        - /app
     environment:
         - MYSQL_USERNAME=admin
         - MYSQL_PASSWORD=pointofsale
