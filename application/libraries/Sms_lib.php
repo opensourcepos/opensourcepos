@@ -2,7 +2,7 @@
  
 class Sms_lib
 {
-	var $CI;
+	private $CI;
 
   	public function __construct()
 	{
@@ -10,7 +10,7 @@ class Sms_lib
 	}
 	
 	/*
-	 * SMS send function
+	 * SMS sending function
 	 * Example of use: $response = sendSMS('4477777777', 'My test message');
 	 */
 	public function sendSMS($phone, $message)
