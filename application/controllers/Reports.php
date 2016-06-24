@@ -805,7 +805,7 @@ class Reports extends Secure_Controller
 			'payment_type' => $report_data['payment_type'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('sales_update'))
+				array('class'=>"modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
 			)
 		));
 
@@ -841,7 +841,7 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
 				'edit' => anchor("sales/edit/".$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('sales_update'))
+					array('class' => "modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
 				)
 			));
 
@@ -887,7 +887,7 @@ class Reports extends Secure_Controller
 			'reference' => $report_data['reference'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('recvs_update'))
+				array('class'=>"modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('recvs_update'))
 			)
 		));
 
@@ -920,7 +920,7 @@ class Reports extends Secure_Controller
 				'reference' => $row['reference'],
 				'comment' => $row['comment'],
 				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => "modal-dlg modal-btn-delete modal-btn-submit print_hide", 'title' => $this->lang->line('recvs_update'))
+					array('class' => "modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('recvs_update'))
 				)
 			));
 

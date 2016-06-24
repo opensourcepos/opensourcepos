@@ -35,13 +35,16 @@
 				if (width_class && width_class.length > 1) {
 					dialog_class = className;
 				}
-				var btn_class = className.split("modal-btn-");
+			});
+
+			$.each($(this).data(), function(name, value) {
+				var btn_class = name.split("btn");
 				if (btn_class && btn_class.length > 1) {
-					var btn_name = btn_class[1];
+					var btn_name = btn_class[1].toLowerCase();
 					var is_submit = btn_name == 'submit';
 					buttons.push({
 						id: btn_name,
-						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
+						label: value,
 						cssClass: button_class[btn_name],
 						hotkey: is_submit ? 13 : undefined, // Enter.
 						action: submit(btn_name)
@@ -51,7 +54,7 @@
 
 			!buttons.length && buttons.push({
 				id: 'close',
-				label: 'Close',
+				label: lang.line('common_close'),
 				cssClass: 'btn-primary',
 				action: function(dialog_ref) {
 					dialog_ref.close();

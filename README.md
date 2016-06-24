@@ -41,9 +41,13 @@ If above information is not provided in full, your issue will be tagged as pendi
 If missing information is not provided within a week we will close your issue.
 
 Cloud install
---------------
+-------------
+A quick option would be to install directly to [Digitalocean](https://m.do.co/c/ac38c262507b) using their preconfigured LAMP stack. 
+Create a DO account first, add a droplet with preconfigured LAMP and follow the instructions for Local Install below. You will be running a provisioned VPS within minutes.
 
-If you just want to run a quick demo of ospos or run it permanently in the cloud, then we
+Cloud install using Docker
+--------------------------
+If you want to run a quick demo of ospos or run it permanently in the cloud, then we
 suggest using Docker cloud together with the DigitalOcean hosting platform. This way all the
 configuration is done automatically and the install will just work. 
 
@@ -55,17 +59,14 @@ month of uptime on the platform. A full setup will only take about 2 minutes by 
 3. Login to docker cloud
 4. Associate your docker cloud account with your previously created digital ocean account under settings
 5. Create a new node on DigitalOcean through the `Infrastructure > Nodes` tab. Fill in a name (ospos) and choose a region near to you
-6. Click this link [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/) or Create a new stack under `Applications > Stacks` and paste the [contents of docker-cloud.yml](https://github.com/jekkos/opensourcepos/blob/master/docker-cloud.yml) from the source repository in the text field and click `Create and deploy` 
-7. Find your website url under `Infrastructure > Nodes > <yournode> > Endpoints > web`
-8. Login with default username/password admin/pointofsale
-9. DNS name for this server can be easily configured in the DigitalOcean control panel
-
-Another option would be to install directly to [Digitalocean](https://m.do.co/c/ac38c262507b) without docker using their preconfigured LAMP stack. 
-Just create a DO account, add a droplet with preconfigured LAMP and follow the instructions below. You will be running a fully provisioned VPS within minutes.
+6. Click [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/) 
+7. Othewise create a new stack under `Applications > Stacks` and paste the [contents of docker-cloud.yml](https://github.com/jekkos/opensourcepos/blob/master/docker-cloud.yml) from the source repository in the text field and hit `Create and deploy` 
+8. Find your website url under `Infrastructure > Nodes > <yournode> > Endpoints > web`
+9. Login with default username/password admin/pointofsale
+10. DNS name for this server can be easily configured in the DigitalOcean control panel
 
 Local install
 -------------
-
 1. Create/locate a new mysql database to install open source point of sale into
 2. Execute the file database/database.sql to create the tables needed
 3. unzip and upload Open Source Point of Sale files to web server

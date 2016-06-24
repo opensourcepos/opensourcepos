@@ -42713,6 +42713,7 @@ $.extend($.fn, {
 
 			this.validateDelegate( ":submit", "click", function( event ) {
 				if ( validator.settings.submitHandler ) {
+
 					validator.submitButton = event.target;
 				}
 				// allow suppressing validation by adding a cancel class to the submit button
@@ -44034,6 +44035,66 @@ $.extend($.fn, {
 });
 
 }));
+jQuery.base64 = (function($) {
+
+    // private property
+    var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
+
+    // private method for UTF-8 encoding
+    function utf8Encode(string) {
+        string = string.replace(/\r\n/g,"\n");
+        var utftext = "";
+        for (var n = 0; n < string.length; n++) {
+            var c = string.charCodeAt(n);
+            if (c < 128) {
+                utftext += String.fromCharCode(c);
+            }
+            else if((c > 127) && (c < 2048)) {
+                utftext += String.fromCharCode((c >> 6) | 192);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+            else {
+                utftext += String.fromCharCode((c >> 12) | 224);
+                utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+                utftext += String.fromCharCode((c & 63) | 128);
+            }
+        }
+        return utftext;
+    }
+
+    function encode(input) {
+        var output = "";
+        var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+        var i = 0;
+        input = utf8Encode(input);
+        while (i < input.length) {
+            chr1 = input.charCodeAt(i++);
+            chr2 = input.charCodeAt(i++);
+            chr3 = input.charCodeAt(i++);
+            enc1 = chr1 >> 2;
+            enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+            enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+            enc4 = chr3 & 63;
+            if (isNaN(chr2)) {
+                enc3 = enc4 = 64;
+            } else if (isNaN(chr3)) {
+                enc4 = 64;
+            }
+            output = output +
+                keyStr.charAt(enc1) + keyStr.charAt(enc2) +
+                keyStr.charAt(enc3) + keyStr.charAt(enc4);
+        }
+        return output;
+    }
+
+    return {
+        encode: function (str) {
+            return encode(str);
+        }
+    };
+
+}(jQuery));
+
 /* 
 * Project: Bootstrap Notify = v3.1.3
 * Description: Turns standard Bootstrap alerts into "Growl-like" notifications.
@@ -44242,7 +44303,7 @@ $.extend($.fn, {
 				hasAnimation = false,
 				settings = this.settings;
 
-			$('[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])').each(function() {
+				$('[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])').each(function() {
 				return offsetAmt = Math.max(offsetAmt, parseInt($(this).css(settings.placement.from)) +  parseInt($(this).outerHeight()) +  parseInt(settings.spacing));
 			});
 			if (this.settings.newest_on_top == true) {
@@ -44352,6 +44413,7 @@ $.extend($.fn, {
 					}
 				}
 			}, 600);
+
 		},
 		reposition: function(posX) {
 			var self = this,
@@ -47875,13 +47937,16 @@ typeof h.headerrows&&(h.headerrows.length=0);"undefined"!=typeof h.columns&&(h.c
 				if (width_class && width_class.length > 1) {
 					dialog_class = className;
 				}
-				var btn_class = className.split("modal-btn-");
+			});
+
+			$.each($(this).data(), function(name, value) {
+				var btn_class = name.split("btn");
 				if (btn_class && btn_class.length > 1) {
-					var btn_name = btn_class[1];
+					var btn_name = btn_class[1].toLowerCase();
 					var is_submit = btn_name == 'submit';
 					buttons.push({
 						id: btn_name,
-						label: btn_name.charAt(0).toUpperCase() + btn_name.slice(1),
+						label: value,
 						cssClass: button_class[btn_name],
 						hotkey: is_submit ? 13 : undefined, // Enter.
 						action: submit(btn_name)
@@ -47891,7 +47956,7 @@ typeof h.headerrows&&(h.headerrows.length=0);"undefined"!=typeof h.columns&&(h.c
 
 			!buttons.length && buttons.push({
 				id: 'close',
-				label: 'Close',
+				label: lang.line('common_close'),
 				cssClass: 'btn-primary',
 				action: function(dialog_ref) {
 					dialog_ref.close();
