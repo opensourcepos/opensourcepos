@@ -1,13 +1,3 @@
-#report_list li ul li
-{
-	margin-left: 35px;
-}
-
-#report_date_range_simple, #report_date_range_complex 
-{
-	margin-bottom: 10px;
-}
-
 .report 
 {
 	font-size: .85em;
