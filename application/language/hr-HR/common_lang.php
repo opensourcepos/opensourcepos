@@ -30,6 +30,7 @@ $lang["common_list_of"] = "Lista";
 $lang["common_logout"] = "Odjava";
 $lang["common_new"] = "Novi";
 $lang["common_no_persons_to_display"] = "Nema nijede osoba za prikazati";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "Ili";
 $lang["common_phone_number"] = "Broj telefona";
 $lang["common_phone_number_required"] = "Broj telefona je obavezan";

@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_locations/', array('id'=>'location_config_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
@@ -9,10 +9,10 @@
 			</div>
             
             <?php echo form_submit(array(
-                'name'=>'submit',
-                'id'=>'submit',
+                'name' => 'submit',
+                'id' => 'submit',
                 'value'=>$this->lang->line('common_submit'),
-                'class'=>'btn btn-primary btn-sm pull-right')); ?>
+                'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
 <?php echo form_close(); ?>

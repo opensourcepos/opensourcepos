@@ -30,6 +30,7 @@ $lang["common_list_of"] = "รายการ";
 $lang["common_logout"] = "ออกจากระบบ";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตัวบุคคล";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "หรือ";
 $lang["common_phone_number"] = "โทรศัพท์";
 $lang["common_phone_number_required"] = "ต้องกรอกเบอร์โทร";

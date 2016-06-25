@@ -30,6 +30,7 @@ $lang["common_list_of"] = "列表";
 $lang["common_logout"] = "登出";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "或";
 $lang["common_phone_number"] = "電話";
 $lang["common_phone_number_required"] = "";

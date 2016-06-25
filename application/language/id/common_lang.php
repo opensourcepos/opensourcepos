@@ -30,6 +30,7 @@ $lang["common_list_of"] = "Daftar";
 $lang["common_logout"] = "Keluar";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "Tidak ada orang untuk ditampilkan";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "ATAU";
 $lang["common_phone_number"] = "Telepon";
 $lang["common_phone_number_required"] = "Nomer Telepon Wajib Diisi";

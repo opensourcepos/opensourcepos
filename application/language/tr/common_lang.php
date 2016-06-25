@@ -30,6 +30,7 @@ $lang["common_list_of"] = "Liste";
 $lang["common_logout"] = "Çıkış";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "Gösterecek kişi yok";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "Yada";
 $lang["common_phone_number"] = "Telefon";
 $lang["common_phone_number_required"] = "";

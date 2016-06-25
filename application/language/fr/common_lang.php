@@ -30,6 +30,7 @@ $lang["common_list_of"] = "Liste de";
 $lang["common_logout"] = "Déconnion";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "Il n'y a personne à afficher";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "OU";
 $lang["common_phone_number"] = "Téléphone";
 $lang["common_phone_number_required"] = "Le numéro de téléphone est requis.";

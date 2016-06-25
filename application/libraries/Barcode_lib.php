@@ -219,7 +219,7 @@ class Barcode_lib
 
 		closedir($handle);
 
-		array_unshift($array, 'No Label');
+		array_unshift($array, $this->CI->lang->line('config_none'));
 
 		return $array;
 	}

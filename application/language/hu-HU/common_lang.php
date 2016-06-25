@@ -30,6 +30,7 @@ $lang["common_list_of"] = "Lista: ";
 $lang["common_logout"] = "Kilépés";
 $lang["common_new"] = "Új";
 $lang["common_no_persons_to_display"] = "Nincsenek megjeleníthető emberek";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "VAGY";
 $lang["common_phone_number"] = "Telefonszám";
 $lang["common_phone_number_required"] = "Telefonszám kötelező mező";
