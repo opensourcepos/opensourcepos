@@ -410,7 +410,7 @@ class Items extends Secure_Controller
             }
             else
             {
-            	$message = $this->xss_clean($upload_success ? $this->lang->line('items_error_adding_updating') . ' ' . $item_data['name'] : $this->upload->display_errors()); 
+            	$message = $this->xss_clean($upload_success ? $this->lang->line('items_error_adding_updating') . ' ' . $item_data['name'] : strip_tags($this->upload->display_errors())); 
 
             	echo json_encode(array('success' => FALSE, 'message' => $message, 'id' => $item_id));
             }

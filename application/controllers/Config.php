@@ -49,7 +49,7 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $upload_success && $result ? TRUE : FALSE;
 		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
-		$message = $upload_success ? $message : $this->upload->display_errors();
+		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());
 
 		echo json_encode(array('success' => $success, 'message' => $message));
 	}
