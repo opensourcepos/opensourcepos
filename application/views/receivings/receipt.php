@@ -12,7 +12,7 @@ if (isset($error_message))
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
-	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . $this->lang->line('recvs_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("receivings", '<span class="glyphicon glyphicon-save">&nbsp</span>' . $this->lang->line('receivings_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="receipt_wrapper">
@@ -46,12 +46,12 @@ if (isset($error_message))
 		<?php
 		}
 		?>
-		<div id="sale_id"><?php echo $this->lang->line('recvs_id').": ".$receiving_id; ?></div>
+		<div id="sale_id"><?php echo $this->lang->line('receivings_id').": ".$receiving_id; ?></div>
 		<?php 
 		if (!empty($reference))
 		{
 		?>
-			<div id="reference"><?php echo $this->lang->line('recvs_reference').": ".$reference; ?></div>	
+			<div id="reference"><?php echo $this->lang->line('receivings_reference').": ".$reference; ?></div>	
 		<?php 
 		}
 		?>

@@ -93,7 +93,7 @@ class Receivings extends Secure_Controller
 		}
 		else if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location))
 		{
-			$data['error'] = $this->lang->line('recvs_unable_to_add_item');
+			$data['error'] = $this->lang->line('receivings_unable_to_add_item');
 		}
 
 		$this->_reload($data);
@@ -120,7 +120,7 @@ class Receivings extends Secure_Controller
 		}
 		else
 		{
-			$data['error']=$this->lang->line('recvs_error_editing_item');
+			$data['error']=$this->lang->line('receivings_error_editing_item');
 		}
 
 		$this->_reload($data);
@@ -164,12 +164,12 @@ class Receivings extends Secure_Controller
 	
 		if($this->Receiving->delete_list($receiving_ids, $employee_id, $update_inventory))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('recvs_successfully_deleted') . ' ' .
-							count($receiving_ids) . ' ' . $this->lang->line('recvs_one_or_multiple'), 'ids' => $receiving_ids));
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('receivings_successfully_deleted') . ' ' .
+							count($receiving_ids) . ' ' . $this->lang->line('receivings_one_or_multiple'), 'ids' => $receiving_ids));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('recvs_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('receivings_cannot_be_deleted')));
 		}
 	}
 
@@ -187,7 +187,7 @@ class Receivings extends Secure_Controller
 		
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
-		$data['receipt_title'] = $this->lang->line('recvs_receipt');
+		$data['receipt_title'] = $this->lang->line('receivings_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['comment'] = $this->receiving_lib->get_comment();
@@ -232,7 +232,7 @@ class Receivings extends Secure_Controller
 
 		if($data['receiving_id'] == 'RECV -1')
 		{
-			$data['error_message'] = $this->lang->line('recvs_transaction_failed');
+			$data['error_message'] = $this->lang->line('receivings_transaction_failed');
 		}
 		else
 		{
@@ -261,7 +261,7 @@ class Receivings extends Secure_Controller
 		}
 		else 
 		{
-			$data['error'] = $this->lang->line('recvs_error_requisition');
+			$data['error'] = $this->lang->line('receivings_error_requisition');
 
 			$this->_reload($data);	
 		}
@@ -274,7 +274,7 @@ class Receivings extends Secure_Controller
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
 		$data['mode'] = $this->receiving_lib->get_mode();
-		$data['receipt_title'] = $this->lang->line('recvs_receipt');
+		$data['receipt_title'] = $this->lang->line('receivings_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($receiving_info['receiving_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('receivings');
 		$data['payment_type'] = $receiving_info['payment_type'];
@@ -315,13 +315,13 @@ class Receivings extends Secure_Controller
 	private function _reload($data = array())
 	{
 		$data['cart'] = $this->receiving_lib->get_cart();
-		$data['modes'] = array('receive' => $this->lang->line('recvs_receiving'), 'return' => $this->lang->line('recvs_return'));
+		$data['modes'] = array('receive' => $this->lang->line('receivings_receiving'), 'return' => $this->lang->line('receivings_return'));
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('receivings');
 		$data['show_stock_locations'] = count($data['stock_locations']) > 1;
 		if($data['show_stock_locations']) 
 		{
-			$data['modes']['requisition'] = $this->lang->line('recvs_requisition');
+			$data['modes']['requisition'] = $this->lang->line('receivings_requisition');
 			$data['stock_source'] = $this->receiving_lib->get_stock_source();
 			$data['stock_destination'] = $this->receiving_lib->get_stock_destination();
 		}
@@ -375,11 +375,11 @@ class Receivings extends Secure_Controller
 	
 		if($this->Receiving->update($receiving_data, $receiving_id))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('recvs_successfully_updated'), 'id' => $receiving_id));
+			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('receivings_successfully_updated'), 'id' => $receiving_id));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('recvs_unsuccessfully_updated'), 'id' => $receiving_id));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('receivings_unsuccessfully_updated'), 'id' => $receiving_id));
 		}
 	}
 

@@ -18,7 +18,7 @@ class Detailed_receivings extends Report
 				'supplier' => $this->lang->line('reports_supplied_by'),
 				'total' => $this->lang->line('reports_total'),
 				'payment_type' => $this->lang->line('reports_payment_type'),
-				'reference' => $this->lang->line('recvs_reference'),
+				'reference' => $this->lang->line('receivings_reference'),
 				'comment' => $this->lang->line('reports_comments'),
 				'edit' => ''),
 			'details' => array(
