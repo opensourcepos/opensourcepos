@@ -1,7 +1,7 @@
 version: '2'
 
 volumes:
-    ospos:
+    uploads:
         driver: local
   
 services:
@@ -14,7 +14,7 @@ services:
         ports:
             - "80:80"
         volumes:
-            - ospos:/app
+            - uploads:/app/uploads
         environment:
             - MYSQL_USERNAME=admin
             - MYSQL_PASSWORD=pointofsale

@@ -7,7 +7,7 @@ web:
     roles:
         - global
     volumes:
-        - /app
+        - /app/uploads
     environment:
         - MYSQL_USERNAME=admin
         - MYSQL_PASSWORD=pointofsale
