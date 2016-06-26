@@ -58,8 +58,8 @@ function get_sale_data_row($sale, $controller)
 	$row = array (
 		'sale_id' => $sale->sale_id,
 		'sale_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time) ),
-		'customer_name' => character_limiter( $sale->customer_name, 25),
-		'amount_tendered' => to_currency( $sale->amount_tendered ),
+		'customer_name' => $sale->customer_name,
+		'amount_tendered' => to_currency($sale->amount_tendered),
 		'amount_due' => to_currency($sale->amount_due),
 		'change_due' => to_currency($sale->change_due),
 		'payment_type' => $sale->payment_type
@@ -170,10 +170,10 @@ function get_person_data_row($person, $controller)
 
 	return array (
 		'people.person_id' => $person->person_id,
-		'last_name' => character_limiter($person->last_name,13),
-		'first_name' => character_limiter($person->first_name,13),
-		'email' => empty($person->email) ? '' : mailto($person->email,character_limiter($person->email,22)),
-		'phone_number' => character_limiter($person->phone_number,13),
+		'last_name' => $person->last_name,
+		'first_name' => $person->first_name,
+		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+		'phone_number' => $person->phone_number,
 		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
@@ -210,12 +210,12 @@ function get_supplier_data_row($supplier, $controller)
 
 	return array (
 		'people.person_id' => $supplier->person_id,
-		'company_name' => character_limiter($supplier->company_name,13),
-		'agency_name' => character_limiter($supplier->agency_name,13),
-		'last_name' => character_limiter($supplier->last_name,13),
-		'first_name' => character_limiter($supplier->first_name,13),
-		'email' => empty($supplier->email) ? '' : mailto($supplier->email,character_limiter($supplier->email,22)),
-		'phone_number' => character_limiter($supplier->phone_number,13),
+		'company_name' => $supplier->company_name,
+		'agency_name' => $supplier->agency_name,
+		'last_name' => $supplier->last_name,
+		'first_name' => $supplier->first_name,
+		'email' => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
+		'phone_number' => $supplier->phone_number,
 		'messages' => empty($supplier->phone_number) ? '' : anchor("Messages/view/$supplier->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$supplier->person_id", '<span class="glyphicon glyphicon-edit"></span>',
@@ -271,9 +271,9 @@ function get_item_data_row($item, $controller)
 	return array (
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
-		'name' => character_limiter($item->name,13),
-		'category' => character_limiter($item->category,13),
-		'company_name' => character_limiter($item->company_name,20),
+		'name' => $item->name,
+		'category' => $item->category,
+		'company_name' => $item->company_name,
 		'cost_price' => to_currency($item->cost_price),
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
@@ -312,8 +312,8 @@ function get_giftcard_data_row($giftcard, $controller)
 
 	return array (
 		'giftcard_id' => $giftcard->giftcard_id,
-		'last_name' => character_limiter($giftcard->last_name,13),
-		'first_name' => character_limiter($giftcard->first_name,13),
+		'last_name' => $giftcard->last_name,
+		'first_name' => $giftcard->first_name,
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
@@ -343,8 +343,8 @@ function get_item_kit_data_row($item_kit, $controller)
 
 	return array (
 		'item_kit_id' => $item_kit->item_kit_id,
-		'name' => character_limiter($item_kit->name),
-		'description' => character_limiter($item_kit->description,13),
+		'name' => $item_kit->name,
+		'description' => $item_kit->description,
 		'cost_price' => to_currency($item_kit->total_cost_price),
 		'unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',

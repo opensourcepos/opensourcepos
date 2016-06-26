@@ -173,7 +173,7 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array(character_limiter($row['name'], 50),
+			$tabular_data[] = $this->xss_clean(array($row['name'],
 				to_quantity_decimals($row['quantity_purchased']),
 				to_currency($row['subtotal']),
 				to_currency($row['total']),
