@@ -42713,7 +42713,6 @@ $.extend($.fn, {
 
 			this.validateDelegate( ":submit", "click", function( event ) {
 				if ( validator.settings.submitHandler ) {
-
 					validator.submitButton = event.target;
 				}
 				// allow suppressing validation by adding a cancel class to the submit button
@@ -44243,7 +44242,7 @@ $.extend($.fn, {
 				hasAnimation = false,
 				settings = this.settings;
 
-				$('[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])').each(function() {
+			$('[data-notify-position="' + this.settings.placement.from + '-' + this.settings.placement.align + '"]:not([data-closing="true"])').each(function() {
 				return offsetAmt = Math.max(offsetAmt, parseInt($(this).css(settings.placement.from)) +  parseInt($(this).outerHeight()) +  parseInt(settings.spacing));
 			});
 			if (this.settings.newest_on_top == true) {
@@ -44353,7 +44352,6 @@ $.extend($.fn, {
 					}
 				}
 			}, 600);
-
 		},
 		reposition: function(posX) {
 			var self = this,
