@@ -340,7 +340,7 @@ class Sales extends Secure_Controller
 		$data['total'] = $this->sale_lib->get_total();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
-		$data['transaction_time'] = date($this->config->item('dateformat').' '.$this->config->item('timeformat'));
+		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
@@ -664,17 +664,19 @@ class Sales extends Secure_Controller
 
 	public function receipt($sale_id)
 	{
-		$sale_data = $this->_load_sale_data($sale_id);
-		
-		$this->load->view('sales/receipt', $sale_data);
+		$data = $this->_load_sale_data($sale_id);
+
+		$this->load->view('sales/receipt', $data);
+
 		$this->sale_lib->clear_all();
 	}
 
 	public function invoice($sale_id)
 	{
-		$sale_data = $this->_load_sale_data($sale_id);
+		$data = $this->_load_sale_data($sale_id);
 
-		$this->load->view('sales/invoice', $sale_data);
+		$this->load->view('sales/invoice', $data);
+
 		$this->sale_lib->clear_all();
 	}
 

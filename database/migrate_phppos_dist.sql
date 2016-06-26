@@ -76,7 +76,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('mailpath', '/usr/sbin/sendmail'),
 ('smtp_port', '465'),
 ('smtp_timeout', '5'),
-('smtp_crypto', 'ssl');
+('smtp_crypto', 'ssl'),
+('receipt_template', 'receipt_default');
 
 
 -- --------------------------------------------------------

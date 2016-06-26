@@ -40,18 +40,19 @@ ALTER TABLE `ospos_customers`
 UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` = 'show_total_discount';
  
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
- ('receipt_show_description', '1'),
- ('receipt_show_serialnumber', '1'),
- ('invoice_enable', '1'),
- ('country_codes', 'us'),
- ('notify_horizontal_position', 'right'),
- ('notify_vertical_position', 'top'),
- ('payment_options_order', 'cashdebitcredit'),
- ('protocol', 'mail'),
- ('mailpath', '/usr/sbin/sendmail'),
- ('smtp_port', '465'),
- ('smtp_timeout', '5'),
- ('smtp_crypto', 'ssl');
+('receipt_show_description', '1'),
+('receipt_show_serialnumber', '1'),
+('invoice_enable', '1'),
+('country_codes', 'us'),
+('notify_horizontal_position', 'right'),
+('notify_vertical_position', 'top'),
+('payment_options_order', 'cashdebitcredit'),
+('protocol', 'mail'),
+('mailpath', '/usr/sbin/sendmail'),
+('smtp_port', '465'),
+('smtp_timeout', '5'),
+('smtp_crypto', 'ssl'),
+('receipt_template', 'receipt_default');
  
 DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
 

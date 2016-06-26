@@ -224,6 +224,7 @@ class Config extends Secure_Controller
     public function save_receipt()
     {
     	$batch_save_data = array (
+			'receipt_template' => $this->input->post('receipt_template'),
 			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != NULL,
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,
 			'receipt_show_description' => $this->input->post('receipt_show_description') != NULL,
