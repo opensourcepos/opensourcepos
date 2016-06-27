@@ -29,7 +29,7 @@ $('#daterangepicker').daterangepicker({
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")));?>",
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m")+1,1,date("Y"))-1);?>"
 		],
-		"<?php echo $this->lang->line("datepicker_this_month_to_today_last_year"); ?>": [
+		"<?php echo $this->lang->line("datepicker_same_month_to_same_day_last_year"); ?>": [
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 			"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y")-1)-1);?>"
 		],
