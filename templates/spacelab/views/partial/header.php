@@ -55,12 +55,12 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/bootstrap-table-export.js" language="javascript"></script>
-		<script type="text/javascript" src="js/common.js" language="javascript"></script>
-		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
-		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
-		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
-		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
+		<script type="text/javascript" src="js/bootstrap-table-export.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
+		<script type="text/javascript" src="js/manage_tables.js"></script>
+		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
+		<script type="text/javascript" src="js/phpjsdate.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
@@ -73,7 +73,7 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=411ab31081" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=6e0cac2379"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

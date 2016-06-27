@@ -516,7 +516,7 @@ if (isset($success))
 	</div>
 </div>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {
     $("#item").autocomplete(

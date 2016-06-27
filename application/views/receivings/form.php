@@ -47,7 +47,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 		
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {
 	<?php $this->load->view('partial/datepicker_locale'); ?>

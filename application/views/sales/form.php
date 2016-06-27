@@ -93,7 +93,7 @@
 <?php echo form_close(); ?>
 		
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {	
 	<?php if(!empty($sale_info['email'])): ?>

@@ -97,7 +97,7 @@
 	</tbody>
 </table>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 $(document).ready(function()
 {
     display_stock(<?php echo json_encode(key($stock_locations)); ?>);

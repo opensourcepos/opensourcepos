@@ -57,10 +57,10 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
-		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
-		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
-		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
+		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
+		<script type="text/javascript" src="js/manage_tables.js"></script>
+		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
+		<script type="text/javascript" src="js/phpjsdate.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
@@ -72,7 +72,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6565b523f9"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=411ab31081" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=6e0cac2379"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

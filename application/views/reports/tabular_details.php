@@ -19,7 +19,7 @@
 	?>
 </div>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 	$(document).ready(function()
 	{
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>

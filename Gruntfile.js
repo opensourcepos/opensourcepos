@@ -141,7 +141,7 @@ module.exports = function(grunt) {
             },
             js: {
                 options: {
-                    scriptTemplate: '<script type="text/javascript" src="{{ path }}" language="javascript"></script>',
+                    scriptTemplate: '<script type="text/javascript" src="{{ path }}"></script>',
                     openTag: '<!-- start js template tags -->',
                     closeTag: '<!-- end js template tags -->',
                     absolutePath: true
@@ -151,7 +151,7 @@ module.exports = function(grunt) {
             },
             minjs: {
                 options: {
-                    scriptTemplate: '<script type="text/javascript" src="{{ path }}" language="javascript"></script>',
+                    scriptTemplate: '<script type="text/javascript" src="{{ path }}"></script>',
                     openTag: '<!-- start minjs template tags -->',
                     closeTag: '<!-- end minjs template tags -->',
                     absolutePath: true

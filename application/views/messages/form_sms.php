@@ -34,7 +34,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {
 	$('#send_sms_form').validate($.extend({
