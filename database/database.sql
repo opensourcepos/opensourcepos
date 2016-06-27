@@ -676,10 +676,11 @@ CREATE TABLE `ospos_sales_suspended_payments` (
 --
 
 CREATE TABLE `ospos_sessions` (
-  `id` varchar(40) NOT NULL DEFAULT '0',
-  `ip_address` varchar(45) NOT NULL DEFAULT '0',
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
   `data` blob NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL DEFAULT '0'
+  KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
