@@ -66,4 +66,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
  
 INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
  ('messages', 1);
+
+ALTER TABLE `ospos_sessions`
+   DROP PRIMARY KEY;
  
