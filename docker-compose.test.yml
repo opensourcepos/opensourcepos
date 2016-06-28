@@ -1,8 +1,4 @@
 version: '2'
-
-volumes:
-    ospos:
-        driver: local
   
 services:
     test: 
@@ -17,9 +13,6 @@ services:
             - mysql
         ports:
             - "80:80"
-        volumes:
-            - ospos:/var/www/html
-            - ospos:/app
         environment:
             - MYSQL_USERNAME=admin
             - MYSQL_PASSWORD=pointofsale

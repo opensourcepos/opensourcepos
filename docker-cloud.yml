@@ -22,4 +22,5 @@ mysql:
         - MYSQL_PASSWORD=pointofsale
     ports:
         - 3306:3306
-
+    volumes:
+        - /app/database/database.sql:/docker-entrypoint-initdb.d/database.sql

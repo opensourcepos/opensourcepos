@@ -1,6 +1,5 @@
 FROM php:5-apache
 MAINTAINER jekkos
-RUN sed -i -e 's/archive.ubuntu.com\|security.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     php5-gd \
     php5-apcu
