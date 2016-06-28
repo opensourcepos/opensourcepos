@@ -61,7 +61,7 @@ month of uptime on the platform. A full setup will only take about 2 minutes by 
 3. Login to docker cloud
 4. Associate your docker cloud account with your previously created digital ocean account under settings
 5. Create a new node on DigitalOcean through the `Infrastructure > Nodes` tab. Fill in a name (ospos) and choose a region near to you
-6. Click [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/) 
+6. Click [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/jekkos/opensourcepos) 
 7. Othewise create a new stack under `Applications > Stacks` and paste the [contents of docker-cloud.yml](https://github.com/jekkos/opensourcepos/blob/master/docker-cloud.yml) from the source repository in the text field and hit `Create and deploy` 
 8. Find your website url under `Infrastructure > Nodes > <yournode> > Endpoints > web`
 9. Login with default username/password admin/pointofsale
