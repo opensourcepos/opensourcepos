@@ -8,7 +8,6 @@
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
-		<link rel="stylesheet" href="bower_components/tablesorter/dist/css/theme.blue.min.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
 		<link rel="stylesheet" href="bower_components/jasny-bootstrap/dist/css/jasny-bootstrap.css" />
 		<link rel="stylesheet" href="bower_components/bootswatch-dist/css/bootstrap.css" />
@@ -35,8 +34,6 @@
 		<script src="bower_components/jquery-form/jquery.form.js"></script>
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
-		<script src="bower_components/swfobject-bower/swfobject/swfobject.js"></script>
-		<script src="bower_components/tablesorter/dist/js/jquery.tablesorter.combined.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
 		<script src="bower_components/bootstrap3-dialog/dist/js/bootstrap-dialog.min.js"></script>
 		<script src="bower_components/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
@@ -44,10 +41,15 @@
 		<script src="bower_components/smalot-bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
 		<script src="bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
 		<script src="bower_components/bootstrap-table/src/bootstrap-table.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/export/bootstrap-table-export.js"></script>
+		<script src="bower_components/bootstrap-table/dist/extensions/mobile/bootstrap-table-mobile.js"></script>
 		<script src="bower_components/moment/moment.js"></script>
 		<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-		<script src="bower_components/table-export/tableExport.js"></script>
-		<script src="bower_components/jquery.base64/index.js"></script>
+		<script src="bower_components/file-saver.js/FileSaver.js"></script>
+		<script src="bower_components/html2canvas/build/html2canvas.js"></script>
+		<script src="bower_components/jspdf/dist/jspdf.min.js"></script>
+		<script src="bower_components/jspdf-autotable/dist/jspdf.plugin.autotable.js"></script>
+		<script src="bower_components/tableExport.jquery.plugin/tableExport.min.js"></script>
 		<script src="bower_components/chartist/dist/chartist.min.js"></script>
 		<script src="bower_components/chartist-plugin-axistitle/dist/chartist-plugin-axistitle.min.js"></script>
 		<script src="bower_components/chartist-plugin-pointlabels/dist/chartist-plugin-pointlabels.min.js"></script>
@@ -55,12 +57,9 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/bootstrap-table-export.js"></script>
-		<script type="text/javascript" src="js/common.js"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
 		<script type="text/javascript" src="js/manage_tables.js"></script>
 		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
-		<script type="text/javascript" src="js/phpjsdate.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
@@ -73,27 +72,27 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=6e0cac2379"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=991a3d5557"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
 	<script type="text/javascript">
 		// live clock
-	
-		function clockTick() {  
+		var clockTick = function clockTick() {
 			setInterval('updateClock();', 1000);  
 		}
 
 		// start the clock immediatly
 		clockTick();
 
-		var now = new Date(<?php echo time() * 1000 ?>);
-
 		function updateClock() {
-			now.setTime(now.getTime() + 1000);
-			
-			document.getElementById('liveclock').innerHTML = phpjsDate("<?php echo $this->config->item('dateformat').' '.$this->config->item('timeformat') ?>", now);
+			document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>");
 		}
+
+		$.notifyDefaults({ placement: {
+			align: '<?php echo $this->config->item('config_notify_horizontal_position'); ?>',
+			from: '<?php echo $this->config->item('config_notify_vertical_position'); ?>'
+		}});
 	</script>
 
 	<style type="text/css">

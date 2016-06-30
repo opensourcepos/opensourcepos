@@ -60,7 +60,6 @@
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
 		<script type="text/javascript" src="js/manage_tables.js"></script>
 		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
-		<script type="text/javascript" src="js/phpjsdate.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
@@ -72,7 +71,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6565b523f9"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=6e0cac2379"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=991a3d5557"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -87,19 +86,14 @@
 		// start the clock immediatly
 		clockTick();
 
-		var now = new Date(<?php echo time() * 1000 ?>);
-
 		function updateClock() {
-			now.setTime(now.getTime() + 1000);
-			
-			document.getElementById('liveclock').innerHTML = phpjsDate("<?php echo $this->config->item('dateformat').' '.$this->config->item('timeformat') ?>", now);
+			document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>");
 		}
 
 		$.notifyDefaults({ placement: {
 			align: '<?php echo $this->config->item('config_notify_horizontal_position'); ?>',
 			from: '<?php echo $this->config->item('config_notify_vertical_position'); ?>'
 		}});
-
 	</script>
 
 	<style type="text/css">
