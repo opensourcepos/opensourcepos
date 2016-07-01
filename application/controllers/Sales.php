@@ -143,7 +143,7 @@ class Sales extends Secure_Controller
 			$mode = $this->input->post('mode');
 			$this->sale_lib->set_mode($mode);
 		} 
-		else if($this->Stock_location->is_allowed_location($stock_location, 'sales'))
+		elseif($this->Stock_location->is_allowed_location($stock_location, 'sales'))
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
@@ -269,11 +269,11 @@ class Sales extends Secure_Controller
 		{
 			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
 		}
-		else if($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+		elseif($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location);
 		}
-		else if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
+		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
 		{
 			$data['error'] = $this->lang->line('sales_unable_to_add_item');
 		}

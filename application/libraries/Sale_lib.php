@@ -370,7 +370,7 @@ class Sale_lib
 		{
 			return $this->CI->lang->line('sales_quantity_less_than_zero');
 		}
-		else if($item_quantity - $quantity_added < $item_info->reorder_level)
+		elseif($item_quantity - $quantity_added < $item_info->reorder_level)
 		{
 			return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
 		}
@@ -443,7 +443,7 @@ class Sale_lib
 		{
 			return $this->CI->Sale->exists($pieces[1]);
 		}
-		else if($this->CI->config->item('invoice_enable') == TRUE)
+		elseif($this->CI->config->item('invoice_enable') == TRUE)
 		{
 			$sale_info = $this->CI->Sale->get_sale_by_invoice_number($receipt_sale_id);
 			if($sale_info->num_rows() > 0)

@@ -178,23 +178,23 @@ class Barcode_lib
 		{
 			$result = $this->CI->lang->line('items_name') . " " . $item['name'];
 		}
-		else if($layout_type == 'category' && isset($item['category']))
+		elseif($layout_type == 'category' && isset($item['category']))
 		{
 			$result = $this->CI->lang->line('items_category') . " " . $item['category'];
 		}
-		else if($layout_type == 'cost_price' && isset($item['cost_price']))
+		elseif($layout_type == 'cost_price' && isset($item['cost_price']))
 		{
 			$result = $this->CI->lang->line('items_cost_price') . " " . to_currency($item['cost_price']);
 		}
-		else if($layout_type == 'unit_price' && isset($item['unit_price']))
+		elseif($layout_type == 'unit_price' && isset($item['unit_price']))
 		{
 			$result = $this->CI->lang->line('items_unit_price') . " " . to_currency($item['unit_price']);
 		}
-		else if($layout_type == 'company_name')
+		elseif($layout_type == 'company_name')
 		{
 			$result = $barcode_config['company'];
 		}
-		else if($layout_type == 'item_code')
+		elseif($layout_type == 'item_code')
 		{
 			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 		}

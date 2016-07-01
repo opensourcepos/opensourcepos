@@ -160,7 +160,7 @@ class Code39 extends BarcodeBase
 					$currentBarX += $narrowBar;
 				}
 				// Wide Bar
-				else if($bit == '1')
+				elseif($bit == '1')
 				{
 					imagefilledrectangle($this->img, $currentBarX, 0, ($currentBarX + $wideBar), ($this->y - 1), $color);
 					$currentBarX += $wideBar;

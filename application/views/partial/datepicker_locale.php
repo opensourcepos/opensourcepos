@@ -65,7 +65,7 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
     meridiem: ["am", "pm"],
     <?php
         }
-        else if( strpos($this->config->item('timeformat'), 'A') !== false )
+        elseif( strpos($this->config->item('timeformat'), 'A') !== false )
         {
     ?>
     meridiem: ["AM", "PM"],

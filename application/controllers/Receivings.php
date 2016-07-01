@@ -50,7 +50,7 @@ class Receivings extends Secure_Controller
 			$mode = $this->input->post('mode');
 			$this->receiving_lib->set_mode($mode);
 		}
-		else if($this->Stock_location->is_allowed_location($stock_source, 'receivings'))
+		elseif($this->Stock_location->is_allowed_location($stock_source, 'receivings'))
 		{
 			$this->receiving_lib->set_stock_source($stock_source);
 			$this->receiving_lib->set_stock_destination($stock_destination);
@@ -87,11 +87,11 @@ class Receivings extends Secure_Controller
 		{
 			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
 		}
-		else if($this->receiving_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+		elseif($this->receiving_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location);
 		}
-		else if(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location))
+		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location))
 		{
 			$data['error'] = $this->lang->line('receivings_unable_to_add_item');
 		}
