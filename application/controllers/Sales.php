@@ -752,7 +752,8 @@ class Sales extends Secure_Controller
 		
 		// go through all the payment type input from the form, make sure the form matches the name and iterator number
 		$payments = array();
-		for($i = 0; $i < $this->input->post('number_of_payments'); ++$i)
+		$number_of_payments = $this->input->post('number_of_payments');
+		for ($i = 0; $i < $number_of_payments; ++$i)
 		{
 			$payment_amount = $this->input->post('payment_amount_' . $i);
 			$payment_type = $this->input->post('payment_type_' . $i);

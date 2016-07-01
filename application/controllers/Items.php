@@ -367,7 +367,8 @@ class Items extends Secure_Controller
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
-			for($k = 0; $k < count($tax_percents); ++$k)
+			$count = count($tax_percents);
+			for ($k = 0; $k < $count; ++$k)
 			{
 				if(is_numeric($tax_percents[$k]))
 				{
@@ -520,8 +521,8 @@ class Items extends Secure_Controller
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
 			$tax_updated = FALSE;
-			
-			for($k = 0; $k < count($tax_percents); ++$k)
+			$count = count($tax_percents);
+			for ($k = 0; $k < $count; ++$k)
 			{		
 				if(!empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
 				{
@@ -658,7 +659,7 @@ class Items extends Secure_Controller
 
                         // array to store information if location got a quantity
                         $allowed_locations = $this->Stock_location->get_allowed_locations();
-                        for($col = 24; $col < $cols; $col = $col + 2)
+                        for ($col = 24; $col < $cols; $col = $col + 2)
                         {
                             $location_id = $data[$col];
                             if(array_key_exists($location_id, $allowed_locations))

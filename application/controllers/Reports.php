@@ -740,7 +740,7 @@ class Reports extends Secure_Controller
 		$data['specific_input_name'] = $this->lang->line('reports_discount');
 
 		$discounts = array();
-		for($i = 0; $i <= 100; $i += 10)
+		for ($i = 0; $i <= 100; $i += 10)
 		{
 			$discounts[$i] = $i . '%';
 		}
