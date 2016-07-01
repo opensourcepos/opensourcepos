@@ -19,7 +19,7 @@ class MY_Lang extends CI_Lang
                 
             foreach($loaded as $file)
             {
-                $this->load( str_replace( '_lang.php', '', $file ) );    
+                $this->load(strtr($file, '', '_lang.php'));    
             }
         }
     }
