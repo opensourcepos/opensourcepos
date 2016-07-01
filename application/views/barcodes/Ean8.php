@@ -173,7 +173,7 @@ class Ean8 extends BarcodeBase
 		foreach($weights as $num) {
 
 			$sum += $num * $ean{$i};
-			$i++;
+			++$i;
 		}
 
 		if( (($sum + $chk) % 10) == 0 )
@@ -260,7 +260,7 @@ class Ean8 extends BarcodeBase
 
 		$xpos += $pxPerBar;
 
-		for ($idx = 0; $idx < 4; $idx ++)
+		for ($idx = 0; $idx < 4; ++$idx)
 		{
 			$value = substr($this->data, $idx, 1);
 
@@ -317,7 +317,7 @@ class Ean8 extends BarcodeBase
 		$xpos += $pxPerBar;
 
 		// Draw right $this->data contents
-		for ($idx = 4; $idx < 8; $idx ++)
+		for ($idx = 4; $idx < 8; ++$idx)
 		{
 			$value = substr($this->data, $idx, 1);
 

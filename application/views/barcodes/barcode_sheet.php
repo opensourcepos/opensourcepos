@@ -21,7 +21,7 @@
 					echo '</tr><tr>';
 				}
 				echo '<td>' . $this->barcode_lib->display_barcode($item, $barcode_config) . '</td>';
-				$count++;
+				++$count;
 			}
 			?>
 		</tr>

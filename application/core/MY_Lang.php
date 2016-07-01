@@ -65,7 +65,7 @@ class MY_Lang extends CI_Lang
             			foreach ($args as $arg)
             			{
             				$line = preg_replace('/\%'.$i.'/', $arg, $line);
-            				$i++;
+            				++$i;
             			}
             		}
             	}

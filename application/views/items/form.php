@@ -253,7 +253,7 @@
 		</div>
 
 		<?php
-		for ($i = 1; $i <= 10; $i++)
+		for ($i = 1; $i <= 10; ++$i)
 		{
 		?>
 			<?php
@@ -294,7 +294,7 @@
 		var no_op = function(event, data, formatted){};
 		$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",delay:10,appendTo: '.modal-content'});
 
-		<?php for ($i = 1; $i <= 10; $i++)
+		<?php for ($i = 1; $i <= 10; ++$i)
 		{
 		?>
 			$("#custom"+<?php echo $i; ?>).autocomplete({

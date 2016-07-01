@@ -63,7 +63,7 @@
 				</div>
 			</div>
 		<?php 
-		$i++;
+			++$i;
 		}
 		echo form_hidden('number_of_payments', $i);			
 		?>

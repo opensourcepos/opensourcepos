@@ -143,7 +143,7 @@ class Ean13 extends BarcodeBase
 		// Weight for a digit in the checksum is 3, 1, 3.. starting from the last digit.
 		// loop backwards to make the loop length-agnostic. The same basic functionality
 		// will work for codes of different lengths.
-		for ($i = strlen($number) - 1; $i >= 0; $i--)
+		for ($i = strlen($number) - 1; $i >= 0; --$i)
 		{
 			$sum += (int)$number[$i] * ($weightflag?3:1);
 			$weightflag = !$weightflag;
@@ -261,7 +261,7 @@ class Ean13 extends BarcodeBase
 		// Draw left $this->data contents
 		$set_array = $this->_codingmapleft[$key];
 
-		for ($idx = 1; $idx < 7; $idx ++)
+		for ($idx = 1; $idx < 7; ++$idx)
 		{
 			$value = substr($this->data, $idx, 1);
 
@@ -318,7 +318,7 @@ class Ean13 extends BarcodeBase
 		$xpos += $pxPerBar;
 
 		// Draw right $this->data contents
-		for ($idx = 7; $idx < 13; $idx ++)
+		for ($idx = 7; $idx < 13; ++$idx)
 		{
 			$value = substr($this->data, $idx, 1);
 

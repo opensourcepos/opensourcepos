@@ -367,7 +367,7 @@ class Items extends Secure_Controller
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
-			for($k = 0; $k < count($tax_percents); $k++)
+			for($k = 0; $k < count($tax_percents); ++$k)
 			{
 				if(is_numeric($tax_percents[$k]))
 				{
@@ -521,7 +521,7 @@ class Items extends Secure_Controller
 			$tax_percents = $this->input->post('tax_percents');
 			$tax_updated = FALSE;
 			
-			for($k = 0; $k < count($tax_percents); $k++)
+			for($k = 0; $k < count($tax_percents); ++$k)
 			{		
 				if(!empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
 				{
@@ -713,7 +713,7 @@ class Items extends Secure_Controller
                         $failCodes[] = $i;
                     }
 
-					$i++;
+					++$i;
                 }
 
 				if(count($failCodes) > 0)

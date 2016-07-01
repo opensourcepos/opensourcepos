@@ -229,7 +229,7 @@ class Customers extends Persons
 						$failCodes[] = $i;
 					}
 					
-					$i++;
+					++$i;
 				}
 				
 				if(count($failCodes) > 0)

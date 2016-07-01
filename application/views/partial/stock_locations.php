@@ -5,7 +5,7 @@ foreach($stock_locations as $location=>$location_data)
 {
 	$location_id = $location_data['location_id'];
 	$location_name = $location_data['location_name'];
-	$i++;
+	++$i;
 ?>
 	<div class="form-group form-group-sm" style="<?php echo $location_data['deleted'] ? 'display:none;' : 'display:block;' ?>">
 		<?php echo form_label($this->lang->line('config_stock_location') . ' ' . $i, 'stock_location_' . $i, array('class'=>'required control-label col-xs-2')); ?>

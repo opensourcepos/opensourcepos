@@ -222,7 +222,7 @@ if (isset($success))
 						</tr>
 					<?php echo form_close(); ?>
 			<?php					
-					$tabindex++;					
+					++$tabindex;					
 				}
 			}
 			?>
