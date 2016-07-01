@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Addresse 1";
 $lang["common_address_2"] = "Addresse 2";
 $lang["common_city"] = "Ville";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Commentaires";
 $lang["common_common"] = "commun";
 $lang["common_confirm_search"] = "Vous avez sélectionné une ou plusieurs ligne(s). Elles ne seront plus selectionnées apres cette recherche. Voulez-vous lancer cette recherche?";

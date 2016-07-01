@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Stad";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Commentaar";
 $lang["common_common"] = "algemeen";
 $lang["common_confirm_search"] = "U hebt een of meerdere rijen geselecteerd, deze zullen niet langer geselecteerd zijn na de zoekopdracht. Bent u zeker dat u wil verdergaan?";

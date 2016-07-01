@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Cím 1";
 $lang["common_address_2"] = "Cím 2";
 $lang["common_city"] = "Város";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Megjegyzések";
 $lang["common_common"] = "közös";
 $lang["common_confirm_search"] = "Ön egy vagy több mezőt választott ki, a keresés után ezek már nem lesznek kiválasztva. Biztos, hogy elküldi ezt a keresést?";

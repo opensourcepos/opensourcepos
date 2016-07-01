@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_city"] = "อำเภอ";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "หมายเหตุ";
 $lang["common_common"] = "ธรรมดา";
 $lang["common_confirm_search"] = "คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?";

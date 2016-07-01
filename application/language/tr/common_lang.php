@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Adres 1";
 $lang["common_address_2"] = "Adres 2";
 $lang["common_city"] = "Şehir";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Yorumlar";
 $lang["common_common"] = "genel";
 $lang["common_confirm_search"] = "Birden fazla satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?";

@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Alamat 1";
 $lang["common_address_2"] = "Alamat 2";
 $lang["common_city"] = "Kota";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Catatan";
 $lang["common_common"] = "Biasa";
 $lang["common_confirm_search"] = "Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?";
