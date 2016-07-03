@@ -6,7 +6,6 @@ class Sale extends CI_Model
 		$this->db->select('customer_id, customer_name, customer_first_name AS first_name, customer_last_name AS last_name, customer_email AS email, customer_comments AS comments,
 						sale_payment_amount AS amount_tendered, (sale_payment_amount - total) AS change_due, total AS amount_due, payment_type,
 						sale_id, sale_date, sale_time, comment, invoice_number, employee_id');
-
 		$this->db->from('sales_items_temp');
 
 		$this->db->where('sale_id', $sale_id);
@@ -195,7 +194,7 @@ class Sale extends CI_Model
 
 			foreach($this->db->get()->result_array() as $result)
 			{
-				$suggestions[] = array('label' => $result[ 'first_name' ].' '.$result[ 'last_name' ]);
+				$suggestions[] = array('label' => $result['first_name'] . ' ' . $result['last_name']);
 			}
 		}
 		else
@@ -532,28 +531,29 @@ class Sale extends CI_Model
 		if($this->config->item('tax_included'))
 		{
 			$total    = '1';
-			$subtotal = '(1 - (SUM(1 - 100 / (100 + percent))))';
-			$tax      = '(SUM(1 - 100 / (100 + percent)))';
+			$subtotal = '(1 - (SUM(1 - 100 / (100 + sales_items_taxes.percent))))';
+			$tax      = '(SUM(1 - 100 / (100 + sales_items_taxes.percent)))';
 		}
 		else
 		{
-			$tax      = '(SUM(percent) / 100)';
-			$total    = '(1 + (SUM(percent / 100)))';
+			$tax      = '(SUM(sales_items_taxes.percent) / 100)';
+			$total    = '(1 + (SUM(sales_items_taxes.percent / 100)))';
 			$subtotal = '1';
 		}
+
+		$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
+		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
 		
 		$decimals = totals_decimals();
 
 		$this->db->query("CREATE TEMPORARY TABLE IF NOT EXISTS " . $this->db->dbprefix('sales_items_temp') . 
 			"(
 				SELECT
-					DATE(sale_time) AS sale_date,
-					sale_time,
-					sales_items.sale_id,
+					DATE(sales.sale_time) AS sale_date,
+					sales.sale_time,
+					sales.sale_id,
 					sales.comment,
-					payments.payment_type,
-					payments.sale_payment_amount,
-					sales_items.item_location,
+					sales.invoice_number,
 					sales.customer_id,
 					CONCAT(customer_p.first_name, ' ', customer_p.last_name) AS customer_name,
 					customer_p.first_name AS customer_first_name,
@@ -570,17 +570,19 @@ class Sale extends CI_Model
 					sales_items.quantity_purchased,
 					sales_items.item_cost_price,
 					sales_items.item_unit_price,
-					SUM(percent) AS item_tax_percent,
 					sales_items.discount_percent,
 					sales_items.line,
 					sales_items.serialnumber,
-					sales.invoice_number,
+					sales_items.item_location,
 					sales_items.description,
-					ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * sales_items.discount_percent / 100) * $total, $decimals) AS total,
-					ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * sales_items.discount_percent / 100) * $tax, $decimals) AS tax,
-					ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * sales_items.discount_percent / 100) * $subtotal, $decimals) AS subtotal,
-					ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * sales_items.discount_percent / 100) - (item_cost_price * quantity_purchased), $decimals) AS profit,
-					ROUND((item_cost_price * quantity_purchased), $decimals) AS cost
+					payments.payment_type,
+					payments.sale_payment_amount,
+					SUM(sales_items_taxes.percent) AS item_tax_percent,
+					ROUND($sale_total * $total, $decimals) AS total,
+					ROUND($sale_total * $tax, $decimals) AS tax,
+					ROUND($sale_total * $subtotal, $decimals) AS subtotal,
+					ROUND($sale_total - $sale_cost, $decimals) AS profit,
+					ROUND($sale_cost, $decimals) AS cost
 				FROM " . $this->db->dbprefix('sales_items') . " AS sales_items
 				INNER JOIN " . $this->db->dbprefix('sales') . " AS sales
 					ON sales_items.sale_id = sales.sale_id
@@ -617,7 +619,7 @@ class Sale extends CI_Model
 		$this->db->update('sales_items_temp', array('tax' => 0));
 
 		//Update null subtotals to be equal to the total as these don't have tax
-		$this->db->query('UPDATE '.$this->db->dbprefix('sales_items_temp'). ' SET total=subtotal WHERE total IS NULL');
+		$this->db->query('UPDATE ' . $this->db->dbprefix('sales_items_temp') . ' SET total = subtotal WHERE total IS NULL');
 	}
 }
 ?>

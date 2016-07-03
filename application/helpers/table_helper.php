@@ -77,7 +77,7 @@ function get_sale_data_row($sale, $controller)
 		array('title'=>$CI->lang->line('sales_show_receipt'))
 	);
 	$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
-		array('class'=>"modal-dlg print_hide", 'data-btn-delete' => $CI->lang->line('common_delete'), 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+		array('class'=>"modal-dlg print_hide", 'data-btn-submit' => $CI->lang->line('common_submit'), 'data-btn-delete' => $CI->lang->line('common_delete'), 'title' => $CI->lang->line($controller_name.'_update'))
 	);
 
 	return $row;
@@ -283,7 +283,7 @@ function get_item_data_row($item, $controller)
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_count'))
 		),
 		'stock' => anchor($controller_name."/count_details/$item->item_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-		array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_details_count'))
+		array('class' => 'modal-dlg', 'data-btn-close' => $CI->lang->line('common_close'), 'title' => $CI->lang->line($controller_name.'_details_count'))
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
