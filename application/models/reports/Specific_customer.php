@@ -16,9 +16,8 @@ class Specific_customer extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, CONCAT(first_name, " ", last_name) AS employee_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->join('people', 'sales_items_temp.employee_id = people.person_id');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND customer_id=" . $this->db->escape($inputs['customer_id']));
 
 		if ($inputs['sale_type'] == 'sales')
@@ -39,10 +38,9 @@ class Specific_customer extends Report
 		
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, serialnumber, sales_items_temp.description, quantity_purchased, subtotal, total, tax, cost, profit, discount_percent');
+			$this->db->select('name, category, serialnumber, description, quantity_purchased, subtotal, total, tax, cost, profit, discount_percent');
 			$this->db->from('sales_items_temp');
-			$this->db->join('items', 'sales_items_temp.item_id = items.item_id');
-			$this->db->where('sale_id = '.$value['sale_id']);
+			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
 

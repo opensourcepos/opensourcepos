@@ -14,10 +14,8 @@ class Summary_employees extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(first_name, " ", last_name) AS employee, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->select('employee_name AS employee, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->join('employees', 'employees.person_id = sales_items_temp.employee_id');
-		$this->db->join('people', 'employees.person_id = people.person_id');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')
@@ -30,7 +28,7 @@ class Summary_employees extends Report
         }
 
 		$this->db->group_by('employee_id');
-		$this->db->order_by('last_name');
+		$this->db->order_by('employee_name');
 
 		return $this->db->get()->result_array();		
 	}
@@ -39,8 +37,6 @@ class Summary_employees extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->join('employees', 'employees.person_id = sales_items_temp.employee_id');
-		$this->db->join('people', 'employees.person_id = people.person_id');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['sale_type'] == 'sales')

@@ -178,13 +178,16 @@ class Sales extends Secure_Controller
 
 	// Multiple Payments
 	public function add_payment()
-	{		
+	{
 		$data = array();
 		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|numeric');
 		
+		$payment_type = $this->input->post('payment_type');
+		$amount_tendered = $this->input->post('amount_tendered');
+
 		if($this->form_validation->run() == FALSE)
 		{
-			if($this->input->post('payment_type') == $this->lang->line('sales_gift_card'))
+			if($payment_type == $this->lang->line('sales_giftcard'))
 			{
 				$data['error'] = $this->lang->line('sales_must_enter_numeric_giftcard');
 			}
@@ -192,41 +195,35 @@ class Sales extends Secure_Controller
 			{
 				$data['error'] = $this->lang->line('sales_must_enter_numeric');
 			}
-				
- 			$this->_reload($data);
-
- 			return;
-		}
-		
-		$payment_type = $this->input->post('payment_type');
-		if($payment_type == $this->lang->line('sales_giftcard'))
-		{
-			$payments = $this->sale_lib->get_payments();
-			$payment_type = $this->input->post('payment_type') . ':' . $payment_amount = $this->input->post('amount_tendered');
-			$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-			$cur_giftcard_value = $this->Giftcard->get_giftcard_value($this->input->post('amount_tendered')) - $current_payments_with_giftcard;
-			
-			if($cur_giftcard_value <= 0)
-			{
-				$data['error'] = $this->lang->line('giftcards_remaining_balance', $this->input->post('amount_tendered'), to_currency( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered'))));
-				$this->_reload($data);
-
-				return;
-			}
-			$new_giftcard_value = $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) - $this->sale_lib->get_amount_due();
-			$new_giftcard_value = ($new_giftcard_value >= 0) ? $new_giftcard_value : 0;
-			$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-			$data['warning'] = $this->lang->line('giftcards_remaining_balance', $this->input->post('amount_tendered'), to_currency($new_giftcard_value, TRUE));
-			$payment_amount = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered') ) );
 		}
 		else
 		{
-			$payment_amount = $this->input->post('amount_tendered');
-		}
-		
-		if(!$this->sale_lib->add_payment($payment_type, $payment_amount))
-		{
-			$data['error'] = 'Unable to Add Payment! Please try again!';
+			if($payment_type == $this->lang->line('sales_giftcard'))
+			{
+				$payments = $this->sale_lib->get_payments();
+				$payment_type = $payment_type . ':' . $amount_tendered;
+				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
+				$cur_giftcard_value = $this->Giftcard->get_giftcard_value($amount_tendered) - $current_payments_with_giftcard;
+				
+				if($cur_giftcard_value <= 0)
+				{
+					$data['error'] = $this->lang->line('giftcards_remaining_balance', $amount_tendered, to_currency( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered'))));
+				}
+				else
+				{
+					$new_giftcard_value = $this->Giftcard->get_giftcard_value($amount_tendered) - $this->sale_lib->get_amount_due();
+					$new_giftcard_value = $new_giftcard_value >= 0 ? $new_giftcard_value : 0;
+					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
+					$data['warning'] = $this->lang->line('giftcards_remaining_balance', $amount_tendered, to_currency($new_giftcard_value, TRUE));
+					$amount_tendered = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value($amount_tendered) );
+					
+					$this->sale_lib->add_payment($payment_type, $amount_tendered);
+				}
+			}
+			else
+			{
+				$this->sale_lib->add_payment($payment_type, $amount_tendered);
+			}
 		}
 		
 		$this->_reload($data);
@@ -527,26 +524,13 @@ class Sales extends Secure_Controller
 	private function _payments_cover_total()
 	{
 		// Changed the conditional to account for floating point rounding
-		
-		// "sale" amount due needs to be <=0 to state it's fine
-		if(($this->sale_lib->get_mode() == 'sale') && $this->sale_lib->get_amount_due() > 1e-6)
-		{
-			return FALSE;
-		}
-
-		// "return" amount due needs to be >=0 to state it's fine		
-		if(($this->sale_lib->get_mode() == 'return') && $this->sale_lib->get_amount_due() < -(1e-6))
-		{
-			return FALSE;
-		}
-		
-		return TRUE;
+		return ($this->sale_lib->get_amount_due() <= 1e-6);
 	}
 
 	private function _load_customer_data($customer_id, &$data, $totals = FALSE)
 	{	
 		$customer_info = '';
-		
+
 		if($customer_id != -1)
 		{
 			$customer_info = $this->Customer->get_info($customer_id);
@@ -585,7 +569,7 @@ class Sales extends Secure_Controller
 				$data['customer_account_number']
 			));
 		}
-		
+
 		return $customer_info;
 	}
 
@@ -614,7 +598,7 @@ class Sales extends Secure_Controller
 		$employee_info = $this->Employee->get_info($this->Employee->get_logged_in_employee_info()->person_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data);
-		
+
 		$data['sale_id_num'] = $sale_id;
 		$data['sale_id'] = 'POS ' . $sale_id;
 		$data['comments'] = $sale_info['comment'];
@@ -698,8 +682,7 @@ class Sales extends Secure_Controller
 		$this->Sale->create_sales_items_temp_table();
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());	
-		$person_name = $sale_info['first_name'] . ' ' . $sale_info['last_name'];
-		$data['selected_customer_name'] = !empty($sale_info['customer_id']) ? $person_name : '';
+		$data['selected_customer_name'] = $sale_info['customer_name'];
 		$data['selected_customer_id'] = $sale_info['customer_id'];
 		$data['sale_info'] = $sale_info;
 

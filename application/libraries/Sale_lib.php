@@ -29,23 +29,6 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_cart');
 	}
 	
-	// Multiple Payments
-	public function get_payments()
-	{
-		if(!$this->CI->session->userdata('sales_payments'))
-		{
-			$this->set_payments(array());
-		}
-
-		return $this->CI->session->userdata('sales_payments');
-	}
-
-	// Multiple Payments
-	public function set_payments($payments_data)
-	{
-		$this->CI->session->set_userdata('sales_payments', $payments_data);
-	}
-	
 	public function get_comment() 
 	{
 		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
@@ -121,6 +104,24 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_email_receipt');
 	}
 
+	// Multiple Payments
+	public function get_payments()
+	{
+		if(!$this->CI->session->userdata('sales_payments'))
+		{
+			$this->set_payments(array());
+		}
+
+		return $this->CI->session->userdata('sales_payments');
+	}
+
+	// Multiple Payments
+	public function set_payments($payments_data)
+	{
+		$this->CI->session->set_userdata('sales_payments', $payments_data);
+	}
+
+	// Multiple Payments
 	public function add_payment($payment_id, $payment_amount)
 	{
 		$payments = $this->get_payments();
@@ -138,8 +139,6 @@ class Sale_lib
 		}
 
 		$this->set_payments($payments);
-		
-		return TRUE;
 	}
 
 	// Multiple Payments
@@ -151,6 +150,8 @@ class Sale_lib
 			$payments[$payment_id]['payment_type'] = $payment_id;
 			$payments[$payment_id]['payment_amount'] = $payment_amount;
 			$this->set_payments($payments);
+
+			return TRUE;
 		}
 
 		return FALSE;
@@ -525,7 +526,7 @@ class Sale_lib
 		}
 		foreach($this->CI->Sale_suspended->get_sale_payments($sale_id)->result() as $row)
 		{
-			$this->add_payment($row->payment_type,$row->payment_amount);
+			$this->add_payment($row->payment_type, $row->payment_amount);
 		}
 		$suspended_sale_info = $this->CI->Sale_suspended->get_info($sale_id)->row();
 		$this->set_customer($suspended_sale_info->person_id);
