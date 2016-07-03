@@ -1,64 +1,82 @@
-#receipt_wrapper 
-{
-	/*background-color:#FFFFFF;*/
-	font-size:75%;
-}
+@media print {
 
-#menubar,#footer
-{
-	display:none;
-}
+	.no-print, .no-print *
+	{
+		display: none !important;
+	}
 
-#content_area
-{
-	width:100%;
-}
+	#receipt_wrapper, #table
+	{
+		/*background-color:#FFFFFF;*/
+		font-size:75%;
+	}
 
-#content_area_wrapper
-{
-	border:0px;
-}
+	.topbar
+	{
+		display:none;
+	}
 
-#sale_return_policy
-{
-	width:100%;
-	text-align:center;
-}
+	#menubar, #footer
+	{
+		display:none;
+	}
 
-.short_name
-{
-	display:inline;
-}
+	#sale_return_policy
+	{
+		width:100%;
+		text-align:center;
+	}
 
-#receipt_items td
-{
-	white-space:nowrap;
-}
+	#receipt_items td
+	{
+		white-space:nowrap;
+	}
 
-/* Hide links in table for printing */
-table.innertable
-{
-	display: table;
-}
+	/* Hide links in table for printing */
+	table.innertable
+	{
+		display: table;
+	}
 
-table.innertable a 
-{
-	color: #000000;
-	text-decoration: none;	
-}
+	table.innertable a
+	{
+		color: #000000;
+		text-decoration: none;
+	}
 
-table.report a.expand 
-{
-	visibility: hidden;
-}
+	table.report a.expand
+	{
+		visibility: hidden;
+	}
 
-table.report a 
-{
-	color: #000000;
-	text-decoration: none;
-}
+	table.report a
+	{
+		color: #000000;
+		text-decoration: none;
+	}
 
-table.innertable thead 
-{
-	/*display:none;*/ 
+	table.innertable thead
+	{
+		/*display:none;*/
+	}
+
+	.print_show 
+	{
+		display:block !important; 
+	}
+
+	.print_hide
+	{
+		display:none !important;
+	}
+
+	.fixed-table-container
+	{
+		border: none;
+	}
+
+	.fixed-table-container thead th .sortable
+	{
+		padding-right: 10px;
+	}
 }

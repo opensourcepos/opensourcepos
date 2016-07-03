@@ -1,37 +1,34 @@
-<?php if ($print_after_sale)
-{
-?>
 <script type="text/javascript">
-$(window).load(function()
+function printdoc()
 {
 	// receipt layout sanity check
-	if ( $("#receipt_items, #items").length > 0) 
+	if ( $("#receipt_items, #items, #table_holder").length > 0) 
 	{
 		// install firefox addon in order to use this plugin
 		if (window.jsPrintSetup) 
 		{
 			// set top margins in millimeters
-			jsPrintSetup.setOption('marginTop', <?php echo $this->Appconfig->get('print_top_margin'); ?>);
-			jsPrintSetup.setOption('marginLeft', <?php echo $this->Appconfig->get('print_left_margin'); ?>);
-			jsPrintSetup.setOption('marginBottom', <?php echo $this->Appconfig->get('print_bottom_margin'); ?>);
-			jsPrintSetup.setOption('marginRight', <?php echo $this->Appconfig->get('print_right_margin'); ?>);
+			jsPrintSetup.setOption('marginTop', '<?php echo $this->Appconfig->get('print_top_margin'); ?>');
+			jsPrintSetup.setOption('marginLeft', '<?php echo $this->Appconfig->get('print_left_margin'); ?>');
+			jsPrintSetup.setOption('marginBottom', '<?php echo $this->Appconfig->get('print_bottom_margin'); ?>');
+			jsPrintSetup.setOption('marginRight', '<?php echo $this->Appconfig->get('print_right_margin'); ?>');
 
 			<?php if (!$this->Appconfig->get('print_header'))
 			{
 			?>
-			// set page header
-			jsPrintSetup.setOption('headerStrLeft', '');
-			jsPrintSetup.setOption('headerStrCenter', '');
-			jsPrintSetup.setOption('headerStrRight', '');
+				// set page header
+				jsPrintSetup.setOption('headerStrLeft', '');
+				jsPrintSetup.setOption('headerStrCenter', '');
+				jsPrintSetup.setOption('headerStrRight', '');
 			<?php 
 			}
 			if (!$this->Appconfig->get('print_footer'))
 			{
 			?>
-			// set empty page footer
-			jsPrintSetup.setOption('footerStrLeft', '');
-			jsPrintSetup.setOption('footerStrCenter', '');
-			jsPrintSetup.setOption('footerStrRight', '');
+				// set empty page footer
+				jsPrintSetup.setOption('footerStrLeft', '');
+				jsPrintSetup.setOption('footerStrCenter', '');
+				jsPrintSetup.setOption('footerStrRight', '');
 			<?php 
 			} 
 			?>
@@ -50,8 +47,8 @@ $(window).load(function()
 					<?php if (!$this->Appconfig->get('print_silently')) 
 					{
 					?>
-					// Suppress print dialog (for this context only)
-					jsPrintSetup.setOption('printSilent', 1);
+						// Suppress print dialog (for this context only)
+						jsPrintSetup.setOption('printSilent', 1);
 					<?php 
 					}
 					?>
@@ -61,15 +58,24 @@ $(window).load(function()
 					jsPrintSetup.print();
 				}
 			}
-		
 		}
 		else
 		{
 			window.print();
 		}
 	}
-});
-</script>
+}
+
+<?php 
+if($print_after_sale)
+{
+?>
+	$(window).load(function() 
+	{
+	   // executes when complete page is fully loaded, including all frames, objects and images
+	   printdoc();
+	}); 
 <?php
 }
 ?>
+</script>

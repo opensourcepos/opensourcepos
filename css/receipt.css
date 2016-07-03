@@ -43,18 +43,13 @@
 #receipt_items td
 {
 	position:relative;
-	padding:3px;
-	margin-bottom:5px;	
+	padding:3px; margin-bottom:5px;
 	
 }
 
-#receipt_items tr {
-	margin-bottom:5px;	
-}
-
-.short_name
+#receipt_items tr
 {
-	display:none;
+	margin-bottom:5px;	
 }
 
 #sale_return_policy
@@ -64,7 +59,7 @@
 	text-align:center;
 }
 
-#barcode
+#receipt_wrapper #barcode
 {
 	margin-top:10px;
 	text-align:center;
@@ -78,5 +73,4 @@
 .discount
 {
 	font-weight: bold;
-}
 }

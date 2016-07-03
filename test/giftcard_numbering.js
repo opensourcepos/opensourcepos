@@ -1,40 +1,22 @@
 var assert = require("assert"); // node.js core module
+var ospos = require("./ospos");
 
 describe("giftcard numbering test", function () {
-
-    var server = "http://localhost/pos";
-
-    var url = function url(suffix) {
-        return server + suffix + "?XDEBUG_SESSION_START=ECLIPSE_DBGP&KEY=14241668456852'";
-    };
+    this.timeout(25000);
 
     it("should be able to login",  function (done) {
-        return this.browser.get(url("/index.php"))
-            .elementByName('username').type("admin").getValue()
-            .then(function(value) {
-                assert.equal(value, "admin");
-            })
-            .elementByName('password').type("pointofsale").getValue()
-            .then(function(value) {
-                assert.ok(value, "pointofsale");
-            })
-            .elementByName('loginButton').click()
-            .elementById('home_module_list').then(function(value) {
-                assert.ok(value, "Login failed!!")
-            })
-            .then(done, done);
-
+        return ospos.login(this.browser, done);
     });
 
-    it.skip("issue #65: giftcard numbering should add properly", function() {
-        return this.browser.get(url("/index.php/giftcards")).waitForElementByCss(".big_button").click()
-            .waitForElementByName("value", 4000).type("100").elementById('giftcard_number').clear().type("10")
-            .elementById("submit").click().waitForElementByXPath("//table/tbody/tr[td/text()='10']/td[4]", 2000).text().then(function (value) {
+    it.skip("issue #65: giftcard numbering should add properly", function(done) {
+        return this.browser.get(ospos.url("/index.php/giftcards")).elementByCssSelector(".modal-dlg").click()
+            .elementByName("value", 10000).type("100").elementById('giftcard_number').clear().type("10")
+            .elementById("submit").click().elementByXPath("//table/tbody/tr[td/text()='10']", 2000).text().then(function (value) {
                 assert.ok(value, "giftcard failed to be added properly!");
-            }).elementByCss(".big_button").click().waitForElementByName("value", 4000).type("100").elementById("submit").click()
-            .waitForElementByXPath("//table/tbody/tr[td/text()='11']/td[4]").text().then(function (value) {
+            }).elementByCssSelector(".modal-dlg").click().elementByName("value", 4000).type("100").elementById("submit").click()
+            .elementByXPath("//table/tbody/tr[td/text()='11']").text().then(function (value) {
                 assert.equal(value, "11", "giftcard number not incrementing properly!!");
-            });
+            }).then(done, done);
     });
 
 });

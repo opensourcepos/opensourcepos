@@ -6,17 +6,17 @@
 
 * { margin: 0; padding: 0; }
 /*body { font: 14px/1.4 Georgia, serif; }*/
-#page-wrap { width: 800px; margin: 0 auto; }
+#page-wrap { width: 100%; margin: 0 auto; max-width: 800px; }
 
-#page-wrap textarea { border: 0; font: 14px Georgia, Sans-Serif; overflow: hidden; resize: none; }
+#page-wrap textarea { border: 0; font-size: 14px; overflow: hidden; resize: none; }
 #page-wrap table { border-collapse: collapse; }
 #page-wrap table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
 #page-wrap table td { padding: 5px; }
 
-#header { height: 30px; width: 100%; margin: 20px 0; background: #222; text-align: center; color: white; font: bold 26px Helvetica, Sans-Serif; letter-spacing: 4px; padding: 8px 0px; }
+#header { margin: 20px 0; background: #222; text-align: center; color: white; font-size: 2.0em; font-weight: bold; letter-spacing: 4px; padding: 10px 0; }
 
 /* first row */
-#logo { text-align: right; margin-top: 15px; float: left; position: relative; border: 1px solid #fff; max-width: 150px; max-height: 150px; overflow: hidden; }
+#logo { text-align: right; margin-top: 15px; float: left; position: relative; border: 1px solid #fff; max-height: 150px; overflow: hidden; }
 #logo img { max-height: 150px; max-width: 150px; }
 /*#logo:hover, #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }*/
 #logoctr { display: none; }
@@ -30,7 +30,7 @@
 #customer-title textarea { width: 150px; }
 
 /* second row */
-#block2 { overflow: hidden; }
+#block2 { overflow: hidden; width: 100%; }
 #company-title { float: left; }
 #meta { margin-top: 1px; width: 300px; float: right; }
 #meta td { text-align: right;  }
@@ -39,7 +39,7 @@
 
 #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
 #items th { background: #eee; text-align: center; }
-#items textarea { width: 80px; height: 40px; }
+#items textarea { width: 80px; height: 20px; }
 #items tr.item-row td { border: 0; vertical-align: top; }
 #items td.description { width: 300px; }
 #items td.item-name { width: 175px; }
@@ -53,7 +53,7 @@
 #items td.blank-bottom { border: 1px; }
 
 #terms { text-align: center; margin: 20px 0 0 0; }
-#terms h5 { text-transform: uppercase; font: 13px Helvetica, Sans-Serif; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
+#terms h5 { text-transform: uppercase; font-size: 13px; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
 #terms textarea { width: 100%; text-align: center;}
 
 .delete-wpr { position: relative; }

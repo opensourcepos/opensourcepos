@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 use emberlabs\Barcode\BarcodeBase;
 require APPPATH.'/views/barcodes/BarcodeBase.php';
@@ -9,10 +9,10 @@ require APPPATH.'/views/barcodes/Ean8.php';
 
 class Barcode_lib
 {
-	private $CI = null;
+	private $CI;
 	private $supported_barcodes = array('Code39' => 'Code 39', 'Code128' => 'Code 128', 'Ean8' => 'EAN 8', 'Ean13' => 'EAN 13');
 	
-	function __construct()
+	public function __construct()
 	{
 		$this->CI =& get_instance();
 	}
@@ -38,11 +38,35 @@ class Barcode_lib
 		$data['barcode_num_in_row'] = $this->CI->Appconfig->get('barcode_num_in_row');
 		$data['barcode_page_width'] = $this->CI->Appconfig->get('barcode_page_width');	  
 		$data['barcode_page_cellspacing'] = $this->CI->Appconfig->get('barcode_page_cellspacing');
+		$data['barcode_generate_if_empty'] = $this->CI->Appconfig->get('barcode_generate_if_empty');
 		
 		return $data;
 	}
-	
-	private function get_barcode_instance($barcode_type='Code128')
+
+	public function validate_barcode($barcode)
+	{
+		$barcode_type = $this->CI->Appconfig->get('barcode_type');
+		$barcode_instance = $this->get_barcode_instance($barcode_type);
+		return $barcode_instance->validate($barcode);
+	}
+
+	public static function barcode_instance($item, $barcode_config)
+	{
+		$barcode_instance = Barcode_lib::get_barcode_instance($barcode_config['barcode_type']);
+		$is_valid = empty($item['item_number']) && $barcode_config['barcode_generate_if_empty'] || $barcode_instance->validate($item['item_number']);
+
+		// if barcode validation does not succeed,
+		if (!$is_valid)
+		{
+			$barcode_instance = Barcode_lib::get_barcode_instance();
+		}
+		$seed = Barcode_lib::barcode_seed($item, $barcode_instance, $barcode_config);
+		$barcode_instance->setData($seed);
+
+		return $barcode_instance;
+	}
+
+	private static function get_barcode_instance($barcode_type='Code128')
 	{
 		switch($barcode_type)
 		{
@@ -64,21 +88,41 @@ class Barcode_lib
 				break;
 		}
 	}
-	
+
+	private static function barcode_seed($item, $barcode_instance, $barcode_config)
+	{
+		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']) ? $item['item_number'] : $item['item_id'];
+
+		if( $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))
+		{
+			$seed = $item['item_number'];
+		}
+		else
+		{
+			if ($barcode_config['barcode_generate_if_empty'])
+			{
+				// generate barcode with the correct instance
+				$seed = $barcode_instance->generate($seed);
+			}
+			else
+			{
+				$seed = $item['item_id'];
+			}
+		}
+		return $seed;
+	}
+
 	private function generate_barcode($item, $barcode_config)
 	{
 		try
 		{
-			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
+			$barcode_instance = Barcode_lib::barcode_instance($item, $barcode_config);
+			$barcode_instance->setQuality($barcode_config['barcode_quality']);
+			$barcode_instance->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
 
-			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
-			$barcode->setData($barcode_content);
-			$barcode->setQuality($barcode_config['barcode_quality']);
-			$barcode->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
-
-			$barcode->draw();
+			$barcode_instance->draw();
 			
-			return $barcode->base64();
+			return $barcode_instance->base64();
 		} 
 		catch(Exception $e)
 		{
@@ -113,32 +157,7 @@ class Barcode_lib
 		}
 	}
 	
-	public function get_barcode($item, $barcode_config)
-	{
-		try
-		{
-			$barcode = $this->get_barcode_instance($barcode_config['barcode_type']);
-			
-			$barcode_content = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
-			$barcode->setData($barcode_content);
-			
-			$code = $barcode->getData();
-			
-			// in case no new code is generated like in Code39 and Code128 return an empty string because we don't want to override it with a pure item_id
-			if( $code == $item['item_id'] )
-			{
-				$code = null;
-			}
-			
-			return $code;
-		} 
-		catch(Exception $e)
-		{
-			echo 'Caught exception: ', $e->getMessage(), "\n";		
-		}
-	}
-
-	public function create_display_barcode($item, $barcode_config)
+	public function display_barcode($item, $barcode_config)
 	{
 		$display_table = "<table>";
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</td></tr>";
@@ -159,28 +178,28 @@ class Barcode_lib
 		{
 			$result = $this->CI->lang->line('items_name') . " " . $item['name'];
 		}
-		else if($layout_type == 'category' && isset($item['category']))
+		elseif($layout_type == 'category' && isset($item['category']))
 		{
 			$result = $this->CI->lang->line('items_category') . " " . $item['category'];
 		}
-		else if($layout_type == 'cost_price' && isset($item['cost_price']))
+		elseif($layout_type == 'cost_price' && isset($item['cost_price']))
 		{
 			$result = $this->CI->lang->line('items_cost_price') . " " . to_currency($item['cost_price']);
 		}
-		else if($layout_type == 'unit_price' && isset($item['unit_price']))
+		elseif($layout_type == 'unit_price' && isset($item['unit_price']))
 		{
 			$result = $this->CI->lang->line('items_unit_price') . " " . to_currency($item['unit_price']);
 		}
-		else if($layout_type == 'company_name')
+		elseif($layout_type == 'company_name')
 		{
 			$result = $barcode_config['company'];
 		}
-		else if($layout_type == 'item_code')
+		elseif($layout_type == 'item_code')
 		{
 			$result = $barcode_config['barcode_content'] !== "id" && isset($item['item_number']) ? $item['item_number'] : $item['item_id'];
 		}
 
-		return $result;
+		return character_limiter($result, 40);
 	}
 	
 	public function listfonts($folder) 
@@ -200,7 +219,7 @@ class Barcode_lib
 
 		closedir($handle);
 
-		array_unshift($array, 'No Label');
+		array_unshift($array, $this->CI->lang->line('config_none'));
 
 		return $array;
 	}
@@ -210,4 +229,5 @@ class Barcode_lib
 		return substr($font_file_name, 0, -4);
 	}
 }
+
 ?>

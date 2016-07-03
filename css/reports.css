@@ -1,18 +1,11 @@
-#report_list li ul li
-{
-	margin-left: 35px;
-}
-#report_date_range_simple, #report_date_range_complex 
-{
-	margin-bottom: 10px;
-}
 .report 
 {
 	font-size: .85em;
 }
+
 #report_summary
 {
-	margin: 0 auto;
+	margin: 2em 0 auto;
 	text-align: center;
 }
 
@@ -20,7 +13,49 @@
 {
 }
 
-#chart_wrapper
+#chart_report_summary
 {
 	text-align: center;
+	margin-top: -100px;
+}
+
+#chart_report_summary .summary_row
+{
+}
+
+.ct-chart
+{
+}
+
+/* style chart X axis labels to be rotated of 60 degrees */
+.ct-label.ct-horizontal
+{
+	-webkit-transform: rotate(-60deg);
+	-moz-transform: rotate(-60deg);
+	-ms-transform: rotate(-60deg);
+	-o-transform: rotate(-60deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
+
+/* set all labels to be black with font size 1.2rem */
+.ct-label
+{
+	fill: rgba(0,0,0,1);
+	color: rgba(0,0,0,1);
+	font-size: 1.2rem;
+}
+
+.ct-tooltip-point
+{
+	fill-opacity: 1!important;
+	stroke-width: 0px;
+	stroke: red;
+	transition: all 0.2s linear;
+}
+
+.ct-tooltip-point:hover
+{
+	r: 7;
+	stroke-opacity: 0.2;
+	stroke-width: 20px;
 }

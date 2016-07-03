@@ -1,18 +1,41 @@
-<?php 
+<?php
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author CodeIgniter community
+ * @author Mutasim Ridlo, S.Kom
+ * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @license http://opensource.org/licenses/MIT MIT License
+ * @link http://codeigniter.com
+ */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang["alpha_dash"] = "The %s field may only contain alpha-numeric characters, underscores, and dashes.";
-$lang["alpha_numeric"] = "The %s field may only contain alpha-numeric characters.";
-$lang["exact_length"] = "The %s field must be exactly %s characters in length.";
-$lang["greater_than"] = "The %s field must contain a number greater than %s.";
-$lang["is_natural"] = "The %s field must contain only positive numbers.";
-$lang["is_natural_no_zero"] = "The %s field must contain a number greater than zero.";
-$lang["is_numeric"] = "The %s field must contain only numeric characters.";
-$lang["is_unique"] = "The %s field must contain a unique value.";
-$lang["less_than"] = "The %s field must contain a number less than %s.";
-$lang["max_length"] = "The %s field can not exceed %s characters in length.";
-$lang["min_length"] = "The %s field must be at least %s characters in length.";
-$lang["regex_match"] = "The %s field is not in the correct format.";
-$lang["valid_email"] = "The %s field must contain a valid email address.";
-$lang["valid_emails"] = "The %s field must contain all valid email addresses.";
-$lang["valid_ip"] = "The %s field must contain a valid IP.";
-$lang["valid_url"] = "The %s field must contain a valid URL.";
+$lang['form_validation_required'] = 'Bidang {field} dibutuhkan.';
+$lang['form_validation_isset'] = 'Bidang {field} harus memiliki nilai.';
+$lang['form_validation_valid_email'] = 'Bidang {field} harus berisi alamat email yang sah.';
+$lang['form_validation_valid_emails'] = 'Bidang {field} harus berisi semua alamat email yang sah.';
+$lang['form_validation_valid_url'] = 'Bidang {field} harus berisi URL yang sah.';
+$lang['form_validation_valid_ip'] = 'Bidang {field} harus berisi IP yang sah.';
+$lang['form_validation_min_length'] = 'Bidang {field} harus setidaknya {param} panjang karakter.';
+$lang['form_validation_max_length'] = 'Bidang {field} tidak dapat melebihi {param} panjang karakter.';
+$lang['form_validation_exact_length'] = 'Bidang {field} harus tepat {param} panjang karakter.';
+$lang['form_validation_alpha'] = 'Bidang {field} hanya dapat berisi karakter abjad.';
+$lang['form_validation_alpha_numeric'] = 'Bidang {field} hanya dapat berisi karakter alpha-numerik.';
+$lang['form_validation_alpha_numeric_spaces'] = 'Bidang {field} hanya dapat berisi karakter alpha-numerik dan spasi.';
+$lang['form_validation_alpha_dash'] = 'Bidang {field} hanya dapat berisi karakter alpha-numeric, garis bawah, dan tanda hubung.';
+$lang['form_validation_numeric'] = 'Bidang {field} harus hanya berisi angka.';
+$lang['form_validation_is_numeric'] = 'Bidang {field} harus berisi karakter numerik.';
+$lang['form_validation_integer'] = 'Bidang {field} harus berisi integer.';
+$lang['form_validation_regex_match'] = 'Bidang {field} tidak dalam format yang benar.';
+$lang['form_validation_matches'] = 'Bidang {field} tidak cocok dengan bidang {param}.';
+$lang['form_validation_differs'] = 'Bidang {field} harus berbeda dari bidang {param}.';
+$lang['form_validation_is_unique'] = 'Bidang {field} harus berisi nilai unik.';
+$lang['form_validation_is_natural'] = 'Bidang {field} harus hanya mengandung angka.';
+$lang['form_validation_is_natural_no_zero'] = 'Bidang {field} harus hanya berisi angka dan harus lebih besar dari nol.';
+$lang['form_validation_decimal'] = 'Bidang {field} harus berisi angka desimal.';
+$lang['form_validation_less_than'] = 'Bidang {field} harus berisi angka kurang dari {param}.';
+$lang['form_validation_less_than_equal_to'] = 'Bidang {field} harus berisi angka kurang dari atau sama dengan {param}.';
+$lang['form_validation_greater_than'] = 'Bidang {field} harus berisi angka lebih besar dari {param}.';
+$lang['form_validation_greater_than_equal_to'] = 'Bidang {field} harus berisi angka yang lebih besar dari atau sama dengan {param}.';
+$lang['form_validation_error_message_not_set'] = 'Tidak dapat mengakses pesan kesalahan sesuai dengan nama bidang Anda {field}.';
+$lang['form_validation_in_list'] = 'Bidang {field} harus menjadi salah satu dari: {param}.';

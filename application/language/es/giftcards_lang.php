@@ -4,7 +4,6 @@ $lang["giftcards_add_minus"] = "Inventario a agregar/substraer";
 $lang["giftcards_allow_alt_description"] = "Permitir Descripción Alternativa";
 $lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_remaining_balance"] = "El valor excedente de la tarjeta de regalo %1 es de %2!";
-$lang["giftcards_basic_information"] = "Información de Tarjeta de Regalo";
 $lang["giftcards_bulk_edit"] = "Edición Múltiple";
 $lang["giftcards_cannot_be_deleted"] = "No se puede borrar las tarjetas seleccionadas. Una o más tiene ventas.";
 $lang["giftcards_cannot_find_giftcard"] = "No puedo encontrar información acerca de la tarjeta de regalo";

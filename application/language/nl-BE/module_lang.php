@@ -21,3 +21,5 @@ $lang["module_sales"] = "Kassa";
 $lang["module_sales_desc"] = "Verwerk aankopen en retours";
 $lang["module_suppliers"] = "Leveranciers";
 $lang["module_suppliers_desc"] = "Zoek, bewerk, verwijder en voeg leveranciers toe";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";

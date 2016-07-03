@@ -1,49 +1,48 @@
 <?php $this->load->view("partial/header"); ?>
-<div id="page_title" style="margin-bottom:8px;"><?php echo $this->lang->line('reports_report_input'); ?></div>
+
+<div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?></div>
+
 <?php
 if(isset($error))
 {
-	echo "<div class='error_message'>".$error."</div>";
+	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 ?>
-	<div>
-		Export to Excel: <input type="radio" name="export_excel" id="export_excel_yes" value='1' /> Yes
-		<input type="radio" name="export_excel" id="export_excel_no" value='0' checked='checked' /> No
-	</div>
-	
-	<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required')); ?>
-	<div id='report_stock_location'>
-		<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id"'); ?>
+
+<?php echo form_open('#', array('id'=>'item_form', 'enctype'=>'multipart/form-data', 'class'=>'form-horizontal')); ?>
+
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('reports_stock_location'), 'reports_stock_location_label', array('class'=>'required control-label col-xs-2')); ?>
+		<div id='report_stock_location' class="col-xs-3">
+			<?php echo form_dropdown('stock_location',$stock_locations,'all','id="location_id" class="form-control"'); ?>
+		</div>
 	</div>
 
-	<?php echo form_label($this->lang->line('reports_item_count'), 'reports_item_count_label', array('class'=>'required')); ?>
-	<div id='report_item_count'>
-		<?php echo form_dropdown('item_count',$item_count,'all','id="item_count"'); ?>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('reports_item_count'), 'reports_item_count_label', array('class'=>'required control-label col-xs-2')); ?>
+		<div id='report_item_count' class="col-xs-3">
+			<?php echo form_dropdown('item_count',$item_count,'all','id="item_count" class="form-control"'); ?>
+		</div>
 	</div>
 
-<?php
-echo form_button(array(
-	'name'=>'generate_report',
-	'id'=>'generate_report',
-	'content'=>$this->lang->line('common_submit'),
-	'class'=>'submit_button')
-);
-?>
+	<?php
+	echo form_button(array(
+		'name'=>'generate_report',
+		'id'=>'generate_report',
+		'content'=>$this->lang->line('common_submit'),
+		'class'=>'btn btn-primary btn-sm')
+	);
+	?>
+<?php echo form_close(); ?>
 
 <?php $this->load->view("partial/footer"); ?>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {
 	$("#generate_report").click(function()
 	{
-		var export_excel = 0;
-		if ($("#export_excel_yes").attr('checked'))
-		{
-			export_excel = 1;
-		}
-		
-		window.location = window.location+'/' + export_excel + '/' + $("#location_id").val() + '/' + $("#item_count").val();
-	});	
+		window.location = [window.location, $("#location_id").val(), $("#item_count").val()].join("/");
+	});
 });
 </script>

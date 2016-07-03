@@ -1,19 +1,29 @@
 <?php
-$lang['imglib_source_image_required'] = 'U moet een bron bestand opgeven in uw instellingen.';
-$lang['imglib_gd_required'] = 'De GD image library is benodigd voor deze functie.';
-$lang['imglib_gd_required_for_props'] = 'Uw server moet de GD library ondersteunen om de eigenschappen van de afbeelding te kunnen bepalen.';
-$lang['imglib_unsupported_imagecreate'] = 'Uw server ondersteunt de benodigde GD functie voor dit type afbeelding niet.';
-$lang['imglib_gif_not_supported'] = 'GIF afbeeldingen worden vaak niet ondersteund door licentie beperkingen.  U zou JPG of PNG afbeeldingen kunnen proberen.';
-$lang['imglib_jpg_not_supported'] = 'JPG afbeeldingen worden niet ondersteund.';
-$lang['imglib_png_not_supported'] = 'PNG afbeeldingen worden niet ondersteund.';
-$lang['imglib_jpg_or_png_required'] = 'Het veranderen van de grootte van afbeeldingen werkt alleen voor JPEG of PNG afbeeldingen.';
-$lang['imglib_copy_error'] = 'Er is een fout opgetreden bij het vervangen van de afbeelding.  Zorg ervoor dat het pad schrijfbaar is.';
-$lang['imglib_rotate_unsupported'] = 'Afbeeldingen roteren met behulp van PHP wordt niet ondersteund op uw server.';
-$lang['imglib_libpath_invalid'] = 'Het pad dat u heeft opgegeven van de image library is niet correct.  Verander dit in uw instellingen van de afbeelding.';
-$lang['imglib_image_process_failed'] = 'Afbeeldingsverwerking mislukt.  Gaat na of het pad naar uw image libray correct is ingesteld en of uw server het gekozen protocol ondersteunt.';
-$lang['imglib_rotation_angle_required'] = 'Een draaihoek moet worden opgegeven om een afbeelding te kunnen roteren.';
-$lang['imglib_writing_failed_gif'] = 'GIF afbeelding ';
-$lang['imglib_invalid_path'] = 'Het opgegeven pad van het afbeelding is niet correct.';
-$lang['imglib_copy_failed'] = 'De afbeeldings kopi';
-$lang['imglib_missing_font'] = 'Kon geen lettertype vinden om te gebruiken.';
-$lang['imglib_save_failed'] = 'Kon e afbeelding niet opslaan. Zorg ervoor dat het pad en de afbeelding (over)schrijfbaar zijn.';
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author	CodeIgniter community
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Pieter Krul
+ * @license	http://opensource.org/licenses/MIT	MIT License
+ * @link	http://codeigniter.com
+ */
+defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
+
+$lang['imglib_source_image_required']		= 'U dient een afbeeldingsbron bij de voorkeuren op te geven.';
+$lang['imglib_gd_required']			= 'De GD image library is vereist voor deze optie.';
+$lang['imglib_gd_required_for_props']		= 'De server dient de GD image library te ondersteunen om afbeeldingseigenschappen weer te kunnen geven.';
+$lang['imglib_unsupported_imagecreate']		= 'De benodigde GD functie die nodig is om dit type afbeeldingen te vewerken wordt niet door de server ondersteund.';
+$lang['imglib_gif_not_supported']		= 'GIF-afbeeldingen worden veelal niet ondersteund vanwege licensierestricties. U zou JPG- of PNG-afbeeldingen kunnen gebruiken.';
+$lang['imglib_jpg_not_supported']		= 'JPG-afbeeldingen worden niet ondersteund.';
+$lang['imglib_png_not_supported']		= 'PNG-afbeeldingen worden niet ondersteund.';
+$lang['imglib_jpg_or_png_required']		= 'Het in de voorkeuren opgegeven protocol voor het schalen van afbeeldingen is alleen geschikt voor JPEG en PNG-afbeeldingen.';
+$lang['imglib_copy_error']			= 'Er is een fout opgetreden tijdens het vervangen van het bestand. Controleer de bestandsrechten voor de directory.';
+$lang['imglib_rotate_unsupported']		= 'Het roteren van afbeeldingen wordt blijkbaar niet door de server ondersteund.';
+$lang['imglib_libpath_invalid']			= 'Het pad naar de image library is niet correct. Stel het juiste pad in bij de afbeeldingsvoorkeuren.';
+$lang['imglib_image_process_failed']		= 'Het verwerken van de afbeelding is mislukt. Controleer of de server het gekozen protocol ondersteunt, en of het pad naar de image library klopt.';
+$lang['imglib_rotation_angle_required']		= 'Om te afbeelding te kunnen roteren, dient een rotatiehoek opgegeven te worden.';
+$lang['imglib_invalid_path']			= 'Het pad naar de afbeelding klopt niet.';
+$lang['imglib_copy_failed']			= 'De kopieerroutine werkte niet.';
+$lang['imglib_missing_font']			= 'Het systeem kon geen bruikbaar lettertype vinden.';
+$lang['imglib_save_failed']			= 'Het opslaan van de afbeelding is mislukt. Controleer of er voldoende rechten zijn om te kunnen schrijven naar de bestandsdirectories';

@@ -3,7 +3,7 @@
 class MY_Lang extends CI_Lang
 {
 
-	function MY_Lang()
+	function __construct()
 	{
 		parent::__construct();
 	}
@@ -19,7 +19,7 @@ class MY_Lang extends CI_Lang
                 
             foreach($loaded as $file)
             {
-                $this->load( str_replace( '_lang.php', '', $file ) );    
+                $this->load(strtr($file, '', '_lang.php'));    
             }
         }
     }
@@ -32,7 +32,7 @@ class MY_Lang extends CI_Lang
      * @access public
      * @return mixed false if not found or the language string
      */
-	function line($line = '')
+	function line($line = '', $log_errors = true)
     {
         //get the arguments passed to the function
         $args = func_get_args();
@@ -65,7 +65,7 @@ class MY_Lang extends CI_Lang
             			foreach ($args as $arg)
             			{
             				$line = preg_replace('/\%'.$i.'/', $arg, $line);
-            				$i++;
+            				++$i;
             			}
             		}
             	}

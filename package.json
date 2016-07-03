@@ -1,6 +1,6 @@
 {
   "name": "opensourcepos",
-  "version": "2.4.0",
+  "version": "3.0.0",
   "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface.",
   "main": "index.php",
   "scripts": {
@@ -11,19 +11,26 @@
     "url": "https://github.com/jekkos/opensourcepos"
   },
   "keywords": [
-    "point-of-sale"
+    "point-of-sale",
+    "POS"
   ],
   "author": "jekkos",
   "license": "MIT",
   "devDependencies": {
     "grunt": "~0.4.5",
+    "grunt-bower": "^0.21.0",
+    "grunt-bower-concat": "^1.0.0",
+    "grunt-bowercopy": "^1.2.4",
     "grunt-cache-breaker": "^2.0.1",
     "grunt-contrib-concat": "~0.5.1",
+    "grunt-contrib-cssmin": "^0.14.0",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~0.8.0",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-mocha-webdriver": "^1.2.2",
     "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
+    "grunt-wiredep": "^2.0.0",
+    "load-grunt-tasks": "^3.4.0",
     "mocha": "^2.2.1",
     "phantomjs": "~1.9.2",
     "wd": "^0.3.3"

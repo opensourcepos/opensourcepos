@@ -1,4 +1,14 @@
 How to Upgrade
 -------------------------
-1. Replace all code from your point of sale installation with the code downloaded
-2. Run the necessary database upgrades from the database folder
+1. Backup all your current database and OSPOS code
+2. Make sure you have a copy of application/config/config.php and application/config/database.php
+3. Remove all directories
+4. Install the new OSPOS
+5. Run the database upgrade scripts from database/ (check which ones you need according to the version you are upgrading from)
+6. Take the saved old config.php and upgrade the new config.php with any additional changes you made in the old.
+   Take time to understand if new config rules require some changes (e.g. encryption keys)
+7. Copy application/config/database.php.tmpl to application/config/database.php
+8. Take the saved old database.php and change the new database.php to contain all the configuration you had in the old setup.
+   Please try not to use the old layout, use the new one and just copy the content of the config variables
+9. Once new code is in place, database is updated and config files are sorted you are good to start the new OSPOS
+10. If any issue please check GitHub issues as somebody else might have had your problem already or post a question

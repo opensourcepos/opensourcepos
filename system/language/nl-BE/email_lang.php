@@ -1,19 +1,31 @@
 <?php
-$lang['email_must_be_array'] = 'De email validatie methode moet een array als argument krijgen.';
-$lang['email_invalid_address'] = 'Ongeldig e-mailadres: %s';
-$lang['email_attachment_missing'] = 'De volgende bijlage kon niet worden gevonden: %s';
-$lang['email_attachment_unreadable'] = 'Kan deze bijlage niet openen: %s';
-$lang['email_no_recipients'] = 'U moet ontvangers specificeren in: To, Cc, of Bcc';
-$lang['email_send_failure_phpmail'] = 'Kan geen email verzenden met PHP mail(). Uw server is vermoedelijk niet ingesteld om deze methode te kunnen gebruiken.';
-$lang['email_send_failure_sendmail'] = 'Kan geen email verzenden met PHP sendmail(). Uw server is vermoedelijk niet ingesteld om deze methode te kunnen gebruiken.';
-$lang['email_send_failure_smtp'] = 'Kan geen email verzenden met PHP SMTP. Uw server is vermoedelijk niet ingesteld om deze methode te kunnen gebruiken.';
-$lang['email_sent'] = 'Uw bericht is succesvol verstuurd met behulp van het protocol: %s';
-$lang['email_no_socket'] = 'Kon geen socket openen voor Sendmail. Kijkt u alstublieft uw instellingen na.';
-$lang['email_no_hostname'] = 'U heeft geen SMTP hostnaam opgegeven.';
-$lang['email_smtp_error'] = 'De volgende SMTP fout is opgetreden: %s';
-$lang['email_no_smtp_unpw'] = 'U moet een SMTP gebruikersnaam en wachtwoord opgeven.';
-$lang['email_failed_smtp_login'] = 'Het versturen van het AUTH LOGIN commando is mislukt. Foutmelding: %s';
-$lang['email_smtp_auth_un'] = 'Gebruikersnaam niet gevonden. Foutmelding: %s';
-$lang['email_smtp_auth_pw'] = 'Wachtwoord niet gevonden. Foutmelding: %s';
-$lang['email_smtp_data_failure'] = 'Kon data niet versturen: %s';
-$lang['email_exit_status'] = 'Afsluit status code: %s';
+/**
+ * System messages translation for CodeIgniter(tm)
+ *
+ * @author	CodeIgniter community
+ * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Pieter Krul
+ * @license	http://opensource.org/licenses/MIT	MIT License
+ * @link	http://codeigniter.com
+ */
+defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
+
+$lang['email_must_be_array']		= 'De e-mail validatie methode moet de array passeren.';
+$lang['email_invalid_address']		= 'De opgegeven waarde is geen geldig e-mailadres: %s';
+$lang['email_attachment_missing']	= 'De bijlage bij dit bericht kan niet gevonden worden: %s';
+$lang['email_attachment_unreadable']	= 'De bijlage kan niet worden gelezen: %s';
+$lang['email_no_from']			= 'E-mail kan niet verstuurd worden zonder "From"-header.';
+$lang['email_no_recipients']		= 'Ontvangers (Naar, Cc, of Bcc) zijn verplicht.';
+$lang['email_send_failure_phpmail']	= 'Het lukt niet om de e-mail te versturen met PHP mail(). Deze server zou wel eens een andere methode gebruiken om berichten te sturen.';
+$lang['email_send_failure_sendmail']	= 'Het lukt niet om de e-mail te versturen met PHP Sendmail. Deze server zou wel eens een andere methode gebruiken om berichten te sturen.';
+$lang['email_send_failure_smtp']	= 'Het lukt niet om de e-mail te versturen met PHP SMTP.  Deze server zou wel eens een andere methode gebruiken om berichten te sturen.';
+$lang['email_sent']			= 'Het bericht is verstuurd, via het volgende protocol: %s';
+$lang['email_no_socket']		= 'Het lukt niet om een socket naar Sendmail te openen.  Controleer instellingen.';
+$lang['email_no_hostname']		= 'Specifieer een SMTP-hostnaam.';
+$lang['email_smtp_error']		= 'Tegengehouden door een SMTP-foutmelding: %s';
+$lang['email_no_smtp_unpw']		= 'Fout: geef een SMTP-gebruikersnaam met wachtwoord op.';
+$lang['email_failed_smtp_login']	= 'De "AUTH LOGIN"-opdracht gaf een foutmelding bij het versturen: %s';
+$lang['email_smtp_auth_un']		= 'Bij het authenticeren gaf de gebruikersnaam een foutmelding: %s';
+$lang['email_smtp_auth_pw']		= 'Bij het authenticeren gaf het wachtwoord een foutmelding:  %s';
+$lang['email_smtp_data_failure']	= 'Versturen van data is mislukt: %s';
+$lang['email_exit_status']		= 'Exit statuscode: %s.';
