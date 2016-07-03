@@ -79,6 +79,7 @@ $lang["config_default_tax_rate_required"] = "A taxa de Imposto padrão é um cam
 $lang["config_default_tax_name_required"] = "Nome da taxa padrão é requerida";
 $lang["config_dot"] = "ponto";
 $lang["config_email"] = "email";
+$lang["config_email_configuration"] = "Email Configuration";
 $lang["config_email_protocol"] = "Protocolo";
 $lang["config_email_mailpath"] = "Caminho para Sendmail";
 $lang["config_email_smtp_host"] = "Servidor SMTP";

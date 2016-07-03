@@ -79,6 +79,7 @@ $lang["config_default_tax_rate_required"] = "預設稅率為必填";
 $lang["config_default_tax_name_required"] = "The default tax name is a required field";
 $lang["config_dot"] = "dot";
 $lang["config_email"] = "Email";
+$lang["config_email_configuration"] = "Email Configuration";
 $lang["config_email_protocol"] = "Protocol";
 $lang["config_email_mailpath"] = "Path to Sendmail";
 $lang["config_email_smtp_host"] = "SMTP Server";

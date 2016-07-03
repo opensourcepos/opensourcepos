@@ -79,6 +79,7 @@ $lang["config_default_tax_rate_required"] = "Het percentage VAT moet ingevuld wo
 $lang["config_default_tax_name_required"] = "De naam van de VAT moet ingevuld worden";
 $lang["config_dot"] = "dot";
 $lang["config_email"] = "Email";
+$lang["config_email_configuration"] = "Email Configuration";
 $lang["config_email_protocol"] = "Protocol";
 $lang["config_email_mailpath"] = "Path to Sendmail";
 $lang["config_email_smtp_host"] = "SMTP Server";
