@@ -296,7 +296,7 @@ class Config extends Secure_Controller
 				'filename' => 'ospos.sql'
     		);
     		 
-    		$backup =& $this->dbutil->backup($prefs);
+    		$backup = $this->dbutil->backup($prefs);
     		 
 			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
     		$save = 'uploads/' . $file_name;
