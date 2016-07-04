@@ -164,7 +164,6 @@ $(document).ready(function()
 	{ 
 		$(this).ajaxSubmit(
 		{
-			beforeSerialize: setup_csrf_token(),
 			success: function(response)
 			{
 				dialog_support.hide();

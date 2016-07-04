@@ -83,11 +83,10 @@ $(document).ready(function()
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
-				beforeSerialize: setup_csrf_token(),
 				success:function(response)
 				{
 					dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
+					table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
 				},
 				dataType:'json'
 			});
