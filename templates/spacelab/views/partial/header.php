@@ -72,20 +72,20 @@
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=75d94393ed" language="javascript"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=75d94393ed"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
 	<script type="text/javascript">
 		// live clock
-		var clockTick = function clockTick() {
-			setInterval('updateClock();', 1000);  
+		var clock_tick = function clock_tick() {
+			setInterval('update_clock();', 1000);
 		}
 
 		// start the clock immediatly
-		clockTick();
+		clock_tick();
 
-		function updateClock() {
+		var update_clock = function update_clock() {
 			document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>");
 		}
 
@@ -93,6 +93,23 @@
 			align: '<?php echo $this->config->item('config_notify_horizontal_position'); ?>',
 			from: '<?php echo $this->config->item('config_notify_vertical_position'); ?>'
 		}});
+
+		var post = $.post;
+
+		$.post = function() {
+			post.call(this, arguments[0], $.extend(arguments[1], {
+				<?php echo $this->security->get_csrf_token_name(); ?> : Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>')
+			}));
+		};
+
+		var setup_csrf = function() {
+			var csrf_cookie_val = Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>');
+			$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_cookie_val);
+		};
+
+		setup_csrf();
+
+		$(document).ajaxComplete(setup_csrf);
 	</script>
 
 	<style type="text/css">

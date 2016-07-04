@@ -121,7 +121,7 @@ $(document).ready(function()
 			$("#mailpath").prop('disabled', false);
 			$("#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop('disabled', true);
 		}
-		elseif($("#protocol").val() == 'smtp')
+		else if($("#protocol").val() == 'smtp')
 		{
 			$("#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop('disabled', false);
 			$("#mailpath").prop('disabled', true);

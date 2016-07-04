@@ -78,7 +78,7 @@
 	<?php $this->load->view('partial/lang_lines'); ?>
 
 	<script type="text/javascript">
-		// live clockf
+		// live clock
 		var clock_tick = function clock_tick() {
 			setInterval('update_clock();', 1000);
 		}
