@@ -6,11 +6,11 @@
         'common_close' : "<?php echo $this->lang->line('common_close') ?>"
     };
 
-    return {
+    $.extend(lang, {
         line: function(key) {
             return lines[key];
         }
-    };
+    });
 
 
 })(window.lang = window.lang || {}, jQuery);
