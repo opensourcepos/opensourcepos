@@ -283,8 +283,9 @@
 	//validation and submit handling
 	$(document).ready(function()
 	{
-		$("#continue").click(function() {
+		$("#new").click(function() {
 			stay_open = true;
+			$("#item_form").submit();
 		});
 
 		$("#submit").click(function() {
@@ -303,7 +304,7 @@
 						type: "POST",
 						url: "<?php echo site_url('items/suggest_custom');?>",
 						dataType: "json",
-						data: $.extend(request, {field_no: <?php echo $i; ?>}),
+						data: $.extend(request, $extend(csrf_form_base(), {field_no: <?php echo $i; ?>})),
 						success: function(data) {
 							response($.map(data, function(item) {
 								return {
@@ -330,6 +331,7 @@
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {
 				$(form).ajaxSubmit({
+					beforeSerialize: setup_csrf_token,
 					success: function(response) {
 						var stay_open = dialog_support.clicked_id() != 'submit';
 						if (stay_open)
@@ -363,14 +365,14 @@
 					{
 						url: "<?php echo site_url($controller_name . '/check_item_number')?>",
 						type: "post",
-						data:
+						data: $.extend(csrf_form_base(),
 						{
 							"item_id" : "<?php echo $item_info->item_id; ?>",
 							"item_number" : function()
 							{
 								return $("#item_number").val();
-							}
-						}
+							},
+						})
 					}
 				},
 				cost_price:

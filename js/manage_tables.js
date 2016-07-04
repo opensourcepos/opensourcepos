@@ -60,7 +60,9 @@
 					dialog_ref.close();
 				}
 			});
-			return { buttons: buttons, cssClass: dialog_class};
+			return { buttons: buttons.sort(function(a, b) {
+				return ($(b).text()) < ($(a).text()) ? 1 : -1;
+			}), cssClass: dialog_class};
 		};
 
 		$(selector).each(function(index, $element) {

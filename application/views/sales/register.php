@@ -46,7 +46,7 @@ if (isset($success))
 				?>
 
 				<li class="pull-right">
-					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-btn-submit='<?php echo $this->lang->line('common_submit'); ?>', data-href='<?php echo site_url($controller_name."/suspended"); ?>'
+					<button class='btn btn-default btn-sm modal-dlg' id='show_suspended_sales_button' data-href='<?php echo site_url($controller_name."/suspended"); ?>'
 							title='<?php echo $this->lang->line('sales_suspended_sales'); ?>'>
 						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspended_sales'); ?>
 					</button>
@@ -78,7 +78,7 @@ if (isset($success))
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-right">
-					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url("items/view"); ?>'
+					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit')?>' data-btn-new='<?php echo $this->lang->line('common_new') ?>' data-href='<?php echo site_url("items/view"); ?>'
 							title='<?php echo $this->lang->line($controller_name . '_new_item'); ?>'>
 						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line($controller_name. '_new_item'); ?>
 					</button>
@@ -672,6 +672,7 @@ $(document).ready(function()
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
 		if(response.success) {
+			setup_csrf_token();
 			if (resource.match(/customers$/))
 			{
 				$("#customer").val(response.id);

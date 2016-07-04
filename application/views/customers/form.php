@@ -83,6 +83,7 @@ $(document).ready(function()
 		submitHandler:function(form)
 		{
 			$(form).ajaxSubmit({
+				beforeSerialize: setup_csrf_token(),
 				success:function(response)
 				{
 					dialog_support.hide();
@@ -102,14 +103,14 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/check_account_number')?>",
 					type: "post",
-					data:
+					data: $.extend(csrf_form_base(),
 					{
 						"person_id" : "<?php echo $person_info->person_id; ?>",
 						"account_number" : function()
 						{
 							return $("#account_number").val();
 						}
-					}
+					})
 				}
 			}
    		},

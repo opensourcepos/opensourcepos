@@ -887,7 +887,7 @@ class Reports extends Secure_Controller
 			'reference' => $report_data['reference'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('receivings_update'))
+				array('class'=>"modal-dlg print_hide", 'data-btn-submit' => $this->lang->line('common_submit'), 'data-btn-delete' => $this->lang->line('common_delete'), 'title' => $this->lang->line('receivings_update'))
 			)
 		));
 

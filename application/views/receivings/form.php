@@ -123,14 +123,6 @@ $(document).ready(function()
 		submitHandler : function(form)
 		{
 			submit_form.call(form);
-		},
-		rules:
-		{
-
-		},
-		messages: 
-		{
-
 		}
 	}, form_support.error));
 

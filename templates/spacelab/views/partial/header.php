@@ -68,49 +68,16 @@
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/bootstrap.min.css?rel=9ed20b1ee8"/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=f8daa2f957"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=80813172ba"/>
 		<!-- end mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="templates/spacelab/css/style.css"/>
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=75d94393ed"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1dbb3c287c" language="javascript"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
-	<script type="text/javascript">
-		// live clock
-		var clock_tick = function clock_tick() {
-			setInterval('update_clock();', 1000);
-		}
-
-		// start the clock immediatly
-		clock_tick();
-
-		var update_clock = function update_clock() {
-			document.getElementById('liveclock').innerHTML = moment().format("<?php echo dateformat_momentjs($this->config->item('dateformat').' '.$this->config->item('timeformat'))?>");
-		}
-
-		$.notifyDefaults({ placement: {
-			align: '<?php echo $this->config->item('config_notify_horizontal_position'); ?>',
-			from: '<?php echo $this->config->item('config_notify_vertical_position'); ?>'
-		}});
-
-		var post = $.post;
-
-		$.post = function() {
-			post.call(this, arguments[0], $.extend(arguments[1], {
-				<?php echo $this->security->get_csrf_token_name(); ?> : Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>')
-			}));
-		};
-
-		var setup_csrf = function() {
-			var csrf_cookie_val = Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>');
-			$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_cookie_val);
-		};
-
-		setup_csrf();
-
-		$(document).ajaxComplete(setup_csrf);
-	</script>
+	<?php $this->load->view('partial/lang_lines'); ?>
+	<?php $this->load->view('partial/header_js'); ?>
 
 	<style type="text/css">
 		html {

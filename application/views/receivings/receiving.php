@@ -493,6 +493,7 @@ $(document).ready(function()
 	{
 		if(response.success)
 		{
+			setup_csrf_token();
 			if (resource.match(/suppliers$/))
 			{
 				$("#supplier").attr("value",response.id);
