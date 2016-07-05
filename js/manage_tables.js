@@ -61,7 +61,7 @@
 				}
 			});
 			return { buttons: buttons.sort(function(a, b) {
-				return ($(b).text()) < ($(a).text()) ? 1 : -1;
+				return ($(b).text()) < ($(a).text()) ? -1 : 1;
 			}), cssClass: dialog_class};
 		};
 
@@ -163,7 +163,7 @@
 					});
 					$.notify(response.message, { type: 'success' });
 				} else {
-					$.notify(response.message, { type: 'pastel-danger' });
+					$.notify(response.message, { type: 'danger' });
 				}
 			}, "json");
 		} else {
@@ -250,7 +250,7 @@
 			var id = response.id;
 
 			if (!response.success) {
-				$.notify(response.text, { type: 'danger' });
+				$.notify(response.message, { type: 'danger' });
 			} else {
 				var message = response.message;
 				var selector = rows_selector(response.id);

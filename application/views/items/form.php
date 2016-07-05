@@ -331,6 +331,7 @@
 		$('#item_form').validate($.extend({
 			submitHandler: function(form, event) {
 				$(form).ajaxSubmit({
+					beforeSerialize: setup_csrf_token,
 					success: function(response) {
 						var stay_open = dialog_support.clicked_id() != 'submit';
 						if (stay_open)
