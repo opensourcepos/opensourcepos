@@ -672,7 +672,6 @@ $(document).ready(function()
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
 		if(response.success) {
-			setup_csrf_token();
 			if (resource.match(/customers$/))
 			{
 				$("#customer").val(response.id);

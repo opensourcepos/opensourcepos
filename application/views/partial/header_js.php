@@ -36,5 +36,11 @@
 
 	setup_csrf_token();
 
-	$(document).ajaxComplete(setup_csrf_token);
+	$.ajaxSetup({
+		dataFilter: function(data) {
+			setup_csrf_token();
+			return data;
+		}
+	});
+
 </script>
