@@ -81,12 +81,12 @@ class Sale extends CI_Model
 
 		$this->db->group_by('sale_id');
 		$this->db->order_by($sort, $order);
-		
+
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
-		
+
 		return $this->db->get();
 	}
 

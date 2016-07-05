@@ -65,7 +65,7 @@ class Sales extends Secure_Controller
 		$sort   = $this->input->get('sort');
 		$order  = $this->input->get('order');
 
-		$is_valid_receipt = isset($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
+		$is_valid_receipt = !empty($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
 		$filters = array('sale_type' => 'all',
 						'location_id' => 'all',
