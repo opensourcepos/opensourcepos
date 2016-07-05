@@ -27,7 +27,8 @@
 	};
 
 	$.post = function() {
-		post.call(this, arguments[0], $.extend(arguments[1], csrf_form_base()));
+		arguments[1] = $.extend(arguments[1], csrf_form_base());
+		post.apply(this, arguments);
 	};
 
 	var setup_csrf_token = function() {
