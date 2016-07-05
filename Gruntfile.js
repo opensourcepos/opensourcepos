@@ -5,13 +5,7 @@ module.exports = function(grunt) {
         wiredep: {
             task: {
                 ignorePath: '../../../',
-                src: ['application/views/partial/header.php']
-            }
-        },
-        wiredep_templates: {
-            task: {
-                ignorePath: '../../../../',
-                src: ['templates/*/views/partial/header.php']
+                src: ['application/views/partial/header_debug.php']
             }
         },
         bower_concat: {
@@ -106,8 +100,7 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: ['css/*.css', '!css/login.css', '!css/invoice_email.css'],
-                dest: 'application/views/partial/header.php',
-                dest: 'templates/spacelab/views/partial/header.php'
+                dest: 'application/views/partial/header_debug.php',
             },
             mincss_header: {
                 options: {
@@ -147,7 +140,7 @@ module.exports = function(grunt) {
                     absolutePath: true
                 },
                 src: ['js/jquery*', 'js/*.js'],
-                dest: 'application/views/partial/header.php'
+                dest: 'application/views/partial/header_debug.php'
             },
             minjs: {
                 options: {
