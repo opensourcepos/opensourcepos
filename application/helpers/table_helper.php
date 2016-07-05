@@ -286,7 +286,7 @@ function get_item_data_row($item, $controller)
 			array('class' => 'modal-dlg', 'title' => $CI->lang->line($controller_name.'_details_count'))
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'data-btn-new' => $CI->lang->line('common_new'), 'title' => $CI->lang->line($controller_name.'_update'))
+			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
 		));
 }
 
