@@ -42,8 +42,8 @@ IndexIgnore *
   Satisfy all
 </Files>
 
-# prevent access to .csv files
-<FilesMatch "\.(csv)$">
+# prevent access to csv and txt files
+<FilesMatch "\.(csv|txt)$">
   Order allow,deny
   Deny from all
   Satisfy all
