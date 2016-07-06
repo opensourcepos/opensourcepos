@@ -202,7 +202,7 @@ class Receiving extends CI_Model
 	/*
 	We create a temp table that allows us to do easy report/receiving queries
 	*/
-	public function create_receivings_items_temp_table()
+	public function create_temp_table()
 	{
 		$this->db->query("CREATE TEMPORARY TABLE IF NOT EXISTS " . $this->db->dbprefix('receivings_items_temp') . "
 			(SELECT 

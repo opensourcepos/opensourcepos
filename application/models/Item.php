@@ -502,7 +502,7 @@ class Item extends CI_Model
 	}
 	
 	//We create a temp table that allows us to do easy report queries
-	public function create_items_temp_table()
+	public function create_temp_table()
 	{
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('items_temp') . 
 			'(

@@ -47,7 +47,7 @@ class Sales extends Secure_Controller
 	
 	public function get_row($row_id)
 	{
-		$this->Sale->create_sales_items_temp_table();
+		$this->Sale->create_temp_table();
 
 		$sale_info = $this->Sale->get_info($row_id)->row();
 		$data_row = $this->xss_clean(get_sale_data_row($sale_info, $this));
@@ -57,7 +57,7 @@ class Sales extends Secure_Controller
 
 	public function search()
 	{
-		$this->Sale->create_sales_items_temp_table();
+		$this->Sale->create_temp_table();
 
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
@@ -575,7 +575,7 @@ class Sales extends Secure_Controller
 
 	private function _load_sale_data($sale_id)
 	{
-		$this->Sale->create_sales_items_temp_table();
+		$this->Sale->create_temp_table();
 
 		$this->sale_lib->clear_all();
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
@@ -679,7 +679,7 @@ class Sales extends Secure_Controller
 			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
 		}
 
-		$this->Sale->create_sales_items_temp_table();
+		$this->Sale->create_temp_table();
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());	
 		$data['selected_customer_name'] = $sale_info['customer_name'];

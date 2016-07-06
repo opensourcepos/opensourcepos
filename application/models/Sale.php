@@ -526,7 +526,7 @@ class Sale extends CI_Model
 	}
 
 	//We create a temp table that allows us to do easy report/sales queries
-	public function create_sales_items_temp_table()
+	public function create_temp_table()
 	{
 		if($this->config->item('tax_included'))
 		{
