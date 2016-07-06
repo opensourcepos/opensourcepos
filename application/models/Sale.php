@@ -546,7 +546,7 @@ class Sale extends CI_Model
 		
 		$decimals = totals_decimals();
 
-		$this->db->query("CREATE TEMPORARY TABLE IF NOT EXISTS " . $this->db->dbprefix('sales_items_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
 			'(
 				SELECT
 					DATE(sales.sale_time) AS sale_date,
@@ -577,13 +577,15 @@ class Sale extends CI_Model
 					sales_items.description,
 					payments.payment_type,
 					payments.sale_payment_amount,
-					SUM(sales_items_taxes.percent) AS item_tax_percent, ' . "
+					SUM(sales_items_taxes.percent) AS item_tax_percent,
+					' . "
 					ROUND($sale_total * $total, $decimals) AS total,
 					ROUND($sale_total * $tax, $decimals) AS tax,
 					ROUND($sale_total * $subtotal, $decimals) AS subtotal,
 					ROUND($sale_total - $sale_cost, $decimals) AS profit,
 					ROUND($sale_cost, $decimals) AS cost
-				FROM " . $this->db->dbprefix('sales_items') . ' AS sales_items
+					" . '
+				FROM ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales_items.sale_id = sales.sale_id
 				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
@@ -606,7 +608,7 @@ class Sale extends CI_Model
 					ON sales.employee_id = employee.person_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-				GROUP BY sale_id, item_id, line
+				GROUP BY sales.sale_id, items.item_id, sales_items.line
 			)'
 		);
 

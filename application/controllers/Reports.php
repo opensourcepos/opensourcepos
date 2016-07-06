@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once("Secure_Controller.php");
+require_once('Secure_Controller.php');
 
 class Reports extends Secure_Controller
 {
@@ -13,9 +13,9 @@ class Reports extends Secure_Controller
 
 		if(sizeof($exploder) > 1)
 		{
-			preg_match("/(?:inventory)|([^_.]*)(?:_graph|_row)?$/", $method_name, $matches);
-			preg_match("/^(.*?)([sy])?$/", array_pop($matches), $matches);
-			$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : "s");
+			preg_match('/(?:inventory)|([^_.]*)(?:_graph|_row)?$/', $method_name, $matches);
+			preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
+			$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 			// check access to report submodule
 			if(!$this->Employee->has_grant('reports_' . $submodule_id, $this->Employee->get_logged_in_employee_info()->person_id))
 			{
@@ -31,7 +31,7 @@ class Reports extends Secure_Controller
 	{
 		$data['grants'] = $this->xss_clean($this->Employee->get_employee_grants($this->session->userdata('person_id')));
 		
-		$this->load->view("reports/listing", $data);
+		$this->load->view('reports/listing', $data);
 	}
 
 	//Summary sales report
@@ -56,14 +56,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_sales_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_sales_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary categories report
@@ -88,14 +88,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_categories_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_categories_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary customers report
@@ -120,14 +120,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_customers_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_customers_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary suppliers report
@@ -152,14 +152,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_suppliers_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary items report
@@ -184,14 +184,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_items_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_items_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary employees report
@@ -216,14 +216,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_employees_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_employees_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary taxes report
@@ -246,14 +246,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_taxes_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary discounts report
@@ -273,14 +273,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_discounts_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Summary payments report
@@ -301,14 +301,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_payments_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
+			'title' => $this->lang->line('reports_payments_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
@@ -317,7 +317,7 @@ class Reports extends Secure_Controller
 		$data = array();
 		$data['mode'] = 'sale';
 
-		$this->load->view("reports/date_input", $data);
+		$this->load->view('reports/date_input', $data);
 	}
 
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
@@ -329,7 +329,7 @@ class Reports extends Secure_Controller
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
         $data['mode'] = 'sale';
 
-		$this->load->view("reports/date_input", $data);
+		$this->load->view('reports/date_input', $data);
 	}
 
     public function date_input_recv()
@@ -340,7 +340,7 @@ class Reports extends Secure_Controller
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
  		$data['mode'] = 'receiving';
 
-        $this->load->view("reports/date_input", $data);
+        $this->load->view('reports/date_input', $data);
     }
 
 	//Graphical summary sales report
@@ -363,18 +363,18 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_sales_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/line",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
-			"yaxis_title" => $this->lang->line('reports_revenue'),
-			"xaxis_title" => $this->lang->line('reports_date'),
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_sales_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/line',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
+			'yaxis_title' => $this->lang->line('reports_revenue'),
+			'xaxis_title' => $this->lang->line('reports_date'),
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary items report
@@ -396,18 +396,18 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_items_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/hbar",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
-			"yaxis_title" => $this->lang->line('reports_items'),
-			"xaxis_title" => $this->lang->line('reports_revenue'),
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_items_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/hbar',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
+			'yaxis_title' => $this->lang->line('reports_items'),
+			'xaxis_title' => $this->lang->line('reports_revenue'),
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary customers report
@@ -430,16 +430,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_categories_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/pie",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $summary,
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_categories_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary suppliers report
@@ -462,16 +462,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_suppliers_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/pie",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $summary,
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_suppliers_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary employees report
@@ -494,16 +494,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_employees_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/pie",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $summary,
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_employees_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary taxes report
@@ -526,16 +526,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_taxes_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/pie",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $summary,
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_taxes_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary customers report
@@ -557,18 +557,18 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_customers_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/hbar",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
-			"yaxis_title" => $this->lang->line('reports_customers'),
-			"xaxis_title" => $this->lang->line('reports_revenue'),
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_customers_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/hbar',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
+			'yaxis_title' => $this->lang->line('reports_customers'),
+			'xaxis_title' => $this->lang->line('reports_revenue'),
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary discounts report
@@ -590,18 +590,18 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_discounts_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/bar",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
-			"yaxis_title" => $this->lang->line('reports_count'),
-			"xaxis_title" => $this->lang->line('reports_discount_percent'),
-			"show_currency" => FALSE
+			'title' => $this->lang->line('reports_discounts_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/bar',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
+			'yaxis_title' => $this->lang->line('reports_count'),
+			'xaxis_title' => $this->lang->line('reports_discount_percent'),
+			'show_currency' => FALSE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary payments report
@@ -624,16 +624,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_payments_summary_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"chart_type" => "reports/graphs/pie",
-			"labels_1" => $labels,
-			"series_data_1" => $series,
-			"summary_data_1" => $summary,
-			"show_currency" => TRUE
+			'title' => $this->lang->line('reports_payments_summary_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
 		);
 
-		$this->load->view("reports/graphical", $data);
+		$this->load->view('reports/graphical', $data);
 	}
 
 	public function specific_customer_input()
@@ -648,7 +648,7 @@ class Reports extends Secure_Controller
 		}
 		$data['specific_input_data'] = $customers;
 
-		$this->load->view("reports/specific_input", $data);
+		$this->load->view('reports/specific_input', $data);
 	}
 
 	public function specific_customer($start_date, $end_date, $customer_id, $sale_type)
@@ -674,15 +674,15 @@ class Reports extends Secure_Controller
 
 		$customer_info = $this->Customer->get_info($customer_id);
 		$data = array(
-			"title" => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . $this->lang->line('reports_report')),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $headers,
-			"summary_data" => $summary_data,
-			"details_data" => $details_data,
-			"overall_summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type)))
+			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . $this->lang->line('reports_report')),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $headers,
+			'summary_data' => $summary_data,
+			'details_data' => $details_data,
+			'overall_summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular_details", $data);
+		$this->load->view('reports/tabular_details', $data);
 	}
 
 	public function specific_employee_input()
@@ -697,7 +697,7 @@ class Reports extends Secure_Controller
 		}
 		$data['specific_input_data'] = $employees;
 
-		$this->load->view("reports/specific_input", $data);
+		$this->load->view('reports/specific_input', $data);
 	}
 
 	public function specific_employee($start_date, $end_date, $employee_id, $sale_type)
@@ -723,15 +723,15 @@ class Reports extends Secure_Controller
 
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data = array(
-			"title" => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $headers,
-			"summary_data" => $summary_data,
-			"details_data" => $details_data,
-			"overall_summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date,'employee_id' => $employee_id, 'sale_type' => $sale_type)))
+			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $headers,
+			'summary_data' => $summary_data,
+			'details_data' => $details_data,
+			'overall_summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date,'employee_id' => $employee_id, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular_details", $data);
+		$this->load->view('reports/tabular_details', $data);
 	}
 
 	public function specific_discount_input()
@@ -748,7 +748,7 @@ class Reports extends Secure_Controller
 		
 		$data = $this->xss_clean($data);
 
-		$this->load->view("reports/specific_input", $data);
+		$this->load->view('reports/specific_input', $data);
 	}
 
 	public function specific_discount($start_date, $end_date, $discount, $sale_type)
@@ -773,15 +773,15 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $discount . '% ' . $this->lang->line('reports_discount') . ' ' . $this->lang->line('reports_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $headers,
-			"summary_data" => $summary_data,
-			"details_data" => $details_data,
-			"overall_summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date,'discount' => $discount, 'sale_type' => $sale_type)))
+			'title' => $discount . '% ' . $this->lang->line('reports_discount') . ' ' . $this->lang->line('reports_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $headers,
+			'summary_data' => $summary_data,
+			'details_data' => $details_data,
+			'overall_summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date,'discount' => $discount, 'sale_type' => $sale_type)))
 		);
 
-		$this->load->view("reports/tabular_details", $data);
+		$this->load->view('reports/tabular_details', $data);
 	}
 
  	public function get_detailed_sales_row($sale_id)
@@ -804,8 +804,8 @@ class Reports extends Secure_Controller
 			'profit' => to_currency($report_data['profit']),
 			'payment_type' => $report_data['payment_type'],
 			'comment' => $report_data['comment'],
-			'edit' => anchor("sales/edit/". $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
+			'edit' => anchor('sales/edit/'. $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
 			)
 		));
 
@@ -840,8 +840,8 @@ class Reports extends Secure_Controller
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
-				'edit' => anchor("sales/edit/".$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => "modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
+				'edit' => anchor('sales/edit/'.$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
 				)
 			));
 
@@ -857,16 +857,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_detailed_sales_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $headers,
-			"editable" => 'sales',
-			"summary_data" => $summary_data,
-			"details_data" => $details_data,
-			"overall_summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id)))
+			'title' => $this->lang->line('reports_detailed_sales_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $headers,
+			'editable' => 'sales',
+			'summary_data' => $summary_data,
+			'details_data' => $details_data,
+			'overall_summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id)))
 		);
 
-		$this->load->view("reports/tabular_details", $data);
+		$this->load->view('reports/tabular_details', $data);
 	}
 
 	public function get_detailed_receivings_row($receiving_id)
@@ -886,8 +886,8 @@ class Reports extends Secure_Controller
 			'payment_type' => $report_data['payment_type'],
 			'reference' => $report_data['reference'],
 			'comment' => $report_data['comment'],
-			'edit' => anchor("receivings/edit/". $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>"modal-dlg print_hide", 'data-btn-submit' => $this->lang->line('common_submit'), 'data-btn-delete' => $this->lang->line('common_delete'), 'title' => $this->lang->line('receivings_update'))
+			'edit' => anchor('receivings/edit/'. $report_data['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+				array('class'=>'modal-dlg print_hide', 'data-btn-submit' => $this->lang->line('common_submit'), 'data-btn-delete' => $this->lang->line('common_delete'), 'title' => $this->lang->line('receivings_update'))
 			)
 		));
 
@@ -919,8 +919,8 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'reference' => $row['reference'],
 				'comment' => $row['comment'],
-				'edit' => anchor("receivings/edit/" . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => "modal-dlg print_hide", 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('receivings_update'))
+				'edit' => anchor('receivings/edit/' . $row['receiving_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('receivings_update'))
 				)
 			));
 
@@ -936,16 +936,16 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_detailed_receivings_report'),
-			"subtitle" => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
-			"headers" => $headers,
-			"editable" => 'receivings',
-			"summary_data" => $summary_data,
-			"details_data" => $details_data,
-			"overall_summary_data" => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id)))
+			'title' => $this->lang->line('reports_detailed_receivings_report'),
+			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
+			'headers' => $headers,
+			'editable' => 'receivings',
+			'summary_data' => $summary_data,
+			'details_data' => $details_data,
+			'overall_summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id)))
 		);
 
-		$this->load->view("reports/tabular_details", $data);
+		$this->load->view('reports/tabular_details', $data);
 	}
 
 	public function inventory_low()
@@ -958,9 +958,8 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['name'], 
-				$row['item_number'], 
-				$row['description'], 
+			$tabular_data[] = $this->xss_clean(array($row['name'],
+				$row['item_number'],
 				to_quantity_decimals($row['quantity']), 
 				to_quantity_decimals($row['reorder_level']), 
 				$row['location_name']
@@ -968,14 +967,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_inventory_low_report'),
-			"subtitle" => '',
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData(array()))
+			'title' => $this->lang->line('reports_inventory_low_report'),
+			'subtitle' => '',
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData(array()))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 
 	public function inventory_summary_input()
@@ -990,7 +989,7 @@ class Reports extends Secure_Controller
 		$stock_locations['all'] = $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 
-		$this->load->view("reports/inventory_summary_input", $data);
+		$this->load->view('reports/inventory_summary_input', $data);
 	}
 
 	public function inventory_summary($location_id = 'all', $item_count = 'all')
@@ -1005,7 +1004,6 @@ class Reports extends Secure_Controller
 		{
 			$tabular_data[] = $this->xss_clean(array($row['name'],
 				$row['item_number'],
-				$row['description'],
 				to_quantity_decimals($row['quantity']),
 				to_quantity_decimals($row['reorder_level']),
 				$row['location_name'],
@@ -1016,14 +1014,14 @@ class Reports extends Secure_Controller
 		}
 
 		$data = array(
-			"title" => $this->lang->line('reports_inventory_summary_report'),
-			"subtitle" => '',
-			"headers" => $this->xss_clean($model->getDataColumns()),
-			"data" => $tabular_data,
-			"summary_data" => $this->xss_clean($model->getSummaryData($report_data))
+			'title' => $this->lang->line('reports_inventory_summary_report'),
+			'subtitle' => '',
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $this->xss_clean($model->getSummaryData($report_data))
 		);
 
-		$this->load->view("reports/tabular", $data);
+		$this->load->view('reports/tabular', $data);
 	}
 }
 ?>

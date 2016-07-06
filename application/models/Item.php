@@ -304,7 +304,7 @@ class Item extends CI_Model
 		return $success;
  	}
 
-	public function get_search_suggestions($search, $filters = array('is_deleted'=>FALSE, 'search_custom'=>FALSE), $unique = FALSE, $limit = 25)
+	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
 
@@ -499,6 +499,32 @@ class Item extends CI_Model
 		$data = array('cost_price' => $average_price);
 
 		return $this->save($data, $item_id);
+	}
+	
+	//We create a temp table that allows us to do easy report queries
+	public function create_items_temp_table()
+	{
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('items_temp') . 
+			'(
+				SELECT
+					items.name,
+					items.item_number,
+					items.description,
+					items.reorder_level,
+					item_quantities.quantity,
+					stock_locations.location_name,
+					stock_locations.location_id,
+					items.cost_price,
+					items.unit_price,
+					(items.cost_price * item_quantities.quantity) AS sub_total_value
+				FROM ' . $this->db->dbprefix('items') . ' AS items
+				INNER JOIN ' . $this->db->dbprefix('item_quantities') . ' AS item_quantities
+					ON items.item_id = item_quantities.item_id
+				INNER JOIN ' . $this->db->dbprefix('stock_locations') . ' AS stock_locations
+					ON item_quantities.location_id = stock_locations.location_id
+				WHERE items.deleted = 0
+			)'
+		);
 	}
 }
 ?>
