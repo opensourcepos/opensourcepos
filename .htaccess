@@ -31,25 +31,32 @@ IndexIgnore *
 
 # secure htaccess file
 <Files .htaccess>
-  order allow,deny
-  deny from all
+  Order allow,deny
+  Deny from all
 </Files>
 
 # prevent access to PHP error log
 <Files error_log>
-  order allow,deny
-  deny from all
-  satisfy All
+  Order allow,deny
+  Deny from all
+  Satisfy all
 </Files>
 
-# prevent access to generate_languages.php
+# prevent access to .csv files
+<FilesMatch "\.(csv)$">
+  Order allow,deny
+  Deny from all
+  Satisfy all
+</FilesMatch>
+
+# control access to generate_languages.php
 <Files generate_languages.php>
-  order deny,allow
-  deny from all
-  allow from 127.0.0.1
+  Order deny,allow
+  Deny from all
+  Allow from 127.0.0.1
  
 # My IP(s)
-#  allow from xxx.xxx.xxx.xxx
+#  Allow from xxx.xxx.xxx.xxx
 
 </Files>
 
