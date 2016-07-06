@@ -21,8 +21,13 @@ class Reports extends Secure_Controller
 			{
 				redirect('no_access/reports/reports_' . $submodule_id);
 			}
-		}
 
+			//Create our temp tables to work with the data in our report
+			$this->Sale->create_temp_table();
+			$this->Receiving->create_temp_table();
+			$this->Item->create_temp_table();
+		}
+		
 		$this->load->helper('report');
 	}
 
