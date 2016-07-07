@@ -31,7 +31,7 @@
 					<?php
 					if( $show_currency )
 					{
-						if( $this->config->item('currency_side') )
+						if( currency_side() )
 						{
 					?>
 							return value + '<?php echo $this->config->item('currency_symbol'); ?>';

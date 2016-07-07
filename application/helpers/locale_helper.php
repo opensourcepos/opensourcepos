@@ -4,113 +4,65 @@
  * Currency locale
  */
 
-function to_currency($number, $escape = FALSE)
+function currency_side()
 {
-	$CI =& get_instance();
-
-	$currency_symbol = $CI->config->item('currency_symbol') ? $CI->config->item('currency_symbol') : '$';
-	$currency_symbol = $currency_symbol == '$' && $escape ? '\$' : $currency_symbol; 
-	$thousands_separator = $CI->config->item('thousands_separator') ? $CI->config->item('thousands_separator') : '';
-	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
-	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
-
-	// the conversion function needs a non null var, so if the number is null set it to 0
-	if(empty($number))
-	{
-		$number = 0;
-	}
-	
-	if($number >= 0)
-	{
-		if(!$CI->config->item('currency_side'))
-		{
-			return $currency_symbol.number_format($number, $decimals, $decimal_point, $thousands_separator);
-		}
-		else
-		{
-			return number_format($number, $decimals, $decimal_point, $thousands_separator).$currency_symbol;
-		}
-	}
-    else
-    {
-    	if(!$CI->config->item('currency_side'))
-		{
-    		return '-'.$currency_symbol.number_format(abs($number), $decimals, $decimal_point, $thousands_separator);
-		}
-    	else
-		{
-    		return '-'.number_format(abs($number), $decimals, $decimal_point, $thousands_separator).$currency_symbol;
-		}
-    }
-}
-
-function to_currency_no_money($number)
-{
-	// ignore empty strings as they are just for empty input
-	if(empty($number))
-	{
-		return $number;
-	}
-
-	$CI =& get_instance();
-
-	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
-
-	return number_format($number, $decimals, '.', '');
+    $CI =& get_instance();
+    $fmt = new \NumberFormatter($CI->config->item('number_locale'), \NumberFormatter::CURRENCY);
+    $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $CI->config->item('currency_symbol'));
+    return !preg_match('/^¤/', $fmt->getPattern());
 }
 
 function totals_decimals()
 {
 	$CI =& get_instance();
-	
 	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
 
 	return $decimals;
 }
 
+function to_currency($number, $escape = FALSE)
+{
+    return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+}
 
-/*
- * Tax locale
- */
+function to_currency_no_money($number)
+{
+    return to_decimals($number, 'currency_decimals');
+}
 
 function to_tax_decimals($number)
 {
-	// ignore empty strings as they are just for empty input
-	if( empty($number) )
-	{
-		return $number;
-	}
-	
-	$CI =& get_instance();
-
-	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
-	$decimals = $CI->config->item('tax_decimals') ? $CI->config->item('tax_decimals') : 0;
-
-	return number_format($number, $decimals, $decimal_point, '');
+    return to_decimals($number, 'tax_decimals');
 }
-
-
-/*
- * Quantity decimals
- */
 
 function to_quantity_decimals($number)
 {
-	$CI =& get_instance();
-
-	$decimal_point = $CI->config->item('decimal_point') ? $CI->config->item('decimal_point') : '.';
-	$decimals = $CI->config->item('quantity_decimals') ? $CI->config->item('quantity_decimals') : 0;
-
-	return number_format($number, $decimals, $decimal_point, '');
+    return to_decimals($number, 'quantity_decimals');
 }
 
-function quantity_decimals()
+function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 {
-	$CI =& get_instance();
-
-	return $CI->config->item('quantity_decimals') ? $CI->config->item('quantity_decimals') : 0;
+    $CI =& get_instance();
+    $fmt = new \NumberFormatter($CI->config->item('number_locale'), $type);
+    $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $CI->config->item($decimals));
+    $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $CI->config->item($decimals));
+    $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $CI->config->item('currency_symbol'));
+    return $fmt->format(floatval($number));
 }
 
+function parse_decimals($number)
+{
+    // ignore empty strings as they are just for empty input
+    if (empty($number))
+    {
+        return $number;
+    }
+    $CI =& get_instance();
+    $fmt = new \NumberFormatter( $CI->config->item('number_locale'), \NumberFormatter::DECIMAL );
+    $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $CI->config->item('quantity_decimals'));
+    $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $CI->config->item('quantity_decimals'));
+    return $fmt->parse($number);
+}
 
 /*
  * Time locale conversion utility

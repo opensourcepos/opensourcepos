@@ -85,17 +85,25 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
+	function check_number_locale()
+	{
+		$number_locale = $this->input->post('number_locale');
+		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
+		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
+		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
+		$number_local_example = $fmt->format(1234567890.12300);
+		echo json_encode(array('success' => $number_local_example != FALSE, 'number_locale_example' => $number_local_example, 'currency_symbol' => $currency_symbol));
+	}
+
 	function save_locale()
 	{
-		$batch_save_data = array(	
+		$batch_save_data = array(
 			'currency_symbol' => $this->input->post('currency_symbol'),
-			'currency_side' => $this->input->post('currency_side') != NULL,
 			'language' => $this->input->post('language'),
 			'timezone' => $this->input->post('timezone'),
 			'dateformat' => $this->input->post('dateformat'),
 			'timeformat' => $this->input->post('timeformat'),
-			'thousands_separator' => $this->input->post('thousands_separator'),
-			'decimal_point' => $this->input->post('decimal_point'),
+			'number_locale' => $this->input->post('number_locale'),
 			'currency_decimals' => $this->input->post('currency_decimals'),
 			'tax_decimals' => $this->input->post('tax_decimals'),
 			'quantity_decimals' => $this->input->post('quantity_decimals'),

@@ -99,19 +99,24 @@ class Receivings extends Secure_Controller
 		$this->_reload($data);
 	}
 
+	function numeric($str)
+	{
+		return (bool) preg_match('/^[\-+]?[0-9]*[\.,]?[0-9]+$/', $str);
+	}
+
 	public function edit_item($item_id)
 	{
 		$data = array();
 
-		$this->form_validation->set_rules('price', 'lang:items_price', 'required|numeric');
-		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|numeric');
-		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|numeric');
+		$this->form_validation->set_rules('price', 'lang:items_price', 'required|callback_numeric');
+		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|callback_numeric');
+		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|callback_numeric');
 
 		$description = $this->input->post('description');
 		$serialnumber = $this->input->post('serialnumber');
-		$price = $this->input->post('price');
-		$quantity = $this->input->post('quantity');
-		$discount = $this->input->post('discount');
+		$price = parse_decimals($this->input->post('price'));
+		$quantity = parse_decimals($this->input->post('quantity'));
+		$discount = parse_decimals($this->input->post('discount'));
 		$item_location = $this->input->post('location');
 
 		if($this->form_validation->run() != FALSE)
