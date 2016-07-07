@@ -180,7 +180,7 @@ class Sales extends Secure_Controller
 	public function add_payment()
 	{
 		$data = array();
-		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|numeric');
+		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
 		
 		$payment_type = $this->input->post('payment_type');
 		$amount_tendered = parse_decimals($this->input->post('amount_tendered'));
@@ -282,7 +282,7 @@ class Sales extends Secure_Controller
 
 	function numeric($str)
 	{
-		return (bool) preg_match('/^[\-+]?[0-9]*[\.,]?[0-9]+$/', $str);
+		return (bool) preg_match('/^[\-+]?([0-9]*[\.,])*?[0-9]+$/', $str);
 	}
 
 	public function edit_item($item_id)

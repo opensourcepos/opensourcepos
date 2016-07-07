@@ -101,7 +101,7 @@ class Receivings extends Secure_Controller
 
 	function numeric($str)
 	{
-		return (bool) preg_match('/^[\-+]?[0-9]*[\.,]?[0-9]+$/', $str);
+		return (bool) preg_match('/^[\-+]?([0-9]*[\.,])*?[0-9]+$/', $str);
 	}
 
 	public function edit_item($item_id)

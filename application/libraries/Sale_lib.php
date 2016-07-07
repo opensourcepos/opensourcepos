@@ -180,7 +180,7 @@ class Sale_lib
 		    $subtotal = bcadd($payments['payment_amount'], $subtotal, PRECISION);
 		}
 
-		return to_currency_no_money($subtotal);
+		return $subtotal;
 	}
 
 	// Multiple Payments
@@ -189,7 +189,7 @@ class Sale_lib
 		$payment_total = $this->get_payments_total();
 		$sales_total = $this->get_total();
 		
-		return to_currency_no_money(bcsub($sales_total, $payment_total, PRECISION));
+		return bcsub($sales_total, $payment_total, PRECISION);
 	}
 
 	public function get_customer()
@@ -306,7 +306,7 @@ class Sale_lib
 				$updatekey = $item['line'];
                 if(!$item_info->is_serialized)
                 {
-                    $quantity += $items[$updatekey]['quantity'];
+                    $quantity = bcadd($quantity, $items[$updatekey]['quantity']);
                 }
 			}
 		}
@@ -603,7 +603,7 @@ class Sale_lib
 	public function get_subtotal($include_discount=FALSE, $exclude_tax=FALSE)
 	{
 		$subtotal = $this->calculate_subtotal($include_discount, $exclude_tax);		
-		return to_currency_no_money($subtotal);
+		return $subtotal;
 	}
 	
 	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE) 
@@ -687,7 +687,7 @@ class Sale_lib
 			}
 		}
 
-		return to_currency_no_money($total);
+		return $total;
 	}
     
     public function validate_item(&$item_id)
