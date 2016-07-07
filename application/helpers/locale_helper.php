@@ -12,12 +12,16 @@ function currency_side()
     return !preg_match('/^¤/', $fmt->getPattern());
 }
 
+function quantity_decimals()
+{
+    $CI =& get_instance();
+    return $CI->config->item('quantity_decimals') ? $CI->config->item('quantity_decimals') : 0;
+}
+
 function totals_decimals()
 {
 	$CI =& get_instance();
-	$decimals = $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
-
-	return $decimals;
+	return $CI->config->item('currency_decimals') ? $CI->config->item('currency_decimals') : 0;
 }
 
 function to_currency($number, $escape = FALSE)
