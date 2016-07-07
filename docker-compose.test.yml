@@ -5,6 +5,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile.test
+    sqlscript:
+        build:
+            context: database/
+            dockerfile: Dockerfile
     php:
         build:
             context: .
