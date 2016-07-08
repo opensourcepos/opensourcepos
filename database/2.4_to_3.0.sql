@@ -10,6 +10,9 @@ ALTER TABLE `ospos_item_kit_items`
 ALTER TABLE `ospos_item_quantities`
  MODIFY COLUMN `quantity` decimal(15,3) NOT NULL DEFAULT '0';
  
+ALTER TABLE `ospos_inventory`
+ MODIFY COLUMN `trans_inventory` decimal(15,3) NOT NULL DEFAULT '0';
+ 
 ALTER TABLE `ospos_receivings`
  DROP KEY `invoice_number`,
  CHANGE COLUMN `invoice_number` `reference` varchar(32) DEFAULT NULL,
@@ -35,7 +38,7 @@ ALTER TABLE `ospos_items_taxes`
  MODIFY COLUMN `percent` decimal(15,3) NOT NULL;
 
 ALTER TABLE `ospos_customers`
- ADD COLUMN `discount_percent` decimal(15,2) NOT NULL DEFAULT '0.00';
+ ADD COLUMN `discount_percent` decimal(15,2) NOT NULL DEFAULT '0';
 
  
 -- alter config table

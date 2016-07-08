@@ -91,7 +91,7 @@ CREATE TABLE `ospos_customers` (
   `company_name` varchar(255) DEFAULT NULL,
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
-  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
   KEY `person_id` (`person_id`)
@@ -160,7 +160,7 @@ CREATE TABLE `ospos_inventory` (
   `trans_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `trans_comment` text NOT NULL,
   `trans_location` int(11) NOT NULL,
-  `trans_inventory` int(11) NOT NULL DEFAULT '0',
+  `trans_inventory` decimal(15,3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`trans_id`),
   KEY `trans_items` (`trans_items`),
   KEY `trans_user` (`trans_user`),
