@@ -58,9 +58,9 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array(
 			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
-			'default_tax_1_name' => parse_decimals($this->input->post('default_tax_1_name')),
+			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
 			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),
-			'default_tax_2_name' => parse_decimals($this->input->post('default_tax_2_name')),
+			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
 			'tax_included' => $this->input->post('tax_included') != NULL,
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),

@@ -370,9 +370,10 @@ class Items extends Secure_Controller
 			$count = count($tax_percents);
 			for ($k = 0; $k < $count; ++$k)
 			{
-				if(is_numeric($tax_percents[$k]))
+				$tax_percentage = parse_decimals($tax_percents[$k]);
+				if(is_numeric($tax_percentage))
 				{
-					$items_taxes_data[] = array('name' => $tax_names[$k], 'percent' => parse_decimals($tax_percents[$k]));
+					$items_taxes_data[] = array('name' => $tax_names[$k], 'percent' => $tax_percentage);
 				}
 			}
 			$success &= $this->Item_taxes->save($items_taxes_data, $item_id);

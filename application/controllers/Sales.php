@@ -282,7 +282,7 @@ class Sales extends Secure_Controller
 
 	function numeric($str)
 	{
-		return (bool) preg_match('/^[\-+]?([0-9]*[\.,])*?[0-9]+$/', $str);
+		return parse_decimals($str, 2);
 	}
 
 	public function edit_item($item_id)

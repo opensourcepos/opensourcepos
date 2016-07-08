@@ -67,6 +67,8 @@ if (isset($success))
 		</div>
 	<?php echo form_close(); ?>
 
+	<?php $tabindex = 0; ?>
+
 	<?php echo form_open($controller_name."/add", array('id'=>'add_item_form', 'class'=>'form-horizontal panel panel-default')); ?>
 		<div class="panel-body form-group">
 			<ul>
@@ -74,7 +76,7 @@ if (isset($success))
 					<label for="item" class='control-label'><?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?></label>
 				</li>
 				<li class="pull-left">
-					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>'1')); ?>
+					<?php echo form_input(array('name'=>'item', 'id'=>'item', 'class'=>'form-control input-sm', 'size'=>'50', 'tabindex'=>++$tabindex)); ?>
 					<span class="ui-helper-hidden-accessible" role="status"></span>
 				</li>
 				<li class="pull-right">
@@ -118,7 +120,6 @@ if (isset($success))
 			}
 			else
 			{				
-				$tabindex = 2;
 				foreach(array_reverse($cart, true) as $line=>$item)
 				{					
 			?>
@@ -135,7 +136,7 @@ if (isset($success))
 							if ($items_module_allowed)
 							{
 							?>
-								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price'])));?></td>
+								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex));?></td>
 							<?php
 							}
 							else
@@ -158,12 +159,12 @@ if (isset($success))
 								}
 								else
 								{								
-									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>$tabindex));
+									echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']), 'tabindex'=>++$tabindex));
 								}
 								?>
 							</td>
 
-							<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0)));?></td>
+							<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex));?></td>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
 							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
@@ -222,7 +223,6 @@ if (isset($success))
 						</tr>
 					<?php echo form_close(); ?>
 			<?php					
-					++$tabindex;					
 				}
 			}
 			?>
@@ -366,13 +366,13 @@ if (isset($success))
 								<tr>
 									<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>'0', 'size'=>'5', 'tabindex'=>$tabindex)); ?>
+										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>'0', 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
 									</td>
 								</tr>
 							</table>
 						<?php echo form_close(); ?>
 
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo $tabindex+1; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 					<?php
 					}
 					else
@@ -389,13 +389,13 @@ if (isset($success))
 								<tr>
 									<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>5)); ?>
+										<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
 									</td>
 								</tr>
 							</table>
 						<?php echo form_close(); ?>
 
-						<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo $tabindex+2; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
+						<div class='btn btn-sm btn-success pull-right' id='add_payment_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-credit-card">&nbsp</span><?php echo $this->lang->line('sales_add_payment'); ?></div>
 					<?php
 					}
 					?>

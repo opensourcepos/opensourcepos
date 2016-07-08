@@ -36,6 +36,10 @@ function to_currency_no_money($number)
 
 function to_tax_decimals($number)
 {
+    if (empty($number))
+    {
+        return $number;
+    }
     return to_decimals($number, 'tax_decimals');
 }
 
@@ -51,7 +55,7 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
     $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $CI->config->item($decimals));
     $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $CI->config->item($decimals));
     $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $CI->config->item('currency_symbol'));
-    return $fmt->format(floatval($number));
+    return $fmt->format($number);
 }
 
 function parse_decimals($number)

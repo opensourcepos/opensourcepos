@@ -17,7 +17,7 @@
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_number_locale'), 'number_locale', array('class' => 'control-label col-xs-2')); ?>
-				<div class='form-group'>
+				<div class='row'>
 					<div class='col-xs-1'>
 						<?php echo form_input('number_locale', $this->config->item('number_locale'), array('class' => 'form-control input-sm', 'id' => 'number_locale')); ?>
 					</div>
