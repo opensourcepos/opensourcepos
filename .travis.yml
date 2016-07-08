@@ -21,7 +21,7 @@ after_success:
     - >
         '[ -n ${DOCKER_USERNAME} ] && 
         docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && 
-        docker tag opensourcepos_php jekkos/opensourcepos:$TRAVIS_BRANCH && 
-        docker tag opensourcepos_sqlscript jekkos/opensourcepos:sqlscript &&
+        docker tag opensourcepos_php_1 jekkos/opensourcepos:$TRAVIS_BRANCH && 
+        docker tag opensourcepos_sqlscript_1 jekkos/opensourcepos:sqlscript &&
         docker push jekkos/opensourcepos:master && docker push jekkos/opensourcepos:sqlscript'
 
