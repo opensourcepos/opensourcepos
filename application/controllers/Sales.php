@@ -727,7 +727,7 @@ class Sales extends Secure_Controller
 	public function save($sale_id = -1)
 	{
 		$newdate = $this->input->post('date');
-		
+
 		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
 
 		$sale_data = array(
@@ -737,7 +737,7 @@ class Sales extends Secure_Controller
 			'comment' => $this->input->post('comment'),
 			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
 		);
-		
+
 		// go through all the payment type input from the form, make sure the form matches the name and iterator number
 		$payments = array();
 		$number_of_payments = $this->input->post('number_of_payments');
@@ -769,7 +769,7 @@ class Sales extends Secure_Controller
 				}
 			}
 		}
-		
+
 		if($this->Sale->update($sale_id, $sale_data, $payments))
 		{
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_updated'), 'id' => $sale_id));
@@ -786,7 +786,7 @@ class Sales extends Secure_Controller
 
 		$this->_reload();
 	}
-	
+
 	public function suspend()
 	{	
 		$cart = $this->sale_lib->get_cart();

@@ -4,7 +4,7 @@ class Sale extends CI_Model
 	public function get_info($sale_id)
 	{
 		$this->db->select('customer_id, customer_name, customer_first_name AS first_name, customer_last_name AS last_name, customer_email AS email, customer_comments AS comments,
-						sale_payment_amount AS amount_tendered, (sale_payment_amount - total) AS change_due, total AS amount_due, payment_type,
+						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, payment_type,
 						sale_id, sale_date, sale_time, comment, invoice_number, employee_id');
 		$this->db->from('sales_items_temp');
 
@@ -14,7 +14,7 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	/*
 	 Get number of rows for the takings (sales/manage) view
 	*/
@@ -76,7 +76,10 @@ class Sale extends CI_Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type ', $this->lang->line('sales_cash'), 'after');
+			$this->db->group_start();
+				$this->db->like('payment_type', $this->lang->line('sales_cash'), 'after');
+				$this->db->or_where('payment_type IS NULL');
+			$this->db->group_end();
 		}
 
 		$this->db->group_by('sale_id');
@@ -136,7 +139,7 @@ class Sale extends CI_Model
 		
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type ', $this->lang->line('sales_cash'), 'after');
+			$this->db->like('payment_type', $this->lang->line('sales_cash'), 'after');
 		}
 
 		$this->db->group_by('payment_type');
@@ -215,7 +218,7 @@ class Sale extends CI_Model
 
 		return $this->db->count_all_results();
 	}
-	
+
 	public function get_sale_by_invoice_number($invoice_number)
 	{
 		$this->db->from('sales');
@@ -223,7 +226,7 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	public function get_invoice_number_for_year($year = '', $start_from = 0) 
 	{
 		$year = $year == '' ? date('Y') : $year;
@@ -243,7 +246,7 @@ class Sale extends CI_Model
 
 		return ($this->db->get()->num_rows()==1);
 	}
-	
+
 	public function update($sale_id, $sale_data, $payments)
 	{
 		$this->db->where('sale_id', $sale_id);
@@ -277,7 +280,7 @@ class Sale extends CI_Model
 		
 		return $success;
 	}
-	
+
 	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id = FALSE)
 	{
 		if(count($items) == 0)
@@ -349,7 +352,7 @@ class Sale extends CI_Model
 			}
 											  
 			// Inventory Count Details
-			$sale_remarks ='POS '.$sale_id;
+			$sale_remarks = 'POS '.$sale_id;
 			$inv_data = array(
 				'trans_date'		=> date('Y-m-d H:i:s'),
 				'trans_items'		=> $item['item_id'],
@@ -385,7 +388,7 @@ class Sale extends CI_Model
 		
 		return $sale_id;
 	}
-	
+
 	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE) 
 	{
 		$result = TRUE;
@@ -397,7 +400,7 @@ class Sale extends CI_Model
 
 		return $result;
 	}
-	
+
 	public function delete($sale_id, $employee_id, $update_inventory = TRUE) 
 	{
 		// start a transaction to assure data integrity
@@ -458,7 +461,7 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	public function get_payment_options($giftcard = TRUE)
 	{
 		$payments = array();
@@ -499,7 +502,7 @@ class Sale extends CI_Model
 
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
-	
+
 	public function invoice_number_exists($invoice_number, $sale_id = '')
 	{
 		$this->db->from('sales');
@@ -511,7 +514,7 @@ class Sale extends CI_Model
 		
 		return ($this->db->get()->num_rows() == 1);
 	}
-	
+
 	public function get_giftcard_value($giftcardNumber)
 	{
 		if(!$this->Giftcard->exists($this->Giftcard->get_giftcard_id($giftcardNumber)))
@@ -576,7 +579,7 @@ class Sale extends CI_Model
 					sales_items.item_location,
 					sales_items.description,
 					payments.payment_type,
-					payments.sale_payment_amount,
+					IFNULL(payments.sale_payment_amount, 0) AS sale_payment_amount,
 					SUM(sales_items_taxes.percent) AS item_tax_percent,
 					' . "
 					ROUND($sale_total * $total, $decimals) AS total,
@@ -592,8 +595,8 @@ class Sale extends CI_Model
 					ON sales_items.item_id = items.item_id
 				LEFT OUTER JOIN (
 								SELECT sale_id, 
-								SUM(payment_amount) AS sale_payment_amount,
-								GROUP_CONCAT(CONCAT(payment_type, " ", payment_amount) SEPARATOR ", ") AS payment_type
+									SUM(payment_amount) AS sale_payment_amount,
+									GROUP_CONCAT(CONCAT(payment_type, " ", payment_amount) SEPARATOR ", ") AS payment_type
 								FROM ' . $this->db->dbprefix('sales_payments') . '
 								GROUP BY sale_id
 							) AS payments

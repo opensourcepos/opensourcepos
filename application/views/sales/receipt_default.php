@@ -143,12 +143,12 @@
 		</tr>
 
 		<?php
-		$only_sale_check = TRUE;
+		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
 		foreach($payments as $payment_id=>$payment)
 		{ 
-			$only_sale_check &= $payment['payment_type'] == $this->lang->line('sales_check');
-			$splitpayment=explode(':',$payment['payment_type']);
+			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
+			$splitpayment = explode(':', $payment['payment_type']);
 			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
 		?>
 			<tr>

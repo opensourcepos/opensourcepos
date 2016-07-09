@@ -36,6 +36,13 @@ function to_currency_no_money($number)
 
 function to_tax_decimals($number)
 {
+	// taxes that are NULL, '' or 0 don't need to be displayed
+	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
+    if(empty($number))
+    {
+        return $number;
+    }
+	
     return to_decimals($number, 'tax_decimals');
 }
 
@@ -47,7 +54,8 @@ function to_quantity_decimals($number)
 function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 {
 	// ignore empty strings and return
-    if(empty($number))
+	// NOTE: do not change it to empty because otherwise tables will show a 0 with no decimal nor currency symbol
+    if(!isset($number))
     {
         return $number;
     }

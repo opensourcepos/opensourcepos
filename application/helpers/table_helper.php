@@ -89,7 +89,7 @@ Get the sales payments summary
 function get_sales_manage_payments_summary($payments, $sales, $controller)
 {
 	$CI =& get_instance();
-	$table='<div id="report_summary">';
+	$table = '<div id="report_summary">';
 
 	foreach($payments as $key=>$payment)
 	{
@@ -104,9 +104,9 @@ function get_sales_manage_payments_summary($payments, $sales, $controller)
 				$amount -= $sale['change_due'];
 			}
 		}
-		$table.='<div class="summary_row">'.$payment['payment_type'].': '.to_currency( $amount ) . '</div>';
+		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency( $amount ) . '</div>';
 	}
-	$table.='</div>';
+	$table .= '</div>';
 
 	return $table;
 }

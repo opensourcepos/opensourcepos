@@ -188,7 +188,7 @@ class Sale_lib
 	{
 		$payment_total = $this->get_payments_total();
 		$sales_total = $this->get_total();
-		
+
 		return bcsub($sales_total, $payment_total, PRECISION);
 	}
 
@@ -553,7 +553,7 @@ class Sale_lib
 		$customer = $this->CI->Customer->get_info($customer_id);
 		
 		//Do not charge sales tax if we have a customer that is not taxable
-		return $customer->taxable or $customer_id==-1;
+		return $customer->taxable or $customer_id == -1;
 	}
 
 	public function get_taxes()
