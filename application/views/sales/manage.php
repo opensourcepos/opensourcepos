@@ -50,6 +50,7 @@ $(document).ready(function()
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
 		<span class="glyphicon glyphicon-print">&nbsp</span><?php echo $this->lang->line('common_print'); ?>
 	</button>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm pull-right', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="toolbar">
