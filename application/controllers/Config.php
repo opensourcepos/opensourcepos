@@ -10,6 +10,55 @@ class Config extends Secure_Controller
 
 		$this->load->library('barcode_lib');
 	}
+
+	/*
+	* This function loads all the licenses starting with the first one being OSPOS one
+	*/
+	private function _licenses()
+	{
+		$i = 0;
+		$license = array();
+
+		$license[$i]['title'] = 'Open Surce Point Of Sale ' . $this->config->item('application_version');
+
+		if(file_exists('COPYING'))
+		{
+			$license[$i]['text'] = $this->xss_clean(file_get_contents('COPYING', NULL, NULL, 0, 2000));
+		}
+		else
+		{
+			$license[$i]['text'] = 'COPYING file must be present in OSPOS root directory. You are not allowed to use OSPOS application until the distribution copy of COPYING file is present.';
+		}
+
+		// read all the files in the dir license
+		$dir = new DirectoryIterator('license');
+
+		foreach($dir as $fileinfo)
+		{
+			// license files must be in couples: .version (name & version) & .license (license text)
+			if($fileinfo->isFile() && $fileinfo->getExtension() == 'version')
+			{
+				++$i;
+
+				$basename = 'license/' . $fileinfo->getBasename('.version');
+
+				$license[$i]['title']  = $this->xss_clean(file_get_contents($basename . '.version', NULL, NULL, 0, 100));
+
+				$license_text_file = $basename . '.license';
+
+				if(file_exists($license_text_file))
+				{
+					$license[$i]['text'] = $this->xss_clean(file_get_contents($license_text_file , NULL, NULL, 0, 2000));
+				}
+				else
+				{
+					$license[$i]['text'] = $license_text_file . ' file is missing';
+				}
+			}
+		}
+		
+		return $license;
+	}
 	
 	public function index()
 	{
@@ -18,6 +67,9 @@ class Config extends Secure_Controller
 		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
 		
 		$data = $this->xss_clean($data);
+		
+		// load all the license statements, they are already XSS cleaned in the private function
+		$data['licenses'] = $this->_licenses();
 
 		$this->load->view("configs/manage", $data);
 	}
@@ -85,7 +137,7 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
-	function check_number_locale()
+	public function check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
@@ -95,7 +147,7 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $number_local_example != FALSE, 'number_locale_example' => $number_local_example, 'currency_symbol' => $currency_symbol));
 	}
 
-	function save_locale()
+	public function save_locale()
 	{
 		$batch_save_data = array(
 			'currency_symbol' => $this->input->post('currency_symbol'),

@@ -42,6 +42,13 @@ IndexIgnore *
   Satisfy all
 </Files>
 
+# prevent access to COPYING
+<Files COPYING>
+  Order allow,deny
+  Deny from all
+  Satisfy all
+</Files>
+
 # prevent access to csv and txt files
 <FilesMatch "\.(csv|txt)$">
   Order allow,deny

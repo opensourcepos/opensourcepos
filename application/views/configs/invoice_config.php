@@ -11,7 +11,7 @@
 						'name' => 'invoice_enable',
 						'value' => 'invoice_enable',
 						'id' => 'invoice_enable',
-						'checked'=>$this->config->item('invoice_enable')));?>
+						'checked' => $this->config->item('invoice_enable')));?>
 				</div>
 			</div>
 			
@@ -22,7 +22,7 @@
 						'name' => 'sales_invoice_format',
 						'id' => 'sales_invoice_format',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('sales_invoice_format'))); ?>
+						'value' => $this->config->item('sales_invoice_format'))); ?>
 				</div>
 			</div>
 
@@ -33,7 +33,7 @@
 						'name' => 'recv_invoice_format',
 						'id' => 'recv_invoice_format',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('recv_invoice_format'))); ?>
+						'value' => $this->config->item('recv_invoice_format'))); ?>
 				</div>
 			</div>
 
@@ -44,7 +44,7 @@
 						'name' => 'invoice_default_comments',
 						'id' => 'invoice_default_comments',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('invoice_default_comments')));?>
+						'value '=> $this->config->item('invoice_default_comments')));?>
 				</div>
 			</div>
 
@@ -55,14 +55,14 @@
 						'name' => 'invoice_email_message',
 						'id' => 'invoice_email_message',
 						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('invoice_email_message')));?>
+						'value '=> $this->config->item('invoice_email_message')));?>
 				</div>
 			</div>
 
 			<?php echo form_submit(array(
 				'name' => 'submit_form',
 				'id' => 'submit_form',
-				'value'=>$this->lang->line('common_submit'),
+				'value' => $this->lang->line('common_submit'),
 				'class' => 'btn btn-primary btn-sm pull-right'));?>
 		</fieldset>
 	</div>
@@ -74,13 +74,13 @@ $(document).ready(function()
 {
 	var enable_disable_invoice_enable = (function() {
 		var invoice_enable = $("#invoice_enable").is(":checked");
-		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message").prop('disabled', !invoice_enable);
+		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message").prop("disabled", !invoice_enable);
 		return arguments.callee;
 	})();
 
 	$("#invoice_enable").change(enable_disable_invoice_enable);
 
-	$('#invoice_config_form').validate($.extend(form_support.handler, {
+	$("#invoice_config_form").validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
