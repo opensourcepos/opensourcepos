@@ -19,7 +19,7 @@ class Config extends Secure_Controller
 		$i = 0;
 		$license = array();
 
-		$license[$i]['title'] = 'Open Surce Point Of Sale ' . $this->config->item('application_version');
+		$license[$i]['title'] = 'Open Source Point Of Sale ' . $this->config->item('application_version');
 
 		if(file_exists('COPYING'))
 		{
@@ -27,7 +27,7 @@ class Config extends Secure_Controller
 		}
 		else
 		{
-			$license[$i]['text'] = 'COPYING file must be present in OSPOS root directory. You are not allowed to use OSPOS application until the distribution copy of COPYING file is present.';
+			$license[$i]['text'] = 'COPYING file must be in OSPOS root directory. You are not allowed to use OSPOS application until the distribution copy of COPYING file is present.';
 		}
 
 		// read all the files in the dir license
