@@ -181,9 +181,8 @@ class Sales extends Secure_Controller
 	{
 		$data = array();
 		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
-		
+
 		$payment_type = $this->input->post('payment_type');
-		$amount_tendered = parse_decimals($this->input->post('amount_tendered'));
 
 		if($this->form_validation->run() == FALSE)
 		{
@@ -200,32 +199,37 @@ class Sales extends Secure_Controller
 		{
 			if($payment_type == $this->lang->line('sales_giftcard'))
 			{
+				// in case of giftcard payment the register input amount_tendered becomes the giftcard number
+				$giftcard_num = $this->input->post('amount_tendered');
+
 				$payments = $this->sale_lib->get_payments();
-				$payment_type = $payment_type . ':' . $amount_tendered;
+				$payment_type = $payment_type . ':' . $giftcard_num;
 				$current_payments_with_giftcard = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
-				$cur_giftcard_value = $this->Giftcard->get_giftcard_value($amount_tendered) - $current_payments_with_giftcard;
+				$cur_giftcard_value = $this->Giftcard->get_giftcard_value($giftcard_num);
 				
-				if($cur_giftcard_value <= 0)
+				if(($cur_giftcard_value - $current_payments_with_giftcard) <= 0)
 				{
-					$data['error'] = $this->lang->line('giftcards_remaining_balance', $amount_tendered, to_currency( $this->Giftcard->get_giftcard_value( $this->input->post('amount_tendered'))));
+					$data['error'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, to_currency(cur_giftcard_value));
 				}
 				else
 				{
-					$new_giftcard_value = $this->Giftcard->get_giftcard_value($amount_tendered) - $this->sale_lib->get_amount_due();
+					$new_giftcard_value = $this->Giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
 					$new_giftcard_value = $new_giftcard_value >= 0 ? $new_giftcard_value : 0;
 					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-					$data['warning'] = $this->lang->line('giftcards_remaining_balance', $amount_tendered, to_currency($new_giftcard_value, TRUE));
-					$amount_tendered = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value($amount_tendered) );
-					
+					$data['warning'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, to_currency($new_giftcard_value, TRUE));
+					$amount_tendered = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value($giftcard_num) );
+
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				}
 			}
 			else
 			{
+				$amount_tendered = parse_decimals($this->input->post('amount_tendered'));
+
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 			}
 		}
-		
+
 		$this->_reload($data);
 	}
 
