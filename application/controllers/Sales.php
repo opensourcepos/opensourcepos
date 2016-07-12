@@ -209,7 +209,7 @@ class Sales extends Secure_Controller
 				
 				if(($cur_giftcard_value - $current_payments_with_giftcard) <= 0)
 				{
-					$data['error'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, to_currency(cur_giftcard_value));
+					$data['error'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, to_currency($cur_giftcard_value));
 				}
 				else
 				{
