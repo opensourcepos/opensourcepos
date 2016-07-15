@@ -61,6 +61,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('timeformat', 'H:i:s'),
 ('currency_symbol', '$'),
 ('number_locale', 'en_US'),
+('thousands_separator', '1'),
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
 ('quantity_decimals', '0'),
