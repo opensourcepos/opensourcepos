@@ -142,9 +142,18 @@ class Config extends Secure_Controller
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
 		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
+		if ($this->input->post('thousands_separator') == "false")
+		{
+			$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+		}
 		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
 		$number_local_example = $fmt->format(1234567890.12300);
-		echo json_encode(array('success' => $number_local_example != FALSE, 'number_locale_example' => $number_local_example, 'currency_symbol' => $currency_symbol));
+		echo json_encode(array(
+			'success' => $number_local_example != FALSE,
+			'number_locale_example' => $number_local_example,
+			'currency_symbol' => $currency_symbol,
+			'thousands_separator' => $fmt->getAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL) != ''
+		));
 	}
 
 	public function save_locale()
@@ -155,7 +164,8 @@ class Config extends Secure_Controller
 			'timezone' => $this->input->post('timezone'),
 			'dateformat' => $this->input->post('dateformat'),
 			'timeformat' => $this->input->post('timeformat'),
-			'number_locale' => $this->input->post('number_locale'),
+			'thousands_separator' => $this->input->post('thousands_separator'),
+			'number_locale' => $this->input->post('number_locale'),	
 			'currency_decimals' => $this->input->post('currency_decimals'),
 			'tax_decimals' => $this->input->post('tax_decimals'),
 			'quantity_decimals' => $this->input->post('quantity_decimals'),

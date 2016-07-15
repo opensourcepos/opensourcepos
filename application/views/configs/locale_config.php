@@ -5,17 +5,6 @@
 			<ul id="locale_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-1'>
-					<?php echo form_input(array(
-							'name' => 'currency_symbol',
-							'id' => 'currency_symbol',
-							'class' => 'form-control input-sm number_locale',
-							'value'=>$this->config->item('currency_symbol'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_number_locale'), 'number_locale', array('class' => 'control-label col-xs-2')); ?>
 				<div class='row'>
 					<div class='col-xs-1'>
@@ -31,6 +20,28 @@
 							</span>
 						</label>
 					</div>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_thousands_separator'), 'thousands_separator', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'thousands_separator',
+						'id' => 'thousands_separator',
+						'value' => 'thousands_separator',
+						'checked'=>$this->config->item('thousands_separator'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_currency_symbol'), 'currency_symbol', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_input(array(
+						'name' => 'currency_symbol',
+						'id' => 'currency_symbol',
+						'class' => 'form-control input-sm number_locale',
+						'value'=>$this->config->item('currency_symbol'))); ?>
 				</div>
 			</div>
 
@@ -269,11 +280,16 @@ $(document).ready(function()
 		type: "POST"
 	};
 
-	$("#currency_symbol").change(function() {
+	$("#currency_symbol, #thousands_separator").change(function() {
+		var field = $(this).attr('id');
+		var value = $(this).is(":checkbox") ? $(this).is(":checked") : $(this).val();
+		var data =
+		{
+			number_locale: $("#number_locale").val()
+		};
+		data[field] = value;
 		$.post($.extend(number_locale_params, {
-			data: $.extend(csrf_form_base(), {
-				"currency_symbol": $("#currency_symbol").val()
-			}),
+			data: $.extend(csrf_form_base(), data),
 			success: function(response) {
 				$("#number_locale_example").text(response.number_locale_example);
 			}
@@ -292,12 +308,16 @@ $(document).ready(function()
 						"number_locale" : function() {
 							return $("#number_locale").val();
 						},
+						"thousands_separator": function() {
+							return $("#thousands_separator").is(":checked");
+						}
 					}),
 					dataFilter: function(data, dataType) {
 						setup_csrf_token();
 						var response = JSON.parse(data);
 						$("#number_locale_example").text(response.number_locale_example);
 						$("#currency_symbol").val(response.currency_symbol);
+						$("#thousands_separator").prop('checked', response.thousands_separator);
 						return response.success;
 					}
 				})

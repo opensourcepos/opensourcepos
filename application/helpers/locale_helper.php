@@ -64,6 +64,10 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
     $fmt = new \NumberFormatter($config->item('number_locale'), $type);
     $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));
     $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item($decimals));
+    if (empty($config->item('thousands_separator')))
+    {
+        $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+    }
     $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
     return $fmt->format($number);
 }

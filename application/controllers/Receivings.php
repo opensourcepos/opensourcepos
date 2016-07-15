@@ -101,7 +101,7 @@ class Receivings extends Secure_Controller
 
 	function numeric($str)
 	{
-		return parse_decimals($str, 2);
+		return parse_decimals($str, 3);
 	}
 
 	public function edit_item($item_id)

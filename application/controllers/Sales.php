@@ -224,7 +224,7 @@ class Sales extends Secure_Controller
 			}
 			else
 			{
-				$amount_tendered = parse_decimals($this->input->post('amount_tendered'));
+				$amount_tendered = $this->input->post('amount_tendered');
 
 				$this->sale_lib->add_payment($payment_type, $amount_tendered);
 			}
@@ -286,7 +286,7 @@ class Sales extends Secure_Controller
 
 	function numeric($str)
 	{
-		return parse_decimals($str, 2);
+		return parse_decimals($str, 3);
 	}
 
 	public function edit_item($item_id)
