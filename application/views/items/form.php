@@ -87,7 +87,7 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'encty
 	%
 	</div>
 </div>
-
+<?php /*
 <div class="field_row clearfix">
 <?php echo form_label($this->lang->line('items_tax_2').':', 'tax_percent_2',array('class'=>'wide')); ?>
 	<div class='form_field'>
@@ -107,7 +107,7 @@ echo form_open('items/save/'.$item_info->item_id,array('id'=>'item_form', 'encty
 	);?>
 	%
 	</div>
-</div>
+</div>*/ ?>
 
 <?php
 foreach($stock_locations as $key=>$location_detail)

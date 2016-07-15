@@ -259,8 +259,8 @@ function get_supplier_data_row($supplier,$controller)
 	//$table_data_row.='<td width="17%">'.character_limiter($supplier->company_name,13).'</td>';
 	//$table_data_row.='<td width="17%">'.character_limiter($supplier->agency_name,13).'</td>';
 	//$table_data_row.='<td width="17%">'.character_limiter($supplier->last_name,13).'</td>';
-	$table_data_row.='<td width="17%">'.character_limiter($supplier->first_name,13).'</td>';
-	$table_data_row.='<td width="22%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
+	$table_data_row.='<td width="30%">'.character_limiter($supplier->first_name.' '.$supplier->last_name,33).'</td>';
+	$table_data_row.='<td width="10%">'.mailto($supplier->email,character_limiter($supplier->email,22)).'</td>';
 	$table_data_row.='<td width="17%">'.character_limiter($supplier->phone_number,13).'</td>';
 	$table_data_row.='<td width="5%">'.character_limiter($supplier->person_id,5).'</td>';
 	$table_data_row.='<td width="5%">'.anchor($controller_name."/view/$supplier->person_id/width:$width", $CI->lang->line('common_edit'),array('class'=>'thickbox','title'=>$CI->lang->line($controller_name.'_update'))).'</td>';
