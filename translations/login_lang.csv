@@ -1,6 +1,6 @@
-label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,pt-BR,hr-HR
-login_go,Juhúúúúúú!,Start,Verstuur,Ir,Go,Lancer,登入,ходите,GOOOO,Giriş,Lanjutkan,Entrar,Ulaz
-login_invalid_username_and_password,Érvénytelen felhasználói név vagy jelszó,Ungültiger Benutzername/Passwort,Ongeldige gebruiker/paswoord,Usuario/Contraseña inválidos,Invalid username/password,Entrée invalide,錯誤的帳號或密碼,Неправелная Имя/Пароль,ชื่อผู้ใช้/รหัส ไม่ถูกต้อง,Kullanıcı adı/Şifre yanlış,Nama Pengguna/Kata Kunci Salah,Usuário ou senha inválido,Neispravno ime/lozinka
-login_login,Belépés,Login,Login,Iniciar Sesión,Login,Login,登入,Вход,ลงชื่อเข้าใช้,Giriş,Masuk,Login,Prijava
-login_password,Jelszó,Passwort,Paswoord,Contraseña,Password,Mot de passe,密碼,Пароль,รหัสผ่าน,Şifre,Kata kunci,Senha,Lozinka
-login_username,Felhasználó név,Benutzername,Gebruiker,Usuario,Username,Nom d'utilisateur,帳號,Имя,ชื่อผู้ใช้,Kullanıcı Adı,Nama Anda,Usuário,Korisničko ime
+label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,pt-BR,hr-HR,de
+login_go,Juhúúúúúú!,Start,Verstuur,Ir,Go,Lancer,登入,ходите,GOOOO,Giriş,Lanjutkan,Entrar,Ulaz,Start
+login_invalid_username_and_password,Érvénytelen felhasználói név vagy jelszó,Ungültiger Benutzername/Passwort,Ongeldige gebruiker/paswoord,Usuario/Contraseña inválidos,Invalid username/password,Entrée invalide,錯誤的帳號或密碼,Неправелная Имя/Пароль,ชื่อผู้ใช้/รหัส ไม่ถูกต้อง,Kullanıcı adı/Şifre yanlış,Nama Pengguna/Kata Kunci Salah,Usuário ou senha inválido,Neispravno ime/lozinka,Ungültiger Benutzername/Passwort
+login_login,Belépés,Login,Login,Iniciar Sesión,Login,Login,登入,Вход,ลงชื่อเข้าใช้,Giriş,Masuk,Login,Prijava,Login
+login_password,Jelszó,Passwort,Paswoord,Contraseña,Password,Mot de passe,密碼,Пароль,รหัสผ่าน,Şifre,Kata kunci,Senha,Lozinka,Passwort
+login_username,Felhasználó név,Benutzername,Gebruiker,Usuario,Username,Nom d'utilisateur,帳號,Имя,ชื่อผู้ใช้,Kullanıcı Adı,Nama Anda,Usuário,Korisničko ime,Benutzername

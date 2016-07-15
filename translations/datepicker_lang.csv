@@ -1,20 +1,20 @@
-label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,pt-BR,hr-HR
-datepicker_today,Ma,Heute,Vandaag,Hoy,Today,Aujourd'hui,今天,сегодня,วันนี้,Bugün,Hari ini,Hoje,Danas
-datepicker_weekstart,1,1,0,0,0,1,0,0,0,0,0,0,1
-datepicker_all_time,Kezdetektől,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu,Todos,Sve
-datepicker_last_7,Utolsó 7 nap,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir,Últimos 7 Dias,Zadnjih 7 dana
-datepicker_last_30,Utolsó 30 nap,Letzte 30 Tage,Vorige 30 Dagen,Últimos 30 Días,Last 30 Days,Ces 30 derniers jours,過去七天,Последние 30 дней,30 วันสุดท้าย,Son 30 Gün,30 Hari Terakhir,Últimos 30 Dias,Zadnjih 30 dana
-datepicker_last_month,Múlt hónap,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu,Último Mês,Zadnji mjesec
-datepicker_last_year,Múlt év,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu,Último ano,Zadnja godina
-datepicker_this_month,Ez a hónap,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini,Este Mês,Ovaj mjesec
-datepicker_this_month_last_year,"Ez a hónap, múlt évben",Dieser Monat letzten Jahres,Same Month Last Year,Este Mes ace un año,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Este mês último ano,Ovaj mjesec prošle godine
-datepicker_same_month_to_today,"Ez a hónap, mai napig",Dieser Monat bis heute,This Month To Today,Este Mes hasta hoy,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,Deste mês para hoje,Ovaj mjesec do danas
-datepicker_same_month_to_same_day_last_year,"Ez a hónap, mai nap, múlt évben",Dieser Monat bis Heute letzten Jahres,Same Month To Same Day Last Year,"Este mes hasta hoy, del año pasado",Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Este mês Para Hoje Último Ano,Ovaj mjesec do danas prošle godine
-datepicker_this_year,Ezév,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini,Este Ano,Ova godina
-datepicker_today_last_year,"Mai nap, elmúlt évben",Heute letzten Jahres,Today Last Year,Hoy el año pasado,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Hoje Último Ano,Ovaj dan prošle godine
-datepicker_yesterday,Tegnap,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin,Ontem,Jučer
-datepicker_apply,Elfogad,Apply,Apply,Aplicar,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Aplicar,Primjeni
-datepicker_cancel,Mégsem,Cancel,Cancel,Cancelar,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancelar,Otkaži
-datepicker_from,Tól,From,From,Desde,From,From,From,From,From,From,From,De,Od
-datepicker_to,Ig,To,To,Hasta,To,To,To,To,To,To,To,Para,Do
-datepicker_custom,Egyedi,Custom,Custom,Personalizar,Custom,Custom,Custom,Custom,Custom,Custom,Custom,Cliente,Slobodan izbor
+label,hu-HU,de-CH,nl-BE,es,en,fr,zh,ru,th,tr,id,pt-BR,hr-HR,de
+datepicker_today,Ma,Heute,Vandaag,Hoy,Today,Aujourd'hui,今天,сегодня,วันนี้,Bugün,Hari ini,Hoje,Danas,Heute
+datepicker_weekstart,1,1,0,0,0,1,0,0,0,0,0,0,1,1
+datepicker_all_time,Kezdetektől,Von Beginn weg,Alle,Todos,All Time,Depuis le début,全部,за все время,เวลาทั้งหมด,Tüm Zamanlar,Semua Waktu,Todos,Sve,Von Beginn weg
+datepicker_last_7,Utolsó 7 nap,Letzte 7 Tage,Vorige 7 Dagen,Últimos 7 Días,Last 7 Days,Ces 7 derniers jours,過去七天,Последние 7 дней,7 วันสุดท้าย,Son 7 Gün,7 Hari Terakhir,Últimos 7 Dias,Zadnjih 7 dana,Letzte 7 Tage
+datepicker_last_30,Utolsó 30 nap,Letzte 30 Tage,Vorige 30 Dagen,Últimos 30 Días,Last 30 Days,Ces 30 derniers jours,過去七天,Последние 30 дней,30 วันสุดท้าย,Son 30 Gün,30 Hari Terakhir,Últimos 30 Dias,Zadnjih 30 dana,Letzte 30 Tage
+datepicker_last_month,Múlt hónap,Letzter Monat,Vorige Maand,Último Mes,Last Month,Le mois dernier,上個月,Последний месяц,เดือนที่แล้ว,Geçen Ay,Bulan lalu,Último Mês,Zadnji mjesec,Letzter Monat
+datepicker_last_year,Múlt év,Letztes Jahr,Vorig Jaar,Último Año,Last Year,L'année passée,去年,в прошлом году,ปีที่แล้ว,Geçen Yıl,Tahun lalu,Último ano,Zadnja godina,Letztes Jahr
+datepicker_this_month,Ez a hónap,Dieser Monat,Deze Maand,Este Mes,This Month,Ce mois,這個月,В этом месяце,เดือนนี้,Bu Ay,Bulan ini,Este Mês,Ovaj mjesec,Dieser Monat
+datepicker_this_month_last_year,"Ez a hónap, múlt évben",Dieser Monat letzten Jahres,Same Month Last Year,Este Mes ace un año,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Same Month Last Year,Este mês último ano,Ovaj mjesec prošle godine,Dieser Monat letzten Jahres
+datepicker_same_month_to_today,"Ez a hónap, mai napig",Dieser Monat bis heute,This Month To Today,Este Mes hasta hoy,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,This Month To Today,Deste mês para hoje,Ovaj mjesec do danas,Dieser Monat bis heute
+datepicker_same_month_to_same_day_last_year,"Ez a hónap, mai nap, múlt évben",Dieser Monat bis Heute letzten Jahres,Same Month To Same Day Last Year,"Este mes hasta hoy, del año pasado",Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Same Month To Same Day Last Year,Este mês Para Hoje Último Ano,Ovaj mjesec do danas prošle godine,Dieser Monat bis Heute letzten Jahres
+datepicker_this_year,Ezév,Dieses Jahr,Dit Jaar,Este Año,This Year,Cette Année,今年,В этом году,ปีนี้,Bu Yıl,Tahun ini,Este Ano,Ova godina,Dieses Jahr
+datepicker_today_last_year,"Mai nap, elmúlt évben",Heute letzten Jahres,Today Last Year,Hoy el año pasado,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Today Last Year,Hoje Último Ano,Ovaj dan prošle godine,Heute letzten Jahres
+datepicker_yesterday,Tegnap,Gestern,Gisteren,Ayer,Yesterday,Hier,昨天,вчера,เมื่อวานนี้,Dün,Kemarin,Ontem,Jučer,Gestern
+datepicker_apply,Elfogad,Apply,Apply,Aplicar,Apply,Apply,Apply,Apply,Apply,Apply,Apply,Aplicar,Primjeni,Ausführen
+datepicker_cancel,Mégsem,Cancel,Cancel,Cancelar,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancel,Cancelar,Otkaži,Abbrechen
+datepicker_from,Tól,From,From,Desde,From,From,From,From,From,From,From,De,Od,Von
+datepicker_to,Ig,To,To,Hasta,To,To,To,To,To,To,To,Para,Do,Bis
+datepicker_custom,Egyedi,Custom,Custom,Personalizar,Custom,Custom,Custom,Custom,Custom,Custom,Custom,Cliente,Slobodan izbor,Benutzerdefiniert

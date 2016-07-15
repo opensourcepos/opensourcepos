@@ -116,6 +116,7 @@
 						'en' => 'English',
 						'es' => 'Spanish',
 						'nl-BE' => 'Dutch (Belgium)',
+						'de' => 'German (Germany)',
 						'de-CH' => 'German (Swiss)',
 						'fr' => 'French',
 						'zh' => 'Chinese',
