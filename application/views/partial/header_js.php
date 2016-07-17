@@ -12,8 +12,8 @@
 	}
 
 	$.notifyDefaults({ placement: {
-		align: '<?php echo $this->config->item('config_notify_horizontal_position'); ?>',
-		from: '<?php echo $this->config->item('config_notify_vertical_position'); ?>'
+		align: '<?php echo $this->config->item('notify_horizontal_position'); ?>',
+		from: '<?php echo $this->config->item('notify_vertical_position'); ?>'
 	}});
 
 	var post = $.post;
