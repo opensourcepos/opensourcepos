@@ -24,7 +24,7 @@ function totals_decimals()
 	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
 }
 
-function to_currency($number)
+function to_currency($number, $escape = FALSE)
 {
     return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
 }

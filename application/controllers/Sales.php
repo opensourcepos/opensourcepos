@@ -533,7 +533,8 @@ class Sales extends Secure_Controller
 
 	private function _payments_cover_total()
 	{
-		return !bccomp($this->sale_lib->get_amount_due(), 0, $this->config->item('currency_decimals'));
+		// Changed the conditional to account for floating point rounding
+		return ($this->sale_lib->get_amount_due() <= 1e-6);
 	}
 
 	private function _load_customer_data($customer_id, &$data, $totals = FALSE)
