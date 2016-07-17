@@ -78,7 +78,7 @@ class Giftcards extends Secure_Controller
 		$giftcard_data = array(
 			'record_time' => date('Y-m-d H:i:s'),
 			'giftcard_number' => $this->input->post('giftcard_number'),
-			'value' => $this->input->post('value'),
+			'value' => parse_decimals($this->input->post('value')),
 			'person_id' => $this->input->post('person_id') == '' ? NULL : $this->input->post('person_id')
 		);
 

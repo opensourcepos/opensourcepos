@@ -216,7 +216,8 @@ class Sales extends Secure_Controller
 					$new_giftcard_value = $this->Giftcard->get_giftcard_value($giftcard_num) - $this->sale_lib->get_amount_due();
 					$new_giftcard_value = $new_giftcard_value >= 0 ? $new_giftcard_value : 0;
 					$this->sale_lib->set_giftcard_remainder($new_giftcard_value);
-					$data['warning'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, to_currency($new_giftcard_value, TRUE));
+					$new_giftcard_value = str_replace('$', '\$', to_currency($new_giftcard_value));
+					$data['warning'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, $new_giftcard_value);
 					$amount_tendered = min( $this->sale_lib->get_amount_due(), $this->Giftcard->get_giftcard_value($giftcard_num) );
 
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
