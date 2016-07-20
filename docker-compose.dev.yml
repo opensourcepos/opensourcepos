@@ -1,0 +1,39 @@
+version: '2'
+
+volumes:
+    uploads:
+        driver: local
+  
+services:
+    sqlscript:
+        build:
+            context: database/
+            dockerfile: Dockerfile
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile.dev
+        links:
+            - mysql
+        ports:
+            - "80:80"
+        volumes:
+            - .:/app
+        environment:
+            - MYSQL_USERNAME=admin
+            - MYSQL_PASSWORD=pointofsale
+            - MYSQL_DB_NAME=ospos
+            - MYSQL_HOST_NAME=mysql
+            - XDEBUG_CONFIG=remote_host=172.17.0.1
+
+    mysql:
+        image: mariadb:10.0.26
+        environment:
+            - MYSQL_ROOT_PASSWORD=pointofsale
+            - MYSQL_DATABASE=ospos
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=pointofsale
+        ports:
+            - "3306:3306"
+        volumes_from:
+            - sqlscript
