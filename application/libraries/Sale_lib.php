@@ -128,7 +128,7 @@ class Sale_lib
 		if(isset($payments[$payment_id]))
 		{
 			//payment_method already exists, add to payment_amount
-			$payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount, PRECISION);
+			$payments[$payment_id]['payment_amount'] = bcadd($payments[$payment_id]['payment_amount'], $payment_amount);
 		}
 		else
 		{
@@ -177,7 +177,7 @@ class Sale_lib
 		$subtotal = 0;
 		foreach($this->get_payments() as $payments)
 		{
-		    $subtotal = bcadd($payments['payment_amount'], $subtotal, PRECISION);
+		    $subtotal = bcadd($payments['payment_amount'], $subtotal);
 		}
 
 		return $subtotal;
@@ -189,7 +189,7 @@ class Sale_lib
 		$payment_total = $this->get_payments_total();
 		$sales_total = $this->get_total();
 
-		return bcsub($sales_total, $payment_total, PRECISION);
+		return bcsub($sales_total, $payment_total);
 	}
 
 	public function get_customer()
@@ -577,7 +577,7 @@ class Sale_lib
 						$taxes[$name] = 0;
 					}
 
-					$taxes[$name] = bcadd($taxes[$name], $tax_amount, PRECISION);
+					$taxes[$name] = bcadd($taxes[$name], $tax_amount);
 				}
 			}
 		}
@@ -593,7 +593,7 @@ class Sale_lib
 			if($item['discount'] > 0)
 			{
 				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
-				$discount = bcadd($discount, $item_discount, PRECISION); 
+				$discount = bcadd($discount, $item_discount);
 			}
 		}
 
@@ -614,7 +614,7 @@ class Sale_lib
 		foreach($tax_info as $tax)
 		{
 			$tax_percentage = $tax['percent'];
-			$item_price = bcsub($item_price, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage), PRECISION);
+			$item_price = bcsub($item_price, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage));
 		}
 		
 		return $item_price;
@@ -622,12 +622,12 @@ class Sale_lib
 	
 	public function get_item_total($quantity, $price, $discount_percentage, $include_discount = FALSE)  
 	{
-		$total = bcmul($quantity, $price, PRECISION);
+		$total = bcmul($quantity, $price);
 		if($include_discount)
 		{
 			$discount_amount = $this->get_item_discount($quantity, $price, $discount_percentage);
 
-			return bcsub($total, $discount_amount, PRECISION);
+			return bcsub($total, $discount_amount);
 		}
 
 		return $total;
@@ -635,10 +635,10 @@ class Sale_lib
 	
 	public function get_item_discount($quantity, $price, $discount_percentage)
 	{
-		$total = bcmul($quantity, $price, PRECISION);
-		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
+		$total = bcmul($quantity, $price);
+		$discount_fraction = bcdiv($discount_percentage, 100);
 
-		return bcmul($total, $discount_fraction, PRECISION);
+		return bcmul($total, $discount_fraction);
 	}
 	
 	public function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
@@ -647,15 +647,15 @@ class Sale_lib
 
 		if($this->CI->config->config['tax_included'])
 		{
-			$tax_fraction = bcadd(100, $tax_percentage, PRECISION);
-			$tax_fraction = bcdiv($tax_fraction, 100, PRECISION);
-			$price_tax_excl = bcdiv($price, $tax_fraction, PRECISION);
+			$tax_fraction = bcadd(100, $tax_percentage);
+			$tax_fraction = bcdiv($tax_fraction, 100);
+			$price_tax_excl = bcdiv($price, $tax_fraction);
 
-			return bcsub($price, $price_tax_excl, PRECISION);
+			return bcsub($price, $price_tax_excl);
 		}
-		$tax_fraction = bcdiv($tax_percentage, 100, PRECISION);
+		$tax_fraction = bcdiv($tax_percentage, 100);
 
-		return bcmul($price, $tax_fraction, PRECISION);
+		return bcmul($price, $tax_fraction);
 	}
 
 	public function calculate_subtotal($include_discount = FALSE, $exclude_tax = FALSE) 
@@ -665,11 +665,11 @@ class Sale_lib
 		{
 			if($exclude_tax && $this->CI->config->config['tax_included'])
 			{
-				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
+				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount));
 			}
 			else 
 			{
-				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount), PRECISION);
+				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount));
 			}
 		}
 
@@ -683,7 +683,7 @@ class Sale_lib
 		{
 			foreach($this->get_taxes() as $tax)
 			{
-				$total = bcadd($total, $tax, PRECISION);
+				$total = bcadd($total, $tax);
 			}
 		}
 

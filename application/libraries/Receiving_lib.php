@@ -353,11 +353,11 @@ class Receiving_lib
 
 	public function get_item_total($quantity, $price, $discount_percentage)
 	{
-		$total = bcmul($quantity, $price, PRECISION);
-		$discount_fraction = bcdiv($discount_percentage, 100, PRECISION);
-		$discount_amount = bcmul($total, $discount_fraction, PRECISION);
+		$total = bcmul($quantity, $price);
+		$discount_fraction = bcdiv($discount_percentage, 100);
+		$discount_amount = bcmul($total, $discount_fraction);
 
-		return bcsub($total, $discount_amount, PRECISION);
+		return bcsub($total, $discount_amount);
 	}
 
 	public function get_total()
@@ -365,7 +365,7 @@ class Receiving_lib
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-			$total = bcadd($total, $this->get_item_total($item['quantity'], $item['price'], $item['discount']), PRECISION);
+			$total = bcadd($total, $this->get_item_total($item['quantity'], $item['price'], $item['discount']));
 		}
 		
 		return $total;

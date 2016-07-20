@@ -20,6 +20,11 @@ class Summary_suppliers extends Report
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
+
 		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
@@ -42,6 +47,11 @@ class Summary_suppliers extends Report
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
 
 		if ($inputs['sale_type'] == 'sales')
         {

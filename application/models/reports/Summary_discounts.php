@@ -19,6 +19,11 @@ class Summary_discounts extends Report
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		$this->db->where('discount_percent > 0');
 
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
+
 		if ($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
@@ -39,6 +44,11 @@ class Summary_discounts extends Report
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+
+		if ($inputs['location_id'] != 'all')
+		{
+			$this->db->where('item_location', $inputs['location_id']);
+		}
 
 		if ($inputs['sale_type'] == 'sales')
         {
