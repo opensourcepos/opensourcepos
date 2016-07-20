@@ -404,7 +404,7 @@ class Reports extends Secure_Controller
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
-			'summary_data_1' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type))),
+			'summary_data_1' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id))),
 			'yaxis_title' => $this->lang->line('reports_items'),
 			'xaxis_title' => $this->lang->line('reports_revenue'),
 			'show_currency' => TRUE
