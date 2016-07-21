@@ -12,7 +12,7 @@ function checkbox_click(event)
 	}
 }
 
-function enable_search(options, ac_enabled)
+function enable_search(options)
 {
 	if (!options.format_item) {
 		format_item = function(results) {
@@ -27,11 +27,9 @@ function enable_search(options, ac_enabled)
     {
     	$(this).attr('value','');
     });
-    ac_enabled = typeof ac_enabled !== 'undefined' ? ac_enabled : true; // Set default value to true
 
     var widget = $("#search").autocomplete(options.suggest_url,{max:100,delay:10, selectFirst: false,
-		formatItem : options.format_item, extraParams: options.extra_params}); // BN TODO Validate
-		//formatItem : options.format_item, extraParams: options.extra_params, enabled: ac_enabled}); // BN TODO Validate
+		formatItem : options.format_item, extraParams: options.extra_params});
     $("#search").result(function(event, data, formatted)
     {
 		do_search(true, options.on_complete);

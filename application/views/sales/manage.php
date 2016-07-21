@@ -12,8 +12,7 @@ $(document).ready(function()
 		$("#payment_summary").html(response.payment_summary);
 	};
 
-    enable_search({suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
-		confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
+    enable_search({confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>',
 		on_complete : on_complete});
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 

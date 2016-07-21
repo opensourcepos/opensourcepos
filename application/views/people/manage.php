@@ -5,8 +5,8 @@ $(document).ready(function()
     init_table_sorting();
     enable_select_all();
     enable_row_selection();
-    enable_search({ suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
-    confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>'}, false); // BN TODO Check
+    //enable_search({ suggest_url : '<?php echo site_url("$controller_name/suggest")?>',
+	enable_search({ confirm_search_message : '<?php echo $this->lang->line("common_confirm_search")?>'});
     enable_email('<?php echo site_url("$controller_name/mailto")?>');
     enable_delete('<?php echo $this->lang->line($controller_name."_confirm_delete")?>','<?php echo $this->lang->line($controller_name."_none_selected")?>');
 });
@@ -21,7 +21,9 @@ function init_table_sorting()
 			sortList: [[1,0]], 
 			headers: 
 			{ 
-				0: { sorter: false}, 
+				0: { sorter: false},
+				2: { sorter: false},
+				3: { sorter: false},
 				5: { sorter: false} 
 			} 
 
