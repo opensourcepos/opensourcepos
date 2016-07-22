@@ -100,7 +100,7 @@ $(document).ready(function()
 		var location = window.location;
 		if ($("#simple_radio").attr('checked'))
 		{
-			location += '/'+$("#report_date_range_simple option:selected").val() + '/' + input_type + '/' + supplier_id;
+			location += '/'+$("#report_date_range_simple option:selected").val() + '/' + input_type;
 		}
 		else
 		{
@@ -108,19 +108,25 @@ $(document).ready(function()
 			var end_date = $("#end_year").val()+'-'+$("#end_month").val()+'-'+$('#end_day').val();
 	        if(!input_type)
 	        {
-				location += '/'+start_date + '/'+ end_date + '/' + supplier_id;
+				location += '/'+start_date + '/'+ end_date;
 	        }
 	        else
 	        {
-				location += '/'+start_date + '/'+ end_date+ '/' + input_type + '/' + supplier_id;
+				location += '/'+start_date + '/'+ end_date+ '/' + input_type;
 			}
 		}
+		if (supplier_id) {
+            location += '/' + supplier_id;
+        }
 		if (location_id)
 		{
-			location += '/' + location_id + '/' + supplier_id; // BN TODO Validate
+			location += '/' + location_id;
 		}
 		window.location = location;
+		console.log(`LOC: `+location);
 	});
+	
+
 	
 	$("#start_month, #start_day, #start_year, #end_month, #end_day, #end_year").click(function()
 	{
