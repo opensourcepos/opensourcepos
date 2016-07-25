@@ -644,7 +644,6 @@ class Sale_lib
 	public function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
 	{
 		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
-
 		if($this->CI->config->config['tax_included'])
 		{
 			$tax_fraction = bcadd(100, $tax_percentage);
