@@ -49,4 +49,4 @@ $lang["receivings_supplier_location"] = "Lieferant Location";
 $lang["receivings_total"] = "Total";
 $lang["receivings_unable_to_add_item"] = "Kann Artikel nicht zum Eingang hinzufügen";
 $lang["receivings_unsuccessfully_updated"] = "Eingang nicht erfolgreich geändert";
-$lang["receivings_update"] = "Ändern";
+$lang["receivings_update"] = "Änd";
