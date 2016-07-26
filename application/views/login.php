@@ -6,7 +6,7 @@
 	<title><?php echo $this->config->item('company') . ' | OSPOS ' . $this->config->item('application_version')  . ' | ' .  $this->lang->line('login_login'); ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<!-- start css template tags -->
-	<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
+	<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=0ff26f4768"/>
 	<link rel="stylesheet" type="text/css" href="css/login.css"/>
 	<!-- end css template tags -->
 

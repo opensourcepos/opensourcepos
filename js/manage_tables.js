@@ -111,7 +111,7 @@
 
 	var selected_ids = function () {
 		return $.map(table().getSelections(), function (element) {
-			return element[options.uniqueId || 'id'];
+			return element[options.uniqueId || 'id'] !== '-' ? element[options.uniqueId || 'id'] : null;
 		});
 	};
 
