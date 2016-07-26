@@ -99,4 +99,5 @@ FAQ
 
 * If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform.
 
-ca
+* You are getting following error `Message: Can't use method return value in write context` saying that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
+
