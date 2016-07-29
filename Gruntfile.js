@@ -183,11 +183,22 @@ module.exports = function(grunt) {
                     src: ['**/header.php', '**/login.php']
                 }
             }
+        },
+        license: {
+            all: {
+                // Target-specific file lists and/or options go here. 
+                options: {
+                    // Target-specific options go here. 
+                    directory: 'bower_components',
+                    output: 'license/LICENSES'
+                }
+            }
         }
     });
 
     require('load-grunt-tasks')(grunt);
     grunt.loadNpmTasks('grunt-mocha-webdriver');
+    grunt.loadNpmTasks('grunt-license-bower');
 
     grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
 

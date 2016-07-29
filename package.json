@@ -33,6 +33,7 @@
     "load-grunt-tasks": "^3.4.0",
     "mocha": "^2.2.1",
     "phantomjs": "~1.9.2",
-    "wd": "^0.3.3"
+    "wd": "^0.3.3",
+    "grunt-license-bower": "~1.0.1"
   }
 }
