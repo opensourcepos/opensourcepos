@@ -643,7 +643,7 @@ class Sales extends Secure_Controller
 		$data['invoice_number'] = $this->_substitute_invoice_number($customer_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['payments_cover_total'] = $this->sale_lib->get_amount_due() == 0;
+		$data['payments_cover_total'] = $this->sale_lib->get_amount_due() <= 0;
 		
 		$data = $this->xss_clean($data);
 
