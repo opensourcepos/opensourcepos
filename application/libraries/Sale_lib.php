@@ -188,8 +188,11 @@ class Sale_lib
 	{
 		$payment_total = $this->get_payments_total();
 		$sales_total = $this->get_total();
-
-		return bcsub($sales_total, $payment_total);
+		$amount_due = bcsub($sales_total, $payment_total);
+		$precision = $this->CI->config->item('currency_decimals');
+		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_EVEN), 0, $precision);
+		// take care of rounding error introduced by round tripping payment amount to the browser
+ 		return  $rounded_due == 0 ? 0 : $amount_due;
 	}
 
 	public function get_customer()

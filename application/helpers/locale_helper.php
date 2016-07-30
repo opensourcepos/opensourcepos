@@ -82,8 +82,6 @@ function parse_decimals($number)
 
     $config = get_instance()->config;
     $fmt = new \NumberFormatter( $config->item('number_locale'), \NumberFormatter::DECIMAL );
-    $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item('quantity_decimals'));
-    $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item('quantity_decimals'));
     return $fmt->parse($number);
 }
 

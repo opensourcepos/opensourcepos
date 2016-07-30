@@ -531,12 +531,6 @@ class Sales extends Secure_Controller
 		return $this->sale_lib->get_invoice_number();
 	}
 
-	private function _payments_cover_total()
-	{
-		$minimum = 5 * pow(10, -1 * ($this->config->item('currency_decimals') + 1));
-		return $this->sale_lib->get_amount_due() < $minimum;
-	}
-
 	private function _load_customer_data($customer_id, &$data, $totals = FALSE)
 	{	
 		$customer_info = '';
@@ -649,7 +643,7 @@ class Sales extends Secure_Controller
 		$data['invoice_number'] = $this->_substitute_invoice_number($customer_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['payments_cover_total'] = $this->_payments_cover_total();
+		$data['payments_cover_total'] = $this->sale_lib->get_amount_due() == 0;
 		
 		$data = $this->xss_clean($data);
 
