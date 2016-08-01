@@ -222,7 +222,7 @@ if (isset($success))
 							</td>
 						</tr>
 					<?php echo form_close(); ?>
-			<?php					
+			<?php
 				}
 			}
 			?>
@@ -647,7 +647,7 @@ $(document).ready(function()
 	{
 		if (event.which == 13)
 		{
-			$('#cart_' + (1 + $(this).index() / 2 )).submit();
+			$(this).parents("tr").prevAll("form:first").submit();
 		}
 	});
 
