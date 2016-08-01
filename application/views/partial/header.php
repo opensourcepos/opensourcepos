@@ -12,12 +12,12 @@
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=0ff26f4768"/>
+		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=0ad5e454a4"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b003b9c4a3"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=ea16f5c215"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=9fdffa8ae4"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
