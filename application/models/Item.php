@@ -7,7 +7,7 @@ class Item extends CI_Model
 	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
 		$this->db->from('items');
-		$this->db->like('item_id', $item_id);
+		$this->db->where('CAST(item_id AS CHAR) = ', $item_id);
 		if($ignore_deleted == FALSE)
 		{
 			$this->db->where('deleted', $deleted);
