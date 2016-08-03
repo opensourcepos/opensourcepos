@@ -54,7 +54,7 @@ function to_quantity_decimals($number)
 function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 {
 	// ignore empty strings and return
-	// NOTE: do not change it to empty because otherwise tables will show a 0 with no decimal nor currency symbol
+	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
     if(!isset($number))
     {
         return $number;
