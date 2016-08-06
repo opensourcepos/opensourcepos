@@ -126,7 +126,8 @@
 						'ru' => 'Russian',
 						'hu-HU' => 'Hungarian',
 						'pt-BR' => 'Portuguese (Brazil)',
-						'hr-HR' => 'Croatian (Croatia)'
+						'hr-HR' => 'Croatian (Croatia)',
+						'ar-EG' => 'Arabic (Egypt)'
 					),
 					$this->config->item('language'), array('class' => 'form-control input-sm'));
 					?>
