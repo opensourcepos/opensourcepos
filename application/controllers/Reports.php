@@ -515,7 +515,7 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
 		
-		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type));
+		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id));
 		$summary = $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id)));
 
 		$labels = array();
