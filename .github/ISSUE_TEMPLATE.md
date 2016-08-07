@@ -1,4 +1,4 @@
-Before submitting an issue please make sure you tick and agree all the following check boxes:
+Before submitting an issue please make sure you tick (add a x between the square brakets) and agree all the following check boxes:
 
 - [ ] Checked the current issues database and no similar issue was already discussed
 - [ ] Read the README, WHATS_NEW and UPGRADE
@@ -8,6 +8,8 @@ Before submitting an issue please make sure you tick and agree all the following
 - [ ] PHP version is at least 5.5 and not 7.x
 - [ ] Know the version of OSPOS and git commit hash (check the footer of your OSPOS) and will add to my issue report
 - [ ] Know the name and version of OS, Web server and MySQL and will add to my issue report
+
+IMPORTANT: If you remove the template when submitting an issue your issue will be closed.
 
 ### Installation information
 
