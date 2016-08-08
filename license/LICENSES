@@ -1,23 +1,8 @@
 {
-    "chartist-plugin-pointlabels@0.0.4": {
-        "licenses": [
-            "WTF*"
-        ]
-    },
-    "jquery-form@3.45.0": {
-        "licenses": "UNKNOWN"
-    },
-    "bootstrap3-dialog@1.35.2": {
-        "licenses": "UNKNOWN",
-        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
-    },
     "jquery@undefined": {
         "licenses": [
             "MIT"
         ]
-    },
-    "chartist@undefined": {
-        "licenses": "UNKNOWN"
     },
     "bootstrap-select@undefined": {
         "licenses": [
@@ -25,19 +10,20 @@
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
     },
-    "js-cookie@undefined": {
+    "jquery-form@3.45.0": {
+        "licenses": "UNKNOWN"
+    },
+    "chartist-plugin-axistitle@0.0.1": {
         "licenses": [
-            "MIT"
+            "WTF*"
         ]
     },
-    "moment@undefined": {
-        "licenses": [
-            "MIT*"
-        ]
+    "chartist@undefined": {
+        "licenses": "UNKNOWN"
     },
-    "chartist-plugin-tooltip@undefined": {
+    "chartist-plugin-pointlabels@0.0.4": {
         "licenses": [
-            "MIT*"
+            "WTF*"
         ]
     },
     "tableExport.jquery.plugin@undefined": {
@@ -45,10 +31,19 @@
             "MIT"
         ]
     },
-    "chartist-plugin-axistitle@0.0.1": {
+    "js-cookie@undefined": {
         "licenses": [
-            "WTF*"
+            "MIT"
         ]
+    },
+    "chartist-plugin-tooltip@undefined": {
+        "licenses": [
+            "MIT*"
+        ]
+    },
+    "bootstrap3-dialog@1.35.2": {
+        "licenses": "UNKNOWN",
+        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "file-saver.js@1.20150507.2": {
         "licenses": [
@@ -68,12 +63,18 @@
         ],
         "homepage": "https://github.com/dbtek/bootswatch-dist"
     },
-    "remarkable-bootstrap-notify@3.1.3": {
+    "smalot-bootstrap-datetimepicker@undefined": {
+        "licenses": [
+            "Apache 2.0",
+            "Apache*"
+        ],
+        "repository": "https://github.com/smalot/bootstrap-datetimepicker"
+    },
+    "jquery-ui@1.11.4": {
         "licenses": [
             "MIT"
         ],
-        "homepage": "http://bootstrap-notify.remabledesigns.com/",
-        "repository": "https://github.com/mouse0270/bootstrap-notify"
+        "repository": "https://github.com/jquery/jquery-ui"
     },
     "bootstrap-table@undefined": {
         "licenses": [
@@ -82,11 +83,29 @@
         "homepage": "https://github.com/wenzhixin/bootstrap-table",
         "repository": "git+https://github.com/wenzhixin/bootstrap-table"
     },
+    "moment@undefined": {
+        "licenses": [
+            "MIT*"
+        ]
+    },
+    "remarkable-bootstrap-notify@3.1.3": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://bootstrap-notify.remabledesigns.com/",
+        "repository": "https://github.com/mouse0270/bootstrap-notify"
+    },
     "bootstrap-daterangepicker@undefined": {
         "licenses": [
             "MIT"
         ],
         "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
+    },
+    "html2canvas@0.4.1": {
+        "licenses": [
+            "MIT"
+        ],
+        "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
     },
     "jspdf-autotable@undefined": {
         "licenses": [
@@ -95,6 +114,13 @@
         "homepage": "https://github.com/simonbengtsson/jspdf-autotable",
         "repository": "git+https://github.com/simonbengtsson/jsPDF-AutoTable"
     },
+    "jquery-validation@1.13.1": {
+        "licenses": [
+            "MIT"
+        ],
+        "repository": "https://github.com/jzaefferer/jquery-validation",
+        "homepage": "http://jqueryvalidation.org/"
+    },
     "bootstrap@undefined": {
         "licenses": [
             "MIT"
@@ -102,37 +128,11 @@
         "homepage": "http://getbootstrap.com",
         "repository": "git+https://github.com/twbs/bootstrap"
     },
-    "html2canvas@0.4.1": {
-        "licenses": [
-            "MIT"
-        ],
-        "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
-    },
-    "jquery-ui@1.11.4": {
-        "licenses": [
-            "MIT"
-        ],
-        "repository": "https://github.com/jquery/jquery-ui"
-    },
     "jasny-bootstrap@3.1.3": {
         "licenses": [
             "Apache-2.0",
             "Apache*"
         ],
         "repository": "git+https://github.com/jasny/bootstrap"
-    },
-    "smalot-bootstrap-datetimepicker@undefined": {
-        "licenses": [
-            "Apache 2.0",
-            "Apache*"
-        ],
-        "repository": "https://github.com/smalot/bootstrap-datetimepicker"
-    },
-    "jquery-validation@1.13.1": {
-        "licenses": [
-            "MIT"
-        ],
-        "repository": "https://github.com/jzaefferer/jquery-validation",
-        "homepage": "http://jqueryvalidation.org/"
     }
 }

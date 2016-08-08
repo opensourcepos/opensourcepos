@@ -184,6 +184,16 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		license: {
+			all: {
+				// Target-specific file lists and/or options go here. 
+				options: {
+					// Target-specific options go here. 
+					directory: 'bower_components',
+					output: 'license/LICENSES'
+				},
+			},
+		},
 		'bower-licensechecker': {
 			options: {
 				/*directory: 'path/to/bower',*/
@@ -196,7 +206,7 @@ module.exports = function(grunt) {
 					noGood: true
 				},
 				log: {
-					outFile: '.licenses',
+					outFile: 'license/.licenses',
 					nonBower: true,
 					noLicense: true,
 					allGood: true,
@@ -204,23 +214,13 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-		license: {
-			all: {
-				// Target-specific file lists and/or options go here. 
-				options: {
-					// Target-specific options go here. 
-					directory: 'bower_components',
-					output: 'license/LICENSES'
-				},
-			},
-		},
     });
 
     require('load-grunt-tasks')(grunt);
     grunt.loadNpmTasks('grunt-mocha-webdriver');
-	grunt.loadNpmTasks('grunt-bower-licensechecker');
 	grunt.loadNpmTasks('grunt-license-bower');
+	grunt.loadNpmTasks('grunt-bower-licensechecker');
 
-    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker', 'bower-licensechecker', 'license']);
+    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker', 'license', 'bower-licensechecker']);
 
 };

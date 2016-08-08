@@ -19,4 +19,4 @@ git-svn-diff.py
 *.~
 *.log
 application/sessions/*
-.licenses
+license/.licenses
