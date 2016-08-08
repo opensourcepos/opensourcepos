@@ -104,6 +104,8 @@ class Config extends Secure_Controller
 					$license[$i]['text'] .= "\n";
 				}
 			}
+			
+			$license[$i]['text'] = $this->xss_clean($license[$i]['text']);
 		}
 		
 		return $license;
