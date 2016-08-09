@@ -82,6 +82,10 @@ function parse_decimals($number)
 
     $config = get_instance()->config;
     $fmt = new \NumberFormatter( $config->item('number_locale'), \NumberFormatter::DECIMAL );
+    if (empty($config->item('thousands_separator')))
+    {
+        $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
+    }
     return $fmt->parse($number);
 }
 

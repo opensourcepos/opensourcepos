@@ -50,7 +50,21 @@ class Secure_Controller extends CI_Controller
 			return $this->security->xss_clean($str, $is_image);
 		}
 	}
-	
+
+	function numeric($str)
+	{
+		return parse_decimals($str);
+	}
+
+	public function check_numeric()
+	{
+		$result = TRUE;
+		foreach($this->input->get() as $str) {
+			$result = parse_decimals($str);
+		}
+		echo $result !== FALSE ? 'true' : 'false';
+	}
+
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function index() { return FALSE; }
 	public function search() { return FALSE; }

@@ -376,13 +376,13 @@
 				},
 				cost_price:
 				{
-					required:true,
-					number:true
+					required: true,
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				unit_price:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				<?php
 				foreach($stock_locations as $key=>$location_detail)
@@ -391,7 +391,7 @@
 					<?php echo 'quantity_' . $key ?>:
 					{
 						required:true,
-						number:true
+						remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 					},
 				<?php
 				}
@@ -399,17 +399,17 @@
 				receiving_quantity:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				reorder_level:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				tax_percent:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				}
 			},
 

@@ -264,18 +264,22 @@ $(document).ready(function()
     		default_tax_1_rate:
     		{
     			required: true,
-    			number: true
+				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
     		},
 			default_tax_1_name: "required",
+			default_tax2_rate:
+			{
+				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
+			},
     		lines_per_page:
     		{
         		required: true,
-        		number: true
+				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
     		},
     		default_sales_discount: 
         	{
         		required: true,
-        		number: true
+				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
     		}  		
    		},
 

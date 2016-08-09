@@ -285,11 +285,6 @@ class Sales extends Secure_Controller
 		$this->_reload($data);
 	}
 
-	function numeric($str)
-	{
-		return parse_decimals($str, 3);
-	}
-
 	public function edit_item($item_id)
 	{
 		$data = array();
