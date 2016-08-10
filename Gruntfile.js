@@ -11,7 +11,6 @@ module.exports = function(grunt) {
 		bower_concat: {
 			all: {
 				mainFiles: {
-					'bootswatch-dist': ['bootstrap/dist/js/bootstrap.js'],
 					'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js", "dist/extensions/mobile/bootstrap-table-mobile.js"]
 				},
 				dest: {
@@ -30,8 +29,24 @@ module.exports = function(grunt) {
 					destPrefix: 'dist'
 				},
 				files: {
+					'login.css': '../css/login.css',
+					'style.css': '../css/style.css',
 					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
-					'bootstrap.min.css': 'bootswatch-dist/css/bootstrap.min.css'
+					'cerulean/bootstrap.min.css': 'bootswatch/cerulean/bootstrap.min.css',
+					'cosmo/bootstrap.min.css': 'bootswatch/cosmo/bootstrap.min.css',
+					'cyborg/bootstrap.min.css': 'bootswatch/cyborg/bootstrap.min.css',
+					'darkly/bootstrap.min.css': 'bootswatch/darkly/bootstrap.min.css',
+					'flatly/bootstrap.min.css': 'bootswatch/flatly/bootstrap.min.css',
+					'journal/bootstrap.min.css': 'bootswatch/journal/bootstrap.min.css',
+					'paper/bootstrap.min.css': 'bootswatch/paper/bootstrap.min.css',
+					'readable/bootstrap.min.css': 'bootswatch/readable/bootstrap.min.css',
+					'sandstone/bootstrap.min.css': 'bootswatch/sandstone/bootstrap.min.css',
+					'slate/bootstrap.min.css': 'bootswatch/slate/bootstrap.min.css',
+					'spacelab/bootstrap.min.css': 'bootswatch/spacelab/bootstrap.min.css',
+					'superhero/bootstrap.min.css': 'bootswatch/superhero/bootstrap.min.css',
+					'united/bootstrap.min.css': 'bootswatch/united/bootstrap.min.css',
+					'yeti/bootstrap.min.css': 'bootswatch/yeti/bootstrap.min.css',
+					'fonts': 'bootswatch/fonts'
 				}
 			}/*,
 			targettmp: {
@@ -46,7 +61,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css']
+					'dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/style.css']
 				}
 			}
 		},
@@ -109,18 +124,8 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end mincss template tags -->',
 					absolutePath: true
 				},
-				src: ['dist/*.css'],
+				src: ['dist/*.css', '!dist/login.css'],
 				dest: 'application/views/partial/header.php',
-			},
-			mincss_header_templates: {
-				options: {
-					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
-					openTag: '<!-- start mincss template tags -->',
-					closeTag: '<!-- end mincss template tags -->',
-					absolutePath: true
-				},
-				src: ['dist/*.css', '!dist/bootstrap.min.css'],
-				dest: 'templates/spacelab/views/partial/header.php'
 			},
 			css_login: {
 				options: {
@@ -129,7 +134,7 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end css template tags -->',
 					absolutePath: true
 				},
-				src: ['dist/bootstrap.min.css', 'css/login.css'],
+				src: ['dist/login.css'],
 				dest: 'application/views/login.php'
 			},
 			js: {
@@ -174,8 +179,7 @@ module.exports = function(grunt) {
 				options: {
 					match: [ {
 						'opensourcepos.min.js': 'dist/opensourcepos.min.js',
-						'opensourcepos.min.css': 'dist/opensourcepos.min.css',
-						'bootstrap.min.css': 'dist/bootstrap.min.css'
+						'opensourcepos.min.css': 'dist/opensourcepos.min.css'
 					} ],
 					replacement: 'md5'
 				},

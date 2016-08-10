@@ -11,13 +11,14 @@
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
 		<![endif]-->
+		<link rel="stylesheet" type="text/css" href=<?php echo 'dist/' . $this->config->item('theme') . '/bootstrap.min.css' ?>/>
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b003b9c4a3"/>
+		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=5f6d1e048b"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=739eb414e7"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

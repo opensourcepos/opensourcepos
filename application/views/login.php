@@ -5,9 +5,9 @@
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company') . ' | OSPOS ' . $this->config->item('application_version')  . ' | ' .  $this->lang->line('login_login'); ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href=<?php echo 'dist/' . $this->config->item('theme') . '/bootstrap.min.css' ?>/>
 	<!-- start css template tags -->
-	<link rel="stylesheet" type="text/css" href="dist/bootstrap.min.css?rel=50ab19585f"/>
-	<link rel="stylesheet" type="text/css" href="css/login.css"/>
+	<link rel="stylesheet" type="text/css" href="dist/login.css"/>
 	<!-- end css template tags -->
 
 	<script type="text/javascript">
