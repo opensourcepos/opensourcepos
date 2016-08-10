@@ -31,6 +31,8 @@ module.exports = function(grunt) {
 				files: {
 					'login.css': '../css/login.css',
 					'style.css': '../css/style.css',
+					'invoice_email.css': '../css/invoice_email.css',
+					'barcode_font.css': '../css/barcode_font.css',
 					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
 					'cerulean/bootstrap.min.css': 'bootswatch/cerulean/bootstrap.min.css',
 					'cosmo/bootstrap.min.css': 'bootswatch/cosmo/bootstrap.min.css',
@@ -61,7 +63,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/style.css']
+					'dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/barcode_font.css', '!css/style.css']
 				}
 			}
 		},
@@ -114,7 +116,7 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end css template tags -->',
 					absolutePath: true
 				},
-				src: ['css/*.css', '!css/login.css', '!css/invoice_email.css'],
+				src: ['css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/barcode_font.css'],
 				dest: 'application/views/partial/header_debug.php',
 			},
 			mincss_header: {
@@ -124,7 +126,7 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end mincss template tags -->',
 					absolutePath: true
 				},
-				src: ['dist/*.css', '!dist/login.css'],
+				src: ['dist/*.css', '!dist/login.css', '!dist/invoice_email.css', '!dist/barcode_font.css'],
 				dest: 'application/views/partial/header.php',
 			},
 			css_login: {

@@ -1,39 +1,33 @@
 {
+    "jquery-form@3.45.0": {
+        "licenses": "UNKNOWN"
+    },
+    "chartist@undefined": {
+        "licenses": "UNKNOWN"
+    },
     "bootstrap-select@undefined": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
     },
-    "jquery-form@3.45.0": {
-        "licenses": "UNKNOWN"
+    "jquery@undefined": {
+        "licenses": [
+            "MIT"
+        ]
     },
     "bootstrap3-dialog@1.35.2": {
         "licenses": "UNKNOWN",
         "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
-    "chartist@undefined": {
-        "licenses": "UNKNOWN"
-    },
-    "file-saver.js@1.20150507.2": {
+    "chartist-plugin-tooltip@undefined": {
         "licenses": [
-            "LICENSE.md"
-        ],
-        "homepage": "https://github.com/Teleborder/FileSaver.js"
+            "MIT*"
+        ]
     },
     "tableExport.jquery.plugin@undefined": {
         "licenses": [
             "MIT"
-        ]
-    },
-    "js-cookie@undefined": {
-        "licenses": [
-            "MIT"
-        ]
-    },
-    "chartist-plugin-pointlabels@0.0.4": {
-        "licenses": [
-            "WTF*"
         ]
     },
     "chartist-plugin-axistitle@0.0.1": {
@@ -41,19 +35,25 @@
             "WTF*"
         ]
     },
+    "chartist-plugin-pointlabels@0.0.4": {
+        "licenses": [
+            "WTF*"
+        ]
+    },
+    "js-cookie@undefined": {
+        "licenses": [
+            "MIT"
+        ]
+    },
+    "file-saver.js@1.20150507.2": {
+        "licenses": [
+            "LICENSE.md"
+        ],
+        "homepage": "https://github.com/Teleborder/FileSaver.js"
+    },
     "moment@undefined": {
         "licenses": [
             "MIT*"
-        ]
-    },
-    "chartist-plugin-tooltip@undefined": {
-        "licenses": [
-            "MIT*"
-        ]
-    },
-    "jquery@undefined": {
-        "licenses": [
-            "MIT"
         ]
     },
     "bootswatch@undefined": {
@@ -72,19 +72,18 @@
         ],
         "homepage": "https://github.com/mrrio/jspdf"
     },
+    "jquery-ui@1.11.4": {
+        "licenses": [
+            "MIT"
+        ],
+        "repository": "https://github.com/jquery/jquery-ui"
+    },
     "smalot-bootstrap-datetimepicker@undefined": {
         "licenses": [
             "Apache 2.0",
             "Apache*"
         ],
         "repository": "https://github.com/smalot/bootstrap-datetimepicker"
-    },
-    "jasny-bootstrap@3.1.3": {
-        "licenses": [
-            "Apache-2.0",
-            "Apache*"
-        ],
-        "repository": "git+https://github.com/jasny/bootstrap"
     },
     "jquery-validation@1.13.1": {
         "licenses": [
@@ -93,24 +92,12 @@
         "repository": "https://github.com/jzaefferer/jquery-validation",
         "homepage": "http://jqueryvalidation.org/"
     },
-    "jquery-ui@1.11.4": {
-        "licenses": [
-            "MIT"
-        ],
-        "repository": "https://github.com/jquery/jquery-ui"
-    },
     "remarkable-bootstrap-notify@3.1.3": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://bootstrap-notify.remabledesigns.com/",
         "repository": "https://github.com/mouse0270/bootstrap-notify"
-    },
-    "bootstrap-daterangepicker@undefined": {
-        "licenses": [
-            "MIT"
-        ],
-        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
     },
     "bootstrap-table@undefined": {
         "licenses": [
@@ -119,18 +106,24 @@
         "homepage": "https://github.com/wenzhixin/bootstrap-table",
         "repository": "git+https://github.com/wenzhixin/bootstrap-table"
     },
+    "bootstrap-daterangepicker@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
+    },
+    "jasny-bootstrap@3.1.3": {
+        "licenses": [
+            "Apache-2.0",
+            "Apache*"
+        ],
+        "repository": "git+https://github.com/jasny/bootstrap"
+    },
     "html2canvas@0.4.1": {
         "licenses": [
             "MIT"
         ],
         "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
-    },
-    "bootstrap@undefined": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://getbootstrap.com",
-        "repository": "git+https://github.com/twbs/bootstrap"
     },
     "jspdf-autotable@undefined": {
         "licenses": [
@@ -138,5 +131,12 @@
         ],
         "homepage": "https://github.com/simonbengtsson/jspdf-autotable",
         "repository": "git+https://github.com/simonbengtsson/jsPDF-AutoTable"
+    },
+    "bootstrap@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://getbootstrap.com",
+        "repository": "git+https://github.com/twbs/bootstrap"
     }
 }

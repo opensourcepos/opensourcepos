@@ -10,7 +10,6 @@
 		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="css/barcode_font.css"/>
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>

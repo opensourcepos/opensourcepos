@@ -9,12 +9,12 @@
 		<?php $this->load->view('partial/header_debug'); ?>
 	<?php else : ?>
 		<!--[if lte IE 8]>
-		<link rel="stylesheet" media="print" href="css/print.css" type="text/css" />
+		<link rel="stylesheet" media="print" href="dist/print.css" type="text/css" />
 		<![endif]-->
 		<link rel="stylesheet" type="text/css" href=<?php echo 'dist/' . $this->config->item('theme') . '/bootstrap.min.css' ?>/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=b003b9c4a3"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=e884819322"/>
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
