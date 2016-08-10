@@ -5,13 +5,13 @@
 	<base href="<?php echo base_url();?>" />
 	<title><?php echo $this->config->item('company') . ' | ' . $this->lang->line('common_powered_by') . ' OSPOS ' . $this->config->item('application_version') ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/' . $this->config->item('theme') . '/bootstrap.min.css' ?>"/>
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<?php $this->load->view('partial/header_debug'); ?>
 	<?php else : ?>
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="dist/print.css" type="text/css" />
 		<![endif]-->
-		<link rel="stylesheet" type="text/css" href=<?php echo 'dist/' . $this->config->item('theme') . '/bootstrap.min.css' ?>/>
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=e884819322"/>
