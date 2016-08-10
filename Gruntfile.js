@@ -220,13 +220,15 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+        clean: {
+            license: ['bower_components/**/bower.json']
+        }
     });
 
     require('load-grunt-tasks')(grunt);
     grunt.loadNpmTasks('grunt-mocha-webdriver');
-	grunt.loadNpmTasks('grunt-license-bower');
-	grunt.loadNpmTasks('grunt-bower-licensechecker');
 
-    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker', 'license', 'bower-licensechecker']);
+    grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
+    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
 
 };
