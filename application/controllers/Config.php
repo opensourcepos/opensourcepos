@@ -110,6 +110,22 @@ class Config extends Secure_Controller
 		
 		return $license;
 	}
+
+	private function _themes()
+	{
+		$themes = array();
+
+		// read all themes in the dist folder
+		$dir = new DirectoryIterator('dist/bootswatch');
+
+		foreach($dir as $dirinfo) {
+			if ($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts') {
+				$themes[$dirinfo->getFileName()] = $dirinfo->getFileName();
+			}
+		}
+		asort($themes);
+		return $themes;
+	}
 	
 	public function index()
 	{
@@ -121,6 +137,7 @@ class Config extends Secure_Controller
 		
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
+		$data['themes'] = $this->_themes();
 
 		$this->load->view("configs/manage", $data);
 	}
@@ -160,6 +177,7 @@ class Config extends Secure_Controller
 	public function save_general()
 	{
 		$batch_save_data = array(
+			'theme' => $this->input->post('theme'),
 			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
 			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
 			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),

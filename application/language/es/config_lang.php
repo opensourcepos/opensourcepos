@@ -179,3 +179,4 @@ $lang["config_return_policy_required"] = "Política de Devolución es requerida"
 $lang["config_number_locale_required"] = "Numero local es un campo requerido";
 $lang["config_number_locale_invalid"] = "El local ingresado es invalido. Revisa el link en el tooltip para encontrar informacion";
 $lang["config_number_locale_tooltip"] = "Encontrar un local adecuado en esta liga";
+$lang["config_theme"] = "Theme";

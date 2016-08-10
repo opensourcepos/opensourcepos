@@ -179,3 +179,4 @@ $lang["config_return_policy_required"] = "سياسة الإسترجاع مطلو
 $lang["config_number_locale_required"] = "رقم التهيئة الإقليمية مطلوب";
 $lang["config_number_locale_invalid"] = "التهيئة الإقليمية المختارة غير صحية، راجع الرابط الموجود فى الملاحظة لاختيار تهيئة مناسبة";
 $lang["config_number_locale_tooltip"] = "إيجاد تهيئة إقليمية مناسبة عبر الرابط";
+$lang["config_theme"] = "Theme";

@@ -179,3 +179,4 @@ $lang["config_return_policy_required"] = "退換貨政策為必填";
 $lang["config_number_locale_required"] = "Number Locale is a required field";
 $lang["config_number_locale_invalid"] = "The entered locale is invalid. Check the link in the tooltip to find a sensible value";
 $lang["config_number_locale_tooltip"] = "Find a suitable locale through this link";
+$lang["config_theme"] = "Theme";

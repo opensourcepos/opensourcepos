@@ -14,17 +14,6 @@ $config['application_version'] = '3.0.0';
 
 /*
 |--------------------------------------------------------------------------
-| Theme
-|--------------------------------------------------------------------------
-|
-| This specifies which bootwatch theme will be used by OSPOS
-| Available are: cerulean, cosmo, cyborg, darkly, flatly, journal, paper, readable, sandstone, slate, spacelab, superhero, united, yeti
-|
-*/
-$config['theme'] = 'flatly';
-
-/*
-|--------------------------------------------------------------------------
 | Commit sha1
 |--------------------------------------------------------------------------
 |

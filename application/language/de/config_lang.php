@@ -179,3 +179,4 @@ $lang["config_return_policy_required"] = "Rücknahmepolitik erforderlich";
 $lang["config_number_locale_required"] = "Localennummer ist ein Pflichtfeld";
 $lang["config_number_locale_invalid"] = "Die eingegebene Lokale ist falsch. Bitte sehen Sie sich den Link tim Tooltip an um einen korrekten Wert zu finden";
 $lang["config_number_locale_tooltip"] = "Finden Sie eine korrekte Lokale über diesen Link";
+$lang["config_theme"] = "Theme";

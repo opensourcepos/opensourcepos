@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 		wiredep: {
 			task: {
 				ignorePath: '../../../',
-				src: ['application/views/partial/header_debug.php']
+				src: ['application/views/partial/header.php']
 			}
 		},
 		bower_concat: {
@@ -34,21 +34,21 @@ module.exports = function(grunt) {
 					'invoice_email.css': '../css/invoice_email.css',
 					'barcode_font.css': '../css/barcode_font.css',
 					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
-					'cerulean/bootstrap.min.css': 'bootswatch/cerulean/bootstrap.min.css',
-					'cosmo/bootstrap.min.css': 'bootswatch/cosmo/bootstrap.min.css',
-					'cyborg/bootstrap.min.css': 'bootswatch/cyborg/bootstrap.min.css',
-					'darkly/bootstrap.min.css': 'bootswatch/darkly/bootstrap.min.css',
-					'flatly/bootstrap.min.css': 'bootswatch/flatly/bootstrap.min.css',
-					'journal/bootstrap.min.css': 'bootswatch/journal/bootstrap.min.css',
-					'paper/bootstrap.min.css': 'bootswatch/paper/bootstrap.min.css',
-					'readable/bootstrap.min.css': 'bootswatch/readable/bootstrap.min.css',
-					'sandstone/bootstrap.min.css': 'bootswatch/sandstone/bootstrap.min.css',
-					'slate/bootstrap.min.css': 'bootswatch/slate/bootstrap.min.css',
-					'spacelab/bootstrap.min.css': 'bootswatch/spacelab/bootstrap.min.css',
-					'superhero/bootstrap.min.css': 'bootswatch/superhero/bootstrap.min.css',
-					'united/bootstrap.min.css': 'bootswatch/united/bootstrap.min.css',
-					'yeti/bootstrap.min.css': 'bootswatch/yeti/bootstrap.min.css',
-					'fonts': 'bootswatch/fonts'
+					'bootswatch/cerulean/bootstrap.min.css': 'bootswatch/cerulean/bootstrap.min.css',
+					'bootswatch/cosmo/bootstrap.min.css': 'bootswatch/cosmo/bootstrap.min.css',
+					'bootswatch/cyborg/bootstrap.min.css': 'bootswatch/cyborg/bootstrap.min.css',
+					'bootswatch/darkly/bootstrap.min.css': 'bootswatch/darkly/bootstrap.min.css',
+					'bootswatch/flatly/bootstrap.min.css': 'bootswatch/flatly/bootstrap.min.css',
+					'bootswatch/journal/bootstrap.min.css': 'bootswatch/journal/bootstrap.min.css',
+					'bootswatch/paper/bootstrap.min.css': 'bootswatch/paper/bootstrap.min.css',
+					'bootswatch/readable/bootstrap.min.css': 'bootswatch/readable/bootstrap.min.css',
+					'bootswatch/sandstone/bootstrap.min.css': 'bootswatch/sandstone/bootstrap.min.css',
+					'bootswatch/slate/bootstrap.min.css': 'bootswatch/slate/bootstrap.min.css',
+					'bootswatch/spacelab/bootstrap.min.css': 'bootswatch/spacelab/bootstrap.min.css',
+					'bootswatch/superhero/bootstrap.min.css': 'bootswatch/superhero/bootstrap.min.css',
+					'bootswatch/united/bootstrap.min.css': 'bootswatch/united/bootstrap.min.css',
+					'bootswatch/yeti/bootstrap.min.css': 'bootswatch/yeti/bootstrap.min.css',
+					'bootswatch/fonts': 'bootswatch/fonts'
 				}
 			}/*,
 			targettmp: {
@@ -117,7 +117,7 @@ module.exports = function(grunt) {
 					absolutePath: true
 				},
 				src: ['css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/barcode_font.css'],
-				dest: 'application/views/partial/header_debug.php',
+				dest: 'application/views/partial/header.php',
 			},
 			mincss_header: {
 				options: {
@@ -147,7 +147,7 @@ module.exports = function(grunt) {
 					absolutePath: true
 				},
 				src: ['js/jquery*', 'js/*.js'],
-				dest: 'application/views/partial/header_debug.php'
+				dest: 'application/views/partial/header.php'
 			},
 			minjs: {
 				options: {
