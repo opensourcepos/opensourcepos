@@ -18,17 +18,17 @@
 		<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css" />
 		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<!-- endbower -->
-			<!-- start css template tags -->
-			<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
-			<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
-			<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
-			<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
-			<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
-			<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
-			<link rel="stylesheet" type="text/css" href="css/register.css"/>
-			<link rel="stylesheet" type="text/css" href="css/reports.css"/>
-			<link rel="stylesheet" type="text/css" href="css/style.css"/>
-			<!-- end css template tags -->
+		<!-- start css template tags -->
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
+		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
+		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
+		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
+		<link rel="stylesheet" type="text/css" href="css/register.css"/>
+		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
 		<script src="bower_components/jquery-form/jquery.form.js"></script>
@@ -71,7 +71,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f8b75fffd9"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=923c241b7f"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
