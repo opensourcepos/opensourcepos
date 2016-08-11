@@ -36,14 +36,11 @@ form
 	padding:6% 4%;
 }
 
-input[type="text"], input[type="password"]
+input[type="username"], input[type="password"]
 {
 	width:100%;
-	background:#fff;
 	margin-bottom:4%;
-	border:1px solid #ccc;
 	padding:4%;
-	color:#555;
 }
 
 input[type="submit"]
