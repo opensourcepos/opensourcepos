@@ -59,7 +59,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_tax_decimals'), 'language', array('class' => 'control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_tax_decimals'), 'tax_decimals', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('tax_decimals', array(
 						'0' => '0',

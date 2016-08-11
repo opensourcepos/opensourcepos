@@ -11,7 +11,7 @@ RUN echo "date.timezone = \"UTC\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app
 COPY . /app
-RUN ln -s /app/* /var/www/html
+RUN rm -rf /var/www && ln -s /app/*[^public] /var/www && ln -nsf /app/public /var/www/html
 
 RUN cp application/config/database.php.tmpl application/config/database.php && \
     sed -i -e "s/\(localhost\)/web/g" test/ospos.js && \

@@ -1,4 +1,5 @@
 {
+    "directory": "public/bower_components",
     "scripts": {
         "postinstall": "grunt default genlicense",
         "postuninstall": "grunt default genlicense"

@@ -1,0 +1,11 @@
+{
+	"description" : "The CodeIgniter Application with Composer",
+    "license": "MIT",
+	"require": {
+		"php": ">=5.5",
+		"codeigniter/framework": "3.1.*"
+	},
+	"require-dev": {
+		"mikey179/vfsStream": "1.1.*"
+	}
+}
