@@ -21,44 +21,51 @@ module.exports = function(grunt) {
 		},
 		bowercopy: {
 			options: {
-				// Bower components folder will be removed afterwards 
-				// clean: true
+				report: false
+			},
+			targetcssdist: {
+				options: {
+					srcPrefix: 'css',
+					destPrefix: 'dist'
+				},
+				files: {
+					'login.css': 'login.css',
+					'style.css': 'style.css',
+					'invoice_email.css': 'invoice_email.css',
+					'barcode_font.css': 'barcode_font.css'
+				}
 			},
 			targetdist: {
 				options: {
 					destPrefix: 'dist'
 				},
 				files: {
-					'login.css': '../css/login.css',
-					'style.css': '../css/style.css',
-					'invoice_email.css': '../css/invoice_email.css',
-					'barcode_font.css': '../css/barcode_font.css',
-					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
-					'bootswatch/cerulean/bootstrap.min.css': 'bootswatch/cerulean/bootstrap.min.css',
-					'bootswatch/cosmo/bootstrap.min.css': 'bootswatch/cosmo/bootstrap.min.css',
-					'bootswatch/cyborg/bootstrap.min.css': 'bootswatch/cyborg/bootstrap.min.css',
-					'bootswatch/darkly/bootstrap.min.css': 'bootswatch/darkly/bootstrap.min.css',
-					'bootswatch/flatly/bootstrap.min.css': 'bootswatch/flatly/bootstrap.min.css',
-					'bootswatch/journal/bootstrap.min.css': 'bootswatch/journal/bootstrap.min.css',
-					'bootswatch/paper/bootstrap.min.css': 'bootswatch/paper/bootstrap.min.css',
-					'bootswatch/readable/bootstrap.min.css': 'bootswatch/readable/bootstrap.min.css',
-					'bootswatch/sandstone/bootstrap.min.css': 'bootswatch/sandstone/bootstrap.min.css',
-					'bootswatch/slate/bootstrap.min.css': 'bootswatch/slate/bootstrap.min.css',
-					'bootswatch/spacelab/bootstrap.min.css': 'bootswatch/spacelab/bootstrap.min.css',
-					'bootswatch/superhero/bootstrap.min.css': 'bootswatch/superhero/bootstrap.min.css',
-					'bootswatch/united/bootstrap.min.css': 'bootswatch/united/bootstrap.min.css',
-					'bootswatch/yeti/bootstrap.min.css': 'bootswatch/yeti/bootstrap.min.css',
-					'bootswatch/fonts': 'bootswatch/fonts'
+					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css'
 				}
-			}/*,
-			targettmp: {
+			},
+			targetdistbootswatch: {
 				options: {
-					destPrefix: 'tmp'
+					srcPrefix: 'bower_components/bootswatch',
+					destPrefix: 'dist/bootswatch'
 				},
 				files: {
-					// add here anything that should be copied in a tmp directory
+					'cerulean/bootstrap.min.css': 'cerulean/bootstrap.min.css',
+					'cosmo/bootstrap.min.css': 'cosmo/bootstrap.min.css',
+					'cyborg/bootstrap.min.css': 'cyborg/bootstrap.min.css',
+					'darkly/bootstrap.min.css': 'darkly/bootstrap.min.css',
+					'flatly/bootstrap.min.css': 'flatly/bootstrap.min.css',
+					'journal/bootstrap.min.css': 'journal/bootstrap.min.css',
+					'paper/bootstrap.min.css': 'paper/bootstrap.min.css',
+					'readable/bootstrap.min.css': 'readable/bootstrap.min.css',
+					'sandstone/bootstrap.min.css': 'sandstone/bootstrap.min.css',
+					'slate/bootstrap.min.css': 'slate/bootstrap.min.css',
+					'spacelab/bootstrap.min.css': 'spacelab/bootstrap.min.css',
+					'superhero/bootstrap.min.css': 'superhero/bootstrap.min.css',
+					'united/bootstrap.min.css': 'united/bootstrap.min.css',
+					'yeti/bootstrap.min.css': 'yeti/bootstrap.min.css',
+					'fonts': 'fonts'
 				}
-			}*/
+			}
 		},
 		cssmin: {
 			target: {
