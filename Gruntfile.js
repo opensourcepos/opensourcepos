@@ -227,15 +227,15 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-        clean: {
-            license: ['bower_components/**/bower.json']
-        }
+		clean: {
+			license: ['bower_components/**/bower.json']
+		}
     });
 
     require('load-grunt-tasks')(grunt);
     grunt.loadNpmTasks('grunt-mocha-webdriver');
 
-    grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
     grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
+    grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
 
 };

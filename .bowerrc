@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "postinstall": "grunt && grunt genlicense",
-        "postuninstall": "grunt && grunt genlicense"
+        "postinstall": "grunt default genlicense",
+        "postuninstall": "grunt default genlicense"
     }
 }
