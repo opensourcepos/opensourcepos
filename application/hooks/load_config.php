@@ -23,7 +23,7 @@ function load_config()
 
         $CI->config->set_item('language', $language);
 
-        $map = directory_map('./application/language/' . $language);
+        $map = directory_map('../application/language/' . $language);
         foreach($map as $file)
         {
             if(!is_array($file) && substr(strrchr($file,'.'), 1) == "php")
