@@ -179,4 +179,4 @@ $lang["config_return_policy_required"] = "A política de devolução é um campo
 $lang["config_number_locale_required"] = "Número Local é um campo obrigatório";
 $lang["config_number_locale_invalid"] = "A localidade digitada é inválida. Verifique o link na dica para encontrar um valor aceitável";
 $lang["config_number_locale_tooltip"] = "Encontrar um local adequado através deste link";
-$lang["config_theme"] = "Tema ";
+$lang["config_theme"] = "Tema";
