@@ -1,6 +1,6 @@
 <?php 
 
-$lang["items_add_minus"] = "المخزن المطلوب الاضافة او الخصم منه";
+$lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
 $lang["items_amazon"] = "Amazon";
