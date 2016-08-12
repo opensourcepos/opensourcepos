@@ -30,7 +30,7 @@ receivings_print_after_sale,Nyomtatás eladás után,Drucke Bon nach Verkauf,Pri
 receivings_quantity,Menny.,Menge,Aantal,Cant.,Qty.,Qté.,數量.,Кол-во.,จำนวน.,Adet,Jumlah,Qtde.,Količina,Menge,الكمية
 receivings_receipt,Átvételi nyugta,Eingangsquittung,Ontvangstbewijs,Recibo de Entrada,Receivings Receipt,Recu des Arrivages,收貨憑證,квитанция о получении,บิลสินค้าเข้า,Alım Faturası,Faktur Penerimaan,Recebimentos,Ulazni račun,Eingangsquittung,إيصال إستلام
 receivings_receipt_number,Átvételi #,Eingangs-Nr.,Order #,Recepción #,Receiving #,,,,,,No. Faktur Penerimaan,Recebimento nº,Ulazni rč. broj,Eingangs-Nr.,كود الإستلام
-receivings_receiving,Átvétel,Eingang,Inkoop,Recibir,Receive,Receive,收貨,получать,รับสินค้า,Alım,Barang Masuk,Receber,Primka,Eingang,إستلم
+receivings_receiving,Átvétel,Eingang,Inkoop,Recibir,Receive,Receive,收貨,получать,รับสินค้า,Alım,Barang Masuk,Receber,Primka,Eingang,إستلام
 receivings_register,Termék átvétel,Wareneingang,Orders,Entrada de Artículos,Items Receiving,Items Receiving,產品進貨,Получение товаров,รับสินค้า,Ürün Alımları,Penerimaan Barang Masuk,Itens Recebimento,Stavke primke,Wareneingang,استلام الأصناف
 receivings_requisition,Átadás,Bedarf,Transfer,Requisición,Requisition,,,,เบิกสินค้า,Talepler,Mutasi Antar Gudang,Requisição,Međusklad.,Bedarf,طلب شراء
 receivings_return,Visszáru,Retoure,Teruggave,Devolver,Return,Return,退貨,возвращать,คืนสินค้า,İade,Retur,Devolução,Povrat,Retoure,إرتجاع لمورد
