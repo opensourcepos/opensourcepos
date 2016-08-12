@@ -45,7 +45,7 @@
 					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
-							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 							<?php echo form_password(array(
 									'name'=>'password',
 									'id'=>'password',
@@ -59,7 +59,7 @@
 				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
-							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 							<?php echo form_password(array(
 									'name'=>'repeat_password',
 									'id'=>'repeat_password',

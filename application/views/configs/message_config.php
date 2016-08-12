@@ -22,7 +22,7 @@
 				<?php echo form_label($this->lang->line('config_msg_pwd'), 'msg_pwd', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
-						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 						<?php echo form_password(array(
 							'name' => 'msg_pwd',
 							'id' => 'msg_pwd',
