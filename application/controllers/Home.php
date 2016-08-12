@@ -8,15 +8,22 @@ class Home extends Secure_Controller
 	{
 		parent::__construct();	
 	}
-	
+
 	public function index()
 	{
 		$this->load->view('home');
 	}
-	
+
 	public function logout()
 	{
 		$this->Employee->logout();
+
+		if($this->config->item('statistics') == TRUE)
+		{
+			$this->load->library('tracking_lib');
+
+			$this->tracking_lib->track_page('Logout', 'logout');
+		}
 	}
 }
 ?>

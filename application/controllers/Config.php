@@ -118,8 +118,10 @@ class Config extends Secure_Controller
 		// read all themes in the dist folder
 		$dir = new DirectoryIterator('dist/bootswatch');
 
-		foreach($dir as $dirinfo) {
-			if ($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts') {
+		foreach($dir as $dirinfo)
+		{
+			if($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts')
+			{
 				$themes[$dirinfo->getFileName()] = $dirinfo->getFileName();
 			}
 		}

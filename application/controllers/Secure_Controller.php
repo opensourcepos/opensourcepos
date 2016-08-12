@@ -18,6 +18,8 @@ class Secure_Controller extends CI_Controller
 			redirect('login');
 		}
 
+		$this->track_page($module_id, $submodule_id);
+		
 		$logged_in_employee_info = $model->get_logged_in_employee_info();
 		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
 			(isset($submodule_id) && !$model->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
@@ -51,7 +53,37 @@ class Secure_Controller extends CI_Controller
 		}
 	}
 
-	function numeric($str)
+	protected function track_page($module_id, $submodule_id)
+	{
+		if($this->config->item('statistics') == TRUE)
+		{
+			$this->load->library('tracking_lib');
+
+			if(empty($module_id))
+			{
+				$module_id = 'home';
+			}
+			
+			if(empty($submodule_id))
+			{
+				$submodule_id = 'empty';
+			}
+
+			$this->tracking_lib->track_page('Controller/' . $module_id, $module_id, $submodule_id);
+		}
+	}
+
+	protected function track_event($category, $action, $label, $value = NULL)
+	{
+		if($this->config->item('statistics') == TRUE)
+		{
+			$this->load->library('tracking_lib');
+
+			$this->tracking_lib->track_event($category, $action, $label, $value);
+		}
+	}
+
+	public function numeric($str)
 	{
 		return parse_decimals($str);
 	}
@@ -59,9 +91,12 @@ class Secure_Controller extends CI_Controller
 	public function check_numeric()
 	{
 		$result = TRUE;
-		foreach($this->input->get() as $str) {
+
+		foreach($this->input->get() as $str)
+		{
 			$result = parse_decimals($str);
 		}
+
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
