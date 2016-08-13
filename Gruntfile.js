@@ -222,7 +222,7 @@ module.exports = function(grunt) {
 				options: {
 					// Target-specific options go here. 
 					directory: 'public/bower_components',
-					output: 'publiclicense/LICENSES'
+					output: 'public/license/LICENSES'
 				},
 			},
 		},
