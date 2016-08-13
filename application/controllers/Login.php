@@ -37,7 +37,7 @@ class Login extends CI_Controller
 
 					if($footer != '-.')
 					{
-						$footer = $footer . ' | ' . $this->config->item('company') . ' | ' .  $this->config->item('address') . ' | ' . $this->config->item('email');
+						$footer = $footer . ' | ' . $this->config->item('company') . ' | ' .  $this->config->item('address') . ' | ' . $this->config->item('email') . ' | ' . $this->config->item('base_url');
 						
 						$this->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
 					
