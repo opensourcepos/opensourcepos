@@ -53,23 +53,18 @@ class Secure_Controller extends CI_Controller
 		}
 	}
 
-	protected function track_page($module_id, $submodule_id)
+	protected function track_page($path, $page)
 	{
 		if($this->config->item('statistics') == TRUE)
 		{
 			$this->load->library('tracking_lib');
 
-			if(empty($module_id))
+			if(empty($path))
 			{
-				$module_id = 'home';
-			}
-			
-			if(empty($submodule_id))
-			{
-				$submodule_id = 'empty';
+				$path = 'home';
 			}
 
-			$this->tracking_lib->track_page('Controller/' . $module_id, $module_id, $submodule_id);
+			$this->tracking_lib->track_page('controller/' . $path, $page);
 		}
 	}
 

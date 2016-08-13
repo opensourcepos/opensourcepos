@@ -11,6 +11,8 @@ class Tracking_lib
 	{
 		$this->CI =& get_instance();
 		
+		$clientId = $this->CI->Appconfig->get('client_id');
+		
 		/**
 		 * Setup the class
 		 * optional
@@ -18,7 +20,7 @@ class Tracking_lib
 		$options = array(
 			'client_create_random_id' => TRUE, // create a random client id when the class can't fetch the current cliend id or none is provided by "client_id"
 			'client_fallback_id' => 555, // fallback client id when cid was not found and random client id is off
-			'client_id' => NULL, //substr($this->CI->config->item('commit_sha1'), 5, 40),    // override client id
+			'client_id' => $clientId, // override client id
 			'user_id' => $_SERVER['SERVER_ADDR'],  // determine current user id
 			// adapter options
 			'adapter' => array(
@@ -30,6 +32,13 @@ class Tracking_lib
 		try
 		{
 			$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-1', $options);
+			
+			if(empty($clientId))
+			{
+				$clientId = $this->tracking->getClientId();
+
+				$this->CI->Appconfig->batch_save(array('client_id' => $clientId));
+			}
 		}
 		finally
 		{
@@ -63,7 +72,7 @@ class Tracking_lib
 	/*
 	 * Track Page function
 	 */
-	public function track_page($path, $title, $description = NULL)
+	public function track_page($path, $title, $description = ' ')
 	{
 		try
 		{
@@ -71,6 +80,7 @@ class Tracking_lib
 			$event = $this->tracking->createTracking('Factory', array(
 				'an' => 'OSPOS',
 				'av' => $this->CI->config->item('application_version') . ' - ' . substr($this->CI->config->item('commit_sha1'), 5, 12),
+				'ul' => $this->CI->config->item('language'),
 				'dh' => $_SERVER['SERVER_ADDR'],
 				'dp' => $path,
 				'dt' => $title,

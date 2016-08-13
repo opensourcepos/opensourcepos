@@ -17,7 +17,7 @@ class Reports extends Secure_Controller
 			preg_match('/^(.*?)([sy])?$/', array_pop($matches), $matches);
 			$submodule_id = $matches[1] . ((count($matches) > 2) ? $matches[2] : 's');
 
-			$this->track_page('Reports', $submodule_id);
+			$this->track_page('reports/' . $submodule_id, 'reports_' . $submodule_id);
 
 			// check access to report submodule
 			if(!$this->Employee->has_grant('reports_' . $submodule_id, $this->Employee->get_logged_in_employee_info()->person_id))
