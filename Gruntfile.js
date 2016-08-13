@@ -45,27 +45,12 @@ module.exports = function(grunt) {
 					'invoice_email.css': '../../css/invoice_email.css',
 					'barcode_font.css': '../../css/barcode_font.css',
 					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
-					'bootswatch/cerulean/bootstrap.min.css': 'bootswatch/cerulean/bootstrap.min.css',
-					'bootswatch/cosmo/bootstrap.min.css': 'bootswatch/cosmo/bootstrap.min.css',
-					'bootswatch/cyborg/bootstrap.min.css': 'bootswatch/cyborg/bootstrap.min.css',
-					'bootswatch/darkly/bootstrap.min.css': 'bootswatch/darkly/bootstrap.min.css',
-					'bootswatch/flatly/bootstrap.min.css': 'bootswatch/flatly/bootstrap.min.css',
-					'bootswatch/journal/bootstrap.min.css': 'bootswatch/journal/bootstrap.min.css',
-					'bootswatch/paper/bootstrap.min.css': 'bootswatch/paper/bootstrap.min.css',
-					'bootswatch/readable/bootstrap.min.css': 'bootswatch/readable/bootstrap.min.css',
-					'bootswatch/sandstone/bootstrap.min.css': 'bootswatch/sandstone/bootstrap.min.css',
-					'bootswatch/slate/bootstrap.min.css': 'bootswatch/slate/bootstrap.min.css',
-					'bootswatch/spacelab/bootstrap.min.css': 'bootswatch/spacelab/bootstrap.min.css',
-					'bootswatch/superhero/bootstrap.min.css': 'bootswatch/superhero/bootstrap.min.css',
-					'bootswatch/united/bootstrap.min.css': 'bootswatch/united/bootstrap.min.css',
-					'bootswatch/yeti/bootstrap.min.css': 'bootswatch/yeti/bootstrap.min.css',
-					'bootswatch/fonts': 'bootswatch/fonts'
 				}
 			},
 			targetdistbootswatch: {
 				options: {
-					srcPrefix: 'bower_components/bootswatch',
-					destPrefix: 'dist/bootswatch'
+					srcPrefix: 'public/bower_components/bootswatch',
+					destPrefix: 'public/dist/bootswatch'
 				},
 				files: {
 					'cerulean/bootstrap.min.css': 'cerulean/bootstrap.min.css',
