@@ -2,9 +2,37 @@ Introduction
 ------------
 
 Open Source Point of Sale is a web based point of sale system written in the PHP language.
-It uses MySQL as the data storage back-end and has a simple user interface.
+It uses MySQL (or MariaDB) as the data storage back-end and has a simple user interface.
 
-This is the latest version 3.0.0 and it's based on Bootstrap 3 using Bootswatch theme Flatly as default, and CodeIgniter 3.0.6.
+The latest version 3.0.0 is a complete overhaul of the original software, based on Bootswatch/Bootstrap 3.x using theme Flatly as default, and CodeIgniter 3.x.
+
+It now has a fresh look'n'feel with improved functionality and security.
+
+License
+-------
+
+Open Source Point of Sale is licensed under MIT terms with an important addition:
+
+_The footer signature "You are using Open Source Point Of Sale" with version, 
+hash and link to the original distribution of the code MUST BE RETAINED, 
+MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED._
+
+Also worth noting:
+
+_The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software._
+
+For more details please read the file __COPYING__.
+
+It's important to understand that althought you are free to use the software the copyright stays and the license agreement applies in all cases.
+Therefore any actions like:
+
+- Removing COPYING and any license files is prohibited
+- Authoring the footer notice replacing with your own or even worse claim the copyright is absolutely prohibited
+
+In short you are free to use the software but you cannot claim any property on it.
+
+Any person or company found breaching the license agreement will be chased up.
 
 Badges
 ------
@@ -80,8 +108,8 @@ Local install
 6. Modify application/config/config.php encryption key with your own
 7. Go to your point of sale install via the browser
 8. LOGIN using
-username: admin 
-password:pointofsale
+  * username: admin 
+  * password: pointofsale
 9. Enjoy
 
 Local install using Docker
