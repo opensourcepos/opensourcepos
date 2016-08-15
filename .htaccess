@@ -60,11 +60,11 @@ IndexIgnore *
 <Files generate_languages.php>
   Order deny,allow
   Deny from all
+
   Allow from 127.0.0.1
- 
+
 # My IP(s)
 #  Allow from xxx.xxx.xxx.xxx
-
 </Files>
 
 <IfModule mod_expires.c>
