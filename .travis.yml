@@ -9,7 +9,9 @@ before_install:
 script:
     - docker-compose build
     - docker-compose up -d
-
+env: 
+    - TAG=$(echo ${travis_branch} | sed s/feature\\///)
 after_success:
-    - '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag opensourcepos_php jekkos/opensourcepos:${TRAVIS_BRANCH} && docker tag opensourcepos_sqlscript jekkos/opensourcepos:sqlscript && docker push jekkos/opensourcepos:${TRAVIS_BRANCH} && docker push jekkos/opensourcepos:sqlscript'
+    - 
+    - '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag opensourcepos_php jekkos/opensourcepos:${TAG} && docker tag opensourcepos_sqlscript jekkos/opensourcepos:sqlscript && docker push jekkos/opensourcepos:${TAG} docker push jekkos/opensourcepos:sqlscript'
 
