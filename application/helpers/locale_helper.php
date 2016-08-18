@@ -4,6 +4,16 @@
  * Currency locale
  */
 
+function current_language_code()
+{
+    return get_instance()->config->item('language_code');
+}
+
+function current_language()
+{
+    return get_instance()->config->item('language');
+}
+
 function currency_side()
 {
     $config = get_instance()->config;

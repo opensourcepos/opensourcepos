@@ -113,23 +113,23 @@
 				<?php echo form_label($this->lang->line('config_language'), 'language', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_dropdown('language', array(
-						'en' => 'English',
-						'es' => 'Spanish',
-						'nl-BE' => 'Dutch (Belgium)',
-						'de' => 'German (Germany)',
-						'de-CH' => 'German (Swiss)',
-						'fr' => 'French',
-						'zh' => 'Chinese',
-						'id' => 'Indonesian',
-						'th' => 'Thai',
-						'tr' => 'Turkish',
-						'ru' => 'Russian',
-						'hu-HU' => 'Hungarian',
-						'pt-BR' => 'Portuguese (Brazil)',
+						'en:english' => 'English',
+						'es:spanish' => 'Spanish',
+						'nl-BE:dutch' => 'Dutch (Belgium)',
+						'de:german' => 'German (Germany)',
+						'de-CH:german' => 'German (Swiss)',
+						'fr:french' => 'French',
+						'zh:simplified-chinese' => 'Chinese',
+						'id:indonesian' => 'Indonesian',
+						'th:thai' => 'Thai',
+						'tr:turkish' => 'Turkish',
+						'ru:russian' => 'Russian',
+						'hu-HU:hungarian' => 'Hungarian',
+						'pt-BR:portugese-brazilian' => 'Portuguese (Brazil)',
 						'hr-HR' => 'Croatian (Croatia)',
-						'ar-EG' => 'Arabic (Egypt)'
+						'ar-EG:arabic' => 'Arabic (Egypt)'
 					),
-					$this->config->item('language'), array('class' => 'form-control input-sm'));
+					current_language_code() . ':' . current_language(), array('class' => 'form-control input-sm'));
 					?>
 				</div>
 			</div>
