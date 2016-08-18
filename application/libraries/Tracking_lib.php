@@ -80,7 +80,7 @@ class Tracking_lib
 			$event = $this->tracking->createTracking('Factory', array(
 				'an' => 'OSPOS',
 				'av' => $this->CI->config->item('application_version') . ' - ' . substr($this->CI->config->item('commit_sha1'), 5, 12),
-				'ul' => $this->CI->config->item('language'),
+				'ul' => current_language_code(),
 				'dh' => $_SERVER['SERVER_ADDR'],
 				'dp' => $path,
 				'dt' => $title,

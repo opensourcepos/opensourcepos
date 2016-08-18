@@ -70,7 +70,6 @@ if ( ! function_exists('directory_map'))
 		{
 			$filedata	= array();
 			$new_depth	= $directory_depth - 1;
-			$source_dir	= rtrim($source_dir, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
 
 			while (FALSE !== ($file = readdir($fp)))
 			{

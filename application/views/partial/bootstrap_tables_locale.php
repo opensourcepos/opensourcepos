@@ -1,7 +1,7 @@
 (function ($) {
     'use strict';
 
-    $.fn.bootstrapTable.locales['<?php echo $this->config->item('language'); ?>'] = {
+    $.fn.bootstrapTable.locales['<?php echo current_language_code(); ?>'] = {
 		formatLoadingMessage: function () {
 			return "<?php echo $this->lang->line('tables_loading');?>";
 		},
@@ -38,6 +38,6 @@
 		}
     };
 
-    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["<?php echo $this->config->item('language');?>"]);
+    $.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["<?php echo current_language_code();?>"]);
 
 })(jQuery);

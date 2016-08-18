@@ -77,7 +77,7 @@ $(document).ready(function()
 		todayBtn: true,
 		todayHighlight: true,
 		bootcssVer: 3,
-		language: "<?php echo $this->config->item('language'); ?>"
+		language: "<?php echo current_language_code(); ?>"
 	});
 
 	var fill_value = function(event, ui)

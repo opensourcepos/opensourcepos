@@ -27,7 +27,8 @@ class Installer
                 'user'  => 'bcit-ci',
                 'repos' => 'codeigniter3-translations',
                 'name'  => 'Translations for CodeIgniter System Messages',
-                'dir'   => 'application',
+                'dir'   => 'language',
+                'dst'   => 'system',
                 'example_branch' => '3.0.0',
              ),
             'restserver' => array(
@@ -155,7 +156,8 @@ class Installer
         
         if (is_string($dir)) {
             $src = realpath(dirname($filepath) . "/$repos-$version/$pre$dir");
-            $dst = realpath(__DIR__ . "/../application/$dir");
+            $dstfolder = empty($this->packages[$package]['dst']) ? 'application' : 'vendor/codeigniter/framework/system';
+            $dst = realpath(__DIR__ . "/../$dstfolder/$dir");
             return array($src, $dst);
         }
         

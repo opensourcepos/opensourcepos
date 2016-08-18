@@ -229,9 +229,11 @@ class Config extends Secure_Controller
 
 	public function save_locale()
 	{
+		$exploded = explode(":", $this->input->post('language'));
 		$batch_save_data = array(
 			'currency_symbol' => $this->input->post('currency_symbol'),
-			'language' => $this->input->post('language'),
+			'language_code' => $exploded[0],
+			'language' => $exploded[1],
 			'timezone' => $this->input->post('timezone'),
 			'dateformat' => $this->input->post('dateformat'),
 			'timeformat' => $this->input->post('timeformat'),
