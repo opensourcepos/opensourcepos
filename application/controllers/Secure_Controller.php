@@ -18,7 +18,7 @@ class Secure_Controller extends CI_Controller
 			redirect('login');
 		}
 
-		$this->track_page($module_id, $submodule_id);
+		$this->track_page($module_id, $module_id);
 		
 		$logged_in_employee_info = $model->get_logged_in_employee_info();
 		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
@@ -62,6 +62,7 @@ class Secure_Controller extends CI_Controller
 			if(empty($path))
 			{
 				$path = 'home';
+				$page = 'home';
 			}
 
 			$this->tracking_lib->track_page('controller/' . $path, $page);

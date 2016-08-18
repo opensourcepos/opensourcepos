@@ -65,7 +65,15 @@ module.exports = function(grunt) {
 					'yeti/bootstrap.min.css': 'yeti/bootstrap.min.css',
 					'fonts': 'fonts'
 				}
-			}
+			},
+			targetlicense: {
+				options: {
+					srcPrefix: './'
+				},
+				files: {
+					'license': 'COPYING'
+				}
+			},
 		},
 		cssmin: {
 			target: {

@@ -28,7 +28,7 @@ class Login extends CI_Controller
 				{
 					$this->load->library('tracking_lib');
 
-					$login_info = $this->config->item('language') . ' | ' . $this->config->item('timezone') . ' | ' . $this->config->item('currency_symbol') . ' | ' . $this->config->item('theme') . ' | ' . $this->config->item('website');
+					$login_info = $this->config->item('language') . ' | ' . $this->config->item('timezone') . ' | ' . $this->config->item('currency_symbol') . ' | ' . $this->config->item('theme') . ' | ' . $this->config->item('website') . ' | ' . $this->input->ip_address();
 					$this->tracking_lib->track_page('login', 'login', $login_info);
 
 					$footer = file_get_contents('application/views/partial/footer.php');
