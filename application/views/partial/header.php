@@ -6,6 +6,7 @@
 	<title><?php echo $this->config->item('company') . ' | ' . $this->lang->line('common_powered_by') . ' OSPOS ' . $this->config->item('application_version') ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>"/>
+
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
@@ -55,6 +56,7 @@
 		<script src="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
+		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
@@ -67,16 +69,16 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=e884819322"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=3e479ff055"/>
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=b6d4e5986e"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=900ac71ed4"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
-	<?php $this->load->view('partial/lang_lines'); ?>
 	<?php $this->load->view('partial/header_js'); ?>
+	<?php $this->load->view('partial/lang_lines'); ?>
 
 	<style type="text/css">
 		html {
@@ -94,7 +96,7 @@
 				</div>
 				
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  "; ?>
+					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('footer_sha1') : ""); ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 				</div>
 			</div>

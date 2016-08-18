@@ -6,7 +6,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libgd-dev
 
 RUN a2enmod rewrite
-RUN docker-php-ext-install mysql mysqli bcmath intl gd
+RUN docker-php-ext-install mysql mysqli bcmath intl gd sockets
 RUN echo "date.timezone = \"UTC\"" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /app

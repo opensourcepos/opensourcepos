@@ -335,3 +335,10 @@
 	}, form_support.error);
 
 })(window.form_support = window.form_support || {}, jQuery);
+
+$(document).ready(function() {
+	if (footer_sha1 != $("#footer strong").text().split("- ")[1])
+	{
+		$(window).block({ message: '' });
+	}
+});

@@ -44,4 +44,6 @@
 		}
 	});
 
+	footer_sha1 = '<?php echo $this->session->userdata('footer_sha1'); ?>';
+
 </script>

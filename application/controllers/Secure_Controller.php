@@ -26,7 +26,7 @@ class Secure_Controller extends CI_Controller
 		{
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
 		}
-		
+
 		// load up global data visible to all the loaded views
 		$data['allowed_modules'] = $this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		$data['user_info'] = $logged_in_employee_info;
