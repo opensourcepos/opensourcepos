@@ -59,7 +59,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('smtp_timeout', '5'),
 ('smtp_crypto', 'ssl'),
 ('receipt_template', 'receipt_default'),
-('theme', 'flatly');
+('theme', 'flatly'),
+('language_code', 'en');
  
 DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
 
