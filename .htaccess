@@ -1,0 +1,75 @@
+RewriteEngine On
+
+# To redirect a subdomain to a subdir because of https not supporting wildcards
+# replace values between <> with your ones
+# RewriteCond %{HTTP_HOST} ^<OSPOS subdomain>\.<my web domain>\.com$ [OR]
+# RewriteCond %{HTTP_HOST} ^www\.<OSPOS subdomain>\.<my web domain>\.com$
+# RewriteRule ^/?$ "https\:\/\/www\.<my web domain>\.com\/<OSPOS path>" [R=301,L]
+
+# To rewrite "domain.com -> www.domain.com" uncomment the following lines.
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
+# RewriteCond %{HTTP_HOST} (.+)$ [NC]
+# RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L]
+
+# Suppress index.php from OSPOS URL
+# Remember to set in application/config/config.php  $config['index_page'] = '';
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# if in web root
+RewriteRule ^(.*)$ index.php?/$1 [L]
+# if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path
+# RewriteRule ^(.*)$ /<OSPOS path>/index.php?/$1 [L]
+
+# disable directory browsing
+# For security reasons, Option all cannot be overridden.
+#Options All -Indexes
+Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
+
+# prevent folder listing
+IndexIgnore *
+
+# secure htaccess file
+<Files .htaccess>
+  Order allow,deny
+  Deny from all
+</Files>
+
+# prevent access to PHP error log
+<Files error_log>
+  Order allow,deny
+  Deny from all
+  Satisfy all
+</Files>
+
+# prevent access to COPYING
+<Files COPYING>
+  Order allow,deny
+  Deny from all
+  Satisfy all
+</Files>
+
+# prevent access to csv and txt files
+<FilesMatch "\.(csv|txt)$">
+  Order allow,deny
+  Deny from all
+  Satisfy all
+</FilesMatch>
+
+# control access to generate_languages.php
+<Files generate_languages.php>
+  Order deny,allow
+  Deny from all
+
+  Allow from 127.0.0.1
+
+# My IP(s)
+#  Allow from xxx.xxx.xxx.xxx
+</Files>
+
+<IfModule mod_expires.c>
+  <FilesMatch "\.(jpe?g|png|gif|js|css)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 week"
+  </FilesMatch>
+</IfModule>
