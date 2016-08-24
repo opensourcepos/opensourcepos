@@ -153,7 +153,7 @@ module.exports = function(grunt) {
 					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
 					openTag: '<!-- start css template tags -->',
 					closeTag: '<!-- end css template tags -->',
-                    ignorePath: '../../public/'
+                    ignorePath: '../../../public/'
 				},
 				src: ['public/dist/login.css'],
 				dest: 'application/views/login.php'
