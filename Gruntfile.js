@@ -26,7 +26,7 @@ module.exports = function(grunt) {
 			targetcssdist: {
 				options: {
 					srcPrefix: 'css',
-					destPrefix: 'dist'
+					destPrefix: 'public/dist'
 				},
 				files: {
 					'login.css': 'login.css',
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
 					srcPrefix: './'
 				},
 				files: {
-					'license': 'COPYING'
+					'public/license': 'COPYING'
 				}
 			},
 		},
@@ -231,7 +231,7 @@ module.exports = function(grunt) {
 					noGood: true
 				},
 				log: {
-					outFile: 'license/.licenses',
+					outFile: 'public/license/.licenses',
 					nonBower: true,
 					noLicense: true,
 					allGood: true,

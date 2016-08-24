@@ -79,7 +79,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('smtp_timeout', '5'),
 ('smtp_crypto', 'ssl'),
 ('receipt_template', 'receipt_default'),
-('theme', 'flatly');
+('theme', 'flatly'),
+('language', 'english'),
+('language_code', 'en');
 
 
 -- --------------------------------------------------------
