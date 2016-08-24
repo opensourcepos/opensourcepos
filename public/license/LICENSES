@@ -6,21 +6,11 @@
         "homepage": "http://getbootstrap.com",
         "repository": "git+https://github.com/twbs/bootstrap"
     },
-    "bootstrap-select@undefined": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://silviomoreto.github.io/bootstrap-select"
-    },
     "bootstrap-daterangepicker@undefined": {
         "licenses": [
             "MIT"
         ],
         "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
-    },
-    "bootstrap3-dialog@1.35.2": {
-        "licenses": "UNKNOWN",
-        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "bootstrap-table@undefined": {
         "licenses": [
@@ -28,6 +18,16 @@
         ],
         "homepage": "https://github.com/wenzhixin/bootstrap-table",
         "repository": "git+https://github.com/wenzhixin/bootstrap-table"
+    },
+    "bootstrap-select@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://silviomoreto.github.io/bootstrap-select"
+    },
+    "bootstrap3-dialog@1.35.2": {
+        "licenses": "UNKNOWN",
+        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "bootswatch@undefined": {
         "licenses": [
@@ -42,6 +42,11 @@
     "chartist@undefined": {
         "licenses": "UNKNOWN"
     },
+    "chartist-plugin-axistitle@0.0.1": {
+        "licenses": [
+            "WTF*"
+        ]
+    },
     "chartist-plugin-pointlabels@0.0.4": {
         "licenses": [
             "WTF*"
@@ -50,11 +55,6 @@
     "chartist-plugin-tooltip@undefined": {
         "licenses": [
             "MIT*"
-        ]
-    },
-    "chartist-plugin-axistitle@0.0.1": {
-        "licenses": [
-            "WTF*"
         ]
     },
     "file-saver.js@1.20150507.2": {
@@ -90,17 +90,17 @@
         ],
         "repository": "https://github.com/jquery/jquery-ui"
     },
-    "js-cookie@undefined": {
-        "licenses": [
-            "MIT"
-        ]
-    },
     "jquery-validation@1.13.1": {
         "licenses": [
             "MIT"
         ],
         "repository": "https://github.com/jzaefferer/jquery-validation",
         "homepage": "http://jqueryvalidation.org/"
+    },
+    "js-cookie@undefined": {
+        "licenses": [
+            "MIT"
+        ]
     },
     "jspdf@1.0.272": {
         "licenses": [
