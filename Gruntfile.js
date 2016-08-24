@@ -75,7 +75,7 @@ module.exports = function(grunt) {
 					srcPrefix: './'
 				},
 				files: {
-					'license': 'COPYING'
+					'license': 'public/license/COPYING'
 				}
 			},
 		},
