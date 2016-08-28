@@ -170,6 +170,7 @@ $lang["config_stock_location_required"] = "Stock location is a required field";
 $lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "Tax Included";
+$lang["total_tables"] = "Total Tables";
 $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Timezone";
 $lang["config_top"] = "Top";

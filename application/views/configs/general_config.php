@@ -3,6 +3,26 @@
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 			<ul id="general_error_message_box" class="error_message_box"></ul>
+			
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('total_tables'), 'total_tables', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_input(array(
+						'name' => 'default_total_tables_name',
+						'id' => 'default_total_tables_name',
+						'class' => 'form-control input-sm',
+						'value'=>$this->config->item('default_total_tables_name')!==FALSE ? $this->config->item('default_total_tables_name') : $this->lang->line('total_tables'))); ?>
+				</div>
+				<div class="col-xs-1 input-group">
+					<?php echo form_input(array(
+						'name' => 'default_total_tables_number',
+						'id' => 'default_total_tables_number',
+						'class' => 'form-control input-sm',
+						'value'=>to_tax_decimals($this->config->item('default_total_tables_number')))); ?>
+					<span class="input-group-addon input-sm">%</span>
+				</div>
+			</div>
+
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_theme'), 'theme', array('class' => 'control-label col-xs-2')); ?>

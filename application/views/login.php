@@ -3,7 +3,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<base href="<?php echo base_url();?>" />
-	<title><?php echo $this->config->item('company') . ' | OSPOS ' . $this->config->item('application_version')  . ' | ' .  $this->lang->line('login_login'); ?></title>
+	<title><?php echo $this->config->item('company') . ' | CXM ' . $this->config->item('application_version')  . ' | ' .  $this->lang->line('login_login'); ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>"/>
 	<!-- start css template tags -->
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-	<div id="logo" align="center"><img src="<?php echo base_url();?>/images/logo.png"></div>
+	<div id="logo" align="center"><h1>Colossus POS</h1><!-- <img src="<?php echo base_url();?>/images/logo.png"> --></div>
 
 	<div id="login">
 		<?php echo form_open('login') ?>
@@ -35,7 +35,7 @@
 			</div>
 		<?php echo form_close(); ?>
 		
-		<h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
+		<h1>Colossus CXM <?php echo $this->config->item('application_version'); ?></h1>
 	</div>
 </body>
 </html>
