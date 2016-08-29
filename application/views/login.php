@@ -35,7 +35,7 @@
 			</div>
 		<?php echo form_close(); ?>
 		
-		<h1>Open Source w Of Sale <?php echo $this->config->item('application_version'); ?></h1>
+		<h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
 	</div>
 </body>
 </html>

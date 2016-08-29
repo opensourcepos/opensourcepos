@@ -49464,7 +49464,6 @@ $(document).ready(function() {
     	            value: address[field_name]
                 };
             });
-            return _.uniq(parsed);
 			return unique(parsed);
 		};
 	};
