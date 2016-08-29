@@ -11,10 +11,6 @@
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
     },
-    "bootstrap3-dialog@1.35.2": {
-        "licenses": "UNKNOWN",
-        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
-    },
     "bootswatch@3.3.7": {
         "licenses": [
             "MIT"
@@ -28,6 +24,10 @@
     "chartist@0.9.8": {
         "licenses": "UNKNOWN",
         "homepage": "https://github.com/gionkunz/chartist-js"
+    },
+    "bootstrap3-dialog@1.35.2": {
+        "licenses": "UNKNOWN",
+        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "chartist-plugin-axistitle@0.1.0": {
         "licenses": [
@@ -87,6 +87,13 @@
         ],
         "homepage": "https://github.com/hhurz/tableExport.jquery.plugin"
     },
+    "bootstrap-daterangepicker@2.1.24": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
+        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
+    },
     "bootstrap@3.3.7": {
         "licenses": [
             "MIT"
@@ -94,12 +101,12 @@
         "homepage": "http://getbootstrap.com",
         "repository": "git+https://github.com/twbs/bootstrap"
     },
-    "bootstrap-daterangepicker@2.1.24": {
+    "bootstrap-table@1.11.0": {
         "licenses": [
             "MIT"
         ],
-        "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
-        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
+        "homepage": "https://github.com/wenzhixin/bootstrap-table",
+        "repository": "git+https://github.com/wenzhixin/bootstrap-table"
     },
     "html2canvas@0.4.1": {
         "licenses": [
@@ -116,12 +123,12 @@
         "homepage": "https://github.com/jasny/bootstrap",
         "repository": "git+https://github.com/jasny/bootstrap"
     },
-    "bootstrap-table@1.11.0": {
+    "jspdf-autotable@2.0.14": {
         "licenses": [
             "MIT"
         ],
-        "homepage": "https://github.com/wenzhixin/bootstrap-table",
-        "repository": "git+https://github.com/wenzhixin/bootstrap-table"
+        "homepage": "https://github.com/simonbengtsson/jspdf-autotable",
+        "repository": "git+https://github.com/simonbengtsson/jsPDF-AutoTable"
     },
     "jquery-validation@1.13.1": {
         "licenses": [
@@ -130,19 +137,18 @@
         "repository": "https://github.com/jzaefferer/jquery-validation",
         "homepage": "http://jqueryvalidation.org/"
     },
+    "lodash@4.15.0": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/lodash/lodash"
+    },
     "remarkable-bootstrap-notify@3.1.3": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://bootstrap-notify.remabledesigns.com/",
         "repository": "https://github.com/mouse0270/bootstrap-notify"
-    },
-    "jspdf-autotable@2.0.14": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/simonbengtsson/jspdf-autotable",
-        "repository": "git+https://github.com/simonbengtsson/jsPDF-AutoTable"
     },
     "smalot-bootstrap-datetimepicker@2.3.11": {
         "licenses": [

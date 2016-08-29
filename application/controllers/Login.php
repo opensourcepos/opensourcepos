@@ -31,20 +31,6 @@ class Login extends CI_Controller
 					$login_info = $this->config->item('language') . ' | ' . $this->config->item('timezone') . ' | ' . $this->config->item('currency_symbol') . ' | ' . $this->config->item('theme') . ' | ' . $this->config->item('website') . ' | ' . $this->input->ip_address();
 					$this->tracking_lib->track_page('login', 'login', $login_info);
 
-
-					$footer = preg_replace('/\s+/', '', $footer);
-
-					if($footer != '-.')
-					{
-						$footer = $footer . ' | ' . $this->config->item('company') . ' | ' .  $this->config->item('address') . ' | ' . $this->config->item('email') . ' | ' . $this->config->item('base_url');
-						
-						$this->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
-					
-						//$header = file_get_contents('application/views/partial/header.php');
-						//$header = strip_tags($header);
-						//$header = preg_replace('/\s+/', '', $header);
-						//$this->tracking_lib->track_page('rogue/header', 'rogue header', $header);
-					}
 				}
 
 				redirect('home');

@@ -20,15 +20,15 @@
 		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
-		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
-		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
-		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
-		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
-		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
-		<link rel="stylesheet" type="text/css" href="css/register.css"/>
-		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
-		<link rel="stylesheet" type="text/css" href="css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/bootstrap.autocomplete.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/ospos.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/ospos_print.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/popupbox.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/receipt.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/register.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/reports.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -57,23 +57,24 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
 		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
+		<script src="bower_components/lodash/lodash.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
-		<script type="text/javascript" src="js/manage_tables.js"></script>
-		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
+		<script type="text/javascript" src="../../../js/imgpreview.full.jquery.js"></script>
+		<script type="text/javascript" src="../../../js/manage_tables.js"></script>
+		<script type="text/javascript" src="../../../js/nominatim.autocomplete.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="dist/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=3e479ff055"/>
-		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../dist/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="../../../dist/opensourcepos.min.css?rel=3e479ff055"/>
+		<link rel="stylesheet" type="text/css" href="../../../dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=900ac71ed4"></script>
+		<script type="text/javascript" src="../../../dist/opensourcepos.min.js?rel=01b32c02e4"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -96,7 +97,7 @@
 				</div>
 				
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('footer_sha1') : ""); ?>
+					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 				</div>
 			</div>

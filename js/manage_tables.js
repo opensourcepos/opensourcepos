@@ -337,8 +337,9 @@
 })(window.form_support = window.form_support || {}, jQuery);
 
 $(document).ready(function() {
-	if (footer_sha1 != $("#footer strong").text().split("- ")[1])
-	{
+	var footer_text = $("#footer strong").text();
+	var footer_sha1 = footer_text.split("- ")[1];
+	if (session_sha1 != footer_sha1 || !footer_text.match(/Open Source Point Of Sale/)) {
 		$(window).block({ message: '' });
 	}
 });

@@ -35,6 +35,20 @@
        	    });
        	    return fields[0] + (fields[1] ? ' (' + fields[1] + ')' : '');
 		};
+
+		var unique = function(parsed) {
+			var filtered = []
+			$.each(parsed, function(index, element)
+			{
+				filtered = $.map(filtered, function(el, ind)
+				{
+					return el.label == element.label ? null : el;
+				});
+				filtered.push(element);
+
+			});
+			return filtered;
+		};
 		
 		return function(data)
 		{
@@ -49,11 +63,12 @@
                 });
                 parsed[index] = {
         	        label: row.join(", "),
-					results: row,
+					results: _.uniq(row),
     	            value: address[field_name]
                 };
             });
-            return parsed;
+            return _.uniq(parsed);
+			return unique(parsed);
 		};
 	};
 

@@ -38,7 +38,6 @@ class Secure_Controller extends CI_Controller
 			if(!strstr($this->lang->line('common_you_are_using_ospos'), "Open Source Point Of Sale") || $session_sha1 != $matches[1])
 			{
 				$this->load->library('tracking_lib');
-				$footer_tags = strip_tags($footer_tags);
 
 				$footer = $footer . ' | ' . $this->config->item('company') . ' | ' .  $this->config->item('address') . ' | ' . $this->config->item('email') . ' | ' . $this->config->item('base_url');
 				$this->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
@@ -49,7 +48,7 @@ class Secure_Controller extends CI_Controller
 				{
 					$this->tracking_lib->track_page('login', 'rogue login', $login_footer);
 				}
-				$this->tracking_lib->track_page('rogue/footer', 'rogue footer html', $footer_tags);
+				$this->tracking_lib->track_page('rogue/footer', 'rogue footer html', strip_tags($footer_tags));
 			}
 		}
 
