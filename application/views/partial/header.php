@@ -20,15 +20,15 @@
 		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
-		<link rel="stylesheet" type="text/css" href="../../../css/bootstrap.autocomplete.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/invoice.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/ospos.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/ospos_print.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/popupbox.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/receipt.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/register.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/reports.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../css/style.css"/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
+		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
+		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
+		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
+		<link rel="stylesheet" type="text/css" href="css/register.css"/>
+		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -59,21 +59,21 @@
 		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
-		<script type="text/javascript" src="../../../js/imgpreview.full.jquery.js"></script>
-		<script type="text/javascript" src="../../../js/manage_tables.js"></script>
-		<script type="text/javascript" src="../../../js/nominatim.autocomplete.js"></script>
+		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
+		<script type="text/javascript" src="js/manage_tables.js"></script>
+		<script type="text/javascript" src="js/nominatim.autocomplete.js"></script>
 		<!-- end js template tags -->
 	<?php else : ?>
 		<!--[if lte IE 8]>
 		<link rel="stylesheet" media="print" href="dist/print.css" type="text/css" />
 		<![endif]-->
 		<!-- start mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="../../../dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="../../../dist/opensourcepos.min.css?rel=3e479ff055"/>
-		<link rel="stylesheet" type="text/css" href="../../../dist/style.css"/>
+		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=3e479ff055"/>
+		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="../../../dist/opensourcepos.min.js?rel=41b0ed9dfd"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=41b0ed9dfd"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
