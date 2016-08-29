@@ -57,7 +57,6 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
 		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
-		<script src="bower_components/lodash/lodash.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="../../../js/imgpreview.full.jquery.js"></script>
@@ -74,7 +73,7 @@
 		<link rel="stylesheet" type="text/css" href="../../../dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="../../../dist/opensourcepos.min.js?rel=01b32c02e4"></script>
+		<script type="text/javascript" src="../../../dist/opensourcepos.min.js?rel=41b0ed9dfd"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
