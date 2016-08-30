@@ -49433,20 +49433,6 @@ $(document).ready(function() {
        	    return fields[0] + (fields[1] ? ' (' + fields[1] + ')' : '');
 		};
 
-		var unique = function(parsed) {
-			var filtered = []
-			$.each(parsed, function(index, element)
-			{
-				filtered = $.map(filtered, function(el, ind)
-				{
-					return el.label == element.label ? null : el;
-				});
-				filtered.push(element);
-
-			});
-			return filtered;
-		};
-		
 		return function(data)
 		{
             var parsed = [];
@@ -49460,11 +49446,11 @@ $(document).ready(function() {
                 });
                 parsed[index] = {
         	        label: row.join(", "),
-					results: _.uniq(row),
+					results: row,
     	            value: address[field_name]
                 };
             });
-			return unique(parsed);
+			return parsed;
 		};
 	};
 
@@ -49486,6 +49472,20 @@ $(document).ready(function() {
 
 		};
 
+		var unique = function(parsed) {
+			var filtered = [];
+			$.each(parsed, function(index, element)
+			{
+				filtered = $.map(filtered, function(el, ind)
+				{
+					return el.label == element.label ? null : el;
+				});
+				filtered.push(element);
+
+			});
+			return filtered;
+		};
+
 		$.each(options.fields, function(key, value)
 		{
 			var handle_field_completion = handle_auto_completion(value.dependencies);
@@ -49504,9 +49504,9 @@ $(document).ready(function() {
 						dataType: "json",
 						data: $.extend(request_params, params()),
 						success: function(data) {
-							response($.map(data, function(item) {
+							response(unique($.map(data, function(item) {
 								return (create_parser(key, (value.response && value.response.format) || value.dependencies))(data)
-							}))
+							})))
 						}
 					});
 				},
