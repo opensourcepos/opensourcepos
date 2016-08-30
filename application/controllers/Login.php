@@ -30,7 +30,6 @@ class Login extends CI_Controller
 
 					$login_info = $this->config->item('language') . ' | ' . $this->config->item('timezone') . ' | ' . $this->config->item('currency_symbol') . ' | ' . $this->config->item('theme') . ' | ' . $this->config->item('website') . ' | ' . $this->input->ip_address();
 					$this->tracking_lib->track_page('login', 'login', $login_info);
-
 				}
 
 				redirect('home');

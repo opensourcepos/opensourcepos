@@ -336,7 +336,7 @@ class GATracking
         $clientAdapter = $this->clientAdapter;
         $clientAdapter->setOptions($adapterOptions);
 
-            return $clientAdapter->send($this->apiEndpointUrl, $trackingCollection);
+        return $clientAdapter->send($this->apiEndpointUrl, $trackingCollection);
     }
 
     /**

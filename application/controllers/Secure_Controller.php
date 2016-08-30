@@ -27,20 +27,21 @@ class Secure_Controller extends CI_Controller
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
 		}
 
-		if (count($this->session->userdata('session_sha1')) == 0)
+		if(count($this->session->userdata('session_sha1')) == 0)
 		{
-			$footer_tags = file_get_contents(APPPATH.'views/partial/footer.php');
+			$footer_tags = file_get_contents(APPPATH . 'views/partial/footer.php');
 			$d = preg_replace('/\$Id:\s.*?\s\$/', '$Id$', $footer_tags);
 			$session_sha1 = sha1("blob " .strlen( $d ). "\0" . $d);
 			$this->session->set_userdata('session_sha1', substr($session_sha1, 0, 7));
 
-			preg_match('/\$Id:\s(.*?)\s\$/', $footer, $matches);
+			preg_match('/\$Id:\s(.*?)\s\$/', $footer_tags, $matches);
 			if(!strstr($this->lang->line('common_you_are_using_ospos'), "Open Source Point Of Sale") || $session_sha1 != $matches[1])
 			{
 				$this->load->library('tracking_lib');
 
-				$footer = $footer . ' | ' . $this->config->item('company') . ' | ' .  $this->config->item('address') . ' | ' . $this->config->item('email') . ' | ' . $this->config->item('base_url');
+				$footer = strip_tags($footer_tags) . ' | ' . $this->Appconfig->get('company') . ' | ' .  $this->Appconfig->get('address') . ' | ' . $this->Appconfig->get('email') . ' | ' . $this->config->item('base_url');
 				$this->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
+				$this->tracking_lib->track_page('rogue/footer', 'rogue footer html', $footer_tags);
 
 				$login_footer = $this->_get_login_footer();
 
@@ -48,7 +49,6 @@ class Secure_Controller extends CI_Controller
 				{
 					$this->tracking_lib->track_page('login', 'rogue login', $login_footer);
 				}
-				$this->tracking_lib->track_page('rogue/footer', 'rogue footer html', strip_tags($footer_tags));
 			}
 		}
 
