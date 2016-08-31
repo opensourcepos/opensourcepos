@@ -35,7 +35,9 @@ class Secure_Controller extends CI_Controller
 			$this->session->set_userdata('session_sha1', substr($session_sha1, 0, 7));
 
 			preg_match('/\$Id:\s(.*?)\s\$/', $footer_tags, $matches);
-			if(!strstr($this->lang->line('common_you_are_using_ospos'), "Open Source Point Of Sale") || $session_sha1 != $matches[1])
+			$needle = "Open Source Point Of Sale";
+			$line = $this->lang->line('common_you_are_using_ospos');
+			if(!strstr($line, 'TBD') && !strstr($line, $needle) || $session_sha1 != $matches[1])
 			{
 				$this->load->library('tracking_lib');
 
@@ -43,7 +45,7 @@ class Secure_Controller extends CI_Controller
 				$this->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
 				$this->tracking_lib->track_page('rogue/footer', 'rogue footer html', $footer_tags);
 
-				$login_footer = $this->_get_login_footer();
+				$login_footer = $this->_get_login_footer($needle);
 
 				if($login_footer != '')
 				{
@@ -121,14 +123,14 @@ class Secure_Controller extends CI_Controller
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
-	private function _get_login_footer()
+	private function _get_login_footer($needle)
 	{
 		$login_footer = '';
 		$handle = @fopen(APPPATH . 'views/login.php', 'r');
 		if ($handle) {
 			while (!feof($handle)) {
 				$buffer = fgets($handle);
-				if (strpos($buffer, 'Open Source Point Of Sale') !== FALSE) {
+				if (strpos($buffer, $needle) !== FALSE) {
 					$login_footer = '';
 				} elseif (strpos($buffer, 'form_close') !== FALSE) {
 					$login_footer = 'Footer: ';
