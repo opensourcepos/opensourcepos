@@ -43,6 +43,6 @@ function load_config()
         date_default_timezone_set('America/New_York');
     }
 
-    bcscale($CI->config->item('currency_decimals') + $CI->config->item('tax_decimals'));
+    bcscale(max(2, $CI->config->item('currency_decimals') + $CI->config->item('tax_decimals')));
 }
 ?>
