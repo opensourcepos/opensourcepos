@@ -113,7 +113,7 @@ class Employees extends Persons
 		{
 			$employee_data = array(
 				'username' => $this->input->post('username'),
-				'password' => password_hash($this->input->post('password')),
+				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
 				'hash_version' => 2
 			);
 		}
