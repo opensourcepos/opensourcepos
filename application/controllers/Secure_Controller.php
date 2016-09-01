@@ -27,33 +27,6 @@ class Secure_Controller extends CI_Controller
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
 		}
 
-		if(count($this->session->userdata('session_sha1')) == 0)
-		{
-			$footer_tags = file_get_contents(APPPATH . 'views/partial/footer.php');
-			$d = preg_replace('/\$Id:\s.*?\s\$/', '$Id$', $footer_tags);
-			$session_sha1 = sha1("blob " .strlen( $d ). "\0" . $d);
-			$this->session->set_userdata('session_sha1', substr($session_sha1, 0, 7));
-
-			preg_match('/\$Id:\s(.*?)\s\$/', $footer_tags, $matches);
-			$needle = "Open Source Point Of Sale";
-			$line = $this->lang->line('common_you_are_using_ospos');
-			if(!strstr($line, 'TBD') && !strstr($line, $needle) || $session_sha1 != $matches[1])
-			{
-				$this->load->library('tracking_lib');
-
-				$footer = strip_tags($footer_tags) . ' | ' . $this->Appconfig->get('company') . ' | ' .  $this->Appconfig->get('address') . ' | ' . $this->Appconfig->get('email') . ' | ' . $this->config->item('base_url');
-				$this->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
-				$this->tracking_lib->track_page('rogue/footer', 'rogue footer html', $footer_tags);
-
-				$login_footer = $this->_get_login_footer($needle);
-
-				if($login_footer != '')
-				{
-					$this->tracking_lib->track_page('login', 'rogue login', $login_footer);
-				}
-			}
-		}
-
 		// load up global data visible to all the loaded views
 		$data['allowed_modules'] = $this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		$data['user_info'] = $logged_in_employee_info;
@@ -123,25 +96,6 @@ class Secure_Controller extends CI_Controller
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
-	private function _get_login_footer($needle)
-	{
-		$login_footer = '';
-		$handle = @fopen(APPPATH . 'views/login.php', 'r');
-		if ($handle) {
-			while (!feof($handle)) {
-				$buffer = fgets($handle);
-				if (strpos($buffer, $needle) !== FALSE) {
-					$login_footer = '';
-				} elseif (strpos($buffer, 'form_close') !== FALSE) {
-					$login_footer = 'Footer: ';
-				} elseif ($login_footer != '') {
-					$login_footer .= $buffer;
-				}
-			}
-			fclose($handle);
-		}
-		return $login_footer;
-	}
 
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function index() { return FALSE; }
