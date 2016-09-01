@@ -115,7 +115,7 @@ CREATE TABLE `ospos_employees` (
   `password` varchar(255) NOT NULL,
   `person_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
-  `hash_version` int(1) NOT NULL DEFAULT '2'
+  `hash_version` int(1) NOT NULL DEFAULT '2',
   UNIQUE KEY `username` (`username`),
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -124,8 +124,8 @@ CREATE TABLE `ospos_employees` (
 -- Dumping data for table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`) VALUES
-('admin', '439a6de57d475c1a0ba9bcb1c39f0af6', 1, 0);
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`) VALUES
+('admin', '439a6de57d475c1a0ba9bcb1c39f0af6', 1, 0, 1);
 
 -- --------------------------------------------------------
 
