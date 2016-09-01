@@ -298,14 +298,29 @@ class Employee extends Person
 	*/
 	public function login($username, $password)
 	{
-		$query = $this->db->get_where('employees', array('username' => $username, 'password' => md5($password), 'deleted' => 0), 1);
+
+		$query = $this->db->get_where('employees', array('username' => $username, 'deleted' => 0), 1);
 
 		if($query->num_rows() == 1)
 		{
 			$row = $query->row();
-			$this->session->set_userdata('person_id', $row->person_id);
 
-			return TRUE;
+			// compare passwords depending on the hash version
+			if ($row->hash_version == 1 && $row->password == md5($password))
+			{
+				$this->db->where('person_id', $row->person_id);
+				$this->session->set_userdata('person_id', $row->person_id);
+				$password_hash = password_hash($password, PASSWORD_DEFAULT);
+
+				return $this->db->update('employees', array('hash_version' => 2, 'password' => $password_hash));
+			}
+			else if ($row->hash_version == 2 && password_verify($password, $row->password))
+			{
+				$this->session->set_userdata('person_id', $row->person_id);
+
+				return TRUE;
+			}
+
 		}
 
 		return FALSE;

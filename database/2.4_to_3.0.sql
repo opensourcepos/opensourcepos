@@ -63,7 +63,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
  
 DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
 
-
 -- add messages (SMS) module and permissions
 
 UPDATE `ospos_modules` SET `sort` = 110 WHERE `name_lang_key` = 'module_config';
@@ -89,4 +88,9 @@ CREATE TABLE `ospos_sessions` (
   `data` blob NOT NULL,
   KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
- 
+
+-- upgrade employees table
+ALTER TABLE `ospos_employees`
+ ADD COLUMN `hash_version` int(1) NOT NULL DEFAULT '2';
+
+UPDATE `ospos_employees` SET `hash_version` = 1;
