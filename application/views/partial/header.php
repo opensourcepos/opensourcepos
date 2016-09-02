@@ -6,6 +6,7 @@
 	<title><?php echo $this->config->item('company') . ' | ' . $this->lang->line('common_powered_by') . ' OSPOS ' . $this->config->item('application_version') ?></title>
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>"/>
+
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="public/bower_components/jquery-ui/themes/base/jquery-ui.css" />
@@ -55,6 +56,7 @@
 		<script src="public/bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.min.js"></script>
 		<script src="public/bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="public/bower_components/js-cookie/src/js.cookie.js"></script>
+		<script src="public/bower_components/blockUI/jquery.blockUI.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
@@ -71,12 +73,12 @@
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=0255dfb5b8"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=3ccc2c6adb"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
-	<?php $this->load->view('partial/lang_lines'); ?>
 	<?php $this->load->view('partial/header_js'); ?>
+	<?php $this->load->view('partial/lang_lines'); ?>
 
 	<style type="text/css">
 		html {
@@ -94,7 +96,7 @@
 				</div>
 				
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  "; ?>
+					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 				</div>
 			</div>

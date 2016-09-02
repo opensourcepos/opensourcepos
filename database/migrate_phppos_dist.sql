@@ -70,8 +70,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('msg_uid', ''),
 ('msg_src', ''),
 ('msg_pwd', ''),
-('notify_horizontal_position', 'right'),
-('notify_vertical_position', 'top'),
+('notify_horizontal_position', 'center'),
+('notify_vertical_position', 'bottom'),
 ('payment_options_order', 'cashdebitcredit'),
 ('protocol', 'mail'),
 ('mailpath', '/usr/sbin/sendmail'),
@@ -117,6 +117,7 @@ CREATE TABLE `ospos_employees` (
   `password` varchar(255) NOT NULL,
   `person_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
+  `hash_version` int(1) NOT NULL DEFAULT '2',
   UNIQUE KEY `username` (`username`),
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -125,8 +126,8 @@ CREATE TABLE `ospos_employees` (
 -- Dumping data for table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`) VALUES
-('admin', '439a6de57d475c1a0ba9bcb1c39f0af6', 1, 0);
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`) VALUES
+('admin', '$2y$10$vJBSMlD02EC7ENSrKfVQXuvq9tNRHMtcOA8MSK2NYS748HHWm.gcG', 1, 0, 2);
 
 -- --------------------------------------------------------
 

@@ -26,7 +26,7 @@ class Secure_Controller extends CI_Controller
 		{
 			redirect('no_access/' . $module_id . '/' . $submodule_id);
 		}
-		
+
 		// load up global data visible to all the loaded views
 		$data['allowed_modules'] = $this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		$data['user_info'] = $logged_in_employee_info;
@@ -96,6 +96,7 @@ class Secure_Controller extends CI_Controller
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
+
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function index() { return FALSE; }
 	public function search() { return FALSE; }
@@ -103,5 +104,6 @@ class Secure_Controller extends CI_Controller
 	public function view($data_item_id = -1) { return FALSE; }
 	public function save($data_item_id = -1) { return FALSE; }
 	public function delete() { return FALSE; }
+
 }
 ?>

@@ -104,7 +104,7 @@ class Employees extends Persons
 			'state' => $this->input->post('state'),
 			'zip' => $this->input->post('zip'),
 			'country' => $this->input->post('country'),
-			'comments' => $this->input->post('comments')
+			'comments' => $this->input->post('comments'),
 		);
 		$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
 		
@@ -113,7 +113,8 @@ class Employees extends Persons
 		{
 			$employee_data = array(
 				'username' => $this->input->post('username'),
-				'password' => md5($this->input->post('password'))
+				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+				'hash_version' => 2
 			);
 		}
 		else //Password not changed

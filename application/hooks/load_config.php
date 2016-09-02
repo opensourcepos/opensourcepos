@@ -20,7 +20,7 @@ function load_config()
         }
 
         load_langauge_files('../vendor/codeigniter/framework/system/language', current_language());
-        load_langauge_files('../application/language', current_language_code());
+        load_langauge_files('../application/language/', current_language_code());
     }
     
     //Set timezone from config database
@@ -33,7 +33,7 @@ function load_config()
         date_default_timezone_set('America/New_York');
     }
 
-    bcscale($CI->config->item('currency_decimals') + $CI->config->item('tax_decimals'));
+    bcscale(max(2, $CI->config->item('currency_decimals') + $CI->config->item('tax_decimals')));
 }
 
 /**
