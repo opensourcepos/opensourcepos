@@ -524,10 +524,11 @@ $(document).ready(function()
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
     	minChars: 0,
     	autoFocus: false,
-       	delay: 10,
+       	delay: 500,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
+			return false;
 		}
     });
 
