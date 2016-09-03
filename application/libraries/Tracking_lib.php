@@ -6,6 +6,7 @@ class Tracking_lib
 {
 	private $CI;
 	private $tracking;
+	private $connected;
 
   	public function __construct()
 	{
@@ -13,24 +14,32 @@ class Tracking_lib
 		
 		$clientId = $this->CI->Appconfig->get('client_id');
 		
-		/**
-		 * Setup the class
-		 * optional
-		 */
-		$options = array(
-			'client_create_random_id' => TRUE, // create a random client id when the class can't fetch the current cliend id or none is provided by "client_id"
-			'client_fallback_id' => 555, // fallback client id when cid was not found and random client id is off
-			'client_id' => $clientId, // override client id
-			'user_id' => $_SERVER['SERVER_ADDR'],  // determine current user id
-			// adapter options
-			'adapter' => array(
-				'async' => TRUE, // requests to google are async - don't wait for google server response
-				'ssl' => FALSE // use ssl connection to google server
-			)
-		);
-
-		try
+		// check for Internet availability
+		if(!$sock = @fsockopen('www.google.com', 80))
 		{
+			$this->connected = FALSE;
+		}
+		else
+		{
+			fclose($sock);
+			$this->connected = TRUE;			
+
+			/**
+			 * Setup the class
+			 * optional
+			 */
+			$options = array(
+				'client_create_random_id' => TRUE, // create a random client id when the class can't fetch the current cliend id or none is provided by "client_id"
+				'client_fallback_id' => 555, // fallback client id when cid was not found and random client id is off
+				'client_id' => $clientId, // override client id
+				'user_id' => $_SERVER['SERVER_ADDR'],  // determine current user id
+				// adapter options
+				'adapter' => array(
+					'async' => TRUE, // requests to google are async - don't wait for google server response
+					'ssl' => FALSE // use ssl connection to google server
+				)
+			);
+
 			$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-1', $options);
 			
 			if(empty($clientId))
@@ -40,10 +49,6 @@ class Tracking_lib
 				$this->CI->Appconfig->batch_save(array('client_id' => $clientId));
 			}
 		}
-		finally
-		{
-			
-		}
 	}
 	
 	/*
@@ -51,7 +56,7 @@ class Tracking_lib
 	 */
 	public function track_event($category, $action, $label = NULL, $value = NULL)
 	{
-		try
+		if($this->connected)
 		{
 			/** @var Tracking/Event $event */
 			$event = $this->tracking->createTracking('Event');
@@ -63,10 +68,6 @@ class Tracking_lib
 
 			return $this->tracking->sendTracking($event);
 		}
-		finally
-		{
-			
-		}
 	}
 	
 	/*
@@ -74,7 +75,7 @@ class Tracking_lib
 	 */
 	public function track_page($path, $title, $description = ' ')
 	{
-		try
+		if($this->connected)
 		{
 			/** @var Tracking/Factory $event */
 			$event = $this->tracking->createTracking('Factory', array(
@@ -88,10 +89,6 @@ class Tracking_lib
 			));
 
 			return $this->tracking->sendTracking($event);
-		}
-		finally
-		{
-			
 		}
 	}
 }
