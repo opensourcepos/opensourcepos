@@ -18,21 +18,27 @@ class Socket extends Client\AbstractClientAdapter
      * @param $endpoint
      * @throws Exception\EndpointServerException
      */
-    private function createConenction($endpoint)
+    private function createConnection($endpoint)
     {
         // port
         $port = $this->getOption('ssl') == true ? 443 : 80;
 
-        $connection = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_connect($connection, $endpoint['host'], $port);
+        if (!($connection = socket_create(AF_INET, SOCK_STREAM, SOL_TCP))) {
+			$errorcode = socket_last_error();
+			$errormsg = socket_strerror($errorcode);
+            throw new Exception\EndpointServerException('Analytics Socket failure! Error:' . $errormsg);
+        }
+		
+        if (!socket_connect($connection, $endpoint['host'], $port)) {
+			$errorcode = socket_last_error();
+			$errormsg = socket_strerror($errorcode);
+            throw new Exception\EndpointServerException('Analytics Host not reachable! Error:' . $errormsg);
+		}
+
         socket_set_option($connection, SOL_SOCKET, SO_RCVTIMEO, array('sec' => self::READ_TIMEOUT, 'usec' => 0));
 
         if ($this->getOption('async')) {
             socket_set_nonblock($connection);
-        }
-
-        if (!$connection) {
-            throw new Exception\EndpointServerException('Analytics Host not reachable! Error:');
         }
 
         $this->connection = $connection;
@@ -60,7 +66,9 @@ class Socket extends Client\AbstractClientAdapter
 
         // fwrite + check if fwrite was ok
         if (!socket_write($this->connection, $header) || !socket_write($this->connection, $payloadString)) {
-            throw new Exception\EndpointServerException('Server closed connection unexpectedly');
+			$errorcode = socket_last_error();
+			$errormsg = socket_strerror($errorcode);
+            throw new Exception\EndpointServerException('Server closed connection unexpectedly' . $errormsg);
         }
 
         return $header;
@@ -103,7 +111,7 @@ class Socket extends Client\AbstractClientAdapter
         // get endpoint
         $endpoint = parse_url($url);
 
-        $this->createConenction($endpoint);
+        $this->createConnection($endpoint);
 
         /** @var Request\TrackingRequest $request */
         while ($requestCollection->valid()) {
