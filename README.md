@@ -130,3 +130,5 @@ FAQ
 
 * You are getting following error `Message: Can't use method return value in write context` saying that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
+* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. Goto PHP.ini and make sure all the needed modules are not commented out. this means php5-gd ,php-intl and sockets. Restart the web server)
+
