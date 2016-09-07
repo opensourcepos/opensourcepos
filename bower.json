@@ -41,7 +41,7 @@
     "chartist-plugin-pointlabels": "^0.0.4",
     "chartist-plugin-tooltip": "^0.0.13",
     "remarkable-bootstrap-notify": "^3.1.3",
-    "js-cookie": "^2.1.2",
+    "js-cookie": "^2.1.3",
     "blockUI": "*"
   },
   "overrides": {

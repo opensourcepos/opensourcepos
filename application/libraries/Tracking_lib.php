@@ -10,7 +10,7 @@ class Tracking_lib
 		$this->CI =& get_instance();
 		
 		$clientId = $this->CI->Appconfig->get('client_id');
-		
+
 		/**
 		 * Setup the class
 		 * optional
@@ -27,20 +27,13 @@ class Tracking_lib
 			)
 		);
 
-		try
+		$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-1', $options);
+		
+		if(empty($clientId))
 		{
-			$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-1', $options);
-			
-			if(empty($clientId))
-			{
-				$clientId = $this->tracking->getClientId();
+			$clientId = $this->tracking->getClientId();
 
-				$this->CI->Appconfig->batch_save(array('client_id' => $clientId));
-			}
-		}
-		finally
-		{
-			
+			$this->CI->Appconfig->batch_save(array('client_id' => $clientId));
 		}
 	}
 	
@@ -61,9 +54,9 @@ class Tracking_lib
 
 			return $this->tracking->sendTracking($event);
 		}
-		finally
+		catch(Exception $e)
 		{
-			
+			error_log($e->getMessage());
 		}
 	}
 	
@@ -87,9 +80,9 @@ class Tracking_lib
 
 			return $this->tracking->sendTracking($event);
 		}
-		finally
+		catch(Exception $e)
 		{
-			
+			error_log($e->getMessage());
 		}
 	}
 }
