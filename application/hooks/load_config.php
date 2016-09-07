@@ -20,7 +20,7 @@ function load_config()
         }
 
         load_langauge_files('../vendor/codeigniter/framework/system/language', current_language());
-        load_langauge_files('../application/language/', current_language_code());
+        load_langauge_files('../application/language', current_language_code());
     }
     
     //Set timezone from config database

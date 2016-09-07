@@ -211,6 +211,7 @@
 			onPageChange: load_success(options.onLoadSuccess),
 			toolbar: '#toolbar',
 			uniqueId: options.uniqueId || 'id',
+			trimOnSearch: false,
 			onCheck: enable_actions,
 			onUncheck: enable_actions,
 			onCheckAll: enable_actions,

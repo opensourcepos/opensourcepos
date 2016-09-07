@@ -1,0 +1,10 @@
+.DS_Store
+composer.phar
+composer.lock
+phpunit.xml
+vendor
+.idea
+.project
+lib/fonts/*.afm.php
+lib/fonts/*.ufm.php
+lib/fonts/log.htm

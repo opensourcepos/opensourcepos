@@ -1,7 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once('src/Racecore/GATracking/GATracking.php');
-
 class Tracking_lib
 {
 	private $CI;

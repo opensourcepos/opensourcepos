@@ -1,0 +1,18 @@
+language: php
+
+sudo: false
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 7.0
+
+install:
+  - composer self-update
+  - composer update --prefer-source
+
+script:
+  - ./vendor/bin/phpcs --standard=./phpcs.xml -np --report=summary .
+  - ./vendor/bin/phpmd . text codesize,unusedcode --exclude vendor,tracking
+  - ./vendor/bin/phpunit --configuration phpunit.xml
