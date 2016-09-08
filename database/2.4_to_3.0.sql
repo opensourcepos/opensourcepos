@@ -44,6 +44,9 @@ ALTER TABLE `ospos_customers`
 -- alter config table
 
 UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` = 'show_total_discount';
+
+DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
+DELETE FROM `ospos_app_config` WHERE `key` = 'language';
  
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_show_description', '1'),
@@ -60,9 +63,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('smtp_crypto', 'ssl'),
 ('receipt_template', 'receipt_default'),
 ('theme', 'flatly'),
+('language', 'english'),
 ('language_code', 'en');
- 
-DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
+
 
 -- add messages (SMS) module and permissions
 
@@ -90,7 +93,9 @@ CREATE TABLE `ospos_sessions` (
   KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 -- upgrade employees table
+
 ALTER TABLE `ospos_employees`
  ADD COLUMN `hash_version` int(1) NOT NULL DEFAULT '2';
 
