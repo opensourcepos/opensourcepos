@@ -111,7 +111,7 @@ Local install
   * password: pointofsale
 9. Enjoy
 
-P.S.: For more infor about a local install based on Raspberry PI please read our wiki
+P.S.: For more info about a local install based on Raspberry PI please read our wiki
 
 Local install using Docker
 --------------------------
@@ -126,9 +126,11 @@ FAQ
 ---
 * If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
+* If sales and receiving views don't show properly, please make sure BCMath lib (php-bcmath) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out
+
 * If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform.
 
 * You are getting following error `Message: Can't use method return value in write context` saying that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
-* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. Goto PHP.ini and make sure all the needed modules are not commented out. this means php5-gd ,php-intl and sockets. Restart the web server)
+* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means php5-gd, php-intl and php-sockets. Restart the web server)
 
