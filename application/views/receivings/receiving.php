@@ -193,6 +193,7 @@ else
 	<?php
 	if(isset($supplier))
 	{
+		//log_message('debug', 'supplier: '.$supplier);
 		echo $this->lang->line("recvs_supplier").': <b>'.$supplier. '</b><br />';
 		echo anchor("receivings/delete_supplier",'['.$this->lang->line('common_delete').' '.$this->lang->line('suppliers_supplier').']');
 	}

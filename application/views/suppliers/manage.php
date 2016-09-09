@@ -1,7 +1,8 @@
 <?php $this->load->view("partial/header"); ?>
 <script type="text/javascript">
 $(document).ready(function() 
-{ 
+{
+	//console.log('In suppliers');
     init_table_sorting();
     enable_select_all();
     enable_row_selection();
@@ -21,8 +22,10 @@ function init_table_sorting()
 			sortList: [[1,0]], 
 			headers: 
 			{ 
-				0: { sorter: false}, 
-				6: { sorter: false} 
+				0: { sorter: false},
+				2: { sorter: false},
+				3: { sorter: false},
+				4: { sorter: false} 
 			} 
 
 		}); 
