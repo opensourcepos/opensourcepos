@@ -16,7 +16,7 @@ class Login extends CI_Controller
 		else
 		{
 			$this->form_validation->set_rules('username', 'lang:login_undername', 'callback_login_check');
-    	    $this->form_validation->set_error_delimiters('<div class="error">', '</div>');
+			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 			
 			if($this->form_validation->run() == FALSE)
 			{
@@ -28,8 +28,19 @@ class Login extends CI_Controller
 				{
 					$this->load->library('tracking_lib');
 
-					$login_info = current_language() . ' | ' . $this->config->item('timezone') . ' | ' . $this->config->item('currency_symbol') . ' | ' . $this->config->item('theme') . ' | ' . $this->config->item('website') . ' | ' . $this->input->ip_address();
+					$login_info = $this->config->item('website') . ' | ' . $this->config->item('base_url') ;
 					$this->tracking_lib->track_page('login', 'login', $login_info);
+					
+					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
+					$this->tracking_lib->track_event('Stats', 'Language', current_language());
+					$this->tracking_lib->track_event('Stats', 'Timezone', $this->config->item('timezone'));
+					$this->tracking_lib->track_event('Stats', 'Currency', $this->config->item('currency_symbol'));
+					$this->tracking_lib->track_event('Stats', 'Tax Included', $this->config->item('tax_included'));
+					$this->tracking_lib->track_event('Stats', 'Thousands Separator', $this->config->item('thousands_separator'));
+					$this->tracking_lib->track_event('Stats', 'Currency Decimals', $this->config->item('currency_decimals'));
+					$this->tracking_lib->track_event('Stats', 'Tax Decimals', $this->config->item('tax_decimals'));
+					$this->tracking_lib->track_event('Stats', 'Quantity Decimals', $this->config->item('quantity_decimals'));
+					$this->tracking_lib->track_event('Stats', 'Invoice Enable', $this->config->item('invoice_enable'));
 				}
 
 				redirect('home');
