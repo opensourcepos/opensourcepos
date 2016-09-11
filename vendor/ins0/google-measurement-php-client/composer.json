@@ -1,0 +1,37 @@
+{
+    "name": "ins0/google-measurement-php-client",
+    "description": "Server-Side PHP Client to communicate to Google Analytics over the Google Measurement Protocol",
+    "type": "library",
+    "keywords": [
+        "google",
+        "analytics",
+        "measurement",
+        "client"
+    ],
+    "authors": [
+        {
+            "name": "Marco Rieger",
+            "email": "rieger@racecore.de"
+        }
+    ],
+    "homepage": "http://www.racecore.de/",
+    "license": "BSD-3-Clause",
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "phpmd/phpmd": "~2.1",
+        "phpunit/phpunit": "4.0.*",
+        "squizlabs/php_codesniffer": "~2.0.0@RC"
+    },
+    "autoload": {
+        "psr-0": {
+            "Racecore\\GATracking": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.1.x-dev"
+        }
+    }
+}

@@ -9,28 +9,18 @@ function load_config()
         $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
     }
     
-    //Set language from config database
-	$language = $CI->config->item('language');
-	
     //Loads all the language files from the language directory
-    if(!empty($language))
+    if(!empty(current_language()))
     {
-		// fallback to English if language folder does not exist        
-        if(!file_exists('./application/language/' . $language)) 
+        // fallback to English if language folder does not exist
+        if (!file_exists('../application/language/' . current_language_code()))
         {
-        	$language = 'en';
+            $CI->config->set_item('language', 'english');
+            $CI->config->set_item('language_code', 'en');
         }
 
-        $CI->config->set_item('language', $language);
-
-        $map = directory_map('./application/language/' . $language);
-        foreach($map as $file)
-        {
-            if(!is_array($file) && substr(strrchr($file,'.'), 1) == "php")
-            {
-                $CI->lang->load(strtr($file, '', '_lang.php'), $language);    
-            }
-        }
+        load_langauge_files('../vendor/codeigniter/framework/system/language', current_language());
+        load_langauge_files('../application/language', current_language_code());
     }
     
     //Set timezone from config database
@@ -45,4 +35,20 @@ function load_config()
 
     bcscale(max(2, $CI->config->item('currency_decimals') + $CI->config->item('tax_decimals')));
 }
+
+/**
+ * @param $language
+ * @param $CI
+ */
+function load_langauge_files($path, $language)
+{
+    $CI =& get_instance();
+    $map = directory_map($path . DIRECTORY_SEPARATOR . $language);
+    foreach ($map as $file) {
+        if (!is_array($file) && substr(strrchr($file, '.'), 1) == "php") {
+            $CI->lang->load(strtr($file, '', '_lang.php'), $language);
+        }
+    }
+}
+
 ?>

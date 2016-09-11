@@ -1,0 +1,13 @@
+{
+	"description" : "The CodeIgniter Application with Composer",
+    "license": "MIT",
+	"require": {
+		"php": ">=5.5",
+		"codeigniter/framework": "3.1.*",
+		"ins0/google-measurement-php-client": "^2.1",
+		"dompdf/dompdf": "^0.7.0"
+	},
+	"require-dev": {
+		"mikey179/vfsStream": "1.1.*"
+	}
+}
