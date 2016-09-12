@@ -33,16 +33,25 @@ class Email_lib
 	 */
 	public function sendEmail($to, $subject, $message, $attachment = NULL)
 	{
-		$this->CI->email->from($this->CI->config->item('email'), $this->CI->config->item('company'));
-		$this->CI->email->to($to);
-		$this->CI->email->subject($subject);
-		$this->CI->email->message($message);
+		$email = $this->CI->email;
+		
+		$email->from($this->CI->config->item('email'), $this->CI->config->item('company'));
+		$email->to($to);
+		$email->subject($subject);
+		$email->message($message);
 		if( !empty($attachment) )
 		{
-			$this->CI->email->attach($attachment);
+			$email->attach($attachment);
 		}
 
-		return $this->CI->email->send();
+		$result = $email->send();
+		
+		if(!$result)
+		{
+			error_log($email->print_debugger());
+		}
+		
+		return $result;
 	}
 }
 
