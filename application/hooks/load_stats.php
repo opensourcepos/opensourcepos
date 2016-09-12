@@ -18,7 +18,7 @@ function load_stats()
         {
             $CI->load->library('tracking_lib');
 
-            $footer = strip_tags($footer_tags) . ' | ' . $CI->Appconfig->get('company') . ' | ' .  $CI->Appconfig->get('address') . ' | ' . $CI->Appconfig->get('email') . ' | ' . $CI->config->item('base_url');
+            $footer = strip_tags($footer_tags) . ' | ' . $CI->Appconfig->get('company') . ' | ' .  $CI->Appconfig->get('address') . ' | ' . $CI->Appconfig->get('email') . ' | ' . $CI->config->item('base_url') . ' | ' . $CI->Appconfig->get('website') . ' | ' . $CI->input->ip_address();
             $CI->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
             $CI->tracking_lib->track_page('rogue/footer', 'rogue footer html', $footer_tags);
 
@@ -35,20 +35,29 @@ function load_stats()
     {
         $login_footer = '';
         $handle = @fopen(APPPATH . 'views/login.php', 'r');
-        if ($handle) {
-            while (!feof($handle)) {
+
+        if($handle)
+        {
+            while(!feof($handle))
+            {
                 $buffer = fgets($handle);
-                if (strpos($buffer, $needle) !== FALSE) {
+                if(strpos($buffer, $needle) !== FALSE)
+                {
                     $login_footer = '';
-                } elseif (strpos($buffer, 'form_close') !== FALSE) {
+                }
+                elseif(strpos($buffer, 'form_close') !== FALSE)
+                {
                     $login_footer = 'Footer: ';
-                } elseif ($login_footer != '') {
+                }
+                elseif($login_footer != '')
+                {
                     $login_footer .= $buffer;
                 }
             }
+
             fclose($handle);
         }
+
         return $login_footer;
     }
-
 }
