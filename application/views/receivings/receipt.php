@@ -67,12 +67,12 @@ if (isset($error_message))
 	{
 	?>
 		<tr>
-		<td><span class='long_name'><?php echo $item['name']; ?></span><span class='short_name'><?php echo character_limiter($item['name'],70); ?></span></td>
+		<td><span class='long_name'><?php echo $item['name']; ?></span></td>
 		<td><?php echo to_currency($item['price'])."/".to_currency($item['unit_price']); ?></td>
 		<td><?php 
 			echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 		?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1; ?></td>
-		<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
+		<td style="text-align:right;"><?php echo to_currency($item['total']); ?></td>
 		</tr>
 	    <tr>
 		<td ><?php echo $item['serialnumber']; ?></td>
