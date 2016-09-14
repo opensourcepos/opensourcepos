@@ -135,7 +135,7 @@ class Barcode_lib
 		try
 		{
 			// Code128 is the default and used in this case for the receipts
-			$barcode = $this->get_barcode_instance();
+			$barcode = $this->get_barcode_instance('Code39');
 
 			// set the receipt number to generate the barcode for
 			$barcode->setData($barcode_content);
@@ -144,7 +144,7 @@ class Barcode_lib
 			$barcode->setQuality(100);
 			
 			// width: 200, height: 30
-			$barcode->setDimensions(200, 30);
+			$barcode->setDimensions(250, 50);
 
 			// draw the image
 			$barcode->draw();
