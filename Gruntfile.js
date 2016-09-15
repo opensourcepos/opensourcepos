@@ -88,7 +88,7 @@ module.exports = function(grunt) {
 					separator: ';'
 				},
 				files: {
-					'dist/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'js/jquery*', 'js/*.js']
+					'tmp/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'js/jquery*', 'js/*.js']
 				}
 			},
 			sql: {
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
 			},
 			dist: {
 				files: {
-					'dist/<%= pkg.name %>.min.js': ['dist/<%= pkg.name %>.js']
+					'dist/<%= pkg.name %>.min.js': ['tmp/<%= pkg.name %>.js']
 				}
 			}
 		},
