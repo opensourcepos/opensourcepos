@@ -5,11 +5,11 @@
         ],
         "homepage": "http://jquery.malsup.com/block/"
     },
-    "bootstrap3-dialog@1.35.2": {
+    "bootstrap3-dialog@1.35.3": {
         "licenses": "UNKNOWN",
         "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
-    "bootstrap-select@1.10.0": {
+    "bootstrap-select@1.11.2": {
         "licenses": [
             "MIT"
         ],
