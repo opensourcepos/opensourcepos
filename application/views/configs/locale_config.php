@@ -125,7 +125,7 @@
 						'tr:turkish' => 'Turkish',
 						'ru:russian' => 'Russian',
 						'hu-HU:hungarian' => 'Hungarian',
-						'pt-BR:portugese-brazilian' => 'Portuguese (Brazil)',
+						'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
 						'hr-HR' => 'Croatian (Croatia)',
 						'ar-EG:arabic' => 'Arabic (Egypt)'
 					),
