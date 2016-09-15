@@ -32,7 +32,7 @@ class Login extends CI_Controller
 					$this->tracking_lib->track_page('login', 'login', $login_info);
 					
 					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
-					$this->tracking_lib->track_event('Stats', 'Language', current_language());
+					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
 					$this->tracking_lib->track_event('Stats', 'Timezone', $this->config->item('timezone'));
 					$this->tracking_lib->track_event('Stats', 'Currency', $this->config->item('currency_symbol'));
 					$this->tracking_lib->track_event('Stats', 'Tax Included', $this->config->item('tax_included'));
