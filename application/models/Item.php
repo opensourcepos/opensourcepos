@@ -441,12 +441,14 @@ class Item extends CI_Model
 
 	public function get_category_suggestions($search)
 	{
+		$categories_to_exclude = array('Handgun', 'Rifle', 'Shotguns');
 		$suggestions = array();
 		$this->db->distinct();
 		$this->db->select('category');
 		$this->db->from('items');
 		$this->db->like('category', $search);
 		$this->db->where('deleted', 0);
+		$this->db->where_not_in('category', $categories_to_exclude);
 		$this->db->order_by('category', 'asc');
 		$by_category = $this->db->get();
 		foreach($by_category->result() as $row)
@@ -702,3 +704,4 @@ class Item extends CI_Model
 	}
 }
 ?>
+
