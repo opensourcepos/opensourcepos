@@ -20,6 +20,7 @@ services:
         volumes:
             - uploads:/app/uploads
         environment:
+            - PHP_TIMEZONE=UTC
             - MYSQL_USERNAME=admin
             - MYSQL_PASSWORD=pointofsale
             - MYSQL_DB_NAME=ospos
