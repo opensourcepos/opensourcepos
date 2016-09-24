@@ -509,13 +509,5 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-/*
-|--------------------------------------------------------------------------
-| Statistics
-|--------------------------------------------------------------------------
-|
-| This is to enable the statistics for development and feature improvement purposes
-|
-*/
-$config['statistics'] = TRUE;
+
 

@@ -126,6 +126,19 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_statistics'), 'statistics', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'statistics',
+						'id' => 'statistics',
+						'value' => 'statistics',
+						'checked'=>$this->config->item('statistics'))); ?>
+					&nbsp
+					<span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_custom1'), 'config_custom1', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
