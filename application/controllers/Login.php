@@ -50,7 +50,14 @@ class Login extends CI_Controller
 
 	public function login_check($username)
 	{
-		$password = $this->input->post('password');	
+		$password = $this->input->post('password');
+
+		if($this->_security_check($username, $password))
+		{
+			$this->form_validation->set_message('login_check', 'Security check failure');
+
+			return FALSE;
+		}
 
 		if(!$this->Employee->login($username, $password))
 		{
@@ -60,6 +67,11 @@ class Login extends CI_Controller
 		}
 
 		return TRUE;		
+	}
+	
+	private function _security_check($username, $password)
+	{
+		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
 	}
 }
 ?>
