@@ -1,24 +1,24 @@
 <?php 
 
-$lang["giftcards_add_minus"] = "Inventory to add/subtract";
+$lang["giftcards_add_minus"] = "สินค้าคงคลัง เพิ่ม/ลด";
 $lang["giftcards_allow_alt_description"] = "";
-$lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
-$lang["giftcards_bulk_edit"] = "Bulk Edit";
-$lang["giftcards_cannot_be_deleted"] = "Could not deleted selected giftcards, one or more of the selected giftcards has sales.";
-$lang["giftcards_cannot_find_giftcard"] = "Cannot find any information about giftcard";
+$lang["giftcards_amazon"] = "อเมซอน";
+$lang["giftcards_remaining_balance"] = "บัตรของขวัญ %1 มีมูลค่า %2!";
+$lang["giftcards_bulk_edit"] = "แก้ไขเป็นกลุ่ม";
+$lang["giftcards_cannot_be_deleted"] = "ไม่สามารถลบข้อมูลบัตรของขวัญที่เลือก, หรือบัตรของขวัญได้มีการใช้ไปแล้ว";
+$lang["giftcards_cannot_find_giftcard"] = "ไม่พบข้อมูลเกี่ยวกับบัตรของขวัญนี้";
 $lang["giftcards_card_value"] = "มูลค่า";
 $lang["giftcards_category"] = "";
 $lang["giftcards_change_all_to_allow_alt_desc"] = "";
 $lang["giftcards_change_all_to_not_allow_allow_desc"] = "";
-$lang["giftcards_change_all_to_serialized"] = "Change All To Serialized";
+$lang["giftcards_change_all_to_serialized"] = "เปลี่ยนแปลงทั้งหมด";
 $lang["giftcards_change_all_to_unserialized"] = "";
 $lang["giftcards_confirm_bulk_edit"] = "";
-$lang["giftcards_confirm_delete"] = "Are you sure you want to delete the selected giftcards?";
+$lang["giftcards_confirm_delete"] = "คุณแน่ใจหรือไม่ว่าต้องการลบบัตรของขวัญที่เลือก?";
 $lang["giftcards_cost_price"] = "ต้นทุน";
-$lang["giftcards_count"] = "Update Inventory";
-$lang["giftcards_current_quantity"] = "Current Quantity";
-$lang["giftcards_description"] = "Description";
+$lang["giftcards_count"] = "ปรับปรุงสินค้าคงคลัง";
+$lang["giftcards_current_quantity"] = "จำนวน ณ. ปัจจุบัน";
+$lang["giftcards_description"] = "รายละเอียด";
 $lang["giftcards_details_count"] = "Inventory Count Details";
 $lang["giftcards_do_nothing"] = "";
 $lang["giftcards_edit_fields_you_want_to_update"] = "";
