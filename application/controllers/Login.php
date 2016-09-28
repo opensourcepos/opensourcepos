@@ -28,8 +28,8 @@ class Login extends CI_Controller
 				{
 					$this->load->library('tracking_lib');
 
-					$login_info = $this->config->item('website') . ' | ' . $this->config->item('base_url') ;
-					$this->tracking_lib->track_page('login', 'login', $login_info);
+					//$login_info = $this->config->item('website') . ' | ' . $this->config->item('base_url') ;
+					$this->tracking_lib->track_page('login', 'login'/*, $login_info*/);
 					
 					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
 					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
