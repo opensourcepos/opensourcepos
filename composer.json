@@ -3,8 +3,8 @@
     "license": "MIT",
 	"require": {
 		"php": ">=5.5",
-		"codeigniter/framework": "3.1.*",
-		"ins0/google-measurement-php-client": "^2.1",
+		"codeigniter/framework": "dev-develop#c4bd43432df03e4f4835c7689c8ed722cd2c3020",
+		"ins0/google-measurement-php-client": "dev-master#2b3aef2375837339f5b2bfe88e76994481f86264",
 		"dompdf/dompdf": "^0.7.0"
 	},
 	"require-dev": {

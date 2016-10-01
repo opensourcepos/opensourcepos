@@ -33,17 +33,17 @@
     },
     {
         "name": "codeigniter/framework",
-        "version": "3.1.0",
-        "version_normalized": "3.1.0.0",
+        "version": "dev-develop",
+        "version_normalized": "dev-develop",
         "source": {
             "type": "git",
             "url": "https://github.com/bcit-ci/CodeIgniter.git",
-            "reference": "6ae943a4cea2434ccc582766724af21191e14fcd"
+            "reference": "c4bd43432df03e4f4835c7689c8ed722cd2c3020"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/6ae943a4cea2434ccc582766724af21191e14fcd",
-            "reference": "6ae943a4cea2434ccc582766724af21191e14fcd",
+            "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/c4bd43432df03e4f4835c7689c8ed722cd2c3020",
+            "reference": "c4bd43432df03e4f4835c7689c8ed722cd2c3020",
             "shasum": ""
         },
         "require": {
@@ -55,9 +55,9 @@
         "suggest": {
             "paragonie/random_compat": "Provides better randomness in PHP 5.x"
         },
-        "time": "2016-07-26 17:36:48",
+        "time": "2016-09-30 09:23:03",
         "type": "project",
-        "installation-source": "dist",
+        "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
@@ -67,17 +67,17 @@
     },
     {
         "name": "ins0/google-measurement-php-client",
-        "version": "v2.1.1",
-        "version_normalized": "2.1.1.0",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
         "source": {
             "type": "git",
             "url": "https://github.com/ins0/google-measurement-php-client.git",
-            "reference": "e3d89481d1fa29a7fa53aaca8b8fceec897fcebb"
+            "reference": "2b3aef2375837339f5b2bfe88e76994481f86264"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/e3d89481d1fa29a7fa53aaca8b8fceec897fcebb",
-            "reference": "e3d89481d1fa29a7fa53aaca8b8fceec897fcebb",
+            "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/2b3aef2375837339f5b2bfe88e76994481f86264",
+            "reference": "2b3aef2375837339f5b2bfe88e76994481f86264",
             "shasum": ""
         },
         "require": {
@@ -88,14 +88,14 @@
             "phpunit/phpunit": "4.0.*",
             "squizlabs/php_codesniffer": "~2.0.0@RC"
         },
-        "time": "2016-03-23 09:03:11",
+        "time": "2016-09-07 19:39:27",
         "type": "library",
         "extra": {
             "branch-alias": {
                 "dev-master": "2.1.x-dev"
             }
         },
-        "installation-source": "dist",
+        "installation-source": "source",
         "autoload": {
             "psr-0": {
                 "Racecore\\GATracking": "src/"

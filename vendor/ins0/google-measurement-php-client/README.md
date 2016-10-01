@@ -44,10 +44,10 @@ https://developers.google.com/analytics/devguides/collection/protocol/v1/devguid
 
 ### Install via Composer
 
-Run the following Composer command to install this:
+Run the following Composer command to install this package:
 
 ```bash
-$ composer require  "ins0/google-measurement-php-client": "dev-master"
+$ composer require  "ins0/google-measurement-php-client"
 ```
 
 #Requirements#

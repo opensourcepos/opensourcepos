@@ -24,16 +24,16 @@ class Socket extends Client\AbstractClientAdapter
         $port = $this->getOption('ssl') == true ? 443 : 80;
 
         if (!($connection = socket_create(AF_INET, SOCK_STREAM, SOL_TCP))) {
-			$errorcode = socket_last_error();
-			$errormsg = socket_strerror($errorcode);
-            throw new Exception\EndpointServerException('Analytics Socket failure! Error:' . $errormsg);
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            throw new Exception\EndpointServerException('Analytics Socket failure! Error: ' . $errormsg);
         }
-		
+
         if (!socket_connect($connection, $endpoint['host'], $port)) {
-			$errorcode = socket_last_error();
-			$errormsg = socket_strerror($errorcode);
-            throw new Exception\EndpointServerException('Analytics Host not reachable! Error:' . $errormsg);
-		}
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            throw new Exception\EndpointServerException('Analytics Host not reachable! Error: ' . $errormsg);
+        }
 
         socket_set_option($connection, SOL_SOCKET, SO_RCVTIMEO, array('sec' => self::READ_TIMEOUT, 'usec' => 0));
 
@@ -66,9 +66,9 @@ class Socket extends Client\AbstractClientAdapter
 
         // fwrite + check if fwrite was ok
         if (!socket_write($this->connection, $header) || !socket_write($this->connection, $payloadString)) {
-			$errorcode = socket_last_error();
-			$errormsg = socket_strerror($errorcode);
-            throw new Exception\EndpointServerException('Server closed connection unexpectedly' . $errormsg);
+            $errorcode = socket_last_error();
+            $errormsg = socket_strerror($errorcode);
+            throw new Exception\EndpointServerException('Server closed connection unexpectedly. Error: ' . $errormsg);
         }
 
         return $header;
