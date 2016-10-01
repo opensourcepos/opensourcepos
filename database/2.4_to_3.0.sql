@@ -43,6 +43,10 @@ ALTER TABLE `ospos_customers`
  
 -- alter config table
 
+ALTER TABLE `ospos_app_config`
+ MODIFY COLUMN `key` varchar(50) NOT NULL,
+ MODIFY COLUMN `value` varchar(500) NOT NULL;
+
 UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` = 'show_total_discount';
 
 DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
