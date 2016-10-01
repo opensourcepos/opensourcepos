@@ -75,7 +75,7 @@
         ],
         "homepage": "https://github.com/mrrio/jspdf"
     },
-    "moment@2.14.1": {
+    "moment@2.15.1": {
         "licenses": [
             "MIT*"
         ],
@@ -152,7 +152,7 @@
         "homepage": "http://bootstrap-notify.remabledesigns.com/",
         "repository": "https://github.com/mouse0270/bootstrap-notify"
     },
-    "jquery-ui@1.11.4": {
+    "jquery-ui@1.12.4": {
         "licenses": [
             "MIT"
         ],
