@@ -423,11 +423,11 @@ class Sales extends Secure_Controller
 			$html = $this->load->view('sales/invoice_email', $sale_data, TRUE);
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
-			$file_content = pdf_create($html, '', FALSE);
 			$filename = sys_get_temp_dir() . '/' . $this->lang->line('sales_invoice') . '-' . str_replace('/', '-' , $sale_data['invoice_number']) . '.pdf';
-			write_file($filename, $file_content);
-			
-			$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
+			if(file_put_contents($filename, pdf_create($html)) !== FALSE)
+			{
+				$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);	
+			}
 
 			$message = $this->lang->line($result ? 'sales_invoice_sent' : 'sales_invoice_unsent') . ' ' . $to;
 		}
