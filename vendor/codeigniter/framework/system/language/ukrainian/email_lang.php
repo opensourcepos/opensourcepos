@@ -9,8 +9,8 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$lang['email_must_be_array'] = 'Методу перевірки адреси електронної пошти необхідно передавати масив.';
-$lang['email_invalid_address'] = 'Некоректна адреса електронної пошти: %s';
+$lang['email_must_be_array'] = 'Методу перевірки адреси електронної пошти повинен бути переданий массив.';
+$lang['email_invalid_address'] = 'Некорректна адреса електронної пошти: %s';
 $lang['email_attachment_missing'] = 'Не вдалося знайти вкладення: %s';
 $lang['email_attachment_unreadable'] = 'Неможливо відкрити вкладення: %s';
 $lang['email_no_from'] = 'Не вдалося відправити лист без вказаного заголовку "Від"/"From".';
