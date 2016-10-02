@@ -205,7 +205,7 @@ module.exports = function(grunt) {
 					replacement: 'md5'
 				},
 				files: {
-					src: ['**/header.php', '**/login.php']
+					src: ['application/views/partial/header.php', 'application/views/login.php']
 				}
 			}
 		},
