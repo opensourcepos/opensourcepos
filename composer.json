@@ -1,5 +1,5 @@
 {
-	"description" : "The CodeIgniter Application with Composer",
+	"description" : "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
     "license": "MIT",
 	"require": {
 		"php": ">=5.5",
