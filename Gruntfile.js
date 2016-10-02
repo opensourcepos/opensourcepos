@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		wiredep: {
 			task: {
-				ignorePath: '../../../public',
+				ignorePath: '../../../public/',
 				src: ['application/views/partial/header.php']
 			}
 		},
