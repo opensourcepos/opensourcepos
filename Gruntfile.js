@@ -209,6 +209,9 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		clean: {
+			license: ['public/bower_components/**/bower.json']
+		},
 		license: {
 			all: {
 				// Target-specific file lists and/or options go here. 
@@ -238,9 +241,6 @@ module.exports = function(grunt) {
 					noGood: true,
 				}
 			}
-		},
-		clean: {
-			license: ['bower_components/**/bower.json']
 		}
     });
 
