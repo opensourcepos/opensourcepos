@@ -23,30 +23,6 @@ module.exports = function(grunt) {
 			options: {
 				report: false
 			},
-			targetcssdist: {
-				options: {
-					srcPrefix: 'css',
-					destPrefix: 'public/dist'
-				},
-				files: {
-					'login.css': 'login.css',
-					'style.css': 'style.css',
-					'invoice_email.css': 'invoice_email.css',
-					'barcode_font.css': 'barcode_font.css'
-				}
-			},
-			targetdist: {
-				options: {
-					destPrefix: 'public/dist'
-				},
-				files: {
-					'login.css': '../../css/login.css',
-					'style.css': '../../css/style.css',
-					'invoice_email.css': '../../css/invoice_email.css',
-					'barcode_font.css': '../../css/barcode_font.css',
-					'jquery-ui.css': 'jquery-ui/themes/base/jquery-ui.css',
-				}
-			},
 			targetdistbootswatch: {
 				options: {
 					srcPrefix: 'public/bower_components/bootswatch',
@@ -82,7 +58,7 @@ module.exports = function(grunt) {
 		cssmin: {
 			target: {
 				files: {
-					'public/dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/barcode_font.css', '!css/style.css']
+					'public/dist/<%= pkg.name %>.min.css': ['tmp/opensourcepos_bower.css', 'public/css/*.css', '!public/css/login.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css', '!public/css/style.css']
 				}
 			}
 		},
@@ -92,7 +68,7 @@ module.exports = function(grunt) {
 					separator: ';'
 				},
 				files: {
-					'tmp/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'js/jquery*', 'js/*.js']
+					'tmp/<%= pkg.name %>.js': ['tmp/opensourcepos_bower.js', 'public/js/jquery*', 'public/js/*.js']
 				}
 			},
 			sql: {
@@ -116,7 +92,7 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint: {
-			files: ['Gruntfile.js', 'js/*.js'],
+			files: ['Gruntfile.js', 'public/js/*.js'],
 			options: {
 				// options here to override JSHint defaults
 				globals: {
@@ -133,9 +109,9 @@ module.exports = function(grunt) {
 					scriptTemplate: '<rel type="text/css" src="{{ path }}"></rel>',
 					openTag: '<!-- start css template tags -->',
 					closeTag: '<!-- end css template tags -->',
-					ignorePath: '../../../'
+					ignorePath: '../../../public/'
 				},
-				src: ['css/*.css', '!css/login.css', '!css/invoice_email.css', '!css/barcode_font.css'],
+				src: ['public/css/*.css', '!public/css/login.css', '!public/css/invoice_email.css', '!public/css/barcode_font.css'],
 				dest: 'application/views/partial/header.php',
 			},
 			mincss_header: {
@@ -163,9 +139,9 @@ module.exports = function(grunt) {
 					scriptTemplate: '<script type="text/javascript" src="{{ path }}"></script>',
 					openTag: '<!-- start js template tags -->',
 					closeTag: '<!-- end js template tags -->',
-					ignorePath: '../../../' 
+					ignorePath: '../../../public/'
 				},
-				src: ['js/jquery*', 'js/*.js'],
+				src: ['public/js/jquery*', 'public/js/*.js'],
 				dest: 'application/views/partial/header.php'
 			},
 			minjs: {

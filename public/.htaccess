@@ -11,11 +11,11 @@ RewriteEngine On
 # RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
 # RewriteCond %{HTTP_HOST} (.+)$ [NC]
 # RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L]
-
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 # if in web root
 RewriteRule ^(.*)$ index.php?/$1 [L]
+
 # if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path
 # RewriteRule ^(.*)$ /<OSPOS path>/public/index.php?/$1 [L]
 
