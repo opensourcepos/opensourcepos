@@ -3,7 +3,7 @@
 $lang["common_address_1"] = "Cím 1";
 $lang["common_address_2"] = "Cím 2";
 $lang["common_city"] = "Város";
-$lang["common_close"] = "Bezár";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Megjegyzések";
 $lang["common_common"] = "közös";
 $lang["common_confirm_search"] = "Ön egy vagy több mezőt választott ki, a keresés után ezek már nem lesznek kiválasztva. Biztos, hogy elküldi ezt a keresést?";
@@ -31,7 +31,7 @@ $lang["common_list_of"] = "Lista: ";
 $lang["common_logout"] = "Kilépés";
 $lang["common_new"] = "Új";
 $lang["common_no_persons_to_display"] = "Nincsenek megjeleníthető emberek";
-$lang["common_none_selected_text"] = "Nincs kiválaszva";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "VAGY";
 $lang["common_phone_number"] = "Telefonszám";
 $lang["common_phone_number_required"] = "Telefonszám kötelező mező";

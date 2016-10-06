@@ -106,6 +106,7 @@ sales_successfully_updated,Értékesités sikeresen frissitve,Änderung erfolgre
 sales_suspend_sale,Felfüggeszt,->Pendent,Bewaar aankoop,Suspender Venta,Suspend,Suspendre la Vente,暫停銷售,Приостановить продажи,พักรายการ,Satışı Askıya Al,Tangguhkan,Suspender,Obustavi,-> Aussetzen,تعليق عملية البيع
 sales_suspended_sale_id,ID,ID,ID,ID de Venta Suspendida,ID,ID,暫停銷售編號,приостановила продажи ID,รหัสการขายที่ถูกพัก,No,ID Penjualan ditangguhkan,ID,Broj obustave,ID,كود عملية البيع
 sales_suspended_sales,Függő eladások,Pendente Aufträge,Bewaarde Aankopen,Ventas Suspendidas,Suspended,Ventes Suspendues,已暫停銷售,приостановила продажи,การขายที่พักไว้,Askıdaki Satışlar,Penangguhan,Suspenso,Obustavljanje,Ausgesetzte Aufträge,المبيعات المعلقة
+sales_table,Table,Table,Table,Table,Table,Table,Table,Table,Table,Table,Table,Table,Table,Table,Table
 sales_tax,Adó,MWSt,VAT,Impuesto,Tax,Taxe,稅額,налог,ภาษี,Vergi,Pajak,Taxa,Porez,MWSt,ضريبة
 sales_tax_percent,Adó %,MWSt %,VAT %,% de Impuesto,Tax %,% Taxe,稅率 %,Налоговые %,ภาษี %,Vergi %,Pajak %,Taxa %,Porez %,MWSt %,ضريبة %
 sales_total,Összesen,Total,Totaal,Total,Total,Total,總計,сумма,ยอดรวม,Toplam,Total,Total,Ukupno,Total,المجموع
