@@ -23,3 +23,11 @@ read_buffer_size = 256K
 sort_buffer_size = 4M
 table_cache = 64
 key_buffer_size = 16M
+
+[isamchk]
+key_buffer		= 16M
+write_buffer = 2M
+read_buffer = 2M
+sort_buffer_size = 20M
+key_buffer_size = 20M
+
