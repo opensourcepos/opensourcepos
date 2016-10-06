@@ -108,7 +108,7 @@ Local install
 4. Copy application/config/database.php.tmpl to application/config/database.php
 5. Modify application/config/database.php to connect to your database
 6. Modify application/config/config.php encryption key with your own
-7. Go to your point of sale install via the browser
+7. Go to your point of sale install public dir via the browser
 8. LOGIN using
   * username: admin 
   * password: pointofsale
