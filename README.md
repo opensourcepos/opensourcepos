@@ -29,12 +29,12 @@ Also worth noting:
 _The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software._
 
-For more details please read the file __COPYING__.
+For more details please read the file __LICENSE__.
 
 It's important to understand that althought you are free to use the software the copyright stays and the license agreement applies in all cases.
 Therefore any actions like:
 
-- Removing COPYING and any license files is prohibited
+- Removing LICENSE and any license files is prohibited
 - Authoring the footer notice replacing it with your own or even worse claiming the copyright is absolutely prohibited
 - Claiming full ownership of the code is prohibited
 
