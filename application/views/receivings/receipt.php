@@ -1,6 +1,6 @@
 <?php $this->load->view("partial/header"); ?>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 
+<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale,
 		'selected_printer' => 'receipt_printer')); ?>
 
 <?php
@@ -12,16 +12,16 @@ if (isset($error_message))
 ?>
 <div id="receipt_wrapper">
 	<div id="receipt_header">
-		<?php if ($this->Appconfig->get('company_logo') == '') 
-        { 
+		<?php if ($this->Appconfig->get('company_logo') == '')
+        {
         ?>
         <div id="company_name"><?php echo $this->config->item('company'); ?></div>
-		<?php 
+		<?php
 		}
-		else 
-		{ 
+		else
+		{
 		?>
-		<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" /></div>			
+		<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" /></div>
 		<?php
 		}
 		?>
@@ -48,8 +48,8 @@ if (isset($error_message))
 		<?php if (!empty($invoice_number))
 		{
 		?>
-		<div id="invoice_number"><?php echo $this->lang->line('recvs_invoice_number').": ".$invoice_number; ?></div>	
-		<?php 
+		<div id="invoice_number"><?php echo $this->lang->line('recvs_invoice_number').": ".$invoice_number; ?></div>
+		<?php
 		}
 		?>
 		<div id="employee"><?php echo $this->lang->line('employees_employee').": ".$employee; ?></div>
@@ -57,20 +57,22 @@ if (isset($error_message))
 
 	<table id="receipt_items">
 	<tr>
+	<th style="width:20%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
 	<th style="width:40%;"><?php echo $this->lang->line('items_item'); ?></th>
 	<th style="width:17%;">Cost/Price</th>
-	<th style="width:20%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-	<th style="width:15%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
+	<th style="width:10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+	<th style="width:10%;text-align:right;"><?php echo $this->lang->line('sales_total'); ?></th>
 	</tr>
 	<?php
 	foreach(array_reverse($cart, true) as $line=>$item)
 	{
 	?>
 		<tr>
+		<td><?php echo $item['item_number']; ?></td>
 		<td><span class='long_name'><?php echo $item['name']; ?></span></td>
 		<td><?php echo to_currency($item['price'])."/".to_currency($item['unit_price']); ?></td>
-		<td><?php 
-			echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
+		<td><?php
+			echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : "");
 		?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1; ?></td>
 		<td style="text-align:right;"><?php echo to_currency($item['total']); ?></td>
 		</tr>
@@ -84,20 +86,20 @@ if (isset($error_message))
 		<?php endif; ?>
 	<?php
 	}
-	?>	
+	?>
 	<tr>
-	<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_total'); ?></td>
+	<td colspan="4" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_total'); ?></td>
 	<td style='border-top:2px solid #000000;'><div class="total-value"><?php echo to_currency($total); ?></div></td>
 	</tr>
-	<?php 
+	<?php
     if($mode!='requisition')
     {
     ?>
 	<tr>
-	<td colspan="3" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
+	<td colspan="4" style='text-align:right;'><?php echo $this->lang->line('sales_payment'); ?></td>
 	<td><div class="total-value"><?php echo $payment_type; ?></div></td>
 	</tr>
-	
+
 
 	<?php if(isset($amount_change))
 	{
@@ -114,7 +116,7 @@ if (isset($error_message))
 	<?php
 	}
 	?>
-	<?php 
+	<?php
     }
     ?>
 	</table>

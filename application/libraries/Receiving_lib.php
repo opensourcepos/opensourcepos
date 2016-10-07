@@ -214,7 +214,8 @@ class Receiving_lib
             'price'=>$price!=null ? $price: $this->CI->Item->get_info($item_id)->cost_price,
             'unit_price' => $this->CI->Item->get_info($item_id)->unit_price,
             'receiving_quantity'=>$receiving_quantity!=null ? $receiving_quantity : $item_info->receiving_quantity,
-            'total'=>$this->get_item_total($quantity, $price, $discount)
+            'total'=>$this->get_item_total($quantity, $price, $discount),
+            'item_number'=>$this->CI->Item->get_info($item_id)->item_number
             )
         );
 
