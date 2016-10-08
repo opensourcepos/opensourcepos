@@ -19,4 +19,5 @@ git-svn-diff.py
 *.~
 *.log
 application/sessions/*
+application/logs/*
 license/.licenses
