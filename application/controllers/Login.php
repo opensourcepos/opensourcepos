@@ -71,7 +71,7 @@ class Login extends CI_Controller
 	
 	private function _security_check($username, $password)
 	{
-		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
+		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
 	}
 }
 ?>
