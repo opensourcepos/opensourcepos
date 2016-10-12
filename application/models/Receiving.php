@@ -42,6 +42,7 @@ class Receiving extends CI_Model
 		}
 
 		$receivings_data = array(
+			'receiving_time' => date('Y-m-d H:i:s'),
 			'supplier_id' => $this->Supplier->exists($supplier_id) ? $supplier_id : NULL,
 			'employee_id' => $employee_id,
 			'payment_type' => $payment_type,
