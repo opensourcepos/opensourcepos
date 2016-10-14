@@ -1,0 +1,5 @@
+dist/ merge=ours
+application/language/**/*.php merge=ours
+text=auto
+application/config/config.php ident
+application/views/partial/footer.php ident
