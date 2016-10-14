@@ -131,7 +131,16 @@ class Sales extends Secure_Controller
 		if($this->Customer->exists($customer_id))
 		{
 			$this->sale_lib->set_customer($customer_id);
+
+			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+
+			// apply customer default discount to items that have 0 discount
+			if($discount_percent != '')
+			{	
+				$this->sale_lib->apply_customer_discount($discount_percent);
+			}
 		}
+		
 		$this->_reload();
 	}
 

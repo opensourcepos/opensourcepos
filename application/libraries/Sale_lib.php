@@ -329,8 +329,8 @@ class Sale_lib
                     'line' => $insertkey,
                     'name' => $item_info->name,
                     'item_number' => $item_info->item_number,
-                    'description' => $description!=NULL ? $description: $item_info->description,
-                    'serialnumber' => $serialnumber!=NULL ? $serialnumber: '',
+                    'description' => $description != NULL ? $description : $item_info->description,
+                    'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
                     'allow_alt_description' => $item_info->allow_alt_description,
                     'is_serialized' => $item_info->is_serialized,
                     'quantity' => $quantity,
@@ -366,7 +366,6 @@ class Sale_lib
         }
 
 		$item_info = $this->CI->Item->get_info($item_id);
-		//$item = $this->CI->Item->get_info($item_id);
 		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id,$item_location)->quantity;
 		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
 
@@ -566,7 +565,7 @@ class Sale_lib
 		//Do not charge sales tax if we have a customer that is not taxable
 		if($this->is_customer_taxable())
 		{
-			foreach($this->get_cart() as $line=>$item)
+			foreach($this->get_cart() as $line => $item)
 			{
 				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
 
@@ -587,11 +586,33 @@ class Sale_lib
 
 		return $taxes;
 	}
+
+	public function apply_customer_discount($discount_percent)
+	{	
+		// Get all items in the cart so far...
+		$items = $this->get_cart();
+		
+		foreach($items as &$item)
+		{
+			$quantity = $item['quantity'];
+			$price = $item['price'];
+
+			// set a new discount only if the current one is 0
+			if($item['discount'] == 0)
+			{
+				$item['discount'] = $discount_percent;
+				$item['total'] = $this->get_item_total($quantity, $price, $discount_percent);
+				$item['discounted_total'] = $this->get_item_total($quantity, $price, $discount_percent, TRUE);
+			}
+		}
+
+		$this->set_cart($items);
+	}
 	
 	public function get_discount()
 	{
 		$discount = 0;
-		foreach($this->get_cart() as $line=>$item)
+		foreach($this->get_cart() as $item)
 		{
 			if($item['discount'] > 0)
 			{
@@ -603,10 +624,9 @@ class Sale_lib
 		return $discount;
 	}
 
-	public function get_subtotal($include_discount=FALSE, $exclude_tax=FALSE)
+	public function get_subtotal($include_discount = FALSE, $exclude_tax = FALSE)
 	{
-		$subtotal = $this->calculate_subtotal($include_discount, $exclude_tax);		
-		return $subtotal;
+		return $this->calculate_subtotal($include_discount, $exclude_tax);
 	}
 	
 	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE) 
