@@ -489,16 +489,19 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
-	public function add_item_kit($external_item_kit_id, $item_location)
+	public function add_item_kit($external_item_kit_id, $item_location, $discount)
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
 		$item_kit_id = $pieces[1];
+		$result = TRUE;
 		
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location);
+			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount);
 		}
+		
+		return $result;
 	}
 
 	public function copy_entire_sale($sale_id)
