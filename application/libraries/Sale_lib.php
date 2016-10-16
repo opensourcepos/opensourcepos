@@ -270,10 +270,10 @@ class Sale_lib
     	$this->CI->session->unset_userdata('sales_giftcard_remainder');
     }
     
-	public function add_item($item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL)
+	public function add_item($item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE)
 	{
 		//make sure item exists	     
-		if($this->validate_item($item_id) == FALSE)
+		if($this->_validate_item($item_id, $include_deleted) === FALSE)
         {
             return FALSE;
         }
@@ -360,7 +360,7 @@ class Sale_lib
 	public function out_of_stock($item_id, $item_location)
 	{
 		//make sure item exists
-		if($this->validate_item($item_id) == FALSE)
+		if($this->_validate_item($item_id) == FALSE)
         {
             return FALSE;
         }
@@ -484,7 +484,7 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
@@ -511,12 +511,14 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
+
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
 		{
 			$this->add_payment($row->payment_type, $row->payment_amount);
 		}
+
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
@@ -715,14 +717,13 @@ class Sale_lib
 		return $total;
 	}
     
-    public function validate_item(&$item_id)
+    private function _validate_item(&$item_id, $include_deleted = FALSE)
     {
         //make sure item exists
-        if(!$this->CI->Item->exists($item_id))
+        if(!$this->CI->Item->exists($item_id, $include_deleted))
         {
             //try to get item id given an item_number
-            $mode = $this->get_mode();
-            $item_id = $this->CI->Item->get_item_id($item_id);
+            $item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
 
             if(!$item_id)
 			{

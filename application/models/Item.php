@@ -191,12 +191,15 @@ class Item extends CI_Model
 	/*
 	Get an item id given an item number
 	*/
-	public function get_item_id($item_number)
+	public function get_item_id($item_number, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number', $item_number);
-		$this->db->where('items.deleted', 0);
+		if($ignore_deleted == FALSE)
+		{
+			$this->db->where('items.deleted', $deleted);
+		}
         
 		$query = $this->db->get();
 

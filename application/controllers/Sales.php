@@ -608,7 +608,7 @@ class Sales extends Secure_Controller
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_info = $this->Employee->get_info($this->Employee->get_logged_in_employee_info()->person_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
-		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data);
+		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
 		$data['sale_id_num'] = $sale_id;
 		$data['sale_id'] = 'POS ' . $sale_id;
