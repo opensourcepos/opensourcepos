@@ -485,6 +485,7 @@ class Sale_lib
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
 			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
+		}
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
