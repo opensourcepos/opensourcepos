@@ -1,5 +1,9 @@
 sudo: true                  # Required to install packages
 
+branches:
+    except:
+        - weblate
+
 services: 
     - docker
 before_install:
