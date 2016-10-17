@@ -324,6 +324,12 @@ class Receivings extends Secure_area
 		{
 			$supplier_info=$this->Supplier->get_info($supplier_id);
 			$data['supplier']=$supplier_info->first_name.' '.$supplier_info->last_name;
+			$data['supplier_2']=$supplier_info->address_1;
+			$data['supplier_3']=$supplier_info->city.', '.$supplier_info->state.' '.$supplier_info->zip;
+			if ( $data['supplier_3'] == ',  ' ) $data['supplier_3'] = '';
+			$data['supplier_4']=$supplier_info->phone_number;
+			$data['supplier_5']=$supplier_info->account_number;
+
 		}
 		$data['print_after_sale'] = FALSE;
 		$this->load->view("receivings/receipt",$data);
@@ -368,6 +374,11 @@ class Receivings extends Secure_area
 			$suppl_info=$this->Supplier->get_info($supplier_id);
 			//$data['supplier']=$suppl_info->company_name;  // first_name.' '.$info->last_name;
 			$data['supplier']=$suppl_info->first_name.' '.$suppl_info->last_name;
+			$data['supplier_2']=$suppl_info->address_1;
+			$data['supplier_3']=$suppl_info->city.', '.$suppl_info->state.' '.$suppl_info->zip;
+			if ( $data['supplier_3'] == ',  ' ) $data['supplier_3'] = '';
+			$data['supplier_4']=$suppl_info->phone_number;
+			$data['supplier_5']=$suppl_info->account_number;
 		}
 		$data['invoice_number']=$this->_substitute_invoice_number($suppl_info);
 		$data['invoice_number_enabled']=$this->receiving_lib->is_invoice_number_enabled();
