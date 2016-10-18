@@ -51,6 +51,7 @@ If you like the project, and you are making money out of it on a daily basis, th
 Server Requirements
 -------------------
 PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
+MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
 
 Reporting Bugs
 --------------
@@ -113,6 +114,7 @@ Local install
   * username: admin 
   * password: pointofsale
 9. Enjoy
+10. Oops an issue? Please read the FAQ first thing :-)
 
 P.S.: For more info about a local install based on Raspberry PI please read our wiki
 
@@ -133,7 +135,10 @@ FAQ
 
 * If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform.
 
-* You are getting following error `Message: Can't use method return value in write context` saying that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
+* If you are getting the following error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
 * If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means php5-gd, php-intl and php-sockets. Restart the web server)
 
+* If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL5.7 as it's not supported yet
+
+* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line
