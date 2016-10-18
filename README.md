@@ -141,4 +141,4 @@ FAQ
 
 * If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL5.7 as it's not supported yet
 
-* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line
+* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help.
