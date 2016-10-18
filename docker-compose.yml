@@ -18,7 +18,7 @@ services:
         ports:
             - "80:80"
         volumes:
-            - uploads:/app/uploads
+            - uploads:/app/public/uploads
         environment:
             - PHP_TIMEZONE=UTC
             - MYSQL_USERNAME=admin
