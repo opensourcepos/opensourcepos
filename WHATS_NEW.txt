@@ -1,3 +1,22 @@
+Version 3.0
+-----------
++ **CodeIgniter 3.1 Upgrade**
++ Major UI overhaul based on **Boostrap 3.0 and Bootswatch Themes**
++ New tabular views with advanced filtering using **Bootstrap Tables**
++ New graphical reports with no more Adobe flash dependency
++ Redesign of all modal dialog
++ Updated Sales register with simplified payment flow
++ **Improved security: MySQL injection, XSS, CSFR, BCrypt password encryption, safer project layout**
++ Support for TXT messaging (interfacing to specific support required)
++ Email configuration
++ Improved Localisation support
++ Improved Store Config page
++ Docker container ready for Cloud installation
++ Composer PHP support
++ More languages and integration with Weblate for continuous translation
++ About 280 closed issues under 3.0.0 release label to produce a meaningful list
++ Various code cleanup, refactoring, optimisation and etc.
+
 Version 2.4
 -----------
 + *CodeIgniter 3.0.5* Upgrade (please read UPGRADE.txt)

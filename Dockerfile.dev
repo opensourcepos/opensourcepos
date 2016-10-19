@@ -1,4 +1,4 @@
-FROM jekkos/opensourcepos:composer
+FROM jekkos/opensourcepos:master
 MAINTAINER jekkos
 
 RUN mkdir -p /app/bower_components && ln -s /app/bower_components /var/www/html/bower_components
