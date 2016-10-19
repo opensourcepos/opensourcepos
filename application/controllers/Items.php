@@ -72,8 +72,8 @@ class Items extends Secure_Controller
 	{
 		$this->load->helper('file');
 		$this->load->library('image_lib');
-		$base_path = "uploads/item_pics/" . $pic_id ;
-		$images = glob ($base_path. "*");
+		$base_path = './uploads/item_pics/' . $pic_id;
+		$images = glob($base_path . '.*');
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
@@ -190,7 +190,7 @@ class Items extends Secure_Controller
 		$data['selected_supplier'] = $item_info->supplier_id;
 
 		$data['logo_exists'] = $item_info->pic_id != '';
-		$images = glob("uploads/item_pics/" . $item_info->pic_id . ".*");
+		$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
 		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
 
 		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
