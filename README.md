@@ -8,12 +8,14 @@
 Introduction
 ------------
 
-Open Source Point of Sale is a web based point of sale system written in the PHP language.
+Open Source Point of Sale is a web based point of sale system written in PHP language.
 It uses MySQL (or MariaDB) as the data storage back-end and has a simple user interface.
+Deployed to a Cloud it can be defined as a SaaS (Software as as Service) type of solution.
 
-The latest version 3.0.0 is a complete overhaul of the original software, based on Bootswatch/Bootstrap 3.x using theme Flatly as default, and CodeIgniter 3.x.
+The latest version 3.0.0 is a complete overhaul of the original software.
+It's now based on Bootswatch/Bootstrap 3.x using theme Flatly as default, and still uses CodeIgniter 3.x as framework.
 
-It now has a fresh look'n'feel with improved functionality and security.
+The UI has a fresh look'n'feel with improved functionality and security.
 
 License
 -------
