@@ -69,26 +69,31 @@ Server Requirements
 PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
 MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
 
-Reporting Bugs
---------------
-Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
-Please DO NOT post issues if you have not done that before running OSPOS 3.0.
-Please also make sure you have updated all the files from latest master.
+Local install
+-------------
+1. Create/locate a new mysql database to install open source point of sale into
+2. Execute the file database/database.sql to create the tables needed
+3. unzip and upload Open Source Point of Sale files to web server
+4. Copy application/config/database.php.tmpl to application/config/database.php
+5. Modify application/config/database.php to connect to your database
+6. Modify application/config/config.php encryption key with your own
+7. Go to your point of sale install public dir via the browser
+8. LOGIN using
+  * username: admin 
+  * password: pointofsale
+9. Enjoy
+10. Oops an issue? Please read the FAQ first thing :-)
 
-Bug reports must follow this schema:
+P.S.: For more info about a local install based on Raspberry PI please read our wiki
 
-1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
-3. Web Server name and version (e.g. Apache 2.4)
-4. Database name and version (e.g. =< MySQL 5.6)
-5. PHP version (e.g. PHP 5.5)
-6. Language selected in OSPOS (e.g. English, Spanish)
-7. Any configuration of OSPOS that you changed
-8. Exact steps to reproduce the issue (test case)
-9. Optionally some screenshots to illustrate each step
+Local install using Docker
+--------------------------
+From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
-If above information is not provided in full, your issue will be tagged as pending.
-If missing information is not provided within a week we will close your issue.
+To build and run the image, issue following commands in a terminal with docker installed
+
+    docker-compose build
+    docker-compose up 
 
 Cloud install
 -------------
@@ -117,31 +122,26 @@ month of uptime on the platform. A full setup will only take about 2 minutes by 
 
 More info [on maintaining a docker](https://github.com/jekkos/opensourcepos/wiki/Docker-cloud-maintenance) install can be found on the wiki
 
-Local install
--------------
-1. Create/locate a new mysql database to install open source point of sale into
-2. Execute the file database/database.sql to create the tables needed
-3. unzip and upload Open Source Point of Sale files to web server
-4. Copy application/config/database.php.tmpl to application/config/database.php
-5. Modify application/config/database.php to connect to your database
-6. Modify application/config/config.php encryption key with your own
-7. Go to your point of sale install public dir via the browser
-8. LOGIN using
-  * username: admin 
-  * password: pointofsale
-9. Enjoy
-10. Oops an issue? Please read the FAQ first thing :-)
+Reporting Bugs
+--------------
+Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
+Please DO NOT post issues if you have not done that before running OSPOS 3.0.
+Please also make sure you have updated all the files from latest master.
 
-P.S.: For more info about a local install based on Raspberry PI please read our wiki
+Bug reports must follow this schema:
 
-Local install using Docker
---------------------------
-From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
+1. Ospos **version string with git commit hash** (see ospos footer)
+2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
+3. Web Server name and version (e.g. Apache 2.4)
+4. Database name and version (e.g. =< MySQL 5.6)
+5. PHP version (e.g. PHP 5.5)
+6. Language selected in OSPOS (e.g. English, Spanish)
+7. Any configuration of OSPOS that you changed
+8. Exact steps to reproduce the issue (test case)
+9. Optionally some screenshots to illustrate each step
 
-To build and run the image, issue following commands in a terminal with docker installed
-
-    docker-compose build
-    docker-compose up 
+If above information is not provided in full, your issue will be tagged as pending.
+If missing information is not provided within a week we will close your issue.
 
 FAQ
 ---
@@ -151,10 +151,12 @@ FAQ
 
 * If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform.
 
-* If you are getting the following error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
+* If you are getting the error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
 * If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means php5-gd, php-intl and php-sockets. Restart the web server)
 
 * If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL5.7 as it's not supported yet
 
-* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help.
+* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help
+
+* If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755
