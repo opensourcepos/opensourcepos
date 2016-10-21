@@ -525,7 +525,7 @@ class Item extends CI_Model
 					ON items.item_id = item_quantities.item_id
 				INNER JOIN ' . $this->db->dbprefix('stock_locations') . ' AS stock_locations
 					ON item_quantities.location_id = stock_locations.location_id
-				WHERE items.deleted = 0
+				WHERE items.deleted = 0 AND stock_locations.deleted = 0
 			)'
 		);
 	}

@@ -27,7 +27,7 @@ class Tracking_lib
 			)
 		);
 
-		$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-1', $options);
+		$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-2', $options);
 		
 		if(empty($clientId))
 		{
