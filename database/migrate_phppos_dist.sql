@@ -771,6 +771,9 @@ SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'fax';
 DELETE FROM `ospos_app_config` WHERE `key` = 'phone';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'phone';
+DELETE FROM `ospos_app_config` WHERE `key` = 'website';
+INSERT INTO `ospos_app_config` (`key`, `value`)
+SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'website';
 DELETE FROM `ospos_app_config` WHERE `key` = 'return_policy';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'return_policy';
@@ -787,8 +790,8 @@ UPDATE `ospos_customers` c1, `ospos_customers` c2 SET `c1`.`account_number` = NU
 -- Copy data to table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`)
-SELECT `username`, `password`, `person_id`, `deleted` FROM `phppos`.phppos_employees;
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`)
+SELECT `username`, `password`, `person_id`, `deleted`, 1 FROM `phppos`.phppos_employees;
 
 --
 -- Copy data to table `ospos_giftcards`
@@ -894,11 +897,6 @@ SELECT `item_id`, 1, `quantity` FROM `phppos`.`phppos_items`;
 
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`)
 SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
-
-
---
--- Add constraints on copied data
---
 
 
 --
