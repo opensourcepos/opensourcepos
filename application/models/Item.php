@@ -491,9 +491,9 @@ class Item extends CI_Model
 
 		$this->db->from('item_quantities');
 		$this->db->select_sum('quantity');
-        $this->db->where('item_id', $item_id);
+		$this->db->where('item_id', $item_id);
 		$this->db->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
-        $this->db->where('stock_locations.deleted', 0);
+		$this->db->where('stock_locations.deleted', 0);
 		$old_total_quantity = $this->db->get()->row()->quantity;
 
 		$total_quantity = $old_total_quantity + $items_received;

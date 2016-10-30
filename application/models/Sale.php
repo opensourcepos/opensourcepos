@@ -546,11 +546,22 @@ class Sale extends CI_Model
 
 		$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
 		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
-		
+
 		$decimals = totals_decimals();
 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
+			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+			(
+				SELECT sale_id, 
+					IFNULL(SUM(payment_amount), 0) AS sale_payment_amount,
+					GROUP_CONCAT(CONCAT(payment_type, " ", payment_amount) SEPARATOR ", ") AS payment_type
+				FROM ' . $this->db->dbprefix('sales_payments') . '
+				GROUP BY sale_id
+			)'
+		);
+
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
-			'(
+			' (
 				SELECT
 					DATE(sales.sale_time) AS sale_date,
 					sales.sale_time,
@@ -579,11 +590,11 @@ class Sale extends CI_Model
 					sales_items.item_location,
 					sales_items.description,
 					payments.payment_type,
-					IFNULL(payments.sale_payment_amount, 0) AS sale_payment_amount,
-					SUM(sales_items_taxes.percent) AS item_tax_percent,
+					payments.sale_payment_amount,
+					IFNULL(SUM(sales_items_taxes.percent), 0) AS item_tax_percent,
 					' . "
-					ROUND($sale_total * $total, $decimals) AS total,
-					ROUND($sale_total * $tax, $decimals) AS tax,
+					IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS total,
+					IFNULL(ROUND($sale_total * $tax, $decimals), 0) AS tax,
 					ROUND($sale_total * $subtotal, $decimals) AS subtotal,
 					ROUND($sale_total - $sale_cost, $decimals) AS profit,
 					ROUND($sale_cost, $decimals) AS cost
@@ -593,13 +604,7 @@ class Sale extends CI_Model
 					ON sales_items.sale_id = sales.sale_id
 				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
 					ON sales_items.item_id = items.item_id
-				LEFT OUTER JOIN (
-								SELECT sale_id, 
-									SUM(payment_amount) AS sale_payment_amount,
-									GROUP_CONCAT(CONCAT(payment_type, " ", payment_amount) SEPARATOR ", ") AS payment_type
-								FROM ' . $this->db->dbprefix('sales_payments') . '
-								GROUP BY sale_id
-							) AS payments
+				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments_temp') . ' AS payments
 					ON sales_items.sale_id = payments.sale_id		
 				LEFT OUTER JOIN ' . $this->db->dbprefix('suppliers') . ' AS supplier
 					ON items.supplier_id = supplier.person_id
@@ -614,17 +619,6 @@ class Sale extends CI_Model
 				GROUP BY sales.sale_id, items.item_id, sales_items.line
 			)'
 		);
-
-		//Update null item_tax_percents to be 0 instead of null
-		$this->db->where('item_tax_percent IS NULL');
-		$this->db->update('sales_items_temp', array('item_tax_percent' => 0));
-
-		//Update null tax to be 0 instead of null
-		$this->db->where('tax IS NULL');
-		$this->db->update('sales_items_temp', array('tax' => 0));
-
-		//Update null subtotals to be equal to the total as these don't have tax
-		$this->db->query('UPDATE ' . $this->db->dbprefix('sales_items_temp') . ' SET total = subtotal WHERE total IS NULL');
 	}
 }
 ?>
