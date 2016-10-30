@@ -508,7 +508,8 @@ class Item extends CI_Model
 	public function create_temp_table()
 	{
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('items_temp') . 
-			'(
+			' (INDEX(quantity), INDEX(location_id))
+			(
 				SELECT
 					items.name,
 					items.item_number,

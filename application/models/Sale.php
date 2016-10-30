@@ -561,7 +561,8 @@ class Sale extends CI_Model
 		);
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
-			' (
+			' (INDEX(sale_date), INDEX(sale_id))
+			(
 				SELECT
 					DATE(sales.sale_time) AS sale_date,
 					sales.sale_time,
