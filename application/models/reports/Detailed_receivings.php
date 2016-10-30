@@ -5,6 +5,9 @@ class Detailed_receivings extends Report
 	function __construct()
 	{
 		parent::__construct();
+
+		//Create our temp tables to work with the data in our report
+		$this->Receiving->create_temp_table();
 	}
 	
 	public function getDataColumns()

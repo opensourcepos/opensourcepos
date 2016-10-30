@@ -10,11 +10,6 @@ abstract class Report extends CI_Model
 		$this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
 		$this->output->set_header('Cache-Control: post-check=0, pre-check=0', FALSE);
 		$this->output->set_header('Pragma: no-cache');
-		
-		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table();
-		$this->Receiving->create_temp_table();
-		$this->Item->create_temp_table();
 	}
 	
 	//Returns the column names used for the report

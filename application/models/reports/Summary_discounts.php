@@ -5,6 +5,9 @@ class Summary_discounts extends Report
 	function __construct()
 	{
 		parent::__construct();
+
+		//Create our temp tables to work with the data in our report
+		$this->Sale->create_temp_table();
 	}
 	
 	public function getDataColumns()
