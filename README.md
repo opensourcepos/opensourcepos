@@ -149,13 +149,13 @@ FAQ
 
 * If sales and receiving views don't show properly, please make sure BCMath lib (php-bcmath) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out
 
-* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please reaad [issue #949](https://github.com/jekkos/opensourcepos/issues/949)
+* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/jekkos/opensourcepos/issues/949)
 
 * If you are getting the error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
 * If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means php5-gd, php-intl and php-sockets. Restart the web server)
 
-* If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL5.7 as it's not supported yet
+* If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL 5.7 as it's not supported yet
 
 * If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help
 
