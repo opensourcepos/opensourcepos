@@ -158,7 +158,8 @@ class Customers extends Persons
 	public function excel()
 	{
 		$name = 'import_customers.csv';
-		$data = file_get_contents($name);
+		$dir = '..';
+		$data = file_get_contents($dir . '/' . $name);
 		force_download($name, $data);
 	}
 	
