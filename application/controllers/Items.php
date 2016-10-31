@@ -564,7 +564,8 @@ class Items extends Secure_Controller
 	public function excel()
 	{
 		$name = 'import_items.csv';
-		$data = file_get_contents($name);
+		$dir = '..';
+		$data = file_get_contents($dir . '/' . $name);
 		force_download($name, $data);
 	}
 	
