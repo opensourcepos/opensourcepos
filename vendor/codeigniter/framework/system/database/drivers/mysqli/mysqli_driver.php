@@ -183,7 +183,7 @@ class CI_DB_mysqli_driver extends CI_DB {
 					// https://bugs.php.net/bug.php?id=68344
 					elseif (defined('MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT'))
 					{
-						$this->_mysqli->options(MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT, TRUE);
+						$client_flags |= MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT;
 					}
 				}
 
@@ -211,13 +211,6 @@ class CI_DB_mysqli_driver extends CI_DB {
 				$message = 'MySQLi was configured for an SSL connection, but got an unencrypted connection instead!';
 				log_message('error', $message);
 				return ($this->db->db_debug) ? $this->db->display_error($message, '', TRUE) : FALSE;
-			}
-
-			if ( ! $this->_mysqli->set_charset($this->char_set))
-			{
-				log_message('error', "Database: Unable to set the configured connection charset ('{$this->char_set}').");
-				$this->_mysqli->close();
-				return ($this->db->db_debug) ? $this->display_error('db_unable_to_set_charset', $this->char_set) : FALSE;
 			}
 
 			return $this->_mysqli;
@@ -267,6 +260,19 @@ class CI_DB_mysqli_driver extends CI_DB {
 		}
 
 		return FALSE;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Set client character set
+	 *
+	 * @param	string	$charset
+	 * @return	bool
+	 */
+	protected function _db_set_charset($charset)
+	{
+		return $this->conn_id->set_charset($charset);
 	}
 
 	// --------------------------------------------------------------------

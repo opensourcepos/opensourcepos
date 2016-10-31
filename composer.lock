@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "71dab0d424965628ef20cbd72fe6e151",
-    "content-hash": "8e04009f1dba7a7d1f2ba5101d238629",
+    "hash": "a3379d860fa0f4ff353e345a89542ac2",
+    "content-hash": "5a62415e3578c5a0a00b72a2e80f2aa0",
     "packages": [
         {
             "name": "codeigniter/framework",
-            "version": "dev-develop",
+            "version": "3.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "c4bd43432df03e4f4835c7689c8ed722cd2c3020"
+                "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/c4bd43432df03e4f4835c7689c8ed722cd2c3020",
-                "reference": "c4bd43432df03e4f4835c7689c8ed722cd2c3020",
+                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
+                "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
                 "shasum": ""
             },
             "require": {
@@ -37,7 +37,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2016-08-10 12:26:57"
+            "time": "2016-10-28 15:13:14"
         },
         {
             "name": "dompdf/dompdf",
@@ -257,7 +257,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "codeigniter/framework": 20,
         "ins0/google-measurement-php-client": 20
     },
     "prefer-stable": false,

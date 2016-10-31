@@ -1,12 +1,12 @@
 {
-    "name": "__root__",
-    "version": "dev-feature/composer",
+    "name": "OpenSourcePOS",
+    "version": "3.0.0",
     "license": [
         "MIT"
     ],
     "dependencies": {
         "codeigniter/framework": {
-            "version": "3.1.0",
+            "version": "3.1.2",
             "license": [
                 "MIT"
             ]
@@ -18,9 +18,15 @@
             ]
         },
         "ins0/google-measurement-php-client": {
-            "version": "v2.1.1",
+            "version": "dev-master 2b3aef2",
             "license": [
                 "BSD-3-Clause"
+            ]
+        },
+        "mikey179/vfsStream": {
+            "version": "v1.1.0",
+            "license": [
+                "BSD"
             ]
         },
         "phenx/php-font-lib": {

@@ -380,8 +380,7 @@ abstract class CI_DB_driver {
 	/**
 	 * Initialize Database Settings
 	 *
-	 * @return	void
-	 * @throws	RuntimeException	In case of failure
+	 * @return	bool
 	 */
 	public function initialize()
 	{
@@ -393,7 +392,7 @@ abstract class CI_DB_driver {
 		 */
 		if ($this->conn_id)
 		{
-			return;
+			return TRUE;
 		}
 
 		// ----------------------------------------------------------------
@@ -430,9 +429,19 @@ abstract class CI_DB_driver {
 			// We still don't have a connection?
 			if ( ! $this->conn_id)
 			{
-				throw new RuntimeException('Unable to connect to the database.');
+				log_message('error', 'Unable to connect to the database');
+
+				if ($this->db_debug)
+				{
+					$this->display_error('db_unable_to_connect');
+				}
+
+				return FALSE;
 			}
 		}
+
+		// Now we set the character set and that's all
+		return $this->db_set_charset($this->char_set);
 	}
 
 	// --------------------------------------------------------------------
@@ -503,6 +512,31 @@ abstract class CI_DB_driver {
 	public function error()
 	{
 		return array('code' => NULL, 'message' => NULL);
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Set client character set
+	 *
+	 * @param	string
+	 * @return	bool
+	 */
+	public function db_set_charset($charset)
+	{
+		if (method_exists($this, '_db_set_charset') && ! $this->_db_set_charset($charset))
+		{
+			log_message('error', 'Unable to set database connection charset: '.$charset);
+
+			if ($this->db_debug)
+			{
+				$this->display_error('db_unable_to_set_charset', $charset);
+			}
+
+			return FALSE;
+		}
+
+		return TRUE;
 	}
 
 	// --------------------------------------------------------------------
@@ -600,6 +634,7 @@ abstract class CI_DB_driver {
 		// cached query if it exists
 		if ($this->cache_on === TRUE && $return_object === TRUE && $this->_cache_init())
 		{
+			$this->load_rdriver();
 			if (FALSE !== ($cache = $this->CACHE->read($sql)))
 			{
 				return $cache;
@@ -683,9 +718,9 @@ abstract class CI_DB_driver {
 			return TRUE;
 		}
 
-		// Instantiate the driver-specific result class
-		$driver	= 'CI_DB_'.$this->dbdriver.'_result';
-		$RES    = new $driver($this);
+		// Load and instantiate the result driver
+		$driver		= $this->load_rdriver();
+		$RES		= new $driver($this);
 
 		// Is query caching enabled? If so, we'll serialize the
 		// result object and save it to a cache file.
@@ -715,6 +750,26 @@ abstract class CI_DB_driver {
 	// --------------------------------------------------------------------
 
 	/**
+	 * Load the result drivers
+	 *
+	 * @return	string	the name of the result class
+	 */
+	public function load_rdriver()
+	{
+		$driver = 'CI_DB_'.$this->dbdriver.'_result';
+
+		if ( ! class_exists($driver, FALSE))
+		{
+			require_once(BASEPATH.'database/DB_result.php');
+			require_once(BASEPATH.'database/drivers/'.$this->dbdriver.'/'.$this->dbdriver.'_result.php');
+		}
+
+		return $driver;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
 	 * Simple Query
 	 * This is a simplified version of the query() function. Internally
 	 * we only use it when running transaction commands since they do
@@ -725,7 +780,14 @@ abstract class CI_DB_driver {
 	 */
 	public function simple_query($sql)
 	{
-		empty($this->conn_id) && $this->initialize();
+		if ( ! $this->conn_id)
+		{
+			if ( ! $this->initialize())
+			{
+				return FALSE;
+			}
+		}
+
 		return $this->_execute($sql);
 	}
 
@@ -918,7 +980,7 @@ abstract class CI_DB_driver {
 	 */
 	public function compile_binds($sql, $binds)
 	{
-		if (empty($binds) OR empty($this->bind_marker) OR strpos($sql, $this->bind_marker) === FALSE)
+		if (empty($this->bind_marker) OR strpos($sql, $this->bind_marker) === FALSE)
 		{
 			return $sql;
 		}

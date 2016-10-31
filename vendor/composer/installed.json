@@ -32,40 +32,6 @@
         "homepage": "http://vfs.bovigo.org/"
     },
     {
-        "name": "codeigniter/framework",
-        "version": "dev-develop",
-        "version_normalized": "dev-develop",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/bcit-ci/CodeIgniter.git",
-            "reference": "c4bd43432df03e4f4835c7689c8ed722cd2c3020"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/c4bd43432df03e4f4835c7689c8ed722cd2c3020",
-            "reference": "c4bd43432df03e4f4835c7689c8ed722cd2c3020",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.2.4"
-        },
-        "require-dev": {
-            "mikey179/vfsstream": "1.1.*"
-        },
-        "suggest": {
-            "paragonie/random_compat": "Provides better randomness in PHP 5.x"
-        },
-        "time": "2016-09-30 09:23:03",
-        "type": "project",
-        "installation-source": "source",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "The CodeIgniter framework",
-        "homepage": "https://codeigniter.com"
-    },
-    {
         "name": "ins0/google-measurement-php-client",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -254,5 +220,39 @@
         ],
         "description": "DOMPDF is a CSS 2.1 compliant HTML to PDF converter",
         "homepage": "https://github.com/dompdf/dompdf"
+    },
+    {
+        "name": "codeigniter/framework",
+        "version": "3.1.2",
+        "version_normalized": "3.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/bcit-ci/CodeIgniter.git",
+            "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
+            "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.2.4"
+        },
+        "require-dev": {
+            "mikey179/vfsstream": "1.1.*"
+        },
+        "suggest": {
+            "paragonie/random_compat": "Provides better randomness in PHP 5.x"
+        },
+        "time": "2016-10-28 15:13:14",
+        "type": "project",
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "The CodeIgniter framework",
+        "homepage": "https://codeigniter.com"
     }
 ]

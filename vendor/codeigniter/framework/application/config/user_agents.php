@@ -87,8 +87,7 @@ $browsers = array(
 	'amaya'			=> 'Amaya',
 	'IBrowse'		=> 'IBrowse',
 	'Maxthon'		=> 'Maxthon',
-	'Ubuntu'		=> 'Ubuntu Web Browser',
-	'Vivaldi'		=> 'Vivaldi'
+	'Ubuntu'		=> 'Ubuntu Web Browser'
 );
 
 $mobiles = array(
