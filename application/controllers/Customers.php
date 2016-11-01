@@ -153,13 +153,12 @@ class Customers extends Persons
 	}
 
 	/*
-	Customer import from excel spreadsheet
+	Customers import from excel spreadsheet
 	*/
 	public function excel()
 	{
 		$name = 'import_customers.csv';
-		$dir = '..';
-		$data = file_get_contents($dir . '/' . $name);
+		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
 	
