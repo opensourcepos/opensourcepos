@@ -182,3 +182,8 @@ $lang["config_number_locale_required"] = "Numero local es un campo requerido";
 $lang["config_number_locale_invalid"] = "El local ingresado es invalido. Revisa el link en el tooltip para encontrar informacion";
 $lang["config_number_locale_tooltip"] = "Encontrar un local adecuado en esta liga";
 $lang["config_theme"] = "Tema";
+/**
+*	Added by Jorge Colmenarez 2016-10-31 16:34
+*	Support for DateTime Reports Filter
+*/
+$lang["config_filter_datetime_format"] = "Filtrar con formato de fecha/hora en los informes";

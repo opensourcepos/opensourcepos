@@ -55,7 +55,12 @@ class Detailed_sales extends Report
 	{
 		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		//	Modify by Jorge Colmenarez 2016-11-01 21:29 
+		//	Set DateTime filter field
+		if(empty($inputs['datetime_filter']))
+			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where("sale_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -93,7 +98,12 @@ class Detailed_sales extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		//	Modify by Jorge Colmenarez 2016-11-01 21:29 
+		//	Set DateTime filter field
+		if(empty($inputs['datetime_filter']))
+			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where("sale_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
 
 		if ($inputs['location_id'] != 'all')
 		{

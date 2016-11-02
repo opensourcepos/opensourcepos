@@ -182,3 +182,8 @@ $lang["config_number_locale_required"] = "Number Locale is a required field";
 $lang["config_number_locale_invalid"] = "The entered locale is invalid. Check the link in the tooltip to find a sensible value";
 $lang["config_number_locale_tooltip"] = "Find a suitable locale through this link";
 $lang["config_theme"] = "Theme";
+/**
+*	Added by Jorge Colmenarez 2016-10-31 16:30
+*	Support for DateTime Reports Filter
+*/
+$lang["config_filter_datetime_format"] = "Filter with date/time format in reports";
