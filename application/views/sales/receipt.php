@@ -68,8 +68,8 @@ if (isset($error_message))
 		<tr>
             <th style="width:20%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
 			<th style="width:40%;"><?php echo $this->lang->line('sales_description_abbrv'); ?></th>
-			<th style="width:17%;"><?php echo $this->lang->line('sales_price'); ?></th>
-			<th style="width:10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
+			<th style="width:9%;"><?php echo $this->lang->line('sales_price'); ?></th>
+			<th style="width:5%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th style="width:10%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 		<?php
@@ -83,11 +83,25 @@ if (isset($error_message))
 				<td><?php echo $item['quantity'] . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); ?></td>
 				<td><div class="total-value"><?php echo to_currency($item[($this->Appconfig->get('show_total_discount') ? 'total' : 'discounted_total')]); ?></div></td>
 			</tr>
+			<?php
+			if ($item['serialnumber'] != "")
+			{
+			?>
 			<tr>
-				<td colspan="1"><?php echo $item['description']; ?></td>
+				<td></td>
 				<td><?php echo $item['serialnumber']; ?></td>
 			</tr>
 			<?php
+			}
+			if ($item['description'] != "")
+			{
+			?>
+			<tr>
+				<td></td>
+				<td><?php echo $item['description']; ?></td>
+			</tr>
+			<?php
+			}
 			if ($item['discount'] > 0)
 			{
 			?>

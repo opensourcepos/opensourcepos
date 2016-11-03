@@ -76,12 +76,21 @@ if (isset($error_message))
 		?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? $item['receiving_quantity'] : 1; ?></td>
 		<td style="text-align:right;"><?php echo to_currency($item['total']); ?></td>
 		</tr>
-	    <tr>
-		<td ><?php echo $item['serialnumber']; ?></td>
-	    </tr>
-	    <?php if ($item['discount'] > 0 ) : ?>
+		<?php if ($item['serialnumber'] != "") : ?>
 		<tr>
-			<td colspan="3" style="font-weight: bold;"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td>
+		  <td></td>
+		  <td ><?php echo $item['serialnumber']; ?></td>
+		</tr>
+		<?php endif; ?>
+		<?php if ($item['description'] != "") : ?>
+		<tr>
+		  <td></td>
+		  <td><?php echo $item['description']; ?></td>
+		</tr>
+		<?php endif; ?>
+		<?php if ($item['discount'] > 0 ) : ?>
+		<tr>
+		  <td colspan="5" style="text-align: right; font-weight: bold;"> <?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?> </td>
 		</tr>
 		<?php endif; ?>
 	<?php
