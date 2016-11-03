@@ -281,7 +281,7 @@ class Sale extends CI_Model
 		return $success;
 	}
 
-	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id = FALSE)
+	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $dinner_table, $sale_id = FALSE)
 	{
 		if(count($items) == 0)
 		{
@@ -293,7 +293,8 @@ class Sale extends CI_Model
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'	 => $employee_id,
 			'comment'		 => $comment,
-			'invoice_number' => $invoice_number
+			'invoice_number' => $invoice_number,
+			'dinner_table_id'=> $dinner_table
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing

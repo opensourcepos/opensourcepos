@@ -235,6 +235,26 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_mode');
 	}
 
+	public function get_dinner_table()
+	{
+		if(!$this->CI->session->userdata('dinner_table'))
+		{
+			$this->set_dinner_table(1);
+		}
+
+		return $this->CI->session->userdata('dinner_table');
+	}
+
+	public function set_dinner_table($dinner_table)
+	{
+		$this->CI->session->set_userdata('dinner_table', $dinner_table);
+	}
+
+	public function clear_table()
+	{
+		$this->CI->session->unset_userdata('dinner_table');
+	}
+
     public function get_sale_location()
     {
         if(!$this->CI->session->userdata('sales_location'))
@@ -541,6 +561,7 @@ class Sale_lib
 	{
 		$this->set_invoice_number_enabled(FALSE);
 		$this->clear_mode();
+		$this->clear_table();
 		$this->empty_cart();
 		$this->clear_comment();
 		$this->clear_email_receipt();
@@ -708,6 +729,12 @@ class Sale_lib
         }
 
         return TRUE;
+    }
+
+    public function get_empty_tables()
+    {
+    	//Get tables which are currently empty
+    	return $this->CI->Dinner_table->get_empty_tables();
     }
 }
 
