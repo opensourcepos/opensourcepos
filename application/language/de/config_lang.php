@@ -76,17 +76,12 @@ $lang["config_default_tax_rate_2"] = "MWSt 2";
 $lang["config_default_tax_rate_number"] = "MWSt Rate";
 $lang["config_default_tax_rate_required"] = "MWSt ist erforderlich";
 $lang["config_default_tax_name_required"] = "Standardsteuerfeld ist erforderlich.";
-<<<<<<< HEAD
 $lang["config_dinner_table"] = "Table";
 $lang["config_dinner_table_duplicate"] = "Please use an unique table name";
-$lang["config_dinner_table_invalid_chars"] = "The stock location name can not contain '_'";
+$lang["config_dinner_table_invalid_chars"] = "The table name can not contain '_'";
 $lang["config_dinner_table_required"] = "Table is a required field";
 $lang["config_dot"] = "Punkt";
 $lang["config_email"] = "eMail";
-=======
-$lang["config_dot"] = "dot";
-$lang["config_email"] = "Email";
->>>>>>> parent of 915170c... add table words to translations
 $lang["config_email_configuration"] = "Email Konfiguration";
 $lang["config_email_protocol"] = "Protokoll";
 $lang["config_email_mailpath"] = "Pfad zu Sendmail";
@@ -178,15 +173,10 @@ $lang["config_stock_location"] = "Lagerort";
 $lang["config_stock_location_duplicate"] = "Bitte verwenden Sie einen eindeutigen Lagerort";
 $lang["config_stock_location_invalid_chars"] = "Der Lagerort kann keine Unterstriche enthalten";
 $lang["config_stock_location_required"] = "Lagerort Nummer ist erforderlich";
-<<<<<<< HEAD
 $lang["config_table"] = "Table";
 $lang["config_table_configuration"] = "Table Configuration";
 $lang["config_takings_printer"] = "Einnahmendrucker";
 $lang["config_tax_decimals"] = "Steuer Dezimalstellen";
-=======
-$lang["config_takings_printer"] = "Takings Printer";
-$lang["config_tax_decimals"] = "Tax Decimals";
->>>>>>> parent of 915170c... add table words to translations
 $lang["config_tax_included"] = "MWSt inbegriffen";
 $lang["config_thousands_separator"] = "Tausendertrennzeichen";
 $lang["config_timezone"] = "Zeitzone";

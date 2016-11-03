@@ -53,23 +53,13 @@ $lang["common_you_are_using_ospos"] = "You are using Open Source Point Of Sale V
 $lang["common_zip"] = "Şehir Kodu";
 $lang["common_import"] = "Aktar";
 $lang["common_download_import_template"] = "Download Import Excel Template (CSV)";
-<<<<<<< HEAD
 $lang["common_import_excel"] = "Excelden aktar";
-=======
-$lang["common_import_excel"] = "Excel Import";
->>>>>>> parent of 915170c... add table words to translations
 $lang["common_import_full_path"] = "Excel dosyası yeri";
 $lang["common_import_select_file"] = "Dosya seç";
 $lang["common_import_change_file"] = "Değiştir";
 $lang["common_import_remove_file"] = "Kaldır";
-<<<<<<< HEAD
 $lang["common_export_excel"] = "Excele Aktar";
 $lang["common_export_excel_yes"] = "Evet";
 $lang["common_export_excel_no"] = "Hayır";
-=======
-$lang["common_export_excel"] = "Excel Export";
-$lang["common_export_excel_yes"] = "Evet";
-$lang["common_export_excel_no"] = "No";
->>>>>>> parent of 915170c... add table words to translations
 $lang["common_required"] = "Zorunlu";
 $lang["common_id"] = "Id";

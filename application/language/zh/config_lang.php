@@ -76,6 +76,10 @@ $lang["config_default_tax_rate_2"] = "稅率 2";
 $lang["config_default_tax_rate_number"] = "預設稅率必需為數字";
 $lang["config_default_tax_rate_required"] = "預設稅率為必填";
 $lang["config_default_tax_name_required"] = "The default tax name is a required field";
+$lang["config_dinner_table"] = "Table";
+$lang["config_dinner_table_duplicate"] = "Please use an unique table name";
+$lang["config_dinner_table_invalid_chars"] = "The table name can not contain '_'";
+$lang["config_dinner_table_required"] = "Table is a required field";
 $lang["config_dot"] = "dot";
 $lang["config_email"] = "Email";
 $lang["config_email_configuration"] = "Email Configuration";
@@ -163,15 +167,14 @@ $lang["config_right"] = "Right";
 $lang["config_sales_invoice_format"] = "Sales Invoice Format";
 $lang["config_saved_successfully"] = "組態設置儲存成功";
 $lang["config_saved_unsuccessfully"] = "組態設置儲存失敗";
-<<<<<<< HEAD
 $lang["config_statistics"] = "Send statistics";
 $lang["config_statistics_tooltip"] = "Send statistics for development and feature improvement purposes";
-=======
->>>>>>> parent of 915170c... add table words to translations
 $lang["config_stock_location"] = "倉庫地址";
 $lang["config_stock_location_duplicate"] = "Please use an unique location name";
 $lang["config_stock_location_invalid_chars"] = "The stock location name can not contain '_'";
 $lang["config_stock_location_required"] = "Stock location number is a required field";
+$lang["config_table"] = "Table";
+$lang["config_table_configuration"] = "Table Configuration";
 $lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "Tax Included";

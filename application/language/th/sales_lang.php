@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "อัพเดทการขายส�
 $lang["sales_suspend_sale"] = "พักรายการ";
 $lang["sales_suspended_sale_id"] = "รหัสการขายที่ถูกพัก";
 $lang["sales_suspended_sales"] = "การขายที่พักไว้";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "ภาษี";
 $lang["sales_tax_percent"] = "ภาษี %";
 $lang["sales_total"] = "ยอดรวม";

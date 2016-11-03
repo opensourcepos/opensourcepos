@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "Wijzigingen bewaard voor ticket";
 $lang["sales_suspend_sale"] = "Bewaar aankoop";
 $lang["sales_suspended_sale_id"] = "ID";
 $lang["sales_suspended_sales"] = "Bewaarde Aankopen";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "VAT";
 $lang["sales_tax_percent"] = "VAT %";
 $lang["sales_total"] = "Totaal";
