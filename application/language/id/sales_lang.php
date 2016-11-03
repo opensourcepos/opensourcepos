@@ -107,7 +107,6 @@ $lang["sales_successfully_updated"] = "Penjualan berhasil diperbarui";
 $lang["sales_suspend_sale"] = "Tangguhkan";
 $lang["sales_suspended_sale_id"] = "ID Penjualan ditangguhkan";
 $lang["sales_suspended_sales"] = "Penangguhan";
-$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "Pajak";
 $lang["sales_tax_percent"] = "Pajak %";
 $lang["sales_total"] = "Total";

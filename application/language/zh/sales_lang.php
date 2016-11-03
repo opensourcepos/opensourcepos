@@ -107,7 +107,6 @@ $lang["sales_successfully_updated"] = "銷售資料成功更新";
 $lang["sales_suspend_sale"] = "暫停銷售";
 $lang["sales_suspended_sale_id"] = "暫停銷售編號";
 $lang["sales_suspended_sales"] = "已暫停銷售";
-$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "稅額";
 $lang["sales_tax_percent"] = "稅率 %";
 $lang["sales_total"] = "總計";

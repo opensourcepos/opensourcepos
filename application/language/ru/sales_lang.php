@@ -107,7 +107,6 @@ $lang["sales_successfully_updated"] = "Продажа успешно обнов�
 $lang["sales_suspend_sale"] = "Приостановить продажи";
 $lang["sales_suspended_sale_id"] = "приостановила продажи ID";
 $lang["sales_suspended_sales"] = "приостановила продажи";
-$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "налог";
 $lang["sales_tax_percent"] = "Налоговые %";
 $lang["sales_total"] = "сумма";

@@ -107,7 +107,6 @@ $lang["sales_successfully_updated"] = "Änderung erfolgreich";
 $lang["sales_suspend_sale"] = "-> Aussetzen";
 $lang["sales_suspended_sale_id"] = "ID";
 $lang["sales_suspended_sales"] = "Ausgesetzte Aufträge";
-$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "MWSt";
 $lang["sales_tax_percent"] = "MWSt %";
 $lang["sales_total"] = "Total";
