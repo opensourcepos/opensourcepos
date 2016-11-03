@@ -5,6 +5,9 @@ class Inventory_low extends Report
 	function __construct()
 	{
 		parent::__construct();
+
+		//Create our temp tables to work with the data in our report
+		$this->Item->create_temp_table();
 	}
 	
 	public function getDataColumns()

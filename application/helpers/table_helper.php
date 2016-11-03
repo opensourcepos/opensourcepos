@@ -248,20 +248,20 @@ function get_items_manage_table_headers()
 function get_item_data_row($item, $controller)
 {
 	$CI =& get_instance();
-	$item_tax_info=$CI->Item_taxes->get_info($item->item_id);
+	$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
 	$tax_percents = '';
 	foreach($item_tax_info as $tax_info)
 	{
-		$tax_percents.=to_tax_decimals($tax_info['percent']) . '%, ';
+		$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
 	}
 	// remove ', ' from last item
-	$tax_percents=substr($tax_percents, 0, -2);
-	$controller_name=strtolower(get_class($CI));
+	$tax_percents = substr($tax_percents, 0, -2);
+	$controller_name = strtolower(get_class($CI));
 
 	$image = '';
-	if (!empty($item->pic_id))
+	if ($item->pic_id != '')
 	{
-		$images = glob("uploads/item_pics/" . $item->pic_id . ".*");
+		$images = glob('./uploads/item_pics/' . $item->pic_id . '.*');
 		if (sizeof($images) > 0)
 		{
 			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/'.$item->pic_id).'"></a>';

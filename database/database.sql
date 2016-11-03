@@ -4,8 +4,8 @@
 --
 
 CREATE TABLE `ospos_app_config` (
-  `key` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
+  `key` varchar(50) NOT NULL,
+  `value` varchar(500) NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -17,7 +17,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('address', '123 Nowhere street'),
 ('company', 'Open Source Point of Sale'),
 ('default_tax_rate', '8'),
-('email', 'admin@pappastech.com'),
+('email', 'changeme@example.com'),
 ('fax', ''),
 ('phone', '555-555-5555'),
 ('return_policy', 'Test'),
@@ -79,7 +79,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('smtp_timeout', '5'),
 ('smtp_crypto', 'ssl'),
 ('receipt_template', 'receipt_default'),
-('theme', 'flatly');
+('theme', 'flatly'),
+('statistics', '1'),
+('language', 'english'),
+('language_code', 'en');
 
 
 -- --------------------------------------------------------
@@ -346,7 +349,7 @@ CREATE TABLE `ospos_people` (
 --
 
 INSERT INTO `ospos_people` (`first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id`) VALUES
-('John', 'Doe', '555-555-5555', 'admin@pappastech.com', 'Address 1', '', '', '', '', '', '', 1);
+('John', 'Doe', '555-555-5555', 'changeme@example.com', 'Address 1', '', '', '', '', '', '', 1);
 
 -- --------------------------------------------------------
 

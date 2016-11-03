@@ -190,7 +190,7 @@ $(document).ready(function()
 				dependencies :  ["state", "country"]
 			}
 		},
-		language : '<?php echo $this->config->item('language');?>',
+		language : '<?php echo current_language_code();?>',
 		country_codes: '<?php echo $this->config->item('country_codes'); ?>'
 	});
 });

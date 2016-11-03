@@ -22,7 +22,7 @@ class Home extends Secure_Controller
 		{
 			$this->load->library('tracking_lib');
 
-			$this->tracking_lib->track_page('Logout', 'logout');
+			$this->tracking_lib->track_page('logout', 'logout');
 		}
 	}
 }

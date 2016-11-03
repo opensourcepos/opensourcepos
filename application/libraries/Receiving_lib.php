@@ -153,13 +153,13 @@ class Receiving_lib
 		$this->CI->session->unset_userdata('recv_stock_destination');
 	}
 
-	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL)
+	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $include_deleted = FALSE)
 	{
 		//make sure item exists in database.
-		if(!$this->CI->Item->exists($item_id))
+		if(!$this->CI->Item->exists($item_id, $include_deleted))
 		{
 			//try to get item id given an item_number
-			$item_id = $this->CI->Item->get_item_id($item_id);
+			$item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
 
 			if(!$item_id)
 			{
@@ -296,7 +296,7 @@ class Receiving_lib
 	public function return_entire_receiving($receipt_receiving_id)
 	{
 		//RECV #
-		$pieces = explode(' ',$receipt_receiving_id);
+		$pieces = explode(' ', $receipt_receiving_id);
 		if(preg_match("/(RECV|KIT)/", $pieces[0]))
 		{
 			$receiving_id = $pieces[1];
@@ -312,8 +312,9 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
 		}
+
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 	}
 
@@ -336,8 +337,9 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
 		}
+
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 		//$this->set_reference($this->CI->Receiving->get_info($receiving_id)->row()->reference);
 	}

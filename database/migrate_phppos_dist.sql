@@ -4,8 +4,8 @@
 --
 
 CREATE TABLE `ospos_app_config` (
-  `key` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
+  `key` varchar(50) NOT NULL,
+  `value` varchar(500) NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -17,7 +17,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('address', '123 Nowhere street'),
 ('company', 'Open Source Point of Sale'),
 ('default_tax_rate', '8'),
-('email', 'admin@pappastech.com'),
+('email', 'changeme@example.com'),
 ('fax', ''),
 ('phone', '555-555-5555'),
 ('return_policy', 'Test'),
@@ -79,7 +79,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('smtp_timeout', '5'),
 ('smtp_crypto', 'ssl'),
 ('receipt_template', 'receipt_default'),
-('theme', 'flatly');
+('theme', 'flatly'),
+('statistics', '1'),
+('language', 'english'),
+('language_code', 'en');
 
 
 -- --------------------------------------------------------
@@ -346,7 +349,7 @@ CREATE TABLE `ospos_people` (
 --
 
 INSERT INTO `ospos_people` (`first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id`) VALUES
-('John', 'Doe', '555-555-5555', 'admin@pappastech.com', 'Address 1', '', '', '', '', '', '', 1);
+('John', 'Doe', '555-555-5555', 'changeme@example.com', 'Address 1', '', '', '', '', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -768,6 +771,9 @@ SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'fax';
 DELETE FROM `ospos_app_config` WHERE `key` = 'phone';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'phone';
+DELETE FROM `ospos_app_config` WHERE `key` = 'website';
+INSERT INTO `ospos_app_config` (`key`, `value`)
+SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'website';
 DELETE FROM `ospos_app_config` WHERE `key` = 'return_policy';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'return_policy';
@@ -784,8 +790,8 @@ UPDATE `ospos_customers` c1, `ospos_customers` c2 SET `c1`.`account_number` = NU
 -- Copy data to table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`)
-SELECT `username`, `password`, `person_id`, `deleted` FROM `phppos`.phppos_employees;
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`)
+SELECT `username`, `password`, `person_id`, `deleted`, 1 FROM `phppos`.phppos_employees;
 
 --
 -- Copy data to table `ospos_giftcards`
@@ -891,11 +897,6 @@ SELECT `item_id`, 1, `quantity` FROM `phppos`.`phppos_items`;
 
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`)
 SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
-
-
---
--- Add constraints on copied data
---
 
 
 --

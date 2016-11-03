@@ -191,12 +191,15 @@ class Item extends CI_Model
 	/*
 	Get an item id given an item number
 	*/
-	public function get_item_id($item_number)
+	public function get_item_id($item_number, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->where('item_number', $item_number);
-		$this->db->where('items.deleted', 0);
+		if($ignore_deleted == FALSE)
+		{
+			$this->db->where('items.deleted', $deleted);
+		}
         
 		$query = $this->db->get();
 
@@ -488,9 +491,9 @@ class Item extends CI_Model
 
 		$this->db->from('item_quantities');
 		$this->db->select_sum('quantity');
-        $this->db->where('item_id', $item_id);
+		$this->db->where('item_id', $item_id);
 		$this->db->join('stock_locations', 'stock_locations.location_id=item_quantities.location_id');
-        $this->db->where('stock_locations.deleted', 0);
+		$this->db->where('stock_locations.deleted', 0);
 		$old_total_quantity = $this->db->get()->row()->quantity;
 
 		$total_quantity = $old_total_quantity + $items_received;
@@ -505,7 +508,8 @@ class Item extends CI_Model
 	public function create_temp_table()
 	{
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('items_temp') . 
-			'(
+			' (INDEX(quantity), INDEX(location_id))
+			(
 				SELECT
 					items.name,
 					items.item_number,
@@ -522,7 +526,7 @@ class Item extends CI_Model
 					ON items.item_id = item_quantities.item_id
 				INNER JOIN ' . $this->db->dbprefix('stock_locations') . ' AS stock_locations
 					ON item_quantities.location_id = stock_locations.location_id
-				WHERE items.deleted = 0
+				WHERE items.deleted = 0 AND stock_locations.deleted = 0
 			)'
 		);
 	}

@@ -72,8 +72,8 @@ class Items extends Secure_Controller
 	{
 		$this->load->helper('file');
 		$this->load->library('image_lib');
-		$base_path = "uploads/item_pics/" . $pic_id ;
-		$images = glob ($base_path. "*");
+		$base_path = './uploads/item_pics/' . $pic_id;
+		$images = glob($base_path . '.*');
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
@@ -190,7 +190,7 @@ class Items extends Secure_Controller
 		$data['selected_supplier'] = $item_info->supplier_id;
 
 		$data['logo_exists'] = $item_info->pic_id != '';
-		$images = glob("uploads/item_pics/" . $item_info->pic_id . ".*");
+		$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
 		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
 
 		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
@@ -560,11 +560,14 @@ class Items extends Secure_Controller
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_cannot_be_deleted')));
 		}
 	}
-	
+
+	/*
+	Items import from excel spreadsheet
+	*/
 	public function excel()
 	{
 		$name = 'import_items.csv';
-		$data = file_get_contents($name);
+		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
 	

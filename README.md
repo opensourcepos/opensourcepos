@@ -8,12 +8,28 @@
 Introduction
 ------------
 
-Open Source Point of Sale is a web based point of sale system written in the PHP language.
-It uses MySQL (or MariaDB) as the data storage back-end and has a simple user interface.
+Open Source Point of Sale is a web based point of sale system.
+The main features are:
+* Stock management
+* Sale register with transactions logging
+* Receipt and invoice printing and emailing
+* Suppliers and Customers database
+* Multiuser with permission control
+* Reporting
+* Gift card
+* Receivings
+* Barcode generation and printing
+* Messaging
+* Multilanguage
+* Different UI themes
 
-The latest version 3.0.0 is a complete overhaul of the original software, based on Bootswatch/Bootstrap 3.x using theme Flatly as default, and CodeIgniter 3.x.
+The software is written in PHP language, it uses MySQL or MariaDB as data storage back-end and has a simple but intuitive user interface.
 
-It now has a fresh look'n'feel with improved functionality and security.
+The latest version 3.0.0 is a complete overhaul of the original software.
+It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
+It also has improved functionality and security.
+
+Deployed to a Cloud it can be defined as a SaaS (Software as as Service) type of solution.
 
 License
 -------
@@ -29,12 +45,12 @@ Also worth noting:
 _The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software._
 
-For more details please read the file __COPYING__.
+For more details please read the file __LICENSE__.
 
 It's important to understand that althought you are free to use the software the copyright stays and the license agreement applies in all cases.
 Therefore any actions like:
 
-- Removing COPYING and any license files is prohibited
+- Removing LICENSE and any license files is prohibited
 - Authoring the footer notice replacing it with your own or even worse claiming the copyright is absolutely prohibited
 - Claiming full ownership of the code is prohibited
 
@@ -51,27 +67,33 @@ If you like the project, and you are making money out of it on a daily basis, th
 Server Requirements
 -------------------
 PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
+MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
 
-Reporting Bugs
---------------
-Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
-Please DO NOT post issues if you have not done that before running OSPOS 3.0.
-Please also make sure you have updated all the files from latest master.
+Local install
+-------------
+1. Create/locate a new mysql database to install open source point of sale into
+2. Execute the file database/database.sql to create the tables needed
+3. unzip and upload Open Source Point of Sale files to web server
+4. Copy application/config/database.php.tmpl to application/config/database.php
+5. Modify application/config/database.php to connect to your database
+6. Modify application/config/config.php encryption key with your own
+7. Go to your point of sale install public dir via the browser
+8. LOGIN using
+  * username: admin 
+  * password: pointofsale
+9. Enjoy
+10. Oops an issue? Please read the FAQ first thing :-)
 
-Bug reports must follow this schema:
+P.S.: For more info about a local install based on Raspberry PI please read our wiki
 
-1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
-3. Web Server name and version (e.g. Apache 2.4)
-4. Database name and version (e.g. =< MySQL 5.6)
-5. PHP version (e.g. PHP 5.5)
-6. Language selected in OSPOS (e.g. English, Spanish)
-7. Any configuration of OSPOS that you changed
-8. Exact steps to reproduce the issue (test case)
-9. Optionally some screenshots to illustrate each step
+Local install using Docker
+--------------------------
+From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
-If above information is not provided in full, your issue will be tagged as pending.
-If missing information is not provided within a week we will close your issue.
+To build and run the image, issue following commands in a terminal with docker installed
+
+    docker-compose build
+    docker-compose up 
 
 Cloud install
 -------------
@@ -100,30 +122,26 @@ month of uptime on the platform. A full setup will only take about 2 minutes by 
 
 More info [on maintaining a docker](https://github.com/jekkos/opensourcepos/wiki/Docker-cloud-maintenance) install can be found on the wiki
 
-Local install
--------------
-1. Create/locate a new mysql database to install open source point of sale into
-2. Execute the file database/database.sql to create the tables needed
-3. unzip and upload Open Source Point of Sale files to web server
-4. Copy application/config/database.php.tmpl to application/config/database.php
-5. Modify application/config/database.php to connect to your database
-6. Modify application/config/config.php encryption key with your own
-7. Go to your point of sale install via the browser
-8. LOGIN using
-  * username: admin 
-  * password: pointofsale
-9. Enjoy
+Reporting Bugs
+--------------
+Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
+Please DO NOT post issues if you have not done that before running OSPOS 3.0.
+Please also make sure you have updated all the files from latest master.
 
-P.S.: For more info about a local install based on Raspberry PI please read our wiki
+Bug reports must follow this schema:
 
-Local install using Docker
---------------------------
-From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
+1. Ospos **version string with git commit hash** (see ospos footer)
+2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
+3. Web Server name and version (e.g. Apache 2.4)
+4. Database name and version (e.g. =< MySQL 5.6)
+5. PHP version (e.g. PHP 5.5)
+6. Language selected in OSPOS (e.g. English, Spanish)
+7. Any configuration of OSPOS that you changed
+8. Exact steps to reproduce the issue (test case)
+9. Optionally some screenshots to illustrate each step
 
-To build and run the image, issue following commands in a terminal with docker installed
-
-    docker-compose build
-    docker-compose up 
+If above information is not provided in full, your issue will be tagged as pending.
+If missing information is not provided within a week we will close your issue.
 
 FAQ
 ---
@@ -131,9 +149,14 @@ FAQ
 
 * If sales and receiving views don't show properly, please make sure BCMath lib (php-bcmath) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out
 
-* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform.
+* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/jekkos/opensourcepos/issues/949)
 
-* You are getting following error `Message: Can't use method return value in write context` saying that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
+* If you are getting the error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
 * If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means php5-gd, php-intl and php-sockets. Restart the web server)
 
+* If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL 5.7 as it's not supported yet
+
+* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help
+
+* If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755

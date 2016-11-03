@@ -131,7 +131,16 @@ class Sales extends Secure_Controller
 		if($this->Customer->exists($customer_id))
 		{
 			$this->sale_lib->set_customer($customer_id);
+
+			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+
+			// apply customer default discount to items that have 0 discount
+			if($discount_percent != '')
+			{	
+				$this->sale_lib->apply_customer_discount($discount_percent);
+			}
 		}
+		
 		$this->_reload();
 	}
 
@@ -275,7 +284,10 @@ class Sales extends Secure_Controller
 		}
 		elseif($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location);
+			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount))
+			{
+				$data['error'] = $this->lang->line('sales_unable_to_add_item');
+			}
 		}
 		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
 		{
@@ -426,11 +438,11 @@ class Sales extends Secure_Controller
 			$html = $this->load->view('sales/invoice_email', $sale_data, TRUE);
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
-			$file_content = pdf_create($html, '', FALSE);
 			$filename = sys_get_temp_dir() . '/' . $this->lang->line('sales_invoice') . '-' . str_replace('/', '-' , $sale_data['invoice_number']) . '.pdf';
-			write_file($filename, $file_content);
-			
-			$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
+			if(file_put_contents($filename, pdf_create($html)) !== FALSE)
+			{
+				$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);	
+			}
 
 			$message = $this->lang->line($result ? 'sales_invoice_sent' : 'sales_invoice_unsent') . ' ' . $to;
 		}
@@ -599,7 +611,7 @@ class Sales extends Secure_Controller
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_info = $this->Employee->get_info($this->Employee->get_logged_in_employee_info()->person_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
-		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data);
+		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
 		$data['sale_id_num'] = $sale_id;
 		$data['sale_id'] = 'POS ' . $sale_id;

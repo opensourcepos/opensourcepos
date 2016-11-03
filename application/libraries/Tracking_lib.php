@@ -1,7 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-require_once('src/Racecore/GATracking/GATracking.php');
-
 class Tracking_lib
 {
 	private $CI;
@@ -29,7 +27,7 @@ class Tracking_lib
 			)
 		);
 
-		$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-1', $options);
+		$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-2', $options);
 		
 		if(empty($clientId))
 		{
@@ -73,7 +71,7 @@ class Tracking_lib
 			$event = $this->tracking->createTracking('Factory', array(
 				'an' => 'OSPOS',
 				'av' => $this->CI->config->item('application_version') . ' - ' . substr($this->CI->config->item('commit_sha1'), 5, 12),
-				'ul' => $this->CI->config->item('language'),
+				'ul' => current_language_code(),
 				'dh' => $_SERVER['SERVER_ADDR'],
 				'dp' => $path,
 				'dt' => $title,

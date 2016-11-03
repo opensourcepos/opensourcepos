@@ -150,7 +150,7 @@ if (isset($success))
 							?>
 								<td>
 									<?php echo $item['price']; ?>
-									<?php echo form_hidden('price', $item['price']); ?>
+									<?php echo form_hidden('price', to_currency_no_money($item['price'])); ?>
 								</td>
 							<?php
 							}

@@ -290,10 +290,10 @@ class Sale_lib
     	$this->CI->session->unset_userdata('sales_giftcard_remainder');
     }
     
-	public function add_item($item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL)
+	public function add_item($item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE)
 	{
 		//make sure item exists	     
-		if($this->validate_item($item_id) == FALSE)
+		if($this->_validate_item($item_id, $include_deleted) == FALSE)
         {
             return FALSE;
         }
@@ -349,8 +349,8 @@ class Sale_lib
                     'line' => $insertkey,
                     'name' => $item_info->name,
                     'item_number' => $item_info->item_number,
-                    'description' => $description!=NULL ? $description: $item_info->description,
-                    'serialnumber' => $serialnumber!=NULL ? $serialnumber: '',
+                    'description' => $description != NULL ? $description : $item_info->description,
+                    'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
                     'allow_alt_description' => $item_info->allow_alt_description,
                     'is_serialized' => $item_info->is_serialized,
                     'quantity' => $quantity,
@@ -380,13 +380,12 @@ class Sale_lib
 	public function out_of_stock($item_id, $item_location)
 	{
 		//make sure item exists
-		if($this->validate_item($item_id) == FALSE)
+		if($this->_validate_item($item_id) == FALSE)
         {
             return FALSE;
         }
 
 		$item_info = $this->CI->Item->get_info($item_id);
-		//$item = $this->CI->Item->get_info($item_id);
 		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id,$item_location)->quantity;
 		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
 
@@ -505,21 +504,25 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
+
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
-	public function add_item_kit($external_item_kit_id, $item_location)
+	public function add_item_kit($external_item_kit_id, $item_location, $discount)
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
 		$item_kit_id = $pieces[1];
+		$result = TRUE;
 		
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location);
+			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount);
 		}
+		
+		return $result;
 	}
 
 	public function copy_entire_sale($sale_id)
@@ -529,12 +532,14 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
+
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
 		{
 			$this->add_payment($row->payment_type, $row->payment_amount);
 		}
+
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
@@ -587,7 +592,7 @@ class Sale_lib
 		//Do not charge sales tax if we have a customer that is not taxable
 		if($this->is_customer_taxable())
 		{
-			foreach($this->get_cart() as $line=>$item)
+			foreach($this->get_cart() as $line => $item)
 			{
 				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
 
@@ -608,11 +613,33 @@ class Sale_lib
 
 		return $taxes;
 	}
+
+	public function apply_customer_discount($discount_percent)
+	{	
+		// Get all items in the cart so far...
+		$items = $this->get_cart();
+		
+		foreach($items as &$item)
+		{
+			$quantity = $item['quantity'];
+			$price = $item['price'];
+
+			// set a new discount only if the current one is 0
+			if($item['discount'] == 0)
+			{
+				$item['discount'] = $discount_percent;
+				$item['total'] = $this->get_item_total($quantity, $price, $discount_percent);
+				$item['discounted_total'] = $this->get_item_total($quantity, $price, $discount_percent, TRUE);
+			}
+		}
+
+		$this->set_cart($items);
+	}
 	
 	public function get_discount()
 	{
 		$discount = 0;
-		foreach($this->get_cart() as $line=>$item)
+		foreach($this->get_cart() as $item)
 		{
 			if($item['discount'] > 0)
 			{
@@ -624,10 +651,9 @@ class Sale_lib
 		return $discount;
 	}
 
-	public function get_subtotal($include_discount=FALSE, $exclude_tax=FALSE)
+	public function get_subtotal($include_discount = FALSE, $exclude_tax = FALSE)
 	{
-		$subtotal = $this->calculate_subtotal($include_discount, $exclude_tax);		
-		return $subtotal;
+		return $this->calculate_subtotal($include_discount, $exclude_tax);
 	}
 	
 	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE) 
@@ -713,14 +739,13 @@ class Sale_lib
 		return $total;
 	}
     
-    public function validate_item(&$item_id)
+    private function _validate_item(&$item_id, $include_deleted = FALSE)
     {
         //make sure item exists
-        if(!$this->CI->Item->exists($item_id))
+        if(!$this->CI->Item->exists($item_id, $include_deleted))
         {
             //try to get item id given an item_number
-            $mode = $this->get_mode();
-            $item_id = $this->CI->Item->get_item_id($item_id);
+            $item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
 
             if(!$item_id)
 			{
