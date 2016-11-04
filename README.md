@@ -67,6 +67,9 @@ If you like the project, and you are making money out of it on a daily basis, th
 Server Requirements
 -------------------
 PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
+
+PHP needs to have `php-gd`, `php-bcmath`, `php-intl` and `php-sockets` installed and enabled.
+
 MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
 
 Local install
@@ -145,15 +148,15 @@ If missing information is not provided within a week we will close your issue.
 
 FAQ
 ---
-* If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check php5-gd presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
+* If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check `php5-gd` presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
-* If sales and receiving views don't show properly, please make sure BCMath lib (php-bcmath) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out
+* If sales and receiving views don't show properly, please make sure BCMath lib (`php-bcmath`) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out
 
 * If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/jekkos/opensourcepos/issues/949)
 
 * If you are getting the error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
-* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means php5-gd, php-intl and php-sockets. Restart the web server)
+* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php5-gd`, `php-intl` and `php-sockets`. Restart the web server)
 
 * If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL 5.7 as it's not supported yet
 
