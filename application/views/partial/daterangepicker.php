@@ -1,10 +1,5 @@
-<?php $this->lang->load("calendar"); $this->lang->load("date"); ?>
+<?php $this->lang->load("calendar"); $this->lang->load("date"); 
 
-/**
-*	Added By Jorge Colmenarez 2016-11-01 8:52 
-*	Support for Set Dinamyc DateTime Filter into Object daterangepicker 
-*/
-<?php
 	if(empty($this->config->item('filter_datetime_format'))){
 ?>
 var start_date = "<?php echo date('Y-m-d')?>";

@@ -47,8 +47,6 @@ class Summary_taxes extends Report
 		
 		$decimals = totals_decimals();
 
-		//	Modify by Jorge Colmenarez 2016-11-01 20:31 
-		//	Set WHERE Clause with support for DateTime filter field
 		$clauseWhere =	"";
 		if(empty($inputs['datetime_filter']))
 			$clauseWhere = "WHERE date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']);
@@ -78,8 +76,7 @@ class Summary_taxes extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:32 
-		//	Set DateTime filter field
+		
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else

@@ -34,13 +34,12 @@ class Sale extends CI_Model
 						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, 
 						payment_type, invoice_number');
 		$this->db->from('sales_items_temp');
-		//	Modify by Jorge Colmenarez 2016-11-01 14:25 
-		//	Set DateTime filter field
+		
 		if(empty($datetime_filter))
 			$this->db->where('sale_date BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		else
 			$this->db->where('sale_time BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
-		//	End Jorge Colmenarez
+
 		if(!empty($search))
 		{
 			if($filters['is_valid_receipt'] != FALSE)
@@ -563,8 +562,7 @@ class Sale extends CI_Model
 				GROUP BY sale_id
 			)'
 		);
-		//	Modify by Jorge Colmenarez 2016-11-01 14:29 
-		//	Add Index sale_time 
+
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
 			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(

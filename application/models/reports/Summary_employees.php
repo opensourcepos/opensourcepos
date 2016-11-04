@@ -19,8 +19,7 @@ class Summary_employees extends Report
 	{
 		$this->db->select('employee_name AS employee, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:26 
-		//	Set DateTime filter field
+
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else
@@ -50,8 +49,7 @@ class Summary_employees extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:26 
-		//	Set DateTime filter field
+		
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else

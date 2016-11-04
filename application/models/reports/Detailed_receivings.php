@@ -53,8 +53,7 @@ class Detailed_receivings extends Report
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-		//	Modify by Jorge Colmenarez 2016-11-01 21:47 
-		//	Set DateTime filter field
+
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("receiving_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else
@@ -100,8 +99,7 @@ class Detailed_receivings extends Report
 	{
 		$this->db->select('SUM(total) AS total');
 		$this->db->from('receivings_items_temp');
-		//	Modify by Jorge Colmenarez 2016-11-01 21:47 
-		//	Set DateTime filter field
+		
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("receiving_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else

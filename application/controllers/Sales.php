@@ -78,10 +78,7 @@ class Sales extends Secure_Controller
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 14:22 
-		*	Support for send flag datetime filter
-		*/
+		
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		//	Modify function search to add parameter datetime filter
 		$sales = $this->Sale->search($search, $filters, $limit, $offset, $sort, $order,$datetime_filter);

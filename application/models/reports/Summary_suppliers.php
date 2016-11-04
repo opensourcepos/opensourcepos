@@ -21,8 +21,7 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:18 
-		//	Set DateTime filter field
+
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else
@@ -54,8 +53,7 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:18 
-		//	Set DateTime filter field
+		
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else

@@ -20,8 +20,7 @@ class Summary_payments extends Report
 		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:49 
-		//	Set DateTime filter field
+
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else
@@ -72,8 +71,7 @@ class Summary_payments extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		//	Modify by Jorge Colmenarez 2016-11-01 20:49 
-		//	Set DateTime filter field
+		
 		if(empty($inputs['datetime_filter']))
 			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		else

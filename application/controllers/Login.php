@@ -41,10 +41,6 @@ class Login extends CI_Controller
 					$this->tracking_lib->track_event('Stats', 'Tax Decimals', $this->config->item('tax_decimals'));
 					$this->tracking_lib->track_event('Stats', 'Quantity Decimals', $this->config->item('quantity_decimals'));
 					$this->tracking_lib->track_event('Stats', 'Invoice Enable', $this->config->item('invoice_enable'));
-					/**
-					*	Jorge Colmenarez 2016-11-01 08:33 
-					*	Set Static Filter DateTime Format Value
-					*/
 					$this->tracking_lib->track_event('Stats', 'Filter DateTime Format', $this->config->item('filter_datetime_format'));
 				}
 

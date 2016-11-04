@@ -43,10 +43,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 19:00 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -63,19 +59,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 19:01 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_sales_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -90,10 +76,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 19:07 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -110,19 +92,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:01 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_categories_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -137,10 +109,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:13 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -157,19 +125,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:14 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_customers_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -183,11 +141,7 @@ class Reports extends Secure_Controller
 	{
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
-		
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:16 
-		*	Support for send flag datetime filter
-		*/
+
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -204,19 +158,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:17 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_suppliers_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -230,11 +174,7 @@ class Reports extends Secure_Controller
 	{
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
-		
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:21 
-		*	Support for send flag datetime filter
-		*/
+
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -251,19 +191,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:22 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_items_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -277,11 +207,7 @@ class Reports extends Secure_Controller
 	{
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
-		
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:24 
-		*	Support for send flag datetime filter
-		*/
+
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -298,19 +224,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:25 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_employees_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -325,10 +241,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:29 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -343,19 +255,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:30 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_taxes_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -370,10 +272,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:44 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -385,19 +283,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:44 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_discounts_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -412,10 +300,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:47 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -428,19 +312,9 @@ class Reports extends Secure_Controller
 			));
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:48 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_payments_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $this->xss_clean($model->getDataColumns()),
 			'data' => $tabular_data,
 			'summary_data' => $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)))
@@ -490,10 +364,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:53 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -508,19 +378,9 @@ class Reports extends Secure_Controller
 			$series[] = array('meta' => $date, 'value' => $row['total']);
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:54 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_sales_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/line',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -539,10 +399,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:54 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -556,19 +412,9 @@ class Reports extends Secure_Controller
 			$series[] = $row['total'];
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:55 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_items_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -587,10 +433,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:56 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 		$summary = $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)));
@@ -605,19 +447,9 @@ class Reports extends Secure_Controller
 			$series[] = array('meta' => $row['category'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:56 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_categories_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -634,10 +466,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:57 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 		$summary = $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)));
@@ -652,19 +480,9 @@ class Reports extends Secure_Controller
 			$series[] = array('meta' => $row['supplier'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:57 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_suppliers_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -681,10 +499,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:59 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 		$summary = $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)));
@@ -699,19 +513,9 @@ class Reports extends Secure_Controller
 			$series[] = array('meta' => $row['employee'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:59 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_employees_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -728,10 +532,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:59 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 		$summary = $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)));
@@ -746,19 +546,9 @@ class Reports extends Secure_Controller
 			$series[] = array('meta' => $row['percent'] . ' ' . round($row['total'] / $summary['total'] * 100, 2) . '%', 'value' => $row['total']);
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 20:59 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_taxes_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -775,10 +565,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:01 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -792,19 +578,9 @@ class Reports extends Secure_Controller
 			$series[] = $row['total'];
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:01 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_customers_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/hbar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -823,10 +599,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:02 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -840,19 +612,9 @@ class Reports extends Secure_Controller
 			$series[] = $row['count'];
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:02 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_discounts_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/bar',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -871,10 +633,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:03 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 		$summary = $this->xss_clean($model->getSummaryData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter)));
@@ -889,19 +647,9 @@ class Reports extends Secure_Controller
 			$series[] = array('meta' => $row['payment_type'] . ' ' . round($row['payment_amount'] / $summary['total'] * 100, 2) . '%', 'value' => $row['payment_amount']);
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:03 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_payments_summary_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,
 			'series_data_1' => $series,
@@ -933,11 +681,6 @@ class Reports extends Secure_Controller
 		$model = $this->Specific_customer;
 
 		$headers = $this->xss_clean($model->getDataColumns());
-
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:06 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'datetime_filter' => $datetime_filter));
 
@@ -956,19 +699,9 @@ class Reports extends Secure_Controller
 
 		$customer_info = $this->Customer->get_info($customer_id);
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:06 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . $this->lang->line('reports_report')),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $headers,
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
@@ -999,11 +732,6 @@ class Reports extends Secure_Controller
 		$model = $this->Specific_employee;
 
 		$headers = $this->xss_clean($model->getDataColumns());
-
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:13 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'employee_id' => $employee_id, 'sale_type' => $sale_type, 'datetime_filter' => $datetime_filter));
 
@@ -1022,19 +750,9 @@ class Reports extends Secure_Controller
 
 		$employee_info = $this->Employee->get_info($employee_id);
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:06 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $headers,
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
@@ -1067,11 +785,6 @@ class Reports extends Secure_Controller
 		$model = $this->Specific_discount;
 
 		$headers = $this->xss_clean($model->getDataColumns());
-
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:17 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'discount' => $discount, 'sale_type' => $sale_type, 'datetime_filter' => $datetime_filter));
 
@@ -1088,19 +801,9 @@ class Reports extends Secure_Controller
 			}
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:17 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $discount . '% ' . $this->lang->line('reports_discount') . ' ' . $this->lang->line('reports_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $headers,
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
@@ -1144,11 +847,6 @@ class Reports extends Secure_Controller
 		$model = $this->Detailed_sales;
 
 		$headers = $this->xss_clean($model->getDataColumns());
-
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:28 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -1188,19 +886,9 @@ class Reports extends Secure_Controller
 			}
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:28 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_detailed_sales_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $headers,
 			'editable' => 'sales',
 			'summary_data' => $summary_data,
@@ -1242,11 +930,6 @@ class Reports extends Secure_Controller
 		$model = $this->Detailed_receivings;
 
 		$headers = $this->xss_clean($model->getDataColumns());
-
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:32 
-		*	Support for send flag datetime filter
-		*/
 		$datetime_filter = $this->config->item('filter_datetime_format');
 		$report_data = $model->getData(array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'datetime_filter' => $datetime_filter));
 
@@ -1283,19 +966,9 @@ class Reports extends Secure_Controller
 			}
 		}
 
-		/**
-		*	Added by Jorge Colmenarez 2016-11-01 21:32 
-		*	Set subtitle with corresponsed format
-		*/
-		$subtitle ="";
-		if(empty($datetime_filter))
-			$subtitle = date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date));
-		else
-			$subtitle = date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $start_date))) . '-' . date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $end_date)));
-
 		$data = array(
 			'title' => $this->lang->line('reports_detailed_receivings_report'),
-			'subtitle' => $subtitle,
+			'subtitle' => $this->_get_subtitle_report(array($start_date,$end_date),$datetime_filter),
 			'headers' => $headers,
 			'editable' => 'receivings',
 			'summary_data' => $summary_data,
@@ -1380,6 +1053,19 @@ class Reports extends Secure_Controller
 		);
 
 		$this->load->view('reports/tabular', $data);
+	}
+	//	Returns subtitle for the reports
+	private function _get_subtitle_report($value,$datetime_filter){
+		$subtitle ="";
+		if(empty($datetime_filter))
+			for($i = 0; $i < count($value); $i++)
+				$subtitle .= date($this->config->item('dateformat'), strtotime($value[$i])) . ' - ';
+		else
+			for($i = 0; $i < count($value); $i++)
+				$subtitle .= date($this->config->item('dateformat')." ".$this->config->item('timeformat'), strtotime(str_replace("%20", " ", $value[$i]))) . ' - ';
+		$subtitle = substr($subtitle,0,-2);
+
+		return $subtitle;
 	}
 }
 ?>

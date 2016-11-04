@@ -205,8 +205,6 @@ class Receiving extends CI_Model
 	*/
 	public function create_temp_table()
 	{
-		//	Modify by Jorge Colmenarez 2016-11-01 21:45 
-		//	Add Index receiving_time 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') . 
 			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(

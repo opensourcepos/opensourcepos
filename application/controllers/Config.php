@@ -303,10 +303,7 @@ class Config extends Secure_Controller
 			'quantity_decimals' => $this->input->post('quantity_decimals'),
 			'country_codes' => $this->input->post('country_codes'),
 			'payment_options_order' => $this->input->post('payment_options_order'),
-			//	Added By Jorge Colmenarez 2016-10-31 16:39
-			//	Support for filter datetime reports
 			'filter_datetime_format' => $this->input->post('filter_datetime_format')
-			//	End Jorge Colmenarez
 		);
 	
 		$result = $this->Appconfig->batch_save($batch_save_data);
