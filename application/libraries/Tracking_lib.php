@@ -8,8 +8,15 @@ class Tracking_lib
   	public function __construct()
 	{
 		$this->CI =& get_instance();
-		
+
 		$clientId = $this->CI->Appconfig->get('client_id');
+
+		// some old beta-3.0.0 time client IDs are wrong so clean them up
+		// this statement should be removed eventually
+		if(!empty($clientId) && strlen($clientId) < 30)
+		{
+			$clientId = NULL;
+		}
 
 		/**
 		 * Setup the class
@@ -19,7 +26,7 @@ class Tracking_lib
 			'client_create_random_id' => TRUE, // create a random client id when the class can't fetch the current cliend id or none is provided by "client_id"
 			'client_fallback_id' => 555, // fallback client id when cid was not found and random client id is off
 			'client_id' => $clientId, // override client id
-			'user_id' => $_SERVER['SERVER_ADDR'],  // determine current user id
+			'user_id' => NULL,  // determine current user id
 			// adapter options
 			'adapter' => array(
 				'async' => TRUE, // requests to google are async - don't wait for google server response
@@ -28,7 +35,7 @@ class Tracking_lib
 		);
 
 		$this->tracking = new \Racecore\GATracking\GATracking('UA-82359828-2', $options);
-		
+
 		if(empty($clientId))
 		{
 			$clientId = $this->tracking->getClientId();
@@ -72,10 +79,9 @@ class Tracking_lib
 				'an' => 'OSPOS',
 				'av' => $this->CI->config->item('application_version') . ' - ' . substr($this->CI->config->item('commit_sha1'), 5, 12),
 				'ul' => current_language_code(),
-				'dh' => $_SERVER['SERVER_ADDR'],
 				'dp' => $path,
 				'dt' => $title,
-				'cd' => $description			
+				'cd' => $description
 			));
 
 			return $this->tracking->sendTracking($event);

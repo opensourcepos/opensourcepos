@@ -254,28 +254,32 @@ class Sales extends Secure_Controller
 	public function add()
 	{
 		$data = array();
-
-		$mode = $this->sale_lib->get_mode();
-		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
-		$quantity = ($mode == 'return') ? -1 : 1;
-		$item_location = $this->sale_lib->get_sale_location();
-
-		$discount = 0;
 		
+		$discount = 0;
+
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
 		if($customer_id != -1)
 		{
 			// load the customer discount if any
-			$discount = $this->Customer->get_info($customer_id)->discount_percent == '' ? 0 : $this->Customer->get_info($customer_id)->discount_percent;
+			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+			if($discount_percent != '')
+			{
+				$discount = $discount_percent;
+			}
 		}
-		
+
 		// if the customer discount is 0 or no customer is selected apply the default sales discount
 		if($discount == 0)
 		{
 			$discount = $this->config->item('default_sales_discount');
 		}
-		
+
+		$mode = $this->sale_lib->get_mode();
+		$quantity = ($mode == 'return') ? -1 : 1;
+		$item_location = $this->sale_lib->get_sale_location();
+		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
+
 		if($mode == 'return' && $this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
@@ -287,12 +291,17 @@ class Sales extends Secure_Controller
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
 		}
-		elseif(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
+		else
 		{
-			$data['error'] = $this->lang->line('sales_unable_to_add_item');
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
+			{
+				$data['error'] = $this->lang->line('sales_unable_to_add_item');
+			}
+			else
+			{
+				$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+			}
 		}
-		
-		$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
 
 		$this->_reload($data);
 	}

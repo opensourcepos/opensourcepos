@@ -139,7 +139,7 @@ class Item extends CI_Model
 
 		if($stock_location_id > -1)
 		{
-			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
+			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $stock_location_id);
 		}
 
@@ -186,6 +186,28 @@ class Item extends CI_Model
 
 			return $item_obj;
 		}
+	}
+	
+	/*
+	Gets information about a particular item by item id or number
+	*/
+	public function get_info_by_id_or_number($item_id)
+	{
+		$this->db->from('items');
+		$this->db->group_start();
+			$this->db->where('CAST(item_id AS CHAR) = ', $item_id);
+			$this->db->or_where('items.item_number', $item_id);
+		$this->db->group_end();
+		$this->db->where('items.deleted', 0);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() == 1)
+		{
+			return $query->row();
+		}
+
+		return '';
 	}
 
 	/*
