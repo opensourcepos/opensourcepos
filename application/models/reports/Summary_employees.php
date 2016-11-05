@@ -17,7 +17,8 @@ class Summary_employees extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('employee_name AS employee, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->select('MAX(employee_name) AS employee, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, 
+		SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
@@ -36,7 +37,7 @@ class Summary_employees extends Report
         }
 
 		$this->db->group_by('employee_id');
-		$this->db->order_by('employee_name');
+		$this->db->order_by('MAX(employee_name)');
 
 		return $this->db->get()->result_array();		
 	}

@@ -17,8 +17,9 @@ class Summary_items extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('name, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
+		$this->db->select('MAX(name) AS name, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, 
+		SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
+        $this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
@@ -36,7 +37,7 @@ class Summary_items extends Report
         }
 
 		$this->db->group_by('item_id');
-		$this->db->order_by('name');
+		$this->db->order_by('MAX(name)');
 
 		return $this->db->get()->result_array();		
 	}

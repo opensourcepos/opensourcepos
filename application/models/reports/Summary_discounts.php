@@ -17,7 +17,7 @@ class Summary_discounts extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(discount_percent, "%") AS discount_percent, count(*) AS count');
+		$this->db->select('CONCAT(discount_percent, "%") AS discount_percent, COUNT(*) AS count');
 		$this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		$this->db->where('discount_percent > 0');

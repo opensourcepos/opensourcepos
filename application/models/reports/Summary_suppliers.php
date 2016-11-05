@@ -17,7 +17,8 @@ class Summary_suppliers extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(company_name, " (", first_name, " ", last_name, ")") AS supplier, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->select('MAX(CONCAT(company_name, " (", first_name, " ", last_name, ")") AS supplier, SUM(quantity_purchased) AS quantity_purchased, 
+		SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
@@ -38,7 +39,7 @@ class Summary_suppliers extends Report
         }
 
 		$this->db->group_by('supplier_id');
-		$this->db->order_by('last_name');
+		$this->db->order_by('MAX(last_name)');
 		
 		return $this->db->get()->result_array();
 	}

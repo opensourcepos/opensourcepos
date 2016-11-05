@@ -55,6 +55,37 @@ class Item extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
+
+        // The original query was grouped on item code only, so only one item code is desired
+        // However, in order to improve performance and keep the dynamic indexing down we are using a simple MAX()
+        // function to insure that there is only one item per record and still have wha should be the only valid
+        // and unique value in the row.  It also satisfies te 5.7 group clause default validation
+        // Note that no columns from suppliers or inventory are included in the result because the values cannot be
+        // determinant.  However they can still be used for filtering.
+        $this->db->select('max(items.name) as name');
+        $this->db->select('max(items.category) as category');
+        $this->db->select('max(items.supplier_id) as supplier_id');
+        $this->db->select('max(items.item_number) as item_number');
+        $this->db->select('max(items.description) as description');
+        $this->db->select('max(items.cost_price) as cost_price');
+        $this->db->select('max(items.unit_price) as unit_price');
+        $this->db->select('max(items.reorder_level) as reorder_level');
+        $this->db->select('max(items.receiving_quantity) as receiving_quantity');
+        $this->db->select('items.item_id');
+        $this->db->select('max(items.pic_id) as pic_id');
+        $this->db->select('max(items.allow_alt_description) as allow_alt_description');
+        $this->db->select('max(items.is_serialized) as is_serialized');
+        $this->db->select('max(items.deleted) as deleted');
+        $this->db->select('max(items.custom1) as custom1');
+        $this->db->select('max(items.custom2) as custom2');
+        $this->db->select('max(items.custom3) as custom3');
+        $this->db->select('max(items.custom4) as custom4');
+        $this->db->select('max(items.custom5) as custom5');
+        $this->db->select('max(items.custom6) as custom6');
+        $this->db->select('max(items.custom7) as custom7');
+        $this->db->select('max(items.custom8) as custom8');
+        $this->db->select('max(items.custom9) as custom9');
+        $this->db->select('max(items.custom10) as custom10');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('inventory', 'inventory.trans_items = items.item_id');

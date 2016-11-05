@@ -209,28 +209,28 @@ class Receiving extends CI_Model
 			' (INDEX(receiving_date), INDEX(receiving_id))
 			(
 				SELECT 
-					DATE(receiving_time) AS receiving_date,
-					receiving_time,
+					MAX(DATE(receiving_time)) AS receiving_date,
+					MAX(receiving_time) AS receiving_time,
 					receivings_items.receiving_id,
-					comment,
-					item_location,
-					reference,
-					payment_type,
-					employee_id, 
+					MAX(comment) AS comment,
+					MAX(item_location) AS item_location,
+					MAX(reference) AS reference,
+					MAX(payment_type) AS payment_type,
+					MAX(employee_id) AS employee_id, 
 					items.item_id,
-					receivings.supplier_id,
-					quantity_purchased,
-					receivings_items.receiving_quantity,
-					item_cost_price,
-					item_unit_price,
-					discount_percent,
+					MAX(receivings.supplier_id) AS supplier_id,
+					MAX(quantity_purchased) AS quantity_purchased,
+					MAX(receivings_items.receiving_quantity) AS receiving_quantity,
+					MAX(item_cost_price) AS item_cost_price,
+					MAX(item_unit_price) AS item_unit_price,
+					MAX(discount_percent) AS discount_percent,
 					receivings_items.line,
-					serialnumber,
-					receivings_items.description,
-					(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS subtotal,
-					(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS total,
-					(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) - (item_cost_price * quantity_purchased) AS profit,
-					(item_cost_price * quantity_purchased) AS cost
+					MAX(serialnumber) AS serialnumber,
+					MAX(receivings_items.description) AS description,
+					(MAX(item_unit_price) * MAX(quantity_purchased) - MAX(item_unit_price) * MAX(quantity_purchased) * MAX(discount_percent) / 100) AS subtotal,
+					(MAX(item_unit_price) * MAX(quantity_purchased) - MAX(item_unit_price) * MAX(quantity_purchased) * MAX(discount_percent) / 100) AS total,
+					(MAX(item_unit_price) * MAX(quantity_purchased) - MAX(item_unit_price) * MAX(quantity_purchased) * MAX(discount_percent) / 100) - (MAX(item_cost_price) * MAX(quantity_purchased)) AS profit,
+					(MAX(item_cost_price) * MAX(quantity_purchased)) AS cost
 				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
 				INNER JOIN ' . $this->db->dbprefix('receivings') . ' AS receivings
 					ON receivings_items.receiving_id = receivings.receiving_id

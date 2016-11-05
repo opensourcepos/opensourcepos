@@ -17,7 +17,8 @@ class Summary_customers extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('customer_name AS customer, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->select('MAX(customer_name) AS customer, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, 
+		SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
@@ -36,7 +37,7 @@ class Summary_customers extends Report
         }
 
 		$this->db->group_by('customer_id');
-		$this->db->order_by('customer_last_name');
+		$this->db->order_by('MAX(customer_last_name)');
 
 		return $this->db->get()->result_array();		
 	}

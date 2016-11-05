@@ -17,7 +17,7 @@ class Summary_payments extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
+		$this->db->select('MAX(sales_payments.payment_type) AS payment_type, COUNT(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
 		$this->db->where("date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));

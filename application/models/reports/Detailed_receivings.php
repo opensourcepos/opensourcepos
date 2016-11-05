@@ -49,7 +49,10 @@ class Detailed_receivings extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, supplier.company_name AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, reference');
+		$this->db->select('receiving_id, MAX(receiving_date) AS receiving_date, SUM(quantity_purchased) AS items_purchased, 
+		MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name, 
+		MAX(supplier.company_name) AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, MAX(payment_type) AS payment_type, 
+		MAX(comment) AS comment, MAX(reference) AS referemce');
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
@@ -72,7 +75,7 @@ class Detailed_receivings extends Report
 			$this->db->having('items_purchased = 0');
 		}
 		$this->db->group_by('receiving_id');
-		$this->db->order_by('receiving_date');
+		$this->db->order_by('MAX(receiving_date)');
 
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();

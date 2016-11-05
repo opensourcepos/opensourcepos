@@ -53,7 +53,10 @@ class Detailed_sales extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, MAX(sale_date) AS sale_date, SUM(quantity_purchased) AS items_purchased, 
+		MAX(employee_name) AS employee_name, MAX(customer_name) AS customer_name, SUM(subtotal) AS subtotal, 
+		SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, 
+		MAX(payment_type) AS payment_type, MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 
@@ -72,7 +75,7 @@ class Detailed_sales extends Report
         }
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date');
+		$this->db->order_by('MAX(sale_date)');
 
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();

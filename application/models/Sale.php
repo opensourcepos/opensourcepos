@@ -3,11 +3,13 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
-		$this->db->select('customer_id, customer_name, customer_first_name AS first_name, customer_last_name AS last_name, customer_email AS email, customer_comments AS comments,
-						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, payment_type,
-						sale_id, sale_date, sale_time, comment, invoice_number, employee_id');
+		$this->db->select('max(customer_id) as customer_id, max(customer_name) as customer_name, max(customer_first_name) AS first_name, 
+		    max(customer_last_name) AS last_name, max(customer_email) AS email, max(customer_comments) AS comments,
+			max(sale_payment_amount) AS amount_tendered, 
+			SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, max(payment_type) as payment_type,
+			sale_id, max(sale_date) as sale_date, max(sale_time) as sale_time, max(comment) as comment, max(invoice_number) as invoice_number, 
+			max(employee_id) as employee_id');
 		$this->db->from('sales_items_temp');
-
 		$this->db->where('sale_id', $sale_id);
 		$this->db->group_by('sale_id');
 		$this->db->order_by('sale_time', 'asc');
@@ -28,11 +30,11 @@ class Sale extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
-		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
-						customer_name, customer_company_name AS company_name,
+		$this->db->select('sale_id, MAX(sale_date) as sale_date, MAX(sale_time) as sale_time, SUM(quantity_purchased) AS items_purchased,
+						MAX(customer_name) as customer_name, MAX(customer_company_name) AS company_name,
 						SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
-						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, 
-						payment_type, invoice_number');
+						MAX(sale_payment_amount) AS amount_tendered, SUM(total) AS amount_due, (MAX(sale_payment_amount) - SUM(total)) AS change_due, 
+						MAX(payment_type) as paymet_type, MAX(invoice_number) as invoice_number');
 		$this->db->from('sales_items_temp');
 
 		$this->db->where('sale_date BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
@@ -99,7 +101,7 @@ class Sale extends CI_Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
-		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
+		$this->db->select('payment_type, COUNT(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
@@ -564,34 +566,34 @@ class Sale extends CI_Model
 			' (INDEX(sale_date), INDEX(sale_id))
 			(
 				SELECT
-					DATE(sales.sale_time) AS sale_date,
-					sales.sale_time,
-					sales.sale_id,
-					sales.comment,
-					sales.invoice_number,
-					sales.customer_id,
-					CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
-					customer_p.first_name AS customer_first_name,
-					customer_p.last_name AS customer_last_name,
-					customer_p.email AS customer_email,
-					customer_p.comments AS customer_comments, 
-					customer.company_name AS customer_company_name,
-					sales.employee_id,
-					CONCAT(employee.first_name, " ", employee.last_name) AS employee_name,
+					MAX(DATE(sales.sale_time)) AS sale_date,
+					MAX(sales.sale_time) AS sale_time,
+					sales.sale_id),
+					MAX(sales.comment) AS comment,
+					MAX(sales.invoice_number) AS invoice_number,
+					MAX(sales.customer_id) AS customer_id,
+					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
+					MAX(customer_p.first_name) AS customer_first_name,
+					MAX(customer_p.last_name) AS customer_last_name,
+					MAX(customer_p.email) AS customer_email,
+					MAX(customer_p.comments) AS customer_comments, 
+					MAX(customer.company_name) AS customer_company_name,
+					MAX(sales.employee_id) AS employee_id,
+					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 					items.item_id,
-					items.name,
-					items.category,
-					items.supplier_id,
-					sales_items.quantity_purchased,
-					sales_items.item_cost_price,
-					sales_items.item_unit_price,
-					sales_items.discount_percent,
+					MAX(items.name) AS name,
+					MAX(items.category) AS category,
+					MAX(items.supplier_id) AS supplier_id,
+					MAX(sales_items.quantity_purchased) AS quantity_purchased,
+					MAX(sales_items.item_cost_price) AS item_cost_price,
+					MAX(sales_items.item_unit_price) AS item_unit_price,
+					MAX(sales_items.discount_percent) AS discount_percent,
 					sales_items.line,
-					sales_items.serialnumber,
-					sales_items.item_location,
-					sales_items.description,
-					payments.payment_type,
-					payments.sale_payment_amount,
+					MAX(sales_items.serialnumber) AS serialnumber,
+					MAX(sales_items.item_location) AS item_location,
+					MAX(sales_items.description) AS description,
+					MAX(payments.payment_type) AS payment_type,
+					MAX(payments.sale_payment_amount) AS sale_payment_amount,
 					IFNULL(SUM(sales_items_taxes.percent), 0) AS item_tax_percent,
 					' . "
 					IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS total,

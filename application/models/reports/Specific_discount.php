@@ -19,7 +19,9 @@ class Specific_discount extends Report
 	
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, MAX(sale_date) AS sales_date, SUM(quantity_purchased) AS items_purchased, 
+		MAX(customer_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, 
+		SUM(profit) AS profit, MAX(payment_type) AS payment_type, MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND discount_percent >=" . $this->db->escape($inputs['discount']));
 		
@@ -33,7 +35,7 @@ class Specific_discount extends Report
 		}
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date');
+		$this->db->order_by('MAX(sale_date)');
 
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();

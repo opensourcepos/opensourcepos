@@ -47,7 +47,7 @@ class Summary_taxes extends Report
 		
 		$decimals = totals_decimals();
 
-		$query = $this->db->query("SELECT percent, count(*) AS count, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax
+		$query = $this->db->query("SELECT percent, COUNT(*) AS count, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax
 			FROM (SELECT name, CONCAT(ROUND(percent, $decimals), '%') AS percent,
 			ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $subtotal, $decimals) AS subtotal,
 			ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $total, $decimals) AS total,
