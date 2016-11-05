@@ -19,7 +19,7 @@ class Secure_Controller extends CI_Controller
 		}
 
 		$this->track_page($module_id, $module_id);
-		
+
 		$logged_in_employee_info = $model->get_logged_in_employee_info();
 		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
 			(isset($submodule_id) && !$model->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
@@ -55,7 +55,7 @@ class Secure_Controller extends CI_Controller
 
 	protected function track_page($path, $page)
 	{
-		if($this->config->item('statistics') == TRUE)
+		if(get_instance()->Appconfig->get('statistics'))
 		{
 			$this->load->library('tracking_lib');
 
@@ -71,7 +71,7 @@ class Secure_Controller extends CI_Controller
 
 	protected function track_event($category, $action, $label, $value = NULL)
 	{
-		if($this->config->item('statistics') == TRUE)
+		if(get_instance()->Appconfig->get('statistics'))
 		{
 			$this->load->library('tracking_lib');
 

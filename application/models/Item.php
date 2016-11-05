@@ -6,14 +6,19 @@ class Item extends CI_Model
 	*/
 	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
-		$this->db->from('items');
-		$this->db->where('CAST(item_id AS CHAR) = ', $item_id);
-		if($ignore_deleted == FALSE)
+		if (ctype_digit($item_id))
 		{
-			$this->db->where('deleted', $deleted);
+			$this->db->from('items');
+			$this->db->where('item_id', (int)$item_id);
+			if ($ignore_deleted == FALSE)
+			{
+				$this->db->where('deleted', $deleted);
+			}
+
+			return ($this->db->get()->num_rows() == 1);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return FALSE;
 	}
 
 	/*
@@ -22,10 +27,10 @@ class Item extends CI_Model
 	public function item_number_exists($item_number, $item_id = '')
 	{
 		$this->db->from('items');
-		$this->db->where('item_number', $item_number);
-		if(!empty($item_id))
+		$this->db->where('item_number', (string) $item_number);
+		if(ctype_digit($item_id))
 		{
-			$this->db->where('item_id !=', $item_id);
+			$this->db->where('item_id !=', (int) $item_id);
 		}
 
 		return ($this->db->get()->num_rows() == 1);
@@ -139,7 +144,7 @@ class Item extends CI_Model
 
 		if($stock_location_id > -1)
 		{
-			$this->db->join('item_quantities', 'item_quantities.item_id=items.item_id');
+			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $stock_location_id);
 		}
 
@@ -186,6 +191,37 @@ class Item extends CI_Model
 
 			return $item_obj;
 		}
+	}
+	
+	/*
+	Gets information about a particular item by item id or number
+	*/
+	public function get_info_by_id_or_number($item_id)
+	{
+		$this->db->from('items');
+
+        if (ctype_digit($item_id))
+        {
+            $this->db->group_start();
+                $this->db->where('item_id', (int) $item_id);
+                $this->db->or_where('items.item_number', $item_id);
+            $this->db->group_end();
+        }
+        else
+        {
+            $this->db->where('item_number', $item_id);
+        }
+
+		$this->db->where('items.deleted', 0);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() == 1)
+		{
+			return $query->row();
+		}
+
+		return '';
 	}
 
 	/*
