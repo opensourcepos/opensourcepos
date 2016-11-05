@@ -720,22 +720,6 @@ class Sale_lib
 		return $total;
 	}
     
-    private function _validate_item(&$item_id, $include_deleted = FALSE)
-    {
-        //make sure item exists
-        if(!$this->CI->Item->exists($item_id, $include_deleted))
-        {
-            //try to get item id given an item_number
-            $item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
-
-            if(!$item_id)
-			{
-				return FALSE;
-			}
-        }
-
-        return TRUE;
-    }
 }
 
 ?>
