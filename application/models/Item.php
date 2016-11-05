@@ -194,10 +194,19 @@ class Item extends CI_Model
 	public function get_info_by_id_or_number($item_id)
 	{
 		$this->db->from('items');
-		$this->db->group_start();
-			$this->db->where('CAST(item_id AS CHAR) = ', $item_id);
-			$this->db->or_where('items.item_number', $item_id);
-		$this->db->group_end();
+
+        if (ctype_digit($item_id))
+        {
+            $this->db->group_start();
+                $this->db->where('item_id', (int) $item_id);
+                $this->db->or_where('items.item_number', $item_id);
+            $this->db->group_end();
+        }
+        else
+        {
+            $this->db->where('item_number', $item_id);
+        }
+
 		$this->db->where('items.deleted', 0);
 
 		$query = $this->db->get();
