@@ -24,12 +24,11 @@ class Login extends CI_Controller
 			}
 			else
 			{
-				if($this->config->item('statistics') == TRUE)
+				if($this->config->item('statistics'))
 				{
 					$this->load->library('tracking_lib');
-
-					//$login_info = $this->config->item('website') . ' | ' . $this->config->item('base_url') ;
-					$this->tracking_lib->track_page('login', 'login'/*, $login_info*/);
+					
+					$this->tracking_lib->track_page('login', 'login');
 					
 					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
 					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
@@ -71,7 +70,7 @@ class Login extends CI_Controller
 	
 	private function _security_check($username, $password)
 	{
-		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
+		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
 	}
 }
 ?>

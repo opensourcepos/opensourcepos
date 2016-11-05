@@ -18,12 +18,7 @@ class Home extends Secure_Controller
 	{
 		$this->Employee->logout();
 
-		if($this->config->item('statistics') == TRUE)
-		{
-			$this->load->library('tracking_lib');
-
-			$this->tracking_lib->track_page('logout', 'logout');
-		}
+		$this->track_page('logout', 'logout');
 	}
 }
 ?>

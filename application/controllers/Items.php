@@ -560,11 +560,14 @@ class Items extends Secure_Controller
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_cannot_be_deleted')));
 		}
 	}
-	
+
+	/*
+	Items import from excel spreadsheet
+	*/
 	public function excel()
 	{
 		$name = 'import_items.csv';
-		$data = file_get_contents($name);
+		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
 	
