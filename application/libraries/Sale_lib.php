@@ -740,6 +740,12 @@ class Sale_lib
 
 		return $total;
 	}
+
+    public function get_empty_tables()		
+    {		
+    	//Get tables which are currently empty		
+    	return $this->CI->Dinner_table->get_empty_tables();		
+    }    
     
 }
 
