@@ -1,11 +1,12 @@
 node_modules
-public/bower_components
-tmp/
-bower_components
-public/bower_components
-tmp/
+tmp
 application/config/email.php
 application/config/database.php
+application/sessions/*
+application/logs/*
+application/uploads/*
+public/license/.licenses
+public/bower_components
 *.patch
 patches/
 .idea/
@@ -22,6 +23,3 @@ git-svn-diff.py
 *~
 *.~
 *.log
-application/sessions/*
-public/license/.licenses
-vendor/mikey179
