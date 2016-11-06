@@ -9,7 +9,7 @@ class Item extends CI_Model
 		if (ctype_digit($item_id))
 		{
 			$this->db->from('items');
-			$this->db->where('item_id', (int)$item_id);
+			$this->db->where('item_id', (int) $item_id);
 			if ($ignore_deleted == FALSE)
 			{
 				$this->db->where('deleted', $deleted);

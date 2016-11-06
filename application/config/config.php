@@ -33,6 +33,16 @@ $config['commit_sha1'] = '$Id$';
 */ 
 $config['ospos_xss_clean'] = TRUE;
 
+/*
+|--------------------------------------------------------------------------
+| Enable database query logging hook
+|--------------------------------------------------------------------------
+|
+| Logs are stored in application/logs
+|
+*/
+$config['db_log_enabled'] = FALSE;
+
 /* 
 |-------------------------------------------------------------------------- 
 | Base Site URL

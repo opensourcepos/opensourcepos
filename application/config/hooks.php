@@ -25,3 +25,10 @@ $hook['post_controller_constructor'][] = array(
                                     'filepath' => 'hooks'
                                 );
 
+// 'post_controller' indicated execution of hooks after controller is finished
+$hook['post_controller'] = array(
+                                    'class' => '',
+                                    'function' => 'db_log_queries',
+                                    'filename' => 'db_log.php',
+                                    'filepath' => 'hooks'
+                                );
