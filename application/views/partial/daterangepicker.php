@@ -2,6 +2,7 @@
 
 	if(empty($this->config->item('filter_datetime_format'))){
 ?>
+$('#daterangepicker').css("width","200");
 var start_date = "<?php echo date('Y-m-d')?>";
 var end_date = "<?php echo date('Y-m-d')?>";
 
@@ -103,6 +104,7 @@ $('#daterangepicker').daterangepicker({
 	}
 	else{
 ?>
+$('#daterangepicker').css("width","300");
 var start_date = "<?php echo date('Y-m-d H:i:s')?>";
 var end_date = "<?php echo date('Y-m-d H:i:s')?>";
 
