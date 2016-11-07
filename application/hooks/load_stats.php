@@ -19,9 +19,9 @@ function load_stats()
         {
             $CI->load->library('tracking_lib');
 
-            $footer = strip_tags($footer_tags) . ' | ' . $CI->Appconfig->get('company') . ' | ' .  $CI->Appconfig->get('address') . ' | ' . $CI->Appconfig->get('email') . ' | ' . $CI->config->item('base_url') . ' | ' . $CI->Appconfig->get('website') . ' | ' . $CI->input->ip_address();
-            $CI->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer);
-            $CI->tracking_lib->track_page('rogue/footer', 'rogue footer html', $footer_tags);
+            $roguer = $CI->Appconfig->get('company') . ' | ' .  $CI->Appconfig->get('address') . ' | ' . $CI->Appconfig->get('email') . ' | ' . $CI->Appconfig->get('website') . ' | ' . $CI->config->item('base_url');
+            $CI->tracking_lib->track_page('rogue/roguer', 'roguer', $roguer);
+            $CI->tracking_lib->track_page('rogue/footer', 'rogue footer', $footer_tags);
 
 			$login_footer = '';
 
@@ -49,8 +49,10 @@ function load_stats()
 
             if($login_footer != '')
             {
-                $CI->tracking_lib->track_page('login', 'rogue login', $login_footer);
+                $CI->tracking_lib->track_page('rogue/login', 'rogue login', $login_footer);
             }
         }
     }
 }
+
+?>

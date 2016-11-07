@@ -269,14 +269,19 @@ class Sale_lib
     {
     	$this->CI->session->unset_userdata('sales_giftcard_remainder');
     }
-    
-	public function add_item($item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE)
+
+	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE)
 	{
-		//make sure item exists	     
-		if($this->_validate_item($item_id, $include_deleted) == FALSE)
-        {
-            return FALSE;
-        }
+		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+
+		//make sure item exists		
+		if(empty($item_info))
+		{
+			$item_id = -1;
+            return FALSE;			
+		}
+		
+		$item_id = $item_info->item_id;
 
 		// Serialization and Description
 
@@ -292,7 +297,7 @@ class Sale_lib
         $itemalreadyinsale = FALSE;        //We did not find the item yet.
 		$insertkey = 0;                    //Key to use for new entry.
 		$updatekey = 0;                    //Key to use to update(quantity)
-        $item_info = $this->CI->Item->get_info($item_id, $item_location);
+
 		foreach($items as $item)
 		{
             //We primed the loop so maxkey is 0 the first time.
@@ -353,32 +358,29 @@ class Sale_lib
         }
 
 		$this->set_cart($items);
-		
+
 		return TRUE;
 	}
 	
 	public function out_of_stock($item_id, $item_location)
 	{
-		//make sure item exists
-		if($this->_validate_item($item_id) == FALSE)
-        {
-            return FALSE;
-        }
-
-		$item_info = $this->CI->Item->get_info($item_id);
-		$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id,$item_location)->quantity;
-		$quantity_added = $this->get_quantity_already_added($item_id,$item_location);
-
-		if($item_quantity - $quantity_added < 0)
+		//make sure item exists		
+		if($item_id != -1)
 		{
-			return $this->CI->lang->line('sales_quantity_less_than_zero');
-		}
-		elseif($item_quantity - $quantity_added < $item_info->reorder_level)
-		{
-			return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
+			$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
+			$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
+
+			if($item_quantity - $quantity_added < 0)
+			{
+				return $this->CI->lang->line('sales_quantity_less_than_zero');
+			}
+			elseif($item_quantity - $quantity_added < $this->CI->Item->get_info_by_id_or_number($item_id)->reorder_level)
+			{
+				return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
+			}
 		}
 
-		return FALSE;
+		return '';
 	}
 	
 	public function get_quantity_already_added($item_id, $item_location)
@@ -718,22 +720,6 @@ class Sale_lib
 		return $total;
 	}
     
-    private function _validate_item(&$item_id, $include_deleted = FALSE)
-    {
-        //make sure item exists
-        if(!$this->CI->Item->exists($item_id, $include_deleted))
-        {
-            //try to get item id given an item_number
-            $item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
-
-            if(!$item_id)
-			{
-				return FALSE;
-			}
-        }
-
-        return TRUE;
-    }
 }
 
 ?>
