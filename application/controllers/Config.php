@@ -193,7 +193,7 @@ class Config extends Secure_Controller
 	{
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
+		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		
 		$data = $this->xss_clean($data);
 		

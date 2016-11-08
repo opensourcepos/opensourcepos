@@ -18,7 +18,7 @@ if (isset($error_message))
 <div id="receipt_wrapper">
 	<div id="receipt_header">
 		<?php
-		if ($this->Appconfig->get('company_logo') == '') 
+		if ($this->config->item('company_logo') == '') 
         { 
         ?>
 			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
@@ -27,7 +27,7 @@ if (isset($error_message))
 		else 
 		{ 
 		?>
-			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" /></div>			
+			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>			
 		<?php
 		}
 		?>
