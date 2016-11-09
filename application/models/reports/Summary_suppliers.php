@@ -5,9 +5,12 @@ class Summary_suppliers extends Report
 	function __construct()
 	{
 		parent::__construct();
-
+	}
+	
+	public function create(array $inputs)
+	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table();
+		$this->Sale->create_temp_table($inputs);
 	}
 	
 	public function getDataColumns()
@@ -21,7 +24,6 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -49,7 +51,6 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{

@@ -31,7 +31,7 @@ class Sale extends CI_Model
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
-				WHERE sales.sale_id = ' . $sale_id . '
+				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
 				GROUP BY sale_id
 			)'
 		);
@@ -280,7 +280,7 @@ class Sale extends CI_Model
 			}
 		}
 
-		if( $gift_card_count > 0 )
+		if($gift_card_count > 0)
 		{
 			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}
@@ -674,7 +674,7 @@ class Sale extends CI_Model
 	}
 
 	//We create a temp table that allows us to do easy report/sales queries
-	public function create_temp_table()
+	public function create_temp_table(array $inputs)
 	{
 		if($this->config->item('tax_included'))
 		{
@@ -693,15 +693,30 @@ class Sale extends CI_Model
 		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
 		$decimals = totals_decimals();
+		
+		if(empty($input['sale_id']))
+		{
+			$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+		}
+		else
+		{
+			$where = 'WHERE sales.sale_id = ' . $this->db->escape($inputs['sale_id']);
+		}
 
+		// create a temporary table to contain all the payment types and amount
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
-				SELECT sale_id, 
-					IFNULL(SUM(payment_amount), 0) AS sale_payment_amount,
-					GROUP_CONCAT(CONCAT(payment_type, " ", payment_amount) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . '
-				GROUP BY sale_id
+				SELECT payments.sale_id AS sale_id, 
+					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					ON sales.sale_id = payments.sale_id
+				' . "
+				$where
+				" . '
+				GROUP BY payments.sale_id
 			)'
 		);
 
@@ -762,9 +777,15 @@ class Sale extends CI_Model
 					ON sales.employee_id = employee.person_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
+				' . "
+				$where
+				" . '
 				GROUP BY sales.sale_id, items.item_id, sales_items.line
 			)'
 		);
+
+		// drop the temporary table to contain memory consumption as it's no longer required
+		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
 	}
 }
 ?>
