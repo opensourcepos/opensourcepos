@@ -13,6 +13,25 @@ class Item_kit extends CI_Model
 	}
 
 	/*
+	Check if a given item_id is an item kit
+	*/
+	public function is_valid_item_kit($item_kit_id)
+	{
+		if(!empty($item_kit_id))
+		{
+			//KIT #
+			$pieces = explode(' ', $item_kit_id);
+
+			if(count($pieces) == 2 && preg_match('/(KIT)/', $pieces[0]))
+			{
+				return $this->exists($pieces[1]);
+			}
+		}
+
+		return FALSE;
+	}
+
+	/*
 	Gets total of rows
 	*/
 	public function get_total_rows()

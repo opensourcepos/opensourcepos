@@ -19,6 +19,26 @@ class Receiving extends CI_Model
 		return $this->db->get();
 	}
 
+	public function is_valid_receipt($receipt_receiving_id)
+	{
+		if(!empty($receipt_receiving_id))
+		{
+			//RECV #
+			$pieces = explode(' ', $receipt_receiving_id);
+
+			if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[0]))
+			{
+				return $this->exists($pieces[1]);
+			}
+			else 
+			{
+				return $this->get_receiving_by_reference($receipt_receiving_id)->num_rows() > 0;
+			}
+		}
+
+		return FALSE;
+	}
+
 	public function exists($receiving_id)
 	{
 		$this->db->from('receivings');

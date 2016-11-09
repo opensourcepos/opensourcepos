@@ -183,7 +183,7 @@ class Sale extends CI_Model
 	{
 		$suggestions = array();
 
-		if(!$this->sale_lib->is_valid_receipt($search))
+		if(!$this->is_valid_receipt($search))
 		{
 			$this->db->distinct();
 			$this->db->select('first_name, last_name');
@@ -237,6 +237,32 @@ class Sale extends CI_Model
 		$result = $this->db->get()->row_array();
 
 		return ($start_from + $result['invoice_number_year']);
+	}
+	
+	public function is_valid_receipt(&$receipt_sale_id)
+	{
+		if(!empty($receipt_sale_id))
+		{
+			//POS #
+			$pieces = explode(' ', $receipt_sale_id);
+
+			if(count($pieces) == 2 && preg_match('/(POS)/', $pieces[0]))
+			{
+				return $this->exists($pieces[1]);
+			}
+			elseif($this->config->item('invoice_enable') == TRUE)
+			{
+				$sale_info = $this->get_sale_by_invoice_number($receipt_sale_id);
+				if($sale_info->num_rows() > 0)
+				{
+					$receipt_sale_id = 'POS ' . $sale_info->row()->sale_id;
+
+					return TRUE;
+				}
+			}
+		}
+
+		return FALSE;
 	}
 
 	public function exists($sale_id)
@@ -503,7 +529,7 @@ class Sale extends CI_Model
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
 
-	public function invoice_number_exists($invoice_number, $sale_id = '')
+	public function check_invoice_number_exists($invoice_number, $sale_id = '')
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
