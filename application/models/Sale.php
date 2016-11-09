@@ -3,14 +3,69 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
-		$this->db->select('customer_id, customer_name, customer_first_name AS first_name, customer_last_name AS last_name, customer_email AS email, customer_comments AS comments,
-						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, payment_type,
-						sale_id, sale_date, sale_time, comment, invoice_number, employee_id');
-		$this->db->from('sales_items_temp');
+		if($this->config->item('tax_included'))
+		{
+			$total    = '1';
+			$subtotal = '(1 - (SUM(1 - 100 / (100 + sales_items_taxes.percent))))';
+			$tax      = '(SUM(1 - 100 / (100 + sales_items_taxes.percent)))';
+		}
+		else
+		{
+			$tax      = '(SUM(sales_items_taxes.percent) / 100)';
+			$total    = '(1 + (SUM(sales_items_taxes.percent / 100)))';
+			$subtotal = '1';
+		}
 
-		$this->db->where('sale_id', $sale_id);
-		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_time', 'asc');
+		$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
+		$sale_cost  = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+
+		$decimals = totals_decimals();
+
+		// create payments temp table to speed up the sales listing
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
+			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+			(
+				SELECT payments.sale_id AS sale_id, 
+					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					ON sales.sale_id = payments.sale_id
+				WHERE sales.sale_id = ' . $sale_id . '
+				GROUP BY sale_id
+			)'
+		);
+
+		$this->db->select('
+				sales.sale_id AS sale_id,
+				DATE(sales.sale_time) AS sale_date,
+				sales.sale_time AS sale_time,
+				sales.comment AS comment,
+				sales.invoice_number AS invoice_number,
+				sales.employee_id AS employee_id,
+				sales.customer_id AS customer_id,
+				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
+				customer_p.first_name AS first_name,
+				customer_p.last_name AS last_name,
+				customer_p.email AS email,
+				customer_p.comments AS comments,
+				payments.sale_payment_amount AS amount_tendered,
+				' . "
+				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS amount_due,
+				" . '
+				payments.payment_type AS payment_type
+		');
+
+		$this->db->from('sales_items AS sales_items');
+		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
+		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
+		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
+		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
+
+		$this->db->where('sales.sale_id', $sale_id);
+		$this->db->group_by('sales.sale_id');
+		$this->db->order_by('sales.sale_time', 'asc');
 
 		return $this->db->get();
 	}
@@ -28,61 +83,119 @@ class Sale extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
-		$this->db->select('sale_id, sale_date, sale_time, SUM(quantity_purchased) AS items_purchased,
-						customer_name, customer_company_name AS company_name,
-						SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit,
-						sale_payment_amount AS amount_tendered, SUM(total) AS amount_due, (sale_payment_amount - SUM(total)) AS change_due, 
-						payment_type, invoice_number');
-		$this->db->from('sales_items_temp');
+		if($this->config->item('tax_included'))
+		{
+			$total    = '1';
+			$subtotal = '(1 - (SUM(1 - 100 / (100 + sales_items_taxes.percent))))';
+			$tax      = '(SUM(1 - 100 / (100 + sales_items_taxes.percent)))';
+		}
+		else
+		{
+			$tax      = '(SUM(sales_items_taxes.percent) / 100)';
+			$total    = '(1 + (SUM(sales_items_taxes.percent / 100)))';
+			$subtotal = '1';
+		}
 
-		$this->db->where('sale_date BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
+		$sale_cost  = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+
+		$decimals = totals_decimals();
+
+		// create payments temp table to speed up the sales listing
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
+			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+			(
+				SELECT payments.sale_id AS sale_id, 
+					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
+				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					ON sales.sale_id = payments.sale_id
+				WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . '
+				GROUP BY sale_id
+			)'
+		);
+
+		$this->db->select('
+				sales.sale_id AS sale_id,
+				DATE(sales.sale_time) AS sale_date,
+				sales.sale_time AS sale_time,
+				SUM(sales_items.quantity_purchased) AS items_purchased,
+				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
+				customer.company_name AS company_name,
+				' . "
+				ROUND($sale_total * $subtotal, $decimals) AS subtotal,
+				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS total,
+				IFNULL(ROUND($sale_total * $tax, $decimals), 0) AS tax,
+				ROUND($sale_total - $sale_cost, $decimals) AS profit,
+				ROUND($sale_cost, $decimals) AS cost,
+				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS amount_due,
+				(payments.sale_payment_amount - IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals))) AS change_due,
+				" . '
+				payments.sale_payment_amount AS amount_tendered,
+				payments.payment_type AS payment_type,
+				sales.invoice_number AS invoice_number
+		');
+
+		$this->db->from('sales_items AS sales_items');
+		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
+		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
+		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
+		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
+
+		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 
 		if(!empty($search))
 		{
 			if($filters['is_valid_receipt'] != FALSE)
 			{
 				$pieces = explode(' ', $search);
-				$this->db->where('sale_id', $pieces[1]);
+				$this->db->where('sales.sale_id', $pieces[1]);
 			}
 			else
-			{
+			{			
 				$this->db->group_start();
-					$this->db->like('customer_last_name', $search);
-					$this->db->or_like('customer_first_name', $search);
-					$this->db->or_like('customer_name', $search);
-					$this->db->or_like('customer_company_name', $search);
+					// customer last name
+					$this->db->like('customer_p.last_name', $search);
+					// customer first name
+					$this->db->or_like('customer_p.first_name', $search);
+					// customer first and last name
+					$this->db->or_like('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
+					// customer company name
+					$this->db->or_like('customer.company_name', $search);
 				$this->db->group_end();
 			}
 		}
 
 		if($filters['location_id'] != 'all')
 		{
-			$this->db->where('item_location', $filters['location_id']);
+			$this->db->where('sales_items.item_location', $filters['location_id']);
 		}
 
 		if($filters['sale_type'] == 'sales')
         {
-            $this->db->where('quantity_purchased > 0');
+            $this->db->where('sales_items.quantity_purchased > 0');
         }
         elseif($filters['sale_type'] == 'returns')
         {
-            $this->db->where('quantity_purchased < 0');
+            $this->db->where('sales_items.quantity_purchased < 0');
         }
 
 		if($filters['only_invoices'] != FALSE)
 		{
-			$this->db->where('invoice_number IS NOT NULL');
+			$this->db->where('sales.invoice_number IS NOT NULL');
 		}
 
 		if($filters['only_cash'] != FALSE)
 		{
 			$this->db->group_start();
-				$this->db->like('payment_type', $this->lang->line('sales_cash'), 'after');
-				$this->db->or_where('payment_type IS NULL');
+				$this->db->like('payments.payment_type', $this->lang->line('sales_cash'), 'after');
+				$this->db->or_where('payments.payment_type IS NULL');
 			$this->db->group_end();
 		}
 
-		$this->db->group_by('sale_id');
+		$this->db->group_by('sales.sale_id');
 		$this->db->order_by($sort, $order);
 
 		if($rows > 0)
@@ -102,7 +215,8 @@ class Sale extends CI_Model
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
-		$this->db->join('people', 'people.person_id = sales.customer_id', 'left');
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
+		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 
 		$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 
@@ -116,9 +230,14 @@ class Sale extends CI_Model
 			else
 			{
 				$this->db->group_start();
-					$this->db->like('last_name', $search);
-					$this->db->or_like('first_name', $search);
-					$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
+					// customer last name
+					$this->db->like('customer_p.last_name', $search);
+					// customer first name
+					$this->db->or_like('customer_p.first_name', $search);
+					// customer first and last name
+					$this->db->or_like('CONCAT(customer_p.first_name, " ", customer_p.last_name)', $search);
+					// customer company name
+					$this->db->or_like('customer.company_name', $search);
 				$this->db->group_end();
 			}
 		}
