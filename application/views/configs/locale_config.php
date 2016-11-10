@@ -262,6 +262,17 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_filter_datetime_format'), 'filter_datetime_format', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_checkbox(array(
+						'name' => 'filter_datetime_format',
+						'id' => 'filter_datetime_format',
+						'value' => 'filter_datetime_format',
+						'checked'=>$this->config->item('filter_datetime_format'))); ?>
+				</div>
+			</div>
+
 			<?php echo form_submit(array(
 				'name' => 'submit_form',
 				'id' => 'submit_form',

@@ -53,7 +53,11 @@ class Detailed_receivings extends Report
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
-		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+
+		if(empty($inputs['datetime_filter']))
+			$this->db->where("receiving_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where("receiving_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -95,7 +99,11 @@ class Detailed_receivings extends Report
 	{
 		$this->db->select('SUM(total) AS total');
 		$this->db->from('receivings_items_temp');
-		$this->db->where('receiving_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
+		
+		if(empty($inputs['datetime_filter']))
+			$this->db->where("receiving_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where("receiving_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
 
 		if ($inputs['location_id'] != 'all')
 		{

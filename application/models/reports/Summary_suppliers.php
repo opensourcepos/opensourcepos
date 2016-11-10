@@ -21,7 +21,11 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+
+		if(empty($inputs['datetime_filter']))
+			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where("sale_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -49,7 +53,11 @@ class Summary_suppliers extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->join('suppliers', 'suppliers.person_id = sales_items_temp.supplier_id');
 		$this->db->join('people', 'suppliers.person_id = people.person_id');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		
+		if(empty($inputs['datetime_filter']))
+			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where("sale_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
 
 		if ($inputs['location_id'] != 'all')
 		{

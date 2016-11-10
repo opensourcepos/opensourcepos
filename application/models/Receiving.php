@@ -206,7 +206,7 @@ class Receiving extends CI_Model
 	public function create_temp_table()
 	{
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') . 
-			' (INDEX(receiving_date), INDEX(receiving_id))
+			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
 				SELECT 
 					DATE(receiving_time) AS receiving_date,
