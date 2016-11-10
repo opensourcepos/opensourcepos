@@ -298,7 +298,6 @@ class Employee extends Person
 	*/
 	public function login($username, $password)
 	{
-
 		$query = $this->db->get_where('employees', array('username' => $username, 'deleted' => 0), 1);
 
 		if($query->num_rows() == 1)
@@ -332,6 +331,7 @@ class Employee extends Person
 	public function logout()
 	{
 		$this->session->sess_destroy();
+
 		redirect('login');
 	}
 	

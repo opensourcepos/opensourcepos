@@ -19,10 +19,10 @@ if (isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-		        <?php if($this->Appconfig->get('company_logo') != '') 
+		        <?php if($this->config->item('company_logo') != '') 
 		        { 
 				?>
-					<img id="image" src="<?php echo 'uploads/' . $this->Appconfig->get('company_logo'); ?>" alt="company_logo" />			
+					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
 				<?php
 				}
 				?>

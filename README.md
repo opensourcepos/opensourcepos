@@ -25,7 +25,7 @@ The main features are:
 
 The software is written in PHP language, it uses MySQL or MariaDB as data storage back-end and has a simple but intuitive user interface.
 
-The latest version 3.0.0 is a complete overhaul of the original software.
+The latest version 3.0.1 is a complete overhaul of the original software.
 It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
 It also has improved functionality and security.
 
@@ -68,9 +68,11 @@ Server Requirements
 -------------------
 PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
 
-PHP needs to have `php-gd`, `php-bcmath`, `php-intl` and `php-sockets` installed and enabled.
+PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets` and `php-mcrypt` installed and enabled.
 
 MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
+
+Apache 2.2 and 2.4 are working both fine.
 
 Local install
 -------------
@@ -127,9 +129,8 @@ More info [on maintaining a docker](https://github.com/jekkos/opensourcepos/wiki
 
 Reporting Bugs
 --------------
-Since OSPOS 3.0.0 is a version under development, please make sure you always run the latest 2.4_to_3.0.sql database upgrade script.
-Please DO NOT post issues if you have not done that before running OSPOS 3.0.
-Please also make sure you have updated all the files from latest master.
+If you are taking a release candidate code please make sure you always run the latest database upgrade script and you took the latest code from master.
+Please DO NOT post issues if you have not done those step.
 
 Bug reports must follow this schema:
 
@@ -163,3 +164,5 @@ FAQ
 * If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help
 
 * If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755
+
+* If you have problems with the encryption support or you get an error please make sure `php5-mcrypt` is installed

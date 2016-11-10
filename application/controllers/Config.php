@@ -183,7 +183,9 @@ class Config extends Secure_Controller
 				$themes[$dirinfo->getFileName()] = $dirinfo->getFileName();
 			}
 		}
+
 		asort($themes);
+
 		return $themes;
 	}
 	
@@ -192,7 +194,7 @@ class Config extends Secure_Controller
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['dinner_tables'] = $this->Dinner_table->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
-		$data['logo_exists'] = $this->Appconfig->get('company_logo') != '';
+		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		
 		$data = $this->xss_clean($data);
 		
@@ -314,12 +316,19 @@ class Config extends Secure_Controller
 
 	public function save_email()
 	{
+		$password = '';
+
+		if($this->_check_encryption())
+		{
+			$password = $this->encryption->encrypt($this->input->post('smtp_pass'));
+		}
+		
 		$batch_save_data = array(
 			'protocol' => $this->input->post('protocol'),
 			'mailpath' => $this->input->post('mailpath'),
 			'smtp_host' => $this->input->post('smtp_host'),
 			'smtp_user' => $this->input->post('smtp_user'),
-			'smtp_pass' => $this->input->post('smtp_pass'),
+			'smtp_pass' => $password,
 			'smtp_port' => $this->input->post('smtp_port'),
 			'smtp_timeout' => $this->input->post('smtp_timeout'),
 			'smtp_crypto' => $this->input->post('smtp_crypto')
@@ -333,10 +342,17 @@ class Config extends Secure_Controller
 
 	public function save_message()
 	{
+		$password = '';
+
+		if($this->_check_encryption())
+		{
+			$password = $this->encryption->encrypt($this->input->post('msg_pwd'));
+		}
+
 		$batch_save_data = array(	
 			'msg_msg' => $this->input->post('msg_msg'),
 			'msg_uid' => $this->input->post('msg_uid'),
-			'msg_pwd' => $this->input->post('msg_pwd'),
+			'msg_pwd' => $password,
 			'msg_src' => $this->input->post('msg_src')
 		);
 	
@@ -533,7 +549,62 @@ class Config extends Secure_Controller
     	$this->upload->do_upload('company_logo');
 
     	return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
-    }
+	}
+	
+	private function _check_encryption()
+	{
+		$encryption_key = $this->config->item('encryption_key');
+		
+		// check if the encryption_key config item is the default one
+		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
+		{
+			// Config path
+			$config_path = APPPATH . 'config/config.php';
+			
+			// Open the file
+			$config = file_get_contents($config_path);
+			
+			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
+			$key = bin2hex($this->encryption->create_key(32));
+			
+			// replace the empty placeholder with a real randomly generated encryption key
+			if($encryption_key == '')
+			{
+				$config = str_replace("['encryption_key'] = '';", "['encryption_key'] = '" . $key . "';", $config);
+			}
+			else
+			{
+				$config = str_replace("['encryption_key'] = 'YOUR KEY';", "['encryption_key'] = '" . $key . "';", $config);				
+			}
+
+			// set the encryption key in the config item
+			$this->config->set_item('encryption_key', $key);
+
+			// Write the new config.php file
+			$handle = fopen($config_path, 'w+');
+
+			// Chmod the file
+			@chmod($config_path, 0777);
+			
+			$result = FALSE;
+
+			// Verify file permissions
+			if(is_writable($config_path))
+			{
+				// Write the file
+				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;
+			}
+			
+			// Chmod the file
+			@chmod($config_path, 0444);
+			
+			fclose($handle);
+
+			return $result;
+		}
+		
+		return TRUE;
+	}
     
     public function backup_db()
     {

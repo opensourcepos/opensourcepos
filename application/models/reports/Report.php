@@ -11,14 +11,17 @@ abstract class Report extends CI_Model
 		$this->output->set_header('Cache-Control: post-check=0, pre-check=0', FALSE);
 		$this->output->set_header('Pragma: no-cache');
 	}
-	
-	//Returns the column names used for the report
+
+	// Create temporary table for fast queries
+	public abstract function create(array $inputs);
+
+	// Returns the column names used for the report
 	public abstract function getDataColumns();
 	
-	//Returns all the data to be populated into the report
+	// Returns all the data to be populated into the report
 	public abstract function getData(array $inputs);
 	
-	//Returns key=>value pairing of summary data for the report
+	// Returns key=>value pairing of summary data for the report
 	public abstract function getSummaryData(array $inputs);
 }
 ?>

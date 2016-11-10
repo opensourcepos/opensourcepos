@@ -19,6 +19,26 @@ class Receiving extends CI_Model
 		return $this->db->get();
 	}
 
+	public function is_valid_receipt($receipt_receiving_id)
+	{
+		if(!empty($receipt_receiving_id))
+		{
+			//RECV #
+			$pieces = explode(' ', $receipt_receiving_id);
+
+			if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[0]))
+			{
+				return $this->exists($pieces[1]);
+			}
+			else 
+			{
+				return $this->get_receiving_by_reference($receipt_receiving_id)->num_rows() > 0;
+			}
+		}
+
+		return FALSE;
+	}
+
 	public function exists($receiving_id)
 	{
 		$this->db->from('receivings');
@@ -203,8 +223,17 @@ class Receiving extends CI_Model
 	/*
 	We create a temp table that allows us to do easy report/receiving queries
 	*/
-	public function create_temp_table()
+	public function create_temp_table(array $inputs)
 	{
+		if(empty($input['receiving_id']))
+		{
+			$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+		}
+		else
+		{
+			$where = 'WHERE receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
+		}
+		
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') . 
 			' (INDEX(receiving_date), INDEX(receiving_id))
 			(
@@ -236,6 +265,9 @@ class Receiving extends CI_Model
 					ON receivings_items.receiving_id = receivings.receiving_id
 				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
 					ON receivings_items.item_id = items.item_id
+				' . "
+				$where
+				" . '
 				GROUP BY receivings_items.receiving_id, items.item_id, receivings_items.line
 			)'
 		);

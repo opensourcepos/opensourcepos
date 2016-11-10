@@ -18,7 +18,7 @@ class Email_lib
 			'mailpath' => $this->CI->config->item('mailpath'),
 			'smtp_host' => $this->CI->config->item('smtp_host'),
 			'smtp_user' => $this->CI->config->item('smtp_user'),
-			'smtp_pass' => $this->CI->config->item('smtp_pass'),
+			'smtp_pass' => $this->CI->encryption->decrypt($this->CI->config->item('smtp_pass')),
 			'smtp_port' => $this->CI->config->item('smtp_port'),
 			'smtp_timeout' => $this->CI->config->item('smtp_timeout'),
 			'smtp_crypto' => $this->CI->config->item('smtp_crypto')
