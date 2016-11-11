@@ -1,68 +1,37 @@
 <?php
-require_once("Report.php");
-class Summary_categories extends Report
+require_once("Summary_report.php");
+class Summary_categories extends Summary_report
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
-	
-	public function create(array $inputs)
-	{
-		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table($inputs);
-	}
-	
+
 	public function getDataColumns()
 	{
 		return array($this->lang->line('reports_category'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
 	}
-	
+
 	public function getData(array $inputs)
 	{
-		$this->db->select('category, SUM(quantity_purchased) AS quantity_purchased, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
+		$this->commonSelect($inputs);
 
-		if ($inputs['location_id'] != 'all')
-		{
-			$this->db->where('item_location', $inputs['location_id']);
-		}
+		$this->db->select('
+				items.category AS category,
+				SUM(sales_items.quantity_purchased) AS quantity_purchased
+		');
 
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		$this->db->from('sales_items AS sales_items');
+		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$this->db->join('items AS items', 'sales_items.item_id = items.item_id', 'inner');
+		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
+
+		$this->commonWhere($inputs);
 
 		$this->db->group_by('category');
 		$this->db->order_by('category');
 
 		return $this->db->get()->result_array();		
-	}
-	
-	public function getSummaryData(array $inputs)
-	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
-
-		if ($inputs['location_id'] != 'all')
-		{
-			$this->db->where('item_location', $inputs['location_id']);
-		}
-
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }     
-
-		return $this->db->get()->row_array();
 	}
 }
 ?>

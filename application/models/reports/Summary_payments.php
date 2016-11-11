@@ -1,16 +1,10 @@
 <?php
-require_once("Report.php");
-class Summary_payments extends Report
+require_once("Summary_report.php");
+class Summary_payments extends Summary_report
 {
 	function __construct()
 	{
 		parent::__construct();
-	}
-	
-	public function create(array $inputs)
-	{
-		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table($inputs);
 	}
 	
 	public function getDataColumns()
@@ -22,22 +16,9 @@ class Summary_payments extends Report
 	{
 		$this->db->select('sales_payments.payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales_payments');
-		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
-		$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		$this->db->join('sales AS sales', 'sales.sale_id = sales_payments.sale_id');
 
-		if ($inputs['location_id'] != 'all')
-		{
-			$this->db->where('item_location', $inputs['location_id']);
-		}
-
-		if ($inputs['sale_type'] == 'sales')
-        {
-			$this->db->where('payment_amount > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-			$this->db->where('payment_amount < 0');
-       	}
+		$this->commonWhere($inputs);
 
 		$this->db->group_by("payment_type");
 		
@@ -64,28 +45,6 @@ class Summary_payments extends Report
 		}
 		
 		return $payments;
-	}
-	
-	public function getSummaryData(array $inputs)
-	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
-
-		if ($inputs['location_id'] != 'all')
-		{
-			$this->db->where('item_location', $inputs['location_id']);
-		}
-
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
-
-		return $this->db->get()->row_array();
 	}
 }
 ?>

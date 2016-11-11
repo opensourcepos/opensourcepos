@@ -12,9 +12,6 @@ abstract class Report extends CI_Model
 		$this->output->set_header('Pragma: no-cache');
 	}
 
-	// Create temporary table for fast queries
-	public abstract function create(array $inputs);
-
 	// Returns the column names used for the report
 	public abstract function getDataColumns();
 	
