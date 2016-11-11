@@ -281,7 +281,6 @@ class CI_DB_mysql_driver extends CI_DB {
 		{
 			return trim($sql).' WHERE 1=1';
 		}
-
 		return $sql;
 	}
 

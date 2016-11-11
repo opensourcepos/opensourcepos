@@ -629,7 +629,7 @@ abstract class CI_DB_driver {
 			$sql = $this->compile_binds($sql, $binds);
 		}
 
-		// Is query caching enabled? If the query is a "read type"
+        // Is query caching enabled? If the query is a "read type"
 		// we will load the caching class and return the previously
 		// cached query if it exists
 		if ($this->cache_on === TRUE && $return_object === TRUE && $this->_cache_init())
