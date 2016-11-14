@@ -610,7 +610,7 @@ class Sales extends Secure_Controller
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
-		$employee_info = $this->Employee->get_info($this->Employee->get_logged_in_employee_info()->person_id);
+		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 

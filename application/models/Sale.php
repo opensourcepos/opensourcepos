@@ -649,6 +649,14 @@ class Sale extends CI_Model
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
 
+	public function get_employee($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+	}
+
 	public function check_invoice_number_exists($invoice_number, $sale_id = '')
 	{
 		$this->db->from('sales');

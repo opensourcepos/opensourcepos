@@ -7,10 +7,6 @@ class Inventory_low extends Report
 		parent::__construct();
 	}
 
-	public function create(array $inputs)
-	{
-	}
-
 	public function getDataColumns()
 	{
 		return array($this->lang->line('reports_item_name'),

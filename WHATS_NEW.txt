@@ -1,14 +1,16 @@
 Version 3.0.1
 -----------
-+ Upgrade to Code Igniter 3.1.2
-+ Substantial database performance improvements
-+ Increased security with email and sms passwords encryption
-+ Better support of Apache 2.4 in .htaccess
-+ Updated various language translations
++ *CodeIgniter 3.1.2 Upgrade*
++ *Substantial database performance improvements*
++ *Improved security: email and sms passwords encryption, removed phpinfo.php*
++ Set code to be production and not development in index.php
++ Better Apache 2.4 support in .htaccess
++ Updates to language translations
 + Fixed excel template download links
++ Fixed employee name in Sale receipt and invoice reprinting
 + Fixed 2.3.2_to_2.3.3.sql database upgrade script mistake
 + Fixed phppos to ospos database migration script
-+ Minor bugfixes and code clean up
++ Minor bugfixes and some general code clean up
 
 Version 3.0.0
 -----------

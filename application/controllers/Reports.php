@@ -45,8 +45,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -81,8 +79,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
-
-		$model->create($inputs);
 
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -119,8 +115,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -155,8 +149,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
-
-		$model->create($inputs);
 
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -193,8 +185,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -229,8 +219,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
-
-		$model->create($inputs);
 
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -267,8 +255,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -302,8 +288,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -333,8 +317,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
-
-		$model->create($inputs);
 
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -402,8 +384,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_sales');
 		$model = $this->Summary_sales;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -441,8 +421,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_items');
 		$model = $this->Summary_items;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -479,8 +457,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_categories');
 		$model = $this->Summary_categories;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -515,8 +491,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Summary_suppliers');
 		$model = $this->Summary_suppliers;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -550,8 +524,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
-
-		$model->create($inputs);
 		
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -586,8 +558,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
-
-		$model->create($inputs);
 		
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -622,8 +592,6 @@ class Reports extends Secure_Controller
 		
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
-
-		$model->create($inputs);
 		
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -660,8 +628,6 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
-
-		$model->create($inputs);
 		
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -698,8 +664,6 @@ class Reports extends Secure_Controller
 		
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
-
-		$model->create($inputs);
 		
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
@@ -1074,8 +1038,6 @@ class Reports extends Secure_Controller
 		$this->load->model('reports/Inventory_low');
 		$model = $this->Inventory_low;
 
-		$model->create($inputs);
-
 		$report_data = $model->getData($inputs);
 		
 		$tabular_data = array();
@@ -1121,8 +1083,6 @@ class Reports extends Secure_Controller
 		
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
-
-		$model->create($inputs);
 
 		$report_data = $model->getData($inputs);
 
