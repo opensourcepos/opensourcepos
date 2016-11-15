@@ -547,6 +547,7 @@ class Sale_lib
 		$this->set_customer($suspended_sale_info->person_id);
 		$this->set_comment($suspended_sale_info->comment);
 		$this->set_invoice_number($suspended_sale_info->invoice_number);
+		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
 	}
 
 	public function clear_all()
