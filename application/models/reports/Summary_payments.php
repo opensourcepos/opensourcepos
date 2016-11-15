@@ -5,9 +5,12 @@ class Summary_payments extends Report
 	function __construct()
 	{
 		parent::__construct();
-
+	}
+	
+	public function create(array $inputs)
+	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table();
+		$this->Sale->create_temp_table($inputs);
 	}
 	
 	public function getDataColumns()
@@ -20,7 +23,7 @@ class Summary_payments extends Report
 		$this->db->select('MAX(sales_payments.payment_type) AS payment_type, COUNT(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales_payments');
 		$this->db->join('sales', 'sales.sale_id=sales_payments.sale_id');
-		$this->db->where("date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
+		$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
@@ -67,7 +70,6 @@ class Summary_payments extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{

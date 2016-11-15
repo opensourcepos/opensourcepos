@@ -54,3 +54,5 @@ function load_stats()
         }
     }
 }
+
+?>

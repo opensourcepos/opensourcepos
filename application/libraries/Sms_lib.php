@@ -16,7 +16,7 @@ class Sms_lib
 	public function sendSMS($phone, $message)
 	{
 		$username   = $this->CI->config->item('msg_uid');
-		$password   = $this->CI->config->item('msg_pwd');
+		$password   = $this->CI->encryption->decrypt($this->CI->config->item('msg_pwd'));
 		$originator = $this->CI->config->item('msg_src');
 		
 		$response = FALSE;
@@ -27,7 +27,7 @@ class Sms_lib
 			//echo $username . ' ' . $password . ' ' . $phone . ' ' . $message . ' ' . $originator;
 		}
 		else
-		{
+		{	
 			$response = TRUE;
 			
 			// make sure passed string is url encoded

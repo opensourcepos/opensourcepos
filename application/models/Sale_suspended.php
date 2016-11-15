@@ -161,18 +161,6 @@ class Sale_suspended extends CI_Model
 
 		return $this->db->get();
 	}
-	
-	public function invoice_number_exists($invoice_number, $sale_id = '')
-	{
-		$this->db->from('sales_suspended');
-		$this->db->where('invoice_number', $invoice_number);
-		if(!empty($sale_id))
-		{
-			$this->db->where('sale_id !=', $sale_id);
-		}
-
-		return ($this->db->get()->num_rows() == 1);
-	}
 
 	public function get_comment($sale_id)
 	{

@@ -172,8 +172,8 @@ class Items extends Secure_Controller
 
 		if($item_id == -1)
 		{
-			$data['default_tax_1_rate'] = $this->Appconfig->get('default_tax_1_rate');
-			$data['default_tax_2_rate'] = $this->Appconfig->get('default_tax_2_rate');
+			$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate');
+			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
 			
 			$item_info->receiving_quantity = 0;
 			$item_info->reorder_level = 0;
@@ -269,7 +269,7 @@ class Items extends Secure_Controller
 			$item = $this->xss_clean($item);
 			
 			// update the UPC/EAN/ISBN field if empty / NULL with the newly generated barcode
-			if(empty($item['item_number']) && $this->Appconfig->get('barcode_generate_if_empty'))
+			if(empty($item['item_number']) && $this->config->item('barcode_generate_if_empty'))
 			{
 				// get the newly generated barcode
 				$barcode_instance = Barcode_lib::barcode_instance($item, $config);

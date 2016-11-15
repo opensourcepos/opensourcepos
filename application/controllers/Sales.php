@@ -47,8 +47,6 @@ class Sales extends Secure_Controller
 	
 	public function get_row($row_id)
 	{
-		$this->Sale->create_temp_table();
-
 		$sale_info = $this->Sale->get_info($row_id)->row();
 		$data_row = $this->xss_clean(get_sale_data_row($sale_info, $this));
 
@@ -57,15 +55,11 @@ class Sales extends Secure_Controller
 
 	public function search()
 	{
-		$this->Sale->create_temp_table();
-
 		$search = $this->input->get('search');
 		$limit  = $this->input->get('limit');
 		$offset = $this->input->get('offset');
 		$sort   = $this->input->get('sort');
 		$order  = $this->input->get('order');
-
-		$is_valid_receipt = !empty($search) ? $this->sale_lib->is_valid_receipt($search) : FALSE;
 
 		$filters = array('sale_type' => 'all',
 						'location_id' => 'all',
@@ -73,7 +67,7 @@ class Sales extends Secure_Controller
 						'end_date' => $this->input->get('end_date'),
 						'only_cash' => FALSE,
 						'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
-						'is_valid_receipt' => $is_valid_receipt);
+						'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
 
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
@@ -103,7 +97,7 @@ class Sales extends Secure_Controller
 		$suggestions = array();
 		$receipt = $search = $this->input->get('term') != '' ? $this->input->get('term') : NULL;
 
-		if($this->sale_lib->get_mode() == 'return' && $this->sale_lib->is_valid_receipt($receipt))
+		if($this->sale_lib->get_mode() == 'return' && $this->Sale->is_valid_receipt($receipt))
 		{
 			// if a valid receipt or invoice was found the search term will be replaced with a receipt number (POS #)
 			$suggestions[] = $receipt;
@@ -280,11 +274,11 @@ class Sales extends Secure_Controller
 		$item_location = $this->sale_lib->get_sale_location();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
 
-		if($mode == 'return' && $this->sale_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
+		if($mode == 'return' && $this->Sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
 		}
-		elseif($this->sale_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount))
 			{
@@ -382,7 +376,7 @@ class Sales extends Secure_Controller
 		$customer_info = $this->_load_customer_data($customer_id, $data);
 		$invoice_number = $this->_substitute_invoice_number($customer_info);
 
-		if($this->sale_lib->is_invoice_number_enabled() && $this->Sale->invoice_number_exists($invoice_number))
+		if($this->sale_lib->is_invoice_number_enabled() && $this->Sale->check_invoice_number_exists($invoice_number))
 		{
 			$data['error'] = $this->lang->line('sales_invoice_number_duplicate');
 
@@ -595,8 +589,6 @@ class Sales extends Secure_Controller
 
 	private function _load_sale_data($sale_id)
 	{
-		$this->Sale->create_temp_table();
-
 		$this->sale_lib->clear_all();
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
@@ -698,8 +690,6 @@ class Sales extends Secure_Controller
 			
 			$data['employees'][$employee->person_id] = $employee->first_name . ' ' . $employee->last_name;
 		}
-
-		$this->Sale->create_temp_table();
 
 		$sale_info = $this->xss_clean($this->Sale->get_info($sale_id)->row_array());	
 		$data['selected_customer_name'] = $sale_info['customer_name'];
@@ -851,7 +841,7 @@ class Sales extends Secure_Controller
 	{
 		$sale_id = $this->input->post('sale_id');
 		$invoice_number = $this->input->post('invoice_number');
-		$exists = !empty($invoice_number) && $this->Sale->invoice_number_exists($invoice_number, $sale_id);
+		$exists = !empty($invoice_number) && $this->Sale->check_invoice_number_exists($invoice_number, $sale_id);
 
 		echo !$exists ? 'true' : 'false';
 	}

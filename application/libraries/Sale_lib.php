@@ -439,42 +439,6 @@ class Sale_lib
 		$this->set_cart($items);
 	}
 
-	public function is_valid_receipt(&$receipt_sale_id)
-	{
-		//POS #
-		$pieces = explode(' ', $receipt_sale_id);
-
-		if(count($pieces) == 2 && strtolower($pieces[0]) == 'pos')
-		{
-			return $this->CI->Sale->exists($pieces[1]);
-		}
-		elseif($this->CI->config->item('invoice_enable') == TRUE)
-		{
-			$sale_info = $this->CI->Sale->get_sale_by_invoice_number($receipt_sale_id);
-			if($sale_info->num_rows() > 0)
-			{
-				$receipt_sale_id = 'POS ' . $sale_info->row()->sale_id;
-
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-	
-	public function is_valid_item_kit($item_kit_id)
-	{
-		//KIT #
-		$pieces = explode(' ', $item_kit_id);
-
-		if(count($pieces) == 2)
-		{
-			return $this->CI->Item_kit->exists($pieces[1]);
-		}
-
-		return FALSE;
-	}
-
 	public function return_entire_sale($receipt_sale_id)
 	{
 		//POS #
@@ -720,22 +684,6 @@ class Sale_lib
 		return $total;
 	}
     
-    private function _validate_item(&$item_id, $include_deleted = FALSE)
-    {
-        //make sure item exists
-        if(!$this->CI->Item->exists($item_id, $include_deleted))
-        {
-            //try to get item id given an item_number
-            $item_id = $this->CI->Item->get_item_id($item_id, $include_deleted);
-
-            if(!$item_id)
-			{
-				return FALSE;
-			}
-        }
-
-        return TRUE;
-    }
 }
 
 ?>

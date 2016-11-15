@@ -6,14 +6,19 @@ class Item extends CI_Model
 	*/
 	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
-		$this->db->from('items');
-		$this->db->where('CAST(item_id AS CHAR) = ', $item_id);
-		if($ignore_deleted == FALSE)
+		if (ctype_digit($item_id))
 		{
-			$this->db->where('deleted', $deleted);
+			$this->db->from('items');
+			$this->db->where('item_id', (int) $item_id);
+			if ($ignore_deleted == FALSE)
+			{
+				$this->db->where('deleted', $deleted);
+			}
+
+			return ($this->db->get()->num_rows() == 1);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return FALSE;
 	}
 
 	/*
@@ -22,10 +27,10 @@ class Item extends CI_Model
 	public function item_number_exists($item_number, $item_id = '')
 	{
 		$this->db->from('items');
-		$this->db->where('item_number', $item_number);
-		if(!empty($item_id))
+		$this->db->where('item_number', (string) $item_number);
+		if(ctype_digit($item_id))
 		{
-			$this->db->where('item_id !=', $item_id);
+			$this->db->where('item_id !=', (int) $item_id);
 		}
 
 		return ($this->db->get()->num_rows() == 1);
@@ -56,12 +61,6 @@ class Item extends CI_Model
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
 
-        // The original query was grouped on item code only, so only one item code is desired
-        // However, in order to improve performance and keep the dynamic indexing down we are using a simple MAX()
-        // function to insure that there is only one item per record and still have wha should be the only valid
-        // and unique value in the row.  It also satisfies te 5.7 group clause default validation
-        // Note that no columns from suppliers or inventory are included in the result because the values cannot be
-        // determinant.  However they can still be used for filtering.
         $this->db->select('max('.$this->db->dbprefix('items').'.name) as name');
         $this->db->select('max('.$this->db->dbprefix('items').'.category) as category');
         $this->db->select('max('.$this->db->dbprefix('items').'.supplier_id) as supplier_id');
@@ -87,6 +86,12 @@ class Item extends CI_Model
         $this->db->select('max('.$this->db->dbprefix('items').'.custom9) as custom9');
         $this->db->select('max('.$this->db->dbprefix('items').'.custom10) as custom10');
 
+        $this->db->select('max('.$this->db->dbprefix('suppliers').'.person_id) as person_id');
+        $this->db->select('max('.$this->db->dbprefix('suppliers').'.company_name) as company_name');
+        $this->db->select('max('.$this->db->dbprefix('suppliers').'.agency_name) as agency_name');
+        $this->db->select('max('.$this->db->dbprefix('suppliers').'.account_number) as account_number');
+        $this->db->select('max('.$this->db->dbprefix('suppliers').'.deleted) as deleted');
+
         $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_id) as trans_id');
         $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_items) as trans_items');
         $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_user) as trans_user');
@@ -95,11 +100,9 @@ class Item extends CI_Model
         $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_location) as trans_location');
         $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_inventory) as trans_inventory');
 
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.person_id) as person_id');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.company_name) as company_name');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.agency_name) as agency_name');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.account_number) as account_number');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.deleted) as deleted');
+        $this->db->select('max('.$this->db->dbprefix('item_quantities').'.item_id) as item_id');
+        $this->db->select('max('.$this->db->dbprefix('item_quantities').'.item_id) as location_id');
+        $this->db->select('max('.$this->db->dbprefix('item_quantities').'.item_id) as quantity');
 
         $this->db->from('items');
         $this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
@@ -243,10 +246,19 @@ class Item extends CI_Model
 	public function get_info_by_id_or_number($item_id)
 	{
 		$this->db->from('items');
-		$this->db->group_start();
-			$this->db->where('CAST(item_id AS CHAR) = ', $item_id);
-			$this->db->or_where('items.item_number', $item_id);
-		$this->db->group_end();
+
+        if (ctype_digit($item_id))
+        {
+            $this->db->group_start();
+                $this->db->where('item_id', (int) $item_id);
+                $this->db->or_where('items.item_number', $item_id);
+            $this->db->group_end();
+        }
+        else
+        {
+            $this->db->where('item_number', $item_id);
+        }
+
 		$this->db->where('items.deleted', 0);
 
 		$query = $this->db->get();
@@ -549,7 +561,7 @@ class Item extends CI_Model
 	 * $old_price (optional) : the current-cost-price
 	 *
 	 * used in receiving-process to update cost-price if changed
-	 * caution: must be used there before item_quantities gets updated, otherwise average price is wrong!
+	 * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
 	 *
 	 */
 	public function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
@@ -573,33 +585,6 @@ class Item extends CI_Model
 		$data = array('cost_price' => $average_price);
 
 		return $this->save($data, $item_id);
-	}
-	
-	//We create a temp table that allows us to do easy report queries
-	public function create_temp_table()
-	{
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('items_temp') . 
-			' (INDEX(quantity), INDEX(location_id))
-			(
-				SELECT
-					items.name,
-					items.item_number,
-					items.description,
-					items.reorder_level,
-					item_quantities.quantity,
-					stock_locations.location_name,
-					stock_locations.location_id,
-					items.cost_price,
-					items.unit_price,
-					(items.cost_price * item_quantities.quantity) AS sub_total_value
-				FROM ' . $this->db->dbprefix('items') . ' AS items
-				INNER JOIN ' . $this->db->dbprefix('item_quantities') . ' AS item_quantities
-					ON items.item_id = item_quantities.item_id
-				INNER JOIN ' . $this->db->dbprefix('stock_locations') . ' AS stock_locations
-					ON item_quantities.location_id = stock_locations.location_id
-				WHERE items.deleted = 0 AND stock_locations.deleted = 0
-			)'
-		);
 	}
 }
 ?>

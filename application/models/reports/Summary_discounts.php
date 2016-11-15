@@ -5,9 +5,12 @@ class Summary_discounts extends Report
 	function __construct()
 	{
 		parent::__construct();
-
+	}
+	
+	public function create(array $inputs)
+	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table();
+		$this->Sale->create_temp_table($inputs);
 	}
 	
 	public function getDataColumns()
@@ -19,7 +22,6 @@ class Summary_discounts extends Report
 	{
 		$this->db->select('CONCAT(discount_percent, "%") AS discount_percent, COUNT(*) AS count');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 		$this->db->where('discount_percent > 0');
 
 		if ($inputs['location_id'] != 'all')
@@ -46,7 +48,6 @@ class Summary_discounts extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
