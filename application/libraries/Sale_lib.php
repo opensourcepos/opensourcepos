@@ -214,6 +214,26 @@ class Sale_lib
 	{
 		$this->CI->session->unset_userdata('sales_customer');
 	}
+	
+	public function get_employee()
+	{
+		if(!$this->CI->session->userdata('sales_employee'))
+		{
+			$this->set_employee(-1);
+		}
+
+		return $this->CI->session->userdata('sales_employee');
+	}
+
+	public function set_employee($employee_id)
+	{
+		$this->CI->session->set_userdata('sales_employee', $employee_id);
+	}
+
+	public function remove_employee()
+	{
+		$this->CI->session->unset_userdata('sales_employee');
+	}
 
 	public function get_mode()
 	{
@@ -487,6 +507,7 @@ class Sale_lib
 		}
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
+		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 	}
 	
 	public function copy_entire_suspended_sale($sale_id)
