@@ -38,22 +38,22 @@ class Sale extends CI_Model
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
-				DATE(sales.sale_time) AS sale_date,
-				sales.sale_time AS sale_time,
-				sales.comment AS comment,
-				sales.invoice_number AS invoice_number,
-				sales.employee_id AS employee_id,
-				sales.customer_id AS customer_id,
-				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
-				customer_p.first_name AS first_name,
-				customer_p.last_name AS last_name,
-				customer_p.email AS email,
-				customer_p.comments AS comments,
-				payments.sale_payment_amount AS amount_tendered,
+				MAX(DATE(sales.sale_time)) AS sale_date,
+				MAX(sales.sale_time) AS sale_time,
+				MAX(sales.comment) AS comment,
+				MAX(sales.invoice_number) AS invoice_number,
+				MAX(sales.employee_id) AS employee_id,
+				MAX(sales.customer_id) AS customer_id,
+				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
+				MAX(customer_p.first_name) AS first_name,
+				MAX(customer_p.last_name) AS last_name,
+				MAX(customer_p.email) AS email,
+				MAX(customer_p.comments) AS comments,
+				MAX(payments.sale_payment_amount) AS amount_tendered,
 				' . "
-				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS amount_due,
+				MAX(IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals))) AS amount_due,
 				" . '
-				payments.payment_type AS payment_type
+				MAX(payments.payment_type) AS payment_type
 		');
 
 		$this->db->from('sales_items AS sales_items');
@@ -65,7 +65,7 @@ class Sale extends CI_Model
 
 		$this->db->where('sales.sale_id', $sale_id);
 		$this->db->group_by('sales.sale_id');
-		$this->db->order_by('sales.sale_time', 'asc');
+		$this->db->order_by('MAX(DATE(sales.sale_time))', 'asc');
 
 		return $this->db->get();
 	}
@@ -107,7 +107,7 @@ class Sale extends CI_Model
 			(
 				SELECT payments.sale_id AS sale_id, 
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
-					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
+					MAX(GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ")) AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
@@ -118,11 +118,11 @@ class Sale extends CI_Model
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
-				DATE(sales.sale_time) AS sale_date,
-				sales.sale_time AS sale_time,
+				MAX(DATE(sales.sale_time)) AS sale_date,
+				MAX(sales.sale_time) AS sale_time,
 				SUM(sales_items.quantity_purchased) AS items_purchased,
-				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
-				customer.company_name AS company_name,
+				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
+				MAX(customer.company_name) AS company_name,
 				' . "
 				ROUND($sale_total * $subtotal, $decimals) AS subtotal,
 				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS total,
@@ -130,11 +130,11 @@ class Sale extends CI_Model
 				ROUND($sale_total - $sale_cost, $decimals) AS profit,
 				ROUND($sale_cost, $decimals) AS cost,
 				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS amount_due,
-				(payments.sale_payment_amount - IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals))) AS change_due,
+				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals))) AS change_due,
 				" . '
-				payments.sale_payment_amount AS amount_tendered,
-				payments.payment_type AS payment_type,
-				sales.invoice_number AS invoice_number
+				MAX(payments.sale_payment_amount) AS amount_tendered,
+				MAX(payments.payment_type) AS payment_type,
+				MAX(sales.invoice_number) AS invoice_number
 		');
 
 		$this->db->from('sales_items AS sales_items');
