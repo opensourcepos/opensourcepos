@@ -41,7 +41,7 @@ $config['ospos_xss_clean'] = TRUE;
 | Logs are stored in application/logs
 |
 */
-$config['db_log_enabled'] = FALSE;
+$config['db_log_enabled'] = (ENVIRONMENT !== 'production');
 
 /* 
 |-------------------------------------------------------------------------- 
@@ -358,7 +358,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = isset($_SERVER['ENCRYPTION_KEY']) ? $_SERVER['ENCRYPTION_KEY'] : '';
 
 /*
 |--------------------------------------------------------------------------

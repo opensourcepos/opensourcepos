@@ -1,7 +1,6 @@
 node_modules
 tmp
 application/config/email.php
-application/config/database.php
 application/sessions/*
 application/logs/*
 application/uploads/*
@@ -22,3 +21,4 @@ git-svn-diff.py
 *~
 *.~
 *.log
+.env
