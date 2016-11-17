@@ -9,11 +9,16 @@ class ComposerStaticInit4fe73a8b8bda5131fdc94f85e4d193c1
     public static $prefixLengthsPsr4 = array (
         'D' => 
         array (
+            'Dotenv\\' => 7,
             'Dompdf\\' => 7,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'Dotenv\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/vlucas/phpdotenv/src',
+        ),
         'Dompdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/dompdf/dompdf/src',
