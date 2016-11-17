@@ -19,7 +19,7 @@ $config['application_version'] = '3.1.0';
 | 
 | 
 */ 
-$config['commit_sha1'] = '$Id$';
+$config['commit_sha1'] = '$Id $';
  
 /* 
 |-------------------------------------------------------------------------- 
@@ -41,7 +41,7 @@ $config['ospos_xss_clean'] = TRUE;
 | Logs are stored in application/logs
 |
 */
-$config['db_log_enabled'] = FALSE;
+$config['db_log_enabled'] = (ENVIRONMENT !== 'production');
 
 /* 
 |-------------------------------------------------------------------------- 
