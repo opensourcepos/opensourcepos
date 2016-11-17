@@ -21,10 +21,9 @@ class Summary_employees extends Summary_report
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 
-		$this->db->from('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$this->commonFrom();
+
 		$this->db->join('people AS employee_p', 'sales.employee_id = employee_p.person_id');
-		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
 
 		$this->commonWhere($inputs);
 

@@ -686,22 +686,22 @@ class Sale extends CI_Model
 	{
 		if($this->config->item('tax_included'))
 		{
-			$total    = '1';
-			$subtotal = '(1 - (SUM(1 - 100 / (100 + sales_items_taxes.percent))))';
-			$tax      = '(SUM(1 - 100 / (100 + sales_items_taxes.percent)))';
+			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+			$sale_subtotal = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (100 / (100 + SUM(sales_items_taxes.percent))))';
+			$sale_tax = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 - 100 / (100 + SUM(sales_items_taxes.percent))))';
 		}
 		else
 		{
-			$tax      = '(SUM(sales_items_taxes.percent) / 100)';
-			$total    = '(1 + (SUM(sales_items_taxes.percent / 100)))';
-			$subtotal = '1';
+			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 + (SUM(sales_items_taxes.percent) / 100)))';
+			$sale_subtotal = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+			$sale_tax = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (SUM(sales_items_taxes.percent) / 100))';
 		}
 
-		$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
 		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		$decimals = totals_decimals();
-		
+		// increase the rounding of two decimals on top of the selected ones to avoid accumulative rounding errors in the totals
+		$decimals = totals_decimals() + 2;
+
 		if(empty($input['sale_id']))
 		{
 			$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
@@ -762,11 +762,11 @@ class Sale extends CI_Model
 					payments.sale_payment_amount,
 					IFNULL(SUM(sales_items_taxes.percent), 0) AS item_tax_percent,
 					' . "
-					IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS total,
-					IFNULL(ROUND($sale_total * $tax, $decimals), 0) AS tax,
-					ROUND($sale_total * $subtotal, $decimals) AS subtotal,
-					ROUND($sale_total - $sale_cost, $decimals) AS profit,
-					ROUND($sale_cost, $decimals) AS cost
+					ROUND($sale_subtotal, $decimals) AS subtotal,
+					IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
+					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
+					ROUND($sale_cost, $decimals) AS cost,
+					ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit
 					" . '
 				FROM ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales

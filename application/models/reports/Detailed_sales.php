@@ -6,13 +6,13 @@ class Detailed_sales extends Report
 	{
 		parent::__construct();
 	}
-	
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
 		$this->Sale->create_temp_table($inputs);
 	}
-	
+
 	public function getDataColumns()
 	{
 		return array(
@@ -44,7 +44,7 @@ class Detailed_sales extends Report
 				$this->lang->line('reports_discount'))
 		);		
 	}
-	
+
 	public function getDataBySaleId($sale_id)
 	{
 		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
@@ -53,7 +53,7 @@ class Detailed_sales extends Report
 
 		return $this->db->get()->row_array();
 	}
-	
+
 	public function getData(array $inputs)
 	{
 		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
@@ -79,7 +79,7 @@ class Detailed_sales extends Report
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
 		$data['details'] = array();
-		
+
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, total, tax, cost, profit, discount_percent');
@@ -87,10 +87,10 @@ class Detailed_sales extends Report
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
-		
+
 		return $data;
 	}
-	
+
 	public function getSummaryData(array $inputs)
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');

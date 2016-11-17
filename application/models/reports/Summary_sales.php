@@ -21,12 +21,10 @@ class Summary_sales extends Summary_report
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 
-		$this->db->from('sales_items AS sales_items');
-		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
+		$this->commonFrom();
 
 		$this->commonWhere($inputs);   
-        
+
 		$this->db->group_by('sale_date');
 		$this->db->order_by('sale_date');
 
