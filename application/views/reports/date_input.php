@@ -77,7 +77,7 @@ $(document).ready(function()
 	<?php $this->load->view('partial/daterangepicker'); ?>
 
 	$("#generate_report").click(function()
-	{	
+	{		
 		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val()].join("/");
 	});
 });
