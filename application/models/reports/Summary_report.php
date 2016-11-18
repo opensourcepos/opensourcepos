@@ -61,7 +61,10 @@ abstract class Summary_report extends Report
 
 	protected function commonWhere(array $inputs)
 	{
-		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		if(empty($this->config->item('filter_datetime_format')))
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		else
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])));
 
 		if($inputs['location_id'] != 'all')
 		{

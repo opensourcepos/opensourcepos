@@ -83,7 +83,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('statistics', '1'),
 ('language', 'english'),
 ('language_code', 'en');
-
+('filter_datetime_format','');
 
 -- --------------------------------------------------------
 

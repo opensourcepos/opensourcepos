@@ -56,7 +56,7 @@ class Items extends Secure_Controller
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
 
-		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
+		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order, $this->config->item('filter_datetime_format'));
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 
 		$data_rows = array();

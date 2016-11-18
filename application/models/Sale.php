@@ -81,7 +81,7 @@ class Sale extends CI_Model
 	/*
 	 Get the sales data for the takings (sales/manage) view
 	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc', $datetime_filter = '')
 	{
 		if($this->config->item('tax_included'))
 		{
@@ -144,7 +144,10 @@ class Sale extends CI_Model
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
 		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
 
-		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		if(empty($datetime_filter))
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		else
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(str_replace("%20"," ", $filters['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $filters['end_date'])));
 
 		if(!empty($search))
 		{
@@ -704,7 +707,10 @@ class Sale extends CI_Model
 
 		if(empty($input['sale_id']))
 		{
-			$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			if(empty($inputs['datetime_filter']))
+  				$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+  			else
+  				$where = 'WHERE sales.sale_time BETWEEN ' . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace("%20"," ", $inputs['end_date']));
 		}
 		else
 		{
@@ -729,7 +735,7 @@ class Sale extends CI_Model
 		);
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
-			' (INDEX(sale_date), INDEX(sale_id))
+			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
 				SELECT
 					DATE(sales.sale_time) AS sale_date,
