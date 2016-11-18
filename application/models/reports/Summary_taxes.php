@@ -47,14 +47,6 @@ class Summary_taxes extends Report
 		
 		$decimals = totals_decimals();
 
-		$clauseWhere =	"";
-		if(empty($inputs['datetime_filter']))
-			$clauseWhere = "WHERE date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']);
-		else
-			$clauseWhere = "WHERE sale_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date']));
-
-		$clauseWhere.=" ".$quantity_cond;
-
 		$query = $this->db->query("SELECT percent, count(*) AS count, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax
 			FROM (SELECT name, CONCAT(ROUND(percent, $decimals), '%') AS percent,
 			ROUND((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent /100) * $subtotal, $decimals) AS subtotal,
@@ -66,7 +58,7 @@ class Summary_taxes extends Report
 			.$this->db->dbprefix('sales_items').'.item_id='.$this->db->dbprefix('sales_items_taxes').'.item_id'." AND "
 			.$this->db->dbprefix('sales_items').'.line='.$this->db->dbprefix('sales_items_taxes').'.line'
 			." JOIN ".$this->db->dbprefix('sales')." ON ".$this->db->dbprefix('sales_items_taxes').".sale_id=".$this->db->dbprefix('sales').".sale_id
-			$clauseWhere) AS temp_taxes
+			WHERE date(sale_time) BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " $quantity_cond) AS temp_taxes
 			GROUP BY percent");
 
 		return $query->result_array();
@@ -76,11 +68,7 @@ class Summary_taxes extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		
-		if(empty($inputs['datetime_filter']))
-			$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
-		else
-			$this->db->where("sale_time BETWEEN " . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . " AND " . $this->db->escape(str_replace("%20"," ", $inputs['end_date'])));
+		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']));
 
 		if ($inputs['location_id'] != 'all')
 		{
