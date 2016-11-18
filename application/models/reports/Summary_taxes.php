@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Summary_report.php");
+
 class Summary_taxes extends Summary_report
 {
 	function __construct()
@@ -7,7 +9,7 @@ class Summary_taxes extends Summary_report
 		parent::__construct();
 	}
 
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
 		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_count'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'));
 	}
@@ -15,16 +17,17 @@ class Summary_taxes extends Summary_report
 	public function getData(array $inputs)
 	{
 		$quantity_cond = '';
-		if ($inputs['sale_type'] == 'sales')
+
+		if($inputs['sale_type'] == 'sales')
 		{
 			$quantity_cond = 'AND quantity_purchased > 0';
 		}
-		elseif ($inputs['sale_type'] == 'returns')
+		elseif($inputs['sale_type'] == 'returns')
 		{
 			$quantity_cond = 'AND quantity_purchased < 0';
 		}
 
-		if ($inputs['location_id'] != 'all')
+		if($inputs['location_id'] != 'all')
 		{
 			$quantity_cond .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
 		}
