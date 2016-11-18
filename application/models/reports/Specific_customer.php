@@ -5,9 +5,12 @@ class Specific_customer extends Report
 	function __construct()
 	{
 		parent::__construct();
-
+	}
+	
+	public function create(array $inputs)
+	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table();
+		$this->Sale->create_temp_table($inputs);
 	}
 	
 	public function getDataColumns()
@@ -21,7 +24,7 @@ class Specific_customer extends Report
 	{
 		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND customer_id=" . $this->db->escape($inputs['customer_id']));
+		$this->db->where('customer_id', $inputs['customer_id']);
 
 		if ($inputs['sale_type'] == 'sales')
         {
@@ -54,7 +57,7 @@ class Specific_customer extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND customer_id=" . $this->db->escape($inputs['customer_id']));
+		$this->db->where('customer_id', $inputs['customer_id']);
 
 		if ($inputs['sale_type'] == 'sales')
         {

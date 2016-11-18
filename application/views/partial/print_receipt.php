@@ -8,12 +8,12 @@ function printdoc()
 		if (window.jsPrintSetup) 
 		{
 			// set top margins in millimeters
-			jsPrintSetup.setOption('marginTop', '<?php echo $this->Appconfig->get('print_top_margin'); ?>');
-			jsPrintSetup.setOption('marginLeft', '<?php echo $this->Appconfig->get('print_left_margin'); ?>');
-			jsPrintSetup.setOption('marginBottom', '<?php echo $this->Appconfig->get('print_bottom_margin'); ?>');
-			jsPrintSetup.setOption('marginRight', '<?php echo $this->Appconfig->get('print_right_margin'); ?>');
+			jsPrintSetup.setOption('marginTop', '<?php echo $this->config->item('print_top_margin'); ?>');
+			jsPrintSetup.setOption('marginLeft', '<?php echo $this->config->item('print_left_margin'); ?>');
+			jsPrintSetup.setOption('marginBottom', '<?php echo $this->config->item('print_bottom_margin'); ?>');
+			jsPrintSetup.setOption('marginRight', '<?php echo $this->config->item('print_right_margin'); ?>');
 
-			<?php if (!$this->Appconfig->get('print_header'))
+			<?php if (!$this->config->item('print_header'))
 			{
 			?>
 				// set page header
@@ -22,7 +22,7 @@ function printdoc()
 				jsPrintSetup.setOption('headerStrRight', '');
 			<?php 
 			}
-			if (!$this->Appconfig->get('print_footer'))
+			if (!$this->config->item('print_footer'))
 			{
 			?>
 				// set empty page footer
@@ -44,7 +44,7 @@ function printdoc()
 					// clears user preferences always silent print value
 					// to enable using 'printSilent' option
 					jsPrintSetup.clearSilentPrint();
-					<?php if (!$this->Appconfig->get('print_silently')) 
+					<?php if (!$this->config->item('print_silently')) 
 					{
 					?>
 						// Suppress print dialog (for this context only)

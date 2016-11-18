@@ -83,11 +83,11 @@ class Receivings extends Secure_Controller
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? 1 : -1;
 		$item_location = $this->receiving_lib->get_stock_source();
 
-		if($mode == 'return' && $this->receiving_lib->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
+		if($mode == 'return' && $this->Receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->return_entire_receiving($item_id_or_number_or_item_kit_or_receipt);
 		}
-		elseif($this->receiving_lib->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
 			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location);
 		}

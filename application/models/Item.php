@@ -514,7 +514,7 @@ class Item extends CI_Model
 	 * $old_price (optional) : the current-cost-price
 	 *
 	 * used in receiving-process to update cost-price if changed
-	 * caution: must be used there before item_quantities gets updated, otherwise average price is wrong!
+	 * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
 	 *
 	 */
 	public function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
@@ -538,33 +538,6 @@ class Item extends CI_Model
 		$data = array('cost_price' => $average_price);
 
 		return $this->save($data, $item_id);
-	}
-	
-	//We create a temp table that allows us to do easy report queries
-	public function create_temp_table()
-	{
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('items_temp') . 
-			' (INDEX(quantity), INDEX(location_id))
-			(
-				SELECT
-					items.name,
-					items.item_number,
-					items.description,
-					items.reorder_level,
-					item_quantities.quantity,
-					stock_locations.location_name,
-					stock_locations.location_id,
-					items.cost_price,
-					items.unit_price,
-					(items.cost_price * item_quantities.quantity) AS sub_total_value
-				FROM ' . $this->db->dbprefix('items') . ' AS items
-				INNER JOIN ' . $this->db->dbprefix('item_quantities') . ' AS item_quantities
-					ON items.item_id = item_quantities.item_id
-				INNER JOIN ' . $this->db->dbprefix('stock_locations') . ' AS stock_locations
-					ON item_quantities.location_id = stock_locations.location_id
-				WHERE items.deleted = 0 AND stock_locations.deleted = 0
-			)'
-		);
 	}
 }
 ?>

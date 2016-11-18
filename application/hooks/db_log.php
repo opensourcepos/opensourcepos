@@ -8,7 +8,7 @@ function db_log_queries()
 	if($CI->config->item('db_log_enabled'))
 	{
 		// Creating Query Log file with today's date in application/logs folder
-		$filepath = APPPATH . 'logs/Query-log-' . date('Y-m-d') . '.log';
+		$filepath = APPPATH . 'logs/Query-log-' . date('Y-m-d') . '.php';
 		// Opening file with pointer at the end of the file
 		$handle = fopen($filepath, "a+");
 

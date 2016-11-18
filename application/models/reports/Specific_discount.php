@@ -5,9 +5,12 @@ class Specific_discount extends Report
 	function __construct()
 	{
 		parent::__construct();
-
+	}
+	
+	public function create(array $inputs)
+	{
 		//Create our temp tables to work with the data in our report
-		$this->Sale->create_temp_table();
+		$this->Sale->create_temp_table($inputs);
 	}
 	
 	public function getDataColumns()
@@ -21,8 +24,8 @@ class Specific_discount extends Report
 	{
 		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND discount_percent >=" . $this->db->escape($inputs['discount']));
-		
+		$this->db->where('discount_percent >=', $inputs['discount']);
+
 		if ($inputs['sale_type'] == 'sales')
 		{
 			$this->db->where('quantity_purchased > 0');
@@ -44,7 +47,6 @@ class Specific_discount extends Report
 			$this->db->select('name, serialnumber, category, description, quantity_purchased, subtotal, total, tax, cost, profit, discount_percent');
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
-			$this->db->where('discount_percent >= ', $inputs['discount']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
 
@@ -55,8 +57,8 @@ class Specific_discount extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where("sale_date BETWEEN " . $this->db->escape($inputs['start_date']) . " AND " . $this->db->escape($inputs['end_date']) . " AND discount_percent >=" . $this->db->escape($inputs['discount']));
-				
+		$this->db->where('discount_percent >=', $inputs['discount']);
+			
 		if ($inputs['sale_type'] == 'sales')
 		{
 			$this->db->where('quantity_purchased > 0');

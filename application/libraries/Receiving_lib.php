@@ -263,36 +263,6 @@ class Receiving_lib
 		$this->set_cart($items);
 	}
 
-	public function is_valid_receipt($receipt_receiving_id)
-	{
-		//RECV #
-		$pieces = explode(' ', $receipt_receiving_id);
-
-		if(count($pieces) == 2 && preg_match('/(RECV|KIT)/', $pieces[1]))
-		{
-			return $this->CI->Receiving->exists($pieces[1]);
-		}
-		else 
-		{
-			return $this->CI->Receiving->get_receiving_by_reference($receipt_receiving_id)->num_rows() > 0;
-		}
-
-		return FALSE;
-	}
-
-	public function is_valid_item_kit($item_kit_id)
-	{
-		//KIT #
-		$pieces = explode(' ',$item_kit_id);
-
-		if(count($pieces) == 2)
-		{
-			return $this->CI->Item_kit->exists($pieces[1]);
-		}
-
-		return FALSE;
-	}
-
 	public function return_entire_receiving($receipt_receiving_id)
 	{
 		//RECV #

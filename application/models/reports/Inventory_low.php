@@ -5,11 +5,8 @@ class Inventory_low extends Report
 	function __construct()
 	{
 		parent::__construct();
-
-		//Create our temp tables to work with the data in our report
-		$this->Item->create_temp_table();
 	}
-	
+
 	public function getDataColumns()
 	{
 		return array($this->lang->line('reports_item_name'),
@@ -21,10 +18,14 @@ class Inventory_low extends Report
 	
     public function getData(array $inputs)
     {
-        $this->db->select('name, item_number, quantity, reorder_level, location_name');
-        $this->db->from('items_temp');
-        $this->db->where('quantity <= reorder_level');
-        $this->db->order_by('name');
+        $this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name');
+        $this->db->from('items');
+        $this->db->join('item_quantities', 'items.item_id = item_quantities.item_id');
+        $this->db->join('stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+        $this->db->where('items.deleted', 0);
+        $this->db->where('stock_locations.deleted', 0);
+        $this->db->where('item_quantities.quantity <= items.reorder_level');
+        $this->db->order_by('items.name');				
 
         return $this->db->get()->result_array();
     }

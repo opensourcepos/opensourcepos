@@ -90,6 +90,8 @@
 				}
 			}),
 
+			Chartist.plugins.ctBarLabels(),
+
 			Chartist.plugins.ctPointLabels({
 				textAnchor: 'middle'
 			})

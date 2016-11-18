@@ -5,9 +5,6 @@ class Inventory_summary extends Report
 	function __construct()
 	{
 		parent::__construct();
-
-		//Create our temp tables to work with the data in our report
-		$this->Item->create_temp_table();
 	}
 
 	public function getDataColumns()
@@ -23,26 +20,30 @@ class Inventory_summary extends Report
 	}
 
 	public function getData(array $inputs)
-	{
-        $this->db->select('name, item_number, quantity, reorder_level, location_name, cost_price, unit_price, sub_total_value');
-        $this->db->from('items_temp');
+	{	
+        $this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
+        $this->db->from('items AS items');
+        $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
+        $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+        $this->db->where('items.deleted', 0);
+        $this->db->where('stock_locations.deleted', 0);
 
 		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
 		if($inputs['item_count'] == 'zero_and_less')
 		{
-			$this->db->where('quantity <= 0');
+			$this->db->where('item_quantities.quantity <= 0');
 		}
 		elseif($inputs['item_count'] == 'more_than_zero')
 		{
-			$this->db->where('quantity > 0');
+			$this->db->where('item_quantities.quantity > 0');
 		}
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('location_id', $inputs['location_id']);
+			$this->db->where('stock_locations.location_id', $inputs['location_id']);
 		}
 
-        $this->db->order_by('name');
+        $this->db->order_by('items.name');
 
 		return $this->db->get()->result_array();
 	}

@@ -24,28 +24,28 @@ class Barcode_lib
 	
 	public function get_barcode_config()
 	{
-		$data['company'] = $this->CI->Appconfig->get('company');
-		$data['barcode_content'] = $this->CI->Appconfig->get('barcode_content');
-		$data['barcode_type'] = $this->CI->Appconfig->get('barcode_type');
-		$data['barcode_font'] = $this->CI->Appconfig->get('barcode_font');
-		$data['barcode_font_size'] = $this->CI->Appconfig->get('barcode_font_size');
-		$data['barcode_height'] = $this->CI->Appconfig->get('barcode_height');
-		$data['barcode_width'] = $this->CI->Appconfig->get('barcode_width');
-		$data['barcode_quality'] = $this->CI->Appconfig->get('barcode_quality');
-		$data['barcode_first_row'] = $this->CI->Appconfig->get('barcode_first_row');
-		$data['barcode_second_row'] = $this->CI->Appconfig->get('barcode_second_row');
-		$data['barcode_third_row'] = $this->CI->Appconfig->get('barcode_third_row');
-		$data['barcode_num_in_row'] = $this->CI->Appconfig->get('barcode_num_in_row');
-		$data['barcode_page_width'] = $this->CI->Appconfig->get('barcode_page_width');	  
-		$data['barcode_page_cellspacing'] = $this->CI->Appconfig->get('barcode_page_cellspacing');
-		$data['barcode_generate_if_empty'] = $this->CI->Appconfig->get('barcode_generate_if_empty');
+		$data['company'] = $this->CI->config->item('company');
+		$data['barcode_content'] = $this->CI->config->item('barcode_content');
+		$data['barcode_type'] = $this->CI->config->item('barcode_type');
+		$data['barcode_font'] = $this->CI->config->item('barcode_font');
+		$data['barcode_font_size'] = $this->CI->config->item('barcode_font_size');
+		$data['barcode_height'] = $this->CI->config->item('barcode_height');
+		$data['barcode_width'] = $this->CI->config->item('barcode_width');
+		$data['barcode_quality'] = $this->CI->config->item('barcode_quality');
+		$data['barcode_first_row'] = $this->CI->config->item('barcode_first_row');
+		$data['barcode_second_row'] = $this->CI->config->item('barcode_second_row');
+		$data['barcode_third_row'] = $this->CI->config->item('barcode_third_row');
+		$data['barcode_num_in_row'] = $this->CI->config->item('barcode_num_in_row');
+		$data['barcode_page_width'] = $this->CI->config->item('barcode_page_width');	  
+		$data['barcode_page_cellspacing'] = $this->CI->config->item('barcode_page_cellspacing');
+		$data['barcode_generate_if_empty'] = $this->CI->config->item('barcode_generate_if_empty');
 		
 		return $data;
 	}
 
 	public function validate_barcode($barcode)
 	{
-		$barcode_type = $this->CI->Appconfig->get('barcode_type');
+		$barcode_type = $this->CI->config->item('barcode_type');
 		$barcode_instance = $this->get_barcode_instance($barcode_type);
 		return $barcode_instance->validate($barcode);
 	}
