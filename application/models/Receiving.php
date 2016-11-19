@@ -227,10 +227,14 @@ class Receiving extends CI_Model
 	{
 		if(empty($input['receiving_id']))
 		{
-			if(empty($inputs['datetime_filter']))
+			if(empty($this->config->item('filter_datetime_format')))
+			{
 				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			}
 			else
-				$where = 'WHERE receiving_time BETWEEN ' . $this->db->escape(str_replace("%20"," ", $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace("%20"," ", $inputs['end_date']));
+			{
+				$where = 'WHERE receiving_time BETWEEN ' . $this->db->escape(str_replace('%20',' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20',' ', $inputs['end_date']));
+			}
 		}
 		else
 		{
