@@ -6,12 +6,10 @@ class Summary_taxes extends Summary_report
 	{
 		parent::__construct();
 	}
-
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
 		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_count'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'));
 	}
-
 	public function getData(array $inputs)
 	{
 		$where = '';
@@ -24,20 +22,18 @@ class Summary_taxes extends Summary_report
 			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(str_replace('%20',' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20',' ', $inputs['end_date'])) .' ';
 		}
 
-		if ($inputs['sale_type'] == 'sales')
+		if($inputs['sale_type'] == 'sales')
 		{
 			$where .= 'AND quantity_purchased > 0';
 		}
-		elseif ($inputs['sale_type'] == 'returns')
+		elseif($inputs['sale_type'] == 'returns')
 		{
 			$where .= 'AND quantity_purchased < 0';
 		}
-
-		if ($inputs['location_id'] != 'all')
+		if($inputs['location_id'] != 'all')
 		{
 			$where .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
 		}
-
 		if($this->config->item('tax_included'))
 		{
 			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
@@ -50,9 +46,7 @@ class Summary_taxes extends Summary_report
 			$sale_subtotal = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
 			$sale_tax = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (sales_items_taxes.percent / 100))';
 		}
-
 		$decimals = totals_decimals();
-
 		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(total), $decimals) AS total, ROUND(SUM(tax), $decimals) AS tax
 			FROM (
 				SELECT
@@ -69,7 +63,6 @@ class Summary_taxes extends Summary_report
 				) AS temp_taxes
 			GROUP BY percent"
 		);
-
 		return $query->result_array();
 	}
 }
