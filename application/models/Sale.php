@@ -716,8 +716,8 @@ class Sale extends CI_Model
 
 		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		// increase the rounding of two decimals on top of the selected ones to avoid accumulative rounding errors in the totals
-		$decimals = totals_decimals() + 2;
+		// increase the rounding of one decimals on top of the selected ones to avoid accumulative rounding errors in the totals
+		$decimals = totals_decimals() + 1;
 
 		if(empty($input['sale_id']))
 		{
