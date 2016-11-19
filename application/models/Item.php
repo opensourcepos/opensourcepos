@@ -61,59 +61,60 @@ class Item extends CI_Model
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
 
-        $this->db->select('max('.$this->db->dbprefix('items').'.name) as name');
-        $this->db->select('max('.$this->db->dbprefix('items').'.category) as category');
-        $this->db->select('max('.$this->db->dbprefix('items').'.supplier_id) as supplier_id');
-        $this->db->select('max('.$this->db->dbprefix('items').'.item_number) as item_number');
-        $this->db->select('max('.$this->db->dbprefix('items').'.description) as description');
-        $this->db->select('max('.$this->db->dbprefix('items').'.cost_price) as cost_price');
-        $this->db->select('max('.$this->db->dbprefix('items').'.unit_price) as unit_price');
-        $this->db->select('max('.$this->db->dbprefix('items').'.reorder_level) as reorder_level');
-        $this->db->select('max('.$this->db->dbprefix('items').'.receiving_quantity) as receiving_quantity');
-        $this->db->select('max('.$this->db->dbprefix('items').'.item_id) as item_id');
-        $this->db->select('max('.$this->db->dbprefix('items').'.pic_id) as pic_id');
-        $this->db->select('max('.$this->db->dbprefix('items').'.allow_alt_description) as allow_alt_description');
-        $this->db->select('max('.$this->db->dbprefix('items').'.is_serialized) as is_serialized');
-        $this->db->select('max('.$this->db->dbprefix('items').'.deleted) as deleted');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom1) as custom1');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom2) as custom2');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom3) as custom3');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom4) as custom4');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom5) as custom5');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom6) as custom6');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom7) as custom7');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom8) as custom8');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom9) as custom9');
-        $this->db->select('max('.$this->db->dbprefix('items').'.custom10) as custom10');
+        $this->db->select('max(items.name) as name');
+        $this->db->select('max(items.category) as category');
+        $this->db->select('max(items.supplier_id) as supplier_id');
+        $this->db->select('max(items.item_number) as item_number');
+        $this->db->select('max(items.description) as description');
+        $this->db->select('max(items.cost_price) as cost_price');
+        $this->db->select('max(items.unit_price) as unit_price');
+        $this->db->select('max(items.reorder_level) as reorder_level');
+        $this->db->select('max(items.receiving_quantity) as receiving_quantity');
+        $this->db->select('items.item_id as item_id');
+        $this->db->select('max(items.pic_id) as pic_id');
+        $this->db->select('max(items.allow_alt_description) as allow_alt_description');
+        $this->db->select('max(items.is_serialized) as is_serialized');
+        $this->db->select('max(items.deleted) as deleted');
+        $this->db->select('max(items.custom1) as custom1');
+        $this->db->select('max(items.custom2) as custom2');
+        $this->db->select('max(items.custom3) as custom3');
+        $this->db->select('max(items.custom4) as custom4');
+        $this->db->select('max(items.custom5) as custom5');
+        $this->db->select('max(items.custom6) as custom6');
+        $this->db->select('max(items.custom7) as custom7');
+        $this->db->select('max(items.custom8) as custom8');
+        $this->db->select('max(items.custom9) as custom9');
+        $this->db->select('max(items.custom10) as custom10');
 
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.person_id) as person_id');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.company_name) as company_name');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.agency_name) as agency_name');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.account_number) as account_number');
-        $this->db->select('max('.$this->db->dbprefix('suppliers').'.deleted) as deleted');
+        $this->db->select('max(suppliers.person_id) as person_id');
+        $this->db->select('max(suppliers.company_name) as company_name');
+        $this->db->select('max(suppliers.agency_name) as agency_name');
+        $this->db->select('max(suppliers.account_number) as account_number');
+        $this->db->select('max(suppliers.deleted) as deleted');
 
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_id) as trans_id');
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_items) as trans_items');
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_user) as trans_user');
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_date) as trans_date');
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_comment) as trans_comment');
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_location) as trans_location');
-        $this->db->select('max('.$this->db->dbprefix('inventory').'.trans_inventory) as trans_inventory');
+        $this->db->select('max(inventory.trans_id) as trans_id');
+        $this->db->select('max(inventory.trans_items) as trans_items');
+        $this->db->select('max(inventory.trans_user) as trans_user');
+        $this->db->select('max(inventory.trans_date) as trans_date');
+        $this->db->select('max(inventory.trans_comment) as trans_comment');
+        $this->db->select('max(inventory.trans_location) as trans_location');
+        $this->db->select('max(inventory.trans_inventory) as trans_inventory');
 
-        $this->db->select('max('.$this->db->dbprefix('item_quantities').'.item_id) as item_id');
-        $this->db->select('max('.$this->db->dbprefix('item_quantities').'.item_id) as location_id');
-        $this->db->select('max('.$this->db->dbprefix('item_quantities').'.item_id) as quantity');
+        $this->db->select('max(item_quantities.item_id) as qty_item_id');
+        $this->db->select('max(item_quantities.location_id) as location_id');
+        $this->db->select('max(item_quantities.quantity) as quantity');
 
-        $this->db->from('items');
-        $this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-        $this->db->join('inventory', 'inventory.trans_items = items.item_id');
-		$this->db->from('items');
-		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
+        $this->db->from($this->db->dbprefix('items').' as items');
+        $this->db->join($this->db->dbprefix('suppliers').' as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+        $this->db->join($this->db->dbprefix('inventory').' as inventory', 'inventory.trans_items = items.item_id');
+
+        $this->db->from($this->db->dbprefix('items').' as items');
+        $this->db->join($this->db->dbprefix('suppliers').' as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+        $this->db->join($this->db->dbprefix('inventory').' as inventory', 'inventory.trans_items = items.item_id');
 
 		if($filters['stock_location_id'] > -1)
 		{
-			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
+			$this->db->join($this->db->dbprefix('item_quantities').' as item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
 
