@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 class Inventory_summary extends Report
 {
 	function __construct()

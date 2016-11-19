@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 class Specific_discount extends Report
 {
 	function __construct()
@@ -25,7 +27,7 @@ class Specific_discount extends Report
 		$this->db->select('sale_id, MAX(sale_date) AS sales_date, SUM(quantity_purchased) AS items_purchased, 
 		MAX(customer_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, 
 		SUM(profit) AS profit, MAX(payment_type) AS payment_type, MAX(comment) AS comment');
-		$this->db->from('sales_items_temp');
+		$this->db->from('sales_items_temp AS sales_items_temp');
 		$this->db->where('discount_percent >=', $inputs['discount']);
 
 		if ($inputs['sale_type'] == 'sales')

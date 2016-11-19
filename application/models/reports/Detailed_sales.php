@@ -1,18 +1,20 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 class Detailed_sales extends Report
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
-	
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
 		$this->Sale->create_temp_table($inputs);
 	}
-	
+
 	public function getDataColumns()
 	{
 		return array(
@@ -44,7 +46,7 @@ class Detailed_sales extends Report
 				$this->lang->line('reports_discount'))
 		);		
 	}
-	
+
 	public function getDataBySaleId($sale_id)
 	{
 		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
@@ -53,14 +55,14 @@ class Detailed_sales extends Report
 
 		return $this->db->get()->row_array();
 	}
-	
+
 	public function getData(array $inputs)
 	{
 		$this->db->select('sale_id, MAX(sale_date) AS sale_date, SUM(quantity_purchased) AS items_purchased, 
 		MAX(employee_name) AS employee_name, MAX(customer_name) AS customer_name, SUM(subtotal) AS subtotal, 
 		SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, 
 		MAX(payment_type) AS payment_type, MAX(comment) AS comment');
-		$this->db->from('sales_items_temp');
+		$this->db->from('sales_items_temp AS sales_items_temp');
 
 		if($inputs['location_id'] != 'all')
 		{
@@ -82,7 +84,7 @@ class Detailed_sales extends Report
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
 		$data['details'] = array();
-		
+
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, total, tax, cost, profit, discount_percent');
@@ -90,10 +92,10 @@ class Detailed_sales extends Report
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
-		
+
 		return $data;
 	}
-	
+
 	public function getSummaryData(array $inputs)
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');

@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 class Detailed_receivings extends Report
 {
 	function __construct()
@@ -56,7 +58,7 @@ class Detailed_receivings extends Report
 		MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name, 
 		MAX(supplier.company_name) AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, MAX(payment_type) AS payment_type, 
 		MAX(comment) AS comment, MAX(reference) AS referemce');
-		$this->db->from('receivings_items_temp');
+		$this->db->from('receivings_items_temp AS receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
