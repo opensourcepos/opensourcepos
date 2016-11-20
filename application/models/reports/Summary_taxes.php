@@ -11,7 +11,7 @@ class Summary_taxes extends Summary_report
 
 	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_count'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'));
+		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_count'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_tax'), $this->lang->line('reports_total'));
 	}
 
 	public function getData(array $inputs)
@@ -47,13 +47,13 @@ class Summary_taxes extends Summary_report
 
 		$decimals = totals_decimals();
 
-		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(total), $decimals) AS total, ROUND(SUM(tax), $decimals) AS tax
+		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
 			FROM (
 				SELECT
 					CONCAT(IFNULL(ROUND(percent, $decimals), 0), '%') AS percent,
 					$sale_subtotal AS subtotal,
-					IFNULL($sale_total, $sale_subtotal) AS total,
-					IFNULL($sale_tax, 0) AS tax
+					IFNULL($sale_tax, 0) AS tax,
+					IFNULL($sale_total, $sale_subtotal) AS total
 					FROM " . $this->db->dbprefix('sales_items') . ' AS sales_items
 					INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 						ON sales_items.sale_id = sales.sale_id

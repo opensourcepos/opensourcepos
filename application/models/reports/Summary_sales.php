@@ -11,7 +11,7 @@ class Summary_sales extends Summary_report
 
 	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_date'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
+		return array($this->lang->line('reports_date'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_tax'), $this->lang->line('reports_total'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
 	}
 
 	protected function _select(array $inputs)

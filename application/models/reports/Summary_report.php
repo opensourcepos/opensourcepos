@@ -53,8 +53,8 @@ abstract class Summary_report extends Report
 
 		$this->db->select("
 				ROUND($sale_subtotal, $decimals) AS subtotal,
-				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				ROUND($sale_cost, $decimals) AS cost,
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit
 		");

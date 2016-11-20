@@ -25,8 +25,8 @@ class Detailed_sales extends Report
 				'employee' => $this->lang->line('reports_sold_by'),
 				'customer' => $this->lang->line('reports_sold_to'),
 				'subtotal' => $this->lang->line('reports_subtotal'),
-				'total' => $this->lang->line('reports_total'),
 				'tax' => $this->lang->line('reports_tax'),
+				'total' => $this->lang->line('reports_total'),
 				'cost' => $this->lang->line('reports_cost'),
 				'profit' => $this->lang->line('reports_profit'),
 				'payment_type' => $this->lang->line('sales_amount_tendered'),
@@ -39,8 +39,8 @@ class Detailed_sales extends Report
 				$this->lang->line('reports_description'),
 				$this->lang->line('reports_quantity'),
 				$this->lang->line('reports_subtotal'),
-				$this->lang->line('reports_total'),
 				$this->lang->line('reports_tax'),
+				$this->lang->line('reports_total'),
 				$this->lang->line('reports_cost'),
 				$this->lang->line('reports_profit'),
 				$this->lang->line('reports_discount'))
@@ -49,7 +49,7 @@ class Detailed_sales extends Report
 
 	public function getDataBySaleId($sale_id)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_id', $sale_id);
 
@@ -58,7 +58,7 @@ class Detailed_sales extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
 		$this->db->from('sales_items_temp');
 
 		if($inputs['location_id'] != 'all')
@@ -84,7 +84,7 @@ class Detailed_sales extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, total, tax, cost, profit, discount_percent');
+			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount_percent');
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
@@ -95,7 +95,7 @@ class Detailed_sales extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(tax) AS tax, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 
 		if($inputs['location_id'] != 'all')

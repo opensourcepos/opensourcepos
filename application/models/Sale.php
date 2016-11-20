@@ -158,8 +158,8 @@ class Sale extends CI_Model
 				customer.company_name AS company_name,
 				' . "
 				ROUND($sale_subtotal, $decimals) AS subtotal,
-				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				ROUND($sale_cost, $decimals) AS cost,
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit,
 				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
@@ -731,8 +731,7 @@ class Sale extends CI_Model
 
 		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		// increase the rounding of one decimal on top of the selected ones to avoid accumulative rounding errors in the totals
-		$decimals = totals_decimals() + 1;
+		$decimals = totals_decimals();
 
 		if(empty($input['sale_id']))
 		{
@@ -795,8 +794,8 @@ class Sale extends CI_Model
 					IFNULL(SUM(sales_items_taxes.percent), 0) AS item_tax_percent,
 					' . "
 					ROUND($sale_subtotal, $decimals) AS subtotal,
-					IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
+					IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 					ROUND($sale_cost, $decimals) AS cost,
 					ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit
 					" . '
