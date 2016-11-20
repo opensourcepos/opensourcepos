@@ -3,31 +3,13 @@ class Sale extends CI_Model
 {
 	public function get_info($sale_id)
 	{
-		if($this->config->item('tax_included'))
-		{
-			$total    = '1';
-			$subtotal = '(1 - (SUM(1 - 100 / (100 + sales_items_taxes.percent))))';
-			$tax      = '(SUM(1 - 100 / (100 + sales_items_taxes.percent)))';
-		}
-		else
-		{
-			$tax      = '(SUM(sales_items_taxes.percent) / 100)';
-			$total    = '(1 + (SUM(sales_items_taxes.percent / 100)))';
-			$subtotal = '1';
-		}
-
-		$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
-		$sale_cost  = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
-
-		$decimals = totals_decimals();
-
-		// create payments temp table to speed up the sales listing
+		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
+		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
-			' (PRIMARY KEY(sale_id), INDEX(sale_id))
-			(
+			'(
 				SELECT payments.sale_id AS sale_id, 
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
-					MAX(GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ")) AS payment_type
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
@@ -35,6 +17,37 @@ class Sale extends CI_Model
 				GROUP BY sale_id
 			)'
 		);
+
+		// create a temporary table to contain all the sum of taxes per sale item
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
+			'(
+				SELECT sales_items_taxes.sale_id AS sale_id,
+					sales_items_taxes.item_id AS item_id,
+					SUM(sales_items_taxes.percent) AS percent
+				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
+				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					ON sales.sale_id = sales_items_taxes.sale_id
+				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
+				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
+				GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id
+			)'
+		);
+
+		if($this->config->item('tax_included'))
+		{
+			$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+			$sale_subtotal = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (100 / (100 + sales_items_taxes.percent)))';
+			$sale_tax = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 - 100 / (100 + sales_items_taxes.percent)))';
+		}
+		else
+		{
+			$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 + (sales_items_taxes.percent / 100)))';
+			$sale_subtotal = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+			$sale_tax = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (sales_items_taxes.percent / 100))';
+		}
+
+		$decimals = totals_decimals();
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
@@ -49,9 +62,10 @@ class Sale extends CI_Model
 				MAX(customer_p.last_name) AS last_name,
 				MAX(customer_p.email) AS email,
 				MAX(customer_p.comments) AS comments,
-				MAX(payments.sale_payment_amount) AS amount_tendered,
 				' . "
-				MAX(IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals))) AS amount_due,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
+				SUM(payments.sale_payment_amount) AS amount_tendered,
+				(SUM(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');
@@ -61,11 +75,12 @@ class Sale extends CI_Model
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
-		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
+		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
 
 		$this->db->where('sales.sale_id', $sale_id);
+
 		$this->db->group_by('sales.sale_id');
-		$this->db->order_by('MAX(DATE(sales.sale_time))', 'asc');
+		$this->db->order_by('sales.sale_time', 'asc');
 
 		return $this->db->get();
 	}
@@ -83,31 +98,14 @@ class Sale extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
-		if($this->config->item('tax_included'))
-		{
-			$total    = '1';
-			$subtotal = '(1 - (SUM(1 - 100 / (100 + sales_items_taxes.percent))))';
-			$tax      = '(SUM(1 - 100 / (100 + sales_items_taxes.percent)))';
-		}
-		else
-		{
-			$tax      = '(SUM(sales_items_taxes.percent) / 100)';
-			$total    = '(1 + (SUM(sales_items_taxes.percent / 100)))';
-			$subtotal = '1';
-		}
-
-		$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.item_unit_price * sales_items.quantity_purchased * sales_items.discount_percent / 100)';
-		$sale_cost  = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
-
-		$decimals = totals_decimals();
-
-		// create payments temp table to speed up the sales listing
+		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
+		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id, 
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
-					MAX(GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ")) AS payment_type
+					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
@@ -116,25 +114,59 @@ class Sale extends CI_Model
 			)'
 		);
 
+		// create a temporary table to contain all the sum of taxes per sale item
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
+			' (INDEX(sale_id), INDEX(item_id))
+			(
+				SELECT sales_items_taxes.sale_id AS sale_id,
+					sales_items_taxes.item_id AS item_id,
+					SUM(sales_items_taxes.percent) AS percent
+				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
+				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					ON sales.sale_id = sales_items_taxes.sale_id
+				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
+				WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . '
+				GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id
+			)'
+		);
+
+		if($this->config->item('tax_included'))
+		{
+			$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+			$sale_subtotal = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (100 / (100 + sales_items_taxes.percent)))';
+			$sale_tax = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 - 100 / (100 + sales_items_taxes.percent)))';
+		}
+		else
+		{
+			$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 + (sales_items_taxes.percent / 100)))';
+			$sale_subtotal = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
+			$sale_tax = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (sales_items_taxes.percent / 100))';
+		}
+
+		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+
+		$decimals = totals_decimals();
+
 		$this->db->select('
 				sales.sale_id AS sale_id,
 				MAX(DATE(sales.sale_time)) AS sale_date,
 				MAX(sales.sale_time) AS sale_time,
+				MAX(sales.invoice_number) AS invoice_number,
 				SUM(sales_items.quantity_purchased) AS items_purchased,
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
 				MAX(customer.company_name) AS company_name,
 				' . "
-				ROUND($sale_total * $subtotal, $decimals) AS subtotal,
-				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS total,
-				IFNULL(ROUND($sale_total * $tax, $decimals), 0) AS tax,
-				ROUND($sale_total - $sale_cost, $decimals) AS profit,
+				ROUND($sale_subtotal, $decimals) AS subtotal,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
+				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
 				ROUND($sale_cost, $decimals) AS cost,
-				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS amount_due,
-				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals))) AS change_due,
-				" . '
+				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
 				MAX(payments.sale_payment_amount) AS amount_tendered,
-				MAX(payments.payment_type) AS payment_type,
-				MAX(sales.invoice_number) AS invoice_number
+				(SUM(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
+				" . '
+				MAX(payments.payment_type) AS payment_type
 		');
 
 		$this->db->from('sales_items AS sales_items');
@@ -142,7 +174,7 @@ class Sale extends CI_Model
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
-		$this->db->join('sales_items_taxes AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line', 'left outer');
+		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
 
 		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 
@@ -213,8 +245,8 @@ class Sale extends CI_Model
 	{
 		// get payment summary
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
-		$this->db->from('sales');
-		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
+		$this->db->from('sales as sales');
+		$this->db->join('sales_payments as sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 
@@ -699,8 +731,8 @@ class Sale extends CI_Model
 
 		$sale_cost  = '(sales_items.item_cost_price * sales_items.quantity_purchased)';
 
-		// increase the rounding of two decimals on top of the selected ones to avoid accumulative rounding errors in the totals
-		$decimals = totals_decimals() + 2;
+		// increase the rounding of one decimal on top of the selected ones to avoid accumulative rounding errors in the totals
+		$decimals = totals_decimals() + 1;
 
 		if(empty($input['sale_id']))
 		{
