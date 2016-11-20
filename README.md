@@ -70,7 +70,7 @@ PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
 
 PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets` and `php-mcrypt` installed and enabled.
 
-MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
+MySQL 5.5 or 5.6 are fine, MySQL 5.7 is supported in backward compatible mode.
 
 Apache 2.2 and 2.4 are working both fine.
 
@@ -137,8 +137,8 @@ Bug reports must follow this schema:
 1. Ospos **version string with git commit hash** (see ospos footer)
 2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
 3. Web Server name and version (e.g. Apache 2.4)
-4. Database name and version (e.g. =< MySQL 5.6)
-5. PHP version (e.g. PHP 5.5)
+4. Database name and version (e.g. MySQL 5.6)
+5. PHP version (e.g. PHP 5.6)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
@@ -158,8 +158,6 @@ FAQ
 * If you are getting the error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
 
 * If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php5-gd`, `php-intl` and `php-sockets`. Restart the web server)
-
-* If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL 5.7 as it's not supported yet
 
 * If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help
 

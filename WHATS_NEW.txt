@@ -5,6 +5,7 @@ Version 3.0.1
 + *Improved security: email and sms passwords encryption, removed phpinfo.php*
 + *Set code to be production and not development in index.php*
 + *Reports improvements, fixed tax calculation and made profit to be net profit*
++ *MySQL5.7 supported in backward compatible mode (please run the database upgrade script)*
 + Better Apache 2.4 support in .htaccess
 + Updates to language translations
 + Fixed excel template download links
