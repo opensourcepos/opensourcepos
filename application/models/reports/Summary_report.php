@@ -1,14 +1,20 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 abstract class Summary_report extends Report
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
+
 	/*
+
 	Private interface
+
 	*/
+
 	private function _common_select(array $inputs)
 	{
 		$where = "";
@@ -52,8 +58,8 @@ abstract class Summary_report extends Report
 		$decimals = totals_decimals();
 		$this->db->select("
 				ROUND($sale_subtotal, $decimals) AS subtotal,
-				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				ROUND($sale_cost, $decimals) AS cost,
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit
 		");
@@ -87,36 +93,52 @@ abstract class Summary_report extends Report
             $this->db->where('quantity_purchased < 0');
         }
 	}
+
 	/*
+
 	Protected class interface implemented by derived classes
+
 	*/
+
 	abstract protected function _get_data_columns();
+
 	protected function _select(array $inputs)	{ $this->_common_select($inputs); }
 	protected function _from()					{ $this->_common_from(); }
 	protected function _where(array $inputs)	{ $this->_common_where($inputs); }
 	protected function _group_order()			{}
+
 	/*
 	
 	Public interface implementing the base abstract class, in general it should not be extended unless there is a valid reason
 	
 	*/
+
 	public function getDataColumns()
 	{
 		return $this->_get_data_columns();
 	}
+
 	public function getData(array $inputs)
 	{
 		$this->_select($inputs);
+
 		$this->_from();
+
 		$this->_where($inputs);
+
 		$this->_group_order();
+
 		return $this->db->get()->result_array();
 	}
+
 	public function getSummaryData(array $inputs)
 	{
 		$this->_common_select($inputs);
+
 		$this->_common_from();
+
 		$this->_common_where($inputs);
+		
 		return $this->db->get()->row_array();		
 	}
 }

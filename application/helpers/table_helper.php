@@ -8,8 +8,8 @@ function get_sales_manage_table_headers()
 		array('sale_id' => $CI->lang->line('common_id')),
 		array('sale_time' => $CI->lang->line('sales_sale_time')),
 		array('customer_name' => $CI->lang->line('customers_customer')),
-		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
 		array('amount_due' => $CI->lang->line('sales_amount_due')),
+		array('amount_tendered' => $CI->lang->line('sales_amount_tendered')),
 		array('change_due' => $CI->lang->line('sales_change_due')),
 		array('payment_type' => $CI->lang->line('sales_payment_type'))
 	);
@@ -29,23 +29,22 @@ function get_sales_manage_table_headers()
 function get_sale_data_last_row($sales, $controller)
 {
 	$CI =& get_instance();
-	$table_data_rows = '';
-	$sum_amount_tendered = 0;
 	$sum_amount_due = 0;
+	$sum_amount_tendered = 0;
 	$sum_change_due = 0;
 
 	foreach($sales->result() as $key=>$sale)
 	{
-		$sum_amount_tendered += $sale->amount_tendered;
 		$sum_amount_due += $sale->amount_due;
+		$sum_amount_tendered += $sale->amount_tendered;
 		$sum_change_due += $sale->change_due;
 	}
 
 	return array(
 		'sale_id' => '-',
 		'sale_time' => '<b>'.$CI->lang->line('sales_total').'</b>',
-		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
+		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
 		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
 	);
 }
@@ -59,8 +58,8 @@ function get_sale_data_row($sale, $controller)
 		'sale_id' => $sale->sale_id,
 		'sale_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time) ),
 		'customer_name' => $sale->customer_name,
-		'amount_tendered' => to_currency($sale->amount_tendered),
 		'amount_due' => to_currency($sale->amount_due),
+		'amount_tendered' => to_currency($sale->amount_tendered),
 		'change_due' => to_currency($sale->change_due),
 		'payment_type' => $sale->payment_type
 	);

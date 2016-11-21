@@ -161,7 +161,7 @@
 					'America/Caracas' => '(GMT-04:30) Caracas',
 					'America/Santiago' => '(GMT-04:00) Santiago',
 					'America/La_Paz' => '(GMT-04:00) La Paz',
-					'Atlantic/Stanley' => '(GMT-04:00) Faukland Islands',
+					'Atlantic/Stanley' => '(GMT-04:00) Falkland Islands',
 					'America/Campo_Grande' => '(GMT-04:00) Brazil',
 					'America/Goose_Bay' => '(GMT-04:00) Atlantic Time (Goose Bay)',
 					'America/Glace_Bay' => '(GMT-04:00) Atlantic Time (Canada)',
