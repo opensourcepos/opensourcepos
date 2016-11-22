@@ -98,6 +98,15 @@ class Sale extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
+		$where = '';
+		if (empty($this->config->item('filter_datetime_format')))
+		{
+			$where .= 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' ';
+		}
+		else
+		{
+			$where .= 'WHERE sales.sale_time BETWEEN ' . $this->db->escape(str_replace('%20', ' ', $filters['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20', ' ', $filters['end_date'])) . ' ';
+		}
 		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
@@ -109,7 +118,7 @@ class Sale extends CI_Model
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
-				WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . '
+				' . $where . '
 				GROUP BY sale_id
 			)'
 		);
@@ -126,7 +135,7 @@ class Sale extends CI_Model
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . '
+				' . $where . '
 				GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id
 			)'
 		);
@@ -176,7 +185,14 @@ class Sale extends CI_Model
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
 
-		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		if (empty($this->config->item('filter_datetime_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(str_replace('%20', ' ', $filters['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20', ' ', $filters['end_date'])));
+		}
 
 		if(!empty($search))
 		{
@@ -250,7 +266,14 @@ class Sale extends CI_Model
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 
-		$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		if (empty($this->config->item('filter_datetime_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(str_replace('%20', ' ', $filters['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20', ' ', $filters['end_date'])));
+		}
 
 		if(!empty($search))
 		{
@@ -735,13 +758,20 @@ class Sale extends CI_Model
 
 		if(empty($input['sale_id']))
 		{
-			$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			if (empty($this->config->item('filter_datetime_format')))
+			{
+				$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			}
+			else
+			{
+				$where = 'WHERE sales.sale_time BETWEEN ' . $this->db->escape(str_replace('%20', ' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20', ' ', $inputs['end_date']));
+			}
 		}
 		else
 		{
 			$where = 'WHERE sales.sale_id = ' . $this->db->escape($inputs['sale_id']);
 		}
-
+		
 		// create a temporary table to contain all the payment types and amount
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
