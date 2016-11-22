@@ -16,20 +16,28 @@ class Summary_taxes extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$quantity_cond = '';
+		$where = '';
+		if (empty($this->config->item('filter_datetime_format')))
+		{
+			$where .= 'WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . ' ';
+		}
+		else
+		{
+			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(str_replace('%20',' ',$inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20',' ',$inputs['end_date'])) . ' ';
+		}
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$quantity_cond = 'AND quantity_purchased > 0';
+			$where .= 'AND quantity_purchased > 0';
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$quantity_cond = 'AND quantity_purchased < 0';
+			$where .= 'AND quantity_purchased < 0';
 		}
 
 		if($inputs['location_id'] != 'all')
 		{
-			$quantity_cond .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
+			$where .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
 		}
 
 		if($this->config->item('tax_included'))
@@ -59,7 +67,7 @@ class Summary_taxes extends Summary_report
 						ON sales_items.sale_id = sales.sale_id
 					LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 						ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-					WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . " $quantity_cond
+					' . " $where
 				) AS temp_taxes
 			GROUP BY percent"
 		);

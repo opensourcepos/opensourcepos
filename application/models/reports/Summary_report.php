@@ -17,6 +17,16 @@ abstract class Summary_report extends Report
 
 	private function _common_select(array $inputs)
 	{
+		$where = '';
+		if (empty($this->config->item('filter_datetime_format')))
+		{
+			$where .= 'WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . ' ';
+		}
+		else
+		{
+			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(str_replace('%20', ' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20', ' ', $inputs['end_date'])) . ' ';
+		}
+
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
 			' (INDEX(sale_id), INDEX(item_id))
@@ -29,7 +39,7 @@ abstract class Summary_report extends Report
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . '
+				' . $where . '
 				GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id
 			)'
 		);
@@ -69,7 +79,14 @@ abstract class Summary_report extends Report
 
 	private function _common_where(array $inputs)
 	{
-		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		if (empty($this->config->item('filter_datetime_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(str_replace('%20', ' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20', ' ', $inputs['end_date'])));
+		}
 
 		if($inputs['location_id'] != 'all')
 		{

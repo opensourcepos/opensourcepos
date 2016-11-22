@@ -69,11 +69,13 @@ class Item extends CI_Model
 			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
+
 		if(empty($this->config->item('filter_datetime_format')))
 		{
 			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
-		else{
+		else
+		{
 			$this->db->where('trans_date BETWEEN ' . $this->db->escape(str_replace('%20',' ', $filters['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20',' ', $filters['end_date'])));
 		}
 
