@@ -17,15 +17,6 @@ abstract class Summary_report extends Report
 
 	private function _common_select(array $inputs)
 	{
-		$where = "";
-		if(empty($this->config->item('filter_datetime_format')))
-		{
-			$where .= ' WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']).' ';
-		}
-		else
-		{
-			$where .= ' WHERE sale_time BETWEEN ' . $this->db->escape(str_replace('%20',' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20',' ', $inputs['end_date'])).' ';
-		}
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
 			' (INDEX(sale_id), INDEX(item_id))
@@ -38,10 +29,11 @@ abstract class Summary_report extends Report
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				'. $where .'
+				WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . '
 				GROUP BY sales_items_taxes.sale_id, sales_items_taxes.item_id
 			)'
 		);
+
 		if($this->config->item('tax_included'))
 		{
 			$sale_total = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
@@ -54,8 +46,11 @@ abstract class Summary_report extends Report
 			$sale_subtotal = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
 			$sale_tax = 'SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (sales_items_taxes.percent / 100))';
 		}
+
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+
 		$decimals = totals_decimals();
+
 		$this->db->select("
 				ROUND($sale_subtotal, $decimals) AS subtotal,
 				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
@@ -64,26 +59,23 @@ abstract class Summary_report extends Report
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit
 		");
 	}
+
 	private function _common_from()
 	{
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
 	}
+
 	private function _common_where(array $inputs)
 	{
-		if(empty($this->config->item('filter_datetime_format')))
-		{
-			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
-		}
-		else
-		{
-			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(str_replace('%20',' ', $inputs['start_date'])) . ' AND ' . $this->db->escape(str_replace('%20',' ', $inputs['end_date'])));
-		}
+		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+
 		if($inputs['location_id'] != 'all')
 		{
 			$this->db->where('item_location', $inputs['location_id']);
 		}
+
 		if($inputs['sale_type'] == 'sales')
         {
             $this->db->where('quantity_purchased > 0');
@@ -138,7 +130,7 @@ abstract class Summary_report extends Report
 		$this->_common_from();
 
 		$this->_common_where($inputs);
-		
+
 		return $this->db->get()->row_array();		
 	}
 }

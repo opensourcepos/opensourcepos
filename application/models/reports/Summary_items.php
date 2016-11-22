@@ -13,7 +13,7 @@ class Summary_items extends Summary_report
 	{
 		return array($this->lang->line('reports_item'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_tax'), $this->lang->line('reports_total'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
 	}
-	
+
 	protected function _select(array $inputs)
 	{
 		parent::_select($inputs);
@@ -34,7 +34,7 @@ class Summary_items extends Summary_report
 	protected function _group_order()
 	{
 		$this->db->group_by('items.item_id');
-		$this->db->order_by('items.name');		
+		$this->db->order_by('items.name');
 	}
 }
 ?>

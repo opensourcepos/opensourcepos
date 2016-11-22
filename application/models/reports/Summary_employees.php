@@ -13,7 +13,7 @@ class Summary_employees extends Summary_report
 	{
 		return array($this->lang->line('reports_employee'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_tax'), $this->lang->line('reports_total'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
 	}
-	
+
 	protected function _select(array $inputs)
 	{
 		parent::_select($inputs);

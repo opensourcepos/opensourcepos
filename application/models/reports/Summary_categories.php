@@ -23,7 +23,7 @@ class Summary_categories extends Summary_report
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 	}
-	
+
 	protected function _from()
 	{
 		parent::_from();

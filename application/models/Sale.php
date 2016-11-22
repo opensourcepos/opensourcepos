@@ -4,7 +4,7 @@ class Sale extends CI_Model
 	public function get_info($sale_id)
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
-		// create payments temp table to speed up the sales listing
+		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
 			'(
 				SELECT payments.sale_id AS sale_id, 
@@ -48,7 +48,7 @@ class Sale extends CI_Model
 		}
 
 		$decimals = totals_decimals();
-		
+
 		$this->db->select('
 				sales.sale_id AS sale_id,
 				DATE(sales.sale_time) AS sale_date,
@@ -63,7 +63,7 @@ class Sale extends CI_Model
 				customer_p.email AS email,
 				customer_p.comments AS comments,
 				' . "
-				IFNULL(ROUND($sale_total * $total, $decimals), ROUND($sale_total * $subtotal, $decimals)) AS amount_due,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
 				payments.sale_payment_amount AS amount_tendered,
 				(payments.sale_payment_amount - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
 				" . '
@@ -78,7 +78,7 @@ class Sale extends CI_Model
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
 
 		$this->db->where('sales.sale_id', $sale_id);
-		
+
 		$this->db->group_by('sales.sale_id');
 		$this->db->order_by('sales.sale_time', 'asc');
 
@@ -99,7 +99,7 @@ class Sale extends CI_Model
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_date', $order = 'desc')
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
-		// create payments temp table to speed up the sales listing
+		// create a temporary table to contain all the payments per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
@@ -760,7 +760,7 @@ class Sale extends CI_Model
 		);
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
-			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
+			' (INDEX(sale_date), INDEX(sale_id))
 			(
 				SELECT
 					DATE(sales.sale_time) AS sale_date,
