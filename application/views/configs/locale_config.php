@@ -344,6 +344,7 @@ $(document).ready(function()
 				number_locale: '<?php echo $this->lang->line('config_number_locale_invalid') ?>'
 			}
 		},
+
 		errorLabelContainer: "#locale_error_message_box"
 	}));
 });

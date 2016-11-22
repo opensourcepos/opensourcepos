@@ -13,7 +13,7 @@ class Summary_discounts extends Summary_report
 	{
 		return array($this->lang->line('reports_discount_percent'), $this->lang->line('reports_count'));
 	}
-	
+
 	public function getData(array $inputs)
 	{
 		$this->db->select('CONCAT(sales_items.discount_percent, "%") AS discount_percent, count(*) AS count');
