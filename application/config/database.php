@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => getenv('DB_HOSTNAME') ? getenv('DB_HOSTNAME') : '',
-	'username' => getenv('DB_USERNAME') ? getenv('DB_USERNAME') : '',
-	'password' => getenv('DB_PASSWORD') ? getenv('DB_PASSWORD') : '',
-	'database' => getenv('DB_DATABASE') ? getenv('DB_DATABASE') : '',
+	'hostname' => getenv('MYSQL_HOST_NAME') ? getenv('MYSQL_HOST_NAME') : '',
+	'username' => getenv('MYSQL_USERNAME') ? getenv('MYSQL_USERNAME') : '',
+	'password' => getenv('MYSQL_PASSWORD') ? getenv('MYSQL_PASSWORD') : '',
+	'database' => getenv('MYSQL_DB_NAME') ? getenv('MYSQL_DB_NAME') : '',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => 'ospos_',
 	'pconnect' => FALSE,
