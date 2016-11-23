@@ -16,9 +16,4 @@ COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
 RUN chmod 775 /app/public/uploads
 
-RUN cp application/config/database.php.tmpl application/config/database.php && \
-    sed -i -e "s/\(localhost\)/web/g" test/ospos.js && \
-    sed -i -e "s/\(user.*\?=.\).*\(.\)$/\1getenv('MYSQL_USERNAME')\2/g" application/config/database.php && \
-    sed -i -e "s/\(password.*\?=.\).*\(.\)$/\1getenv('MYSQL_PASSWORD')\2/g" application/config/database.php && \
-    sed -i -e "s/\(database.*\?=.\).*\(.\)$/\1getenv('MYSQL_DB_NAME')\2/g" application/config/database.php && \
-    sed -i -e "s/\(hostname.*\?=.\).*\(.\)$/\1getenv('MYSQL_HOST_NAME')\2/g" application/config/database.php
+RUN sed -i -e "s/\(localhost\)/web/g" test/ospos.js
