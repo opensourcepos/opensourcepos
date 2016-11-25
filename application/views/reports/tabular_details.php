@@ -35,7 +35,7 @@
 		};
 
 		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers_readonly($headers['summary']); ?>,
+			columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			pagination: true,

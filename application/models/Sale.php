@@ -733,7 +733,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		if(empty($input['sale_id']))
+		if(empty($inputs['sale_id']))
 		{
 			$where = 'WHERE DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}

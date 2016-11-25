@@ -225,7 +225,7 @@ class Receiving extends CI_Model
 	*/
 	public function create_temp_table(array $inputs)
 	{
-		if(empty($input['receiving_id']))
+		if(empty($inputs['receiving_id']))
 		{
 			$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}

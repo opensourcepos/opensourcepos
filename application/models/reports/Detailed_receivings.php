@@ -19,16 +19,15 @@ class Detailed_receivings extends Report
 	{
 		$columns = array(
 			'summary' => array(
-				'id' => $this->lang->line('reports_receiving_id'),
-				'receiving_date' => $this->lang->line('reports_date'),
-				'quantity' => $this->lang->line('reports_quantity'),
-				'employee' => $this->lang->line('reports_received_by'),
-				'supplier' => $this->lang->line('reports_supplied_by'),
-				'total' => $this->lang->line('reports_total'),
-				'payment_type' => $this->lang->line('reports_payment_type'),
-				'reference' => $this->lang->line('receivings_reference'),
-				'comment' => $this->lang->line('reports_comments'),
-				'edit' => ''),
+				array('id' => $this->lang->line('reports_receiving_id')),
+				array('receiving_date' => $this->lang->line('reports_date')),
+				array('quantity' => $this->lang->line('reports_quantity')),
+				array('employee' => $this->lang->line('reports_received_by')),
+				array('supplier' => $this->lang->line('reports_supplied_by')),
+				array('total' => $this->lang->line('reports_total')),
+				array('payment_type' => $this->lang->line('reports_payment_type')),
+				array('reference' => $this->lang->line('receivings_reference')),
+				array('comment' => $this->lang->line('reports_comments'))),
 			'details' => array(
 				$this->lang->line('reports_item_number'),
 				$this->lang->line('reports_name'),
