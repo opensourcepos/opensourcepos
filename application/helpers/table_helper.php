@@ -121,17 +121,11 @@ function transform_headers_readonly($array)
 	return json_encode($result);
 }
 
-function transform_headers($array, $readonly = FALSE)
+function transform_headers($array)
 {
 	$result = array();
-
-	if (!readonly)
-	{
-		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
-	}
-
-	$array[] = array('edit' => '');
-
+	$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)),
+		$array, array(array('edit' => '')));
 	foreach($array as $element)
 	{
 		$result[] = array('field' => key($element),

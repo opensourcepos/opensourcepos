@@ -19,18 +19,19 @@ class Detailed_sales extends Report
 	{
 		return array(
 			'summary' => array(
-				array('id' => $this->lang->line('reports_sale_id')),
-				array('sale_date' => $this->lang->line('reports_date')),
-				array('quantity' => $this->lang->line('reports_quantity')),
-				array('employee' => $this->lang->line('reports_sold_by')),
-				array('customer' => $this->lang->line('reports_sold_to')),
-				array('subtotal' => $this->lang->line('reports_subtotal')),
-				array('total' => $this->lang->line('reports_total')),
-				array('tax' => $this->lang->line('reports_tax')),
-				array('cost' => $this->lang->line('reports_cost')),
-				array('profit' => $this->lang->line('reports_profit')),
-				array('payment_type' => $this->lang->line('sales_amount_tendered')),
-				array('comment' => $this->lang->line('reports_comments'))),
+				'id' => $this->lang->line('reports_sale_id'),
+				'sale_date' => $this->lang->line('reports_date'),
+				'quantity' => $this->lang->line('reports_quantity'),
+				'employee' => $this->lang->line('reports_sold_by'),
+				'customer' => $this->lang->line('reports_sold_to'),
+				'subtotal' => $this->lang->line('reports_subtotal'),
+				'tax' => $this->lang->line('reports_tax'),
+				'total' => $this->lang->line('reports_total'),
+				'cost' => $this->lang->line('reports_cost'),
+				'profit' => $this->lang->line('reports_profit'),
+				'payment_type' => $this->lang->line('sales_amount_tendered'),
+				'comment' => $this->lang->line('reports_comments'),
+				'edit' => ''),
 			'details' => array(
 				$this->lang->line('reports_name'),
 				$this->lang->line('reports_category'),
@@ -43,7 +44,7 @@ class Detailed_sales extends Report
 				$this->lang->line('reports_cost'),
 				$this->lang->line('reports_profit'),
 				$this->lang->line('reports_discount'))
-		);		
+		);
 	}
 
 	public function getDataBySaleId($sale_id)
@@ -99,7 +100,7 @@ class Detailed_sales extends Report
 
 		if($inputs['location_id'] != 'all')
 		{
-		 	$this->db->where('item_location', $inputs['location_id']);
+			$this->db->where('item_location', $inputs['location_id']);
 		}
 
 		if($inputs['sale_type'] == 'sales')
