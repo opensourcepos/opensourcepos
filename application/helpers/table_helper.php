@@ -124,8 +124,14 @@ function transform_headers_readonly($array)
 function transform_headers($array)
 {
 	$result = array();
-	$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)),
-		$array, array(array('edit' => '')));
+
+	if (!readonly)
+	{
+		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
+	}
+
+	$array[] = array('edit' => '');
+
 	foreach($array as $element)
 	{
 		$result[] = array('field' => key($element),
@@ -137,7 +143,9 @@ function transform_headers($array)
 			'checkbox' => isset($element['checkbox']) ?
 				$element['checkbox'] : FALSE,
 			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ?
-				'print_hide' : '');
+				'print_hide' : '',
+			'sorter' => isset($element['sorter']) ?
+				$element ['sorter'] : '');
 	}
 	return json_encode($result);
 }

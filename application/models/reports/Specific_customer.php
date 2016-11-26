@@ -19,17 +19,17 @@ class Specific_customer extends Report
 	{
 		return array(
 			'summary' => array(
-				$this->lang->line('reports_sale_id'),
-				$this->lang->line('reports_date'),
-				$this->lang->line('reports_quantity'),
-				$this->lang->line('reports_sold_by'),
-				$this->lang->line('reports_subtotal'),
-				$this->lang->line('reports_tax'),
-				$this->lang->line('reports_total'),
-				$this->lang->line('reports_cost'),
-				$this->lang->line('reports_profit'),
-				$this->lang->line('reports_payment_type'),
-				$this->lang->line('reports_comments')),
+				array('id' => $this->lang->line('reports_sale_id')),
+				array('sale_date' => $this->lang->line('reports_date')),
+				array('quantity' => $this->lang->line('reports_quantity')),
+				array('sold_by' => $this->lang->line('reports_sold_by')),
+				array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'currency_sorter'),
+				array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'currency_sorter'),
+				array('total' => $this->lang->line('reports_total'), 'sorter' => 'currency_sorter'),
+				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'currency_sorter'),
+				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'currency_sorter'),
+				array('payment_type' => $this->lang->line('reports_payment_type')),
+				array('comments' => $this->lang->line('reports_comments'))),
 			'details' => array(
 				$this->lang->line('reports_name'),
 				$this->lang->line('reports_category'),

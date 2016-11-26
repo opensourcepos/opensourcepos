@@ -723,7 +723,18 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
-			$summary_data[] = $this->xss_clean(array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['employee_name'], to_currency($row['subtotal']), to_currency($row['tax']), to_currency($row['total']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']));
+			$summary_data[] = $this->xss_clean(array(
+				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee_name' => $row['employee_name'],
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit']),
+				'payment_type' => $row['payment_type'],
+				'comment' => $row['comment']));
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -776,7 +787,18 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
-			$summary_data[] = $this->xss_clean(array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['customer_name'], to_currency($row['subtotal']), to_currency($row['tax']), to_currency($row['total']), to_currency($row['cost']), to_currency($row['profit']), $row['payment_type'], $row['comment']));
+			$summary_data[] = $this->xss_clean(array(
+				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'customer_name' => $row['customer_name'],
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit']),
+				'payment_type' => $row['payment_type'],
+				'comment' => $row['comment']));
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -831,7 +853,18 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
-			$summary_data[] = $this->xss_clean(array(anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')), $row['sale_date'], to_quantity_decimals($row['items_purchased']), $row['customer_name'], to_currency($row['subtotal']), to_currency($row['tax']), to_currency($row['total']), to_currency($row['profit']), $row['payment_type'], $row['comment']));
+			$summary_data[] = $this->xss_clean(array(
+				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'customer_name' => $row['customer_name'],
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'profit' => to_currency($row['profit']),
+				'payment_type' => $row['payment_type'],
+				'comment' => $row['comment']
+			));
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -906,8 +939,8 @@ class Reports extends Secure_Controller
 				'id' => $row['sale_id'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
-				'employee' => $row['employee_name'],
-				'customer' => $row['customer_name'],
+				'employee_name' => $row['employee_name'],
+				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency($row['tax']),
 				'total' => to_currency($row['total']),
@@ -996,8 +1029,8 @@ class Reports extends Secure_Controller
 				'id' => $row['receiving_id'],
 				'receiving_date' => $row['receiving_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
-				'employee' => $row['employee_name'],
-				'supplier' => $row['supplier_name'],
+				'employee_name' => $row['employee_name'],
+				'supplier_name' => $row['supplier_name'],
 				'total' => to_currency($row['total']),
 				'payment_type' => $row['payment_type'],
 				'reference' => $row['reference'],

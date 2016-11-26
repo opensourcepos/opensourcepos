@@ -20,6 +20,16 @@
 </div>
 
 <script type="text/javascript">
+
+	function currency_sorter(a, b)
+	{
+		a = +a.replace(/[^0-9\.]+/g,"");
+		b = +b.replace(/[^0-9\.]+/g,"");
+		if (a > b) return 1;
+		if (a < b) return -1;
+		return 0;
+	}
+
 	$(document).ready(function()
 	{
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
@@ -28,6 +38,7 @@
 
 		var init_dialog = function()
 		{
+
 			<?php if (isset($editable)): ?>
 			table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
 			dialog_support.init("a.modal-dlg");
@@ -35,7 +46,7 @@
 		};
 
 		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers_readonly($headers['summary']); ?>,
+			columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			pagination: true,
@@ -56,7 +67,7 @@
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
-					data: detail_data[row.id || $(row[0]).text().replace(/(POS|RECV)\s*/g, '')]
+					data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 				});
 			}
 		});
