@@ -344,3 +344,12 @@ $(document).ready(function() {
 		$(window).block({ message: '' });
 	}
 });
+
+function currency_sorter(a, b)
+{
+	a = +a.replace(/[^0-9\.]+/g,"");
+	b = +b.replace(/[^0-9\.]+/g,"");
+	if (a > b) return 1;
+	if (a < b) return -1;
+	return 0;
+}

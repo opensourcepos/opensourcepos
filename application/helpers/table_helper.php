@@ -121,7 +121,7 @@ function transform_headers_readonly($array)
 	return json_encode($result);
 }
 
-function transform_headers($array, $readonly = FALSE)
+function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 {
 	$result = array();
 
@@ -130,7 +130,10 @@ function transform_headers($array, $readonly = FALSE)
 		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
 	}
 
-	$array[] = array('edit' => '');
+	if ($editable)
+	{
+		$array[] = array('edit' => '');
+	}
 
 	foreach($array as $element)
 	{

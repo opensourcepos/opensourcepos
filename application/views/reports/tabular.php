@@ -25,7 +25,7 @@
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers_readonly($headers); ?>,
+			columns: <?php echo transform_headers($headers, TRUE, FALSE); ?>,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			sortable: true,

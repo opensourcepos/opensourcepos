@@ -51,13 +51,14 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['sale_date'],
-				to_quantity_decimals($row['quantity_purchased']),
-				to_currency($row['subtotal']),
-				to_currency($row['tax']),
-				to_currency($row['total']),
-				to_currency($row['cost']),
-				to_currency($row['profit'])
+			$tabular_data[] = $this->xss_clean(array(
+				'sale_date' => $row['sale_date'],
+				'quantity' => to_quantity_decimals($row['quantity_purchased']),
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit'])
 			));
 		}
 
@@ -86,13 +87,14 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['category'],
-				to_quantity_decimals($row['quantity_purchased']),
-				to_currency($row['subtotal']),
-				to_currency($row['tax']),
-				to_currency($row['total']),
-				to_currency($row['cost']),
-				to_currency($row['profit'])
+			$tabular_data[] = $this->xss_clean(array(
+				'category' => $row['category'],
+				'quantity' => to_quantity_decimals($row['quantity_purchased']),
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit'])
 			));
 		}
 
@@ -121,13 +123,14 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['customer'],
-				to_quantity_decimals($row['quantity_purchased']),
-				to_currency($row['subtotal']),
-				to_currency($row['tax']),
-				to_currency($row['total']),
-				to_currency($row['cost']),
-				to_currency($row['profit'])
+			$tabular_data[] = $this->xss_clean(array(
+				'customer_name' => $row['customer'],
+				'quantity' => to_quantity_decimals($row['quantity_purchased']),
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit'])
 			));
 		}
 
@@ -156,13 +159,14 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['supplier'],
-				to_quantity_decimals($row['quantity_purchased']),
-				to_currency($row['subtotal']),
-				to_currency($row['tax']),
-				to_currency($row['total']),
-				to_currency($row['cost']),
-				to_currency($row['profit'])
+			$tabular_data[] = $this->xss_clean(array(
+				'supplier_name' => $row['supplier'],
+				'quantity' => to_quantity_decimals($row['quantity_purchased']),
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit'])
 			));
 		}
 
@@ -191,13 +195,14 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['name'],
-				to_quantity_decimals($row['quantity_purchased']),
-				to_currency($row['subtotal']),
-				to_currency($row['tax']),
-				to_currency($row['total']),
-				to_currency($row['cost']),
-				to_currency($row['profit'])
+			$tabular_data[] = $this->xss_clean(array(
+				'item_name' => $row['name'],
+				'quantity' => to_quantity_decimals($row['quantity_purchased']),
+				'subtotal' => to_currency($row['subtotal']),
+				'tax'  => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit'])
 			));
 		}
 
@@ -226,13 +231,14 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['employee'],
-				to_quantity_decimals($row['quantity_purchased']),
-				to_currency($row['subtotal']),
-				to_currency($row['tax']),
-				to_currency($row['total']),
-				to_currency($row['cost']),
-				to_currency($row['profit'])
+			$tabular_data[] = $this->xss_clean(array(
+				'employee_name' => $row['employee'],
+				'quantity' => to_quantity_decimals($row['quantity_purchased']),
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
+				'profit' => to_currency($row['profit'])
 			));
 		}
 
@@ -261,11 +267,12 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['percent'], 
-				$row['count'], 
-				to_currency($row['subtotal']), 
-				to_currency($row['tax']), 
-				to_currency($row['total'])
+			$tabular_data[] = $this->xss_clean(array(
+				'tax_percent' => $row['percent'],
+				'report_count' => $row['count'],
+				'subtotal' => to_currency($row['subtotal']),
+				'tax' => to_currency($row['tax']),
+				'total' => to_currency($row['total'])
 			));
 		}
 
@@ -294,8 +301,9 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['discount_percent'], 
-				$row['count']
+			$tabular_data[] = $this->xss_clean(array(
+				'discount' => $row['discount_percent'],
+				'count' => $row['count']
 			));
 		}
 
@@ -324,9 +332,10 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['payment_type'],
-				$row['count'],
-				to_currency($row['payment_amount'])
+			$tabular_data[] = $this->xss_clean(array(
+				'payment_type' => $row['payment_type'],
+				'report_count' => $row['count'],
+				'amount_tendered' => to_currency($row['payment_amount'])
 			));
 		}
 
@@ -899,8 +908,8 @@ class Reports extends Secure_Controller
 			'sale_id' => $report_data['sale_id'],
 			'sale_date' => $report_data['sale_date'],
 			'quantity' => to_quantity_decimals($report_data['items_purchased']),
-			'employee' => $report_data['employee_name'],
-			'customer' => $report_data['customer_name'],
+			'employee_name' => $report_data['employee_name'],
+			'customer_name' => $report_data['customer_name'],
 			'subtotal' => to_currency($report_data['subtotal']),
 			'tax' => to_currency($report_data['tax']),
 			'total' => to_currency($report_data['total']),
@@ -992,8 +1001,8 @@ class Reports extends Secure_Controller
 			'receiving_id' => $report_data['receiving_id'],
 			'receiving_date' => $report_data['receiving_date'],
 			'quantity' => to_quantity_decimals($report_data['items_purchased']),
-			'employee' => $report_data['employee_name'],
-			'supplier' => $report_data['supplier_name'],
+			'employee_name' => $report_data['employee_name'],
+			'supplier_name' => $report_data['supplier_name'],
 			'total' => to_currency($report_data['total']),
 			'payment_type' => $report_data['payment_type'],
 			'reference' => $report_data['reference'],
@@ -1076,11 +1085,12 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['name'],
-				$row['item_number'],
-				to_quantity_decimals($row['quantity']), 
-				to_quantity_decimals($row['reorder_level']), 
-				$row['location_name']
+			$tabular_data[] = $this->xss_clean(array(
+				'item_name' => $row['name'],
+				'item_number' => $row['item_number'],
+				'quantity' => to_quantity_decimals($row['quantity']),
+				'reorder_level' => to_quantity_decimals($row['reorder_level']),
+				'location_name' => $row['location_name']
 			));
 		}
 
@@ -1122,14 +1132,15 @@ class Reports extends Secure_Controller
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
-			$tabular_data[] = $this->xss_clean(array($row['name'],
-				$row['item_number'],
-				to_quantity_decimals($row['quantity']),
-				to_quantity_decimals($row['reorder_level']),
-				$row['location_name'],
-				to_currency($row['cost_price']),
-				to_currency($row['unit_price']),
-				to_currency($row['sub_total_value'])
+			$tabular_data[] = $this->xss_clean(array(
+				'item_name' => $row['name'],
+				'item_number' => $row['item_number'],
+				'quantity' => to_quantity_decimals($row['quantity']),
+				'reorder_level' => to_quantity_decimals($row['reorder_level']),
+				'location_name' => $row['location_name'],
+				'cost_price' => to_currency($row['cost_price']),
+				'unit_price' => to_currency($row['unit_price']),
+				'subtotal' => to_currency($row['sub_total_value'])
 			));
 		}
 

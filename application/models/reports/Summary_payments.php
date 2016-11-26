@@ -11,7 +11,10 @@ class Summary_payments extends Summary_report
 	
 	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_payment_type'), $this->lang->line('reports_count'), $this->lang->line('sales_amount_tendered'));
+		return array(
+			array('payment_type' => $this->lang->line('reports_payment_type')),
+			array('report_count' => $this->lang->line('reports_count')),
+			array('amount_tendered' => $this->lang->line('sales_amount_tendered'), 'sorter' => 'currency_sorter'));
 	}
 	
 	public function getData(array $inputs)

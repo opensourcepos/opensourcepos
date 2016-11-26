@@ -11,7 +11,9 @@ class Summary_discounts extends Summary_report
 	
 	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_discount_percent'), $this->lang->line('reports_count'));
+		return array(
+			array('discount' => $this->lang->line('reports_discount_percent')),
+			array('count' => $this->lang->line('reports_count')));
 	}
 
 	public function getData(array $inputs)
