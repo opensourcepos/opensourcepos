@@ -12,11 +12,11 @@ class Summary_taxes extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('tax_percent' => $this->lang->line('reports_tax_percent'), 'sorter' => 'currency_sorter'),
+			array('tax' => $this->lang->line('reports_tax_percent'), 'sorter' => 'number_sorter'),
 			array('report_count' => $this->lang->line('reports_count')),
-			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'currency_sorter'),
-			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'currency_sorter'),
-			array('total' => $this->lang->line('reports_total'), 'sorter' => 'currency_sorter'));
+			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)

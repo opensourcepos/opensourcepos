@@ -14,11 +14,11 @@ class Summary_sales extends Summary_report
 		return array(
 			array('sale_date' => $this->lang->line('reports_date')),
 			array('quantity' => $this->lang->line('reports_quantity')),
-			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'currency_sorter'),
-			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'currency_sorter'),
-			array('total' => $this->lang->line('reports_total'), 'sorter' => 'currency_sorter'),
-			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'currency_sorter'),
-			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'currency_sorter'));
+			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
+			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
+			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
 	}
 
 	protected function _select(array $inputs)

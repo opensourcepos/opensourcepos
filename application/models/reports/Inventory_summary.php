@@ -16,9 +16,9 @@ class Inventory_summary extends Report
 					array('quantity' => $this->lang->line('reports_quantity')),
 					array('reorder_level' => $this->lang->line('reports_reorder_level')),
 					array('location_name' => $this->lang->line('reports_stock_location')),
-					array('cost_price' => $this->lang->line('reports_cost_price'), 'sorter' => 'currency_sorter'),
-					array('unit_price' => $this->lang->line('reports_unit_price'), 'sorter' => 'currency_sorter'),
-					array('subtotal' => $this->lang->line('reports_sub_total_value'), 'sorter' => 'currency_sorter'));
+					array('cost_price' => $this->lang->line('reports_cost_price'), 'sorter' => 'number_sorter'),
+					array('unit_price' => $this->lang->line('reports_unit_price'), 'sorter' => 'number_sorter'),
+					array('subtotal' => $this->lang->line('reports_sub_total_value'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)
