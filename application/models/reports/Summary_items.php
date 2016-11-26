@@ -17,7 +17,7 @@ class Summary_items extends Summary_report
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'currency_sorter'),
 			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'currency_sorter'),
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'currency_sorter'),
-			array('cost', $this->lang->line('reports_cost'), 'sorter' => 'currency_sorter'),
+			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'currency_sorter'),
 			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'currency_sorter'));
 	}
 
