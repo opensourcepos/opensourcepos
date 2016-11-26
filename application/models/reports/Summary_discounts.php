@@ -12,7 +12,7 @@ class Summary_discounts extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('discount' => $this->lang->line('reports_discount_percent')),
+			array('discount' => $this->lang->line('reports_discount_percent'), 'sorter' => 'currency_sorter'),
 			array('count' => $this->lang->line('reports_count')));
 	}
 
