@@ -52,11 +52,20 @@ class Sale_suspended extends CI_Model
 		return $this->db->update('sales_suspended', $sale_data);
 	}
 	
-	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id = FALSE)
+	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $dinner_table, $sale_id = FALSE)
 	{
 		if(count($items) == 0)
 		{
 			return -1;
+		}
+
+		if($dinner_table > 2)	//not delivery or take away
+		{
+			$table_status = 1;
+		}
+		else
+		{
+			$table_status = 0;
 		}
 
 		$sales_data = array(
@@ -64,7 +73,8 @@ class Sale_suspended extends CI_Model
 			'customer_id'    => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'    => $employee_id,
 			'comment'        => $comment,
-			'invoice_number' => $invoice_number
+			'invoice_number' => $invoice_number,
+			'dinner_table_id'	 => $dinner_table
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
@@ -121,6 +131,13 @@ class Sale_suspended extends CI_Model
 			}
 		}
 
+		$dinner_table_data = array(
+			'status' => $table_status
+		);
+
+		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->update('dinner_tables', $dinner_table_data);
+
 		$this->db->trans_complete();
 		
 		if($this->db->trans_status() === FALSE)
@@ -136,6 +153,14 @@ class Sale_suspended extends CI_Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
+		$dinner_table = $this->get_dinner_table($sale_id);
+		$dinner_table_data = array(
+			'status' => 0
+		);
+
+		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->update('dinner_tables', $dinner_table_data);
+
 		$this->db->delete('sales_suspended_payments', array('sale_id' => $sale_id)); 
 		$this->db->delete('sales_suspended_items_taxes', array('sale_id' => $sale_id)); 
 		$this->db->delete('sales_suspended_items', array('sale_id' => $sale_id)); 
@@ -168,6 +193,14 @@ class Sale_suspended extends CI_Model
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->db->get()->row()->comment;
+	}
+
+	public function get_dinner_table($sale_id)
+	{
+		$this->db->from('sales_suspended');
+		$this->db->where('sale_id', $sale_id);
+
+		return $this->db->get()->row()->dinner_table_id;
 	}
 }
 ?>

@@ -505,10 +505,12 @@ CREATE TABLE `ospos_sales` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `dinner_table_id` int(11) NOT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
   KEY `sale_time` (`sale_time`),
+  KEY `dinner_table_id` (`dinner_table_id`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
@@ -599,9 +601,11 @@ CREATE TABLE `ospos_sales_suspended` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `dinner_table_id` int(11) NOT NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
-  KEY `employee_id` (`employee_id`)
+  KEY `employee_id` (`employee_id`),
+  KEY `dinner_table_id` (`dinner_table_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
 --
@@ -728,6 +732,25 @@ CREATE TABLE `ospos_suppliers` (
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_dinner_tables`
+--
+
+CREATE TABLE `ospos_dinner_tables` (
+  `dinner_table_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`dinner_table_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted`) VALUES
+(1, 'Delivery', 0, 0),
+(2, 'Take Away', 0, 0);
+
+
 --
 -- Dumping data for table `ospos_suppliers`
 --
@@ -809,7 +832,8 @@ ALTER TABLE `ospos_receivings_items`
 --
 ALTER TABLE `ospos_sales`
   ADD CONSTRAINT `ospos_sales_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`),
-  ADD CONSTRAINT `ospos_sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `ospos_customers` (`person_id`);
+  ADD CONSTRAINT `ospos_sales_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `ospos_customers` (`person_id`),
+  ADD CONSTRAINT `ospos_sales_ibfk_3` FOREIGN KEY (`dinner_table_id`) REFERENCES `ospos_dinner_tables` (`dinner_table_id`);
 
 --
 -- Constraints for table `ospos_sales_items`
@@ -837,7 +861,8 @@ ALTER TABLE `ospos_sales_payments`
 --
 ALTER TABLE `ospos_sales_suspended`
   ADD CONSTRAINT `ospos_sales_suspended_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `ospos_customers` (`person_id`);
+  ADD CONSTRAINT `ospos_sales_suspended_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `ospos_customers` (`person_id`),
+  ADD CONSTRAINT `ospos_sales_suspended_ibfk_3` FOREIGN KEY (`dinner_table_id`) REFERENCES `ospos_dinner_tables` (`dinner_table_id`);
 
 --
 -- Constraints for table `ospos_sales_suspended_items`

@@ -192,6 +192,7 @@ class Config extends Secure_Controller
 	public function index()
 	{
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
+		$data['dinner_tables'] = $this->Dinner_table->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		
@@ -370,10 +371,20 @@ class Config extends Secure_Controller
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
 	} 
 	
+	public function dinner_tables() 
+	{
+		$dinner_tables = $this->Dinner_table->get_all()->result_array();
+		
+		$dinner_tables = $this->xss_clean($dinner_tables);
+
+		$this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables));
+	} 
+	
 	private function _clear_session_state()
 	{
 		$this->load->library('sale_lib');
 		$this->sale_lib->clear_sale_location();
+		$this->sale_lib->clear_table();
 		$this->sale_lib->clear_all();
 		$this->load->library('receiving_lib');
 		$this->receiving_lib->clear_stock_source();
@@ -405,6 +416,44 @@ class Config extends Secure_Controller
 		foreach ($deleted_locations as $location_id => $location_name)
 		{
 			$this->Stock_location->delete($location_id);
+		}
+
+		$this->db->trans_complete();
+		
+		$success = $this->db->trans_status();
+		
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
+
+	public function save_tables() 
+	{
+		$this->db->trans_start();
+		
+		$deleted_tables = $this->Dinner_table->get_all()->result_array();
+		$not_to_delete = array();
+		foreach($this->input->post() as $key => $value)
+		{
+			if (strstr($key, 'dinner_table'))
+			{
+				$dinner_table_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+				$not_to_delete[] = $dinner_table_id;
+
+				// save or update
+				$table_data = array('name' => $value);
+				if ($this->Dinner_table->save($table_data, $dinner_table_id))
+				{
+					$this->_clear_session_state();
+				}
+			}
+		}
+
+		// all locations not available in post will be deleted now
+		foreach ($deleted_tables as $dinner_table)
+		{
+			if(!in_array($dinner_table['dinner_table_id'],$not_to_delete))
+			{			
+				$this->Dinner_table->delete($dinner_table['dinner_table_id']);
+			}
 		}
 
 		$this->db->trans_complete();
