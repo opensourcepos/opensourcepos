@@ -3,13 +3,20 @@
 class Sale_lib
 {
 	private $CI;
+    private $line_sequence_options = array('0' => 'Standard', '1' => 'Entry', '2' => 'Group by Type', '3' => 'Group by Category');
 
   	public function __construct()
 	{
 		$this->CI =& get_instance();
 	}
 
-	public function get_cart()
+    public function get_line_sequence_options()
+    {
+        return $this->line_sequence_options;
+    }
+
+
+    public function get_cart()
 	{
 		if(!$this->CI->session->userdata('sales_cart'))
 		{
@@ -387,16 +394,20 @@ class Sale_lib
 		//make sure item exists		
 		if($item_id != -1)
 		{
-			$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
-			$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
+            $item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
-			if($item_quantity - $quantity_added < 0)
-			{
-				return $this->CI->lang->line('sales_quantity_less_than_zero');
-			}
-			elseif($item_quantity - $quantity_added < $this->CI->Item->get_info_by_id_or_number($item_id)->reorder_level)
-			{
-				return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
+            if ($item_info->stock_type === 0) {
+                $item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
+                $quantity_added = $this->get_quantity_already_added($item_id, $item_location);
+
+                if($item_quantity - $quantity_added < 0)
+                {
+                    return $this->CI->lang->line('sales_quantity_less_than_zero');
+                }
+                elseif($item_quantity - $quantity_added < $item_info->reorder_level)
+                {
+                    return $this->CI->lang->line('sales_quantity_less_than_reorder_level');
+                }
 			}
 		}
 
@@ -468,7 +479,7 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
+		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
 			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
@@ -496,7 +507,7 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
-		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
+		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}

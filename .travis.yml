@@ -12,10 +12,8 @@ before_install:
     - sudo mv docker-compose /usr/local/bin
 script:
     - docker-compose build
-    - docker-compose up -d
 env: 
     - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success:
-    - 
     - '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker tag opensourcepos_sqlscript jekkos/opensourcepos:sqlscript && docker push "jekkos/opensourcepos:$TAG" &&  docker push jekkos/opensourcepos:sqlscript'
 

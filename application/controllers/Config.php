@@ -9,6 +9,7 @@ class Config extends Secure_Controller
 		parent::__construct('config');
 
 		$this->load->library('barcode_lib');
+        $this->load->library('Sale_lib');
 	}
 
 	/*
@@ -194,7 +195,8 @@ class Config extends Secure_Controller
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
-		
+        $data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
+
 		$data = $this->xss_clean($data);
 		
 		// load all the license statements, they are already XSS cleaned in the private function
@@ -372,7 +374,6 @@ class Config extends Secure_Controller
 	
 	private function _clear_session_state()
 	{
-		$this->load->library('sale_lib');
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_all();
 		$this->load->library('receiving_lib');
@@ -469,7 +470,8 @@ class Config extends Secure_Controller
 			'sales_invoice_format' => $this->input->post('sales_invoice_format'),
 			'recv_invoice_format' => $this->input->post('recv_invoice_format'),
 			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
-			'invoice_email_message' => $this->input->post('invoice_email_message')
+			'invoice_email_message' => $this->input->post('invoice_email_message'),
+			'line_sequence' => $this->input->post('line_sequence')
 		);
 
     	$result = $this->Appconfig->batch_save($batch_save_data);

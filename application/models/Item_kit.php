@@ -46,7 +46,41 @@ class Item_kit extends CI_Model
 	*/
 	public function get_info($item_kit_id)
 	{
-		$this->db->from('item_kits');
+	    $this->db->select('
+	    item_kit_id, 
+	    item_kits.name as name, 
+	    items.name as item_name, 
+	    item_kits.description, 
+	    items.description as item_description, 
+	    item_kits.item_id as kit_item_id, 
+	    kit_discount_percent, 
+	    price_option, 
+	    print_option, 
+	    category, 
+	    supplier_id, 
+	    item_number, 
+	    cost_price, 
+	    unit_price, 
+	    reorder_level, 
+	    receiving_quantity, 
+	    pic_id, 
+	    allow_alt_description, 
+	    is_serialized, 
+	    deleted, 
+	    custom1, 
+	    custom2, 
+	    custom3, 
+	    custom4, 
+	    custom5, 
+	    custom6, 
+	    custom7, 
+	    custom8, 
+	    custom9, 
+	    custom10,
+	    item_type');
+
+    $this->db->from('item_kits');
+		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$this->db->where('item_kit_id', $item_kit_id);
 		
 		$query = $this->db->get();
@@ -71,8 +105,21 @@ class Item_kit extends CI_Model
 	}
 
 	/*
-	Gets information about multiple item kits
-	*/
+	Returns true if an item kit exists for the given name
+    */
+    public function item_kit_exists_for_name($name)
+    {
+        $this->db->from('item_kits');
+        $this->db->where('name', $name);
+
+        return ($this->db->get()->num_rows() == 1);
+    }
+
+
+
+    /*
+    Gets information about multiple item kits
+    */
 	public function get_multiple_info($item_kit_ids)
 	{
 		$this->db->from('item_kits');
@@ -87,7 +134,7 @@ class Item_kit extends CI_Model
 	*/
 	public function save(&$item_kit_data, $item_kit_id = FALSE)
 	{
-		if(!$item_kit_id || !$this->exists($item_kit_id))
+        if(!$item_kit_id || !$this->exists($item_kit_id))
 		{
 			if($this->db->insert('item_kits', $item_kit_data))
 			{

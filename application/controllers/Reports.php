@@ -931,10 +931,11 @@ class Reports extends Secure_Controller
 		
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
-		
+
 		$model->create($inputs);
 
 		$headers = $this->xss_clean($model->getDataColumns());
+
 		$report_data = $model->getData($inputs);
 
 		$summary_data = array();
@@ -973,7 +974,7 @@ class Reports extends Secure_Controller
 			}
 		}
 
-		$data = array(
+        $data = array(
 			'title' => $this->lang->line('reports_detailed_sales_report'),
 			'subtitle' => date($this->config->item('dateformat'), strtotime($start_date)) . '-' . date($this->config->item('dateformat'), strtotime($end_date)),
 			'headers' => $headers,
@@ -1041,6 +1042,7 @@ class Reports extends Secure_Controller
 				'employee_name' => $row['employee_name'],
 				'supplier_name' => $row['supplier_name'],
 				'total' => to_currency($row['total']),
+                'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
 				'reference' => $row['reference'],
 				'comment' => $row['comment'],

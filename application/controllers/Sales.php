@@ -245,60 +245,82 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
-	public function add()
-	{
-		$data = array();
-		
-		$discount = 0;
+    public function add()
+    {
+        $data = array();
 
-		// check if any discount is assigned to the selected customer
-		$customer_id = $this->sale_lib->get_customer();
-		if($customer_id != -1)
-		{
-			// load the customer discount if any
-			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
-			if($discount_percent != '')
-			{
-				$discount = $discount_percent;
-			}
-		}
+        $discount = 0;
 
-		// if the customer discount is 0 or no customer is selected apply the default sales discount
-		if($discount == 0)
-		{
-			$discount = $this->config->item('default_sales_discount');
-		}
+        // check if any discount is assigned to the selected customer
+        $customer_id = $this->sale_lib->get_customer();
+        if($customer_id != -1)
+        {
+            // load the customer discount if any
+            $discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+            if($discount_percent != '')
+            {
+                $discount = $discount_percent;
+            }
+        }
 
-		$mode = $this->sale_lib->get_mode();
-		$quantity = ($mode == 'return') ? -1 : 1;
-		$item_location = $this->sale_lib->get_sale_location();
-		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
+        // if the customer discount is 0 or no customer is selected apply the default sales discount
+        if($discount == 0)
+        {
+            $discount = $this->config->item('default_sales_discount');
+        }
 
-		if($mode == 'return' && $this->Sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
-		{
-			$this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
-		}
-		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
-		{
-			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount))
-			{
-				$data['error'] = $this->lang->line('sales_unable_to_add_item');
-			}
-		}
-		else
-		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
-			{
-				$data['error'] = $this->lang->line('sales_unable_to_add_item');
-			}
-			else
-			{
-				$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
-			}
-		}
+        $mode = $this->sale_lib->get_mode();
+        $quantity = ($mode == 'return') ? -1 : 1;
+        $item_location = $this->sale_lib->get_sale_location();
+        $item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
 
-		$this->_reload($data);
-	}
+        if($mode == 'return' && $this->Sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
+        {
+            $this->sale_lib->return_entire_sale($item_id_or_number_or_item_kit_or_receipt);
+        }
+        elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
+        {
+
+            // Add kit item to order if one is assigned
+            $pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
+            $item_kit_id = $pieces[1];
+            $item_kit_info = $this->Item_kit->get_info($item_kit_id);
+            $kit_item_id = $item_kit_info->kit_item_id;
+
+            if ($kit_item_id !== '')
+            {
+                if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount))
+                {
+                    $data['error'] = $this->lang->line('sales_unable_to_add_item');
+                }
+                else
+                {
+                    $data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+                }
+            }
+
+            // Add kit items to order
+            if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount))
+            {
+                $data['error'] = $this->lang->line('sales_unable_to_add_item');
+            }
+
+
+        }
+        else
+        {
+            if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
+            {
+                $data['error'] = $this->lang->line('sales_unable_to_add_item');
+            }
+            else
+            {
+                $data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+            }
+        }
+
+        $this->_reload($data);
+    }
 
 	public function edit_item($item_id)
 	{
@@ -366,7 +388,7 @@ class Sales extends Secure_Controller
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
-		$data['employee'] = $employee_info->first_name  . ' ' . $employee_info->last_name;
+		$data['employee'] = $employee_info->first_name  . ' ' . $employee_info->last_name[0];
 		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone'),
@@ -608,7 +630,7 @@ class Sales extends Secure_Controller
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
-		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
 		$data['sale_id_num'] = $sale_id;

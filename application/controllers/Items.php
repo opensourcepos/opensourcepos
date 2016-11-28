@@ -174,9 +174,11 @@ class Items extends Secure_Controller
 		{
 			$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate');
 			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
-			
+
 			$item_info->receiving_quantity = 0;
 			$item_info->reorder_level = 0;
+			$item_info->item_type = '0'; // standard
+            $item_info->stock_type = '0'; // stock
 		}
 
 		$data['item_info'] = $item_info;
@@ -190,8 +192,11 @@ class Items extends Secure_Controller
 		$data['selected_supplier'] = $item_info->supplier_id;
 
 		$data['logo_exists'] = $item_info->pic_id != '';
-		$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
-		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+		if (!empty($item_info->pic_id))
+		{
+			$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
+			$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+		}
 
 		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($stock_locations as $location)
@@ -320,6 +325,8 @@ class Items extends Secure_Controller
 			'name' => $this->input->post('name'),
 			'description' => $this->input->post('description'),
 			'category' => $this->input->post('category'),
+            'item_type' => $this->input->post('item_type'),
+            'stock_type' => $this->input->post('stock_type'),
 			'supplier_id' => $this->input->post('supplier_id') == '' ? NULL : $this->input->post('supplier_id'),
 			'item_number' => $this->input->post('item_number') == '' ? NULL : $this->input->post('item_number'),
 			'cost_price' => parse_decimals($this->input->post('cost_price')),
@@ -430,8 +437,27 @@ class Items extends Secure_Controller
 		$exists = $this->Item->item_number_exists($this->input->post('item_number'), $this->input->post('item_id'));
 		echo !$exists ? 'true' : 'false';
 	}
-	
-	private function _handle_image_upload()
+
+    /*
+    If adding a new item check to see if an item kit with the same name as the item already exists.
+    */
+    public function check_kit_exists()
+    {
+    	error_log('>>> Items.check_kit_exists');
+    	error_log('>>> Items.check_kit_exists item_number' . $this->input->post('item_number'));
+        error_log('>>> Items.check_kit_exists item_number' . $this->input->post('name'));
+    	if ($this->input->post('item_number') === -1)
+		{
+            $exists = $this->Item_kit->item_kit_exists_for_name($this->input->post('name'));
+		}
+		else
+		{
+			$exists  = false;
+		}
+        echo !$exists ? 'true' : 'false';
+    }
+
+    private function _handle_image_upload()
 	{
 		$this->load->helper('directory');
 

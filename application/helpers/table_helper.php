@@ -137,6 +137,7 @@ function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 
 	foreach($array as $element)
 	{
+        reset($element);
 		$result[] = array('field' => key($element),
 			'title' => current($element),
 			'switchable' => isset($element['switchable']) ?

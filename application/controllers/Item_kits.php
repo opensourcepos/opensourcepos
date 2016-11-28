@@ -82,62 +82,90 @@ class Item_kits extends Secure_Controller
 	}
 	
 	public function view($item_kit_id = -1)
-	{
+    {
 		$info = $this->Item_kit->get_info($item_kit_id);
+
+        if($item_kit_id == -1)
+        {
+            $info->price_option = '0';
+            $info->print_option = '0';
+        }
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $this->xss_clean($value);
 		}
-		$data['item_kit_info']  = $info;
-		
+
+        $data['item_kit_info']  = $info;
+
 		$items = array();
 		foreach($this->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
+            $item['kit_sequence'] = $this->xss_clean($item_kit_item['kit_sequence']);
 			$item['name'] = $this->xss_clean($this->Item->get_info($item_kit_item['item_id'])->name);
 			$item['item_id'] = $this->xss_clean($item_kit_item['item_id']);
 			$item['quantity'] = $this->xss_clean($item_kit_item['quantity']);
-			
-			$items[] = $item;
+
+            $items[] = $item;
 		}
+
 		$data['item_kit_items'] = $items;
 
-		$this->load->view("item_kits/form", $data);
+        $data['selected_kit_item_id'] = $info->kit_item_id;
+        $data['selected_kit_item'] = ($item_kit_id > 0 && isset($info->kit_item_id)) ? $info->item_name : '';
+
+        $this->load->view("item_kits/form", $data);
 	}
 	
 	public function save($item_kit_id = -1)
 	{
 		$item_kit_data = array(
 			'name' => $this->input->post('name'),
+            'item_id' => $this->input->post('kit_item_id'),
+            'kit_discount_percent' => $this->input->post('kit_discount_percent'),
+            'price_option' => $this->input->post('price_option'),
+            'print_option' => $this->input->post('print_option'),
 			'description' => $this->input->post('description')
 		);
 		
 		if($this->Item_kit->save($item_kit_data, $item_kit_id))
 		{
 			$success = TRUE;
+            $new_item = FALSE;
 			//New item kit
 			if ($item_kit_id == -1)
 			{
 				$item_kit_id = $item_kit_data['item_kit_id'];
+                $new_item = TRUE;
 			}
 
-			if($this->input->post('item_kit_item') != NULL)
+			if($this->input->post('item_kit_qty') != NULL)
 			{
-				$item_kit_items = array();
-				foreach($this->input->post('item_kit_item') as $item_id => $quantity)
+                $item_kit_items = array();
+				foreach($this->input->post('item_kit_qty') as $item_id => $quantity)
 				{
+                    $seq = $this->input->post('item_kit_seq[' . $item_id . ']');
+                    error_log('>>>Item_kits.save ' . $item_id . ', seq-' . $seq . ', qty-' . $quantity);
 					$item_kit_items[] = array(
 						'item_id' => $item_id,
-						'quantity' => $quantity
+						'quantity' => $quantity,
+                        'kit_sequence' => $seq
 					);
 				}
 
-				$success = $this->Item_kit_items->save($item_kit_items, $item_kit_id);
 			}
 
-			$item_kit_data = $this->xss_clean($item_kit_data);
+            $success = $this->Item_kit_items->save($item_kit_items, $item_kit_id);
 
-			echo json_encode(array('success' => $success,
-								'message' => $this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+            $item_kit_data = $this->xss_clean($item_kit_data);
+
+			if($new_item) {
+                echo json_encode(array('success' => $success,
+                    'message' => $this->lang->line('item_kits_successful_adding').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+
+            } else {
+                echo json_encode(array('success' => $success,
+                    'message' => $this->lang->line('item_kits_successful_updating').' '.$item_kit_data['name'], 'id' => $item_kit_id));
+            }
 		}
 		else//failure
 		{

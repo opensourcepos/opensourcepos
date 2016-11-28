@@ -197,6 +197,8 @@ CREATE TABLE `ospos_items` (
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
   `pic_id` int(10) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
+  `item_type` TINYINT(2) NOT NULL DEFAULT 0,
+  `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `is_serialized` tinyint(1) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(25) NOT NULL,
@@ -247,6 +249,10 @@ CREATE TABLE `ospos_item_kits` (
   `item_kit_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
+  `item_id` INT(10) NOT NULL DEFAULT 0,
+  `kit_discount_percent` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+  `price_option` TINYINT(2) NOT NULL DEFAULT 0,
+  `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`item_kit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
@@ -265,6 +271,7 @@ CREATE TABLE `ospos_item_kit_items` (
   `item_kit_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `quantity` decimal(15,3) NOT NULL,
+  `kit_sequence` INT(3) NOT NULL DEFAULT 0,
   PRIMARY KEY (`item_kit_id`,`item_id`,`quantity`),
   KEY `ospos_item_kit_items_ibfk_2` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
