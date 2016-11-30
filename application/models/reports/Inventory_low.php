@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 class Inventory_low extends Report
 {
 	function __construct()
@@ -9,11 +11,12 @@ class Inventory_low extends Report
 
 	public function getDataColumns()
 	{
-		return array($this->lang->line('reports_item_name'),
-					$this->lang->line('reports_item_number'), 
-					$this->lang->line('reports_quantity'), 
-					$this->lang->line('reports_reorder_level'), 
-					$this->lang->line('reports_stock_location'));
+		return array(
+			array('item_name' => $this->lang->line('reports_item_name')),
+			array('item_number' => $this->lang->line('reports_item_number')),
+			array('quantity' => $this->lang->line('reports_quantity')),
+			array('reorder_level' => $this->lang->line('reports_reorder_level')),
+			array('location_name' => $this->lang->line('reports_stock_location')));
 	}
 	
     public function getData(array $inputs)

@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Report.php");
+
 abstract class Summary_report extends Report
 {
 	function __construct()
@@ -7,9 +9,15 @@ abstract class Summary_report extends Report
 		parent::__construct();
 	}
 
-	protected function commonSelect(array $inputs)
+	/*
+
+	Private interface
+
+	*/
+
+	private function _common_select(array $inputs)
 	{
-		// create a temporary table to contain all the payment types and amount
+		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
 			' (INDEX(sale_id), INDEX(item_id))
 			(
@@ -45,21 +53,21 @@ abstract class Summary_report extends Report
 
 		$this->db->select("
 				ROUND($sale_subtotal, $decimals) AS subtotal,
-				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
+				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
 				ROUND($sale_cost, $decimals) AS cost,
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit
 		");
 	}
 
-	protected function commonFrom()
+	private function _common_from()
 	{
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
 	}
 
-	protected function commonWhere(array $inputs)
+	private function _common_where(array $inputs)
 	{
 		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
 
@@ -78,13 +86,50 @@ abstract class Summary_report extends Report
         }
 	}
 
+	/*
+
+	Protected class interface implemented by derived classes
+
+	*/
+
+	abstract protected function _get_data_columns();
+
+	protected function _select(array $inputs)	{ $this->_common_select($inputs); }
+	protected function _from()					{ $this->_common_from(); }
+	protected function _where(array $inputs)	{ $this->_common_where($inputs); }
+	protected function _group_order()			{}
+
+	/*
+	
+	Public interface implementing the base abstract class, in general it should not be extended unless there is a valid reason
+	
+	*/
+
+	public function getDataColumns()
+	{
+		return $this->_get_data_columns();
+	}
+
+	public function getData(array $inputs)
+	{
+		$this->_select($inputs);
+
+		$this->_from();
+
+		$this->_where($inputs);
+
+		$this->_group_order();
+
+		return $this->db->get()->result_array();
+	}
+
 	public function getSummaryData(array $inputs)
 	{
-		$this->commonSelect($inputs);
+		$this->_common_select($inputs);
 
-		$this->commonFrom();
+		$this->_common_from();
 
-		$this->commonWhere($inputs);
+		$this->_common_where($inputs);
 
 		return $this->db->get()->row_array();		
 	}

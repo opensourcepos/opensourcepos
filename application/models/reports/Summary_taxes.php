@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Summary_report.php");
+
 class Summary_taxes extends Summary_report
 {
 	function __construct()
@@ -7,24 +9,30 @@ class Summary_taxes extends Summary_report
 		parent::__construct();
 	}
 
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_tax_percent'), $this->lang->line('reports_count'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'));
+		return array(
+			array('tax_percent' => $this->lang->line('reports_tax_percent'), 'sorter' => 'number_sorter'),
+			array('report_count' => $this->lang->line('reports_count')),
+			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)
 	{
 		$quantity_cond = '';
-		if ($inputs['sale_type'] == 'sales')
+
+		if($inputs['sale_type'] == 'sales')
 		{
 			$quantity_cond = 'AND quantity_purchased > 0';
 		}
-		elseif ($inputs['sale_type'] == 'returns')
+		elseif($inputs['sale_type'] == 'returns')
 		{
 			$quantity_cond = 'AND quantity_purchased < 0';
 		}
 
-		if ($inputs['location_id'] != 'all')
+		if($inputs['location_id'] != 'all')
 		{
 			$quantity_cond .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
 		}
@@ -44,13 +52,13 @@ class Summary_taxes extends Summary_report
 
 		$decimals = totals_decimals();
 
-		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(total), $decimals) AS total, ROUND(SUM(tax), $decimals) AS tax
+		$query = $this->db->query("SELECT percent, count(*) AS count, ROUND(SUM(subtotal), $decimals) AS subtotal, ROUND(SUM(tax), $decimals) AS tax, ROUND(SUM(total), $decimals) AS total
 			FROM (
 				SELECT
 					CONCAT(IFNULL(ROUND(percent, $decimals), 0), '%') AS percent,
 					$sale_subtotal AS subtotal,
-					IFNULL($sale_total, $sale_subtotal) AS total,
-					IFNULL($sale_tax, 0) AS tax
+					IFNULL($sale_tax, 0) AS tax,
+					IFNULL($sale_total, $sale_subtotal) AS total
 					FROM " . $this->db->dbprefix('sales_items') . ' AS sales_items
 					INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 						ON sales_items.sale_id = sales.sale_id

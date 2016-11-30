@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Summary_report.php");
+
 class Summary_discounts extends Summary_report
 {
 	function __construct()
@@ -7,11 +9,13 @@ class Summary_discounts extends Summary_report
 		parent::__construct();
 	}
 	
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_discount_percent'), $this->lang->line('reports_count'));
+		return array(
+			array('discount' => $this->lang->line('reports_discount_percent'), 'sorter' => 'number_sorter'),
+			array('count' => $this->lang->line('reports_count')));
 	}
-	
+
 	public function getData(array $inputs)
 	{
 		$this->db->select('CONCAT(sales_items.discount_percent, "%") AS discount_percent, count(*) AS count');
@@ -20,7 +24,7 @@ class Summary_discounts extends Summary_report
 
 		$this->db->where('discount_percent > 0');
 
-		$this->commonWhere($inputs);
+		$this->_where($inputs);
 		
 		$this->db->group_by('sales_items.discount_percent');
 		$this->db->order_by('sales_items.discount_percent');

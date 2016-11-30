@@ -1,5 +1,7 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 require_once("Summary_report.php");
+
 class Summary_payments extends Summary_report
 {
 	function __construct()
@@ -7,9 +9,12 @@ class Summary_payments extends Summary_report
 		parent::__construct();
 	}
 	
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_payment_type'), $this->lang->line('reports_count'), $this->lang->line('sales_amount_tendered'));
+		return array(
+			array('payment_type' => $this->lang->line('reports_payment_type')),
+			array('report_count' => $this->lang->line('reports_count')),
+			array('amount_tendered' => $this->lang->line('sales_amount_tendered'), 'sorter' => 'number_sorter'));
 	}
 	
 	public function getData(array $inputs)
@@ -18,7 +23,7 @@ class Summary_payments extends Summary_report
 		$this->db->from('sales_payments');
 		$this->db->join('sales AS sales', 'sales.sale_id = sales_payments.sale_id');
 
-		$this->commonWhere($inputs);
+		$this->_where($inputs);
 
 		$this->db->group_by("payment_type");
 		
@@ -39,7 +44,7 @@ class Summary_payments extends Summary_report
 			}
 		}
 
-		if( $gift_card_count > 0 )
+		if($gift_card_count > 0)
 		{
 			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
 		}

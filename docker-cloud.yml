@@ -9,7 +9,7 @@ web:
     roles:
         - global
     volumes:
-        - /app/uploads
+        - /app/public/uploads
     environment:
         - PHP_TIMEZONE=UTC
         - MYSQL_USERNAME=admin

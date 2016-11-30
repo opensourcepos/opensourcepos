@@ -4,10 +4,10 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     php5-apcu \
     libicu-dev \
     libgd-dev \
-    sendmail
+    libmcrypt-dev
 
 RUN a2enmod rewrite
-RUN docker-php-ext-install mysql mysqli bcmath intl gd sockets mbstring
+RUN docker-php-ext-install mysql mysqli bcmath intl gd sockets mbstring mcrypt
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 RUN echo -e “$(hostname -i)\t$(hostname) $(hostname).localhost” >> /etc/hosts
 
