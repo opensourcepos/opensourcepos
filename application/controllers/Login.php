@@ -40,6 +40,7 @@ class Login extends CI_Controller
 					$this->tracking_lib->track_event('Stats', 'Tax Decimals', $this->config->item('tax_decimals'));
 					$this->tracking_lib->track_event('Stats', 'Quantity Decimals', $this->config->item('quantity_decimals'));
 					$this->tracking_lib->track_event('Stats', 'Invoice Enable', $this->config->item('invoice_enable'));
+					$this->tracking_lib->track_event('Stats', 'Date or Time Format', $this->config->item('date_or_time_format'));
 				}
 
 				redirect('home');
