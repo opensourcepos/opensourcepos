@@ -1159,7 +1159,7 @@ class Reports extends Secure_Controller
 	{
 		$subtitle = '';
 
-		if(empty($this->config->item('filter_datetime_format')))
+		if(empty($this->config->item('date_or_time_format')))
 		{
 			$subtitle .= date($this->config->item('dateformat'), strtotime($inputs['start_date'])) . ' - ' .date($this->config->item('dateformat'), strtotime($inputs['end_date']));
 		}
