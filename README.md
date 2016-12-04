@@ -25,7 +25,7 @@ The main features are:
 
 The software is written in PHP language, it uses MySQL or MariaDB as data storage back-end and has a simple but intuitive user interface.
 
-The latest version 3.0.1 is a complete overhaul of the original software.
+The latest version 3.0.2 is a complete overhaul of the original software.
 It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
 It also has improved functionality and security.
 

@@ -1,3 +1,10 @@
+Version 3.0.2
+-----------
++ 
++ 
++ Updates to language translations
+
+
 Version 3.0.1
 -----------
 + *CodeIgniter 3.1.2 Upgrade*
