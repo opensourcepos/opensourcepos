@@ -1,7 +1,7 @@
 Version 3.0.2
 -----------
 + 
-+ 
++ Protect Employee privacy printing just the first letter of family name
 + Updates to language translations
 
 

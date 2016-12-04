@@ -366,7 +366,7 @@ class Sales extends Secure_Controller
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
-		$data['employee'] = $employee_info->first_name  . ' ' . $employee_info->last_name;
+		$data['employee'] = $employee_info->first_name  . ' ' . $employee_info->last_name[0];
 		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone'),
@@ -608,7 +608,7 @@ class Sales extends Secure_Controller
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
-		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
 		$data['sale_id_num'] = $sale_id;
