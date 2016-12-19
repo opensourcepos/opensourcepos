@@ -112,8 +112,8 @@ class Items extends Secure_Controller
 				$config['create_thumb'] = TRUE;
 				$config['width'] = 52;
 				$config['height'] = 32;
-				 $this->image_lib->initialize($config);
-				 $image = $this->image_lib->resize();
+				$this->image_lib->initialize($config);
+				$image = $this->image_lib->resize();
 				$thumb_path = $this->image_lib->full_dst_path;
 			}
 			$this->output->set_content_type(get_mime_by_extension($thumb_path));
@@ -472,7 +472,7 @@ class Items extends Secure_Controller
 		echo !$exists ? 'true' : 'false';
 	}
 	
-	private function _handle_image_upload($pic_filename)
+	private function _handle_image_upload()
 	{
 		/* Let files be uploaded with their original name */
 		
