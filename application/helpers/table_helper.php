@@ -282,7 +282,7 @@ function get_item_data_row($item, $controller)
 		}
 		if (sizeof($images) > 0)
 		{
-			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/' . pathinfo($item->pic_filename, PATHINFO_BASENAME)) . '"></a>';
+			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '"></a>';
 		}
 	}
 

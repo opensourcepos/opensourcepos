@@ -85,18 +85,9 @@ class Items extends Secure_Controller
 		$this->load->helper('file');
 		$this->load->library('image_lib');
 
+		// in this context, $pic_filename always has .ext
 		$ext = pathinfo($pic_filename, PATHINFO_EXTENSION);
-		if($ext == '')
-		{
-			// if file extension is not found guess it (legacy)
-			$images = glob('./uploads/item_pics/' . $pic_filename . '.*');
-			// update $ext, needed below
-			$ext = pathinfo($images[0], PATHINFO_EXTENSION);
-		}
-		else
-		{
-			  $images = glob('./uploads/item_pics/' . $pic_filename);
-		}
+		$images = glob('./uploads/item_pics/' . $pic_filename);
 
 		// make sure we pick only the file name, without extension
 		$base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
