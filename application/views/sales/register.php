@@ -55,10 +55,10 @@ if (isset($success))
 	</form>
 
 	<?php echo form_open("sales/add",array('id'=>'add_item_form')); ?>
-	<label id="item_label" for="item"> 
+	<label id="item_label" for="item">
 		<?php echo $this->lang->line('sales_find_or_scan_item_or_receipt'); ?>
 	</label>
-	
+
 	<?php echo form_input(array('name'=>'item','id'=>'item','size'=>'40','tabindex'=>'1')); ?>
 	<div id="new_item_button_register" >
 		<?php echo anchor("items/view/-1/width:450",
@@ -95,14 +95,14 @@ if (isset($success))
 			<?php
 			}
 			else
-			{				
-				$tabindex = 2;				
+			{
+				$tabindex = 2;
 				foreach(array_reverse($cart, true) as $line=>$item)
-				{					
-					if($tabindex == 3) 
+				{
+					if($tabindex == 3)
 					{
 						$tabindex = 5;
-					}					
+					}
 					echo form_open("sales/edit_item/$line");
 			?>
 					<tr>
@@ -135,7 +135,7 @@ if (isset($success))
 								echo form_hidden('quantity',$item['quantity']);
 							}
 							else
-							{								
+							{
 				        		echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2','tabindex'=>$tabindex));
 							}
 						?>
@@ -146,12 +146,12 @@ if (isset($success))
 						<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
 					</tr>
 					<tr>
-						<?php 
+						<?php
 						if($item['allow_alt_description']==1)
 						{
 						?>
 							<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
-						<?php 
+						<?php
 						}
 						?>
 
@@ -203,8 +203,8 @@ if (isset($success))
 					</tr>
 
 					</form>
-			<?php					
-					$tabindex = $tabindex + 1;					
+			<?php
+					$tabindex = $tabindex + 1;
 				}
 			}
 			?>
@@ -235,10 +235,12 @@ if (isset($success))
 			array('class'=>'thickbox none','title'=>$this->lang->line('sales_new_customer')));
 			?>
 		</div>
-		
+
 		<div class="clearfix">&nbsp;</div>
 	<?php
 	}
+	if(isset($customer))
+	{
 	?>
 
 	<div id='sale_details'>
@@ -255,6 +257,8 @@ if (isset($success))
 	</div>
 
 	<?php
+	}
+	// isset customer
 	// Only show this part if there are Items already in the sale.
 	if(count($cart) > 0)
 	{
@@ -265,17 +269,19 @@ if (isset($success))
 			<div class='small_button' id='cancel_sale_button' style='float:left; margin-top: 5px;'>
 				<span><?php echo $this->lang->line('sales_cancel_sale'); ?></span>
 			</div>
-			
+
 			<div class='small_button' id='suspend_sale_button' style='float:right; margin-top: 5px;'>
 				<span><?php echo $this->lang->line('sales_suspend_sale'); ?></span>
 			</div>
 		</div>
-	
+
 		</form>
 
 		<div class="clearfix" style="margin-bottom: 1px;">&nbsp;</div>
 
 		<?php
+		if(isset($customer))
+		{
 		// Only show this part if there is at least one payment entered.
 		if(count($payments) > 0)
 		{
@@ -298,9 +304,9 @@ if (isset($success))
 					    'checked' => (boolean)$email_receipt,
 					    )).'<br />('.$customer_email.')<br />';
 				}
-				 
+
 				if ($payments_cover_total)
-				{					
+				{
 					echo "<div class='small_button' id='finish_sale_button' style='float:left; margin-top:5px;' tabindex='3'><span>".$this->lang->line('sales_complete_sale')."</span></div>";
 				}
 				?>
@@ -346,7 +352,7 @@ if (isset($success))
 						</td>
 					</tr>
 					<?php
-					if ($mode == "sale") 
+					if ($mode == "sale")
 					{
 					?>
 					<tr>
@@ -373,7 +379,7 @@ if (isset($success))
 							<?php echo form_input(array('name'=>'sales_invoice_number','id'=>'sales_invoice_number','value'=>$invoice_number,'size'=>10));?>
 						</td>
 					</tr>
-					<?php 
+					<?php
 					}
 					?>
 					<tr>
@@ -393,7 +399,7 @@ if (isset($success))
 						</td>
 					</tr>
 				</table>
-				
+
 				<div class='small_button' id='add_payment_button' style='float: left; margin-top: 5px;'>
 					<span><?php echo $this->lang->line('sales_add_payment'); ?></span>
 				</div>
@@ -414,7 +420,7 @@ if (isset($success))
 							<th style="width: 18%;"><?php echo $this->lang->line('sales_payment_amount'); ?></th>
 						</tr>
 					</thead>
-		
+
 					<tbody id="payment_contents">
 						<?php
 						foreach($payments as $payment_id=>$payment)
@@ -426,7 +432,7 @@ if (isset($success))
 								<td><?php echo $payment['payment_type']; ?></td>
 								<td style="text-align: right;"><?php echo to_currency( $payment['payment_amount'] ); ?></td>
 							</tr>
-							
+
 							</form>
 						<?php
 						}
@@ -441,6 +447,7 @@ if (isset($success))
 		</div>
 
 	<?php
+		}
 	}
 	?>
 </div>
@@ -475,7 +482,7 @@ $(document).ready(function()
 
     var clear_fields = function()
     {
-        if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . 
+        if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' .
         	$this->lang->line('sales_start_typing_customer_name'); ?>"))
         {
             $(this).val('');
@@ -503,18 +510,18 @@ $(document).ready(function()
     {
     	$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
     });
-	
-	$('#comment').keyup(function() 
+
+	$('#comment').keyup(function()
 	{
 		$.post('<?php echo site_url("sales/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	$('#sales_invoice_number').keyup(function() 
+	$('#sales_invoice_number').keyup(function()
 	{
 		$.post('<?php echo site_url("sales/set_invoice_number");?>', {sales_invoice_number: $('#sales_invoice_number').val()});
 	});
 
-	var enable_invoice_number = function() 
+	var enable_invoice_number = function()
 	{
 		var enabled = $("#sales_invoice_enable").is(":checked");
 		$("#sales_invoice_number").prop("disabled", !enabled).parents('tr').show();
@@ -526,18 +533,18 @@ $(document).ready(function()
 	$("#sales_print_after_sale").change(function() {
 		$.post('<?php echo site_url("sales/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
 	});
-	
+
 	$("#sales_invoice_enable").change(function() {
 		var enabled = enable_invoice_number();
 		$.post('<?php echo site_url("sales/set_invoice_number_enabled");?>', {sales_invoice_number_enabled: enabled});
 	});
-	
-	$('#email_receipt').change(function() 
+
+	$('#email_receipt').change(function()
 	{
 		$.post('<?php echo site_url("sales/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
 	});
-	
-	
+
+
     $("#finish_sale_button").click(function()
     {
     	if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
@@ -547,7 +554,7 @@ $(document).ready(function()
     });
 
 	$("#suspend_sale_button").click(function()
-	{ 	
+	{
 		if (confirm('<?php echo $this->lang->line("sales_confirm_suspend_sale"); ?>'))
     	{
 			$('#cancel_sale_form').attr('action', '<?php echo site_url("sales/suspend"); ?>');
@@ -569,13 +576,13 @@ $(document).ready(function()
     });
 
 	$("#payment_types").change(check_payment_type_gifcard).ready(check_payment_type_gifcard)
-	
+
 	$("#amount_tendered").keyup(function(event){
 		if(event.which == 13) {
 			$('#add_payment_form').submit();
 		}
-	});	
-	
+	});
+
     $( "#finish_sale_button" ).keypress(function( event ) {
 		if ( event.which == 13 ) {
 			if (confirm('<?php echo $this->lang->line("sales_confirm_finish_sale"); ?>'))
@@ -583,7 +590,7 @@ $(document).ready(function()
 				$('#finish_sale_form').submit();
 			}
 		}
-	});	    
+	});
 });
 
 function post_item_form_submit(response, stay_open)
@@ -599,7 +606,7 @@ function post_item_form_submit(response, stay_open)
 		}
 		else
 		{
-			$("#add_item_form").submit();	
+			$("#add_item_form").submit();
 		}
 	}
 }
