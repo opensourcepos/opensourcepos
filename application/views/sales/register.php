@@ -528,6 +528,7 @@ $(document).ready(function()
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
+			setup_csrf_token();
 			return false;
 		}
     });
@@ -537,6 +538,7 @@ $(document).ready(function()
 	$('#item').keypress(function (e) {
 		if (e.which == 13) {
 			$('#add_item_form').submit();
+			setup_csrf_token();
 			return false;
 		}
 	});
