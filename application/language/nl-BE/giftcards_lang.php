@@ -64,6 +64,6 @@ $lang["giftcards_tax_percents"] = "VAT Percentages";
 $lang["giftcards_unit_price"] = "Verkoopsprijs";
 $lang["giftcards_upc_database"] = "UPC Database";
 $lang["giftcards_update"] = "Bewaar Cadeaubon";
-$lang["giftcards_use_inventory_menu"] = "Use Inv. Menu";
+$lang["giftcards_use_inventory_menu"] = "Gebruik inventaris menu";
 $lang["giftcards_value"] = "Cadeaubon Waarde moet een getal zijn";
 $lang["giftcards_value_required"] = "Cadeaubon Waarde is een verplicht veld";
