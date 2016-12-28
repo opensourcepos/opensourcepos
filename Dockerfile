@@ -14,7 +14,7 @@ RUN echo -e “$(hostname -i)\t$(hostname) $(hostname).localhost” >> /etc/host
 WORKDIR /app
 COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
-RUN chmod 775 /app/public/uploads && chown -R www-data:www-data /app/public/uploads
+RUN chmod 755 /app/public/uploads && chown -R www-data:www-data /app/public/uploads
 
 RUN cp application/config/database.php.tmpl application/config/database.php && \
     sed -i -e "s/\(localhost\)/web/g" test/ospos.js && \

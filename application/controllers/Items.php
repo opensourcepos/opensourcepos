@@ -190,8 +190,11 @@ class Items extends Secure_Controller
 		$data['selected_supplier'] = $item_info->supplier_id;
 
 		$data['logo_exists'] = $item_info->pic_id != '';
-		$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
-		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+		if (!empty($item_info->pic_id))
+		{
+			$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
+			$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+		}
 
 		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($stock_locations as $location)
