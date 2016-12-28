@@ -414,7 +414,6 @@ $(document).ready(function()
        	autoFocus: false,
 		select:	function (a, ui) {
 			$(this).val(ui.item.value);
-			setup_csrf_token();
 			$("#add_item_form").submit();
 			return false;
 		}
@@ -424,7 +423,6 @@ $(document).ready(function()
 
 	$('#item').keypress(function (e) {
 		if (e.which == 13) {
-			setup_csrf_token();
 			$('#add_item_form').submit();
 			return false;
 		}
