@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-$lang["customers_account_number"] = "Account #";
+$lang["customers_account_number"] = "DL/ID/FFL #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_basic_information"] = "Customer Information";
 $lang["customers_cannot_be_deleted"] = "Could not deleted selected customers, one or more of the selected customers has sales.";

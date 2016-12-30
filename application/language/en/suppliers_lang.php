@@ -1,6 +1,6 @@
-<?php 
+<?php
 
-$lang["suppliers_account_number"] = "Account #";
+$lang["suppliers_account_number"] = "DL/ID/FFL/ACT#";
 $lang["suppliers_basic_information"] = "Supplier Information";
 $lang["suppliers_cannot_be_deleted"] = "Could not deleted selected suppliers, one or more of the selected suppliers has sales.";
 $lang["suppliers_company_name"] = "Company Name";

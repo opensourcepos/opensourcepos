@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="<?php echo base_url();?>/images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="css/ospos.css" />
 	<link rel="stylesheet" type="text/css" href="css/ospos_print.css" media="print" />
-	
+
 	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/jquery-1.8.3.js" language="javascript"></script>
@@ -25,7 +25,7 @@
 		<script type="text/javascript" src="js/date.js" language="javascript"></script>
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js" language="javascript"></script>
 		<script type="text/javascript" src="js/manage_tables.js" language="javascript"></script>
-		<script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script>
+		<!-- <script type="text/javascript" src="js/nominatim.autocomplete.js" language="javascript"></script> -->
 		<script type="text/javascript" src="js/phpjsdate.js" language="javascript"></script>
 		<script type="text/javascript" src="js/swfobject.js" language="javascript"></script>
 		<script type="text/javascript" src="js/tabcontent.js" language="javascript"></script>
@@ -34,14 +34,14 @@
 	<?php else : ?>
 		<!-- start minjs template tags -->
 		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=5b6d6cb4c1" language="javascript"></script>
-		<!-- end minjs template tags -->       
+		<!-- end minjs template tags -->
 	<?php endif; ?>
 
 	<script type="text/javascript">
 		// live clock
-	
-		function clockTick() {  
-			setInterval('updateClock();', 1000);  
+
+		function clockTick() {
+			setInterval('updateClock();', 1000);
 		}
 
 		// start the clock immediatly
@@ -51,7 +51,7 @@
 
 		function updateClock() {
 			now.setTime(now.getTime() + 1000);
-			
+
 			document.getElementById('liveclock').innerHTML = phpjsDate("<?php echo $this->config->item('dateformat').' '.$this->config->item('timeformat') ?>", now);
 		}
 	</script>
@@ -85,12 +85,12 @@
 				}
 				?>
 			</div>
-			
+
 			<div id="menubar_footer">
 				<?php echo $this->lang->line('common_welcome')." $user_info->first_name $user_info->last_name! | "; ?>
 				<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 			</div>
-			
+
 			<div id="menubar_date">
 				<div id="liveclock"><?php echo date($this->config->item('dateformat').' '.$this->config->item('timeformat')) ?></div>
 			</div>
@@ -98,4 +98,3 @@
 	</div>
 	<div id="content_area_wrapper">
 	<div id="content_area">
- 

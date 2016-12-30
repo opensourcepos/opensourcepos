@@ -1,4 +1,4 @@
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_first_name').':', 'first_name',array('class'=>'required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -8,7 +8,7 @@
 	);?>
 	</div>
 </div>
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_last_name').':', 'last_name',array('class'=>'required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -19,7 +19,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_gender').':', 'gender',
 !empty($basic_version) ? array('class'=>'required') : array()); ?>
 	<div class='form_field'>
@@ -43,7 +43,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_email').':', 'email'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -54,7 +54,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_phone_number').':', 'phone_number'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -64,7 +64,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_address_1').':', 'address_1'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -74,7 +74,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_address_2').':', 'address_2'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -84,7 +84,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_city').':', 'city'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -94,7 +94,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_state').':', 'state'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -104,7 +104,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_zip').':', 'zip'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -114,7 +114,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_country').':', 'country'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -124,7 +124,7 @@
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('common_comments').':', 'comments'); ?>
 	<div class='form_field'>
 	<?php echo form_textarea(array(
@@ -132,7 +132,7 @@
 		'id'=>'comments',
 		'value'=>$person_info->comments,
 		'rows'=>'5',
-		'cols'=>'17')		
+		'cols'=>'17')
 	);?>
 	</div>
 </div>
@@ -141,34 +141,34 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	nominatim.init({
-		fields : {
-			postcode : {  
-				dependencies :  ["postcode", "city", "state", "country"], 
-				response : {  
-					field : 'postalcode', 
-					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"] 
-				}
-			},
-	
-			city : {
-				dependencies :  ["postcode", "city", "state", "country"], 
-				response : {  
-					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"] 
-				}
-			},
-	
-			state : {
-				dependencies :  ["state", "country"]
-			},
-	
-			country : {
-				dependencies :  ["state", "country"] 
-			}
-			
-		},
-		language : '<?php echo $this->config->item('language');?>'
-	});
-
+	//nominatim.init({
+//		fields : {
+//			postcode : {
+//				dependencies :  ["postcode", "city", "state", "country"],
+//				response : {
+//					field : 'postalcode',
+//					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"]
+//				}
+//			},
+//
+//			city : {
+//				dependencies :  ["postcode", "city", "state", "country"],
+//				response : {
+//					format: ["postcode", "village|town|hamlet|city_district|city", "state", "country"]
+//				}
+//			},
+//
+//			state : {
+//				dependencies :  ["state", "country"]
+//			},
+//
+//			country : {
+//				dependencies :  ["state", "country"]
+//			}
+//
+//		},
+//		language : '<?php echo $this->config->item('language');?>'
+//	});
+//
 });
 </script>
