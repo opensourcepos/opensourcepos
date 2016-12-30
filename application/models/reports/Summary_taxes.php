@@ -19,6 +19,18 @@ class Summary_taxes extends Summary_report
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
 	}
 
+	protected function _where(array $inputs)
+	{
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+		}
+	}
+
 	public function getData(array $inputs)
 	{
 		$where = '';
@@ -31,21 +43,6 @@ class Summary_taxes extends Summary_report
 		{
 			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
-
-		if($inputs['sale_type'] == 'sales')
-		{
-			$where = 'AND quantity_purchased > 0';
-		}
-		elseif($inputs['sale_type'] == 'returns')
-		{
-			$where = 'AND quantity_purchased < 0';
-		}
-
-		if($inputs['location_id'] != 'all')
-		{
-			$where .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
-		}
-
 		if($this->config->item('tax_included'))
 		{
 			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
