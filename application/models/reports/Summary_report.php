@@ -73,17 +73,17 @@ abstract class Summary_report extends Report
 
 		if($inputs['location_id'] != 'all')
 		{
-			$this->db->where('item_location', $inputs['location_id']);
+			$this->db->where('sales_items.item_location', $inputs['location_id']);
 		}
 
 		if($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		{
+			$this->db->where('sales_items.quantity_purchased >= 0');
+		}
+		elseif($inputs['sale_type'] == 'returns')
+		{
+			$this->db->where('sales_items.quantity_purchased < 0');
+		}
 	}
 
 	/*
@@ -129,7 +129,7 @@ abstract class Summary_report extends Report
 
 		$this->_common_from();
 
-		$this->_common_where($inputs);
+		$this->_where($inputs);
 
 		return $this->db->get()->row_array();		
 	}

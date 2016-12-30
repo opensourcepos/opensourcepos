@@ -19,24 +19,13 @@ class Summary_taxes extends Summary_report
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
 	}
 
+	protected function _where(array $inputs)
+	{
+		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+	}
+
 	public function getData(array $inputs)
 	{
-		$quantity_cond = '';
-
-		if($inputs['sale_type'] == 'sales')
-		{
-			$quantity_cond = 'AND quantity_purchased > 0';
-		}
-		elseif($inputs['sale_type'] == 'returns')
-		{
-			$quantity_cond = 'AND quantity_purchased < 0';
-		}
-
-		if($inputs['location_id'] != 'all')
-		{
-			$quantity_cond .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
-		}
-
 		if($this->config->item('tax_included'))
 		{
 			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
@@ -64,9 +53,9 @@ class Summary_taxes extends Summary_report
 						ON sales_items.sale_id = sales.sale_id
 					LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 						ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-					WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . " $quantity_cond
+					WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . '
 				) AS temp_taxes
-			GROUP BY percent"
+			GROUP BY percent'
 		);
 
 		return $query->result_array();
