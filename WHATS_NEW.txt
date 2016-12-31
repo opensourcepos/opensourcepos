@@ -1,9 +1,11 @@
 Version 3.0.2
 -----------
-+ 
-+ Protect Employee privacy printing just the first letter of family name
++ Fixed error when performing scans multiple times in a row
++ Fixed summary reports
++ Protect Employee privacy printing just the first letter of the family name
 + Updates to language translations
-
++ Various Dockers support improvements
++ Minor bugfixes
 
 Version 3.0.1
 -----------
