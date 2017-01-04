@@ -1,14 +1,41 @@
 SELECT
   DISTINCT(s.sale_id) AS ID,
-  CONCAT(p.first_name, ' ', p.last_name) AS 'Customer Name',
-  CASE WHEN CAST(s.sale_time AS DATE) = CURDATE() THEN '**' 
+  LEFT(CONCAT(p.first_name, ' ', p.last_name),25) AS 'Customer Name',
+  CASE WHEN CAST(s.sale_time AS DATE) = CURDATE() THEN '*' 
     ELSE ''
   END AS T,
-  s.sale_time AS 'Sale Date',
+  DATE_FORMAT(s.sale_time,'%m/%d/%y %H:%i') AS 'Sale Date',
   i.name AS Item,
   i.item_number AS BBN,    
-  sp.payment_type AS Payment
-
+  CASE sp.payment_type
+    WHEN 'Credit Card' THEN 'CC'
+    WHEN 'Debit Card' THEN 'DC'
+    WHEN 'Cash' THEN 'CA'
+    WHEN 'Deposit' THEN 'DE'
+    WHEN 'Layaway Bal' THEN 'LB'
+    WHEN 'OOS PMT' THEN 'OP'
+    WHEN 'Check' THEN 'CH'
+    WHEN 'House Account' THEN 'HA'
+    ELSE sp.payment_type
+  END AS Pay,
+  CASE i.category 
+    WHEN 'Rifle' THEN 'RI'
+    WHEN 'Shotguns' THEN 'SH'
+    WHEN 'Transfers' THEN 'TR'
+    WHEN 'Longgun-Rifle' THEN 'LR'
+    WHEN 'Longgun-Shotgun' THEN 'LS'
+    WHEN 'Handgun-Revolver' THEN 'HR'
+    WHEN 'Handgun-Pistol' THEN 'HP'
+    WHEN 'Lay-A-WayPayment' THEN 'LA'
+    WHEN 'SpecialOrderDeposit' THEN 'SO'
+    WHEN 'Other-Receiver' THEN 'OR'
+    WHEN 'Other-Frame' THEN 'OF'
+    WHEN 'Other-Firearm' THEN 'OM'
+    WHEN 'Longgun-Combo R/S' THEN 'LC'
+    WHEN 'Other-PG Shotguns' THEN 'OS'
+    WHEN 'Returns' THEN 'RE'
+    ELSE i.category
+  END AS Cat
 FROM
   ospos_sales AS s
 JOIN
@@ -27,15 +54,30 @@ JOIN
   ospos_sales_payments AS sp
 ON
   s.sale_id = sp.sale_id
+
 WHERE
-  i.category IN(
-    'Handgun-Pistol',
-    'Handgun-Revolver'
-  ) AND DATE_SUB(CURDATE(), INTERVAL 14 DAY) <= s.sale_time
-  AND sp.payment_type NOT IN  ('Layaway Bal', 'OOS PMT', 'Deposit')
+upper(p.last_name) <> 'TILL'
+AND DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= s.sale_time
+AND i.category IN(
+'Rifle',
+'Shotguns',
+'Transfers',
+'Longgun-Rifle',
+'Longgun-Shotgun',
+'Handgun-Revolver',
+'Handgun-Pistol',
+'Lay-A-WayPayment',
+'SpecialOrderDeposit',
+'Other-Receiver',
+'Other-Frame',
+'Other-Firearm',
+'Longgun-Combo R/S',
+'Other-PG Shotguns',
+'Returns'
+)
+
 ORDER BY
   p.last_name,
   i.name,
   s.sale_time
 DESC
-
