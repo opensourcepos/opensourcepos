@@ -1,12 +1,12 @@
 SELECT
   DISTINCT(s.sale_id) AS ID,
   LEFT(CONCAT(p.first_name, ' ', p.last_name),25) AS 'Customer Name',
-  CASE WHEN CAST(s.sale_time AS DATE) = CURDATE() THEN '*' 
+  CASE WHEN CAST(s.sale_time AS DATE) = CURDATE() THEN '*'
     ELSE ''
   END AS T,
   DATE_FORMAT(s.sale_time,'%m/%d/%y %H:%i') AS 'Sale Date',
   i.name AS Item,
-  i.item_number AS BBN,    
+  i.item_number AS BBN,
   CASE sp.payment_type
     WHEN 'Credit Card' THEN 'CC'
     WHEN 'Debit Card' THEN 'DC'
@@ -18,7 +18,7 @@ SELECT
     WHEN 'House Account' THEN 'HA'
     ELSE sp.payment_type
   END AS Pay,
-  CASE i.category 
+  CASE i.category
     WHEN 'Rifle' THEN 'RI'
     WHEN 'Shotguns' THEN 'SH'
     WHEN 'Transfers' THEN 'TR'
@@ -58,22 +58,22 @@ ON
 WHERE
 upper(p.last_name) <> 'TILL'
 AND DATE_SUB(CURDATE(), INTERVAL 10 DAY) <= s.sale_time
+AND si.quantity_purchased > 0
+AND i.name <> 'Lay-A-Way Payment'
+AND si.item_unit_price > 0
 AND i.category IN(
 'Rifle',
 'Shotguns',
-'Transfers',
 'Longgun-Rifle',
 'Longgun-Shotgun',
 'Handgun-Revolver',
 'Handgun-Pistol',
 'Lay-A-WayPayment',
-'SpecialOrderDeposit',
 'Other-Receiver',
 'Other-Frame',
 'Other-Firearm',
 'Longgun-Combo R/S',
-'Other-PG Shotguns',
-'Returns'
+'Other-PG Shotguns'
 )
 
 ORDER BY
@@ -81,3 +81,5 @@ ORDER BY
   i.name,
   s.sale_time
 DESC
+
+
