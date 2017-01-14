@@ -21,4 +21,4 @@ $lang["customers_import_items_excel"] = "Müşterileri Excel sayfasından aktar"
 $lang["customers_excel_import_failed"] = "Excel aktarım hatası";
 $lang["customers_excel_import_nodata_wrongformat"] = "Yüklenen dosya herhangi bir veri içermiyor veya hatalı formatta";
 $lang["customers_excel_import_success"] = "Müşteri aktarımı başarılı";
-$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
+$lang["customers_excel_import_partially_failed"] = "Birçok Müşteri içe aktarıldı. Ama bazıları değil, listesi burada";
