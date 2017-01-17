@@ -144,7 +144,6 @@ class Item_kits extends Secure_Controller
 				foreach($this->input->post('item_kit_qty') as $item_id => $quantity)
 				{
                     $seq = $this->input->post('item_kit_seq[' . $item_id . ']');
-                    error_log('>>>Item_kits.save ' . $item_id . ', seq-' . $seq . ', qty-' . $quantity);
 					$item_kit_items[] = array(
 						'item_id' => $item_id,
 						'quantity' => $quantity,

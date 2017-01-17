@@ -32,7 +32,6 @@ class Item_kit_items extends CI_Model
 	public function save(&$item_kit_items_data, $item_kit_id)
     {
 
-        error_log('>>>Item_kit_items.save ');
         $success = TRUE;
 
         //Run these queries as a transaction, we want to make sure we do all or nothing
@@ -43,8 +42,6 @@ class Item_kit_items extends CI_Model
 
         if ($item_kit_items_data != NULL) {
             foreach ($item_kit_items_data as $row) {
-                error_log('>>>Item_kit_items.save  to kit id-' . $item_kit_id);
-                error_log('>>>Item_kit_items.save  to row-' . print_r($row, TRUE));
                 $row['item_kit_id'] = $item_kit_id;
                 $success &= $this->db->insert('item_kit_items', $row);
             }

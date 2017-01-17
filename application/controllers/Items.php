@@ -443,9 +443,6 @@ class Items extends Secure_Controller
     */
     public function check_kit_exists()
     {
-    	error_log('>>> Items.check_kit_exists');
-    	error_log('>>> Items.check_kit_exists item_number' . $this->input->post('item_number'));
-        error_log('>>> Items.check_kit_exists item_number' . $this->input->post('name'));
     	if ($this->input->post('item_number') === -1)
 		{
             $exists = $this->Item_kit->item_kit_exists_for_name($this->input->post('name'));
