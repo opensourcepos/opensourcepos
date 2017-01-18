@@ -6,7 +6,8 @@ SELECT
   END AS T,
   DATE_FORMAT(s.sale_time,'%m/%d/%y %H:%i') AS 'Sale Date',
   CASE i.name
-     WHEN 'Proceed' THEN CONCAT(i.name, ' ', si.description)
+     WHEN 'Release Date' THEN CONCAT(i.name, ' ', si.description)
+     WHEN 'Final Lay-A-Way Payment' THEN CONCAT(i.name, ' ', si.description)
     ELSE i.name
   END AS 'Item Name',
   CASE i.item_number
