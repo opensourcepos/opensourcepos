@@ -5,7 +5,7 @@ class Sale extends CI_Model
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
 			'(
 				SELECT payments.sale_id AS sale_id, 
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
@@ -19,7 +19,7 @@ class Sale extends CI_Model
 		);
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
 			'(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
@@ -51,23 +51,23 @@ class Sale extends CI_Model
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
-				DATE(sales.sale_time) AS sale_date,
-				sales.sale_time AS sale_time,
-				sales.comment AS comment,
-				sales.invoice_number AS invoice_number,
-				sales.employee_id AS employee_id,
-				sales.customer_id AS customer_id,
-				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
-				customer_p.first_name AS first_name,
-				customer_p.last_name AS last_name,
-				customer_p.email AS email,
-				customer_p.comments AS comments,
+				MAX(DATE(sales.sale_time)) AS sale_date,
+				MAX(sales.sale_time) AS sale_time,
+				MAX(sales.comment) AS comment,
+				MAX(sales.invoice_number) AS invoice_number,
+				MAX(sales.employee_id) AS employee_id,
+				MAX(sales.customer_id) AS customer_id,
+				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
+				MAX(customer_p.first_name) AS first_name,
+				MAX(customer_p.last_name) AS last_name,
+				MAX(customer_p.email) AS email,
+				MAX(customer_p.comments) AS comments,
 				' . "
 				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
-				payments.sale_payment_amount AS amount_tendered,
-				(payments.sale_payment_amount - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
+				MAX(payments.sale_payment_amount) AS amount_tendered,
+				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
 				" . '
-				payments.payment_type AS payment_type
+				MAX(payments.payment_type) AS payment_type
 		');
 
 		$this->db->from('sales_items AS sales_items');
@@ -109,7 +109,7 @@ class Sale extends CI_Model
 		}
 		// NOTE: temporary tables are created to speed up searches due to the fact that are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id, 
@@ -124,7 +124,7 @@ class Sale extends CI_Model
 		);
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
 			' (INDEX(sale_id), INDEX(item_id))
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
@@ -159,12 +159,12 @@ class Sale extends CI_Model
 
 		$this->db->select('
 				sales.sale_id AS sale_id,
-				DATE(sales.sale_time) AS sale_date,
-				sales.sale_time AS sale_time,
-				sales.invoice_number AS invoice_number,
+				MAX(DATE(sales.sale_time)) AS sale_date,
+				MAX(sales.sale_time) AS sale_time,
+				MAX(sales.invoice_number) AS invoice_number,
 				SUM(sales_items.quantity_purchased) AS items_purchased,
-				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
-				customer.company_name AS company_name,
+				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) as customer_name,
+				MAX(customer.company_name) AS company_name,
 				' . "
 				ROUND($sale_subtotal, $decimals) AS subtotal,
 				IFNULL(ROUND($sale_tax, $decimals), 0) AS tax,
@@ -172,10 +172,10 @@ class Sale extends CI_Model
 				ROUND($sale_cost, $decimals) AS cost,
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit,
 				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
-				payments.sale_payment_amount AS amount_tendered,
-				(payments.sale_payment_amount - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
+				MAX(payments.sale_payment_amount) AS amount_tendered,
+				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
 				" . '
-				payments.payment_type AS payment_type
+				MAX(payments.payment_type) AS payment_type
 		');
 
 		$this->db->from('sales_items AS sales_items');
@@ -202,7 +202,7 @@ class Sale extends CI_Model
 				$this->db->where('sales.sale_id', $pieces[1]);
 			}
 			else
-			{			
+			{
 				$this->db->group_start();
 					// customer last name
 					$this->db->like('customer_p.last_name', $search);
@@ -310,7 +310,7 @@ class Sale extends CI_Model
 		{
 			$this->db->where('invoice_number IS NOT NULL');
 		}
-		
+
 		if($filters['only_cash'] != FALSE)
 		{
 			$this->db->like('payment_type', $this->lang->line('sales_cash'), 'after');
@@ -401,7 +401,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_invoice_number_for_year($year = '', $start_from = 0) 
+	public function get_invoice_number_for_year($year = '', $start_from = 0)
 	{
 		$year = $year == '' ? date('Y') : $year;
 		$this->db->select('COUNT( 1 ) AS invoice_number_year');
@@ -412,7 +412,7 @@ class Sale extends CI_Model
 
 		return ($start_from + $result['invoice_number_year']);
 	}
-	
+
 	public function is_valid_receipt(&$receipt_sale_id)
 	{
 		if(!empty($receipt_sale_id))
@@ -457,7 +457,7 @@ class Sale extends CI_Model
 		{
 			//Run these queries as a transaction, we want to make sure we do all or nothing
 			$this->db->trans_start();
-			
+
 			// first delete all payments
 			$this->db->delete('sales_payments', array('sale_id' => $sale_id));
 
@@ -472,12 +472,12 @@ class Sale extends CI_Model
 
 				$success = $this->db->insert('sales_payments', $sales_payments_data);
 			}
-			
+
 			$this->db->trans_complete();
-			
+
 			$success &= $this->db->trans_status();
 		}
-		
+
 		return $success;
 	}
 
@@ -534,23 +534,27 @@ class Sale extends CI_Model
 				'discount_percent'	=> $item['discount'],
 				'item_cost_price'	=> $cur_item_info->cost_price,
 				'item_unit_price'	=> $item['price'],
-				'item_location'		=> $item['item_location']
+				'item_location'		=> $item['item_location'],
+				'print_option'		=> $item['print_option']
 			);
 
 			$this->db->insert('sales_items', $sales_items_data);
 
-			// Update stock quantity
-			$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-			$this->Item_quantity->save(array('quantity'		=> $item_quantity->quantity - $item['quantity'],
-                                              'item_id'		=> $item['item_id'],
-                                              'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
+			if ($cur_item_info->stock_type === '0')
+			{
+				// Update stock quantity if item type is not non-stock
+				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
+				$this->Item_quantity->save(array('quantity'		=> $item_quantity->quantity - $item['quantity'],
+					'item_id'		=> $item['item_id'],
+					'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
+			}
 
 			// if an items was deleted but later returned it's restored with this rule
 			if($item['quantity'] < 0)
 			{
 				$this->Item->undelete($item['item_id']);
 			}
-											  
+
 			// Inventory Count Details
 			$sale_remarks = 'POS '.$sale_id;
 			$inv_data = array(
@@ -564,8 +568,8 @@ class Sale extends CI_Model
 			$this->Inventory->insert($inv_data);
 
 			$customer = $this->Customer->get_info($customer_id);
- 			if($customer_id == -1 || $customer->taxable)
- 			{
+			if($customer_id == -1 || $customer->taxable)
+			{
 				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
 				{
 					$this->db->insert('sales_items_taxes', array(
@@ -580,16 +584,16 @@ class Sale extends CI_Model
 		}
 
 		$this->db->trans_complete();
-		
+
 		if($this->db->trans_status() === FALSE)
 		{
 			return -1;
 		}
-		
+
 		return $sale_id;
 	}
 
-	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE) 
+	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
 	{
 		$result = TRUE;
 
@@ -601,7 +605,7 @@ class Sale extends CI_Model
 		return $result;
 	}
 
-	public function delete($sale_id, $employee_id, $update_inventory = TRUE) 
+	public function delete($sale_id, $employee_id, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
@@ -642,7 +646,7 @@ class Sale extends CI_Model
 
 		// execute transaction
 		$this->db->trans_complete();
-	
+
 		return $this->db->trans_status();
 	}
 
@@ -650,6 +654,60 @@ class Sale extends CI_Model
 	{
 		$this->db->from('sales_items');
 		$this->db->where('sale_id', $sale_id);
+
+		return $this->db->get();
+	}
+
+	/*
+	 * Used by the invoice and receipt programs
+	 */
+	public function get_sale_items_ordered($sale_id)
+	{
+		$this->db->select('
+		sale_id,
+		sales_items.item_id,
+		sales_items.description,
+		serialnumber,
+		line,
+		quantity_purchased,
+		item_cost_price,
+		item_unit_price,
+		discount_percent,
+		item_location,
+		print_option,
+		items.name as name,
+		category,
+		item_type');
+		$this->db->from('sales_items as sales_items');
+		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
+		$this->db->where('sale_id', $sale_id);
+
+		// Entry sequence (this will also render kits in the expected sequence)
+		if($this->config->item('line_sequence') == '0')
+		{
+			$this->db->order_by('line', 'asc');
+		}
+		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
+		elseif($this->config->item('line_sequence') == '1')
+		{
+			$this->db->order_by('stock_type', 'desc');
+			$this->db->order_by('sales_items.description', 'asc');
+			$this->db->order_by('items.name', 'asc');
+		}
+
+		// Group by Item Category
+		elseif($this->config->item('line_sequence') == '2')
+		{
+			$this->db->order_by('category', 'asc');
+			$this->db->order_by('sales_items.description', 'asc');
+			$this->db->order_by('items.name', 'asc');
+		}
+
+		// Group by reverse entry sequence in descending sequence (the Standard)
+		else
+		{
+			$this->db->order_by('line', 'desc');
+		}
 
 		return $this->db->get();
 	}
@@ -665,7 +723,7 @@ class Sale extends CI_Model
 	public function get_payment_options($giftcard = TRUE)
 	{
 		$payments = array();
-		
+
 		if($this->config->item('payment_options_order') == 'debitcreditcash')
 		{
 			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
@@ -719,7 +777,7 @@ class Sale extends CI_Model
 		{
 			$this->db->where('sale_id !=', $sale_id);
 		}
-		
+
 		return ($this->db->get()->num_rows() == 1);
 	}
 
@@ -729,7 +787,7 @@ class Sale extends CI_Model
 		{
 			return 0;
 		}
-		
+
 		$this->db->from('giftcards');
 		$this->db->where('giftcard_number', $giftcardNumber);
 
@@ -773,7 +831,7 @@ class Sale extends CI_Model
 		}
 
 		// create a temporary table to contain all the payment types and amount
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
 			' (PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id, 
@@ -789,38 +847,38 @@ class Sale extends CI_Model
 			)'
 		);
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') . 
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') .
 			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
 				SELECT
-					DATE(sales.sale_time) AS sale_date,
-					sales.sale_time,
+					MAX(DATE(sales.sale_time)) AS sale_date,
+					MAX(sales.sale_time) AS sale_time,
 					sales.sale_id,
-					sales.comment,
-					sales.invoice_number,
-					sales.customer_id,
-					CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer_name,
-					customer_p.first_name AS customer_first_name,
-					customer_p.last_name AS customer_last_name,
-					customer_p.email AS customer_email,
-					customer_p.comments AS customer_comments, 
-					customer.company_name AS customer_company_name,
-					sales.employee_id,
-					CONCAT(employee.first_name, " ", employee.last_name) AS employee_name,
+					MAX(sales.comment) AS comment,
+					MAX(sales.invoice_number) AS invoice_number,
+					MAX(sales.customer_id) AS customer_id,
+					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
+					MAX(customer_p.first_name) AS customer_first_name,
+					MAX(customer_p.last_name) AS customer_last_name,
+					MAX(customer_p.email) AS customer_email,
+					MAX(customer_p.comments) AS customer_comments, 
+					MAX(customer.company_name) AS customer_company_name,
+					MAX(sales.employee_id) AS employee_id,
+					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 					items.item_id,
-					items.name,
-					items.category,
-					items.supplier_id,
-					sales_items.quantity_purchased,
-					sales_items.item_cost_price,
-					sales_items.item_unit_price,
-					sales_items.discount_percent,
+					MAX(items.name) AS name,
+					MAX(items.category) AS category,
+					MAX(items.supplier_id) AS supplier_id,
+					MAX(sales_items.quantity_purchased) AS quantity_purchased,
+					MAX(sales_items.item_cost_price) AS item_cost_price,
+					MAX(sales_items.item_unit_price) AS item_unit_price,
+					MAX(sales_items.discount_percent) AS discount_percent,
 					sales_items.line,
-					sales_items.serialnumber,
-					sales_items.item_location,
-					sales_items.description,
-					payments.payment_type,
-					payments.sale_payment_amount,
+					MAX(sales_items.serialnumber) AS serialnumber,
+					MAX(sales_items.item_location) AS item_location,
+					MAX(sales_items.description) AS description,
+					MAX(payments.payment_type) AS payment_type,
+					MAX(payments.sale_payment_amount) AS sale_payment_amount,
 					IFNULL(SUM(sales_items_taxes.percent), 0) AS item_tax_percent,
 					' . "
 					ROUND($sale_subtotal, $decimals) AS subtotal,

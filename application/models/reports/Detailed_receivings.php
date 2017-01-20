@@ -14,7 +14,7 @@ class Detailed_receivings extends Report
 		//Create our temp tables to work with the data in our report
 		$this->Receiving->create_temp_table($inputs);
 	}
-	
+
 	public function getDataColumns()
 	{
 		$columns = array(
@@ -39,7 +39,7 @@ class Detailed_receivings extends Report
 
 		return $columns;
 	}
-	
+
 	public function getDataByReceivingId($receiving_id)
 	{
 		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name, " ", employee.last_name) AS employee_name, supplier.company_name AS supplier_name, SUM(subtotal) AS subtotal, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, reference');
@@ -50,11 +50,20 @@ class Detailed_receivings extends Report
 
 		return $this->db->get()->row_array();
 	}
-	
+
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, receiving_date, SUM(quantity_purchased) AS items_purchased, CONCAT(employee.first_name," ",employee.last_name) AS employee_name, supplier.company_name AS supplier_name, SUM(total) AS total, SUM(profit) AS profit, payment_type, comment, reference');
-		$this->db->from('receivings_items_temp');
+		$this->db->select('receiving_id, 
+		MAX(receiving_date) as receiving_date, 
+		SUM(quantity_purchased) AS items_purchased, 
+		MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name, 
+		MAX(supplier.company_name) AS supplier_name, 
+		SUM(total) AS total, 
+		SUM(profit) AS profit, 
+		MAX(payment_type) AS payment_type, 
+		MAX(comment) AS comment, 
+		MAX(reference) AS reference');
+		$this->db->from('receivings_items_temp AS receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
@@ -80,7 +89,7 @@ class Detailed_receivings extends Report
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
 		$data['details'] = array();
-		
+
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('name, item_number, category, quantity_purchased, serialnumber,total, discount_percent, item_location, receivings_items_temp.receiving_quantity');
@@ -89,10 +98,10 @@ class Detailed_receivings extends Report
 			$this->db->where('receiving_id = '.$value['receiving_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
-		
+
 		return $data;
 	}
-	
+
 	public function getSummaryData(array $inputs)
 	{
 		$this->db->select('SUM(total) AS total');

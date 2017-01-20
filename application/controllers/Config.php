@@ -9,6 +9,7 @@ class Config extends Secure_Controller
 		parent::__construct('config');
 
 		$this->load->library('barcode_lib');
+		$this->load->library('Sale_lib');
 	}
 
 	/*
@@ -194,7 +195,8 @@ class Config extends Secure_Controller
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
-		
+		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
+
 		$data = $this->xss_clean($data);
 		
 		// load all the license statements, they are already XSS cleaned in the private function
@@ -373,7 +375,6 @@ class Config extends Secure_Controller
 	
 	private function _clear_session_state()
 	{
-		$this->load->library('sale_lib');
 		$this->sale_lib->clear_sale_location();
 		$this->sale_lib->clear_all();
 		$this->load->library('receiving_lib');
@@ -415,9 +416,9 @@ class Config extends Secure_Controller
 		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
 
-    public function save_barcode()
-    {
-        $batch_save_data = array(
+	public function save_barcode()
+	{
+		$batch_save_data = array(
 			'barcode_type' => $this->input->post('barcode_type'),
 			'barcode_quality' => $this->input->post('barcode_quality'),
 			'barcode_width' => $this->input->post('barcode_width'),
@@ -432,17 +433,17 @@ class Config extends Secure_Controller
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
 			'barcode_content' => $this->input->post('barcode_content')
-        );
-        
-        $result = $this->Appconfig->batch_save($batch_save_data);
-        $success = $result ? TRUE : FALSE;
+		);
+
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
 		
-        echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
-    }
-    
-    public function save_receipt()
-    {
-    	$batch_save_data = array (
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
+
+	public function save_receipt()
+	{
+		$batch_save_data = array (
 			'receipt_template' => $this->input->post('receipt_template'),
 			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != NULL,
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,
@@ -457,27 +458,28 @@ class Config extends Secure_Controller
 			'print_right_margin' => $this->input->post('print_right_margin')
 		);
 
-    	$result = $this->Appconfig->batch_save($batch_save_data);
-    	$success = $result ? TRUE : FALSE;
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
 
-    	echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
-    }
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
 
-    public function save_invoice()
-    {
-    	$batch_save_data = array (
+	public function save_invoice()
+	{
+		$batch_save_data = array (
 			'invoice_enable' => $this->input->post('invoice_enable') != NULL,
 			'sales_invoice_format' => $this->input->post('sales_invoice_format'),
 			'recv_invoice_format' => $this->input->post('recv_invoice_format'),
 			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
-			'invoice_email_message' => $this->input->post('invoice_email_message')
+			'invoice_email_message' => $this->input->post('invoice_email_message'),
+			'line_sequence' => $this->input->post('line_sequence')
 		);
 
-    	$result = $this->Appconfig->batch_save($batch_save_data);
-    	$success = $result ? TRUE : FALSE;
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
 
-    	echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
-    }
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
 
 	public function remove_logo()
 	{
@@ -485,22 +487,22 @@ class Config extends Secure_Controller
 		
 		echo json_encode(array('success' => $result));
 	}
-    
-    private function _handle_logo_upload()
-    {
-    	$this->load->helper('directory');
 
-    	// load upload library
-    	$config = array('upload_path' => './uploads/',
-    			'allowed_types' => 'gif|jpg|png',
-    			'max_size' => '1024',
-    			'max_width' => '800',
-    			'max_height' => '680',
-    			'file_name' => 'company_logo');
-    	$this->load->library('upload', $config);
-    	$this->upload->do_upload('company_logo');
+	private function _handle_logo_upload()
+	{
+		$this->load->helper('directory');
 
-    	return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
+		// load upload library
+		$config = array('upload_path' => './uploads/',
+				'allowed_types' => 'gif|jpg|png',
+				'max_size' => '1024',
+				'max_width' => '800',
+				'max_height' => '680',
+				'file_name' => 'company_logo');
+		$this->load->library('upload', $config);
+		$this->upload->do_upload('company_logo');
+
+		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
 	
 	private function _check_encryption()
@@ -557,35 +559,35 @@ class Config extends Secure_Controller
 		
 		return TRUE;
 	}
-    
-    public function backup_db()
-    {
-    	$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-    	if($this->Employee->has_module_grant('config', $employee_id))
-    	{
-    		$this->load->dbutil();
 
-    		$prefs = array(
+	public function backup_db()
+	{
+		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		if($this->Employee->has_module_grant('config', $employee_id))
+		{
+			$this->load->dbutil();
+
+			$prefs = array(
 				'format' => 'zip',
 				'filename' => 'ospos.sql'
-    		);
-    		 
-    		$backup = $this->dbutil->backup($prefs);
-    		 
-			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
-    		$save = 'uploads/' . $file_name;
-    		$this->load->helper('download');
-    		while(ob_get_level())
-			{
-    			ob_end_clean();
-    		}
+			);
 
-    		force_download($file_name, $backup);
-    	}
-    	else 
-    	{
-    		redirect('no_access/config');
-    	}
-    }
+			$backup = $this->dbutil->backup($prefs);
+
+			$file_name = 'ospos-' . date("Y-m-d-H-i-s") .'.zip';
+			$save = 'uploads/' . $file_name;
+			$this->load->helper('download');
+			while(ob_get_level())
+			{
+				ob_end_clean();
+			}
+
+			force_download($file_name, $backup);
+		}
+		else
+		{
+			redirect('no_access/config');
+		}
+	}
 }
 ?>
