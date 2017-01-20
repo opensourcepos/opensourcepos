@@ -108,7 +108,7 @@ $(document).ready(function()
 			value:
 			{
 				required:true,
-				number:true
+				//number:true
 			}
    		},
 		messages:

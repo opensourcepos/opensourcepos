@@ -293,7 +293,7 @@ class Sale_lib
 	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
-
+		$this->set_invoice_number_enabled(TRUE);
 		//make sure item exists		
 		if(empty($item_info))
 		{
@@ -478,6 +478,7 @@ class Sale_lib
 	
 	public function add_item_kit($external_item_kit_id, $item_location, $discount)
 	{
+		$this->set_invoice_number_enabled(TRUE);
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
 		$item_kit_id = $pieces[1];
@@ -531,7 +532,7 @@ class Sale_lib
 
 	public function clear_all()
 	{
-		$this->set_invoice_number_enabled(FALSE);
+		$this->set_invoice_number_enabled(TRUE);
 		$this->clear_mode();
 		$this->empty_cart();
 		$this->clear_comment();
