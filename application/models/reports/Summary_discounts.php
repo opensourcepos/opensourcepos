@@ -8,7 +8,7 @@ class Summary_discounts extends Summary_report
 	{
 		parent::__construct();
 	}
-	
+
 	protected function _get_data_columns()
 	{
 		return array(
@@ -18,18 +18,18 @@ class Summary_discounts extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(sales_items.discount_percent, "%") AS discount_percent, count(*) AS count');
+		$this->db->select('MAX(CONCAT(sales_items.discount_percent, "%")) AS discount_percent, count(*) AS count');
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
 		$this->db->where('discount_percent > 0');
 
 		$this->_where($inputs);
-		
+
 		$this->db->group_by('sales_items.discount_percent');
 		$this->db->order_by('sales_items.discount_percent');
 
-		return $this->db->get()->result_array();		
+		return $this->db->get()->result_array();
 	}
 }
 ?>

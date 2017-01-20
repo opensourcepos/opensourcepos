@@ -176,7 +176,7 @@ class Sales extends Secure_Controller
 	
 	public function set_email_receipt()
 	{
- 		$this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
+		$this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
 	}
 
 	// Multiple Payments
@@ -248,7 +248,7 @@ class Sales extends Secure_Controller
 	public function add()
 	{
 		$data = array();
-		
+
 		$discount = 0;
 
 		// check if any discount is assigned to the selected customer
@@ -280,10 +280,36 @@ class Sales extends Secure_Controller
 		}
 		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
+
+			// Add kit item to order if one is assigned
+			$pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
+			$item_kit_id = $pieces[1];
+			$item_kit_info = $this->Item_kit->get_info($item_kit_id);
+			$kit_item_id = $item_kit_info->kit_item_id;
+
+			if ($kit_item_id !== '' && $kit_item_id != 0)
+			{
+				if ($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
+				{
+					$discount = $item_kit_info->kit_discount_percent;
+				}
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount))
+				{
+					$data['error'] = $this->lang->line('sales_unable_to_add_item');
+				}
+				else
+				{
+					$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+				}
+			}
+
+			// Add kit items to order
 			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
+
+
 		}
 		else
 		{
