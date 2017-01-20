@@ -1,4 +1,4 @@
-e<script type="text/javascript">
+<script type="text/javascript">
 function printdoc()
 {
 	// install firefox addon in order to use this plugin
