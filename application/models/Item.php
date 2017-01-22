@@ -102,7 +102,7 @@ class Item extends CI_Model
 		if($filters['stock_location_id'] > -1) {
 			$this->db->select('max(item_quantities.item_id) as qty_item_id');
 			$this->db->select('max(item_quantities.location_id) as location_id');
-			$this->db->select('sum(item_quantities.quantity) as quantity');
+			$this->db->select('max(item_quantities.quantity) as quantity');
 		}
 
 		$this->db->from('items as items');

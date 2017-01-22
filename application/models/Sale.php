@@ -163,8 +163,8 @@ class Sale extends CI_Model
 				ROUND($sale_cost, $decimals) AS cost,
 				ROUND($sale_total - IFNULL($sale_tax, 0) - $sale_cost, $decimals) AS profit,
 				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
-				SUM(payments.sale_payment_amount) AS amount_tendered,
-				(SUM(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
+				MAX(payments.sale_payment_amount) AS amount_tendered,
+				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');
