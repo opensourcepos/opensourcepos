@@ -64,8 +64,8 @@ class Sale extends CI_Model
 				MAX(customer_p.comments) AS comments,
 				' . "
 				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS amount_due,
-				SUM(payments.sale_payment_amount) AS amount_tendered,
-				(SUM(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
+				MAX(payments.sale_payment_amount) AS amount_tendered,
+				(MAX(payments.sale_payment_amount) - IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals))) AS change_due,
 				" . '
 				MAX(payments.payment_type) AS payment_type
 		');
@@ -845,7 +845,7 @@ class Sale extends CI_Model
 					MAX(items.name) AS name,
 					MAX(items.category) AS category,
 					MAX(items.supplier_id) AS supplier_id,
-					SUM(sales_items.quantity_purchased) AS quantity_purchased,
+					MAX(sales_items.quantity_purchased) AS quantity_purchased,
 					MAX(sales_items.item_cost_price) AS item_cost_price,
 					MAX(sales_items.item_unit_price) AS item_unit_price,
 					MAX(sales_items.discount_percent) AS discount_percent,
@@ -854,7 +854,7 @@ class Sale extends CI_Model
 					MAX(sales_items.item_location) AS item_location,
 					MAX(sales_items.description) AS description,
 					MAX(payments.payment_type) AS payment_type,
-					SUM(payments.sale_payment_amount) AS sale_payment_amount,
+					MAX(payments.sale_payment_amount) AS sale_payment_amount,
 					IFNULL(SUM(sales_items_taxes.percent), 0) AS item_tax_percent,
 					' . "
 					ROUND($sale_subtotal, $decimals) AS subtotal,

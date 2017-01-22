@@ -26,7 +26,7 @@ class Detailed_receivings extends Report
 				array('supplier' => $this->lang->line('reports_supplied_by')),
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
 				array('payment_type' => $this->lang->line('reports_payment_type')),
-                array('comment' => $this->lang->line('reports_comments')),
+				array('comment' => $this->lang->line('reports_comments')),
 				array('reference' => $this->lang->line('receivings_reference'))),
 			'details' => array(
 				$this->lang->line('reports_item_number'),
@@ -57,27 +57,27 @@ class Detailed_receivings extends Report
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
 		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 		$this->db->where('receiving_id', $receiving_id);
-        $this->db->group_by('receiving_id');
+		$this->db->group_by('receiving_id');
 
-        return $this->db->get()->row_array();
-    }
+		return $this->db->get()->row_array();
+	}
 
-    public function getData(array $inputs)
-    {
+	public function getData(array $inputs)
+	{
 
-        $this->db->select('receiving_id, 
-        MAX(receiving_date) as receiving_date, 
-        SUM(quantity_purchased) AS items_purchased, 
-        MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name, 
-        MAX(supplier.company_name) AS supplier_name, 
-        SUM(total) AS total, 
-        SUM(profit) AS profit, 
-        MAX(payment_type) AS payment_type, 
-        MAX(comment) AS comment, 
-        MAX(reference) AS reference');
-        $this->db->from('receivings_items_temp AS receivings_items_temp');
-        $this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
-        $this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
+		$this->db->select('receiving_id, 
+		MAX(receiving_date) as receiving_date, 
+		SUM(quantity_purchased) AS items_purchased, 
+		MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name, 
+		MAX(supplier.company_name) AS supplier_name, 
+		SUM(total) AS total, 
+		SUM(profit) AS profit, 
+		MAX(payment_type) AS payment_type, 
+		MAX(comment) AS comment, 
+		MAX(reference) AS reference');
+		$this->db->from('receivings_items_temp AS receivings_items_temp');
+		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
+		$this->db->join('suppliers AS supplier', 'receivings_items_temp.supplier_id = supplier.person_id', 'left');
 
 		if($inputs['location_id'] != 'all')
 		{

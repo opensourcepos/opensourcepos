@@ -247,18 +247,18 @@ class Receiving extends CI_Model
 					MAX(employee_id) AS employee_id, 
 					items.item_id,
 					MAX(receivings.supplier_id) AS supplier_id,
-					SUM(quantity_purchased) AS quantity_purchased,
-					SUM(receivings_items.receiving_quantity) AS receiving_quantity,
+					MAX(quantity_purchased) AS quantity_purchased,
+					MAX(receivings_items.receiving_quantity) AS receiving_quantity,
 					MAX(item_cost_price) AS item_cost_price,
 					MAX(item_unit_price) AS item_unit_price,
 					MAX(discount_percent) AS discount_percent,
 					receivings_items.line,
 					MAX(serialnumber) AS serialnumber,
 					MAX(receivings_items.description) AS description,
-					SUM(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS subtotal,
-					SUM(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS total,
-					SUM((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) - (item_cost_price * quantity_purchased)) AS profit,
-					SUM(item_cost_price * quantity_purchased) AS cost
+					MAX(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS subtotal,
+					MAX(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS total,
+					MAX((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) - (item_cost_price * quantity_purchased)) AS profit,
+					MAX(item_cost_price * quantity_purchased) AS cost
 				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
 				INNER JOIN ' . $this->db->dbprefix('receivings') . ' AS receivings
 					ON receivings_items.receiving_id = receivings.receiving_id
