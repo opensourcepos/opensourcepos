@@ -1,4 +1,4 @@
-FROM php:5-apache
+FROM php:7.0.15-apache
 MAINTAINER jekkos
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     php5-apcu \
@@ -7,7 +7,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libmcrypt-dev
 
 RUN a2enmod rewrite
-RUN docker-php-ext-install mysql mysqli bcmath intl gd sockets mbstring mcrypt
+RUN docker-php-ext-install mysqli bcmath intl gd sockets mbstring mcrypt
 RUN echo "date.timezone = \"\${PHP_TIMEZONE}\"" > /usr/local/etc/php/conf.d/timezone.ini
 RUN echo -e “$(hostname -i)\t$(hostname) $(hostname).localhost” >> /etc/hosts
 
