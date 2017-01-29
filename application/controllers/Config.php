@@ -304,7 +304,8 @@ class Config extends Secure_Controller
 			'tax_decimals' => $this->input->post('tax_decimals'),
 			'quantity_decimals' => $this->input->post('quantity_decimals'),
 			'country_codes' => $this->input->post('country_codes'),
-			'payment_options_order' => $this->input->post('payment_options_order')
+			'payment_options_order' => $this->input->post('payment_options_order'),
+			'date_or_time_format' => $this->input->post('date_or_time_format')
 		);
 	
 		$result = $this->Appconfig->batch_save($batch_save_data);

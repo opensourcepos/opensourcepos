@@ -227,7 +227,14 @@ class Receiving extends CI_Model
 	{
 		if(empty($inputs['receiving_id']))
 		{
-			$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			if(empty($this->config->item('date_or_time_format')))
+			{
+				$where = 'WHERE DATE(receiving_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			}
+			else
+			{
+				$where = 'WHERE receiving_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+			}
 		}
 		else
 		{
@@ -235,7 +242,7 @@ class Receiving extends CI_Model
 		}
 		
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') . 
-			' (INDEX(receiving_date), INDEX(receiving_id))
+			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
 				SELECT 
 					DATE(receiving_time) AS receiving_date,
