@@ -44,7 +44,7 @@
 						'name' => 'invoice_default_comments',
 						'id' => 'invoice_default_comments',
 						'class' => 'form-control input-sm',
-						'value '=> $this->config->item('invoice_default_comments')));?>
+						'value' => $this->config->item('invoice_default_comments')));?>
 				</div>
 			</div>
 
@@ -55,7 +55,7 @@
 						'name' => 'invoice_email_message',
 						'id' => 'invoice_email_message',
 						'class' => 'form-control input-sm',
-						'value '=> $this->config->item('invoice_email_message')));?>
+						'value' => $this->config->item('invoice_email_message')));?>
 				</div>
 			</div>
 
