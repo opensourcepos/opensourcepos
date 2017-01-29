@@ -97,7 +97,7 @@
 				</div>
 				
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('common_welcome') . "    $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
+					<?php echo"    $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
 				</div>
 				
