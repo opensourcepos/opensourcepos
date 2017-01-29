@@ -37,6 +37,7 @@ $lang["config_company_remove_image"] = "Remove Image";
 $lang["config_company_required"] = "Company name is a required field";
 $lang["config_company_website_url"] = "Company website is not a valid URL (http://...)";
 $lang["config_comma"] = "comma";
+$lang["config_date_or_time_format"] = "Date and Time";
 $lang["config_country_codes"] = "Country Codes";
 $lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";
 $lang["config_currency_symbol"] = "Currency Symbol";
