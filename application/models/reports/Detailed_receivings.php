@@ -23,7 +23,7 @@ class Detailed_receivings extends Report
 				array('receiving_date' => $this->lang->line('reports_date')),
 				array('quantity' => $this->lang->line('reports_quantity')),
 				array('employee_name' => $this->lang->line('reports_received_by')),
-				array('supplier' => $this->lang->line('reports_supplied_by')),
+				array('supplier_name' => $this->lang->line('reports_supplied_by')),
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
 				array('payment_type' => $this->lang->line('reports_payment_type')),
 				array('reference' => $this->lang->line('receivings_reference')),
