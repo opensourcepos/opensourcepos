@@ -21,11 +21,29 @@ class Summary_taxes extends Summary_report
 
 	protected function _where(array $inputs)
 	{
-		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+		}
 	}
 
 	public function getData(array $inputs)
 	{
+		$where = '';
+
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$where .= 'WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+		}
+		else
+		{
+			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+		}
+
 		if($this->config->item('tax_included'))
 		{
 			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
@@ -53,7 +71,7 @@ class Summary_taxes extends Summary_report
 						ON sales_items.sale_id = sales.sale_id
 					LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 						ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-					WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . '
+					' . $where . '
 				) AS temp_taxes
 			GROUP BY percent'
 		);
