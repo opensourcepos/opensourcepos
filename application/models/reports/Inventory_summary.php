@@ -23,12 +23,12 @@ class Inventory_summary extends Report
 
 	public function getData(array $inputs)
 	{	
-        $this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
-        $this->db->from('items AS items');
-        $this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
-        $this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
-        $this->db->where('items.deleted', 0);
-        $this->db->where('stock_locations.deleted', 0);
+		$this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
+		$this->db->from('items AS items');
+		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
+		$this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+		$this->db->where('items.deleted', 0);
+		$this->db->where('stock_locations.deleted', 0);
 
 		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
 		if($inputs['item_count'] == 'zero_and_less')

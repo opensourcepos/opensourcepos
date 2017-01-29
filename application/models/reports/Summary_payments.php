@@ -19,7 +19,14 @@ class Summary_payments extends Summary_report
 
 	protected function _where(array $inputs)
 	{
-		$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+		}
 	}
 
 	public function getData(array $inputs)

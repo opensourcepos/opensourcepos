@@ -27,6 +27,7 @@ abstract class Summary_report extends Report
 		{
 			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
+
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') . 
 			' (INDEX(sale_id), INDEX(item_id))

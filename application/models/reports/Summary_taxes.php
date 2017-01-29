@@ -71,9 +71,9 @@ class Summary_taxes extends Summary_report
 						ON sales_items.sale_id = sales.sale_id
 					LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 						ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-					' . " $where 
+					' . $where . '
 				) AS temp_taxes
-			GROUP BY percent"
+			GROUP BY percent'
 		);
 
 		return $query->result_array();
