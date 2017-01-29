@@ -33,7 +33,7 @@
 			<?php echo form_label($this->lang->line('customers_total'), 'total', array('class' => 'control-label col-xs-3')); ?>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
-					<?php if (!$this->config->item('currency_side')): ?>
+					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
@@ -43,7 +43,7 @@
 							'value'=>to_currency_no_money($total),
 							'disabled'=>'')
 							);?>
-					<?php if ($this->config->item('currency_side')): ?>
+					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -74,7 +74,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 
 //validation and submit handling
 $(document).ready(function()
@@ -86,7 +86,7 @@ $(document).ready(function()
 				success:function(response)
 				{
 					dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
+					table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
 				},
 				dataType:'json'
 			});
@@ -102,14 +102,14 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/check_account_number')?>",
 					type: "post",
-					data:
+					data: $.extend(csrf_form_base(),
 					{
 						"person_id" : "<?php echo $person_info->person_id; ?>",
 						"account_number" : function()
 						{
 							return $("#account_number").val();
 						}
-					}
+					})
 				}
 			}
    		},
@@ -120,6 +120,6 @@ $(document).ready(function()
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
 			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

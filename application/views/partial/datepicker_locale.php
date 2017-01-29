@@ -4,7 +4,7 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
     days: [
 		"<?php echo $this->lang->line("cal_sunday"); ?>",
         "<?php echo $this->lang->line("cal_monday"); ?>",
-        "<?php echo $this->lang->line("cal_tueday"); ?>",
+        "<?php echo $this->lang->line("cal_tuesday"); ?>",
         "<?php echo $this->lang->line("cal_wednesday"); ?>",
         "<?php echo $this->lang->line("cal_thursday"); ?>",
         "<?php echo $this->lang->line("cal_friday"); ?>",
@@ -47,7 +47,7 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
 		"<?php echo $this->lang->line("cal_jan"); ?>",
         "<?php echo $this->lang->line("cal_feb"); ?>",
         "<?php echo $this->lang->line("cal_mar"); ?>",
-        "<?php echo $this->lang->line("cal_ap"); ?>",
+        "<?php echo $this->lang->line("cal_apr"); ?>",
         "<?php echo $this->lang->line("cal_may"); ?>",
         "<?php echo $this->lang->line("cal_jun"); ?>",
         "<?php echo $this->lang->line("cal_jul"); ?>",
@@ -65,7 +65,7 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
     meridiem: ["am", "pm"],
     <?php
         }
-        else if( strpos($this->config->item('timeformat'), 'A') !== false )
+        elseif( strpos($this->config->item('timeformat'), 'A') !== false )
         {
     ?>
     meridiem: ["AM", "PM"],

@@ -33,20 +33,30 @@
 		axisX: {
 			// Lets offset the chart a bit from the labels
 			offset: 120,
-			position: 'end'
+			position: 'end',
+			// offset the labels a bit from the axis to avoid overlaps
+			labelOffset: {
+				x: 0,
+				y: 20
+			}
 		},
 
 		// Y-Axis specific configuration
 		axisY: {
 			// Lets offset the chart a bit from the labels
-			offset: 60,
+			offset: 80,
+			// offset the labels a bit from the axis to avoid overlaps
+			labelOffset: {
+				x: -20,
+				y: 0
+			},
 			// The label interpolation function enables you to modify the values
 			// used for the labels on each axis.
 			labelInterpolationFnc: function(value) {
 				<?php
 				if( $show_currency )
 				{
-					if( $this->config->item('currency_side') )
+					if( currency_side() )
 					{
 				?>
 						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
@@ -99,7 +109,7 @@
 					<?php
 					if( $show_currency )
 					{
-						if( $this->config->item('currency_side') )
+						if( currency_side() )
 						{
 					?>
 							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
@@ -128,7 +138,7 @@
 					<?php
 					if( $show_currency )
 					{
-						if( $this->config->item('currency_side') )
+						if( currency_side() )
 						{
 					?>
 							return value + '<?php echo $this->config->item('currency_symbol'); ?>';

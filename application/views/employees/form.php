@@ -45,7 +45,7 @@
 					<?php echo form_label($this->lang->line('employees_password'), 'password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
-							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 							<?php echo form_password(array(
 									'name'=>'password',
 									'id'=>'password',
@@ -59,7 +59,7 @@
 				<?php echo form_label($this->lang->line('employees_repeat_password'), 'repeat_password', array_merge($password_label_attributes, array('class'=>'control-label col-xs-3'))); ?>
 					<div class='col-xs-8'>
 						<div class="input-group">
-							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-asterisk"></span></span>
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 							<?php echo form_password(array(
 									'name'=>'repeat_password',
 									'id'=>'repeat_password',
@@ -77,34 +77,33 @@
 
 				<ul id="permission_list">
 					<?php
-					foreach($all_modules->result() as $module)
+					foreach($all_modules as $module)
 					{
 					?>
 						<li>	
-							<?php echo form_checkbox("grants[]",$module->module_id,$this->Employee->has_grant($module->module_id,$person_info->person_id),"class='module'"); ?>
+							<?php echo form_checkbox("grants[]", $module->module_id, $module->grant, "class='module'"); ?>
 							<span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 							<span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
 							<?php
-								foreach($all_subpermissions->result() as $permission)
+								foreach($all_subpermissions as $permission)
 								{
 									$exploded_permission = explode('_', $permission->permission_id);
-									if ($permission->module_id == $module->module_id)
+									if($permission->module_id == $module->module_id)
 									{
 										$lang_key = $module->module_id.'_'.$exploded_permission[1];
 										$lang_line = $this->lang->line($lang_key);
 										$lang_line = ($this->lang->line_tbd($lang_key) == $lang_line) ? $exploded_permission[1] : $lang_line;
-										if (empty($lang_line))
+										if(!empty($lang_line))
 										{
-											continue;
-										} 
 							?>
-									<ul>
-										<li>
-											<?php echo form_checkbox("grants[]", $permission->permission_id, $this->Employee->has_grant($permission->permission_id,$person_info->person_id)); ?>
-											<span class="medium"><?php echo $lang_line ?></span>
-										</li>
-									</ul>
-							<?php 
+											<ul>
+												<li>
+													<?php echo form_checkbox("grants[]", $permission->permission_id, $permission->grant); ?>
+													<span class="medium"><?php echo $lang_line ?></span>
+												</li>
+											</ul>
+							<?php
+										}
 									}
 								}
 							?>
@@ -118,7 +117,7 @@
 	</div>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
@@ -224,6 +223,6 @@ $(document).ready(function()
      		},
      		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

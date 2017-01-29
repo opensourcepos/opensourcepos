@@ -1,19 +1,50 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+/*
+|-------------------------------------------------------------------------- 
+| Code Version 
+|-------------------------------------------------------------------------- 
+| 
+| This is the version of Open Source Point of Sale you're running 
+| 
+| 
+*/ 
+$config['application_version'] = '3.1.0';
+
+/* 
+|-------------------------------------------------------------------------- 
+| Commit sha1 
+|-------------------------------------------------------------------------- 
+| 
+| This is the commit hash for the version you are currently using 
+| 
+| 
+*/ 
+$config['commit_sha1'] = '$Id$';
+ 
+/* 
+|-------------------------------------------------------------------------- 
+| Internal to OSPOS XSS Clean 
+|-------------------------------------------------------------------------- 
+| 
+| This is to indicated whether we want XSS clean to be performed or not 
+| By default it's enabled as it's assumed the installation has Internet access and needs to be protected, 
+| however intranet only installations may not need this so they can set FALSE to improve performance 
+| 
+*/ 
+$config['ospos_xss_clean'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------
-| Code Version
+| Enable database query logging hook
 |--------------------------------------------------------------------------
 |
-| This is the version of Open Source Point of Sale you're running
-|
+| Logs are stored in application/logs
 |
 */
-$config['application_version'] = '3.0.0';
+$config['db_log_enabled'] = FALSE;
 
-/*
-|--------------------------------------------------------------------------
+/* 
+|-------------------------------------------------------------------------- 
 | Base Site URL
 |--------------------------------------------------------------------------
 |
@@ -34,9 +65,9 @@ $config['application_version'] = '3.0.0';
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
-$config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
-$config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$config['base_url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
+$config['base_url'] .= '://' . $_SERVER['HTTP_HOST'];
+$config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +79,7 @@ $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -89,7 +120,7 @@ $config['url_suffix'] = '';
 | than english.
 |
 */
-$config['language']	= 'en';
+$config['language'] = 'english';
 
 /*
 |--------------------------------------------------------------------------
@@ -149,7 +180,7 @@ $config['subclass_prefix'] = 'MY_';
 | Note: This will NOT disable or override the CodeIgniter-specific
 |	autoloading (application/config/autoload.php)
 */
-$config['composer_autoload'] = FALSE;
+$config['composer_autoload'] = realpath(APPPATH . '../vendor/autoload.php');
 
 /*
 |--------------------------------------------------------------------------
@@ -384,7 +415,7 @@ $config['sess_driver'] = 'database';
 $config['sess_cookie_name'] = 'ospos_session';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = 'sessions';
-$config['sess_match_ip'] = FALSE;
+$config['sess_match_ip'] = TRUE;
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
 
@@ -403,11 +434,11 @@ $config['sess_regenerate_destroy'] = FALSE;
 |       'cookie_httponly') will also affect sessions.
 |
 */
-$config['cookie_prefix']	= '';
-$config['cookie_domain']	= '';
-$config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_prefix'] = '';
+$config['cookie_domain'] = '';
+$config['cookie_path'] = '/';
+$config['cookie_secure'] = FALSE;
+$config['cookie_httponly'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -451,7 +482,7 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_regenerate' = Regenerate token on every submission
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
-$config['csrf_protection'] = FALSE;
+$config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_ospos_v3';
 $config['csrf_cookie_name'] = 'csrf_cookie_ospos_v3';
 $config['csrf_expire'] = 7200;

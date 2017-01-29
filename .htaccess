@@ -1,50 +1,60 @@
-RewriteEngine On
-
-# Option 2: To rewrite "domain.com -> www.domain.com" uncomment the following lines.
-# RewriteCond %{HTTPS} !=on
-# RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
-# RewriteCond %{HTTP_HOST} (.+)$ [NC]
-# RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L]
-
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?/$1 [L]
-
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.
-#Options All -Indexes
 Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
 
 # prevent folder listing
 IndexIgnore *
 
-# secure htaccess file
-<Files .htaccess>
- order allow,deny
- deny from all
-</Files>
+# Apache 2.4
+<IfModule authz_core_module>
+  # secure htaccess file
+  <Files .htaccess>
+    Require all denied
+  </Files>
 
-# prevent access to PHP error log
-<Files error_log>
- order allow,deny
- deny from all
- satisfy All
-</Files>
+  # prevent access to PHP error log
+  <Files error_log>
+    Require all denied
+  </Files>
 
-# prevent access to generate_languages.php
-<Files generate_languages.php>
- order deny,allow
- deny from all
- allow from 127.0.0.1
- 
-# My IP(s)
-#  allow from xxx.xxx.xxx.xxx
+  # prevent access to LICENSE
+  <Files LICENSE>
+    Require all denied
+  </Files>
 
-</Files>
+  # prevent access to csv, txt and md files
+  <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
 
-<IfModule mod_expires.c>
-          <FilesMatch "\.(jpe?g|png|gif|js|css)$">
-                      ExpiresActive On
-                      ExpiresDefault "access plus 1 week"
-          </FilesMatch>
+# Apache 2.2
+<IfModule !authz_core_module>
+  # secure htaccess file
+  <Files .htaccess>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+
+  # prevent access to PHP error log
+  <Files error_log>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+
+  # prevent access to LICENSE
+  <Files LICENSE>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+
+  # prevent access to csv, txt and md files
+  <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </FilesMatch>
 </IfModule>

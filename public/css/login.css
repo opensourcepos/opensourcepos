@@ -1,0 +1,60 @@
+*
+{
+	margin:0;
+	padding:0;
+}
+
+#logo
+{
+	margin-top:2%;
+	margin-bottom:2%;
+}
+
+#login
+{
+	width:400px;
+	margin:0 auto;
+	margin-top:2%;
+	margin-bottom:2%;
+	transition:opacity 1s;
+	-webkit-transition:opacity 1s;
+}
+
+#login h1
+{
+	background:#3399cc;
+	padding:20px 0;
+	font-size:140%;
+	font-weight:300;
+	text-align:center;
+	color:#fff;
+}
+
+form
+{
+	background:#f0f0f0;
+	padding:6% 4%;
+}
+
+input[type="username"], input[type="password"]
+{
+	width:100%;
+	margin-bottom:4%;
+	padding:4%;
+}
+
+input[type="submit"]
+{
+	width:100%;
+	background:#3399cc;
+	margin-top:4%;
+	border:0;
+	padding:4%;
+	transition:background .3s;
+	-webkit-transition:background .3s;
+}
+
+input[type="submit"]:hover
+{
+	background:#2288bb;
+}

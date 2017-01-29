@@ -1,54 +1,35 @@
-<?php
-require_once("Report.php");
-class Summary_discounts extends Report
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+require_once("Summary_report.php");
+
+class Summary_discounts extends Summary_report
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
 	
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_discount_percent'), $this->lang->line('reports_count'));
+		return array(
+			array('discount' => $this->lang->line('reports_discount_percent'), 'sorter' => 'number_sorter'),
+			array('count' => $this->lang->line('reports_count')));
 	}
-	
+
 	public function getData(array $inputs)
 	{
-		$this->db->select('CONCAT(discount_percent, "%") as discount_percent, count(*) as count', false);
-		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'" and discount_percent > 0');
+		$this->db->select('CONCAT(sales_items.discount_percent, "%") AS discount_percent, count(*) AS count');
+		$this->db->from('sales_items AS sales_items');
+		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		$this->db->where('discount_percent > 0');
+
+		$this->_where($inputs);
 		
-		$this->db->group_by('sales_items_temp.discount_percent');
-		$this->db->order_by('discount_percent');
+		$this->db->group_by('sales_items.discount_percent');
+		$this->db->order_by('sales_items.discount_percent');
 
 		return $this->db->get()->result_array();		
-	}
-	
-	public function getSummaryData(array $inputs)
-	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
-		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
-
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
-
-		return $this->db->get()->row_array();		
 	}
 }
 ?>

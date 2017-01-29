@@ -1,8 +1,12 @@
 node_modules
-bower_components
 tmp
 application/config/email.php
 application/config/database.php
+application/sessions/*
+application/logs/*
+application/uploads/*
+public/license/.licenses
+public/bower_components
 *.patch
 patches/
 .idea/
@@ -18,4 +22,3 @@ git-svn-diff.py
 *~
 *.~
 *.log
-application/sessions/*

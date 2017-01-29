@@ -49,13 +49,12 @@
 			</thead>
 			<tbody>
 				<?php
-				foreach ($this->Item_kit_items->get_info($item_kit_info->item_kit_id) as $item_kit_item)
+				foreach($item_kit_items as $item_kit_item)
 				{
 				?>
 					<tr>
-						<?php $item_info = $this->Item->get_info($item_kit_item['item_id']); ?>
 						<td><a href='#' onclick='return delete_item_kit_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td>
-						<td><?php echo $item_info->name; ?></td>
+						<td><?php echo $item_kit_item['name']; ?></td>
 						<td><input class='quantity form-control input-sm' id='item_kit_item_<?php echo $item_kit_item['item_id'] ?>' name=item_kit_item[<?php echo $item_kit_item['item_id'] ?>] value='<?php echo to_quantity_decimals($item_kit_item['quantity']) ?>'/></td>
 					</tr>
 				<?php
@@ -66,7 +65,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 
 //validation and submit handling
 $(document).ready(function()
@@ -114,7 +113,7 @@ $(document).ready(function()
 			name:"<?php echo $this->lang->line('items_name_required'); ?>",
 			category:"<?php echo $this->lang->line('items_category_required'); ?>"
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 
 function delete_item_kit_row(link)

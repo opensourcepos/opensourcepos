@@ -34,7 +34,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {
 	$('#send_sms_form').validate($.extend({
@@ -74,6 +74,6 @@ $(document).ready(function()
 				required:"<?php echo $this->lang->line('messages_message_required'); ?>"
 			}
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

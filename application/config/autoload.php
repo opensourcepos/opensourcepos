@@ -58,7 +58,7 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database', 'form_validation', 'session', 'user_agent', 'pagination', 'sms');
+$autoload['libraries'] = array('database', 'form_validation', 'session', 'user_agent', 'pagination', 'encryption');
 
 /*
 | -------------------------------------------------------------------
@@ -72,6 +72,12 @@ $autoload['libraries'] = array('database', 'form_validation', 'session', 'user_a
 | Prototype:
 |
 |	$autoload['drivers'] = array('cache');
+|
+| You can also supply an alternative property name to be assigned in
+| the controller:
+|
+|	$autoload['drivers'] = array('cache' => 'cch');
+|
 */
 $autoload['drivers'] = array();
 

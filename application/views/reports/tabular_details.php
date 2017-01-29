@@ -1,4 +1,4 @@
-<?php $this->load->view("partial/header");?>
+<?php $this->load->view("partial/header"); ?>
 
 <div id="page_title"><?php echo $title ?></div>
 
@@ -19,7 +19,8 @@
 	?>
 </div>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
+
 	$(document).ready(function()
 	{
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
@@ -28,6 +29,7 @@
 
 		var init_dialog = function()
 		{
+
 			<?php if (isset($editable)): ?>
 			table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
 			dialog_support.init("a.modal-dlg");
@@ -35,7 +37,7 @@
 		};
 
 		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers_readonly($headers['summary']); ?>,
+			columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			pagination: true,
@@ -48,6 +50,7 @@
 			paginationVAlign: 'bottom',
 			detailView: true,
 			uniqueId: 'id',
+			escape: false,
 			onPageChange: init_dialog,
 			onPostBody: function() {
 				dialog_support.init("a.modal-dlg");
@@ -55,7 +58,7 @@
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
-					data: detail_data[row.id || $(row[0]).text().replace(/(POS|RECV)\s*/g, '')]
+					data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 				});
 			}
 		});
@@ -63,4 +66,5 @@
 		init_dialog();
 	});
 </script>
+
 <?php $this->load->view("partial/footer"); ?>

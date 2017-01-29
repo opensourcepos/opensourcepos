@@ -1,4 +1,4 @@
-<?php echo form_open('config/save_locations/', array('id'=>'location_config_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('config/save_locations/', array('id' => 'location_config_form', 'class' => 'form-horizontal')); ?>
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
@@ -9,15 +9,15 @@
 			</div>
             
             <?php echo form_submit(array(
-                'name'=>'submit',
-                'id'=>'submit',
+                'name' => 'submit',
+                'id' => 'submit',
                 'value'=>$this->lang->line('common_submit'),
-                'class'=>'btn btn-primary btn-sm pull-right')); ?>
+                'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
@@ -71,36 +71,20 @@ $(document).ready(function()
 		return value.indexOf('_') === -1;
     }, "<?php echo $this->lang->line('config_stock_location_invalid_chars'); ?>");
 	
-	$('#location_config_form').validate({
+	$('#location_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)	{
-					if(response.success)
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-success', false);		
-					}
-					else
-					{
-						set_feedback(response.message, 'alert alert-dismissible alert-danger', true);		
-					}
-
+					$.notify({ message: response.message }, { type: response.success ? 'success' : 'danger'});
 					$("#stock_locations").load('<?php echo site_url("config/stock_locations"); ?>', init_add_remove_locations);
 				},
 				dataType: 'json'
 			});
 		},
 
-		errorClass: "has-error",
 		errorLabelContainer: "#stock_error_message_box",
-		wrapper: "li",
-		highlight: function (e)	{
-			$(e).closest('.form-group').addClass('has-error');
-		},
-		unhighlight: function (e) {
-			$(e).closest('.form-group').removeClass('has-error');
-		},
 
-		rules: 
+		rules:
 		{
 			<?php
 			$i = 0;
@@ -132,6 +116,6 @@ $(document).ready(function()
 			}
 			?>
 		}
-	});
+	}));
 });
 </script>

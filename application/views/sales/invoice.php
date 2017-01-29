@@ -8,13 +8,39 @@ if (isset($error_message))
 }
 ?>
 
+<?php if(!empty($customer_email)): ?>
+<script type="text/javascript">
+$(document).ready(function()
+{
+	var send_email = function()
+	{
+		$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_id_num; ?>',
+			function(response)
+			{
+				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+			}, 'json'
+		);
+	};
+
+	$("#show_email_button").click(send_email);
+
+	<?php if(!empty($email_receipt)): ?>
+		send_email();
+	<?php endif; ?>
+});
+</script>
+<?php endif; ?>
+
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
-	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo $this->lang->line('common_print'); ?></div></a>
-	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
-	<?php echo anchor("sales", $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
-	<?php echo anchor("sales/manage", $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
+	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
+	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
+	<?php if(isset($customer_email) && !empty($customer_email)): ?>
+		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_invoice'); ?></div></a>
+	<?php endif; ?>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
+	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
 <div id="page-wrap">
@@ -32,19 +58,15 @@ if (isset($error_message))
 		</div>
 
         <div id="logo">
-	        <?php if ($this->Appconfig->get('company_logo') == '') 
+	        <?php if($this->Appconfig->get('company_logo') != '') 
 	        { 
-	        ?>
-				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
-			<?php 
-			}
-			else 
-			{ 
 			?>
 				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
 			<?php
 			}
 			?>
+			<div>&nbsp</div>
+			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
         </div>
 	</div>
 
@@ -90,7 +112,7 @@ if (isset($error_message))
 			<tr class="item-row">
 				<td></td>
 				<td class="item-name"><textarea cols="6"><?php echo $item['description']; ?></textarea></td>
-				<td style='text-align:center;'><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
+				<td style='text-align:center;' colspan="4"><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
 			</tr>
 		<?php
 		}

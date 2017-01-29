@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Адрес 1";
 $lang["common_address_2"] = "Адрес 2";
 $lang["common_city"] = "Город";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Комментарии";
 $lang["common_common"] = "общественно";
 $lang["common_confirm_search"] = "Вы выбрали одну или несколько строк, это больше не будет быть выбрано после поиска. Вы уверены, что хотите, чтобы представить этот поиск?";
@@ -30,6 +31,7 @@ $lang["common_list_of"] = "Список";
 $lang["common_logout"] = "Выход";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "Там нет людей, чтобы отобразить";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "ИЛИ";
 $lang["common_phone_number"] = "Номер телефона";
 $lang["common_phone_number_required"] = "";

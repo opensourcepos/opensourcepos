@@ -1,6 +1,4 @@
-<?php 
-	$this->load->view("partial/header");
-?>
+<?php $this->load->view("partial/header"); ?>
 
 <div id="page_title"><?php echo $title ?></div>
 
@@ -21,13 +19,13 @@
 	?>
 </div>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 	$(document).ready(function()
 	{
 		<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		$('#table').bootstrapTable({
-			columns: <?php echo transform_headers_readonly($headers); ?>,
+			columns: <?php echo transform_headers($headers, TRUE, FALSE); ?>,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			sortable: true,
@@ -37,11 +35,11 @@
 			showExport: true,
 			data: <?php echo json_encode($data); ?>,
 			iconSize: 'sm',
-			paginationVAlign: 'bottom'
+			paginationVAlign: 'bottom',
+			escape: false
 		});
 
 	});
 </script>
-<?php
-	$this->load->view("partial/footer");
-?>
+
+<?php $this->load->view("partial/footer"); ?>

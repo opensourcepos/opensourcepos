@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/invoice_email.css"/>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url() . 'dist/invoice_email.css';?>"/>
 </head>
 
 <body>
@@ -19,30 +19,23 @@ if (isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-		        <?php if ($this->Appconfig->get('company_logo') == '') 
+		        <?php if($this->config->item('company_logo') != '') 
 		        { 
-		        ?>
-					<div id="company_name"><?php echo $this->config->item('company'); ?></div>
-				<?php 
-				}
-				else 
-				{ 
 				?>
-					<img id="image" src="<?php echo $image_prefix. 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
+					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
 				<?php
 				}
 				?>
 			</td>
 			<td id="customer-title">
-				<pre><?php if(isset($customer))
-				{
-					echo $customer_info;
-				}
-				?></pre>
+	            <pre><?php if(isset($customer)) { echo $customer_info; } ?></pre>
 			</td>
 		</tr>
 		<tr>
-	       	<td id="company-title"><pre><?php echo $company_info; ?></pre></td>
+	       	<td id="company-title">
+	            <pre><?php echo $this->config->item('company'); ?></pre>
+	            <pre><?php echo $company_info; ?></pre>
+			</td>
 	        <td id="meta">
 	        	<table align="right">
 	            <tr>
@@ -67,7 +60,6 @@ if (isset($error_message))
 	        </td>
 		</tr>
 	</table>
-	
 
 	<table id="items">
 	  <tr>

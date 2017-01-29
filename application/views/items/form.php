@@ -57,7 +57,7 @@
 			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class'=>'required control-label col-xs-3')); ?>
 			<div class="col-xs-4">
 				<div class="input-group input-group-sm">
-					<?php if (!$this->config->item('currency_side')): ?>
+					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
@@ -66,7 +66,7 @@
 							'class'=>'form-control input-sm',
 							'value'=>to_currency_no_money($item_info->cost_price))
 							);?>
-					<?php if ($this->config->item('currency_side')): ?>
+					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -77,7 +77,7 @@
 			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!$this->config->item('currency_side')): ?>
+					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
@@ -86,7 +86,7 @@
 							'class'=>'form-control input-sm',
 							'value'=>to_currency_no_money($item_info->unit_price))
 							);?>
-					<?php if ($this->config->item('currency_side')): ?>
+					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -253,7 +253,7 @@
 		</div>
 
 		<?php
-		for ($i = 1; $i <= 10; $i++)
+		for ($i = 1; $i <= 10; ++$i)
 		{
 		?>
 			<?php
@@ -279,12 +279,13 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 	//validation and submit handling
 	$(document).ready(function()
 	{
-		$("#continue").click(function() {
+		$("#new").click(function() {
 			stay_open = true;
+			$("#item_form").submit();
 		});
 
 		$("#submit").click(function() {
@@ -294,7 +295,7 @@
 		var no_op = function(event, data, formatted){};
 		$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",delay:10,appendTo: '.modal-content'});
 
-		<?php for ($i = 1; $i <= 10; $i++)
+		<?php for ($i = 1; $i <= 10; ++$i)
 		{
 		?>
 			$("#custom"+<?php echo $i; ?>).autocomplete({
@@ -303,7 +304,7 @@
 						type: "POST",
 						url: "<?php echo site_url('items/suggest_custom');?>",
 						dataType: "json",
-						data: $.extend(request, {field_no: <?php echo $i; ?>}),
+						data: $.extend(request, $extend(csrf_form_base(), {field_no: <?php echo $i; ?>})),
 						success: function(data) {
 							response($.map(data, function(item) {
 								return {
@@ -363,25 +364,25 @@
 					{
 						url: "<?php echo site_url($controller_name . '/check_item_number')?>",
 						type: "post",
-						data:
+						data: $.extend(csrf_form_base(),
 						{
 							"item_id" : "<?php echo $item_info->item_id; ?>",
 							"item_number" : function()
 							{
 								return $("#item_number").val();
-							}
-						}
+							},
+						})
 					}
 				},
 				cost_price:
 				{
-					required:true,
-					number:true
+					required: true,
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				unit_price:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				<?php
 				foreach($stock_locations as $key=>$location_detail)
@@ -390,7 +391,7 @@
 					<?php echo 'quantity_' . $key ?>:
 					{
 						required:true,
-						number:true
+						remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 					},
 				<?php
 				}
@@ -398,17 +399,17 @@
 				receiving_quantity:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				reorder_level:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				},
 				tax_percent:
 				{
 					required:true,
-					number:true
+					remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 				}
 			},
 
@@ -455,7 +456,7 @@
 					number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
 				}
 			}
-		}, dialog_support.error));
+		}, form_support.error));
 	});
 </script>
 

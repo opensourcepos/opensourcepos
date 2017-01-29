@@ -40,7 +40,7 @@
 			<?php echo form_label($this->lang->line('items_cost_price'), 'cost_price', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!$this->config->item('currency_side')): ?>
+					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
@@ -48,7 +48,7 @@
 							'id'=>'cost_price',
 							'class'=>'form-control input-sm')
 							);?>
-					<?php if ($this->config->item('currency_side')): ?>
+					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -59,7 +59,7 @@
 			<?php echo form_label($this->lang->line('items_unit_price'), 'unit_price', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!$this->config->item('currency_side')): ?>
+					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
@@ -67,7 +67,7 @@
 							'id'=>'unit_price',
 							'class'=>'form-control input-sm')
 							);?>
-					<?php if ($this->config->item('currency_side')): ?>
+					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -158,7 +158,7 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {	
@@ -229,6 +229,6 @@ $(document).ready(function()
 			}
 
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>

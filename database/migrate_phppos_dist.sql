@@ -4,8 +4,8 @@
 --
 
 CREATE TABLE `ospos_app_config` (
-  `key` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
+  `key` varchar(50) NOT NULL,
+  `value` varchar(500) NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -17,7 +17,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('address', '123 Nowhere street'),
 ('company', 'Open Source Point of Sale'),
 ('default_tax_rate', '8'),
-('email', 'admin@pappastech.com'),
+('email', 'changeme@example.com'),
 ('fax', ''),
 ('phone', '555-555-5555'),
 ('return_policy', 'Test'),
@@ -44,7 +44,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_show_description', '1'),
 ('receipt_show_serialnumber', '1'),
 ('invoice_enable', '1'),
-('use_invoice_template', '1'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
 ('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
@@ -61,14 +60,29 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('dateformat', 'm/d/Y'),
 ('timeformat', 'H:i:s'),
 ('currency_symbol', '$'),
-('decimal_point', '.'),
+('number_locale', 'en_US'),
+('thousands_separator', '1'),
 ('currency_decimals', '2'),
 ('tax_decimals', '2'),
 ('quantity_decimals', '0'),
+('country_codes', 'us'),
 ('msg_msg', ''),
 ('msg_uid', ''),
 ('msg_src', ''),
-('msg_pwd', '');
+('msg_pwd', ''),
+('notify_horizontal_position', 'center'),
+('notify_vertical_position', 'bottom'),
+('payment_options_order', 'cashdebitcredit'),
+('protocol', 'mail'),
+('mailpath', '/usr/sbin/sendmail'),
+('smtp_port', '465'),
+('smtp_timeout', '5'),
+('smtp_crypto', 'ssl'),
+('receipt_template', 'receipt_default'),
+('theme', 'flatly'),
+('statistics', '1'),
+('language', 'english'),
+('language_code', 'en');
 
 
 -- --------------------------------------------------------
@@ -82,7 +96,7 @@ CREATE TABLE `ospos_customers` (
   `company_name` varchar(255) DEFAULT NULL,
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
-  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
   KEY `person_id` (`person_id`)
@@ -104,6 +118,7 @@ CREATE TABLE `ospos_employees` (
   `password` varchar(255) NOT NULL,
   `person_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
+  `hash_version` int(1) NOT NULL DEFAULT '2',
   UNIQUE KEY `username` (`username`),
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -112,8 +127,8 @@ CREATE TABLE `ospos_employees` (
 -- Dumping data for table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`) VALUES
-('admin', '439a6de57d475c1a0ba9bcb1c39f0af6', 1, 0);
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`) VALUES
+('admin', '$2y$10$vJBSMlD02EC7ENSrKfVQXuvq9tNRHMtcOA8MSK2NYS748HHWm.gcG', 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -151,7 +166,7 @@ CREATE TABLE `ospos_inventory` (
   `trans_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `trans_comment` text NOT NULL,
   `trans_location` int(11) NOT NULL,
-  `trans_inventory` int(11) NOT NULL DEFAULT '0',
+  `trans_inventory` decimal(15,3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`trans_id`),
   KEY `trans_items` (`trans_items`),
   KEY `trans_user` (`trans_user`),
@@ -334,7 +349,7 @@ CREATE TABLE `ospos_people` (
 --
 
 INSERT INTO `ospos_people` (`first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address_2`, `city`, `state`, `zip`, `country`, `comments`, `person_id`) VALUES
-('John', 'Doe', '555-555-5555', 'admin@pappastech.com', 'Address 1', '', '', '', '', '', '', 1);
+('John', 'Doe', '555-555-5555', 'changeme@example.com', 'Address 1', '', '', '', '', '', '', 1);
 
 -- --------------------------------------------------------
 
@@ -438,11 +453,11 @@ CREATE TABLE `ospos_receivings` (
   `comment` text NOT NULL,
   `receiving_id` int(10) NOT NULL AUTO_INCREMENT,
   `payment_type` varchar(20) DEFAULT NULL,
-  `invoice_number` varchar(32) DEFAULT NULL,
+  `reference` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`receiving_id`),
   KEY `supplier_id` (`supplier_id`),
   KEY `employee_id` (`employee_id`),
-  UNIQUE KEY `invoice_number` (`invoice_number`)
+  KEY `reference` (`reference`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
 --
@@ -667,11 +682,11 @@ CREATE TABLE `ospos_sales_suspended_payments` (
 --
 
 CREATE TABLE `ospos_sessions` (
-  `id` varchar(40) NOT NULL DEFAULT '0',
-  `ip_address` varchar(45) NOT NULL DEFAULT '0',
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
   `data` blob NOT NULL,
-  `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  KEY `ci_sessions_timestamp` (`timestamp`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -756,6 +771,9 @@ SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'fax';
 DELETE FROM `ospos_app_config` WHERE `key` = 'phone';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'phone';
+DELETE FROM `ospos_app_config` WHERE `key` = 'website';
+INSERT INTO `ospos_app_config` (`key`, `value`)
+SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'website';
 DELETE FROM `ospos_app_config` WHERE `key` = 'return_policy';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'return_policy';
@@ -772,8 +790,8 @@ UPDATE `ospos_customers` c1, `ospos_customers` c2 SET `c1`.`account_number` = NU
 -- Copy data to table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`)
-SELECT `username`, `password`, `person_id`, `deleted` FROM `phppos`.phppos_employees;
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`)
+SELECT `username`, `password`, `person_id`, `deleted`, 1 FROM `phppos`.phppos_employees;
 
 --
 -- Copy data to table `ospos_giftcards`
@@ -828,15 +846,15 @@ SELECT `first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address
 -- Copy data to table `ospos_receivings`
 --
 
-INSERT INTO `ospos_receivings` (`receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, `invoice_number`) 
+INSERT INTO `ospos_receivings` (`receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, `reference`) 
 SELECT `receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, NULL FROM `phppos`.phppos_receivings;
 
 --
 -- Copy data to table `ospos_receivings_items`
 --
 
-INSERT INTO `ospos_receivings_items` (`receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`) 
-SELECT `receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent` FROM `phppos`.phppos_receivings_items;
+INSERT INTO `ospos_receivings_items` (`receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, `item_location`) 
+SELECT `receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, 1 FROM `phppos`.phppos_receivings_items;
 
 --
 -- Copy data to table `ospos_sales`
@@ -879,11 +897,6 @@ SELECT `item_id`, 1, `quantity` FROM `phppos`.`phppos_items`;
 
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`)
 SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
-
-
---
--- Add constraints on copied data
---
 
 
 --

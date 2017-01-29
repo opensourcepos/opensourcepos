@@ -1,20 +1,19 @@
-sudo: false
+sudo: true                  # Required to install packages
 
-language: node_js
+branches:
+    except:
+        - weblate
 
-node_js:
-      - "4.1"
-
-services:
+services: 
     - docker
-
 before_install:
-    - docker build -t jekkos/opensourcepos .
-    - docker run -d jekkos/opensourcepos 
-
+    - curl -L https://github.com/docker/compose/releases/download/1.7.1/docker-compose-`uname -s`-`uname -m` > docker-compose
+    - chmod +x docker-compose
+    - sudo mv docker-compose /usr/local/bin
 script:
-    - docker exec -t -i $(docker ps | tail -n 1 | cut -d' ' -f1) /bin/sh -c "while ! curl http://localhost/index.php | grep username; do sleep 1; done; cd app && grunt mochaWebdriver:test" 
-
+    - docker-compose build
+env: 
+    - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success:
-    - docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-    - docker push jekkos/opensourcepos
+    - '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker tag opensourcepos_sqlscript jekkos/opensourcepos:sqlscript && docker push "jekkos/opensourcepos:$TAG" &&  docker push jekkos/opensourcepos:sqlscript'
+

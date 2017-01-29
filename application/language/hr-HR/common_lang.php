@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Adresa 1";
 $lang["common_address_2"] = "Adresa 2";
 $lang["common_city"] = "Grad";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Komentari";
 $lang["common_common"] = "Zajedničko";
 $lang["common_confirm_search"] = "Odabrali ste jedan ili više redova koji neće biti odabrani nakon pretrage. Jeste li ste sigurni da želite pretragu?";
@@ -30,6 +31,7 @@ $lang["common_list_of"] = "Lista";
 $lang["common_logout"] = "Odjava";
 $lang["common_new"] = "Novi";
 $lang["common_no_persons_to_display"] = "Nema nijede osoba za prikazati";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "Ili";
 $lang["common_phone_number"] = "Broj telefona";
 $lang["common_phone_number_required"] = "Broj telefona je obavezan";

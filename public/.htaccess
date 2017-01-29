@@ -1,0 +1,63 @@
+RewriteEngine On
+
+# To redirect a subdomain to a subdir because of https not supporting wildcards
+# replace values between <> with your ones
+# RewriteCond %{HTTP_HOST} ^<OSPOS subdomain>\.<my web domain>\.com$ [OR]
+# RewriteCond %{HTTP_HOST} ^www\.<OSPOS subdomain>\.<my web domain>\.com$
+# RewriteRule ^/?$ "https\:\/\/www\.<my web domain>\.com\/<OSPOS path>" [R=301,L]
+
+# To rewrite "domain.com -> www.domain.com" uncomment the following lines.
+# RewriteCond %{HTTPS} !=on
+# RewriteCond %{HTTP_HOST} !^www\..+$ [NC]
+# RewriteCond %{HTTP_HOST} (.+)$ [NC]
+# RewriteRule ^(.*)$ http://www.%1/$1 [R=301,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# if in web root
+RewriteRule ^(.*)$ index.php?/$1 [L]
+
+# if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path
+# RewriteRule ^(.*)$ /<OSPOS path>/public/index.php?/$1 [L]
+
+# disable directory browsing
+# For security reasons, Option all cannot be overridden.
+#Options All -Indexes
+Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
+
+# prevent folder listing
+IndexIgnore *
+
+# Apache 2.4
+<IfModule authz_core_module>
+  # secure htaccess file
+  <Files .htaccess>
+    Require all denied
+  </Files>
+  # prevent access to PHP error log
+  <Files error_log>
+    Require all denied
+  </Files>
+</IfModule>
+
+# Apache 2.2
+<IfModule !authz_core_module>
+  # secure htaccess file
+  <Files .htaccess>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+  # prevent access to PHP error log
+  <Files error_log>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+</IfModule>
+
+<IfModule mod_expires.c>
+  <FilesMatch "\.(jpe?g|png|gif|js|css)$">
+    ExpiresActive On
+    ExpiresDefault "access plus 1 week"
+  </FilesMatch>
+</IfModule>

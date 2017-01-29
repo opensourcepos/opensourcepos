@@ -1,0 +1,36 @@
+version: '2'
+  
+services:
+    test: 
+        build:
+            context: .
+            dockerfile: Dockerfile.test
+    sqlscript:
+        build:
+            context: database/
+            dockerfile: Dockerfile
+    php:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        links:
+            - mysql
+        ports:
+            - "80:80"
+        environment:
+            - MYSQL_USERNAME=admin
+            - MYSQL_PASSWORD=pointofsale
+            - MYSQL_DB_NAME=ospos
+            - MYSQL_HOST_NAME=mysql
+
+    mysql:
+        image: mysql:5.7
+        environment:
+            - MYSQL_ROOT_PASSWORD=pointofsale
+            - MYSQL_DATABASE=ospos
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=pointofsale
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./database/database.sql:/docker-entrypoint-initdb.d/database.sql

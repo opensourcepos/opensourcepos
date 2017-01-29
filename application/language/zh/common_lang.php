@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "地址 1";
 $lang["common_address_2"] = "地址 2";
 $lang["common_city"] = "城市";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "評論";
 $lang["common_common"] = "一般";
 $lang["common_confirm_search"] = "您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？";
@@ -30,6 +31,7 @@ $lang["common_list_of"] = "列表";
 $lang["common_logout"] = "登出";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "或";
 $lang["common_phone_number"] = "電話";
 $lang["common_phone_number_required"] = "";

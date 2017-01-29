@@ -24,7 +24,7 @@ $(document).ready(function()
 </script>
 
 <div id="title_bar" class="btn-toolbar">
-	<button class='btn btn-info btn-sm pull-right modal-dlg modal-btn-submit' data-href='<?php echo site_url($controller_name."/view"); ?>'
+	<button class='btn btn-info btn-sm pull-right modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url($controller_name."/view"); ?>'
 			title='<?php echo $this->lang->line($controller_name. '_new'); ?>'>
 		<span class="glyphicon glyphicon-tags">&nbsp</span><?php echo $this->lang->line($controller_name. '_new'); ?>
 	</button>

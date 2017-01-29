@@ -23,8 +23,7 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_invoice_number'), 'invoice_number', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
-					<?php if (isset($sale_info["invoice_number"]) && !empty($sale_info["invoice_number"]) && 
-						isset($sale_info['customer_id']) && isset($sale_info['email']) && !empty($sale_info['email'])): ?>
+					<?php if(!empty($sale_info["invoice_number"]) && isset($sale_info['customer_id']) && !empty($sale_info['email'])): ?>
 						<?php echo form_input(array('name'=>'invoice_number', 'size'=>10, 'value'=>$sale_info['invoice_number'], 'id'=>'invoice_number', 'class'=>'form-control input-sm'));?>
 						<a id="send_invoice" href="javascript:void(0);"><?php echo $this->lang->line('sales_send_invoice');?></a>
 					<?php else: ?>
@@ -38,7 +37,7 @@
 
 		<?php 
 		$i = 0;
-		foreach($payments->result() as $row)
+		foreach($payments as $row)
 		{
 		?>
 			<div class="form-group form-group-sm">
@@ -53,18 +52,18 @@
 				</div>
 				<div class='col-xs-4'>
 					<div class="input-group input-group-sm">
-						<?php if(!$this->config->item('currency_side')): ?>
+						<?php if(!currency_side()): ?>
 							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 						<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
-						<?php if ($this->config->item('currency_side')): ?>
+						<?php if (currency_side()): ?>
 							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 						<?php endif; ?>
 					</div>
 				</div>
 			</div>
 		<?php 
-		$i++;
+			++$i;
 		}
 		echo form_hidden('number_of_payments', $i);			
 		?>
@@ -94,17 +93,17 @@
 <?php echo form_close(); ?>
 		
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {	
-	<?php if (isset($sale_info['email'])): ?>
+	<?php if(!empty($sale_info['email'])): ?>
 		$("#send_invoice").click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
 				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
-						function(response) {
-							dialog_support.hide();
-							table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
-						}, "json"
+					function(response) {
+						dialog_support.hide();
+						table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
+					}, "json"
 				);	
 			}
 		});
@@ -136,7 +135,7 @@ $(document).ready(function()
 		todayBtn: true,
 		todayHighlight: true,
 		bootcssVer: 3,
-		language: "<?php echo $this->config->item('language'); ?>"
+		language: "<?php echo current_language_code(); ?>"
 	});
 
 	var fill_value =  function(event, ui) {
@@ -188,14 +187,14 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
 					type: "POST",
-					data:
+					data: $.extend(csrf_form_base(),
 					{
 						"sale_id" : <?php echo $sale_info['sale_id']; ?>,
 						"invoice_number" : function()
 						{
 							return $("#invoice_number").val();
 						}
-					}
+					})
 				}
 			}
 		},
@@ -203,7 +202,7 @@ $(document).ready(function()
 		{
 			invoice_number: '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>'
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 
 });
 </script>

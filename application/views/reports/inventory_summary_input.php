@@ -37,7 +37,7 @@ if(isset($error))
 
 <?php $this->load->view("partial/footer"); ?>
 
-<script type="text/javascript" language="javascript">
+<script type="text/javascript">
 $(document).ready(function()
 {
 	$("#generate_report").click(function()

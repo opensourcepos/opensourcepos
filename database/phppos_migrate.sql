@@ -36,6 +36,9 @@ SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'fax';
 DELETE FROM `ospos_app_config` WHERE `key` = 'phone';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'phone';
+DELETE FROM `ospos_app_config` WHERE `key` = 'website';
+INSERT INTO `ospos_app_config` (`key`, `value`)
+SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'website';
 DELETE FROM `ospos_app_config` WHERE `key` = 'return_policy';
 INSERT INTO `ospos_app_config` (`key`, `value`)
 SELECT  `key`, `value` FROM `phppos`.phppos_app_config WHERE `key` = 'return_policy';
@@ -52,8 +55,8 @@ UPDATE `ospos_customers` c1, `ospos_customers` c2 SET `c1`.`account_number` = NU
 -- Copy data to table `ospos_employees`
 --
 
-INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`)
-SELECT `username`, `password`, `person_id`, `deleted` FROM `phppos`.phppos_employees;
+INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`)
+SELECT `username`, `password`, `person_id`, `deleted`, 1 FROM `phppos`.phppos_employees;
 
 --
 -- Copy data to table `ospos_giftcards`
@@ -108,15 +111,15 @@ SELECT `first_name`, `last_name`, `phone_number`, `email`, `address_1`, `address
 -- Copy data to table `ospos_receivings`
 --
 
-INSERT INTO `ospos_receivings` (`receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, `invoice_number`) 
+INSERT INTO `ospos_receivings` (`receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, `reference`) 
 SELECT `receiving_time`, `supplier_id`, `employee_id`, `comment`, `receiving_id`, `payment_type`, NULL FROM `phppos`.phppos_receivings;
 
 --
 -- Copy data to table `ospos_receivings_items`
 --
 
-INSERT INTO `ospos_receivings_items` (`receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`) 
-SELECT `receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent` FROM `phppos`.phppos_receivings_items;
+INSERT INTO `ospos_receivings_items` (`receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, `item_location`) 
+SELECT `receiving_id`, `item_id`, `description`, `serialnumber`, `line`, `quantity_purchased`, `item_cost_price`, `item_unit_price`, `discount_percent`, 1 FROM `phppos`.phppos_receivings_items;
 
 --
 -- Copy data to table `ospos_sales`
@@ -159,9 +162,4 @@ SELECT `item_id`, 1, `quantity` FROM `phppos`.`phppos_items`;
 
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`)
 SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
-
-
---
--- Add constraints on copied data
---
 

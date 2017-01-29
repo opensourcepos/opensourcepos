@@ -3,6 +3,7 @@
 $lang["common_address_1"] = "Adresse 1";
 $lang["common_address_2"] = "Adresse 2";
 $lang["common_city"] = "Stadt";
+$lang["common_close"] = "Close";
 $lang["common_comments"] = "Kommentare";
 $lang["common_common"] = "Allgemein";
 $lang["common_confirm_search"] = "Sie haben einen oder mehrere Zeilen gewählt. Nach der Verarbeitung werden diese nicht mehr selektiert sein. Wollen Sie die Suche dennoch verarbeiten?";
@@ -30,6 +31,7 @@ $lang["common_list_of"] = "Liste von";
 $lang["common_logout"] = "Logout";
 $lang["common_new"] = "Neu";
 $lang["common_no_persons_to_display"] = "Keine Personen zum Anzeigen";
+$lang["common_none_selected_text"] = "Nothing selected";
 $lang["common_or"] = "Oder";
 $lang["common_phone_number"] = "Telefon";
 $lang["common_phone_number_required"] = "Telefon ist erforderlich";

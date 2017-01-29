@@ -1,55 +1,40 @@
-<?php
-require_once("Report.php");
-class Summary_sales extends Report
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+require_once("Summary_report.php");
+
+class Summary_sales extends Summary_report
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
 
-	public function getDataColumns()
+	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_date'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
+		return array(
+			array('sale_date' => $this->lang->line('reports_date')),
+			array('quantity' => $this->lang->line('reports_quantity')),
+			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
+			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
+			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
+	}
+
+	protected function _select(array $inputs)
+	{
+		parent::_select($inputs);
+
+		$this->db->select('
+				DATE(sales.sale_time) AS sale_date,
+				SUM(sales_items.quantity_purchased) AS quantity_purchased
+		');
 	}
 	
-	public function getData(array $inputs)
-	{		
-		$this->db->select('sale_date, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
-		$this->db->from('sales_items_temp');
-
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }    
-        
+	protected function _group_order()
+	{
 		$this->db->group_by('sale_date');
-		$this->db->having('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
 		$this->db->order_by('sale_date');
-
-		return $this->db->get()->result_array();
 	}
-	
-	public function getSummaryData(array $inputs)
-	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
-		$this->db->from('sales_items_temp');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
-
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
-
-		return $this->db->get()->row_array();		
-	}
-
 }
 ?>

@@ -1,58 +1,47 @@
-<?php
-require_once("Report.php");
-class Summary_customers extends Report
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+require_once("Summary_report.php");
+
+class Summary_customers extends Summary_report
 {
 	function __construct()
 	{
 		parent::__construct();
 	}
-	
-	public function getDataColumns()
+
+	protected function _get_data_columns()
 	{
-		return array($this->lang->line('reports_customer'), $this->lang->line('reports_quantity'), $this->lang->line('reports_subtotal'), $this->lang->line('reports_total'), $this->lang->line('reports_tax'), $this->lang->line('reports_cost'), $this->lang->line('reports_profit'));
+		return array(
+			array('customer_name' => $this->lang->line('reports_customer')),
+			array('quantity' => $this->lang->line('reports_quantity')),
+			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
+			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
+			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
+			array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
+			array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'));
 	}
-	
-	public function getData(array $inputs)
+
+	protected function _select(array $inputs)
 	{
-		$this->db->select('CONCAT(first_name, " ", last_name) as customer, sum(quantity_purchased) as quantity_purchased, sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit', false);
-		$this->db->from('sales_items_temp');
-		$this->db->join('customers', 'customers.person_id = sales_items_temp.customer_id');
-		$this->db->join('people', 'customers.person_id = people.person_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		parent::_select($inputs);
 
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
-
-		$this->db->group_by('customer_id');
-		$this->db->order_by('last_name');
-
-		return $this->db->get()->result_array();		
+		$this->db->select('
+				CONCAT(customer_p.first_name, " ", customer_p.last_name) AS customer,
+				SUM(sales_items.quantity_purchased) AS quantity_purchased
+		');
 	}
-	
-	public function getSummaryData(array $inputs)
+
+	protected function _from()
 	{
-		$this->db->select('sum(subtotal) as subtotal, sum(total) as total, sum(tax) as tax, sum(cost) as cost, sum(profit) as profit');
-		$this->db->from('sales_items_temp');
-		$this->db->join('customers', 'customers.person_id = sales_items_temp.customer_id');
-		$this->db->join('people', 'customers.person_id = people.person_id');
-		$this->db->where('sale_date BETWEEN "'. $inputs['start_date']. '" and "'. $inputs['end_date'].'"');
+		parent::_from();
 
-		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id');
+	}
 
-		return $this->db->get()->row_array();
+	protected function _group_order()
+	{
+		$this->db->group_by('sales.customer_id');
+		$this->db->order_by('customer_p.last_name');
 	}
 }
 ?>

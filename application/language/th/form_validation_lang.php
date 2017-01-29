@@ -26,4 +26,4 @@ $lang['greater_than']		= "The %s field must contain a number greater than %s.";
 
 
 /* End of file form_validation_lang.php */
-/* Location: ./system/language/english/form_validation_lang.php */
+/* Location: ./system/language/en/form_validation_lang.php */

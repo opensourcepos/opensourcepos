@@ -4,8 +4,7 @@
 $(document).ready(function()
 {
 	// when any filter is clicked and the dropdown window is closed
-	$('#filters').on('hidden.bs.select', function(e)
-	{
+	$('#filters').on('hidden.bs.select', function(e) {
 		table_support.refresh();
 	});
 	
@@ -24,9 +23,10 @@ $(document).ready(function()
 		pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 		uniqueId: 'sale_id',
 		onLoadSuccess: function(response) {
-			$("#payment_summary").html(response.payment_summary);
-			$("#table tbody tr").length > 1 && $("#table tbody tr:last td:first").html("");
-
+			if($("#table tbody tr").length > 1) {
+				$("#payment_summary").html(response.payment_summary);
+				$("#table tbody tr:last td:first").html("");
+			}
 		},
 		queryParams: function() {
 			return $.extend(arguments[0], {
@@ -41,9 +41,7 @@ $(document).ready(function()
 			}
 		}
 	});
-
 });
-
 </script>
 
 <?php $this->load->view('partial/print_receipt', array('print_after_sale'=>false, 'selected_printer'=>'takings_printer')); ?>
@@ -52,6 +50,7 @@ $(document).ready(function()
 	<button onclick="javascript:printdoc()" class='btn btn-info btn-sm pull-right'>
 		<span class="glyphicon glyphicon-print">&nbsp</span><?php echo $this->lang->line('common_print'); ?>
 	</button>
+	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm pull-right', 'id'=>'show_sales_button')); ?>
 </div>
 
 <div id="toolbar">
@@ -61,7 +60,7 @@ $(document).ready(function()
 		</button>
 
 		<?php echo form_input(array('name'=>'daterangepicker', 'class'=>'form-control input-sm', 'id'=>'daterangepicker')); ?>
-		<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+		<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'data-none-selected-text'=>$this->lang->line('common_none_selected_text'), 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 	</div>
 </div>
 

@@ -14,5 +14,5 @@ $lang["suppliers_successful_adding"] = "Uspješno ste dodali dobavljača";
 $lang["suppliers_successful_deleted"] = "Uspješno ste obrisali dobavljača";
 $lang["suppliers_successful_updating"] = "Uspješno ste ažurirali dobavljača";
 $lang["suppliers_supplier"] = "Dobavljač";
-$lang["suppliers_supplier_id"] = "Dobavljač br.";
+$lang["suppliers_supplier_id"] = "ID";
 $lang["suppliers_update"] = "Ažuriranje dobavljača";

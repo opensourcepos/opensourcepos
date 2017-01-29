@@ -1,10 +1,10 @@
 <div id="receipt_wrapper" style="width:100%;">
 	<div id="receipt_header" style="text-align:center;">
 		<?php
-		if ($this->Appconfig->get('company_logo') != '') 
+		if ($this->config->item('company_logo') != '') 
         { 
         ?>
-			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" /></div>			
+			<div id="company_name"><img id="image" src="<?php echo base_url('uploads/' . $this->config->item('company_logo')); ?>" alt="company_logo" /></div>			
 		<?php
 		}
 		?>
@@ -50,11 +50,11 @@
 				<td><?php echo ucfirst($item['name']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-				<td style="text-align:right;"><?php echo to_currency($item[($this->Appconfig->get('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
+				<td style="text-align:right;"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
 			</tr>
 			<tr>
 				<?php
-				if($this->Appconfig->get('receipt_show_description'))
+				if($this->config->item('receipt_show_description'))
 				{
 				?>
 					<td colspan="2"><?php echo $item['description']; ?></td>
@@ -62,7 +62,7 @@
 				}
 				?>
 				<?php
-				if($this->Appconfig->get('receipt_show_serialnumber'))
+				if($this->config->item('receipt_show_serialnumber'))
 				{
 				?>
 					<td><?php echo $item['serialnumber']; ?></td>
@@ -86,7 +86,7 @@
 		?>
 	
 		<?php
-		if ($this->Appconfig->get('receipt_show_total_discount') && $discount > 0)
+		if ($this->config->item('receipt_show_total_discount') && $discount > 0)
 		{
 		?> 
 			<tr>
@@ -102,7 +102,7 @@
 		?>
 
 		<?php
-		if ($this->Appconfig->get('receipt_show_taxes'))
+		if ($this->config->item('receipt_show_taxes'))
 		{
 		?> 
 			<tr>
@@ -127,7 +127,7 @@
 		<tr>
 		</tr>
 		
-		<?php $border = (!$this->Appconfig->get('receipt_show_taxes') && !($this->Appconfig->get('receipt_show_total_discount') && $discount > 0)); ?> 
+		<?php $border = (!$this->config->item('receipt_show_taxes') && !($this->config->item('receipt_show_total_discount') && $discount > 0)); ?> 
 		<tr>
 			<td colspan="3" style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right;"><?php echo $this->lang->line('sales_total'); ?></td>
 			<td style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right"><?php echo to_currency($total); ?></td>
@@ -138,12 +138,12 @@
 		</tr>
 
 		<?php
-		$only_sale_check = TRUE;
+		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
 		foreach($payments as $payment_id=>$payment)
 		{ 
-			$only_sale_check &= $payment['payment_type'] == $this->lang->line('sales_check');
-			$splitpayment=explode(':',$payment['payment_type']);
+			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
+			$splitpayment = explode(':', $payment['payment_type']);
 			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
 		?>
 			<tr>

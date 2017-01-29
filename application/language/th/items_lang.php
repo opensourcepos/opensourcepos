@@ -1,9 +1,9 @@
 <?php 
 
 $lang["items_add_minus"] = "เพิ่ม/ลบ จำนวนสินค้าคงคลัง";
-$lang["items_allow_alt_desciption"] = "Allow Alt Description";
+$lang["items_allow_alt_desciption"] = "อนุญาตให้เพิ่มรายละเอียด";
 $lang["items_allow_alt_description"] = "แสดงข้อมูลเพิ่มเติม";
-$lang["items_amazon"] = "Amazon";
+$lang["items_amazon"] = "อเมซอน";
 $lang["items_bulk_edit"] = "แก้ไขความจุ";
 $lang["items_buy_price_required"] = "ราคาซื้อขายต้องกรอก";
 $lang["items_cannot_be_deleted"] = "ไม่สามารถลบสินค้าที่เลือก, สินค้าที่เลือกถูกขายไปแล้ว.";
@@ -11,7 +11,7 @@ $lang["items_cannot_find_item"] = "ไม่พบข้อมูลของส
 $lang["items_category"] = "หมวดหมู่";
 $lang["items_category_required"] = "หมวดหมู่สินค้าต้องกรอก";
 $lang["items_change_all_to_allow_alt_desc"] = " Allow Alt Desc For All";
-$lang["items_change_all_to_not_allow_allow_desc"] = "Not Allow Alt Desc For All";
+$lang["items_change_all_to_not_allow_allow_desc"] = "ไม่อนุญาตให้จัดเรียงลำดับ";
 $lang["items_change_all_to_serialized"] = "เปลี่ยนแปลงรหัสสินค้าทั้งหมด";
 $lang["items_change_all_to_unserialized"] = "ลบรหัสสินค้าทั้งหมด";
 $lang["items_confirm_bulk_edit"] = "แน่ใจหรือไม่ที่จะแก้ใขสินค้าทั้งหมดที่คุณเลือก?";
@@ -30,6 +30,9 @@ $lang["items_edit_multiple_items"] = "แก้ใขสินค้าต่า
 $lang["items_error_adding_updating"] = "เพิ่ม/ปรับแต่ง สินค้าล้มเหลว";
 $lang["items_error_updating_multiple"] = "ปรับแต่งสินค้าล้มเหลว";
 $lang["items_excel_import_failed"] = "นำเข้าข้อมูล Excel ล้มเหลว";
+$lang["items_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
+$lang["items_excel_import_success"] = "Import of Items successful";
+$lang["items_excel_import_partially_failed"] = "Most Items imported. But some were not, here is the list";
 $lang["items_generate_barcodes"] = "พิมพ์บาร์โค๊ด";
 $lang["items_image"] = "รูป";
 $lang["items_info_provided_by"] = "จัดเตรียมข้อมูลโดย";

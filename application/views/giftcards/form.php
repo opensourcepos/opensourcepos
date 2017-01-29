@@ -2,7 +2,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('giftcards/save/'.$giftcard_info->giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('giftcards/save/'.$giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
@@ -33,16 +33,16 @@
 			<?php echo form_label($this->lang->line('giftcards_card_value'), 'name', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
-					<?php if (!$this->config->item('currency_side')): ?>
+					<?php if (!currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
 							'name'=>'value',
 							'id'=>'value',
 							'class'=>'form-control input-sm',
-							'value'=>to_currency_no_money($giftcard_info->value))
+							'value'=>to_currency_no_money($giftcard_value))
 							);?>
-					<?php if ($this->config->item('currency_side')): ?>
+					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 					<?php endif; ?>
 				</div>
@@ -51,21 +51,26 @@
 	</fieldset>
 <?php echo form_close(); ?>
 
-<script type='text/javascript'>
+<script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
-	var fill_value =  function(event, ui) {
+	$("input[name='person_name']").change(function() {
+		if( ! $("input[name='person_name']").val() ) {
+			$("input[name='person_id']").val('');
+		}
+	});
+	
+	var fill_value = function(event, ui) {
 		event.preventDefault();
 		$("input[name='person_id']").val(ui.item.value);
 		$("input[name='person_name']").val(ui.item.label);
 	};
 
-	var autocompleter = $("#person_name").autocomplete(
-	{
+	var autocompleter = $("#person_name").autocomplete({
 		source: '<?php echo site_url("customers/suggest"); ?>',
-    	minChars:0,
-    	delay:15, 
+    	minChars: 0,
+    	delay: 15, 
        	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
@@ -73,11 +78,9 @@ $(document).ready(function()
     });
 
 	// declare submitHandler as an object.. will be reused
-	var submit_form = function()
-	{ 
-		$(this).ajaxSubmit(
-		{
-			success:function(response)
+	var submit_form = function() { 
+		$(this).ajaxSubmit({
+			success: function(response)
 			{
 				dialog_support.hide();
 				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
@@ -121,6 +124,6 @@ $(document).ready(function()
 				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
-	}, dialog_support.error));
+	}, form_support.error));
 });
 </script>
