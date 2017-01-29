@@ -261,7 +261,7 @@ class Sale extends CI_Model
 	{
 		// get payment summary
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
-		$this->db->from('sales');
+		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
