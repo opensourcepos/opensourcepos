@@ -85,13 +85,13 @@ class Specific_employee extends Report
 		$this->db->where('employee_id', $inputs['employee_id']);
 
 		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		{
+			$this->db->where('quantity_purchased > 0');
+		}
+		elseif ($inputs['sale_type'] == 'returns')
+		{
+			$this->db->where('quantity_purchased < 0');
+		}
 
 		return $this->db->get()->row_array();
 	}

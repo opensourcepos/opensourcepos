@@ -168,6 +168,7 @@
 			</tbody>
 		</table>
 	</fieldset>
+
 <?php echo form_close(); ?>
 
 <script type="text/javascript">

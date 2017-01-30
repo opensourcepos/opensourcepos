@@ -3,6 +3,7 @@
 class Sale_lib
 {
 	private $CI;
+	private $line_sequence_options = array('0' => 'Standard', '1' => 'Entry', '2' => 'Group by Type', '3' => 'Group by Category');
 
 	public function __construct()
 	{
@@ -327,7 +328,8 @@ class Sale_lib
 		$insertkey = 0;                    //Key to use for new entry.
 		$updatekey = 0;                    //Key to use to update(quantity)
 
-		foreach ($items as $item) {
+		foreach($items as $item)
+		{
 			//We primed the loop so maxkey is 0 the first time.
 			//Also, we have stored the key in the element itself so we can compare.
 
@@ -338,7 +340,8 @@ class Sale_lib
 			if ($item['item_id'] == $item_id && $item['item_location'] == $item_location) {
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];
-				if (!$item_info->is_serialized) {
+				if(!$item_info->is_serialized)
+				{
 					$quantity = bcadd($quantity, $items[$updatekey]['quantity']);
 				}
 			}
@@ -380,7 +383,8 @@ class Sale_lib
 					'total' => $total,
 					'discounted_total' => $discounted_total,
 					'print_option' => $print_option
-				));
+				)
+			);
 			//add to existing array
 			$items += $item;
 		}

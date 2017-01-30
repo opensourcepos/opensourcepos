@@ -222,13 +222,13 @@ class Sale extends CI_Model
 		}
 
 		if($filters['sale_type'] == 'sales')
-        {
-            $this->db->where('sales_items.quantity_purchased > 0');
-        }
-        elseif($filters['sale_type'] == 'returns')
-        {
-            $this->db->where('sales_items.quantity_purchased < 0');
-        }
+		{
+			$this->db->where('sales_items.quantity_purchased > 0');
+		}
+		elseif($filters['sale_type'] == 'returns')
+		{
+			$this->db->where('sales_items.quantity_purchased < 0');
+		}
 
 		if($filters['only_invoices'] != FALSE)
 		{
@@ -550,6 +550,7 @@ class Sale extends CI_Model
 			}
 
 			// if an items was deleted but later returned it's restored with this rule
+
 			if($item['quantity'] < 0)
 			{
 				$this->Item->undelete($item['item_id']);
@@ -622,20 +623,24 @@ class Sale extends CI_Model
 			$items = $this->get_sale_items($sale_id)->result_array();
 			foreach($items as $item)
 			{
-				// create query to update inventory tracking
-				$inv_data = array(
-					'trans_date'      => date('Y-m-d H:i:s'),
-					'trans_items'     => $item['item_id'],
-					'trans_user'      => $employee_id,
-					'trans_comment'   => 'Deleting sale ' . $sale_id,
-					'trans_location'  => $item['item_location'],
-					'trans_inventory' => $item['quantity_purchased']
-				);
-				// update inventory
-				$this->Inventory->insert($inv_data);
+				$cur_item_info = $this->Item->get_info($item['item_id']);
 
-				// update quantities
-				$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
+				if ($cur_item_info->stock_type === '0') {
+					// create query to update inventory tracking
+					$inv_data = array(
+						'trans_date' => date('Y-m-d H:i:s'),
+						'trans_items' => $item['item_id'],
+						'trans_user' => $employee_id,
+						'trans_comment' => 'Deleting sale ' . $sale_id,
+						'trans_location' => $item['item_location'],
+						'trans_inventory' => $item['quantity_purchased']
+					);
+					// update inventory
+					$this->Inventory->insert($inv_data);
+
+					// update quantities
+					$this->Item_quantity->change_quantity($item['item_id'], $item['item_location'], $item['quantity_purchased']);
+				}
 			}
 		}
 
@@ -674,7 +679,10 @@ class Sale extends CI_Model
 		item_unit_price,
 		discount_percent,
 		item_location,
+<<<<<<< HEAD
 		print_option,
+=======
+>>>>>>> upstream/item-kit
 		items.name as name,
 		category,
 		item_type');
@@ -682,13 +690,22 @@ class Sale extends CI_Model
 		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
 		$this->db->where('sale_id', $sale_id);
 
+<<<<<<< HEAD
 		// Entry sequence (this will also render kits in the expected sequence)
 		if($this->config->item('line_sequence') == '0')
+=======
+		// Entry sequence (this will render kits in the expected sequence)
+		if($this->config->item('line_sequence') == '1')
+>>>>>>> upstream/item-kit
 		{
 			$this->db->order_by('line', 'asc');
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
+<<<<<<< HEAD
 		elseif($this->config->item('line_sequence') == '1')
+=======
+		elseif($this->config->item('line_sequence') == '2')
+>>>>>>> upstream/item-kit
 		{
 			$this->db->order_by('stock_type', 'desc');
 			$this->db->order_by('sales_items.description', 'asc');
@@ -696,14 +713,22 @@ class Sale extends CI_Model
 		}
 
 		// Group by Item Category
+<<<<<<< HEAD
 		elseif($this->config->item('line_sequence') == '2')
+=======
+		elseif($this->config->item('line_sequence') == '3')
+>>>>>>> upstream/item-kit
 		{
 			$this->db->order_by('category', 'asc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
 		}
 
+<<<<<<< HEAD
 		// Group by reverse entry sequence in descending sequence (the Standard)
+=======
+		// Group by entry sequence in descending sequence (the Standard)
+>>>>>>> upstream/item-kit
 		else
 		{
 			$this->db->order_by('line', 'desc');

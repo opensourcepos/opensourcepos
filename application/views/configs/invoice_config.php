@@ -66,6 +66,13 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_line_sequence'), 'line_sequence', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_dropdown('line_sequence', $line_sequence_options, $this->config->item('line_sequence'), array('class' => 'form-control input-sm')); ?>
+				</div>
+			</div>
+
 			<?php echo form_submit(array(
 				'name' => 'submit_form',
 				'id' => 'submit_form',
