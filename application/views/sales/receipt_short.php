@@ -32,7 +32,7 @@
 		if (!empty($invoice_number))
 		{
 		?>
-			<div id="invoice_number"><?php echo $this->lang->line('recvs_invoice_number').": ".$invoice_number; ?></div>	
+			<div id="invoice_number"><?php echo $this->lang->line('sales_invoice_number').": ".$invoice_number; ?></div>
 		<?php 
 		}
 		?>

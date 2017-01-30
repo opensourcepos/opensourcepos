@@ -95,10 +95,14 @@
 				<div class="navbar-left">
 					<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
 				</div>
-				
+
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
+					<?php echo $user_info->first_name . ' ' . $user_info->last_name . '  |  ' . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ''); ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
+				</div>
+
+				<div class="navbar-center" style="text-align:center">
+					<strong><?php echo $this->config->item('company'); ?></strong>
 				</div>
 			</div>
 		</div>

@@ -415,6 +415,7 @@ $(document).ready(function()
 		select:	function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
+			return false;
 		}
     });
 

@@ -224,7 +224,6 @@ class Items extends Secure_Controller
 			$images = glob('./uploads/item_pics/' . $item_info->pic_filename);
 		}
 		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
-
 		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
         foreach($stock_locations as $location)
         {
