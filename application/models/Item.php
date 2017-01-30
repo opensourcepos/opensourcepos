@@ -60,13 +60,59 @@ class Item extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
 	{
-		$this->db->from('items');
-		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->join('inventory', 'inventory.trans_items = items.item_id');
+		$this->db->select('MAX(items.name) as name');
+		$this->db->select('MAX(items.category) as category');
+		$this->db->select('MAX(items.supplier_id) as supplier_id');
+		$this->db->select('MAX(items.item_number) as item_number');
+		$this->db->select('MAX(items.description) as description');
+		$this->db->select('MAX(items.cost_price) as cost_price');
+		$this->db->select('MAX(items.unit_price) as unit_price');
+		$this->db->select('MAX(items.reorder_level) as reorder_level');
+		$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
+		$this->db->select('items.item_id as item_id');
+		$this->db->select('MAX(items.pic_id) as pic_id');
+		$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
+		$this->db->select('MAX(items.is_serialized) as is_serialized');
+		$this->db->select('MAX(items.deleted) as deleted');
+		$this->db->select('MAX(items.custom1) as custom1');
+		$this->db->select('MAX(items.custom2) as custom2');
+		$this->db->select('MAX(items.custom3) as custom3');
+		$this->db->select('MAX(items.custom4) as custom4');
+		$this->db->select('MAX(items.custom5) as custom5');
+		$this->db->select('MAX(items.custom6) as custom6');
+		$this->db->select('MAX(items.custom7) as custom7');
+		$this->db->select('MAX(items.custom8) as custom8');
+		$this->db->select('MAX(items.custom9) as custom9');
+		$this->db->select('MAX(items.custom10) as custom10');
+
+		$this->db->select('MAX(suppliers.person_id) as person_id');
+		$this->db->select('MAX(suppliers.company_name) as company_name');
+		$this->db->select('MAX(suppliers.agency_name) as agency_name');
+		$this->db->select('MAX(suppliers.account_number) as account_number');
+		$this->db->select('MAX(suppliers.deleted) as deleted');
+
+		$this->db->select('MAX(inventory.trans_id) as trans_id');
+		$this->db->select('MAX(inventory.trans_items) as trans_items');
+		$this->db->select('MAX(inventory.trans_user) as trans_user');
+		$this->db->select('MAX(inventory.trans_date) as trans_date');
+		$this->db->select('MAX(inventory.trans_comment) as trans_comment');
+		$this->db->select('MAX(inventory.trans_location) as trans_location');
+		$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
 
 		if($filters['stock_location_id'] > -1)
 		{
-			$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id');
+			$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
+			$this->db->select('MAX(item_quantities.location_id) as location_id');
+			$this->db->select('MAX(item_quantities.quantity) as quantity');
+		}
+
+		$this->db->from('items as items');
+		$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+		$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
+
+		if($filters['stock_location_id'] > -1)
+		{
+			$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
 
@@ -129,18 +175,18 @@ class Item extends CI_Model
 
 		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.item_id');
-		
+
 		// order by name of item
 		$this->db->order_by($sort, $order);
 
-		if($rows > 0) 
-		{	
+		if($rows > 0)
+		{
 			$this->db->limit($rows, $limit_from);
 		}
 
 		return $this->db->get();
 	}
-	
+
 	/*
 	Returns all the items
 	*/
@@ -199,7 +245,7 @@ class Item extends CI_Model
 			return $item_obj;
 		}
 	}
-	
+
 	/*
 	Gets information about a particular item by item id or number
 	*/
@@ -207,17 +253,17 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 
-        if (ctype_digit($item_id))
-        {
-            $this->db->group_start();
-                $this->db->where('item_id', (int) $item_id);
-                $this->db->or_where('items.item_number', $item_id);
-            $this->db->group_end();
-        }
-        else
-        {
-            $this->db->where('item_number', $item_id);
-        }
+		if (ctype_digit($item_id))
+		{
+			$this->db->group_start();
+				$this->db->where('item_id', (int) $item_id);
+				$this->db->or_where('items.item_number', $item_id);
+			$this->db->group_end();
+		}
+		else
+		{
+			$this->db->where('item_number', $item_id);
+		}
 
 		$this->db->where('items.deleted', 0);
 
@@ -243,7 +289,7 @@ class Item extends CI_Model
 		{
 			$this->db->where('items.deleted', $deleted);
 		}
-        
+
 		$query = $this->db->get();
 
 		if($query->num_rows() == 1)
@@ -284,7 +330,7 @@ class Item extends CI_Model
 
 			return FALSE;
 		}
-		
+
 		$this->db->where('item_id', $item_id);
 
 		return $this->db->update('items', $item_data);
@@ -312,14 +358,14 @@ class Item extends CI_Model
 		$this->Item_quantity->reset_quantity($item_id);
 		$this->db->where('item_id', $item_id);
 		$success = $this->db->update('items', array('deleted'=>1));
-		
+
 		$this->db->trans_complete();
-		
+
 		$success &= $this->db->trans_status();
 
 		return $success;
 	}
-	
+
 	/*
 	Undeletes one item
 	*/
@@ -342,13 +388,13 @@ class Item extends CI_Model
 		$this->Item_quantity->reset_quantity_list($item_ids);
 		$this->db->where_in('item_id', $item_ids);
 		$success = $this->db->update('items', array('deleted'=>1));
-		
+
 		$this->db->trans_complete();
-		
+
 		$success &= $this->db->trans_status();
 
 		return $success;
- 	}
+	}
 
 	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
@@ -357,6 +403,7 @@ class Item extends CI_Model
 		$this->db->select('item_id, name');
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
+		$this->db->where("item_type = '0'"); // standard, exclude kit items since kits will be picked up later
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
 		foreach($this->db->get()->result() as $row)
@@ -465,7 +512,7 @@ class Item extends CI_Model
 
 		return $suggestions;
 	}
-	
+
 	public function get_location_suggestions($search)
 	{
 		$suggestions = array();
@@ -479,7 +526,7 @@ class Item extends CI_Model
 		{
 			$suggestions[] = array('label' => $row->location);
 		}
-	
+
 		return $suggestions;
 	}
 
@@ -497,7 +544,7 @@ class Item extends CI_Model
 			$row_array = (array) $row;
 			$suggestions[] = array('label' => $row_array['custom'.$field_no]);
 		}
-	
+
 		return $suggestions;
 	}
 

@@ -104,6 +104,7 @@ $lang["config_language"] = "Language";
 $lang["config_left"] = "Left";
 $lang["config_license"] = "License";
 $lang["config_license_configuration"] = "License Statement";
+$lang["config_line_sequence"] = "Line Sequence";
 $lang["config_lines_per_page"] = "Lines Per Page";
 $lang["config_lines_per_page_number"] = "";
 $lang["config_lines_per_page_required"] = "The lines per page is a required field";
