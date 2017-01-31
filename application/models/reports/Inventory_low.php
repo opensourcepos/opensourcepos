@@ -27,7 +27,7 @@ class Inventory_low extends Report
 		$this->db->join('stock_locations', 'item_quantities.location_id = stock_locations.location_id');
 		$this->db->where('items.deleted', 0);
 		$this->db->where('stock_locations.deleted', 0);
-		$this->db->where('item_quantities.quantity <= items.reorder_level');
+		$this->db->where('items.stock_type', 0);
 		$this->db->order_by('items.name');				
 
 		return $this->db->get()->result_array();

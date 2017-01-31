@@ -28,6 +28,7 @@ class Inventory_summary extends Report
 		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
 		$this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
 		$this->db->where('items.deleted', 0);
+		$this->db->where('items.stock_type', 0);
 		$this->db->where('stock_locations.deleted', 0);
 
 		// should be corresponding to values Inventory_summary::getItemCountDropdownArray() returns...
