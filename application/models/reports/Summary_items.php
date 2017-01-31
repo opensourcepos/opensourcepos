@@ -26,7 +26,7 @@ class Summary_items extends Summary_report
 		parent::_select($inputs);
 
 		$this->db->select('
-				items.name AS name,
+				MAX(items.name) AS name,
 				SUM(sales_items.quantity_purchased) AS quantity_purchased
 		');
 	}
@@ -41,7 +41,7 @@ class Summary_items extends Summary_report
 	protected function _group_order()
 	{
 		$this->db->group_by('items.item_id');
-		$this->db->order_by('items.name');
+		$this->db->order_by('name');
 	}
 }
 ?>
