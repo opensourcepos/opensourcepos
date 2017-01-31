@@ -63,7 +63,7 @@ class Item_kit extends CI_Model
 		unit_price, 
 		reorder_level, 
 		receiving_quantity, 
-		pic_id, 
+		pic_filename, 
 		allow_alt_description, 
 		is_serialized, 
 		deleted, 
@@ -79,7 +79,7 @@ class Item_kit extends CI_Model
 		custom10,
 		item_type');
 
-	$this->db->from('item_kits');
+		$this->db->from('item_kits');
 		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$this->db->where('item_kit_id', $item_kit_id);
 		
