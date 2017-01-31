@@ -219,9 +219,12 @@ class Items extends Secure_Controller
 			// try to update pic_filename in db, following 3 lines might not be necessary
 			// after what I put in search(), feel free to remove it if you also think it's
 			// redundant.
-			$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-			$item_data = array('pic_filename' => $new_pic_filename);
-			$this->Item->save($item_data, $item_id);
+			if(sizeof($images) > 0)
+			{
+				$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
+				$item_data = array('pic_filename' => $new_pic_filename);
+				$this->Item->save($item_data, $item_id);
+			}
 		}
 		else
 		{
