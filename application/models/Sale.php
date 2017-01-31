@@ -688,19 +688,19 @@ class Sale extends CI_Model
 		$this->db->where('sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
-		if($this->config->item('line_sequence') == '1')
+		if($this->config->item('line_sequence') == '0')
 		{
 			$this->db->order_by('line', 'asc');
 		}
 		// Group by Stock Type (nonstock first - type 1, stock next - type 0)
-		elseif($this->config->item('line_sequence') == '2')
+		elseif($this->config->item('line_sequence') == '1')
 		{
 			$this->db->order_by('stock_type', 'desc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
 		}
 		// Group by Item Category
-		elseif($this->config->item('line_sequence') == '3')
+		elseif($this->config->item('line_sequence') == '2')
 		{
 			$this->db->order_by('category', 'asc');
 			$this->db->order_by('sales_items.description', 'asc');
