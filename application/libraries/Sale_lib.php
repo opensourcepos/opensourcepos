@@ -498,7 +498,7 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 	
-	public function add_item_kit($external_item_kit_id, $item_location, $discount, $price_option, $kit_print_option)
+	public function add_item_kit($external_item_kit_id, $item_location, $discount, $price_option, $kit_print_option, &$stock_warning)
 	{
 
 		//KIT #
@@ -542,6 +542,10 @@ class Sale_lib
 			}
 
 			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $price, null, null, null, $print_option);
+
+			if ($stock_warning == null) {
+				$stock_warning = $this->out_of_stock($item_kit_item['item_id'], $item_location);
+			}
 		}
 		
 		return $result;
