@@ -70,7 +70,7 @@ class Item extends CI_Model
 		$this->db->select('MAX(items.reorder_level) as reorder_level');
 		$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
 		$this->db->select('items.item_id as item_id');
-		$this->db->select('MAX(items.pic_id) as pic_id');
+		$this->db->select('MAX(items.pic_filename) as pic_filename');
 		$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
 		$this->db->select('MAX(items.is_serialized) as is_serialized');
 		$this->db->select('MAX(items.deleted) as deleted');
