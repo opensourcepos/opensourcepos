@@ -3,7 +3,6 @@
 class Sale_lib
 {
 	private $CI;
-	private $line_sequence_options = array('0' => 'Standard', '1' => 'Entry', '2' => 'Group by Type', '3' => 'Group by Category');
 
 	public function __construct()
 	{
