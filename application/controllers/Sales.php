@@ -310,10 +310,17 @@ class Sales extends Secure_Controller
 				}
 			}
 
+
+
 			// Add item kit items to order
-			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $price_option, $kit_print_option))
+			$stock_warning = null;
+			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $price_option, $kit_print_option, $stock_warning))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
+			}
+			elseif ($stock_warning != null)
+			{
+				$data['warning'] = $stock_warning;
 			}
 
 		}
