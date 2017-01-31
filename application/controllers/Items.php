@@ -63,21 +63,37 @@ class Items extends Secure_Controller
 		foreach($items->result() as $item)
 		{
 			$data_rows[] = $this->xss_clean(get_item_data_row($item, $this));
+
+			// Guess whether file extension is not in the table field,
+			// if it isn't, then it's an old-format (formerly pic_id) field,
+			// so we guess the right filename and update the table
+			$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
+			if($ext == '')
+			{
+				$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
+				$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
+				$item_data = array('pic_filename' => $new_pic_filename);
+				$this->Item->save($item_data, $item->item_id);
+			}
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 	
-	public function pic_thumb($pic_id)
+	public function pic_thumb($pic_filename)
 	{
 		$this->load->helper('file');
 		$this->load->library('image_lib');
-		$base_path = './uploads/item_pics/' . $pic_id;
-		$images = glob($base_path . '.*');
+
+		// in this context, $pic_filename always has .ext
+		$ext = pathinfo($pic_filename, PATHINFO_EXTENSION);
+		$images = glob('./uploads/item_pics/' . $pic_filename);
+
+		// make sure we pick only the file name, without extension
+		$base_path = './uploads/item_pics/' . pathinfo($pic_filename, PATHINFO_FILENAME);
 		if(sizeof($images) > 0)
 		{
 			$image_path = $images[0];
-			$ext = pathinfo($image_path, PATHINFO_EXTENSION);
 			$thumb_path = $base_path . $this->image_lib->thumb_marker . '.' . $ext;
 			if(sizeof($images) < 2)
 			{
@@ -191,13 +207,25 @@ class Items extends Secure_Controller
 		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $item_info->supplier_id;
 
-		$data['logo_exists'] = $item_info->pic_id != '';
-		if (!empty($item_info->pic_id))
+		$data['logo_exists'] = $item_info->pic_filename != '';
+		$ext = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
+		if($ext == '')
 		{
-			$images = glob('./uploads/item_pics/' . $item_info->pic_id . '.*');
-			$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
+			// if file extension is not found guess it (legacy)
+			$images = glob('./uploads/item_pics/' . $item_info->pic_filename . '.*');
+			// try to update pic_filename in db, following 3 lines might not be necessary
+			// after what I put in search(), feel free to remove it if you also think it's
+			// redundant.
+			$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
+			$item_data = array('pic_filename' => $new_pic_filename);
+			$this->Item->save($item_data, $item_id);
 		}
-
+		else
+		{
+			// else just pick that file
+			$images = glob('./uploads/item_pics/' . $item_info->pic_filename);
+		}
+		$data['image_path'] = sizeof($images) > 0 ? base_url($images[0]) : '';
 		$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
 		foreach($stock_locations as $location)
 		{
@@ -353,7 +381,7 @@ class Items extends Secure_Controller
 			// XSS file image sanity check
 			if($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
 			{
-				$item_data['pic_id'] = $upload_data['raw_name'];
+				$item_data['pic_filename'] = $upload_data['raw_name'];
 			}
 		}
 		
@@ -456,17 +484,14 @@ class Items extends Secure_Controller
 
 	private function _handle_image_upload()
 	{
-		$this->load->helper('directory');
-
-		$map = directory_map('./uploads/item_pics/', 1);
-
+		/* Let files be uploaded with their original name */
+		
 		// load upload library
 		$config = array('upload_path' => './uploads/item_pics/',
 			'allowed_types' => 'gif|jpg|png',
 			'max_size' => '100',
 			'max_width' => '640',
-			'max_height' => '480',
-			'file_name' => sizeof($map) + 1
+			'max_height' => '480'
 		);
 		$this->load->library('upload', $config);
 		$this->upload->do_upload('item_image');           
@@ -476,7 +501,7 @@ class Items extends Secure_Controller
 
 	public function remove_logo($item_id)
 	{
-		$item_data = array('pic_id' => NULL);
+		$item_data = array('pic_filename' => NULL);
 		$result = $this->Item->save($item_data, $item_id);
 
 		echo json_encode(array('success' => $result));
@@ -620,6 +645,7 @@ class Items extends Secure_Controller
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
 					
+					/* haven't touched this so old templates will work, or so I guess... */
 					if(sizeof($data) >= 23)
 					{
 						$item_data = array(
@@ -643,6 +669,18 @@ class Items extends Secure_Controller
 							'custom9'				=> $data[22],
 							'custom10'				=> $data[23]
 						);
+            
+						/* we could do something like this, however, the effectiveness of
+						  this is rather limited, since for now, you have to upload files manually
+						  into that directory, so you really can do whatever you want, this probably
+						  needs further discussion  */
+
+						$pic_file = $data[26];
+						/*if(strcmp('.htaccess', $pic_file)==0) {
+							$pic_file='';
+						}*/
+						$item_data['pic_filename']=$pic_file;
+            
 						$item_number = $data[0];
 						$invalidated = FALSE;
 						if($item_number != '')

@@ -195,7 +195,7 @@ CREATE TABLE `ospos_items` (
   `reorder_level` decimal(15,3) NOT NULL DEFAULT '0',
   `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
-  `pic_id` int(10) DEFAULT NULL,
+  `pic_filename` varchar(255) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
