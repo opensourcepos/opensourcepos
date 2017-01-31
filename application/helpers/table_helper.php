@@ -269,9 +269,9 @@ function get_item_data_row($item, $controller)
 	$tax_percents = substr($tax_percents, 0, -2);
 	$controller_name = strtolower(get_class($CI));
 
+	$image = NULL;
 	if ($item->pic_filename != '')
 	{
-		$image = '';
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 		if($ext == '')
 		{

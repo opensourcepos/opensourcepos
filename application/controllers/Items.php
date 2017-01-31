@@ -71,9 +71,12 @@ class Items extends Secure_Controller
 			if($ext == '')
 			{
 				$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
-				$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-				$item_data = array('pic_filename' => $new_pic_filename);
-				$this->Item->save($item_data, $item->item_id);
+				if(sizeof($images) > 0)
+				{
+					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
+					$item_data = array('pic_filename' => $new_pic_filename);
+					$this->Item->save($item_data, $item->item_id);
+				}
 			}
 		}
 
