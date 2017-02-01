@@ -216,7 +216,7 @@ $(document).ready(function()
 
 
     $("#item_name").autocomplete({
-        source: '<?php echo site_url("items/suggest"); ?>',
+        source: '<?php echo site_url("items/suggest_kits"); ?>',
         minChars: 0,
         delay: 15,
         cacheLength: 1,

@@ -57,6 +57,7 @@ class Items extends Secure_Controller
 		$filters = array_merge($filters, $filledup);
 
 		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
+
 		$total_rows = $this->Item->get_found_rows($search, $filters);
 
 		$data_rows = array();
@@ -115,6 +116,14 @@ class Items extends Secure_Controller
 	public function suggest()
 	{
 		$suggestions = $this->xss_clean($this->Item->get_search_suggestions($this->input->post_get('term'),
+			array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
+
+		echo json_encode($suggestions);
+	}
+
+	public function suggest_kits()
+	{
+		$suggestions = $this->xss_clean($this->Item->get_kit_search_suggestions($this->input->post_get('term'),
 			array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE));
 
 		echo json_encode($suggestions);
