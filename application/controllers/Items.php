@@ -63,21 +63,7 @@ class Items extends Secure_Controller
 		foreach($items->result() as $item)
 		{
 			$data_rows[] = $this->xss_clean(get_item_data_row($item, $this));
-
-			// Guess whether file extension is not in the table field,
-			// if it isn't, then it's an old-format (formerly pic_id) field,
-			// so we guess the right filename and update the table
-			$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
-			if($ext == '')
-			{
-				$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
-				if(sizeof($images) > 0)
-				{
-					$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-					$item_data = array('pic_filename' => $new_pic_filename);
-					$this->Item->save($item_data, $item->item_id);
-				}
-			}
+			$this->_update_pic_filename($item);
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
@@ -802,6 +788,25 @@ class Items extends Secure_Controller
 			else 
 			{
 				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('items_excel_import_nodata_wrongformat')));
+			}
+		}
+	}
+
+	/**
+	 * Guess whether file extension is not in the table field,
+	 * if it isn't, then it's an old-format (formerly pic_id) field,
+	 * so we guess the right filename and update the table
+	 * @param $item the item to update
+	 */
+	private function _update_pic_filename($item)
+	{
+		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
+		if ($ext == '') {
+			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
+			if (sizeof($images) > 0) {
+				$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
+				$item_data = array('pic_filename' => $new_pic_filename);
+				$this->Item->save($item_data, $item->item_id);
 			}
 		}
 	}
