@@ -369,21 +369,21 @@ class Reports extends Secure_Controller
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
-        $data['mode'] = 'sale';
+		$data['mode'] = 'sale';
 
 		$this->load->view('reports/date_input', $data);
 	}
 
-    public function date_input_recv()
-    {
-        $data = array();
+	public function date_input_recv()
+	{
+		$data = array();
 		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('receivings'));
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
- 		$data['mode'] = 'receiving';
+		$data['mode'] = 'receiving';
 
-        $this->load->view('reports/date_input', $data);
-    }
+		$this->load->view('reports/date_input', $data);
+	}
 
 	//Graphical summary sales report
 	public function graphical_summary_sales($start_date, $end_date, $sale_type, $location_id = 'all')
@@ -893,7 +893,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular_details', $data);
 	}
 
- 	public function get_detailed_sales_row($sale_id)
+	public function get_detailed_sales_row($sale_id)
 	{
 		$inputs = array('sale_id' => $sale_id);
 		
@@ -931,10 +931,11 @@ class Reports extends Secure_Controller
 		
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
-		
+
 		$model->create($inputs);
 
 		$headers = $this->xss_clean($model->getDataColumns());
+
 		$report_data = $model->getData($inputs);
 
 		$summary_data = array();
@@ -1041,6 +1042,7 @@ class Reports extends Secure_Controller
 				'employee_name' => $row['employee_name'],
 				'supplier_name' => $row['supplier_name'],
 				'total' => to_currency($row['total']),
+				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
 				'reference' => $row['reference'],
 				'comment' => $row['comment'],
