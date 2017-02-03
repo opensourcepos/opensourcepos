@@ -20,6 +20,9 @@ ALTER TABLE `ospos_sales_items`
 ALTER TABLE `ospos_sales_suspended_items`
  ADD COLUMN `print_option` TINYINT(2) NOT NULL DEFAULT 0;
 
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('line_sequence', '0');
+
 -- alter pic_id field, to rather contain a file name
 
 ALTER TABLE `ospos_items` CHANGE `pic_id` `pic_filename` VARCHAR(255);

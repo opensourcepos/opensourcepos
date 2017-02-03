@@ -44,6 +44,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_show_description', '1'),
 ('receipt_show_serialnumber', '1'),
 ('invoice_enable', '1'),
+('line_sequence', '0'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
 ('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
