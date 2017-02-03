@@ -12,7 +12,7 @@ ALTER TABLE `ospos_item_kits`
 
 
 ALTER TABLE `ospos_item_kit_items`
-	ADD COLUMN `kit_sequence` INT(3) NOT NULL DEFAULT 0;
+ ADD COLUMN `kit_sequence` INT(3) NOT NULL DEFAULT 0;
 
 ALTER TABLE `ospos_sales_items`
  ADD COLUMN `print_option` TINYINT(2) NOT NULL DEFAULT 0;
@@ -21,8 +21,10 @@ ALTER TABLE `ospos_sales_suspended_items`
  ADD COLUMN `print_option` TINYINT(2) NOT NULL DEFAULT 0;
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('date_or_time_format', ''),
 ('line_sequence', '0');
 
 -- alter pic_id field, to rather contain a file name
 
 ALTER TABLE `ospos_items` CHANGE `pic_id` `pic_filename` VARCHAR(255);
+

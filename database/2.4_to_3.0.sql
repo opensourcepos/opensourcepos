@@ -69,8 +69,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('theme', 'flatly'),
 ('statistics', '1'),
 ('language', 'english'),
-('language_code', 'en'),
-('date_or_time_format','');
+('language_code', 'en');
 
 
 -- add messages (SMS) module and permissions
