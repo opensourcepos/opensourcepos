@@ -106,9 +106,8 @@
 	{
 ?>
 		$('#daterangepicker').css("width","305");
-		var start_date = "<?php echo date('Y-m-d H:i:s')?>";
-		var end_date = "<?php echo date('Y-m-d H:i:s')?>";
-
+		var start_date = "<?php echo date('Y-m-d H:i:s',mktime(0,0,0,date("m"),date("d"),date("Y")))?>";
+		var end_date = "<?php echo date('Y-m-d H:i:s',mktime(23,59,59,date("m"),date("d"),date("Y")))?>";
 		$('#daterangepicker').daterangepicker({
 			"ranges": {
 				"<?php echo $this->lang->line("datepicker_today"); ?>": [
@@ -198,9 +197,9 @@
 		    "timePickerSeconds": true,
 			"alwaysShowCalendars": true,
 			"startDate": "<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d"),date("Y")));?>",
-			"endDate": "<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y"))-1);?>",
+			"endDate": "<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>",
 			"minDate": "<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,01,01,2010));?>",
-			"maxDate": "<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y"))-1);?>"
+			"maxDate": "<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 		}, function(start, end, label) {
 			start_date = start.format('YYYY-MM-DD HH:mm:ss');
 			end_date = end.format('YYYY-MM-DD HH:mm:ss');
