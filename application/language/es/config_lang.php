@@ -51,6 +51,7 @@ $lang["config_custom7"] = "Campo Libre 7";
 $lang["config_custom8"] = "Campo Libre 8";
 $lang["config_custom9"] = "Campo Libre 9";
 $lang["config_custom10"] = "Campo Libre 10";
+$lang["config_date_or_time_format"] = "Filtro de fecha y hora";
 $lang["config_datetimeformat"] = "Formato de fecha y hora";
 $lang["config_decimal_point"] = "Punto Decimal";
 $lang["config_default_barcode_font_size_number"] = "Tamaño de fuente del código de barras debe ser un número";

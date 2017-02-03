@@ -51,6 +51,7 @@ $lang["config_custom7"] = "Custom Field 7";
 $lang["config_custom8"] = "Custom Field 8";
 $lang["config_custom9"] = "Custom Field 9";
 $lang["config_custom10"] = "Custom Field 10";
+$lang["config_date_or_time_format"] = "Date and Time filter";
 $lang["config_datetimeformat"] = "Date and Time format";
 $lang["config_decimal_point"] = "Decimal Point";
 $lang["config_default_barcode_font_size_number"] = "The default barcode font size must be a number";
