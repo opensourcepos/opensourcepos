@@ -75,12 +75,12 @@ class Items extends Secure_Controller
 	
 	public function pic_thumb($pic_filename)
 	{
-	    if($pic_filename=='')
-	    {
-	        // nothing to do here
-	        return;
-	    }
-	    
+		if($pic_filename=='')
+		{
+			// nothing to do here
+			return;
+		}
+
 		$this->load->helper('file');
 		$this->load->library('image_lib');
 
@@ -220,15 +220,6 @@ class Items extends Secure_Controller
 		{
 			// if file extension is not found guess it (legacy)
 			$images = glob('./uploads/item_pics/' . $item_info->pic_filename . '.*');
-			// try to update pic_filename in db, following 3 lines might not be necessary
-			// after what I put in search(), feel free to remove it if you also think it's
-			// redundant.
-			if(sizeof($images) > 0)
-			{
-				//$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-				//$item_data = array('pic_filename' => $new_pic_filename);
-				//$this->Item->save($item_data, $item_id);
-			}
 		}
 		else
 		{
@@ -504,7 +495,7 @@ class Items extends Secure_Controller
 			'max_height' => '480'
 		);
 		$this->load->library('upload', $config);
-		$this->upload->do_upload('item_image');           
+		$this->upload->do_upload('item_image');
 		
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
@@ -679,7 +670,7 @@ class Items extends Secure_Controller
 							'custom9'				=> $data[22],
 							'custom10'				=> $data[23]
 						);
-            
+
 						/* we could do something like this, however, the effectiveness of
 						  this is rather limited, since for now, you have to upload files manually
 						  into that directory, so you really can do whatever you want, this probably
@@ -690,7 +681,7 @@ class Items extends Secure_Controller
 							$pic_file='';
 						}*/
 						$item_data['pic_filename']=$pic_file;
-            
+
 						$item_number = $data[0];
 						$invalidated = FALSE;
 						if($item_number != '')
@@ -818,8 +809,13 @@ class Items extends Secure_Controller
 	 */
 	private function _update_pic_filename($item)
 	{
-        $filename = pathinfo($item->pic_filename, PATHINFO_FILENAME);
-        if($filename=="." or $filename=="" or $filename=="..") return;
+		$filename = pathinfo($item->pic_filename, PATHINFO_FILENAME);
+		if($filename=='')
+		{
+			// if the field is empty there's nothing to check
+			return;
+		}
+		
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 		if ($ext == '') {
 			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
