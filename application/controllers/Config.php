@@ -508,19 +508,22 @@ class Config extends Secure_Controller
 	private function _check_encryption()
 	{
 		$encryption_key = $this->config->item('encryption_key');
-		
+
 		// check if the encryption_key config item is the default one
 		if($encryption_key == '' || $encryption_key == 'YOUR KEY')
 		{
 			// Config path
 			$config_path = APPPATH . 'config/config.php';
-			
+
 			// Open the file
 			$config = file_get_contents($config_path);
-			
+
 			// $key will be assigned a 32-byte (256-bit) hex-encoded random key
 			$key = bin2hex($this->encryption->create_key(32));
-			
+
+			// set the encryption key in the config item
+			$this->config->set_item('encryption_key', $key);
+
 			// replace the empty placeholder with a real randomly generated encryption key
 			if($encryption_key == '')
 			{
@@ -531,16 +534,13 @@ class Config extends Secure_Controller
 				$config = str_replace("['encryption_key'] = 'YOUR KEY';", "['encryption_key'] = '" . $key . "';", $config);				
 			}
 
-			// set the encryption key in the config item
-			$this->config->set_item('encryption_key', $key);
-
-			// Write the new config.php file
-			$handle = fopen($config_path, 'w+');
+			$result = FALSE;
 
 			// Chmod the file
 			@chmod($config_path, 0777);
 			
-			$result = FALSE;
+			// Write the new config.php file
+			$handle = fopen($config_path, 'w+');
 
 			// Verify file permissions
 			if(is_writable($config_path))
@@ -549,11 +549,11 @@ class Config extends Secure_Controller
 				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;
 			}
 			
+			fclose($handle);
+
 			// Chmod the file
 			@chmod($config_path, 0444);
 			
-			fclose($handle);
-
 			return $result;
 		}
 		
