@@ -128,7 +128,7 @@ if (isset($success))
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align: center;">
-								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
+								<?php echo $item['name']; ?><br /> <?php if($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
 							</td>
 
@@ -371,9 +371,16 @@ if (isset($success))
 							</tr>
 						</table>
 					<?php echo form_close(); ?>
-
-					<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
-				<?php
+	   					<?php
+	    				// Only show this part if the payment cover the total and in sale or return mode
+		    			if ($sales_or_return_mode == '1')
+			    		{
+				    	?>
+  						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<?php
+    					}
+	   					?>
+ 				<?php
 				}
 				else
 				{
@@ -437,6 +444,15 @@ if (isset($success))
 			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 				<div class="form-group" id="buttons_sale">
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+					<?php
+					// Only show this part if the payment cover the total
+					if ($quote_or_invoice_mode && isset($customer))
+					{
+					?>
+					<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
+					<?php
+					}
+					?>
 
 					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				</div>
@@ -444,10 +460,10 @@ if (isset($success))
 
 
 			<?php
-				// Only show this part if the payment cover the total
-				if($payments_cover_total)
-				{
-				?>
+			// Only show this part if the payment cover the total
+			if($payments_cover_total || $quote_or_invoice_mode)
+			{
+			?>
 				<div class="container-fluid">
 					<div class="no-gutter row">
 						<div class="form-group form-group-sm">
@@ -483,11 +499,12 @@ if (isset($success))
 						</div>
 					</div>
 				<?php
-				if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
+				if (($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
 				{
 				?>
 					<div class="row">
 						<div class="form-group form-group-sm">
+
 							<div class="col-xs-6">
 								<label class="control-label checkbox" for="sales_invoice_enable">
 									<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
@@ -619,11 +636,17 @@ $(document).ready(function()
 	
     $("#finish_sale_button").click(function()
     {
-		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete_receipt"); ?>');
 		$('#buttons_form').submit();
     });
 
-	$("#suspend_sale_button").click(function()
+    $("#finish_invoice_quote_button").click(function()
+    {
+        $('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
+        $('#buttons_form').submit();
+    });
+
+    $("#suspend_sale_button").click(function()
 	{ 	
 		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/suspend"); ?>');
 		$('#buttons_form').submit();
