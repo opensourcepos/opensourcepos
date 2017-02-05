@@ -75,12 +75,6 @@ class Items extends Secure_Controller
 	
 	public function pic_thumb($pic_filename)
 	{
-		if($pic_filename=='')
-		{
-			// nothing to do here
-			return;
-		}
-
 		$this->load->helper('file');
 		$this->load->library('image_lib');
 
