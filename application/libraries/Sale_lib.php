@@ -18,6 +18,15 @@ class Sale_lib
 		);
 	}
 
+	public function get_register_mode_options()
+	{
+		return array(
+			'sale' => $this->CI->lang->line('sales_receipt'),
+			'sale_invoice' => $this->CI->lang->line('sales_invoice'),
+			'sale_quote' => $this->CI->lang->line('sales_quote')
+		);
+	}
+
 	public function get_cart()
 	{
 		if(!$this->CI->session->userdata('sales_cart'))
@@ -60,7 +69,12 @@ class Sale_lib
 	{
 		return $this->CI->session->userdata('sales_invoice_number');
 	}
-	
+
+	public function get_quote_number()
+	{
+		return $this->CI->session->userdata('sales_quote_number');
+	}
+
 	public function set_invoice_number($invoice_number, $keep_custom = FALSE)
 	{
 		$current_invoice_number = $this->CI->session->userdata('sales_invoice_number');
@@ -69,19 +83,67 @@ class Sale_lib
 			$this->CI->session->set_userdata('sales_invoice_number', $invoice_number);
 		}
 	}
-	
+
+	public function set_quote_number($quote_number, $keep_custom = FALSE)
+	{
+		$current_quote_number = $this->CI->session->userdata('sales_quote_number');
+		if(!$keep_custom || empty($current_quote_number))
+		{
+			$this->CI->session->set_userdata('sales_quote_number', $quote_number);
+		}
+	}
+
 	public function clear_invoice_number()
 	{
 		$this->CI->session->unset_userdata('sales_invoice_number');
 	}
-	
-	public function is_invoice_number_enabled() 
+
+	public function clear_quote_number()
 	{
-		return ($this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
-				$this->CI->session->userdata('sales_invoice_number_enabled') == '1') &&
-				$this->CI->config->item('invoice_enable') == TRUE;
+		$this->CI->session->unset_userdata('sales_quote_number');
 	}
-	
+
+//	public function is_invoice_number_enabled()
+//	{
+//		return ($this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
+//				$this->CI->session->userdata('sales_invoice_number_enabled') == '1') &&
+//				$this->CI->config->item('invoice_enable') == TRUE;
+//	}
+
+	public function set_receipt_override($receipt_override)
+	{
+		$this->CI->session->set_userdata('receipt_override', $receipt_override);
+	}
+
+	public function set_suspended_id($suspended_id)
+	{
+		$this->CI->session->set_userdata('suspended_id', $suspended_id);
+	}
+
+	public function get_suspended_id()
+	{
+		return $this->CI->session->userdata('suspended_id');
+	}
+
+	public function get_receipt_override()
+	{
+		return $this->CI->session->userdata('receipt_override');
+	}
+
+	public function is_invoice_mode()
+	{
+
+		return ($this->CI->session->userdata('sales_invoice_number_enabled') == 'true' ||
+				$this->CI->session->userdata('sales_mode') == 'sale_invoice' ||
+				($this->CI->session->userdata('sales_invoice_number_enabled') == '1') &&
+					$this->CI->config->item('invoice_enable') == TRUE);
+	}
+
+	public function is_quote_mode()
+	{
+		return ($this->CI->session->userdata('sales_mode') == 'sale_quote');
+	}
+
 	public function set_invoice_number_enabled($invoice_number_enabled)
 	{
 		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
@@ -248,7 +310,13 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_mode'))
 		{
-			$this->set_mode('sale');
+			if ($this->CI->config->config['invoice_enable'] == '1')
+			{
+				$this->set_mode($this->CI->config->config['default_register_mode']);
+			}
+			else{
+				$this->set_mode('sale');
+			}
 		}
 
 		return $this->CI->session->userdata('sales_mode');
@@ -601,20 +669,23 @@ class Sale_lib
 		$suspended_sale_info = $this->CI->Sale_suspended->get_info($sale_id)->row();
 		$this->set_customer($suspended_sale_info->person_id);
 		$this->set_comment($suspended_sale_info->comment);
+
 		$this->set_invoice_number($suspended_sale_info->invoice_number);
+		$this->set_quote_number($suspended_sale_info->quote_number);
 	}
 
 	public function clear_all()
 	{
 		$this->set_invoice_number_enabled(FALSE);
-		$this->clear_mode();
 		$this->empty_cart();
 		$this->clear_comment();
 		$this->clear_email_receipt();
 		$this->clear_invoice_number();
+		$this->clear_quote_number();
 		$this->clear_giftcard_remainder();
 		$this->empty_payments();
 		$this->remove_customer();
+		$this->set_receipt_override(FALSE);
 	}
 	
 	public function is_customer_taxable()

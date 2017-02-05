@@ -371,8 +371,19 @@ if (isset($success))
 								</tr>
 							</table>
 						<?php echo form_close(); ?>
+	    					<?php
+		    				// Only show this part if the payment cover the total
+			    			if ($quote_or_invoice_mode)
+				    		{
+					    		?>
+                                <div class="form-group" style="text-align:center;width:150px;height:50px;float: left;padding-top:5px">
+                                    <span style="font-style:italic;"><?php echo $this->lang->line('sales_receipt_to_print');?></span>
+                                </div>
+							    <?php
+    						}
+	    					?>
 
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+    						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 					<?php
 					}
 					else
@@ -437,6 +448,15 @@ if (isset($success))
 			<?php echo form_open($controller_name."/cancel", array('id'=>'buttons_form')); ?>
 				<div class="form-group" id="buttons_sale">
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
+					<?php
+					// Only show this part if the payment cover the total
+					if ($quote_or_invoice_mode)
+					{
+					?>
+                    <div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
+					<?php
+					}
+					?>
 
 					<div class='btn btn-sm btn-danger pull-right' id='cancel_sale_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('sales_cancel_sale'); ?></div>
 				</div>
@@ -445,7 +465,7 @@ if (isset($success))
 
 			<?php
 				// Only show this part if the payment cover the total
-				if($payments_cover_total)
+				if($payments_cover_total || $quote_or_invoice_mode)
 				{
 				?>
 				<div class="container-fluid">
@@ -483,7 +503,7 @@ if (isset($success))
 						</div>
 					</div>
 				<?php
-				if ($mode == "sale" && $this->config->item('invoice_enable') == TRUE)
+				if (($mode == "sale" || $mode == "sale_invoice") && $this->config->item('invoice_enable') == TRUE)
 				{
 				?>
 					<div class="row">
@@ -619,11 +639,17 @@ $(document).ready(function()
 	
     $("#finish_sale_button").click(function()
     {
-		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete_receipt"); ?>');
 		$('#buttons_form').submit();
     });
 
-	$("#suspend_sale_button").click(function()
+    $("#finish_invoice_quote_button").click(function()
+    {
+        $('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
+        $('#buttons_form').submit();
+    });
+
+    $("#suspend_sale_button").click(function()
 	{ 	
 		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/suspend"); ?>');
 		$('#buttons_form').submit();
