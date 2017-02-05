@@ -14,8 +14,15 @@
 						'checked' => $this->config->item('invoice_enable')));?>
 				</div>
 			</div>
-			
-			<div class="form-group form-group-sm">    
+
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_register_mode_default'), 'default_register_mode', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_dropdown('default_register_mode', $register_mode_options, $this->config->item('default_register_mode'), array('class' => 'form-control input-sm')); ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_sales_invoice_format'), 'sales_invoice_format', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
@@ -26,7 +33,18 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">    
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_sales_quote_format'), 'sales_quote_format', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_input(array(
+						'name' => 'sales_quote_format',
+						'id' => 'sales_quote_format',
+						'class' => 'form-control input-sm',
+						'value' => $this->config->item('sales_quote_format'))); ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_recv_invoice_format'), 'recv_invoice_format', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
@@ -66,6 +84,34 @@
 				</div>
 			</div>
 
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_last_used_invoice_number'), 'last_used_invoice_number', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_input(array(
+						'max' => '999999999',
+						'min' => '0',
+						'type' => 'number',
+						'name' => 'last_used_invoice_number',
+						'id' => 'last_used_invoice_number',
+						'class' => 'form-control input-sm required',
+						'value'=>$this->config->item('last_used_invoice_number'))); ?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_last_used_quote_number'), 'last_used_quote_number', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_input(array(
+						'max' => '999999999',
+						'min' => '0',
+						'type' => 'number',
+						'name' => 'last_used_quote_number',
+						'id' => 'last_used_quote_number',
+						'class' => 'form-control input-sm required',
+						'value'=>$this->config->item('last_used_quote_number'))); ?>
+                </div>
+            </div>
+
 			<?php echo form_submit(array(
 				'name' => 'submit_form',
 				'id' => 'submit_form',
@@ -81,7 +127,7 @@ $(document).ready(function()
 {
 	var enable_disable_invoice_enable = (function() {
 		var invoice_enable = $("#invoice_enable").is(":checked");
-		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message").prop("disabled", !invoice_enable);
+		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message, select[name='default_register_mode'], #sales_quote_format, select[name='line_sequence'], #last_used_invoice_number, #last_used_quote_number").prop("disabled", !invoice_enable);
 		return arguments.callee;
 	})();
 

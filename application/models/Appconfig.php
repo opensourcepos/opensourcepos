@@ -74,5 +74,19 @@ class Appconfig extends CI_Model
 	{
 		return $this->db->empty_table('app_config'); 
 	}
+
+	public function get_next_invoice_sequence()
+	{
+		$last_used = $this->get('last_used_invoice_number') + 1;
+		$this->save('last_used_invoice_number', $last_used);
+		return $last_used;
+	}
+
+	public function get_next_quote_sequence()
+	{
+		$last_used = $this->get('last_used_quote_number') + 1;
+		$this->save('last_used_quote_number', $last_used);
+		return $last_used;
+	}
 }
 ?>
