@@ -52,7 +52,7 @@ class Sale_suspended extends CI_Model
 		return $this->db->update('sales_suspended', $sale_data);
 	}
 	
-	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $sale_id = FALSE)
+	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $sale_id = FALSE)
 	{
 		if(count($items) == 0)
 		{
@@ -64,7 +64,8 @@ class Sale_suspended extends CI_Model
 			'customer_id'    => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'    => $employee_id,
 			'comment'        => $comment,
-			'invoice_number' => $invoice_number
+			'invoice_number' => $invoice_number,
+			'quote_number' => $quote_number,
 		);
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
