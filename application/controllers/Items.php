@@ -64,7 +64,10 @@ class Items extends Secure_Controller
 		foreach($items->result() as $item)
 		{
 			$data_rows[] = $this->xss_clean(get_item_data_row($item, $this));
-			$this->_update_pic_filename($item);
+			if($item->pic_filename!='')
+			{
+				$this->_update_pic_filename($item);
+			}
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
@@ -72,6 +75,12 @@ class Items extends Secure_Controller
 	
 	public function pic_thumb($pic_filename)
 	{
+	    if($pic_filename=='')
+	    {
+	        // nothing to do here
+	        return;
+	    }
+	    
 		$this->load->helper('file');
 		$this->load->library('image_lib');
 
@@ -216,9 +225,9 @@ class Items extends Secure_Controller
 			// redundant.
 			if(sizeof($images) > 0)
 			{
-				$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
-				$item_data = array('pic_filename' => $new_pic_filename);
-				$this->Item->save($item_data, $item_id);
+				//$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
+				//$item_data = array('pic_filename' => $new_pic_filename);
+				//$this->Item->save($item_data, $item_id);
 			}
 		}
 		else
@@ -809,6 +818,8 @@ class Items extends Secure_Controller
 	 */
 	private function _update_pic_filename($item)
 	{
+        $filename = pathinfo($item->pic_filename, PATHINFO_FILENAME);
+        if($filename=="." or $filename=="" or $filename=="..") return;
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 		if ($ext == '') {
 			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
