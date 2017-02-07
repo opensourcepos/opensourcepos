@@ -22,3 +22,4 @@ git-svn-diff.py
 *~
 *.~
 *.log
+application/logs/*
