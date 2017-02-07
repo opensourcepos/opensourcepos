@@ -290,16 +290,16 @@ class Sales extends Secure_Controller
 			$stock_type = $item_kit_info->stock_type;
 			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
 
+			if ($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
+			{
+				$discount = $item_kit_info->kit_discount_percent;
+			}
+
+			$price = null;
+			$print_option = 0; // Always include in list of items on invoice
+
 			if ($kit_item_id !== '' && $kit_item_id != 0)
 			{
-				if ($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
-				{
-					$discount = $item_kit_info->kit_discount_percent;
-				}
-
-				$price = null;
-				$print_option = 0; // Always include in list of items on invoice
-
 				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, null, null, null, $print_option))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
