@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Session Library &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Session Library &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="HTML Table Class" href="table.html"/>
         <link rel="prev" title="Security Class" href="security.html"/> 
@@ -485,7 +485,7 @@ For the most part the session class will run unattended in the background,
 so simply initializing the class will cause it to read, create, and update
 sessions when necessary.</p>
 <p>To initialize the Session class manually in your controller constructor,
-use the <code class="docutils literal"><span class="pre">$this-&gt;load-&gt;library()</span></code> method:</p>
+use the <tt class="docutils literal"><span class="pre">$this-&gt;load-&gt;library()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;session&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -497,7 +497,7 @@ use the <code class="docutils literal"><span class="pre">$this-&gt;load-&gt;libr
 <p class="first admonition-title">Important</p>
 <p class="last">Because the <a class="reference internal" href="loader.html"><em>Loader Class</em></a> is instantiated
 by CodeIgniter&#8217;s base controller, make sure to call
-<code class="docutils literal"><span class="pre">parent::__construct()</span></code> before trying to load a library from
+<tt class="docutils literal"><span class="pre">parent::__construct()</span></tt> before trying to load a library from
 inside a controller constructor.</p>
 </div>
 </div>
@@ -542,7 +542,7 @@ more problems!</p>
 have the session open, while you&#8217;ve already processed it and therefore no
 longer need it. So, what you need is to close the session for the
 current request after you no longer need it.</p>
-<p>Long story short - call <code class="docutils literal"><span class="pre">session_write_close()</span></code> once you no longer need
+<p>Long story short - call <tt class="docutils literal"><span class="pre">session_write_close()</span></tt> once you no longer need
 anything to do with session variables.</p>
 </div>
 </div>
@@ -555,7 +555,7 @@ anything to do with session variables.</p>
 (if not, please read the content on that link).</p>
 <p>CodeIgniter gives access to its session data through the same means, as it
 uses the session handlers&#8217; mechanism provided by PHP. Using session data is
-as simple as manipulating (read, set and unset values) the <code class="docutils literal"><span class="pre">$_SESSION</span></code>
+as simple as manipulating (read, set and unset values) the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt>
 array.</p>
 <p>In addition, CodeIgniter also provides 2 special types of session data
 that are further explained below: flashdata and tempdata.</p>
@@ -570,7 +570,7 @@ the custom &#8216;userdata&#8217; methods work.</p>
 <div class="section" id="retrieving-session-data">
 <h3><a class="toc-backref" href="#id8">Retrieving Session Data</a><a class="headerlink" href="#retrieving-session-data" title="Permalink to this headline">¶</a></h3>
 <p>Any piece of information from the session array is available through the
-<code class="docutils literal"><span class="pre">$_SESSION</span></code> superglobal:</p>
+<tt class="docutils literal"><span class="pre">$_SESSION</span></tt> superglobal:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -578,12 +578,12 @@ the custom &#8216;userdata&#8217; methods work.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">item</span>
 </pre></div>
 </div>
-<p>And for backwards compatibility, through the <code class="docutils literal"><span class="pre">userdata()</span></code> method:</p>
+<p>And for backwards compatibility, through the <tt class="docutils literal"><span class="pre">userdata()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>Where item is the array key corresponding to the item you wish to fetch.
-For example, to assign a previously stored &#8216;name&#8217; item to the <code class="docutils literal"><span class="pre">$name</span></code>
+For example, to assign a previously stored &#8216;name&#8217; item to the <tt class="docutils literal"><span class="pre">$name</span></tt>
 variable, you will do this:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$name</span> <span class="o">=</span> <span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">];</span>
 
@@ -598,7 +598,7 @@ variable, you will do this:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal"><span class="pre">userdata()</span></code> method returns NULL if the item you are trying
+<p class="last">The <tt class="docutils literal"><span class="pre">userdata()</span></tt> method returns NULL if the item you are trying
 to access does not exist.</p>
 </div>
 <p>If you want to retrieve all of the existing userdata, you can simply
@@ -617,15 +617,15 @@ omit the item key (magic getter only works for properties):</p>
 could add their username and e-mail address to the session, making that
 data globally available to you without having to run a database query when
 you need it.</p>
-<p>You can simply assign data to the <code class="docutils literal"><span class="pre">$_SESSION</span></code> array, as with any other
-variable. Or as a property of <code class="docutils literal"><span class="pre">$this-&gt;session</span></code>.</p>
+<p>You can simply assign data to the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> array, as with any other
+variable. Or as a property of <tt class="docutils literal"><span class="pre">$this-&gt;session</span></tt>.</p>
 <p>Alternatively, the old method of assigning it as &#8220;userdata&#8221; is also
 available. That however passing an array containing your new data to the
-<code class="docutils literal"><span class="pre">set_userdata()</span></code> method:</p>
+<tt class="docutils literal"><span class="pre">set_userdata()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">(</span><span class="nv">$array</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Where <code class="docutils literal"><span class="pre">$array</span></code> is an associative array containing your new data. Here&#8217;s
+<p>Where <tt class="docutils literal"><span class="pre">$array</span></tt> is an associative array containing your new data. Here&#8217;s
 an example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$newdata</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;username&#39;</span>  <span class="o">=&gt;</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span>
@@ -636,27 +636,27 @@ an example:</p>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">(</span><span class="nv">$newdata</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If you want to add userdata one value at a time, <code class="docutils literal"><span class="pre">set_userdata()</span></code> also
+<p>If you want to add userdata one value at a time, <tt class="docutils literal"><span class="pre">set_userdata()</span></tt> also
 supports this syntax:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_userdata</span><span class="p">(</span><span class="s1">&#39;some_name&#39;</span><span class="p">,</span> <span class="s1">&#39;some_value&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <p>If you want to verify that a session value exists, simply check with
-<code class="docutils literal"><span class="pre">isset()</span></code>:</p>
+<tt class="docutils literal"><span class="pre">isset()</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// returns FALSE if the &#39;some_name&#39; item doesn&#39;t exist or is NULL,</span>
 <span class="c1">// TRUE otherwise:</span>
 <span class="nb">isset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;some_name&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<p>Or you can call <code class="docutils literal"><span class="pre">has_userdata()</span></code>:</p>
+<p>Or you can call <tt class="docutils literal"><span class="pre">has_userdata()</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">has_userdata</span><span class="p">(</span><span class="s1">&#39;some_name&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="removing-session-data">
 <h3><a class="toc-backref" href="#id10">Removing Session Data</a><a class="headerlink" href="#removing-session-data" title="Permalink to this headline">¶</a></h3>
-<p>Just as with any other variable, unsetting a value in <code class="docutils literal"><span class="pre">$_SESSION</span></code> can be
-done through <code class="docutils literal"><span class="pre">unset()</span></code>:</p>
+<p>Just as with any other variable, unsetting a value in <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> can be
+done through <tt class="docutils literal"><span class="pre">unset()</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;some_name&#39;</span><span class="p">]);</span>
 
 <span class="c1">// or multiple values:</span>
@@ -667,8 +667,8 @@ done through <code class="docutils literal"><span class="pre">unset()</span></co
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>Also, just as <code class="docutils literal"><span class="pre">set_userdata()</span></code> can be used to add information to a
-session, <code class="docutils literal"><span class="pre">unset_userdata()</span></code> can be used to remove it, by passing the
+<p>Also, just as <tt class="docutils literal"><span class="pre">set_userdata()</span></tt> can be used to add information to a
+session, <tt class="docutils literal"><span class="pre">unset_userdata()</span></tt> can be used to remove it, by passing the
 session key. For example, if you wanted to remove &#8216;some_name&#8217; from your
 session data array:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_userdata</span><span class="p">(</span><span class="s1">&#39;some_name&#39;</span><span class="p">);</span>
@@ -682,8 +682,8 @@ session data array:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In previous versions, the <code class="docutils literal"><span class="pre">unset_userdata()</span></code> method used
-to accept an associative array of <code class="docutils literal"><span class="pre">key</span> <span class="pre">=&gt;</span> <span class="pre">'dummy</span> <span class="pre">value'</span></code>
+<p class="last">In previous versions, the <tt class="docutils literal"><span class="pre">unset_userdata()</span></tt> method used
+to accept an associative array of <tt class="docutils literal"><span class="pre">key</span> <span class="pre">=&gt;</span> <span class="pre">'dummy</span> <span class="pre">value'</span></tt>
 pairs. This is no longer supported.</p>
 </div>
 </div>
@@ -710,23 +710,23 @@ array:</p>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">mark_as_flash</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Or alternatively, using the <code class="docutils literal"><span class="pre">set_flashdata()</span></code> method:</p>
+<p>Or alternatively, using the <tt class="docutils literal"><span class="pre">set_flashdata()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_flashdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>You can also pass an array to <code class="docutils literal"><span class="pre">set_flashdata()</span></code>, in the same manner as
-<code class="docutils literal"><span class="pre">set_userdata()</span></code>.</p>
+<p>You can also pass an array to <tt class="docutils literal"><span class="pre">set_flashdata()</span></tt>, in the same manner as
+<tt class="docutils literal"><span class="pre">set_userdata()</span></tt>.</p>
 <p>Reading flashdata variables is the same as reading regular session data
-through <code class="docutils literal"><span class="pre">$_SESSION</span></code>:</p>
+through <tt class="docutils literal"><span class="pre">$_SESSION</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">The <code class="docutils literal"><span class="pre">userdata()</span></code> method will NOT return flashdata items.</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">userdata()</span></tt> method will NOT return flashdata items.</p>
 </div>
 <p>However, if you want to be sure that you&#8217;re reading &#8220;flashdata&#8221; (and not
-any other kind), you can also use the <code class="docutils literal"><span class="pre">flashdata()</span></code> method:</p>
+any other kind), you can also use the <tt class="docutils literal"><span class="pre">flashdata()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">flashdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -736,11 +736,11 @@ any other kind), you can also use the <code class="docutils literal"><span class
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal"><span class="pre">flashdata()</span></code> method returns NULL if the item cannot be
+<p class="last">The <tt class="docutils literal"><span class="pre">flashdata()</span></tt> method returns NULL if the item cannot be
 found.</p>
 </div>
 <p>If you find that you need to preserve a flashdata variable through an
-additional request, you can do so using the <code class="docutils literal"><span class="pre">keep_flashdata()</span></code> method.
+additional request, you can do so using the <tt class="docutils literal"><span class="pre">keep_flashdata()</span></tt> method.
 You can either pass a single item or an array of flashdata items to keep.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">keep_flashdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">);</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">keep_flashdata</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;item1&#39;</span><span class="p">,</span> <span class="s1">&#39;item2&#39;</span><span class="p">,</span> <span class="s1">&#39;item3&#39;</span><span class="p">));</span>
@@ -756,7 +756,7 @@ deleted, the value is automatically removed.</p>
 are marked in a specific way under the &#8216;__ci_vars&#8217; key (again, don&#8217;t touch
 that one).</p>
 <p>To mark an existing item as &#8220;tempdata&#8221;, simply pass its key and expiry time
-(in seconds!) to the <code class="docutils literal"><span class="pre">mark_as_temp()</span></code> method:</p>
+(in seconds!) to the <tt class="docutils literal"><span class="pre">mark_as_temp()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// &#39;item&#39; will be erased after 300 seconds</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">mark_as_temp</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
 </pre></div>
@@ -779,11 +779,11 @@ you want them all to have the same expiry time or not:</p>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">mark_as_temp</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span> <span class="c1">// Expire in 5 minutes</span>
 </pre></div>
 </div>
-<p>Or alternatively, using the <code class="docutils literal"><span class="pre">set_tempdata()</span></code> method:</p>
+<p>Or alternatively, using the <tt class="docutils literal"><span class="pre">set_tempdata()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_tempdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">,</span> <span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="mi">300</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>You can also pass an array to <code class="docutils literal"><span class="pre">set_tempdata()</span></code>:</p>
+<p>You can also pass an array to <tt class="docutils literal"><span class="pre">set_tempdata()</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$tempdata</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;newuser&#39;</span> <span class="o">=&gt;</span> <span class="k">TRUE</span><span class="p">,</span> <span class="s1">&#39;message&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;Thanks for joining!&#39;</span><span class="p">);</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">set_tempdata</span><span class="p">(</span><span class="nv">$tempdata</span><span class="p">,</span> <span class="k">NULL</span><span class="p">,</span> <span class="nv">$expire</span><span class="p">);</span>
@@ -795,16 +795,16 @@ you want them all to have the same expiry time or not:</p>
 time-to-live value of 300 seconds (or 5 minutes) will be used.</p>
 </div>
 <p>To read a tempdata variable, again you can just access it through the
-<code class="docutils literal"><span class="pre">$_SESSION</span></code> superglobal array:</p>
+<tt class="docutils literal"><span class="pre">$_SESSION</span></tt> superglobal array:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">The <code class="docutils literal"><span class="pre">userdata()</span></code> method will NOT return tempdata items.</p>
+<p class="last">The <tt class="docutils literal"><span class="pre">userdata()</span></tt> method will NOT return tempdata items.</p>
 </div>
 <p>Or if you want to be sure that you&#8217;re reading &#8220;tempdata&#8221; (and not any
-other kind), you can also use the <code class="docutils literal"><span class="pre">tempdata()</span></code> method:</p>
+other kind), you can also use the <tt class="docutils literal"><span class="pre">tempdata()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">tempdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -814,18 +814,18 @@ other kind), you can also use the <code class="docutils literal"><span class="pr
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <code class="docutils literal"><span class="pre">tempdata()</span></code> method returns NULL if the item cannot be
+<p class="last">The <tt class="docutils literal"><span class="pre">tempdata()</span></tt> method returns NULL if the item cannot be
 found.</p>
 </div>
 <p>If you need to remove a tempdata value before it expires, you can directly
-unset it from the <code class="docutils literal"><span class="pre">$_SESSION</span></code> array:</p>
+unset it from the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> array:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nb">unset</span><span class="p">(</span><span class="nv">$_SESSION</span><span class="p">[</span><span class="s1">&#39;item&#39;</span><span class="p">]);</span>
 </pre></div>
 </div>
 <p>However, this won&#8217;t remove the marker that makes this specific item to be
 tempdata (it will be invalidated on the next HTTP request), so if you
 intend to reuse that same key in the same request, you&#8217;d want to use
-<code class="docutils literal"><span class="pre">unset_tempdata()</span></code>:</p>
+<tt class="docutils literal"><span class="pre">unset_tempdata()</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">unset_tempdata</span><span class="p">(</span><span class="s1">&#39;item&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -834,7 +834,7 @@ intend to reuse that same key in the same request, you&#8217;d want to use
 <h3><a class="toc-backref" href="#id13">Destroying a Session</a><a class="headerlink" href="#destroying-a-session" title="Permalink to this headline">¶</a></h3>
 <p>To clear the current session (for example, during a logout), you may
 simply use either PHP&#8217;s <a class="reference external" href="http://php.net/session_destroy">session_destroy()</a>
-function, or the <code class="docutils literal"><span class="pre">sess_destroy()</span></code> method. Both will work in exactly the
+function, or the <tt class="docutils literal"><span class="pre">sess_destroy()</span></tt> method. Both will work in exactly the
 same way:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nb">session_destroy</span><span class="p">();</span>
 
@@ -861,9 +861,9 @@ application relied on these values, so here are alternative methods of
 accessing them:</p>
 <blockquote>
 <div><ul class="simple">
-<li>session_id: <code class="docutils literal"><span class="pre">session_id()</span></code></li>
-<li>ip_address: <code class="docutils literal"><span class="pre">$_SERVER['REMOTE_ADDR']</span></code></li>
-<li>user_agent: <code class="docutils literal"><span class="pre">$this-&gt;input-&gt;user_agent()</span></code> (unused by sessions)</li>
+<li>session_id: <tt class="docutils literal"><span class="pre">session_id()</span></tt></li>
+<li>ip_address: <tt class="docutils literal"><span class="pre">$_SERVER['REMOTE_ADDR']</span></tt></li>
+<li>user_agent: <tt class="docutils literal"><span class="pre">$this-&gt;input-&gt;user_agent()</span></tt> (unused by sessions)</li>
 <li>last_activity: Depends on the storage, no straightforward way. Sorry!</li>
 </ul>
 </div></blockquote>
@@ -995,7 +995,7 @@ engines, that you can use:</p>
 <p>By default, the <a class="reference internal" href="#files-driver">Files Driver</a> will be used when a session is initialized,
 because it is the most safe choice and is expected to work everywhere
 (virtually every environment has a file system).</p>
-<p>However, any other driver may be selected via the <code class="docutils literal"><span class="pre">$config['sess_driver']</span></code>
+<p>However, any other driver may be selected via the <tt class="docutils literal"><span class="pre">$config['sess_driver']</span></tt>
 line in your <strong>application/config/config.php</strong> file, if you chose to do so.
 Have it in mind though, every driver has different caveats, so be sure to
 get yourself familiar with them (below) before you make that choice.</p>
@@ -1020,7 +1020,7 @@ mind that it is in fact not the same code and it has some limitations
 <p>To be more specific, it doesn&#8217;t support PHP&#8217;s <a class="reference external" href="http://php.net/manual/en/session.configuration.php#ini.session.save-path">directory level and mode
 formats used in session.save_path</a>,
 and it has most of the options hard-coded for safety. Instead, only
-absolute paths are supported for <code class="docutils literal"><span class="pre">$config['sess_save_path']</span></code>.</p>
+absolute paths are supported for <tt class="docutils literal"><span class="pre">$config['sess_save_path']</span></tt>.</p>
 <p>Another important thing that you should know, is to make sure that you
 don&#8217;t use a publicly-readable or shared directory for storing your session
 files. Make sure that <em>only you</em> have access to see the contents of your
@@ -1063,7 +1063,7 @@ an application - it is just another table in your database.</p>
 <blockquote>
 <div><ul class="simple">
 <li>Only your <strong>default</strong> database connection (or the one that you access
-as <code class="docutils literal"><span class="pre">$this-&gt;db</span></code> from your controllers) can be used.</li>
+as <tt class="docutils literal"><span class="pre">$this-&gt;db</span></tt> from your controllers) can be used.</li>
 <li>You must have the <a class="reference internal" href="../database/query_builder.html"><em>Query Builder</em></a>
 enabled.</li>
 <li>You can NOT use a persistent connection.</li>
@@ -1072,7 +1072,7 @@ enabled.</li>
 </div></blockquote>
 <p>In order to use the &#8216;database&#8217; session driver, you must also create this
 table that we already mentioned and then set it as your
-<code class="docutils literal"><span class="pre">$config['sess_save_path']</span></code> value.
+<tt class="docutils literal"><span class="pre">$config['sess_save_path']</span></tt> value.
 For example, if you would like to use &#8216;ci_sessions&#8217; as your table name,
 you would do this:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_driver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;database&#39;</span><span class="p">;</span>
@@ -1127,7 +1127,7 @@ setting</strong>. The examples below work both on MySQL and PostgreSQL:</p>
 supported, due to lack of advisory locking mechanisms on other
 platforms. Using sessions without locks can cause all sorts of
 problems, especially with heavy usage of AJAX, and we will not
-support such cases. Use <code class="docutils literal"><span class="pre">session_write_close()</span></code> after you&#8217;ve
+support such cases. Use <tt class="docutils literal"><span class="pre">session_write_close()</span></tt> after you&#8217;ve
 done processing session data if you&#8217;re having performance
 issues.</p>
 </div>
@@ -1151,7 +1151,7 @@ Chances are, you&#8217;re only be using the &#8216;redis&#8217; driver only if y
 both familiar with Redis and using it for other purposes.</p>
 <p>Just as with the &#8216;files&#8217; and &#8216;database&#8217; drivers, you must also configure
 the storage location for your sessions via the
-<code class="docutils literal"><span class="pre">$config['sess_save_path']</span></code> setting.
+<tt class="docutils literal"><span class="pre">$config['sess_save_path']</span></tt> setting.
 The format here is a bit different and complicated at the same time. It is
 best explained by the <em>phpredis</em> extension&#8217;s README file, so we&#8217;ll simply
 link you to it:</p>
@@ -1160,10 +1160,10 @@ link you to it:</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">CodeIgniter&#8217;s Session library does NOT use the actual &#8216;redis&#8217;
-<code class="docutils literal"><span class="pre">session.save_handler</span></code>. Take note <strong>only</strong> of the path format in
+<tt class="docutils literal"><span class="pre">session.save_handler</span></tt>. Take note <strong>only</strong> of the path format in
 the link above.</p>
 </div>
-<p>For the most common case however, a simple <code class="docutils literal"><span class="pre">host:port</span></code> pair should be
+<p>For the most common case however, a simple <tt class="docutils literal"><span class="pre">host:port</span></tt> pair should be
 sufficient:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_driver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;redis&#39;</span><span class="p">;</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_save_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;tcp://localhost:6379&#39;</span><span class="p">;</span>
@@ -1189,8 +1189,8 @@ is that setting value X to expire after Y seconds will result in it being
 deleted after Y seconds have passed (but not necessarily that it won&#8217;t
 expire earlier than that time). This happens very rarely, but should be
 considered as it may result in loss of sessions.</p>
-<p>The <code class="docutils literal"><span class="pre">$config['sess_save_path']</span></code> format is fairly straightforward here,
-being just a <code class="docutils literal"><span class="pre">host:port</span></code> pair:</p>
+<p>The <tt class="docutils literal"><span class="pre">$config['sess_save_path']</span></tt> format is fairly straightforward here,
+being just a <tt class="docutils literal"><span class="pre">host:port</span></tt> pair:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_driver&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;memcached&#39;</span><span class="p">;</span>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;sess_save_path&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;localhost:11211&#39;</span><span class="p">;</span>
 </pre></div>
@@ -1198,7 +1198,7 @@ being just a <code class="docutils literal"><span class="pre">host:port</span></
 <div class="section" id="id1">
 <h5><a class="toc-backref" href="#id22">Bonus Tip</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h5>
 <p>Multi-server configuration with an optional <em>weight</em> parameter as the
-third colon-separated (<code class="docutils literal"><span class="pre">:weight</span></code>) value is also supported, but we have
+third colon-separated (<tt class="docutils literal"><span class="pre">:weight</span></tt>) value is also supported, but we have
 to note that we haven&#8217;t tested if that is reliable.</p>
 <p>If you want to experiment with this feature (on your own risk), simply
 separate the multiple server paths with commas:</p>
@@ -1233,10 +1233,10 @@ when creating a session driver for CodeIgniter:</p>
 <li><p class="first">Put your driver&#8217;s file under <strong>application/libraries/Session/drivers/</strong>
 and follow the naming conventions used by the Session class.</p>
 <p>For example, if you were to create a &#8216;dummy&#8217; driver, you would have
-a <code class="docutils literal"><span class="pre">Session_dummy_driver</span></code> class name, that is declared in
+a <tt class="docutils literal"><span class="pre">Session_dummy_driver</span></tt> class name, that is declared in
 <em>application/libraries/Session/drivers/Session_dummy_driver.php</em>.</p>
 </li>
-<li><p class="first">Extend the <code class="docutils literal"><span class="pre">CI_Session_driver</span></code> class.</p>
+<li><p class="first">Extend the <tt class="docutils literal"><span class="pre">CI_Session_driver</span></tt> class.</p>
 <p>This is just a basic class with a few internal helper methods. It is
 also extendable like any other library, if you really need to do that,
 but we are not going to explain how ... if you&#8217;re familiar with how
@@ -1246,7 +1246,7 @@ it. If not, well, you shouldn&#8217;t be doing it in the first place.</p>
 <li><p class="first">Implement the <a class="reference external" href="http://php.net/sessionhandlerinterface">SessionHandlerInterface</a> interface.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">You may notice that <code class="docutils literal"><span class="pre">SessionHandlerInterface</span></code> is provided
+<p class="last">You may notice that <tt class="docutils literal"><span class="pre">SessionHandlerInterface</span></tt> is provided
 by PHP since version 5.4.0. CodeIgniter will automatically declare
 the same interface if you&#8217;re running an older PHP version.</p>
 </div>
@@ -1311,10 +1311,10 @@ configuration value to &#8216;dummy&#8217; and use your own driver. Congratulati
 <h2><a class="toc-backref" href="#id24">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Session">
-<em class="property">class </em><code class="descname">CI_Session</code><a class="headerlink" href="#CI_Session" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Session</tt><a class="headerlink" href="#CI_Session" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Session::userdata">
-<code class="descname">userdata</code><span class="sig-paren">(</span><span class="optional">[</span><em>$key = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::userdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">userdata</tt><big>(</big><span class="optional">[</span><em>$key = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::userdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1332,19 +1332,19 @@ configuration value to &#8216;dummy&#8217; and use your own driver. Congratulati
 </tr>
 </tbody>
 </table>
-<p>Gets the value for a specific <code class="docutils literal"><span class="pre">$_SESSION</span></code> item, or an
+<p>Gets the value for a specific <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item, or an
 array of all &#8220;userdata&#8221; items if not key was specified.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
 compatibility with older applications. You should
-directly access <code class="docutils literal"><span class="pre">$_SESSION</span></code> instead.</p>
+directly access <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> instead.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::all_userdata">
-<code class="descname">all_userdata</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::all_userdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">all_userdata</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Session::all_userdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1358,25 +1358,25 @@ directly access <code class="docutils literal"><span class="pre">$_SESSION</span
 <p>Returns an array containing all &#8220;userdata&#8221; items.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This method is DEPRECATED. Use <code class="docutils literal"><span class="pre">userdata()</span></code>
+<p class="last">This method is DEPRECATED. Use <tt class="docutils literal"><span class="pre">userdata()</span></tt>
 with no parameters instead.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt>
-<code class="descname">&amp;get_userdata()</code></dt>
+<tt class="descname">&amp;get_userdata()</tt></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A reference to <code class="docutils literal"><span class="pre">$_SESSION</span></code></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A reference to <tt class="docutils literal"><span class="pre">$_SESSION</span></tt></td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">array</td>
 </tr>
 </tbody>
 </table>
-<p>Returns a reference to the <code class="docutils literal"><span class="pre">$_SESSION</span></code> array.</p>
+<p>Returns a reference to the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> array.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
@@ -1386,7 +1386,7 @@ compatibility with older applications.</p>
 
 <dl class="method">
 <dt id="CI_Session::has_userdata">
-<code class="descname">has_userdata</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::has_userdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">has_userdata</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::has_userdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1404,19 +1404,19 @@ compatibility with older applications.</p>
 </tr>
 </tbody>
 </table>
-<p>Checks if an item exists in <code class="docutils literal"><span class="pre">$_SESSION</span></code>.</p>
+<p>Checks if an item exists in <tt class="docutils literal"><span class="pre">$_SESSION</span></tt>.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
 compatibility with older applications. It is just
-an alias for <code class="docutils literal"><span class="pre">isset($_SESSION[$key])</span></code> - please
+an alias for <tt class="docutils literal"><span class="pre">isset($_SESSION[$key])</span></tt> - please
 use that instead.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::set_userdata">
-<code class="descname">set_userdata</code><span class="sig-paren">(</span><em>$data</em><span class="optional">[</span>, <em>$value = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::set_userdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_userdata</tt><big>(</big><em>$data</em><span class="optional">[</span>, <em>$value = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::set_userdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1432,7 +1432,7 @@ use that instead.</p>
 </tr>
 </tbody>
 </table>
-<p>Assigns data to the <code class="docutils literal"><span class="pre">$_SESSION</span></code> superglobal.</p>
+<p>Assigns data to the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> superglobal.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
@@ -1442,7 +1442,7 @@ compatibility with older applications.</p>
 
 <dl class="method">
 <dt id="CI_Session::unset_userdata">
-<code class="descname">unset_userdata</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::unset_userdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unset_userdata</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::unset_userdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1457,20 +1457,20 @@ compatibility with older applications.</p>
 </tr>
 </tbody>
 </table>
-<p>Unsets the specified key(s) from the <code class="docutils literal"><span class="pre">$_SESSION</span></code>
+<p>Unsets the specified key(s) from the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt>
 superglobal.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
 compatibility with older applications. It is just
-an alias for <code class="docutils literal"><span class="pre">unset($_SESSION[$key])</span></code> - please
+an alias for <tt class="docutils literal"><span class="pre">unset($_SESSION[$key])</span></tt> - please
 use that instead.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::mark_as_flash">
-<code class="descname">mark_as_flash</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::mark_as_flash" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mark_as_flash</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::mark_as_flash" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1488,13 +1488,13 @@ use that instead.</p>
 </tr>
 </tbody>
 </table>
-<p>Marks a <code class="docutils literal"><span class="pre">$_SESSION</span></code> item key (or multiple ones) as
+<p>Marks a <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item key (or multiple ones) as
 &#8220;flashdata&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::get_flash_keys">
-<code class="descname">get_flash_keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::get_flash_keys" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_flash_keys</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Session::get_flash_keys" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1505,13 +1505,13 @@ use that instead.</p>
 </tr>
 </tbody>
 </table>
-<p>Gets a list of all <code class="docutils literal"><span class="pre">$_SESSION</span></code> that have been marked as
+<p>Gets a list of all <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> that have been marked as
 &#8220;flashdata&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::unmark_flash">
-<code class="descname">unmark_flash</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::unmark_flash" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unmark_flash</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::unmark_flash" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1526,13 +1526,13 @@ use that instead.</p>
 </tr>
 </tbody>
 </table>
-<p>Unmarks a <code class="docutils literal"><span class="pre">$_SESSION</span></code> item key (or multiple ones) as
+<p>Unmarks a <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item key (or multiple ones) as
 &#8220;flashdata&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::flashdata">
-<code class="descname">flashdata</code><span class="sig-paren">(</span><span class="optional">[</span><em>$key = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::flashdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">flashdata</tt><big>(</big><span class="optional">[</span><em>$key = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::flashdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1550,20 +1550,20 @@ use that instead.</p>
 </tr>
 </tbody>
 </table>
-<p>Gets the value for a specific <code class="docutils literal"><span class="pre">$_SESSION</span></code> item that has
+<p>Gets the value for a specific <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item that has
 been marked as &#8220;flashdata&#8221;, or an array of all &#8220;flashdata&#8221;
 items if no key was specified.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
 compatibility with older applications. You should
-directly access <code class="docutils literal"><span class="pre">$_SESSION</span></code> instead.</p>
+directly access <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> instead.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::keep_flashdata">
-<code class="descname">keep_flashdata</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::keep_flashdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">keep_flashdata</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::keep_flashdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1587,13 +1587,13 @@ through the next request.</p>
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
 compatibility with older applications. It is just
-an alias for the <code class="docutils literal"><span class="pre">mark_as_flash()</span></code> method.</p>
+an alias for the <tt class="docutils literal"><span class="pre">mark_as_flash()</span></tt> method.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::set_flashdata">
-<code class="descname">set_flashdata</code><span class="sig-paren">(</span><em>$data</em><span class="optional">[</span>, <em>$value = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::set_flashdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_flashdata</tt><big>(</big><em>$data</em><span class="optional">[</span>, <em>$value = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::set_flashdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1609,7 +1609,7 @@ an alias for the <code class="docutils literal"><span class="pre">mark_as_flash(
 </tr>
 </tbody>
 </table>
-<p>Assigns data to the <code class="docutils literal"><span class="pre">$_SESSION</span></code> superglobal and marks it
+<p>Assigns data to the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> superglobal and marks it
 as &#8220;flashdata&#8221;.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1620,7 +1620,7 @@ compatibility with older applications.</p>
 
 <dl class="method">
 <dt id="CI_Session::mark_as_temp">
-<code class="descname">mark_as_temp</code><span class="sig-paren">(</span><em>$key</em><span class="optional">[</span>, <em>$ttl = 300</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::mark_as_temp" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mark_as_temp</tt><big>(</big><em>$key</em><span class="optional">[</span>, <em>$ttl = 300</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::mark_as_temp" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1639,13 +1639,13 @@ compatibility with older applications.</p>
 </tr>
 </tbody>
 </table>
-<p>Marks a <code class="docutils literal"><span class="pre">$_SESSION</span></code> item key (or multiple ones) as
+<p>Marks a <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item key (or multiple ones) as
 &#8220;tempdata&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::get_temp_keys">
-<code class="descname">get_temp_keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::get_temp_keys" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_temp_keys</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Session::get_temp_keys" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1656,13 +1656,13 @@ compatibility with older applications.</p>
 </tr>
 </tbody>
 </table>
-<p>Gets a list of all <code class="docutils literal"><span class="pre">$_SESSION</span></code> that have been marked as
+<p>Gets a list of all <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> that have been marked as
 &#8220;tempdata&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::unmark_temp">
-<code class="descname">unmark_temp</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::unmark_temp" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unmark_temp</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::unmark_temp" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1677,13 +1677,13 @@ compatibility with older applications.</p>
 </tr>
 </tbody>
 </table>
-<p>Unmarks a <code class="docutils literal"><span class="pre">$_SESSION</span></code> item key (or multiple ones) as
+<p>Unmarks a <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item key (or multiple ones) as
 &#8220;tempdata&#8221;.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::tempdata">
-<code class="descname">tempdata</code><span class="sig-paren">(</span><span class="optional">[</span><em>$key = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::tempdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">tempdata</tt><big>(</big><span class="optional">[</span><em>$key = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::tempdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1701,20 +1701,20 @@ compatibility with older applications.</p>
 </tr>
 </tbody>
 </table>
-<p>Gets the value for a specific <code class="docutils literal"><span class="pre">$_SESSION</span></code> item that has
+<p>Gets the value for a specific <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> item that has
 been marked as &#8220;tempdata&#8221;, or an array of all &#8220;tempdata&#8221;
 items if no key was specified.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This is a legacy method kept only for backwards
 compatibility with older applications. You should
-directly access <code class="docutils literal"><span class="pre">$_SESSION</span></code> instead.</p>
+directly access <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> instead.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::set_tempdata">
-<code class="descname">set_tempdata</code><span class="sig-paren">(</span><em>$data</em><span class="optional">[</span>, <em>$value = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::set_tempdata" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_tempdata</tt><big>(</big><em>$data</em><span class="optional">[</span>, <em>$value = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::set_tempdata" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1731,7 +1731,7 @@ directly access <code class="docutils literal"><span class="pre">$_SESSION</span
 </tr>
 </tbody>
 </table>
-<p>Assigns data to the <code class="docutils literal"><span class="pre">$_SESSION</span></code> superglobal and marks it
+<p>Assigns data to the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> superglobal and marks it
 as &#8220;tempdata&#8221;.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1742,7 +1742,7 @@ compatibility with older applications.</p>
 
 <dl class="method">
 <dt id="CI_Session::sess_regenerate">
-<code class="descname">sess_regenerate</code><span class="sig-paren">(</span><span class="optional">[</span><em>$destroy = FALSE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::sess_regenerate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sess_regenerate</tt><big>(</big><span class="optional">[</span><em>$destroy = FALSE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Session::sess_regenerate" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1768,7 +1768,7 @@ session&#8217;s data.</p>
 
 <dl class="method">
 <dt id="CI_Session::sess_destroy">
-<code class="descname">sess_destroy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::sess_destroy" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sess_destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Session::sess_destroy" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1793,7 +1793,7 @@ you do that.</p>
 
 <dl class="method">
 <dt id="CI_Session::__get">
-<code class="descname">__get</code><span class="sig-paren">(</span><em>$key</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::__get" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__get</tt><big>(</big><em>$key</em><big>)</big><a class="headerlink" href="#CI_Session::__get" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1812,16 +1812,16 @@ you do that.</p>
 </tbody>
 </table>
 <p>A magic method that allows you to use
-<code class="docutils literal"><span class="pre">$this-&gt;session-&gt;item</span></code> instead of <code class="docutils literal"><span class="pre">$_SESSION['item']</span></code>,
+<tt class="docutils literal"><span class="pre">$this-&gt;session-&gt;item</span></tt> instead of <tt class="docutils literal"><span class="pre">$_SESSION['item']</span></tt>,
 if that&#8217;s what you prefer.</p>
 <p>It will also return the session ID by calling
-<code class="docutils literal"><span class="pre">session_id()</span></code> if you try to access
-<code class="docutils literal"><span class="pre">$this-&gt;session-&gt;session_id</span></code>.</p>
+<tt class="docutils literal"><span class="pre">session_id()</span></tt> if you try to access
+<tt class="docutils literal"><span class="pre">$this-&gt;session-&gt;session_id</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Session::__set">
-<code class="descname">__set</code><span class="sig-paren">(</span><em>$key</em>, <em>$value</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Session::__set" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">__set</tt><big>(</big><em>$key</em>, <em>$value</em><big>)</big><a class="headerlink" href="#CI_Session::__set" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1838,7 +1838,7 @@ if that&#8217;s what you prefer.</p>
 </tbody>
 </table>
 <p>A magic method that allows you to assign items to
-<code class="docutils literal"><span class="pre">$_SESSION</span></code> by accessing them as <code class="docutils literal"><span class="pre">$this-&gt;session</span></code>
+<tt class="docutils literal"><span class="pre">$_SESSION</span></tt> by accessing them as <tt class="docutils literal"><span class="pre">$this-&gt;session</span></tt>
 properties:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">foo</span> <span class="o">=</span> <span class="s1">&#39;bar&#39;</span><span class="p">;</span>
 
@@ -1871,8 +1871,8 @@ properties:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -1893,7 +1893,7 @@ properties:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
