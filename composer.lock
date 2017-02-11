@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a3379d860fa0f4ff353e345a89542ac2",
-    "content-hash": "5a62415e3578c5a0a00b72a2e80f2aa0",
+    "hash": "b63fb8ca5a200785f230caaee5081808",
+    "content-hash": "576db607455889457a626422f6ea3875",
     "packages": [
         {
             "name": "codeigniter/framework",
@@ -110,7 +110,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/2b3aef2375837339f5b2bfe88e76994481f86264",
+                "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/415cabca0c6d83cd0bd6a8ed6fb695b35f892018",
                 "reference": "2b3aef2375837339f5b2bfe88e76994481f86264",
                 "shasum": ""
             },
