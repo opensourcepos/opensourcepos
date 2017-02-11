@@ -70,11 +70,11 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=d5b9522f2f"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6f7eba2cba"/>
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=bc5842b19a"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=0b1d0dd5d9"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -95,10 +95,14 @@
 				<div class="navbar-left">
 					<div id="liveclock"><?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat')) ?></div>
 				</div>
-				
+
 				<div class="navbar-right" style="margin:0">
-					<?php echo $this->config->item('company') . "  |  $user_info->first_name $user_info->last_name  |  " . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ""); ?>
+					<?php echo $user_info->first_name . ' ' . $user_info->last_name . '  |  ' . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ''); ?>
 					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
+				</div>
+
+				<div class="navbar-center" style="text-align:center">
+					<strong><?php echo $this->config->item('company'); ?></strong>
 				</div>
 			</div>
 		</div>

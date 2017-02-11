@@ -176,7 +176,7 @@ class Sales extends Secure_Controller
 	
 	public function set_email_receipt()
 	{
- 		$this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
+		$this->sale_lib->set_email_receipt($this->input->post('email_receipt'));
 	}
 
 	// Multiple Payments
@@ -248,7 +248,7 @@ class Sales extends Secure_Controller
 	public function add()
 	{
 		$data = array();
-		
+
 		$discount = 0;
 
 		// check if any discount is assigned to the selected customer
@@ -280,10 +280,49 @@ class Sales extends Secure_Controller
 		}
 		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount))
+
+			// Add kit item to order if one is assigned
+			$pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
+			$item_kit_id = $pieces[1];
+			$item_kit_info = $this->Item_kit->get_info($item_kit_id);
+			$kit_item_id = $item_kit_info->kit_item_id;
+			$price_option = $item_kit_info->price_option;
+			$stock_type = $item_kit_info->stock_type;
+			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
+
+			if ($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
+			{
+				$discount = $item_kit_info->kit_discount_percent;
+			}
+
+			$price = null;
+			$print_option = 0; // Always include in list of items on invoice
+
+			if ($kit_item_id !== '' && $kit_item_id != 0)
+			{
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, null, null, null, $print_option))
+				{
+					$data['error'] = $this->lang->line('sales_unable_to_add_item');
+				}
+				else
+				{
+					$data['warning'] = $this->sale_lib->out_of_stock($item_id_or_number_or_item_kit_or_receipt, $item_location);
+				}
+			}
+
+
+
+			// Add item kit items to order
+			$stock_warning = null;
+			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $price_option, $kit_print_option, $stock_warning))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
+			elseif ($stock_warning != null)
+			{
+				$data['warning'] = $stock_warning;
+			}
+
 		}
 		else
 		{
@@ -388,7 +427,8 @@ class Sales extends Secure_Controller
 			$data['invoice_number'] = $invoice_number;
 			$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments']);
 			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
-			
+
+
 			$data = $this->xss_clean($data);
 			
 			if($data['sale_id_num'] == -1)
@@ -403,7 +443,10 @@ class Sales extends Secure_Controller
 			$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
 			$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 			$data['email_receipt'] = $this->sale_lib->get_email_receipt();
-			
+
+			// Reload (sorted) and filter the cart line items for printing purposes
+			$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
+
 			if($this->sale_lib->is_invoice_number_enabled())
 			{
 				$this->load->view('sales/invoice', $data);
@@ -844,6 +887,24 @@ class Sales extends Secure_Controller
 		$exists = !empty($invoice_number) && $this->Sale->check_invoice_number_exists($invoice_number, $sale_id);
 
 		echo !$exists ? 'true' : 'false';
+	}
+
+	public function get_filtered($cart)
+	{
+		$filteredCart = array();
+		foreach($cart as $id => $item)
+		{
+			if ($item['print_option'] == '0') // always include
+			{
+				$filteredCart[$id] = $item;
+			}
+			elseif ($item['print_option'] == '1' && $item['price'] != 0)  // include only if the price is not zero
+			{
+				$filteredCart[$id] = $item;
+			}
+			// print_option 2 is never included
+		};
+		return $filteredCart;
 	}
 }
 ?>

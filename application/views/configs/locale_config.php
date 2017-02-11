@@ -262,6 +262,17 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+  				<?php echo form_label($this->lang->line('config_date_or_time_format'), 'date_or_time_format', array('class' => 'control-label col-xs-2')); ?>
+  				<div class='col-xs-2'>
+ 					<?php echo form_checkbox(array(
+ 						'name' => 'date_or_time_format',
+ 						'id' => 'date_or_time_format',
+ 						'value' => 'date_or_time_format',
+  						'checked'=>$this->config->item('date_or_time_format'))); ?>
+  				</div>
+  			</div>
+
 			<?php echo form_submit(array(
 				'name' => 'submit_form',
 				'id' => 'submit_form',

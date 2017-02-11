@@ -44,6 +44,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_show_description', '1'),
 ('receipt_show_serialnumber', '1'),
 ('invoice_enable', '1'),
+('line_sequence', '0'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
 ('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
@@ -82,7 +83,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('theme', 'flatly'),
 ('statistics', '1'),
 ('language', 'english'),
-('language_code', 'en');
+('language_code', 'en'),
+('date_or_time_format','');
 
 
 -- --------------------------------------------------------
@@ -195,9 +197,11 @@ CREATE TABLE `ospos_items` (
   `reorder_level` decimal(15,3) NOT NULL DEFAULT '0',
   `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   `item_id` int(10) NOT NULL AUTO_INCREMENT,
-  `pic_id` int(10) DEFAULT NULL,
+  `pic_filename` varchar(255) DEFAULT NULL,
   `allow_alt_description` tinyint(1) NOT NULL,
   `is_serialized` tinyint(1) NOT NULL,
+  `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
+  `item_type` TINYINT(2) NOT NULL DEFAULT 0,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(25) NOT NULL,
   `custom2` VARCHAR(25) NOT NULL,
@@ -246,6 +250,10 @@ CREATE TABLE `ospos_items_taxes` (
 CREATE TABLE `ospos_item_kits` (
   `item_kit_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `item_id` INT(10) NOT NULL DEFAULT 0,
+  `kit_discount_percent` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+  `price_option` TINYINT(2) NOT NULL DEFAULT 0,
+  `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`item_kit_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
@@ -265,6 +273,7 @@ CREATE TABLE `ospos_item_kit_items` (
   `item_kit_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `quantity` decimal(15,3) NOT NULL,
+  `kit_sequence` INT(3) NOT NULL DEFAULT 0,
   PRIMARY KEY (`item_kit_id`,`item_id`,`quantity`),
   KEY `ospos_item_kit_items_ibfk_2` (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -534,6 +543,7 @@ CREATE TABLE `ospos_sales_items` (
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `item_location` int(11) NOT NULL,
+  `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`),
@@ -626,6 +636,7 @@ CREATE TABLE `ospos_sales_suspended_items` (
   `item_unit_price` decimal(15,2) NOT NULL,
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `item_location` int(11) NOT NULL,
+  `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)

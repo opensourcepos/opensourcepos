@@ -8,13 +8,13 @@ class Specific_customer extends Report
 	{
 		parent::__construct();
 	}
-	
+
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
 		$this->Sale->create_temp_table($inputs);
 	}
-	
+
 	public function getDataColumns()
 	{
 		return array(
@@ -44,29 +44,29 @@ class Specific_customer extends Report
 				$this->lang->line('reports_discount'))
 		);
 	}
-	
+
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id, MAX(sale_date) AS sale_date, SUM(quantity_purchased) AS items_purchased, MAX(employee_name) AS employee_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, MAX(payment_type) AS payment_type, MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('customer_id', $inputs['customer_id']);
 
 		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		{
+			$this->db->where('quantity_purchased > 0');
+		}
+		elseif ($inputs['sale_type'] == 'returns')
+		{
+			$this->db->where('quantity_purchased < 0');
+		}
 
 		$this->db->group_by('sale_id');
-		$this->db->order_by('sale_date');
+		$this->db->order_by('MAX(sale_date)');
 
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
 		$data['details'] = array();
-		
+
 		foreach($data['summary'] as $key=>$value)
 		{
 			$this->db->select('name, category, serialnumber, description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent');
@@ -77,7 +77,7 @@ class Specific_customer extends Report
 
 		return $data;
 	}
-	
+
 	public function getSummaryData(array $inputs)
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
@@ -85,13 +85,13 @@ class Specific_customer extends Report
 		$this->db->where('customer_id', $inputs['customer_id']);
 
 		if ($inputs['sale_type'] == 'sales')
-        {
-            $this->db->where('quantity_purchased > 0');
-        }
-        elseif ($inputs['sale_type'] == 'returns')
-        {
-            $this->db->where('quantity_purchased < 0');
-        }
+		{
+			$this->db->where('quantity_purchased > 0');
+		}
+		elseif ($inputs['sale_type'] == 'returns')
+		{
+			$this->db->where('quantity_purchased < 0');
+		}
 
 		return $this->db->get()->row_array();
 	}

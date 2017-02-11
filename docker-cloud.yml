@@ -17,7 +17,7 @@ web:
         - MYSQL_DB_NAME=ospos
         - MYSQL_HOST_NAME=mysql
 mysql:
-    image: mariadb:10.0.26
+    image: mariadb:10.1.21
     environment:
         - MYSQL_ROOT_PASSWORD=pointofsale
         - MYSQL_DATABASE=ospos

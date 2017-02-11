@@ -19,22 +19,29 @@ class Summary_taxes extends Summary_report
 			array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'));
 	}
 
+	protected function _where(array $inputs)
+	{
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
+		}
+		else
+		{
+			$this->db->where('sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date'])));
+		}
+	}
+
 	public function getData(array $inputs)
 	{
-		$quantity_cond = '';
+		$where = '';
 
-		if($inputs['sale_type'] == 'sales')
+		if(empty($this->config->item('date_or_time_format')))
 		{
-			$quantity_cond = 'AND quantity_purchased > 0';
+			$where .= 'WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
 		}
-		elseif($inputs['sale_type'] == 'returns')
+		else
 		{
-			$quantity_cond = 'AND quantity_purchased < 0';
-		}
-
-		if($inputs['location_id'] != 'all')
-		{
-			$quantity_cond .= 'AND item_location = '. $this->db->escape($inputs['location_id']);
+			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 
 		if($this->config->item('tax_included'))
@@ -64,9 +71,9 @@ class Summary_taxes extends Summary_report
 						ON sales_items.sale_id = sales.sale_id
 					LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 						ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-					WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']) . " $quantity_cond
+					' . $where . '
 				) AS temp_taxes
-			GROUP BY percent"
+			GROUP BY percent'
 		);
 
 		return $query->result_array();
