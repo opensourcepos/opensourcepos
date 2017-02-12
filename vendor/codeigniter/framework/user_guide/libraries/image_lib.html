@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Image Manipulation Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Image Manipulation Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Input Class" href="input.html"/>
         <link rel="prev" title="FTP Class" href="ftp.html"/> 
@@ -473,7 +473,7 @@ in your controller using the $this-&gt;load-&gt;library function:</p>
 </pre></div>
 </div>
 <p>Once the library is loaded it will be ready for use. The image library
-object you will use to call all functions is: <code class="docutils literal"><span class="pre">$this-&gt;image_lib</span></code></p>
+object you will use to call all functions is: <tt class="docutils literal"><span class="pre">$this-&gt;image_lib</span></tt></p>
 <div class="section" id="processing-an-image">
 <h3><a class="toc-backref" href="#id2">Processing an Image</a><a class="headerlink" href="#processing-an-image" title="Permalink to this headline">¶</a></h3>
 <p>Regardless of the type of processing you would like to perform
@@ -706,7 +706,7 @@ setting of 30 will crop an image 30 pixels from the top.</td>
 instead put them into a config file. Simply create a new file called
 image_lib.php, add the $config array in that file. Then save the file
 in <em>config/image_lib.php</em> and it will be used automatically. You will
-NOT need to use the <code class="docutils literal"><span class="pre">$this-&gt;image_lib-&gt;initialize()</span></code> method if you save
+NOT need to use the <tt class="docutils literal"><span class="pre">$this-&gt;image_lib-&gt;initialize()</span></tt> method if you save
 your preferences in a config file.</p>
 </div>
 </div>
@@ -956,10 +956,10 @@ transparent.</td>
 <h2><a class="toc-backref" href="#id12">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Image_lib">
-<em class="property">class </em><code class="descname">CI_Image_lib</code><a class="headerlink" href="#CI_Image_lib" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Image_lib</tt><a class="headerlink" href="#CI_Image_lib" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Image_lib::initialize">
-<code class="descname">initialize</code><span class="sig-paren">(</span><span class="optional">[</span><em>$props = array()</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::initialize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">initialize</tt><big>(</big><span class="optional">[</span><em>$props = array()</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Image_lib::initialize" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -982,7 +982,7 @@ transparent.</td>
 
 <dl class="method">
 <dt id="CI_Image_lib::resize">
-<code class="descname">resize</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::resize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">resize</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Image_lib::resize" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -998,7 +998,7 @@ copy (with or without resizing), or create a thumbnail image.</p>
 <p>For practical purposes there is no difference between creating a copy
 and creating a thumbnail except a thumb will have the thumbnail marker
 as part of the name (i.e. mypic_thumb.jpg).</p>
-<p>All preferences listed in the <a class="reference internal" href="#processing-preferences"><span>Preferences</span></a> table are available for this
+<p>All preferences listed in the <a class="reference internal" href="#processing-preferences"><em>Preferences</em></a> table are available for this
 method except these three: <em>rotation_angle</em>, <em>x_axis</em> and <em>y_axis</em>.</p>
 <p><strong>Creating a Thumbnail</strong></p>
 <p>The resizing method will create a thumbnail file (and preserve the
@@ -1031,7 +1031,7 @@ original image for processing.</p>
 
 <dl class="method">
 <dt id="CI_Image_lib::crop">
-<code class="descname">crop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::crop" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">crop</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Image_lib::crop" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1049,7 +1049,7 @@ pixels) specifying where to crop, like this:</p>
 <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;y_axis&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">40</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>All preferences listed in the <a class="reference internal" href="#processing-preferences"><span>Preferences</span></a> table are available for this
+<p>All preferences listed in the <a class="reference internal" href="#processing-preferences"><em>Preferences</em></a> table are available for this
 method except these: <em>rotation_angle</em>, <em>create_thumb</em> and <em>new_image</em>.</p>
 <p>Here&#8217;s an example showing how you might crop an image:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;image_library&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;imagemagick&#39;</span><span class="p">;</span>
@@ -1078,7 +1078,7 @@ lets the cropping area be selected.</p>
 
 <dl class="method">
 <dt id="CI_Image_lib::rotate">
-<code class="descname">rotate</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::rotate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">rotate</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Image_lib::rotate" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1120,7 +1120,7 @@ via its preference:</p>
 
 <dl class="method">
 <dt id="CI_Image_lib::watermark">
-<code class="descname">watermark</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::watermark" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">watermark</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Image_lib::watermark" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1131,13 +1131,13 @@ via its preference:</p>
 </tr>
 </tbody>
 </table>
-<p>Creates a watermark over an image, please refer to the <a class="reference internal" href="#watermarking"><span>Watermarking an Image</span></a>
+<p>Creates a watermark over an image, please refer to the <a class="reference internal" href="#watermarking"><em>Watermarking an Image</em></a>
 section for more info.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Image_lib::clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::clear" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">clear</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Image_lib::clear" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1156,7 +1156,7 @@ loop.</p>
 
 <dl class="method">
 <dt id="CI_Image_lib::display_errors">
-<code class="descname">display_errors</code><span class="sig-paren">(</span><span class="optional">[</span><em>$open = '&lt;p&gt;</em><span class="optional">[</span>, <em>$close = '&lt;/p&gt;'</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Image_lib::display_errors" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">display_errors</tt><big>(</big><span class="optional">[</span><em>$open = '&lt;p&gt;</em><span class="optional">[</span>, <em>$close = '&lt;/p&gt;'</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Image_lib::display_errors" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1204,8 +1204,8 @@ loop.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -1226,7 +1226,7 @@ loop.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

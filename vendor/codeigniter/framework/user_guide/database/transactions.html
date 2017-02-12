@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Transactions &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Transactions &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Database Reference" href="index.html"/>
         <link rel="next" title="Database Metadata" href="metadata.html"/>
         <link rel="prev" title="Query Builder Class" href="query_builder.html"/> 
@@ -495,7 +495,7 @@ debugging is turned off, you can manage your own errors like this:</p>
 <div class="section" id="disabling-transactions">
 <h2>Disabling Transactions<a class="headerlink" href="#disabling-transactions" title="Permalink to this headline">¶</a></h2>
 <p>If you would like to disable transactions you can do so using
-<code class="docutils literal"><span class="pre">$this-&gt;db-&gt;trans_off()</span></code>:</p>
+<tt class="docutils literal"><span class="pre">$this-&gt;db-&gt;trans_off()</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">trans_off</span><span class="p">();</span>
 
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">trans_start</span><span class="p">();</span>
@@ -505,7 +505,7 @@ debugging is turned off, you can manage your own errors like this:</p>
 </div>
 <p>When transactions are disabled, your queries will be auto-commited, just as
 they are when running queries without transactions, practically ignoring
-any calls to <code class="docutils literal"><span class="pre">trans_start()</span></code>, <code class="docutils literal"><span class="pre">trans_complete()</span></code>, etc.</p>
+any calls to <tt class="docutils literal"><span class="pre">trans_start()</span></tt>, <tt class="docutils literal"><span class="pre">trans_complete()</span></tt>, etc.</p>
 </div>
 <div class="section" id="test-mode">
 <h2>Test Mode<a class="headerlink" href="#test-mode" title="Permalink to this headline">¶</a></h2>
@@ -564,8 +564,8 @@ transactions, <strong>NOT</strong> $this-&gt;db-&gt;trans_start().</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -586,7 +586,7 @@ transactions, <strong>NOT</strong> $this-&gt;db-&gt;trans_start().</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

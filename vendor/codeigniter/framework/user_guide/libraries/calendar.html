@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Calendaring Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Calendaring Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Shopping Cart Class" href="cart.html"/>
         <link rel="prev" title="Caching Driver" href="caching.html"/> 
@@ -697,10 +697,10 @@ inherited in the calendar class.</p>
 <h2><a class="toc-backref" href="#id8">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Calendar">
-<em class="property">class </em><code class="descname">CI_Calendar</code><a class="headerlink" href="#CI_Calendar" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Calendar</tt><a class="headerlink" href="#CI_Calendar" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Calendar::initialize">
-<code class="descname">initialize</code><span class="sig-paren">(</span><span class="optional">[</span><em>$config = array()</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::initialize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">initialize</tt><big>(</big><span class="optional">[</span><em>$config = array()</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Calendar::initialize" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -723,7 +723,7 @@ inherited in the calendar class.</p>
 
 <dl class="method">
 <dt id="CI_Calendar::generate">
-<code class="descname">generate</code><span class="sig-paren">(</span><span class="optional">[</span><em>$year = ''</em><span class="optional">[</span>, <em>$month = ''</em><span class="optional">[</span>, <em>$data = array()</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::generate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">generate</tt><big>(</big><span class="optional">[</span><em>$year = ''</em><span class="optional">[</span>, <em>$month = ''</em><span class="optional">[</span>, <em>$data = array()</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Calendar::generate" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -748,7 +748,7 @@ inherited in the calendar class.</p>
 
 <dl class="method">
 <dt id="CI_Calendar::get_month_name">
-<code class="descname">get_month_name</code><span class="sig-paren">(</span><em>$month</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::get_month_name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_month_name</tt><big>(</big><em>$month</em><big>)</big><a class="headerlink" href="#CI_Calendar::get_month_name" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -771,7 +771,7 @@ inherited in the calendar class.</p>
 
 <dl class="method">
 <dt id="CI_Calendar::get_day_names">
-<code class="descname">get_day_names</code><span class="sig-paren">(</span><em>$day_type = ''</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::get_day_names" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_day_names</tt><big>(</big><em>$day_type = ''</em><big>)</big><a class="headerlink" href="#CI_Calendar::get_day_names" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -790,14 +790,14 @@ inherited in the calendar class.</p>
 </tbody>
 </table>
 <p>Returns an array of day names (Sunday, Monday, etc.) based on the type
-provided. Options: long, short, abr. If no <code class="docutils literal"><span class="pre">$day_type</span></code> is provided (or
+provided. Options: long, short, abr. If no <tt class="docutils literal"><span class="pre">$day_type</span></tt> is provided (or
 if an invalid type is provided) this method will return the &#8220;abbreviated&#8221;
 style.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Calendar::adjust_date">
-<code class="descname">adjust_date</code><span class="sig-paren">(</span><em>$month</em>, <em>$year</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::adjust_date" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">adjust_date</tt><big>(</big><em>$month</em>, <em>$year</em><big>)</big><a class="headerlink" href="#CI_Calendar::adjust_date" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -834,7 +834,7 @@ become January:</p>
 
 <dl class="method">
 <dt id="CI_Calendar::get_total_days">
-<code class="descname">get_total_days</code><span class="sig-paren">(</span><em>$month</em>, <em>$year</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::get_total_days" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_total_days</tt><big>(</big><em>$month</em>, <em>$year</em><big>)</big><a class="headerlink" href="#CI_Calendar::get_total_days" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -860,13 +860,13 @@ become January:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This method is an alias for <a class="reference internal" href="../helpers/date_helper.html"><em>Date Helper</em></a> function <a class="reference internal" href="../helpers/date_helper.html#days_in_month" title="days_in_month"><code class="xref php php-func docutils literal"><span class="pre">days_in_month()</span></code></a>.</p>
+<p class="last">This method is an alias for <a class="reference internal" href="../helpers/date_helper.html"><em>Date Helper</em></a> function <a class="reference internal" href="../helpers/date_helper.html#days_in_month" title="days_in_month"><tt class="xref php php-func docutils literal"><span class="pre">days_in_month()</span></tt></a>.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Calendar::default_template">
-<code class="descname">default_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::default_template" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">default_template</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Calendar::default_template" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -883,7 +883,7 @@ your own template.</p>
 
 <dl class="method">
 <dt id="CI_Calendar::parse_template">
-<code class="descname">parse_template</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Calendar::parse_template" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">parse_template</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Calendar::parse_template" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -894,7 +894,7 @@ your own template.</p>
 </tr>
 </tbody>
 </table>
-<p>Harvests the data within the template <code class="docutils literal"><span class="pre">{pseudo-variables}</span></code> used to
+<p>Harvests the data within the template <tt class="docutils literal"><span class="pre">{pseudo-variables}</span></tt> used to
 display the calendar.</p>
 </dd></dl>
 
@@ -921,8 +921,8 @@ display the calendar.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -943,7 +943,7 @@ display the calendar.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

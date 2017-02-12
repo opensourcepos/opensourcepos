@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>String Helper &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>String Helper &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Helpers" href="index.html"/>
         <link rel="next" title="Text Helper" href="text_helper.html"/>
         <link rel="prev" title="Smiley Helper" href="smiley_helper.html"/> 
@@ -450,7 +450,7 @@ suitable to be used for any kind of security-related logic.</p>
 <p>The following functions are available:</p>
 <dl class="function">
 <dt id="random_string">
-<code class="descname">random_string</code><span class="sig-paren">(</span><span class="optional">[</span><em>$type = 'alnum'</em><span class="optional">[</span>, <em>$len = 8</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#random_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">random_string</tt><big>(</big><span class="optional">[</span><em>$type = 'alnum'</em><span class="optional">[</span>, <em>$len = 8</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#random_string" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -476,11 +476,11 @@ specifies the length. The following choices are available:</p>
 <ul class="simple">
 <li><strong>alpha</strong>: A string with lower and uppercase letters only.</li>
 <li><strong>alnum</strong>: Alpha-numeric string with lower and uppercase characters.</li>
-<li><strong>basic</strong>: A random number based on <code class="docutils literal"><span class="pre">mt_rand()</span></code>.</li>
+<li><strong>basic</strong>: A random number based on <tt class="docutils literal"><span class="pre">mt_rand()</span></tt>.</li>
 <li><strong>numeric</strong>: Numeric string.</li>
 <li><strong>nozero</strong>: Numeric string with no zeros.</li>
-<li><strong>md5</strong>: An encrypted random number based on <code class="docutils literal"><span class="pre">md5()</span></code> (fixed length of 32).</li>
-<li><strong>sha1</strong>: An encrypted random number based on <code class="docutils literal"><span class="pre">sha1()</span></code> (fixed length of 40).</li>
+<li><strong>md5</strong>: An encrypted random number based on <tt class="docutils literal"><span class="pre">md5()</span></tt> (fixed length of 32).</li>
+<li><strong>sha1</strong>: An encrypted random number based on <tt class="docutils literal"><span class="pre">sha1()</span></tt> (fixed length of 40).</li>
 </ul>
 <p>Usage example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">echo</span> <span class="nx">random_string</span><span class="p">(</span><span class="s1">&#39;alnum&#39;</span><span class="p">,</span> <span class="mi">16</span><span class="p">);</span>
@@ -495,7 +495,7 @@ are just aliases for <em>md5</em> and <em>sha1</em> respectively.</p>
 
 <dl class="function">
 <dt id="increment_string">
-<code class="descname">increment_string</code><span class="sig-paren">(</span><em>$str</em><span class="optional">[</span>, <em>$separator = '_'</em><span class="optional">[</span>, <em>$first = 1</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#increment_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">increment_string</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$separator = '_'</em><span class="optional">[</span>, <em>$first = 1</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#increment_string" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -528,7 +528,7 @@ content which has unique titles or slugs.</p>
 
 <dl class="function">
 <dt id="alternator">
-<code class="descname">alternator</code><span class="sig-paren">(</span><em>$args</em><span class="sig-paren">)</span><a class="headerlink" href="#alternator" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">alternator</tt><big>(</big><em>$args</em><big>)</big><a class="headerlink" href="#alternator" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -571,7 +571,7 @@ function with no arguments to re-initialize.</p>
 
 <dl class="function">
 <dt id="repeater">
-<code class="descname">repeater</code><span class="sig-paren">(</span><em>$data</em><span class="optional">[</span>, <em>$num = 1</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#repeater" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">repeater</tt><big>(</big><em>$data</em><span class="optional">[</span>, <em>$num = 1</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#repeater" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -598,14 +598,14 @@ function with no arguments to re-initialize.</p>
 <p>The above would generate 30 newlines.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This function is DEPRECATED. Use the native <code class="docutils literal"><span class="pre">str_repeat()</span></code>
+<p class="last">This function is DEPRECATED. Use the native <tt class="docutils literal"><span class="pre">str_repeat()</span></tt>
 instead.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="reduce_double_slashes">
-<code class="descname">reduce_double_slashes</code><span class="sig-paren">(</span><em>$str</em><span class="sig-paren">)</span><a class="headerlink" href="#reduce_double_slashes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reduce_double_slashes</tt><big>(</big><em>$str</em><big>)</big><a class="headerlink" href="#reduce_double_slashes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -634,7 +634,7 @@ found in URL protocol prefixes (e.g. http&amp;#58;//).</p>
 
 <dl class="function">
 <dt id="strip_slashes">
-<code class="descname">strip_slashes</code><span class="sig-paren">(</span><em>$data</em><span class="sig-paren">)</span><a class="headerlink" href="#strip_slashes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">strip_slashes</tt><big>(</big><em>$data</em><big>)</big><a class="headerlink" href="#strip_slashes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -673,13 +673,13 @@ found in URL protocol prefixes (e.g. http&amp;#58;//).</p>
 <p class="first admonition-title">Note</p>
 <p class="last">For historical reasons, this function will also accept
 and handle string inputs. This however makes it just an
-alias for <code class="docutils literal"><span class="pre">stripslashes()</span></code>.</p>
+alias for <tt class="docutils literal"><span class="pre">stripslashes()</span></tt>.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="trim_slashes">
-<code class="descname">trim_slashes</code><span class="sig-paren">(</span><em>$str</em><span class="sig-paren">)</span><a class="headerlink" href="#trim_slashes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">trim_slashes</tt><big>(</big><em>$str</em><big>)</big><a class="headerlink" href="#trim_slashes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -704,7 +704,7 @@ alias for <code class="docutils literal"><span class="pre">stripslashes()</span>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This function is DEPRECATED. Use the native <code class="docutils literal"><span class="pre">trim()</span></code> instead:
+<p class="last">This function is DEPRECATED. Use the native <tt class="docutils literal"><span class="pre">trim()</span></tt> instead:
 |
 | trim($str, &#8216;/&#8217;);</p>
 </div>
@@ -712,7 +712,7 @@ alias for <code class="docutils literal"><span class="pre">stripslashes()</span>
 
 <dl class="function">
 <dt id="reduce_multiples">
-<code class="descname">reduce_multiples</code><span class="sig-paren">(</span><em>$str</em><span class="optional">[</span>, <em>$character = ''</em><span class="optional">[</span>, <em>$trim = FALSE</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#reduce_multiples" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reduce_multiples</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$character = ''</em><span class="optional">[</span>, <em>$trim = FALSE</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#reduce_multiples" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -748,7 +748,7 @@ character at the beginning and the end of the string. Example:</p>
 
 <dl class="function">
 <dt id="quotes_to_entities">
-<code class="descname">quotes_to_entities</code><span class="sig-paren">(</span><em>$str</em><span class="sig-paren">)</span><a class="headerlink" href="#quotes_to_entities" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">quotes_to_entities</tt><big>(</big><em>$str</em><big>)</big><a class="headerlink" href="#quotes_to_entities" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -776,7 +776,7 @@ entities. Example:</p>
 
 <dl class="function">
 <dt id="strip_quotes">
-<code class="descname">strip_quotes</code><span class="sig-paren">(</span><em>$str</em><span class="sig-paren">)</span><a class="headerlink" href="#strip_quotes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">strip_quotes</tt><big>(</big><em>$str</em><big>)</big><a class="headerlink" href="#strip_quotes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -822,8 +822,8 @@ entities. Example:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -844,7 +844,7 @@ entities. Example:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

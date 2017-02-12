@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>URI Routing &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>URI Routing &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="General Topics" href="index.html"/>
         <link rel="next" title="Error Handling" href="errors.html"/>
         <link rel="prev" title="Compatibility Functions" href="compatibility_functions.html"/> 
@@ -447,7 +447,7 @@ overcome this, CodeIgniter allows you to remap the URI handler.</p>
 <div class="section" id="setting-your-own-routing-rules">
 <h2>Setting your own routing rules<a class="headerlink" href="#setting-your-own-routing-rules" title="Permalink to this headline">¶</a></h2>
 <p>Routing rules are defined in your <em>application/config/routes.php</em> file.
-In it you&#8217;ll see an array called <code class="docutils literal"><span class="pre">$route</span></code> that permits you to specify
+In it you&#8217;ll see an array called <tt class="docutils literal"><span class="pre">$route</span></tt> that permits you to specify
 your own routing criteria. Routes can either be specified using wildcards
 or Regular Expressions.</p>
 </div>
@@ -539,9 +539,9 @@ page after they log in, you may find this example useful:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">In the above example, if the <code class="docutils literal"><span class="pre">$1</span></code> placeholder contains a
+<p class="last">In the above example, if the <tt class="docutils literal"><span class="pre">$1</span></tt> placeholder contains a
 slash, it will still be split into multiple parameters when
-passed to <code class="docutils literal"><span class="pre">Auth::login()</span></code>.</p>
+passed to <tt class="docutils literal"><span class="pre">Auth::login()</span></tt>.</p>
 </div>
 <p>For those of you who don&#8217;t know regular expressions and want to learn
 more about them, <a class="reference external" href="http://www.regular-expressions.info/">regular-expressions.info</a>
@@ -572,13 +572,13 @@ Example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;products&#39;</span><span class="p">][</span><span class="s1">&#39;put&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;product/insert&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
-<p>In the above example, a PUT request to URI &#8220;products&#8221; would call the <code class="docutils literal"><span class="pre">Product::insert()</span></code>
+<p>In the above example, a PUT request to URI &#8220;products&#8221; would call the <tt class="docutils literal"><span class="pre">Product::insert()</span></tt>
 controller method.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;products/(:num)&#39;</span><span class="p">][</span><span class="s1">&#39;DELETE&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;product/delete/$1&#39;</span><span class="p">;</span>
 </pre></div>
 </div>
 <p>A DELETE request to URL with &#8220;products&#8221; as first the segment and a number in the second will be
-mapped to the <code class="docutils literal"><span class="pre">Product::delete()</span></code> method, passing the numeric value as the first parameter.</p>
+mapped to the <tt class="docutils literal"><span class="pre">Product::delete()</span></tt> method, passing the numeric value as the first parameter.</p>
 <p>Using HTTP verbs is of course, optional.</p>
 </div>
 <div class="section" id="reserved-routes">
@@ -589,9 +589,9 @@ mapped to the <code class="docutils literal"><span class="pre">Product::delete()
 </div>
 <p>This route points to the action that should be executed if the URI contains
 no data, which will be the case when people load your root URL.
-The setting accepts a <strong>controller/method</strong> value and <code class="docutils literal"><span class="pre">index()</span></code> would be
+The setting accepts a <strong>controller/method</strong> value and <tt class="docutils literal"><span class="pre">index()</span></tt> would be
 the default method if you don&#8217;t specify one. In the above example, it is
-<code class="docutils literal"><span class="pre">Welcome::index()</span></code> that would be called.</p>
+<tt class="docutils literal"><span class="pre">Welcome::index()</span></tt> that would be called.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You can NOT use a directory as a part of this setting!</p>
@@ -605,7 +605,7 @@ will appear by default.</p>
 requested controller is not found. It will override the default 404
 error page. Same per-directory rules as with &#8216;default_controller&#8217;
 apply here as well.</p>
-<p>It won&#8217;t affect to the <code class="docutils literal"><span class="pre">show_404()</span></code> function, which will
+<p>It won&#8217;t affect to the <tt class="docutils literal"><span class="pre">show_404()</span></tt> function, which will
 continue loading the default <em>error_404.php</em> file at
 <em>application/views/errors/error_404.php</em>.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;translate_uri_dashes&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="k">FALSE</span><span class="p">;</span>
@@ -643,8 +643,8 @@ regular expression routes.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -665,7 +665,7 @@ regular expression routes.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

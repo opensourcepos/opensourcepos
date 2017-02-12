@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Form Validation &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Form Validation &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="FTP Class" href="ftp.html"/>
         <link rel="prev" title="File Uploading Class" href="file_uploading.html"/> 
@@ -627,7 +627,7 @@ your application more portable in the event your URLs change.</p>
 validator. If there are no messages it returns an empty string.</p>
 </li>
 </ol>
-<p>The controller (Form.php) has one method: <code class="docutils literal"><span class="pre">index()</span></code>. This method
+<p>The controller (Form.php) has one method: <tt class="docutils literal"><span class="pre">index()</span></tt>. This method
 initializes the validation class and loads the form helper and URL
 helper used by your view files. It also runs the validation routine.
 Based on whether the validation was successful it either presents the
@@ -638,7 +638,7 @@ form or the success page.</p>
 <p>CodeIgniter lets you set as many validation rules as you need for a
 given field, cascading them in order, and it even lets you prep and
 pre-process the field data at the same time. To set validation rules you
-will use the <code class="docutils literal"><span class="pre">set_rules()</span></code> method:</p>
+will use the <tt class="docutils literal"><span class="pre">set_rules()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">set_rules</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -654,7 +654,7 @@ a human name of &#8220;Username&#8221;.</li>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If you would like the field name to be stored in a language
-file, please see <a class="reference internal" href="#translating-field-names"><span>Translating Field Names</span></a>.</p>
+file, please see <a class="reference internal" href="#translating-field-names"><em>Translating Field Names</em></a>.</p>
 </div>
 <p>Here is an example. In your controller (Form.php), add this code just
 below the validation initialization method:</p>
@@ -767,7 +767,7 @@ new error messages that correspond to your new rules. There are numerous
 rules available which you can read about in the validation reference.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>You can also pass an array of rules to <code class="docutils literal"><span class="pre">set_rules()</span></code>,
+<p>You can also pass an array of rules to <tt class="docutils literal"><span class="pre">set_rules()</span></tt>,
 instead of a string. Example:</p>
 <div class="last highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;Username&#39;</span><span class="p">,</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;required&#39;</span><span class="p">,</span> <span class="s1">&#39;min_length[5]&#39;</span><span class="p">));</span>
 </pre></div>
@@ -806,7 +806,7 @@ commonly is:</p>
 </pre></div>
 </div>
 <p>Open your myform.php view file and update the <strong>value</strong> in each field
-using the <a class="reference internal" href="../helpers/form_helper.html#set_value" title="set_value"><code class="xref php php-func docutils literal"><span class="pre">set_value()</span></code></a> function:</p>
+using the <a class="reference internal" href="../helpers/form_helper.html#set_value" title="set_value"><tt class="xref php php-func docutils literal"><span class="pre">set_value()</span></tt></a> function:</p>
 <p><strong>Don&#8217;t forget to include each field name in the :php:func:`set_value()`
 function calls!</strong></p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nx">html</span><span class="o">&gt;</span>
@@ -843,7 +843,7 @@ function calls!</strong></p>
 Your form fields should now be re-populated</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">The <a class="reference internal" href="#class-reference"><span>Class Reference</span></a> section below
+<p class="last">The <a class="reference internal" href="#class-reference"><em>Class Reference</em></a> section below
 contains methods that permit you to re-populate &lt;select&gt; menus,
 radio buttons, and checkboxes.</p>
 </div>
@@ -855,7 +855,7 @@ must supply it as an array to the function. Example:</p>
 </pre></div>
 </div>
 </div>
-<p>For more info please see the <a class="reference internal" href="#using-arrays-as-field-names"><span>Using Arrays as Field Names</span></a> section below.</p>
+<p>For more info please see the <a class="reference internal" href="#using-arrays-as-field-names"><em>Using Arrays as Field Names</em></a> section below.</p>
 </div>
 <div class="section" id="callbacks-your-own-validation-methods">
 <h3><a class="toc-backref" href="#id19">Callbacks: Your own Validation Methods</a><a class="headerlink" href="#callbacks-your-own-validation-methods" title="Permalink to this headline">¶</a></h3>
@@ -868,7 +868,7 @@ that does that. Let&#8217;s create an example of this.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;Username&#39;</span><span class="p">,</span> <span class="s1">&#39;callback_username_check&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>Then add a new method called <code class="docutils literal"><span class="pre">username_check()</span></code> to your controller.
+<p>Then add a new method called <tt class="docutils literal"><span class="pre">username_check()</span></tt> to your controller.
 Here&#8217;s how your controller should now look:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="o">&lt;?</span><span class="nx">php</span>
 
@@ -917,7 +917,7 @@ for you to process.</p>
 <p>To invoke a callback just put the method name in a rule, with
 &#8220;callback_&#8221; as the rule <strong>prefix</strong>. If you need to receive an extra
 parameter in your callback method, just add it normally after the
-method name between square brackets, as in: <code class="docutils literal"><span class="pre">callback_foo[bar]</span></code>,
+method name between square brackets, as in: <tt class="docutils literal"><span class="pre">callback_foo[bar]</span></tt>,
 then it will be passed as the second argument of your callback method.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -931,7 +931,7 @@ form data.</p>
 <h3><a class="toc-backref" href="#id20">Callable: Use anything as a rule</a><a class="headerlink" href="#callable-use-anything-as-a-rule" title="Permalink to this headline">¶</a></h3>
 <p>If callback rules aren&#8217;t good enough for you (for example, because they are
 limited to your controller), don&#8217;t get disappointed, there&#8217;s one more way
-to create custom rules: anything that <code class="docutils literal"><span class="pre">is_callable()</span></code> would return TRUE for.</p>
+to create custom rules: anything that <tt class="docutils literal"><span class="pre">is_callable()</span></tt> would return TRUE for.</p>
 <p>Consider the following example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">set_rules</span><span class="p">(</span>
         <span class="s1">&#39;username&#39;</span><span class="p">,</span> <span class="s1">&#39;Username&#39;</span><span class="p">,</span>
@@ -942,8 +942,8 @@ to create custom rules: anything that <code class="docutils literal"><span class
 <span class="p">);</span>
 </pre></div>
 </div>
-<p>The above code would use the <code class="docutils literal"><span class="pre">valid_username()</span></code> method from your
-<code class="docutils literal"><span class="pre">Users_model</span></code> object.</p>
+<p>The above code would use the <tt class="docutils literal"><span class="pre">valid_username()</span></tt> method from your
+<tt class="docutils literal"><span class="pre">Users_model</span></tt> object.</p>
 <p>This is just an example of course, and callbacks aren&#8217;t limited to models.
 You can use any object/method that accepts the field value as its&#8217; first
 parameter. You can also use an anonymous function:</p>
@@ -1033,7 +1033,7 @@ the name of the method (without the &#8220;callback_&#8221; prefix):</p>
 <div class="section" id="translating-field-names">
 <span id="id3"></span><h3><a class="toc-backref" href="#id22">Translating Field Names</a><a class="headerlink" href="#translating-field-names" title="Permalink to this headline">¶</a></h3>
 <p>If you would like to store the &#8220;human&#8221; name you passed to the
-<code class="docutils literal"><span class="pre">set_rules()</span></code> method in a language file, and therefore make the name
+<tt class="docutils literal"><span class="pre">set_rules()</span></tt> method in a language file, and therefore make the name
 able to be translated, here&#8217;s how:</p>
 <p>First, prefix your &#8220;human&#8221; name with <strong>lang:</strong>, as in this example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">&#39;first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;lang:first_name&#39;</span><span class="p">,</span> <span class="s1">&#39;required&#39;</span><span class="p">);</span>
@@ -1093,7 +1093,7 @@ You can add your error delimiters in application/config/form_validation.php as f
 <div class="section" id="showing-errors-individually">
 <h3><a class="toc-backref" href="#id24">Showing Errors Individually</a><a class="headerlink" href="#showing-errors-individually" title="Permalink to this headline">¶</a></h3>
 <p>If you prefer to show an error message next to each form field, rather
-than as a list, you can use the <a class="reference internal" href="../helpers/form_helper.html#form_error" title="form_error"><code class="xref php php-func docutils literal"><span class="pre">form_error()</span></code></a> function.</p>
+than as a list, you can use the <a class="reference internal" href="../helpers/form_helper.html#form_error" title="form_error"><tt class="xref php php-func docutils literal"><span class="pre">form_error()</span></tt></a> function.</p>
 <p>Try it! Change your form so that it looks like this:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="nx">h5</span><span class="o">&gt;</span><span class="nx">Username</span><span class="o">&lt;/</span><span class="nx">h5</span><span class="o">&gt;</span>
 <span class="o">&lt;?</span><span class="nx">php</span> <span class="k">echo</span> <span class="nx">form_error</span><span class="p">(</span><span class="s1">&#39;username&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span>
@@ -1123,11 +1123,11 @@ must supply it as an array to the function. Example:</p>
 </pre></div>
 </div>
 </div>
-<p>For more info please see the <a class="reference internal" href="#using-arrays-as-field-names"><span>Using Arrays as Field Names</span></a> section below.</p>
+<p>For more info please see the <a class="reference internal" href="#using-arrays-as-field-names"><em>Using Arrays as Field Names</em></a> section below.</p>
 </div>
 <div class="section" id="validating-an-array-other-than-post">
 <h3><a class="toc-backref" href="#id25">Validating an Array (other than $_POST)</a><a class="headerlink" href="#validating-an-array-other-than-post" title="Permalink to this headline">¶</a></h3>
-<p>Sometimes you may want to validate an array that does not originate from <code class="docutils literal"><span class="pre">$_POST</span></code> data.</p>
+<p>Sometimes you may want to validate an array that does not originate from <tt class="docutils literal"><span class="pre">$_POST</span></tt> data.</p>
 <p>In this case, you can specify the array to be validated:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;username&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;johndoe&#39;</span><span class="p">,</span>
@@ -1139,20 +1139,20 @@ must supply it as an array to the function. Example:</p>
 </pre></div>
 </div>
 <p>Creating validation rules, running the validation, and retrieving error
-messages works the same whether you are validating <code class="docutils literal"><span class="pre">$_POST</span></code> data or
+messages works the same whether you are validating <tt class="docutils literal"><span class="pre">$_POST</span></tt> data or
 another array of your choice.</p>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">You have to call the <code class="docutils literal"><span class="pre">set_data()</span></code> method <em>before</em> defining
+<p class="last">You have to call the <tt class="docutils literal"><span class="pre">set_data()</span></tt> method <em>before</em> defining
 any validation rules.</p>
 </div>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
 <p class="last">If you want to validate more than one array during a single
-execution, then you should call the <code class="docutils literal"><span class="pre">reset_validation()</span></code> method
+execution, then you should call the <tt class="docutils literal"><span class="pre">reset_validation()</span></tt> method
 before setting up rules and validating the new array.</p>
 </div>
-<p>For more info please see the <a class="reference internal" href="#class-reference"><span>Class Reference</span></a> section below.</p>
+<p>For more info please see the <a class="reference internal" href="#class-reference"><em>Class Reference</em></a> section below.</p>
 </div>
 </div>
 <div class="section" id="saving-sets-of-validation-rules-to-a-config-file">
@@ -1193,8 +1193,8 @@ the validation array will have this prototype:</p>
 </pre></div>
 </div>
 <p>Your validation rule file will be loaded automatically and used when you
-call the <code class="docutils literal"><span class="pre">run()</span></code> method.</p>
-<p>Please note that you MUST name your <code class="docutils literal"><span class="pre">$config</span></code> array.</p>
+call the <tt class="docutils literal"><span class="pre">run()</span></tt> method.</p>
+<p>Please note that you MUST name your <tt class="docutils literal"><span class="pre">$config</span></tt> array.</p>
 </div>
 <div class="section" id="creating-sets-of-rules">
 <h3><a class="toc-backref" href="#id28">Creating Sets of Rules</a><a class="headerlink" href="#creating-sets-of-rules" title="Permalink to this headline">¶</a></h3>
@@ -1253,7 +1253,7 @@ You can name your rules anything you want:</p>
 </div>
 <div class="section" id="calling-a-specific-rule-group">
 <h3><a class="toc-backref" href="#id29">Calling a Specific Rule Group</a><a class="headerlink" href="#calling-a-specific-rule-group" title="Permalink to this headline">¶</a></h3>
-<p>In order to call a specific group, you will pass its name to the <code class="docutils literal"><span class="pre">run()</span></code>
+<p>In order to call a specific group, you will pass its name to the <tt class="docutils literal"><span class="pre">run()</span></tt>
 method. For example, to call the signup rule you will do this:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">run</span><span class="p">(</span><span class="s1">&#39;signup&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="k">FALSE</span><span class="p">)</span>
 <span class="p">{</span>
@@ -1321,7 +1321,7 @@ member/signup:</p>
 </pre></div>
 </div>
 <p>When a rule group is named identically to a controller class/method it
-will be used automatically when the <code class="docutils literal"><span class="pre">run()</span></code> method is invoked from that
+will be used automatically when the <tt class="docutils literal"><span class="pre">run()</span></tt> method is invoked from that
 class/method.</p>
 </div>
 </div>
@@ -1333,7 +1333,7 @@ Consider this example:</p>
 </pre></div>
 </div>
 <p>If you do use an array as a field name, you must use the EXACT array
-name in the <a class="reference internal" href="#helper-functions"><span>Helper Functions</span></a> that require the
+name in the <a class="reference internal" href="#helper-functions"><em>Helper Functions</em></a> that require the
 field name, and as your Validation Rule field name.</p>
 <p>For example, to set a rule for the above field you would use:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">form_validation</span><span class="o">-&gt;</span><span class="na">set_rules</span><span class="p">(</span><span class="s1">&#39;options[]&#39;</span><span class="p">,</span> <span class="s1">&#39;Options&#39;</span><span class="p">,</span> <span class="s1">&#39;required&#39;</span><span class="p">);</span>
@@ -1534,8 +1534,8 @@ number, but not zero: 1, 2, 3, etc.</td>
 <td>&nbsp;</td>
 </tr>
 <tr class="row-odd"><td><strong>valid_ip</strong></td>
-<td>No</td>
-<td>Returns FALSE if the supplied IP is not valid.
+<td>Yes</td>
+<td>Returns FALSE if the supplied IP address is not valid.
 Accepts an optional parameter of &#8216;ipv4&#8217; or &#8216;ipv6&#8217; to specify an IP format.</td>
 <td>&nbsp;</td>
 </tr>
@@ -1599,7 +1599,7 @@ to use:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">You can also use any native PHP functions that permits one
-parameter, like <code class="docutils literal"><span class="pre">trim()</span></code>, <code class="docutils literal"><span class="pre">htmlspecialchars()</span></code>, <code class="docutils literal"><span class="pre">urldecode()</span></code>,
+parameter, like <tt class="docutils literal"><span class="pre">trim()</span></tt>, <tt class="docutils literal"><span class="pre">htmlspecialchars()</span></tt>, <tt class="docutils literal"><span class="pre">urldecode()</span></tt>,
 etc.</p>
 </div>
 </div>
@@ -1607,10 +1607,10 @@ etc.</p>
 <span id="id5"></span><h2><a class="toc-backref" href="#id34">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Form_validation">
-<em class="property">class </em><code class="descname">CI_Form_validation</code><a class="headerlink" href="#CI_Form_validation" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Form_validation</tt><a class="headerlink" href="#CI_Form_validation" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Form_validation::set_rules">
-<code class="descname">set_rules</code><span class="sig-paren">(</span><em>$field</em><span class="optional">[</span>, <em>$label = ''</em><span class="optional">[</span>, <em>$rules = ''</em><span class="optional">[</span>, <em>$errors = array()</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::set_rules" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_rules</tt><big>(</big><em>$field</em><span class="optional">[</span>, <em>$label = ''</em><span class="optional">[</span>, <em>$rules = ''</em><span class="optional">[</span>, <em>$errors = array()</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Form_validation::set_rules" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1634,14 +1634,14 @@ etc.</p>
 <p>Permits you to set validation rules, as described in the tutorial
 sections above:</p>
 <ul class="simple">
-<li><a class="reference internal" href="#setting-validation-rules"><span>Setting Validation Rules</span></a></li>
-<li><a class="reference internal" href="#saving-groups"><span>Saving Sets of Validation Rules to a Config File</span></a></li>
+<li><a class="reference internal" href="#setting-validation-rules"><em>Setting Validation Rules</em></a></li>
+<li><a class="reference internal" href="#saving-groups"><em>Saving Sets of Validation Rules to a Config File</em></a></li>
 </ul>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Form_validation::run">
-<code class="descname">run</code><span class="sig-paren">(</span><span class="optional">[</span><em>$group = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::run" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">run</tt><big>(</big><span class="optional">[</span><em>$group = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Form_validation::run" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1661,12 +1661,12 @@ sections above:</p>
 </table>
 <p>Runs the validation routines. Returns boolean TRUE on success and FALSE
 on failure. You can optionally pass the name of the validation group via
-the method, as described in: <a class="reference internal" href="#saving-groups"><span>Saving Sets of Validation Rules to a Config File</span></a></p>
+the method, as described in: <a class="reference internal" href="#saving-groups"><em>Saving Sets of Validation Rules to a Config File</em></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Form_validation::set_message">
-<code class="descname">set_message</code><span class="sig-paren">(</span><em>$lang</em><span class="optional">[</span>, <em>$val = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::set_message" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_message</tt><big>(</big><em>$lang</em><span class="optional">[</span>, <em>$val = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Form_validation::set_message" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1685,12 +1685,12 @@ the method, as described in: <a class="reference internal" href="#saving-groups"
 </tr>
 </tbody>
 </table>
-<p>Permits you to set custom error messages. See <a class="reference internal" href="#setting-error-messages"><span>Setting Error Messages</span></a></p>
+<p>Permits you to set custom error messages. See <a class="reference internal" href="#setting-error-messages"><em>Setting Error Messages</em></a></p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Form_validation::set_error_delimiters">
-<code class="descname">set_error_delimiters</code><span class="sig-paren">(</span><span class="optional">[</span><em>$prefix = '&lt;p&gt;'</em><span class="optional">[</span>, <em>$suffix = '&lt;/p&gt;'</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::set_error_delimiters" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_error_delimiters</tt><big>(</big><span class="optional">[</span><em>$prefix = '&lt;p&gt;'</em><span class="optional">[</span>, <em>$suffix = '&lt;/p&gt;'</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Form_validation::set_error_delimiters" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1714,7 +1714,7 @@ the method, as described in: <a class="reference internal" href="#saving-groups"
 
 <dl class="method">
 <dt id="CI_Form_validation::set_data">
-<code class="descname">set_data</code><span class="sig-paren">(</span><em>$data</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::set_data" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_data</tt><big>(</big><em>$data</em><big>)</big><a class="headerlink" href="#CI_Form_validation::set_data" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1733,12 +1733,12 @@ the method, as described in: <a class="reference internal" href="#saving-groups"
 </tbody>
 </table>
 <p>Permits you to set an array for validation, instead of using the default
-<code class="docutils literal"><span class="pre">$_POST</span></code> array.</p>
+<tt class="docutils literal"><span class="pre">$_POST</span></tt> array.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Form_validation::reset_validation">
-<code class="descname">reset_validation</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::reset_validation" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">reset_validation</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Form_validation::reset_validation" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1755,7 +1755,7 @@ This method should be called before validating each new array.</p>
 
 <dl class="method">
 <dt id="CI_Form_validation::error_array">
-<code class="descname">error_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::error_array" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">error_array</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Form_validation::error_array" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1771,7 +1771,7 @@ This method should be called before validating each new array.</p>
 
 <dl class="method">
 <dt id="CI_Form_validation::error_string">
-<code class="descname">error_string</code><span class="sig-paren">(</span><span class="optional">[</span><em>$prefix = ''</em><span class="optional">[</span>, <em>$suffix = ''</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::error_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">error_string</tt><big>(</big><span class="optional">[</span><em>$prefix = ''</em><span class="optional">[</span>, <em>$suffix = ''</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Form_validation::error_string" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1796,7 +1796,7 @@ string and separated by a newline character.</p>
 
 <dl class="method">
 <dt id="CI_Form_validation::error">
-<code class="descname">error</code><span class="sig-paren">(</span><em>$field</em><span class="optional">[</span>, <em>$prefix = ''</em><span class="optional">[</span>, <em>$suffix = ''</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::error" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">error</tt><big>(</big><em>$field</em><span class="optional">[</span>, <em>$prefix = ''</em><span class="optional">[</span>, <em>$suffix = ''</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Form_validation::error" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1822,7 +1822,7 @@ prefix and/or suffix to it (usually HTML tags).</p>
 
 <dl class="method">
 <dt id="CI_Form_validation::has_rule">
-<code class="descname">has_rule</code><span class="sig-paren">(</span><em>$field</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Form_validation::has_rule" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">has_rule</tt><big>(</big><em>$field</em><big>)</big><a class="headerlink" href="#CI_Form_validation::has_rule" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1851,15 +1851,15 @@ prefix and/or suffix to it (usually HTML tags).</p>
 <p>Please refer to the <a class="reference internal" href="../helpers/form_helper.html"><em>Form Helper</em></a> manual for
 the following functions:</p>
 <ul class="simple">
-<li><a class="reference internal" href="../helpers/form_helper.html#form_error" title="form_error"><code class="xref php php-func docutils literal"><span class="pre">form_error()</span></code></a></li>
-<li><a class="reference internal" href="../helpers/form_helper.html#validation_errors" title="validation_errors"><code class="xref php php-func docutils literal"><span class="pre">validation_errors()</span></code></a></li>
-<li><a class="reference internal" href="../helpers/form_helper.html#set_value" title="set_value"><code class="xref php php-func docutils literal"><span class="pre">set_value()</span></code></a></li>
-<li><a class="reference internal" href="../helpers/form_helper.html#set_select" title="set_select"><code class="xref php php-func docutils literal"><span class="pre">set_select()</span></code></a></li>
-<li><a class="reference internal" href="../helpers/form_helper.html#set_checkbox" title="set_checkbox"><code class="xref php php-func docutils literal"><span class="pre">set_checkbox()</span></code></a></li>
-<li><a class="reference internal" href="../helpers/form_helper.html#set_radio" title="set_radio"><code class="xref php php-func docutils literal"><span class="pre">set_radio()</span></code></a></li>
+<li><a class="reference internal" href="../helpers/form_helper.html#form_error" title="form_error"><tt class="xref php php-func docutils literal"><span class="pre">form_error()</span></tt></a></li>
+<li><a class="reference internal" href="../helpers/form_helper.html#validation_errors" title="validation_errors"><tt class="xref php php-func docutils literal"><span class="pre">validation_errors()</span></tt></a></li>
+<li><a class="reference internal" href="../helpers/form_helper.html#set_value" title="set_value"><tt class="xref php php-func docutils literal"><span class="pre">set_value()</span></tt></a></li>
+<li><a class="reference internal" href="../helpers/form_helper.html#set_select" title="set_select"><tt class="xref php php-func docutils literal"><span class="pre">set_select()</span></tt></a></li>
+<li><a class="reference internal" href="../helpers/form_helper.html#set_checkbox" title="set_checkbox"><tt class="xref php php-func docutils literal"><span class="pre">set_checkbox()</span></tt></a></li>
+<li><a class="reference internal" href="../helpers/form_helper.html#set_radio" title="set_radio"><tt class="xref php php-func docutils literal"><span class="pre">set_radio()</span></tt></a></li>
 </ul>
 <p>Note that these are procedural functions, so they <strong>do not</strong> require you
-to prepend them with <code class="docutils literal"><span class="pre">$this-&gt;form_validation</span></code>.</p>
+to prepend them with <tt class="docutils literal"><span class="pre">$this-&gt;form_validation</span></tt>.</p>
 </div>
 </div>
 
@@ -1881,8 +1881,8 @@ to prepend them with <code class="docutils literal"><span class="pre">$this-&gt;
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -1903,7 +1903,7 @@ to prepend them with <code class="docutils literal"><span class="pre">$this-&gt;
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
