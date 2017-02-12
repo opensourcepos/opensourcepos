@@ -42,7 +42,7 @@
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/2b3aef2375837339f5b2bfe88e76994481f86264",
+            "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/415cabca0c6d83cd0bd6a8ed6fb695b35f892018",
             "reference": "2b3aef2375837339f5b2bfe88e76994481f86264",
             "shasum": ""
         },
@@ -223,17 +223,17 @@
     },
     {
         "name": "codeigniter/framework",
-        "version": "3.1.2",
-        "version_normalized": "3.1.2.0",
+        "version": "3.1.3",
+        "version_normalized": "3.1.3.0",
         "source": {
             "type": "git",
             "url": "https://github.com/bcit-ci/CodeIgniter.git",
-            "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141"
+            "reference": "5ea77465c445157fb1096c38f5c2d27384b780b7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
-            "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
+            "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/5ea77465c445157fb1096c38f5c2d27384b780b7",
+            "reference": "5ea77465c445157fb1096c38f5c2d27384b780b7",
             "shasum": ""
         },
         "require": {
@@ -245,7 +245,7 @@
         "suggest": {
             "paragonie/random_compat": "Provides better randomness in PHP 5.x"
         },
-        "time": "2016-10-28 15:13:14",
+        "time": "2017-01-09 14:32:03",
         "type": "project",
         "installation-source": "source",
         "notification-url": "https://packagist.org/downloads/",

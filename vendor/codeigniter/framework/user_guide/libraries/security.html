@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Security Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Security Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Session Library" href="sessions.html"/>
         <link rel="prev" title="Template Parser Class" href="parser.html"/> 
@@ -441,7 +441,7 @@ looks for commonly used techniques to trigger JavaScript or other types
 of code that attempt to hijack cookies or do other malicious things.
 If anything disallowed is encountered it is rendered safe by converting
 the data to character entities.</p>
-<p>To filter data through the XSS filter use the <code class="docutils literal"><span class="pre">xss_clean()</span></code> method:</p>
+<p>To filter data through the XSS filter use the <tt class="docutils literal"><span class="pre">xss_clean()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">xss_clean</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -466,9 +466,9 @@ file in the following way:</p>
 </pre></div>
 </div>
 <p>If you use the <a class="reference internal" href="../helpers/form_helper.html"><em>form helper</em></a>, then
-<code class="xref py py-func docutils literal"><span class="pre">form_open()</span></code> will automatically insert a hidden csrf field in
-your forms. If not, then you can use <code class="docutils literal"><span class="pre">get_csrf_token_name()</span></code>
-and <code class="docutils literal"><span class="pre">get_csrf_hash()</span></code></p>
+<tt class="xref py py-func docutils literal"><span class="pre">form_open()</span></tt> will automatically insert a hidden csrf field in
+your forms. If not, then you can use <tt class="docutils literal"><span class="pre">get_csrf_token_name()</span></tt>
+and <tt class="docutils literal"><span class="pre">get_csrf_hash()</span></tt></p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$csrf</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;name&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_token_name</span><span class="p">(),</span>
         <span class="s1">&#39;hash&#39;</span> <span class="o">=&gt;</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">get_csrf_hash</span><span class="p">()</span>
@@ -506,10 +506,10 @@ by editing the &#8216;csrf_exclude_uris&#8217; config parameter:</p>
 <h2><a class="toc-backref" href="#id3">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Security">
-<em class="property">class </em><code class="descname">CI_Security</code><a class="headerlink" href="#CI_Security" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Security</tt><a class="headerlink" href="#CI_Security" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Security::xss_clean">
-<code class="descname">xss_clean</code><span class="sig-paren">(</span><em>$str</em><span class="optional">[</span>, <em>$is_image = FALSE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Security::xss_clean" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">xss_clean</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$is_image = FALSE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Security::xss_clean" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -533,7 +533,7 @@ If the optional second parameter is set to true, it will return boolean TRUE if 
 
 <dl class="method">
 <dt id="CI_Security::sanitize_filename">
-<code class="descname">sanitize_filename</code><span class="sig-paren">(</span><em>$str</em><span class="optional">[</span>, <em>$relative_path = FALSE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Security::sanitize_filename" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">sanitize_filename</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$relative_path = FALSE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Security::sanitize_filename" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -558,7 +558,7 @@ and other security threats, which is particularly useful for files that were sup
 </pre></div>
 </div>
 <p>If it is acceptable for the user input to include relative paths, e.g.
-<em>file/in/some/approved/folder.txt</em>, you can set the second optional parameter, <code class="docutils literal"><span class="pre">$relative_path</span></code> to TRUE.</p>
+<em>file/in/some/approved/folder.txt</em>, you can set the second optional parameter, <tt class="docutils literal"><span class="pre">$relative_path</span></tt> to TRUE.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$filename</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">security</span><span class="o">-&gt;</span><span class="na">sanitize_filename</span><span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="s1">&#39;filename&#39;</span><span class="p">),</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -566,7 +566,7 @@ and other security threats, which is particularly useful for files that were sup
 
 <dl class="method">
 <dt id="CI_Security::get_csrf_token_name">
-<code class="descname">get_csrf_token_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Security::get_csrf_token_name" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_csrf_token_name</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Security::get_csrf_token_name" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -577,12 +577,12 @@ and other security threats, which is particularly useful for files that were sup
 </tr>
 </tbody>
 </table>
-<p>Returns the CSRF token name (the <code class="docutils literal"><span class="pre">$config['csrf_token_name']</span></code> value).</p>
+<p>Returns the CSRF token name (the <tt class="docutils literal"><span class="pre">$config['csrf_token_name']</span></tt> value).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Security::get_csrf_hash">
-<code class="descname">get_csrf_hash</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Security::get_csrf_hash" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_csrf_hash</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Security::get_csrf_hash" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -593,13 +593,13 @@ and other security threats, which is particularly useful for files that were sup
 </tr>
 </tbody>
 </table>
-<p>Returns the CSRF hash value. Useful in combination with <code class="docutils literal"><span class="pre">get_csrf_token_name()</span></code>
+<p>Returns the CSRF hash value. Useful in combination with <tt class="docutils literal"><span class="pre">get_csrf_token_name()</span></tt>
 for manually building forms or sending valid AJAX POST requests.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Security::entity_decode">
-<code class="descname">entity_decode</code><span class="sig-paren">(</span><em>$str</em><span class="optional">[</span>, <em>$charset = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Security::entity_decode" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">entity_decode</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$charset = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Security::entity_decode" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -618,14 +618,14 @@ for manually building forms or sending valid AJAX POST requests.</p>
 </tr>
 </tbody>
 </table>
-<p>This method acts a lot like PHP&#8217;s own native <code class="docutils literal"><span class="pre">html_entity_decode()</span></code> function in ENT_COMPAT mode, only
+<p>This method acts a lot like PHP&#8217;s own native <tt class="docutils literal"><span class="pre">html_entity_decode()</span></tt> function in ENT_COMPAT mode, only
 it tries to detect HTML entities that don&#8217;t end in a semicolon because some browsers allow that.</p>
-<p>If the <code class="docutils literal"><span class="pre">$charset</span></code> parameter is left empty, then your configured <code class="docutils literal"><span class="pre">$config['charset']</span></code> value will be used.</p>
+<p>If the <tt class="docutils literal"><span class="pre">$charset</span></tt> parameter is left empty, then your configured <tt class="docutils literal"><span class="pre">$config['charset']</span></tt> value will be used.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Security::get_random_bytes">
-<code class="descname">get_random_bytes</code><span class="sig-paren">(</span><em>$length</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Security::get_random_bytes" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_random_bytes</tt><big>(</big><em>$length</em><big>)</big><a class="headerlink" href="#CI_Security::get_random_bytes" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -643,8 +643,8 @@ it tries to detect HTML entities that don&#8217;t end in a semicolon because som
 </tr>
 </tbody>
 </table>
-<p>A convenience method for getting proper random bytes via <code class="docutils literal"><span class="pre">mcrypt_create_iv()</span></code>,
-<code class="docutils literal"><span class="pre">/dev/urandom</span></code> or <code class="docutils literal"><span class="pre">openssl_random_pseudo_bytes()</span></code> (in that order), if one
+<p>A convenience method for getting proper random bytes via <tt class="docutils literal"><span class="pre">mcrypt_create_iv()</span></tt>,
+<tt class="docutils literal"><span class="pre">/dev/urandom</span></tt> or <tt class="docutils literal"><span class="pre">openssl_random_pseudo_bytes()</span></tt> (in that order), if one
 of them is available.</p>
 <p>Used for generating CSRF and XSS tokens.</p>
 <div class="admonition note">
@@ -677,8 +677,8 @@ just the best attempt at that.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -699,7 +699,7 @@ just the best attempt at that.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

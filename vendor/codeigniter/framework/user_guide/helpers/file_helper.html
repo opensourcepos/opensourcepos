@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>File Helper &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>File Helper &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Helpers" href="index.html"/>
         <link rel="next" title="Form Helper" href="form_helper.html"/>
         <link rel="prev" title="Email Helper" href="email_helper.html"/> 
@@ -444,7 +444,7 @@
 <p>The following functions are available:</p>
 <dl class="function">
 <dt id="read_file">
-<code class="descname">read_file</code><span class="sig-paren">(</span><em>$file</em><span class="sig-paren">)</span><a class="headerlink" href="#read_file" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">read_file</tt><big>(</big><em>$file</em><big>)</big><a class="headerlink" href="#read_file" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -476,7 +476,7 @@ are always relative to the main site index.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This function is DEPRECATED. Use the native <code class="docutils literal"><span class="pre">file_get_contents()</span></code>
+<p class="last">This function is DEPRECATED. Use the native <tt class="docutils literal"><span class="pre">file_get_contents()</span></tt>
 instead.</p>
 </div>
 <div class="admonition important">
@@ -489,7 +489,7 @@ calling script.</p>
 
 <dl class="function">
 <dt id="write_file">
-<code class="descname">write_file</code><span class="sig-paren">(</span><em>$path</em>, <em>$data</em><span class="optional">[</span>, <em>$mode = 'wb'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#write_file" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">write_file</tt><big>(</big><em>$path</em>, <em>$data</em><span class="optional">[</span>, <em>$mode = 'wb'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#write_file" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -497,7 +497,7 @@ calling script.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>$path</strong> (<em>string</em>) &#8211; File path</li>
 <li><strong>$data</strong> (<em>string</em>) &#8211; Data to write to file</li>
-<li><strong>$mode</strong> (<em>string</em>) &#8211; <code class="docutils literal"><span class="pre">fopen()</span></code> mode</li>
+<li><strong>$mode</strong> (<em>string</em>) &#8211; <tt class="docutils literal"><span class="pre">fopen()</span></tt> mode</li>
 </ul>
 </td>
 </tr>
@@ -543,7 +543,7 @@ are always relative to the main site index.</p>
 
 <dl class="function">
 <dt id="delete_files">
-<code class="descname">delete_files</code><span class="sig-paren">(</span><em>$path</em><span class="optional">[</span>, <em>$del_dir = FALSE</em><span class="optional">[</span>, <em>$htdocs = FALSE</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#delete_files" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">delete_files</tt><big>(</big><em>$path</em><span class="optional">[</span>, <em>$del_dir = FALSE</em><span class="optional">[</span>, <em>$htdocs = FALSE</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#delete_files" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -582,7 +582,7 @@ root path will be deleted as well.</p>
 
 <dl class="function">
 <dt id="get_filenames">
-<code class="descname">get_filenames</code><span class="sig-paren">(</span><em>$source_dir</em><span class="optional">[</span>, <em>$include_path = FALSE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#get_filenames" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_filenames</tt><big>(</big><em>$source_dir</em><span class="optional">[</span>, <em>$include_path = FALSE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#get_filenames" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -612,7 +612,7 @@ the second parameter to TRUE.</p>
 
 <dl class="function">
 <dt id="get_dir_file_info">
-<code class="descname">get_dir_file_info</code><span class="sig-paren">(</span><em>$source_dir</em>, <em>$top_level_only</em><span class="sig-paren">)</span><a class="headerlink" href="#get_dir_file_info" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_dir_file_info</tt><big>(</big><em>$source_dir</em>, <em>$top_level_only</em><big>)</big><a class="headerlink" href="#get_dir_file_info" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -643,7 +643,7 @@ operation.</p>
 
 <dl class="function">
 <dt id="get_file_info">
-<code class="descname">get_file_info</code><span class="sig-paren">(</span><em>$file</em><span class="optional">[</span>, <em>$returned_values = array('name'</em>, <em>'server_path'</em>, <em>'size'</em>, <em>'date')</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#get_file_info" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_file_info</tt><big>(</big><em>$file</em><span class="optional">[</span>, <em>$returned_values = array('name'</em>, <em>'server_path'</em>, <em>'size'</em>, <em>'date')</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#get_file_info" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -665,13 +665,13 @@ operation.</p>
 <p>Given a file and path, returns (optionally) the <em>name</em>, <em>path</em>, <em>size</em> and <em>date modified</em>
 information attributes for a file. Second parameter allows you to explicitly declare what
 information you want returned.</p>
-<p>Valid <code class="docutils literal"><span class="pre">$returned_values</span></code> options are: <cite>name</cite>, <cite>size</cite>, <cite>date</cite>, <cite>readable</cite>, <cite>writeable</cite>,
+<p>Valid <tt class="docutils literal"><span class="pre">$returned_values</span></tt> options are: <cite>name</cite>, <cite>size</cite>, <cite>date</cite>, <cite>readable</cite>, <cite>writeable</cite>,
 <cite>executable</cite> and <cite>fileperms</cite>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="get_mime_by_extension">
-<code class="descname">get_mime_by_extension</code><span class="sig-paren">(</span><em>$filename</em><span class="sig-paren">)</span><a class="headerlink" href="#get_mime_by_extension" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_mime_by_extension</tt><big>(</big><em>$filename</em><big>)</big><a class="headerlink" href="#get_mime_by_extension" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -705,7 +705,7 @@ purposes.</p>
 
 <dl class="function">
 <dt id="symbolic_permissions">
-<code class="descname">symbolic_permissions</code><span class="sig-paren">(</span><em>$perms</em><span class="sig-paren">)</span><a class="headerlink" href="#symbolic_permissions" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">symbolic_permissions</tt><big>(</big><em>$perms</em><big>)</big><a class="headerlink" href="#symbolic_permissions" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -723,7 +723,7 @@ purposes.</p>
 </tr>
 </tbody>
 </table>
-<p>Takes numeric permissions (such as is returned by <code class="docutils literal"><span class="pre">fileperms()</span></code>) and returns
+<p>Takes numeric permissions (such as is returned by <tt class="docutils literal"><span class="pre">fileperms()</span></tt>) and returns
 standard symbolic notation of file permissions.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">echo</span> <span class="nx">symbolic_permissions</span><span class="p">(</span><span class="nb">fileperms</span><span class="p">(</span><span class="s1">&#39;./index.php&#39;</span><span class="p">));</span>  <span class="c1">// -rw-r--r--</span>
 </pre></div>
@@ -732,7 +732,7 @@ standard symbolic notation of file permissions.</p>
 
 <dl class="function">
 <dt id="octal_permissions">
-<code class="descname">octal_permissions</code><span class="sig-paren">(</span><em>$perms</em><span class="sig-paren">)</span><a class="headerlink" href="#octal_permissions" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">octal_permissions</tt><big>(</big><em>$perms</em><big>)</big><a class="headerlink" href="#octal_permissions" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -750,7 +750,7 @@ standard symbolic notation of file permissions.</p>
 </tr>
 </tbody>
 </table>
-<p>Takes numeric permissions (such as is returned by <code class="docutils literal"><span class="pre">fileperms()</span></code>) and returns
+<p>Takes numeric permissions (such as is returned by <tt class="docutils literal"><span class="pre">fileperms()</span></tt>) and returns
 a three character octal notation of file permissions.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">echo</span> <span class="nx">octal_permissions</span><span class="p">(</span><span class="nb">fileperms</span><span class="p">(</span><span class="s1">&#39;./index.php&#39;</span><span class="p">));</span> <span class="c1">// 644</span>
 </pre></div>
@@ -778,8 +778,8 @@ a three character octal notation of file permissions.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -800,7 +800,7 @@ a three character octal notation of file permissions.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

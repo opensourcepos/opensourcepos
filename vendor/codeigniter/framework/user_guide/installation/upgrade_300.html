@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Upgrading from 2.2.x to 3.0.x &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Upgrading from 2.2.x to 3.0.x &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Upgrading From a Previous Version" href="upgrading.html"/>
         <link rel="next" title="Upgrading from 2.2.2 to 2.2.3" href="upgrade_223.html"/>
         <link rel="prev" title="Upgrading from 3.0.0 to 3.0.1" href="upgrade_301.html"/> 
@@ -483,8 +483,8 @@ it to <em>application/config/mimes.php</em>.</p>
 </div>
 <div class="section" id="step-4-remove-autoload-core-from-your-config-autoload-php">
 <h2>Step 4: Remove $autoload[&#8216;core&#8217;] from your config/autoload.php<a class="headerlink" href="#step-4-remove-autoload-core-from-your-config-autoload-php" title="Permalink to this headline">¶</a></h2>
-<p>Use of the <code class="docutils literal"><span class="pre">$autoload['core']</span></code> config array has been deprecated as of CodeIgniter 1.4.1 and is now removed.
-Move any entries that you might have listed there to <code class="docutils literal"><span class="pre">$autoload['libraries']</span></code> instead.</p>
+<p>Use of the <tt class="docutils literal"><span class="pre">$autoload['core']</span></tt> config array has been deprecated as of CodeIgniter 1.4.1 and is now removed.
+Move any entries that you might have listed there to <tt class="docutils literal"><span class="pre">$autoload['libraries']</span></tt> instead.</p>
 </div>
 <div class="section" id="step-5-move-your-log-class-overrides-or-extensions">
 <h2>Step 5: Move your Log class overrides or extensions<a class="headerlink" href="#step-5-move-your-log-class-overrides-or-extensions" title="Permalink to this headline">¶</a></h2>
@@ -507,31 +507,31 @@ some kind of server-side storage engine, with the file-system being the
 default option.</p>
 <p>The Session Class now utilizes PHP&#8217;s own mechanisms for building custom
 session handlers, which also means that your session data is now
-accessible via the <code class="docutils literal"><span class="pre">$_SESSION</span></code> superglobal (though, we&#8217;ve kept the
+accessible via the <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> superglobal (though, we&#8217;ve kept the
 possibility to use it as &#8220;userdata&#8221;, like you&#8217;ve done until now).</p>
 <p>A few configuration options have been removed and a few have been added.
 You should really read the whole <a class="reference internal" href="../libraries/sessions.html"><em>Session library manual</em></a> for the details, but here&#8217;s a short list of changes
 that you should make:</p>
 <blockquote>
 <div><ul>
-<li><p class="first">Set your <code class="docutils literal"><span class="pre">$config['sess_driver']</span></code> value</p>
+<li><p class="first">Set your <tt class="docutils literal"><span class="pre">$config['sess_driver']</span></tt> value</p>
 <p>It will default to &#8216;files&#8217;, unles you&#8217;ve previously used
-<code class="docutils literal"><span class="pre">$config['sess_use_database']</span></code>, in which case it will be set to
+<tt class="docutils literal"><span class="pre">$config['sess_use_database']</span></tt>, in which case it will be set to
 &#8216;database&#8217;.</p>
 </li>
-<li><p class="first">Set a <code class="docutils literal"><span class="pre">$config['sess_save_path']</span></code> value</p>
-<p>For the &#8216;database&#8217; driver, a fallback to <code class="docutils literal"><span class="pre">$config['sess_table_name']</span></code>
+<li><p class="first">Set a <tt class="docutils literal"><span class="pre">$config['sess_save_path']</span></tt> value</p>
+<p>For the &#8216;database&#8217; driver, a fallback to <tt class="docutils literal"><span class="pre">$config['sess_table_name']</span></tt>
 is in place, but otherwise requires you to read the manual for the
 specific driver of your choice.</p>
 </li>
-<li><p class="first">Update your <code class="docutils literal"><span class="pre">ci_sessions</span></code> table (&#8216;database&#8217; driver only)</p>
+<li><p class="first">Update your <tt class="docutils literal"><span class="pre">ci_sessions</span></tt> table (&#8216;database&#8217; driver only)</p>
 <p>The table structure has changed a bit, and more specifically:</p>
 <blockquote>
 <div><ul class="simple">
-<li><code class="docutils literal"><span class="pre">session_id</span></code> field is renamed to <code class="docutils literal"><span class="pre">id</span></code></li>
-<li><code class="docutils literal"><span class="pre">user_agent</span></code> field is dropped</li>
-<li><code class="docutils literal"><span class="pre">user_data</span></code> field is renamed to <code class="docutils literal"><span class="pre">data</span></code> and under MySQL is now of type BLOB</li>
-<li><code class="docutils literal"><span class="pre">last_activity</span></code> field is renamed to <code class="docutils literal"><span class="pre">timestamp</span></code></li>
+<li><tt class="docutils literal"><span class="pre">session_id</span></tt> field is renamed to <tt class="docutils literal"><span class="pre">id</span></tt></li>
+<li><tt class="docutils literal"><span class="pre">user_agent</span></tt> field is dropped</li>
+<li><tt class="docutils literal"><span class="pre">user_data</span></tt> field is renamed to <tt class="docutils literal"><span class="pre">data</span></tt> and under MySQL is now of type BLOB</li>
+<li><tt class="docutils literal"><span class="pre">last_activity</span></tt> field is renamed to <tt class="docutils literal"><span class="pre">timestamp</span></tt></li>
 </ul>
 </div></blockquote>
 <p>This is accompanied by a slight change in the table indexes too, so
@@ -544,19 +544,19 @@ locking features, they are unsafe for concurrent requests and
 you should consider using another driver instead.</p>
 </div>
 </li>
-<li><p class="first">Remove <code class="docutils literal"><span class="pre">$config['sess_match_useragent']</span></code></p>
+<li><p class="first">Remove <tt class="docutils literal"><span class="pre">$config['sess_match_useragent']</span></tt></p>
 <p>The user-agent string is input supplied by the user&#8217;s browser, or in
 other words: client side input. As such, it is an ineffective feature
 and hence why it has been removed.</p>
 </li>
-<li><p class="first">Remove <code class="docutils literal"><span class="pre">$config['sess_encrypt_cookie']</span></code></p>
+<li><p class="first">Remove <tt class="docutils literal"><span class="pre">$config['sess_encrypt_cookie']</span></tt></p>
 <p>As already noted, the library no longer uses cookies as a storage
 mechanism, which renders this option useless.</p>
 </li>
-<li><p class="first">Remove <code class="docutils literal"><span class="pre">$config['sess_expire_on_close']</span></code></p>
+<li><p class="first">Remove <tt class="docutils literal"><span class="pre">$config['sess_expire_on_close']</span></tt></p>
 <p>This option is still usable, but only for backwards compatibility
 purposes and it should be otherwise removed. The same effect is
-achieved by setting <code class="docutils literal"><span class="pre">$config['sess_expiration']</span></code> to 0.</p>
+achieved by setting <tt class="docutils literal"><span class="pre">$config['sess_expiration']</span></tt> to 0.</p>
 </li>
 <li><p class="first">Check &#8220;flashdata&#8221; for collisions with &#8220;userdata&#8221;</p>
 <p>Flashdata is now just regular &#8220;userdata&#8221;, only marked for deletion on
@@ -570,9 +570,9 @@ This is no longer possible, and you should read the notes about
 <a class="reference external" href="../libraries/sessions.html#accessing-session-metadata">Session Metadata</a>
 if your application relies on those values.</p>
 </li>
-<li><p class="first">Check <code class="docutils literal"><span class="pre">unset_userdata()</span></code> usage</p>
+<li><p class="first">Check <tt class="docutils literal"><span class="pre">unset_userdata()</span></tt> usage</p>
 <p>Previously, this method used to accept an associative array of
-<code class="docutils literal"><span class="pre">'key'</span> <span class="pre">=&gt;</span> <span class="pre">'dummy</span> <span class="pre">value'</span></code> pairs for unsetting multiple keys. That
+<tt class="docutils literal"><span class="pre">'key'</span> <span class="pre">=&gt;</span> <span class="pre">'dummy</span> <span class="pre">value'</span></tt> pairs for unsetting multiple keys. That
 however makes no sense and you now have to pass <em>only</em> the keys, as
 the elements of an array.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// Old</span>
@@ -592,8 +592,8 @@ it will now also have to be re-factored.</p>
 <div class="section" id="step-7-update-your-config-database-php">
 <h2>Step 7: Update your config/database.php<a class="headerlink" href="#step-7-update-your-config-database-php" title="Permalink to this headline">¶</a></h2>
 <p>Due to 3.0.0&#8217;s renaming of Active Record to Query Builder, inside your
-<strong>config/database.php</strong>, you will need to rename the <code class="docutils literal"><span class="pre">$active_record</span></code>
-variable to <code class="docutils literal"><span class="pre">$query_builder</span></code>:</p>
+<strong>config/database.php</strong>, you will need to rename the <tt class="docutils literal"><span class="pre">$active_record</span></tt>
+variable to <tt class="docutils literal"><span class="pre">$query_builder</span></tt>:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$active_group</span> <span class="o">=</span> <span class="s1">&#39;default&#39;</span><span class="p">;</span>
 <span class="c1">// $active_record = TRUE;</span>
 <span class="nv">$query_builder</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
@@ -632,8 +632,8 @@ the <strong>.+</strong> regular expression:</p>
 </div>
 <div class="section" id="directories-and-default-controller-404-override">
 <h3>Directories and &#8216;default_controller&#8217;, &#8216;404_override&#8217;<a class="headerlink" href="#directories-and-default-controller-404-override" title="Permalink to this headline">¶</a></h3>
-<p>As you should know, the <code class="docutils literal"><span class="pre">$route['default_controller']</span></code> and
-<code class="docutils literal"><span class="pre">$route['404_override']</span></code> settings accept not only a controller name, but
+<p>As you should know, the <tt class="docutils literal"><span class="pre">$route['default_controller']</span></tt> and
+<tt class="docutils literal"><span class="pre">$route['404_override']</span></tt> settings accept not only a controller name, but
 also <em>controller/method</em> pairs. However, a bug in the routing logic has
 made it possible for some users to use that as <em>directory/controller</em>
 instead.</p>
@@ -647,10 +647,10 @@ let&#8217;s take the following example:</p>
 </pre></div>
 </div>
 <p>Now, assuming that your website is located at <em>example.com</em>, you already
-know that if a user visits <code class="docutils literal"><span class="pre">http://example.com/</span></code>, the above setting will
+know that if a user visits <tt class="docutils literal"><span class="pre">http://example.com/</span></tt>, the above setting will
 cause your &#8216;Main&#8217; controller to be loaded.</p>
 <p>However, what happens if you have an <em>application/controllers/admin/</em>
-directory and the user visits <code class="docutils literal"><span class="pre">http://example.com/admin/</span></code>?
+directory and the user visits <tt class="docutils literal"><span class="pre">http://example.com/admin/</span></tt>?
 In CodeIgniter 3, the router will look for a &#8216;Main&#8217; controller under the
 admin/ directory as well. If not found, a Not Found (404) will be triggered.</p>
 <p>The same rule applies to the &#8216;404_override&#8217; setting.</p>
@@ -703,10 +703,10 @@ admin/ directory as well. If not found, a Not Found (404) will be triggered.</p>
 <p>Many functions in CodeIgniter allow you to use its XSS filtering feature
 on demand by passing a boolean parameter. The default value of that
 parameter used to be boolean FALSE, but it is now changed to NULL and it
-will be dynamically determined by your <code class="docutils literal"><span class="pre">$config['global_xss_filtering']</span></code>
+will be dynamically determined by your <tt class="docutils literal"><span class="pre">$config['global_xss_filtering']</span></tt>
 value.</p>
-<p>If you used to manually pass a boolean value for the <code class="docutils literal"><span class="pre">$xss_filter</span></code>
-parameter or if you&#8217;ve always had <code class="docutils literal"><span class="pre">$config['global_xss_filtering']</span></code> set
+<p>If you used to manually pass a boolean value for the <tt class="docutils literal"><span class="pre">$xss_filter</span></tt>
+parameter or if you&#8217;ve always had <tt class="docutils literal"><span class="pre">$config['global_xss_filtering']</span></tt> set
 to FALSE, then this change doesn&#8217;t concern you.</p>
 <p>Otherwise however, please review your usage of the following functions:</p>
 <blockquote>
@@ -720,13 +720,13 @@ to FALSE, then this change doesn&#8217;t concern you.</p>
 <li>input-&gt;input_stream()</li>
 </ul>
 </li>
-<li><a class="reference internal" href="../helpers/cookie_helper.html"><em>Cookie Helper</em></a> <a class="reference internal" href="../helpers/cookie_helper.html#get_cookie" title="get_cookie"><code class="xref php php-func docutils literal"><span class="pre">get_cookie()</span></code></a></li>
+<li><a class="reference internal" href="../helpers/cookie_helper.html"><em>Cookie Helper</em></a> <a class="reference internal" href="../helpers/cookie_helper.html#get_cookie" title="get_cookie"><tt class="xref php php-func docutils literal"><span class="pre">get_cookie()</span></tt></a></li>
 </ul>
 </div></blockquote>
 <div class="admonition important">
 <p class="first admonition-title">Important</p>
-<p class="last">Another related change is that the <code class="docutils literal"><span class="pre">$_GET</span></code>, <code class="docutils literal"><span class="pre">$_POST</span></code>,
-<code class="docutils literal"><span class="pre">$_COOKIE</span></code> and <code class="docutils literal"><span class="pre">$_SERVER</span></code> superglobals are no longer
+<p class="last">Another related change is that the <tt class="docutils literal"><span class="pre">$_GET</span></tt>, <tt class="docutils literal"><span class="pre">$_POST</span></tt>,
+<tt class="docutils literal"><span class="pre">$_COOKIE</span></tt> and <tt class="docutils literal"><span class="pre">$_SERVER</span></tt> superglobals are no longer
 automatically overwritten when global XSS filtering is turned on.</p>
 </div>
 </div>
@@ -736,10 +736,10 @@ automatically overwritten when global XSS filtering is turned on.</p>
 a certain set of &#8220;programmatic characters&#8221; to HTML entities when they
 are encountered in a URI segment.</p>
 <p>This was aimed at providing some automatic XSS protection, in addition
-to the <code class="docutils literal"><span class="pre">$config['permitted_uri_chars']</span></code> setting, but has proven to be
+to the <tt class="docutils literal"><span class="pre">$config['permitted_uri_chars']</span></tt> setting, but has proven to be
 problematic and is now removed in CodeIgniter 3.0.</p>
 <p>If your application has relied on this feature, you should update it to
-filter URI segments through <code class="docutils literal"><span class="pre">$this-&gt;security-&gt;xss_clean()</span></code> whenever you
+filter URI segments through <tt class="docutils literal"><span class="pre">$this-&gt;security-&gt;xss_clean()</span></tt> whenever you
 output them.</p>
 </div>
 <div class="section" id="step-13-check-for-usage-of-the-xss-clean-form-validation-rule">
@@ -755,16 +755,16 @@ generally validates <em>input</em> data, the &#8216;xss_clean&#8217; rule simply
 belong in it.</p>
 <p>If you really, really need to apply that rule, you should now also load the
 <a class="reference internal" href="../helpers/security_helper.html"><em>Security Helper</em></a>, which contains
-<code class="docutils literal"><span class="pre">xss_clean()</span></code> as a regular function and therefore can be also used as
+<tt class="docutils literal"><span class="pre">xss_clean()</span></tt> as a regular function and therefore can be also used as
 a validation rule.</p>
 </div>
 <div class="section" id="step-14-update-usage-of-input-class-s-get-post-method">
 <h2>Step 14: Update usage of Input Class&#8217;s get_post() method<a class="headerlink" href="#step-14-update-usage-of-input-class-s-get-post-method" title="Permalink to this headline">¶</a></h2>
-<p>Previously, the <a class="reference internal" href="../libraries/input.html"><em>Input Class</em></a> method <code class="docutils literal"><span class="pre">get_post()</span></code>
+<p>Previously, the <a class="reference internal" href="../libraries/input.html"><em>Input Class</em></a> method <tt class="docutils literal"><span class="pre">get_post()</span></tt>
 was searching first in POST data, then in GET data. This method has been
 modified so that it searches in GET then in POST, as its name suggests.</p>
-<p>A method has been added, <code class="docutils literal"><span class="pre">post_get()</span></code>, which searches in POST then in GET, as
-<code class="docutils literal"><span class="pre">get_post()</span></code> was doing before.</p>
+<p>A method has been added, <tt class="docutils literal"><span class="pre">post_get()</span></tt>, which searches in POST then in GET, as
+<tt class="docutils literal"><span class="pre">get_post()</span></tt> was doing before.</p>
 </div>
 <div class="section" id="step-15-update-usage-of-directory-helper-s-directory-map-function">
 <h2>Step 15: Update usage of Directory Helper&#8217;s directory_map() function<a class="headerlink" href="#step-15-update-usage-of-directory-helper-s-directory-map-function" title="Permalink to this headline">¶</a></h2>
@@ -773,7 +773,7 @@ separator (i.e. a slash, usually).</p>
 </div>
 <div class="section" id="step-16-update-usage-of-database-forge-s-drop-table-method">
 <h2>Step 16: Update usage of Database Forge&#8217;s drop_table() method<a class="headerlink" href="#step-16-update-usage-of-database-forge-s-drop-table-method" title="Permalink to this headline">¶</a></h2>
-<p>Up until now, <code class="docutils literal"><span class="pre">drop_table()</span></code> added an IF EXISTS clause by default or it didn&#8217;t work
+<p>Up until now, <tt class="docutils literal"><span class="pre">drop_table()</span></tt> added an IF EXISTS clause by default or it didn&#8217;t work
 at all with some drivers. In CodeIgniter 3.0, the IF EXISTS condition is no longer added
 by default and has an optional second parameter that allows that instead and is set to
 FALSE by default.</p>
@@ -795,7 +795,7 @@ all drivers with the exception of ODBC.</p>
 <h2>Step 17: Change usage of Email library with multiple emails<a class="headerlink" href="#step-17-change-usage-of-email-library-with-multiple-emails" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="../libraries/email.html"><em>Email Library</em></a> will automatically clear the
 set parameters after successfully sending emails. To override this behaviour,
-pass FALSE as the first parameter in the <code class="docutils literal"><span class="pre">send()</span></code> method:</p>
+pass FALSE as the first parameter in the <tt class="docutils literal"><span class="pre">send()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="p">(</span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">email</span><span class="o">-&gt;</span><span class="na">send</span><span class="p">(</span><span class="k">FALSE</span><span class="p">))</span>
 <span class="p">{</span>
         <span class="c1">// Parameters won&#39;t be cleared</span>
@@ -841,7 +841,7 @@ later.</p>
 </div>
 <div class="section" id="step-19-make-sure-your-base-url-config-value-is-not-empty">
 <h2>Step 19: Make sure your &#8216;base_url&#8217; config value is not empty<a class="headerlink" href="#step-19-make-sure-your-base-url-config-value-is-not-empty" title="Permalink to this headline">¶</a></h2>
-<p>When <code class="docutils literal"><span class="pre">$config['base_url']</span></code> is not set, CodeIgniter tries to automatically
+<p>When <tt class="docutils literal"><span class="pre">$config['base_url']</span></tt> is not set, CodeIgniter tries to automatically
 detect what your website&#8217;s base URL is. This is done purely for convenience
 when you are starting development of a new application.</p>
 <p>Auto-detection is never reliable and also has security implications, which
@@ -879,26 +879,26 @@ which you can create this logic with a few lines of code. For example:</p>
 </div>
 <div class="section" id="step-20-remove-usage-of-previously-deprecated-functionalities">
 <h2>Step 20: Remove usage of (previously) deprecated functionalities<a class="headerlink" href="#step-20-remove-usage-of-previously-deprecated-functionalities" title="Permalink to this headline">¶</a></h2>
-<p>In addition to the <code class="docutils literal"><span class="pre">$autoload['core']</span></code> configuration setting, there&#8217;s a
+<p>In addition to the <tt class="docutils literal"><span class="pre">$autoload['core']</span></tt> configuration setting, there&#8217;s a
 number of other functionalities that have been removed in CodeIgniter 3.0.0:</p>
 <div class="section" id="the-sha1-library">
 <h3>The SHA1 library<a class="headerlink" href="#the-sha1-library" title="Permalink to this headline">¶</a></h3>
 <p>The previously deprecated SHA1 library has been removed, alter your code to use PHP&#8217;s native
-<code class="docutils literal"><span class="pre">sha1()</span></code> function to generate a SHA1 hash.</p>
-<p>Additionally, the <code class="docutils literal"><span class="pre">sha1()</span></code> method in the <a class="reference internal" href="../libraries/encrypt.html"><em>Encrypt Library</em></a> has been removed.</p>
+<tt class="docutils literal"><span class="pre">sha1()</span></tt> function to generate a SHA1 hash.</p>
+<p>Additionally, the <tt class="docutils literal"><span class="pre">sha1()</span></tt> method in the <a class="reference internal" href="../libraries/encrypt.html"><em>Encrypt Library</em></a> has been removed.</p>
 </div>
 <div class="section" id="the-ext-constant">
 <h3>The EXT constant<a class="headerlink" href="#the-ext-constant" title="Permalink to this headline">¶</a></h3>
-<p>Usage of the <code class="docutils literal"><span class="pre">EXT</span></code> constant has been deprecated since dropping support for PHP 4. There&#8217;s no
+<p>Usage of the <tt class="docutils literal"><span class="pre">EXT</span></tt> constant has been deprecated since dropping support for PHP 4. There&#8217;s no
 longer a need to maintain different filename extensions and in this new CodeIgniter version,
-the <code class="docutils literal"><span class="pre">EXT</span></code> constant has been removed. Use just &#8216;.php&#8217; instead.</p>
+the <tt class="docutils literal"><span class="pre">EXT</span></tt> constant has been removed. Use just &#8216;.php&#8217; instead.</p>
 </div>
 <div class="section" id="smiley-helper">
 <h3>Smiley helper<a class="headerlink" href="#smiley-helper" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="../helpers/smiley_helper.html"><em>Smiley Helper</em></a> is a legacy feature from EllisLab&#8217;s
 ExpressionEngine product. However, it is too specific for a general purpose framework like
 CodeIgniter and as such it is now deprecated.</p>
-<p>Also, the previously deprecated <code class="docutils literal"><span class="pre">js_insert_smiley()</span></code> (since version 1.7.2) is now removed.</p>
+<p>Also, the previously deprecated <tt class="docutils literal"><span class="pre">js_insert_smiley()</span></tt> (since version 1.7.2) is now removed.</p>
 </div>
 <div class="section" id="the-encrypt-library">
 <h3>The Encrypt library<a class="headerlink" href="#the-encrypt-library" title="Permalink to this headline">¶</a></h3>
@@ -949,8 +949,8 @@ sooner rather than later.</p>
 </div>
 <div class="section" id="security-helper-do-hash">
 <h3>Security helper do_hash()<a class="headerlink" href="#security-helper-do-hash" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/security_helper.html"><em>Security Helper</em></a> function <code class="docutils literal"><span class="pre">do_hash()</span></code> is now just an alias for
-PHP&#8217;s native <code class="docutils literal"><span class="pre">hash()</span></code> function. It is deprecated and scheduled for removal in CodeIgniter 3.1+.</p>
+<p><a class="reference internal" href="../helpers/security_helper.html"><em>Security Helper</em></a> function <tt class="docutils literal"><span class="pre">do_hash()</span></tt> is now just an alias for
+PHP&#8217;s native <tt class="docutils literal"><span class="pre">hash()</span></tt> function. It is deprecated and scheduled for removal in CodeIgniter 3.1+.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is still available, but you&#8217;re strongly encouraged to remove its usage sooner
@@ -960,11 +960,11 @@ rather than later.</p>
 <div class="section" id="the-config-global-xss-filtering-setting">
 <h3>The $config[&#8216;global_xss_filtering&#8217;] setting<a class="headerlink" href="#the-config-global-xss-filtering-setting" title="Permalink to this headline">¶</a></h3>
 <p>As already explained above, XSS filtering should not be done on input data,
-but on output instead. Therefore, the <code class="docutils literal"><span class="pre">$config['global_xss_filtering']</span></code>,
+but on output instead. Therefore, the <tt class="docutils literal"><span class="pre">$config['global_xss_filtering']</span></tt>,
 which automatically filters <em>input</em> data, is considered a bad practice and
 is now deprecated.</p>
 <p>Instead, you should manually escape any user-provided data via the
-<a class="reference internal" href="../helpers/security_helper.html#xss_clean" title="xss_clean"><code class="xref php php-func docutils literal"><span class="pre">xss_clean()</span></code></a> function when you need to output it, or use a
+<a class="reference internal" href="../helpers/security_helper.html#xss_clean" title="xss_clean"><tt class="xref php php-func docutils literal"><span class="pre">xss_clean()</span></tt></a> function when you need to output it, or use a
 library like <a class="reference external" href="http://htmlpurifier.org/">HTML Purifier</a> that does that
 for you.</p>
 <div class="admonition note">
@@ -975,8 +975,8 @@ remove its usage sooner rather than later.</p>
 </div>
 <div class="section" id="file-helper-read-file">
 <h3>File helper read_file()<a class="headerlink" href="#file-helper-read-file" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/file_helper.html"><em>File Helper</em></a> function <code class="docutils literal"><span class="pre">read_file()</span></code> is now just an alias for
-PHP&#8217;s native <code class="docutils literal"><span class="pre">file_get_contents()</span></code> function. It is deprecated and scheduled for removal in
+<p><a class="reference internal" href="../helpers/file_helper.html"><em>File Helper</em></a> function <tt class="docutils literal"><span class="pre">read_file()</span></tt> is now just an alias for
+PHP&#8217;s native <tt class="docutils literal"><span class="pre">file_get_contents()</span></tt> function. It is deprecated and scheduled for removal in
 CodeIgniter 3.1+.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -986,8 +986,8 @@ rather than later.</p>
 </div>
 <div class="section" id="string-helper-repeater">
 <h3>String helper repeater()<a class="headerlink" href="#string-helper-repeater" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/string_helper.html"><em>String Helper</em></a> function <a class="reference internal" href="../helpers/string_helper.html#repeater" title="repeater"><code class="xref php php-func docutils literal"><span class="pre">repeater()</span></code></a> is now just an alias for
-PHP&#8217;s native <code class="docutils literal"><span class="pre">str_repeat()</span></code> function. It is deprecated and scheduled for removal in CodeIgniter 3.1+.</p>
+<p><a class="reference internal" href="../helpers/string_helper.html"><em>String Helper</em></a> function <a class="reference internal" href="../helpers/string_helper.html#repeater" title="repeater"><tt class="xref php php-func docutils literal"><span class="pre">repeater()</span></tt></a> is now just an alias for
+PHP&#8217;s native <tt class="docutils literal"><span class="pre">str_repeat()</span></tt> function. It is deprecated and scheduled for removal in CodeIgniter 3.1+.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is still available, but you&#8217;re strongly encouraged to remove its usage sooner
@@ -996,8 +996,8 @@ rather than later.</p>
 </div>
 <div class="section" id="string-helper-trim-slashes">
 <h3>String helper trim_slashes()<a class="headerlink" href="#string-helper-trim-slashes" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/string_helper.html"><em>String Helper</em></a> function <a class="reference internal" href="../helpers/string_helper.html#trim_slashes" title="trim_slashes"><code class="xref php php-func docutils literal"><span class="pre">trim_slashes()</span></code></a> is now just an alias
-for PHP&#8217;s native <code class="docutils literal"><span class="pre">trim()</span></code> function (with a slash passed as its second argument). It is deprecated and
+<p><a class="reference internal" href="../helpers/string_helper.html"><em>String Helper</em></a> function <a class="reference internal" href="../helpers/string_helper.html#trim_slashes" title="trim_slashes"><tt class="xref php php-func docutils literal"><span class="pre">trim_slashes()</span></tt></a> is now just an alias
+for PHP&#8217;s native <tt class="docutils literal"><span class="pre">trim()</span></tt> function (with a slash passed as its second argument). It is deprecated and
 scheduled for removal in CodeIgniter 3.1+.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1007,10 +1007,10 @@ rather than later.</p>
 </div>
 <div class="section" id="form-helper-form-prep">
 <h3>Form helper form_prep()<a class="headerlink" href="#form-helper-form-prep" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/form_helper.html"><em>Form Helper</em></a> function <a class="reference internal" href="../helpers/form_helper.html#form_prep" title="form_prep"><code class="xref php php-func docutils literal"><span class="pre">form_prep()</span></code></a>
+<p><a class="reference internal" href="../helpers/form_helper.html"><em>Form Helper</em></a> function <a class="reference internal" href="../helpers/form_helper.html#form_prep" title="form_prep"><tt class="xref php php-func docutils literal"><span class="pre">form_prep()</span></tt></a>
 is now just an alias for <a class="reference internal" href="../general/common_functions.html"><em>common function</em></a>
-<code class="xref py py-func docutils literal"><span class="pre">html_escape()</span></code>. It is deprecated and will be removed in the future.</p>
-<p>Please use <a class="reference internal" href="../general/common_functions.html#html_escape" title="html_escape"><code class="xref php php-func docutils literal"><span class="pre">html_escape()</span></code></a> instead.</p>
+<tt class="xref py py-func docutils literal"><span class="pre">html_escape()</span></tt>. It is deprecated and will be removed in the future.</p>
+<p>Please use <a class="reference internal" href="../general/common_functions.html#html_escape" title="html_escape"><tt class="xref php php-func docutils literal"><span class="pre">html_escape()</span></tt></a> instead.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This function is still available, but you&#8217;re strongly encouraged
@@ -1022,11 +1022,11 @@ to remove its usage sooner rather than later.</p>
 <p><a class="reference internal" href="../helpers/email_helper.html"><em>Email Helper</em></a> only has two functions</p>
 <blockquote>
 <div><ul class="simple">
-<li><a class="reference internal" href="../helpers/email_helper.html#valid_email" title="valid_email"><code class="xref php php-func docutils literal"><span class="pre">valid_email()</span></code></a></li>
-<li><a class="reference internal" href="../helpers/email_helper.html#send_email" title="send_email"><code class="xref php php-func docutils literal"><span class="pre">send_email()</span></code></a></li>
+<li><a class="reference internal" href="../helpers/email_helper.html#valid_email" title="valid_email"><tt class="xref php php-func docutils literal"><span class="pre">valid_email()</span></tt></a></li>
+<li><a class="reference internal" href="../helpers/email_helper.html#send_email" title="send_email"><tt class="xref php php-func docutils literal"><span class="pre">send_email()</span></tt></a></li>
 </ul>
 </div></blockquote>
-<p>Both of them are now aliases for PHP&#8217;s native <code class="docutils literal"><span class="pre">filter_var()</span></code> and <code class="docutils literal"><span class="pre">mail()</span></code> functions, respectively.
+<p>Both of them are now aliases for PHP&#8217;s native <tt class="docutils literal"><span class="pre">filter_var()</span></tt> and <tt class="docutils literal"><span class="pre">mail()</span></tt> functions, respectively.
 Therefore the <a class="reference internal" href="../helpers/email_helper.html"><em>Email Helper</em></a> altogether is being deprecated and
 is scheduled for removal in CodeIgniter 3.1+.</p>
 <div class="admonition note">
@@ -1037,10 +1037,10 @@ sooner rather than later.</p>
 </div>
 <div class="section" id="date-helper-standard-date">
 <h3>Date helper standard_date()<a class="headerlink" href="#date-helper-standard-date" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/date_helper.html"><em>Date Helper</em></a> function <code class="docutils literal"><span class="pre">standard_date()</span></code> is being deprecated due
+<p><a class="reference internal" href="../helpers/date_helper.html"><em>Date Helper</em></a> function <tt class="docutils literal"><span class="pre">standard_date()</span></tt> is being deprecated due
 to the availability of native PHP <a class="reference external" href="http://php.net/manual/en/class.datetime.php#datetime.constants.types">constants</a>,
-which when combined with <code class="docutils literal"><span class="pre">date()</span></code> provide the same functionality. Furthermore, they have the
-exact same names as the ones supported by <code class="docutils literal"><span class="pre">standard_date()</span></code>. Here are examples of how to replace
+which when combined with <tt class="docutils literal"><span class="pre">date()</span></tt> provide the same functionality. Furthermore, they have the
+exact same names as the ones supported by <tt class="docutils literal"><span class="pre">standard_date()</span></tt>. Here are examples of how to replace
 its usage:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// Old way</span>
 <span class="nx">standard_date</span><span class="p">();</span> <span class="c1">// defaults to standard_date(&#39;DATE_RFC822&#39;, now());</span>
@@ -1063,8 +1063,8 @@ rather than later as it is scheduled for removal in CodeIgniter 3.1+.</p>
 </div>
 <div class="section" id="html-helpers-nbs-br">
 <h3>HTML helpers nbs(), br()<a class="headerlink" href="#html-helpers-nbs-br" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="../helpers/html_helper.html"><em>HTML Helper</em></a> functions <code class="docutils literal"><span class="pre">nbs()</span></code> and <code class="docutils literal"><span class="pre">br()</span></code> are just aliases
-for the native <code class="docutils literal"><span class="pre">str_repeat()</span></code> function used with <code class="docutils literal"><span class="pre">&amp;nbsp;</span></code> and <code class="docutils literal"><span class="pre">&lt;br</span> <span class="pre">&gt;</span></code> respectively.</p>
+<p><a class="reference internal" href="../helpers/html_helper.html"><em>HTML Helper</em></a> functions <tt class="docutils literal"><span class="pre">nbs()</span></tt> and <tt class="docutils literal"><span class="pre">br()</span></tt> are just aliases
+for the native <tt class="docutils literal"><span class="pre">str_repeat()</span></tt> function used with <tt class="docutils literal"><span class="pre">&amp;nbsp;</span></tt> and <tt class="docutils literal"><span class="pre">&lt;br</span> <span class="pre">&gt;</span></tt> respectively.</p>
 <p>Because there&#8217;s no point in just aliasing native PHP functions, they are now deprecated and
 scheduled for removal in CodeIgniter 3.1+.</p>
 <div class="admonition note">
@@ -1088,7 +1088,7 @@ rather than later.</p>
 </div>
 <div class="section" id="string-helper-random-string-types-unique-and-encrypt">
 <h3>String helper random_string() types &#8216;unique&#8217; and &#8216;encrypt&#8217;<a class="headerlink" href="#string-helper-random-string-types-unique-and-encrypt" title="Permalink to this headline">¶</a></h3>
-<p>When using the <a class="reference internal" href="../helpers/string_helper.html"><em>String Helper</em></a> function <a class="reference internal" href="../helpers/string_helper.html#random_string" title="random_string"><code class="xref php php-func docutils literal"><span class="pre">random_string()</span></code></a>,
+<p>When using the <a class="reference internal" href="../helpers/string_helper.html"><em>String Helper</em></a> function <a class="reference internal" href="../helpers/string_helper.html#random_string" title="random_string"><tt class="xref php php-func docutils literal"><span class="pre">random_string()</span></tt></a>,
 you should no longer pass the <strong>unique</strong> and <strong>encrypt</strong> randomization types. They are only
 aliases for <strong>md5</strong> and <strong>sha1</strong> respectively and are now deprecated and scheduled for removal
 in CodeIgniter 3.1+.</p>
@@ -1100,7 +1100,7 @@ sooner rather than later.</p>
 </div>
 <div class="section" id="url-helper-url-title-separators-dash-and-underscore">
 <h3>URL helper url_title() separators &#8216;dash&#8217; and &#8216;underscore&#8217;<a class="headerlink" href="#url-helper-url-title-separators-dash-and-underscore" title="Permalink to this headline">¶</a></h3>
-<p>When using the <a class="reference internal" href="../helpers/url_helper.html"><em>URL Helper</em></a> function <a class="reference internal" href="../helpers/url_helper.html#url_title" title="url_title"><code class="xref php php-func docutils literal"><span class="pre">url_title()</span></code></a>, you
+<p>When using the <a class="reference internal" href="../helpers/url_helper.html"><em>URL Helper</em></a> function <a class="reference internal" href="../helpers/url_helper.html#url_title" title="url_title"><tt class="xref php php-func docutils literal"><span class="pre">url_title()</span></tt></a>, you
 should no longer pass <strong>dash</strong> or <strong>underscore</strong> as the word separator. This function will
 now accept any character and you should just pass the chosen character directly, so you
 should write &#8216;-&#8216; instead of &#8216;dash&#8217; and &#8216;_&#8217; instead of &#8216;underscore&#8217;.</p>
@@ -1115,12 +1115,12 @@ sooner rather than later.</p>
 <div class="section" id="session-library-method-all-userdata">
 <h3>Session Library method all_userdata()<a class="headerlink" href="#session-library-method-all-userdata" title="Permalink to this headline">¶</a></h3>
 <p>As seen in the <a class="reference internal" href="../changelog.html"><em>Change Log</em></a>, <a class="reference internal" href="../libraries/sessions.html"><em>Session Library</em></a>
-method <code class="docutils literal"><span class="pre">userdata()</span></code> now allows you to fetch all userdata by simply omitting its parameter:</p>
+method <tt class="docutils literal"><span class="pre">userdata()</span></tt> now allows you to fetch all userdata by simply omitting its parameter:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">session</span><span class="o">-&gt;</span><span class="na">userdata</span><span class="p">();</span>
 </pre></div>
 </div>
-<p>This makes the <code class="docutils literal"><span class="pre">all_userdata()</span></code> method redudant and therefore it is now just an alias for
-<code class="docutils literal"><span class="pre">userdata()</span></code> with the above shown usage and is being deprecated and scheduled for removal
+<p>This makes the <tt class="docutils literal"><span class="pre">all_userdata()</span></tt> method redudant and therefore it is now just an alias for
+<tt class="docutils literal"><span class="pre">userdata()</span></tt> with the above shown usage and is being deprecated and scheduled for removal
 in CodeIgniter 3.1+.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1131,7 +1131,7 @@ sooner rather than later.</p>
 <div class="section" id="database-forge-method-add-column-with-an-after-clause">
 <h3>Database Forge method add_column() with an AFTER clause<a class="headerlink" href="#database-forge-method-add-column-with-an-after-clause" title="Permalink to this headline">¶</a></h3>
 <p>If you have used the <strong>third parameter</strong> for <a class="reference internal" href="../database/forge.html"><em>Database Forge</em></a> method
-<code class="docutils literal"><span class="pre">add_column()</span></code> to add a field for an AFTER clause, then you should change its usage.</p>
+<tt class="docutils literal"><span class="pre">add_column()</span></tt> to add a field for an AFTER clause, then you should change its usage.</p>
 <p>That third parameter has been deprecated and scheduled for removal in CodeIgniter 3.1+.</p>
 <p>You should now put AFTER clause field names in the field definition array instead:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// Old usage:</span>
@@ -1162,8 +1162,8 @@ clause and will silently ignore it.</p>
 </div>
 <div class="section" id="uri-routing-methods-fetch-directory-fetch-class-fetch-method">
 <h3>URI Routing methods fetch_directory(), fetch_class(), fetch_method()<a class="headerlink" href="#uri-routing-methods-fetch-directory-fetch-class-fetch-method" title="Permalink to this headline">¶</a></h3>
-<p>With properties <code class="docutils literal"><span class="pre">CI_Router::$directory</span></code>, <code class="docutils literal"><span class="pre">CI_Router::$class</span></code> and <code class="docutils literal"><span class="pre">CI_Router::$method</span></code>
-being public and their respective <code class="docutils literal"><span class="pre">fetch_*()</span></code> no longer doing anything else to just return
+<p>With properties <tt class="docutils literal"><span class="pre">CI_Router::$directory</span></tt>, <tt class="docutils literal"><span class="pre">CI_Router::$class</span></tt> and <tt class="docutils literal"><span class="pre">CI_Router::$method</span></tt>
+being public and their respective <tt class="docutils literal"><span class="pre">fetch_*()</span></tt> no longer doing anything else to just return
 the properties - it doesn&#8217;t make sense to keep them.</p>
 <p>Those are all internal, undocumented methods, but we&#8217;ve opted to deprecate them for now
 in order to maintain backwards-compatibility just in case. If some of you have utilized them,
@@ -1181,9 +1181,9 @@ sooner rather than later.</p>
 </div>
 <div class="section" id="input-library-method-is-cli-request">
 <h3>Input library method is_cli_request()<a class="headerlink" href="#input-library-method-is-cli-request" title="Permalink to this headline">¶</a></h3>
-<p>Calls to the <code class="docutils literal"><span class="pre">CI_Input::is_cli_request()</span></code> method are necessary at many places
+<p>Calls to the <tt class="docutils literal"><span class="pre">CI_Input::is_cli_request()</span></tt> method are necessary at many places
 in the CodeIgniter internals and this is often before the <a class="reference internal" href="../libraries/input.html"><em>Input Library</em></a> is loaded. Because of that, it is being replaced by a common
-function named <a class="reference internal" href="../general/common_functions.html#is_cli" title="is_cli"><code class="xref php php-func docutils literal"><span class="pre">is_cli()</span></code></a> and this method is now just an alias.</p>
+function named <a class="reference internal" href="../general/common_functions.html#is_cli" title="is_cli"><tt class="xref php php-func docutils literal"><span class="pre">is_cli()</span></tt></a> and this method is now just an alias.</p>
 <p>The new function is both available at all times for you to use and shorter to type.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="c1">// Old</span>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">is_cli_request</span><span class="p">();</span>
@@ -1192,7 +1192,7 @@ function named <a class="reference internal" href="../general/common_functions.h
 <span class="nx">is_cli</span><span class="p">();</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">CI_Input::is_cli_request()</span></code> is now now deprecated and scheduled for removal in
+<p><tt class="docutils literal"><span class="pre">CI_Input::is_cli_request()</span></tt> is now now deprecated and scheduled for removal in
 CodeIgniter 3.1+.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
@@ -1202,7 +1202,7 @@ sooner rather than later.</p>
 </div>
 <div class="section" id="config-library-method-system-url">
 <h3>Config library method system_url()<a class="headerlink" href="#config-library-method-system-url" title="Permalink to this headline">¶</a></h3>
-<p>Usage of <code class="docutils literal"><span class="pre">CI_Config::system_url()</span></code> encourages insecure coding practices.
+<p>Usage of <tt class="docutils literal"><span class="pre">CI_Config::system_url()</span></tt> encourages insecure coding practices.
 Namely, your CodeIgniter <em>system/</em> directory shouldn&#8217;t be publicly accessible
 from a security point of view.</p>
 <p>Because of this, this method is now deprecated and scheduled for removal in
@@ -1227,8 +1227,8 @@ sooner rather than later.</p>
 <div class="section" id="form-validation-method-prep-for-form">
 <h3>Form Validation method prep_for_form()<a class="headerlink" href="#form-validation-method-prep-for-form" title="Permalink to this headline">¶</a></h3>
 <p>The <a class="reference internal" href="../libraries/form_validation.html"><em>Form Validation Library</em></a> has a
-<code class="docutils literal"><span class="pre">prep_for_form()</span></code> method, which is/can also be used as a rule in
-<code class="docutils literal"><span class="pre">set_rules()</span></code> to automatically perform HTML encoding on input data.</p>
+<tt class="docutils literal"><span class="pre">prep_for_form()</span></tt> method, which is/can also be used as a rule in
+<tt class="docutils literal"><span class="pre">set_rules()</span></tt> to automatically perform HTML encoding on input data.</p>
 <p>Automatically encoding input (instead of output) data is a bad practice in
 the first place, and CodeIgniter and PHP itself offer other alternatives
 to this method anyway.
@@ -1246,8 +1246,8 @@ remove its usage sooner rather than later.</p>
 <div class="section" id="step-21-check-your-usage-of-text-helper-highlight-phrase">
 <h2>Step 21: Check your usage of Text helper highlight_phrase()<a class="headerlink" href="#step-21-check-your-usage-of-text-helper-highlight-phrase" title="Permalink to this headline">¶</a></h2>
 <p>The default HTML tag used by <a class="reference internal" href="../helpers/text_helper.html"><em>Text Helper</em></a> function
-<code class="xref py py-func docutils literal"><span class="pre">highlight_phrase()</span></code> has been changed from <code class="docutils literal"><span class="pre">&lt;strong&gt;</span></code> to the new HTML5
-tag <code class="docutils literal"><span class="pre">&lt;mark&gt;</span></code>.</p>
+<tt class="xref py py-func docutils literal"><span class="pre">highlight_phrase()</span></tt> has been changed from <tt class="docutils literal"><span class="pre">&lt;strong&gt;</span></tt> to the new HTML5
+tag <tt class="docutils literal"><span class="pre">&lt;mark&gt;</span></tt>.</p>
 <p>Unless you&#8217;ve used your own highlighting tags, this might cause trouble
 for your visitors who use older web browsers such as Internet Explorer 8.
 We therefore suggest that you add the following code to your CSS files
@@ -1279,8 +1279,8 @@ in order to avoid backwards compatibility with old browsers:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -1301,7 +1301,7 @@ in order to avoid backwards compatibility with old browsers:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

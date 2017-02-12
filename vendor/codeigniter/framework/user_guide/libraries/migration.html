@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Migrations Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Migrations Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Output Class" href="output.html"/>
         <link rel="prev" title="Loader Class" href="loader.html"/> 
@@ -432,7 +432,7 @@ need to go and run them. You would also have to keep track of which changes
 need to be run against the production machines next time you deploy.</p>
 <p>The database table <strong>migration</strong> tracks which migrations have already been
 run so all you have to do is update your application files and
-call <code class="docutils literal"><span class="pre">$this-&gt;migration-&gt;current()</span></code> to work out which migrations should be run.
+call <tt class="docutils literal"><span class="pre">$this-&gt;migration-&gt;current()</span></tt> to work out which migrations should be run.
 The current version is found in <strong>application/config/migration.php</strong>.</p>
 <div class="contents local topic" id="contents">
 <ul class="simple">
@@ -456,7 +456,7 @@ was created, in <strong>YYYYMMDDHHIISS</strong> format (e.g. <strong>20121031100
 helps prevent numbering conflicts when working in a team environment, and is
 the preferred scheme in CodeIgniter 3.0 and later.</li>
 </ul>
-<p>The desired style may be selected using the <code class="docutils literal"><span class="pre">$config['migration_type']</span></code>
+<p>The desired style may be selected using the <tt class="docutils literal"><span class="pre">$config['migration_type']</span></tt>
 setting in your <em>application/config/migration.php</em> file.</p>
 <p>Regardless of which numbering style you choose to use, prefix your migration
 files with the migration number followed by an underscore and a descriptive
@@ -506,7 +506,7 @@ as <em>20121031100537_add_blog.php</em>.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<p>Then in <strong>application/config/migration.php</strong> set <code class="docutils literal"><span class="pre">$config['migration_version']</span> <span class="pre">=</span> <span class="pre">20121031100537;</span></code>.</p>
+<p>Then in <strong>application/config/migration.php</strong> set <tt class="docutils literal"><span class="pre">$config['migration_version']</span> <span class="pre">=</span> <span class="pre">20121031100537;</span></tt>.</p>
 </div>
 <div class="section" id="usage-example">
 <h2><a class="toc-backref" href="#id3">Usage Example</a><a class="headerlink" href="#usage-example" title="Permalink to this headline">¶</a></h2>
@@ -589,10 +589,10 @@ migration files.</td>
 <h2><a class="toc-backref" href="#id5">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Migration">
-<em class="property">class </em><code class="descname">CI_Migration</code><a class="headerlink" href="#CI_Migration" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Migration</tt><a class="headerlink" href="#CI_Migration" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Migration::current">
-<code class="descname">current</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Migration::current" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">current</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Migration::current" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -604,12 +604,12 @@ migration files.</td>
 </tbody>
 </table>
 <p>Migrates up to the current version (whatever is set for
-<code class="docutils literal"><span class="pre">$config['migration_version']</span></code> in <em>application/config/migration.php</em>).</p>
+<tt class="docutils literal"><span class="pre">$config['migration_version']</span></tt> in <em>application/config/migration.php</em>).</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Migration::error_string">
-<code class="descname">error_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Migration::error_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">error_string</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Migration::error_string" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -625,7 +625,7 @@ migration files.</td>
 
 <dl class="method">
 <dt id="CI_Migration::find_migrations">
-<code class="descname">find_migrations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Migration::find_migrations" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">find_migrations</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Migration::find_migrations" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -641,7 +641,7 @@ migration files.</td>
 
 <dl class="method">
 <dt id="CI_Migration::latest">
-<code class="descname">latest</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Migration::latest" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">latest</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Migration::latest" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -652,14 +652,14 @@ migration files.</td>
 </tr>
 </tbody>
 </table>
-<p>This works much the same way as <code class="docutils literal"><span class="pre">current()</span></code> but instead of looking for
-the <code class="docutils literal"><span class="pre">$config['migration_version']</span></code> the Migration class will use the very
+<p>This works much the same way as <tt class="docutils literal"><span class="pre">current()</span></tt> but instead of looking for
+the <tt class="docutils literal"><span class="pre">$config['migration_version']</span></tt> the Migration class will use the very
 newest migration found in the filesystem.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Migration::version">
-<code class="descname">version</code><span class="sig-paren">(</span><em>$target_version</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Migration::version" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">version</tt><big>(</big><em>$target_version</em><big>)</big><a class="headerlink" href="#CI_Migration::version" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -678,7 +678,7 @@ newest migration found in the filesystem.</p>
 </tbody>
 </table>
 <p>Version can be used to roll back changes or step forwards programmatically to
-specific versions. It works just like <code class="docutils literal"><span class="pre">current()</span></code> but ignores <code class="docutils literal"><span class="pre">$config['migration_version']</span></code>.</p>
+specific versions. It works just like <tt class="docutils literal"><span class="pre">current()</span></tt> but ignores <tt class="docutils literal"><span class="pre">$config['migration_version']</span></tt>.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">migration</span><span class="o">-&gt;</span><span class="na">version</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -707,8 +707,8 @@ specific versions. It works just like <code class="docutils literal"><span class
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -729,7 +729,7 @@ specific versions. It works just like <code class="docutils literal"><span class
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
