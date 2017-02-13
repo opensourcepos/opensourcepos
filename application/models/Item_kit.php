@@ -77,7 +77,8 @@ class Item_kit extends CI_Model
 		custom8, 
 		custom9, 
 		custom10,
-		item_type');
+		item_type,
+		stock_type');
 
 		$this->db->from('item_kits');
 		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
