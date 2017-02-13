@@ -88,8 +88,6 @@
 				<?php echo form_label($this->lang->line('config_last_used_invoice_number'), 'last_used_invoice_number', array('class' => 'control-label col-xs-2')); ?>
                 <div class='col-xs-2'>
 					<?php echo form_input(array(
-						'max' => '999999999',
-						'min' => '0',
 						'type' => 'number',
 						'name' => 'last_used_invoice_number',
 						'id' => 'last_used_invoice_number',
@@ -102,8 +100,6 @@
 				<?php echo form_label($this->lang->line('config_last_used_quote_number'), 'last_used_quote_number', array('class' => 'control-label col-xs-2')); ?>
                 <div class='col-xs-2'>
 					<?php echo form_input(array(
-						'max' => '999999999',
-						'min' => '0',
 						'type' => 'number',
 						'name' => 'last_used_quote_number',
 						'id' => 'last_used_quote_number',

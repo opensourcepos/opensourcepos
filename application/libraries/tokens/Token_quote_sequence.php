@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: steve
- * Date: 2/4/2017
- * Time: 4:01 PM
- */
 class Token_quote_sequence extends Token
 {
 	private static $token_code = 'QSEQ';
@@ -24,7 +18,7 @@ class Token_quote_sequence extends Token
 
 	public function get_value()
 	{
-		return $this->CI->Appconfig->get_next_quote_sequence();
+		return $this->CI->Appconfig->acquire_save_next_quote_sequence();
 	}
 
 }

@@ -450,10 +450,10 @@ if (isset($success))
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
 					<?php
 					// Only show this part if the payment cover the total
-					if ($quote_or_invoice_mode)
+					if ($quote_or_invoice_mode && isset($customer))
 					{
 					?>
-                    <div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
+					<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
 					<?php
 					}
 					?>

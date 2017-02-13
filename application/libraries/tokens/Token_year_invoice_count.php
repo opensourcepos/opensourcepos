@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: steve
- * Date: 2/4/2017
- * Time: 3:59 PM
- */
 class Token_year_invoice_count extends Token
 {
 	private $CI;
