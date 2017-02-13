@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: steve
- * Date: 2/4/2017
- * Time: 7:57 PM
- */
 class Token_customer extends Token
 {
 	private static $token_code = 'CU';

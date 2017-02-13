@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: steve
- * Date: 2/4/2017
- * Time: 4:00 PM
- */
 class Token_invoice_sequence extends Token
 {
 	private static $token_code = 'ISEQ';
@@ -24,6 +18,6 @@ class Token_invoice_sequence extends Token
 
 	public function get_value()
 	{
-		return $this->CI->Appconfig->get_next_invoice_sequence();
+		return $this->CI->Appconfig->acquire_save_next_invoice_sequence();
 	}
 }
