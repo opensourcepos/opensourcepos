@@ -2,13 +2,7 @@
 
 class Token_customer extends Token
 {
-	private static $token_code = 'CU';
 	private $CI;
-
-	public static function get_token_code()
-	{
-		return Token_customer::$token_code;
-	}
 
 	public function __construct()
 	{
@@ -30,7 +24,7 @@ class Token_customer extends Token
 			}
 		}
 
-		return 'Customer Unknown';
+		return '';
 
 	}
 

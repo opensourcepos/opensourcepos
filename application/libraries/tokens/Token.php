@@ -12,44 +12,46 @@ class Token
 {
 	private $CI;
 
-	public static function get_token($token_id)
-	{
-		if($token_id == Token_customer::get_token_code())
-		{
-			return new Token_customer();
-		}
-		elseif($token_id == Token_invoice_count::get_token_code())
-		{
-			return new Token_invoice_count();
-		}
-		elseif($token_id == Token_invoice_sequence::get_token_code())
-		{
-			return new Token_invoice_sequence();
-		}
-		elseif($token_id == Token_invoice_sequence::get_token_code())
-		{
-			return new Token_invoice_sequence();
-		}
-		elseif($token_id == Token_quote_sequence::get_token_code())
-		{
-			return new Token_quote_sequence();
-		}
-		elseif($token_id == Token_suspended_invoice_count::get_token_code())
-		{
-			return new Token_suspended_invoice_count();
-		}
-		elseif($token_id == Token_year_invoice_count::get_token_code())
-		{
-			return new Token_year_invoice_count();
-		}
-	}
-
 	public function __construct()
 	{
 		$this->CI =& get_instance();
 	}
 
+	public function replace($token_id)
+	{
+		if($token_id == 'CU')
+		{
+			return (new Token_customer())->get_value();
+		}
+		elseif($token_id == 'CO')
+		{
+			return (new Token_invoice_count())->get_value();
+		}
+		elseif($token_id == 'ISEQ')
+		{
+			return (new Token_invoice_sequence())->get_value();
+		}
+		elseif($token_id == 'ISEQ')
+		{
+			return (new Token_invoice_sequence())->get_value();
+		}
+		elseif($token_id == 'QSEQ')
+		{
+			return (new Token_quote_sequence())->get_value();
+		}
+		elseif($token_id == 'SCO')
+		{
+			return (new Token_suspended_invoice_count())->get_value();
+		}
+		elseif($token_id == 'YCO')
+		{
+			return (new Token_year_invoice_count())->get_value();
+		}
+		return '';
+	}
+
 	function get_value(){
+		return '';
 	}
 
 }

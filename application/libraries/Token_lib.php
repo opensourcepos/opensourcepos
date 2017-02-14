@@ -87,8 +87,7 @@ class Token_lib
 		foreach($used_tokens as $token_code => $token_info)
 		{
 			// Generate value here based on the key value
-			$token = Token::get_token($token_code);
-			$token_value = $token->get_value();
+			$token_value = Token::replace($token_code);
 
 			foreach($token_info as $length => $token_spec)
 			{
