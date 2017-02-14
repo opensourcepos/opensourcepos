@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Upgrading from 3.0.5 to 3.0.6 &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Upgrading from 3.0.5 to 3.0.6 &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Upgrading From a Previous Version" href="upgrading.html"/>
         <link rel="next" title="Upgrading from 3.0.4 to 3.0.5" href="upgrade_305.html"/>
         <link rel="prev" title="Upgrading from 3.0.6 to 3.1.0" href="upgrade_310.html"/> 
@@ -441,7 +441,7 @@ please make copies of them first.</p>
 <div class="section" id="step-2-update-your-index-php-file-optional">
 <h2>Step 2: Update your index.php file (optional)<a class="headerlink" href="#step-2-update-your-index-php-file-optional" title="Permalink to this headline">¶</a></h2>
 <p>We&#8217;ve made some tweaks to the index.php file, mostly related to proper
-usage of directory separators (i.e. use the <code class="docutils literal"><span class="pre">DIRECTORY_SEPARATOR</span></code>
+usage of directory separators (i.e. use the <tt class="docutils literal"><span class="pre">DIRECTORY_SEPARATOR</span></tt>
 constant instead of a hard coded forward slash &#8220;/&#8221;).</p>
 <p>Nothing will break if you skip this step, but if you&#8217;re running Windows
 or just want to be up to date with every change - we do recommend that
@@ -453,8 +453,8 @@ new one, replacing the defaults.</em></p>
 <div class="section" id="step-3-remove-prep-for-form-usage-deprecation">
 <h2>Step 3: Remove &#8216;prep_for_form&#8217; usage (deprecation)<a class="headerlink" href="#step-3-remove-prep-for-form-usage-deprecation" title="Permalink to this headline">¶</a></h2>
 <p>The <a class="reference internal" href="../libraries/form_validation.html"><em>Form Validation Library</em></a> has a
-<code class="docutils literal"><span class="pre">prep_for_form()</span></code> method, which is/can also be used as a rule in
-<code class="docutils literal"><span class="pre">set_rules()</span></code> to automatically perform HTML encoding on input data.</p>
+<tt class="docutils literal"><span class="pre">prep_for_form()</span></tt> method, which is/can also be used as a rule in
+<tt class="docutils literal"><span class="pre">set_rules()</span></tt> to automatically perform HTML encoding on input data.</p>
 <p>Automatically encoding input (instead of output) data is a bad practice in
 the first place, and CodeIgniter and PHP itself offer other alternatives
 to this method anyway.
@@ -488,8 +488,8 @@ remove its usage sooner rather than later.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -510,7 +510,7 @@ remove its usage sooner rather than later.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

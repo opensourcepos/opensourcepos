@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Date Helper &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Date Helper &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Helpers" href="index.html"/>
         <link rel="next" title="Directory Helper" href="directory_helper.html"/>
         <link rel="prev" title="Cookie Helper" href="cookie_helper.html"/> 
@@ -445,7 +445,7 @@
 <p>The following functions are available:</p>
 <dl class="function">
 <dt id="now">
-<code class="descname">now</code><span class="sig-paren">(</span><span class="optional">[</span><em>$timezone = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#now" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">now</tt><big>(</big><span class="optional">[</span><em>$timezone = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#now" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -468,17 +468,17 @@ local time or any PHP suported timezone, based on the &#8220;time reference&#822
 in your config file. If you do not intend to set your master time reference to
 any other PHP supported timezone (which you&#8217;ll typically do if you run a site
 that lets each user set their own timezone settings) there is no benefit to using
-this function over PHP&#8217;s <code class="docutils literal"><span class="pre">time()</span></code> function.</p>
+this function over PHP&#8217;s <tt class="docutils literal"><span class="pre">time()</span></tt> function.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">echo</span> <span class="nx">now</span><span class="p">(</span><span class="s1">&#39;Australia/Victoria&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>If a timezone is not provided, it will return <code class="docutils literal"><span class="pre">time()</span></code> based on the
+<p>If a timezone is not provided, it will return <tt class="docutils literal"><span class="pre">time()</span></tt> based on the
 <strong>time_reference</strong> setting.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="mdate">
-<code class="descname">mdate</code><span class="sig-paren">(</span><span class="optional">[</span><em>$datestr = ''</em><span class="optional">[</span>, <em>$time = ''</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#mdate" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mdate</tt><big>(</big><span class="optional">[</span><em>$datestr = ''</em><span class="optional">[</span>, <em>$time = ''</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#mdate" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -502,7 +502,7 @@ function, except that it lets you use MySQL style date codes, where each
 code letter is preceded with a percent sign, e.g. <cite>%Y %m %d</cite></p>
 <p>The benefit of doing dates this way is that you don&#8217;t have to worry
 about escaping any characters that are not date codes, as you would
-normally have to do with the <code class="docutils literal"><span class="pre">date()</span></code> function.</p>
+normally have to do with the <tt class="docutils literal"><span class="pre">date()</span></tt> function.</p>
 <p>Example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$datestring</span> <span class="o">=</span> <span class="s1">&#39;Year: %Y Month: %m Day: %d - %h:%i %a&#39;</span><span class="p">;</span>
 <span class="nv">$time</span> <span class="o">=</span> <span class="nb">time</span><span class="p">();</span>
@@ -515,7 +515,7 @@ will be used.</p>
 
 <dl class="function">
 <dt id="standard_date">
-<code class="descname">standard_date</code><span class="sig-paren">(</span><span class="optional">[</span><em>$fmt = 'DATE_RFC822'</em><span class="optional">[</span>, <em>$time = NULL</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#standard_date" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">standard_date</tt><big>(</big><span class="optional">[</span><em>$fmt = 'DATE_RFC822'</em><span class="optional">[</span>, <em>$time = NULL</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#standard_date" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -543,8 +543,8 @@ will be used.</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>This function is DEPRECATED. Use the native <code class="docutils literal"><span class="pre">date()</span></code> combined with
-<a class="reference external" href="http://php.net/manual/en/class.datetime.php#datetime.constants.types">DateTime&#8217;s format constants</a>
+<p>This function is DEPRECATED. Use the native <tt class="docutils literal"><span class="pre">date()</span></tt> combined with
+<a class="reference external" href="https://secure.php.net/manual/en/class.datetime.php#datetime.constants.types">DateTime&#8217;s format constants</a>
 instead:</p>
 <div class="last highlight-ci"><div class="highlight"><pre><span></span><span class="k">echo</span> <span class="nb">date</span><span class="p">(</span><span class="nx">DATE_RFC822</span><span class="p">,</span> <span class="nb">time</span><span class="p">());</span>
 </pre></div>
@@ -610,7 +610,7 @@ instead:</p>
 
 <dl class="function">
 <dt id="local_to_gmt">
-<code class="descname">local_to_gmt</code><span class="sig-paren">(</span><span class="optional">[</span><em>$time = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#local_to_gmt" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">local_to_gmt</tt><big>(</big><span class="optional">[</span><em>$time = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#local_to_gmt" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -637,7 +637,7 @@ instead:</p>
 
 <dl class="function">
 <dt id="gmt_to_local">
-<code class="descname">gmt_to_local</code><span class="sig-paren">(</span><span class="optional">[</span><em>$time = ''</em><span class="optional">[</span>, <em>$timezone = 'UTC'</em><span class="optional">[</span>, <em>$dst = FALSE</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#gmt_to_local" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">gmt_to_local</tt><big>(</big><span class="optional">[</span><em>$time = ''</em><span class="optional">[</span>, <em>$timezone = 'UTC'</em><span class="optional">[</span>, <em>$dst = FALSE</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#gmt_to_local" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -675,7 +675,7 @@ submitted.</p>
 
 <dl class="function">
 <dt id="mysql_to_unix">
-<code class="descname">mysql_to_unix</code><span class="sig-paren">(</span><span class="optional">[</span><em>$time = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#mysql_to_unix" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">mysql_to_unix</tt><big>(</big><span class="optional">[</span><em>$time = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#mysql_to_unix" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -702,7 +702,7 @@ submitted.</p>
 
 <dl class="function">
 <dt id="unix_to_human">
-<code class="descname">unix_to_human</code><span class="sig-paren">(</span><span class="optional">[</span><em>$time = ''</em><span class="optional">[</span>, <em>$seconds = FALSE</em><span class="optional">[</span>, <em>$fmt = 'us'</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#unix_to_human" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">unix_to_human</tt><big>(</big><span class="optional">[</span><em>$time = ''</em><span class="optional">[</span>, <em>$seconds = FALSE</em><span class="optional">[</span>, <em>$fmt = 'us'</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#unix_to_human" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -743,7 +743,7 @@ the time without seconds formatted for the U.S.</p>
 
 <dl class="function">
 <dt id="human_to_unix">
-<code class="descname">human_to_unix</code><span class="sig-paren">(</span><span class="optional">[</span><em>$datestr = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#human_to_unix" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">human_to_unix</tt><big>(</big><span class="optional">[</span><em>$datestr = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#human_to_unix" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -761,7 +761,7 @@ the time without seconds formatted for the U.S.</p>
 </tr>
 </tbody>
 </table>
-<p>The opposite of the <code class="xref php php-func docutils literal"><span class="pre">unix_to_time()</span></code> function. Takes a &#8220;human&#8221;
+<p>The opposite of the <tt class="xref php php-func docutils literal"><span class="pre">unix_to_time()</span></tt> function. Takes a &#8220;human&#8221;
 time as input and returns it as a UNIX timestamp. This is useful if you
 accept &#8220;human&#8221; formatted dates submitted via a form. Returns boolean FALSE
 date string passed to it is not formatted as indicated above.</p>
@@ -775,14 +775,14 @@ date string passed to it is not formatted as indicated above.</p>
 
 <dl class="function">
 <dt id="nice_date">
-<code class="descname">nice_date</code><span class="sig-paren">(</span><span class="optional">[</span><em>$bad_date = ''</em><span class="optional">[</span>, <em>$format = FALSE</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#nice_date" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">nice_date</tt><big>(</big><span class="optional">[</span><em>$bad_date = ''</em><span class="optional">[</span>, <em>$format = FALSE</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#nice_date" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>$bad_date</strong> (<em>int</em>) &#8211; The terribly formatted date-like string</li>
-<li><strong>$format</strong> (<em>string</em>) &#8211; Date format to return (same as PHP&#8217;s <code class="docutils literal"><span class="pre">date()</span></code> function)</li>
+<li><strong>$format</strong> (<em>string</em>) &#8211; Date format to return (same as PHP&#8217;s <tt class="docutils literal"><span class="pre">date()</span></tt> function)</li>
 </ul>
 </td>
 </tr>
@@ -797,7 +797,7 @@ date string passed to it is not formatted as indicated above.</p>
 <p>This function can take a number poorly-formed date formats and convert
 them into something useful. It also accepts well-formed dates.</p>
 <p>The function will return a UNIX timestamp by default. You can, optionally,
-pass a format string (the same type as the PHP <code class="docutils literal"><span class="pre">date()</span></code> function accepts)
+pass a format string (the same type as the PHP <tt class="docutils literal"><span class="pre">date()</span></tt> function accepts)
 as the second parameter.</p>
 <p>Example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$bad_date</span> <span class="o">=</span> <span class="s1">&#39;199605&#39;</span><span class="p">;</span>
@@ -809,11 +809,15 @@ as the second parameter.</p>
 <span class="nv">$better_date</span> <span class="o">=</span> <span class="nx">nice_date</span><span class="p">(</span><span class="nv">$bad_date</span><span class="p">,</span> <span class="s1">&#39;Y-m-d&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">This function is DEPRECATED. Use PHP&#8217;s native <a class="reference external" href="https://secure.php.net/datetime">DateTime class</a> instead.</p>
+</div>
 </dd></dl>
 
 <dl class="function">
 <dt id="timespan">
-<code class="descname">timespan</code><span class="sig-paren">(</span><span class="optional">[</span><em>$seconds = 1</em><span class="optional">[</span>, <em>$time = ''</em><span class="optional">[</span>, <em>$units = ''</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#timespan" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">timespan</tt><big>(</big><span class="optional">[</span><em>$seconds = 1</em><span class="optional">[</span>, <em>$time = ''</em><span class="optional">[</span>, <em>$units = ''</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#timespan" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -860,7 +864,7 @@ file: <cite>language/&lt;your_lang&gt;/date_lang.php</cite></p>
 
 <dl class="function">
 <dt id="days_in_month">
-<code class="descname">days_in_month</code><span class="sig-paren">(</span><span class="optional">[</span><em>$month = 0</em><span class="optional">[</span>, <em>$year = ''</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#days_in_month" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">days_in_month</tt><big>(</big><span class="optional">[</span><em>$month = 0</em><span class="optional">[</span>, <em>$year = ''</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#days_in_month" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -888,14 +892,14 @@ account.</p>
 <p>If the second parameter is empty, the current year will be used.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">This function will alias the native <code class="docutils literal"><span class="pre">cal_days_in_month()</span></code>, if
+<p class="last">This function will alias the native <tt class="docutils literal"><span class="pre">cal_days_in_month()</span></tt>, if
 it is available.</p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="date_range">
-<code class="descname">date_range</code><span class="sig-paren">(</span><span class="optional">[</span><em>$unix_start = ''</em><span class="optional">[</span>, <em>$mixed = ''</em><span class="optional">[</span>, <em>$is_unix = TRUE</em><span class="optional">[</span>, <em>$format = 'Y-m-d'</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#date_range" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">date_range</tt><big>(</big><span class="optional">[</span><em>$unix_start = ''</em><span class="optional">[</span>, <em>$mixed = ''</em><span class="optional">[</span>, <em>$is_unix = TRUE</em><span class="optional">[</span>, <em>$format = 'Y-m-d'</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#date_range" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -904,7 +908,7 @@ it is available.</p>
 <li><strong>$unix_start</strong> (<em>int</em>) &#8211; UNIX timestamp of the range start date</li>
 <li><strong>$mixed</strong> (<em>int</em>) &#8211; UNIX timestamp of the range end date or interval in days</li>
 <li><strong>$is_unix</strong> (<em>bool</em>) &#8211; set to FALSE if $mixed is not a timestamp</li>
-<li><strong>$format</strong> (<em>string</em>) &#8211; Output date format, same as in <code class="docutils literal"><span class="pre">date()</span></code></li>
+<li><strong>$format</strong> (<em>string</em>) &#8211; Output date format, same as in <tt class="docutils literal"><span class="pre">date()</span></tt></li>
 </ul>
 </td>
 </tr>
@@ -930,7 +934,7 @@ it is available.</p>
 
 <dl class="function">
 <dt id="timezones">
-<code class="descname">timezones</code><span class="sig-paren">(</span><span class="optional">[</span><em>$tz = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#timezones" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">timezones</tt><big>(</big><span class="optional">[</span><em>$tz = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#timezones" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -955,12 +959,12 @@ UTC.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="k">echo</span> <span class="nx">timezones</span><span class="p">(</span><span class="s1">&#39;UM5&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>This function is useful when used with <a class="reference internal" href="#timezone_menu" title="timezone_menu"><code class="xref php php-func docutils literal"><span class="pre">timezone_menu()</span></code></a>.</p>
+<p>This function is useful when used with <a class="reference internal" href="#timezone_menu" title="timezone_menu"><tt class="xref php php-func docutils literal"><span class="pre">timezone_menu()</span></tt></a>.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="timezone_menu">
-<code class="descname">timezone_menu</code><span class="sig-paren">(</span><span class="optional">[</span><em>$default = 'UTC'</em><span class="optional">[</span>, <em>$class = ''</em><span class="optional">[</span>, <em>$name = 'timezones'</em><span class="optional">[</span>, <em>$attributes = ''</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#timezone_menu" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">timezone_menu</tt><big>(</big><span class="optional">[</span><em>$default = 'UTC'</em><span class="optional">[</span>, <em>$class = ''</em><span class="optional">[</span>, <em>$name = 'timezones'</em><span class="optional">[</span>, <em>$attributes = ''</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#timezone_menu" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1201,8 +1205,8 @@ language file: <cite>language/&lt;your_lang&gt;/date_lang.php</cite></p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -1223,7 +1227,7 @@ language file: <cite>language/&lt;your_lang&gt;/date_lang.php</cite></p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

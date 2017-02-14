@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Models &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Models &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="General Topics" href="index.html"/>
         <link rel="next" title="Helper Functions" href="helpers.html"/>
         <link rel="prev" title="Views" href="views.html"/> 
@@ -453,12 +453,6 @@ model class might look like:</p>
         <span class="k">public</span> <span class="nv">$content</span><span class="p">;</span>
         <span class="k">public</span> <span class="nv">$date</span><span class="p">;</span>
 
-        <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
-        <span class="p">{</span>
-                <span class="c1">// Call the CI_Model constructor</span>
-                <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
-        <span class="p">}</span>
-
         <span class="k">public</span> <span class="k">function</span> <span class="nf">get_last_ten_entries</span><span class="p">()</span>
         <span class="p">{</span>
                 <span class="nv">$query</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">db</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">&#39;entries&#39;</span><span class="p">,</span> <span class="mi">10</span><span class="p">);</span>
@@ -492,10 +486,10 @@ model class might look like:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">For the sake of simplicity in this example we&#8217;re using <code class="docutils literal"><span class="pre">$_POST</span></code>
+<p class="last">For the sake of simplicity in this example we&#8217;re using <tt class="docutils literal"><span class="pre">$_POST</span></tt>
 directly. This is generally bad practice, and a more common approach
 would be to use the <a class="reference internal" href="../libraries/input.html"><em>Input Library</em></a>
-<code class="docutils literal"><span class="pre">$this-&gt;input-&gt;post('title')</span></code>.</p>
+<tt class="docutils literal"><span class="pre">$this-&gt;input-&gt;post('title')</span></tt>.</p>
 </div>
 </div>
 <div class="section" id="anatomy-of-a-model">
@@ -509,6 +503,7 @@ organization.</p>
         <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
         <span class="p">{</span>
                 <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+                <span class="c1">// Your own constructor code</span>
         <span class="p">}</span>
 
 <span class="p">}</span>
@@ -523,6 +518,7 @@ sure your class extends the base Model class.</p>
         <span class="k">public</span> <span class="k">function</span> <span class="nf">__construct</span><span class="p">()</span>
         <span class="p">{</span>
                 <span class="k">parent</span><span class="o">::</span><span class="na">__construct</span><span class="p">();</span>
+                <span class="c1">// Your own constructor code</span>
         <span class="p">}</span>
 
 <span class="p">}</span>
@@ -638,8 +634,8 @@ parameter:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -660,7 +656,7 @@ parameter:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

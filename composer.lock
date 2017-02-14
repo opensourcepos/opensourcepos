@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a3379d860fa0f4ff353e345a89542ac2",
-    "content-hash": "5a62415e3578c5a0a00b72a2e80f2aa0",
+    "hash": "4e4079e21b7066a9304c32d7342fe8df",
+    "content-hash": "3f58ebd1937bb46a290c1f9d217deb22",
     "packages": [
         {
             "name": "codeigniter/framework",
-            "version": "3.1.2",
+            "version": "3.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141"
+                "reference": "5ea77465c445157fb1096c38f5c2d27384b780b7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
-                "reference": "2afa6b6b58a73fa26a7a93045ccb1fc8a087a141",
+                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/5ea77465c445157fb1096c38f5c2d27384b780b7",
+                "reference": "5ea77465c445157fb1096c38f5c2d27384b780b7",
                 "shasum": ""
             },
             "require": {
@@ -37,7 +37,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2016-10-28 15:13:14"
+            "time": "2017-01-09 14:32:03"
         },
         {
             "name": "dompdf/dompdf",
@@ -110,7 +110,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/2b3aef2375837339f5b2bfe88e76994481f86264",
+                "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/415cabca0c6d83cd0bd6a8ed6fb695b35f892018",
                 "reference": "2b3aef2375837339f5b2bfe88e76994481f86264",
                 "shasum": ""
             },

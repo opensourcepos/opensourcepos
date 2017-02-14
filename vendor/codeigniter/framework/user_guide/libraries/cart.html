@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Shopping Cart Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Shopping Cart Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Config Class" href="config.html"/>
         <link rel="prev" title="Calendaring Class" href="calendar.html"/> 
@@ -467,7 +467,7 @@ session preferences in your application/config/config.php file to
 utilize a database.</p>
 </div>
 <p>To initialize the Shopping Cart Class in your controller constructor,
-use the <code class="docutils literal"><span class="pre">$this-&gt;load-&gt;library()</span></code> method:</p>
+use the <tt class="docutils literal"><span class="pre">$this-&gt;load-&gt;library()</span></tt> method:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">load</span><span class="o">-&gt;</span><span class="na">library</span><span class="p">(</span><span class="s1">&#39;cart&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
@@ -485,7 +485,7 @@ application, you do not need to load the Session class.</p>
 <div class="section" id="adding-an-item-to-the-cart">
 <h3><a class="toc-backref" href="#id3">Adding an Item to The Cart</a><a class="headerlink" href="#adding-an-item-to-the-cart" title="Permalink to this headline">¶</a></h3>
 <p>To add an item to the shopping cart, simply pass an array with the
-product information to the <code class="docutils literal"><span class="pre">$this-&gt;cart-&gt;insert()</span></code> method, as shown
+product information to the <tt class="docutils literal"><span class="pre">$this-&gt;cart-&gt;insert()</span></tt> method, as shown
 below:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$data</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
         <span class="s1">&#39;id&#39;</span>      <span class="o">=&gt;</span> <span class="s1">&#39;sku_123ABC&#39;</span><span class="p">,</span>
@@ -535,7 +535,7 @@ information in a table easier.</p>
 <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">cart</span><span class="o">-&gt;</span><span class="na">insert</span><span class="p">(</span><span class="nv">$data</span><span class="p">);</span>
 </pre></div>
 </div>
-<p>The <code class="docutils literal"><span class="pre">insert()</span></code> method will return the $rowid if you successfully insert a
+<p>The <tt class="docutils literal"><span class="pre">insert()</span></tt> method will return the $rowid if you successfully insert a
 single item.</p>
 </div>
 <div class="section" id="adding-multiple-items-to-the-cart">
@@ -635,7 +635,7 @@ helper</em></a>.</p>
 <h3><a class="toc-backref" href="#id6">Updating The Cart</a><a class="headerlink" href="#updating-the-cart" title="Permalink to this headline">¶</a></h3>
 <p>To update the information in your cart, you must pass an array
 containing the Row ID and one or more pre-defined properties to the
-<code class="docutils literal"><span class="pre">$this-&gt;cart-&gt;update()</span></code> method.</p>
+<tt class="docutils literal"><span class="pre">$this-&gt;cart-&gt;update()</span></tt> method.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">If the quantity is set to zero, the item will be removed from
@@ -697,7 +697,7 @@ the product ID and any options associated with it.</p>
 via the &#8220;view cart&#8221; page, so as a developer, it is unlikely that you
 will ever have to concern yourself with the &#8220;row ID&#8221;, other than making
 sure your &#8220;view cart&#8221; page contains this information in a hidden form
-field, and making sure it gets passed to the <code class="docutils literal"><span class="pre">update()</span></code> method when
+field, and making sure it gets passed to the <tt class="docutils literal"><span class="pre">update()</span></tt> method when
 the update form is submitted. Please examine the construction of the
 &#8220;view cart&#8221; page above for more information.</p>
 </div>
@@ -707,30 +707,30 @@ the update form is submitted. Please examine the construction of the
 <h2><a class="toc-backref" href="#id8">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Cart">
-<em class="property">class </em><code class="descname">CI_Cart</code><a class="headerlink" href="#CI_Cart" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Cart</tt><a class="headerlink" href="#CI_Cart" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt>
-<code class="descname">$product_id_rules = '.a-z0-9_-'</code></dt>
+<tt class="descname">$product_id_rules = '.a-z0-9_-'</tt></dt>
 <dd><p>These are the regular expression rules that we use to validate the product
 ID - alpha-numeric, dashes, underscores, or periods by default</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">$product_name_rules      = 'w -.:'</code></dt>
+<tt class="descname">$product_name_rules      = 'w -.:'</tt></dt>
 <dd><p>These are the regular expression rules that we use to validate the product ID and product name - alpha-numeric, dashes, underscores, colons or periods by
 default</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt>
-<code class="descname">$product_name_safe = TRUE</code></dt>
+<tt class="descname">$product_name_safe = TRUE</tt></dt>
 <dd><p>Whether or not to only allow safe product names. Default TRUE.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Cart::insert">
-<code class="descname">insert</code><span class="sig-paren">(</span><span class="optional">[</span><em>$items = array()</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::insert" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">insert</tt><big>(</big><span class="optional">[</span><em>$items = array()</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Cart::insert" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -754,7 +754,7 @@ on success and FALSE on failure.</p>
 
 <dl class="method">
 <dt id="CI_Cart::update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>$items = array()</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::update" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">update</tt><big>(</big><span class="optional">[</span><em>$items = array()</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Cart::update" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -780,7 +780,7 @@ for each item.</p>
 
 <dl class="method">
 <dt id="CI_Cart::remove">
-<code class="descname">remove</code><span class="sig-paren">(</span><em>$rowid</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::remove" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">remove</tt><big>(</big><em>$rowid</em><big>)</big><a class="headerlink" href="#CI_Cart::remove" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -799,12 +799,12 @@ for each item.</p>
 </tbody>
 </table>
 <p>Allows you to remove an item from the shopping cart by passing it the
-<code class="docutils literal"><span class="pre">$rowid</span></code>.</p>
+<tt class="docutils literal"><span class="pre">$rowid</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Cart::total">
-<code class="descname">total</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::total" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">total</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Cart::total" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -820,7 +820,7 @@ for each item.</p>
 
 <dl class="method">
 <dt id="CI_Cart::total_items">
-<code class="descname">total_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::total_items" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">total_items</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Cart::total_items" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -836,7 +836,7 @@ for each item.</p>
 
 <dl class="method">
 <dt id="CI_Cart::contents">
-<code class="descname">contents</code><span class="sig-paren">(</span><span class="optional">[</span><em>$newest_first = FALSE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::contents" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">contents</tt><big>(</big><span class="optional">[</span><em>$newest_first = FALSE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Cart::contents" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -862,7 +862,7 @@ to newest.</p>
 
 <dl class="method">
 <dt id="CI_Cart::get_item">
-<code class="descname">get_item</code><span class="sig-paren">(</span><em>$row_id</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::get_item" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_item</tt><big>(</big><em>$row_id</em><big>)</big><a class="headerlink" href="#CI_Cart::get_item" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -886,7 +886,7 @@ ID, or FALSE if no such item exists.</p>
 
 <dl class="method">
 <dt id="CI_Cart::has_options">
-<code class="descname">has_options</code><span class="sig-paren">(</span><em>$row_id = ''</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::has_options" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">has_options</tt><big>(</big><em>$row_id = ''</em><big>)</big><a class="headerlink" href="#CI_Cart::has_options" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -905,14 +905,14 @@ ID, or FALSE if no such item exists.</p>
 </tbody>
 </table>
 <p>Returns TRUE (boolean) if a particular row in the cart contains options.
-This method is designed to be used in a loop with <code class="docutils literal"><span class="pre">contents()</span></code>, since
+This method is designed to be used in a loop with <tt class="docutils literal"><span class="pre">contents()</span></tt>, since
 you must pass the rowid to this method, as shown in the Displaying
 the Cart example above.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Cart::product_options">
-<code class="descname">product_options</code><span class="sig-paren">(</span><span class="optional">[</span><em>$row_id = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::product_options" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">product_options</tt><big>(</big><span class="optional">[</span><em>$row_id = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Cart::product_options" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -931,14 +931,14 @@ the Cart example above.</p>
 </tbody>
 </table>
 <p>Returns an array of options for a particular product. This method is
-designed to be used in a loop with <code class="docutils literal"><span class="pre">contents()</span></code>, since you
+designed to be used in a loop with <tt class="docutils literal"><span class="pre">contents()</span></tt>, since you
 must pass the rowid to this method, as shown in the Displaying the
 Cart example above.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Cart::destroy">
-<code class="descname">destroy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Cart::destroy" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">destroy</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Cart::destroy" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -974,8 +974,8 @@ when you are finished processing the customer&#8217;s order.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -996,7 +996,7 @@ when you are finished processing the customer&#8217;s order.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
