@@ -17,7 +17,16 @@ class Token_lib
 	public function render($tokened_text)
 	{
 
-		// First apply the rendering for the "%" tokens if any are used
+		// Transform legacy "$" tokens to their brace token equivalent
+		if(strpos($tokened_text, '$') !== false)
+		{
+			$tokened_text = str_replace('$YCO', '{YCO}', $tokened_text);
+			$tokened_text = str_replace('$CO', '{CO}', $tokened_text);
+			$tokened_text = str_replace('$SCO', '{SCO}', $tokened_text);
+			$tokened_text = str_replace('$CU', '{CU}', $tokened_text);
+		}
+
+		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== false)
 		{
 			$tokened_text = strftime($tokened_text);

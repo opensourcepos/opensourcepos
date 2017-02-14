@@ -9,6 +9,7 @@ class Token_customer extends Token
 	{
 		return Token_customer::$token_code;
 	}
+
 	public function __construct()
 	{
 		parent::__construct();
