@@ -12,18 +12,18 @@ Open Source Point of Sale is a web based point of sale system.
 The main features are:
 * Stock management (Items and Kits)
 * Sale register with transactions logging
-* Receipt and invoice printing and emailing
+* Receipt and invoice printing and/or emailing
 * Barcode generation and printing
 * Suppliers and Customers database
 * Multiuser with permission control
 * Receivings
-* Reporting
+* Reporting on sales, orders, inventory status
 * Gift card
-* Messaging
+* Messaging (SMS)
 * Multilanguage
 * Different UI themes
 
-The software is written in PHP language, it uses MySQL or MariaDB as data storage back-end and has a simple but intuitive user interface.
+The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
 The latest version 3.1.0 is a complete overhaul of the original software.
 It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
@@ -66,9 +66,9 @@ If you like the project, and you are making money out of it on a daily basis, th
 
 Server Requirements
 -------------------
-PHP version 5.5 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets` and `php-mcrypt` installed and enabled.
+PHP version 5.5 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt` and `php-curl` installed and enabled.
 
-MySQL 5.5, 5.6 and 5.7 are supported, also MariaBD replacement is supported and apparently offering better performance.
+MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance.
 
 Apache 2.2 and 2.4 are supported. Also Nginx has been proven to work fine, see [wiki page here](https://github.com/jekkos/opensourcepos/wiki/Local-Deployment-using-LEMP)
 
