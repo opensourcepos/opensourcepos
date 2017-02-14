@@ -16,3 +16,5 @@ class Token_year_invoice_count extends Token
 		return $this->Sale->get_invoice_number_for_year();
 	}
 }
+
+?>

@@ -16,3 +16,5 @@ class Token_invoice_count extends Token
 		return $this->Sale->get_invoice_count();
 	}
 }
+
+?>

@@ -53,5 +53,6 @@ class Token
 	function get_value(){
 		return '';
 	}
-
 }
+
+?>

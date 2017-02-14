@@ -3,7 +3,6 @@
 class Token_customer extends Token
 {
 	private $CI;
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -25,7 +24,7 @@ class Token_customer extends Token
 		}
 
 		return '';
-
 	}
-
 }
+
+?>

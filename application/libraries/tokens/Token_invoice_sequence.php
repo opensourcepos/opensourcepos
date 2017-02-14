@@ -15,3 +15,5 @@ class Token_invoice_sequence extends Token
 		return $this->CI->Appconfig->acquire_save_next_invoice_sequence();
 	}
 }
+
+?>
