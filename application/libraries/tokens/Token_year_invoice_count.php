@@ -13,7 +13,7 @@ class Token_year_invoice_count extends Token
 
 	public function get_value()
 	{
-		return $this->Sale->get_invoice_number_for_year();
+		return $this->CI->Sale->get_invoice_number_for_year();
 	}
 }
 

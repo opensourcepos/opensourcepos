@@ -13,7 +13,7 @@ class Token_invoice_count extends Token
 
 	public function get_value()
 	{
-		return $this->Sale->get_invoice_count();
+		return $this->CI->Sale->get_invoice_count();
 	}
 }
 

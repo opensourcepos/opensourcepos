@@ -13,10 +13,10 @@ class Token_customer extends Token
 	public function get_value()
 	{
 		// substitute customer info
-		$customer_id = $this->sale_lib->get_customer();
+		$customer_id = $this->CI->sale_lib->get_customer();
 		if($customer_id != -1)
 		{
-			$customer_info = $this->Customer->get_info($customer_id);
+			$customer_info = $this->CI->Customer->get_info($customer_id);
 			if($customer_info != '')
 			{
 				return trim($customer_info->first_name . ' ' . $customer_info->last_name);
