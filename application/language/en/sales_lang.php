@@ -93,7 +93,6 @@ $lang["sales_receipt"] = "Sales Receipt";
 $lang["sales_receipt_number"] = "Sale #";
 $lang["sales_receipt_sent"] = "Receipt sent to";
 $lang["sales_receipt_unsent"] = "Receipt failed to be sent to";
-$lang["sales_receipt_to_print"] = "If this Complete is pressed a receipt will print.";
 $lang["sales_register"] = "Sales Register";
 $lang["sales_remove_customer"] = "Remove Customer";
 $lang["sales_return"] = "Return";

@@ -373,17 +373,13 @@ if (isset($success))
 						<?php echo form_close(); ?>
 	    					<?php
 		    				// Only show this part if the payment cover the total
-			    			if ($quote_or_invoice_mode)
+			    			if ($sales_or_return_mode == '1')
 				    		{
-					    		?>
-                                <div class="form-group" style="text-align:center;width:150px;height:50px;float: left;padding-top:5px">
-                                    <span style="font-style:italic;"><?php echo $this->lang->line('sales_receipt_to_print');?></span>
-                                </div>
-							    <?php
+					    	?>
+                                <div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+							<?php
     						}
 	    					?>
-
-    						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 					<?php
 					}
 					else
@@ -503,11 +499,12 @@ if (isset($success))
 						</div>
 					</div>
 				<?php
-				if (($mode == "sale" || $mode == "sale_invoice") && $this->config->item('invoice_enable') == TRUE)
+				if (($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
 				{
 				?>
 					<div class="row">
 						<div class="form-group form-group-sm">
+
 							<div class="col-xs-6">
 								<label class="control-label checkbox" for="sales_invoice_enable">
 									<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>

@@ -164,11 +164,6 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_quote_number');
 	}
 
-	public function set_receipt_override($receipt_override)
-	{
-		$this->CI->session->set_userdata('receipt_override', $receipt_override);
-	}
-
 	public function set_suspended_id($suspended_id)
 	{
 		$this->CI->session->set_userdata('suspended_id', $suspended_id);
@@ -179,11 +174,6 @@ class Sale_lib
 		return $this->CI->session->userdata('suspended_id');
 	}
 
-	public function get_receipt_override()
-	{
-		return $this->CI->session->userdata('receipt_override');
-	}
-
 	public function is_invoice_mode()
 	{
 
@@ -191,6 +181,11 @@ class Sale_lib
 				$this->CI->session->userdata('sales_mode') == 'sale_invoice' ||
 				($this->CI->session->userdata('sales_invoice_number_enabled') == '1') &&
 					$this->CI->config->item('invoice_enable') == TRUE);
+	}
+
+	public function is_sale_by_receipt_mode()
+	{
+		return ($this->CI->session->userdata('sales_mode') == 'sale');
 	}
 
 	public function is_quote_mode()
@@ -486,7 +481,7 @@ class Sale_lib
 
 		// For print purposes this simpifies line selection
 		// 0 will print, 2 will not print.   The decision about 1 is made here
-		if ($print_option =='1')
+		if($print_option =='1')
 		{
 			if($price == 0)
 			{
@@ -759,7 +754,6 @@ class Sale_lib
 		$this->clear_giftcard_remainder();
 		$this->empty_payments();
 		$this->remove_customer();
-		$this->set_receipt_override(FALSE);
 	}
 	
 	public function is_customer_taxable()

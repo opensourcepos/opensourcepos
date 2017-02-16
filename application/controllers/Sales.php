@@ -387,7 +387,6 @@ class Sales extends Secure_Controller
 
 	public function complete_receipt()
 	{
-		$this->sale_lib->set_receipt_override(TRUE);
 		$this->complete();
 	}
 
@@ -417,13 +416,28 @@ class Sales extends Secure_Controller
 			$this->config->item('phone'),
 			$this->config->item('account_number')
 		));
+		$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
+		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
 		$customer_info = $this->_load_customer_data($customer_id, $data);
 
-		if ($this->sale_lib->is_invoice_mode() && $this->sale_lib->get_receipt_override() == false)
+		if ($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == true)
 		{
-			// generate final invoice number
-			$invoice_format = $this->config->item('sales_invoice_format');
+			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
+			if ($this->sale_lib->is_sale_by_receipt_mode())
+			{
+				$this->sale_lib->set_invoice_number($this->input->post('invoice_number'), $keep_custom = TRUE);
+				$invoice_format = $this->sale_lib->get_invoice_number();
+				if (empty($invoice_format))
+				{
+					$invoice_format = $this->config->item('sales_invoice_format');
+				}
+			}
+			else
+			{
+				$invoice_format = $this->config->item('sales_invoice_format');
+			}
 			$invoice_number = $this->token_lib->render($invoice_format);
 
 			$quote_number = null;
@@ -455,16 +469,13 @@ class Sales extends Secure_Controller
 				else
 				{
 					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-					$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-					$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-					$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 
 					$this->load->view('sales/invoice', $data);
 					$this->sale_lib->clear_all();
 				}
 			}
 		}
-		else if ($this->sale_lib->is_quote_mode() && $this->sale_lib->get_receipt_override() ==  false)
+		else if ($this->sale_lib->is_quote_mode())
 		{
 			$quote_number = $this->sale_lib->get_quote_number();
 			if ($quote_number == null)
@@ -492,9 +503,6 @@ class Sales extends Secure_Controller
 				$data = $this->xss_clean($data);
 
 				$data['barcode'] = NULL;
-				$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-				$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-				$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 
 				$this->suspend_quote($quote_number);
 				$this->load->view('sales/quote', $data);
@@ -518,9 +526,6 @@ class Sales extends Secure_Controller
 			else
 			{
 				$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-				$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-				$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-				$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 
 				// Reload (sorted) and filter the cart line items for printing purposes
 				$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
@@ -843,17 +848,21 @@ class Sales extends Secure_Controller
 		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 
 		$invoice_format = $this->config->item('sales_invoice_format');
+		$data['invoice_format'] = $invoice_format;
+
+		$this->set_invoice_number($invoice_format);
 		$data['invoice_number'] = $invoice_format;
 
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['payments_cover_total'] = $this->sale_lib->get_amount_due() <= 0;
 		$data['quote_or_invoice_mode'] = $data['mode'] == 'sale_invoice' || $data['mode'] == 'sale_quote';
+		$data['sales_or_return_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
 		if($this->sale_lib->get_mode() == 'sale_invoice')
 		{
 			$data['mode_label'] = $this->lang->line('sales_invoice');
 		}
-		else if($this->sale_lib->get_mode() == 'sale_quote')
+		elseif($this->sale_lib->get_mode() == 'sale_quote')
 		{
 			$data['mode_label'] = $this->lang->line('sales_quote');
 		}
