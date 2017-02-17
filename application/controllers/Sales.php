@@ -416,6 +416,7 @@ class Sales extends Secure_Controller
 			$this->config->item('phone'),
 			$this->config->item('account_number')
 		));
+		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
 		$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();

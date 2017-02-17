@@ -682,7 +682,8 @@ class Sale extends CI_Model
 		print_option,
 		items.name as name,
 		category,
-		item_type');
+		item_type,
+		stock_type');
 		$this->db->from('sales_items as sales_items');
 		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
 		$this->db->where('sale_id', $sale_id);

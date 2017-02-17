@@ -133,7 +133,7 @@ $(document).ready(function()
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message").prop("disabled", false); 
+					$("#sales_invoice_format, #sales_quote_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message, #last_used_invoice_number, #last_used_quote_number").prop("disabled", false);
 					return true;
 				},
 				success: function(response) {
