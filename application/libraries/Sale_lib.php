@@ -683,7 +683,7 @@ class Sale_lib
 				$print_option = '2'; // Do not include in list
 			}
 
-			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $price, null, null, null, $print_option, $print_option, $item_kit_item['stock_type']);
+			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $price, null, null, null, $print_option, $item_kit_item['stock_type']);
 
 			if($stock_warning == null)
 			{

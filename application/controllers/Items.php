@@ -180,6 +180,7 @@ class Items extends Secure_Controller
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
+		$data['item_kits_enabled'] = $this->Employee->has_grant('item_kits', $this->Employee->get_logged_in_employee_info()->person_id);
 
 		$item_info = $this->Item->get_info($item_id);
 		foreach(get_object_vars($item_info) as $property => $value)

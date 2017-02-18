@@ -25,7 +25,7 @@ ALTER TABLE `ospos_sales_suspended_items`
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('date_or_time_format', ''),
-('sales_quote_format', 'Q%m{QSEQ:6}'),
+('sales_quote_format', 'Q%y{QSEQ:6}'),
 ('default_register_mode', 'sale'),
 ('last_used_invoice_number', '0'),
 ('last_used_quote_number', '0'),
