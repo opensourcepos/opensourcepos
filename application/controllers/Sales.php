@@ -301,7 +301,7 @@ class Sales extends Secure_Controller
 
 			if ($kit_item_id !== '' && $kit_item_id != 0)
 			{
-				if (!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, null, null, null, $print_option))
+				if (!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, null, null, null, $print_option, $stock_type))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}

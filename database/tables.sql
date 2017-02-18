@@ -50,7 +50,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('line_sequence', '0'),
 ('recv_invoice_format', '$CO'),
 ('sales_invoice_format', '$CO'),
-('sales_quote_format', 'Q%m{QSEQ:6}'),
+('sales_quote_format', 'Q%y{QSEQ:6}'),
 ('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
 ('invoice_default_comments', 'This is a default comment'),
 ('print_silently', '1'),
