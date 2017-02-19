@@ -3,14 +3,14 @@
 $lang["config_address"] = "Addresse";
 $lang["config_address_required"] = "L'adresse est requise";
 $lang["config_apostrophe"] = "apostrophe";
-$lang["config_backup_button"] = "Backup";
-$lang["config_backup_database"] = "Backup Database";
+$lang["config_backup_button"] = "Sauvegarde";
+$lang["config_backup_database"] = "Sauvegarder la base de données";
 $lang["config_barcode"] = "Code à barre";
 $lang["config_barcode_company"] = "Nome de l'Entreprise";
 $lang["config_barcode_configuration"] = "Configuration du Code à barre";
 $lang["config_barcode_content"] = "Contenu du Code à barre";
 $lang["config_barcode_first_row"] = "Ligne numéro 1";
-$lang["config_barcode_font"] = "Font";
+$lang["config_barcode_font"] = "Police";
 $lang["config_barcode_height"] = "Hauteur (px)";
 $lang["config_barcode_id"] = "Item Id/Name";
 $lang["config_barcode_info"] = "Configuration des Informations du Code à barre";

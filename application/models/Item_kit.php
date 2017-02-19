@@ -22,7 +22,7 @@ class Item_kit extends CI_Model
 			//KIT #
 			$pieces = explode(' ', $item_kit_id);
 
-			if(count($pieces) == 2 && preg_match('/(KIT)/', $pieces[0]))
+			if(count($pieces) == 2 && preg_match('/(KIT)/i', $pieces[0]))
 			{
 				return $this->exists($pieces[1]);
 			}
@@ -77,7 +77,8 @@ class Item_kit extends CI_Model
 		custom8, 
 		custom9, 
 		custom10,
-		item_type');
+		item_type,
+		stock_type');
 
 		$this->db->from('item_kits');
 		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');

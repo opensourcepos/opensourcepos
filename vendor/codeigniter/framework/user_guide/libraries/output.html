@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Output Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Output Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Pagination Class" href="pagination.html"/>
         <link rel="prev" title="Migrations Class" href="migration.html"/> 
@@ -450,10 +450,10 @@ need to.</p>
 <h2><a class="toc-backref" href="#id1">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Output">
-<em class="property">class </em><code class="descname">CI_Output</code><a class="headerlink" href="#CI_Output" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Output</tt><a class="headerlink" href="#CI_Output" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="attribute">
 <dt>
-<code class="descname">$parse_exec_vars = TRUE;</code></dt>
+<tt class="descname">$parse_exec_vars = TRUE;</tt></dt>
 <dd><p>Enables/disables parsing of the {elapsed_time} and {memory_usage} pseudo-variables.</p>
 <p>CodeIgniter will parse those tokens in your output by default. To disable this, set
 this property to FALSE in your controller.</p>
@@ -464,7 +464,7 @@ this property to FALSE in your controller.</p>
 
 <dl class="method">
 <dt id="CI_Output::set_output">
-<code class="descname">set_output</code><span class="sig-paren">(</span><em>$output</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::set_output" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_output</tt><big>(</big><em>$output</em><big>)</big><a class="headerlink" href="#CI_Output::set_output" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -496,7 +496,7 @@ of your controller methods, don&#8217;t set the output until the end.</p>
 
 <dl class="method">
 <dt id="CI_Output::set_content_type">
-<code class="descname">set_content_type</code><span class="sig-paren">(</span><em>$mime_type</em><span class="optional">[</span>, <em>$charset = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::set_content_type" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_content_type</tt><big>(</big><em>$mime_type</em><span class="optional">[</span>, <em>$charset = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Output::set_content_type" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -538,7 +538,7 @@ exists in <em>application/config/mimes.php</em> or it will have no effect.</p>
 
 <dl class="method">
 <dt id="CI_Output::get_content_type">
-<code class="descname">get_content_type</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::get_content_type" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_content_type</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Output::get_content_type" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -561,7 +561,7 @@ exists in <em>application/config/mimes.php</em> or it will have no effect.</p>
 
 <dl class="method">
 <dt id="CI_Output::get_header">
-<code class="descname">get_header</code><span class="sig-paren">(</span><em>$header</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::get_header" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_header</tt><big>(</big><em>$header</em><big>)</big><a class="headerlink" href="#CI_Output::get_header" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -592,13 +592,13 @@ Example:</p>
 </div>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p class="last">Raw headers sent via PHP&#8217;s native <code class="docutils literal"><span class="pre">header()</span></code> function are also detected.</p>
+<p class="last">Raw headers sent via PHP&#8217;s native <tt class="docutils literal"><span class="pre">header()</span></tt> function are also detected.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Output::get_output">
-<code class="descname">get_output</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::get_output" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">get_output</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Output::get_output" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -616,12 +616,12 @@ storage in the output class. Usage example:</p>
 </div>
 <p>Note that data will only be retrievable from this function if it has
 been previously sent to the output class by one of the CodeIgniter
-functions like <code class="docutils literal"><span class="pre">$this-&gt;load-&gt;view()</span></code>.</p>
+functions like <tt class="docutils literal"><span class="pre">$this-&gt;load-&gt;view()</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Output::append_output">
-<code class="descname">append_output</code><span class="sig-paren">(</span><em>$output</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::append_output" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">append_output</tt><big>(</big><em>$output</em><big>)</big><a class="headerlink" href="#CI_Output::append_output" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -647,7 +647,7 @@ functions like <code class="docutils literal"><span class="pre">$this-&gt;load-&
 
 <dl class="method">
 <dt id="CI_Output::set_header">
-<code class="descname">set_header</code><span class="sig-paren">(</span><em>$header</em><span class="optional">[</span>, <em>$replace = TRUE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::set_header" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_header</tt><big>(</big><em>$header</em><span class="optional">[</span>, <em>$replace = TRUE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Output::set_header" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -680,7 +680,7 @@ send for you when outputting the final rendered display. Example:</p>
 
 <dl class="method">
 <dt id="CI_Output::set_status_header">
-<code class="descname">set_status_header</code><span class="sig-paren">(</span><span class="optional">[</span><em>$code = 200</em><span class="optional">[</span>, <em>$text = ''</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::set_status_header" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_status_header</tt><big>(</big><span class="optional">[</span><em>$code = 200</em><span class="optional">[</span>, <em>$text = ''</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Output::set_status_header" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -708,13 +708,13 @@ send for you when outputting the final rendered display. Example:</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method is an alias for <a class="reference internal" href="../general/common_functions.html"><em>Common function</em></a>
-<code class="xref py py-func docutils literal"><span class="pre">set_status_header()</span></code>.</p>
+<tt class="xref py py-func docutils literal"><span class="pre">set_status_header()</span></tt>.</p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_Output::enable_profiler">
-<code class="descname">enable_profiler</code><span class="sig-paren">(</span><span class="optional">[</span><em>$val = TRUE</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::enable_profiler" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">enable_profiler</tt><big>(</big><span class="optional">[</span><em>$val = TRUE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Output::enable_profiler" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -748,7 +748,7 @@ and other data at the bottom of your pages for debugging and optimization purpos
 
 <dl class="method">
 <dt id="CI_Output::set_profiler_sections">
-<code class="descname">set_profiler_sections</code><span class="sig-paren">(</span><em>$sections</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::set_profiler_sections" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_profiler_sections</tt><big>(</big><em>$sections</em><big>)</big><a class="headerlink" href="#CI_Output::set_profiler_sections" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -772,7 +772,7 @@ Please refer to the <a class="reference internal" href="../general/profiling.htm
 
 <dl class="method">
 <dt id="CI_Output::cache">
-<code class="descname">cache</code><span class="sig-paren">(</span><em>$time</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::cache" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">cache</tt><big>(</big><em>$time</em><big>)</big><a class="headerlink" href="#CI_Output::cache" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -796,7 +796,7 @@ Please refer to the <a class="reference internal" href="../general/profiling.htm
 
 <dl class="method">
 <dt id="CI_Output::_display">
-<code class="descname">_display</code><span class="sig-paren">(</span><span class="optional">[</span><em>$output = ''</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Output::_display" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">_display</tt><big>(</big><span class="optional">[</span><em>$output = ''</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Output::_display" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -819,7 +819,7 @@ timers.</p>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
 <p class="last">This method is called automatically at the end of script execution, you won&#8217;t need to
-call it manually unless you are aborting script execution using <code class="docutils literal"><span class="pre">exit()</span></code> or <code class="docutils literal"><span class="pre">die()</span></code> in your code.</p>
+call it manually unless you are aborting script execution using <tt class="docutils literal"><span class="pre">exit()</span></tt> or <tt class="docutils literal"><span class="pre">die()</span></tt> in your code.</p>
 </div>
 <p>Example:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$response</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span><span class="s1">&#39;status&#39;</span> <span class="o">=&gt;</span> <span class="s1">&#39;OK&#39;</span><span class="p">);</span>
@@ -861,8 +861,8 @@ call it manually unless you are aborting script execution using <code class="doc
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -883,7 +883,7 @@ call it manually unless you are aborting script execution using <code class="doc
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

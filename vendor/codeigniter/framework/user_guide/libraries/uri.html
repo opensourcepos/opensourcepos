@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>URI Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>URI Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="User Agent Class" href="user_agent.html"/>
         <link rel="prev" title="Unit Testing Class" href="unit_testing.html"/> 
@@ -442,10 +442,10 @@ is no need to do it manually.</p>
 <h2><a class="toc-backref" href="#id1">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_URI">
-<em class="property">class </em><code class="descname">CI_URI</code><a class="headerlink" href="#CI_URI" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_URI</tt><a class="headerlink" href="#CI_URI" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_URI::segment">
-<code class="descname">segment</code><span class="sig-paren">(</span><em>$n</em><span class="optional">[</span>, <em>$no_result = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::segment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">segment</tt><big>(</big><em>$n</em><span class="optional">[</span>, <em>$no_result = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_URI::segment" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -498,7 +498,7 @@ For example, this would tell the method to return the number zero in the event o
 
 <dl class="method">
 <dt id="CI_URI::rsegment">
-<code class="descname">rsegment</code><span class="sig-paren">(</span><em>$n</em><span class="optional">[</span>, <em>$no_result = NULL</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::rsegment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">rsegment</tt><big>(</big><em>$n</em><span class="optional">[</span>, <em>$no_result = NULL</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_URI::rsegment" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -517,14 +517,14 @@ For example, this would tell the method to return the number zero in the event o
 </tr>
 </tbody>
 </table>
-<p>This method is identical to <code class="docutils literal"><span class="pre">segment()</span></code>, except that it lets you retrieve
+<p>This method is identical to <tt class="docutils literal"><span class="pre">segment()</span></tt>, except that it lets you retrieve
 a specific segment from your re-routed URI in the event you are
 using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"><em>URI Routing</em></a> feature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_URI::slash_segment">
-<code class="descname">slash_segment</code><span class="sig-paren">(</span><em>$n</em><span class="optional">[</span>, <em>$where = 'trailing'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::slash_segment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">slash_segment</tt><big>(</big><em>$n</em><span class="optional">[</span>, <em>$where = 'trailing'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_URI::slash_segment" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -543,7 +543,7 @@ using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing
 </tr>
 </tbody>
 </table>
-<p>This method is almost identical to <code class="docutils literal"><span class="pre">segment()</span></code>, except it
+<p>This method is almost identical to <tt class="docutils literal"><span class="pre">segment()</span></tt>, except it
 adds a trailing and/or leading slash based on the second parameter.
 If the parameter is not used, a trailing slash added. Examples:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">uri</span><span class="o">-&gt;</span><span class="na">slash_segment</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
@@ -561,7 +561,7 @@ If the parameter is not used, a trailing slash added. Examples:</p>
 
 <dl class="method">
 <dt id="CI_URI::slash_rsegment">
-<code class="descname">slash_rsegment</code><span class="sig-paren">(</span><em>$n</em><span class="optional">[</span>, <em>$where = 'trailing'</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::slash_rsegment" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">slash_rsegment</tt><big>(</big><em>$n</em><span class="optional">[</span>, <em>$where = 'trailing'</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_URI::slash_rsegment" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -580,7 +580,7 @@ If the parameter is not used, a trailing slash added. Examples:</p>
 </tr>
 </tbody>
 </table>
-<p>This method is identical to <code class="docutils literal"><span class="pre">slash_segment()</span></code>, except that it lets you
+<p>This method is identical to <tt class="docutils literal"><span class="pre">slash_segment()</span></tt>, except that it lets you
 add slashes a specific segment from your re-routed URI in the event you
 are using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"><em>URI Routing</em></a>
 feature.</p>
@@ -588,7 +588,7 @@ feature.</p>
 
 <dl class="method">
 <dt id="CI_URI::uri_to_assoc">
-<code class="descname">uri_to_assoc</code><span class="sig-paren">(</span><span class="optional">[</span><em>$n = 3</em><span class="optional">[</span>, <em>$default = array()</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::uri_to_assoc" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">uri_to_assoc</tt><big>(</big><span class="optional">[</span><em>$n = 3</em><span class="optional">[</span>, <em>$default = array()</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_URI::uri_to_assoc" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -644,7 +644,7 @@ is an odd number of URI segments) the value will be set to NULL.</p>
 
 <dl class="method">
 <dt id="CI_URI::ruri_to_assoc">
-<code class="descname">ruri_to_assoc</code><span class="sig-paren">(</span><span class="optional">[</span><em>$n = 3</em><span class="optional">[</span>, <em>$default = array()</em><span class="optional">]</span><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::ruri_to_assoc" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">ruri_to_assoc</tt><big>(</big><span class="optional">[</span><em>$n = 3</em><span class="optional">[</span>, <em>$default = array()</em><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_URI::ruri_to_assoc" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -663,14 +663,14 @@ is an odd number of URI segments) the value will be set to NULL.</p>
 </tr>
 </tbody>
 </table>
-<p>This method is identical to <code class="docutils literal"><span class="pre">uri_to_assoc()</span></code>, except that it creates
+<p>This method is identical to <tt class="docutils literal"><span class="pre">uri_to_assoc()</span></tt>, except that it creates
 an associative array using the re-routed URI in the event you are using
 CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"><em>URI Routing</em></a> feature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_URI::assoc_to_uri">
-<code class="descname">assoc_to_uri</code><span class="sig-paren">(</span><em>$array</em><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::assoc_to_uri" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">assoc_to_uri</tt><big>(</big><em>$array</em><big>)</big><a class="headerlink" href="#CI_URI::assoc_to_uri" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -700,7 +700,7 @@ The array keys will be included in the string. Example:</p>
 
 <dl class="method">
 <dt id="CI_URI::uri_string">
-<code class="descname">uri_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::uri_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">uri_string</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_URI::uri_string" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -723,7 +723,7 @@ The array keys will be included in the string. Example:</p>
 
 <dl class="method">
 <dt id="CI_URI::ruri_string">
-<code class="descname">ruri_string</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::ruri_string" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">ruri_string</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_URI::ruri_string" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -734,14 +734,14 @@ The array keys will be included in the string. Example:</p>
 </tr>
 </tbody>
 </table>
-<p>This method is identical to <code class="docutils literal"><span class="pre">uri_string()</span></code>, except that it returns
+<p>This method is identical to <tt class="docutils literal"><span class="pre">uri_string()</span></tt>, except that it returns
 the re-routed URI in the event you are using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"><em>URI
 Routing</em></a> feature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_URI::total_segments">
-<code class="descname">total_segments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::total_segments" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">total_segments</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_URI::total_segments" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -757,7 +757,7 @@ Routing</em></a> feature.</p>
 
 <dl class="method">
 <dt id="CI_URI::total_rsegments">
-<code class="descname">total_rsegments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::total_rsegments" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">total_rsegments</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_URI::total_rsegments" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -768,14 +768,14 @@ Routing</em></a> feature.</p>
 </tr>
 </tbody>
 </table>
-<p>This method is identical to <code class="docutils literal"><span class="pre">total_segments()</span></code>, except that it returns
+<p>This method is identical to <tt class="docutils literal"><span class="pre">total_segments()</span></tt>, except that it returns
 the total number of segments in your re-routed URI in the event you are
 using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"><em>URI Routing</em></a> feature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="CI_URI::segment_array">
-<code class="descname">segment_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::segment_array" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">segment_array</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_URI::segment_array" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -800,7 +800,7 @@ using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing
 
 <dl class="method">
 <dt id="CI_URI::rsegment_array">
-<code class="descname">rsegment_array</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_URI::rsegment_array" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">rsegment_array</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_URI::rsegment_array" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -811,7 +811,7 @@ using CodeIgniter&#8217;s <a class="reference internal" href="../general/routing
 </tr>
 </tbody>
 </table>
-<p>This method is identical to <code class="docutils literal"><span class="pre">segment_array()</span></code>, except that it returns
+<p>This method is identical to <tt class="docutils literal"><span class="pre">segment_array()</span></tt>, except that it returns
 the array of segments in your re-routed URI in the event you are using
 CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"><em>URI Routing</em></a> feature.</p>
 </dd></dl>
@@ -839,8 +839,8 @@ CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -861,7 +861,7 @@ CodeIgniter&#8217;s <a class="reference internal" href="../general/routing.html"
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

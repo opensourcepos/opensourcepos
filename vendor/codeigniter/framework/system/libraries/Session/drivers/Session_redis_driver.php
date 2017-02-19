@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 3.0.0
@@ -199,7 +199,7 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
 	 */
 	public function write($session_id, $session_data)
 	{
-		if ( ! isset($this->_redis))
+		if ( ! isset($this->_redis, $this->_lock_key))
 		{
 			return $this->_fail();
 		}
@@ -215,27 +215,22 @@ class CI_Session_redis_driver extends CI_Session_driver implements SessionHandle
 			$this->_session_id = $session_id;
 		}
 
-		if (isset($this->_lock_key))
+		$this->_redis->setTimeout($this->_lock_key, 300);
+		if ($this->_fingerprint !== ($fingerprint = md5($session_data)) OR $this->_key_exists === FALSE)
 		{
-			$this->_redis->setTimeout($this->_lock_key, 300);
-			if ($this->_fingerprint !== ($fingerprint = md5($session_data)) OR $this->_key_exists === FALSE)
+			if ($this->_redis->set($this->_key_prefix.$session_id, $session_data, $this->_config['expiration']))
 			{
-				if ($this->_redis->set($this->_key_prefix.$session_id, $session_data, $this->_config['expiration']))
-				{
-					$this->_fingerprint = $fingerprint;
-					$this->_key_exists = TRUE;
-					return $this->_success;
-				}
-
-				return $this->_fail();
+				$this->_fingerprint = $fingerprint;
+				$this->_key_exists = TRUE;
+				return $this->_success;
 			}
 
-			return ($this->_redis->setTimeout($this->_key_prefix.$session_id, $this->_config['expiration']))
-				? $this->_success
-				: $this->_fail();
+			return $this->_fail();
 		}
 
-		return $this->_fail();
+		return ($this->_redis->setTimeout($this->_key_prefix.$session_id, $this->_config['expiration']))
+			? $this->_success
+			: $this->_fail();
 	}
 
 	// ------------------------------------------------------------------------

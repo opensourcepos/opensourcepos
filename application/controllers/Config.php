@@ -204,6 +204,8 @@ class Config extends Secure_Controller
 		$data['licenses'] = $this->_licenses();
 		$data['themes'] = $this->_themes();
 
+		$this->_check_encryption();
+
 		$this->load->view("configs/manage", $data);
 	}
 		

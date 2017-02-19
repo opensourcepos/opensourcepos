@@ -282,7 +282,6 @@ class Sales extends Secure_Controller
 		}
 		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-
 			// Add kit item to order if one is assigned
 			$pieces = explode(' ', $item_id_or_number_or_item_kit_or_receipt);
 			$item_kit_id = $pieces[1];
@@ -292,7 +291,7 @@ class Sales extends Secure_Controller
 			$stock_type = $item_kit_info->stock_type;
 			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
 
-			if ($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
+			if($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
 			{
 				$discount = $item_kit_info->kit_discount_percent;
 			}
@@ -300,7 +299,7 @@ class Sales extends Secure_Controller
 			$price = null;
 			$print_option = 0; // Always include in list of items on invoice
 
-			if ($kit_item_id !== '' && $kit_item_id != 0)
+			if(!empty($kit_item_id))
 			{
 				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, null, null, null, $print_option))
 				{
@@ -312,8 +311,6 @@ class Sales extends Secure_Controller
 				}
 			}
 
-
-
 			// Add item kit items to order
 			$stock_warning = null;
 			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $price_option, $kit_print_option, $stock_warning))
@@ -324,7 +321,6 @@ class Sales extends Secure_Controller
 			{
 				$data['warning'] = $stock_warning;
 			}
-
 		}
 		else
 		{
@@ -699,7 +695,7 @@ class Sales extends Secure_Controller
 		$data['invoice_number'] = $this->_substitute_invoice_number($customer_info);
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_number_enabled();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['payments_cover_total'] = $this->sale_lib->get_amount_due() <= 0;
+		$data['payments_cover_total'] = $this->sale_lib->is_payment_covering_total();
 		
 		$data = $this->xss_clean($data);
 

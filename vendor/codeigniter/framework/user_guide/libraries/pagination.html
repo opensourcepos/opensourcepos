@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Pagination Class &mdash; CodeIgniter 3.1.2 documentation</title>
+  <title>Pagination Class &mdash; CodeIgniter 3.1.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.2 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Template Parser Class" href="parser.html"/>
         <link rel="prev" title="Output Class" href="output.html"/> 
@@ -470,8 +470,8 @@ that allows you to navigate from page to page, like this:</p>
 </div>
 <div class="section" id="notes">
 <h3><a class="toc-backref" href="#id2">Notes</a><a class="headerlink" href="#notes" title="Permalink to this headline">¶</a></h3>
-<p>The <code class="docutils literal"><span class="pre">$config</span></code> array contains your configuration variables. It is passed to
-the <code class="docutils literal"><span class="pre">$this-&gt;pagination-&gt;initialize()</span></code> method as shown above. Although
+<p>The <tt class="docutils literal"><span class="pre">$config</span></tt> array contains your configuration variables. It is passed to
+the <tt class="docutils literal"><span class="pre">$this-&gt;pagination-&gt;initialize()</span></tt> method as shown above. Although
 there are some twenty items you can configure, at minimum you need the
 three shown. Here is a description of what those items represent:</p>
 <ul class="simple">
@@ -486,16 +486,16 @@ the total rows that your database query returned.</li>
 <li><strong>per_page</strong> The number of items you intend to show per page. In the
 above example, you would be showing 20 items per page.</li>
 </ul>
-<p>The <code class="docutils literal"><span class="pre">create_links()</span></code> method returns an empty string when there is no
+<p>The <tt class="docutils literal"><span class="pre">create_links()</span></tt> method returns an empty string when there is no
 pagination to show.</p>
 </div>
 <div class="section" id="setting-preferences-in-a-config-file">
 <h3><a class="toc-backref" href="#id3">Setting preferences in a config file</a><a class="headerlink" href="#setting-preferences-in-a-config-file" title="Permalink to this headline">¶</a></h3>
 <p>If you prefer not to set preferences using the above method, you can
 instead put them into a config file. Simply create a new file called
-pagination.php, add the <code class="docutils literal"><span class="pre">$config</span></code> array in that file. Then save the file
+pagination.php, add the <tt class="docutils literal"><span class="pre">$config</span></tt> array in that file. Then save the file
 in <em>application/config/pagination.php</em> and it will be used automatically.
-You will NOT need to use <code class="docutils literal"><span class="pre">$this-&gt;pagination-&gt;initialize()</span></code> if you save
+You will NOT need to use <tt class="docutils literal"><span class="pre">$this-&gt;pagination-&gt;initialize()</span></tt> if you save
 your preferences in a config file.</p>
 </div>
 </div>
@@ -522,15 +522,15 @@ like:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">example</span><span class="o">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">index</span><span class="o">.</span><span class="nx">php</span><span class="o">/</span><span class="nx">test</span><span class="o">/</span><span class="nx">page</span><span class="o">/</span><span class="mi">20</span>
 </pre></div>
 </div>
-<p>If you have <code class="docutils literal"><span class="pre">$config['enable_query_strings']</span></code> set to TRUE your links
+<p>If you have <tt class="docutils literal"><span class="pre">$config['enable_query_strings']</span></tt> set to TRUE your links
 will automatically be re-written using Query Strings. This option can
-also be explictly set. Using <code class="docutils literal"><span class="pre">$config['page_query_string']</span></code> set to TRUE,
+also be explictly set. Using <tt class="docutils literal"><span class="pre">$config['page_query_string']</span></tt> set to TRUE,
 the pagination link will become:</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nx">http</span><span class="o">://</span><span class="nx">example</span><span class="o">.</span><span class="nx">com</span><span class="o">/</span><span class="nx">index</span><span class="o">.</span><span class="nx">php</span><span class="o">?</span><span class="nx">c</span><span class="o">=</span><span class="nx">test</span><span class="o">&amp;</span><span class="nx">m</span><span class="o">=</span><span class="nx">page</span><span class="o">&amp;</span><span class="nx">per_page</span><span class="o">=</span><span class="mi">20</span>
 </pre></div>
 </div>
 <p>Note that &#8220;per_page&#8221; is the default query string passed, however can be
-configured using <code class="docutils literal"><span class="pre">$config['query_string_segment']</span> <span class="pre">=</span> <span class="pre">'your_string'</span></code></p>
+configured using <tt class="docutils literal"><span class="pre">$config['query_string_segment']</span> <span class="pre">=</span> <span class="pre">'your_string'</span></tt></p>
 <p><strong>$config[&#8216;reuse_query_string&#8217;] = FALSE;</strong></p>
 <p>By default your Query String arguments (nothing to do with other
 query string options) will be ignored. Setting this config to
@@ -548,8 +548,8 @@ the offset segment.</p>
 <p>A custom suffix added to the path. The sufix value will be right after
 the offset segment.</p>
 <p><strong>$config[&#8216;use_global_url_suffix&#8217;] = FALSE;</strong></p>
-<p>When set to TRUE, it will <strong>override</strong> the <code class="docutils literal"><span class="pre">$config['suffix']</span></code> value and
-instead set it to the one that you have in <code class="docutils literal"><span class="pre">$config['url_suffix']</span></code> in
+<p>When set to TRUE, it will <strong>override</strong> the <tt class="docutils literal"><span class="pre">$config['suffix']</span></tt> value and
+instead set it to the one that you have in <tt class="docutils literal"><span class="pre">$config['url_suffix']</span></tt> in
 your <strong>application/config/config.php</strong> file.</p>
 </div>
 <div class="section" id="adding-enclosing-markup">
@@ -670,10 +670,10 @@ you can pass boolean FALSE as a regular attribute</p>
 <h2><a class="toc-backref" href="#id15">Class Reference</a><a class="headerlink" href="#class-reference" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="CI_Pagination">
-<em class="property">class </em><code class="descname">CI_Pagination</code><a class="headerlink" href="#CI_Pagination" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><tt class="descname">CI_Pagination</tt><a class="headerlink" href="#CI_Pagination" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="CI_Pagination::initialize">
-<code class="descname">initialize</code><span class="sig-paren">(</span><span class="optional">[</span><em>$params = array()</em><span class="optional">]</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Pagination::initialize" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">initialize</tt><big>(</big><span class="optional">[</span><em>$params = array()</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Pagination::initialize" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -696,7 +696,7 @@ you can pass boolean FALSE as a regular attribute</p>
 
 <dl class="method">
 <dt id="CI_Pagination::create_links">
-<code class="descname">create_links</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#CI_Pagination::create_links" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">create_links</tt><big>(</big><big>)</big><a class="headerlink" href="#CI_Pagination::create_links" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -733,8 +733,8 @@ you can pass boolean FALSE as a regular attribute</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2014 - 2016, British Columbia Institute of Technology.
-      Last updated on Oct 28, 2016.
+        &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
+      Last updated on Jan 09, 2017.
     </p>
   </div>
 
@@ -755,7 +755,7 @@ you can pass boolean FALSE as a regular attribute</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.2',
+            VERSION:'3.1.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
