@@ -312,7 +312,15 @@ class Sale_lib
 		$precision = $this->CI->config->item('currency_decimals');
 		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_EVEN), 0, $precision);
 		// take care of rounding error introduced by round tripping payment amount to the browser
-		return  $rounded_due == 0 ? 0 : $amount_due;
+		return $rounded_due == 0 ? 0 : $amount_due;
+	}
+
+	public function is_payment_covering_total()
+	{
+		$amount_due = $this->get_amount_due();
+		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
+		$threshold = bcpow(10, -$this->CI->config->item('currency_decimals')) / 2;
+		return ($amount_due > -$threshold && $amount_due < $threshold);
 	}
 
 	public function get_customer()
@@ -418,7 +426,6 @@ class Sale_lib
 
 	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0')
 	{
-
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
 		//make sure item exists		
