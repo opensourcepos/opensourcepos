@@ -10,26 +10,26 @@ Introduction
 
 Open Source Point of Sale is a web based point of sale system.
 The main features are:
-* Stock management
+* Stock management (Items and Kits)
 * Sale register with transactions logging
-* Receipt and invoice printing and emailing
+* Receipt and invoice printing and/or emailing
+* Barcode generation and printing
 * Suppliers and Customers database
 * Multiuser with permission control
-* Reporting
-* Gift card
 * Receivings
-* Barcode generation and printing
-* Messaging
+* Reporting on sales, orders, inventory status
+* Gift card
+* Messaging (SMS)
 * Multilanguage
 * Different UI themes
 
-The software is written in PHP language, it uses MySQL or MariaDB as data storage back-end and has a simple but intuitive user interface.
+The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
-The latest version 3.0.2 is a complete overhaul of the original software.
+The latest version 3.1.0 is a complete overhaul of the original software.
 It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
 It also has improved functionality and security.
 
-Deployed to a Cloud it can be defined as a SaaS (Software as as Service) type of solution.
+Deployed to a Cloud it can be defined as a SaaS (Software as a Service) solution.
 
 License
 -------
@@ -66,13 +66,15 @@ If you like the project, and you are making money out of it on a daily basis, th
 
 Server Requirements
 -------------------
-PHP version 5.5 or newer is recommended but PHP 7.x is not fully supported yet.
+PHP version 5.5 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt` and `php-curl` installed and enabled.
 
-PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets` and `php-mcrypt` installed and enabled.
+MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance.
 
-MySQL 5.5 or 5.6 are fine but MySQL 5.7 is not supported yet.
+Apache 2.2 and 2.4 are supported. Also Nginx has been proven to work fine, see [wiki page here](https://github.com/jekkos/opensourcepos/wiki/Local-Deployment-using-LEMP)
 
-Apache 2.2 and 2.4 are working both fine.
+Raspberry PI based installations proved to work, see [wiki page here](https://github.com/jekkos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS))
+
+For Windows based installations please read [the wiki](https://github.com/jekkos/opensourcepos/wiki) and also existing closed issues as this topic has been covered well in all the variants and issues.
 
 Local install
 -------------
@@ -88,8 +90,6 @@ Local install
   * password: pointofsale
 9. Enjoy
 10. Oops an issue? Please read the FAQ first thing :-)
-
-P.S.: For more info about a local install based on Raspberry PI please read our wiki
 
 Local install using Docker
 --------------------------
@@ -137,7 +137,7 @@ Bug reports must follow this schema:
 1. Ospos **version string with git commit hash** (see ospos footer)
 2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
 3. Web Server name and version (e.g. Apache 2.4)
-4. Database name and version (e.g. =< MySQL 5.6)
+4. Database name and version (e.g. MySQL 5.6)
 5. PHP version (e.g. PHP 5.5)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
@@ -155,11 +155,7 @@ FAQ
 
 * If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/jekkos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/jekkos/opensourcepos/issues/949)
 
-* If you are getting the error `Message: Can't use method return value in write context` that means that you are probably using PHP7 which is not completely supported yet. Check your hosting configuration to verify whether you have a supported PHP version installed
-
 * If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php5-gd`, `php-intl` and `php-sockets`. Restart the web server)
-
-* If you get various errors at item creation, opening views or reports, or having issues at login please make sure you are not using MySQL 5.7 as it's not supported yet
 
 * If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/jekkos/opensourcepos/issues/920) for more help
 
