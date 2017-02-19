@@ -30,15 +30,18 @@ if (isset($success))
 				<li class="pull-left">
 					<?php echo form_dropdown('mode', $modes, $mode, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 				</li>
-
-				<li class="pull-left first_li">
-					<label class="control-label"><?php echo $this->lang->line('sales_table'); ?></label>
-				</li>
-				<li class="pull-left">
-					<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table,array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
-				</li>
-
 				<?php
+				if($this->config->item('dinner_table_enable') == TRUE)
+				{
+				?>
+					<li class="pull-left first_li">
+						<label class="control-label"><?php echo $this->lang->line('sales_table'); ?></label>
+					</li>
+					<li class="pull-left">
+						<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table,array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+					</li>
+				<?php
+				}
 				if (count($stock_locations) > 1)
 				{
 				?>

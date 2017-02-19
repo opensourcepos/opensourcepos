@@ -433,12 +433,15 @@ class Config extends Secure_Controller
 	{
 		$this->db->trans_start();
 		
+		$this->Appconfig->save('dinner_table_enable',$this->input->post('dinner_table_enable'));
+
 		$deleted_tables = $this->Dinner_table->get_all()->result_array();
 		$not_to_delete = array();
 		foreach($this->input->post() as $key => $value)
 		{
-			if (strstr($key, 'dinner_table'))
+			if (strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
 			{
+
 				$dinner_table_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
 				$not_to_delete[] = $dinner_table_id;
 

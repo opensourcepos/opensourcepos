@@ -276,7 +276,10 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('dinner_table'))
 		{
-			$this->set_dinner_table(1);
+			if($this->CI->config->item('dinner_table_enable') == TRUE)
+			{
+				$this->set_dinner_table(1);
+			}
 		}
 
 		return $this->CI->session->userdata('dinner_table');

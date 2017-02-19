@@ -16,7 +16,7 @@ INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted
 
 -- alter ospos_sales table
 ALTER TABLE `ospos_sales`
- ADD COLUMN `dinner_table_id` int(11) NOT NULL;
+ ADD COLUMN `dinner_table_id` int(11) NULL;
 
 ALTER TABLE `ospos_sales`
  ADD KEY `dinner_table_id` (`dinner_table_id`),
@@ -24,7 +24,7 @@ ALTER TABLE `ospos_sales`
 
 -- alter ospos_sales_suspended table
 ALTER TABLE `ospos_sales_suspended`
- ADD COLUMN `dinner_table_id` int(11) NOT NULL;
+ ADD COLUMN `dinner_table_id` int(11) NULL;
 
 ALTER TABLE `ospos_sales_suspended`
  ADD KEY `dinner_table_id` (`dinner_table_id`),
