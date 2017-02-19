@@ -126,13 +126,13 @@ if (isset($error_message))
             <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($tax_exclusive_subtotal); ?></textarea></td>
         </tr>
 		<?php
-		foreach($taxes as $name=>$value)
+		foreach($taxes as $tax_group_index=>$sales_tax)
 		{
 			?>
             <tr>
                 <td colspan="3" class="blank"> </td>
-                <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $name; ?>:</textarea></td>
-                <td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency($value); ?></textarea></td>
+                <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
+                <td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></textarea></td>
             </tr>
 			<?php
 		}

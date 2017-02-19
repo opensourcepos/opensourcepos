@@ -34,6 +34,7 @@ class Login extends CI_Controller
 					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
 					$this->tracking_lib->track_event('Stats', 'Timezone', $this->config->item('timezone'));
 					$this->tracking_lib->track_event('Stats', 'Currency', $this->config->item('currency_symbol'));
+					$this->tracking_lib->track_event('Stats', 'Customer Sales Tax Support', $this->config->item('customer_sales_tax_support'));
 					$this->tracking_lib->track_event('Stats', 'Tax Included', $this->config->item('tax_included'));
 					$this->tracking_lib->track_event('Stats', 'Thousands Separator', $this->config->item('thousands_separator'));
 					$this->tracking_lib->track_event('Stats', 'Currency Decimals', $this->config->item('currency_decimals'));
@@ -71,7 +72,7 @@ class Login extends CI_Controller
 	
 	private function _security_check($username, $password)
 	{
-		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
+		return preg_match('~\b(Copyright|(c)|Â©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
 	}
 }
 ?>

@@ -63,13 +63,15 @@ class Customers extends Persons
 	*/
 	public function view($customer_id = -1)
 	{
+		$customer_sales_tax_support = $this->config->item('customer_sales_tax_support');
+
 		$info = $this->Customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
 		{
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
-
+		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' .$this->Tax->get_info($info->sales_tax_code)->tax_code_name;
 		$data['total'] = $this->xss_clean($this->Customer->get_totals($customer_id)->total);
 		$packages = array('' => $this->lang->line('items_none'));
 		foreach($this->Customer_rewards->get_all()->result_array() as $row)
@@ -78,6 +80,15 @@ class Customers extends Persons
 		}
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
+
+		if ($customer_sales_tax_support == '1')
+		{
+			$data['customer_sales_tax_enabled']  = TRUE;
+		}
+		else
+		{
+			$data['customer_sales_tax_enabled']  = FALSE;
+		}
 
 		$this->load->view("customers/form", $data);
 	}
@@ -101,12 +112,14 @@ class Customers extends Persons
 			'country' => $this->input->post('country'),
 			'comments' => $this->input->post('comments')
 		);
+
 		$customer_data = array(
 			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
 			'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
 			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
-			'taxable' => $this->input->post('taxable') != NULL
+			'taxable' => $this->input->post('taxable') != NULL,
+			'sales_tax_code' => $this->input->post('sales_tax_code')
 		);
 
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))

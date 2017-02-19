@@ -122,3 +122,85 @@ ADD COLUMN `points` int(11) DEFAULT NULL AFTER `package_id`;
 -- add enabled reward points key into config
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_reward_enable','');
+
+/* The following  changes are in support of customer sales tax changes */
+
+CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
+  `tax_code` varchar(32) NOT NULL,
+  `tax_code_name` varchar(255) NOT NULL DEFAULT '',
+  `tax_code_type` tinyint(2) NOT NULL DEFAULT 0,
+  `city` varchar(255) NOT NULL DEFAULT '',
+  `state` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`tax_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
+  `rate_tax_code` varchar(32) NOT NULL,
+  `rate_tax_category_id` int(10) NOT NULL,
+  `tax_rate` decimal(15,4) NOT NULL DEFAULT 0.0000,
+  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`rate_tax_code`,`rate_tax_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `ospos_sales_taxes` (
+  `sale_id` int(10) NOT NULL,
+  `tax_type` smallint(2) NOT NULL,
+  `tax_group` varchar(32) NOT NULL,
+  `sale_tax_basis` decimal(15,4) NOT NULL,
+  `sale_tax_amount` decimal(15,4) NOT NULL,
+  `print_sequence` tinyint(2) NOT NULL DEFAULT 0,
+  `name` varchar(255) NOT NULL,
+  `tax_rate` decimal(15,4) NOT NULL,
+  `sales_tax_code` varchar(32) NOT NULL DEFAULT '',
+  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`sale_id`,`tax_type`,`tax_group`),
+  KEY `print_sequence` (`sale_id`,`print_sequence`,`tax_type`,`tax_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
+  `tax_category_id` int(10) NOT NULL,
+  `tax_category` varchar(32) NOT NULL,
+  `tax_group_sequence` tinyint(2) NOT NULL,
+  PRIMARY KEY (`tax_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
+  (0, 'Standard', 10),
+  (1, 'Service', 12),
+  (2, 'Alcohol', 11);
+
+ALTER TABLE `ospos_items`
+  ADD COLUMN `tax_category_id` int(10) NOT NULL DEFAULT 0;
+
+ALTER TABLE `ospos_sales`
+  ADD COLUMN `quote_number` varchar(32) DEFAULT NULL,
+  ADD COLUMN `sale_status` tinyint(2) NOT NULL DEFAULT 0;
+
+ALTER TABLE `ospos_sales_items_taxes`
+  MODIFY COLUMN `percent` decimal(15,4) NOT NULL DEFAULT 0.0000,
+  ADD COLUMN `tax_type` tinyint(2) NOT NULL DEFAULT 0,
+  ADD COLUMN `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  ADD COLUMN `cascade_tax` tinyint(2) NOT NULL DEFAULT 0,
+  ADD COLUMN `cascade_sequence` tinyint(2) NOT NULL DEFAULT 0,
+  ADD COLUMN `item_tax_amount` decimal(15,4) NOT NULL DEFAULT 0;
+
+ALTER TABLE `ospos_customers`
+  ADD COLUMN `sales_tax_code` varchar(32) NOT NULL;
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+  ('customer_sales_tax_support', '0'),
+  ('default_origin_tax_code', '');
+
+INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
+  ('module_taxes', 'module_taxes_desc', 105, 'taxes');
+
+INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+  ('taxes', 'taxes');
+
+/* End of customer sales tax changes */
+
+/* Start of support for cash rounding */
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+  ('cash_decimals', '2');
+/* End of support for cash rounding */
+

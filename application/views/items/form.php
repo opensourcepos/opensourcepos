@@ -166,7 +166,7 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
+        <div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
@@ -189,7 +189,16 @@
 			</div>
 		</div>
 
-		<?php
+		<?php if($customer_sales_tax_enabled) { ?>
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('taxes_tax_category'), 'tax_category', array('class'=>'control-label col-xs-3')); ?>
+                <div class='col-xs-8'>
+					<?php echo form_dropdown('tax_category_id', $tax_categories, $selected_tax_category, array('class'=>'form-control')); ?>
+                </div>
+            </div>
+		<?php } ?>
+
+        <?php
 		foreach($stock_locations as $key=>$location_detail)
 		{
 		?>

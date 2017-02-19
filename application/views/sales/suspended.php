@@ -50,7 +50,7 @@
 				<td><?php echo $suspended_sale['comment'];?></td>
 				<td>
 					<?php echo form_open('sales/unsuspend');
-						echo form_hidden('suspended_sale_id', $suspended_sale['sale_id']);
+						echo form_hidden('suspended_sale_id', $suspended_sale['suspended_sale_id']);
 					?>
 						<input type="submit" name="submit" value="<?php echo $this->lang->line('sales_unsuspend'); ?>" id="submit" class="btn btn-primary btn-xs pull-right">
 					<?php echo form_close(); ?>

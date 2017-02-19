@@ -408,7 +408,7 @@ $(document).ready(function()
 {
     $("#item").autocomplete(
     {
-		source: '<?php echo site_url($controller_name."/item_search"); ?>',
+		source: '<?php echo site_url($controller_name."/stock_item_search"); ?>',
     	minChars:0,
        	delay:10,
        	autoFocus: false,

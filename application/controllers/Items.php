@@ -197,6 +197,7 @@ class Items extends Secure_Controller
 			$item_info->reorder_level = 0;
 			$item_info->item_type = '0'; // standard
 			$item_info->stock_type = '0'; // stock
+			$item_info->tax_category_id = 0;
 		}
 
 		$data['item_info'] = $item_info;
@@ -208,6 +209,25 @@ class Items extends Secure_Controller
 		}
 		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $item_info->supplier_id;
+
+		$customer_sales_tax_support = $this->config->item('customer_sales_tax_support');
+		if($customer_sales_tax_support == '1')
+		{
+			$data['customer_sales_tax_enabled']  = TRUE;
+			$tax_categories = array();
+			foreach($this->Tax->get_all_tax_categories()->result_array() as $row)
+			{
+				$tax_categories[$this->xss_clean($row['tax_category_id'])] = $this->xss_clean($row['tax_category']);
+			}
+			$data['tax_categories'] = $tax_categories;
+			$data['selected_tax_category'] = $item_info->tax_category_id;
+		}
+		else
+		{
+			$data['customer_sales_tax_enabled']  = FALSE;
+			$data['tax_categories'] = array();
+			$data['selected_tax_category'] = '';
+		}
 
 		$data['logo_exists'] = $item_info->pic_filename != '';
 		$ext = pathinfo($item_info->pic_filename, PATHINFO_EXTENSION);
@@ -371,6 +391,16 @@ class Items extends Secure_Controller
 			'custom9' => $this->input->post('custom9') == NULL ? '' : $this->input->post('custom9'),
 			'custom10' => $this->input->post('custom10') == NULL ? '' : $this->input->post('custom10')
 		);
+
+		$x = $this->input->post('tax_category_id');
+		if(!isset($x))
+		{
+			$item['tax_category_id'] = '';
+		}
+		else
+		{
+			$item['tax_category_id'] = $this->input->post('selected_tax_category');
+		}
 		
 		if(!empty($upload_data['orig_name']))
 		{

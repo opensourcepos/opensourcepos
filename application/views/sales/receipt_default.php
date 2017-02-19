@@ -115,12 +115,12 @@
 				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $discounted_subtotal); ?></td>
 			</tr>
 			<?php
-			foreach($taxes as $name=>$value)
+			foreach($taxes as $tax_group_index=>$sales_tax)
 			{
 			?>
 				<tr>
-					<td colspan="3" class="total-value"><?php echo $name; ?>:</td>
-					<td class="total-value"><?php echo to_currency($value); ?></td>
+					<td colspan="3" class="total-value"><?php echo $sales_tax['tax_group']; ?>:</td>
+					<td class="total-value"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
 			}

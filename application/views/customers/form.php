@@ -91,6 +91,26 @@
 				<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable);?>
 			</div>
 		</div>
+
+        <?php if ($customer_sales_tax_enabled) { ?>
+        <div class="form-group  form-group-sm">
+			<?php echo form_label($this->lang->line('customers_tax_code'), 'sales_tax_code_name', array('class'=>'control-label col-xs-3')); ?>
+            <div class='col-xs-8'>
+                <div class="input-group input-group-sm">
+					<?php echo form_input(array(
+							'name'=>'sales_tax_code_name',
+							'id'=>'sales_tax_code_name',
+							'class'=>'form-control input-sm',
+							'size'=>'50',
+							'value'=>$sales_tax_code_label)
+					); ?>
+					<?php echo form_hidden('sales_tax_code', $person_info->sales_tax_code);?>
+
+                </div>
+            </div>
+        </div>
+		<?php } ?>
+
 	</fieldset>
 <?php echo form_close(); ?>
 
@@ -142,4 +162,27 @@ $(document).ready(function()
 		}
 	}, form_support.error));
 });
+
+$("input[name='sales_tax_code_name']").change(function() {
+    if( ! $("input[name='sales_tax_code_name']").val() ) {
+        $("input[name='sales_tax_code']").val('');
+    }
+});
+
+var fill_value = function(event, ui) {
+    event.preventDefault();
+    $("input[name='sales_tax_code']").val(ui.item.value);
+    $("input[name='sales_tax_code_name']").val(ui.item.label);
+};
+
+$("#sales_tax_code_name").autocomplete({
+    source: '<?php echo site_url("taxes/suggest_sales_tax_codes"); ?>',
+    minChars: 0,
+    delay: 15,
+    cacheLength: 1,
+    appendTo: '.modal-content',
+    select: fill_value,
+    focus: fill_value
+});
+
 </script>

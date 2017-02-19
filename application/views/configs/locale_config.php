@@ -65,7 +65,8 @@
 						'0' => '0',
 						'1' => '1',
 						'2' => '2',
-						'3' => '3'
+						'3' => '3',
+						'4' => '4'
 					),
 					$this->config->item('tax_decimals'), array('class' => 'form-control input-sm'));
 					?>
@@ -86,7 +87,31 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_cash_decimals'), 'cash_decimals', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-2'>
+					<?php echo form_dropdown('cash_decimals', array(
+						'0' => '0',
+						'1' => '1',
+						'2' => '2'
+					),
+						$this->config->item('cash_decimals'), array('class' => 'form-control input-sm'));
+					?>
+                </div>
+                <div class='col-xs-1'>
+                    <span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_cash_rounding'), 'cash_rounding_code', array('class' => 'control-label col-xs-2')); ?>
+                <div class='col-xs-4'>
+					<?php echo form_dropdown('cash_rounding_code', $rounding_options, $this->config->item('cash_rounding_code'), array('class' => 'form-control input-sm'));
+					?>
+                </div>
+            </div>
+
+            <div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_payment_options_order'), 'payment_options_order', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_dropdown('payment_options_order', array(
