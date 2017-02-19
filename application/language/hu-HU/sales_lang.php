@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "Értékesités sikeresen frissitve";
 $lang["sales_suspend_sale"] = "Felfüggeszt";
 $lang["sales_suspended_sale_id"] = "ID";
 $lang["sales_suspended_sales"] = "Függő eladások";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "Adó";
 $lang["sales_tax_percent"] = "Adó %";
 $lang["sales_total"] = "Összesen";

@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "Uspješno ste ažurirali prodaju";
 $lang["sales_suspend_sale"] = "Obustavi";
 $lang["sales_suspended_sale_id"] = "Broj obustave";
 $lang["sales_suspended_sales"] = "Obustavljanje";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "Porez";
 $lang["sales_tax_percent"] = "Porez %";
 $lang["sales_total"] = "Ukupno";
