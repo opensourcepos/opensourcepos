@@ -78,6 +78,7 @@ $lang["config_default_tax_rate_number"] = "The default tax rate must be a number
 $lang["config_default_tax_rate_required"] = "The default tax rate is a required field";
 $lang["config_default_tax_name_required"] = "The default tax name is a required field";
 $lang["config_dinner_table"] = "Table";
+$lang["config_dinner_table_enable"] = "Enable Dinner Tables";
 $lang["config_dinner_table_duplicate"] = "Please use an unique table name";
 $lang["config_dinner_table_invalid_chars"] = "The table name can not contain '_'";
 $lang["config_dinner_table_required"] = "Table is a required field";
