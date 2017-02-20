@@ -420,7 +420,7 @@ class Sale extends CI_Model
 			//POS #
 			$pieces = explode(' ', $receipt_sale_id);
 
-			if(count($pieces) == 2 && preg_match('/(POS)/', $pieces[0]))
+			if(count($pieces) == 2 && preg_match('/(POS)/i', $pieces[0]))
 			{
 				return $this->exists($pieces[1]);
 			}

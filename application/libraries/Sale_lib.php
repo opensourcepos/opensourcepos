@@ -201,7 +201,15 @@ class Sale_lib
 		$precision = $this->CI->config->item('currency_decimals');
 		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_EVEN), 0, $precision);
 		// take care of rounding error introduced by round tripping payment amount to the browser
-		return  $rounded_due == 0 ? 0 : $amount_due;
+		return $rounded_due == 0 ? 0 : $amount_due;
+	}
+
+	public function is_payment_covering_total()
+	{
+		$amount_due = $this->get_amount_due();
+		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
+		$threshold = bcpow(10, -$this->CI->config->item('currency_decimals')) / 2;
+		return ($amount_due > -$threshold && $amount_due < $threshold);
 	}
 
 	public function get_customer()
@@ -268,7 +276,10 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('dinner_table'))
 		{
-			$this->set_dinner_table(1);
+			if($this->CI->config->item('dinner_table_enable') == TRUE)
+			{
+				$this->set_dinner_table(1);
+			}
 		}
 
 		return $this->CI->session->userdata('dinner_table');
@@ -321,11 +332,11 @@ class Sale_lib
 
 	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0')
 	{
-
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
 		//make sure item exists		
-		if (empty($item_info)) {
+		if(empty($item_info))
+		{
 			$item_id = -1;
 			return FALSE;
 		}
@@ -352,11 +363,13 @@ class Sale_lib
 			//We primed the loop so maxkey is 0 the first time.
 			//Also, we have stored the key in the element itself so we can compare.
 
-			if ($maxkey <= $item['line']) {
+			if($maxkey <= $item['line'])
+			{
 				$maxkey = $item['line'];
 			}
 
-			if ($item['item_id'] == $item_id && $item['item_location'] == $item_location) {
+			if($item['item_id'] == $item_id && $item['item_location'] == $item_location)
+			{
 				$itemalreadyinsale = TRUE;
 				$updatekey = $item['line'];
 				if(!$item_info->is_serialized)
@@ -369,11 +382,11 @@ class Sale_lib
 		$insertkey = $maxkey + 1;
 		//array/cart records are identified by $insertkey and item_id is just another field.
 
-		if (is_null($price))
+		if(is_null($price))
 		{
 			$price = $item_info->unit_price;
 		}
-		elseif ($price == 0)
+		elseif($price == 0)
 		{
 			$price = 0.00;
 			$discount = 0.00;
