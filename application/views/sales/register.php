@@ -695,6 +695,12 @@ $(document).ready(function()
 			}
 		}
 	}
+
+	$('[name="price"],[name="quantity"],[name="discount"]').focusout(function() {
+		var index = $(this).parents("tr").index() - 1;
+		$("#cart_" + index).submit();
+	});
+	
 });
 
 function check_payment_type_giftcard()
