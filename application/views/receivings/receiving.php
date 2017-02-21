@@ -142,7 +142,7 @@ if (isset($success))
 							if ($items_module_allowed && $mode !='requisition')
 							{
 							?>
-								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price'])));?></td>
+								<td><?php echo form_input(array('name'=>'price', 'id'=>'cart_'.$line, 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price'])));?></td>
 							<?php
 							}
 							else
@@ -156,7 +156,7 @@ if (isset($success))
 							}
 							?>
 							
-							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']))); ?></td>
+							<td><?php echo form_input(array('name'=>'quantity', 'id'=>'cart_'.$line, 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']))); ?></td>
 							<?php
 							if ($item['receiving_quantity'] > 1) 
 							{
@@ -176,7 +176,7 @@ if (isset($success))
 							if ($items_module_allowed && $mode!='requisition')
 							{
 							?>
-								<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount']));?></td>
+								<td><?php echo form_input(array('name'=>'discount', 'id'=>'cart_'.$line, 'class'=>'form-control input-sm', 'value'=>$item['discount']));?></td>
 							<?php
 							}
 							else
@@ -516,6 +516,17 @@ $(document).ready(function()
 			}
 		}
 	}
+	$('[name="price"]').focusout( function(e) {
+		document.getElementById(this.id).submit();
+	});
+
+	$('[name="quantity"]').focusout( function(e) {
+		document.getElementById(this.id).submit();
+	});
+
+	$('[name="discount"]').focusout( function(e) {
+		document.getElementById(this.id).submit();
+	});
 });
 
 </script>
