@@ -124,7 +124,7 @@ if (isset($success))
 				{					
 			?>
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
-						<tr>
+						<tr id='<?php echo $line?>'>
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
 							<td><?php echo $item['item_number']; ?></td>
 							<td style="align: center;">
@@ -697,7 +697,7 @@ $(document).ready(function()
 	}
 
 	$('[name="price"],[name="quantity"],[name="discount"]').focusout(function() {
-		var index = $(this).parents("tr").index() - 1;
+		var index = $(this).parents("tr").attr('id');
 		$("#cart_" + index).submit();
 	});
 	
