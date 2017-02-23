@@ -110,6 +110,7 @@ $lang["sales_successfully_updated"] = "Sale successfully updated";
 $lang["sales_suspend_sale"] = "Suspend";
 $lang["sales_suspended_sale_id"] = "ID";
 $lang["sales_suspended_sales"] = "Suspended";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "Tax";
 $lang["sales_tax_percent"] = "Tax %";
 $lang["sales_total"] = "Total";

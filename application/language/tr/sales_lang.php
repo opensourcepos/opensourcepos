@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "Satış düzenlendi";
 $lang["sales_suspend_sale"] = "Satışı Askıya Al";
 $lang["sales_suspended_sale_id"] = "No";
 $lang["sales_suspended_sales"] = "Askıdaki Satışlar";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "Vergi";
 $lang["sales_tax_percent"] = "Vergi %";
 $lang["sales_total"] = "Toplam";

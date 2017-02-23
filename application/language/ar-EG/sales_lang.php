@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "لقد تم تحديث بيانات عم�
 $lang["sales_suspend_sale"] = "تعليق عملية البيع";
 $lang["sales_suspended_sale_id"] = "كود عملية البيع";
 $lang["sales_suspended_sales"] = "المبيعات المعلقة";
+$lang["sales_table"] = "Table";
 $lang["sales_tax"] = "ضريبة";
 $lang["sales_tax_percent"] = "ضريبة %";
 $lang["sales_total"] = "المجموع";
