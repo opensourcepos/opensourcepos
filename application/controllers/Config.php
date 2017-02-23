@@ -196,6 +196,7 @@ class Config extends Secure_Controller
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
+		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 
 		$data = $this->xss_clean($data);
 		
@@ -470,15 +471,33 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array (
 			'invoice_enable' => $this->input->post('invoice_enable') != NULL,
+			'default_register_mode' => $this->input->post('default_register_mode'),
 			'sales_invoice_format' => $this->input->post('sales_invoice_format'),
+			'sales_quote_format' => $this->input->post('sales_quote_format'),
 			'recv_invoice_format' => $this->input->post('recv_invoice_format'),
 			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
 			'invoice_email_message' => $this->input->post('invoice_email_message'),
-			'line_sequence' => $this->input->post('line_sequence')
+			'line_sequence' => $this->input->post('line_sequence'),
+			'last_used_invoice_number' =>$this->input->post('last_used_invoice_number'),
+			'last_used_quote_number' =>$this->input->post('last_used_quote_number')
 		);
 
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
+
+		// Update the register mode with the latest change so that if the user
+		// switches immediately back to the register the mode reflects the change
+		if ($success == TRUE)
+		{
+			if ($this->config->item('invoice_enable') == '1')
+			{
+				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
+			}
+			else
+			{
+				$this->sale_lib->set_mode('sale');
+			}
+		}
 
 		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
 	}
