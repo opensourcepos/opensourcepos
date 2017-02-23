@@ -696,9 +696,8 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"]').focusout(function() {
-		var index = $(this).parents("tr").index() - 1;
-		$("#cart_" + index).submit();
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').focusout(function() {
+		$(this).parents("tr").prevAll("form:first").submit()
 	});
 	
 });
