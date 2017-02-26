@@ -518,10 +518,12 @@ CREATE TABLE `ospos_sales` (
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `dinner_table_id` int(11) NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
   KEY `sale_time` (`sale_time`),
+  KEY `dinner_table_id` (`dinner_table_id`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
@@ -614,9 +616,11 @@ CREATE TABLE `ospos_sales_suspended` (
   `invoice_number` varchar(32) DEFAULT NULL,
   `quote_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `dinner_table_id` int(11) NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
-  KEY `employee_id` (`employee_id`)
+  KEY `employee_id` (`employee_id`),
+  KEY `dinner_table_id` (`dinner_table_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
 
 --
@@ -748,3 +752,24 @@ CREATE TABLE `ospos_suppliers` (
 -- Dumping data for table `ospos_suppliers`
 --
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_dinner_tables`
+--
+
+CREATE TABLE `ospos_dinner_tables` (
+  `dinner_table_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0',
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`dinner_table_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ospos_dinner_tables`
+--
+
+INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted`) VALUES
+(1, 'Delivery', 0, 0),
+(2, 'Take Away', 0, 0);
