@@ -165,6 +165,8 @@ class Sale_suspended extends CI_Model
 		$this->db->from('sales_suspended_items');
 		$this->db->join('items as items', 'sales_suspended_items.item_id = items.item_id');
 		$this->db->where('sale_id', $sale_id);
+
+		return $this->db->get();
 	}
 
 	public function get_sale_payments($sale_id)
