@@ -188,7 +188,7 @@ if (isset($success))
 							}
 							?>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:$('#<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php 
@@ -516,6 +516,12 @@ $(document).ready(function()
 			}
 		}
 	}
+
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').focusout(function() {
+		var index = $(this).parents("tr").index() - 1;
+		$("#cart_" + index).submit();
+	});
+
 });
 
 </script>
