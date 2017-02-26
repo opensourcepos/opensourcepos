@@ -107,6 +107,7 @@ $lang["sales_successfully_updated"] = "La venta ha sido actualizada satisfactori
 $lang["sales_suspend_sale"] = "Suspender Venta";
 $lang["sales_suspended_sale_id"] = "ID de Venta Suspendida";
 $lang["sales_suspended_sales"] = "Ventas Suspendidas";
+$lang["sales_table"] = "Mesa";
 $lang["sales_tax"] = "Impuesto";
 $lang["sales_tax_percent"] = "% de Impuesto";
 $lang["sales_total"] = "Total";
