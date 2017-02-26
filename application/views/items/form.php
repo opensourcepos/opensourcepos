@@ -46,6 +46,7 @@
 			</div>
 		</div>
 
+		<?php if ($item_kits_enabled == '1'): ?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_stock_type'), 'stock_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
 			<div class="col-xs-8">
@@ -93,8 +94,9 @@
 				</label>
 			</div>
 		</div>
+		<?php endif; ?>
 
-		<div class="form-group form-group-sm">
+        <div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control')); ?>

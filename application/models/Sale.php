@@ -682,7 +682,8 @@ class Sale extends CI_Model
 		print_option,
 		items.name as name,
 		category,
-		item_type');
+		item_type,
+		stock_type');
 		$this->db->from('sales_items as sales_items');
 		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
 		$this->db->where('sale_id', $sale_id);
@@ -770,6 +771,19 @@ class Sale extends CI_Model
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+	}
+
+	// TODO change to use new quote_number field
+	public function check_quote_number_exists($quote_number, $sale_id = '')
+	{
+		$this->db->from('sales_suspended');
+		$this->db->where('invoice_number', $quote_number);
+		if(!empty($sale_id))
+		{
+			$this->db->where('sale_id !=', $sale_id);
+		}
+
+		return ($this->db->get()->num_rows() == 1);
 	}
 
 	public function check_invoice_number_exists($invoice_number, $sale_id = '')
