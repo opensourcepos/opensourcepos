@@ -642,7 +642,6 @@ class Sale_lib
 	
 	public function add_item_kit($external_item_kit_id, $item_location, $discount, $price_option, $kit_print_option, &$stock_warning)
 	{
-
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
 		$item_kit_id = $pieces[1];
@@ -792,7 +791,8 @@ class Sale_lib
 						$taxes[$name] = 0;
 					}
 
-					$taxes[$name] = bcadd($taxes[$name], $tax_amount);
+					$precision = $this->CI->config->item('currency_decimals');
+					$taxes[$name] = bcadd($taxes[$name], round($tax_amount, $precision, PHP_ROUND_HALF_EVEN));
 				}
 			}
 		}
