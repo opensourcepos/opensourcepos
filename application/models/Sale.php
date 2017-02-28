@@ -5,8 +5,6 @@ class Sale extends CI_Model
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$this->db->where('employee_id', $employee_id);
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
 			'(
 				SELECT payments.sale_id AS sale_id,
@@ -106,8 +104,11 @@ class Sale extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_time', $order = 'desc')
 	{
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		if (!$this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+		{
+		$employee_id = $this->session->userdata('person_id'); //$this->Employee->get_logged_in_employee_info()->person_id;
 		$this->db->where('employee_id', $employee_id);
+		}
 		$where = '';
 
 		if (empty($this->config->item('date_or_time_format')))
@@ -269,6 +270,11 @@ class Sale extends CI_Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
+		if (!$this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+		{
+		$employee_id = $this->session->userdata('person_id'); //$this->Employee->get_logged_in_employee_info()->person_id;
+		$this->db->where('employee_id', $employee_id);
+		}
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');

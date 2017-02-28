@@ -379,11 +379,13 @@ if (isset($success))
 						</table>
 					
 					<?php echo form_close(); ?>
-	   					<?php
+
+	   				<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+
+						<?php
 	    				// Only show this part if the payment cover the total and in sale or return mode
-		    			if ($sales_or_return_mode == '1')
-			    		{
-				    	?>
+		    			if ($sales_or_return_mode == '0')
+
 			    		{
 				    	?>
   						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
@@ -509,7 +511,9 @@ if (isset($success))
 						</div>
 					</div>
 				<?php
-				if (($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
+
+				if (($mode == "sale") && $this->config->item('invoice_enable') == TRUE && isset($customer))
+
 				{
 				?>
 					<div class="row">

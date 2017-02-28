@@ -23,7 +23,6 @@ class Sales extends Secure_Controller
 	public function manage()
 	{
 		$person_id = $this->session->userdata('person_id');
-
 		
 			$data['table_headers'] = get_sales_manage_table_headers();
 
@@ -31,7 +30,6 @@ class Sales extends Secure_Controller
 			if($this->config->item('invoice_enable') == TRUE)
 			{
 				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
-										//'deleted' => $this->lang->line('sales_deleted'),
 					'only_invoices' => $this->lang->line('sales_invoice_filter'));
 			}
 			else
@@ -65,7 +63,6 @@ class Sales extends Secure_Controller
 						 'end_date' => $this->input->get('end_date'),
 						 'only_cash' => FALSE,
 						 'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
-						//'deleted' => '0',
 						 'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
 
 		// check if any filter is set in the multiselect dropdown
@@ -449,6 +446,7 @@ class Sales extends Secure_Controller
 				$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments']);
 				$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
+
 				// Resort and filter cart lines for printing
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
@@ -461,7 +459,9 @@ class Sales extends Secure_Controller
 				else
 				{
 					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-					$this->load->view('sales/invoice', $data);
+
+					$this->load->view('sales/receipt', $data);
+
 					$this->sale_lib->clear_all();
 				}
 			}
@@ -561,9 +561,8 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_all();
 
 		return $result;
-			
-	} 
-		
+	}
+
 	public function send_quote($sale_id)
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
@@ -770,7 +769,7 @@ class Sales extends Secure_Controller
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
-		$employee_info = $this->Employee->get_info($this->Employee->get_logged_in_employee_info()->person_id);
+		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
@@ -801,7 +800,8 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
 
-		if ($this->config->item('invoice_enable') == '0')
+
+		if ($this->config->item('invoice_enable') == '0' or empty($customer_info))
 		{
 			$data['modes'] = array(
 				'sale' => $this->lang->line('sales_sale'),
@@ -809,12 +809,16 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
+
 			$data['modes'] = array(
+
 				'sale' => $this->lang->line('sales_sale'),
 				'sale_invoice' => $this->lang->line('sales_sale_by_invoice'),
 				'sale_quote' => $this->lang->line('sales_quote'),
 				'return' => $this->lang->line('sales_return'));
+
 		}
+
 		$data['mode'] = $this->sale_lib->get_mode();
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
@@ -875,7 +879,9 @@ class Sales extends Secure_Controller
 	public function invoice($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);
+
 		$this->load->view('sales/receipt', $data);
+
 		$this->sale_lib->clear_all();
 	}
 
@@ -928,7 +934,7 @@ class Sales extends Secure_Controller
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_deleted')));
 		}
-	}	
+	}
 
 	public function save($sale_id = -1)
 	{
@@ -939,7 +945,6 @@ class Sales extends Secure_Controller
 			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
 			'employee_id' => $this->input->post('employee_id'),
 			'comment' => $this->input->post('comment'),
-			//'deleted' => $this->input->post('deleted') != '' ? $this->input->post('deleted') : NULL,
 			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
 		);
 
@@ -1074,49 +1079,6 @@ class Sales extends Secure_Controller
 		$invoice_number = $this->input->post('invoice_number');
 		$exists = !empty($invoice_number) && $this->Sale->check_invoice_number_exists($invoice_number, $sale_id);
 		echo !$exists ? 'true' : 'false';
-	}
-	
-	
-	public function complete_proforma()
-	{
-		$data = array();
-
-		$data['cart'] = $this->sale_lib->get_cart();
-		$data['subtotal'] = $this->sale_lib->get_subtotal();
-		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(TRUE);
-		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
-		$data['taxes'] = $this->sale_lib->get_taxes();
-		$data['total'] = $this->sale_lib->get_total();
-		$data['discount'] = $this->sale_lib->get_discount();
-		$data['receipt_title'] = $this->lang->line('sales_proforma');
-		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
-		$data['transaction_date'] = date($this->config->item('dateformat'));
-		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$data['comments'] = $this->sale_lib->get_comment();
-		$data['payments'] = $this->sale_lib->get_payments();
-		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
-		$data['amount_due'] = $this->sale_lib->get_amount_due();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$employee_info = $this->Employee->get_info($employee_id);
-		$data['employee'] = $employee_info->first_name  . ' ' . $employee_info->last_name[0];
-		$data['company_info'] = implode("\n", array(
-			$this->config->item('address'),
-			$this->config->item('phone'),
-			$this->config->item('account_number')
-		));
-		$customer_id = $this->sale_lib->get_customer();
-		$customer_info = $this->_load_customer_data($customer_id, $data);
-		$invoice_number = $this->_substitute_invoice_number($customer_info);
-					
-			$data = $this->xss_clean($data);		
-			$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
-			$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-			$data['email_receipt'] = $this->sale_lib->get_email_receipt();
-			
-				$this->load->view('sales/proforma', $data);
-			
-
-					
 	}
 
 	public function get_filtered($cart)
