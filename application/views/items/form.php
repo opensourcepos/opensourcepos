@@ -49,7 +49,7 @@
 			</div>
 		</div>
 <?php
-		<?php if ($item_kits_enabled == '1'): ?>
+		for ($i = 1; $i <= 10; $i++)
 		{
 		?>
 			<?php
@@ -68,12 +68,12 @@
 								);?>
 					</div>
 				</div>
-		<?php endif; ?>
+		<?php
 			}
 		}
 		?>
 
-        <div class="form-group form-group-sm">
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control')); ?>
