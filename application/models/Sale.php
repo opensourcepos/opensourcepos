@@ -104,6 +104,11 @@ class Sale extends CI_Model
 	*/
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_time', $order = 'desc')
 	{
+		if (!$this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+		{
+		$employee_id = $this->session->userdata('person_id'); //$this->Employee->get_logged_in_employee_info()->person_id;
+		$this->db->where('employee_id', $employee_id);
+		}
 		$where = '';
 
 		if (empty($this->config->item('date_or_time_format')))
@@ -265,6 +270,11 @@ class Sale extends CI_Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
+		if (!$this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+		{
+		$employee_id = $this->session->userdata('person_id'); //$this->Employee->get_logged_in_employee_info()->person_id;
+		$this->db->where('employee_id', $employee_id);
+		}
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
@@ -776,6 +786,19 @@ class Sale extends CI_Model
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->Employee->get_info($this->db->get()->row()->employee_id);
+	}
+
+	// TODO change to use new quote_number field
+	public function check_quote_number_exists($quote_number, $sale_id = '')
+	{
+		$this->db->from('sales_suspended');
+		$this->db->where('invoice_number', $quote_number);
+		if(!empty($sale_id))
+		{
+			$this->db->where('sale_id !=', $sale_id);
+		}
+
+		return ($this->db->get()->num_rows() == 1);
 	}
 
 	// TODO change to use new quote_number field

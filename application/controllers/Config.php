@@ -253,6 +253,7 @@ class Config extends Secure_Controller
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),
 			'default_sales_discount' => $this->input->post('default_sales_discount'),
+			'item_markup'=>$this->input->post('item_markup'),
 			'notify_horizontal_position' => $this->input->post('notify_horizontal_position'),
 			'notify_vertical_position' => $this->input->post('notify_vertical_position'),
 			'custom1_name' => $this->input->post('custom1_name'),

@@ -21,12 +21,7 @@ class Secure_Controller extends CI_Controller
 		$this->track_page($module_id, $module_id);
 
 		$logged_in_employee_info = $model->get_logged_in_employee_info();
-		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
-			(isset($submodule_id) && !$model->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
-		{
-			redirect('no_access/' . $module_id . '/' . $submodule_id);
-		}
-
+		
 		// load up global data visible to all the loaded views
 		$data['allowed_modules'] = $this->Module->get_allowed_modules($logged_in_employee_info->person_id);
 		$data['user_info'] = $logged_in_employee_info;

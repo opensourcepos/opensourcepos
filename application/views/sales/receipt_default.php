@@ -12,7 +12,19 @@
 		<div id="company_name"><?php echo $this->config->item('company'); ?></div>
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
+		<?php if(!empty($invoice_number))
+		{
+	    ?>
+	    <div id="sale_receipt"><?php echo "Sales Invoice" ?></div>
+	    <?php
+		}
+		else
+		{
+		?>
 		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
+		<?php
+		}
+		?>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 	</div>
 

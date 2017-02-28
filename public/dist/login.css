@@ -27,6 +27,7 @@
 	font-size:140%;
 	font-weight:300;
 	text-align:center;
+	border-radius:10px;
 	color:#fff;
 }
 
@@ -34,13 +35,15 @@ form
 {
 	background:#f0f0f0;
 	padding:6% 4%;
+	border-radius:10px;
 }
 
 input[type="username"], input[type="password"]
 {
 	width:100%;
 	margin-bottom:4%;
-	padding:4%;
+	padding:3%;
+	border-radius:10px;
 }
 
 input[type="submit"]

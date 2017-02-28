@@ -50,19 +50,13 @@ if (isset($success))
 							title='<?php echo $this->lang->line('sales_suspended_sales'); ?>'>
 						<span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspended_sales'); ?>
 					</button>
-				</li>
-			
-				<?php
-				if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
-				{
-				?>
+				</li>			
+				
 					<li class="pull-right">						
 						<?php echo anchor($controller_name."/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), 
 									array('class'=>'btn btn-primary btn-sm', 'id'=>'sales_takings_button', 'title'=>$this->lang->line('sales_takings'))); ?>
 					</li>
-				<?php
-				}
-				?>
+				
 			</ul>
 		</div>
 	<?php echo form_close(); ?>
@@ -126,7 +120,20 @@ if (isset($success))
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
-							<td><?php echo $item['item_number']; ?></td>
+							<?php if(!empty($item['item_number'])) 
+							{
+						     ?>
+							 <td><?php echo $item['item_number']; ?></td>
+							
+							<?php
+							}
+							else
+							{
+						?>
+						<td><?php echo $item['item_id']; ?></td>
+							<?php
+							}
+							?>
 							<td style="align: center;">
 								<?php echo $item['name']; ?><br /> <?php if($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
@@ -370,10 +377,13 @@ if (isset($success))
 								</td>
 							</tr>
 						</table>
+					
 					<?php echo form_close(); ?>
 	   					<?php
 	    				// Only show this part if the payment cover the total and in sale or return mode
 		    			if ($sales_or_return_mode == '1')
+			    		{
+				    	?>
 			    		{
 				    	?>
   						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>

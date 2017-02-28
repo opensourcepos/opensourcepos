@@ -93,6 +93,7 @@ $lang["config_general"] = "General";
 $lang["config_general_configuration"] = "General Configuration";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Store Information";
+$lang["config_item_markup"] = "Item Markup";
 $lang["config_invoice"] = "Invoice";
 $lang["config_invoice_configuration"] = "Invoice Print Settings";
 $lang["config_invoice_default_comments"] = "Default Invoice Comments";

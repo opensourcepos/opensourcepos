@@ -23,13 +23,7 @@ class Sales extends Secure_Controller
 	public function manage()
 	{
 		$person_id = $this->session->userdata('person_id');
-
-		if(!$this->Employee->has_grant('reports_sales', $person_id))
-		{
-			redirect('no_access/sales/reports_sales');
-		}
-		else
-		{
+		
 			$data['table_headers'] = get_sales_manage_table_headers();
 
 			// filters that will be loaded in the multiselect dropdown
@@ -44,7 +38,7 @@ class Sales extends Secure_Controller
 			}
 
 			$this->load->view('sales/manage', $data);
-		}
+		
 	}
 
 	public function get_row($row_id)
@@ -464,7 +458,7 @@ class Sales extends Secure_Controller
 				else
 				{
 					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-					$this->load->view('sales/invoice', $data);
+					$this->load->view('sales/receipt', $data);
 					$this->sale_lib->clear_all();
 				}
 			}
@@ -508,6 +502,20 @@ class Sales extends Secure_Controller
 			// Save the data to the sales table
 			$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], null, $data['payments']);
 			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
+
+			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+			$data = $this->xss_clean($data);
+
+			if($data['sale_id_num'] == -1)
+			{
+				$data['error_message'] = $this->lang->line('sales_transaction_failed');
+		}
+		else
+		{
+			// Save the data to the sales table
+			$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], null, $data['payments']);
+			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
+				$data['cart'] = $this->get_filtered($this->sale_lib->get_cart_reordered($data['sale_id_num']));
 
 			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 			$data = $this->xss_clean($data);
@@ -803,7 +811,7 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
 
-		if ($this->config->item('invoice_enable') == '0')
+		if ($this->config->item('invoice_enable') == '0' or empty($customer_info))
 		{
 			$data['modes'] = array(
 				'sale' => $this->lang->line('sales_sale'),
@@ -817,6 +825,8 @@ class Sales extends Secure_Controller
 				'sale_quote' => $this->lang->line('sales_quote'),
 				'return' => $this->lang->line('sales_return'));
 		}
+			}
+			
 		$data['mode'] = $this->sale_lib->get_mode();
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
@@ -877,7 +887,7 @@ class Sales extends Secure_Controller
 	public function invoice($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);
-		$this->load->view('sales/invoice', $data);
+		$this->load->view('sales/receipt', $data);
 		$this->sale_lib->clear_all();
 	}
 

@@ -28,7 +28,6 @@
 		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
 		<link rel="stylesheet" type="text/css" href="css/register.css"/>
 		<link rel="stylesheet" type="text/css" href="css/reports.css"/>
-		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
@@ -71,7 +70,7 @@
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6b4d066e8a"/>
-		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
+		<link rel="stylesheet" type="text/css" href="css/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
 		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=3af1006480"></script>
@@ -85,10 +84,24 @@
 		html {
 			overflow: auto;
 		}
+.navbar-nav {
+float:none;
+margin:0 auto;
+display: block;
+text-align: center;
+
+}
+
+.navbar-nav>li {
+display: inline-block;
+float:none;
+}
 	</style>
 </head>
 
 <body>
+	
+</div>
 	<div class="wrapper">
 		<div class="topbar">
 			<div class="container">
@@ -106,7 +119,7 @@
 				</div>
 			</div>
 		</div>
-
+		
 		<div class="navbar navbar-default" role="navigation">
 			<div class="container">
 				<div class="navbar-header">
@@ -116,12 +129,11 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-			
-					<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">OSPOS</a>
+		
 				</div>
 
 				<div class="navbar-collapse collapse">
-					<ul class="nav navbar-nav navbar-right">
+					<ul class="nav navbar-nav">
 						<?php foreach($allowed_modules->result() as $module): ?>
 						<li class="<?php echo $module->module_id == $this->uri->segment(1)? 'active': ''; ?>">
 							<a href="<?php echo site_url("$module->module_id");?>" title="<?php echo $this->lang->line("module_".$module->module_id);?>" class="menu-icon">
