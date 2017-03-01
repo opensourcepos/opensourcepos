@@ -140,6 +140,8 @@ class Sales extends Secure_Controller
 		{
 			$mode = $this->input->post('mode');
 			$this->sale_lib->set_mode($mode);
+			$dinner_table = $this->input->post('dinner_table');
+			$this->sale_lib->set_dinner_table($dinner_table);
 		}
 		elseif($this->Stock_location->is_allowed_location($stock_location, 'sales'))
 		{
@@ -381,6 +383,7 @@ class Sales extends Secure_Controller
 	public function complete()
 	{
 		$data = array();
+		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 		$data['cart'] = $this->sale_lib->get_cart();
 		$data['subtotal'] = $this->sale_lib->get_subtotal();
 		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(TRUE);
@@ -443,7 +446,7 @@ class Sales extends Secure_Controller
 				$data['quote_number'] = $quote_number;
 
 				// Save the data to the sales table
-				$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments']);
+				$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments'], $data['dinner_table']);
 				$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
 
@@ -503,7 +506,7 @@ class Sales extends Secure_Controller
 		else
 		{
 			// Save the data to the sales table
-			$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], null, $data['payments']);
+			$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], null, $data['payments'], $data['dinner_table']);
 			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
 			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
@@ -820,6 +823,8 @@ class Sales extends Secure_Controller
 		}
 
 		$data['mode'] = $this->sale_lib->get_mode();
+		$data['empty_tables'] = $this->sale_lib->get_empty_tables();
+		$data['selected_table'] = $this->sale_lib->get_dinner_table();
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
 		$data['subtotal'] = $this->sale_lib->get_subtotal(TRUE);
@@ -1009,6 +1014,7 @@ class Sales extends Secure_Controller
 
 	public function suspend()
 	{
+		$dinner_table = $this->sale_lib->get_dinner_table();
 		$cart = $this->sale_lib->get_cart();
 		$payments = $this->sale_lib->get_payments();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
@@ -1020,7 +1026,7 @@ class Sales extends Secure_Controller
 
 		//SAVE sale to database
 		$data = array();
-		if ($this->Sale_suspended->save($cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments) == '-1')
+		if ($this->Sale_suspended->save($cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table) == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
 		}
