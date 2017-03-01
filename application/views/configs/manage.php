@@ -17,6 +17,9 @@
         <a data-toggle="tab" href="#stock_tab" title="<?php echo $this->lang->line('config_location_configuration'); ?>"><?php echo $this->lang->line('config_location'); ?></a>
     </li>
     <li role="presentation">
+        <a data-toggle="tab" href="#table_tab" title="<?php echo $this->lang->line('config_table_configuration'); ?>"><?php echo $this->lang->line('config_table'); ?></a>
+    </li>
+    <li role="presentation">
         <a data-toggle="tab" href="#receipt_tab" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>"><?php echo $this->lang->line('config_receipt'); ?></a>
     </li>
     <li role="presentation">
@@ -48,6 +51,9 @@
     </div>
     <div class="tab-pane" id="stock_tab">
         <?php $this->load->view("configs/stock_config"); ?>
+    </div>
+    <div class="tab-pane" id="table_tab">
+        <?php $this->load->view("configs/table_config"); ?>
     </div>
     <div class="tab-pane" id="receipt_tab">
         <?php $this->load->view("configs/receipt_config"); ?>
