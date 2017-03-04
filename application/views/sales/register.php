@@ -290,6 +290,21 @@ if (isset($success))
 					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_discount"); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo $customer_discount_percent . ' %'; ?></th>
 				</tr>
+				<?php
+				if(!empty($customer_rewards) &&  isset($customer_rewards))
+				{
+				?>
+					<tr>
+						<th style='width: 55%;'><?php echo $this->lang->line("rewards_package"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['package_name']; ?></th>
+					</tr>
+					<tr>
+						<th style='width: 55%;'><?php echo $this->lang->line("customers_available_points"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['points']; ?></th>
+					</tr>
+				<?php
+				}
+				?>
 				<tr>
 					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_total"); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>

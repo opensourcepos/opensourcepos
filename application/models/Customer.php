@@ -146,6 +146,16 @@ class Customer extends Person
 	}
 	
 	/*
+	Updates reward points value
+	*/
+	public function update_reward_points_value($customer_id, $value)
+	{
+		$this->db->where('person_id', $customer_id);
+		$this->db->update('customers', array('points' => $value));
+	} 
+
+
+	/*
 	Deletes one customer
 	*/
 	public function delete($customer_id)

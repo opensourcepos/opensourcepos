@@ -194,6 +194,7 @@ class Config extends Secure_Controller
 	{
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['dinner_tables'] = $this->Dinner_table->get_all()->result_array();
+		$data['customer_rewards'] = $this->Customer_rewards->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
@@ -385,6 +386,15 @@ class Config extends Secure_Controller
 
 		$this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables));
 	}
+
+	public function customer_rewards() 
+	{
+		$customer_rewards = $this->Customer_rewards->get_all()->result_array();
+		
+		$customer_rewards = $this->xss_clean($customer_rewards);
+
+		$this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards));
+	}
 	
 	private function _clear_session_state()
 	{
@@ -461,6 +471,56 @@ class Config extends Secure_Controller
 			if(!in_array($dinner_table['dinner_table_id'],$not_to_delete))
 			{			
 				$this->Dinner_table->delete($dinner_table['dinner_table_id']);
+			}
+		}
+
+		$this->db->trans_complete();
+		
+		$success = $this->db->trans_status();
+		
+		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+	}
+
+	public function save_rewards() 
+	{
+		$this->db->trans_start();
+		
+		$this->Appconfig->save('customer_reward_enable',$this->input->post('customer_reward_enable'));
+
+		$deleted_packages = $this->Customer_rewards->get_all()->result_array();
+		$not_to_delete = array();
+		$array_save = array();
+		foreach($this->input->post() as $key => $value)
+		{   
+			if (strstr($key, 'reward_points') && $key != 'customer_reward_enable')
+			{
+				$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+				$not_to_delete[] = $customer_reward_id;
+				$array_save[$customer_reward_id]['points_percent'] = $value;
+			}
+			if (strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
+			{
+				$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+				$not_to_delete[] = $customer_reward_id;
+				$array_save[$customer_reward_id]['package_name'] = $value;
+			}
+		}
+		if(!empty($array_save))
+		foreach ($array_save as $key => $value) {
+			// save or update
+				$table_data = array('package_name' => $value['package_name'],'points_percent' => $value['points_percent']);
+				if ($this->Customer_rewards->save($table_data, $key))
+				{
+					$this->_clear_session_state();
+				}
+		}
+
+		// all locations not available in post will be deleted now
+		foreach ($deleted_packages as $customer_reward)
+		{
+			if(!in_array($customer_reward['customer_reward_id'],$not_to_delete))
+			{			
+				$this->Customer_rewards->delete($customer_reward['customer_reward_id']);
 			}
 		}
 

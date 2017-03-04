@@ -229,6 +229,38 @@ class Sales extends Secure_Controller
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				}
 			}
+			else if ($payment_type == $this->lang->line('sales_rewards'))
+			{
+				$customer_id = $this->sale_lib->get_customer();
+				$package_id = $this->Customer->get_info($customer_id)->package_id;
+				if(isset($package_id) && $package_id!=NULL){
+					$package_name = $this->Customer_rewards->get_name($package_id);
+					$points = $this->Customer->get_info($customer_id)->points;
+					$points = ($points==NULL ? 0 : $points);
+
+					$payments = $this->sale_lib->get_payments();
+					$payment_type = $payment_type;
+					$current_payments_with_rewards = isset($payments[$payment_type]) ? $payments[$payment_type]['payment_amount'] : 0;
+					$cur_rewards_value = $points;
+
+					if(($cur_rewards_value - $current_payments_with_rewards) <= 0)
+					{
+						$data['error'] = $this->lang->line('rewards_remaining_balance', to_currency($cur_rewards_value));
+					}
+					else
+					{
+						$new_reward_value = $points - $this->sale_lib->get_amount_due();
+						$new_reward_value = $new_reward_value >= 0 ? $new_reward_value : 0;
+						$this->sale_lib->set_rewards_remainder($new_reward_value);
+						$new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
+						$data['warning'] = $this->lang->line('rewards_remaining_balance', $new_reward_value);
+						$amount_tendered = min($this->sale_lib->get_amount_due(), $points);
+
+						$this->sale_lib->add_payment($payment_type, $amount_tendered);
+					}
+				}
+
+			}
 			else
 			{
 				$amount_tendered = $this->input->post('amount_tendered');
@@ -375,6 +407,8 @@ class Sales extends Secure_Controller
 	public function remove_customer()
 	{
 		$this->sale_lib->clear_giftcard_remainder();
+		$this->sale_lib->clear_rewards_remainder();
+		$this->sale_lib->delete_payment($this->lang->line('sales_rewards'));
 		$this->sale_lib->clear_invoice_number();
 		$this->sale_lib->remove_customer();
 
@@ -415,6 +449,7 @@ class Sales extends Secure_Controller
 		));
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
 		$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
+		$data['cur_rewards_value'] = $this->sale_lib->get_rewards_remainder();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
@@ -739,6 +774,14 @@ class Sales extends Secure_Controller
 			}
 			$data['customer_account_number'] = $customer_info->account_number;
 			$data['customer_discount_percent'] = $customer_info->discount_percent;
+			$package_id = $this->Customer->get_info($customer_id)->package_id;
+			if($package_id!=NULL){
+				$package_name = $this->Customer_rewards->get_name($package_id);
+				$points = $this->Customer->get_info($customer_id)->points;
+				$data['customer_rewards']['package_id'] = $package_id;
+				$data['customer_rewards']['points'] = ($points==NULL ? 0 : $points);
+				$data['customer_rewards']['package_name'] = $package_name;
+			}
 			if ($totals)
 			{
 				$cust_totals = $this->Customer->get_totals($customer_id);
@@ -835,7 +878,10 @@ class Sales extends Secure_Controller
 		$data['payments_total'] = $this->sale_lib->get_payments_total();
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$data['payments'] = $this->sale_lib->get_payments();
-		$data['payment_options'] = $this->Sale->get_payment_options();
+		if($customer_info)
+			$data['payment_options'] = $this->Sale->get_payment_options(TRUE,TRUE);
+		else
+			$data['payment_options'] = $this->Sale->get_payment_options();
 		$quote_number = $this->sale_lib->get_quote_number();
 		if ($quote_number != NULL)
 		{
