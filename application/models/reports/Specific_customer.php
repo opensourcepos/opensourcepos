@@ -76,7 +76,7 @@ class Specific_customer extends Report
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
-			$this->db->select('earned, used');
+			$this->db->select('used, earned');
 			$this->db->from('sales_reward_points');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['rewards'][$key] = $this->db->get()->result_array();

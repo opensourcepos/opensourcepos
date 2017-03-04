@@ -753,7 +753,7 @@ class Reports extends Secure_Controller
 			if(isset($report_data['rewards'][$key])){
 				foreach($report_data['rewards'][$key] as $drow)
 				{
-					$details_data_rewards[$row['sale_id']][] = $this->xss_clean(array($drow['earned'], $drow['used']));
+					$details_data_rewards[$row['sale_id']][] = $this->xss_clean(array($drow['used'], $drow['earned']));
 				}
 			}
 		}
@@ -984,7 +984,7 @@ class Reports extends Secure_Controller
 			if(isset($report_data['rewards'][$key])){
 				foreach($report_data['rewards'][$key] as $drow)
 				{
-					$details_data_rewards[$row['sale_id']][] = $this->xss_clean(array($drow['earned'], $drow['used']));
+					$details_data_rewards[$row['sale_id']][] = $this->xss_clean(array($drow['used'], $drow['earned']));
 				}
 			}
 		}
