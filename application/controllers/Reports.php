@@ -729,6 +729,7 @@ class Reports extends Secure_Controller
 
 		$summary_data = array();
 		$details_data = array();
+		$details_data_rewards = array();
 
 		foreach($report_data['summary'] as $key => $row)
 		{
@@ -749,6 +750,12 @@ class Reports extends Secure_Controller
 			{
 				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
 			}
+			if(isset($report_data['rewards'][$key])){
+				foreach($report_data['rewards'][$key] as $drow)
+				{
+					$details_data_rewards[$row['sale_id']][] = $this->xss_clean(array($drow['earned'], $drow['used']));
+				}
+			}
 		}
 
 		$customer_info = $this->Customer->get_info($customer_id);
@@ -758,6 +765,7 @@ class Reports extends Secure_Controller
 			'headers' => $headers,
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
+			'details_data_rewards' => $details_data_rewards,
 			'overall_summary_data' => $this->xss_clean($model->getSummaryData($inputs))
 		);
 
@@ -940,6 +948,7 @@ class Reports extends Secure_Controller
 
 		$summary_data = array();
 		$details_data = array();
+		$details_data_rewards = array();
 
 		$show_locations = $this->xss_clean($this->Stock_location->multiple_locations());
 
@@ -972,6 +981,12 @@ class Reports extends Secure_Controller
 				}
 				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
 			}
+			if(isset($report_data['rewards'][$key])){
+				foreach($report_data['rewards'][$key] as $drow)
+				{
+					$details_data_rewards[$row['sale_id']][] = $this->xss_clean(array($drow['earned'], $drow['used']));
+				}
+			}
 		}
 
 		$data = array(
@@ -981,9 +996,9 @@ class Reports extends Secure_Controller
 			'editable' => 'sales',
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
+			'details_data_rewards' => $details_data_rewards,
 			'overall_summary_data' => $this->xss_clean($model->getSummaryData($inputs))
 		);
-
 		$this->load->view('reports/tabular_details', $data);
 	}
 
