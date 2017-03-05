@@ -264,7 +264,7 @@ class Receiving extends CI_Model
 					MAX(serialnumber) AS serialnumber,
 					MAX(receivings_items.description) AS description,
 					MAX(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS subtotal,
-					MAX(item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) AS total,
+					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * discount_percent / 100) AS total,
 					MAX((item_unit_price * quantity_purchased - item_unit_price * quantity_purchased * discount_percent / 100) - (item_cost_price * quantity_purchased)) AS profit,
 					MAX(item_cost_price * quantity_purchased) AS cost
 				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
