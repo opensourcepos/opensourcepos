@@ -88,7 +88,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('statistics', '1'),
 ('language', 'english'),
 ('language_code', 'en'),
-('date_or_time_format','');
+('date_or_time_format',''),
+('customer_reward_enable','');
 
 
 -- --------------------------------------------------------
@@ -103,6 +104,8 @@ CREATE TABLE `ospos_customers` (
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `package_id` int(11) DEFAULT NULL,
+  `points` int(11) DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
   KEY `person_id` (`person_id`)
@@ -774,6 +777,49 @@ INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted
 (1, 'Delivery', 0, 0),
 (2, 'Take Away', 0, 0);
 
+--
+-- Table structure for table `ospos_customer_packages`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_customers_packages` (
+  `package_id` int(11) NOT NULL AUTO_INCREMENT,
+  `package_name` varchar(255) DEFAULT NULL,
+  `points_percent` float NOT NULL DEFAULT '0',
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `ospos_customers_packages` (`package_id`, `package_name`, `points_percent`, `deleted`) VALUES
+(1, 'Default', 0, 0),
+(2, 'Bronze', 10, 0),
+(3, 'Silver', 20, 0),
+(4, 'Gold', 30, 0),
+(5, 'Premium', 50, 0);
+
+--
+-- Table structure for table `ospos_customer_points`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_customers_points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `points_earned` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Table structure for table `ospos_sales_reward_points`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_sales_reward_points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sale_id` int(11) NOT NULL,
+  `earned` float NOT NULL,
+  `used` float NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 --
 -- Constraints for dumped tables

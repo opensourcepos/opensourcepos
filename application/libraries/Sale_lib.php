@@ -39,15 +39,15 @@ class Sale_lib
 
 	public function sort_and_filter_cart($cart)
 	{
-
-		if (empty($cart))
+		if(empty($cart))
 		{
 			return $cart;
 		}
 
 		$filtered_cart = array();
 
-		foreach($cart as $k=>$v) {
+		foreach($cart as $k=>$v)
+		{
 			if($v['print_option'] == '0')
 			{
 				$filtered_cart[] = $v;
@@ -58,7 +58,8 @@ class Sale_lib
 		if($this->CI->config->item('line_sequence') == '0')
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v) {
+			foreach($filtered_cart as $k=>$v)
+			{
 				$sort['line'][$k] = $v['line'];
 			}
 			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
@@ -67,7 +68,8 @@ class Sale_lib
 		elseif($this->CI->config->item('line_sequence') == '1')
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v) {
+			foreach($filtered_cart as $k=>$v)
+			{
 				$sort['stock_type'][$k] = $v['stock_type'];
 				$sort['description'][$k] = $v['description'];
 				$sort['name'][$k] = $v['name'];
@@ -78,7 +80,8 @@ class Sale_lib
 		elseif($this->CI->config->item('line_sequence') == '2')
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v) {
+			foreach($filtered_cart as $k=>$v)
+			{
 				$sort['category'][$k] = $v['stock_type'];
 				$sort['description'][$k] = $v['description'];
 				$sort['name'][$k] = $v['name'];
@@ -89,7 +92,8 @@ class Sale_lib
 		else
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v) {
+			foreach($filtered_cart as $k=>$v)
+			{
 				$sort['line'][$k] = $v['line'];
 			}
 			array_multisort($sort['line'], SORT_ASC, $filtered_cart);
@@ -316,10 +320,17 @@ class Sale_lib
 
 	public function is_payment_covering_total()
 	{
-		$amount_due = $this->get_amount_due();
 		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
 		$threshold = bcpow(10, -$this->CI->config->item('currency_decimals')) / 2;
-		return ($amount_due > -$threshold && $amount_due < $threshold);
+
+		if($this->get_mode() == 'return')
+		{
+			return ($this->get_amount_due() > -$threshold);
+		}
+		else
+		{
+			return ($this->get_amount_due() < $threshold);
+		}
 	}
 
 	public function get_customer()
