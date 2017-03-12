@@ -68,3 +68,57 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('last_used_quote_number', '0'),
 ('line_sequence', '0'),
 ('dinner_table_enable','');
+
+--
+-- Table structure for table `ospos_customer_packages`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_customers_packages` (
+  `package_id` int(11) NOT NULL AUTO_INCREMENT,
+  `package_name` varchar(255) DEFAULT NULL,
+  `points_percent` float NOT NULL DEFAULT '0',
+  `deleted` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`package_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+INSERT INTO `ospos_customers_packages` (`package_id`, `package_name`, `points_percent`, `deleted`) VALUES
+(1, 'Default', 0, 0),
+(2, 'Bronze', 10, 0),
+(3, 'Silver', 20, 0),
+(4, 'Gold', 30, 0),
+(5, 'Premium', 50, 0);
+
+--
+-- Table structure for table `ospos_customer_points`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_customers_points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) NOT NULL,
+  `package_id` int(11) NOT NULL,
+  `sale_id` int(11) NOT NULL,
+  `points_earned` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
+-- Table structure for table `ospos_sales_reward_points`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_sales_reward_points` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `sale_id` int(11) NOT NULL,
+  `earned` float NOT NULL,
+  `used` float NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- alter ospos_customers table
+
+ALTER TABLE ospos_customers
+ADD COLUMN `package_id` int(11) DEFAULT NULL AFTER `discount_percent`,
+ADD COLUMN `points` int(11) DEFAULT NULL AFTER `package_id`;
+
+-- add enabled reward points key into config
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('customer_reward_enable','');
