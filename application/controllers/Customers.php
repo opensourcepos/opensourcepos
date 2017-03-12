@@ -71,6 +71,13 @@ class Customers extends Persons
 		$data['person_info'] = $info;
 
 		$data['total'] = $this->xss_clean($this->Customer->get_totals($customer_id)->total);
+		$packages = array('' => $this->lang->line('items_none'));
+		foreach($this->Customer_rewards->get_all()->result_array() as $row)
+		{
+			$packages[$this->xss_clean($row['package_id'])] = $this->xss_clean($row['package_name']);
+		}
+		$data['packages'] = $packages;
+		$data['selected_package'] = $info->package_id;
 
 		$this->load->view("customers/form", $data);
 	}
@@ -98,6 +105,7 @@ class Customers extends Persons
 			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
 			'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
+			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
 			'taxable' => $this->input->post('taxable') != NULL
 		);
 

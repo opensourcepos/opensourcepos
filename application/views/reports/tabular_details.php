@@ -26,7 +26,7 @@
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		var detail_data = <?php echo json_encode($details_data); ?>;
-
+		var details_data_rewards = <?php echo json_encode($details_data_rewards); ?>;
 		var init_dialog = function()
 		{
 
@@ -60,6 +60,12 @@
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
 					data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 				});
+				<?php if(isset($details_data_rewards) && $details_data_rewards!= null && !empty($details_data_rewards)) { ?>
+				$detail.append('<table></table>').find("table").bootstrapTable({
+					columns: <?php echo transform_headers_readonly($headers['details_rewards']); ?>,
+					data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+				});
+				<?php  } ?>
 			}
 		});
 

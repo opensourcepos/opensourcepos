@@ -446,6 +446,21 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_giftcard_remainder');
 	}
 
+	public function set_rewards_remainder($value)
+	{
+		$this->CI->session->set_userdata('sales_rewards_remainder', $value);
+	}
+
+	public function get_rewards_remainder()
+	{
+		return $this->CI->session->userdata('sales_rewards_remainder');
+	}
+
+	public function clear_rewards_remainder()
+	{
+		$this->CI->session->unset_userdata('sales_rewards_remainder');
+	}
+
 	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0')
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);

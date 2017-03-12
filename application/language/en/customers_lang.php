@@ -22,3 +22,5 @@ $lang["customers_excel_import_failed"] = "Excel import failed";
 $lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
 $lang["customers_excel_import_success"] = "Import of Customers successful";
 $lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
+$lang["rewards_package"] = "Rewards Package";
+$lang["customers_available_points"] = "Available Points";
