@@ -58,9 +58,16 @@ class Dinner_table extends CI_Model
     public function get_name($dinner_table_id)
     {
         $this->db->from('dinner_tables');
-        $this->db->where('dinner_table_id',$dinner_table_id);
+        $this->db->where('dinner_table_id', $dinner_table_id);
 
-        return $this->db->get()->row()->name;
+		$row = $this->db->get()->row();
+
+		if(isset($row->name))
+		{
+			return $row->name;
+		}
+
+        return '';
     }
 
     public function get_all()
