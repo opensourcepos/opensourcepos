@@ -136,4 +136,4 @@ $lang["rewards_package"] = "Rewards";
 $lang["customers_available_points"] = "Available Points";
 $lang["sales_rewards"] = "Reward Points";
 $lang["sales_rewards_balance"] = "Reward Points Balance";
-$lang["rewards_remaining_balance"] = "Reward Points remaining value is %1!";
+$lang["rewards_remaining_balance"] = "Reward Points remaining value is ";

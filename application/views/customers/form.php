@@ -64,7 +64,7 @@
 				</div>
 			</div>	
 		</div>
-
+	<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('rewards_package'), 'rewards', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
@@ -84,7 +84,7 @@
 						);?>
 			</div>
 		</div>
-
+	<?php endif; ?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
 			<div class='col-xs-1'>
