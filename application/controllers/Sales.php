@@ -245,7 +245,7 @@ class Sales extends Secure_Controller
 
 					if(($cur_rewards_value - $current_payments_with_rewards) <= 0)
 					{
-						$data['error'] = $this->lang->line('rewards_remaining_balance', to_currency($cur_rewards_value));
+						$data['error'] = $this->lang->line('rewards_remaining_balance'). to_currency($cur_rewards_value);
 					}
 					else
 					{
@@ -253,7 +253,7 @@ class Sales extends Secure_Controller
 						$new_reward_value = $new_reward_value >= 0 ? $new_reward_value : 0;
 						$this->sale_lib->set_rewards_remainder($new_reward_value);
 						$new_reward_value = str_replace('$', '\$', to_currency($new_reward_value));
-						$data['warning'] = $this->lang->line('rewards_remaining_balance', $new_reward_value);
+						$data['warning'] = $this->lang->line('rewards_remaining_balance'). $new_reward_value;
 						$amount_tendered = min($this->sale_lib->get_amount_due(), $points);
 
 						$this->sale_lib->add_payment($payment_type, $amount_tendered);
@@ -878,7 +878,7 @@ class Sales extends Secure_Controller
 		$data['payments_total'] = $this->sale_lib->get_payments_total();
 		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$data['payments'] = $this->sale_lib->get_payments();
-		if($customer_info)
+		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
 			$data['payment_options'] = $this->Sale->get_payment_options(TRUE,TRUE);
 		else
 			$data['payment_options'] = $this->Sale->get_payment_options();

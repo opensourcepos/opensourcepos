@@ -536,7 +536,7 @@ class Sale extends CI_Model
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
 		}
 
-		if(isset($customer_id) && $customer_id!= NULL){
+		if(isset($customer_id) && $customer_id!= NULL && $this->config->item('customer_reward_enable') == TRUE){
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
 				if(isset($package_id) && $package_id!=NULL){
 					$points_percent = $this->Customer_rewards->get_points_percent($package_id);
