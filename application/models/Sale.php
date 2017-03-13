@@ -536,20 +536,24 @@ class Sale extends CI_Model
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
 		}
 
-		if((!empty (-$customer_id)) && $this->config->item('customer_reward_enable') == TRUE){
+		if(!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
+		{
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
-				if(isset($package_id) && $package_id!=NULL){
-					$points_percent = $this->Customer_rewards->get_points_percent($package_id);
-					$points = $this->Customer->get_info($customer_id)->points;
-					$points = ($points==NULL ? 0 : $points);
-					$points_percent = ($points_percent==NULL ? 0 : $points_percent);
-					$total_amount_earned = ($total_amount*$points_percent/100);
-					$points = $points + $total_amount_earned;
-					$this->Customer->update_reward_points_value($customer_id, $points);
-					$rewards_data = array('sale_id'=>$sale_id, 'earned'=>$total_amount_earned, 'used'=>$total_amount_used);
-					$this->Rewards->save($rewards_data);
-				}
+
+			if(!empty($package_id))
+			{
+				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
+				$points = $this->Customer->get_info($customer_id)->points;
+				$points = ($points==NULL ? 0 : $points);
+				$points_percent = ($points_percent==NULL ? 0 : $points_percent);
+				$total_amount_earned = ($total_amount*$points_percent/100);
+				$points = $points + $total_amount_earned;
+				$this->Customer->update_reward_points_value($customer_id, $points);
+				$rewards_data = array('sale_id'=>$sale_id, 'earned'=>$total_amount_earned, 'used'=>$total_amount_used);
+				$this->Rewards->save($rewards_data);
+			}
 		}
+
 		foreach($items as $line=>$item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
