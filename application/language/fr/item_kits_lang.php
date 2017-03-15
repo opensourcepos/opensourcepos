@@ -1,13 +1,13 @@
 <?php 
 
-$lang["item_kits_add_item"] = "Ajouter Item";
+$lang["item_kits_add_item"] = "Ajouter un article";
 $lang["item_kits_cannot_be_deleted"] = "Impossible de supprimer";
 $lang["item_kits_confirm_delete"] = "Ètes vous sûr(e) de vouloir supprimer le(s) Kits sélectionnés?";
 $lang["item_kits_description"] = "Description du Kit";
 $lang["item_kits_error_adding_updating"] = "Érreur d'ajout/édition de Kit";
 $lang["item_kits_info"] = "Détails du Kit";
-$lang["item_kits_item"] = "Item";
-$lang["item_kits_items"] = "Items";
+$lang["item_kits_item"] = "Article";
+$lang["item_kits_items"] = "Articles";
 $lang["item_kits_kit"] = "Kit Id";
 $lang["item_kits_name"] = "Nom du Kit";
 $lang["item_kits_new"] = "Nouveau Kit";
