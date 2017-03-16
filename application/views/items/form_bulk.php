@@ -155,6 +155,17 @@
 				<?php echo form_dropdown('is_serialized', $serialization_choices, '', array('class'=>'form-control'));?>
 			</div>
 		</div>
+	<div class="form-group form-group-sm">
+		<?php echo form_label($this->lang->line('common_print').':', 'printed',array('class'=>'control-label col-xs-3')); ?>
+		<div class='col-xs-5'>
+			<?php echo form_checkbox(array(
+				'name'=>'printed',
+				'id'=>'printed',
+				'value'=>1,
+				'checked'=>('printed')? 1 : 0)
+			);?>
+		</div>
+	</div>
 	</fieldset>
 <?php echo form_close(); ?>
 

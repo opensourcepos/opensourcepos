@@ -24,6 +24,7 @@ class Items extends Secure_Controller
 			'is_serialized' => $this->lang->line('items_serialized_items'),
 			'no_description' => $this->lang->line('items_no_description_items'),
 			'search_custom' => $this->lang->line('items_search_custom_items'),
+			'printed' => $this->lang->line('items_is_printed'),
 			'is_deleted' => $this->lang->line('items_is_deleted'));
 
 		$this->load->view('items/manage', $data);
@@ -50,6 +51,7 @@ class Items extends Secure_Controller
 						'is_serialized' => FALSE,
 						'no_description' => FALSE,
 						'search_custom' => FALSE,
+						'printed' => FALSE,
 						'is_deleted' => FALSE);
 		
 		// check if any filter is set in the multiselect dropdown
@@ -141,7 +143,12 @@ class Items extends Secure_Controller
 
 		echo json_encode($suggestions);
 	}
+     function suggest_printed()
+	{
+		$suggestions = $this->Item->get_printed_suggestions($this->input->post('q'));
 
+		echo implode("\n",$suggestions);
+	}
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
@@ -193,7 +200,7 @@ class Items extends Secure_Controller
 			$data['default_tax_1_rate'] = $this->config->item('default_tax_1_rate');
 			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
 
-			$item_info->receiving_quantity = 0;
+			$item_info->receiving_quantity = 1;
 			$item_info->reorder_level = 0;
 			$item_info->item_type = '0'; // standard
 			$item_info->stock_type = '0'; // stock
@@ -343,6 +350,17 @@ class Items extends Secure_Controller
 	{
 		$upload_success = $this->_handle_image_upload();
 		$upload_data = $this->upload->data();
+        $markup = $this->config->item('item_markup');
+		$cost_price = parse_decimals($this->input->post('cost_price'));
+		//Save item data
+		if ($markup > 0 )
+					{			
+		    $unit_price = parse_decimals($this->input->post('cost_price') * $markup);
+					}
+					else
+					{
+					$unit_price = parse_decimals($this->input->post('unit_price'));
+					}
 
 		//Save item data
 		$item_data = array(
@@ -353,12 +371,13 @@ class Items extends Secure_Controller
 			'stock_type' => $this->input->post('stock_type'),
 			'supplier_id' => $this->input->post('supplier_id') == '' ? NULL : $this->input->post('supplier_id'),
 			'item_number' => $this->input->post('item_number') == '' ? NULL : $this->input->post('item_number'),
-			'cost_price' => parse_decimals($this->input->post('cost_price')),
-			'unit_price' => parse_decimals($this->input->post('unit_price')),
+			'cost_price' => parse_decimals($cost_price),//parse_decimals($this->input->post('cost_price')),
+			'unit_price' => parse_decimals($unit_price),//parse_decimals($this->input->post('unit_price')),
 			'reorder_level' => parse_decimals($this->input->post('reorder_level')),
 			'receiving_quantity' => parse_decimals($this->input->post('receiving_quantity')),
 			'allow_alt_description' => $this->input->post('allow_alt_description') != NULL,
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
+            'printed'=>$this->input->post('printed') != Null,
 			'deleted' => $this->input->post('is_deleted') != NULL,
 			'custom1' => $this->input->post('custom1') == NULL ? '' : $this->input->post('custom1'),
 			'custom2' => $this->input->post('custom2') == NULL ? '' : $this->input->post('custom2'),

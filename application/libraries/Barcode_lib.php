@@ -159,12 +159,15 @@ class Barcode_lib
 	
 	public function display_barcode($item, $barcode_config)
 	{
+		$today = date("m.d.y");
+		$number = $item['item_id'];
 		$display_table = "<table>";
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_first_row'], $item, $barcode_config) . "</td></tr>";
 		$barcode = $this->generate_barcode($item, $barcode_config);
-		$display_table .= "<tr><td align='center'><img src='data:image/png;base64,$barcode' /></td></tr>";
 		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_second_row'], $item, $barcode_config) . "</td></tr>";
-		$display_table .= "<tr><td align='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'], $item, $barcode_config) . "</td></tr>";
+        $display_table .= "<tr><td align ='center'>" . $this->manage_display_layout($barcode_config['barcode_third_row'],$item, $barcode_config). "<align='center'> &nbsp;&nbsp;:&nbsp;&nbsp;$today " ."</td></tr>"; 
+		$display_table .= "<tr><td align='center'><img src='data:image/png;base64,$barcode' /></td></tr>";
+		$display_table .= "<tr><td align='center'> *$number*</td></tr>";
 		$display_table .= "</table>";
 		
 		return $display_table;
@@ -176,7 +179,7 @@ class Barcode_lib
 		
 		if($layout_type == 'name')
 		{
-			$result = $this->CI->lang->line('items_name') . " " . $item['name'];
+			$result = $this->CI->lang->line('') . " " . $item['name'];
 		}
 		elseif($layout_type == 'category' && isset($item['category']))
 		{
@@ -188,7 +191,7 @@ class Barcode_lib
 		}
 		elseif($layout_type == 'unit_price' && isset($item['unit_price']))
 		{
-			$result = $this->CI->lang->line('items_unit_price') . " " . to_currency($item['unit_price']);
+			$result = $this->CI->lang->line('') . " " . to_currency($item['unit_price']);
 		}
 		elseif($layout_type == 'company_name')
 		{

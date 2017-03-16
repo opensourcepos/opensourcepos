@@ -23,13 +23,7 @@ class Sales extends Secure_Controller
 	public function manage()
 	{
 		$person_id = $this->session->userdata('person_id');
-
-		if(!$this->Employee->has_grant('reports_sales', $person_id))
-		{
-			redirect('no_access/sales/reports_sales');
-		}
-		else
-		{
+		
 			$data['table_headers'] = get_sales_manage_table_headers();
 
 			// filters that will be loaded in the multiselect dropdown
@@ -44,7 +38,7 @@ class Sales extends Secure_Controller
 			}
 
 			$this->load->view('sales/manage', $data);
-		}
+		
 	}
 
 	public function get_row($row_id)
@@ -490,6 +484,7 @@ class Sales extends Secure_Controller
 				$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments'], $data['dinner_table']);
 				$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
+
 				// Resort and filter cart lines for printing
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
@@ -502,7 +497,9 @@ class Sales extends Secure_Controller
 				else
 				{
 					$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
-					$this->load->view('sales/invoice', $data);
+
+					$this->load->view('sales/receipt', $data);
+
 					$this->sale_lib->clear_all();
 				}
 			}
@@ -849,7 +846,8 @@ class Sales extends Secure_Controller
 		$data['cart'] = $this->sale_lib->get_cart();
 		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
 
-		if ($this->config->item('invoice_enable') == '0')
+
+		if ($this->config->item('invoice_enable') == '0' or empty($customer_info))
 		{
 			$data['modes'] = array(
 				'sale' => $this->lang->line('sales_sale'),
@@ -857,12 +855,16 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
+
 			$data['modes'] = array(
+
 				'sale' => $this->lang->line('sales_sale'),
 				'sale_invoice' => $this->lang->line('sales_sale_by_invoice'),
 				'sale_quote' => $this->lang->line('sales_quote'),
 				'return' => $this->lang->line('sales_return'));
+
 		}
+
 		$data['mode'] = $this->sale_lib->get_mode();
 		$data['empty_tables'] = $this->sale_lib->get_empty_tables();
 		$data['selected_table'] = $this->sale_lib->get_dinner_table();
@@ -928,7 +930,9 @@ class Sales extends Secure_Controller
 	public function invoice($sale_id)
 	{
 		$data = $this->_load_sale_data($sale_id);
-		$this->load->view('sales/invoice', $data);
+
+		$this->load->view('sales/receipt', $data);
+
 		$this->sale_lib->clear_all();
 	}
 

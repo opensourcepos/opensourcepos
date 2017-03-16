@@ -218,7 +218,7 @@ class Receiving_lib
 				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 				'price' => $price,
 				'receiving_quantity' => $receiving_quantity!=NULL ? $receiving_quantity : $item_info->receiving_quantity,
-				'total' => $this->get_item_total($quantity, $price, $discount)
+				'total' => $this->get_item_total($quantity, $price, $discount, $receiving_quantity)
 			)
 		);
 
@@ -334,10 +334,17 @@ class Receiving_lib
 
 	public function get_total()
 	{
+		
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-			$total = bcadd($total, $this->get_item_total($item['quantity'], $item['price'], $item['discount']));
+			$receiving_quantity = $item['receiving_quantity'];
+			if($receiving_quantity == 0)
+			{
+			$total = bcadd($total, $this->get_item_total($item['quantity'], $item['price'], $item['discount']));	
+			}
+			$total = bcadd($total, $this->get_item_total(($item['quantity'] * $receiving_quantity),$item['price'], $item['discount']));
+	    	
 		}
 		
 		return $total;

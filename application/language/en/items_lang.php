@@ -96,3 +96,5 @@ $lang["items_import_items_excel"] = "Import items from Excel sheet";
 $lang["items_select_image"] = "Select Image";
 $lang["items_change_image"] = "Change Image";
 $lang["items_remove_image"] = "Remove Image";
+$lang["items_is_printed"] = "Not Printed";
+$lang["items_markup"] = "Items Markup is enabled";

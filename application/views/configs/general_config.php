@@ -75,8 +75,25 @@
 						<span class="input-group-addon input-sm">%</span>
 					</div>
 				</div>
+			</div>		
+			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_item_markup'), 'item_markup', array('class'=>'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<div class="input-group">
+						<?php echo form_input(array(
+							'name'=>'item_markup',
+							'id'=>'item_markup',
+							'class'=>'form-control input-sm',
+							'type'=>'number',
+							'min'=>0,
+							'max'=>100,
+							'value'=>$this->config->item('item_markup'))); ?>
+						<span class="input-group-addon input-sm"></span>
+					</div>
+				</div>
 			</div>
-
+			
+			
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_receiving_calculate_average_price'), 'receiving_calculate_average_price', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
@@ -87,6 +104,18 @@
 						'checked'=>$this->config->item('receiving_calculate_average_price'))); ?>
 				</div>
 			</div>
+			
+			<!--<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_current_employee_only'), 'current_employee_only', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'current_employee_only',
+						'id' => 'current_employee_only',
+						'value' => 'current_employee_only',
+						'checked'=>$this->config->item('current_employee_only'))); ?>
+				</div>
+			</div>-->
+			
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_lines_per_page'), 'lines_per_page', array('class' => 'control-label col-xs-2 required')); ?>

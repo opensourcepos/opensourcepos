@@ -20,7 +20,7 @@ function get_sales_manage_table_headers()
 		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
 	}
 
-	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE))));
+	return transform_headers1(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE))));
 }
 
 /*
@@ -75,10 +75,13 @@ function get_sale_data_row($sale, $controller)
 	$row['receipt'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
 		array('title' => $CI->lang->line('sales_show_receipt'))
 	);
+	
 	$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
-		array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $CI->lang->line('common_delete'), 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+		array('class' => 'modal-dlg print_hide','data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
+	
 	);
 
+              
 	return $row;
 }
 
@@ -120,6 +123,39 @@ function transform_headers_readonly($array)
 
 	return json_encode($result);
 }
+function transform_headers1($array, $readonly = FALSE, $editable = TRUE)
+{
+	$result = array();
+
+	if (!$readonly)
+	{
+		//$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
+	}
+
+	if ($editable)
+	{
+		$array[] = array('edit' => '');
+	}
+
+	foreach($array as $element)
+	{
+		reset($element);
+		$result[] = array('field' => key($element),
+			'title' => current($element),
+			'switchable' => isset($element['switchable']) ?
+				$element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
+			'sortable' => isset($element['sortable']) ?
+				$element['sortable'] : current($element) != '',
+			'checkbox' => isset($element['checkbox']) ?
+				$element['checkbox'] : FALSE,
+			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ?
+				'print_hide' : '',
+			'sorter' => isset($element['sorter']) ?
+				$element ['sorter'] : '');
+	}
+	return json_encode($result);
+}
+
 
 function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 {
@@ -268,22 +304,20 @@ function get_item_data_row($item, $controller)
 	// remove ', ' from last item
 	$tax_percents = substr($tax_percents, 0, -2);
 	$controller_name = strtolower(get_class($CI));
-
-	$image = NULL;
+     $image = NULL;
 	if ($item->pic_filename != '')
-	{
+	{		
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 		if($ext == '')
 		{
 			// legacy
 			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
 		}
-		else
+		else 
 		{
 			// preferred
 			$images = glob('./uploads/item_pics/' . $item->pic_filename);
 		}
-
 		if (sizeof($images) > 0)
 		{
 			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '"></a>';
