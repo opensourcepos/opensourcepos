@@ -1,10 +1,10 @@
 <?php 
 
 $lang["suppliers_account_number"] = "حساب رقم#";
+$lang["suppliers_agency_name"] = "اسم الوكالة";
 $lang["suppliers_cannot_be_deleted"] = "لايمكن حذف المورد/الموردين لوجود مبيعات مرتبطة بهم";
 $lang["suppliers_company_name"] = "اسم الشركة";
 $lang["suppliers_company_name_required"] = "اسم الشركة مطلوب";
-$lang["suppliers_agency_name"] = "اسم الوكالة";
 $lang["suppliers_confirm_delete"] = "هل تريد حقا حذف هؤلاء الموردين؟";
 $lang["suppliers_error_adding_updating"] = "خطاء فى إضافة/تحديث المورد";
 $lang["suppliers_new"] = "مورد جديد";

@@ -3,7 +3,6 @@
 $lang["giftcards_add_minus"] = "Inventuru dodati/oduzeti";
 $lang["giftcards_allow_alt_description"] = "Dozvoli Alt opis";
 $lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "Na poklon bonu %1 ostala je još vrijednost %2!";
 $lang["giftcards_bulk_edit"] = "Grupno uređivanje";
 $lang["giftcards_cannot_be_deleted"] = "Nije moguće obrisati poklon bon, jedan ili više poklon bonova ima prodaju.";
 $lang["giftcards_cannot_find_giftcard"] = "Ne možemo pronaći informacije o poklon bonu";
@@ -47,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "Poklon bon(ovi)";
 $lang["giftcards_person_id"] = "Kupac";
 $lang["giftcards_quantity"] = "Količina";
 $lang["giftcards_quantity_required"] = "Količina je potrebna. Molim otkažite (x) za odustajanje";
+$lang["giftcards_remaining_balance"] = "Na poklon bonu %1 ostala je još vrijednost %2!";
 $lang["giftcards_reorder_level"] = "Poredaj razine";
 $lang["giftcards_retrive_giftcard_info"] = "Pozovi info o pklon bonu";
 $lang["giftcards_sales_tax_1"] = "Prodajni porez 1";

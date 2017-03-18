@@ -3,7 +3,6 @@
 $lang["giftcards_add_minus"] = "Ajout/Soustraction à l'inventaire";
 $lang["giftcards_allow_alt_description"] = "Autorisér Description Alt";
 $lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
 $lang["giftcards_bulk_edit"] = "Édition en groupe";
 $lang["giftcards_cannot_be_deleted"] = "Impossible de supprimer. Une ou plusieurs carte(s) ont des ventes.";
 $lang["giftcards_cannot_find_giftcard"] = "Aucune information sur la carte";
@@ -47,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "carte(s)";
 $lang["giftcards_person_id"] = "Client";
 $lang["giftcards_quantity"] = "Quantité";
 $lang["giftcards_quantity_required"] = "La quantité est requise. Veuillez Fermer ( X ) pour annuler";
+$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
 $lang["giftcards_reorder_level"] = "Seuil de Réapprovisionnement";
 $lang["giftcards_retrive_giftcard_info"] = "Obtenir des détails de la Carte";
 $lang["giftcards_sales_tax_1"] = "Sales Tax";

@@ -3,7 +3,6 @@
 $lang["giftcards_add_minus"] = "สินค้าคงคลัง เพิ่ม/ลด";
 $lang["giftcards_allow_alt_description"] = "";
 $lang["giftcards_amazon"] = "อเมซอน";
-$lang["giftcards_remaining_balance"] = "บัตรของขวัญ %1 มีมูลค่า %2!";
 $lang["giftcards_bulk_edit"] = "แก้ไขเป็นกลุ่ม";
 $lang["giftcards_cannot_be_deleted"] = "ไม่สามารถลบข้อมูลบัตรของขวัญที่เลือก, หรือบัตรของขวัญได้มีการใช้ไปแล้ว";
 $lang["giftcards_cannot_find_giftcard"] = "ไม่พบข้อมูลเกี่ยวกับบัตรของขวัญนี้";
@@ -47,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "giftcard(s)";
 $lang["giftcards_person_id"] = "เจ้าของบัตร";
 $lang["giftcards_quantity"] = "ปริมาณ";
 $lang["giftcards_quantity_required"] = "ช่องข้อมูลปริมาณ จำเป็นต้องกรอก. คลิกที่เครื่องหมาย ( X ) เพื่อยกเลิก";
+$lang["giftcards_remaining_balance"] = "บัตรของขวัญ %1 มีมูลค่า %2!";
 $lang["giftcards_reorder_level"] = "ยอดขั้นต่ำ";
 $lang["giftcards_retrive_giftcard_info"] = "Retrieve Giftcard Info";
 $lang["giftcards_sales_tax_1"] = "ภาษีการขาย";
