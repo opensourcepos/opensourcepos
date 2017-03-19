@@ -21,3 +21,5 @@ dist/*_bower.*
 application/sessions/*
 application/logs/*
 *.backup
+.*
+*.gz
