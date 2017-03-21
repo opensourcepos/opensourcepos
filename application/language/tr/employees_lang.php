@@ -18,6 +18,7 @@ $lang["employees_password_required"] = "Şifre zorunlu alandır";
 $lang["employees_permission_desc"] = "Modül yetkisi vermek için kutuları işaretleyin";
 $lang["employees_permission_info"] = "Personel İzin ve Yetkileri";
 $lang["employees_repeat_password"] = "Şifre (Tekrar)";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";
 $lang["employees_successful_adding"] = "Personel eklendi";
 $lang["employees_successful_deleted"] = "Silme başarılı";
 $lang["employees_successful_updating"] = "Personel güncellendi";

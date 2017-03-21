@@ -1,7 +1,7 @@
 <?php 
 
 $lang["suppliers_account_number"] = "Account #";
-$lang["suppliers_basic_information"] = "Supplier Information";
+$lang["suppliers_agency_name"] = "Agency Name";
 $lang["suppliers_cannot_be_deleted"] = "Could not deleted selected suppliers, one or more of the selected suppliers has sales.";
 $lang["suppliers_company_name"] = "Company Name";
 $lang["suppliers_company_name_required"] = "Company Name is a required field";
@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "You have successfully added supplier";
 $lang["suppliers_successful_deleted"] = "You have successfully deleted";
 $lang["suppliers_successful_updating"] = "You have successfully updated supplier";
 $lang["suppliers_supplier"] = "Supplier";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "Update Supplier";

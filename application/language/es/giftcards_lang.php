@@ -3,8 +3,6 @@
 $lang["giftcards_add_minus"] = "Inventario a agregar/substraer";
 $lang["giftcards_allow_alt_description"] = "Permitir Descripción Alternativa";
 $lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "El valor excedente de la tarjeta de regalo %1 es de %2!";
-$lang["giftcards_basic_information"] = "Información de Tarjeta de Regalo";
 $lang["giftcards_bulk_edit"] = "Edición Múltiple";
 $lang["giftcards_cannot_be_deleted"] = "No se puede borrar las tarjetas seleccionadas. Una o más tiene ventas.";
 $lang["giftcards_cannot_find_giftcard"] = "No puedo encontrar información acerca de la tarjeta de regalo";
@@ -48,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "tarjeta(s) de regalo";
 $lang["giftcards_person_id"] = "Cliente";
 $lang["giftcards_quantity"] = "Cantidad";
 $lang["giftcards_quantity_required"] = "Cantidad es requerido. Por favor, haz click en ( X ) para cancelar";
+$lang["giftcards_remaining_balance"] = "El valor excedente de la tarjeta de regalo %1 es de %2!";
 $lang["giftcards_reorder_level"] = "Cantidad Mínima";
 $lang["giftcards_retrive_giftcard_info"] = "Obtener Info de Tarjeta de Regalo";
 $lang["giftcards_sales_tax_1"] = "Impuesto de Venta 1";

@@ -28,6 +28,11 @@ abstract class BarcodeBase
 	protected $img = null;
 
 	/*
+	 * @var data - to be set
+	 */
+	protected $data = '';
+	
+	/*
 	 * @var int x (width)
 	 */
 	protected $x = 0;
@@ -57,6 +62,39 @@ abstract class BarcodeBase
 	 * @return throws \OverflowException
 	 */
 	abstract public function setData($data);
+
+	/*
+	 * Get the data
+	 *
+	 * @param mixed data - (int or string) Data to be encoded
+	 * @return instance of \emberlabs\Barcode\BarcodeInterface
+	 * @return throws \OverflowException
+	 */
+	public function getData()
+	{
+		return $this->data;
+	}
+
+	/**
+	 * Validate the given barcode.
+	 * @param $barcode The barcode to validate
+	 * @return bool true if it complies with the barcode formatting
+	 */
+	public function validate($barcode)
+	{
+		return TRUE;
+	}
+
+	/**
+	 * Generate a barcode for this implementation using the given seed.
+	 * Default implementation returns just the seed
+	 * @param $number The seed to generate a barcode for
+	 * @return mixed The generated barcode
+	 */
+	public function generate($number)
+	{
+		return $number;
+	}
 
 	/*
 	 * (Abstract) Draw the image
@@ -115,7 +153,7 @@ abstract class BarcodeBase
 		{
 			case 'jpg':
 			case 'jpeg':
-				imagejpeg($this->img, NULL, $this->jpgQuality);
+				imagejpeg($this->img, null, $this->jpgQuality);
 			break;
 
 			case 'gif':
@@ -176,3 +214,4 @@ abstract class BarcodeBase
 		return base64_encode(ob_get_clean());
 	}
 }
+?>

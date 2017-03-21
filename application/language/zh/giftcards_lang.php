@@ -3,8 +3,6 @@
 $lang["giftcards_add_minus"] = "加/減庫存";
 $lang["giftcards_allow_alt_description"] = "允許使用ALT描述";
 $lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
-$lang["giftcards_basic_information"] = "禮金券資訊";
 $lang["giftcards_bulk_edit"] = "批量編輯";
 $lang["giftcards_cannot_be_deleted"] = "無法刪除選定的禮金券，一個或多個所選擇的禮金券已經使用。";
 $lang["giftcards_cannot_find_giftcard"] = "找不到禮金券的訊息";
@@ -48,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "禮金券";
 $lang["giftcards_person_id"] = "Customer";
 $lang["giftcards_quantity"] = "數量";
 $lang["giftcards_quantity_required"] = "數量是必填字段。請按關閉（X）來取消";
+$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
 $lang["giftcards_reorder_level"] = "補貨點";
 $lang["giftcards_retrive_giftcard_info"] = "檢索禮金券訊息";
 $lang["giftcards_sales_tax_1"] = "銷售稅額 1";

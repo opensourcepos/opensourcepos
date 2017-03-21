@@ -1,0 +1,47 @@
+@font-face 
+{
+    font-family: 'SansationLight';
+   	src: url('../fonts/SansationLight.eot');
+	src: local('SansationLight'), url('../fonts/SansationLight.woff') format('woff'), url('../fonts/SansationLight.ttf') format('truetype');
+}
+
+.font_SansationLight
+{
+	font-family: 'SansationLight' !important;
+}
+
+@font-face 
+{
+    font-family:'Arial';
+   	src: url('../fonts/Arial.eot');
+	src: local('Arial'), url('../fonts/Arial.woff') format('woff'), url('../fonts/Arial.ttf') format('truetype');
+}
+
+.font_Arial
+{
+	font-family: 'Arial' !important;
+}
+
+@font-face 
+{
+    font-family: 'JUNEBUG';
+   	src: url('../fonts/JUNEBUG.eot');
+	src: local('JUNEBUG'), url('../fonts/JUNEBUG.woff') format('woff'), url('../fonts/JUNEBUG.ttf') format('truetype');
+}
+
+.font_JUNEBUG
+{
+	font-family: 'JUNEBUG' !important;
+}
+
+@font-face 
+{
+    font-family: 'b-de-bonita-shadow';
+   	src: url('../fonts/b-de-bonita-shadow.eot');
+	src: local('JUNEBUG'), url('../fonts/b-de-bonita-shadow.woff') format('woff'), url('../fonts/b-de-bonita-shadow.ttf') format('truetype');
+}
+
+.font_b-de-bonita-shadow
+{
+	font-family: 'b-de-bonita-shadow' !important;
+}

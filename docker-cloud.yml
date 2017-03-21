@@ -1,0 +1,29 @@
+sqlscript:
+    image: jekkos/opensourcepos:sqlscript
+web:
+    image: jekkos/opensourcepos:master
+    links:
+        - mysql
+    ports:
+        - "80:80"
+    roles:
+        - global
+    volumes:
+        - /app/public/uploads
+    environment:
+        - PHP_TIMEZONE=UTC
+        - MYSQL_USERNAME=admin
+        - MYSQL_PASSWORD=pointofsale
+        - MYSQL_DB_NAME=ospos
+        - MYSQL_HOST_NAME=mysql
+mysql:
+    image: mariadb:10.1.21
+    environment:
+        - MYSQL_ROOT_PASSWORD=pointofsale
+        - MYSQL_DATABASE=ospos
+        - MYSQL_USER=admin
+        - MYSQL_PASSWORD=pointofsale
+    ports:
+        - 3306:3306
+    volumes_from:
+        - sqlscript

@@ -1,0 +1,45 @@
+{
+    "name": "OpenSourcePOS",
+    "version": "3.1.0",
+    "license": [
+        "MIT"
+    ],
+    "dependencies": {
+        "codeigniter/framework": {
+            "version": "3.1.2",
+            "license": [
+                "MIT"
+            ]
+        },
+        "dompdf/dompdf": {
+            "version": "v0.7.0",
+            "license": [
+                "LGPL-2.1"
+            ]
+        },
+        "ins0/google-measurement-php-client": {
+            "version": "dev-master 2b3aef2",
+            "license": [
+                "BSD-3-Clause"
+            ]
+        },
+        "mikey179/vfsStream": {
+            "version": "v1.1.0",
+            "license": [
+                "BSD"
+            ]
+        },
+        "phenx/php-font-lib": {
+            "version": "0.4",
+            "license": [
+                "LGPL-3.0"
+            ]
+        },
+        "phenx/php-svg-lib": {
+            "version": "0.1",
+            "license": [
+                "LGPL-3.0"
+            ]
+        }
+    }
+}

@@ -1,7 +1,7 @@
 <?php 
 
 $lang["module_config"] = "Store Config";
-$lang["module_config_desc"] = "Change the store\'s configuration";
+$lang["module_config_desc"] = "Change the store's configuration";
 $lang["module_customers"] = "Customers";
 $lang["module_customers_desc"] = "Add, Update, Delete, and Search customers";
 $lang["module_employees"] = "Employees";
@@ -13,6 +13,8 @@ $lang["module_item_kits"] = "Item Kits";
 $lang["module_item_kits_desc"] = "Add, Update, Delete and Search Item Kits";
 $lang["module_items"] = "Items";
 $lang["module_items_desc"] = "Add, Update, Delete, and Search items";
+$lang["module_messages"] = "Messages";
+$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
 $lang["module_receivings"] = "Receivings";
 $lang["module_receivings_desc"] = "Process Purchase orders";
 $lang["module_reports"] = "Reports";

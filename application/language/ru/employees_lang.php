@@ -18,6 +18,7 @@ $lang["employees_password_required"] = "Пароль обязательно";
 $lang["employees_permission_desc"] = "Отметьте флажками ниже, чтобы предоставить доступ к модулям";
 $lang["employees_permission_info"] = "Сотрудник разрешениями и правами доступа";
 $lang["employees_repeat_password"] = "Повторяете пароль";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";
 $lang["employees_successful_adding"] = "Вы успешно добавили сотрудника";
 $lang["employees_successful_deleted"] = "Вы успешно удалили";
 $lang["employees_successful_updating"] = "Вы успешно обновили сотрудника";

@@ -1,7 +1,7 @@
 <?php 
 
 $lang["employees_basic_information"] = "Informasi Karyawan";
-$lang["employees_cannot_be_deleted"] = "Karyawan terpilih tidak bisa dihapus; satu atau lebih dari para pekerja telah memproses penjualan atau Anda mencoba untuk menghapus diri Anda sendiri:)";
+$lang["employees_cannot_be_deleted"] = "Karyawan terpilih tidak bisa dihapus satu atau lebih dari para pekerja telah memproses penjualan atau Anda mencoba untuk menghapus diri Anda sendiri :)";
 $lang["employees_confirm_delete"] = "Apakah Anda yakin ingin menghapus karyawan yang dipilih?";
 $lang["employees_employee"] = "Karyawan";
 $lang["employees_error_adding_updating"] = "Kesalahan menambah / memperbarui karyawan";
@@ -18,6 +18,7 @@ $lang["employees_password_required"] = "Kata Sandi wajib diisi";
 $lang["employees_permission_desc"] = "Tandai kotak di bawah ini untuk memberikan akses ke Modul";
 $lang["employees_permission_info"] = "Hak Akses Karyawan";
 $lang["employees_repeat_password"] = "Ulang Kata Sandi";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";
 $lang["employees_successful_adding"] = "Anda telah berhasil menambahkan karyawan";
 $lang["employees_successful_deleted"] = "Anda telah berhasil menghapus";
 $lang["employees_successful_updating"] = "Anda telah berhasil memperbarui karyawan";

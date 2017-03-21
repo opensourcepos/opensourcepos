@@ -1,3 +1,118 @@
+Version 3.0.2
+-----------
++ Fixed error when performing scans multiple times in a row
++ Fixed summary reports
++ Protect Employee privacy printing just the first letter of the family name
++ Updates to language translations
++ Various Dockers support improvements
++ Minor bugfixes
+
+Version 3.0.1
+-----------
++ *CodeIgniter 3.1.2 Upgrade*
++ *Substantial database performance improvements*
++ *Improved security: email and sms passwords encryption, removed phpinfo.php*
++ *Set code to be production and not development in index.php*
++ *Reports improvements, fixed table sorting, tax calculation and made profit to be net profit*
++ Better Apache 2.4 support in .htaccess
++ Updates to language translations
++ Fixed excel template download links
++ Fixed employee name in Sale receipt and invoice reprinting
++ Fixed 2.3.2_to_2.3.3.sql database upgrade script mistake
++ Fixed phppos to ospos database migration script
++ Minor bugfixes and some general code clean up
+
+Version 3.0.0
+-----------
++ *CodeIgniter 3.1 Upgrade*
++ Major UI overhaul based on *Boostrap 3.0 and Bootswatch Themes*
++ New tabular views with advanced filtering using *Bootstrap Tables*
++ New graphical reports with no more Adobe flash dependency
++ Redesign of all modal dialogs
++ Updated Sales register with simplified payment flow
++ *Improved security: MySQL injection, XSS, CSFR, BCrypt password encryption, safer project layout*
++ Support for TXT messaging (interfacing to specific support required)
++ Email configuration
++ Improved Localisation support
++ Improved Store Config page
++ Docker container ready for Cloud installation
++ Composer PHP support
++ More languages and integration with Weblate for continuous translation
++ About 280 closed issues under 3.0.0 release label, too many to produce a meaningful list
++ Various code cleanup, refactoring, optimisation and etc.
+
+Version 2.4
+-----------
++ *CodeIgniter 3.0.5* Upgrade (please read UPGRADE.txt)
++ Fix for spurious logouts
++ Apache .htaccess mod_expiry caching and security optimizations
++ Bulk item edit fixes (category, tax and supplier fields)
++ Remove f-key shortcuts used for module navigation
++ Allow to use custom invoice numbers when suspending sale
++ PHP7 fixes
++ Specific warnings to distinguish between reorder level and out of stock situation in sales
++ Fix malware detection issues due to usage of base64 encoding for storing session variables
++ Improve language generation scripts (use PHP builtin functionality)
++ Add extra buttons for navigation and printing to receipt and invoice
++ Improve print layout for invoices
++ Make layout consistent for items between receipt and invoice templates
++ Minor bugfixes
+ 
+Version 2.3.4
+-------------
++ Migration script fixes
++ Improved continuous integration setup
++ More integration tests
++ Virtualized container setup (docker install)
++ Live clock functionality + favicon
++ Improved PHP 7 compatbility
++ Added de_CH (German) as language 
++ Minor code cleanup
++ Removal of annoying backup prompt on logout
+
+Version 2.3.3
+-------------
++ Item kit fixes (search, list, ..)
++ Add datepicker widgets in sale/receiving edit forms
++ Add date filter in items module
++ Add barcode generation logic for EAN8, EAN13
++ Add barcode validation + fallback logic for EAN8, EAN13
++ New config option to generate barcodes if item_number empty
++ Add cost + count to inventory reports
++ Giftcard fixes
++ Refactor sales overview (added date filtering + search options)
++ Better locale config support
++ Improve php compatibility
++ Fix invoice numbering bug on suspend
++ Add configurable locale-dependent dateformat
++ Add grunt-cache-breaker plugin
++ Suspend button appeaers before adding a payment
++ Searching of deleted items, filtering part is removed
++ Remove infamous "0" after leaving sale or receiving comments empty
++ Add SQL script to clean zeroes in sales/receivings comments
++ Numerous other bug fixes
+
+Version 2.3.2
+-------------
++ Nominatim (OpenStreetMap) customer address autocompletion
++ Sale invoice templating
++ Configurable barcode generation for items
++ Stock location filtering in detailed sales and receivings reports
++ Giftcards bugfixes
++ Proper pagination support for most modules
++ Language updates
++ Bugfix for decimal taxrates
++ Add gender + company name attributes to customer
++ Stock location config screen refactor
++ Basic travis-ci + phantomJs setup
++ Database backup on admin logout
++ Modifiable item thumbnails
++ Email invoice PDF generation using DomPDF
++ Modifiable company logo
++ jQuery upgrade (1.2 -> 1.8.3)
++ Javascript minification (using grunt)
++ Numerous bugfixes
+
 Version 2.3.1
 -------------
 

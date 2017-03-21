@@ -18,6 +18,7 @@ $lang["employees_password_required"] = "請輸入密碼";
 $lang["employees_permission_desc"] = "勾選後授予使用該模組功能";
 $lang["employees_permission_info"] = "員工權限";
 $lang["employees_repeat_password"] = "確認密碼";
+$lang["employees_subpermission_required"] = "Add at least one grant for each module";
 $lang["employees_successful_adding"] = "新增員工資料成功";
 $lang["employees_successful_deleted"] = "成功刪除員工資料";
 $lang["employees_successful_updating"] = "成功更新員工資料";

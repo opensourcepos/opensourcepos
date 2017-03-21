@@ -1,0 +1,60 @@
+# disable directory browsing
+# For security reasons, Option all cannot be overridden.
+Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
+
+# prevent folder listing
+IndexIgnore *
+
+# Apache 2.4
+<IfModule authz_core_module>
+  # secure htaccess file
+  <Files .htaccess>
+    Require all denied
+  </Files>
+
+  # prevent access to PHP error log
+  <Files error_log>
+    Require all denied
+  </Files>
+
+  # prevent access to LICENSE
+  <Files LICENSE>
+    Require all denied
+  </Files>
+
+  # prevent access to csv, txt and md files
+  <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+
+# Apache 2.2
+<IfModule !authz_core_module>
+  # secure htaccess file
+  <Files .htaccess>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+
+  # prevent access to PHP error log
+  <Files error_log>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+
+  # prevent access to LICENSE
+  <Files LICENSE>
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </Files>
+
+  # prevent access to csv, txt and md files
+  <FilesMatch "\.(csv|txt|md|yml|json|lock)$">
+    Order allow,deny
+    Deny from all
+    Satisfy all
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,130 @@
+#register_wrapper
+{
+	float: left;
+	width: 70%;
+	font-size: 13px;
+}
+
+#mode_form, #add_item_form
+{
+	margin: 0;
+}
+
+#mode_form .panel-body, #add_item_form .panel-body
+{
+	padding: 0.7em;
+	margin: 0;
+}
+
+#mode_form
+{
+	background-color: #DDD;
+}
+
+#mode_form ul, #add_item_form ul
+{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#mode_form ul li, #add_item_form  ul li
+{
+	margin-left: 1em;
+}
+
+.first_li
+{
+    margin-left: 0.2em !important;
+}
+
+#mode_form ul.dropdown-menu.inner, #add_item_form ul.dropdown-menu.inner
+{
+	margin-left: -1em !important;
+}
+
+#add_item_form
+{
+	background-color: #BBB;
+}
+
+#register
+{
+	padding: 0;
+	border-collapse: collapse;	
+}
+
+#register th
+{	
+	background-color: #999;
+	padding: 5px;
+	text-align: center;
+	color: #FFF;
+}
+
+#register td
+{
+	background-color: #EEE;
+	padding: 3px;
+	text-align: center;
+}
+
+#overall_sale
+{
+	width: 29%;
+	float: left;
+	margin-left: 0.1em;
+	padding-bottom: 1em;
+	padding-top: 1em;
+	background-color: #BBB;
+	font-size: 13px;
+	text-align: center;
+}
+
+#overall_sale .panel-body
+{
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+#overall_sale .form-group
+{
+	margin: 0;
+}
+
+#overall_sale .btn
+{
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+#payment_details, #buttons_sale, #suspended_sales_table
+{
+	width: 100%;
+}
+
+.sales_table_100
+{
+	width: 100%;
+}
+
+#sale_totals, #payment_totals
+{
+	border-top: 1px solid #000;
+}
+
+#payment_details
+{
+	float: left;
+	border-top: 1px solid #000;
+	background-color: #DDD;
+	margin-top: 0.2em;
+	padding: 0.5em;
+	text-align: left;
+	clear: both;
+}
+
+.alert
+{
+	margin-bottom: 5px;
+}

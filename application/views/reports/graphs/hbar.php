@@ -1,61 +1,116 @@
-<?php
-$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
-$this->output->set_header("Pragma: public");
+<script>
+	// Labels and data series
+	var data = {
+		labels: <?php echo json_encode($labels_1); ?>,
+		series: [{
+			name: '<?php echo $yaxis_title; ?>',
+			data: <?php echo json_encode($series_data_1); ?>
+		}]
+	};
 
-$title = new title($title);
+	// We are setting a few options for our chart and override the defaults
+	var options = {
 
-$hbar = new hbar( '#86BBEF' );
-$hbar->set_tooltip($this->lang->line('reports_revenue').': #val#' );
-$y_labels = array();
-$max_value = 0;
-foreach($data as $label=>$value)
-{
-	if ($max_value < $value)
-	{
-		$max_value = $value;
-	}
-	$y_labels[] = (string)$label;
-	$hbar->append_value( new hbar_value(0,(float)$value) );
-}
-$chart = new open_flash_chart();
-$chart->set_title( $title );
-$chart->add_element( $hbar );
+		// Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
+		width: '100%',
 
-$step_count = $max_value > 0 ? $max_value/10 : 1;
-$x = new x_axis();
-$x->set_offset( false );
-$x->set_steps($max_value/10);
+		// Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
+		height: '100%',
 
-$chart->set_x_axis( $x );
+		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
+		chartPadding: {
+			top: 20,
+			bottom: 100
+		},
 
-$y = new y_axis();
-$y->set_offset( true );
-$y->set_labels(array_reverse($y_labels));
-$chart->add_y_axis( $y );
+		// Set the bar chart to be horizontal
+		horizontalBars: true,
 
-if (isset($yaxis_label))
-{
-	$y_legend = new y_legend($yaxis_label );
-	$y_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_y_legend( $y_legend );
-}
+		// X-Axis specific configuration
+		axisX: {
+			// Lets offset the chart a bit from the labels
+			offset: 120,
+			position: 'end',
+			// The label interpolation function enables you to modify the values
+			// used for the labels on each axis.
+			labelInterpolationFnc: function(value) {
+				<?php
+				if( $show_currency )
+				{
+					if( currency_side() )
+					{
+				?>
+						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+					<?php
+					}
+					else
+					{
+					?>
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+				<?php
+					}
+				}
+				else
+				{
+				?>
+					return value;
+				<?php
+				}
+				?>
+			}
+		},
 
-if (isset($xaxis_label))
-{
-	$x_legend = new x_legend($xaxis_label );
-	$x_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_x_legend( $x_legend );
-}
+		// Y-Axis specific configuration
+		axisY: {
+			// Lets offset the chart a bit from the labels
+			offset: 120
+		},
 
-$chart->set_bg_colour("#f3f3f3");
+		// plugins configuration
+		plugins: [
+			Chartist.plugins.ctAxisTitle({
+				axisX: {
+					axisTitle: '<?php echo $xaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: -100,
+						y: 100
+					},
+					textAnchor: 'middle'
+				},
+				axisY: {
+					axisTitle: '<?php echo $yaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: 0,
+						y: 0
+					},
+					textAnchor: 'middle',
+					flipTitle: false
+				}
+			}),
 
-$tooltip = new tooltip();
-$tooltip->set_hover();
-$tooltip->set_stroke( 1 );
-$tooltip->set_colour( "#000000" );
-$tooltip->set_background_colour( "#ffffff" ); 
-$chart->set_tooltip( $tooltip );
+			Chartist.plugins.ctBarLabels(),
 
+			Chartist.plugins.ctPointLabels({
+				textAnchor: 'middle'
+			})
+		]
+	};
+	
+	var responsiveOptions = [
+		['screen and (min-width: 640px)', {
+			height: '80%',
+			chartPadding: {
+				top: 20,
+				bottom: 0
+			},
+		}] /*,
+		['screen and (min-width: 1024px)', {
+			labelOffset: 80,
+			chartPadding: 20
+		}]*/
+	];
 
-echo $chart->toPrettyString();
-?>
+	new Chartist.Bar('#chart1', data, options, responsiveOptions);
+</script>

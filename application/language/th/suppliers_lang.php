@@ -1,7 +1,7 @@
 <?php 
 
 $lang["suppliers_account_number"] = "บัญชี #";
-$lang["suppliers_basic_information"] = "ข้อมูลผู้ผลิต";
+$lang["suppliers_agency_name"] = " ";
 $lang["suppliers_cannot_be_deleted"] = "ลบผู้ผลิตที่ถูกเลือกไม่ได้, one or more of the selected suppliers has sales.";
 $lang["suppliers_company_name"] = "ชื่อบริษัท";
 $lang["suppliers_company_name_required"] = "ชื่อบริษัทต้องกรอก";
@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "เพิ่มผู้ผลิตส�
 $lang["suppliers_successful_deleted"] = "ลบสำเร็จ";
 $lang["suppliers_successful_updating"] = "ปรับปรุงผู้ผลิตสำเร็จ";
 $lang["suppliers_supplier"] = "ผู้ผลิต";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "ปรับปรุงผู้ผลิต";

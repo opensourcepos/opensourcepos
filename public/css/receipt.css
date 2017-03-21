@@ -1,0 +1,76 @@
+#receipt_wrapper
+{
+	width:100%;	
+}
+
+#receipt_header
+{
+	text-align:center;
+}
+
+#company_name
+{
+	font-size:150%;
+	font-weight:bold;
+}
+
+#company_name img
+{
+	max-width: 150px;
+	max-height: 150px;
+}
+
+#company_phone
+{
+	margin-bottom:15px;
+
+}
+
+#sale_time
+{
+	margin-bottom:5px;
+}
+
+#receipt_items
+{
+	position:relative;
+	border-collapse:collapse;
+	margin-top:15px;
+	margin-bottom:15px;
+	width:100%;
+}
+
+#receipt_items td
+{
+	position:relative;
+	padding:3px; margin-bottom:5px;
+	
+}
+
+#receipt_items tr
+{
+	margin-bottom:5px;	
+}
+
+#sale_return_policy
+{
+	width:80%;
+	margin:0 auto;
+	text-align:center;
+}
+
+#receipt_wrapper #barcode
+{
+	margin-top:10px;
+	text-align:center;
+}
+
+.total-value 
+{
+	text-align: right;		
+}
+
+.discount
+{
+	font-weight: bold;
+}

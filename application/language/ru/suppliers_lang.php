@@ -1,7 +1,7 @@
 <?php 
 
 $lang["suppliers_account_number"] = "№ счета";
-$lang["suppliers_basic_information"] = "Информация о поставщике";
+$lang["suppliers_agency_name"] = " ";
 $lang["suppliers_cannot_be_deleted"] = "Не удалось удалить выбранные поставщиков, один или более из выбранных поставщиков имеет продаж.";
 $lang["suppliers_company_name"] = "Название компании";
 $lang["suppliers_company_name_required"] = "Название компании является обязательным полем";
@@ -14,4 +14,5 @@ $lang["suppliers_successful_adding"] = "Вы успешно добавили п�
 $lang["suppliers_successful_deleted"] = "Вы успешно удален";
 $lang["suppliers_successful_updating"] = "Вы успешно обновляли поставщиком";
 $lang["suppliers_supplier"] = "поставщик";
+$lang["suppliers_supplier_id"] = "Id";
 $lang["suppliers_update"] = "Обновить поставщика";

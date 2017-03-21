@@ -1,0 +1,60 @@
+/*
+	 CSS-Tricks Example
+	 by Chris Coyier
+	 http://css-tricks.com
+*/
+
+* { margin: 0; padding: 0; }
+/*body { font: 14px/1.4 Georgia, serif; }*/
+#page-wrap { width: 100%; margin: 0 auto; max-width: 800px; }
+
+#page-wrap textarea { border: 0; font-size: 14px; overflow: hidden; resize: none; }
+#page-wrap table { border-collapse: collapse; }
+#page-wrap table td, #page-wrap table th { border: 1px solid black; padding: 5px; }
+#page-wrap table td { padding: 5px; }
+
+#header { margin: 20px 0; background: #222; text-align: center; color: white; font-size: 2.0em; font-weight: bold; letter-spacing: 4px; padding: 10px 0; }
+
+/* first row */
+#logo { text-align: right; margin-top: 15px; float: left; position: relative; border: 1px solid #fff; max-height: 150px; overflow: hidden; }
+#logo img { max-height: 150px; max-width: 150px; }
+/*#logo:hover, #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }*/
+#logoctr { display: none; }
+#logo:hover #logoctr, #logo.edit #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }
+#logohelp { text-align: left; display: none; font-style: italic; padding: 10px 5px;}
+#logohelp input { margin-bottom: 5px; }
+.edit #logohelp { display: block; }
+.edit #save-logo, .edit #cancel-logo { display: inline; }
+.edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
+#customer-title {  height: 100px; float: right; margin-top:40px;}
+#customer-title textarea { width: 150px; }
+
+/* second row */
+#block2 { overflow: hidden; width: 100%; }
+#company-title { float: left; }
+#meta { margin-top: 1px; width: 300px; float: right; }
+#meta td { text-align: right;  }
+#meta td.meta-head { text-align: left; background: #eee; }
+#meta td textarea { width: 100%; height: 20px; text-align: right; }
+
+#items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
+#items th { background: #eee; text-align: center; }
+#items textarea { width: 80px; height: 20px; }
+#items tr.item-row td { border: 0; vertical-align: top; }
+#items td.description { width: 300px; }
+#items td.item-name { width: 175px; }
+#items td.description textarea, #items td.item-name textarea { width: 100%; }
+#items td.total-line { border-right: 0; text-align: right; }
+#items td.total-value { border-left: 0; padding: 10px; }
+#items td.total-value textarea { height: 20px; background: none; }
+#items td.total-line textarea { height: 20px; width:150px; background: none; }
+#items td.balance { background: #eee; }
+#items td.blank { border: 0; }
+#items td.blank-bottom { border: 1px; }
+
+#terms { text-align: center; margin: 20px 0 0 0; }
+#terms h5 { text-transform: uppercase; font-size: 13px; letter-spacing: 10px; border-bottom: 1px solid black; padding: 0 0 8px 0; margin: 0 0 8px 0; }
+#terms textarea { width: 100%; text-align: center;}
+
+.delete-wpr { position: relative; }
+.delete { display: block; color: #000; text-decoration: none; position: absolute; background: #EEEEEE; font-weight: bold; padding: 0px 3px; border: 1px solid; top: -6px; left: -22px; font-family: Verdana; font-size: 12px; }

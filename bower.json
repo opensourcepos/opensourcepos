@@ -1,15 +1,16 @@
 {
   "name": "opensourcepos",
-  "version": "2.4",
-  "authors": [
-    "jekkos <jeroen.peelaerts - at - gmail.com>"
-  ],
-  "description": "Open Source Point of Sale is a web based point of sale system written in the PHP language. It uses MySQL as the data storage back-end and has a simple user interface",
-  "main": "dist/ospos.js",
-  "keywords": [
-    "point-of-sale"
-  ],
+  "description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
+  "version": "3.1.0",
   "license": "MIT",
+  "authors": [
+    "jekkos <jeroen.peelaerts - at - gmail.com>",
+    "FrancescoUK <francesco.lodolo.uk - at - gmail.com>"
+  ],
+  "keywords": [
+    "point-of-sale",
+    "POS"
+  ],
   "homepage": "https://github.com/jekkos/opensourcepos",
   "private": true,
   "moduleType": [
@@ -23,13 +24,46 @@
     "tests"
   ],
   "dependencies": {
-    "jKey": "https://github.com/OscarGodson/jKey",
-    "jquery-bgiframe": "~3.0.1",
-    "jquery-color": "~2.1.2",
     "jquery-form": "~3.46.0",
     "jquery-validate": "~1.13.1",
-    "jquery": "1.8.3",
-    "swfobject": "*",
-    "thickbox": "~3.1.2"
+    "jquery": "~1.12.4",
+    "jquery-ui": "1.11.4",
+    "bootstrap3-dialog": "bootstrap-dialog#^1.35.3",
+    "jasny-bootstrap": "^3.1.3",
+    "bootswatch": "^3.3.7",
+    "smalot-bootstrap-datetimepicker": "^2.4.4",
+    "bootstrap-select": "^1.12.2",
+    "bootstrap-table": "fde42200",
+    "bootstrap-daterangepicker": "^2.1.24",
+    "tableExport.jquery.plugin": "1.5.1",
+    "chartist": "^0.9.8",
+    "chartist-plugin-axistitle": "^0.1.0",
+    "chartist-plugin-pointlabels": "^0.0.4",
+    "chartist-plugin-tooltip": "^0.0.13",
+    "chartist-plugin-barlabels": "https://github.com/mtgibbs/chartist-plugin-barlabels.git#^0.0.5",
+    "remarkable-bootstrap-notify": "^3.1.3",
+    "js-cookie": "^2.1.3",
+    "blockUI": "*"
+  },
+  "overrides": {
+    "jquery-ui": {
+      "main": [
+        "themes/base/jquery-ui.css",
+        "jquery-ui.js"
+      ]
+    },
+    "table-export": {
+      "main": [
+        "tableExport.js"
+      ]
+    },
+    "bootstrap-table": {
+      "main": [
+        "src/bootstrap-table.js",
+        "src/bootstrap-table.css",
+        "dist/extensions/export/bootstrap-table-export.js",
+        "dist/extensions/mobile/bootstrap-table-mobile.js"
+      ]
+    }
   }
 }

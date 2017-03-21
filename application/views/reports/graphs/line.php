@@ -1,49 +1,199 @@
-<?php
-$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate");
-$this->output->set_header("Pragma: public");
-$line_data = array();
-$labels = array();
-foreach($data as $label=>$value)
-{
-    $line_data[] = (float)$value;
-	$labels[] = (string)$label;
-}
+<script>
+	// Labels and data series
+	var data = {
+		labels: <?php echo json_encode($labels_1); ?>,
+		series: [{
+			name: '<?php echo $yaxis_title; ?>',
+			data: <?php echo json_encode($series_data_1); ?>
+		}]
+	};
 
-$hol = new hollow_dot();
-$hol->size(3)->halo_size(1)->tooltip('#x_label#<br>#val#');
+	// We are setting a few options for our chart and override the defaults
+	var options = {
 
-$line = new line();
-$line->set_default_dot_style($hol); 
-$line->set_values($line_data);
+		// Specify a fixed width for the chart as a string (i.e. '100px' or '50%')
+		width: '100%',
 
-$chart = new open_flash_chart();
-$chart->set_title(new title($title));
-$chart->add_element($line);
+		// Specify a fixed height for the chart as a string (i.e. '100px' or '50%')
+		height: '100%',
 
-$x = new x_axis();
-$x->steps(count($data) > 10 ? (int)(count($data)/4) : 1);
-$x->set_labels_from_array($labels);
-$chart->set_x_axis( $x );
+		// Draw the line chart points
+		showPoint: true,
 
-$y = new y_axis();
-$y->set_tick_length(7);
-$y->set_range(0, (count($data) > 0 ? max($data) : 0) + 25, ((count($data) > 0 ? max($data) : 0)+25)/10);
-$chart->set_y_axis( $y );
-$chart->set_bg_colour("#f3f3f3");
+		// Disable line smoothing
+		lineSmooth: false,
 
-if (isset($yaxis_label))
-{
-	$y_legend = new y_legend($yaxis_label );
-	$y_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_y_legend( $y_legend );
-}
+		// Padding of the chart drawing area to the container element and labels as a number or padding object {top: 5, right: 5, bottom: 5, left: 5}
+		chartPadding: {
+			top: 20,
+			bottom: 120
+		},
 
-if (isset($xaxis_label))
-{
-	$x_legend = new x_legend($xaxis_label );
-	$x_legend->set_style( '{font-size: 20px; color: #000000}' );
-	$chart->set_x_legend( $x_legend );
-}
+		// X-Axis specific configuration
+		axisX: {
+			// Lets offset the chart a bit from the labels
+			offset: 120,
+			position: 'end',
+			// offset the labels a bit from the axis to avoid overlaps
+			labelOffset: {
+				x: 0,
+				y: 20
+			}
+		},
 
-echo $chart->toPrettyString();
-?>
+		// Y-Axis specific configuration
+		axisY: {
+			// Lets offset the chart a bit from the labels
+			offset: 80,
+			// offset the labels a bit from the axis to avoid overlaps
+			labelOffset: {
+				x: -20,
+				y: 0
+			},
+			// The label interpolation function enables you to modify the values
+			// used for the labels on each axis.
+			labelInterpolationFnc: function(value) {
+				<?php
+				if( $show_currency )
+				{
+					if( currency_side() )
+					{
+				?>
+						return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+					<?php
+					}
+					else
+					{
+					?>
+						return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+				<?php
+					}
+				}
+				else
+				{
+				?>
+					return value;
+				<?php
+				}
+				?>
+			}
+		},
+
+		// plugins configuration
+		plugins: [
+			Chartist.plugins.ctAxisTitle({
+				axisX: {
+					axisTitle: '<?php echo $xaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: -100,
+						y: 100
+					},
+					textAnchor: 'middle'
+				},
+				axisY: {
+					axisTitle: '<?php echo $yaxis_title; ?>',
+					axisClass: 'ct-axis-title',
+					offset: {
+						x: 0,
+						y: 0
+					},
+					textAnchor: 'middle',
+					flipTitle: false
+				}
+			}),
+
+			Chartist.plugins.ctPointLabels({
+				textAnchor: 'middle',
+				labelInterpolationFnc: function(value) {
+					<?php
+					if( $show_currency )
+					{
+						if( currency_side() )
+						{
+					?>
+							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+						<?php
+						}
+						else
+						{
+						?>
+							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+					<?php
+						}
+					}
+					else
+					{
+					?>
+						return value;
+					<?php
+					}
+					?>
+				}
+			}),
+			
+			Chartist.plugins.tooltip({
+				pointClass: 'ct-tooltip-point',
+				transformTooltipTextFnc: function(value) {
+					<?php
+					if( $show_currency )
+					{
+						if( currency_side() )
+						{
+					?>
+							return value + '<?php echo $this->config->item('currency_symbol'); ?>';
+						<?php
+						}
+						else
+						{
+						?>
+							return '<?php echo $this->config->item('currency_symbol'); ?>' + value;				
+					<?php
+						}
+					}
+					else
+					{
+					?>
+						return value;
+					<?php
+					}
+					?>
+				}
+			})
+		]
+	};
+	
+	var responsiveOptions = [
+		['screen and (min-width: 640px)', {
+			height: '80%',
+			chartPadding: {
+				top: 20,
+				bottom: 0
+			},
+		}] /*,
+		['screen and (min-width: 1024px)', {
+			labelOffset: 80,
+			chartPadding: 20
+		}]*/
+	];
+
+	chart = new Chartist.Line('#chart1', data, options, responsiveOptions);
+	
+	chart.on('draw', function(data) {
+		// If the draw event was triggered from drawing a point on the line chart
+		if(data.type === 'point') {
+			// We are creating a new path SVG element that draws a triangle around the point coordinates
+			var circle = new Chartist.Svg('circle', {
+				cx: [data.x],
+				cy: [data.y],
+				r: [5], 
+				'ct:value': data.value.y,
+				'ct:meta': data.meta,
+				class: 'ct-tooltip-point',
+			}, 'ct-area');
+
+			// With data.element we get the Chartist SVG wrapper and we can replace the original point drawn by Chartist with our newly created triangle
+			data.element.replace(circle);
+		}
+	});
+</script>

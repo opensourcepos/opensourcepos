@@ -1,0 +1,85 @@
+#required_fields_message
+{
+	width: 100%;
+	text-align: center;
+	margin-bottom: 3px;
+	font-style: italic;
+}
+
+.error_message_box
+{
+	margin-bottom: 7px;
+	margin-left: 20px;
+	color: red;	
+	font-weight: bold;
+}
+
+#customer_basic_info, #item_basic_info, #item_number_info, #supplier_basic_info, #sale_basic_info, #employee_basic_info, #employee_login_info, #employee_permission_info
+{
+	padding: 5px;
+}
+
+#info_provided_by
+{
+	display: none;
+	font-weight: bold;
+}
+
+#permission_list
+{
+	list-style: none;
+}
+
+#permission_list li
+{
+	padding: 5px;	
+}
+
+#permission_list ul li
+{
+	padding-left: 20px;
+	padding-bottom: 0px;
+	list-style: none;
+}
+
+#permission_list input
+{
+	top: 3px;
+}
+
+#employee_permission_info p
+{
+	font-weight: bold;
+}
+
+#employee_permission_info span.small
+{
+	font-style: italic;
+	font-size: 80%;
+}
+
+#items_count_details
+{
+	font-size: 80%;
+}
+
+#item_kit_items, #items_count_details
+{
+	width: 100%;
+}
+
+#item_kit_items thead tr, #items_count_details thead tr
+{
+	background-color: #CCC;
+}
+
+#item_kit_items th, #items_count_details th
+{
+	text-align: center;
+	font-weight: bold;
+}
+
+#item_kit_items td, #items_count_details td
+{
+	text-align: center;
+}
