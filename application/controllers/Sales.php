@@ -455,10 +455,9 @@ class Sales extends Secure_area
 		$client_ip = $_SERVER['REMOTE_ADDR'];
 		log_message('debug', var_export($data['payments'], TRUE));
 		log_message('debug', var_export($client_ip, TRUE));
-		// add code to check $data['payments']
-		if (array_key_exists('Cash', $data['payments'])) {
-			@exec("php -f application/helpers/cashdrawer_helper.php $client_ip &> /dev/null &");
-		}
+
+		@exec("php -f application/helpers/cashdrawer_helper.php $client_ip &> /dev/null &");
+
 		//exec("php -f application/helpers/cashdrawer_helper.php $client_ip", $cmdout);
 		//log_message('debug', var_export($cmdout, TRUE));
 	}
