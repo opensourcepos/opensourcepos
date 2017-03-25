@@ -4,9 +4,9 @@
  *
  * @author	CodeIgniter community
  * @author  Cristian Robert Chiribuc
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'Calea către biblioteca de imagine nu este co
 $lang['imglib_image_process_failed'] = 'Procesarea imaginii a eșuat. Verificați dacă serverul dvs. suportă protocolul ales și dacă este corectă calea către biblioteca de imagine.';
 $lang['imglib_rotation_angle_required'] = 'Este necesar un unghi de rotație petru a roti imaginea.';
 $lang['imglib_invalid_path'] = 'Calea către imagine nu este corectă.';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'Copierea imaginii de rutină a eșuat.';
 $lang['imglib_missing_font'] = 'Nu s-a putut găsi un font pentru a fi folosit.';
 $lang['imglib_save_failed'] = 'Imaginea nu a putut fi salvată. Asigurați-vă că imaginea și fișierul director au permisiuni de scriere.';

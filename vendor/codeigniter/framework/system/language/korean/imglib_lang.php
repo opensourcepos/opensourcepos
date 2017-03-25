@@ -4,9 +4,9 @@
  *
  * @author CodeIgniter community
  * @author HyeongJoo Kwon
- * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license http://opensource.org/licenses/MIT MIT License
- * @link http://codeigniter.com
+ * @link https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = '이미지 라이브러리에 대한 경로가
 $lang['imglib_image_process_failed'] = '이미지 처리에 실패했습니다. 서버가 해당 형식을 지원하는지 확인하고, 이미지 라이브러리의 경로가 올바른지 확인하세요.';
 $lang['imglib_rotation_angle_required'] = '회전하려면 각도를 입력하세요.';
 $lang['imglib_invalid_path'] = '이미지 경로가 올바르지 않습니다.';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = '이미지 복사에 실패했습니다.';
 $lang['imglib_missing_font'] = '해당 폰트를 찾을 수 없습니다.';
 $lang['imglib_save_failed'] = '이미지를 저장할 수 없습니다. 권한을 확인하거나 경로를 확인하세요.';

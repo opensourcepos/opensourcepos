@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Change Log &mdash; CodeIgniter 3.1.3 documentation</title>
+  <title>Change Log &mdash; CodeIgniter 3.1.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.4 documentation" href="index.html"/>
         <link rel="next" title="The MIT License (MIT)" href="license.html"/>
         <link rel="prev" title="Developer’s Certificate of Origin 1.1" href="DCO.html"/> 
 
@@ -422,6 +422,45 @@
             
   <div class="section" id="change-log">
 <h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-3-1-4">
+<h2>Version 3.1.4<a class="headerlink" href="#version-3-1-4" title="Permalink to this headline">¶</a></h2>
+<p>Release Date: March 23, 2017</p>
+<ul class="simple">
+<li><strong>Security</strong><ul>
+<li>Fixed a header injection vulnerability in <a class="reference internal" href="general/common_functions.html"><em>common function</em></a> <a class="reference internal" href="general/common_functions.html#set_status_header" title="set_status_header"><tt class="xref php php-func docutils literal"><span class="pre">set_status_header()</span></tt></a> under Apache (thanks to Guillermo Caminer from <a class="reference external" href="https://flowgate.net/">Flowgate</a>).</li>
+<li>Fixed byte-safety issues in <a class="reference internal" href="libraries/encrypt.html"><em>Encrypt Library</em></a> (DEPRECATED) when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
+<li>Fixed byte-safety issues in <a class="reference internal" href="libraries/encryption.html"><em>Encryption Library</em></a> when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
+<li>Fixed byte-safety issues in <a class="reference internal" href="general/compatibility_functions.html"><em>compatibility functions</em></a> <tt class="docutils literal"><span class="pre">password_hash()</span></tt>, <tt class="docutils literal"><span class="pre">hash_pbkdf2()</span></tt> when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
+<li>Updated <a class="reference internal" href="libraries/encrypt.html"><em>Encrypt Library</em></a> (DEPRECATED) to call <tt class="docutils literal"><span class="pre">mcrypt_create_iv()</span></tt> with <tt class="docutils literal"><span class="pre">MCRYPT_DEV_URANDOM</span></tt>.</li>
+</ul>
+</li>
+<li>General Changes<ul>
+<li>Updated the <a class="reference internal" href="libraries/image_lib.html"><em>Image Manipulation Library</em></a> to work-around an issue with some JPEGs when using GD.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="bug-fixes-for-3-1-4">
+<h3>Bug fixes for 3.1.4<a class="headerlink" href="#bug-fixes-for-3-1-4" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed a regression (#4975) - <a class="reference internal" href="libraries/loader.html"><em>Loader Library</em></a> couldn&#8217;t handle objects passed as view variables.</li>
+<li>Fixed a bug (#4977) - <a class="reference internal" href="libraries/loader.html"><em>Loader Library</em></a> method <tt class="docutils literal"><span class="pre">helper()</span></tt> could accept any character as a filename extension separator.</li>
+<li>Fixed a regression where the <a class="reference internal" href="libraries/sessions.html"><em>Session Library</em></a> would fail on a <tt class="docutils literal"><span class="pre">session_regenerate_id(TRUE)</span></tt> call with the &#8216;database&#8217; driver.</li>
+<li>Fixed a bug (#4987) - <a class="reference internal" href="database/query_builder.html"><em>Query Builder</em></a> caching didn&#8217;t keep track of table aliases.</li>
+<li>Fixed a bug where <a class="reference internal" href="helpers/text_helper.html"><em>Text Helper</em></a> function <tt class="docutils literal"><span class="pre">ascii_to_entities()</span></tt> wasn&#8217;t byte-safe when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
+<li>Fixed a bug where <tt class="docutils literal"><span class="pre">CI_Log</span></tt>, <tt class="docutils literal"><span class="pre">CI_Output</span></tt>, <tt class="docutils literal"><span class="pre">CI_Email</span></tt> and <tt class="docutils literal"><span class="pre">CI_Zip</span></tt> didn&#8217;t handle strings in a byte-safe manner when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
+<li>Fixed a bug where <a class="reference internal" href="libraries/sessions.html"><em>Session Library</em></a> didn&#8217;t read session data in a byte-safe manner when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
+<li>Fixed a bug (#4990) - <a class="reference internal" href="general/profiling.html"><em>Profiler</em></a> didn&#8217;t close <tt class="docutils literal"><span class="pre">&lt;pre&gt;</span></tt> tags it generated.</li>
+<li>Fixed a bug (#4990) - <a class="reference internal" href="general/profiling.html"><em>Profiler</em></a> didn&#8217;t HTML-escape quotes for <tt class="docutils literal"><span class="pre">$_SESSION</span></tt> variables.</li>
+<li>Fixed a bug where <a class="reference internal" href="libraries/input.html"><em>Input Library</em></a> method <tt class="docutils literal"><span class="pre">set_cookie()</span></tt> didn&#8217;t allow its <em>httponly</em> and <em>secure</em> parameters to be overriden to <tt class="docutils literal"><span class="pre">FALSE</span></tt>.</li>
+<li>Fixed a bug (#5006) - <a class="reference internal" href="general/common_functions.html"><em>common function</em></a> <a class="reference internal" href="general/common_functions.html#get_mimes" title="get_mimes"><tt class="xref php php-func docutils literal"><span class="pre">get_mimes()</span></tt></a> didn&#8217;t load <em>application/config/mimes.php</em> if an environment specific config exists.</li>
+<li>Fixed a bug (#5006) - <a class="reference internal" href="general/common_functions.html"><em>common function</em></a> <a class="reference internal" href="general/common_functions.html#remove_invisible_characters" title="remove_invisible_characters"><tt class="xref php php-func docutils literal"><span class="pre">remove_invisible_characters()</span></tt></a> didn&#8217;t remove URL-encoded <tt class="docutils literal"><span class="pre">0x7F</span></tt>.</li>
+<li>Fixed a bug (#4815) - <a class="reference internal" href="database/index.html"><em>Database Library</em></a> stripped URL-encoded sequences while escaping strings with the &#8216;mssql&#8217; driver.</li>
+<li>Fixed a bug (#5044) - <a class="reference internal" href="helpers/html_helper.html"><em>HTML Helper</em></a> function <a class="reference internal" href="helpers/html_helper.html#img" title="img"><tt class="xref php php-func docutils literal"><span class="pre">img()</span></tt></a> didn&#8217;t accept <tt class="docutils literal"><span class="pre">data:</span></tt> URI schemes for the image source.</li>
+<li>Fixed a bug (#5050) - <a class="reference internal" href="database/index.html"><em>Database Library</em></a> tried to access an undefined property in a number of error handling cases.</li>
+<li>Fixed a bug (#5057) - <a class="reference internal" href="database/index.html"><em>Database</em></a> driver &#8216;postgre&#8217; didn&#8217;t actually apply extra options (such as &#8216;connect_timeout&#8217;) to its DSN.</li>
+</ul>
+</div>
+</div>
 <div class="section" id="version-3-1-3">
 <h2>Version 3.1.3<a class="headerlink" href="#version-3-1-3" title="Permalink to this headline">¶</a></h2>
 <p>Release Date: Jan 09, 2017</p>
@@ -487,7 +526,7 @@
 <li>Fixed a regression (#4874) - <a class="reference internal" href="libraries/sessions.html"><em>Session Library</em></a> didn&#8217;t take into account <tt class="docutils literal"><span class="pre">session.hash_bits_per_character</span></tt> when validating session IDs.</li>
 <li>Fixed a bug (#4871) - <a class="reference internal" href="database/query_builder.html"><em>Query Builder</em></a> method <tt class="docutils literal"><span class="pre">update_batch()</span></tt> didn&#8217;t properly handle identifier escaping.</li>
 <li>Fixed a bug (#4884) - <a class="reference internal" href="database/query_builder.html"><em>Query Builder</em></a> didn&#8217;t properly parse field names ending in &#8216;is&#8217; when used inside WHERE and HAVING statements.</li>
-<li>Fixed a bug where <tt class="docutils literal"><span class="pre">CI_Log</span></tt>, <tt class="docutils literal"><span class="pre">CI_Output</span></tt>, <tt class="docutils literal"><span class="pre">CI_Email</span></tt> and <tt class="docutils literal"><span class="pre">CI_Zip</span></tt> didn&#8217;t handle strings in a byte-safe manner when <tt class="docutils literal"><span class="pre">mbstring.func_override</span></tt> is enabled.</li>
+<li>Fixed a bug where <tt class="docutils literal"><span class="pre">CI_Log</span></tt>, <tt class="docutils literal"><span class="pre">CI_Output</span></tt>, <tt class="docutils literal"><span class="pre">CI_Email</span></tt> and <tt class="docutils literal"><span class="pre">CI_Zip</span></tt> didn&#8217;t handle strings in a byte-safe manner when <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
 </ul>
 </div>
 </div>
@@ -526,7 +565,7 @@ and <a class="reference external" href="https://tools.ietf.org/html/rfc6585">658
 <li>Fixed a bug where <a class="reference internal" href="database/query_builder.html"><em>Query Builder</em></a> method <tt class="docutils literal"><span class="pre">insert_batch()</span></tt> tried to execute an unsupported SQL query with the &#8216;ibase&#8217; and &#8216;pdo/firebird&#8217; drivers.</li>
 <li>Fixed a bug (#4809) - <a class="reference internal" href="database/index.html"><em>Database</em></a> driver &#8216;pdo/mysql&#8217; didn&#8217;t turn off <tt class="docutils literal"><span class="pre">AUTOCOMMIT</span></tt> when starting a transaction.</li>
 <li>Fixed a bug (#4822) - <a class="reference internal" href="helpers/captcha_helper.html"><em>CAPTCHA Helper</em></a> didn&#8217;t clear expired PNG images.</li>
-<li>Fixed a bug (#4823) - <a class="reference internal" href="libraries/sessions.html"><em>Session Library</em></a> &#8216;files&#8217; driver could enter an infinite loop if <tt class="docutils literal"><span class="pre">mbstring.func_override</span></tt> is enabled.</li>
+<li>Fixed a bug (#4823) - <a class="reference internal" href="libraries/sessions.html"><em>Session Library</em></a> &#8216;files&#8217; driver could enter an infinite loop if <tt class="docutils literal"><span class="pre">mbstring.func_overload</span></tt> is enabled.</li>
 <li>Fixed a bug (#4851) - <a class="reference internal" href="database/forge.html"><em>Database Forge</em></a> didn&#8217;t quote schema names passed to its <tt class="docutils literal"><span class="pre">create_database()</span></tt> method.</li>
 <li>Fixed a bug (#4863) - <a class="reference internal" href="libraries/table.html"><em>HTML Table Library</em></a> method <tt class="docutils literal"><span class="pre">set_caption()</span></tt> was missing method chaining support.</li>
 <li>Fixed a bug (#4843) - <a class="reference internal" href="libraries/xmlrpc.html"><em>XML-RPC Library</em></a> client class didn&#8217;t set a read/write socket timeout.</li>
@@ -3979,7 +4018,7 @@ and fixed various typos.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
-      Last updated on Jan 09, 2017.
+      Last updated on Mar 20, 2017.
     </p>
   </div>
 
@@ -4000,7 +4039,7 @@ and fixed various typos.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.1.3',
+            VERSION:'3.1.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

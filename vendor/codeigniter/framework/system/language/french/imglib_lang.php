@@ -2,9 +2,9 @@
 /**
  * System messages translation for CodeIgniter(tm)
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -22,6 +22,7 @@ $lang['imglib_libpath_invalid']         = "Le chemin vers votre librairie d'imag
 $lang['imglib_image_process_failed']    = "Le traintement de l'image a échoué. Veuillez vous assurer que votre serveur prend en charge le protocole choisi et que le chemin vers votre librairie d'images est correct.";
 $lang['imglib_rotation_angle_required'] = "Un angle de rotation est nécéssaire pour faire tourner l'image.";
 $lang['imglib_invalid_path']            = "Le chemin vers l'image est incorrect.";
+$lang['imglib_invalid_image']           = 'The provided image is not valid.';
 $lang['imglib_copy_failed']             = "La routine de copie d'image a échouée.";
 $lang['imglib_missing_font']            = "Impossible de trouver une police de caractères.";
 $lang['imglib_save_failed']             = "Impossible de sauvegarder l'image. Veuillez vous assurer que l'image et le répertoire sont accessibles en écriture.";

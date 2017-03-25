@@ -4,9 +4,9 @@
  *
  * @author CodeIgniter community
  * @author Peter Denk
- * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license http://opensource.org/licenses/MIT MIT License
- * @link http://codeigniter.com
+ * @link https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid']		= 'Sökvägen till bildmappen är felaktig. Ang
 $lang['imglib_image_process_failed']	= 'Bildbehandlingen misslyckades. Kontrollera att server stöder valt protokoll och att sökvägen till bildmappen är korrekt.';
 $lang['imglib_rotation_angle_required']	= 'En rotationsvinkel måste anges för att rotera bilden.';
 $lang['imglib_invalid_path']		= 'Sökvägen till bild-filen är inte korrekt.';
+$lang['imglib_invalid_image']		= 'The provided image is not valid.';
 $lang['imglib_copy_failed']		= 'Kunde inte kopiera bilden.';
 $lang['imglib_missing_font']		= 'Teckensnitt saknas.';
 $lang['imglib_save_failed']		= 'Kunde inte spara bilden. Kontrollera skrivrättigheterna för filen och mappen.';

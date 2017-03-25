@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -19,7 +19,7 @@ $lang['upload_stopped_by_extension'] = 'O upload de arquivo foi parado por causa
 $lang['upload_no_file_selected'] = 'Você não selecionou o arquivo para fazer upload.';
 $lang['upload_invalid_filetype'] = 'O tipo de arquivo que você está tentando fazer upload não é permitido.';
 $lang['upload_invalid_filesize'] = 'O arquivo que você está tentando fazer upload é maior que o tamanho permitido.';
-$lang['upload_invalid_dimensions'] = 'A imagem que você está tentando fazer upload excede as dimensões máxima permitida.';
+$lang['upload_invalid_dimensions'] = 'A imagem que você está tentando fazer upload excede as dimensões máximas permitidas.';
 $lang['upload_destination_error'] = 'Um problema foi encontrado enquanto tentava mover o arquivo que foi feito upload para o destino final.';
 $lang['upload_no_filepath'] = 'O caminho(path) para upload parece não ser válido.';
 $lang['upload_no_file_types'] = 'Você não especificou o tipo de arquivo permitido.';

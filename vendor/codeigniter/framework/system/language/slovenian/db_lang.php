@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,9 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -51,7 +51,7 @@ $lang['db_del_must_use_where'] = 'Izbrisi niso možni razen z uporabo "where" al
 $lang['db_field_param_missing'] = 'Za prenos polje zahteva ime tabele kot parametra.';
 $lang['db_unsupported_function'] = 'Funkcionalnost ni podprta v vaši podatkovni bazi';
 $lang['db_transaction_failure'] = 'Neuspešna transakcija: Izveden rollback.';
-$lang['db_unable_to_drop'] = 'Ni možno izbrisati določene podatkovne baze.';'Unable to drop the specified database.';
+$lang['db_unable_to_drop'] = 'Ni možno izbrisati navedene podatkovne baze.';
 $lang['db_unsupported_feature'] = 'Funkcionalnost ni podprta na vašem platformu podatkovne baze.';
 $lang['db_unsupported_compression'] = 'Komprecijski format ni podprt na vašem strežniku.';
 $lang['db_filepath_error'] = 'Ni možno pisati podatkov v določeni poti.';
