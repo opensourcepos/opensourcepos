@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = 'Ճանապարհը դեպի նկարների 
 $lang['imglib_image_process_failed'] = 'Նկարի հետ աշխատանքը ձախողվեց։ Խնդրում ենք ստուգել, որ ձեր սերվերը ապահովվում է նշված կանոնագիրը և ճանապարհը դեպի նկարների գրադարանը ճիշտ է։';
 $lang['imglib_rotation_angle_required'] = 'Անհրաժեշտ է ներկայացնել պտույտի անկյունը նկարը պտտելու համար։';
 $lang['imglib_invalid_path'] = 'Ճանապարհը դեպի նկար սխալ է։';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'Նկարը պատճենելը ավարտվեց անհաջողությամբ։';
 $lang['imglib_missing_font'] = 'Չհաջողվեց գտնել տառատեսակը։';
 $lang['imglib_save_failed'] = 'Պահպանել նկարը չհաջողվեց։ Խնդրում ենք համոզվել, որ նկարը և ֆայլի պանակը հասանելի են գրելու համար։';

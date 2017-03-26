@@ -5,7 +5,7 @@
  * @author	CodeIgniter community
  * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -27,9 +27,9 @@ $lang['db_unable_to_drop'] = 'Неможливо видалити вказану
 $lang['db_unsupported_feature'] = 'Непідтримувана особливість платформи бази даних, яку Ви використовуєте.';
 $lang['db_unsupported_compression'] = 'Формат стискання файлів, який Ви вибрали, не підтримується Вашим сервером.';
 $lang['db_filepath_error'] = 'Неможливо записати дані в файл за вказаним шляхом.';
-$lang['db_invalid_cache_path'] = 'Вказаний шлях до кеш файлів некорректний або недоступний для запису.';
+$lang['db_invalid_cache_path'] = 'Вказаний шлях до кеш файлів некоректний або недоступний для запису.';
 $lang['db_table_name_required'] = 'Необхідно вказати ім’я таблиці для цієї операції.';
-$lang['db_column_name_required'] = 'Необхідно вказани ім’я стовпця для цієї операції.';
+$lang['db_column_name_required'] = 'Необхідно вказати ім’я стовпця для цієї операції.';
 $lang['db_column_definition_required'] = 'Назва стовпця обов’язкова для цієї операції.';
 $lang['db_unable_to_set_charset'] = 'Неможливо встановити кодування з’єднання: %s';
 $lang['db_error_heading'] = 'Помилка бази даних.';

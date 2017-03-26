@@ -4,9 +4,9 @@
  *
  * @author	CodeIgniter community
  * @author	Kim Chanthoeun
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid']             = 'ទីតាំងទៅកាន
 $lang['imglib_image_process_failed']        = 'ដំណើរការរូបភាពបរាជ័យ។ សូមផ្ទៀងផ្ទាត់ថាម៉ាស៊ីនរបស់អ្នកស្គាល់ នូវតម្រូវការដែលបានជ្រើស  ហើយទីតាំងទៅបណ្ណាល័យរូបភាពរបស់អ្នកគឺត្រឹមត្រូវ។';
 $lang['imglib_rotation_angle_required']     = 'មុំនៃការបង្វិលគឺតម្រូវឲ្យមាន​ដើម្បីបង្វិលរូបភាព។';
 $lang['imglib_invalid_path']                = 'ទីតាំងទៅកាន់រូបភាពគឺមិនត្រឹមត្រូវ។';
+$lang['imglib_invalid_image']               = 'The provided image is not valid.';
 $lang['imglib_copy_failed']                 = 'ថតចម្លងរូបភាពបានបរាជ័យ។';
 $lang['imglib_missing_font']                = 'កមិនឃើញពុម្ពអក្សរដែលត្រូវប្រើនោះបានទេ។';
 $lang['imglib_save_failed']                 = 'មិនអាចរក្សាទុករូបភាព។ សូមបញ្ជាក់ថារូបភាពនិងថតឯកសារគឺអាចកែតម្រូវបាន។';

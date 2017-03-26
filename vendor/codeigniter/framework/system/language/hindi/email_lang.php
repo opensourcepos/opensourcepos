@@ -3,10 +3,10 @@
 * System messages translation for CodeIgniter(tm)
 *
 * @author	CodeIgniter community
-* @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+* @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
 * @copyright	Pieter Krul
 * @license	http://opensource.org/licenses/MIT MIT License
-* @link	http://codeigniter.com
+* @link	https://codeigniter.com
 */
 defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
 $lang['email_must_be_array'] = 'ईमेल सत्यापन विधि को  सरणी (array) भेजी जानी चाहिए।';

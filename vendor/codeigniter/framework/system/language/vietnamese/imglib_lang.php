@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = 'Đường dẫn "image library" không chính
 $lang['imglib_image_process_failed'] = 'Xử lý hình ảnh thất bại. Bạn hãy kiểm tra lại máy chủ của bạn có hỗ trợ giao thức xử lý và đường dẫn "image library" là chính xác.';
 $lang['imglib_rotation_angle_required'] = 'Thiếu gốc xoay (angle of rotation) để xoay hình.';
 $lang['imglib_invalid_path'] = 'Đường dẫn hình ảnh không chính xác.';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'Sao chép hình ảnh thất bại';
 $lang['imglib_missing_font'] = 'Không tìm thấy font.';
 $lang['imglib_save_failed'] = 'Không thể lưu hình ảnh. Bạn hãy chắc rằng đường dẫn đến thư mục chứ ảnh đúng và thư mục cho phép ghi.';

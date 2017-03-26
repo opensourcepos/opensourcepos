@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = '圖形函式庫路徑錯誤。在設定中必
 $lang['imglib_image_process_failed'] = '影像處理錯誤。請確認伺服器支援指定的處理方法，且圖形函式庫徑正確';
 $lang['imglib_rotation_angle_required'] = '必須指定旋轉角度';
 $lang['imglib_invalid_path'] = '圖檔路徑錯誤';
+$lang['imglib_invalid_image'] = '無效的圖檔';
 $lang['imglib_copy_failed'] = '圖檔複製錯誤';
 $lang['imglib_missing_font'] = '無法找到指定的字體';
 $lang['imglib_save_failed'] = '無法存檔，請確定圖檔或目錄可寫';

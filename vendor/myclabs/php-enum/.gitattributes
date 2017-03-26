@@ -1,0 +1,6 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+tests/ export-ignore
+phpunit.xml export-ignore
+.travis.yml export-ignore

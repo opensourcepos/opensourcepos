@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid']         = 'Resim kütüphanesi yolu yanlış. L�
 $lang['imglib_image_process_failed']    = 'Resim işleme başarısız. Lütfen sunucunuzun seçilen protokolü desteklediğini ve resim kütüphanesinin yolunu kontrol ediniz.';
 $lang['imglib_rotation_angle_required'] = 'Resmin döndürülmesi için bir döndürme açısı gerekli.';
 $lang['imglib_invalid_path']            = 'Resim yolu doğru değil.';
+$lang['imglib_invalid_image']           = 'Geçersiz resim.';
 $lang['imglib_copy_failed']             = 'Resim kopyalama işlemi başarısız.';
 $lang['imglib_missing_font']            = 'Kullanılacak font bulunamadı.';
 $lang['imglib_save_failed']             = 'Resim kaydedilemedi. Resmin ve klasörün yazılabilir olduğunu kontrol ediniz.';

@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Typography Class &mdash; CodeIgniter 3.1.3 documentation</title>
+  <title>Typography Class &mdash; CodeIgniter 3.1.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.4 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Unit Testing Class" href="unit_testing.html"/>
         <link rel="prev" title="Trackback Class" href="trackback.html"/> 
@@ -469,6 +469,57 @@ To enable this, set the <tt class="docutils literal"><span class="pre">protect_b
 </dd></dl>
 
 <dl class="method">
+<dt id="CI_Typography::auto_typography">
+<tt class="descname">auto_typography</tt><big>(</big><em>$str</em><span class="optional">[</span>, <em>$reduce_linebreaks = FALSE</em><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Typography::auto_typography" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>$str</strong> (<em>string</em>) &#8211; Input string</li>
+<li><strong>$reduce_linebreaks</strong> (<em>bool</em>) &#8211; Whether to reduce consequitive linebreaks</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">HTML typography-safe string</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">string</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Formats text so that it is semantically and typographically correct HTML.
+Takes a string as input and returns it with the following formatting:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Surrounds paragraphs within &lt;p&gt;&lt;/p&gt; (looks for double line breaks to identify paragraphs).</li>
+<li>Single line breaks are converted to &lt;br /&gt;, except those that appear within &lt;pre&gt; tags.</li>
+<li>Block level elements, like &lt;div&gt; tags, are not wrapped within paragraphs, but their contained text is if it contains paragraphs.</li>
+<li>Quotes are converted to correctly facing curly quote entities, except those that appear within tags.</li>
+<li>Apostrophes are converted to curly apostrophe entities.</li>
+<li>Double dashes (either like &#8211; this or like&#8211;this) are converted to em—dashes.</li>
+<li>Three consecutive periods either preceding or following a word are converted to ellipsis (…).</li>
+<li>Double spaces following sentences are converted to non-breaking spaces to mimic double spacing.</li>
+</ul>
+</div></blockquote>
+<p>Usage example:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$string</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">typography</span><span class="o">-&gt;</span><span class="na">auto_typography</span><span class="p">(</span><span class="nv">$string</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>There is one optional parameter that determines whether the parser should reduce more than two consecutive line breaks down to two.
+Pass boolean TRUE to enable reducing line breaks:</p>
+<div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$string</span> <span class="o">=</span> <span class="nv">$this</span><span class="o">-&gt;</span><span class="na">typography</span><span class="o">-&gt;</span><span class="na">auto_typography</span><span class="p">(</span><span class="nv">$string</span><span class="p">,</span> <span class="k">TRUE</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Typographic formatting can be processor intensive, particularly if you have a lot of content being formatted.
+If you choose to use this method you may want to consider <a class="reference internal" href="../general/caching.html"><em>caching</em></a> your pages.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
 <dt id="CI_Typography::format_characters">
 <tt class="descname">format_characters</tt><big>(</big><em>$str</em><big>)</big><a class="headerlink" href="#CI_Typography::format_characters" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
@@ -556,7 +607,7 @@ This method is identical to the native PHP <tt class="xref php php-func docutils
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
-      Last updated on Jan 09, 2017.
+      Last updated on Mar 20, 2017.
     </p>
   </div>
 
@@ -577,7 +628,7 @@ This method is identical to the native PHP <tt class="xref php php-func docutils
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.3',
+            VERSION:'3.1.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
