@@ -187,6 +187,7 @@ class Sales extends Secure_area
 		{
 			$this->sale_lib->set_sale_location($stock_location);
 		}
+		//log_message('debug',var_export($this->sale_lib->get_mode(), TRUE));
 		$this->_reload();
 	}
 
@@ -451,15 +452,23 @@ class Sales extends Secure_area
 			}
 			$this->sale_lib->clear_all();
 		}
-		//@open_cashdrawer();
 		$client_ip = $_SERVER['REMOTE_ADDR'];
-		log_message('debug', var_export($data['payments'], TRUE));
-		log_message('debug', var_export($client_ip, TRUE));
-
-		@exec("php -f application/helpers/cashdrawer_helper.php $client_ip &> /dev/null &");
-
-		//exec("php -f application/helpers/cashdrawer_helper.php $client_ip", $cmdout);
-		//log_message('debug', var_export($cmdout, TRUE));
+		$is_sale = FALSE;
+		foreach ($data['cart'] as $cart_item)
+		{
+			$cart_item_quantity = $cart_item['quantity'];
+			if ( $cart_item_quantity > 0)
+			{
+				$is_sale = TRUE;
+				break;
+			}
+			// Only if all quantities are negative then it is a return
+		}
+		if ($is_sale)
+		{
+			//log_message('debug', 'Opening cash drawer');
+			@exec("php -f application/helpers/cashdrawer_helper.php $client_ip &> /dev/null &");
+		}
 	}
 
 	private function _invoice_email_pdf($data)
