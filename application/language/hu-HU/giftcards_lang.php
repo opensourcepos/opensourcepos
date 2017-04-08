@@ -3,7 +3,6 @@
 $lang["giftcards_add_minus"] = "Hozzáadás/levonás";
 $lang["giftcards_allow_alt_description"] = "Alternativ leirás eng.";
 $lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "%1 számú utalvány fennmaradó értéke %2!";
 $lang["giftcards_bulk_edit"] = "Tömeges mód.";
 $lang["giftcards_cannot_be_deleted"] = "Utalvány nem törölhető, mert folyamatban van egy eladás.";
 $lang["giftcards_cannot_find_giftcard"] = "Nem található információ az utalványról";
@@ -47,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "utalvány(ok)";
 $lang["giftcards_person_id"] = "Vevő";
 $lang["giftcards_quantity"] = "Mennyiség";
 $lang["giftcards_quantity_required"] = "Mennyiség kötelező mező. Kérem zárja be ( X ) a mégsemhez";
+$lang["giftcards_remaining_balance"] = "%1 számú utalvány fennmaradó értéke %2!";
 $lang["giftcards_reorder_level"] = "Újrarend. szint";
 $lang["giftcards_retrive_giftcard_info"] = "Utalvány visszaváltási infó";
 $lang["giftcards_sales_tax_1"] = "Eladási adó";

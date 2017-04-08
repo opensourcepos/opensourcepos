@@ -352,7 +352,7 @@ class CI_DB_mssql_driver extends CI_DB {
 	 * Error
 	 *
 	 * Returns an array containing code and message of the last
-	 * database error that has occured.
+	 * database error that has occurred.
 	 *
 	 * @return	array
 	 */
@@ -500,7 +500,7 @@ class CI_DB_mssql_driver extends CI_DB {
 			return parent::_insert_batch($table, $keys, $values);
 		}
 
-		return ($this->db->db_debug) ? $this->db->display_error('db_unsupported_feature') : FALSE;
+		return ($this->db_debug) ? $this->display_error('db_unsupported_feature') : FALSE;
 	}
 
 	// --------------------------------------------------------------------

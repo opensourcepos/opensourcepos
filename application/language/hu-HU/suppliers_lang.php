@@ -1,10 +1,10 @@
 <?php 
 
 $lang["suppliers_account_number"] = "Számla #";
+$lang["suppliers_agency_name"] = "Ügynökség neve";
 $lang["suppliers_cannot_be_deleted"] = "Nem lehet törölni a beszállítót, mert már van eladásuk.";
 $lang["suppliers_company_name"] = "Cégnév";
 $lang["suppliers_company_name_required"] = "Cégnév kötelező mező";
-$lang["suppliers_agency_name"] = "Ügynökség neve";
 $lang["suppliers_confirm_delete"] = "Biztos, hogy törölni kívánja a kiválasztott beszállítókat?";
 $lang["suppliers_error_adding_updating"] = "Hiba beszállító hozzáadásánál/módosításánál";
 $lang["suppliers_new"] = "Új beszállító";

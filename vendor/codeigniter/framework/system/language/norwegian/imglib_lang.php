@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = 'Filstien til bildebiblioteket ditt er feil. V
 $lang['imglib_image_process_failed'] = 'Bildebehandling mislyktes. Sjekk at tjeneren din støtter valgte protokoll og at filstien til bildebiblioteket ditt er korrekt.';
 $lang['imglib_rotation_angle_required'] = 'En vinkel må oppgis for å rotere bildet.';
 $lang['imglib_invalid_path'] = 'Stien til bildet er feil.';
+$lang['imglib_invalid_image'] = 'Bildet er ikke gyldig.';
 $lang['imglib_copy_failed'] = 'Bildekopiering mislyktes.';
 $lang['imglib_missing_font'] = 'Fant ingen font.';
 $lang['imglib_save_failed'] = 'Lagring av bildet mislyktes. Sjekk at bildet og mappen er skrivbare.';

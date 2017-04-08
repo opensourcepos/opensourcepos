@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid']         = 'Cesta ke grafické knihovně není na
 $lang['imglib_image_process_failed']    = 'Zpracování obrázku bylo neúspěšné. Zkontrolujte zda server podporuje daný protokol a zda-li je cesta nastavena správně.';
 $lang['imglib_rotation_angle_required'] = 'Pro otočení obrázku je potřeba zadat úhel.';
 $lang['imglib_invalid_path']            = 'Cesta k obrázku není správná.';
+$lang['imglib_invalid_image']           = 'Poskytnutý obrázek je chybný.';
 $lang['imglib_copy_failed']             = 'Kopírování obrázku se nezdařilo.';
 $lang['imglib_missing_font']            = 'Nepodařilo se nalézt daný font.';
 $lang['imglib_save_failed']             = 'Nepodařilo se uložit obrázek. Zkontrolujte zda-li je možné zapisovat do adresáře.';

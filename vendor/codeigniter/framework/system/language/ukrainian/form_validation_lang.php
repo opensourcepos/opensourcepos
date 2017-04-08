@@ -5,7 +5,7 @@
  * @author	CodeIgniter community
  * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,8 +23,8 @@ $lang['form_validation_alpha_numeric'] = 'Поле {field} може бути з�
 $lang['form_validation_alpha_numeric_spaces'] = 'Поле {field} може бути заповнене літерами, цифрами та пробілами.';
 $lang['form_validation_alpha_dash'] = 'Поле {field} може бути заповнене літерами, цифрами, знаків підкреслення та тире.';
 $lang['form_validation_numeric'] = 'Поле {field} може складатися лише із цифр.';
-$lang['form_validation_is_numeric'] = 'Поле {field} может складатися тільки з цифрових значень.';
-$lang['form_validation_integer'] = 'Поле {field} заповнюється лише цілочисельним значенням.';
+$lang['form_validation_is_numeric'] = 'Поле {field} може складатися тільки з цифрових значень.';
+$lang['form_validation_integer'] = 'Поле {field} може бути лише цілочисельним значенням.';
 $lang['form_validation_regex_match'] = 'Поле {field} заповнено неправильно.';
 $lang['form_validation_matches'] = 'Поле {field} не відповідає параметру {param}.';
 $lang['form_validation_differs'] = 'Поле {field} повинно відрізнятися від параметра {param}.';

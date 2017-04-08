@@ -20,6 +20,9 @@
         <a data-toggle="tab" href="#table_tab" title="<?php echo $this->lang->line('config_table_configuration'); ?>"><?php echo $this->lang->line('config_table'); ?></a>
     </li>
     <li role="presentation">
+        <a data-toggle="tab" href="#reward_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_reward'); ?></a>
+    </li>
+    <li role="presentation">
         <a data-toggle="tab" href="#receipt_tab" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>"><?php echo $this->lang->line('config_receipt'); ?></a>
     </li>
     <li role="presentation">
@@ -54,6 +57,9 @@
     </div>
     <div class="tab-pane" id="table_tab">
         <?php $this->load->view("configs/table_config"); ?>
+    </div>
+    <div class="tab-pane" id="reward_tab">
+        <?php $this->load->view("configs/reward_config"); ?>
     </div>
     <div class="tab-pane" id="receipt_tab">
         <?php $this->load->view("configs/receipt_config"); ?>

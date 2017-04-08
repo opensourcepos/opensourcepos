@@ -3,7 +3,6 @@
 $lang["giftcards_add_minus"] = "Инвентарь для сложения/вычитания";
 $lang["giftcards_allow_alt_description"] = "Разрешить альтернативные Описание";
 $lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
 $lang["giftcards_bulk_edit"] = "Массовое изменение";
 $lang["giftcards_cannot_be_deleted"] = "Не удалось удалить выбранные подарочные карты, одну или несколько из выбранных подарочные карты имеет продаж.";
 $lang["giftcards_cannot_find_giftcard"] = "Не можете найти любую информацию о Подарочную карту";
@@ -47,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "подарочную карту";
 $lang["giftcards_person_id"] = "Клиент";
 $lang["giftcards_quantity"] = "Количество";
 $lang["giftcards_quantity_required"] = "Количество является обязательным полем. Пожалуйста, закройте (X), чтобы отменить";
+$lang["giftcards_remaining_balance"] = "Giftcard %1 remaining value is %2!";
 $lang["giftcards_reorder_level"] = "минимальный уровень для перезаказ";
 $lang["giftcards_retrive_giftcard_info"] = "находить и подавать информация Подарочную карту";
 $lang["giftcards_sales_tax_1"] = "Налог с продаж";

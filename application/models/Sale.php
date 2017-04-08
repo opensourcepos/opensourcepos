@@ -507,7 +507,8 @@ class Sale extends CI_Model
 
 		$this->db->insert('sales', $sales_data);
 		$sale_id = $this->db->insert_id();
-
+		$total_amount = 0;
+		$total_amount_used = 0;
 		foreach($payments as $payment_id=>$payment)
 		{
 			if( substr( $payment['payment_type'], 0, strlen( $this->lang->line('sales_giftcard') ) ) == $this->lang->line('sales_giftcard') )
@@ -518,12 +519,39 @@ class Sale extends CI_Model
 				$this->Giftcard->update_giftcard_value( $splitpayment[1], $cur_giftcard_value - $payment['payment_amount'] );
 			}
 
+			if( substr( $payment['payment_type'], 0, strlen( $this->lang->line('sales_rewards') ) ) == $this->lang->line('sales_rewards') )
+			{
+
+				$cur_rewards_value = $this->Customer->get_info($customer_id)->points;
+				$this->Customer->update_reward_points_value($customer_id, $cur_rewards_value - $payment['payment_amount'] );
+				$total_amount_used = floatval($total_amount_used) + floatval($payment['payment_amount']);
+			}
+
 			$sales_payments_data = array(
 				'sale_id'		 => $sale_id,
 				'payment_type'	 => $payment['payment_type'],
 				'payment_amount' => $payment['payment_amount']
 			);
 			$this->db->insert('sales_payments', $sales_payments_data);
+			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
+		}
+
+		if(!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
+		{
+			$package_id = $this->Customer->get_info($customer_id)->package_id;
+
+			if(!empty($package_id))
+			{
+				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
+				$points = $this->Customer->get_info($customer_id)->points;
+				$points = ($points==NULL ? 0 : $points);
+				$points_percent = ($points_percent==NULL ? 0 : $points_percent);
+				$total_amount_earned = ($total_amount*$points_percent/100);
+				$points = $points + $total_amount_earned;
+				$this->Customer->update_reward_points_value($customer_id, $points);
+				$rewards_data = array('sale_id'=>$sale_id, 'earned'=>$total_amount_earned, 'used'=>$total_amount_used);
+				$this->Rewards->save($rewards_data);
+			}
 		}
 
 		foreach($items as $line=>$item)
@@ -730,7 +758,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_payment_options($giftcard = TRUE)
+	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE)
 	{
 		$payments = array();
 
@@ -758,6 +786,11 @@ class Sale extends CI_Model
 		if($giftcard)
 		{
 			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
+		}
+
+		if($reward_points)
+		{
+			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
 		}
 
 		return $payments;

@@ -1,14 +1,14 @@
 <?php 
 
-$lang["messages_sms_send"] = "Send SMS";
-$lang["messages_first_name"] = "First name";
-$lang["messages_last_name"] = "Last name";
-$lang["messages_phone"] = "Phone number";
-$lang["messages_phone_placeholder"] = "Mobile Number(s) here...";
-$lang["messages_phone_number_required"] = "Phone number required";
+$lang["messages_first_name"] = "Prénon";
+$lang["messages_last_name"] = "Nom de famille";
 $lang["messages_message"] = "Message";
-$lang["messages_message_placeholder"] = "Your Message here...";
-$lang["messages_message_required"] = "Message required";
-$lang["messages_multiple_phones"] = "(In case of multiple recipients, enter mobile numbers separated by commas)";
-$lang["messages_successfully_sent"] = "Message successfully sent to: ";
-$lang["messages_unsuccessfully_sent"] = "Message unsuccessfully sent to: ";
+$lang["messages_message_placeholder"] = "Votre message ici...";
+$lang["messages_message_required"] = "Message requis";
+$lang["messages_multiple_phones"] = "(Si plusieur destinataires, séparer les numéros avec une virgule)";
+$lang["messages_phone"] = "N° de téléphone";
+$lang["messages_phone_number_required"] = "N° de téléphone requis";
+$lang["messages_phone_placeholder"] = "N° de téléphone portable ici...";
+$lang["messages_sms_send"] = "Envoier SMS";
+$lang["messages_successfully_sent"] = "Message envoyé avec succès à : ";
+$lang["messages_unsuccessfully_sent"] = "Message non envoyer du a une erreur: ";

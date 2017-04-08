@@ -11,11 +11,15 @@
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
     },
-    "bootstrap3-dialog@1.35.3": {
+    "bootstrap3-dialog@1.35.4": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
+    },
+    "chartist@0.9.8": {
+        "licenses": "UNKNOWN",
+        "homepage": "https://github.com/gionkunz/chartist-js"
     },
     "bootswatch@3.3.7": {
         "licenses": [
@@ -33,10 +37,6 @@
         ],
         "homepage": "https://github.com/alexstanbury/chartist-plugin-axistitle"
     },
-    "chartist@0.9.8": {
-        "licenses": "UNKNOWN",
-        "homepage": "https://github.com/gionkunz/chartist-js"
-    },
     "chartist-plugin-barlabels@0.0.5": {
         "licenses": [
             "WTF*"
@@ -49,17 +49,17 @@
         ],
         "homepage": "https://github.com/gionkunz/chartist-plugin-pointlabels"
     },
-    "chartist-plugin-tooltip@0.0.13": {
-        "licenses": [
-            "MIT*"
-        ],
-        "homepage": "https://github.com/Globegitter/chartist-plugin-tooltip"
-    },
     "file-saver.js@1.20150507.2": {
         "licenses": [
             "LICENSE.md"
         ],
         "homepage": "https://github.com/Teleborder/FileSaver.js"
+    },
+    "chartist-plugin-tooltip@0.0.13": {
+        "licenses": [
+            "MIT*"
+        ],
+        "homepage": "https://github.com/Globegitter/chartist-plugin-tooltip"
     },
     "jquery@1.12.4": {
         "licenses": [
@@ -83,7 +83,7 @@
         ],
         "homepage": "https://github.com/mrrio/jspdf"
     },
-    "moment@2.17.1": {
+    "moment@2.18.1": {
         "licenses": [
             "MIT"
         ],
@@ -95,13 +95,6 @@
         ],
         "homepage": "https://github.com/hhurz/tableExport.jquery.plugin"
     },
-    "bootstrap@3.3.7": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://getbootstrap.com",
-        "repository": "git+https://github.com/twbs/bootstrap"
-    },
     "bootstrap-daterangepicker@2.1.25": {
         "licenses": [
             "MIT"
@@ -109,13 +102,19 @@
         "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
         "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
     },
-    "jasny-bootstrap@3.1.3": {
+    "bootstrap@3.3.7": {
         "licenses": [
-            "Apache-2.0",
-            "Apache*"
+            "MIT"
         ],
-        "homepage": "https://github.com/jasny/bootstrap",
-        "repository": "git+https://github.com/jasny/bootstrap"
+        "homepage": "http://getbootstrap.com",
+        "repository": "git+https://github.com/twbs/bootstrap"
+    },
+    "bootstrap-table@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/wenzhixin/bootstrap-table",
+        "repository": "git+https://github.com/wenzhixin/bootstrap-table"
     },
     "html2canvas@0.4.1": {
         "licenses": [
@@ -124,12 +123,13 @@
         "homepage": "https://github.com/niklasvh/html2canvas",
         "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
     },
-    "bootstrap-table@undefined": {
+    "jasny-bootstrap@3.1.3": {
         "licenses": [
-            "MIT"
+            "Apache-2.0",
+            "Apache*"
         ],
-        "homepage": "https://github.com/wenzhixin/bootstrap-table",
-        "repository": "git+https://github.com/wenzhixin/bootstrap-table"
+        "homepage": "https://github.com/jasny/bootstrap",
+        "repository": "git+https://github.com/jasny/bootstrap"
     },
     "jquery-validation@1.13.1": {
         "licenses": [
@@ -152,7 +152,7 @@
         "homepage": "http://bootstrap-notify.remabledesigns.com/",
         "repository": "https://github.com/mouse0270/bootstrap-notify"
     },
-    "smalot-bootstrap-datetimepicker@2.4.3": {
+    "smalot-bootstrap-datetimepicker@2.4.4": {
         "licenses": [
             "Apache 2.0",
             "Apache*"

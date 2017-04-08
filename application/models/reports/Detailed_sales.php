@@ -42,7 +42,10 @@ class Detailed_sales extends Report
 				$this->lang->line('reports_total'),
 				$this->lang->line('reports_cost'),
 				$this->lang->line('reports_profit'),
-				$this->lang->line('reports_discount'))
+				$this->lang->line('reports_discount')),
+			'details_rewards' => array(
+				$this->lang->line('reports_used'),
+				$this->lang->line('reports_earned'))
 		);
 	}
 
@@ -91,6 +94,7 @@ class Detailed_sales extends Report
 		$data = array();
 		$data['summary'] = $this->db->get()->result_array();
 		$data['details'] = array();
+		$data['rewards'] = array();
 
 		foreach($data['summary'] as $key=>$value)
 		{
@@ -98,6 +102,10 @@ class Detailed_sales extends Report
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
+			$this->db->select('used, earned');
+			$this->db->from('sales_reward_points');
+			$this->db->where('sale_id', $value['sale_id']);
+			$data['rewards'][$key] = $this->db->get()->result_array();
 		}
 
 		return $data;

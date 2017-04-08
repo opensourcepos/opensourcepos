@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = '图形库路径错误。在设置中必须指
 $lang['imglib_image_process_failed'] = '图像处理错误。 请验证服务器支持指定的处理方法，并且图形库路径正确。';
 $lang['imglib_rotation_angle_required'] = '必须指定旋转角度。';
 $lang['imglib_invalid_path'] = '图像路径错误。';
+$lang['imglib_invalid_image'] = '提供的图像无效。';
 $lang['imglib_copy_failed'] = '图像复制错误。';
 $lang['imglib_missing_font'] = '无法找到使用的字体。';
 $lang['imglib_save_failed'] = '图像无法保存，请确保图像和目录可写。';

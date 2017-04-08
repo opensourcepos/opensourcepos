@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author		CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license		http://opensource.org/licenses/MIT	MIT License
- * @link		http://codeigniter.com
+ * @link		https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid']			= 'A képkönyvtárhoz tartozó elérési út 
 $lang['imglib_image_process_failed']	= 'A kép feldolgozása sikertelen. Kérjük ellenőrizze, hogy az ön szervere támogatja-e a választott protokollt és hogy a képkönyvtárhoz tartozó elérési út helyes-e!';
 $lang['imglib_rotation_angle_required']	= 'A kép forgatásához a forgatási-szög megadása kötelező.';
 $lang['imglib_invalid_path']			= 'A képhez tartozó elérési út helytelen.';
+$lang['imglib_invalid_image']			= 'A megadott kép formátuma nem megfelelő.';
 $lang['imglib_copy_failed']				= 'A képmásoló eljárás közben hiba történt.';
 $lang['imglib_missing_font']			= 'A használni kívánt betűtípus nem található.';
 $lang['imglib_save_failed']				= 'Nem lehet lementeni a képet. Kérjük, ellenőrizze, hogy a fájl és a könyvtár írható.';

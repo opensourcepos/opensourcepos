@@ -3,7 +3,6 @@
 $lang["giftcards_add_minus"] = "Inventário para adicionar/subtrair";
 $lang["giftcards_allow_alt_description"] = "Permitir Alterar Descrição";
 $lang["giftcards_amazon"] = "Amazonas";
-$lang["giftcards_remaining_balance"] = "Cartão de presente %1 valor remanescente é %2!";
 $lang["giftcards_bulk_edit"] = "Edição em massa";
 $lang["giftcards_cannot_be_deleted"] = "Não foi possível excluir os cartões de presente selecionados, um ou mais dos cartões de presente selecionados tem vendas.";
 $lang["giftcards_cannot_find_giftcard"] = "Não consegue encontrar qualquer informação sobre cartões de presente";
@@ -47,6 +46,7 @@ $lang["giftcards_one_or_multiple"] = "cartão de presente(s)";
 $lang["giftcards_person_id"] = "Cliente";
 $lang["giftcards_quantity"] = "Quantidade";
 $lang["giftcards_quantity_required"] = "Quantidade é um campo obrigatório. Por favor, feche (X) para cancelar";
+$lang["giftcards_remaining_balance"] = "Cartão de presente %1 valor remanescente é %2!";
 $lang["giftcards_reorder_level"] = "Nível de reabastecimento";
 $lang["giftcards_retrive_giftcard_info"] = "Recuperar Informações dos cartões de presente";
 $lang["giftcards_sales_tax_1"] = "Imposto sobre vendas";

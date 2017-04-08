@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Input Class &mdash; CodeIgniter 3.1.3 documentation</title>
+  <title>Input Class &mdash; CodeIgniter 3.1.4 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.3 documentation" href="../index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.4 documentation" href="../index.html"/>
         <link rel="up" title="Libraries" href="index.html"/>
         <link rel="next" title="Javascript Class" href="javascript.html"/>
         <link rel="prev" title="Image Manipulation Class" href="image_lib.html"/> 
@@ -609,7 +609,7 @@ as an array.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
-<p>Same rule applied here, to retrive the parameters with XSS filtering enabled, set the
+<p>Same rule applied here, to retrieve the parameters with XSS filtering enabled, set the
 second parameter to boolean TRUE.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">post</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">),</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
@@ -653,7 +653,7 @@ as an array.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">));</span>
 </pre></div>
 </div>
-<p>Same rule applied here, to retrive the parameters with XSS filtering enabled, set the
+<p>Same rule applied here, to retrieve the parameters with XSS filtering enabled, set the
 second parameter to boolean TRUE.</p>
 <div class="highlight-ci"><div class="highlight"><pre><span></span><span class="nv">$this</span><span class="o">-&gt;</span><span class="na">input</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="k">array</span><span class="p">(</span><span class="s1">&#39;field1&#39;</span><span class="p">,</span> <span class="s1">&#39;field2&#39;</span><span class="p">),</span> <span class="k">TRUE</span><span class="p">);</span>
 </pre></div>
@@ -821,7 +821,7 @@ only it fetches the <em>php://input</em> stream data.</p>
 
 <dl class="method">
 <dt id="CI_Input::set_cookie">
-<tt class="descname">set_cookie</tt><big>(</big><em>$name = ''</em><span class="optional">[</span>, <em>$value = ''</em><span class="optional">[</span>, <em>$expire = ''</em><span class="optional">[</span>, <em>$domain = ''</em><span class="optional">[</span>, <em>$path = '/'</em><span class="optional">[</span>, <em>$prefix = ''</em><span class="optional">[</span>, <em>$secure = FALSE</em><span class="optional">[</span>, <em>$httponly = FALSE</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Input::set_cookie" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">set_cookie</tt><big>(</big><em>$name = ''</em><span class="optional">[</span>, <em>$value = ''</em><span class="optional">[</span>, <em>$expire = ''</em><span class="optional">[</span>, <em>$domain = ''</em><span class="optional">[</span>, <em>$path = '/'</em><span class="optional">[</span>, <em>$prefix = ''</em><span class="optional">[</span>, <em>$secure = NULL</em><span class="optional">[</span>, <em>$httponly = NULL</em><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><span class="optional">]</span><big>)</big><a class="headerlink" href="#CI_Input::set_cookie" title="Permalink to this definition">¶</a></dt>
 <dd><table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -875,8 +875,8 @@ URL to the <strong>domain</strong> starting with a period, like this:
 <p>The path is usually not needed since the method sets a root path.</p>
 <p>The prefix is only needed if you need to avoid name collisions with
 other identically named cookies for your server.</p>
-<p>The secure boolean is only needed if you want to make it a secure cookie
-by setting it to TRUE.</p>
+<p>The <em>httponly</em> and <em>secure</em> flags, when omitted, will default to your
+<tt class="docutils literal"><span class="pre">$config['cookie_httponly']</span></tt> and <tt class="docutils literal"><span class="pre">$config['cookie_secure']</span></tt> settings.</p>
 <p><strong>Discrete Parameters</strong></p>
 <p>If you prefer, you can set the cookie by passing data using individual
 parameters:</p>
@@ -1141,7 +1141,7 @@ in uppercase or lowercase.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
-      Last updated on Jan 09, 2017.
+      Last updated on Mar 20, 2017.
     </p>
   </div>
 
@@ -1162,7 +1162,7 @@ in uppercase or lowercase.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'3.1.3',
+            VERSION:'3.1.4',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false

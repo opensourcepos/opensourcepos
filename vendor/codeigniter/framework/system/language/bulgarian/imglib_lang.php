@@ -4,9 +4,9 @@
  *
  * @author	CodeIgniter community
  * @author	Ivan Tcholakov
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'Пътят към снимките не е п
 $lang['imglib_image_process_failed'] = 'Обработката на изображението се провали. Уверете се, че сървъра поддържа избрания протокол и че пътят към изображението е правилен.';
 $lang['imglib_rotation_angle_required'] = 'Изисква се зададен ъгъл, за да завъртите изображението.';
 $lang['imglib_invalid_path'] = 'Пътят към изображението не е правилен.';
+$lang['imglib_invalid_image'] = 'Изображението е с невалиден бинарен формат.';
 $lang['imglib_copy_failed'] = 'Копираната картинка върна грешка.';
 $lang['imglib_missing_font'] = 'Не може да се намери шрифт за използване.';
 $lang['imglib_save_failed'] = 'Не може да запазите изображението. Моля, уверете се, че изображението и файловите директории имат права за запис.';

@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,10 +28,10 @@
  *
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
- * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (http://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  * @since	Version 1.0.0
  * @filesource
  */
@@ -51,6 +51,7 @@ $lang['imglib_libpath_invalid'] = 'Pot do vaše slikovne knjižnice ni pravilna.
 $lang['imglib_image_process_failed'] = 'Procesiranje slike ni uspelo. Prosim preverite, da vaš strežnik podpira izbran protokol in da je pot do vaše knjižnice slik pravilna.';
 $lang['imglib_rotation_angle_required'] = 'Za rotacijo slike je zahtevan kot rotacije.';
 $lang['imglib_invalid_path'] = 'Pot do slike ni pravilna.';
+$lang['imglib_invalid_image'] = 'Podana slika ni veljavna.';
 $lang['imglib_copy_failed'] = 'Kopiranje slike ni uspelo.';
 $lang['imglib_missing_font'] = 'Ni mogoče najti fonta za uporabo.';
-$lang['imglib_save_failed'] = 'Ni mogoče shraniti slike. Preverite pravice pisanje za sliko in ciljno mapo.';
+$lang['imglib_save_failed'] = 'Ni mogoče shraniti slike. Preverite pravice pisanja za sliko in ciljno mapo.';
