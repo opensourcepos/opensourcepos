@@ -11,7 +11,8 @@ $lang["customers_discount"] = "Diskon";
 $lang["customers_error_adding_updating"] = "Menambah / Memperbarui Pelanggan Salah";
 $lang["customers_excel_import_failed"] = "Impor dari Excel tidak berhasil dilakukan";
 $lang["customers_excel_import_nodata_wrongformat"] = "Berkas yang Anda unggah tidak berisi data atau salah format";
-$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
+$lang["customers_excel_import_partially_failed"] = "Ada beberapa pelanggan yang gagal diimpor, berikut daftarnya
+Most Customers imported. But some were not, here is the list";
 $lang["customers_excel_import_success"] = "Impor pelanggan berhasil";
 $lang["customers_import_items_excel"] = "Impor pelanggan dari Excel";
 $lang["customers_new"] = "Pelanggan Baru";
