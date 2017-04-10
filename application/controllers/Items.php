@@ -671,7 +671,7 @@ class Items extends Secure_Controller
 						  into that directory, so you really can do whatever you want, this probably
 						  needs further discussion  */
 
-						$pic_file = $data[26];
+						$pic_file = $data[24];
 						/*if(strcmp('.htaccess', $pic_file)==0) {
 							$pic_file='';
 						}*/
@@ -720,7 +720,7 @@ class Items extends Secure_Controller
 
 						// array to store information if location got a quantity
 						$allowed_locations = $this->Stock_location->get_allowed_locations();
-						for ($col = 24; $col < $cols; $col = $col + 2)
+						for ($col = 25; $col < $cols; $col = $col + 2)
 						{
 							$location_id = $data[$col];
 							if(array_key_exists($location_id, $allowed_locations))
