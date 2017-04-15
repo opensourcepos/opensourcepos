@@ -97,6 +97,7 @@ class Customer extends Person
 		$this->db->from('sales');
 		$this->db->join('sales_payments', 'sales.sale_id = sales_payments.sale_id');
 		$this->db->where('sales.customer_id', $customer_id);
+		$this->db->where('sale_status',0);
 
 		return $this->db->get()->row();
 	}
@@ -123,7 +124,7 @@ class Customer extends Person
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-		
+
 		if(parent::save($person_data, $customer_id))
 		{
 			if(!$customer_id || !$this->exists($customer_id))
@@ -139,7 +140,7 @@ class Customer extends Person
 		}
 		
 		$this->db->trans_complete();
-		
+
 		$success &= $this->db->trans_status();
 
 		return $success;

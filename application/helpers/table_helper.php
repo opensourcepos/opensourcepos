@@ -327,6 +327,23 @@ function get_giftcards_manage_table_headers()
 	return transform_headers($headers);
 }
 
+function get_taxes_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('tax_code' => $CI->lang->line('taxes_tax_code')),
+		array('tax_code_name' => $CI->lang->line('taxes_tax_code_name')),
+		array('tax_code_type_name' => $CI->lang->line('taxes_tax_code_type')),
+		array('tax_rate' => $CI->lang->line('taxes_tax_rate')),
+		array('rounding_code_name' => $CI->lang->line('taxes_rounding_code')),
+		array('city' => $CI->lang->line('common_city')),
+		array('state' => $CI->lang->line('common_state'))
+	);
+
+	return transform_headers($headers);
+}
+
 function get_giftcard_data_row($giftcard, $controller)
 {
 	$CI =& get_instance();
@@ -339,6 +356,26 @@ function get_giftcard_data_row($giftcard, $controller)
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
+
+function get_tax_data_row($tax_code_row, $controller)
+{
+	$CI =& get_instance();
+	$controller_name=strtolower(get_class($CI));
+
+	return array (
+		'tax_code' => $tax_code_row->tax_code,
+		'tax_code_name' => $tax_code_row->tax_code_name,
+		'tax_code_type' => $tax_code_row->tax_code_type,
+		'tax_rate' => $tax_code_row->tax_rate,
+		'rounding_code' =>$tax_code_row->rounding_code,
+		'tax_code_type_name' => $CI->Tax->get_tax_code_type_name($tax_code_row->tax_code_type),
+		'rounding_code_name' => $CI->get_rounding_code_name($tax_code_row->rounding_code),
+		'city' => $tax_code_row->city,
+		'state' => $tax_code_row->state,
+		'edit' => anchor($controller_name."/view/$tax_code_row->tax_code", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
 }

@@ -7,6 +7,9 @@ class Sale_lib
 	public function __construct()
 	{
 		$this->CI =& get_instance();
+		$this->CI->load->library('tax_lib');
+		$this->CI->load->model('enums/Rounding_code');
+
 	}
 
 	public function get_line_sequence_options()
@@ -298,17 +301,112 @@ class Sale_lib
 	public function get_payments_total()
 	{
 		$subtotal = 0;
+		$this->reset_cash_flags();
 		foreach($this->get_payments() as $payments)
 		{
 			$subtotal = bcadd($payments['payment_amount'], $subtotal);
+			if($this->CI->session->userdata('cash_rounding') && $this->CI->lang->line('sales_cash') != $payments['payment_type'])
+			{
+				$this->CI->session->set_userdata('cash_rounding', 0);
+			}
 		}
 
 		return $subtotal;
 	}
 
+	public function get_cash_rounding()
+	{
+
+	}
+
+	/*
+	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
+	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'
+	 */
+	public function get_totals()
+	{
+		$cash_rounding = $this->CI->session->userdata('cash_rounding');
+
+		$totals = array();
+
+		$subtotal = 0;
+		$discounted_subtotal = 0;
+		$tax_exclusive_subtotal = 0;
+		foreach($this->get_cart() as $item)
+		{
+			$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], false));
+			$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], true));
+			if($this->CI->config->config['tax_included'])
+			{
+				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], true));
+			}
+		}
+
+		$totals['subtotal'] = $subtotal;
+		$totals['discounted_subtotal'] = $discounted_subtotal;
+		$totals['tax_exclusive_subtotal'] = $tax_exclusive_subtotal;
+
+		$total = $discounted_subtotal;
+		if ($this->CI->config->config['tax_included'])
+		{
+			$totals['total'] = $total;
+		}
+		else
+		{
+			foreach($this->get_taxes() as $sales_tax)
+			{
+				$total = bcadd($total, $sales_tax['sale_tax_amount']);
+			}
+			$totals['total'] = $total;
+		}
+
+		if($cash_rounding)
+		{
+			$cash_total = $this->check_for_cash_rounding($total);
+			$totals['cash_total'] = $cash_total;
+		}
+		else
+		{
+			$cash_total = $total;
+		}
+
+		$totals['cash_total'] = $cash_total;
+
+		$payment_total = $this->get_payments_total();
+		$totals['payment_total'] = $payment_total;
+
+		$amount_due = bcsub($total, $payment_total);
+		$totals['amount_due'] = $amount_due;
+
+		$cash_amount_due = bcsub($cash_total, $payment_total);
+		$totals['cash_amount_due'] = $cash_amount_due;
+
+		if($cash_rounding)
+		{
+			$current_due = $cash_amount_due;
+		}
+		else
+		{
+			$current_due = $amount_due;
+		}
+
+		if($this->get_mode() == 'return')
+		{
+			$totals['payments_cover_total'] = $current_due >= 0;
+		}
+		else
+		{
+			$totals['payments_cover_total'] =  $current_due <= 0;
+		}
+
+		return $totals;
+	}
+
+
 	// Multiple Payments
 	public function get_amount_due()
 	{
+		// Payment totals need to be identified first so that we know whether or not there is a non-cash payment involved
 		$payment_total = $this->get_payments_total();
 		$sales_total = $this->get_total();
 		$amount_due = bcsub($sales_total, $payment_total);
@@ -320,16 +418,14 @@ class Sale_lib
 
 	public function is_payment_covering_total()
 	{
-		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
-		$threshold = bcpow(10, -$this->CI->config->item('currency_decimals')) / 2;
 
 		if($this->get_mode() == 'return')
 		{
-			return ($this->get_amount_due() > -$threshold);
+			return $this->get_amount_due() >= 0;
 		}
 		else
 		{
-			return ($this->get_amount_due() < $threshold);
+			return $this->get_amount_due() <= 0;
 		}
 	}
 
@@ -435,6 +531,16 @@ class Sale_lib
 	public function set_sale_location($location)
 	{
 		$this->CI->session->set_userdata('sales_location', $location);
+	}
+
+	public function set_payment_type($payment_type)
+	{
+		$this->CI->session->set_userdata('payment_type', $payment_type);
+	}
+
+	public function get_payment_type()
+	{
+		return $this->CI->session->userdata('payment_type');
 	}
 
 	public function clear_sale_location()
@@ -571,7 +677,8 @@ class Sale_lib
 					'total' => $total,
 					'discounted_total' => $discounted_total,
 					'print_option' => $print_option,
-					'stock_type' => $stock_type
+					'stock_type' => $stock_type,
+					'tax_category_id' => $item_info->tax_category_id
 				)
 			);
 			//add to existing array
@@ -778,6 +885,31 @@ class Sale_lib
 		$this->empty_cart();
 		$this->remove_customer();
 
+		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
+		{
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
+				$row->description, $row->serialnumber, TRUE, $row->print_option, $row->stock_type);
+		}
+
+		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
+		{
+			$this->add_payment($row->payment_type, $row->payment_amount);
+		}
+
+		$suspended_sale_info = $this->CI->Sale->get_info($sale_id)->row();
+		$this->set_customer($suspended_sale_info->person_id);
+		$this->set_comment($suspended_sale_info->comment);
+
+		$this->set_invoice_number($suspended_sale_info->invoice_number);
+		$this->set_quote_number($suspended_sale_info->quote_number);
+		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
+	}
+
+	public function copy_entire_suspended_tables_sale($sale_id)
+	{
+		$this->empty_cart();
+		$this->remove_customer();
+
 		foreach($this->CI->Sale_suspended->get_sale_items($sale_id)->result() as $row)
 		{
 			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
@@ -810,6 +942,37 @@ class Sale_lib
 		$this->clear_giftcard_remainder();
 		$this->empty_payments();
 		$this->remove_customer();
+		$this->clear_cash_flags();
+	}
+
+	public function clear_cash_flags()
+	{
+		$this->CI->session->unset_userdata('cash_rounding');
+		$this->CI->session->unset_userdata('cash_mode');
+		$this->CI->session->unset_userdata('payment_type');
+	}
+
+	public function reset_cash_flags()
+	{
+		if($this->CI->lang->line('payment_options_order') != 'cashdebitcredit')
+		{
+			$cash_mode = 1;
+		}
+		else
+		{
+			$cash_mode = 0;
+		}
+		$this->CI->session->set_userdata('cash_mode', $cash_mode);
+
+		if($this->CI->config->config['cash_decimals'] < $this->CI->config->config['currency_decimals'])
+		{
+			$cash_rounding = 1;
+		}
+		else
+		{
+			$cash_rounding = 0;
+		}
+		$this->CI->session->set_userdata('cash_rounding', $cash_rounding);
 	}
 	
 	public function is_customer_taxable()
@@ -821,34 +984,68 @@ class Sale_lib
 		return $customer->taxable or $customer_id == -1;
 	}
 
+	/*
+	 * This returns taxes for VAT taxes and for pre 3.1.0 sales taxes.
+	 */
 	public function get_taxes()
 	{
-		$taxes = array();
-
+		$register_mode = $this->CI->config->config['default_register_mode'];
+		$tax_decimals = $this->CI->config->config['tax_decimals'];
+		$customer_id = $this->get_customer();
+		$customer = $this->CI->Customer->get_info($customer_id);
+		$sales_taxes = array();
 		//Do not charge sales tax if we have a customer that is not taxable
-		if($this->is_customer_taxable())
+		if($customer->taxable or $customer_id == -1)
 		{
 			foreach($this->get_cart() as $line => $item)
 			{
-				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+				// Start of current VAT tax apply
 
+				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
+				$tax_group_sequence = 0;
 				foreach($tax_info as $tax)
 				{
-					$name = to_tax_decimals($tax['percent']) . '% ' . $tax['name'];
-					$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax['percent']);
+					// This computes tax for each line item and adds it to the tax type total
+					$tax_group = (float)$tax['percent'] . '% ' . $tax['name'];
+					$tax_type = Tax_lib::TAX_TYPE_VAT;
+					$tax_basis = $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
+					$tax_amount = 0;
 
-					if(!isset($taxes[$name]))
+					if($this->CI->config->config['tax_included'])
 					{
-						$taxes[$name] = 0;
+						$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax['percent']);
+					}
+					elseif($this->CI->config->config['customer_sales_tax_support'] == '0')
+					{
+						$tax_amount = $this->CI->tax_lib->get_sales_tax_for_amount($tax_basis, $tax['percent'], '0', $tax_decimals);
 					}
 
-					$precision = $this->CI->config->item('currency_decimals');
-					$taxes[$name] = bcadd($taxes[$name], round($tax_amount, $precision, PHP_ROUND_HALF_EVEN));
+					if($tax_amount <> 0)
+					{
+						$this->CI->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, '0', -1);
+						$tax_group_sequence += 1;
+					}
 				}
+
+				$tax_category = '';
+				$tax_rate = '';
+				$rounding_code = Rounding_code::HALF_UP;
+				$tax_group_sequence = 0;
+				$tax_code = '';
+
+				if($this->CI->config->config['customer_sales_tax_support'] == '1')
+				{
+					// Now calculate what the sales taxes should be (storing them in the $sales_taxes array
+					$this->CI->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, 0, $sales_taxes, $tax_category, $tax_rate, $rounding_code, $tax_group_sequence, $tax_code);
+				}
+
 			}
+
+			$this->CI->tax_lib->round_sales_taxes($sales_taxes);
+
 		}
 
-		return $taxes;
+		return $sales_taxes;
 	}
 
 	public function apply_customer_discount($discount_percent)
@@ -944,7 +1141,7 @@ class Sale_lib
 		return bcmul($price, $tax_fraction);
 	}
 
-	public function calculate_subtotal($include_discount = FALSE, $exclude_tax = FALSE) 
+	public function calculate_subtotal($include_discount = FALSE, $exclude_tax = FALSE)
 	{
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
@@ -964,22 +1161,67 @@ class Sale_lib
 
 	public function get_total()
 	{
-		$total = $this->calculate_subtotal(TRUE);		
-		if(!$this->CI->config->config['tax_included'])
+		$total = $this->calculate_subtotal(TRUE);
+
+		$cash_rounding = $this->CI->session->userdata('cash_rounding');
+
+		foreach($this->get_taxes() as $sales_tax)
 		{
-			foreach($this->get_taxes() as $tax)
-			{
-				$total = bcadd($total, $tax);
-			}
+			$total = bcadd($total, $sales_tax['sale_tax_amount']);
 		}
 
+		if($cash_rounding)
+		{
+			$rounded_total = $this->check_for_cash_rounding($total);
+			return $rounded_total;
+		}
 		return $total;
 	}
 
-    public function get_empty_tables()		
+    public function get_empty_tables()
     {
     	return $this->CI->Dinner_table->get_empty_tables();		
     }
+
+	public function check_for_cash_rounding($total)
+	{
+		$cash_decimals = $this->CI->config->config['cash_decimals'];
+		$cash_rounding_code = $this->CI->config->config['cash_rounding_code'];
+		$rounded_total = $total;
+
+		if($cash_rounding_code == Rounding_code::HALF_UP)
+		{
+			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_UP);
+		}
+		elseif($cash_rounding_code == Rounding_code::HALF_DOWN)
+		{
+			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_DOWN);
+		}
+		elseif($cash_rounding_code == Rounding_code::HALF_EVEN)
+		{
+			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_EVEN);
+		}
+		elseif($cash_rounding_code == Rounding_code::HALF_ODD)
+		{
+			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_UP);
+		}
+		elseif($cash_rounding_code == Rounding_code::ROUND_UP)
+		{
+			$fig = (int) str_pad('1', $cash_decimals, '0');
+			$rounded_total = (ceil($total * $fig) / $fig);
+		}
+		elseif($cash_rounding_code == Rounding_code::ROUND_DOWN)
+		{
+			$fig = (int) str_pad('1', $cash_decimals, '0');
+			$rounded_total = (floor($total * $fig) / $fig);
+		}
+		elseif($cash_rounding_code == Rounding_code::HALF_FIVE)
+		{
+			$rounded_total = round($total / 5) * 5;
+		}
+
+		return $rounded_total;
+	}
 }
 
 ?>

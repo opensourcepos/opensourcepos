@@ -53,6 +53,7 @@ abstract class Summary_report extends Report
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
+					sales_items_taxes.line AS line,
 					' . "
 					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
 					" . '
@@ -61,8 +62,8 @@ abstract class Summary_report extends Report
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE ' . $where . '
-				GROUP BY sale_id, item_id
+				WHERE sale_status = 0 AND ' . $where . '
+				GROUP BY sale_id, item_id, line
 			)'
 		);
 
@@ -79,7 +80,9 @@ abstract class Summary_report extends Report
 	{
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
+		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
+			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
+			'left outer');
 	}
 
 	private function _common_where(array $inputs)

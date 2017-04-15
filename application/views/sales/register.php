@@ -343,12 +343,12 @@ if (isset($success))
 			</tr>
 			
 			<?php
-			foreach($taxes as $name=>$value)
+			foreach($taxes as $tax_group_index=>$sales_tax)
 			{
 			?>
 				<tr>
-					<th style='width: 55%;'><?php echo $name; ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo to_currency($value); ?></th>
+					<th style='width: 55%;'><?php echo $sales_tax['tax_group']; ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></th>
 				</tr>
 			<?php
 			}
@@ -356,7 +356,7 @@ if (isset($success))
 
 			<tr>
 				<th style='width: 55%;'><?php echo $this->lang->line('sales_total'); ?></th>
-				<th style="width: 45%; text-align: right;"><?php echo to_currency($total); ?></th>
+				<th style="width: 45%; text-align: right;"><span id="sale_total"><?php echo to_currency($total); ?></span></th>
 			</tr>
 		</table>
 	
@@ -372,7 +372,7 @@ if (isset($success))
 				</tr>
 				<tr>
 					<th style="width: 55%;"><?php echo $this->lang->line('sales_amount_due');?></th>
-					<th style="width: 45%; text-align: right;"><?php echo to_currency($amount_due); ?></th>
+					<th style="width: 45%; text-align: right;"><span id="sale_amount_due"><?php echo to_currency($amount_due); ?></span></th>
 				</tr>
 			</table>
 
@@ -387,7 +387,7 @@ if (isset($success))
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'disabled')); ?>
+									<?php echo form_dropdown('payment_type', $payment_options, $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'disabled')); ?>
 								</td>
 							</tr>
 							<tr>
@@ -417,7 +417,7 @@ if (isset($success))
 							<tr>
 								<td><?php echo $this->lang->line('sales_payment');?></td>
 								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
+									<?php echo form_dropdown('payment_type', $payment_options,  $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 								</td>
 							</tr>
 							<tr>
@@ -693,7 +693,7 @@ $(document).ready(function()
 		$('#add_payment_form').submit();
     });
 
-	$("#payment_types").change(check_payment_type_giftcard).ready(check_payment_type_giftcard);
+	$("#payment_types").change(check_payment_type).ready(check_payment_type);
 
 	$("#cart_contents input").keypress(function(event)
 	{
@@ -752,18 +752,31 @@ $(document).ready(function()
 	
 });
 
-function check_payment_type_giftcard()
+function check_payment_type()
 {
-	if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
-	{
-		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
-		$("#amount_tendered:enabled").val('').focus();
-	}
-	else
-	{
-		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
-		$("#amount_tendered:enabled").val('<?php echo to_currency_no_money($amount_due); ?>');
-	}
+    var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
+
+    if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
+    {
+        $("#sale_total").html("<?php echo to_currency($total); ?>");
+        $("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
+        $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
+        $("#amount_tendered:enabled").val('').focus();
+    }
+    else if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
+    {
+        $("#sale_total").html("<?php echo to_currency($cash_total); ?>");
+        $("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
+        $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+        $("#amount_tendered:enabled").val('<?php echo to_currency_no_money($cash_amount_due); ?>');
+    }
+    else
+    {
+        $("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
+        $("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
+        $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+        $("#amount_tendered:enabled").val('<?php echo to_currency_no_money($non_cash_amount_due); ?>');
+    }
 }
 
 </script>

@@ -18,6 +18,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('company', 'Open Source Point of Sale'),
 ('default_register_mode', 'sale'),
 ('default_tax_rate', '8'),
+('default_tax_category', 'Standard'),
 ('email', 'changeme@example.com'),
 ('fax', ''),
 ('phone', '555-555-5555'),
@@ -85,11 +86,16 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('smtp_crypto', 'ssl'),
 ('receipt_template', 'receipt_default'),
 ('theme', 'flatly'),
+('customer_sales_tax_support', '0'),
 ('statistics', '1'),
 ('language', 'english'),
 ('language_code', 'en'),
 ('date_or_time_format',''),
-('customer_reward_enable','');
+('customer_reward_enable',''),
+('customer_sales_tax_support', '0'),
+('default_origin_tax_code', ''),
+('cash_decimals', '2');
+
 
 
 -- --------------------------------------------------------
@@ -103,6 +109,7 @@ CREATE TABLE `ospos_customers` (
   `company_name` varchar(255) DEFAULT NULL,
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
+  `sales_tax_code` varchar(32) NOT NULL DEFAULT '1',
   `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
   `package_id` int(11) DEFAULT NULL,
   `points` int(11) DEFAULT NULL,
@@ -209,6 +216,7 @@ CREATE TABLE `ospos_items` (
   `is_serialized` tinyint(1) NOT NULL,
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
+  `tax_category_id` int(10) NOT NULL DEFAULT 0,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(25) NOT NULL,
   `custom2` VARCHAR(25) NOT NULL,
@@ -335,7 +343,8 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 ('module_receivings', 'module_receivings_desc', 60, 'receivings'),
 ('module_reports', 'module_reports_desc', 50, 'reports'),
 ('module_sales', 'module_sales_desc', 70, 'sales'),
-('module_suppliers', 'module_suppliers_desc', 40, 'suppliers');
+('module_suppliers', 'module_suppliers_desc', 40, 'suppliers'),
+('module_taxes', 'module_taxes_desc', 105, 'taxes');
 
 -- --------------------------------------------------------
 
@@ -407,7 +416,8 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('reports', 'reports'),
 ('sales', 'sales'),
 ('config', 'config'),
-('suppliers', 'suppliers');
+('suppliers', 'suppliers'),
+('taxes', 'taxes');
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
 ('items_stock', 'items', 1),
@@ -520,7 +530,9 @@ CREATE TABLE `ospos_sales` (
   `employee_id` int(10) NOT NULL DEFAULT '0',
   `comment` text NOT NULL,
   `invoice_number` varchar(32) DEFAULT NULL,
+  `quote_number` varchar(32) DEFAULT NULL,
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
+  `sale_status` tinyint(2) NOT NULL DEFAULT 0,
   `dinner_table_id` int(11) NULL,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
@@ -575,7 +587,12 @@ CREATE TABLE `ospos_sales_items_taxes` (
   `item_id` int(10) NOT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `name` varchar(255) NOT NULL,
-  `percent` decimal(15,3) NOT NULL,
+  `percent` decimal(15,4) NOT NULL DEFAULT 0.0000,
+  `tax_type` tinyint(2) NOT NULL DEFAULT 0,
+  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  `cascade_tax` tinyint(2) NOT NULL DEFAULT 0,
+  `cascade_sequence` tinyint(2) NOT NULL DEFAULT 0,
+  `item_tax_amount` decimal(15,4) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
   KEY `sale_id` (`sale_id`),
   KEY `item_id` (`item_id`)
@@ -603,6 +620,33 @@ CREATE TABLE `ospos_sales_payments` (
 --
 -- Dumping data for table `ospos_sales_payments`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_sales_taxes`
+--
+
+CREATE TABLE `ospos_sales_taxes` (
+  `sale_id` int(10) NOT NULL,
+  `tax_type` smallint(2) NOT NULL,
+  `tax_group` varchar(32) NOT NULL,
+  `sale_tax_basis` decimal(15,4) NOT NULL,
+  `sale_tax_amount` decimal(15,4) NOT NULL,
+  `print_sequence` tinyint(2) NOT NULL DEFAULT 0,
+  `name` varchar(255) NOT NULL,
+  `tax_rate` decimal(15,4) NOT NULL,
+  `sales_tax_code` varchar(32) NOT NULL DEFAULT '',
+  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`sale_id`,`tax_type`,`tax_group`),
+  KEY `print_sequence` (`sale_id`,`print_sequence`,`tax_type`,`tax_group`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+--
+-- Dumping data for table `ospos_sales_taxes`
+--
+
 
 
 -- --------------------------------------------------------
@@ -736,7 +780,6 @@ CREATE TABLE `ospos_stock_locations` (
 INSERT INTO `ospos_stock_locations` ( `deleted`, `location_name` ) VALUES ('0', 'stock');
 
 -- --------------------------------------------------------
-
 --
 -- Table structure for table `ospos_suppliers`
 --
@@ -751,12 +794,47 @@ CREATE TABLE `ospos_suppliers` (
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-- --------------------------------------------------------
 --
--- Dumping data for table `ospos_suppliers`
+-- Table structure for table `ospos_tax_categories`
 --
+
+CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
+  `tax_category_id` int(10) NOT NULL,
+  `tax_category` varchar(32) NOT NULL,
+  `tax_group_sequence` tinyint(2) NOT NULL,
+  PRIMARY KEY (`tax_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ospos_stock_locations`
+--
+
+INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
+  (0, 'Standard', 10),
+  (1, 'Service', 12),
+  (2, 'Alcohol', 11);
 
 -- --------------------------------------------------------
+--
+-- Table structure for table `ospos_tax_codes`
+--
 
+CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
+  `tax_code` varchar(32) NOT NULL,
+  `tax_code_name` varchar(255) NOT NULL DEFAULT '',
+  `tax_code_type` tinyint(2) NOT NULL DEFAULT 0,
+  `city` varchar(255) NOT NULL DEFAULT '',
+  `state` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`tax_code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ospos_tax_codes`
+--
+
+
+-- --------------------------------------------------------
 --
 -- Table structure for table `ospos_dinner_tables`
 --
@@ -820,6 +898,23 @@ CREATE TABLE IF NOT EXISTS `ospos_sales_reward_points` (
   `used` float NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+--
+-- Table structure for table `ospos_tax_code_rates`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
+  `rate_tax_code` varchar(32) NOT NULL,
+  `rate_tax_category_id` int(10) NOT NULL,
+  `tax_rate` decimal(15,4) NOT NULL DEFAULT 0.0000,
+  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`rate_tax_code`,`rate_tax_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ospos_tax_code_rates`
+--
 
 --
 -- Constraints for dumped tables

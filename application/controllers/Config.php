@@ -199,6 +199,7 @@ class Config extends Secure_Controller
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
+		$data['rounding_options'] = Rounding_code::get_rounding_options();
 
 		$data = $this->xss_clean($data);
 		
@@ -252,6 +253,8 @@ class Config extends Secure_Controller
 			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),
 			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
 			'tax_included' => $this->input->post('tax_included') != NULL,
+			'customer_sales_tax_support' => $this->input->post('customer_sales_tax_support') != NULL,
+			'default_origin_tax_code' => $this->input->post('default_origin_tax_code'),
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),
 			'default_sales_discount' => $this->input->post('default_sales_discount'),
@@ -312,7 +315,9 @@ class Config extends Secure_Controller
 			'quantity_decimals' => $this->input->post('quantity_decimals'),
 			'country_codes' => $this->input->post('country_codes'),
 			'payment_options_order' => $this->input->post('payment_options_order'),
-			'date_or_time_format' => $this->input->post('date_or_time_format')
+			'date_or_time_format' => $this->input->post('date_or_time_format'),
+			'cash_decimals' => $this->input->post('cash_decimals'),
+			'cash_rounding_code' => $this->input->post('cash_rounding_code')
 		);
 	
 		$result = $this->Appconfig->batch_save($batch_save_data);

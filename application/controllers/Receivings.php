@@ -27,6 +27,16 @@ class Receivings extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+	public function stock_item_search()
+	{
+		$suggestions = $this->Item->get_stock_search_suggestions($this->input->get('term'), array('search_custom' => FALSE, 'is_deleted' => FALSE), TRUE);
+		$suggestions = array_merge($suggestions, $this->Item_kit->get_search_suggestions($this->input->get('term')));
+
+		$suggestions = $this->xss_clean($suggestions);
+
+		echo json_encode($suggestions);
+	}
+
 	public function select_supplier()
 	{
 		$supplier_id = $this->input->post('supplier');

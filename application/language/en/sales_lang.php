@@ -105,6 +105,7 @@ $lang["sales_sale"] = "Sale";
 $lang["sales_sale_by_invoice"] = "Sale by Invoice";
 $lang["sales_sale_for_customer"] = "Customer:";
 $lang["sales_sale_time"] = "Time";
+$lang["sales_sales_tax"] = "Sales Tax";
 $lang["sales_select_customer"] = "Select Customer (Optional)";
 $lang["sales_send_invoice"] = "Send Invoice";
 $lang["sales_send_quote"] = "Send Quote";

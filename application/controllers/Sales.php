@@ -9,6 +9,7 @@ class Sales extends Secure_Controller
 		parent::__construct('sales');
 
 		$this->load->library('sale_lib');
+		$this->load->library('tax_lib');
 		$this->load->library('barcode_lib');
 		$this->load->library('email_lib');
 		$this->load->library('token_lib');
@@ -172,6 +173,12 @@ class Sales extends Secure_Controller
 		$this->sale_lib->set_invoice_number_enabled($this->input->post('sales_invoice_number_enabled'));
 	}
 
+	public function set_payment_type()
+	{
+		$this->sale_lib->set_payment_type($this->input->post('selected_payment_type'));
+		$this->_reload();
+	}
+
 	public function set_print_after_sale()
 	{
 		$this->sale_lib->set_print_after_sale($this->input->post('sales_print_after_sale'));
@@ -229,7 +236,7 @@ class Sales extends Secure_Controller
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				}
 			}
-			else if ($payment_type == $this->lang->line('sales_rewards'))
+			elseif ($payment_type == $this->lang->line('sales_rewards'))
 			{
 				$customer_id = $this->sale_lib->get_customer();
 				$package_id = $this->Customer->get_info($customer_id)->package_id;
@@ -410,6 +417,7 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_rewards_remainder();
 		$this->sale_lib->delete_payment($this->lang->line('sales_rewards'));
 		$this->sale_lib->clear_invoice_number();
+		$this->sale_lib->clear_quote_number();
 		$this->sale_lib->remove_customer();
 
 		$this->_reload();
@@ -425,20 +433,11 @@ class Sales extends Secure_Controller
 		$data = array();
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 		$data['cart'] = $this->sale_lib->get_cart();
-		$data['subtotal'] = $this->sale_lib->get_subtotal();
-		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(TRUE);
-		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
-		$data['taxes'] = $this->sale_lib->get_taxes();
-		$data['total'] = $this->sale_lib->get_total();
-		$data['discount'] = $this->sale_lib->get_discount();
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
-		$data['payments'] = $this->sale_lib->get_payments();
-		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
-		$data['amount_due'] = $this->sale_lib->get_amount_due();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
@@ -453,12 +452,44 @@ class Sales extends Secure_Controller
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
+		$data["invoice_number"] = $this->sale_lib->get_invoice_number();
+		$data["quote_number"] = $this->sale_lib->get_quote_number();
 		$customer_info = $this->_load_customer_data($customer_id, $data);
+
+		$data['taxes'] = $this->sale_lib->get_taxes();
+		$data['discount'] = $this->sale_lib->get_discount();
+		$data['payments'] = $this->sale_lib->get_payments();
+
+		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
+		$totals = $this->sale_lib->get_totals();
+		$data['subtotal'] = $totals['discounted_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_total'] =$totals['total'];
+		$data['non_cash_amount_due'] =$totals['amount_due'];
+		$data['payments_total'] = $totals['payment_total'];
+		$data['payments_cover_total'] = $totals['payments_cover_total'];
+		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
+
+		$data['discounted_subtotal'] = $totals['discounted_subtotal'];
+		$data['tax_exclusive_subtotal'] = $totals['tax_exclusive_subtotal'];
+
+		if ($data['cash_rounding'])
+		{
+			$data['total'] = $totals['cash_total'];
+			$data['amount_due'] = $totals['cash_amount_due'];
+		}
+		else
+		{
+			$data['total'] = $totals['total'];
+			$data['amount_due'] = $totals['amount_due'];
+		}
+		$data['amount_change'] = $data['amount_due'] * -1;
 
 		if ($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == true)
 		{
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
-			if ($this->sale_lib->is_sale_by_receipt_mode())
+			if($this->sale_lib->is_sale_by_receipt_mode())
 			{
 				$this->sale_lib->set_invoice_number($this->input->post('invoice_number'), $keep_custom = TRUE);
 				$invoice_format = $this->sale_lib->get_invoice_number();
@@ -473,8 +504,6 @@ class Sales extends Secure_Controller
 			}
 			$invoice_number = $this->token_lib->render($invoice_format);
 
-			$quote_number = null;
-
 			// TODO If duplicate invoice then determine the number of employees and repeat until until success or tried the number of employees (if QSEQ was used).
 			if($this->Sale->check_invoice_number_exists($invoice_number))
 			{
@@ -484,10 +513,10 @@ class Sales extends Secure_Controller
 			else
 			{
 				$data['invoice_number'] = $invoice_number;
-				$data['quote_number'] = $quote_number;
+				$data['sale_status'] = '0'; // Complete
 
 				// Save the data to the sales table
-				$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data['payments'], $data['dinner_table']);
+				$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data["quote_number"], $data['payments'], $data['dinner_table'], $data['taxes']);
 				$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
 				// Resort and filter cart lines for printing
@@ -509,15 +538,15 @@ class Sales extends Secure_Controller
 		}
 		elseif($this->sale_lib->is_quote_mode())
 		{
+			$invoice_number = null;
 			$quote_number = $this->sale_lib->get_quote_number();
+
 			if($quote_number == null)
 			{
 				// generate quote number
 				$quote_format = $this->config->item('sales_quote_format');
 				$quote_number = $this->token_lib->render($quote_format);
 			}
-
-			$invoice_number = null;
 
 			// TODO If duplicate quote then determine the number of employees and repeat until until success or tried the number of employees (if QSEQ was used).
 			if($this->Sale->check_quote_number_exists($quote_number))
@@ -529,13 +558,19 @@ class Sales extends Secure_Controller
 			{
 				$data['invoice_number'] = $invoice_number;
 				$data['quote_number'] = $quote_number;
+				$data['sale_status'] = '1'; // Suspended
+
+				$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $quote_number, $data['payments'], $data['dinner_table'], $data['taxes']);
 
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
 
 				$data = $this->xss_clean($data);
 
+
 				$data['barcode'] = NULL;
-				$this->suspend_quote($quote_number);
+
+//				$this->suspend_quote($quote_number);
+
 				$this->load->view('sales/quote', $data);
 				$this->sale_lib->clear_mode();
 				$this->sale_lib->clear_all();
@@ -544,7 +579,9 @@ class Sales extends Secure_Controller
 		else
 		{
 			// Save the data to the sales table
-			$data['sale_id_num'] = $this->Sale->save($data['cart'], $customer_id, $employee_id, $data['comments'], null, $data['payments'], $data['dinner_table']);
+			$data['sale_status'] = '0'; // Complete
+			$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], null, null, $data['payments'], $data['dinner_table'], $data['taxes']);
+
 			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
 			$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
@@ -720,7 +757,7 @@ class Sales extends Secure_Controller
 	{
 		$text = $this->_substitute_variable($text, '$YCO', $this->Sale, 'get_invoice_number_for_year');
 		$text = $this->_substitute_variable($text, '$CO', $this->Sale, 'get_invoice_count');
-		$text = $this->_substitute_variable($text, '$SCO', $this->Sale_suspended, 'get_invoice_count');
+		$text = $this->_substitute_variable($text, '$SCO', $this->Sale, 'get_suspended_invoice_count');
 		$text = strftime($text);
 		$text = $this->_substitute_customer($text, $customer_info);
 
@@ -801,23 +838,53 @@ class Sales extends Secure_Controller
 	private function _load_sale_data($sale_id)
 	{
 		$this->sale_lib->clear_all();
+		$this->sale_lib->reset_cash_flags();
 		$sale_info = $this->Sale->get_info($sale_id)->row_array();
 		$this->sale_lib->copy_entire_sale($sale_id);
 		$data = array();
 		$data['cart'] = $this->sale_lib->get_cart();
 		$data['payments'] = $this->sale_lib->get_payments();
-		$data['subtotal'] = $this->sale_lib->get_subtotal();
-		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(TRUE);
-		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
+		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
+
+//		$data['subtotal'] = $this->sale_lib->get_subtotal();
+//		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(TRUE);
+//		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
+//		$data['amount_due'] = $this->sale_lib->get_amount_due();
+//		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
+//		$data['total'] = $this->sale_lib->get_total();
+
 		$data['taxes'] = $this->sale_lib->get_taxes();
-		$data['total'] = $this->sale_lib->get_total();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
 		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
-		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
-		$data['amount_due'] = $this->sale_lib->get_amount_due();
+
+
+		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
+		$totals = $this->sale_lib->get_totals();
+		$data['subtotal'] = $totals['subtotal'];
+		$data['discounted_subtotal'] = $totals['discounted_subtotal'];
+		$data['tax_exclusive_subtotal'] = $totals['tax_exclusive_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_total'] = $totals['total'];
+		$data['non_cash_amount_due'] = $totals['amount_due'];
+		$data['payments_total'] = $totals['payment_total'];
+		$data['payments_cover_total'] = $totals['payments_cover_total'];
+
+		if ($this->session->userdata('cash_rounding'))
+		{
+			$data['total'] = $totals['cash_total'];
+			$data['amount_due'] = $totals['cash_amount_due'];
+		}
+		else
+		{
+			$data['total'] = $totals['total'];
+			$data['amount_due'] = $totals['amount_due'];
+		}
+		$data['amount_change'] = $data['amount_due'] * -1;
+
 		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
@@ -826,6 +893,8 @@ class Sales extends Secure_Controller
 		$data['sale_id'] = 'POS ' . $sale_id;
 		$data['comments'] = $sale_info['comment'];
 		$data['invoice_number'] = $sale_info['invoice_number'];
+		$data['quote_number'] = $sale_info['quote_number'];
+		$data['sale_status'] = $sale_info['sale_status'];
 		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone'),
@@ -868,20 +937,46 @@ class Sales extends Secure_Controller
 		$data['selected_table'] = $this->sale_lib->get_dinner_table();
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
-		$data['subtotal'] = $this->sale_lib->get_subtotal(TRUE);
 		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
+
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
-		$data['total'] = $this->sale_lib->get_total();
+		$data['payments'] = $this->sale_lib->get_payments();
+
+		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
+		$totals = $this->sale_lib->get_totals();
+		$data['subtotal'] = $totals['discounted_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_total'] =$totals['total'];
+		$data['non_cash_amount_due'] =$totals['amount_due'];
+		$data['payments_total'] = $totals['payment_total'];
+		$data['payments_cover_total'] = $totals['payments_cover_total'];
+		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
+
+		if ($data['cash_rounding'])
+		{
+			$data['total'] = $totals['cash_total'];
+			$data['amount_due'] = $totals['cash_amount_due'];
+		}
+		else
+		{
+			$data['total'] = $totals['total'];
+			$data['amount_due'] = $totals['amount_due'];
+		}
+		$data['amount_change'] = $data['amount_due'] * -1;
+
 		$data['comment'] = $this->sale_lib->get_comment();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
-		$data['payments_total'] = $this->sale_lib->get_payments_total();
-		$data['amount_due'] = $this->sale_lib->get_amount_due();
-		$data['payments'] = $this->sale_lib->get_payments();
+		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
 		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
-			$data['payment_options'] = $this->Sale->get_payment_options(TRUE,TRUE);
+		{
+			$data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
+		}
 		else
+		{
 			$data['payment_options'] = $this->Sale->get_payment_options();
+		}
 		$quote_number = $this->sale_lib->get_quote_number();
 		if ($quote_number != NULL)
 		{
@@ -898,7 +993,6 @@ class Sales extends Secure_Controller
 
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['payments_cover_total'] = $this->sale_lib->is_payment_covering_total();
 		$data['quote_or_invoice_mode'] = $data['mode'] == 'sale_invoice' || $data['mode'] == 'sale_quote';
 		$data['sales_or_return_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
 		if($this->sale_lib->get_mode() == 'sale_invoice')
@@ -1050,7 +1144,7 @@ class Sales extends Secure_Controller
 	{
 		$suspended_id = $this->sale_lib->get_suspended_id();
 		$this->sale_lib->clear_all();
-		$this->Sale_suspended->delete($suspended_id);
+		$this->Sale->delete_suspended_sale($suspended_id);
 		$this->_reload();
 	}
 
@@ -1065,10 +1159,11 @@ class Sales extends Secure_Controller
 		$invoice_number = $this->_is_custom_invoice_number($customer_info) ? $this->sale_lib->get_invoice_number() : NULL;
 		$quote_number = $this->sale_lib->get_quote_number();
 		$comment = $this->sale_lib->get_comment();
+		$sale_status = '1';
 
-		//SAVE sale to database
 		$data = array();
-		if ($this->Sale_suspended->save($cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table) == '-1')
+		$sales_taxes = array();
+		if ($this->Sale->save($sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sales_taxes) == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
 		}
@@ -1088,14 +1183,14 @@ class Sales extends Secure_Controller
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$customer_id = $this->sale_lib->get_customer();
 		$customer_info = $this->Customer->get_info($customer_id);
+		$dinner_table = $this->sale_lib->get_dinner_table();
 		$invoice_number = $this->_is_custom_invoice_number($customer_info) ? $this->sale_lib->get_invoice_number() : NULL;
 		$comment = $this->sale_lib->get_comment();
+		$sale_status = '2'; // Suspend
 
-		//SAVE sale to database
 		$data = array();
-		$suspended_id = $this->Sale_suspended->save($cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments);
-		$this->sale_lib->set_suspended_id($suspended_id);
-		if ($suspended_id  == '-1')
+		$sales_taxes = array();
+		if ($this->Sale->save($sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sales_taxes) == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
 		}
@@ -1107,17 +1202,35 @@ class Sales extends Secure_Controller
 
 	public function suspended()
 	{
+		$customer_id = $this->sale_lib->get_customer();
 		$data = array();
-		$data['suspended_sales'] = $this->xss_clean($this->Sale_suspended->get_all()->result_array());
+		$data['suspended_sales'] = $this->xss_clean($this->Sale->get_all_suspended($customer_id));
+		$data['dinner_table_enable'] = $this->config->item('dinner_table_enable');
 		$this->load->view('sales/suspended', $data);
 	}
 
+	/*
+	 * We will eventually drop the current set of "suspended" tables since suspended sales
+	 * are now stored in the sales tables with a sale_status value of suspended.
+	 */
 	public function unsuspend()
 	{
 		$sale_id = $this->input->post('suspended_sale_id');
 		$this->sale_lib->clear_all();
-		$this->sale_lib->copy_entire_suspended_sale($sale_id);
-		$this->Sale_suspended->delete($sale_id);
+
+		if($sale_id > 0)
+		{
+			$this->sale_lib->copy_entire_sale($sale_id);
+			$this->Sale->delete_suspended_sale($sale_id);
+		}
+		else
+		{
+			// This will unsuspended older suspended sales
+			$sale_id = $sale_id * -1;
+			$this->sale_lib->copy_entire_suspended_tables_sale($sale_id);
+			$this->Sale_suspended->delete($sale_id);
+		}
+
 		$this->_reload();
 	}
 

@@ -8,12 +8,12 @@ class Token_suspended_invoice_count extends Token
 	{
 		parent::__construct();
 		$this->CI =& get_instance();
-		$this->CI->load->model('Sale_suspended');
+		$this->CI->load->model('Sale');
 	}
 
 	public function get_value()
 	{
-		return $this->CI->Sale_suspended->get_invoice_count();
+		return $this->CI->Sale->get_suspended_invoice_count();
 	}
 }
 

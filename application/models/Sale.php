@@ -42,6 +42,7 @@ class Sale extends CI_Model
 			'(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
+					sales_items_taxes.line AS line,
 					' . "
 					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
 					" . '
@@ -51,7 +52,7 @@ class Sale extends CI_Model
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
-				GROUP BY sale_id, item_id
+				GROUP BY sale_id, item_id, line
 			)'
 		);
 
@@ -60,7 +61,9 @@ class Sale extends CI_Model
 				MAX(DATE(sales.sale_time)) AS sale_date,
 				MAX(sales.sale_time) AS sale_time,
 				MAX(sales.comment) AS comment,
+				MAX(sales.sale_status) AS sale_status,
 				MAX(sales.invoice_number) AS invoice_number,
+				MAX(sales.quote_number) AS quote_number,
 				MAX(sales.employee_id) AS employee_id,
 				MAX(sales.customer_id) AS customer_id,
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
@@ -81,7 +84,9 @@ class Sale extends CI_Model
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
-		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
+		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
+			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
+			'left outer');
 
 		$this->db->where('sales.sale_id', $sale_id);
 
@@ -108,11 +113,11 @@ class Sale extends CI_Model
 
 		if (empty($this->config->item('date_or_time_format')))
 		{
-			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' ';
+			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' AND sales.sale_status = 0 ';
 		}
 		else
 		{
-			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])) . ' ';
+			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])) . ' AND sales.sale_status = 0 ';
 		}
 
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
@@ -156,6 +161,7 @@ class Sale extends CI_Model
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
+					sales_items_taxes.line AS line,
 					' . "
 					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
 					" . '
@@ -165,7 +171,7 @@ class Sale extends CI_Model
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
-				GROUP BY sale_id, item_id
+				GROUP BY sale_id, item_id, line
 			)'
 		);
 
@@ -174,6 +180,7 @@ class Sale extends CI_Model
 				MAX(DATE(sales.sale_time)) AS sale_date,
 				MAX(sales.sale_time) AS sale_time,
 				MAX(sales.invoice_number) AS invoice_number,
+				MAX(sales.quote_number) AS quote_number,
 				SUM(sales_items.quantity_purchased) AS items_purchased,
 				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
 				MAX(customer.company_name) AS company_name,
@@ -195,7 +202,9 @@ class Sale extends CI_Model
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
-		$this->db->join('sales_items_taxes_temp AS sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id', 'left outer');
+		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
+			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
+			'left outer');
 
 		$this->db->where($where);
 
@@ -486,8 +495,15 @@ class Sale extends CI_Model
 		return $success;
 	}
 
-	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $payments, $dinner_table, $sale_id = FALSE)
+
+	/*
+	 * Save the sale information after the sales is complete but before the final document is printed
+	 * The sales_taxes variable needs to be initialized to an empty array before calling
+	 */
+	public function save(&$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, &$sales_taxes, $sale_id = FALSE)
 	{
+		$tax_decimals = $this->config->item('tax_decimals');
+
 		if(count($items) == 0)
 		{
 			return -1;
@@ -499,7 +515,9 @@ class Sale extends CI_Model
 			'employee_id'	 => $employee_id,
 			'comment'		 => $comment,
 			'invoice_number' => $invoice_number,
-			'dinner_table_id'=> $dinner_table
+			'quote_number' => $quote_number,
+			'dinner_table_id'=> $dinner_table,
+			'sale_status'	 => $sale_status
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -554,6 +572,10 @@ class Sale extends CI_Model
 			}
 		}
 
+		$customer = $this->Customer->get_info($customer_id);
+
+		$sales_taxes = array();
+
 		foreach($items as $line=>$item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
@@ -602,20 +624,80 @@ class Sale extends CI_Model
 			);
 			$this->Inventory->insert($inv_data);
 
-			$customer = $this->Customer->get_info($customer_id);
+			// Calculate taxes and save the tax information for the sale.  Return the result for printing
+
 			if($customer_id == -1 || $customer->taxable)
 			{
+				if($this->config->item('tax_included'))
+				{
+					$tax_type = Tax_lib::TAX_TYPE_VAT;
+				}
+				else
+				{
+					$tax_type = Tax_lib::TAX_TYPE_SALES;
+				}
+				$rounding_code = Rounding_code::HALF_UP; // half adjust
+				$tax_group_sequence = 0;
+				$item_total = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
+				$tax_basis = $item_total;
+				$item_tax_amount = 0;
+
 				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
 				{
-					$this->db->insert('sales_items_taxes', array(
-						'sale_id' 	=> $sale_id,
-						'item_id' 	=> $item['item_id'],
-						'line'      => $item['line'],
-						'name'		=> $row['name'],
-						'percent' 	=> $row['percent']
-					));
+
+					$sales_items_taxes = array(
+						'sale_id'			=> $sale_id,
+						'item_id'			=> $item['item_id'],
+						'line'				=> $item['line'],
+						'name'				=> character_limiter($row['name'], 255),
+						'percent'			=> $row['percent'],
+						'tax_type'			=> $tax_type,
+						'rounding_code'		=> $rounding_code,
+						'cascade_tax'		=> 0,
+						'cascade_sequence'	=> 0,
+						'item_tax_amount'	=> 0
+					);
+
+					// This computes tax for each line item and adds it to the tax type total
+					$tax_group = (float)$row['percent'] . '% ' . $row['name'];
+					$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
+
+					if($this->config->item('tax_included'))
+					{
+						$tax_type = Tax_lib::TAX_TYPE_VAT;
+						$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity'], $item['price'], $item['discount'],$row['percent']);
+					}
+					elseif($this->config->item('customer_sales_tax_support') == '0')
+					{
+						$tax_type = Tax_lib::TAX_TYPE_SALES;
+						$item_tax_amount = $this->tax_lib->get_sales_tax_for_amount($tax_basis, $row['percent'], '0', $tax_decimals);
+					}
+					else
+					{
+						$tax_type = Tax_lib::TAX_TYPE_SALES;
+					}
+
+					$sales_items_taxes['item_tax_amount'] = $item_tax_amount;
+					if ($item_tax_amount != 0)
+					{
+						$this->db->insert('sales_items_taxes', $sales_items_taxes);
+						$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $row['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id,  $row['name'], '');
+						$tax_group_sequence += 1;
+					}
+
+				}
+
+				if($this->config->item('customer_sales_tax_support') == '1')
+				{
+					$this->save_sales_item_tax($customer, $sale_id, $item, $item_total, $sales_taxes, $sequence, $cur_item_info->tax_category_id);
 				}
 			}
+		}
+
+		if($customer_id == -1 || $customer->taxable)
+		{
+			$this->tax_lib->round_sales_taxes($sales_taxes);
+			$this->save_sales_tax($sales_taxes);
 		}
 
 		$this->db->trans_complete();
@@ -626,6 +708,47 @@ class Sale extends CI_Model
 		}
 
 		return $sale_id;
+	}
+
+	/**
+	 * Apply customer sales tax if the customer sales tax is enabledl
+	 * The original tax is still supported if the user configures it,
+	 * but it won't make sense unless it's used exclusively for the purpose
+	 * of VAT tax which becomes a price component.  VAT taxes must still be reported
+	 * as a separate tax entry on the invoice.
+	 */
+	public function save_sales_item_tax(&$customer, &$sale_id, &$item, $tax_basis, &$sales_taxes, &$sequence, $tax_category_id)
+	{
+		// if customer sales tax is enabled then update  sales_items_taxes with the
+		if($this->config->item('customer_sales_tax_support') == '1')
+		{
+			$register_mode = $this->config->item('default_register_mode');
+			$tax_details = $this->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, $sale_id, $sales_taxes);
+
+			$sales_items_taxes = array(
+				'sale_id'			=> $sale_id,
+				'item_id'			=> $item['item_id'],
+				'line'				=> $item['line'],
+				'name'				=> $tax_details['tax_name'],
+				'percent'			=> $tax_details['tax_rate'],
+				'tax_type'			=> Tax_lib::TAX_TYPE_SALES,
+				'rounding_code'		=> $tax_details['rounding_code'],
+				'cascade_tax'		=> 0,
+				'cascade_sequence'	=> 0,
+				'item_tax_amount'	=> $tax_details['item_tax_amount']
+			);
+
+			$this->db->insert('sales_items_taxes', $sales_items_taxes);
+
+		}
+	}
+
+	private function save_sales_tax(&$sales_taxes)
+	{
+		foreach($sales_taxes as $line=>$sales_tax)
+		{
+			$this->db->insert('sales_taxes', $sales_tax);
+		}
 	}
 
 	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
@@ -815,8 +938,8 @@ class Sale extends CI_Model
 	// TODO change to use new quote_number field
 	public function check_quote_number_exists($quote_number, $sale_id = '')
 	{
-		$this->db->from('sales_suspended');
-		$this->db->where('invoice_number', $quote_number);
+		$this->db->from('sales');
+		$this->db->where('quote_number', $quote_number);
 		if(!empty($sale_id))
 		{
 			$this->db->where('sale_id !=', $sale_id);
@@ -894,6 +1017,7 @@ class Sale extends CI_Model
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
+					sales_items_taxes.line AS line,
 					' . "
 					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
 					" . '
@@ -902,8 +1026,8 @@ class Sale extends CI_Model
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE ' . $where . '
-				GROUP BY sale_id, item_id
+				WHERE sales.sale_status = 0 AND ' . $where . '
+				GROUP BY sale_id, item_id, line
 			)'
 		);
 
@@ -917,7 +1041,7 @@ class Sale extends CI_Model
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
-				WHERE ' . $where . '
+				WHERE sales.sale_status = 0 AND ' . $where . '
 				GROUP BY payments.sale_id
 			)'
 		);
@@ -931,6 +1055,7 @@ class Sale extends CI_Model
 					sales.sale_id AS sale_id,
 					MAX(sales.comment) AS comment,
 					MAX(sales.invoice_number) AS invoice_number,
+					MAX(sales.quote_number) AS quote_number,
 					MAX(sales.customer_id) AS customer_id,
 					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
 					MAX(customer_p.first_name) AS customer_first_name,
@@ -977,8 +1102,8 @@ class Sale extends CI_Model
 				LEFT OUTER JOIN ' . $this->db->dbprefix('people') . ' AS employee
 					ON sales.employee_id = employee.person_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes_temp') . ' AS sales_items_taxes
-					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id
-				WHERE ' . $where . '
+					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
+				WHERE sales.sale_status = 0 AND ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)'
 		);
@@ -987,5 +1112,92 @@ class Sale extends CI_Model
 		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
 		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp'));
 	}
+
+	/*
+	 * Retrieves all sales that are in a suspended state
+	 */
+	public function get_all_suspended($customer_id = NULL)
+	{
+		if ($customer_id == -1)
+		{
+			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. $this->db->dbprefix('sales') . ' where sale_status = 1 '
+				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. $this->db->dbprefix('sales_suspended'));
+		}
+		else
+		{
+			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. $this->db->dbprefix('sales') . ' where sale_status = 1 and customer_id = ' . $customer_id
+				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. $this->db->dbprefix('sales_suspended') . ' where customer_id = ' . $customer_id);
+		}
+
+		return $query->result_array();
+
+	}
+
+	/*
+	 * get the dinner table for the selected sale
+	 */
+	public function get_dinner_table($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		return $this->db->get()->row()->dinner_table_id;
+	}
+
+	/*
+	* Gets total of suspended invoices rows
+	*/
+	public function get_suspended_invoice_count()
+	{
+		$this->db->from('sales');
+		$this->db->where('invoice_number IS NOT NULL');
+		$this->db->where('sale_status', '1');
+
+		return $this->db->count_all_results();
+	}
+
+	/*
+	 * This will remove a selected sale from the sales table.
+	 * This function should only be called for suspended sales that are being restored to the current cart
+	 */
+	public function delete_suspended_sale($sale_id)
+	{
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
+
+		$dinner_table = $this->get_dinner_table($sale_id);
+		$dinner_table_data = array(
+			'status' => 0
+		);
+
+		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->update('dinner_tables', $dinner_table_data);
+
+		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
+		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
+		$this->db->delete('sales_items', array('sale_id' => $sale_id));
+		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
+		$this->db->delete('sales', array('sale_id' => $sale_id));
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
+	}
+
+	public function get_suspended_sale_info($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+		$this->db->join('people', 'people.person_id = sales_suspended.customer_id', 'LEFT');
+
+		return $this->db->get();
+	}
+
+
+
 }
 ?>
