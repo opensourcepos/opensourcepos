@@ -2,7 +2,7 @@
 
 $lang["config_address"] = "Alamat Perusahaan";
 $lang["config_address_required"] = "Alamat Perusahaan wajib diisi";
-$lang["config_apostrophe"] = "apostrophe";
+$lang["config_apostrophe"] = "apostrop";
 $lang["config_backup_button"] = "Cadangan";
 $lang["config_backup_database"] = "Cadangkan basis data";
 $lang["config_barcode"] = "Kode batang";
@@ -19,7 +19,7 @@ $lang["config_barcode_layout"] = "Tata letak kode batang";
 $lang["config_barcode_name"] = "Nama";
 $lang["config_barcode_number"] = "UPC/EAN/ISBN";
 $lang["config_barcode_number_in_row"] = "Jumlah baris";
-$lang["config_barcode_page_cellspacing"] = "Display page cellspacing";
+$lang["config_barcode_page_cellspacing"] = "Tampilkan cellspacing halaman";
 $lang["config_barcode_page_width"] = "Lebar halaman";
 $lang["config_barcode_price"] = "Harga";
 $lang["config_barcode_quality"] = "Kualitas (1-100)";
