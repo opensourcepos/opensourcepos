@@ -10,7 +10,7 @@
 				<?php echo form_input(array(
 						'name'=>'tax_code',
 						'id'=>'tax_code',
-						'class'=>'form-control input-sm',
+						'class'=>'form-control input-sm text-uppercase',
 						'value'=>$tax_code)
 						);?>
 			</div>
