@@ -157,6 +157,7 @@ Gets information about a particular tax_code
 				$this->save_tax_rates($tax_rate_data, $tax_code);
 				return TRUE;
 			}
+
 			return FALSE;
 		}
 
@@ -180,6 +181,7 @@ Gets information about a particular tax_code
 			{
 				return TRUE;
 			}
+
 			return FALSE;
 		}
 
@@ -203,8 +205,10 @@ Gets information about a particular tax_code
 		// Delete all exceptions for the given tax_code
 		$this->delete_tax_rate_exceptions($tax_code);
 
-		if ($tax_rate_data != NULL) {
-			foreach ($tax_rate_data as $row) {
+		if ($tax_rate_data != NULL)
+		{
+			foreach ($tax_rate_data as $row) 
+			{
 				$row['rate_tax_code'] = $tax_code;
 				$success &= $this->db->insert('tax_code_rates', $row);
 			}
@@ -255,7 +259,8 @@ Gets information about a particular tax_code
 		$this->db->from('tax_codes');
 		$this->db->join('tax_code_rates',
 			'tax_code = rate_tax_code and rate_tax_category_id = 0', 'LEFT');
-		if (!empty($search)) {
+		if (!empty($search))
+		{
 			$this->db->like('tax_code', $search);
 			$this->db->or_like('tax_code_name', $search);
 		}
@@ -275,7 +280,8 @@ Gets information about a particular tax_code
 	public function get_found_rows($search)
 	{
 		$this->db->from('tax_codes');
-		if (!empty($search)) {
+		if (!empty($search))
+		{
 			$this->db->like('tax_code', $search);
 			$this->db->or_like('tax_code_name', $search);
 		}
@@ -300,7 +306,8 @@ Gets information about a particular tax_code
 		$suggestions = array();
 
 		$this->db->from('tax_codes');
-		if (!empty($search)) {
+		if (!empty($search))
+		{
 			$this->db->like('tax_code', $search);
 			$this->db->or_like('tax_code_name', $search);
 		}
@@ -326,7 +333,8 @@ Gets information about a particular tax_code
 
 		$this->db->from('tax_categories');
 		$this->db->where('tax_category_id !=', 0);
-		if (!empty($search)) {
+		if (!empty($search))
+		{
 			$this->db->like('tax_category', '%'.$search.'%');
 		}
 		$this->db->order_by('tax_category', 'asc');
@@ -344,6 +352,7 @@ Gets information about a particular tax_code
 		$this->db->select('tax_category');
 		$this->db->from('tax_categories');
 		$this->db->where('tax_category_id', $tax_category_id);
+
 		return $this->db->get()->row()->tax_category;
 	}
 
@@ -351,6 +360,7 @@ Gets information about a particular tax_code
 	{
 		$this->db->from('tax_categories');
 		$this->db->order_by('tax_category_id');
+
 		return $this->db->get();
 	}
 
@@ -358,6 +368,7 @@ Gets information about a particular tax_code
 	{
 		$this->db->select('tax_category_id');
 		$this->db->from('tax_categories');
+
 		return $this->db->get()->row()->tax_category_id;
 	}
 

@@ -71,7 +71,7 @@ class Customers extends Persons
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
-		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' .$this->Tax->get_info($info->sales_tax_code)->tax_code_name;
+		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' . $this->Tax->get_info($info->sales_tax_code)->tax_code_name;
 		$data['total'] = $this->xss_clean($this->Customer->get_totals($customer_id)->total);
 		$packages = array('' => $this->lang->line('items_none'));
 		foreach($this->Customer_rewards->get_all()->result_array() as $row)
@@ -83,11 +83,11 @@ class Customers extends Persons
 
 		if ($customer_sales_tax_support == '1')
 		{
-			$data['customer_sales_tax_enabled']  = TRUE;
+			$data['customer_sales_tax_enabled'] = TRUE;
 		}
 		else
 		{
-			$data['customer_sales_tax_enabled']  = FALSE;
+			$data['customer_sales_tax_enabled'] = FALSE;
 		}
 
 		$this->load->view("customers/form", $data);

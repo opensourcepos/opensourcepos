@@ -89,7 +89,8 @@ class Tax_lib
 
 		$tax_group_index = $this->clean('X'.$tax_group);
 
-		if ($item_tax_amount != 0) {
+		if ($item_tax_amount != 0)
+		{
 			if(!array_key_exists($tax_group_index, $sales_taxes))
 			{
 				$insertkey = $tax_group_index;
@@ -148,10 +149,11 @@ class Tax_lib
 	 */
 	public function round_sales_taxes(&$sales_taxes)
 	{
-		if (!empty($sales_taxes))
+		if(!empty($sales_taxes))
 		{
 			$sort = array();
-			foreach($sales_taxes as $k=>$v) {
+			foreach($sales_taxes as $k=>$v)
+			{
 				$sort['print_sequence'][$k] = $v['print_sequence'];
 			}
 			array_multisort($sort['print_sequence'], SORT_ASC, $sales_taxes);
@@ -307,6 +309,7 @@ class Tax_lib
 				$tax_code = $sales_tax_code;
 			}
 		}
+
 		return $tax_code;
 	}
 

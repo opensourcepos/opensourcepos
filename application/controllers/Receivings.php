@@ -37,8 +37,6 @@ class Receivings extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
-
-
 	public function select_supplier()
 	{
 		$supplier_id = $this->input->post('supplier');

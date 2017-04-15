@@ -236,7 +236,7 @@ class Sales extends Secure_Controller
 					$this->sale_lib->add_payment($payment_type, $amount_tendered);
 				}
 			}
-			else if ($payment_type == $this->lang->line('sales_rewards'))
+			elseif ($payment_type == $this->lang->line('sales_rewards'))
 			{
 				$customer_id = $this->sale_lib->get_customer();
 				$package_id = $this->Customer->get_info($customer_id)->package_id;
@@ -970,9 +970,13 @@ class Sales extends Secure_Controller
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
 		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
-			$data['payment_options'] = $this->Sale->get_payment_options(TRUE,TRUE);
+		{
+			$data['payment_options'] = $this->Sale->get_payment_options(TRUE, TRUE);
+		}
 		else
+		{
 			$data['payment_options'] = $this->Sale->get_payment_options();
+		}
 		$quote_number = $this->sale_lib->get_quote_number();
 		if ($quote_number != NULL)
 		{
@@ -1214,7 +1218,8 @@ class Sales extends Secure_Controller
 		$sale_id = $this->input->post('suspended_sale_id');
 		$this->sale_lib->clear_all();
 
-		if($sale_id > 0) {
+		if($sale_id > 0)
+		{
 			$this->sale_lib->copy_entire_sale($sale_id);
 			$this->Sale->delete_suspended_sale($sale_id);
 		}

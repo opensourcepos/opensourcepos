@@ -213,7 +213,7 @@ class Items extends Secure_Controller
 		$customer_sales_tax_support = $this->config->item('customer_sales_tax_support');
 		if($customer_sales_tax_support == '1')
 		{
-			$data['customer_sales_tax_enabled']  = TRUE;
+			$data['customer_sales_tax_enabled'] = TRUE;
 			$tax_categories = array();
 			foreach($this->Tax->get_all_tax_categories()->result_array() as $row)
 			{
@@ -224,7 +224,7 @@ class Items extends Secure_Controller
 		}
 		else
 		{
-			$data['customer_sales_tax_enabled']  = FALSE;
+			$data['customer_sales_tax_enabled'] = FALSE;
 			$data['tax_categories'] = array();
 			$data['selected_tax_category'] = '';
 		}
@@ -705,7 +705,7 @@ class Items extends Secure_Controller
 						/*if(strcmp('.htaccess', $pic_file)==0) {
 							$pic_file='';
 						}*/
-						$item_data['pic_filename']=$pic_file;
+						$item_data['pic_filename'] = $pic_file;
 
 						$item_number = $data[0];
 						$invalidated = FALSE;

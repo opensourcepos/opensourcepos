@@ -57,7 +57,7 @@ class Dinner_table extends CI_Model
 
     public function get_name($dinner_table_id)
     {
-    	if($dinner_table_id == null || empty($dinner_table_id))
+    	if(empty($dinner_table_id))
 		{
 			return '';
 		}
