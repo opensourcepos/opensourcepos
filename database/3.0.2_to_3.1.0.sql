@@ -185,7 +185,7 @@ ALTER TABLE `ospos_sales_items_taxes`
   ADD COLUMN `item_tax_amount` decimal(15,4) NOT NULL DEFAULT 0;
 
 ALTER TABLE `ospos_customers`
-  ADD COLUMN `sales_tax_code` varchar(32) NOT NULL;
+  ADD COLUMN `sales_tax_code` varchar(32) NOT NULL DEFAULT '1';
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('customer_sales_tax_support', '0'),
