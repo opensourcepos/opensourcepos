@@ -92,7 +92,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('language_code', 'en'),
 ('date_or_time_format',''),
 ('customer_reward_enable',''),
-('customer_sales_tax_support', '0'),
 ('default_origin_tax_code', ''),
 ('cash_decimals', '2');
 
