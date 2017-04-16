@@ -105,7 +105,7 @@
 
             <div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_cash_rounding'), 'cash_rounding_code', array('class' => 'control-label col-xs-2')); ?>
-                <div class='col-xs-4'>
+                <div class='col-xs-2'>
 					<?php echo form_dropdown('cash_rounding_code', $rounding_options, $this->config->item('cash_rounding_code'), array('class' => 'form-control input-sm'));
 					?>
                 </div>
