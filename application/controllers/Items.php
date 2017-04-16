@@ -395,11 +395,11 @@ class Items extends Secure_Controller
 		$x = $this->input->post('tax_category_id');
 		if(!isset($x))
 		{
-			$item['tax_category_id'] = '';
+			$item_data['tax_category_id'] = '';
 		}
 		else
 		{
-			$item['tax_category_id'] = $this->input->post('selected_tax_category');
+			$item_data['tax_category_id'] = $this->input->post('tax_category_id');
 		}
 		
 		if(!empty($upload_data['orig_name']))
