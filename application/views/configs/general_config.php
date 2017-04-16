@@ -77,7 +77,7 @@
 					<?php echo form_input(array(
 						'name' => 'default_origin_tax_code',
 						'id' => 'default_origin_tax_code',
-						'class' => 'form-control input-sm',
+						'class' => 'form-control input-sm text-uppercase',
 						'value'=>$this->config->item('default_origin_tax_code'))); ?>
                 </div>
             </div>
