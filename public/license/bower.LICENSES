@@ -17,10 +17,6 @@
         ],
         "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
-    "chartist@0.9.8": {
-        "licenses": "UNKNOWN",
-        "homepage": "https://github.com/gionkunz/chartist-js"
-    },
     "bootswatch@3.3.7": {
         "licenses": [
             "MIT"
@@ -30,6 +26,10 @@
             "url": "git://github.com/thomaspark/bootswatch.git"
         },
         "homepage": "http://bootswatch.com"
+    },
+    "chartist@0.9.8": {
+        "licenses": "UNKNOWN",
+        "homepage": "https://github.com/gionkunz/chartist-js"
     },
     "chartist-plugin-axistitle@0.1.0": {
         "licenses": [
@@ -49,17 +49,17 @@
         ],
         "homepage": "https://github.com/gionkunz/chartist-plugin-pointlabels"
     },
-    "file-saver.js@1.20150507.2": {
-        "licenses": [
-            "LICENSE.md"
-        ],
-        "homepage": "https://github.com/Teleborder/FileSaver.js"
-    },
     "chartist-plugin-tooltip@0.0.13": {
         "licenses": [
             "MIT*"
         ],
         "homepage": "https://github.com/Globegitter/chartist-plugin-tooltip"
+    },
+    "file-saver.js@1.20150507.2": {
+        "licenses": [
+            "LICENSE.md"
+        ],
+        "homepage": "https://github.com/Teleborder/FileSaver.js"
     },
     "jquery@1.12.4": {
         "licenses": [
@@ -71,7 +71,7 @@
         "licenses": "UNKNOWN",
         "homepage": "https://github.com/malsup/form"
     },
-    "js-cookie@2.1.3": {
+    "js-cookie@2.1.4": {
         "licenses": [
             "MIT"
         ],
@@ -109,19 +109,19 @@
         "homepage": "http://getbootstrap.com",
         "repository": "git+https://github.com/twbs/bootstrap"
     },
-    "bootstrap-table@undefined": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/wenzhixin/bootstrap-table",
-        "repository": "git+https://github.com/wenzhixin/bootstrap-table"
-    },
     "html2canvas@0.4.1": {
         "licenses": [
             "MIT"
         ],
         "homepage": "https://github.com/niklasvh/html2canvas",
         "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
+    },
+    "bootstrap-table@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/wenzhixin/bootstrap-table",
+        "repository": "git+https://github.com/wenzhixin/bootstrap-table"
     },
     "jasny-bootstrap@3.1.3": {
         "licenses": [
