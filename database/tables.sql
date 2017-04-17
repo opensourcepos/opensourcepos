@@ -96,7 +96,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('cash_decimals', '2');
 
 
-
 -- --------------------------------------------------------
 
 --
@@ -161,7 +160,7 @@ CREATE TABLE `ospos_giftcards` (
   PRIMARY KEY (`giftcard_id`),
   UNIQUE KEY `giftcard_number` (`giftcard_number`),
   KEY `person_id` (`person_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_giftcards`
@@ -186,7 +185,7 @@ CREATE TABLE `ospos_inventory` (
   KEY `trans_items` (`trans_items`),
   KEY `trans_user` (`trans_user`),
   KEY `trans_location` (`trans_location`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_inventory`
@@ -230,7 +229,7 @@ CREATE TABLE `ospos_items` (
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `item_number` (`item_number`),
   KEY `supplier_id` (`supplier_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_items`
@@ -270,7 +269,7 @@ CREATE TABLE `ospos_item_kits` (
   `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   `description` varchar(255) NOT NULL,
   PRIMARY KEY (`item_kit_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_item_kits`
@@ -309,7 +308,7 @@ CREATE TABLE IF NOT EXISTS `ospos_item_quantities` (
   PRIMARY KEY (`item_id`,`location_id`),
   KEY `item_id` (`item_id`),
   KEY `location_id` (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -365,8 +364,9 @@ CREATE TABLE `ospos_people` (
   `country` varchar(255) NOT NULL,
   `comments` text NOT NULL,
   `person_id` int(10) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`person_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8  ;
+  PRIMARY KEY (`person_id`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_people`
@@ -465,7 +465,8 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('items_stock', 1),
 ('sales_stock', 1),
 ('receivings_stock', 1),
-('suppliers', 1);
+('suppliers', 1),
+('taxes', 1);
 
 --
 -- Table structure for table `ospos_receivings`
@@ -483,7 +484,7 @@ CREATE TABLE `ospos_receivings` (
   KEY `supplier_id` (`supplier_id`),
   KEY `employee_id` (`employee_id`),
   KEY `reference` (`reference`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_receivings`
@@ -539,7 +540,7 @@ CREATE TABLE `ospos_sales` (
   KEY `sale_time` (`sale_time`),
   KEY `dinner_table_id` (`dinner_table_id`),
   UNIQUE KEY `invoice_number` (`invoice_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales`
@@ -620,6 +621,7 @@ CREATE TABLE `ospos_sales_payments` (
 -- Dumping data for table `ospos_sales_payments`
 --
 
+
 -- --------------------------------------------------------
 
 --
@@ -641,11 +643,9 @@ CREATE TABLE `ospos_sales_taxes` (
   KEY `print_sequence` (`sale_id`,`print_sequence`,`tax_type`,`tax_group`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
 --
 -- Dumping data for table `ospos_sales_taxes`
 --
-
 
 
 -- --------------------------------------------------------
@@ -667,7 +667,7 @@ CREATE TABLE `ospos_sales_suspended` (
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
   KEY `dinner_table_id` (`dinner_table_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_sales_suspended`
@@ -759,6 +759,7 @@ CREATE TABLE `ospos_sessions` (
 -- Dumping data for table `ospos_sessions`
 --
 
+
 -- --------------------------------------------------------
 
 --
@@ -770,7 +771,7 @@ CREATE TABLE `ospos_stock_locations` (
   `location_name` varchar(255) DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`location_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `ospos_stock_locations`
@@ -778,7 +779,9 @@ CREATE TABLE `ospos_stock_locations` (
 
 INSERT INTO `ospos_stock_locations` ( `deleted`, `location_name` ) VALUES ('0', 'stock');
 
+
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `ospos_suppliers`
 --
@@ -793,7 +796,9 @@ CREATE TABLE `ospos_suppliers` (
   KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `ospos_tax_categories`
 --
@@ -814,7 +819,9 @@ INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_grou
   (1, 'Service', 12),
   (2, 'Alcohol', 11);
 
+
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `ospos_tax_codes`
 --
@@ -834,6 +841,26 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
 
 
 -- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_tax_code_rates`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
+  `rate_tax_code` varchar(32) NOT NULL,
+  `rate_tax_category_id` int(10) NOT NULL,
+  `tax_rate` decimal(15,4) NOT NULL DEFAULT 0.0000,
+  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`rate_tax_code`,`rate_tax_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `ospos_tax_code_rates`
+--
+
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `ospos_dinner_tables`
 --
@@ -854,6 +881,9 @@ INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted
 (1, 'Delivery', 0, 0),
 (2, 'Take Away', 0, 0);
 
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `ospos_customer_packages`
 --
@@ -864,7 +894,7 @@ CREATE TABLE IF NOT EXISTS `ospos_customers_packages` (
   `points_percent` float NOT NULL DEFAULT '0',
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`package_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 INSERT INTO `ospos_customers_packages` (`package_id`, `package_name`, `points_percent`, `deleted`) VALUES
 (1, 'Default', 0, 0),
@@ -872,6 +902,9 @@ INSERT INTO `ospos_customers_packages` (`package_id`, `package_name`, `points_pe
 (3, 'Silver', 20, 0),
 (4, 'Gold', 30, 0),
 (5, 'Premium', 50, 0);
+
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `ospos_customer_points`
@@ -884,7 +917,10 @@ CREATE TABLE IF NOT EXISTS `ospos_customers_points` (
   `sale_id` int(11) NOT NULL,
   `points_earned` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `ospos_sales_reward_points`
@@ -896,21 +932,7 @@ CREATE TABLE IF NOT EXISTS `ospos_sales_reward_points` (
   `earned` float NOT NULL,
   `used` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
 
 -- --------------------------------------------------------
---
--- Table structure for table `ospos_tax_code_rates`
---
-
-CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
-  `rate_tax_code` varchar(32) NOT NULL,
-  `rate_tax_category_id` int(10) NOT NULL,
-  `tax_rate` decimal(15,4) NOT NULL DEFAULT 0.0000,
-  `rounding_code` tinyint(2) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`rate_tax_code`,`rate_tax_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_tax_code_rates`
---

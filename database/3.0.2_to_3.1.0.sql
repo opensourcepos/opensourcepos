@@ -10,7 +10,6 @@ ALTER TABLE `ospos_item_kits`
  ADD COLUMN `price_option` TINYINT(2) NOT NULL DEFAULT 0,
  ADD COLUMN `print_option` TINYINT(2) NOT NULL DEFAULT 0;
 
-
 ALTER TABLE `ospos_item_kit_items`
  ADD COLUMN `kit_sequence` INT(3) NOT NULL DEFAULT 0;
 
@@ -44,6 +43,7 @@ INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted
 (2, 'Take Away', 0, 0);
 
 -- alter ospos_sales table
+
 ALTER TABLE `ospos_sales`
  ADD COLUMN `dinner_table_id` int(11) NULL AFTER `invoice_number`;
 
@@ -52,6 +52,7 @@ ALTER TABLE `ospos_sales`
  ADD CONSTRAINT `ospos_sales_ibfk_3` FOREIGN KEY (`dinner_table_id`) REFERENCES `ospos_dinner_tables` (`dinner_table_id`);
 
 -- alter ospos_sales_suspended table
+
 ALTER TABLE `ospos_sales_suspended`
  ADD COLUMN `dinner_table_id` int(11) NULL AFTER `quote_number`;
 
@@ -60,6 +61,7 @@ ALTER TABLE `ospos_sales_suspended`
  ADD CONSTRAINT `ospos_sales_suspended_ibfk_3` FOREIGN KEY (`dinner_table_id`) REFERENCES `ospos_dinner_tables` (`dinner_table_id`);
 
 -- add enabled dinner tables key into config
+
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('date_or_time_format', ''),
 ('sales_quote_format', 'Q%y{QSEQ:6}'),
@@ -120,10 +122,13 @@ ADD COLUMN `package_id` int(11) DEFAULT NULL AFTER `discount_percent`,
 ADD COLUMN `points` int(11) DEFAULT NULL AFTER `package_id`;
 
 -- add enabled reward points key into config
+
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_reward_enable','');
 
-/* The following  changes are in support of customer sales tax changes */
+--
+-- The following changes are in support of customer sales tax changes
+--
 
 CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
   `tax_code` varchar(32) NOT NULL,
@@ -197,10 +202,12 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
   ('taxes', 'taxes');
 
-/* End of customer sales tax changes */
+-- add support for cash rounding into config
 
-/* Start of support for cash rounding */
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('cash_decimals', '2');
-/* End of support for cash rounding */
 
+-- alter people table (create email index)
+
+ALTER TABLE `ospos_people`
+  ADD INDEX `email` (`email`);
