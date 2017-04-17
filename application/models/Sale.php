@@ -111,7 +111,7 @@ class Sale extends CI_Model
 	{
 		$where = '';
 
-		if (empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->item('date_or_time_format')))
 		{
 			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' AND sales.sale_status = 0 ';
 		}
@@ -257,6 +257,11 @@ class Sale extends CI_Model
 			$this->db->group_end();
 		}
 
+		if($filters['only_check'] != FALSE)
+		{
+			$this->db->like('payments.payment_type', $this->lang->line('sales_check'), 'after');
+		}
+
 		$this->db->group_by('sale_id');
 		$this->db->order_by($sort, $order);
 
@@ -280,7 +285,7 @@ class Sale extends CI_Model
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
 		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
 
-		if (empty($this->config->item('date_or_time_format')))
+		if(empty($this->config->item('date_or_time_format')))
 		{
 			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 		}
@@ -328,6 +333,11 @@ class Sale extends CI_Model
 		if($filters['only_cash'] != FALSE)
 		{
 			$this->db->like('payment_type', $this->lang->line('sales_cash'), 'after');
+		}
+
+		if($filters['only_check'] != FALSE)
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_check'), 'after');
 		}
 
 		$this->db->group_by('payment_type');
@@ -596,7 +606,7 @@ class Sale extends CI_Model
 
 			$this->db->insert('sales_items', $sales_items_data);
 
-			if ($cur_item_info->stock_type === '0')
+			if($cur_item_info->stock_type === '0')
 			{
 				// Update stock quantity if item type is not non-stock
 				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
@@ -678,7 +688,7 @@ class Sale extends CI_Model
 					}
 
 					$sales_items_taxes['item_tax_amount'] = $item_tax_amount;
-					if ($item_tax_amount != 0)
+					if($item_tax_amount != 0)
 					{
 						$this->db->insert('sales_items_taxes', $sales_items_taxes);
 						$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $row['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id,  $row['name'], '');
@@ -739,7 +749,6 @@ class Sale extends CI_Model
 			);
 
 			$this->db->insert('sales_items_taxes', $sales_items_taxes);
-
 		}
 	}
 
@@ -782,7 +791,7 @@ class Sale extends CI_Model
 			{
 				$cur_item_info = $this->Item->get_info($item['item_id']);
 
-				if ($cur_item_info->stock_type === '0') {
+				if($cur_item_info->stock_type === '0') {
 					// create query to update inventory tracking
 					$inv_data = array(
 						'trans_date' => date('Y-m-d H:i:s'),
@@ -1118,7 +1127,7 @@ class Sale extends CI_Model
 	 */
 	public function get_all_suspended($customer_id = NULL)
 	{
-		if ($customer_id == -1)
+		if($customer_id == -1)
 		{
 			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
 				. $this->db->dbprefix('sales') . ' where sale_status = 1 '
@@ -1196,8 +1205,5 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
-
-
-
 }
 ?>

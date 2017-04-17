@@ -12,6 +12,7 @@ $lang["sales_cash_filter"] = "Cash";
 $lang["sales_change_due"] = "Change Due";
 $lang["sales_check"] = "Check";
 $lang["sales_check_balance"] = "Check remainder";
+$lang["sales_check_filter"] = "Check";
 $lang["sales_comment"] = "Comment";
 $lang["sales_comments"] = "Comments";
 $lang["sales_complete_sale"] = "Complete";
