@@ -81,7 +81,7 @@ class Config extends Secure_Controller
 			$license[$i]['text'] = '';
 
 			$file = file_get_contents('license/composer.LICENSES');
-			$array = json_decode($file, true);
+			$array = json_decode($file, TRUE);
 
 			foreach($array as $key => $val)
 			{
@@ -133,7 +133,7 @@ class Config extends Secure_Controller
 			$license[$i]['text'] = '';
 
 			$file = file_get_contents('license/bower.LICENSES');
-			$array = json_decode($file, true);
+			$array = json_decode($file, TRUE);
 
 			foreach($array as $key => $val)
 			{
@@ -284,7 +284,7 @@ class Config extends Secure_Controller
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
 		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
-		if ($this->input->post('thousands_separator') == "false")
+		if ($this->input->post('thousands_separator') == 'false')
 		{
 			$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 		}

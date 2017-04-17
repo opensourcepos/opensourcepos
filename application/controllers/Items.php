@@ -503,7 +503,7 @@ class Items extends Secure_Controller
 		}
 		else
 		{
-			$exists  = false;
+			$exists = FALSE;
 		}
 		echo !$exists ? 'true' : 'false';
 	}

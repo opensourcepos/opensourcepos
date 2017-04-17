@@ -2,7 +2,7 @@
 class Giftcard extends CI_Model
 {
 	/*
-	Determines if a given giftcard_id is an giftcard
+	Determines if a given giftcard_id is a giftcard
 	*/
 	public function exists($giftcard_id)
 	{

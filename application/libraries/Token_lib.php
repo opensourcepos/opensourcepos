@@ -18,7 +18,7 @@ class Token_lib
 	{
 
 		// Transform legacy "$" tokens to their brace token equivalent
-		if(strpos($tokened_text, '$') !== false)
+		if(strpos($tokened_text, '$') !== FALSE)
 		{
 			$tokened_text = str_replace('$YCO', '{YCO}', $tokened_text);
 			$tokened_text = str_replace('$CO', '{CO}', $tokened_text);
@@ -27,7 +27,7 @@ class Token_lib
 		}
 
 		// Apply the transformation for the "%" tokens if any are used
-		if(strpos($tokened_text, '%') !== false)
+		if(strpos($tokened_text, '%') !== FALSE)
 		{
 			$tokened_text = strftime($tokened_text);
 		}
@@ -37,7 +37,7 @@ class Token_lib
 
 		if(empty($token_tree))
 		{
-			if(strpos($tokened_text, '%') !== false)
+			if(strpos($tokened_text, '%') !== FALSE)
 			{
 				return strftime($tokened_text);
 			}

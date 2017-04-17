@@ -489,7 +489,7 @@ class Sales extends Secure_Controller
 		}
 		$data['amount_change'] = $data['amount_due'] * -1;
 
-		if($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == true)
+		if($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == TRUE)
 		{
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
 			if($this->sale_lib->is_sale_by_receipt_mode())

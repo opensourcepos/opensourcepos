@@ -7,7 +7,7 @@
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="<?php echo 'dist/bootswatch/' . (empty($this->config->item('theme')) ? 'flatly' : $this->config->item('theme')) . '/bootstrap.min.css' ?>"/>
 
-	<?php if ($this->input->cookie('debug') == "true" || $this->input->get("debug") == "true") : ?>
+	<?php if ($this->input->cookie('debug') == 'true' || $this->input->get('debug') == 'true') : ?>
 		<!-- bower:css -->
 		<link rel="stylesheet" href="bower_components/jquery-ui/themes/base/jquery-ui.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap3-dialog/dist/css/bootstrap-dialog.min.css" />
@@ -97,8 +97,8 @@
 				</div>
 
 				<div class="navbar-right" style="margin:0">
-					<?php echo $user_info->first_name . ' ' . $user_info->last_name . '  |  ' . ($this->input->get("debug") == "true" ? $this->session->userdata('session_sha1') : ''); ?>
-					<?php echo anchor("home/logout", $this->lang->line("common_logout")); ?>
+					<?php echo $user_info->first_name . ' ' . $user_info->last_name . '  |  ' . ($this->input->get('debug') == 'true' ? $this->session->userdata('session_sha1') : ''); ?>
+					<?php echo anchor('home/logout', $this->lang->line('common_logout')); ?>
 				</div>
 
 				<div class="navbar-center" style="text-align:center">

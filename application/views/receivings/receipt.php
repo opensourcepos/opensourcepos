@@ -67,7 +67,7 @@ if (isset($error_message))
 		</tr>
 
 		<?php
-		foreach(array_reverse($cart, true) as $line=>$item)
+		foreach(array_reverse($cart, TRUE) as $line=>$item)
 		{
 		?>
 			<tr>

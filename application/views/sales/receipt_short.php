@@ -47,7 +47,7 @@
 			<th colspan="4" style="width:25%;" class="total-value"><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 		<?php
-		foreach(array_reverse($cart, true) as $line=>$item)
+		foreach(array_reverse($cart, TRUE) as $line=>$item)
 		{
 		?>
 			<tr>

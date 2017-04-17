@@ -9,7 +9,6 @@ class Dinner_table extends CI_Model
         return ($this->db->get()->num_rows() >= 1);
     }
 
-
     public function save(&$table_data, $dinner_table_id) 
     {
         $name = $$table_data['name'];

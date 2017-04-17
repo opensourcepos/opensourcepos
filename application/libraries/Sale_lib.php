@@ -334,11 +334,11 @@ class Sale_lib
 		$tax_exclusive_subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
-			$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], false));
-			$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], true));
+			$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
+			$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
 			if($this->CI->config->config['tax_included'])
 			{
-				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], true));
+				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], TRUE));
 			}
 		}
 

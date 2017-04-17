@@ -206,9 +206,9 @@ class Barcode_lib
 	{
 		$array = array();
 
-		if (($handle = opendir($folder)) !== false)
+		if (($handle = opendir($folder)) !== FALSE)
 		{
-			while (($file = readdir($handle)) !== false)
+			while (($file = readdir($handle)) !== FALSE)
 			{
 				if(substr($file, -4, 4) === '.ttf')
 				{

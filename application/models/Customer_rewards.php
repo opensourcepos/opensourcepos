@@ -9,7 +9,6 @@ class Customer_rewards extends CI_Model
         return ($this->db->get()->num_rows() >= 1);
     }
 
-
     public function save(&$table_data, $package_id) 
     {
         $name = $$table_data['package_name'];
@@ -67,7 +66,7 @@ class Customer_rewards extends CI_Model
     }
 
     /*
-    Deletes one table
+    Deletes one reward
     */
     public function delete($package_id)
     {

@@ -2,18 +2,17 @@
 
 class MY_Lang extends CI_Lang
 {
-
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 	}
 
-    function switch_to( $idiom )
+    public function switch_to($idiom)
     {
         $CI =& get_instance();
-        if( is_string( $idiom ) )
+        if(is_string($idiom))
         {
-            $CI->config->set_item( 'language', $idiom );
+            $CI->config->set_item('language', $idiom);
             $loaded = $this->is_loaded;
             $this->is_loaded = array();
                 
@@ -32,7 +31,7 @@ class MY_Lang extends CI_Lang
      * @access public
      * @return mixed false if not found or the language string
      */
-	function line($line = '', $log_errors = true)
+	public function line($line = '', $log_errors = TRUE)
     {
         //get the arguments passed to the function
         $args = func_get_args();
@@ -41,28 +40,28 @@ class MY_Lang extends CI_Lang
         $c = count($args);
         
         //if one or more arguments, perform the necessary processing
-        if ($c)
+        if($c)
         {
             //first argument should be the actual language line key
             //so remove it from the array (pop from front)
             $line = array_shift($args);
             
             //check to make sure the key is valid and load the line
-            if ($line == '')
+            if($line == '')
             {
             	$line = FALSE;
             }
             else 
             {
-            	if (isset($this->language[$line]))
+            	if(isset($this->language[$line]))
             	{
             		$line = $this->language[$line];
             		//if the line exists and more function arguments remain
             		//perform wildcard replacements
-            		if ($args)
+            		if($args)
             		{
             			$i = 1;
-            			foreach ($args as $arg)
+            			foreach($args as $arg)
             			{
             				$line = preg_replace('/\%'.$i.'/', $arg, $line);
             				++$i;
@@ -80,17 +79,16 @@ class MY_Lang extends CI_Lang
         else
         {
             //if no arguments given, no language line available
-            $line = false;
+            $line = FALSE;
         }
         
         return $line;
     }
     
-    function line_tbd($line='')
+    public function line_tbd($line = '')
     {
     	return $line . ' (TBD)';
     }
-    
 }
 
 ?>

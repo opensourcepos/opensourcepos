@@ -130,7 +130,7 @@ if (isset($success))
 			}
 			else
 			{				
-				foreach(array_reverse($cart, true) as $line=>$item)
+				foreach(array_reverse($cart, TRUE) as $line=>$item)
 				{					
 			?>
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>

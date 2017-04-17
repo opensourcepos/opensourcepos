@@ -22,6 +22,5 @@ class Rewards extends CI_Model
 
 		return $this->db->update('sales_reward_points', $rewards_data);
 	}
-
 }
 ?>
