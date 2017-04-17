@@ -194,6 +194,7 @@
 	var init = function (_options) {
 		options = _options;
 		enable_actions = enable_actions(options.enableActions);
+		load_success = load_success(options.onLoadSuccess);
 		$('#table').bootstrapTable($.extend(options, {
 			columns: options.headers,
 			url: options.resource + '/search',
@@ -208,7 +209,10 @@
 			exportOptions: {
 				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
 			},
-			onPageChange: load_success(options.onLoadSuccess),
+			onPageChange: function(response) {
+				load_success(response);
+				enable_actions();
+			},
 			toolbar: '#toolbar',
 			uniqueId: options.uniqueId || 'id',
 			trimOnSearch: false,
@@ -216,7 +220,10 @@
 			onUncheck: enable_actions,
 			onCheckAll: enable_actions,
 			onUncheckAll: enable_actions,
-			onLoadSuccess: load_success(options.onLoadSuccess),
+			onLoadSuccess: function(response) {
+				load_success(response);
+				enable_actions();
+			},
 			onColumnSwitch : function(field, checked) {
 				var user_settings = localStorage[options.employee_id];
 				user_settings = (user_settings && JSON.parse(user_settings)) || {};
