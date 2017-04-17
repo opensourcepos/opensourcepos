@@ -36,7 +36,7 @@
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y")-1)-1);?>"
 				],
-				"<?php echo $this->lang->line("datepicker_this_month_last_year"); ?>": [
+				"<?php echo $this->lang->line("datepicker_same_month_last_year"); ?>": [
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m")+1,1,date("Y")-1)-1);?>"
 				],
@@ -52,8 +52,16 @@
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,date("Y")-1));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,date("Y"))-1);?>"
 				],
+				"<?php echo $this->lang->line("datepicker_this_financial_year"); ?>": [
+					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")));?>",
+					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),1,date("Y")+1)-1);?>"
+				],
+				"<?php echo $this->lang->line("datepicker_last_financial_year"); ?>": [
+					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")-1));?>",
+					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,$this->config->item('financial_year'),1,date("Y"))-1);?>"
+				],
 				"<?php echo $this->lang->line("datepicker_all_time"); ?>": [
-					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,01,01,2010));?>",
+					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,1,1,2010));?>",
 					"<?php echo date($this->config->item('dateformat'), mktime(0,0,0,date("m"),date("d")+1,date("Y"))-1);?>"
 				],
 			},
@@ -112,51 +120,59 @@
 			"ranges": {
 				"<?php echo $this->lang->line("datepicker_today"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'), mktime(0,0,0,date("m"),date("d"),date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_today_last_year"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d"),date("Y")-1));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")-1)-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")-1));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_yesterday"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d")-1,date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d")-1,date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d")-1,date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_last_7"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d")-6,date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_last_30"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),date("d")-29,date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_this_month"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),1,date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_same_month_to_same_day_last_year"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),1,date("Y")-1));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")-1)-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")-1));?>"
 				],
-				"<?php echo $this->lang->line("datepicker_this_month_last_year"); ?>": [
+				"<?php echo $this->lang->line("datepicker_same_month_last_year"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m"),1,date("Y")-1));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")-1)-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")-1));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_last_month"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,date("m")-1,1,date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),0,date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),0,date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_this_year"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,1,1,date("Y")));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),1,date("Y")+1)-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_last_year"); ?>": [
 					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,1,1,date("Y")-1));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,1,0,date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,12,31,date("Y")-1));?>"
+				],
+				"<?php echo $this->lang->line("datepicker_this_financial_year"); ?>": [
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")));?>",
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m")+1,0,date("Y")));?>"
+				],
+				"<?php echo $this->lang->line("datepicker_last_financial_year"); ?>": [
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,$this->config->item('financial_year'),1,date("Y")-1));?>",
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,$this->config->item('financial_year'),0,date("Y")));?>"
 				],
 				"<?php echo $this->lang->line("datepicker_all_time"); ?>": [
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,01,01,2010));?>",
-					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y"))-1);?>"
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(0,0,0,1,1,2010));?>",
+					"<?php echo date($this->config->item('dateformat')." ".$this->config->item('timeformat'),mktime(23,59,59,date("m"),date("d"),date("Y")));?>"
 				],
 			},
 			"locale": {

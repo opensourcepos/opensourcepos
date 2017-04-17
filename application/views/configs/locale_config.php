@@ -82,7 +82,7 @@
 						'2' => '2',
 						'3' => '3'
 					),
-						$this->config->item('quantity_decimals'), array('class' => 'form-control input-sm'));
+					$this->config->item('quantity_decimals'), array('class' => 'form-control input-sm'));
 					?>
 				</div>
 			</div>
@@ -297,6 +297,20 @@
   						'checked'=>$this->config->item('date_or_time_format'))); ?>
   				</div>
   			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_financial_year'), 'financial_year', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_dropdown('financial_year', array(
+						'1' => $this->lang->line('config_financial_year_jan'),
+						'4' => $this->lang->line('config_financial_year_apr'),
+						'7' => $this->lang->line('config_financial_year_jul'),
+						'10' => $this->lang->line('config_financial_year_oct')
+					),
+					$this->config->item('financial_year'), array('class' => 'form-control input-sm'));
+					?>
+				</div>
+			</div>
 
 			<?php echo form_submit(array(
 				'name' => 'submit_form',

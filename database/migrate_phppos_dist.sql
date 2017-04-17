@@ -93,7 +93,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('date_or_time_format',''),
 ('customer_reward_enable',''),
 ('default_origin_tax_code', ''),
-('cash_decimals', '2');
+('cash_decimals', '2'),
+('financial_year','1');
 
 
 -- --------------------------------------------------------

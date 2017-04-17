@@ -211,3 +211,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 
 ALTER TABLE `ospos_people`
   ADD INDEX `email` (`email`);
+
+-- add financial year start into config
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('financial_year','1');
