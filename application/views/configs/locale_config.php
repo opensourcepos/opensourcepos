@@ -303,9 +303,17 @@
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('financial_year', array(
 						'1' => $this->lang->line('config_financial_year_jan'),
+						'2' => $this->lang->line('config_financial_year_feb'),
+						'3' => $this->lang->line('config_financial_year_mar'),
 						'4' => $this->lang->line('config_financial_year_apr'),
+						'5' => $this->lang->line('config_financial_year_may'),
+						'6' => $this->lang->line('config_financial_year_jun'),
 						'7' => $this->lang->line('config_financial_year_jul'),
-						'10' => $this->lang->line('config_financial_year_oct')
+						'8' => $this->lang->line('config_financial_year_aug'),
+						'9' => $this->lang->line('config_financial_year_sep'),
+						'10' => $this->lang->line('config_financial_year_oct'),
+						'11' => $this->lang->line('config_financial_year_nov'),
+						'12' => $this->lang->line('config_financial_year_dec')
 					),
 					$this->config->item('financial_year'), array('class' => 'form-control input-sm'));
 					?>
