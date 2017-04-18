@@ -23,3 +23,5 @@ $lang["module_sales"] = "Satış";
 $lang["module_sales_desc"] = "Satış ve iade";
 $lang["module_suppliers"] = "Sağlayıcılar";
 $lang["module_suppliers_desc"] = "Ekleme, değiştirme, silme ve arama";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

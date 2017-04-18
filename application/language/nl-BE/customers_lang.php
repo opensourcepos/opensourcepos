@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "klant(en) verwijderd";
 $lang["customers_successful_adding"] = "Klant succesvol aangemaakt";
 $lang["customers_successful_deleted"] = "Er werd(en)";
 $lang["customers_successful_updating"] = "Wijzigingen klantgegevens bewaard voor ";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "Belastbaar";
 $lang["customers_total"] = "Totaal";
 $lang["customers_update"] = "Bewerk Klant";

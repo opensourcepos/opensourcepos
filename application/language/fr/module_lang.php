@@ -23,3 +23,5 @@ $lang["module_sales"] = "Ventes";
 $lang["module_sales_desc"] = "Ventes et chiffre d'affaire";
 $lang["module_suppliers"] = "Fournisseurs";
 $lang["module_suppliers_desc"] = "Ajouter, Éditer, Supprimer, et Chercher des fournisseurs";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

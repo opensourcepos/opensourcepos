@@ -23,3 +23,5 @@ $lang["module_sales"] = "Продажа";
 $lang["module_sales_desc"] = "Процесс продажи и возвращается";
 $lang["module_suppliers"] = "Поставщики";
 $lang["module_suppliers_desc"] = "Добавление, обновление, удаление и поиск suppliers";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

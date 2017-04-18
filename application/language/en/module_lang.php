@@ -25,5 +25,3 @@ $lang["module_suppliers"] = "Suppliers";
 $lang["module_suppliers_desc"] = "Add, Update, Delete, and Search suppliers";
 $lang["module_taxes"] = "Taxes";
 $lang["module_taxes_desc"] = "Configure sales taxes";
-$lang["module_messages"] = "Messages";
-$lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";

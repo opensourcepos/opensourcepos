@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "عميل/عملاء";
 $lang["customers_successful_adding"] = "لقد أضفت عميل بنجاح";
 $lang["customers_successful_deleted"] = "لقد قمت بالحذف بنجاح";
 $lang["customers_successful_updating"] = "لقد قمت بتحديث بيانات العميل بنجاح";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "خاضع للضريبة";
 $lang["customers_total"] = "المجموع";
 $lang["customers_update"] = "تحديث بيانات عميل";

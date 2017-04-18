@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "Kunde(n)";
 $lang["customers_successful_adding"] = "Kunde erfolgreich hinzugefügt";
 $lang["customers_successful_deleted"] = "Löschung erfolgreich";
 $lang["customers_successful_updating"] = "Änderung erfolgreich";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "Steuerpflichtig";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Kunde ändern";

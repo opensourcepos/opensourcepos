@@ -23,3 +23,5 @@ $lang["module_sales"] = "المبيعات";
 $lang["module_sales_desc"] = "معالجة المبيعات و المرتجعات";
 $lang["module_suppliers"] = "الموردين";
 $lang["module_suppliers_desc"] = "إضافة، تحديث ، بحث و حذف مجموعات الموردين";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

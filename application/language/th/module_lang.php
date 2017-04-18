@@ -23,3 +23,5 @@ $lang["module_sales"] = "งานขาย";
 $lang["module_sales_desc"] = "งานขาย และ รับคืน";
 $lang["module_suppliers"] = "ผู้ผลิต";
 $lang["module_suppliers_desc"] = "เพิ่ม, อัพเดท, ลบ, และค้นหา ผู้ผลิต";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

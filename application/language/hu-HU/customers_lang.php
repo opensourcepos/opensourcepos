@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "vevő(k)";
 $lang["customers_successful_adding"] = "Sikeresen hozzáadott egy vevőt";
 $lang["customers_successful_deleted"] = "Sikeres törlés.";
 $lang["customers_successful_updating"] = "Sikeresen módosította a vevőt";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "Adóköteles";
 $lang["customers_total"] = "Összesen";
 $lang["customers_update"] = "Vevő módosítása";

@@ -23,3 +23,5 @@ $lang["module_sales"] = "Vendas";
 $lang["module_sales_desc"] = "Processar vendas e devoluções";
 $lang["module_suppliers"] = "Fornecedores";
 $lang["module_suppliers_desc"] = "Adicionar,  atualizar,  excluir e Pesquisar fornecedores";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

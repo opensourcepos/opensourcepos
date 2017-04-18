@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "müşteri";
 $lang["customers_successful_adding"] = "Müşteri eklendi";
 $lang["customers_successful_deleted"] = "Silme başarılı";
 $lang["customers_successful_updating"] = "Müşteri güncellendi";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "Vergilendirilebilir";
 $lang["customers_total"] = "Toplam";
 $lang["customers_update"] = "Müşteri Güncelle";

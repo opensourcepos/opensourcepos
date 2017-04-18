@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "ลูกค้า";
 $lang["customers_successful_adding"] = "คุณได้ทำการเพิ่มลูกค้าเรียบร้อยแล้ว";
 $lang["customers_successful_deleted"] = "คุณได้ทำการลบข้อมูลเรียบร้อยแล้ว";
 $lang["customers_successful_updating"] = "คุณได้ทำการแก้ไขข้อมูลลูกค้าเรียบร้อยแล้ว";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "ต้องเสียภาษี";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "แก้ไขข้อมูลลูกค้า";

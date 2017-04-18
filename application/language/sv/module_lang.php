@@ -23,3 +23,5 @@ $lang["module_sales"] = "";
 $lang["module_sales_desc"] = "";
 $lang["module_suppliers"] = "";
 $lang["module_suppliers_desc"] = "";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

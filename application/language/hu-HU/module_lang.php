@@ -23,3 +23,5 @@ $lang["module_sales"] = "Értékesítés";
 $lang["module_sales_desc"] = "Termékek értékesítése és visszavétele";
 $lang["module_suppliers"] = "Beszállítók";
 $lang["module_suppliers_desc"] = "Beszállítók hozzáadása, módosítása, törlése és keresése";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

@@ -23,3 +23,5 @@ $lang["module_sales"] = "Verkauf";
 $lang["module_sales_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
 $lang["module_suppliers"] = "Lieferanten";
 $lang["module_suppliers_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
+$lang["module_taxes"] = "";
+$lang["module_taxes_desc"] = "";

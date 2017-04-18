@@ -20,6 +20,7 @@ $lang["customers_one_or_multiple"] = "cliente(s)";
 $lang["customers_successful_adding"] = "Has agregado satisfactoriamente el cliente";
 $lang["customers_successful_deleted"] = "Has borrado satisfactoriamente a";
 $lang["customers_successful_updating"] = "No se ha podido agregar el cliente";
+$lang["customers_tax_code"] = "";
 $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";
