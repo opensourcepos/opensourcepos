@@ -35,6 +35,10 @@ $hook['post_controller'] = array(
 
 $hook['pre_system'] = function() {
     $config_path = APPPATH . 'config/';
-    $dotenv = new Dotenv\Dotenv($config_path);
-    $dotenv->load();
+	try {
+		$dotenv = new Dotenv\Dotenv($config_path);
+		$dotenv->overload();
+	} catch(Exception $e) {
+		// continue, .env file not present
+	}
 };

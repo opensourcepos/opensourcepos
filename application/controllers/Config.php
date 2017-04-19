@@ -664,14 +664,7 @@ class Config extends Secure_Controller
 			$this->config->set_item('encryption_key', $key);
 
 			// replace the empty placeholder with a real randomly generated encryption key
-			if($encryption_key == '')
-			{
-				$config = str_replace("['encryption_key'] = '';", "['encryption_key'] = '" . $key . "';", $config);
-			}
-			else
-			{
-				$config = str_replace("['encryption_key'] = 'YOUR KEY';", "['encryption_key'] = '" . $key . "';", $config);				
-			}
+			$config = preg_replace("/(.*encryption_key.*)('');/", "$1'$key';", $config);
 
 			$result = FALSE;
 

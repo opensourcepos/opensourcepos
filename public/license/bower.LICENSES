@@ -71,17 +71,17 @@
         "licenses": "UNKNOWN",
         "homepage": "https://github.com/malsup/form"
     },
-    "js-cookie@2.1.4": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/js-cookie/js-cookie"
-    },
     "jspdf@1.0.272": {
         "licenses": [
             "MIT"
         ],
         "homepage": "https://github.com/mrrio/jspdf"
+    },
+    "js-cookie@2.1.4": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/js-cookie/js-cookie"
     },
     "moment@2.18.1": {
         "licenses": [
@@ -95,19 +95,19 @@
         ],
         "homepage": "https://github.com/hhurz/tableExport.jquery.plugin"
     },
-    "bootstrap-daterangepicker@2.1.25": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
-        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
-    },
     "bootstrap@3.3.7": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://getbootstrap.com",
         "repository": "git+https://github.com/twbs/bootstrap"
+    },
+    "bootstrap-daterangepicker@2.1.25": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
+        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
     },
     "html2canvas@0.4.1": {
         "licenses": [

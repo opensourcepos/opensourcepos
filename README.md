@@ -81,15 +81,14 @@ Local install
 1. Create/locate a new mysql database to install open source point of sale into
 2. Execute the file database/database.sql to create the tables needed
 3. unzip and upload Open Source Point of Sale files to web server
-4. Copy application/config/.env.example to application/config/.env
-5. Modify database settings in application/config/.env to connect to your database
-6. Modify encryption key in application/config/.env with your own
-7. Go to your point of sale install public dir via the browser
-8. LOGIN using
+4. Modify application/config/database.php and modify credentials if needed to connect to your database
+5. Modify application/config/config.php encryption key with your own
+6. Go to your point of sale install public dir via the browser
+7. LOGIN using
   * username: admin 
   * password: pointofsale
-9. Enjoy
-10. Oops an issue? Please read the FAQ first thing :-)
+8. Enjoy
+9. Oops an issue? Please read the FAQ and check the issue list on github. PHP display_errors is disabled by default. Create a application/config/.env file from the .env.example to enable it in a development environment. 
 
 Local install using Docker
 --------------------------

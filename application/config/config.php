@@ -511,6 +511,7 @@ $config['csrf_exclude_uris'] = array();
 */
 $config['compress_output'] = FALSE;
 
+
 /*
 |--------------------------------------------------------------------------
 | Master Time Reference
