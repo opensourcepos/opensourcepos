@@ -303,6 +303,7 @@ class Sale extends CI_Model
 			}
 			else
 			{
+				$this->db->where('DATE(sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
 				$this->db->group_start();
 					// customer last name
 					$this->db->like('customer_p.last_name', $search);
