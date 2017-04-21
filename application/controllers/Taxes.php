@@ -141,7 +141,7 @@ class Taxes extends Secure_Controller
 	{
 		$entered_tax_code = $this->xss_clean($this->input->post('tax_code'));
 		$tax_code_data = array(
-			'tax_code' => $this->input->post('tax_code'),
+			'tax_code' => strtoupper($this->input->post('tax_code')),
 			'tax_code_name' => $this->input->post('tax_code_name'),
 			'tax_code_type' => $this->input->post('tax_code_type'),
 			'city' => $this->input->post('city'),
