@@ -121,14 +121,14 @@ class Customers extends Persons
 			'taxable' => $this->input->post('taxable') != NULL
 		);
 
-		$x = $this->input->post('sales_tax_code');
-		if(!isset($x))
+		$tax_code = $this->input->post('sales_tax_code');
+		if(!isset($tax_code))
 		{
 			$customer_data['sales_tax_code'] = '';
 		}
 		else
 		{
-			$customer_data['sales_tax_code'] = $this->input->post('sales_tax_code');
+			$customer_data['sales_tax_code'] = $tax_code;
 		}
 
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
