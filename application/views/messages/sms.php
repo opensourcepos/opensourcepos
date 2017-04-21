@@ -1,4 +1,8 @@
 <?php $this->load->view("partial/header"); ?>
+
+<script type="text/javascript">
+	dialog_support.init("a.modal-dlg");
+</script>
 	      
 <div class="jumbotron" style="max-width: 60%; margin:auto">
 	<?php echo form_open("messages/send/", array('id'=>'send_sms_form', 'enctype'=>'multipart/form-data', 'method'=>'post', 'class'=>'form-horizontal')); ?>

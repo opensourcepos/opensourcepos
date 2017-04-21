@@ -1,5 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
 
+<script type="text/javascript">
+    dialog_support.init("a.modal-dlg");
+</script>
+
 <ul class="nav nav-tabs" data-tabs="tabs">
     <li class="active" role="presentation">
         <a data-toggle="tab" href="#info_tab" title="<?php echo $this->lang->line('config_info_configuration'); ?>"><?php echo $this->lang->line('config_info'); ?></a>
