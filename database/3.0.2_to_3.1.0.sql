@@ -224,3 +224,7 @@ ALTER TABLE `ospos_giftcards` CHANGE `giftcard_number` `giftcard_number` VARCHAR
 -- add support for select between gitcard number series or random
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('giftcard_number', 'series');
+
+-- add option to print company name in receipt
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('receipt_show_company_name', '1');

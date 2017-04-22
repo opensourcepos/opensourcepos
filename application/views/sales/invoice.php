@@ -58,7 +58,8 @@ $(document).ready(function()
 		</div>
 
         <div id="logo">
-	        <?php if($this->Appconfig->get('company_logo') != '') 
+	        <?php
+			if($this->Appconfig->get('company_logo') != '') 
 	        { 
 			?>
 				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
@@ -66,7 +67,14 @@ $(document).ready(function()
 			}
 			?>
 			<div>&nbsp</div>
-			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+			<?php
+			if ($this->Appconfig->get('receipt_show_company_name')) 
+		    { 
+		    ?>
+				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+			<?php
+			}
+			?>
         </div>
 	</div>
 

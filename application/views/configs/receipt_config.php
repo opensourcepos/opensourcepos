@@ -17,6 +17,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">	
+				<?php echo form_label($this->lang->line('config_receipt_show_company_name'), 'receipt_show_company_name', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'receipt_show_company_name',
+						'value' => 'receipt_show_company_name',
+						'id' => 'receipt_show_company_name',
+						'checked'=>$this->config->item('receipt_show_company_name'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_receipt_show_taxes'), 'receipt_show_taxes', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -114,7 +125,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">    
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_print_top_margin'), 'print_top_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -131,7 +142,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">    
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_print_left_margin'), 'print_left_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -148,7 +159,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">    
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_print_bottom_margin'), 'print_bottom_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -165,7 +176,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">    
+			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_print_right_margin'), 'print_right_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -203,7 +214,7 @@ $(document).ready(function()
 			var $this = $(this)
 			$(printers).each(function(key, value) 
 			{   
-			     $this.append($('<option>', { value : value }).text(value));
+				 $this.append($('<option>', { value : value }).text(value));
   	 		});
 			$("option[value='" + localStorage[$(this).attr('id')] + "']", this).prop('selected', true);
 			$(this).change(function()
@@ -241,48 +252,48 @@ $(document).ready(function()
 		rules:
 		{
 			print_top_margin:
-    		{
-    			required:true,
-    			number:true
-    		},
-    		print_left_margin:
-    		{
-    			required:true,
-    			number:true
-    		},
-    		print_bottom_margin:
-    		{
-    			required:true,
-    			number:true
-    		},
-    		print_right_margin:
-    		{
-    			required:true,
-    			number:true
-    		}    		
+			{
+				required:true,
+				number:true
+			},
+			print_left_margin:
+			{
+				required:true,
+				number:true
+			},
+			print_bottom_margin:
+			{
+				required:true,
+				number:true
+			},
+			print_right_margin:
+			{
+				required:true,
+				number:true
+			}			
    		},
 
 		messages: 
 		{
 			print_top_margin:
 			{
-	            required:"<?php echo $this->lang->line('config_print_top_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_top_margin_number'); ?>"
+				required:"<?php echo $this->lang->line('config_print_top_margin_required'); ?>",
+				number:"<?php echo $this->lang->line('config_print_top_margin_number'); ?>"
 			},
 			print_left_margin:
 			{
-	            required:"<?php echo $this->lang->line('config_print_left_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_left_margin_number'); ?>"
+				required:"<?php echo $this->lang->line('config_print_left_margin_required'); ?>",
+				number:"<?php echo $this->lang->line('config_print_left_margin_number'); ?>"
 			},
 			print_bottom_margin:
 			{
-	            required:"<?php echo $this->lang->line('config_print_bottom_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_bottom_margin_number'); ?>"
+				required:"<?php echo $this->lang->line('config_print_bottom_margin_required'); ?>",
+				number:"<?php echo $this->lang->line('config_print_bottom_margin_number'); ?>"
 			},
 			print_right_margin:
 			{
-	            required:"<?php echo $this->lang->line('config_print_right_margin_required'); ?>",
-	            number:"<?php echo $this->lang->line('config_print_right_margin_number'); ?>"
+				required:"<?php echo $this->lang->line('config_print_right_margin_required'); ?>",
+				number:"<?php echo $this->lang->line('config_print_right_margin_number'); ?>"
 			}
 		}
 	}));

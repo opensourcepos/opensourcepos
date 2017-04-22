@@ -194,6 +194,7 @@ $lang["config_receipt_default"] = "Default";
 $lang["config_receipt_info"] = "Receipt Configuration Information";
 $lang["config_receipt_printer"] = "Ticket Printer";
 $lang["config_receipt_short"] = "Short";
+$lang["config_receipt_show_company_name"] = "Show Company Name";
 $lang["config_receipt_show_description"] = "Show Description";
 $lang["config_receipt_show_serialnumber"] = "Show Serial Number";
 $lang["config_receipt_show_taxes"] = "Show Taxes";

@@ -41,6 +41,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_page_width', '100'),      
 ('barcode_page_cellspacing', '20'),
 ('barcode_generate_if_empty', '0'),
+('receipt_show_company_name', '1'),
 ('receipt_show_taxes', '0'),
 ('receipt_show_total_discount', '1'),
 ('receipt_show_description', '1'),
@@ -94,7 +95,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_reward_enable',''),
 ('default_origin_tax_code', ''),
 ('cash_decimals', '2'),
-('financial_year','1'),
+('financial_year', '1'),
 ('giftcard_number', 'series');
 
 
