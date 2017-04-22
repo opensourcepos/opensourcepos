@@ -89,9 +89,9 @@ class Customer extends Person
 	}
 	
 	/*
-	Gets total about a particular customer
+	Gets stats about a particular customer
 	*/
-	public function get_totals($customer_id)
+	public function get_stats($customer_id)
 	{
 		$this->db->select('SUM(payment_amount) AS total');
 		$this->db->from('sales');

@@ -829,21 +829,8 @@ class Sales extends Secure_Controller
 			{
 				$cust_stats = $this->Customer->get_stats($customer_id);
 				$data['customer_total'] = empty($cust_stats) ? 0 : $cust_stats->total;
-
-				// retrieve the info from Mailchimp only if there is an email address assigned
-				if(!empty($customer_info->email))
-				{
-					$this->load->library('mailchimp_lib');
-
-					$list_id = $this->encryption->decrypt($this->config->item('mailchimp_list_id'));
-
-					// collect mailchimp customer info
-					if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($list_id, $customer_info->email)) !== FALSE)
-					{
-						$data['mailchimp_info'] = $this->xss_clean($mailchimp_info);
-					}
-				}
 			}
+
 			$data['customer_info'] = implode("\n", array(
 				$data['customer'],
 				$data['customer_address'],
