@@ -94,9 +94,9 @@ class Config extends Secure_Controller
 							$license[$i]['text'] .= 'component: ' . $key1 . "\n";
 
 							foreach($val1 as $key2 => $val2)
-							{								
+							{
 								if(is_array($val2))
-								{	
+								{
 									$license[$i]['text'] .= $key2 . ': ';
 
 									foreach($val2 as $key3 => $val3)
@@ -163,13 +163,16 @@ class Config extends Secure_Controller
 					$license[$i]['text'] .= "\n";
 				}
 			}
-			
+
 			$license[$i]['text'] = $this->xss_clean($license[$i]['text']);
 		}
-		
+
 		return $license;
 	}
 
+	/*
+	* This function loads all the available themes in the dist/bootswatch directory
+	*/
 	private function _themes()
 	{
 		$themes = array();
@@ -181,7 +184,8 @@ class Config extends Secure_Controller
 		{
 			if($dirinfo->isDir() && !$dirinfo->isDot() && $dirinfo->getFileName() != 'fonts')
 			{
-				$themes[$dirinfo->getFileName()] = $dirinfo->getFileName();
+				$file = $this->xss_clean($dirinfo->getFileName());
+				$themes[$file] = $file;
 			}
 		}
 
@@ -189,7 +193,7 @@ class Config extends Secure_Controller
 
 		return $themes;
 	}
-	
+
 	public function index()
 	{
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
@@ -202,16 +206,30 @@ class Config extends Secure_Controller
 		$data['rounding_options'] = Rounding_code::get_rounding_options();
 
 		$data = $this->xss_clean($data);
-		
+
 		// load all the license statements, they are already XSS cleaned in the private function
 		$data['licenses'] = $this->_licenses();
+		// load all the themes, already XSS cleaned in the private function
 		$data['themes'] = $this->_themes();
 
-		$this->_check_encryption();
+		$data['mailchimp'] = array();
+		if($this->_check_encryption())
+		{
+			$data['mailchimp']['api_key'] = $this->encryption->decrypt($this->config->item('mailchimp_api_key'));
+			$data['mailchimp']['list_id'] = $this->encryption->decrypt($this->config->item('mailchimp_list_id'));
+		}
+		else
+		{
+			$data['mailchimp']['api_key'] = '';
+			$data['mailchimp']['list_id'] = '';		
+		}
+
+		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
+		$data['mailchimp']['lists'] = $this->_mailchimp();
 
 		$this->load->view("configs/manage", $data);
 	}
-		
+
 	public function save_info()
 	{
 		$upload_success = $this->_handle_logo_upload();
@@ -226,7 +244,7 @@ class Config extends Secure_Controller
 			'website' => $this->input->post('website'),	
 			'return_policy' => $this->input->post('return_policy')
 		);
-		
+
 		if (!empty($upload_data['orig_name']))
 		{
 			// XSS file image sanity check
@@ -235,15 +253,18 @@ class Config extends Secure_Controller
 				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
 			}
 		}
-		
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $upload_success && $result ? TRUE : FALSE;
 		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
 		$message = $upload_success ? $message : strip_tags($this->upload->display_errors());
 
-		echo json_encode(array('success' => $success, 'message' => $message));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $message
+		));
 	}
-		
+
 	public function save_general()
 	{
 		$batch_save_data = array(
@@ -273,11 +294,14 @@ class Config extends Secure_Controller
 			'statistics' => $this->input->post('statistics') != NULL,
 			'giftcard_number' => $this->input->post('giftcard_number'),
 		);
-		
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function check_number_locale()
@@ -321,11 +345,14 @@ class Config extends Secure_Controller
 			'cash_rounding_code' => $this->input->post('cash_rounding_code'),
 			'financial_year' => $this->input->post('financial_year')
 		);
-	
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function save_email()
@@ -351,7 +378,10 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function save_message()
@@ -373,7 +403,75 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
+	}
+
+	/*
+	* This function fetches all the available lists from Mailchimp for the given API key
+	*/
+	private function _mailchimp($api_key = '')
+	{
+		$this->load->library('mailchimp_lib', array('api_key' => $api_key));
+
+		$result = array();
+
+		if(($lists = $this->mailchimp_lib->getLists()) !== FALSE)
+		{
+			if(is_array($lists) && !empty($lists['lists']) && is_array($lists['lists']))
+			{
+				foreach($lists['lists'] as $list)
+				{
+					$list = $this->xss_clean($list);
+					$result[$list['id']] = $list['name'] . ' [' . $list['stats']['member_count'] . ']';
+				}
+			}
+		}
+		
+		return $result;
+	}
+
+	/*
+	AJAX call from mailchimp config form to fetch the Mailchimp lists when a valid API key is inserted
+	*/
+	public function ajax_check_mailchimp_api_key()
+	{	
+		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
+		$lists = $this->_mailchimp($this->input->post('mailchimp_api_key'));
+		$success = count($lists) > 0 ? TRUE : FALSE;
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_mailchimp_key_' . ($success ? '' : 'un') . 'successfully'),
+			'mailchimp_lists' => $lists
+		));
+	}
+
+	public function save_mailchimp()
+	{
+		$api_key = '';
+		$list_id = '';
+
+		if($this->_check_encryption())
+		{
+			$api_key = $this->encryption->encrypt($this->input->post('mailchimp_api_key'));
+			$list_id = $this->encryption->encrypt($this->input->post('mailchimp_list_id'));
+		}
+
+		$batch_save_data = array(
+			'mailchimp_api_key' => $api_key,
+			'mailchimp_list_id' => $list_id
+		);
+	
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 	
 	public function stock_locations() 
@@ -535,7 +633,10 @@ class Config extends Secure_Controller
 		
 		$success = $this->db->trans_status();
 		
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function save_barcode()
@@ -560,7 +661,10 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 		
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function save_receipt()
@@ -583,7 +687,10 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function save_invoice()
@@ -618,7 +725,10 @@ class Config extends Secure_Controller
 			}
 		}
 
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
 	public function remove_logo()
@@ -681,7 +791,7 @@ class Config extends Secure_Controller
 				// Write the file
 				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;
 			}
-			
+
 			fclose($handle);
 
 			// Chmod the file

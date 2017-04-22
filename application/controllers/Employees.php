@@ -8,14 +8,7 @@ class Employees extends Persons
 	{
 		parent::__construct('employees');
 	}
-	
-	public function index()
-	{
-		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
 
-		$this->load->view('people/manage', $data);
-	}
-	
 	/*
 	Returns employee table data rows. This will be called with AJAX.
 	*/

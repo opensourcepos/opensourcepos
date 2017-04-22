@@ -25,6 +25,7 @@ $lang["sales_customer_discount"] = "Discount";
 $lang["sales_customer_email"] = "Email";
 $lang["sales_customer_location"] = "Location";
 $lang["sales_customer_total"] = "Total";
+$lang["sales_customer_mailchimp_status"] = "Mailchimp status";
 $lang["sales_date"] = "Sale Date";
 $lang["sales_date_range"] = "Date Range";
 $lang["sales_date_required"] = "A correct date needs to be filled in";

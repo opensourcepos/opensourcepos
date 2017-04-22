@@ -4,18 +4,19 @@ require_once("Persons.php");
 
 class Customers extends Persons
 {
+	private $_list_id;
+
 	public function __construct()
 	{
 		parent::__construct('customers');
-	}
-	
-	public function index()
-	{
-		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
 
-		$this->load->view('people/manage', $data);
+		$this->load->library('mailchimp_lib');
+
+		$CI =& get_instance();
+
+		$this->_list_id = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_list_id'));
 	}
-	
+
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
@@ -72,7 +73,6 @@ class Customers extends Persons
 		}
 		$data['person_info'] = $info;
 		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' . $this->Tax->get_info($info->sales_tax_code)->tax_code_name;
-		$data['total'] = $this->xss_clean($this->Customer->get_stats($customer_id)->total);
 		$packages = array('' => $this->lang->line('items_none'));
 		foreach($this->Customer_rewards->get_all()->result_array() as $row)
 		{
@@ -90,6 +90,72 @@ class Customers extends Persons
 			$data['customer_sales_tax_enabled'] = FALSE;
 		}
 
+		// show the total amount the customer spent so far together with min, max and average values
+		$stats = $this->Customer->get_stats($customer_id);
+		if(!empty($stats))
+		{
+			foreach(get_object_vars($stats) as $property => $value)
+			{
+				$info->$property = $this->xss_clean($value);
+			}
+			$data['stats'] = $stats;
+		}
+
+		// retrieve the info from Mailchimp only if there is an email address assigned
+		if(!empty($info->email))
+		{
+			// collect mailchimp customer info
+			if(($mailchimp_info = $this->mailchimp_lib->getMemberInfo($this->_list_id, $info->email)) !== FALSE)
+			{
+				$data['mailchimp_info'] = $this->xss_clean($mailchimp_info);
+
+				// collect customer mailchimp emails activities (stats)
+				if(($activities = $this->mailchimp_lib->getMemberActivity($this->_list_id, $info->email)) !== FALSE)
+				{
+					if(array_key_exists('activity', $activities))
+					{
+						$open = 0;
+						$unopen = 0;
+						$click = 0;
+						$total = 0;
+						$lastopen = '';
+
+						foreach($activities['activity'] as $activity)
+						{
+							if($activity['action'] == 'sent')
+							{
+								++$unopen;
+							}
+							elseif($activity['action'] == 'open')
+							{
+								if(empty($lastopen))
+								{
+									$lastopen = substr($activity['timestamp'], 0, 10);
+								}
+								++$open;
+							}
+							elseif($activity['action'] == 'click')
+							{
+								if(empty($lastopen))
+								{
+									$lastopen = substr($activity['timestamp'], 0, 10);
+								}
+								++$click;
+							}
+							
+							++$total;
+						}
+
+						$data['mailchimp_activity']['total'] = $total;
+						$data['mailchimp_activity']['open'] = $open;
+						$data['mailchimp_activity']['unopen'] = $unopen;
+						$data['mailchimp_activity']['click'] = $click;
+						$data['mailchimp_activity']['lastopen'] = $lastopen;
+					}
+				}
+			}
+		}
+		
 		$this->load->view("customers/form", $data);
 	}
 	
@@ -98,11 +164,15 @@ class Customers extends Persons
 	*/
 	public function save($customer_id = -1)
 	{
+		$first_name = $this->xss_clean($this->input->post('first_name'));
+		$last_name = $this->xss_clean($this->input->post('last_name'));
+		$email = $this->xss_clean(strtolower($this->input->post('email')));
+		
 		$person_data = array(
-			'first_name' => $this->input->post('first_name'),
-			'last_name' => $this->input->post('last_name'),
+			'first_name' => $first_name,
+			'last_name' => $last_name,
 			'gender' => $this->input->post('gender'),
-			'email' => $this->input->post('email'),
+			'email' => $email,
 			'phone_number' => $this->input->post('phone_number'),
 			'address_1' => $this->input->post('address_1'),
 			'address_2' => $this->input->post('address_2'),
@@ -133,33 +203,50 @@ class Customers extends Persons
 
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
 		{
-			$person_data = $this->xss_clean($person_data);
-			$customer_data = $this->xss_clean($customer_data);
-			
-			//New customer
+			// save customer to Mailchimp selected list
+			$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $email, $first_name, $last_name, $this->input->post('mailchimp_status'), array('vip' => $this->input->post('mailchimp_vip') != NULL));
+
+			// New customer
 			if($customer_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_adding').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_data['person_id']));
+				echo json_encode(array(
+								'success' => TRUE,
+								'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
+								'id' => $this->xss_clean($customer_data['person_id'])));
 			}
-			else //Existing customer
+			else // Existing customer
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_updating').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $customer_id));
+				echo json_encode(array(
+								'success' => TRUE,
+								'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
+								'id' => $customer_id));
 			}
 		}
-		else//failure
+		else // Failure
 		{
-			$person_data = $this->xss_clean($person_data);
-
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_error_adding_updating').' '.
-							$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+			echo json_encode(array(
+							'success' => FALSE,
+							'message' => $this->lang->line('customers_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
+							'id' => -1));
 		}
 	}
-	
-	public function check_account_number()
+
+	/*
+	AJAX call to verify if an email address already exists
+	*/
+	public function ajax_check_email()
 	{
-		$exists = $this->Customer->account_number_exists($this->input->post('account_number'), $this->input->post('person_id'));
+		$exists = $this->Customer->check_email_exists(strtolower($this->input->post('email')), $this->input->post('person_id'));
+
+		echo !$exists ? 'true' : 'false';
+	}
+
+	/*
+	AJAX call to verify if an account number already exists
+	*/
+	public function ajax_check_account_number()
+	{
+		$exists = $this->Customer->check_account_number_exists($this->input->post('account_number'), $this->input->post('person_id'));
 
 		echo !$exists ? 'true' : 'false';
 	}
@@ -169,12 +256,19 @@ class Customers extends Persons
 	*/
 	public function delete()
 	{
-		$customers_to_delete = $this->xss_clean($this->input->post('ids'));
+		$customers_to_delete = $this->input->post('ids');
+		$customers_info = $this->Customer->get_multiple_info($customers_to_delete);
 
 		if($this->Customer->delete_list($customers_to_delete))
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_successful_deleted').' '.
-							count($customers_to_delete).' '.$this->lang->line('customers_one_or_multiple')));
+			foreach($customers_info->result() as $info)
+			{
+				// remove customer from Mailchimp selected list
+				$this->mailchimp_lib->removeMember($this->_list_id, $info->email);
+			}
+
+			echo json_encode(array('success' => TRUE,
+				'message' => $this->lang->line('customers_successful_deleted') . ' ' . count($customers_to_delete) . ' ' . $this->lang->line('customers_one_or_multiple')));
 		}
 		else
 		{
@@ -220,11 +314,12 @@ class Customers extends Persons
 
 					if(sizeof($data) >= 15)
 					{
+						$email = strtolower($data[3]);
 						$person_data = array(
 							'first_name'	=> $data[0],
 							'last_name'		=> $data[1],
 							'gender'		=> $data[2],
-							'email'			=> $data[3],
+							'email'			=> $email,
 							'phone_number'	=> $data[4],
 							'address_1'		=> $data[5],
 							'address_2'		=> $data[6],
@@ -240,13 +335,15 @@ class Customers extends Persons
 							'discount_percent'	=> $data[14],
 							'taxable'			=> $data[15] == '' ? 0 : 1
 						);
-						
 						$account_number = $data[13];
-						$invalidated = FALSE;
+
+						// don't duplicate people with same email
+						$invalidated = $this->Customer->check_email_exists($email);
+
 						if($account_number != '') 
 						{
 							$customer_data['account_number'] = $account_number;
-							$invalidated = $this->Customer->account_number_exists($account_number);
+							$invalidated &= $this->Customer->check_account_number_exists($account_number);
 						}
 					}
 					else 
@@ -254,7 +351,16 @@ class Customers extends Persons
 						$invalidated = TRUE;
 					}
 
-					if($invalidated || !$this->Customer->save_customer($person_data, $customer_data))
+					if($invalidated)
+					{	
+						$failCodes[] = $i;
+					}
+					elseif($this->Customer->save_customer($person_data, $customer_data))
+					{
+						// save customer to Mailchimp selected list
+						$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
+					}
+					else
 					{	
 						$failCodes[] = $i;
 					}

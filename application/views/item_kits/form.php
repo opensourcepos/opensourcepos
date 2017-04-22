@@ -236,13 +236,14 @@ $(document).ready(function()
                 },
                 dataType:'json'
             });
-
         },
+
         rules:
             {
                 name:"required",
                 category:"required"
             },
+
         messages:
             {
                 name:"<?php echo $this->lang->line('items_name_required'); ?>",

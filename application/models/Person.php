@@ -72,7 +72,7 @@ class Person extends CI_Model
 
 		return $this->db->get();		
 	}
-	
+
 	/*
 	Inserts or updates a person
 	*/

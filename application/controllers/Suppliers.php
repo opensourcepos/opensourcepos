@@ -8,14 +8,14 @@ class Suppliers extends Persons
 	{
 		parent::__construct('suppliers');
 	}
-	
+
 	public function index()
 	{
 		$data['table_headers'] = $this->xss_clean(get_suppliers_manage_table_headers());
 
 		$this->load->view('people/manage', $data);
 	}
-	
+
 	/*
 	Gets one row for a supplier manage table. This is called using AJAX to update one row.
 	*/

@@ -8,7 +8,14 @@ abstract class Persons extends Secure_Controller
 	{
 		parent::__construct($module_id);		
 	}
-	
+
+	public function index()
+	{
+		$data['table_headers'] = $this->xss_clean(get_people_manage_table_headers());
+
+		$this->load->view('people/manage', $data);
+	}
+
 	/*
 	 Gives search suggestions based on what is being searched for
 	*/
@@ -18,7 +25,7 @@ abstract class Persons extends Secure_Controller
 
 		echo json_encode($suggestions);
 	}
-		
+
 	/*
 	Gets one row for a person manage table. This is called using AJAX to update one row.
 	*/

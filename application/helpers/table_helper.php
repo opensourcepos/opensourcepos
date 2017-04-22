@@ -177,7 +177,7 @@ function get_people_manage_table_headers()
 function get_person_data_row($person, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'people.person_id' => $person->person_id,
@@ -217,7 +217,7 @@ function get_suppliers_manage_table_headers()
 function get_supplier_data_row($supplier, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'people.person_id' => $supplier->person_id,
@@ -398,7 +398,7 @@ function get_item_kits_manage_table_headers()
 function get_item_kit_data_row($item_kit, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'item_kit_id' => $item_kit->item_kit_id,

@@ -311,6 +311,17 @@ if (isset($success))
 					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_total"); ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
 				</tr>
+				<?php
+				if(!empty($mailchimp_info))
+				{
+				?>
+					<tr>
+						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_mailchimp_status"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $mailchimp_info['status']; ?></th>
+					</tr>
+				<?php
+				}
+				?>
 			</table>
 
 			<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),

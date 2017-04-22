@@ -6,7 +6,7 @@
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_theme'), 'theme', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-3'>
+				<div class='col-xs-2'>
 					<?php echo form_dropdown('theme', $themes, $this->config->item('theme'), array('class' => 'form-control input-sm')); ?>
 				</div>
 			</div>
