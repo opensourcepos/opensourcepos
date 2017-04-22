@@ -12,8 +12,7 @@ class Giftcards extends Secure_Controller
 	public function index()
 	{
 		$data['table_headers'] = $this->xss_clean(get_giftcards_manage_table_headers());
-		var_dump($this->Giftcard->get_max_number());
-		exit();
+
 		$this->load->view('giftcards/manage', $data);
 	}
 
