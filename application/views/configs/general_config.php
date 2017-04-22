@@ -60,29 +60,29 @@
 				</div>
 			</div>
 
-            <div class="form-group form-group-sm">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_customer_sales_tax_support'), 'customer_sales_tax_support', array('class' => 'control-label col-xs-2')); ?>
-                <div class='col-xs-2'>
+				<div class='col-xs-2'>
 					<?php echo form_checkbox(array(
 						'name' => 'customer_sales_tax_support',
 						'id' => 'customer_sales_tax_support',
 						'value' => 'customer_sales_tax_support',
 						'checked'=>$this->config->item('customer_sales_tax_support'))); ?>
-                </div>
-            </div>
+				</div>
+			</div>
 
-            <div class="form-group form-group-sm">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_default_origin_tax_code'), 'default_origin_tax_code', array('class' => 'control-label col-xs-2')); ?>
-                <div class='col-xs-2'>
+				<div class='col-xs-2'>
 					<?php echo form_input(array(
 						'name' => 'default_origin_tax_code',
 						'id' => 'default_origin_tax_code',
 						'class' => 'form-control input-sm text-uppercase',
 						'value'=>$this->config->item('default_origin_tax_code'))); ?>
-                </div>
-            </div>
+				</div>
+			</div>
 
-            <div class="form-group form-group-sm">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -150,20 +150,20 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-8'>
-                    <label class="radio-inline">
-                        <?php echo form_radio(array(
-                            'name' => 'giftcard_number',
-                            'value' => 'series',
-                            'checked'=>$this->config->item('giftcard_number') === "series")); ?>
-                        <?php echo $this->lang->line('config_giftcard_series'); ?>
-                    </label>
 					<label class="radio-inline">
-                        <?php echo form_radio(array(
-                            'name' => 'giftcard_number',
-                            'value' => 'random',
-                            'checked'=>$this->config->item('giftcard_number') === "random")); ?>
-                        <?php echo $this->lang->line('config_giftcard_random'); ?>
-                    </label>
+						<?php echo form_radio(array(
+							'name' => 'giftcard_number',
+							'value' => 'series',
+							'checked'=>$this->config->item('giftcard_number') === "series")); ?>
+						<?php echo $this->lang->line('config_giftcard_series'); ?>
+					</label>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'giftcard_number',
+							'value' => 'random',
+							'checked'=>$this->config->item('giftcard_number') === "random")); ?>
+						<?php echo $this->lang->line('config_giftcard_random'); ?>
+					</label>
 				</div>
 			</div>
 
@@ -323,24 +323,24 @@ $(document).ready(function()
 
 		rules: 
 		{
-    		default_tax_1_rate:
-    		{
+			default_tax_1_rate:
+			{
 				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-    		},
+			},
 			default_tax2_rate:
 			{
 				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 			},
-    		lines_per_page:
-    		{
-        		required: true,
+			lines_per_page:
+			{
+				required: true,
 				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-    		},
-    		default_sales_discount: 
-        	{
-        		required: true,
+			},
+			default_sales_discount: 
+			{
+				required: true,
 				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-    		}  		
+			}  		
    		},
 
 		messages: 

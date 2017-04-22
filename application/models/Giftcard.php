@@ -279,11 +279,13 @@ class Giftcard extends CI_Model
 	{
 		$value = str_replace('.', 'DE', $value);
 		$random = bin2hex(openssl_random_pseudo_bytes(3));
-		$giftcard_name = (string)$random.'-'.$value;
-		if($this->exists_gitcard_name($giftcard_name)){
+		$giftcard_name = (string)$random . '-' . $value;
+		if($this->exists_gitcard_name($giftcard_name))
+		{
 			$this->generate_unique_giftcard_name($value);
 		}
-		return  strtoupper($giftcard_name);
+
+		return strtoupper($giftcard_name);
 	}
 }
 ?>

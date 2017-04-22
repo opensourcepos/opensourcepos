@@ -94,7 +94,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_reward_enable',''),
 ('default_origin_tax_code', ''),
 ('cash_decimals', '2'),
-('financial_year','1');
+('financial_year','1'),
+('giftcard_number', 'series');
 
 
 -- --------------------------------------------------------
@@ -154,7 +155,7 @@ INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `
 CREATE TABLE `ospos_giftcards` (
   `record_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `giftcard_id` int(11) NOT NULL AUTO_INCREMENT,
-  `giftcard_number` int(10) NOT NULL,
+  `giftcard_number` VARCHAR(255) NULL,
   `value` decimal(15,2) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `person_id` INT(10) DEFAULT NULL,

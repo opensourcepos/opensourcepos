@@ -18,9 +18,10 @@
 		</div>
 
 		<?php 
-		$class = "";
-		if($this->config->item('giftcard_number') == "series"){
-			$class = " required";
+		$class = '';
+		if($this->config->item('giftcard_number') == 'series')
+		{
+			$class = ' required';
 		}
 		?>
 		<div class="form-group form-group-sm">
@@ -75,13 +76,13 @@ $(document).ready(function()
 
 	var autocompleter = $("#person_name").autocomplete({
 		source: '<?php echo site_url("customers/suggest"); ?>',
-    	minChars: 0,
-    	delay: 15, 
-       	cacheLength: 1,
+		minChars: 0,
+		delay: 15, 
+	   	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
 		focus: fill_value
-    });
+	});
 
 	// declare submitHandler as an object.. will be reused
 	var submit_form = function() { 
