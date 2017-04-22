@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Tausendertrennzeichen";
 $lang["config_timezone"] = "Zeitzone";
 $lang["config_top"] = "Top";
 $lang["config_website"] = "Website";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

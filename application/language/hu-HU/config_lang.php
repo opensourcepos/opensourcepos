@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Ezres elválasztó";
 $lang["config_timezone"] = "Időzóna";
 $lang["config_top"] = "Felül";
 $lang["config_website"] = "Weboldal";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

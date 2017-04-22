@@ -195,10 +195,16 @@ class Sales extends Secure_Controller
 	public function add_payment()
 	{
 		$data = array();
-		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
 
 		$payment_type = $this->input->post('payment_type');
-
+		if($payment_type != $this->lang->line('sales_giftcard'))
+		{
+			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
+		}
+		else
+		{
+			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required');
+		}
 		if($this->form_validation->run() == FALSE)
 		{
 			if($payment_type == $this->lang->line('sales_giftcard'))
@@ -242,7 +248,7 @@ class Sales extends Secure_Controller
 			{
 				$customer_id = $this->sale_lib->get_customer();
 				$package_id = $this->Customer->get_info($customer_id)->package_id;
-				if(isset($package_id) && $package_id!=NULL)
+				if(!empty($package_id))
 				{
 					$package_name = $this->Customer_rewards->get_name($package_id);
 					$points = $this->Customer->get_info($customer_id)->points;
@@ -255,7 +261,7 @@ class Sales extends Secure_Controller
 
 					if(($cur_rewards_value - $current_payments_with_rewards) <= 0)
 					{
-						$data['error'] = $this->lang->line('rewards_remaining_balance'). to_currency($cur_rewards_value);
+						$data['error'] = $this->lang->line('rewards_remaining_balance') . to_currency($cur_rewards_value);
 					}
 					else
 					{
@@ -269,7 +275,6 @@ class Sales extends Secure_Controller
 						$this->sale_lib->add_payment($payment_type, $amount_tendered);
 					}
 				}
-
 			}
 			else
 			{
