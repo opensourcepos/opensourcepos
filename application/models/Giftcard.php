@@ -256,5 +256,32 @@ class Giftcard extends CI_Model
 		$this->db->where('giftcard_number', $giftcard_number);
 		$this->db->update('giftcards', array('value' => $value));
 	}
+
+	/*
+	Determines if a given giftcard_name esists
+	*/
+	public function exists_gitcard_name($giftcard_name)
+	{
+		$giftcard_name = strtoupper($giftcard_name);
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number', $giftcard_name);
+		$this->db->where('deleted', 0);
+
+		return ($this->db->get()->num_rows() == 1);
+	}
+
+	/*
+	Generate unique gift card name/number
+	*/
+	public function generate_unique_giftcard_name($value)
+	{
+		$value = str_replace('.', 'DE', $value);
+		$random = bin2hex(openssl_random_pseudo_bytes(3));
+		$giftcard_name = (string)$random.'-'.$value;
+		if($this->exists_gitcard_name($giftcard_name)){
+			$this->generate_unique_giftcard_name($value);
+		}
+		return  strtoupper($giftcard_name);
+	}
 }
 ?>
