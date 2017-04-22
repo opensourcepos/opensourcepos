@@ -219,3 +219,5 @@ $lang["config_thousands_separator"] = "Separador de milhar";
 $lang["config_timezone"] = "Fuso horário";
 $lang["config_top"] = "Topo";
 $lang["config_website"] = "Site da internet";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

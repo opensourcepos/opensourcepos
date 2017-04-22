@@ -219,3 +219,4 @@ $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Fuseau Horaire";
 $lang["config_top"] = "Top";
 $lang["config_website"] = "Site-web";
+$lang["config_giftcard_number"] = "";

@@ -195,10 +195,14 @@ class Sales extends Secure_Controller
 	public function add_payment()
 	{
 		$data = array();
-		$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
 
 		$payment_type = $this->input->post('payment_type');
-
+		if($payment_type != $this->lang->line('sales_giftcard')){
+			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required|callback_numeric');
+		}
+		else{
+			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required');
+		}
 		if($this->form_validation->run() == FALSE)
 		{
 			if($payment_type == $this->lang->line('sales_giftcard'))

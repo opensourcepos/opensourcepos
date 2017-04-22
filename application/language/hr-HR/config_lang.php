@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Razdjelnik za tisućice";
 $lang["config_timezone"] = "Vremenska zona";
 $lang["config_top"] = "Top";
 $lang["config_website"] = "web strana";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";
