@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "";
 $lang["config_timezone"] = "";
 $lang["config_top"] = "";
 $lang["config_website"] = "";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

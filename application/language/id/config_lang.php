@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Pemisah Ribuan";
 $lang["config_timezone"] = "Zona Waktu";
 $lang["config_top"] = "Atas";
 $lang["config_website"] = "Situs Perusahaan";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

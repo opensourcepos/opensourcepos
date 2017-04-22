@@ -12,7 +12,8 @@ class Giftcards extends Secure_Controller
 	public function index()
 	{
 		$data['table_headers'] = $this->xss_clean(get_giftcards_manage_table_headers());
-
+		var_dump($this->Giftcard->get_max_number());
+		exit();
 		$this->load->view('giftcards/manage', $data);
 	}
 
@@ -64,7 +65,12 @@ class Giftcards extends Secure_Controller
 
 		$data['selected_person_name'] = ($giftcard_id > 0 && isset($giftcard_info->person_id)) ? $giftcard_info->first_name . ' ' . $giftcard_info->last_name : '';
 		$data['selected_person_id']   = $giftcard_info->person_id;
-		$data['giftcard_number']      = $giftcard_id > 0 ? $giftcard_info->giftcard_number : '';
+		if($this->config->item('giftcard_number') == "random"){
+			$data['giftcard_number']      = $giftcard_id > 0 ? $giftcard_info->giftcard_number : '';
+		}
+		else{
+			$data['giftcard_number']      = $giftcard_id > 0 ? $giftcard_info->giftcard_number : $this->Giftcard->get_max_number()->giftcard_number + 1;
+		}
 		$data['giftcard_id']          = $giftcard_id;
 		$data['giftcard_value']       = $giftcard_info->value;
 
@@ -75,11 +81,12 @@ class Giftcards extends Secure_Controller
 	
 	public function save($giftcard_id = -1)
 	{
-		if($giftcard_id == -1):
+		if($giftcard_id == -1 && trim($this->input->post('giftcard_number')) == ''){
 			$giftcard_number = $this->Giftcard->generate_unique_giftcard_name($this->input->post('value'));
-		else:
+		}
+		else{
 			$giftcard_number = $this->input->post('giftcard_number');
-		endif;
+		}
 		$giftcard_data = array(
 			'record_time' => date('Y-m-d H:i:s'),
 			'giftcard_number' => $giftcard_number,

@@ -216,3 +216,11 @@ ALTER TABLE `ospos_people`
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('financial_year','1');
+
+-- alter giftcard field number to be varchar
+
+ALTER TABLE `ospos_giftcards` CHANGE `giftcard_number` `giftcard_number` VARCHAR(255) NULL;
+
+-- add support for select between gitcard number series or random
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('giftcard_number', 'series');

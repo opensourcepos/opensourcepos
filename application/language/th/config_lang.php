@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "ตัวคั่นหลักพั�
 $lang["config_timezone"] = "โซนเวลา";
 $lang["config_top"] = "ด้านบน";
 $lang["config_website"] = "เว็บไซต์";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

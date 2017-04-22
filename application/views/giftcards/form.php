@@ -17,9 +17,14 @@
 			</div>
 		</div>
 
-	<?php if($giftcard_number != ''): ?>
+		<?php 
+		$class = "";
+		if($this->config->item('giftcard_number') == "series"){
+			$class = " required";
+		}
+		?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'name', array('class'=>'control-label col-xs-3'.$class)); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'giftcard_number',
@@ -29,7 +34,6 @@
 						);?>
 			</div>
 		</div>
-	<?php endif; ?>
 
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('giftcards_card_value'), 'name', array('class'=>'required control-label col-xs-3')); ?>
@@ -102,6 +106,13 @@ $(document).ready(function()
 		},
 		rules:
 		{
+			<?php if($this->config->item('giftcard_number') == "series"){ ?>
+			giftcard_number:
+ 			{
+ 				required:true,
+ 				number:true
+ 			},
+ 			<?php } ?>
 			value:
 			{
 				required:true,
@@ -110,6 +121,13 @@ $(document).ready(function()
    		},
 		messages:
 		{
+			<?php if($this->config->item('giftcard_number') == "series"){ ?>
+			giftcard_number:
+ 			{
+ 				required:"<?php echo $this->lang->line('giftcards_number_required'); ?>",
+ 				number:"<?php echo $this->lang->line('giftcards_number'); ?>"
+ 			},
+ 			<?php } ?>
 			value:
 			{
 				required:"<?php echo $this->lang->line('giftcards_value_required'); ?>",

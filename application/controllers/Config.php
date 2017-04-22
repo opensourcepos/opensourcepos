@@ -271,6 +271,7 @@ class Config extends Secure_Controller
 			'custom9_name' => $this->input->post('custom9_name'),
 			'custom10_name' => $this->input->post('custom10_name'),
 			'statistics' => $this->input->post('statistics') != NULL,
+			'giftcard_number' => $this->input->post('giftcard_number'),
 		);
 		
 		$result = $this->Appconfig->batch_save($batch_save_data);
