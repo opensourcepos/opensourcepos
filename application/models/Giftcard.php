@@ -19,8 +19,10 @@ class Giftcard extends CI_Model
 	public function get_max_number()
 	{
 		$this->db->select_max('giftcard_number');
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
 
-		return $this->db->get('giftcards')->row();
+		return $this->db->get()->row();
 	}
 	
 	/*
