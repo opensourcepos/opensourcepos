@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Separador de miles";
 $lang["config_timezone"] = "Zona Horaria";
 $lang["config_top"] = "Arriba";
 $lang["config_website"] = "Sitio Web";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

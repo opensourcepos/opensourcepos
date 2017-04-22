@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "فاصل الاف";
 $lang["config_timezone"] = "المنطقة الزمنية";
 $lang["config_top"] = "علوى";
 $lang["config_website"] = "موقع الشركة";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

@@ -147,6 +147,26 @@
 				</div>
 			</div>
 
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-8'>
+                    <label class="radio-inline">
+                        <?php echo form_radio(array(
+                            'name' => 'giftcard_number',
+                            'value' => 'series',
+                            'checked'=>$this->config->item('giftcard_number') === "series")); ?>
+                        <?php echo $this->lang->line('config_giftcard_series'); ?>
+                    </label>
+					<label class="radio-inline">
+                        <?php echo form_radio(array(
+                            'name' => 'giftcard_number',
+                            'value' => 'random',
+                            'checked'=>$this->config->item('giftcard_number') === "random")); ?>
+                        <?php echo $this->lang->line('config_giftcard_random'); ?>
+                    </label>
+				</div>
+			</div>
+
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_statistics'), 'statistics', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>

@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Saat Dilimi";
 $lang["config_top"] = "Üst";
 $lang["config_website"] = "Website";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";

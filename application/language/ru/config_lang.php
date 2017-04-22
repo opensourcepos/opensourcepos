@@ -219,3 +219,6 @@ $lang["config_thousands_separator"] = "Thousands Separator";
 $lang["config_timezone"] = "Часовой пояс";
 $lang["config_top"] = "Top";
 $lang["config_website"] = "Веб-сайт";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_series"] = "";
+$lang["config_giftcard_random"] = "";
