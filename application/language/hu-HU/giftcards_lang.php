@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Utalvány módositás";
 $lang["giftcards_use_inventory_menu"] = "Leltár menü haszn.";
 $lang["giftcards_value"] = "Utalvány értékének számnak kell lennie";
 $lang["giftcards_value_required"] = "Utalvány érték kötelező mező";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

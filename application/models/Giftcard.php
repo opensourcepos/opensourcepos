@@ -287,5 +287,21 @@ class Giftcard extends CI_Model
 
 		return strtoupper($giftcard_name);
 	}
+
+	/*
+	Gets gift card customer
+	*/
+	public function get_giftcard_customer($giftcard_number)
+	{
+		if( !$this->exists($this->get_giftcard_id($giftcard_number)) )
+		{
+			return 0;
+		}
+		
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number', $giftcard_number);
+
+		return $this->db->get()->row()->person_id;
+	}
 }
 ?>
