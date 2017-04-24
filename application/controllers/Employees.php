@@ -198,7 +198,7 @@ class Employees extends Persons
 		}
 		$data['person_info'] = $person_info;
 
-		$this->load->view('employees/change_password', $data);
+		$this->load->view('employees/form_change_password', $data);
 	}
 }
 ?>
