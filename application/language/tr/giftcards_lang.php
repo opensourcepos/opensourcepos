@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Hediye Çeki Güncelle";
 $lang["giftcards_use_inventory_menu"] = "Stok Menüsünü Kullan";
 $lang["giftcards_value"] = "Hediye Çeki Değeri rakam olmalıdır";
 $lang["giftcards_value_required"] = "Hediye Çeki Değeri zorunlu bir alandır";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

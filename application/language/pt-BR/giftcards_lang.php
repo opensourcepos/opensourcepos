@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "atualização cartão de presente";
 $lang["giftcards_use_inventory_menu"] = "Usar menu de inventário";
 $lang["giftcards_value"] = "Cartão de presente: O valor deve ser um número";
 $lang["giftcards_value_required"] = "Cartão de presente: O valor é um campo obrigatório ";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";
