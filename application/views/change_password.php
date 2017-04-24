@@ -32,9 +32,7 @@
 							<?php echo form_password(array(
 									'name'=>'current_password',
 									'id'=>'current_password',
-									'class'=>'form-control input-sm',
-									'value'=>$person_info->password,
-									'readonly'=>'true')
+									'class'=>'form-control input-sm')
 									);?>
 						</div>
 					</div>
@@ -77,6 +75,10 @@
 $(document).ready(function()
 {
 	$.validator.setDefaults({ ignore: [] });
+
+	$.validator.addMethod("notEqualTo", function(value, element, param) {
+		return this.optional(element) || value != $(param).val();
+	}, '<?php echo $this->lang->line('employees_password_not_must_match'); ?>');
 	
 	$('#employee_form').validate($.extend({
 		submitHandler:function(form) 
@@ -91,11 +93,17 @@ $(document).ready(function()
 			});
 		},
 		rules:
-		{			
-			password:
+		{
+			current_password:
 			{
 				required:true,
 				minlength: 8
+			},
+			password:
+			{
+				required:true,
+				minlength: 8,
+				notEqualTo: "#current_password"
 			},	
 			repeat_password:
 			{

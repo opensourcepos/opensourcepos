@@ -414,7 +414,7 @@ class Employee extends Person
 	/*
 	Change password for the employee
 	*/
-	public function change_password(&$employee_data, $employee_id = FALSE)
+	public function change_password($employee_data, $employee_id = FALSE)
 	{
 		$success = FALSE;
 
