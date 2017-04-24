@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "ปรับข้อมูลบัตรกำน
 $lang["giftcards_use_inventory_menu"] = "";
 $lang["giftcards_value"] = "มูลค่าบัตรกำนัลต้องเป็นตัวเลขเท่านั้น";
 $lang["giftcards_value_required"] = "ต้องกรอกมูลค่าบัตรกำนัล";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

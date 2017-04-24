@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "更新禮金券";
 $lang["giftcards_use_inventory_menu"] = "使用庫存清單";
 $lang["giftcards_value"] = "禮金券金額需為數字";
 $lang["giftcards_value_required"] = "請輸入禮金券金額";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

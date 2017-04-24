@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Gutschein ändern";
 $lang["giftcards_use_inventory_menu"] = "Verwende Lager Menu";
 $lang["giftcards_value"] = "Gutschein-Wert muss eine Zahl sein";
 $lang["giftcards_value_required"] = "Gutschein-Wert erforderlich";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

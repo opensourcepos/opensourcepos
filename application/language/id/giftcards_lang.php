@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Ubah GiftCard";
 $lang["giftcards_use_inventory_menu"] = "Gunakan Inv. Menu";
 $lang["giftcards_value"] = "Nilai GiftCard harus angka";
 $lang["giftcards_value_required"] = "Nilai GiftCard wajib diisi";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Обновлять Подарочная карта"
 $lang["giftcards_use_inventory_menu"] = "Используйте меню инвентаря";
 $lang["giftcards_value"] = "стоимость Подарочную карту должна быть цифрая";
 $lang["giftcards_value_required"] = "стоимость Подарочную карту обязательный пробел";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

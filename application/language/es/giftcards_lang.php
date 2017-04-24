@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Actualizar Tarjeta de Regalo";
 $lang["giftcards_use_inventory_menu"] = "Usar Menú de Inventario";
 $lang["giftcards_value"] = "Valor de Tarjeta de Regalo debe ser un número";
 $lang["giftcards_value_required"] = "Valor de Tarjeta de Regalo es requerido";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";

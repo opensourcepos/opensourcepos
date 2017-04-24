@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "تحديث بطاقة هدية";
 $lang["giftcards_use_inventory_menu"] = "استخدام تحديث المخزن";
 $lang["giftcards_value"] = "قيمة بطاقة الهدية يجب ان تكون رقم";
 $lang["giftcards_value_required"] = "قيمة بطاقة الهدية مطلوبة";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";
