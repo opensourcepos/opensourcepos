@@ -27,6 +27,7 @@ $lang["employees_successful_adding"] = "You have successfully added employee";
 $lang["employees_successful_deleted"] = "You have successfully deleted";
 $lang["employees_successful_updating"] = "You have successfully updated employee";
 $lang["employees_successful_change_password"] = "Password successfully changed";
+$lang["employees_unsuccessful_change_password"] = "Password unsuccessfully changed";
 $lang["employees_update"] = "Update Employee";
 $lang["employees_username"] = "Username";
 $lang["employees_username_minlength"] = "The username must be at least 5 characters";

@@ -77,7 +77,7 @@ class Employees extends Persons
 		}
 		$data['all_subpermissions'] = $permissions;
 
-		$this->load->view("employees/form", $data);
+		$this->load->view('employees/form', $data);
 	}
 	
 	/*
@@ -87,7 +87,7 @@ class Employees extends Persons
 	{
 		if($this->input->post('current_password') != '')
 		{
-			if($this->_check_password($employee_id,$this->input->post('current_password')))
+			if($this->Employee->check_password($this->input->post('username'), $this->input->post('current_password')))
 			{
 				$employee_data = array(
 					'username' => $this->input->post('username'),
@@ -97,21 +97,16 @@ class Employees extends Persons
 				
 				if($this->Employee->change_password($employee_data, $employee_id))
 				{
-					$employee_data = $this->xss_clean($employee_data);
-
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_change_password').' '.
-										$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_id));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_change_password'), 'id' => $employee_id));
 				}
 				else//failure
 				{
-					echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_successful_change_password').' '.
-									$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+					echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_unsuccessful_change_password'), 'id' => -1));
 				}
 			}
 			else
 			{
-				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid').' '.
-									$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid'), 'id' => -1));
 			}
 		}
 		else
@@ -154,21 +149,21 @@ class Employees extends Persons
 				//New employee
 				if($employee_id == -1)
 				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_adding').' '.
-									$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_data['person_id']));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_adding') . ' ' .
+									$person_data['first_name'] . ' ' . $person_data['last_name'], 'id' => $employee_data['person_id']));
 				}
 				else //Existing employee
 				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_updating').' '.
-									$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_id));
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_updating') . ' ' .
+									$person_data['first_name'] . ' ' . $person_data['last_name'], 'id' => $employee_id));
 				}
 			}
 			else//failure
 			{
 				$person_data = $this->xss_clean($person_data);
 
-				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating') . ' ' .
+								$person_data['first_name'] . ' ' . $person_data['last_name'], 'id' => -1));
 			}
 		}
 	}
@@ -182,12 +177,12 @@ class Employees extends Persons
 
 		if($this->Employee->delete_list($employees_to_delete))
 		{
-			echo json_encode(array('success' => TRUE,'message' => $this->lang->line('employees_successful_deleted').' '.
-							count($employees_to_delete).' '.$this->lang->line('employees_one_or_multiple')));
+			echo json_encode(array('success' => TRUE,'message' => $this->lang->line('employees_successful_deleted') . ' ' .
+							count($employees_to_delete) . ' ' . $this->lang->line('employees_one_or_multiple')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE,'message' => $this->lang->line('employees_cannot_be_deleted')));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_cannot_be_deleted')));
 		}
 	}
 
@@ -203,20 +198,7 @@ class Employees extends Persons
 		}
 		$data['person_info'] = $person_info;
 
-		$this->load->view("change_password", $data);
-	}
-
-	private function _check_password($employee_id,$password)
-	{
-		$person_info = $this->Employee->get_info($employee_id);
-		if(password_verify($password, $person_info->password))
-		{
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
-		}
+		$this->load->view('employees/change_password', $data);
 	}
 }
 ?>
