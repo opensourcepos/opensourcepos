@@ -1,5 +1,10 @@
 <?php $this->load->view("partial/header"); ?>
 
+<script type="text/javascript">
+	dialog_support.init("a.modal-dlg");
+</script>
+
+
 <div id="page_title"><?php echo $this->lang->line('reports_report_input'); ?></div>
 
 <?php

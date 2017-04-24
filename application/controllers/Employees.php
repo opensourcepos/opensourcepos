@@ -85,59 +85,91 @@ class Employees extends Persons
 	*/
 	public function save($employee_id = -1)
 	{
-		$person_data = array(
-			'first_name' => $this->input->post('first_name'),
-			'last_name' => $this->input->post('last_name'),
-			'gender' => $this->input->post('gender'),
-			'email' => $this->input->post('email'),
-			'phone_number' => $this->input->post('phone_number'),
-			'address_1' => $this->input->post('address_1'),
-			'address_2' => $this->input->post('address_2'),
-			'city' => $this->input->post('city'),
-			'state' => $this->input->post('state'),
-			'zip' => $this->input->post('zip'),
-			'country' => $this->input->post('country'),
-			'comments' => $this->input->post('comments'),
-		);
-		$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
-		
-		//Password has been changed OR first time password set
-		if($this->input->post('password') != '')
+		if($this->input->post('current_password') != '')
 		{
-			$employee_data = array(
-				'username' => $this->input->post('username'),
-				'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-				'hash_version' => 2
+			if($this->_check_password($employee_id,$this->input->post('current_password')))
+			{
+				$employee_data = array(
+					'username' => $this->input->post('username'),
+					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+					'hash_version' => 2
+				);
+				
+				if($this->Employee->change_password($employee_data, $employee_id))
+				{
+					$employee_data = $this->xss_clean($employee_data);
+
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_change_password').' '.
+										$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_id));
+				}
+				else//failure
+				{
+					echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_successful_change_password').' '.
+									$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+				}
+			}
+			else
+			{
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid').' '.
+									$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+			}
+		}
+		else
+		{
+			$person_data = array(
+				'first_name' => $this->input->post('first_name'),
+				'last_name' => $this->input->post('last_name'),
+				'gender' => $this->input->post('gender'),
+				'email' => $this->input->post('email'),
+				'phone_number' => $this->input->post('phone_number'),
+				'address_1' => $this->input->post('address_1'),
+				'address_2' => $this->input->post('address_2'),
+				'city' => $this->input->post('city'),
+				'state' => $this->input->post('state'),
+				'zip' => $this->input->post('zip'),
+				'country' => $this->input->post('country'),
+				'comments' => $this->input->post('comments'),
 			);
-		}
-		else //Password not changed
-		{
-			$employee_data = array('username' => $this->input->post('username'));
-		}
-		
-		if($this->Employee->save_employee($person_data, $employee_data, $grants_data, $employee_id))
-		{
-			$person_data = $this->xss_clean($person_data);
-			$employee_data = $this->xss_clean($employee_data);
-
-			//New employee
-			if($employee_id == -1)
+			$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
+			
+			//Password has been changed OR first time password set
+			if($this->input->post('password') != '')
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_adding').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_data['person_id']));
+				$employee_data = array(
+					'username' => $this->input->post('username'),
+					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+					'hash_version' => 2
+				);
 			}
-			else //Existing employee
+			else //Password not changed
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_updating').' '.
-								$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_id));
+				$employee_data = array('username' => $this->input->post('username'));
 			}
-		}
-		else//failure
-		{
-			$person_data = $this->xss_clean($person_data);
+			
+			if($this->Employee->save_employee($person_data, $employee_data, $grants_data, $employee_id))
+			{
+				$person_data = $this->xss_clean($person_data);
+				$employee_data = $this->xss_clean($employee_data);
 
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating').' '.
-							$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+				//New employee
+				if($employee_id == -1)
+				{
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_adding').' '.
+									$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_data['person_id']));
+				}
+				else //Existing employee
+				{
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_updating').' '.
+									$person_data['first_name'].' '.$person_data['last_name'], 'id' => $employee_id));
+				}
+			}
+			else//failure
+			{
+				$person_data = $this->xss_clean($person_data);
+
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_error_adding_updating').' '.
+								$person_data['first_name'].' '.$person_data['last_name'], 'id' => -1));
+			}
 		}
 	}
 	
@@ -156,6 +188,34 @@ class Employees extends Persons
 		else
 		{
 			echo json_encode(array('success' => FALSE,'message' => $this->lang->line('employees_cannot_be_deleted')));
+		}
+	}
+
+	/*
+	Loads the change password form
+	*/
+	public function change_password($employee_id = -1)
+	{
+		$person_info = $this->Employee->get_info($employee_id);
+		foreach(get_object_vars($person_info) as $property => $value)
+		{
+			$person_info->$property = $this->xss_clean($value);
+		}
+		$data['person_info'] = $person_info;
+
+		$this->load->view("change_password", $data);
+	}
+
+	private function _check_password($employee_id,$password)
+	{
+		$person_info = $this->Employee->get_info($employee_id);
+		if(password_verify($password, $person_info->password))
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
 		}
 	}
 }

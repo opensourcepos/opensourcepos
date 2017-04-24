@@ -1,5 +1,9 @@
 <?php $this->load->view("partial/header"); ?>
 
+<script type="text/javascript">
+	dialog_support.init("a.modal-dlg");
+</script>
+
 <?php
 if(isset($error))
 {

@@ -411,5 +411,24 @@ class Employee extends Person
 
 		return $this->db->get()->result_array();
 	}
+	/*
+	Change password for the employee
+	*/
+	public function change_password($employee_data, $employee_id = FALSE)
+	{
+		$success = FALSE;
+
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
+
+		$this->db->where('person_id', $employee_id);
+		$success = $this->db->update('employees', $employee_data);
+
+		$this->db->trans_complete();
+
+		$success &= $this->db->trans_status();
+
+		return $success;
+	}
 }
 ?>
