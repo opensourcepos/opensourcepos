@@ -229,7 +229,8 @@ class Sales extends Secure_Controller
 				$cur_giftcard_value = $this->Giftcard->get_giftcard_value($giftcard_num);
 				$cur_giftcard_customer = $this->Giftcard->get_giftcard_customer($giftcard_num);
 				$customer_id = $this->sale_lib->get_customer();
-				if(isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id){
+				if(isset($cur_giftcard_customer) && $cur_giftcard_customer != $customer_id)
+				{
 					$data['error'] = $this->lang->line('giftcards_cannot_use', $giftcard_num);
 				}
 				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0)
