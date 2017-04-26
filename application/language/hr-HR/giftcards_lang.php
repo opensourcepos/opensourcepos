@@ -67,3 +67,4 @@ $lang["giftcards_update"] = "Ažurirajte poklon bon";
 $lang["giftcards_use_inventory_menu"] = "Koristite meni inventure";
 $lang["giftcards_value"] = "Vrijednost poklon bona mora biti broj";
 $lang["giftcards_value_required"] = "Vrijednost poklon kartice je potrebna";
+$lang["giftcards_cannot_use"] = "Giftcard %1 cannot be used for this sale. Invalid Customer!";
