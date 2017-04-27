@@ -1,0 +1,3 @@
+input#amount_tendered:disabled {
+    display:none;
+}

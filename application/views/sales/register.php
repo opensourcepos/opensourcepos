@@ -434,7 +434,8 @@ if (isset($success))
 							<tr>
 								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
 								<td>
-									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm non-giftcard-input', 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
+									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm giftcard-input', 'disabled' => true, 'value'=>to_currency_no_money($amount_due), 'size'=>'5', 'tabindex'=>++$tabindex)); ?>
 								</td>
 							</tr>
 						</table>
@@ -619,7 +620,16 @@ $(document).ready(function()
 			$("#select_customer_form").submit();
 		}
     });
-
+    $(".giftcard-input").autocomplete(
+    {
+		source: '<?php echo site_url("giftcards/suggest"); ?>',
+    	minChars: 0,
+    	delay: 10,
+		select: function (a, ui) {
+			$(this).val(ui.item.value);
+			$("#add_payment_form").submit();
+		}
+    });
 	$('#item, #customer').click(clear_fields).dblclick(function(event)
 	{
 		$(this).autocomplete("search");
@@ -773,6 +783,9 @@ function check_payment_type()
         $("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
         $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
         $("#amount_tendered:enabled").val('').focus();
+        $(".giftcard-input").attr('disabled',false);
+        $(".non-giftcard-input").attr('disabled',true);
+        $(".giftcard-input:enabled").val('').focus();
     }
     else if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
     {
@@ -780,6 +793,8 @@ function check_payment_type()
         $("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
         $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
         $("#amount_tendered:enabled").val('<?php echo to_currency_no_money($cash_amount_due); ?>');
+        $(".giftcard-input").attr('disabled',true);
+        $(".non-giftcard-input").attr('disabled',false);
     }
     else
     {
@@ -787,6 +802,8 @@ function check_payment_type()
         $("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
         $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
         $("#amount_tendered:enabled").val('<?php echo to_currency_no_money($non_cash_amount_due); ?>');
+        $(".giftcard-input").attr('disabled',true);
+        $(".non-giftcard-input").attr('disabled',false);
     }
 }
 
