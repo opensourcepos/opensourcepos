@@ -1,17 +1,17 @@
 <?php $this->load->view("partial/header"); ?>
 
 <?php
-if (isset($error))
+if(isset($error))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error."</div>";
 }
 
-if (!empty($warning))
+if(!empty($warning))
 {
 	echo "<div class='alert alert-dismissible alert-warning'>".$warning."</div>";
 }
 
-if (isset($success))
+if(isset($success))
 {
 	echo "<div class='alert alert-dismissible alert-success'>".$success."</div>";
 }
@@ -42,7 +42,7 @@ if (isset($success))
 					</li>
 				<?php
 				}
-				if (count($stock_locations) > 1)
+				if(count($stock_locations) > 1)
 				{
 				?>
 					<li class="pull-left">
@@ -63,7 +63,7 @@ if (isset($success))
 				</li>
 			
 				<?php
-				if ($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
+				if($this->Employee->has_grant('reports_sales', $this->session->userdata('person_id')))
 				{
 				?>
 					<li class="pull-right">						
@@ -143,7 +143,7 @@ if (isset($success))
 							</td>
 
 							<?php
-							if ($items_module_allowed)
+							if($items_module_allowed)
 							{
 							?>
 								<td><?php echo form_input(array('name'=>'price', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['price']), 'tabindex'=>++$tabindex));?></td>
@@ -196,7 +196,7 @@ if (isset($success))
 								}
 								else
 								{
-									if ($item['description']!='')
+									if($item['description']!='')
 									{
 										echo $item['description'];
 										echo form_hidden('description', $item['description']);
@@ -410,13 +410,13 @@ if (isset($success))
 						</table>
 					<?php echo form_close(); ?>
 	   					<?php
-	    				// Only show this part if the payment cover the total and in sale or return mode
-		    			if ($sales_or_return_mode == '1')
-			    		{
-				    	?>
+						// Only show this part if the payment cover the total and in sale or return mode
+						if($sales_or_return_mode == '1')
+						{
+						?>
   						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
-    					}
+						}
 	   					?>
  				<?php
 				}
@@ -485,7 +485,7 @@ if (isset($success))
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
 					<?php
 					// Only show this part if the payment cover the total
-					if ($quote_or_invoice_mode && isset($customer))
+					if($quote_or_invoice_mode && isset($customer))
 					{
 					?>
 					<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
@@ -538,7 +538,7 @@ if (isset($success))
 						</div>
 					</div>
 				<?php
-				if (($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
+				if(($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
 				{
 				?>
 					<div class="row">
@@ -575,70 +575,72 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
-    $("#item").autocomplete(
+	$("#item").autocomplete(
 	{
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
-    	minChars: 0,
-    	autoFocus: false,
-       	delay: 500,
+		minChars: 0,
+		autoFocus: false,
+	   	delay: 500,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
 			return false;
 		}
-    });
+	});
 
 	$('#item').focus();
 
 	$('#item').keypress(function (e) {
-		if (e.which == 13) {
+		if(e.which == 13) {
 			$('#add_item_form').submit();
 			return false;
 		}
 	});
 
-    $('#item').blur(function()
-    {
-        $(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
-    });
+	$('#item').blur(function()
+	{
+		$(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
+	});
 
-    var clear_fields = function()
-    {
-        if ($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . $this->lang->line('sales_start_typing_customer_name'); ?>"))
-        {
-            $(this).val('');
-        }
-    };
+	var clear_fields = function()
+	{
+		if($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . $this->lang->line('sales_start_typing_customer_name'); ?>"))
+		{
+			$(this).val('');
+		}
+	};
 
-    $("#customer").autocomplete(
-    {
+	$("#customer").autocomplete(
+	{
 		source: '<?php echo site_url("customers/suggest"); ?>',
-    	minChars: 0,
-    	delay: 10,
+		minChars: 0,
+		delay: 10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#select_customer_form").submit();
 		}
-    });
-    $(".giftcard-input").autocomplete(
-    {
+	});
+
+	$(".giftcard-input").autocomplete(
+	{
 		source: '<?php echo site_url("giftcards/suggest"); ?>',
-    	minChars: 0,
-    	delay: 10,
+		minChars: 0,
+		delay: 10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_payment_form").submit();
 		}
-    });
+	});
+
 	$('#item, #customer').click(clear_fields).dblclick(function(event)
 	{
 		$(this).autocomplete("search");
 	});
 
 	$('#customer').blur(function()
-    {
-    	$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
-    });
+	{
+		$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
+	});
 
 	$('#comment').keyup(function() 
 	{
@@ -646,7 +648,7 @@ $(document).ready(function()
 	});
 
 	<?php
-	if ($this->config->item('invoice_enable') == TRUE) 
+	if($this->config->item('invoice_enable') == TRUE) 
 	{
 	?>
 		$('#sales_invoice_number').keyup(function() 
@@ -682,43 +684,43 @@ $(document).ready(function()
 		$.post('<?php echo site_url($controller_name."/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
 	});
 	
-    $("#finish_sale_button").click(function()
-    {
+	$("#finish_sale_button").click(function()
+	{
 		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete_receipt"); ?>');
 		$('#buttons_form').submit();
-    });
+	});
 
-    $("#finish_invoice_quote_button").click(function()
-    {
-        $('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
-        $('#buttons_form').submit();
-    });
+	$("#finish_invoice_quote_button").click(function()
+	{
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
+		$('#buttons_form').submit();
+	});
 
-    $("#suspend_sale_button").click(function()
+	$("#suspend_sale_button").click(function()
 	{ 	
 		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/suspend"); ?>');
 		$('#buttons_form').submit();
 	});
 
-    $("#cancel_sale_button").click(function()
-    {
-    	if (confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
-    	{
+	$("#cancel_sale_button").click(function()
+	{
+		if(confirm('<?php echo $this->lang->line("sales_confirm_cancel_sale"); ?>'))
+		{
 			$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/cancel"); ?>');
-    		$('#buttons_form').submit();
-    	}
-    });
+			$('#buttons_form').submit();
+		}
+	});
 
 	$("#add_payment_button").click(function()
 	{
 		$('#add_payment_form').submit();
-    });
+	});
 
 	$("#payment_types").change(check_payment_type).ready(check_payment_type);
 
 	$("#cart_contents input").keypress(function(event)
 	{
-		if (event.which == 13)
+		if(event.which == 13)
 		{
 			$(this).parents("tr").prevAll("form:first").submit();
 		}
@@ -726,15 +728,15 @@ $(document).ready(function()
 
 	$("#amount_tendered").keypress(function(event)
 	{
-		if( event.which == 13 )
+		if(event.which == 13)
 		{
 			$('#add_payment_form').submit();
 		}
 	});
 	
-    $("#finish_sale_button").keypress(function(event)
+	$("#finish_sale_button").keypress(function(event)
 	{
-		if ( event.which == 13 )
+		if(event.which == 13)
 		{
 			$('#finish_sale_form').submit();
 		}
@@ -744,8 +746,9 @@ $(document).ready(function()
 
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
-		if(response.success) {
-			if (resource.match(/customers$/))
+		if(response.success) 
+		{
+			if(resource.match(/customers$/))
 			{
 				$("#customer").val(response.id);
 				$("#select_customer_form").submit();
@@ -755,7 +758,7 @@ $(document).ready(function()
 				var $stock_location = $("select[name='stock_location']").val();
 				$("#item_location").val($stock_location);
 				$("#item").val(response.id);
-				if (stay_open)
+				if(stay_open)
 				{
 					$("#add_item_form").ajaxSubmit();
 				}
@@ -775,36 +778,36 @@ $(document).ready(function()
 
 function check_payment_type()
 {
-    var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
+	var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
 
-    if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
-    {
-        $("#sale_total").html("<?php echo to_currency($total); ?>");
-        $("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
-        $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
-        $("#amount_tendered:enabled").val('').focus();
-        $(".giftcard-input").attr('disabled',false);
-        $(".non-giftcard-input").attr('disabled',true);
-        $(".giftcard-input:enabled").val('').focus();
-    }
-    else if ($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
-    {
-        $("#sale_total").html("<?php echo to_currency($cash_total); ?>");
-        $("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
-        $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
-        $("#amount_tendered:enabled").val('<?php echo to_currency_no_money($cash_amount_due); ?>');
-        $(".giftcard-input").attr('disabled',true);
-        $(".non-giftcard-input").attr('disabled',false);
-    }
-    else
-    {
-        $("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
-        $("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
-        $("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
-        $("#amount_tendered:enabled").val('<?php echo to_currency_no_money($non_cash_amount_due); ?>');
-        $(".giftcard-input").attr('disabled',true);
-        $(".non-giftcard-input").attr('disabled',false);
-    }
+	if($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
+	{
+		$("#sale_total").html("<?php echo to_currency($total); ?>");
+		$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
+		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
+		$("#amount_tendered:enabled").val('').focus();
+		$(".giftcard-input").attr('disabled', false);
+		$(".non-giftcard-input").attr('disabled', true);
+		$(".giftcard-input:enabled").val('').focus();
+	}
+	else if($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
+	{
+		$("#sale_total").html("<?php echo to_currency($cash_total); ?>");
+		$("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
+		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+		$("#amount_tendered:enabled").val('<?php echo to_currency_no_money($cash_amount_due); ?>');
+		$(".giftcard-input").attr('disabled', true);
+		$(".non-giftcard-input").attr('disabled', false);
+	}
+	else
+	{
+		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
+		$("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
+		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+		$("#amount_tendered:enabled").val('<?php echo to_currency_no_money($non_cash_amount_due); ?>');
+		$(".giftcard-input").attr('disabled', true);
+		$(".non-giftcard-input").attr('disabled', false);
+	}
 }
 
 </script>
