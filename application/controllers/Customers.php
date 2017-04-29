@@ -41,7 +41,7 @@ class Customers extends Persons
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
-	
+
 	/*
 	Gives search suggestions based on what is being searched for
 	*/
@@ -58,7 +58,7 @@ class Customers extends Persons
 
 		echo json_encode($suggestions);
 	}
-	
+
 	/*
 	Loads the customer edit form
 	*/
@@ -142,7 +142,7 @@ class Customers extends Persons
 								}
 								++$click;
 							}
-							
+
 							++$total;
 						}
 
@@ -155,10 +155,10 @@ class Customers extends Persons
 				}
 			}
 		}
-		
+
 		$this->load->view("customers/form", $data);
 	}
-	
+
 	/*
 	Inserts/updates a customer
 	*/
@@ -167,7 +167,11 @@ class Customers extends Persons
 		$first_name = $this->xss_clean($this->input->post('first_name'));
 		$last_name = $this->xss_clean($this->input->post('last_name'));
 		$email = $this->xss_clean(strtolower($this->input->post('email')));
-		
+
+		// format first and last name properly
+		$first_name = $this->nameize($first_name);
+		$last_name = $this->nameize($last_name);
+
 		$person_data = array(
 			'first_name' => $first_name,
 			'last_name' => $last_name,
@@ -209,23 +213,20 @@ class Customers extends Persons
 			// New customer
 			if($customer_id == -1)
 			{
-				echo json_encode(array(
-								'success' => TRUE,
+				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('customers_successful_adding') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $this->xss_clean($customer_data['person_id'])));
 			}
 			else // Existing customer
 			{
-				echo json_encode(array(
-								'success' => TRUE,
+				echo json_encode(array('success' => TRUE,
 								'message' => $this->lang->line('customers_successful_updating') . ' ' . $first_name . ' ' . $last_name,
 								'id' => $customer_id));
 			}
 		}
 		else // Failure
 		{
-			echo json_encode(array(
-							'success' => FALSE,
+			echo json_encode(array('success' => FALSE,
 							'message' => $this->lang->line('customers_error_adding_updating') . ' ' . $first_name . ' ' . $last_name,
 							'id' => -1));
 		}
@@ -250,7 +251,7 @@ class Customers extends Persons
 
 		echo !$exists ? 'true' : 'false';
 	}
-	
+
 	/*
 	This deletes customers from the customers table
 	*/
@@ -285,7 +286,7 @@ class Customers extends Persons
 		$data = file_get_contents('../' . $name);
 		force_download($name, $data);
 	}
-	
+
 	public function excel_import()
 	{
 		$this->load->view('customers/form_excel_import', NULL);
@@ -301,13 +302,13 @@ class Customers extends Persons
 		{
 			if(($handle = fopen($_FILES['file_path']['tmp_name'], 'r')) !== FALSE)
 			{
-                // Skip the first row as it's the table description
+				// Skip the first row as it's the table description
 				fgetcsv($handle);
 				$i = 1;
 
 				$failCodes = array();
 
-				while(($data = fgetcsv($handle)) !== FALSE) 
+				while(($data = fgetcsv($handle)) !== FALSE)
 				{
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
@@ -329,7 +330,7 @@ class Customers extends Persons
 							'country'		=> $data[10],
 							'comments'		=> $data[11]
 						);
-						
+
 						$customer_data = array(
 							'company_name'		=> $data[12],
 							'discount_percent'	=> $data[14],
@@ -340,19 +341,19 @@ class Customers extends Persons
 						// don't duplicate people with same email
 						$invalidated = $this->Customer->check_email_exists($email);
 
-						if($account_number != '') 
+						if($account_number != '')
 						{
 							$customer_data['account_number'] = $account_number;
 							$invalidated &= $this->Customer->check_account_number_exists($account_number);
 						}
 					}
-					else 
+					else
 					{
 						$invalidated = TRUE;
 					}
 
 					if($invalidated)
-					{	
+					{
 						$failCodes[] = $i;
 					}
 					elseif($this->Customer->save_customer($person_data, $customer_data))
@@ -361,17 +362,17 @@ class Customers extends Persons
 						$this->mailchimp_lib->addOrUpdateMember($this->_list_id, $person_data['email'], $person_data['first_name'], '', $person_data['last_name']);
 					}
 					else
-					{	
+					{
 						$failCodes[] = $i;
 					}
-					
+
 					++$i;
 				}
-				
+
 				if(count($failCodes) > 0)
 				{
 					$message = $this->lang->line('customers_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
-					
+
 					echo json_encode(array('success' => FALSE, 'message' => $message));
 				}
 				else
@@ -379,9 +380,9 @@ class Customers extends Persons
 					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('customers_excel_import_success')));
 				}
 			}
-			else 
+			else
 			{
-                echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_nodata_wrongformat')));
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('customers_excel_import_nodata_wrongformat')));
 			}
 		}
 	}
