@@ -17,6 +17,13 @@ class Customers extends Persons
 		$this->_list_id = $CI->encryption->decrypt($CI->Appconfig->get('mailchimp_list_id'));
 	}
 
+	public function index()
+	{
+		$data['table_headers'] = $this->xss_clean(get_customer_manage_table_headers());
+
+		$this->load->view('people/manage', $data);
+	}
+
 	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
@@ -34,7 +41,21 @@ class Customers extends Persons
 		$data_rows = array();
 		foreach($customers->result() as $person)
 		{
-			$data_rows[] = get_person_data_row($person, $this);
+			// retrieve the total amount the customer spent so far together with min, max and average values
+			$stats = $this->Customer->get_stats($person->person_id);
+			if(empty($stats))
+			{
+				//create object with empty properties.
+				$stats = new stdClass;
+				$stats->total = 0;
+				$stats->min = 0;
+				$stats->max = 0;
+				$stats->average = 0;
+				$stats->avg_discount = 0;
+				$stats->quantity = 0;
+			}
+
+			$data_rows[] = get_customer_data_row($person, $stats, $this);
 		}
 
 		$data_rows = $this->xss_clean($data_rows);
@@ -90,7 +111,7 @@ class Customers extends Persons
 			$data['customer_sales_tax_enabled'] = FALSE;
 		}
 
-		// show the total amount the customer spent so far together with min, max and average values
+		// retrieve the total amount the customer spent so far together with min, max and average values
 		$stats = $this->Customer->get_stats($customer_id);
 		if(!empty($stats))
 		{
