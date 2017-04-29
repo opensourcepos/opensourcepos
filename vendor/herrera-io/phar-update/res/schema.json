@@ -1,0 +1,35 @@
+{
+    "title": "Update Manifest Schema",
+    "type": "array",
+    "items": {
+        "title": "Update",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+            "name": {
+                "description": "The name of the file that will be downloaded.",
+                "type": "string",
+                "pattern": "\\.phar$"
+            },
+            "publicKey": {
+                "description": "The location of the public key file.",
+                "type": "string"
+            },
+            "sha1": {
+                "description": "The SHA1 file checksum.",
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+            },
+            "url": {
+                "description": "The location of the update file.",
+                "type": "string"
+            },
+            "version": {
+                "description": "The semantic version number.",
+                "type": "string",
+                "pattern": "^\\d+\\.\\d+\\.\\d+(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?$"
+            }
+        },
+        "required": ["name", "sha1", "url", "version"]
+    }
+}

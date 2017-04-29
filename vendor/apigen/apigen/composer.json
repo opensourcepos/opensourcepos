@@ -1,0 +1,60 @@
+{
+	"name": "apigen/apigen",
+	"description": "PHP source code API generator",
+	"keywords": ["documentation", "phpdoc", "generator", "api"],
+	"homepage": "http://apigen.org/",
+	"license": "MIT",
+	"authors": [
+		{ "name": "Tomáš Votruba", "email": "tomas.vot@gmail.com" },
+		{ "name": "Olivier Laviale", "homepage": "https://github.com/olvlvl" },
+		{ "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
+		{ "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
+		{ "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
+	],
+	"require": {
+		"php": ">=5.4",
+		"nette/application": "~2.2",
+		"nette/bootstrap": "~2.2",
+		"nette/di": "~2.2",
+		"nette/neon": "~2.2",
+		"nette/mail": "~2.2",
+		"nette/robot-loader": "~2.2",
+		"nette/safe-stream": "~2.2",
+		"latte/latte": ">=2.2.0,<2.3.5",
+		"tracy/tracy": "~2.2",
+
+		"kukulich/fshl": "~2.1",
+		"andrewsville/php-token-reflection": "~1.4",
+		"michelf/php-markdown": "~1.4",
+		"kdyby/events": "~2.0",
+		"symfony/options-resolver": "~2.6.1",
+		"symfony/console": "~2.6",
+		"symfony/yaml": "~2.6",
+		"herrera-io/phar-update": "~2.0",
+
+		"apigen/theme-default": "~1.0.1",
+		"apigen/theme-bootstrap": "~1.1.2"
+	},
+	"require-dev": {
+		"mockery/mockery": "~0.9",
+		"herrera-io/box": "~1.6"
+	},
+	"autoload": {
+		"psr-4": {
+			"ApiGen\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"ApiGen\\Tests\\": "tests"
+		}
+	},
+	"bin": [
+		"bin/apigen"
+	],
+	"extra": {
+		"branch-alias": {
+			"dev-master": "4.1.0-dev"
+		}
+	}
+}

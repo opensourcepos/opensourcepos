@@ -1,0 +1,49 @@
+/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+pre.tracy-dump {
+	text-align: left;
+	color: #444;
+	background: white;
+}
+
+pre.tracy-dump div {
+	padding-left: 3ex;
+}
+
+pre.tracy-dump div div {
+	border-left: 1px solid rgba(0, 0, 0, .1);
+	margin-left: .5ex;
+}
+
+.tracy-dump-array,
+.tracy-dump-object {
+	color: #C22;
+}
+
+.tracy-dump-string {
+	color: #35D;
+}
+
+.tracy-dump-number {
+	color: #090;
+}
+
+.tracy-dump-null,
+.tracy-dump-bool {
+	color: #850;
+}
+
+.tracy-dump-visibility,
+.tracy-dump-hash {
+	font-size: 85%; color: #999;
+}
+
+.tracy-dump-indent {
+	display: none;
+}
+
+span[data-tracy-href] {
+	border-bottom: 1px dotted rgba(0, 0, 0, .2);
+}

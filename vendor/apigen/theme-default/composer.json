@@ -1,0 +1,16 @@
+{
+	"name": "apigen/theme-default",
+	"description": "Default theme for ApiGen",
+	"homepage": "http://apigen.org/",
+	"license": "MIT",
+	"authors": [
+		{ "name": "Tomáš Votruba", "email": "tomas.vot@gmail.com" },
+		{ "name": "Olivier Laviale", "homepage": "https://github.com/olvlvl" },
+		{ "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
+		{ "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
+		{ "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
+	],
+	"require": {
+		"latte/latte": "~2.2"
+	}
+}

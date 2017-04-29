@@ -1,0 +1,96 @@
+services:
+	# commands
+	- {class: ApiGen\Command\GenerateCommand, tags: [console.command]}
+	- {class: ApiGen\Command\SelfUpdateCommand, tags: [console.command]}
+
+	# configuration
+	- ApiGen\Configuration\Configuration
+	- ApiGen\Configuration\ConfigurationOptionsResolver
+	- ApiGen\Configuration\OptionsResolverFactory
+	-
+		implement: ApiGen\Configuration\Theme\ThemeConfigFactory
+		parameters: [filePath]
+		arguments: [%filePath%]
+	- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
+
+	# console
+	-
+		class: ApiGen\Console\Application
+		setup:
+			- setEventManager
+	- ApiGen\Console\IO
+	- ApiGen\Console\ProgressBar
+	- Symfony\Component\Console\Helper\ProgressHelper
+	- Symfony\Component\Console\Helper\QuestionHelper
+	-
+		class: Symfony\Component\Console\Helper\HelperSet
+		setup:
+			- set(@Symfony\Component\Console\Helper\ProgressHelper, 'progress')
+			- set(@Symfony\Component\Console\Helper\QuestionHelper, 'question')
+
+	# elements
+	- ApiGen\Generator\Resolvers\ElementResolver
+	- ApiGen\Generator\Resolvers\RelativePathResolver
+
+	# events
+	- {class: ApiGen\Events\ProgressBarIncrement, tags: [kdyby.subscriber]}
+	- {class: ApiGen\Events\InjectConfig, tags: [kdyby.subscriber]}
+	- {class: ApiGen\Events\SetIoOnConsoleRun, tags: [kdyby.subscriber]}
+
+	# filesystem
+	- ApiGen\FileSystem\FileSystem
+	- ApiGen\FileSystem\ZipArchiveGenerator
+
+	# generator
+	- ApiGen\Scanner\Scanner
+	- ApiGen\Generator\GeneratorQueue
+	# intentionally first to collect output from other generators
+	- {class: ApiGen\Generator\TemplateGenerators\ZipGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\CombinedGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\E404Generator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\ElementListGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\OpensearchGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\OverviewGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\SitemapGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\TreeGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\RobotsGenerator, tags: [template.generator]}
+	# elements
+	- {class: ApiGen\Generator\TemplateGenerators\ClassElementGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\NamespaceGenerator, tags: [template.generator]}
+	- {class: ApiGen\Generator\TemplateGenerators\PackageGenerator, tags: [template.generator]}
+	- ApiGen\Generator\TemplateGenerators\Loaders\NamespaceAndPackageLoader
+	- ApiGen\Generator\Markups\MarkdownMarkup
+	- Michelf\MarkdownExtra
+
+	# templating
+	- ApiGen\Templating\TemplateElementsLoader
+	- ApiGen\Templating\TemplateFactory
+	- ApiGen\Templating\TemplateNavigator
+	- ApiGen\Templating\Filters\Helpers\ElementLinkFactory
+	- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
+	- ApiGen\Templating\Filters\Helpers\LinkBuilder
+	- {class: ApiGen\Templating\Filters\AnnotationFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\PathFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\PhpManualFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\ResolverFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\SourceFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\UrlFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\NamespaceAndPackageUrlFilters, tags: [latte.filter]}
+	- {class: ApiGen\Templating\Filters\ElementUrlFilters, tags: [latte.filter]}
+
+	# theme
+	- ApiGen\Theme\ThemeResources
+	- ApiGen\Theme\ThemeConfigPathResolver(%rootDir%)
+
+	# syntax highlighter
+	- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
+	- FSHL\Output\Html
+	- FSHL\Lexer\Php
+	-
+		class: FSHL\Highlighter
+		setup:
+			- setLexer(@FSHL\Lexer\Php)

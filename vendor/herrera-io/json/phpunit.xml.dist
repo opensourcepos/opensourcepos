@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="true"
+         backupStaticAttributes="false"
+         bootstrap="src/tests/bootstrap.php"
+         colors="true"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         strict="true"
+         verbose="false">
+  <filter>
+    <whitelist>
+      <directory suffix=".php">src/lib/</directory>
+    </whitelist>
+  </filter>
+  <testsuites>
+    <testsuite name="Json Test Suite">
+      <directory phpVersion="5.3.0" phpVersionOperator=">=" suffix="Test.php">src/tests/</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>

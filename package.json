@@ -21,6 +21,7 @@
   ],
   "devDependencies": {
     "grunt": "~0.4.5",
+    "grunt-apigen": "git://github.com/daN4cat/grunt-apigen#master",
     "grunt-bower": "^0.21.0",
     "grunt-bower-concat": "^1.0.0",
     "grunt-bower-licensechecker": "^0.1.2",
@@ -41,5 +42,9 @@
     "mocha": "^2.2.1",
     "phantomjs": "~1.9.2",
     "wd": "^0.3.3"
+  },
+  "dependencies": {
+    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
+    "grunt-apigen": "git://github.com/daN4cat/grunt-apigen#master"
   }
 }

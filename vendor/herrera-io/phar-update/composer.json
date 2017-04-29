@@ -1,0 +1,42 @@
+{
+    "name": "herrera-io/phar-update",
+    "description": "A library for self-updating Phars.",
+    "keywords": ["phar", "update"],
+    "homepage": "http://herrera-io.github.com/php-phar-update",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Herrera",
+            "email": "kevin@herrera.io",
+            "homepage": "http://kevin.herrera.io"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/herrera-io/php-phar-update/issues"
+    },
+    "require": {
+        "php": ">=5.3.3",
+        "herrera-io/json": "1.*",
+        "herrera-io/version": "1.*"
+    },
+    "require-dev": {
+        "herrera-io/phpunit-test-case": "1.*",
+        "mikey179/vfsStream": "1.1.0",
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "files": ["src/lib/constants.php"],
+        "psr-0": {
+            "Herrera\\Phar\\Update": "src/lib"
+        }
+    },
+    "config": {
+        "bin-dir": "bin",
+        "vendor-dir": "src/vendors"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev"
+        }
+    }
+}

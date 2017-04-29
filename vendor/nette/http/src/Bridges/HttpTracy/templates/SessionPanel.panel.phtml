@@ -1,0 +1,43 @@
+<?php
+
+namespace Nette\Bridges\HttpTracy;
+
+use Tracy\Dumper;
+
+?>
+<style class="tracy-debug">
+
+	#tracy-debug .nette-SessionPanel .tracy-inner table {
+		width: 100%;
+	}
+
+	#tracy-debug .nette-SessionPanel-parameters pre {
+		background: #FDF5CE;
+		padding: .4em .7em;
+		border: 1px dotted silver;
+		overflow: auto;
+	}
+
+</style>
+
+<div class="nette-SessionPanel">
+	<h1>Session #<?= htmlspecialchars(session_id(), ENT_IGNORE, 'UTF-8') ?> (Lifetime: <?= htmlspecialchars(ini_get('session.cookie_lifetime'), ENT_NOQUOTES, 'UTF-8'); ?>)</h1>
+
+	<div class="tracy-inner">
+		<?php if (empty($_SESSION)):?>
+		<p><i>empty</i></p>
+		<?php else: ?>
+		<table>
+		<?php
+		foreach ($_SESSION as $k => $v) {
+			if ($k === '__NF') {
+				$k = 'Nette Session'; $v = isset($v['DATA']) ? $v['DATA'] : NULL;
+			} elseif ($k === '_tracy') {
+				continue;
+			}
+			echo '<tr><th>', htmlspecialchars($k, ENT_IGNORE, 'UTF-8'), '</th><td>', Dumper::toHtml($v, [Dumper::LIVE => TRUE]), "</td></tr>\n";
+		}?>
+		</table>
+		<?php endif ?>
+	</div>
+</div>

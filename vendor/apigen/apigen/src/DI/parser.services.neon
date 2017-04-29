@@ -1,0 +1,11 @@
+services:
+	- ApiGen\Parser\Elements\AutocompleteElements
+	- ApiGen\Parser\Elements\ElementExtractor
+	- ApiGen\Parser\Elements\ElementFilter
+	- ApiGen\Parser\Elements\Elements
+	- ApiGen\Parser\Elements\ElementSorter
+	- ApiGen\Parser\Elements\ElementStorage
+	- ApiGen\Parser\Elements\GroupSorter
+	- ApiGen\Parser\Parser
+	- ApiGen\Parser\ParserResult
+	- ApiGen\Reflection\TokenReflection\ReflectionFactory

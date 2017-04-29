@@ -1,0 +1,34 @@
+{
+    "name": "symfony/options-resolver",
+    "type": "library",
+    "description": "Symfony OptionsResolver Component",
+    "keywords": ["options", "config", "configuration"],
+    "homepage": "https://symfony.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Fabien Potencier",
+            "email": "fabien@symfony.com"
+        },
+        {
+            "name": "Symfony Community",
+            "homepage": "https://symfony.com/contributors"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "symfony/phpunit-bridge": "~2.7"
+    },
+    "autoload": {
+        "psr-0": { "Symfony\\Component\\OptionsResolver\\": "" }
+    },
+    "target-dir": "Symfony/Component/OptionsResolver",
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.6-dev"
+        }
+    }
+}

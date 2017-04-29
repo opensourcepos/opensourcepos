@@ -1,0 +1,39 @@
+{
+    "name": "herrera-io/version",
+    "description": "A library for creating, editing, and comparing semantic versioning numbers.",
+    "keywords": ["semantic", "version"],
+    "homepage": "http://github.com/herrera-io/php-version",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kevin Herrera",
+            "email": "kevin@herrera.io",
+            "homepage": "http://kevin.herrera.io"
+        }
+    ],
+    "support": {
+        "forum": "https://groups.google.com/d/forum/herrera-io-users",
+        "issues": "https://github.com/herrera-io/php-version/issues"
+    },
+    "require": {
+        "php": ">=5.3.3"
+    },
+    "require-dev": {
+        "herrera-io/phpunit-test-case": "1.*",
+        "phpunit/phpunit": "3.7.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Herrera\\Version": "src/lib"
+        }
+    },
+    "config": {
+        "bin-dir": "bin",
+        "vendor-dir": "src/vendors"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.1.x-dev"
+        }
+    }
+}

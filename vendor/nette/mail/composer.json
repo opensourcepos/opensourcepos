@@ -1,0 +1,41 @@
+{
+	"name": "nette/mail",
+	"description": "Nette Mail: Sending E-mails",
+	"homepage": "https://nette.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "David Grudl",
+			"homepage": "https://davidgrudl.com"
+		},
+		{
+			"name": "Nette Community",
+			"homepage": "https://nette.org/contributors"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0",
+		"ext-iconv": "*",
+		"nette/utils": "^2.4 || ~3.0.0"
+	},
+	"require-dev": {
+		"nette/di": "^2.4 || ~3.0.0",
+		"nette/tester": "^2.0",
+		"tracy/tracy": "^2.4"
+	},
+	"conflict": {
+		"nette/nette": "<2.2"
+	},
+	"suggest": {
+		"ext-fileinfo": "to detect type of attached files"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	},
+	"minimum-stability": "dev",
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.4-dev"
+		}
+	}
+}

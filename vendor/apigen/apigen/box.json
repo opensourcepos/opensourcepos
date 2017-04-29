@@ -1,0 +1,42 @@
+{
+	"bootstrap": "src/Herrera/Box/Compactor/PhpNette.php",
+	"output": "apigen.phar",
+	"chmod": "0755",
+	"compactors": [
+		"ApiGen\\Herrera\\Box\\Compactor\\PhpNette"
+	],
+	"compression": "GZ",
+	"extract": false,
+	"main": "bin/apigen",
+	"files": [
+		"bin/bootstrap.php",
+		"vendor/autoload.php",
+		"LICENSE"
+	],
+	"finder": [
+		{
+			"in": "src"
+		},
+		{
+			"name": ["*.php", "*.json", "*.latte", "*.neon", "*.css", "*.js", "*.png"],
+			"exclude": ["test", "Test", "Tests", "tests" ],
+			"in": [
+				"vendor/andrewsville",
+				"vendor/apigen",
+				"vendor/composer",
+				"vendor/hamcrest",
+				"vendor/herrera-io",
+				"vendor/justinrainbow",
+				"vendor/kdyby",
+				"vendor/kukulich",
+				"vendor/latte",
+				"vendor/michelf",
+				"vendor/nette",
+				"vendor/seld",
+				"vendor/symfony",
+				"vendor/tracy"
+			]
+		}
+	],
+	"stub": true
+}

@@ -1,0 +1,66 @@
+{
+	"name": "kdyby/events",
+	"type": "library",
+	"description": "Events for Nette Framework",
+	"keywords": ["nette", "kdyby"],
+	"homepage": "http://kdyby.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "Filip Procházka",
+			"homepage": "http://filip-prochazka.com",
+			"email": "filip@prochazka.su"
+		}
+	],
+	"support": {
+		"email": "filip@prochazka.su",
+		"issues": "https://github.com/kdyby/events/issues"
+	},
+	"require": {
+		"nette/di": "~2.3@dev",
+		"nette/utils": "~2.3@dev"
+	},
+	"require-dev": {
+		"nette/application": "~2.3@dev",
+		"nette/bootstrap": "~2.3@dev",
+		"nette/caching": "~2.3@dev",
+		"nette/component-model": "~2.2@dev",
+		"nette/database": "~2.3@dev",
+		"nette/deprecated": "~2.3@dev",
+		"nette/di": "~2.3@dev",
+		"nette/finder": "~2.3@dev",
+		"nette/forms": "~2.3@dev",
+		"nette/http": "~2.3@dev",
+		"nette/mail": "~2.3@dev",
+		"nette/neon": "~2.3@dev",
+		"nette/php-generator": "~2.3@dev",
+		"nette/reflection": "~2.3@dev",
+		"nette/robot-loader": "~2.3@dev",
+		"nette/safe-stream": "~2.3@dev",
+		"nette/security": "~2.3@dev",
+		"nette/tokenizer": "~2.2@dev",
+		"latte/latte": "~2.3@dev",
+		"tracy/tracy": "~2.3@dev",
+		"nette/utils": "~2.3@dev",
+
+		"symfony/event-dispatcher": "~2.3",
+
+		"nette/tester": "~1.4"
+	},
+	"autoload": {
+		"psr-0": {
+			"Kdyby\\Events\\": "src/"
+		},
+		"classmap": [
+			"src/Kdyby/Events/exceptions.php"
+		],
+		"files": [
+			"src/Doctrine/compatibility.php"
+		]
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.4-dev"
+		}
+	}
+}

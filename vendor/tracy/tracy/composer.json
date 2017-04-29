@@ -1,0 +1,36 @@
+{
+	"name": "tracy/tracy",
+	"description": "Tracy: useful PHP debugger",
+	"keywords": ["debug", "debugger", "nette"],
+	"homepage": "https://tracy.nette.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "David Grudl",
+			"homepage": "https://davidgrudl.com"
+		},
+		{
+			"name": "Nette Community",
+			"homepage": "https://nette.org/contributors"
+		}
+	],
+	"require": {
+		"php": ">=5.4.4",
+		"ext-session": "*",
+		"ext-json": "*"
+	},
+	"require-dev": {
+		"nette/di": "~2.3",
+		"nette/tester": "~2.0"
+	},
+	"autoload": {
+		"classmap": ["src"],
+		"files": ["src/shortcuts.php"]
+	},
+	"minimum-stability": "dev",
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.4-dev"
+		}
+	}
+}

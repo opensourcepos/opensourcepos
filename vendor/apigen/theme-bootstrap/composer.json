@@ -1,0 +1,13 @@
+{
+	"name": "apigen/theme-bootstrap",
+	"description": "Twitter Bootstrap theme for ApiGen",
+	"homepage": "http://apigen.org/",
+	"license": "MIT",
+	"authors": [
+		{ "name": "Tomáš Votruba", "email": "tomas.vot@gmail.com" },
+		{ "name": "Olivier Laviale", "homepage": "https://github.com/olvlvl" }
+	],
+	"require": {
+		"latte/latte": "~2.2"
+	}
+}

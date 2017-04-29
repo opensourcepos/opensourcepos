@@ -1,0 +1,53 @@
+{
+	"name": "nette/application",
+	"description": "Nette Application MVC Component",
+	"homepage": "https://nette.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "David Grudl",
+			"homepage": "https://davidgrudl.com"
+		},
+		{
+			"name": "Nette Community",
+			"homepage": "https://nette.org/contributors"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0",
+		"nette/component-model": "^2.3",
+		"nette/http": "^2.2",
+		"nette/reflection": "^2.2",
+		"nette/utils": "^2.4 || ~3.0.0"
+	},
+	"suggest": {
+		"nette/forms": "Allows to use Nette\\Application\\UI\\Form",
+		"latte/latte": "Allows using Latte in templates"
+	},
+	"require-dev": {
+		"nette/tester": "^2.0",
+		"nette/di": "^2.4 || ~3.0.0",
+		"nette/forms": "^2.4",
+		"nette/robot-loader": "^2.4.2 || ^3.0",
+		"nette/security": "^2.4",
+		"latte/latte": "^2.4.3",
+		"tracy/tracy": "^2.4",
+		"mockery/mockery": "^0.9.5"
+	},
+	"conflict": {
+		"nette/nette": "<2.2",
+		"nette/di": "<2.4",
+		"nette/forms": "<2.4",
+		"nette/latte": "<2.4"
+	},
+	"autoload": {
+		"classmap": ["src/"],
+		"files": ["src/compatibility.php"]
+	},
+	"minimum-stability": "dev",
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.4-dev"
+		}
+	}
+}

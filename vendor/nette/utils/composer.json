@@ -1,0 +1,44 @@
+{
+	"name": "nette/utils",
+	"description": "Nette Utility Classes",
+	"homepage": "https://nette.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "David Grudl",
+			"homepage": "https://davidgrudl.com"
+		},
+		{
+			"name": "Nette Community",
+			"homepage": "https://nette.org/contributors"
+		}
+	],
+	"require": {
+		"php": ">=5.6.0"
+	},
+	"require-dev": {
+		"nette/tester": "~2.0",
+		"tracy/tracy": "^2.3"
+	},
+	"suggest": {
+		"ext-iconv": "to use Strings::webalize() and toAscii()",
+		"ext-json": "to use Nette\\Utils\\Json",
+		"ext-intl": "for script transliteration in Strings::webalize() and toAscii()",
+		"ext-mbstring": "to use Strings::lower() etc...",
+		"ext-xml": "to use Strings::length() etc. when mbstring is not available",
+		"ext-gd": "to use Image",
+		"https://nette.org/donate": "\u001b[1;37;42m Please consider supporting Nette via a donation \u001b[0m"
+	},
+	"conflict": {
+		"nette/nette": "<2.2"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	},
+	"minimum-stability": "dev",
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.4-dev"
+		}
+	}
+}

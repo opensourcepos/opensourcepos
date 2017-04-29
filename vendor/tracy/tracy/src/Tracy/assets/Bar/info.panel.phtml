@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * Debug Bar: panel "info" template.
+ *
+ * This file is part of the Tracy (https://tracy.nette.org)
+ * Copyright (c) 2004 David Grudl (https://davidgrudl.com)
+ */
+
+namespace Tracy;
+
+use Tracy;
+
+if (isset($this->cpuUsage) && $this->time) {
+	foreach (getrusage() as $key => $val) {
+		$this->cpuUsage[$key] -= $val;
+	}
+	$userUsage = -round(($this->cpuUsage['ru_utime.tv_sec'] * 1e6 + $this->cpuUsage['ru_utime.tv_usec']) / $this->time / 10000);
+	$systemUsage = -round(($this->cpuUsage['ru_stime.tv_sec'] * 1e6 + $this->cpuUsage['ru_stime.tv_usec']) / $this->time / 10000);
+}
+
+$info = array_filter([
+	'Execution time' => number_format($this->time * 1000, 1, '.', ' ') . ' ms',
+	'CPU usage user + system' => isset($userUsage) ? (int) $userUsage . ' % + ' . (int) $systemUsage . ' %' : NULL,
+	'Peak of allocated memory' => number_format(memory_get_peak_usage() / 1000000, 2, '.', ' ') . ' MB',
+	'Included files' => count(get_included_files()),
+	'Classes + interfaces + traits' => count(get_declared_classes()) . ' + '
+		. count(get_declared_interfaces()) . ' + ' . count(get_declared_traits()),
+	'Your IP' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : NULL,
+	'Server IP' => isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : NULL,
+	'HTTP method / response code' => isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] . ' / ' . http_response_code() : NULL,
+	'HHVM' => defined('HHVM_VERSION') ? HHVM_VERSION : NULL,
+	'PHP' => PHP_VERSION,
+	'Xdebug' => extension_loaded('xdebug') ? phpversion('xdebug') : NULL,
+	'Tracy' => Debugger::VERSION,
+	'Server' => isset($_SERVER['SERVER_SOFTWARE']) ? $_SERVER['SERVER_SOFTWARE'] : NULL,
+] + (array) $this->data);
+
+?>
+<style class="tracy-debug">
+	#tracy-debug .tracy-InfoPanel td {
+		white-space: nowrap;
+	}
+	#tracy-debug .tracy-InfoPanel td:nth-child(2) {
+		font-weight: bold;
+	}
+	#tracy-debug .tracy-InfoPanel td[colspan='2'] b {
+		float: right;
+		margin-left: 2em;
+	}
+</style>
+
+<h1>System info</h1>
+
+<div class="tracy-inner tracy-InfoPanel">
+<table>
+<?php foreach ($info as $key => $val): ?>
+<tr>
+<?php if (iconv_strlen((string) $val, 'UTF-8') > 25): ?>
+	<td colspan=2><?= Helpers::escapeHtml($key) ?> <b><?= Helpers::escapeHtml($val) ?></b></td>
+<?php else: ?>
+	<td><?= Helpers::escapeHtml($key) ?></td><td><?= Helpers::escapeHtml($val) ?></td>
+<?php endif ?>
+</tr>
+<?php endforeach ?>
+</table>
+</div>

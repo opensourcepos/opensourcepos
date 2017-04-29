@@ -1,0 +1,76 @@
+<?php
+
+namespace Nette\Bridges\DITracy;
+
+use Nette;
+use Tracy\Helpers;
+use Tracy\Dumper;
+
+?>
+<style class="tracy-debug">
+
+	#tracy-debug .nette-ContainerPanel .tracy-inner {
+		width: 700px;
+	}
+
+	#tracy-debug .nette-ContainerPanel table {
+		width: 100%;
+		white-space: nowrap;
+	}
+
+	#tracy-debug .nette-ContainerPanel .created {
+		font-weight: bold;
+	}
+
+	#tracy-debug .nette-ContainerPanel .yes {
+		color: green;
+		font-weight: bold;
+	}
+
+</style>
+
+<div class="nette-ContainerPanel">
+<h1><?= get_class($container) ?></h1>
+
+<div class="tracy-inner">
+	<h2>Services</h2>
+
+	<table>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Autowired</th>
+			<th>Service</th>
+			<th>Tags</th>
+		</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($services as $name => $class): ?>
+		<?php $autowired = !empty($meta[Nette\DI\Container::TYPES][$class][TRUE]) && in_array($name, $meta[Nette\DI\Container::TYPES][$class][TRUE]) ?>
+		<tr>
+			<td class="<?= isset($registry[$name]) ? 'created' : '' ?>"><?= htmlSpecialChars($name) ?></td>
+			<td class="<?= $autowired ? 'yes' : '' ?>"><?= $autowired ? 'yes' : 'no' ?></td>
+			<td>
+				<?php if (isset($registry[$name]) && !$registry[$name] instanceof Nette\DI\Container): ?>
+					<?= Dumper::toHtml($registry[$name], [Dumper::COLLAPSE => TRUE, Dumper::LIVE => TRUE]); ?>
+				<?php elseif (isset($registry[$name])): ?>
+					<code><?= get_class($registry[$name]) ?></code>
+				<?php elseif (is_string($class)): ?>
+					<code><?= htmlSpecialChars($class) ?></code>
+				<?php endif ?>
+			</td>
+			<td><?php if (isset($tags[$name])) { echo Dumper::toHtml($tags[$name], [Dumper::COLLAPSE => TRUE]); } ?></td>
+		</tr>
+		<?php endforeach ?>
+		</tbody>
+	</table>
+
+	<h2>Parameters</h2>
+
+	<div class="nette-ContainerPanel-parameters">
+		<?= Dumper::toHtml($container->parameters); ?>
+	</div>
+
+	<p>Source: <?= Helpers::editorLink($file) ?></p>
+</div>
+</div>

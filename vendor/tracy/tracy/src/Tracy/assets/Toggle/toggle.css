@@ -1,0 +1,24 @@
+/**
+ * This file is part of the Tracy (https://tracy.nette.org)
+ */
+
+.tracy-collapsed {
+	display: none;
+}
+
+.tracy-toggle.tracy-collapsed {
+	display: inline;
+}
+
+.tracy-toggle {
+	cursor: pointer;
+}
+
+.tracy-toggle:after {
+	content: "\A0\25BC";
+	opacity: .4;
+}
+
+.tracy-toggle.tracy-collapsed:after {
+	content: "\A0\25BA";
+}

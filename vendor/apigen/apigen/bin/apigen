@@ -1,0 +1,40 @@
+#!/usr/bin/env php
+<?php
+
+require __DIR__ . '/bootstrap.php';
+
+
+// Create temp dir
+$tempDir = sys_get_temp_dir() . '/_apigen';
+ApiGen\FileSystem\FileSystem::purgeDir($tempDir);
+
+
+// Init debugger
+Tracy\Debugger::$strictMode = TRUE;
+if (isset($_SERVER['argv']) && ($tmp = array_search('--debug', $_SERVER['argv'], TRUE))) {
+	Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
+
+} else {
+	Tracy\Debugger::enable(Tracy\Debugger::PRODUCTION);
+	Tracy\Debugger::$onFatalError[] = function() use ($tempDir) {
+		echo "For more information turn on the debug mode using the --debug option.\n";
+		ApiGen\FileSystem\FileSystem::deleteDir($tempDir);
+	};
+}
+
+
+$configurator = new Nette\Configurator;
+$configurator->setDebugMode( ! Tracy\Debugger::$productionMode);
+$configurator->setTempDirectory($tempDir);
+$configurator->addConfig(__DIR__ . '/../src/DI/config.neon');
+$configurator->addParameters(['rootDir' => __DIR__ . '/..']);
+$container = $configurator->createContainer();
+
+
+/** @var ApiGen\Console\Application $application */
+$application = $container->getByType('ApiGen\Console\Application');
+$application->run();
+
+
+// Remove temp data
+ApiGen\FileSystem\FileSystem::deleteDir($tempDir);

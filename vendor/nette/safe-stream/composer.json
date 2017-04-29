@@ -1,0 +1,35 @@
+{
+	"name": "nette/safe-stream",
+	"description": "Nette SafeStream: Atomic Operations",
+	"homepage": "https://nette.org",
+	"license": ["BSD-3-Clause", "GPL-2.0", "GPL-3.0"],
+	"authors": [
+		{
+			"name": "David Grudl",
+			"homepage": "https://davidgrudl.com"
+		},
+		{
+			"name": "Nette Community",
+			"homepage": "https://nette.org/contributors"
+		}
+	],
+	"require": {
+		"php": ">=5.3.1"
+	},
+	"require-dev": {
+		"nette/tester": "~1.0",
+		"tracy/tracy": "^2.3"
+	},
+	"conflict": {
+		"nette/nette": "<2.2"
+	},
+	"autoload": {
+		"files": ["src/loader.php"]
+	},
+	"minimum-stability": "dev",
+	"extra": {
+		"branch-alias": {
+			"dev-master": "2.3-dev"
+		}
+	}
+}

@@ -1,0 +1,93 @@
+<?php
+
+namespace Nette\Bridges\ApplicationTracy;
+
+use Nette;
+use Nette\Application\UI\Presenter;
+use Tracy;
+use Tracy\Dumper;
+
+?>
+<style class="tracy-debug">
+
+	#tracy-debug .nette-RoutingPanel table {
+		font: 9pt/1.5 Consolas, monospace;
+	}
+
+	#tracy-debug .nette-RoutingPanel .yes td {
+		background: #BDE678 !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel .may td {
+		background: #C1D3FF !important;
+	}
+
+	#tracy-debug .nette-RoutingPanel pre, #tracy-debug .nette-RoutingPanel code {
+		display: inline;
+		background: transparent;
+	}
+
+</style>
+
+<div class="nette-RoutingPanel">
+<h1>
+<?php if (empty($request)): ?>
+	no route
+<?php else: ?>
+	<?= htmlSpecialChars($request->getPresenterName() . ':' . (isset($request->parameters[Presenter::ACTION_KEY]) ? $request->parameters[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION) . (isset($request->parameters[Presenter::SIGNAL_KEY]) ? " {$request->parameters[Presenter::SIGNAL_KEY]}!" : ''), ENT_NOQUOTES, 'UTF-8') ?>
+<?php endif ?>
+</h1>
+
+<div class="tracy-inner">
+<?php if (empty($routers)): ?>
+	<p>No routers defined.</p>
+
+<?php else: ?>
+	<table>
+	<thead>
+	<tr>
+		<th></th>
+		<th>Mask / Class</th>
+		<th>Defaults</th>
+		<?php if ($hasModule): ?><th>Module</th><?php endif ?>
+		<th>Matched as</th>
+	</tr>
+	</thead>
+
+	<tbody>
+	<?php foreach ($routers as $router): ?>
+	<tr class="<?= $router['matched'] ?>">
+		<td><?= $router['matched'] === 'yes' ? '✓' : ($router['matched'] === 'may' ? '≈' : '') ?></td>
+
+		<td><code title="<?= htmlSpecialChars($router['class'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlSpecialChars(isset($router['mask']) ? $router['mask'] : $router['class'], ENT_NOQUOTES, 'UTF-8') ?></code></td>
+
+		<td><code>
+		<?php foreach ($router['defaults'] as $key => $value): ?>
+			<?= htmlSpecialChars($key, ENT_IGNORE, 'UTF-8'), "&nbsp;=&nbsp;", is_string($value) ? htmlSpecialChars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => TRUE, Dumper::LIVE => TRUE]) ?>
+		<?php endforeach ?>
+		</code></td>
+
+		<?php if ($hasModule): ?><td><code><?= htmlSpecialChars($router['module'], ENT_NOQUOTES, 'UTF-8') ?></code></td><?php endif ?>
+
+		<td><?php if ($router['request']): ?><code>
+		<?php $params = $router['request']->getParameters(); ?>
+		<strong><?= htmlSpecialChars($router['request']->getPresenterName() . ':' . (isset($params[Presenter::ACTION_KEY]) ? $params[Presenter::ACTION_KEY] : Presenter::DEFAULT_ACTION), ENT_NOQUOTES, 'UTF-8') ?></strong><br />
+		<?php unset($params[Presenter::ACTION_KEY]) ?>
+		<?php foreach ($params as $key => $value): ?>
+			<?= htmlSpecialChars($key, ENT_IGNORE, 'UTF-8'), "&nbsp;=&nbsp;", is_string($value) ? htmlSpecialChars($value, ENT_IGNORE, 'UTF-8') . '<br />' : Dumper::toHtml($value, [Dumper::COLLAPSE => TRUE, Dumper::LIVE => TRUE]) ?>
+		<?php endforeach ?>
+		</code><?php endif ?></td>
+	</tr>
+	<?php endforeach ?>
+	</tbody>
+	</table>
+<?php endif ?>
+
+	<p><code><?= htmlSpecialChars($method, ENT_IGNORE, 'UTF-8') ?></code>
+	<code><?= htmlSpecialChars($url->getBaseUrl(), ENT_IGNORE, 'UTF-8') ?><span style="background:#eee; white-space:nowrap"><?= htmlSpecialChars($url->getRelativeUrl(), ENT_IGNORE, 'UTF-8') ?></span></code></p>
+
+	<?php if ($source): ?>
+	<p><a href="<?= htmlSpecialChars(Tracy\Helpers::editorUri($source->getFileName(), $source->getStartLine()), ENT_QUOTES, 'UTF-8') ?>"><?= $source instanceof \ReflectionClass ? $source->getName() : $source->getDeclaringClass()->getName() . '::' . $source->getName() . '()' ?></a></p>
+	<?php endif ?>
+</div>
+</div>
