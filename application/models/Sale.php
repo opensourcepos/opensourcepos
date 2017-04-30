@@ -752,11 +752,14 @@ class Sale extends CI_Model
 		}
 	}
 
-	private function save_sales_tax(&$sales_taxes)
+	public function save_sales_tax(&$sales_taxes)
 	{
+		error_log('>>>Sale.save_sales_tax started'.print_r($sales_taxes, TRUE));
 		foreach($sales_taxes as $line=>$sales_tax)
 		{
+			error_log('>>>Sale.save_sales_tax $sales_tax - '.print_r($sales_tax, TRUE));
 			$this->db->insert('sales_taxes', $sales_tax);
+			error_log('>>>Sale.save_sales_tax sales_tax written');
 		}
 	}
 
@@ -1205,5 +1208,63 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
+
+	public function get_sale_items_for_migration($sale_id)
+	{
+
+		$this->db->select('sales_items.sale_id as sale_id');
+		$this->db->select('sales_items.line as line');
+		$this->db->select('item_unit_price');
+		$this->db->select('discount_percent');
+		$this->db->select('quantity_purchased');
+		$this->db->select('percent');
+		$this->db->select('name');
+		$this->db->from('sales_items as sales_items');
+		$this->db->join('sales_items_taxes as sales_items_taxes', 'sales_items.sale_id = sales_items_taxes.sale_id and sales_items.line = sales_items_taxes.line');
+		$this->db->where('sales_items.sale_id', $sale_id);
+
+		return $this->db->get();
+	}
+
+	public function get_count_of_unmigrated()
+	{
+		$result = $this->db->query('SELECT COUNT(*) FROM(SELECT SIT.sale_id, ST.sale_id as sales_taxes_sale_id FROM '
+			. $this->db->dbprefix('sales_items_taxes')
+			. ' as SIT LEFT JOIN '
+			. $this->db->dbprefix('sales_taxes')
+			. ' as ST ON SIT.sale_id = ST.sale_id WHERE ST.sale_id is null GROUP BY SIT.sale_id, ST.sale_id'
+			. ' ORDER BY SIT.sale_id) as US')->result_array();
+
+		return $result[0]['COUNT(*)'];
+	}
+
+	public function get_unmigrated($block_count)
+	{
+
+		$this->db->select('SIT.sale_id');
+		$this->db->select('ST.sale_id as sales_taxes_sale_id');
+		$this->db->from('sales_items_taxes as SIT');
+		$this->db->join('sales_taxes as ST','SIT.sale_id = ST.sale_id', 'left');
+		$this->db->where('ST.sale_id is null');
+		$this->db->group_by('SIT.sale_id');
+		$this->db->group_by('ST.sale_id');
+		$this->db->order_by('SIT.sale_id');
+		$this->db->limit($block_count);
+		$query = $this->db->get();
+
+		return $query;
+
+	}
+
+	public function update_sales_items_taxes_amount($sale_id, $line, $name, $percent, $tax_type, $item_tax_amount)
+	{
+		error_log('>>>Sale.update_sales_items_taxes_amount '.$sale_id.', '.$line.', '.$name.', '.$percent.', '.$tax_type.', '.$item_tax_amount);
+		$this->db->where('sale_id', $sale_id);
+		$this->db->where('line', $line);
+		$this->db->where('name', $name);
+		$this->db->where('percent', $percent);
+		$this->db->update('sales_items_taxes', array('tax_type' => $tax_type, 'item_tax_amount' => $item_tax_amount));
+	}
+
 }
 ?>

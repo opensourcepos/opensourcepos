@@ -96,7 +96,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('default_origin_tax_code', ''),
 ('cash_decimals', '2'),
 ('financial_year', '1'),
-('giftcard_number', 'series');
+('giftcard_number', 'series'),
+('migrate_sales_history', '0'),
+('migrate_sales_history_block', '0');
 
 
 -- --------------------------------------------------------
