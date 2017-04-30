@@ -10,6 +10,7 @@ class Config extends Secure_Controller
 
 		$this->load->library('barcode_lib');
 		$this->load->library('sale_lib');
+		$this->load->library('tax_lib');
 	}
 
 	/*
@@ -267,6 +268,9 @@ class Config extends Secure_Controller
 
 	public function save_general()
 	{
+		$migrate_sales_history = $this->input->post('migrate_sales_history') != NULL;
+		$migrate_sales_history_block = $this->input->post('migrate_sales_history_block');
+
 		$batch_save_data = array(
 			'theme' => $this->input->post('theme'),
 			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
@@ -275,6 +279,8 @@ class Config extends Secure_Controller
 			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
 			'tax_included' => $this->input->post('tax_included') != NULL,
 			'customer_sales_tax_support' => $this->input->post('customer_sales_tax_support') != NULL,
+			'migrate_sales_history' => $migrate_sales_history,
+			'migrate_sales_history_block' => $migrate_sales_history_block,
 			'default_origin_tax_code' => $this->input->post('default_origin_tax_code'),
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),
@@ -298,10 +304,47 @@ class Config extends Secure_Controller
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
-		echo json_encode(array(
-			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
-		));
+		if($success && $migrate_sales_history)
+		{
+			$number_of_unmigrated = $this->Sale->get_count_of_unmigrated();
+			if ($number_of_unmigrated > 0 && $migrate_sales_history_block > 0)
+			{
+				$unmigrated_invoices = $this->Sale->get_unmigrated($migrate_sales_history_block)->result_array();
+
+				foreach($unmigrated_invoices as $key=>$unmigrated_invoice)
+				{
+					$this->tax_lib->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id']);
+				}
+
+				if($migrate_sales_history_block > $number_of_unmigrated)
+				{
+					$migrate_sales_history_block = $number_of_unmigrated;
+				}
+
+				$number_of_unmigrated = $this->Sale->get_count_of_unmigrated();
+
+				echo json_encode(array(
+					'success' => $success,
+					'message' => $this->lang->line('config_saved_with_migration').' '.$migrate_sales_history_block.' / '.$number_of_unmigrated.' '.$this->lang->line('config_migrate_remaining')
+				));
+
+			}
+			else
+			{
+				echo json_encode(array(
+					'success' => $success,
+					'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+				));
+			}
+		}
+		else
+		{
+			echo json_encode(array(
+				'success' => $success,
+				'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			));
+		}
+
 	}
 
 	public function check_number_locale()
