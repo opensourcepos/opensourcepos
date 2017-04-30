@@ -204,6 +204,9 @@
 	<h1>Class Person</h1>
 
 
+	<div class="description">
+	<p>Base class for People classes.</p>
+	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
@@ -238,7 +241,13 @@ CI_Model
 		
 		
 
-			<b>Located at</b> <a href="source-class-Person.html#2-147" title="Go to source code">models/Person.php</a>
+				<b>Author:</b>
+				N/A<br>
+				<b>Since:</b>
+				1.0<br>
+				<b>Link:</b>
+				github.com/jekkos/opensourcepos<br>
+			<b>Located at</b> <a href="source-class-Person.html#4-196" title="Go to source code">models/Person.php</a>
 		<br>
 	</div>
 
@@ -251,24 +260,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Person.html#7-13" title="Go to source code">exists</a>( <span> <var>$person_id</var></span> )</code>
+		<code><a href="source-class-Person.html#13-26" title="Go to source code">exists</a>( <span>integer <var>$person_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Determines whether the given person exists in the people database table</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Determines whether the given person exists in the people database table</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_id</var></dt>
+					<dd>identifier of the person to verify the existence</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>TRUE if the person exists, FALSE if not
+				</div>
 
 
 
@@ -281,24 +299,35 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all">#</a>
-		<code><a href="source-class-Person.html#18-26" title="Go to source code">get_all</a>( <span> <var>$limit</var> = <span class="php-num">10000</span></span>, <span> <var>$offset</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Person.html#28-45" title="Go to source code">get_all</a>( <span>integer <var>$limit</var> = <span class="php-num">10000</span></span>, <span>integer <var>$offset</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets all people from the database table</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets all people from the database table</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$limit</var></dt>
+					<dd>limits the query return rows</dd>
+					<dt><var>$offset</var></dt>
+					<dd>offset the query</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>array of people table rows
+				</div>
 
 
 
@@ -311,24 +340,28 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			integer
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_total_rows">#</a>
-		<code><a href="source-class-Person.html#31-37" title="Go to source code">get_total_rows</a>( )</code>
+		<code><a href="source-class-Person.html#47-58" title="Go to source code">get_total_rows</a>( )</code>
 
 		<div class="description short">
-			
+			<p>Gets total of rows of people database table</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets total of rows of people database table</p>
 
 
 
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>row counter
+				</div>
 
 
 
@@ -341,24 +374,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Person.html#42-62" title="Go to source code">get_info</a>( <span> <var>$person_id</var></span> )</code>
+		<code><a href="source-class-Person.html#60-87" title="Go to source code">get_info</a>( <span>integer <var>$person_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets information about a person as an array</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets information about a person as an array</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_id</var></dt>
+					<dd>identifier of the person</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>containing all the fields of the table row
+				</div>
 
 
 
@@ -371,24 +413,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_multiple_info">#</a>
-		<code><a href="source-class-Person.html#67-74" title="Go to source code">get_multiple_info</a>( <span> <var>$person_ids</var></span> )</code>
+		<code><a href="source-class-Person.html#89-103" title="Go to source code">get_multiple_info</a>( <span>array <var>$person_ids</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets information about people as an array of rows</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets information about people as an array of rows</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_ids</var></dt>
+					<dd>array of people identifiers</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>containing all the fields of the table row
+				</div>
 
 
 
@@ -401,24 +452,35 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Person.html#79-96" title="Go to source code">save</a>( <span> <var>&amp; $person_data</var></span>, <span> <var>$person_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Person.html#105-131" title="Go to source code">save</a>( <span>array <var>&amp; $person_data</var></span>, <span>var <var>$person_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Inserts or updates a person</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Inserts or updates a person</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_data</var></dt>
+					<dd>array containing person information</dd>
+					<dt><var>$person_id</var></dt>
+					<dd>identifier of the person to update the information</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>TRUE if the save was successful, FALSE if not
+				</div>
 
 
 
@@ -431,24 +493,35 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_search_suggestions">#</a>
-		<code><a href="source-class-Person.html#101-130" title="Go to source code">get_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Person.html#133-171" title="Go to source code">get_search_suggestions</a>( <span>string <var>$search</var></span>, <span>integer <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Get search suggestions to find person</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Get search suggestions to find person</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$search</var></dt>
+					<dd>string containing the term to search in the people table</dd>
+					<dt><var>$limit</var></dt>
+					<dd>limit the search</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>array with the suggestion strings
+				</div>
 
 
 
@@ -461,24 +534,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Person.html#135-138" title="Go to source code">delete</a>( <span> <var>$person_id</var></span> )</code>
+		<code><a href="source-class-Person.html#173-183" title="Go to source code">delete</a>( <span>integer <var>$person_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes one Person (dummy base function)</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Deletes one Person (dummy base function)</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_id</var></dt>
+					<dd>person identificator</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>always TRUE
+				</div>
 
 
 
@@ -491,24 +573,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_list">#</a>
-		<code><a href="source-class-Person.html#143-146" title="Go to source code">delete_list</a>( <span> <var>$person_ids</var></span> )</code>
+		<code><a href="source-class-Person.html#185-195" title="Go to source code">delete_list</a>( <span>array <var>$person_ids</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes a list of people (dummy base function)</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Deletes a list of people (dummy base function)</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_ids</var></dt>
+					<dd>list of person identificators</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>always TRUE
+				</div>
 
 
 

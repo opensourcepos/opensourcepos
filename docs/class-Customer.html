@@ -204,6 +204,9 @@
 	<h1>Class Customer</h1>
 
 
+	<div class="description">
+	<p>Customer class</p>
+	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
@@ -239,7 +242,13 @@ CI_Model
 		
 		
 
-			<b>Located at</b> <a href="source-class-Customer.html#2-345" title="Go to source code">models/Customer.php</a>
+				<b>Author:</b>
+				N/A<br>
+				<b>Since:</b>
+				1.0<br>
+				<b>Link:</b>
+				github.com/jekkos/opensourcepos<br>
+			<b>Located at</b> <a href="source-class-Customer.html#4-354" title="Go to source code">models/Customer.php</a>
 		<br>
 	</div>
 
@@ -252,24 +261,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Customer.html#7-14" title="Go to source code">exists</a>( <span> <var>$person_id</var></span> )</code>
+		<code><a href="source-class-Customer.html#16-23" title="Go to source code">exists</a>( <span>integer <var>$person_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Determines whether the given person exists in the people database table</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Determines whether the given person exists in the people database table</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$person_id</var></dt>
+					<dd>identifier of the person to verify the existence</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>TRUE if the person exists, FALSE if not
+				</div>
 
 
 
@@ -291,7 +309,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_account_number_exists">#</a>
-		<code><a href="source-class-Customer.html#19-30" title="Go to source code">check_account_number_exists</a>( <span> <var>$account_number</var></span>, <span> <var>$person_id</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-Customer.html#28-39" title="Go to source code">check_account_number_exists</a>( <span> <var>$account_number</var></span>, <span> <var>$person_id</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			
@@ -314,24 +332,28 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			integer
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_total_rows">#</a>
-		<code><a href="source-class-Customer.html#35-41" title="Go to source code">get_total_rows</a>( )</code>
+		<code><a href="source-class-Customer.html#44-50" title="Go to source code">get_total_rows</a>( )</code>
 
 		<div class="description short">
-			
+			<p>Gets total of rows of people database table</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets total of rows of people database table</p>
 
 
 
+				<h4>Returns</h4>
+				<div class="list">
+					integer<br>row counter
+				</div>
 
 
 
@@ -346,24 +368,35 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all">#</a>
-		<code><a href="source-class-Customer.html#46-59" title="Go to source code">get_all</a>( <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Customer.html#55-68" title="Go to source code">get_all</a>( <span>integer <var>$rows</var> = <span class="php-num">0</span></span>, <span>integer <var>$limit_from</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets all people from the database table</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets all people from the database table</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$rows</var></dt>
+					<dd>$limit limits the query return rows</dd>
+					<dt><var>$limit_from</var></dt>
+					<dd>$offset offset the query</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>array of people table rows
+				</div>
 
 
 
@@ -378,24 +411,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Customer.html#64-89" title="Go to source code">get_info</a>( <span> <var>$customer_id</var></span> )</code>
+		<code><a href="source-class-Customer.html#73-98" title="Go to source code">get_info</a>( <span>integer <var>$customer_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets information about a person as an array</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets information about a person as an array</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$customer_id</var></dt>
+					<dd>$person_id identifier of the person</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>containing all the fields of the table row
+				</div>
 
 
 
@@ -417,7 +459,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_stats">#</a>
-		<code><a href="source-class-Customer.html#94-137" title="Go to source code">get_stats</a>( <span> <var>$customer_id</var></span> )</code>
+		<code><a href="source-class-Customer.html#103-146" title="Go to source code">get_stats</a>( <span> <var>$customer_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -440,24 +482,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_multiple_info">#</a>
-		<code><a href="source-class-Customer.html#142-150" title="Go to source code">get_multiple_info</a>( <span> <var>$customer_ids</var></span> )</code>
+		<code><a href="source-class-Customer.html#151-159" title="Go to source code">get_multiple_info</a>( <span>array <var>$customer_ids</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets information about people as an array of rows</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets information about people as an array of rows</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$customer_ids</var></dt>
+					<dd>$person_ids array of people identifiers</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>containing all the fields of the table row
+				</div>
 
 
 
@@ -479,7 +530,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_email_exists">#</a>
-		<code><a href="source-class-Customer.html#155-174" title="Go to source code">check_email_exists</a>( <span> <var>$email</var></span>, <span> <var>$customer_id</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-Customer.html#164-183" title="Go to source code">check_email_exists</a>( <span> <var>$email</var></span>, <span> <var>$customer_id</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			
@@ -509,7 +560,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save_customer">#</a>
-		<code><a href="source-class-Customer.html#179-205" title="Go to source code">save_customer</a>( <span> <var>&amp; $person_data</var></span>, <span> <var>&amp; $customer_data</var></span>, <span> <var>$customer_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Customer.html#188-214" title="Go to source code">save_customer</a>( <span> <var>&amp; $person_data</var></span>, <span> <var>&amp; $customer_data</var></span>, <span> <var>$customer_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -539,7 +590,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_reward_points_value">#</a>
-		<code><a href="source-class-Customer.html#210-214" title="Go to source code">update_reward_points_value</a>( <span> <var>$customer_id</var></span>, <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Customer.html#219-223" title="Go to source code">update_reward_points_value</a>( <span> <var>$customer_id</var></span>, <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -562,24 +613,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Customer.html#220-225" title="Go to source code">delete</a>( <span> <var>$customer_id</var></span> )</code>
+		<code><a href="source-class-Customer.html#229-234" title="Go to source code">delete</a>( <span>integer <var>$customer_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes one Person (dummy base function)</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Deletes one Person (dummy base function)</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$customer_id</var></dt>
+					<dd>$person_id person identificator</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>always TRUE
+				</div>
 
 
 
@@ -594,24 +654,33 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			boolean
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_list">#</a>
-		<code><a href="source-class-Customer.html#230-235" title="Go to source code">delete_list</a>( <span> <var>$customer_ids</var></span> )</code>
+		<code><a href="source-class-Customer.html#239-244" title="Go to source code">delete_list</a>( <span>array <var>$customer_ids</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes a list of people (dummy base function)</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Deletes a list of people (dummy base function)</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$customer_ids</var></dt>
+					<dd>$person_ids list of person identificators</dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					boolean<br>always TRUE
+				</div>
 
 
 
@@ -626,24 +695,37 @@ CI_Model
 		<td class="attributes"><code>
 			 public 
 
-			
+			array
 			
 			</code>
 		</td>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_search_suggestions">#</a>
-		<code><a href="source-class-Customer.html#240-298" title="Go to source code">get_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$unique</var> = <span class="php-keyword1">TRUE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Customer.html#249-307" title="Go to source code">get_search_suggestions</a>( <span>string <var>$search</var></span>, <span>integer <var>$unique</var> = <span class="php-keyword1">TRUE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Get search suggestions to find person</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Get search suggestions to find person</p>
 
 
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$search</var></dt>
+					<dd>string containing the term to search in the people table</dd>
+					<dt><var>$unique</var></dt>
+					<dd>$limit limit the search</dd>
+					<dt><var>$limit</var></dt>
+					<dd></dd>
+				</dl></div>
 
+				<h4>Returns</h4>
+				<div class="list">
+					array<br>array with the suggestion strings
+				</div>
 
 
 
@@ -665,7 +747,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_found_rows">#</a>
-		<code><a href="source-class-Customer.html#303-318" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span> )</code>
+		<code><a href="source-class-Customer.html#312-327" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span> )</code>
 
 		<div class="description short">
 			
@@ -695,7 +777,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_search">#</a>
-		<code><a href="source-class-Customer.html#323-344" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'last_name'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
+		<code><a href="source-class-Customer.html#332-353" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'last_name'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
 
 		<div class="description short">
 			
