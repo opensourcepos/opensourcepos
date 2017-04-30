@@ -24,7 +24,6 @@
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.1.*",
-		"vlucas/phpdotenv": "^2.4",
-		"apigen/apigen": "^4.1"
+		"vlucas/phpdotenv": "^2.4"
 	}
 }

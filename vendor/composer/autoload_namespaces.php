@@ -7,15 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'org\\bovigo\\vfs' => array($vendorDir . '/mikey179/vfsStream/src/main/php'),
-    'TokenReflection' => array($vendorDir . '/andrewsville/php-token-reflection'),
-    'Symfony\\Component\\OptionsResolver\\' => array($vendorDir . '/symfony/options-resolver'),
     'Svg\\' => array($vendorDir . '/phenx/php-svg-lib/src'),
     'Racecore\\GATracking' => array($vendorDir . '/ins0/google-measurement-php-client/src'),
-    'Michelf' => array($vendorDir . '/michelf/php-markdown'),
-    'Kdyby\\Events\\' => array($vendorDir . '/kdyby/events/src'),
-    'Herrera\\Version' => array($vendorDir . '/herrera-io/version/src/lib'),
-    'Herrera\\Phar\\Update' => array($vendorDir . '/herrera-io/phar-update/src/lib'),
-    'Herrera\\Json' => array($vendorDir . '/herrera-io/json/src/lib'),
     'FontLib\\' => array($vendorDir . '/phenx/php-font-lib/src'),
-    'FSHL' => array($vendorDir . '/kukulich/fshl'),
 );
