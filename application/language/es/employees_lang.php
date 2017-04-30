@@ -27,6 +27,7 @@ $lang["employees_successful_adding"] = "Has agregado el empleado satisfactoriame
 $lang["employees_successful_deleted"] = "Has borrado satisfactoriamente a";
 $lang["employees_successful_updating"] = "Has actualizado el empleado satisfactoriamente";
 $lang["employees_successful_change_password"] = "Contraseña cambiada satisfactoriamente";
+$lang["employees_unsuccessful_change_password"] = "Cambio de contraseña sin éxito";
 $lang["employees_update"] = "Actualizar Empleado";
 $lang["employees_username"] = "Usuario";
 $lang["employees_username_minlength"] = "El Usuario debe tener, por lo menos, 5 caracteres";

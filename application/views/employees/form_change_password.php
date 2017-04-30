@@ -87,7 +87,14 @@ $(document).ready(function()
 				success:function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo site_url('employees'); ?>', response);
+					if(!response.success)
+					{
+						$.notify(response.message, {type: 'danger' });
+					}
+					else
+					{
+						$.notify(response.message, {type: 'success' });
+					}
 				},
 				dataType:'json'
 			});
