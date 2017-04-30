@@ -44,7 +44,6 @@
     "wd": "^0.3.3"
   },
   "dependencies": {
-    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
-    "grunt-apigen": "git://github.com/daN4cat/grunt-apigen#master"
+    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master"
   }
 }

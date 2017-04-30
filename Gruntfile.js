@@ -234,7 +234,9 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-composer');
 	grunt.loadNpmTasks('grunt-apigen');
 
-    grunt.registerTask('default', ['composer:update', 'apigen:generate', 'wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
+    grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
     grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
+    grunt.registerTask('packages', ['composer:update']);
+    grunt.registerTask('gendocs', ['apigen:generate']);
 
 };
