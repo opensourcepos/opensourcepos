@@ -46,6 +46,9 @@
     "blockUI": "*",
     "bootstrap-tagsinput": "^0.8.0"
   },
+  "resolutions": {
+    "jquery": "~1.12.4"
+  },
   "overrides": {
     "jquery-ui": {
       "main": [

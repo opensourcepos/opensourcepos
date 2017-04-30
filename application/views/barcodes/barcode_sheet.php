@@ -5,7 +5,7 @@
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title><?php echo $this->lang->line('items_generate_barcodes'); ?></title>
-	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>dist/barcode_font.css" />
+	<link rel="stylesheet" rev="stylesheet" href="<?php echo base_url();?>css/barcode_font.css" />
 </head>
 
 <body class=<?php echo "font_".$this->barcode_lib->get_font_name($barcode_config['barcode_font']); ?> 

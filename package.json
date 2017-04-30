@@ -38,6 +38,7 @@
     "grunt-mocha-webdriver": "^1.2.2",
     "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master",
     "grunt-wiredep": "^2.0.0",
+    "grunt-contrib-compress": "^1.4.1",
     "load-grunt-tasks": "^3.4.0",
     "mocha": "^2.2.1",
     "phantomjs": "~1.9.2",
