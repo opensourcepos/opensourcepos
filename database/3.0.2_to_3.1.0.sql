@@ -228,8 +228,3 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('giftcard_number', 'seri
 -- add option to print company name in receipt
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('receipt_show_company_name', '1');
-
--- add options to support sales tax history migration
-
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('migrate_sales_history', '0');
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES ('migrate_sales_history_block', '0');

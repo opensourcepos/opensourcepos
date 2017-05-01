@@ -82,31 +82,7 @@
 				</div>
 			</div>
 
-
-            <div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_migrate_sales_history'), 'migrate_sales_history', array('class' => 'control-label col-xs-2')); ?>
-                <div class='col-xs-2'>
-					<?php echo form_checkbox(array(
-						'name' => 'migrate_sales_history',
-						'id' => 'migrate_sales_history',
-						'value' => 'migrate_sales_history',
-						'checked'=>$this->config->item('migrate_sales_history'))); ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_migrate_sales_history_block'), 'migrate_sales_history_block', array('class' => 'control-label col-xs-2')); ?>
-                <div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'migrate_sales_history_block',
-						'id' => 'migrate_sales_history_block',
-						'class' => 'form-control input-sm required',
-						'type' => 'number',
-						'value'=>$this->config->item('migrate_sales_history_block'))); ?>
-                </div>
-            </div>
-
-            <div class="form-group form-group-sm">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">

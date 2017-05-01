@@ -89,32 +89,35 @@ class Tax_lib
 
 		$tax_group_index = $this->clean('X'.$tax_group);
 
-		if(!array_key_exists($tax_group_index, $sales_taxes))
+		if ($item_tax_amount != 0)
 		{
-			$insertkey = $tax_group_index;
+			if(!array_key_exists($tax_group_index, $sales_taxes))
+			{
+				$insertkey = $tax_group_index;
 
-			$sales_tax = array($insertkey => array(
-				'sale_id' => $sale_id,
-				'tax_type' => $tax_type,
-				'tax_group' => $tax_group,
-				'sale_tax_basis' => $tax_basis,
-				'sale_tax_amount' => $item_tax_amount,
-				'print_sequence' => $tax_group_sequence,
-				'name' => $name,
-				'tax_rate' => $tax_rate,
-				'sales_tax_code' => $tax_code,
-				'rounding_code' => $rounding_code
-			));
+				$sales_tax = array($insertkey => array(
+					'sale_id' => $sale_id,
+					'tax_type' => $tax_type,
+					'tax_group' => $tax_group,
+					'sale_tax_basis' => $tax_basis,
+					'sale_tax_amount' => $item_tax_amount,
+					'print_sequence' => $tax_group_sequence,
+					'name' => $name,
+					'tax_rate' => $tax_rate,
+					'sales_tax_code' => $tax_code,
+					'rounding_code' => $rounding_code
+				));
 
-			//add to existing array
-			$sales_taxes += $sales_tax;
-		}
-		else
-		{
-			// Important ... the sales amounts are accumulated for the group at the maximum configurable scale value of 4
-			// but the scale will in reality be the scale specified by the tax_decimal configuration value  used for sales_items_taxes
-			$sales_taxes[$tax_group_index]['sale_tax_basis'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_basis'], $tax_basis, 4);
-			$sales_taxes[$tax_group_index]['sale_tax_amount'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_amount'], $item_tax_amount, 4);
+				//add to existing array
+				$sales_taxes += $sales_tax;
+			}
+			else
+			{
+				// Important ... the sales amounts are accumulated for the group at the maximum configurable scale value of 4
+				// but the scale will in reality be the scale specified by the tax_decimal configuration value  used for sales_items_taxes
+				$sales_taxes[$tax_group_index]['sale_tax_basis'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_basis'], $tax_basis, 4);
+				$sales_taxes[$tax_group_index]['sale_tax_amount'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_amount'], $item_tax_amount, 4);
+			}
 		}
 	}
 
@@ -315,45 +318,6 @@ class Tax_lib
 
 		return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 	}
-
-	function upgrade_tax_history_for_sale($sale_id)
-	{
-		$tax_decimals = $this->CI->config->config['tax_decimals'];
-		$tax_included = $this->CI->config->config['tax_included'];
-
-		if($tax_included)
-		{
-			$tax_type = Tax_lib::TAX_TYPE_VAT;
-		}
-		else
-		{
-			$tax_type = Tax_lib::TAX_TYPE_SALES;
-		}
-
-		$sales_taxes = array();
-		$tax_group_sequence = 0;
-
-		$items = $this->CI->Sale->get_sale_items_for_migration($sale_id)->result_array();
-		foreach($items as $item)
-		{
-			// This computes tax for each line item and adds it to the tax type total
-			$tax_group = (float)$item['percent'] . '% ' . $item['name'];
-			$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], TRUE);
-			$item_tax_amount = 0;
-
-			if($tax_included)
-			{
-				$item_tax_amount = $this->CI->sale_lib->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], $item['percent']);
-			}
-			else
-			{
-				$item_tax_amount = $this->get_sales_tax_for_amount($tax_basis, $item['percent'], '0', $tax_decimals);
-			}
-			$this->CI->Sale->update_sales_items_taxes_amount($sale_id, $item['line'], $item['name'], $item['percent'], $tax_type, $item_tax_amount);
-			$this->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, '0', $sale_id, $item['name']);
-			$tax_group_sequence += 1;
-		}
-		$this->CI->Sale->save_sales_tax($sales_taxes);
-	}
 }
+
 ?>
