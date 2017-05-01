@@ -252,14 +252,14 @@ class Sale extends CI_Model
 		if($filters['only_cash'] != FALSE)
 		{
 			$this->db->group_start();
-				$this->db->like('payments.payment_type', $this->lang->line('sales_cash'), 'after');
+				$this->db->like('payments.payment_type', $this->lang->line('sales_cash'));
 				$this->db->or_where('payments.payment_type IS NULL');
 			$this->db->group_end();
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payments.payment_type', $this->lang->line('sales_check'), 'after');
+			$this->db->like('payments.payment_type', $this->lang->line('sales_check'));
 		}
 
 		$this->db->group_by('sale_id');
@@ -332,12 +332,12 @@ class Sale extends CI_Model
 
 		if($filters['only_cash'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_cash'), 'after');
+			$this->db->like('payment_type', $this->lang->line('sales_cash'));
 		}
 
 		if($filters['only_check'] != FALSE)
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_check'), 'after');
+			$this->db->like('payment_type', $this->lang->line('sales_check'));
 		}
 
 		$this->db->group_by('payment_type');
