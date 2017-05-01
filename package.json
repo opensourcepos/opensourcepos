@@ -42,8 +42,5 @@
     "mocha": "^2.2.1",
     "phantomjs": "~1.9.2",
     "wd": "^0.3.3"
-  },
-  "dependencies": {
-    "grunt-script-link-tags": "git://github.com/jekkos/grunt-script-link-tags.git#master"
   }
 }
