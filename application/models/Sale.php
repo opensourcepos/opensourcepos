@@ -752,7 +752,7 @@ class Sale extends CI_Model
 		}
 	}
 
-	private function save_sales_tax(&$sales_taxes)
+	public function save_sales_tax(&$sales_taxes)
 	{
 		foreach($sales_taxes as $line=>$sales_tax)
 		{
@@ -1205,5 +1205,6 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
+
 }
 ?>

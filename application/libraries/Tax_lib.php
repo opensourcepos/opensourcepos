@@ -89,35 +89,32 @@ class Tax_lib
 
 		$tax_group_index = $this->clean('X'.$tax_group);
 
-		if ($item_tax_amount != 0)
+		if(!array_key_exists($tax_group_index, $sales_taxes))
 		{
-			if(!array_key_exists($tax_group_index, $sales_taxes))
-			{
-				$insertkey = $tax_group_index;
+			$insertkey = $tax_group_index;
 
-				$sales_tax = array($insertkey => array(
-					'sale_id' => $sale_id,
-					'tax_type' => $tax_type,
-					'tax_group' => $tax_group,
-					'sale_tax_basis' => $tax_basis,
-					'sale_tax_amount' => $item_tax_amount,
-					'print_sequence' => $tax_group_sequence,
-					'name' => $name,
-					'tax_rate' => $tax_rate,
-					'sales_tax_code' => $tax_code,
-					'rounding_code' => $rounding_code
-				));
+			$sales_tax = array($insertkey => array(
+				'sale_id' => $sale_id,
+				'tax_type' => $tax_type,
+				'tax_group' => $tax_group,
+				'sale_tax_basis' => $tax_basis,
+				'sale_tax_amount' => $item_tax_amount,
+				'print_sequence' => $tax_group_sequence,
+				'name' => $name,
+				'tax_rate' => $tax_rate,
+				'sales_tax_code' => $tax_code,
+				'rounding_code' => $rounding_code
+			));
 
-				//add to existing array
-				$sales_taxes += $sales_tax;
-			}
-			else
-			{
-				// Important ... the sales amounts are accumulated for the group at the maximum configurable scale value of 4
-				// but the scale will in reality be the scale specified by the tax_decimal configuration value  used for sales_items_taxes
-				$sales_taxes[$tax_group_index]['sale_tax_basis'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_basis'], $tax_basis, 4);
-				$sales_taxes[$tax_group_index]['sale_tax_amount'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_amount'], $item_tax_amount, 4);
-			}
+			//add to existing array
+			$sales_taxes += $sales_tax;
+		}
+		else
+		{
+			// Important ... the sales amounts are accumulated for the group at the maximum configurable scale value of 4
+			// but the scale will in reality be the scale specified by the tax_decimal configuration value  used for sales_items_taxes
+			$sales_taxes[$tax_group_index]['sale_tax_basis'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_basis'], $tax_basis, 4);
+			$sales_taxes[$tax_group_index]['sale_tax_amount'] = bcadd($sales_taxes[$tax_group_index]['sale_tax_amount'], $item_tax_amount, 4);
 		}
 	}
 
@@ -140,7 +137,7 @@ class Tax_lib
 
 		foreach($sales_taxes as $row_number => $sales_tax)
 		{
-			$sales_tax['sale_tax_amount'] = get_sales_tax_for_amount($sales_tax['sale_tax_basis'], $sales_tax['sale_tax_rate'], $sales_tax['rounding_code'], $currency_decimals);
+			$sales_taxes[$row_number]['sale_tax_amount'] = $this->get_sales_tax_for_amount($sales_tax['sale_tax_basis'], $sales_tax['tax_rate'], $sales_tax['rounding_code'], $currency_decimals);
 		}
 	}
 
@@ -318,6 +315,6 @@ class Tax_lib
 
 		return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 	}
-}
 
+}
 ?>
