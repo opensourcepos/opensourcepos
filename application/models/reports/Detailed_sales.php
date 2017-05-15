@@ -113,8 +113,9 @@ class Detailed_sales extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(sales_taxes.sale_tax_amount) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->from('sales_items_temp as sales_items_temp');
+		$this->db->join('sales_taxes as sales_taxes', 'sales_items_temp.sale_id = sales_taxes.sale_id');
 
 		if($inputs['location_id'] != 'all')
 		{
