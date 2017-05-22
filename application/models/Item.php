@@ -358,6 +358,7 @@ class Item extends CI_Model
 		$this->Item_quantity->reset_quantity($item_id);
 		$this->db->where('item_id', $item_id);
 		$success = $this->db->update('items', array('deleted'=>1));
+		$success &= $this->Inventory->reset_quantity($item_id);
 
 		$this->db->trans_complete();
 
@@ -388,6 +389,11 @@ class Item extends CI_Model
 		$this->Item_quantity->reset_quantity_list($item_ids);
 		$this->db->where_in('item_id', $item_ids);
 		$success = $this->db->update('items', array('deleted'=>1));
+
+		foreach($item_ids as $item_id)
+		{
+			$success &= $this->Inventory->reset_quantity($item_id);
+		}
 
 		$this->db->trans_complete();
 
