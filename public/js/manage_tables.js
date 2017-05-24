@@ -17,6 +17,7 @@
 			if (button_id == 'submit') {
 				$('form', dlog_ref.$modalBody).first().submit();
 			}
+			return false;
 		}
 	};
 
@@ -256,7 +257,6 @@
 	var submit_handler = function(url) {
 		return function (resource, response) {
 			var id = response.id;
-
 			if (!response.success) {
 				$.notify(response.message, { type: 'danger' });
 			} else {
@@ -287,6 +287,7 @@
 				}
 				$.notify(message, {type: 'success' });
 			}
+			return false;
 		};
 	};
 
