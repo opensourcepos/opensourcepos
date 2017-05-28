@@ -864,6 +864,7 @@ class Sale_lib
 			$this->add_payment($row->payment_type, $row->payment_amount);
 		}
 
+		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 	}

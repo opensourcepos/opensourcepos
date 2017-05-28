@@ -111,7 +111,7 @@ if (isset($error_message))
 			?>
             <tr class="item-row">
                 <td><?php echo $item['item_number']; ?></td>
-                <td class="item-name"><textarea rows="4" cols="6"><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name']; ?></textarea></td>
+                <td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
                 <td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
                 <td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
                 <td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] .'%'; ?></textarea></td>
@@ -131,7 +131,7 @@ if (isset($error_message))
         <tr>
             <td colspan="3" class="blank-bottom"> </td>
             <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-            <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($tax_exclusive_subtotal); ?></textarea></td>
+            <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
         </tr>
 		<?php
 		foreach($taxes as $tax_group_index=>$sales_tax)
@@ -150,6 +150,25 @@ if (isset($error_message))
             <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
             <td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
         </tr>
+
+		<?php
+		$only_sale_check = FALSE;
+		$show_giftcard_remainder = FALSE;
+		foreach($payments as $payment_id=>$payment)
+		{
+			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
+			$splitpayment = explode(':', $payment['payment_type']);
+			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
+			?>
+            <tr>
+                <td colspan="3" class="blank"> </td>
+                <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
+                <td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount']); ?></textarea></td>
+            </tr>
+			<?php
+		}
+		?>
+
     </table>
 </div>
 
