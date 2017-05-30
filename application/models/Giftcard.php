@@ -18,9 +18,12 @@ class Giftcard extends CI_Model
 	*/
 	public function get_max_number()
 	{
-		$this->db->select_max('giftcard_number');
+		$this->db->select('cast(giftcard_number AS UNSIGNED) AS giftcard_number');
 		$this->db->from('giftcards');
 		$this->db->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
+		$this->db->order_by("giftcard_number","desc");
+		$this->db->limit(1);
+
 
 		return $this->db->get()->row();
 	}
@@ -108,7 +111,7 @@ class Giftcard extends CI_Model
 		{
 			if($this->db->insert('giftcards', $giftcard_data))
 			{
-				$giftcard_data['giftcard_id'] = $this->db->insert_id();
+				$giftcard_data['giftcard_number'] = $this->db->insert_id();
 
 				return TRUE;
 			}
