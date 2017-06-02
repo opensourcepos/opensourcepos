@@ -57,6 +57,7 @@ $lang["common_search_options"] = "Search options";
 $lang["common_searched_for"] = "查找";
 $lang["common_state"] = "州";
 $lang["common_submit"] = "送出";
+$lang["common_total_spent"] = "";
 $lang["common_view_recent_sales"] = "最新的消售資訊";
 $lang["common_website"] = "網站";
 $lang["common_welcome"] = "歡迎";

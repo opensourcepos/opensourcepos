@@ -24,6 +24,7 @@ $lang["sales_customer_address"] = "Adresse client";
 $lang["sales_customer_discount"] = "Rabais";
 $lang["sales_customer_email"] = "Email client";
 $lang["sales_customer_location"] = "Localisation client";
+$lang["sales_customer_mailchimp_status"] = "";
 $lang["sales_customer_total"] = "Total";
 $lang["sales_date"] = "Date de Vente";
 $lang["sales_date_range"] = "Plage de dates";

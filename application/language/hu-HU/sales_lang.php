@@ -24,6 +24,7 @@ $lang["sales_customer_address"] = "Vevő cím";
 $lang["sales_customer_discount"] = "Discount";
 $lang["sales_customer_email"] = "Vevő e-mail";
 $lang["sales_customer_location"] = "Vevő hely";
+$lang["sales_customer_mailchimp_status"] = "";
 $lang["sales_customer_total"] = "Total";
 $lang["sales_date"] = "Eladás dátuma";
 $lang["sales_date_range"] = "Dátum range";

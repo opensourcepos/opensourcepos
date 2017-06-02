@@ -57,6 +57,7 @@ $lang["common_search_options"] = "Pilihan pencarian";
 $lang["common_searched_for"] = "Mencari untuk";
 $lang["common_state"] = "Provinsi";
 $lang["common_submit"] = "Kirim";
+$lang["common_total_spent"] = "";
 $lang["common_view_recent_sales"] = "Lihat Penjualan Terkini";
 $lang["common_website"] = "Situs";
 $lang["common_welcome"] = "Selamat Datang";

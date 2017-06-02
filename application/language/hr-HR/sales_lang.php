@@ -24,6 +24,7 @@ $lang["sales_customer_address"] = "Adresa kupca";
 $lang["sales_customer_discount"] = "Discount";
 $lang["sales_customer_email"] = "e-mail kupca";
 $lang["sales_customer_location"] = "Mjesto kupca";
+$lang["sales_customer_mailchimp_status"] = "";
 $lang["sales_customer_total"] = "Total";
 $lang["sales_date"] = "Datum prodaje";
 $lang["sales_date_range"] = "Period";

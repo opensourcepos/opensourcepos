@@ -24,6 +24,7 @@ $lang["sales_customer_address"] = "Customer Address";
 $lang["sales_customer_discount"] = "Diskon";
 $lang["sales_customer_email"] = "Customer Email";
 $lang["sales_customer_location"] = "Customer Location";
+$lang["sales_customer_mailchimp_status"] = "";
 $lang["sales_customer_total"] = "Total";
 $lang["sales_date"] = "Tanggal";
 $lang["sales_date_range"] = "Rentang Tanggal";
