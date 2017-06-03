@@ -24,6 +24,7 @@ $lang["sales_customer_address"] = "العنوان";
 $lang["sales_customer_discount"] = "الخصم";
 $lang["sales_customer_email"] = "البريد الإلكترونى";
 $lang["sales_customer_location"] = "المكان";
+$lang["sales_customer_mailchimp_status"] = "";
 $lang["sales_customer_total"] = "المجموع";
 $lang["sales_date"] = "تاريخ البيع";
 $lang["sales_date_range"] = "الفترة الزمنية";

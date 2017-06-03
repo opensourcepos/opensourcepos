@@ -57,6 +57,7 @@ $lang["common_search_options"] = "Options de recherche";
 $lang["common_searched_for"] = "Recherché";
 $lang["common_state"] = "État";
 $lang["common_submit"] = "Envoyer";
+$lang["common_total_spent"] = "";
 $lang["common_view_recent_sales"] = "Voir Ventes Récentes";
 $lang["common_website"] = "site-web";
 $lang["common_welcome"] = "Bienvenue";

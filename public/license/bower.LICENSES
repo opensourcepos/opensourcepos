@@ -11,7 +11,7 @@
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
     },
-    "bootstrap3-dialog@1.35.4": {
+    "bootstrap3-dialog@undefined": {
         "licenses": [
             "MIT"
         ],
@@ -71,17 +71,17 @@
         "licenses": "UNKNOWN",
         "homepage": "https://github.com/malsup/form"
     },
-    "jspdf@1.0.272": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/mrrio/jspdf"
-    },
     "js-cookie@2.1.4": {
         "licenses": [
             "MIT"
         ],
         "homepage": "https://github.com/js-cookie/js-cookie"
+    },
+    "jspdf@1.0.272": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/mrrio/jspdf"
     },
     "moment@2.18.1": {
         "licenses": [
@@ -109,13 +109,6 @@
         "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
         "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
     },
-    "html2canvas@0.4.1": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/niklasvh/html2canvas",
-        "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
-    },
     "bootstrap-table@undefined": {
         "licenses": [
             "MIT"
@@ -131,12 +124,12 @@
         "homepage": "https://github.com/jasny/bootstrap",
         "repository": "git+https://github.com/jasny/bootstrap"
     },
-    "jquery-validation@1.13.1": {
+    "html2canvas@0.4.1": {
         "licenses": [
             "MIT"
         ],
-        "repository": "https://github.com/jzaefferer/jquery-validation",
-        "homepage": "http://jqueryvalidation.org/"
+        "homepage": "https://github.com/niklasvh/html2canvas",
+        "repository": "git+ssh://git@github.com/niklasvh/html2canvas"
     },
     "jspdf-autotable@2.0.14": {
         "licenses": [
@@ -151,6 +144,13 @@
         ],
         "homepage": "http://bootstrap-notify.remabledesigns.com/",
         "repository": "https://github.com/mouse0270/bootstrap-notify"
+    },
+    "jquery-validation@1.13.1": {
+        "licenses": [
+            "MIT"
+        ],
+        "repository": "https://github.com/jzaefferer/jquery-validation",
+        "homepage": "http://jqueryvalidation.org/"
     },
     "smalot-bootstrap-datetimepicker@2.4.4": {
         "licenses": [
