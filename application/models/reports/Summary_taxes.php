@@ -48,13 +48,11 @@ class Summary_taxes extends Summary_report
 		{
 			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
 			$sale_subtotal = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (100 / (100 + sales_items_taxes.percent)))';
-			$sale_tax = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 - 100 / (100 + sales_items_taxes.percent)))';
 		}
 		else
 		{
 			$sale_total = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (1 + (sales_items_taxes.percent / 100)))';
 			$sale_subtotal = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100))';
-			$sale_tax = '(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100) * (sales_items_taxes.percent / 100))';
 		}
 
 		$decimals = totals_decimals();
@@ -64,7 +62,7 @@ class Summary_taxes extends Summary_report
 				SELECT
 					CONCAT(IFNULL(ROUND(percent, $decimals), 0), '%') AS percent,
 					$sale_subtotal AS subtotal,
-					IFNULL($sale_tax, 0) AS tax,
+					IFNULL(sales_items_taxes.item_tax_amount, 0) AS tax,
 					IFNULL($sale_total, $sale_subtotal) AS total
 					FROM " . $this->db->dbprefix('sales_items') . ' AS sales_items
 					INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales

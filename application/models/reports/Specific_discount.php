@@ -45,15 +45,25 @@ class Specific_discount extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, MAX(sale_date) AS sales_date, SUM(quantity_purchased) AS items_purchased, MAX(customer_name) AS customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, MAX(payment_type) AS payment_type, MAX(comment) AS comment');
+		$this->db->select('sale_id,
+			MAX(sale_date) AS sale_date,
+			SUM(quantity_purchased) AS items_purchased,
+			MAX(customer_name) AS customer_name,
+			SUM(subtotal) AS subtotal,
+			SUM(tax) AS tax,
+			SUM(total) AS total,
+			SUM(cost) AS cost,
+			SUM(profit) AS profit,
+			MAX(payment_type) AS payment_type,
+			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('discount_percent >=', $inputs['discount']);
 
-		if ($inputs['sale_type'] == 'sales')
+		if($inputs['sale_type'] == 'sales')
 		{
 			$this->db->where('quantity_purchased > 0');
 		}
-		elseif ($inputs['sale_type'] == 'returns')
+		elseif($inputs['sale_type'] == 'returns')
 		{
 			$this->db->where('quantity_purchased < 0');
 		}
@@ -78,15 +88,16 @@ class Specific_discount extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(sales_taxes.sale_tax_amount) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->from('sales_items_temp as sales_items_temp');
+		$this->db->join('sales_taxes as sales_taxes', 'sales_items_temp.sale_id = sales_taxes.sale_id');
 		$this->db->where('discount_percent >=', $inputs['discount']);
 
-		if ($inputs['sale_type'] == 'sales')
+		if($inputs['sale_type'] == 'sales')
 		{
 			$this->db->where('quantity_purchased > 0');
 		}
-		elseif ($inputs['sale_type'] == 'returns')
+		elseif($inputs['sale_type'] == 'returns')
 		{
 			$this->db->where('quantity_purchased < 0');
 		}
