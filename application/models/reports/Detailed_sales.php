@@ -51,7 +51,18 @@ class Detailed_sales extends Report
 
 	public function getDataBySaleId($sale_id)
 	{
-		$this->db->select('sale_id, sale_date, SUM(quantity_purchased) AS items_purchased, employee_name, customer_name, SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, payment_type, comment');
+		$this->db->select('sale_id,
+			sale_date,
+			SUM(quantity_purchased) AS items_purchased,
+			employee_name,
+			customer_name,
+			SUM(subtotal) AS subtotal,
+			SUM(tax) AS tax,
+			SUM(total) AS total,
+			SUM(cost) AS cost,
+			SUM(profit) AS profit,
+			payment_type,
+			comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_id', $sale_id);
 
@@ -61,17 +72,17 @@ class Detailed_sales extends Report
 	public function getData(array $inputs)
 	{
 		$this->db->select('sale_id, 
-		MAX(sale_date) AS sale_date, 
-		SUM(quantity_purchased) AS items_purchased, 
-		MAX(employee_name) AS employee_name, 
-		MAX(customer_name) AS customer_name, 
-		SUM(subtotal) AS subtotal, 
-		SUM(tax) AS tax, 
-		SUM(total) AS total, 
-		SUM(cost) AS cost, 
-		SUM(profit) AS profit, 
-		MAX(payment_type) AS payment_type, 
-		MAX(comment) AS comment');
+			MAX(sale_date) AS sale_date, 
+			SUM(quantity_purchased) AS items_purchased, 
+			MAX(employee_name) AS employee_name, 
+			MAX(customer_name) AS customer_name, 
+			SUM(subtotal) AS subtotal, 
+			SUM(tax) AS tax, 
+			SUM(total) AS total, 
+			SUM(cost) AS cost, 
+			SUM(profit) AS profit, 
+			MAX(payment_type) AS payment_type, 
+			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 
 		if($inputs['location_id'] != 'all')
@@ -113,8 +124,9 @@ class Detailed_sales extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
-		$this->db->from('sales_items_temp');
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(sales_taxes.sale_tax_amount) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+		$this->db->from('sales_items_temp as sales_items_temp');
+		$this->db->join('sales_taxes as sales_taxes', 'sales_items_temp.sale_id = sales_taxes.sale_id');
 
 		if($inputs['location_id'] != 'all')
 		{

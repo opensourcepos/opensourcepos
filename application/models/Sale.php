@@ -24,13 +24,11 @@ class Sale extends CI_Model
 		{
 			$sale_total = 'SUM(' . $sale_price . ')';
 			$sale_subtotal = 'SUM(' . $sale_price . ' - sales_items_taxes.tax)';
-			$sale_tax = 'SUM(' . $sale_price . ' * (1 - 100 / (100 + sales_items_taxes.percent)))';
 		}
 		else
 		{
 			$sale_total = 'SUM(' . $sale_price . ' + sales_items_taxes.tax)';
 			$sale_subtotal = 'SUM(' . $sale_price . ')';
-			$sale_tax = 'SUM(' . $sale_price . ' * (sales_items_taxes.percent / 100))';
 		}
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
@@ -43,9 +41,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					' . "
-					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
-					" . '
+					SUM(sales_items_taxes.item_tax_amount) AS tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -142,13 +138,11 @@ class Sale extends CI_Model
 		{
 			$sale_total = 'SUM(' . $sale_price . ')';
 			$sale_subtotal = 'SUM(' . $sale_price . ' - sales_items_taxes.tax)';
-			$sale_tax = 'SUM(' . $sale_price . ' * (1 - 100 / (100 + sales_items_taxes.percent)))';
 		}
 		else
 		{
 			$sale_total = 'SUM(' . $sale_price . ' + sales_items_taxes.tax)';
 			$sale_subtotal = 'SUM(' . $sale_price . ')';
-			$sale_tax = 'SUM(' . $sale_price . ' * (sales_items_taxes.percent / 100))';
 		}
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
@@ -162,9 +156,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					' . "
-					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
-					" . '
+					SUM(sales_items_taxes.item_tax_amount) as tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -1007,13 +999,11 @@ class Sale extends CI_Model
 		{
 			$sale_total = 'SUM(' . $sale_price . ')';
 			$sale_subtotal = 'SUM(' . $sale_price . ' - sales_items_taxes.tax)';
-			$sale_tax = 'SUM(' . $sale_price . ' * (1 - 100 / (100 + sales_items_taxes.percent)))';
 		}
 		else
 		{
 			$sale_total = 'SUM(' . $sale_price . ' + sales_items_taxes.tax)';
 			$sale_subtotal = 'SUM(' . $sale_price . ')';
-			$sale_tax = 'SUM(' . $sale_price . ' * (sales_items_taxes.percent / 100))';
 		}
 
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
@@ -1027,9 +1017,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					' . "
-					IFNULL(ROUND($sale_tax, $decimals), 0) AS tax
-					" . '
+					SUM(sales_items_taxes.item_tax_amount) as tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
