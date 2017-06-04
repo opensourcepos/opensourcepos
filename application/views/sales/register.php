@@ -292,7 +292,7 @@ if(isset($success))
 				</tr>
 				<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
 				<?php
-				if(!empty($customer_rewards) &&  isset($customer_rewards))
+				if(!empty($customer_rewards))
 				{
 				?>
 					<tr>

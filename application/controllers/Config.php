@@ -2,7 +2,7 @@
 
 require_once("Secure_Controller.php");
 
-class Config extends Secure_Controller 
+class Config extends Secure_Controller
 {
 	public function __construct()
 	{
@@ -86,11 +86,11 @@ class Config extends Secure_Controller
 			foreach($array as $key => $val)
 			{
 				if(is_array($val) && $key == 'dependencies')
-				{	
+				{
 					foreach($val as $key1 => $val1)
 					{
 						if(is_array($val1))
-						{	
+						{
 							$license[$i]['text'] .= 'component: ' . $key1 . "\n";
 
 							foreach($val1 as $key2 => $val2)
@@ -121,7 +121,7 @@ class Config extends Secure_Controller
 					}
 				}
 			}
-			
+
 			$license[$i]['text'] = $this->xss_clean($license[$i]['text']);
 		}
 
@@ -140,7 +140,7 @@ class Config extends Secure_Controller
 				if(is_array($val))
 				{
 					$license[$i]['text'] .= 'component: ' . $key . "\n";
-					
+
 					foreach($val as $key1 => $val1)
 					{
 						if(is_array($val1))
@@ -221,7 +221,7 @@ class Config extends Secure_Controller
 		else
 		{
 			$data['mailchimp']['api_key'] = '';
-			$data['mailchimp']['list_id'] = '';		
+			$data['mailchimp']['list_id'] = '';
 		}
 
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
@@ -241,7 +241,7 @@ class Config extends Secure_Controller
 			'phone' => $this->input->post('phone'),
 			'email' => $this->input->post('email'),
 			'fax' => $this->input->post('fax'),
-			'website' => $this->input->post('website'),	
+			'website' => $this->input->post('website'),
 			'return_policy' => $this->input->post('return_policy')
 		);
 
@@ -334,7 +334,7 @@ class Config extends Secure_Controller
 			'dateformat' => $this->input->post('dateformat'),
 			'timeformat' => $this->input->post('timeformat'),
 			'thousands_separator' => $this->input->post('thousands_separator'),
-			'number_locale' => $this->input->post('number_locale'),	
+			'number_locale' => $this->input->post('number_locale'),
 			'currency_decimals' => $this->input->post('currency_decimals'),
 			'tax_decimals' => $this->input->post('tax_decimals'),
 			'quantity_decimals' => $this->input->post('quantity_decimals'),
@@ -363,7 +363,7 @@ class Config extends Secure_Controller
 		{
 			$password = $this->encryption->encrypt($this->input->post('smtp_pass'));
 		}
-		
+
 		$batch_save_data = array(
 			'protocol' => $this->input->post('protocol'),
 			'mailpath' => $this->input->post('mailpath'),
@@ -393,13 +393,13 @@ class Config extends Secure_Controller
 			$password = $this->encryption->encrypt($this->input->post('msg_pwd'));
 		}
 
-		$batch_save_data = array(	
+		$batch_save_data = array(
 			'msg_msg' => $this->input->post('msg_msg'),
 			'msg_uid' => $this->input->post('msg_uid'),
 			'msg_pwd' => $password,
 			'msg_src' => $this->input->post('msg_src')
 		);
-	
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
@@ -429,7 +429,7 @@ class Config extends Secure_Controller
 				}
 			}
 		}
-		
+
 		return $result;
 	}
 
@@ -437,7 +437,7 @@ class Config extends Secure_Controller
 	AJAX call from mailchimp config form to fetch the Mailchimp lists when a valid API key is inserted
 	*/
 	public function ajax_check_mailchimp_api_key()
-	{	
+	{
 		// load mailchimp lists associated to the given api key, already XSS cleaned in the private function
 		$lists = $this->_mailchimp($this->input->post('mailchimp_api_key'));
 		$success = count($lists) > 0 ? TRUE : FALSE;
@@ -464,7 +464,7 @@ class Config extends Secure_Controller
 			'mailchimp_api_key' => $api_key,
 			'mailchimp_list_id' => $list_id
 		);
-	
+
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
 
@@ -473,34 +473,34 @@ class Config extends Secure_Controller
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 	}
-	
-	public function stock_locations() 
+
+	public function stock_locations()
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
-		
+
 		$stock_locations = $this->xss_clean($stock_locations);
 
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
-	} 
-	
-	public function dinner_tables() 
+	}
+
+	public function dinner_tables()
 	{
 		$dinner_tables = $this->Dinner_table->get_all()->result_array();
-		
+
 		$dinner_tables = $this->xss_clean($dinner_tables);
 
 		$this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables));
 	}
 
-	public function customer_rewards() 
+	public function customer_rewards()
 	{
 		$customer_rewards = $this->Customer_rewards->get_all()->result_array();
-		
+
 		$customer_rewards = $this->xss_clean($customer_rewards);
 
 		$this->load->view('partial/customer_rewards', array('customer_rewards' => $customer_rewards));
 	}
-	
+
 	private function _clear_session_state()
 	{
 		$this->sale_lib->clear_sale_location();
@@ -511,11 +511,11 @@ class Config extends Secure_Controller
 		$this->receiving_lib->clear_stock_destination();
 		$this->receiving_lib->clear_all();
 	}
-	
-	public function save_locations() 
+
+	public function save_locations()
 	{
 		$this->db->trans_start();
-		
+
 		$deleted_locations = $this->Stock_location->get_allowed_locations();
 		foreach($this->input->post() as $key => $value)
 		{
@@ -539,16 +539,19 @@ class Config extends Secure_Controller
 		}
 
 		$this->db->trans_complete();
-		
+
 		$success = $this->db->trans_status();
-		
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
-	public function save_tables() 
+	public function save_tables()
 	{
 		$this->db->trans_start();
-		
+
 		$this->Appconfig->save('dinner_table_enable',$this->input->post('dinner_table_enable'));
 
 		$deleted_tables = $this->Dinner_table->get_all()->result_array();
@@ -574,65 +577,73 @@ class Config extends Secure_Controller
 		foreach ($deleted_tables as $dinner_table)
 		{
 			if(!in_array($dinner_table['dinner_table_id'],$not_to_delete))
-			{			
+			{
 				$this->Dinner_table->delete($dinner_table['dinner_table_id']);
 			}
 		}
 
 		$this->db->trans_complete();
-		
+
 		$success = $this->db->trans_status();
-		
-		echo json_encode(array('success' => $success, 'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')));
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
 	}
 
-	public function save_rewards() 
+	public function save_rewards()
 	{
 		$this->db->trans_start();
-		
+
 		$this->Appconfig->save('customer_reward_enable',$this->input->post('customer_reward_enable'));
 
 		$deleted_packages = $this->Customer_rewards->get_all()->result_array();
 		$not_to_delete = array();
 		$array_save = array();
 		foreach($this->input->post() as $key => $value)
-		{   
-			if (strstr($key, 'reward_points') && $key != 'customer_reward_enable')
+		{
+			if(strstr($key, 'reward_points') && $key != 'customer_reward_enable')
 			{
 				$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
 				$not_to_delete[] = $customer_reward_id;
 				$array_save[$customer_reward_id]['points_percent'] = $value;
 			}
-			if (strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
+
+			if(strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
 			{
 				$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
 				$not_to_delete[] = $customer_reward_id;
 				$array_save[$customer_reward_id]['package_name'] = $value;
 			}
 		}
+
 		if(!empty($array_save))
-		foreach ($array_save as $key => $value) {
+		{
+			foreach($array_save as $key => $value)
+			{
 			// save or update
 				$table_data = array('package_name' => $value['package_name'],'points_percent' => $value['points_percent']);
 				if ($this->Customer_rewards->save($table_data, $key))
 				{
 					$this->_clear_session_state();
 				}
+			}
 		}
 
 		// all locations not available in post will be deleted now
-		foreach ($deleted_packages as $customer_reward)
+		foreach($deleted_packages as $customer_reward)
 		{
 			if(!in_array($customer_reward['customer_reward_id'],$not_to_delete))
-			{			
+			{
 				$this->Customer_rewards->delete($customer_reward['customer_reward_id']);
 			}
 		}
 
 		$this->db->trans_complete();
-		
+
 		$success = $this->db->trans_status();
-		
+
 		echo json_encode(array(
 			'success' => $success,
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
@@ -660,7 +671,7 @@ class Config extends Secure_Controller
 
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
-		
+
 		echo json_encode(array(
 			'success' => $success,
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
@@ -735,7 +746,7 @@ class Config extends Secure_Controller
 	public function remove_logo()
 	{
 		$result = $this->Appconfig->batch_save(array('company_logo' => ''));
-		
+
 		echo json_encode(array('success' => $result));
 	}
 
@@ -755,7 +766,7 @@ class Config extends Secure_Controller
 
 		return strlen($this->upload->display_errors()) == 0 || !strcmp($this->upload->display_errors(), '<p>'.$this->lang->line('upload_no_file_selected').'</p>');
 	}
-	
+
 	private function _check_encryption()
 	{
 		$encryption_key = $this->config->item('encryption_key');
@@ -782,7 +793,7 @@ class Config extends Secure_Controller
 
 			// Chmod the file
 			@chmod($config_path, 0777);
-			
+
 			// Write the new config.php file
 			$handle = fopen($config_path, 'w+');
 
@@ -797,10 +808,10 @@ class Config extends Secure_Controller
 
 			// Chmod the file
 			@chmod($config_path, 0444);
-			
+
 			return $result;
 		}
-		
+
 		return TRUE;
 	}
 
