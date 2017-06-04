@@ -9,17 +9,17 @@ class Customer_rewards extends CI_Model
         return ($this->db->get()->num_rows() >= 1);
     }
 
-    public function save(&$table_data, $package_id) 
+    public function save($package_data, $package_id) 
     {
-        $name = $$table_data['package_name'];
-        $points_percent = $$table_data['points_percent'];
+        $name = $package_data['package_name'];
+        $points_percent = $package_data['points_percent'];
 
         if(!$this->exists($package_id))
         {
             $this->db->trans_start();
 
-            $location_data = array('package_name'=>$name, 'deleted'=>0, 'points_percent'=>$points_percent);
-            $this->db->insert('customers_packages', $table_data);
+            $location_data = array('package_name' => $name, 'deleted' => 0, 'points_percent'=>$points_percent);
+            $this->db->insert('customers_packages', $package_data);
             $package_id = $this->db->insert_id();
 
             $this->db->trans_complete();
@@ -30,14 +30,14 @@ class Customer_rewards extends CI_Model
         {
             $this->db->where('package_id', $package_id);
 
-            return $this->db->update('customers_packages', $table_data);
+            return $this->db->update('customers_packages', $package_data);
         }
     }
 
     public function get_name($package_id)
     {
         $this->db->from('customers_packages');
-        $this->db->where('package_id',$package_id);
+        $this->db->where('package_id', $package_id);
 
         return $this->db->get()->row()->package_name;
     }
@@ -45,7 +45,7 @@ class Customer_rewards extends CI_Model
     public function get_points_percent($package_id)
     {
         $this->db->from('customers_packages');
-        $this->db->where('package_id',$package_id);
+        $this->db->where('package_id', $package_id);
 
         return $this->db->get()->row()->points_percent;
     }

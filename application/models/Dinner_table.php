@@ -9,15 +9,15 @@ class Dinner_table extends CI_Model
         return ($this->db->get()->num_rows() >= 1);
     }
 
-    public function save(&$table_data, $dinner_table_id) 
+    public function save($table_data, $dinner_table_id) 
     {
-        $name = $$table_data['name'];
+        $name = $table_data['name'];
 
         if(!$this->exists($dinner_table_id))
         {
             $this->db->trans_start();
 
-            $location_data = array('name'=>$name, 'deleted'=>0);
+            $location_data = array('name' => $name, 'deleted' => 0);
             $this->db->insert('dinner_tables', $table_data);
             $dinner_table_id = $this->db->insert_id();
 
@@ -42,7 +42,7 @@ class Dinner_table extends CI_Model
         $this->db->where('status', 0);
         $this->db->where('deleted', 0);
 
-        $empty_tables =  $this->db->get()->result_array();
+        $empty_tables = $this->db->get()->result_array();
 
         $empty_tables_array = array();
         foreach($empty_tables as $empty_table)
@@ -63,7 +63,7 @@ class Dinner_table extends CI_Model
 		else
 		{
 			$this->db->from('dinner_tables');
-			$this->db->where('dinner_table_id',$dinner_table_id);
+			$this->db->where('dinner_table_id', $dinner_table_id);
 
 			return $this->db->get()->row()->name;
 		}

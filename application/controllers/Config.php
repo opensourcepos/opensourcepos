@@ -245,10 +245,10 @@ class Config extends Secure_Controller
 			'return_policy' => $this->input->post('return_policy')
 		);
 
-		if (!empty($upload_data['orig_name']))
+		if(!empty($upload_data['orig_name']))
 		{
 			// XSS file image sanity check
-			if ($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
+			if($this->xss_clean($upload_data['raw_name'], TRUE) === TRUE)
 			{
 				$batch_save_data['company_logo'] = $upload_data['raw_name'] . $upload_data['file_ext'];
 			}
@@ -309,7 +309,7 @@ class Config extends Secure_Controller
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
 		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
-		if ($this->input->post('thousands_separator') == 'false')
+		if($this->input->post('thousands_separator') == 'false')
 		{
 			$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 		}
@@ -519,13 +519,13 @@ class Config extends Secure_Controller
 		$deleted_locations = $this->Stock_location->get_allowed_locations();
 		foreach($this->input->post() as $key => $value)
 		{
-			if (strstr($key, 'stock_location'))
+			if(strstr($key, 'stock_location'))
 			{
 				$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
 				unset($deleted_locations[$location_id]);
 				// save or update
 				$location_data = array('location_name' => $value);
-				if ($this->Stock_location->save($location_data, $location_id))
+				if($this->Stock_location->save($location_data, $location_id))
 				{
 					$this->_clear_session_state();
 				}
@@ -533,7 +533,7 @@ class Config extends Secure_Controller
 		}
 
 		// all locations not available in post will be deleted now
-		foreach ($deleted_locations as $location_id => $location_name)
+		foreach($deleted_locations as $location_id => $location_name)
 		{
 			$this->Stock_location->delete($location_id);
 		}
@@ -558,7 +558,7 @@ class Config extends Secure_Controller
 		$not_to_delete = array();
 		foreach($this->input->post() as $key => $value)
 		{
-			if (strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
+			if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
 			{
 
 				$dinner_table_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
@@ -566,7 +566,7 @@ class Config extends Secure_Controller
 
 				// save or update
 				$table_data = array('name' => $value);
-				if ($this->Dinner_table->save($table_data, $dinner_table_id))
+				if($this->Dinner_table->save($table_data, $dinner_table_id))
 				{
 					$this->_clear_session_state();
 				}
@@ -574,7 +574,7 @@ class Config extends Secure_Controller
 		}
 
 		// all locations not available in post will be deleted now
-		foreach ($deleted_tables as $dinner_table)
+		foreach($deleted_tables as $dinner_table)
 		{
 			if(!in_array($dinner_table['dinner_table_id'],$not_to_delete))
 			{
@@ -596,7 +596,7 @@ class Config extends Secure_Controller
 	{
 		$this->db->trans_start();
 
-		$this->Appconfig->save('customer_reward_enable',$this->input->post('customer_reward_enable'));
+		$this->Appconfig->save('customer_reward_enable', $this->input->post('customer_reward_enable'));
 
 		$deleted_packages = $this->Customer_rewards->get_all()->result_array();
 		$not_to_delete = array();
@@ -622,9 +622,9 @@ class Config extends Secure_Controller
 		{
 			foreach($array_save as $key => $value)
 			{
-			// save or update
-				$table_data = array('package_name' => $value['package_name'],'points_percent' => $value['points_percent']);
-				if ($this->Customer_rewards->save($table_data, $key))
+				// save or update
+				$table_data = array('package_name' => $value['package_name'], 'points_percent' => $value['points_percent']);
+				if($this->Customer_rewards->save($table_data, $key))
 				{
 					$this->_clear_session_state();
 				}
@@ -634,7 +634,7 @@ class Config extends Secure_Controller
 		// all locations not available in post will be deleted now
 		foreach($deleted_packages as $customer_reward)
 		{
-			if(!in_array($customer_reward['customer_reward_id'],$not_to_delete))
+			if(!in_array($customer_reward['customer_reward_id'], $not_to_delete))
 			{
 				$this->Customer_rewards->delete($customer_reward['customer_reward_id']);
 			}
@@ -725,9 +725,9 @@ class Config extends Secure_Controller
 
 		// Update the register mode with the latest change so that if the user
 		// switches immediately back to the register the mode reflects the change
-		if ($success == TRUE)
+		if($success == TRUE)
 		{
-			if ($this->config->item('invoice_enable') == '1')
+			if($this->config->item('invoice_enable') == '1')
 			{
 				$this->sale_lib->set_mode($batch_save_data['default_register_mode']);
 			}
