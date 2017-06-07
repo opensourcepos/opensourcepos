@@ -901,7 +901,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE)
+	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE, $deposits = FALSE)
 	{
 		$payments = array();
 
@@ -936,6 +936,12 @@ class Sale extends CI_Model
 			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
 		}
 
+		if ($this->config->item('invoice_enable'))
+		{
+			$payments[$this->lang->line('sales_cash_deposit')] = $this->lang->line('sales_cash_deposit');
+			$payments[$this->lang->line('sales_credit_deposit')] = $this->lang->line('sales_credit_deposit');
+		}
+
 		return $payments;
 	}
 
@@ -947,6 +953,24 @@ class Sale extends CI_Model
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
 
+	public function get_quote_number($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if ($row != null)
+		{
+			return $row->quote_number;
+		}
+		else
+		{
+			return null;
+		}
+
+	}
+
 	public function get_employee($sale_id)
 	{
 		$this->db->from('sales');
@@ -955,7 +979,6 @@ class Sale extends CI_Model
 		return $this->Employee->get_info($this->db->get()->row()->employee_id);
 	}
 
-	// TODO change to use new quote_number field
 	public function check_quote_number_exists($quote_number, $sale_id = '')
 	{
 		$this->db->from('sales');
@@ -1161,7 +1184,16 @@ class Sale extends CI_Model
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
 
-		return $this->db->get()->row()->dinner_table_id;
+		$row = $this->db->get()->row();
+
+		if ($row != null)
+		{
+			return $row->dinner_table_id;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	/*
