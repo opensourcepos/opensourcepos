@@ -511,6 +511,18 @@ class Sale extends CI_Model
 			return -1;
 		}
 
+		if($sale_status == '1')	//suspend sales
+		{
+			if($dinner_table > 2)	//not delivery or take away
+			{
+				$table_status = 1;
+			}
+			else
+			{
+				$table_status = 0;
+			}
+		}
+
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
@@ -701,6 +713,13 @@ class Sale extends CI_Model
 			$this->tax_lib->round_sales_taxes($sales_taxes);
 			$this->save_sales_tax($sales_taxes);
 		}
+
+		$dinner_table_data = array(
+			'status' => $table_status
+		);
+
+		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->update('dinner_tables', $dinner_table_data);
 
 		$this->db->trans_complete();
 

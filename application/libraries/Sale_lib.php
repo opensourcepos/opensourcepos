@@ -866,6 +866,7 @@ class Sale_lib
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
+		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
 	}
 
 	public function get_cart_reordered($sale_id)
