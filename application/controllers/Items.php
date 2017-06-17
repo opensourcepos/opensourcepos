@@ -194,7 +194,7 @@ class Items extends Secure_Controller
 			$data['default_tax_2_rate'] = $this->config->item('default_tax_2_rate');
 
 			$item_info->receiving_quantity = 0;
-			$item_info->reorder_level = 0;
+			$item_info->reorder_level = 1;
 			$item_info->item_type = '0'; // standard
 			$item_info->stock_type = '0'; // stock
 			$item_info->tax_category_id = 0;
