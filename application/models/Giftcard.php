@@ -2,7 +2,7 @@
 class Giftcard extends CI_Model
 {
 	/*
-	Determines if a given giftcard_id is an giftcard
+	Determines if a given giftcard_id is a giftcard
 	*/
 	public function exists($giftcard_id)
 	{
@@ -18,9 +18,14 @@ class Giftcard extends CI_Model
 	*/
 	public function get_max_number()
 	{
-		$this->db->select_max('giftcard_number');
+		$this->db->select('cast(giftcard_number AS UNSIGNED) AS giftcard_number');
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number REGEXP', "'^[0-9]+$'", FALSE);
+		$this->db->order_by("giftcard_number","desc");
+		$this->db->limit(1);
 
-		return $this->db->get('giftcards')->row();
+
+		return $this->db->get()->row();
 	}
 	
 	/*
@@ -106,7 +111,7 @@ class Giftcard extends CI_Model
 		{
 			if($this->db->insert('giftcards', $giftcard_data))
 			{
-				$giftcard_data['giftcard_id'] = $this->db->insert_id();
+				$giftcard_data['giftcard_number'] = $this->db->insert_id();
 
 				return TRUE;
 			}
@@ -255,6 +260,51 @@ class Giftcard extends CI_Model
 	{
 		$this->db->where('giftcard_number', $giftcard_number);
 		$this->db->update('giftcards', array('value' => $value));
+	}
+
+	/*
+	Determines if a given giftcard_name esists
+	*/
+	public function exists_gitcard_name($giftcard_name)
+	{
+		$giftcard_name = strtoupper($giftcard_name);
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number', $giftcard_name);
+		$this->db->where('deleted', 0);
+
+		return ($this->db->get()->num_rows() == 1);
+	}
+
+	/*
+	Generate unique gift card name/number
+	*/
+	public function generate_unique_giftcard_name($value)
+	{
+		$value = str_replace('.', 'DE', $value);
+		$random = bin2hex(openssl_random_pseudo_bytes(3));
+		$giftcard_name = (string)$random . '-' . $value;
+		if($this->exists_gitcard_name($giftcard_name))
+		{
+			$this->generate_unique_giftcard_name($value);
+		}
+
+		return strtoupper($giftcard_name);
+	}
+
+	/*
+	Gets gift card customer
+	*/
+	public function get_giftcard_customer($giftcard_number)
+	{
+		if( !$this->exists($this->get_giftcard_id($giftcard_number)) )
+		{
+			return 0;
+		}
+		
+		$this->db->from('giftcards');
+		$this->db->where('giftcard_number', $giftcard_number);
+
+		return $this->db->get()->row()->person_id;
 	}
 }
 ?>

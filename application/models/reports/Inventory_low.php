@@ -19,19 +19,20 @@ class Inventory_low extends Report
 			array('location_name' => $this->lang->line('reports_stock_location')));
 	}
 	
-    public function getData(array $inputs)
-    {
-        $this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name');
-        $this->db->from('items');
-        $this->db->join('item_quantities', 'items.item_id = item_quantities.item_id');
-        $this->db->join('stock_locations', 'item_quantities.location_id = stock_locations.location_id');
-        $this->db->where('items.deleted', 0);
-        $this->db->where('stock_locations.deleted', 0);
-        $this->db->where('item_quantities.quantity <= items.reorder_level');
-        $this->db->order_by('items.name');				
+	public function getData(array $inputs)
+	{
+		$this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name');
+		$this->db->from('items');
+		$this->db->join('item_quantities', 'items.item_id = item_quantities.item_id');
+		$this->db->join('stock_locations', 'item_quantities.location_id = stock_locations.location_id');
+		$this->db->where('items.deleted', 0);
+		$this->db->where('stock_locations.deleted', 0);
+		$this->db->where('items.stock_type', 0);
+		$this->db->where('item_quantities.quantity <= items.reorder_level');
+		$this->db->order_by('items.name');
 
-        return $this->db->get()->result_array();
-    }
+		return $this->db->get()->result_array();
+	}
 	
 	public function getSummaryData(array $inputs)
 	{

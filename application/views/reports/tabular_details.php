@@ -26,7 +26,14 @@
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
 		var detail_data = <?php echo json_encode($details_data); ?>;
-
+		<?php
+		if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
+		{
+		?>
+			var details_data_rewards = <?php echo json_encode($details_data_rewards); ?>;
+		<?php
+		}
+		?>
 		var init_dialog = function()
 		{
 
@@ -60,6 +67,17 @@
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
 					data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 				});
+				<?php
+				if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
+				{
+				?>
+					$detail.append('<table></table>').find("table").bootstrapTable({
+						columns: <?php echo transform_headers_readonly($headers['details_rewards']); ?>,
+						data: details_data_rewards[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+					});
+				<?php
+				}
+				?>
 			}
 		});
 

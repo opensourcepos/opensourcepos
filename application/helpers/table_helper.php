@@ -137,6 +137,7 @@ function transform_headers($array, $readonly = FALSE, $editable = TRUE)
 
 	foreach($array as $element)
 	{
+		reset($element);
 		$result[] = array('field' => key($element),
 			'title' => current($element),
 			'switchable' => isset($element['switchable']) ?
@@ -176,7 +177,7 @@ function get_people_manage_table_headers()
 function get_person_data_row($person, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'people.person_id' => $person->person_id,
@@ -184,6 +185,46 @@ function get_person_data_row($person, $controller)
 		'first_name' => $person->first_name,
 		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
 		'phone_number' => $person->phone_number,
+		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
+		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+	));
+}
+
+function get_customer_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('people.person_id' => $CI->lang->line('common_id')),
+		array('last_name' => $CI->lang->line('common_last_name')),
+		array('first_name' => $CI->lang->line('common_first_name')),
+		array('email' => $CI->lang->line('common_email')),
+		array('phone_number' => $CI->lang->line('common_phone_number')),
+		array('total' => $CI->lang->line('common_total_spent'), 'sortable' => FALSE)
+	);
+
+	if($CI->Employee->has_grant('messages', $CI->session->userdata('person_id')))
+	{
+		$headers[] = array('messages' => '', 'sortable' => FALSE);
+	}
+	
+	return transform_headers($headers);
+}
+
+function get_customer_data_row($person, $stats, $controller)
+{
+	$CI =& get_instance();
+	$controller_name = strtolower(get_class($CI));
+
+	return array (
+		'people.person_id' => $person->person_id,
+		'last_name' => $person->last_name,
+		'first_name' => $person->first_name,
+		'email' => empty($person->email) ? '' : mailto($person->email, $person->email),
+		'phone_number' => $person->phone_number,
+		'total' => to_currency($stats->total),
 		'messages' => empty($person->phone_number) ? '' : anchor("Messages/view/$person->person_id", '<span class="glyphicon glyphicon-phone"></span>', 
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line('messages_sms_send'))),
 		'edit' => anchor($controller_name."/view/$person->person_id", '<span class="glyphicon glyphicon-edit"></span>',
@@ -216,7 +257,7 @@ function get_suppliers_manage_table_headers()
 function get_supplier_data_row($supplier, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'people.person_id' => $supplier->person_id,
@@ -268,13 +309,24 @@ function get_item_data_row($item, $controller)
 	$tax_percents = substr($tax_percents, 0, -2);
 	$controller_name = strtolower(get_class($CI));
 
-	$image = '';
-	if ($item->pic_id != '')
+	$image = NULL;
+	if ($item->pic_filename != '')
 	{
-		$images = glob('./uploads/item_pics/' . $item->pic_id . '.*');
+		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
+		if($ext == '')
+		{
+			// legacy
+			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
+		}
+		else
+		{
+			// preferred
+			$images = glob('./uploads/item_pics/' . $item->pic_filename);
+		}
+
 		if (sizeof($images) > 0)
 		{
-			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/'.$item->pic_id).'"></a>';
+			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '"></a>';
 		}
 	}
 
@@ -315,6 +367,23 @@ function get_giftcards_manage_table_headers()
 	return transform_headers($headers);
 }
 
+function get_taxes_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('tax_code' => $CI->lang->line('taxes_tax_code')),
+		array('tax_code_name' => $CI->lang->line('taxes_tax_code_name')),
+		array('tax_code_type_name' => $CI->lang->line('taxes_tax_code_type')),
+		array('tax_rate' => $CI->lang->line('taxes_tax_rate')),
+		array('rounding_code_name' => $CI->lang->line('taxes_rounding_code')),
+		array('city' => $CI->lang->line('common_city')),
+		array('state' => $CI->lang->line('common_state'))
+	);
+
+	return transform_headers($headers);
+}
+
 function get_giftcard_data_row($giftcard, $controller)
 {
 	$CI =& get_instance();
@@ -327,6 +396,26 @@ function get_giftcard_data_row($giftcard, $controller)
 		'giftcard_number' => $giftcard->giftcard_number,
 		'value' => to_currency($giftcard->value),
 		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
+
+function get_tax_data_row($tax_code_row, $controller)
+{
+	$CI =& get_instance();
+	$controller_name=strtolower(get_class($CI));
+
+	return array (
+		'tax_code' => $tax_code_row->tax_code,
+		'tax_code_name' => $tax_code_row->tax_code_name,
+		'tax_code_type' => $tax_code_row->tax_code_type,
+		'tax_rate' => $tax_code_row->tax_rate,
+		'rounding_code' =>$tax_code_row->rounding_code,
+		'tax_code_type_name' => $CI->Tax->get_tax_code_type_name($tax_code_row->tax_code_type),
+		'rounding_code_name' => $CI->get_rounding_code_name($tax_code_row->rounding_code),
+		'city' => $tax_code_row->city,
+		'state' => $tax_code_row->state,
+		'edit' => anchor($controller_name."/view/$tax_code_row->tax_code", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
 }
@@ -349,7 +438,7 @@ function get_item_kits_manage_table_headers()
 function get_item_kit_data_row($item_kit, $controller)
 {
 	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
+	$controller_name = strtolower(get_class($CI));
 
 	return array (
 		'item_kit_id' => $item_kit->item_kit_id,

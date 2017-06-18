@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = 'Path ไปยัง image libraryของ�
 $lang['imglib_image_process_failed'] = 'ล้มเหลวในการประมวลผลภาพ กรุณาตรวจสอบว่าเซิร์ฟเวอร์ของคุณรองรับโปรโตคอลที่ใช้และเส้นทางไปยัง image library ของคุณถูกต้อง';
 $lang['imglib_rotation_angle_required'] = 'โปรดระบุมุุมสำหรับการหมุนภาพ';
 $lang['imglib_invalid_path'] = 'ตำแหน่งของภาพไม่ถูกต้อง';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'การคัดลอกภาพล้มเหลว';
 $lang['imglib_missing_font'] = 'ไม่พบแบบอัษร]ต้องการ';
 $lang['imglib_save_failed'] = 'ไม่สามารถบันทึกภาพได้กรุณาตรวจสอบภาพและไดเรกทอรี่ว่าสามารถเขียนได้หรือไม่';

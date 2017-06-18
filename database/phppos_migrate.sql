@@ -163,3 +163,9 @@ SELECT `item_id`, 1, `quantity` FROM `phppos`.`phppos_items`;
 INSERT INTO `ospos_suppliers` (`person_id`, `company_name`, `account_number`, `deleted`)
 SELECT `person_id`, `company_name`, `account_number`, `deleted` FROM `phppos`.phppos_suppliers;
 
+-- 
+-- Copy data to table `ospos_dinner_tables`
+--
+
+INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted`)
+SELECT `dinner_table_id`, `name`, `status`, `deleted` FROM `phppos`.phppos_dinner_tables;

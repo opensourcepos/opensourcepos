@@ -4,9 +4,9 @@
  *
  * @author	CodeIgniter community
  * @author	Stefano Mazzega
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'Il percorso della libreria delle immagini non
 $lang['imglib_image_process_failed'] = 'Lavorazione dell\'immagine fallita. Verifica che il server supporti il protocollo scelto e che il percorso della libreria delle immagini sia corretto.';
 $lang['imglib_rotation_angle_required'] = 'Un angolo di rotazione è necessario per poter eseguire la rotazione di una immagine.';
 $lang['imglib_invalid_path'] = 'Il percorso dell\'immagine non è corretto.';
+$lang['imglib_invalid_image'] = 'L\'immagine fornita non è valida.';
 $lang['imglib_copy_failed'] = 'Il tentativo di copiare l\'immagine è fallito.';
 $lang['imglib_missing_font'] = 'Impossibile trovare la font da utilizzare.';
 $lang['imglib_save_failed'] = 'Impossibile salvare l\'immagine. Verifica che l\'immagine e la directory siano scrivibili.';

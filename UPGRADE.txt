@@ -7,9 +7,8 @@ How to Upgrade
 5. Run the database upgrade scripts from database/ dir (check which ones you need according to the version you are upgrading from)
 6. Take the saved old config.php and upgrade the new config.php with any additional changes you made in the old.
    Take time to understand if new config rules require some changes (e.g. encryption keys)
-7. Copy application/config/database.php.tmpl to application/config/database.php
-8. Take the saved old database.php and change the new database.php to contain all the configuration you had in the old setup.
+7. Take the saved old database.php and change the new database.php to contain all the configuration you had in the old setup.
    Please try not to use the old layout, use the new one and just copy the content of the config variables
-9. Restore the content of the old uploads/ folder into public/uploads/ one
-10. Once new code is in place, database is updated and config files are sorted you are good to start the new OSPOS
-11. If any issue please check FAQ and/or GitHub issues as somebody else might have had your problem already or post a question
+8. Restore the content of the old uploads/ folder into public/uploads/ one
+9. Once new code is in place, database is updated and config files are sorted you are good to start the new OSPOS
+10. If any issue please check FAQ and/or GitHub issues as somebody else might have had your problem already or post a question

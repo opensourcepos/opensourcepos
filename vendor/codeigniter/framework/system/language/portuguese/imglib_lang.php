@@ -3,9 +3,9 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -23,6 +23,7 @@ $lang['imglib_libpath_invalid'] = 'O caminho para a sua biblioteca de imagens n�
 $lang['imglib_image_process_failed'] = 'Ocorreu uma falha ao processar a imagem.  Por favor verifique que o seu servidor suporta o protocolo escolhido e que o caminho para a biblioteca de imagem está correto.';
 $lang['imglib_rotation_angle_required'] = 'É necessário definir um ângulo de rotação para rodar a imagem.';
 $lang['imglib_invalid_path'] = 'O caminho para a imagem não está correto.';
-$lang['imglib_copy_failed'] = 'Arotina de cópia da imagem falhou.';
+$lang['imglib_invalid_image'] = 'A imagem não é válida.';
+$lang['imglib_copy_failed'] = 'A rotina de cópia da imagem falhou.';
 $lang['imglib_missing_font'] = 'Incapaz de encontrar um tipo de letra para usar.';
 $lang['imglib_save_failed'] = 'Não foi possível guardar a imagem. Por favor certifique-se que tem permissões de escrita da imagem e da diretoria do ficheiro.';

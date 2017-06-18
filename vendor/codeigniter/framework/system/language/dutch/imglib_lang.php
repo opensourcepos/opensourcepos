@@ -3,10 +3,10 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @copyright	Pieter Krul
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid']			= 'Het pad naar de image library is niet corre
 $lang['imglib_image_process_failed']		= 'Het verwerken van de afbeelding is mislukt. Controleer of de server het gekozen protocol ondersteunt, en of het pad naar de image library klopt.';
 $lang['imglib_rotation_angle_required']		= 'Om te afbeelding te kunnen roteren, dient een rotatiehoek opgegeven te worden.';
 $lang['imglib_invalid_path']			= 'Het pad naar de afbeelding klopt niet.';
+$lang['imglib_invalid_image']			= 'The provided image is not valid.';
 $lang['imglib_copy_failed']			= 'De kopieerroutine werkte niet.';
 $lang['imglib_missing_font']			= 'Het systeem kon geen bruikbaar lettertype vinden.';
 $lang['imglib_save_failed']			= 'Het opslaan van de afbeelding is mislukt. Controleer of er voldoende rechten zijn om te kunnen schrijven naar de bestandsdirectories';

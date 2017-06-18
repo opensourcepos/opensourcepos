@@ -1,7 +1,7 @@
 {
   "name": "opensourcepos",
   "description": "Open Source Point of Sale is a web based POS system written in the PHP language. It uses MySQL as backend and has a simple user interface",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "license": "MIT",
   "authors": [
     "jekkos <jeroen.peelaerts - at - gmail.com>",
@@ -28,11 +28,11 @@
     "jquery-validate": "~1.13.1",
     "jquery": "~1.12.4",
     "jquery-ui": "1.11.4",
-    "bootstrap3-dialog": "bootstrap-dialog#^1.35.3",
+    "bootstrap3-dialog": "https://github.com/nakupanda/bootstrap3-dialog.git#master",
     "jasny-bootstrap": "^3.1.3",
     "bootswatch": "^3.3.7",
-    "smalot-bootstrap-datetimepicker": "^2.3.11",
-    "bootstrap-select": "^1.11.2",
+    "smalot-bootstrap-datetimepicker": "^2.4.4",
+    "bootstrap-select": "^1.12.2",
     "bootstrap-table": "fde42200",
     "bootstrap-daterangepicker": "^2.1.24",
     "tableExport.jquery.plugin": "1.5.1",

@@ -127,7 +127,7 @@ if (isset($success))
 			}
 			else
 			{
-				foreach(array_reverse($cart, true) as $line=>$item)
+				foreach(array_reverse($cart, TRUE) as $line=>$item)
 				{
 			?>
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
@@ -188,7 +188,7 @@ if (isset($success))
 							}
 							?>
 							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
-							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:$('#<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
 							<?php 
@@ -408,7 +408,7 @@ $(document).ready(function()
 {
     $("#item").autocomplete(
     {
-		source: '<?php echo site_url($controller_name."/item_search"); ?>',
+		source: '<?php echo site_url($controller_name."/stock_item_search"); ?>',
     	minChars:0,
        	delay:10,
        	autoFocus: false,
@@ -516,6 +516,12 @@ $(document).ready(function()
 			}
 		}
 	}
+
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').focusout(function() {
+		var index = $(this).parents("tr").index() - 1;
+		$("#cart_" + index).submit();
+	});
+
 });
 
 </script>

@@ -22,7 +22,7 @@ class Item_kit extends CI_Model
 			//KIT #
 			$pieces = explode(' ', $item_kit_id);
 
-			if(count($pieces) == 2 && preg_match('/(KIT)/', $pieces[0]))
+			if(count($pieces) == 2 && preg_match('/(KIT)/i', $pieces[0]))
 			{
 				return $this->exists($pieces[1]);
 			}
@@ -46,7 +46,42 @@ class Item_kit extends CI_Model
 	*/
 	public function get_info($item_kit_id)
 	{
+		$this->db->select('
+		item_kit_id, 
+		item_kits.name as name, 
+		items.name as item_name, 
+		item_kits.description, 
+		items.description as item_description, 
+		item_kits.item_id as kit_item_id, 
+		kit_discount_percent, 
+		price_option, 
+		print_option, 
+		category, 
+		supplier_id, 
+		item_number, 
+		cost_price, 
+		unit_price, 
+		reorder_level, 
+		receiving_quantity, 
+		pic_filename, 
+		allow_alt_description, 
+		is_serialized, 
+		deleted, 
+		custom1, 
+		custom2, 
+		custom3, 
+		custom4, 
+		custom5, 
+		custom6, 
+		custom7, 
+		custom8, 
+		custom9, 
+		custom10,
+		item_type,
+		stock_type');
+
 		$this->db->from('item_kits');
+		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$this->db->where('item_kit_id', $item_kit_id);
 		
 		$query = $this->db->get();
@@ -120,7 +155,7 @@ class Item_kit extends CI_Model
 		$this->db->where_in('item_kit_id', $item_kit_ids);
 
 		return $this->db->delete('item_kits');		
- 	}
+	}
 
 	public function get_search_suggestions($search, $limit = 25)
 	{

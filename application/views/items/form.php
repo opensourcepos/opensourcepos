@@ -46,7 +46,57 @@
 			</div>
 		</div>
 
+		<?php if ($item_kits_enabled == '1'): ?>
 		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_stock_type'), 'stock_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<div class="col-xs-8">
+				<label class="radio-inline">
+					<?php echo form_radio(array(
+							'name'=>'stock_type',
+							'type'=>'radio',
+							'id'=>'stock_type',
+							'value'=>0,
+							'checked'=>$item_info->stock_type === '0')
+					); ?> <?php echo $this->lang->line('items_stock'); ?>
+				</label>
+				<label class="radio-inline">
+					<?php echo form_radio(array(
+							'name'=>'stock_type',
+							'type'=>'radio',
+							'id'=>'stock_type',
+							'value'=>1,
+							'checked'=>$item_info->stock_type === '1')
+					); ?> <?php echo $this->lang->line('items_nonstock'); ?>
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('items_type'), 'item_type', !empty($basic_version) ? array('class'=>'required control-label col-xs-3') : array('class'=>'control-label col-xs-3')); ?>
+			<div class="col-xs-8">
+				<label class="radio-inline">
+					<?php echo form_radio(array(
+							'name'=>'item_type',
+							'type'=>'radio',
+							'id'=>'item_type',
+							'value'=>0,
+							'checked'=>$item_info->item_type === '0')
+					); ?> <?php echo $this->lang->line('items_standard'); ?>
+				</label>
+				<label class="radio-inline">
+					<?php echo form_radio(array(
+							'name'=>'item_type',
+							'type'=>'radio',
+							'id'=>'item_type',
+							'value'=>1,
+							'checked'=>$item_info->item_type === '1')
+					); ?> <?php echo $this->lang->line('items_kit'); ?>
+				</label>
+			</div>
+		</div>
+		<?php endif; ?>
+
+        <div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, $selected_supplier, array('class'=>'form-control')); ?>
@@ -116,7 +166,7 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
+        <div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_2'), 'tax_percent_2', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
@@ -139,7 +189,16 @@
 			</div>
 		</div>
 
-		<?php
+		<?php if($customer_sales_tax_enabled) { ?>
+            <div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('taxes_tax_category'), 'tax_category', array('class'=>'control-label col-xs-3')); ?>
+                <div class='col-xs-8'>
+					<?php echo form_dropdown('tax_category_id', $tax_categories, $selected_tax_category, array('class'=>'form-control')); ?>
+                </div>
+            </div>
+		<?php } ?>
+
+        <?php
 		foreach($stock_locations as $key=>$location_detail)
 		{
 		?>

@@ -4,9 +4,9 @@
  *
  * @author	CodeIgniter community
  * @author	Grigoris Charamidis
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'Η διαδρομή του πακέτου ε�
 $lang['imglib_image_process_failed'] = 'Σφάλμα στην επεξεργασία της εικόνας. Παρακαλώ επιβεβαίωστε οτι ο διακομιστής σας υποστηρίζει το επιλεγμένο πρωτόκολλο και οτι η διαδρομή του πακέτου εικόνας είναι σωστή.';
 $lang['imglib_rotation_angle_required'] = 'Μια γωνία περιστροφής απαιτέιται για να περιστραφεί η εικόνα.';
 $lang['imglib_invalid_path'] = 'Η διαδρομή για την εικόνα δεν είνα σωστή.';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'Η ρουτίνα αντίγραφο της εικόνας απέτυχε.';
 $lang['imglib_missing_font'] = 'Αδυναμία να βρεθεί η γραμματοσειρά που χρησιμοποιείται.';
 $lang['imglib_save_failed'] = 'Αδυναμία στην αποθήκευση εικόνας. Παρακαλώ βεβαιωθείτε οτι η εικόνα και ο κατάλογος είναι εγγράψιμοι.';

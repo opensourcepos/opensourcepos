@@ -2,7 +2,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('suppliers/save/'.$person_info->person_id, array('id'=>'supplier_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open($controller_name . '/save/' . $person_info->person_id, array('id'=>'supplier_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="supplier_basic_info">
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('suppliers_company_name'), 'company_name', array('class'=>'required control-label col-xs-3')); ?>

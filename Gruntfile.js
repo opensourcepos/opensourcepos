@@ -195,8 +195,8 @@ module.exports = function(grunt) {
 					// Target-specific options go here. 
 					directory: 'public/bower_components',
 					output: 'public/license/bower.LICENSES'
-				},
-			},
+				}
+			}
 		},
 		'bower-licensechecker': {
 			options: {
@@ -217,13 +217,26 @@ module.exports = function(grunt) {
 					noGood: true,
 				}
 			}
+		},
+		apigen: {
+			generate:{
+				options: {
+					apigenPath: 'vendor/bin/',
+					source: 'application',
+					destination: 'docs'
+				}
+			}
 		}
     });
 
     require('load-grunt-tasks')(grunt);
     grunt.loadNpmTasks('grunt-mocha-webdriver');
+	grunt.loadNpmTasks('grunt-composer');
+	grunt.loadNpmTasks('grunt-apigen');
 
     grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
     grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
+    grunt.registerTask('packages', ['composer:update']);
+    grunt.registerTask('gendocs', ['apigen:generate']);
 
 };

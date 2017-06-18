@@ -26,3 +26,4 @@ RENAME TABLE `ospos_sales_suspended_items_taxes` TO `phppos_sales_suspended_item
 RENAME TABLE `ospos_sales_suspended_payments` TO `phppos_sales_suspended_payments`;
 RENAME TABLE `ospos_sessions` TO `phppos_sessions`;
 RENAME TABLE `ospos_suppliers` TO `phppos_suppliers`;
+RENAME TABLE `ospos_dinner_tables` TO `phppos_dinner_tables`;

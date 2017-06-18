@@ -8,7 +8,7 @@
 | 
 | 
 */ 
-$config['application_version'] = '3.0.2';
+$config['application_version'] = '3.1.0';
 
 /* 
 |-------------------------------------------------------------------------- 
@@ -19,7 +19,7 @@ $config['application_version'] = '3.0.2';
 | 
 | 
 */ 
-$config['commit_sha1'] = '$Id$';
+$config['commit_sha1'] = '$Id $';
  
 /* 
 |-------------------------------------------------------------------------- 
@@ -358,7 +358,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = '';
+$config['encryption_key'] = getenv('ENCRYPTION_KEY') ? getenv('ENCRYPTION_KEY') : '';
 
 /*
 |--------------------------------------------------------------------------
@@ -511,6 +511,7 @@ $config['csrf_exclude_uris'] = array('sales/add');
 |
 */
 $config['compress_output'] = FALSE;
+
 
 /*
 |--------------------------------------------------------------------------

@@ -3,10 +3,10 @@
  * System messages translation for CodeIgniter(tm)
  *
  * @author	CodeIgniter community
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @copyright	Novak Urošević
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('Nije dozvoljen direktan pristup');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'Putanja do vaše biblioteke za slike nije isp
 $lang['imglib_image_process_failed'] = 'Neuspešna obrada slike. Proverite da li vaš server podržava izabrani protokol i da li je putanja do biblioteke za slike ispravna.';
 $lang['imglib_rotation_angle_required'] = 'Potreban je ugao rotacije da bi se rotacija izvršila.';
 $lang['imglib_invalid_path'] = 'Putanja do slike nije ispravna.';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'Kopiranje slike je neuspešno.';
 $lang['imglib_missing_font'] = 'Ne može se locirati font za upotrebu.';
 $lang['imglib_save_failed'] = 'Ne može se snimiti slika. Proverite da slika i direktorijum u kom se nalazi fajl imaju dozvolu za pisanje.';

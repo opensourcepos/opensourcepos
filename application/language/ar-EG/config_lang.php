@@ -11,6 +11,7 @@ $lang["config_barcode_configuration"] = "اعدادات الباركود";
 $lang["config_barcode_content"] = "محتويات الباركود";
 $lang["config_barcode_first_row"] = "الصف 1";
 $lang["config_barcode_font"] = "الخط";
+$lang["config_barcode_generate_if_empty"] = "توليد اذا كان الباركود فارغ";
 $lang["config_barcode_height"] = "الارتفاع (px)";
 $lang["config_barcode_id"] = "كود/اسم الصنف";
 $lang["config_barcode_info"] = "معلومات اعدادات الباركود";
@@ -26,22 +27,25 @@ $lang["config_barcode_second_row"] = "الصف 2";
 $lang["config_barcode_third_row"] = "الصف 3";
 $lang["config_barcode_type"] = "نوعية الباركود";
 $lang["config_barcode_width"] = "العرض (px)";
-$lang["config_barcode_generate_if_empty"] = "توليد اذا كان الباركود فارغ";
 $lang["config_bottom"] = "الأسفل";
+$lang["config_cash_decimals"] = "";
+$lang["config_cash_decimals_tooltip"] = "";
+$lang["config_cash_rounding"] = "";
 $lang["config_center"] = "الوسط";
+$lang["config_comma"] = "فاصلة";
 $lang["config_company"] = "اسم الشركة";
-$lang["config_company_logo"] = "شعار الشركة";
-$lang["config_company_select_image"] = "اختار صورة";
 $lang["config_company_change_image"] = "تغيير الصورة";
+$lang["config_company_logo"] = "شعار الشركة";
 $lang["config_company_remove_image"] = "إزالة الصورة";
 $lang["config_company_required"] = "اسم الشركة مطلوب";
+$lang["config_company_select_image"] = "اختار صورة";
 $lang["config_company_website_url"] = "الموقع الإلكترونى للشركة غير صحيح";
-$lang["config_comma"] = "فاصلة";
 $lang["config_country_codes"] = "أكواد الدولة";
 $lang["config_country_codes_tooltip"] = "قائمة مفصولة بفاصلة لاسماء الدول للبحث";
-$lang["config_currency_symbol"] = "رمز العملة";
 $lang["config_currency_decimals"] = "العلامة العشرية للعملة";
+$lang["config_currency_symbol"] = "رمز العملة";
 $lang["config_custom1"] = "حقل مخصص 1";
+$lang["config_custom10"] = "حقل مخصص 10";
 $lang["config_custom2"] = "حقل مخصص 2";
 $lang["config_custom3"] = "حقل مخصص 3";
 $lang["config_custom4"] = "حقل مخصص 4";
@@ -50,7 +54,13 @@ $lang["config_custom6"] = "حقل مخصص 6";
 $lang["config_custom7"] = "حقل مخصص 7";
 $lang["config_custom8"] = "حقل مخصص 8";
 $lang["config_custom9"] = "حقل مخصص 9";
-$lang["config_custom10"] = "حقل مخصص 10";
+$lang["config_customer_reward"] = "";
+$lang["config_customer_reward_duplicate"] = "";
+$lang["config_customer_reward_enable"] = "";
+$lang["config_customer_reward_invalid_chars"] = "";
+$lang["config_customer_reward_required"] = "";
+$lang["config_customer_sales_tax_support"] = "";
+$lang["config_date_or_time_format"] = "";
 $lang["config_datetimeformat"] = "شكل الوقت و التاريخ";
 $lang["config_decimal_point"] = "العلامة العشرية";
 $lang["config_default_barcode_font_size_number"] = "الحجم الافتراضي لخط الباركود لابد أن يكون رقم";
@@ -67,42 +77,68 @@ $lang["config_default_barcode_quality_number"] = "الجودة الافتراض�
 $lang["config_default_barcode_quality_required"] = "الجودة الافتراضية للباركود مطلوبة";
 $lang["config_default_barcode_width_number"] = "العرض الافتراضي للباركود لابد ان يكون رقم";
 $lang["config_default_barcode_width_required"] = "العرض الافتراضي للباركود مطلوب";
+$lang["config_default_origin_tax_code"] = "";
 $lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية %";
 $lang["config_default_sales_discount_number"] = "نسبة الخصم الافتراضية لابد ان تكون رقم";
 $lang["config_default_sales_discount_required"] = "نسبة الخصم الافتراضية مطلوبة";
+$lang["config_default_tax_name_number"] = "";
+$lang["config_default_tax_name_required"] = "اسم الضريبة الافتراضية مطلوب";
 $lang["config_default_tax_rate"] = "معدل الضريبة الافتراضي %";
 $lang["config_default_tax_rate_1"] = "معدل الضريبة 1";
 $lang["config_default_tax_rate_2"] = "معدل الضريبة 2";
 $lang["config_default_tax_rate_number"] = "معدل الضريبة الافتراضي يجب أن يكون رقم";
 $lang["config_default_tax_rate_required"] = "معدل الضريبة الافتراضي مطلوب";
-$lang["config_default_tax_name_required"] = "اسم الضريبة الافتراضية مطلوب";
+$lang["config_dinner_table"] = "";
+$lang["config_dinner_table_duplicate"] = "";
+$lang["config_dinner_table_enable"] = "";
+$lang["config_dinner_table_invalid_chars"] = "";
+$lang["config_dinner_table_required"] = "";
 $lang["config_dot"] = "نقطة";
 $lang["config_email"] = "البريد الإلكتروني";
 $lang["config_email_configuration"] = "إعدادات البريد الإلكتروني";
-$lang["config_email_protocol"] = "بروتوكول";
 $lang["config_email_mailpath"] = "مسار ارسال البريد";
-$lang["config_email_smtp_host"] = "خادم SMTP";
-$lang["config_email_smtp_port"] = "رقم منفذ SMTP";
+$lang["config_email_protocol"] = "بروتوكول";
 $lang["config_email_smtp_crypto"] = "تشفير SMTP";
+$lang["config_email_smtp_host"] = "خادم SMTP";
+$lang["config_email_smtp_pass"] = "كلمة سر SMTP";
+$lang["config_email_smtp_port"] = "رقم منفذ SMTP";
 $lang["config_email_smtp_timeout"] = "وقت فشل المحاولة (ثوانى) لـ SMTP";
 $lang["config_email_smtp_user"] = "اسم مستخدم SMTP";
-$lang["config_email_smtp_pass"] = "كلمة سر SMTP";
 $lang["config_fax"] = "الفاكس";
+$lang["config_financial_year"] = "";
+$lang["config_financial_year_apr"] = "";
+$lang["config_financial_year_aug"] = "";
+$lang["config_financial_year_dec"] = "";
+$lang["config_financial_year_feb"] = "";
+$lang["config_financial_year_jan"] = "";
+$lang["config_financial_year_jul"] = "";
+$lang["config_financial_year_jun"] = "";
+$lang["config_financial_year_mar"] = "";
+$lang["config_financial_year_may"] = "";
+$lang["config_financial_year_nov"] = "";
+$lang["config_financial_year_oct"] = "";
+$lang["config_financial_year_sep"] = "";
 $lang["config_general"] = "عام";
 $lang["config_general_configuration"] = "إعدادات عامة";
+$lang["config_giftcard_number"] = "";
+$lang["config_giftcard_random"] = "";
+$lang["config_giftcard_series"] = "";
 $lang["config_info"] = "معلومات";
 $lang["config_info_configuration"] = "معلومات الشركة";
 $lang["config_invoice"] = "الفاتورة";
 $lang["config_invoice_configuration"] = "إعدادات طباعة الفاتورة";
 $lang["config_invoice_default_comments"] = "التعليق الافتراضي على الفاتورة";
-$lang["config_invoice_enable"] = "تفعيل الفوترة";
 $lang["config_invoice_email_message"] = "قالب البريد الإلكتروني للفاتورة";
+$lang["config_invoice_enable"] = "تفعيل الفوترة";
 $lang["config_invoice_printer"] = "طابعة الفواتير";
 $lang["config_jsprintsetup_required"] = "تحذير! هذه الخاصية غير المفعلة سوف تعمل فقط مع وجود الاضافة jsPrintSetup على متصفح فايرفوكس. حفظ على أى حال؟";
 $lang["config_language"] = "اللغة";
+$lang["config_last_used_invoice_number"] = "";
+$lang["config_last_used_quote_number"] = "";
 $lang["config_left"] = "يسار";
 $lang["config_license"] = "الرخصة";
 $lang["config_license_configuration"] = "نص الرخصة";
+$lang["config_line_sequence"] = "";
 $lang["config_lines_per_page"] = "عدد السطور فى الصفحة";
 $lang["config_lines_per_page_number"] = "عدد السطور فى الصفحة يجب أن يكون رقم";
 $lang["config_lines_per_page_required"] = "عدد السطور فى الصفحة مطلوب";
@@ -113,19 +149,29 @@ $lang["config_location"] = "المخزون";
 $lang["config_location_configuration"] = "أماكن المخزون";
 $lang["config_location_info"] = "معلومات تهيئة الأماكن";
 $lang["config_logout"] = "هل تريد عمل نسخة إحتياطية قبل الخروج؟ اضغط [نعم] لعمل النسخة أو [الغاء] للخروج";
+$lang["config_mailchimp"] = "";
+$lang["config_mailchimp_api_key"] = "";
+$lang["config_mailchimp_configuration"] = "";
+$lang["config_mailchimp_key_successfully"] = "";
+$lang["config_mailchimp_key_unsuccessfully"] = "";
+$lang["config_mailchimp_lists"] = "";
 $lang["config_message"] = "الرسائل";
 $lang["config_message_configuration"] = "إعدادات الرسائل";
 $lang["config_msg_msg"] = "الرسائل النصية المحفوظة";
 $lang["config_msg_msg_placeholder"] = "إذا أردت إستخدام قالب للرسائل القصيرة احفظه هنا. عدا ذلك أترك هذا الحقل فارغ";
-$lang["config_msg_uid"] = "SMS-API اسم المستخدم لـ";
-$lang["config_msg_uid_required"] = "مطلوب SMS-API اسم المستخدم لـ";
 $lang["config_msg_pwd"] = "SMS-API  كلمة السر لـ";
 $lang["config_msg_pwd_required"] = "مطلوب SMS-API كلمة السر لـ";
 $lang["config_msg_src"] = "SMS-API  كود المرسل لـ";
 $lang["config_msg_src_required"] = "مطلوب SMS-API كود المرسل لـ";
+$lang["config_msg_uid"] = "SMS-API اسم المستخدم لـ";
+$lang["config_msg_uid_required"] = "مطلوب SMS-API اسم المستخدم لـ";
 $lang["config_none"] = "لايوجد";
 $lang["config_notify_alignment"] = "مكان عرض رسائل المعلومات";
 $lang["config_number_format"] = "شكل الرقم";
+$lang["config_number_locale"] = "التهيئة الاقليمية";
+$lang["config_number_locale_invalid"] = "التهيئة الإقليمية المختارة غير صحية، راجع الرابط الموجود فى الملاحظة لاختيار تهيئة مناسبة";
+$lang["config_number_locale_required"] = "رقم التهيئة الإقليمية مطلوب";
+$lang["config_number_locale_tooltip"] = "إيجاد تهيئة إقليمية مناسبة عبر الرابط";
 $lang["config_payment_options_order"] = "ترتيب خيارات الدفع";
 $lang["config_phone"] = "هاتف الشركة";
 $lang["config_phone_required"] = "هاتف الشركة مطلوب";
@@ -147,20 +193,25 @@ $lang["config_print_top_margin_required"] = "الهامش العلوى مطلو�
 $lang["config_quantity_decimals"] = "العلامة العشرية للكمية";
 $lang["config_receipt"] = "الإيصال";
 $lang["config_receipt_configuration"] = "إعدادات طباعة الايصالات";
+$lang["config_receipt_default"] = "افتراضى";
 $lang["config_receipt_info"] = "معلومات تهيئة الإيصالات";
 $lang["config_receipt_printer"] = "طابعة تذاكر";
-$lang["config_receipt_show_taxes"] = "عرض الضرائب";
-$lang["config_receipt_show_total_discount"] = "عرض إجمالى الخصم";
+$lang["config_receipt_short"] = "مختصر";
+$lang["config_receipt_show_company_name"] = "";
 $lang["config_receipt_show_description"] = "عرض الوصف";
 $lang["config_receipt_show_serialnumber"] = "عرض الرقم المسلسل";
+$lang["config_receipt_show_taxes"] = "عرض الضرائب";
+$lang["config_receipt_show_total_discount"] = "عرض إجمالى الخصم";
 $lang["config_receipt_template"] = "قالب الايصال";
-$lang["config_receipt_default"] = "افتراضى";
-$lang["config_receipt_short"] = "مختصر";
 $lang["config_receiving_calculate_average_price"] = "حساب متوسط سعر الأصناف المستلمة";
 $lang["config_recv_invoice_format"] = "شكل فاتورة الإستلام";
+$lang["config_register_mode_default"] = "";
 $lang["config_return_policy_required"] = "سياسة الإسترجاع مطلوب";
+$lang["config_reward"] = "";
+$lang["config_reward_configuration"] = "";
 $lang["config_right"] = "يمين";
 $lang["config_sales_invoice_format"] = "شكل فاتورة البيع";
+$lang["config_sales_quote_format"] = "";
 $lang["config_saved_successfully"] = "تم حفظ التهيئة بنجاح";
 $lang["config_saved_unsuccessfully"] = "لم يتم حفظ التهيئة بنجاح";
 $lang["config_statistics"] = "Send statistics";
@@ -169,16 +220,13 @@ $lang["config_stock_location"] = "مكان المخزون";
 $lang["config_stock_location_duplicate"] = "من فضلك إستخدم اسم مكان غير مكرر";
 $lang["config_stock_location_invalid_chars"] = "مكان المخزون لايمكن أن يحتوى على '_'";
 $lang["config_stock_location_required"] = "مكان المخزون مطلوب";
+$lang["config_table"] = "";
+$lang["config_table_configuration"] = "";
 $lang["config_takings_printer"] = "طابعة الإيراد";
 $lang["config_tax_decimals"] = "العلامة العشرية للضريبة";
 $lang["config_tax_included"] = "شامل الضريبة";
+$lang["config_theme"] = "السمة";
 $lang["config_thousands_separator"] = "فاصل الاف";
 $lang["config_timezone"] = "المنطقة الزمنية";
 $lang["config_top"] = "علوى";
 $lang["config_website"] = "موقع الشركة";
-$lang["config_number_locale"] = "التهيئة الاقليمية";
-$lang["config_return_policy_required"] = "سياسة الإسترجاع مطلوب";
-$lang["config_number_locale_required"] = "رقم التهيئة الإقليمية مطلوب";
-$lang["config_number_locale_invalid"] = "التهيئة الإقليمية المختارة غير صحية، راجع الرابط الموجود فى الملاحظة لاختيار تهيئة مناسبة";
-$lang["config_number_locale_tooltip"] = "إيجاد تهيئة إقليمية مناسبة عبر الرابط";
-$lang["config_theme"] = "السمة";

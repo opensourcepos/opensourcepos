@@ -1,7 +1,6 @@
 node_modules
 tmp
 application/config/email.php
-application/config/database.php
 *.patch
 patches/
 .idea/

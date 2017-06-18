@@ -113,6 +113,11 @@
 	border-top: 1px solid #000;
 }
 
+input#amount_tendered:disabled
+{
+    display: none;
+}
+
 #payment_details
 {
 	float: left;

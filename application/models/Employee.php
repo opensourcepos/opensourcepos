@@ -1,4 +1,13 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Employee class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Employee extends Person
 {
 	/*
@@ -305,7 +314,7 @@ class Employee extends Person
 			$row = $query->row();
 
 			// compare passwords depending on the hash version
-			if ($row->hash_version == 1 && $row->password == md5($password))
+			if($row->hash_version == 1 && $row->password == md5($password))
 			{
 				$this->db->where('person_id', $row->person_id);
 				$this->session->set_userdata('person_id', $row->person_id);
@@ -313,7 +322,7 @@ class Employee extends Person
 
 				return $this->db->update('employees', array('hash_version' => 2, 'password' => $password_hash));
 			}
-			else if ($row->hash_version == 2 && password_verify($password, $row->password))
+			elseif($row->hash_version == 2 && password_verify($password, $row->password))
 			{
 				$this->session->set_userdata('person_id', $row->person_id);
 
@@ -391,7 +400,7 @@ class Employee extends Person
 	public function has_grant($permission_id, $person_id)
 	{
 		//if no module_id is null, allow access
-		if($permission_id == null)
+		if($permission_id == NULL)
 		{
 			return TRUE;
 		}
@@ -410,6 +419,49 @@ class Employee extends Person
 		$this->db->where('person_id', $person_id);
 
 		return $this->db->get()->result_array();
+	}
+
+
+	/*
+	Attempts to login employee and set session. Returns boolean based on outcome.
+	*/
+	public function check_password($username, $password)
+	{
+		$query = $this->db->get_where('employees', array('username' => $username, 'deleted' => 0), 1);
+
+		if($query->num_rows() == 1)
+		{
+			$row = $query->row();
+
+			// compare passwords
+			if(password_verify($password, $row->password))
+			{
+				return TRUE;
+			}
+
+		}
+
+		return FALSE;
+	}
+
+	/*
+	Change password for the employee
+	*/
+	public function change_password($employee_data, $employee_id = FALSE)
+	{
+		$success = FALSE;
+
+		//Run these queries as a transaction, we want to make sure we do all or nothing
+		$this->db->trans_start();
+
+		$this->db->where('person_id', $employee_id);
+		$success = $this->db->update('employees', $employee_data);
+
+		$this->db->trans_complete();
+
+		$success &= $this->db->trans_status();
+
+		return $success;
 	}
 }
 ?>

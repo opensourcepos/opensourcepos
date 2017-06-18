@@ -4,9 +4,9 @@
  *
  * @author	CodeIgniter community
  * @author	Ignasi Molsosa
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
- * @link	http://codeigniter.com
+ * @link	https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'La ruta a la teva llibreria de processament d
 $lang['imglib_image_process_failed'] = 'Processament d\'imatge erroni. Siusplau verifica que el teu servidor disposa del protocol triat i que la ruta a la teva llibreria de processament d\'imatges és correcta.';
 $lang['imglib_rotation_angle_required'] = 'Per tal de rotar la imatge és necessari indicar un angle de rotació.';
 $lang['imglib_invalid_path'] = 'La ruta a la imatge no és correcta.';
+$lang['imglib_invalid_image'] = 'The provided image is not valid.';
 $lang['imglib_copy_failed'] = 'La rutina de copia d\'imatge ha fallat.';
 $lang['imglib_missing_font'] = 'Impossible trobar una font per a fer servir.';
 $lang['imglib_save_failed'] = 'Impossible guardar la imatge. Siusplau comprova que el directori és escribible.';

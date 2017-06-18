@@ -8,14 +8,14 @@ class Suppliers extends Persons
 	{
 		parent::__construct('suppliers');
 	}
-	
+
 	public function index()
 	{
 		$data['table_headers'] = $this->xss_clean(get_suppliers_manage_table_headers());
 
 		$this->load->view('people/manage', $data);
 	}
-	
+
 	/*
 	Gets one row for a supplier manage table. This is called using AJAX to update one row.
 	*/
@@ -88,11 +88,19 @@ class Suppliers extends Persons
 	*/
 	public function save($supplier_id = -1)
 	{
+		$first_name = $this->xss_clean($this->input->post('first_name'));
+		$last_name = $this->xss_clean($this->input->post('last_name'));
+		$email = $this->xss_clean(strtolower($this->input->post('email')));
+
+		// format first and last name properly
+		$first_name = $this->nameize($first_name);
+		$last_name = $this->nameize($last_name);
+
 		$person_data = array(
-			'first_name' => $this->input->post('first_name'),
-			'last_name' => $this->input->post('last_name'),
+			'first_name' => $first_name,
+			'last_name' => $last_name,
 			'gender' => $this->input->post('gender'),
-			'email' => $this->input->post('email'),
+			'email' => $email,
 			'phone_number' => $this->input->post('phone_number'),
 			'address_1' => $this->input->post('address_1'),
 			'address_2' => $this->input->post('address_2'),
@@ -102,6 +110,7 @@ class Suppliers extends Persons
 			'country' => $this->input->post('country'),
 			'comments' => $this->input->post('comments')
 		);
+
 		$supplier_data = array(
 			'company_name' => $this->input->post('company_name'),
 			'agency_name' => $this->input->post('agency_name'),
@@ -115,21 +124,24 @@ class Suppliers extends Persons
 			//New supplier
 			if($supplier_id == -1)
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('suppliers_successful_adding').' '.
-								$supplier_data['company_name'], 'id' => $supplier_data['person_id']));
+				echo json_encode(array('success' => TRUE,
+								'message' => $this->lang->line('suppliers_successful_adding') . ' ' . $supplier_data['company_name'],
+								'id' => $supplier_data['person_id']));
 			}
 			else //Existing supplier
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('suppliers_successful_updating').' '.
-								$supplier_data['company_name'], 'id' => $supplier_id));
+				echo json_encode(array('success' => TRUE,
+								'message' => $this->lang->line('suppliers_successful_updating') . ' ' . $supplier_data['company_name'],
+								'id' => $supplier_id));
 			}
 		}
 		else//failure
 		{
 			$supplier_data = $this->xss_clean($supplier_data);
 
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('suppliers_error_adding_updating').' '.
-							$supplier_data['company_name'], 'id' => -1));
+			echo json_encode(array('success' => FALSE,
+							'message' => $this->lang->line('suppliers_error_adding_updating') . ' ' . 	$supplier_data['company_name'],
+							'id' => -1));
 		}
 	}
 	

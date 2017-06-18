@@ -1,10 +1,10 @@
 <?php 
 
 $lang["suppliers_account_number"] = "№ счета";
+$lang["suppliers_agency_name"] = " ";
 $lang["suppliers_cannot_be_deleted"] = "Не удалось удалить выбранные поставщиков, один или более из выбранных поставщиков имеет продаж.";
 $lang["suppliers_company_name"] = "Название компании";
 $lang["suppliers_company_name_required"] = "Название компании является обязательным полем";
-$lang["suppliers_agency_name"] = " ";
 $lang["suppliers_confirm_delete"] = "Вы уверены, что хотите удалить выбранных поставщиков?";
 $lang["suppliers_error_adding_updating"] = "Ошибка при добавлении/обновлении поставщиком";
 $lang["suppliers_new"] = "Новый поставщик";

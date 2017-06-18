@@ -10,11 +10,14 @@ $lang["common_confirm_search"] = "لقد قمت اختيار أكتر من سج�
 $lang["common_country"] = "البلد";
 $lang["common_date"] = "التاريخ";
 $lang["common_delete"] = "حذف";
-$lang["common_print"] = "طباعة";
 $lang["common_det"] = "تفاصيل";
+$lang["common_download_import_template"] = "تنزيل قالب الاستيراد من اكسل (CSV)";
 $lang["common_edit"] = "تحرير";
 $lang["common_email"] = "بريد إلكتروني";
 $lang["common_email_invalid_format"] = "شكل البريد الإلكتروني غير صحيح";
+$lang["common_export_excel"] = "تصدير إلى اكسل";
+$lang["common_export_excel_no"] = "لا";
+$lang["common_export_excel_yes"] = "نعم";
 $lang["common_fields_required_message"] = "الحقول التي بالأحمر مطلوبة";
 $lang["common_first_name"] = "الاسم الأول";
 $lang["common_first_name_required"] = "الاسم الأول مطلوب";
@@ -22,6 +25,13 @@ $lang["common_first_page"] = "الأول";
 $lang["common_gender"] = "النوع";
 $lang["common_gender_female"] = "أنثى";
 $lang["common_gender_male"] = "ذكر";
+$lang["common_id"] = "كود";
+$lang["common_import"] = "استيراد";
+$lang["common_import_change_file"] = "تغيير";
+$lang["common_import_excel"] = "استيراد من اكسل";
+$lang["common_import_full_path"] = "المسار الكامل لملف اكسل مطلوب";
+$lang["common_import_remove_file"] = "إزالة";
+$lang["common_import_select_file"] = "اختار ملف";
 $lang["common_inv"] = "المخزن";
 $lang["common_last_name"] = "الاسم الأخير";
 $lang["common_last_name_required"] = "الاسم الأخير مطلوب";
@@ -38,28 +48,19 @@ $lang["common_phone_number_required"] = "رقم التليفون مطلوب";
 $lang["common_please_visit_my"] = "برجاء زيارة";
 $lang["common_powered_by"] = "مدعوم بواسطة";
 $lang["common_price"] = "السعر";
+$lang["common_print"] = "طباعة";
 $lang["common_remove"] = "إزالة";
+$lang["common_required"] = "مطلوب";
 $lang["common_return_policy"] = "سياسة الاسترجاع";
 $lang["common_search"] = "بحث";
 $lang["common_search_options"] = "خيارات البحث";
 $lang["common_searched_for"] = "بحث عن";
 $lang["common_state"] = "المحافظة";
 $lang["common_submit"] = "حفظ";
+$lang["common_total_spent"] = "";
 $lang["common_view_recent_sales"] = "عرض أحدث المبيعات";
 $lang["common_website"] = "الموقع الإلكترونى";
 $lang["common_welcome"] = "مرحباً";
 $lang["common_welcome_message"] = "مرحباً فى OSPOS برجاء إختيار أى قسم للبدء";
 $lang["common_you_are_using_ospos"] = "أنت تستخدم إصدار Open Source Point Of Sale ";
 $lang["common_zip"] = "الرقم البريدى";
-$lang["common_import"] = "استيراد";
-$lang["common_download_import_template"] = "تنزيل قالب الاستيراد من اكسل (CSV)";
-$lang["common_import_excel"] = "استيراد من اكسل";
-$lang["common_import_full_path"] = "المسار الكامل لملف اكسل مطلوب";
-$lang["common_import_select_file"] = "اختار ملف";
-$lang["common_import_change_file"] = "تغيير";
-$lang["common_import_remove_file"] = "إزالة";
-$lang["common_export_excel"] = "تصدير إلى اكسل";
-$lang["common_export_excel_yes"] = "نعم";
-$lang["common_export_excel_no"] = "لا";
-$lang["common_required"] = "مطلوب";
-$lang["common_id"] = "كود";

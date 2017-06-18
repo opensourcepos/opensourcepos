@@ -4,9 +4,9 @@
  *
  * @author CodeIgniter community
  * @author Mutasim Ridlo, S.Kom
- * @copyright Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license http://opensource.org/licenses/MIT MIT License
- * @link http://codeigniter.com
+ * @link https://codeigniter.com
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -24,6 +24,7 @@ $lang['imglib_libpath_invalid'] = 'Jalur ke pustaka gambar Anda tidak benar. Sil
 $lang['imglib_image_process_failed'] = 'Pengolahan gambar gagal. Harap verifikasi bahwa server Anda mendukung protokol yang dipilih dan bahwa jalan ke pustaka gambar Anda benar.';
 $lang['imglib_rotation_angle_required'] = 'Sudut rotasi diperlukan untuk memutar gambar.';
 $lang['imglib_invalid_path'] = 'Jalur ke gambar tersebut tidak benar.';
+$lang['imglib_invalid_image'] = 'Gambar yang diberikan tidak valid.';
 $lang['imglib_copy_failed'] = 'Menyalin gambar rutin gagal.';
 $lang['imglib_missing_font'] = 'Tidak dapat menemukan huruf untuk menggunakan.';
 $lang['imglib_save_failed'] = 'Tidak dapat menyimpan gambar. Pastikan gambar dan direktori berkas dapat ditulis.';

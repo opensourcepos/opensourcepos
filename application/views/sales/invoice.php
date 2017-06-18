@@ -58,7 +58,8 @@ $(document).ready(function()
 		</div>
 
         <div id="logo">
-	        <?php if($this->Appconfig->get('company_logo') != '') 
+	        <?php
+			if($this->Appconfig->get('company_logo') != '') 
 	        { 
 			?>
 				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
@@ -66,7 +67,14 @@ $(document).ready(function()
 			}
 			?>
 			<div>&nbsp</div>
-			<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+			<?php
+			if ($this->Appconfig->get('receipt_show_company_name')) 
+		    { 
+		    ?>
+				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
+			<?php
+			}
+			?>
         </div>
 	</div>
 
@@ -123,16 +131,16 @@ $(document).ready(function()
 		<tr>
 			<td colspan="3" class="blank-bottom"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($tax_exclusive_subtotal); ?></textarea></td>
+			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
 		</tr>
 		<?php
-		foreach($taxes as $name=>$value)
+		foreach($taxes as $tax_group_index=>$sales_tax)
 		{
 		?>
 			<tr>
 				<td colspan="3" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $name; ?>:</textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency($value); ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php
 		}
@@ -142,6 +150,45 @@ $(document).ready(function()
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
 		</tr>
+
+		<?php
+		$only_sale_check = FALSE;
+		$show_giftcard_remainder = FALSE;
+		foreach($payments as $payment_id=>$payment)
+		{
+			$only_sale_check |= $payment['payment_type'] == $this->lang->line('sales_check');
+			$splitpayment = explode(':', $payment['payment_type']);
+			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
+			?>
+            <tr>
+                <td colspan="3" class="blank"> </td>
+                <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
+                <td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></textarea></td>
+            </tr>
+			<?php
+		}
+		if(isset($cur_giftcard_value) && $show_giftcard_remainder)
+		{
+			?>
+            <tr>
+                <td colspan="3" class="blank"> </td>
+                <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
+                <td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
+            </tr>
+			<?php
+		}
+		if(!empty($payments))
+		{
+		?>
+        <tr>
+            <td colspan="3" class="blank"> </td>
+            <td colspan="2" class="total-line"> <textarea rows="5" cols="6"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></textarea></td>
+            <td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change); ?></textarea></td>
+        </tr>
+        <?php
+		}
+		?>
+
 	</table>
 	
 	<div id="terms">
