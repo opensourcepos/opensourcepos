@@ -416,9 +416,10 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
-
-	public function get_invoice_number_for_year($year = '', $start_from = 0)
-	{
+	
+	//public function get_invoice_number_for_year($year = '', $start_from = 0)
+	public function get_invoice_number_for_year($year = '', $start_from = 1) 
+   {
 		$year = $year == '' ? date('Y') : $year;
 		$this->db->select('COUNT( 1 ) AS invoice_number_year');
 		$this->db->from('sales');
