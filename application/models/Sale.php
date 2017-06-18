@@ -522,6 +522,10 @@ class Sale extends CI_Model
 				$table_status = 0;
 			}
 		}
+		else
+		{
+			$table_status = 0;
+		}
 
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
