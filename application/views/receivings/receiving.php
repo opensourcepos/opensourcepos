@@ -517,7 +517,7 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').focusout(function() {
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').change(function() {
 		var index = $(this).parents("tr").index() - 1;
 		$("#cart_" + index).submit();
 	});

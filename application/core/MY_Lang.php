@@ -53,7 +53,7 @@ class MY_Lang extends CI_Lang
             }
             else 
             {
-            	if(!empty($this->language[$line] || strstr($line, 'common_you_are_using')))
+            	if(isset($this->language[$line]) && $this->language[$line] != '')
             	{
             		$line = $this->language[$line];
             		//if the line exists and more function arguments remain

@@ -770,7 +770,7 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').focusout(function() {
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
 	
