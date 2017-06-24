@@ -137,5 +137,5 @@ $lang["sales_unsuccessfully_deleted"] = "Sale(s) could not be deleted";
 $lang["sales_unsuccessfully_suspended_sale"] = "Your sale has been unsuccessfully suspended";
 $lang["sales_unsuccessfully_updated"] = "Sale unsuccessfully updated";
 $lang["sales_unsuspend"] = "Unsuspend";
-$lang["sales_unsuspend_and_delete"] = "";
+$lang["sales_unsuspend_and_delete"] = "Action";
 $lang["sales_update"] = "Update";
