@@ -240,3 +240,6 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
   ('migrate', 1);
 
+-- update to receivings
+
+UPDATE ospos_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
