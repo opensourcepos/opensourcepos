@@ -28,7 +28,7 @@ class Specific_discount extends Report
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
 				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
 				array('payment_type' => $this->lang->line('reports_payment_type')),
-				array('comments' => $this->lang->line('reports_comments'))),
+				array('comment' => $this->lang->line('reports_comments'))),
 			'details' => array(
 				$this->lang->line('reports_name'),
 				$this->lang->line('reports_category'),
