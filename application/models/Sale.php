@@ -614,33 +614,33 @@ class Sale extends CI_Model
 
 			$this->db->insert('sales_items', $sales_items_data);
 
-			if($cur_item_info->stock_type === '0')
+			if($cur_item_info->stock_type === '0' && $sale_status === '0')
 			{
-				// Update stock quantity if item type is not non-stock
+				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
 				$this->Item_quantity->save(array('quantity'		=> $item_quantity->quantity - $item['quantity'],
 					'item_id'		=> $item['item_id'],
 					'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
+
+				// if an items was deleted but later returned it's restored with this rule
+
+				if($item['quantity'] < 0)
+				{
+					$this->Item->undelete($item['item_id']);
+				}
+
+				// Inventory Count Details
+				$sale_remarks = 'POS '.$sale_id;
+				$inv_data = array(
+					'trans_date'		=> date('Y-m-d H:i:s'),
+					'trans_items'		=> $item['item_id'],
+					'trans_user'		=> $employee_id,
+					'trans_location'	=> $item['item_location'],
+					'trans_comment'		=> $sale_remarks,
+					'trans_inventory'	=> -$item['quantity']
+				);
+				$this->Inventory->insert($inv_data);
 			}
-
-			// if an items was deleted but later returned it's restored with this rule
-
-			if($item['quantity'] < 0)
-			{
-				$this->Item->undelete($item['item_id']);
-			}
-
-			// Inventory Count Details
-			$sale_remarks = 'POS '.$sale_id;
-			$inv_data = array(
-				'trans_date'		=> date('Y-m-d H:i:s'),
-				'trans_items'		=> $item['item_id'],
-				'trans_user'		=> $employee_id,
-				'trans_location'	=> $item['item_location'],
-				'trans_comment'		=> $sale_remarks,
-				'trans_inventory'	=> -$item['quantity']
-			);
-			$this->Inventory->insert($inv_data);
 
 			// Calculate taxes and save the tax information for the sale.  Return the result for printing
 
