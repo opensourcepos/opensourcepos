@@ -350,7 +350,7 @@ if(isset($success))
 		<table class="sales_table_100" id="sale_totals">
 			<tr>
 				<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
-				<th style="width: 45%; text-align: right;"><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $subtotal); ?></th>
+				<th style="width: 45%; text-align: right;"><?php echo to_currency($subtotal); ?></th>
 			</tr>
 			
 			<?php
