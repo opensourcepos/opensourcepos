@@ -329,25 +329,36 @@ class Sale_lib
 
 		$totals = array();
 
+		$prediscount_subtotal = 0;
 		$subtotal = 0;
-		$discounted_subtotal = 0;
-		$tax_exclusive_subtotal = 0;
+		$total = 0;
+		$total_discount = 0;
+
 		foreach($this->get_cart() as $item)
 		{
-			$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], FALSE));
-			$discounted_subtotal = bcadd($discounted_subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE));
-			if($this->CI->config->config['tax_included'])
+			$discount_amount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
+			$total_discount = bcadd($total_discount, $discount_amount);
+
+			$extended_amount = $this->get_extended_amount($item['quantity'], $item['price']);
+			$extended_discounted_amount = $this->get_extended_amount($item['quantity'], $item['price'], $discount_amount);
+			$prediscount_subtotal= bcadd($prediscount_subtotal, $extended_amount);
+			$total = bcadd($total, $extended_discounted_amount);
+
+			if($this->CI->config->item('tax_included'))
 			{
-				$tax_exclusive_subtotal = bcadd($tax_exclusive_subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], TRUE));
+				$subtotal = bcadd($subtotal, $this->get_extended_total_tax_exclusive($item['item_id'], $extended_discounted_amount, $item['quantity'], $item['price'], $item['discount']));
+			}
+			else
+			{
+				$subtotal =bcadd($subtotal, $extended_discounted_amount);
 			}
 		}
 
+		$totals['prediscount_subtotal'] = $prediscount_subtotal;
+		$totals['total_discount'] = $total_discount;
 		$totals['subtotal'] = $subtotal;
-		$totals['discounted_subtotal'] = $discounted_subtotal;
-		$totals['tax_exclusive_subtotal'] = $tax_exclusive_subtotal;
 
-		$total = $discounted_subtotal;
-		if ($this->CI->config->config['tax_included'])
+		if ($this->CI->config->item('tax_included'))
 		{
 			$totals['total'] = $total;
 		}
@@ -368,9 +379,9 @@ class Sale_lib
 		else
 		{
 			$cash_total = $total;
-		}
+			$totals['cash_total'] = $cash_total;
 
-		$totals['cash_total'] = $cash_total;
+		}
 
 		$payment_total = $this->get_payments_total();
 		$totals['payment_total'] = $payment_total;
@@ -473,9 +484,9 @@ class Sale_lib
 	{
 		if(!$this->CI->session->userdata('sales_mode'))
 		{
-			if($this->CI->config->config['invoice_enable'] == '1')
+			if($this->CI->config->item('invoice_enable') == '1')
 			{
-				$this->set_mode($this->CI->config->config['default_register_mode']);
+				$this->set_mode($this->CI->config->item('default_register_mode'));
 			}
 			else{
 				$this->set_mode('sale');
@@ -866,6 +877,8 @@ class Sale_lib
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
+		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
+		$this->set_comment($this->CI->Sale->get_comment($sale_id));
 		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
 	}
 
@@ -900,7 +913,6 @@ class Sale_lib
 		$suspended_sale_info = $this->CI->Sale->get_info($sale_id)->row();
 		$this->set_customer($suspended_sale_info->person_id);
 		$this->set_comment($suspended_sale_info->comment);
-
 		$this->set_invoice_number($suspended_sale_info->invoice_number);
 		$this->set_quote_number($suspended_sale_info->quote_number);
 		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
@@ -965,7 +977,7 @@ class Sale_lib
 		}
 		$this->CI->session->set_userdata('cash_mode', $cash_mode);
 
-		if($this->CI->config->config['cash_decimals'] < $this->CI->config->config['currency_decimals'])
+		if($this->CI->config->item('cash_decimals') < $this->CI->config->item('currency_decimals'))
 		{
 			$cash_rounding = 1;
 		}
@@ -990,8 +1002,8 @@ class Sale_lib
 	 */
 	public function get_taxes()
 	{
-		$register_mode = $this->CI->config->config['default_register_mode'];
-		$tax_decimals = $this->CI->config->config['tax_decimals'];
+		$register_mode = $this->CI->config->item('default_register_mode');
+		$tax_decimals = $this->CI->config->item('tax_decimals');
 		$customer_id = $this->get_customer();
 		$customer = $this->CI->Customer->get_info($customer_id);
 		$sales_taxes = array();
@@ -1001,7 +1013,6 @@ class Sale_lib
 			foreach($this->get_cart() as $line => $item)
 			{
 				// Start of current VAT tax apply
-
 				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
 				$tax_group_sequence = 0;
 				foreach($tax_info as $tax)
@@ -1012,11 +1023,11 @@ class Sale_lib
 					$tax_basis = $this->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
 					$tax_amount = 0;
 
-					if($this->CI->config->config['tax_included'])
+					if($this->CI->config->item('tax_included'))
 					{
 						$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $tax['percent']);
 					}
-					elseif($this->CI->config->config['customer_sales_tax_support'] == '0')
+					elseif($this->CI->config->item('customer_sales_tax_support') == '0')
 					{
 						$tax_amount = $this->CI->tax_lib->get_sales_tax_for_amount($tax_basis, $tax['percent'], '0', $tax_decimals);
 					}
@@ -1034,7 +1045,7 @@ class Sale_lib
 				$tax_group_sequence = 0;
 				$tax_code = '';
 
-				if($this->CI->config->config['customer_sales_tax_support'] == '1')
+				if($this->CI->config->item('customer_sales_tax_support') == '1')
 				{
 					// Now calculate what the sales taxes should be (storing them in the $sales_taxes array
 					$this->CI->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, 0, $sales_taxes, $tax_category, $tax_rate, $rounding_code, $tax_group_sequence, $tax_code);
@@ -1094,17 +1105,29 @@ class Sale_lib
 	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE) 
 	{
 		$tax_info = $this->CI->Item_taxes->get_info($item_id);
-		$item_price = $this->get_item_total($quantity, $price, $discount_percentage, $include_discount);
+		$item_total = $this->get_item_total($quantity, $price, $discount_percentage, $include_discount);
 		// only additive tax here
 		foreach($tax_info as $tax)
 		{
 			$tax_percentage = $tax['percent'];
-			$item_price = bcsub($item_price, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage));
+			$item_total = bcsub($item_total, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage));
 		}
 		
-		return $item_price;
+		return $item_total;
 	}
-	
+
+	public function get_extended_total_tax_exclusive($item_id, $discounted_extended_amount, $quantity, $price, $discount_percentage = 0)
+	{
+		$tax_info = $this->CI->Item_taxes->get_info($item_id);
+		// only additive tax here
+		foreach($tax_info as $tax)
+		{
+			$tax_percentage = $tax['percent'];
+			$discounted_extended_amount = bcsub($discounted_extended_amount, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage));
+		}
+
+		return $discounted_extended_amount;
+	}
 	public function get_item_total($quantity, $price, $discount_percentage, $include_discount = FALSE)  
 	{
 		$total = bcmul($quantity, $price);
@@ -1117,7 +1140,13 @@ class Sale_lib
 
 		return $total;
 	}
-	
+
+	public function get_extended_amount($quantity, $price, $discount_amount = 0)
+	{
+		$extended_amount = bcmul($quantity, $price);
+		return bcsub($extended_amount, $discount_amount);
+	}
+
 	public function get_item_discount($quantity, $price, $discount_percentage)
 	{
 		$total = bcmul($quantity, $price);
@@ -1129,7 +1158,7 @@ class Sale_lib
 	public function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
 	{
 		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
-		if($this->CI->config->config['tax_included'])
+		if($this->CI->config->item('tax_included'))
 		{
 			$tax_fraction = bcadd(100, $tax_percentage);
 			$tax_fraction = bcdiv($tax_fraction, 100);
@@ -1147,7 +1176,7 @@ class Sale_lib
 		$subtotal = 0;
 		foreach($this->get_cart() as $item)
 		{
-			if($exclude_tax && $this->CI->config->config['tax_included'])
+			if($exclude_tax && $this->CI->config->item('tax_included'))
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount));
 			}
@@ -1186,8 +1215,8 @@ class Sale_lib
 
 	public function check_for_cash_rounding($total)
 	{
-		$cash_decimals = $this->CI->config->config['cash_decimals'];
-		$cash_rounding_code = $this->CI->config->config['cash_rounding_code'];
+		$cash_decimals = $this->CI->config->item('cash_decimals');
+		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
 		$rounded_total = $total;
 
 		if($cash_rounding_code == Rounding_code::HALF_UP)
