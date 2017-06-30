@@ -21,7 +21,7 @@
   ],
   "devDependencies": {
     "grunt": "~0.4.5",
-    "grunt-apigen": "git://github.com/daN4cat/grunt-apigen#master",
+    "grunt-apigen": "^0.1.3",
     "grunt-bower": "^0.21.0",
     "grunt-bower-concat": "^1.0.0",
     "grunt-bower-licensechecker": "^0.1.2",
