@@ -468,24 +468,26 @@ class Sales extends Secure_Controller
 		$data["invoice_number"] = $this->sale_lib->get_invoice_number();
 		$data["quote_number"] = $this->sale_lib->get_quote_number();
 		$customer_info = $this->_load_customer_data($customer_id, $data);
-
+		if($customer_info != NULL)
+		{
+			$data["customer_comments"] = $customer_info->comments;
+		}
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['payments'] = $this->sale_lib->get_payments();
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals();
-		$data['subtotal'] = $totals['discounted_subtotal'];
-		$data['cash_total'] = $totals['cash_total'];
-		$data['cash_amount_due'] = $totals['cash_amount_due'];
-		$data['non_cash_total'] =$totals['total'];
-		$data['non_cash_amount_due'] =$totals['amount_due'];
+		$data['subtotal'] = $totals['subtotal'];
+		$data['total'] = $totals['total'];
 		$data['payments_total'] = $totals['payment_total'];
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
 		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
-
-		$data['discounted_subtotal'] = $totals['discounted_subtotal'];
-		$data['tax_exclusive_subtotal'] = $totals['tax_exclusive_subtotal'];
+		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['non_cash_total'] = $totals['total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_amount_due'] = $totals['amount_due'];
 
 		if($data['cash_rounding'])
 		{
@@ -580,10 +582,7 @@ class Sales extends Secure_Controller
 
 				$data = $this->xss_clean($data);
 
-
 				$data['barcode'] = NULL;
-
-//				$this->suspend_quote($quote_number);
 
 				$this->load->view('sales/quote', $data);
 				$this->sale_lib->clear_mode();
@@ -864,13 +863,6 @@ class Sales extends Secure_Controller
 		$data['payments'] = $this->sale_lib->get_payments();
 		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
 
-//		$data['subtotal'] = $this->sale_lib->get_subtotal();
-//		$data['discounted_subtotal'] = $this->sale_lib->get_subtotal(TRUE);
-//		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
-//		$data['amount_due'] = $this->sale_lib->get_amount_due();
-//		$data['amount_change'] = $this->sale_lib->get_amount_due() * -1;
-//		$data['total'] = $this->sale_lib->get_total();
-
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
@@ -882,14 +874,15 @@ class Sales extends Secure_Controller
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals();
 		$data['subtotal'] = $totals['subtotal'];
-		$data['discounted_subtotal'] = $totals['discounted_subtotal'];
-		$data['tax_exclusive_subtotal'] = $totals['tax_exclusive_subtotal'];
-		$data['cash_total'] = $totals['cash_total'];
-		$data['cash_amount_due'] = $totals['cash_amount_due'];
-		$data['non_cash_total'] = $totals['total'];
-		$data['non_cash_amount_due'] = $totals['amount_due'];
+		$data['total'] = $totals['total'];
 		$data['payments_total'] = $totals['payment_total'];
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
+		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
+		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['non_cash_total'] = $totals['total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_amount_due'] = $totals['amount_due'];
 
 		if($this->session->userdata('cash_rounding'))
 		{
@@ -957,21 +950,22 @@ class Sales extends Secure_Controller
 		$data['stock_locations'] = $this->Stock_location->get_allowed_locations('sales');
 		$data['stock_location'] = $this->sale_lib->get_sale_location();
 		$data['tax_exclusive_subtotal'] = $this->sale_lib->get_subtotal(TRUE, TRUE);
-
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['payments'] = $this->sale_lib->get_payments();
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals();
-		$data['subtotal'] = $totals['discounted_subtotal'];
-		$data['cash_total'] = $totals['cash_total'];
-		$data['cash_amount_due'] = $totals['cash_amount_due'];
-		$data['non_cash_total'] =$totals['total'];
-		$data['non_cash_amount_due'] =$totals['amount_due'];
+		$data['subtotal'] = $totals['subtotal'];
+		$data['total'] = $totals['total'];
 		$data['payments_total'] = $totals['payment_total'];
 		$data['payments_cover_total'] = $totals['payments_cover_total'];
 		$data['cash_rounding'] = $this->session->userdata('cash_rounding');
+		$data['prediscount_subtotal'] = $totals['prediscount_subtotal'];
+		$data['cash_total'] = $totals['cash_total'];
+		$data['non_cash_total'] = $totals['total'];
+		$data['cash_amount_due'] = $totals['cash_amount_due'];
+		$data['non_cash_amount_due'] = $totals['amount_due'];
 
 		if($data['cash_rounding'])
 		{

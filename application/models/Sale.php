@@ -1169,6 +1169,46 @@ class Sale extends CI_Model
 	}
 
 	/*
+	 * get the quote_number for the selected sale
+ 	 */
+	public function get_quote_number($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->quote_number;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+
+	/*
+	 * get the quote_number for the selected sale
+	 */
+	public function get_comment($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->comment;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+
+	/*
 	* Gets total of suspended invoices rows
 	*/
 	public function get_suspended_invoice_count()

@@ -131,7 +131,7 @@ if (isset($error_message))
         <tr>
             <td colspan="3" class="blank-bottom"> </td>
             <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-            <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($tax_exclusive_subtotal); ?></textarea></td>
+            <td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
         </tr>
 		<?php
 		foreach($taxes as $tax_group_index=>$sales_tax)
