@@ -1178,13 +1178,13 @@ class Sale extends CI_Model
 
 		$row = $this->db->get()->row();
 
-		if($row != null)
+		if($row != NULL)
 		{
 			return $row->quote_number;
 		}
 		else
 		{
-			return null;
+			return NULL;
 		}
 	}
 
@@ -1198,13 +1198,13 @@ class Sale extends CI_Model
 
 		$row = $this->db->get()->row();
 
-		if($row != null)
+		if($row != NULL)
 		{
 			return $row->comment;
 		}
 		else
 		{
-			return null;
+			return NULL;
 		}
 	}
 
