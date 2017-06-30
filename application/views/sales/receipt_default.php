@@ -104,10 +104,10 @@
 		?> 
 			<tr>
 				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
+				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($prediscount_subtotal); ?></td>
 			</tr>
 			<tr>
-				<td colspan="3" class="total-value"><?php echo $this->lang->line('sales_discount'); ?>:</td>
+				<td colspan="3" class="total-value"><?php echo $this->lang->line('sales_customer_discount'); ?>:</td>
 				<td class="total-value"><?php echo to_currency($discount * -1); ?></td>
 			</tr>
 		<?php
@@ -120,7 +120,7 @@
 		?> 
 			<tr>
 				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($this->config->item('tax_included') ? $tax_exclusive_subtotal : $discounted_subtotal); ?></td>
+				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 			</tr>
 			<?php
 			foreach($taxes as $tax_group_index=>$sales_tax)
