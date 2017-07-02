@@ -19,6 +19,8 @@ The main features are:
 * Receivings
 * Reporting on sales, orders, inventory status
 * Gift card
+* Rewards
+* Restaurant tables
 * Messaging (SMS)
 * Multilanguage
 * Different UI themes
@@ -29,7 +31,7 @@ The latest version 3.1.0 is a complete overhaul of the original software.
 It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
 It also has improved functionality and security.
 
-Deployed to a Cloud it can be defined as a SaaS (Software as a Service) solution.
+Deployed to a Cloud it's a SaaS (Software as a Service) solution.
 
 License
 -------
@@ -66,7 +68,7 @@ If you like the project, and you are making money out of it on a daily basis, th
 
 Server Requirements
 -------------------
-PHP version 5.5 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt` and `php-curl` installed and enabled.
+PHP version 5.6 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt` and `php-curl` installed and enabled.
 
 MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance.
 
@@ -134,10 +136,10 @@ Please DO NOT post issues if you have not done those step.
 Bug reports must follow this schema:
 
 1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. Linux Ubuntu 15.0)
+2. OS name and version running your Web Server (e.g. Linux Ubuntu 16.04)
 3. Web Server name and version (e.g. Apache 2.4)
 4. Database name and version (e.g. MySQL 5.6)
-5. PHP version (e.g. PHP 5.5)
+5. PHP version (e.g. PHP 5.6)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
