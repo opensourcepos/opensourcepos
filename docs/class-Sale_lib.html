@@ -162,6 +162,7 @@
 				<li><a href="function-quantity_decimals.html">quantity_decimals</a></li>
 				<li><a href="function-show_report.html">show_report</a></li>
 				<li><a href="function-show_report_if_allowed.html">show_report_if_allowed</a></li>
+				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
@@ -232,7 +233,7 @@
 				1.0<br>
 				<b>Link:</b>
 				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Sale_lib.html#4-1264" title="Go to source code">libraries/Sale_lib.php</a>
+			<b>Located at</b> <a href="source-class-Sale_lib.html#4-1265" title="Go to source code">libraries/Sale_lib.php</a>
 		<br>
 	</div>
 
@@ -1302,14 +1303,16 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_totals">#</a>
-		<code><a href="source-class-Sale_lib.html#335-423" title="Go to source code">get_totals</a>( )</code>
+		<code><a href="source-class-Sale_lib.html#331-423" title="Go to source code">get_totals</a>( )</code>
 
 		<div class="description short">
-			
+			<p>Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
+'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
+'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'</p>
 
 
 
@@ -2742,7 +2745,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_item_total">#</a>
-		<code><a href="source-class-Sale_lib.html#1140-1151" title="Go to source code">get_item_total</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span>, <span> <var>$include_discount</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Sale_lib.html#1141-1152" title="Go to source code">get_item_total</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span>, <span> <var>$include_discount</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -2772,7 +2775,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_extended_amount">#</a>
-		<code><a href="source-class-Sale_lib.html#1153-1157" title="Go to source code">get_extended_amount</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_amount</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Sale_lib.html#1154-1158" title="Go to source code">get_extended_amount</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_amount</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			
@@ -2802,7 +2805,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_item_discount">#</a>
-		<code><a href="source-class-Sale_lib.html#1159-1165" title="Go to source code">get_item_discount</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span> )</code>
+		<code><a href="source-class-Sale_lib.html#1160-1166" title="Go to source code">get_item_discount</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span> )</code>
 
 		<div class="description short">
 			
@@ -2832,7 +2835,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_item_tax">#</a>
-		<code><a href="source-class-Sale_lib.html#1167-1181" title="Go to source code">get_item_tax</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span>, <span> <var>$tax_percentage</var></span> )</code>
+		<code><a href="source-class-Sale_lib.html#1168-1182" title="Go to source code">get_item_tax</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span>, <span> <var>$tax_percentage</var></span> )</code>
 
 		<div class="description short">
 			
@@ -2862,7 +2865,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_calculate_subtotal">#</a>
-		<code><a href="source-class-Sale_lib.html#1183-1199" title="Go to source code">calculate_subtotal</a>( <span> <var>$include_discount</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$exclude_tax</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Sale_lib.html#1184-1200" title="Go to source code">calculate_subtotal</a>( <span> <var>$include_discount</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$exclude_tax</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -2892,7 +2895,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_total">#</a>
-		<code><a href="source-class-Sale_lib.html#1201-1218" title="Go to source code">get_total</a>( )</code>
+		<code><a href="source-class-Sale_lib.html#1202-1219" title="Go to source code">get_total</a>( )</code>
 
 		<div class="description short">
 			
@@ -2922,7 +2925,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_empty_tables">#</a>
-		<code><a href="source-class-Sale_lib.html#1220-1223" title="Go to source code">get_empty_tables</a>( )</code>
+		<code><a href="source-class-Sale_lib.html#1221-1224" title="Go to source code">get_empty_tables</a>( )</code>
 
 		<div class="description short">
 			
@@ -2952,7 +2955,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check_for_cash_rounding">#</a>
-		<code><a href="source-class-Sale_lib.html#1225-1263" title="Go to source code">check_for_cash_rounding</a>( <span> <var>$total</var></span> )</code>
+		<code><a href="source-class-Sale_lib.html#1226-1264" title="Go to source code">check_for_cash_rounding</a>( <span> <var>$total</var></span> )</code>
 
 		<div class="description short">
 			
