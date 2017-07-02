@@ -4,9 +4,9 @@ require_once("Report.php");
 
 abstract class Summary_report extends Report
 {
-	/*
-	Private interface
-	*/
+	/**
+	 * Private interface
+	 */
 
 	private function _common_select(array $inputs)
 	{
@@ -21,22 +21,22 @@ abstract class Summary_report extends Report
 			$where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 
+		$decimals = totals_decimals();
+
 		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_cost = 'ROUND(IFNULL(SUM(sales_items.item_cost_price * sales_items.quantity_purchased), 0), ' . $decimals . ')';
+		$tax = 'ROUND(IFNULL(SUM(sales_items_taxes.tax), 0), ' . $decimals . ')';
 
 		if($this->config->item('tax_included'))
 		{
-			$sale_total = 'SUM(' . $sale_price . ')';
-			$sale_subtotal = 'SUM(' . $sale_price . ' - sales_items_taxes.tax)';
+			$sale_total = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_subtotal = $sale_total . ' - ' . $tax;
 		}
 		else
 		{
-			$sale_total = 'SUM(' . $sale_price . ' + sales_items_taxes.tax)';
-			$sale_subtotal = 'SUM(' . $sale_price . ')';
+			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_total = $sale_subtotal . ' + ' . $tax;
 		}
-
-		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
-
-		$decimals = totals_decimals();
 
 		// create a temporary table to contain all the sum of taxes per sale item
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
@@ -57,11 +57,11 @@ abstract class Summary_report extends Report
 		);
 
 		$this->db->select("
-				IFNULL(ROUND($sale_subtotal, $decimals), ROUND($sale_total - IFNULL(SUM(sales_items_taxes.tax), 0), $decimals)) AS subtotal,
-				IFNULL(ROUND(SUM(sales_items_taxes.tax), $decimals), 0) AS tax,
-				IFNULL(ROUND($sale_total, $decimals), ROUND($sale_subtotal, $decimals)) AS total,
-				IFNULL(ROUND($sale_cost, $decimals), 0) AS cost,
-				IFNULL(ROUND($sale_total - IFNULL(SUM(sales_items_taxes.tax), 0) - $sale_cost, $decimals), ROUND($sale_subtotal - $sale_cost, $decimals)) AS profit
+				IFNULL($sale_subtotal, $sale_total) AS subtotal,
+				$tax AS tax,
+				IFNULL($sale_total, $sale_subtotal) AS total,
+				$sale_cost AS cost,
+				(IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit
 		");
 	}
 
@@ -100,11 +100,9 @@ abstract class Summary_report extends Report
 		}
 	}
 
-	/*
-
-	Protected class interface implemented by derived classes
-
-	*/
+	/**
+	 * Protected class interface implemented by derived classes
+	 */
 
 	abstract protected function _get_data_columns();
 
@@ -113,10 +111,8 @@ abstract class Summary_report extends Report
 	protected function _where(array $inputs)	{ $this->_common_where($inputs); }
 	protected function _group_order()			{}
 
-	/*
-
-	Public interface implementing the base abstract class, in general it should not be extended unless there is a valid reason
-
+	/**
+	 * Public interface implementing the base abstract class, in general it should not be extended unless there is a valid reason
 	*/
 
 	public function getDataColumns()

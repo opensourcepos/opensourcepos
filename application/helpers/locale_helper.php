@@ -17,21 +17,32 @@ function current_language()
 function currency_side()
 {
     $config = get_instance()->config;
+
     $fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::CURRENCY);
     $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
+
     return !preg_match('/^¤/', $fmt->getPattern());
 }
 
 function quantity_decimals()
 {
     $config = get_instance()->config;
+
     return $config->item('quantity_decimals') ? $config->item('quantity_decimals') : 0;
 }
 
 function totals_decimals()
 {
 	$config = get_instance()->config;
+
 	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
+}
+
+function tax_decimals()
+{
+	$config = get_instance()->config;
+
+	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
 }
 
 function to_currency($number)
@@ -74,11 +85,12 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
     $fmt = new \NumberFormatter($config->item('number_locale'), $type);
     $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));
     $fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item($decimals));
-    if (empty($config->item('thousands_separator')))
+    if(empty($config->item('thousands_separator')))
     {
         $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
     $fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
+
     return $fmt->format($number);
 }
 
@@ -96,6 +108,7 @@ function parse_decimals($number)
     {
         $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
+
     return $fmt->parse($number);
 }
 

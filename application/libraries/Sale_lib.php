@@ -328,7 +328,7 @@ class Sale_lib
 
 	}
 
-	/*
+	/**
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
 	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'
 	 */
@@ -359,7 +359,7 @@ class Sale_lib
 			}
 			else
 			{
-				$subtotal =bcadd($subtotal, $extended_discounted_amount);
+				$subtotal = bcadd($subtotal, $extended_discounted_amount);
 			}
 		}
 
@@ -367,7 +367,7 @@ class Sale_lib
 		$totals['total_discount'] = $total_discount;
 		$totals['subtotal'] = $subtotal;
 
-		if ($this->CI->config->item('tax_included'))
+		if($this->CI->config->item('tax_included'))
 		{
 			$totals['total'] = $total;
 		}
@@ -1137,6 +1137,7 @@ class Sale_lib
 
 		return $discounted_extended_amount;
 	}
+
 	public function get_item_total($quantity, $price, $discount_percentage, $include_discount = FALSE)
 	{
 		$total = bcmul($quantity, $price);
