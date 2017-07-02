@@ -1,4 +1,13 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Item_taxes class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Item_taxes extends CI_Model
 {
 	/*
@@ -12,14 +21,14 @@ class Item_taxes extends CI_Model
 		//return an array of taxes for an item
 		return $this->db->get()->result_array();
 	}
-	
+
 	/*
 	Inserts or updates an item's taxes
 	*/
 	public function save(&$items_taxes_data, $item_id)
 	{
 		$success = TRUE;
-		
+
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
@@ -28,9 +37,9 @@ class Item_taxes extends CI_Model
 		foreach($items_taxes_data as $row)
 		{
 			$row['item_id'] = $item_id;
-			$success &= $this->db->insert('items_taxes', $row);		
+			$success &= $this->db->insert('items_taxes', $row);
 		}
-		
+
 		$this->db->trans_complete();
 
 		$success &= $this->db->trans_status();
@@ -44,10 +53,10 @@ class Item_taxes extends CI_Model
 	public function save_multiple(&$items_taxes_data, $item_ids)
 	{
 		$success = TRUE;
-		
+
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-		
+
 		foreach(explode(':', $item_ids) as $item_id)
 		{
 			$this->delete($item_id);
@@ -55,7 +64,7 @@ class Item_taxes extends CI_Model
 			foreach($items_taxes_data as $row)
 			{
 				$row['item_id'] = $item_id;
-				$success &= $this->db->insert('items_taxes', $row);		
+				$success &= $this->db->insert('items_taxes', $row);
 			}
 		}
 
@@ -71,7 +80,7 @@ class Item_taxes extends CI_Model
 	*/
 	public function delete($item_id)
 	{
-		return $this->db->delete('items_taxes', array('item_id' => $item_id)); 
+		return $this->db->delete('items_taxes', array('item_id' => $item_id));
 	}
 }
 ?>

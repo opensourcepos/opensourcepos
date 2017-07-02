@@ -1,4 +1,13 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Giftcard class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Giftcard extends CI_Model
 {
 	/*
@@ -12,7 +21,7 @@ class Giftcard extends CI_Model
 
 		return ($this->db->get()->num_rows() == 1);
 	}
-	
+
 	/*
 	Gets max gift card number
 	*/
@@ -27,7 +36,7 @@ class Giftcard extends CI_Model
 
 		return $this->db->get()->row();
 	}
-	
+
 	/*
 	Gets total of rows
 	*/
@@ -182,7 +191,7 @@ class Giftcard extends CI_Model
 		foreach($this->db->get()->result() as $row)
 		{
 			$suggestions[] = array('label' => $row->first_name.' '.$row->last_name);
-		}			
+		}
 
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
@@ -192,7 +201,7 @@ class Giftcard extends CI_Model
 
 		return $suggestions;
 	}
-	
+
 	/*
 	Performs a search on giftcards
 	*/
@@ -217,7 +226,7 @@ class Giftcard extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	/*
 	Gets gift cards
 	*/
@@ -236,7 +245,7 @@ class Giftcard extends CI_Model
 
 		return $this->db->get()->num_rows();
 	}
-	
+
 	/*
 	Gets gift card value
 	*/
@@ -246,13 +255,13 @@ class Giftcard extends CI_Model
 		{
 			return 0;
 		}
-		
+
 		$this->db->from('giftcards');
 		$this->db->where('giftcard_number', $giftcard_number);
 
 		return $this->db->get()->row()->value;
 	}
-	
+
 	/*
 	Updates gift card value
 	*/
@@ -300,7 +309,7 @@ class Giftcard extends CI_Model
 		{
 			return 0;
 		}
-		
+
 		$this->db->from('giftcards');
 		$this->db->where('giftcard_number', $giftcard_number);
 

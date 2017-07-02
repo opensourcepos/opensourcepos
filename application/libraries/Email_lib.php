@@ -1,5 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
- 
+
+/**
+ * Email library
+ *
+ * Library with utilities to configure and send emails
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.0
+ * @author  daN4cat (FrancescoUK)
+ */
+
 class Email_lib
 {
 	private $CI;
@@ -7,7 +17,7 @@ class Email_lib
   	public function __construct()
 	{
 		$this->CI =& get_instance();
-		
+
 		$this->CI->load->library('email');
 
 		$config = array(
@@ -23,34 +33,34 @@ class Email_lib
 			'smtp_timeout' => $this->CI->config->item('smtp_timeout'),
 			'smtp_crypto' => $this->CI->config->item('smtp_crypto')
 		);
-		
+
 		$this->CI->email->initialize($config);
 	}
-	
-	/*
+
+	/**
 	 * Email sending function
 	 * Example of use: $response = sendEmail('john@doe.com', 'Hello', 'This is a message', $filename);
 	 */
 	public function sendEmail($to, $subject, $message, $attachment = NULL)
 	{
 		$email = $this->CI->email;
-		
+
 		$email->from($this->CI->config->item('email'), $this->CI->config->item('company'));
 		$email->to($to);
 		$email->subject($subject);
 		$email->message($message);
-		if( !empty($attachment) )
+		if(!empty($attachment))
 		{
 			$email->attach($attachment);
 		}
 
 		$result = $email->send();
-		
+
 		if(!$result)
 		{
 			error_log($email->print_debugger());
 		}
-		
+
 		return $result;
 	}
 }

@@ -4,11 +4,6 @@ require_once("Summary_report.php");
 
 class Summary_categories extends Summary_report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	protected function _get_data_columns()
 	{
 		return array(

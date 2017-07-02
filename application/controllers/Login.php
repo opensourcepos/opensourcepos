@@ -2,11 +2,6 @@
 
 class Login extends CI_Controller 
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function index()
 	{
 		if($this->Employee->is_logged_in())

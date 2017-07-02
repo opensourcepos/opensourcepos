@@ -2,11 +2,6 @@
 
 class No_Access extends CI_Controller 
 {
-	public function __construct()
-	{
-		parent::__construct();
-	}
-	
 	public function index($module_id = '', $permission_id = '')
 	{
 		$data['module_name']   = $this->Module->get_module_name($module_id);

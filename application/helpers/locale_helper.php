@@ -1,7 +1,7 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
- * Currency locale
+/**
+ * Currency locale helper
  */
 
 function current_language_code()
@@ -52,7 +52,7 @@ function to_tax_decimals($number)
     {
         return $number;
     }
-	
+
     return to_decimals($number, 'tax_decimals');
 }
 
@@ -69,7 +69,7 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
     {
         return $number;
     }
-	
+
     $config = get_instance()->config;
     $fmt = new \NumberFormatter($config->item('number_locale'), $type);
     $fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));

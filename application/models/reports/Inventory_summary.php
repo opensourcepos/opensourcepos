@@ -4,11 +4,6 @@ require_once("Report.php");
 
 class Inventory_summary extends Report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function getDataColumns()
 	{
 		return array(array('item_name' => $this->lang->line('reports_item_name')),
@@ -22,7 +17,7 @@ class Inventory_summary extends Report
 	}
 
 	public function getData(array $inputs)
-	{	
+	{
 		$this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
 		$this->db->from('items AS items');
 		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
@@ -53,7 +48,7 @@ class Inventory_summary extends Report
 
 	/**
 	 * calculates the total value of the given inventory summary by summing all sub_total_values (see Inventory_summary::getData())
-	 * 
+	 *
 	 * @param array $inputs expects the reports-data-array which Inventory_summary::getData() returns
 	 * @return array
 	 */
@@ -71,7 +66,7 @@ class Inventory_summary extends Report
 
 	/**
 	 * returns the array for the dropdown-element item-count in the form for the inventory summary-report
-	 * 
+	 *
 	 * @return array
 	 */
 	public function getItemCountDropdownArray()

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once(APPPATH . 'libraries/tokens/Token.php');
 require_once(APPPATH . 'libraries/tokens/Token_customer.php');
@@ -8,9 +8,17 @@ require_once(APPPATH . 'libraries/tokens/Token_quote_sequence.php');
 require_once(APPPATH . 'libraries/tokens/Token_suspended_invoice_count.php');
 require_once(APPPATH . 'libraries/tokens/Token_year_invoice_count.php');
 
+/**
+ * Token class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  SteveIreland
+ */
+
 class Token
 {
-	private $CI;
+	protected $CI;
 
 	public function __construct()
 	{
@@ -50,9 +58,9 @@ class Token
 		return '';
 	}
 
-	function get_value(){
+	public function get_value()
+	{
 		return '';
 	}
 }
-
 ?>

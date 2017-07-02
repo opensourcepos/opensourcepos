@@ -1,4 +1,13 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Sale_suspended class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Sale_suspended extends CI_Model
 {
 	public function get_all()
@@ -8,7 +17,7 @@ class Sale_suspended extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	public function get_info($sale_id)
 	{
 		$this->db->from('sales_suspended');
@@ -28,7 +37,7 @@ class Sale_suspended extends CI_Model
 
 		return $this->db->count_all_results();
 	}
-	
+
 	public function get_sale_by_invoice_number($invoice_number)
 	{
 		$this->db->from('sales_suspended');
@@ -44,14 +53,14 @@ class Sale_suspended extends CI_Model
 
 		return ($this->db->get()->num_rows() == 1);
 	}
-	
+
 	public function update($sale_data, $sale_id)
 	{
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->db->update('sales_suspended', $sale_data);
 	}
-	
+
 	public function save($items, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sale_id = FALSE)
 	{
 		if(count($items) == 0)
@@ -126,7 +135,7 @@ class Sale_suspended extends CI_Model
 						'name'    => $row['name'],
 						'percent' => $row['percent']
 					);
-					
+
 					$this->db->insert('sales_suspended_items_taxes', $sales_items_taxes);
 				}
 			}
@@ -140,20 +149,20 @@ class Sale_suspended extends CI_Model
 		$this->db->update('dinner_tables', $dinner_table_data);
 
 		$this->db->trans_complete();
-		
+
 		if($this->db->trans_status() === FALSE)
 		{
 			return -1;
 		}
-		
+
 		return $sale_id;
 	}
-	
+
 	public function delete($sale_id)
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-		
+
 		$dinner_table = $this->get_dinner_table($sale_id);
 		$dinner_table_data = array(
 			'status' => 0
@@ -161,14 +170,14 @@ class Sale_suspended extends CI_Model
 
 		$this->db->where('dinner_table_id',$dinner_table);
 		$this->db->update('dinner_tables', $dinner_table_data);
-		
-		$this->db->delete('sales_suspended_payments', array('sale_id' => $sale_id)); 
-		$this->db->delete('sales_suspended_items_taxes', array('sale_id' => $sale_id)); 
-		$this->db->delete('sales_suspended_items', array('sale_id' => $sale_id)); 
-		$this->db->delete('sales_suspended', array('sale_id' => $sale_id)); 
-		
+
+		$this->db->delete('sales_suspended_payments', array('sale_id' => $sale_id));
+		$this->db->delete('sales_suspended_items_taxes', array('sale_id' => $sale_id));
+		$this->db->delete('sales_suspended_items', array('sale_id' => $sale_id));
+		$this->db->delete('sales_suspended', array('sale_id' => $sale_id));
+
 		$this->db->trans_complete();
-				
+
 		return $this->db->trans_status();
 	}
 

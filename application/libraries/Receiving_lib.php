@@ -1,5 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Receiving library
+ *
+ * Library with utilities to manage receivings
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Receiving_lib
 {
 	private $CI;

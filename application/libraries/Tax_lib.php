@@ -1,5 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Tax library
+ *
+ * Library with utilities to manage taxes
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  SteveIreland
+ */
+
 class Tax_lib
 {
 	const TAX_TYPE_SALES = 1;
@@ -310,11 +320,11 @@ class Tax_lib
 		return $tax_code;
 	}
 
-	function clean($string) {
+	public function clean($string)
+	{
 		$string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 
 		return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 	}
-
 }
 ?>

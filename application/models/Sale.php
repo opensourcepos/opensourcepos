@@ -1,6 +1,18 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Sale class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Sale extends CI_Model
 {
+	/**
+	 * Get sale info
+	 */
 	public function get_info($sale_id)
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
@@ -92,17 +104,17 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	/*
-	 Get number of rows for the takings (sales/manage) view
-	*/
+	/**
+	 * Get number of rows for the takings (sales/manage) view
+	 */
 	public function get_found_rows($search, $filters)
 	{
 		return $this->search($search, $filters)->num_rows();
 	}
 
-	/*
-	 Get the sales data for the takings (sales/manage) view
-	*/
+	/**
+	 * Get the sales data for the takings (sales/manage) view
+	 */
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_time', $order = 'desc')
 	{
 		$where = '';
@@ -265,9 +277,9 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	/*
-	 Get the payment summary for the takings (sales/manage) view
-	*/
+	/**
+	 * Get the payment summary for the takings (sales/manage) view
+	 */
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
@@ -359,9 +371,9 @@ class Sale extends CI_Model
 		return $payments;
 	}
 
-	/*
-	Gets total of rows
-	*/
+	/**
+	 * Gets total of rows
+	 */
 	public function get_total_rows()
 	{
 		$this->db->from('sales');
@@ -369,6 +381,9 @@ class Sale extends CI_Model
 		return $this->db->count_all_results();
 	}
 
+	/**
+	 * Gets search suggestions
+	 */
 	public function get_search_suggestions($search, $limit = 25)
 	{
 		$suggestions = array();
@@ -398,9 +413,9 @@ class Sale extends CI_Model
 		return $suggestions;
 	}
 
-	/*
-	Gets total of invoice rows
-	*/
+	/**
+	 * Gets total of invoice rows
+	 */
 	public function get_invoice_count()
 	{
 		$this->db->from('sales');
@@ -409,6 +424,9 @@ class Sale extends CI_Model
 		return $this->db->count_all_results();
 	}
 
+	/**
+	 * Gets sale by invoice number
+	 */
 	public function get_sale_by_invoice_number($invoice_number)
 	{
 		$this->db->from('sales');
@@ -417,6 +435,9 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
+	/**
+	 * Gets invoice number by year
+	 */
 	public function get_invoice_number_for_year($year = '', $start_from = 0)
 	{
 		$year = $year == '' ? date('Y') : $year;
@@ -429,6 +450,9 @@ class Sale extends CI_Model
 		return ($start_from + $result['invoice_number_year']);
 	}
 
+	/**
+	 * Checks if valid receipt
+	 */
 	public function is_valid_receipt(&$receipt_sale_id)
 	{
 		if(!empty($receipt_sale_id))
@@ -455,6 +479,9 @@ class Sale extends CI_Model
 		return FALSE;
 	}
 
+	/**
+	 * Checks if sale exists
+	 */
 	public function exists($sale_id)
 	{
 		$this->db->from('sales');
@@ -463,6 +490,9 @@ class Sale extends CI_Model
 		return ($this->db->get()->num_rows()==1);
 	}
 
+	/**
+	 * Update sale
+	 */
 	public function update($sale_id, $sale_data, $payments)
 	{
 		$this->db->where('sale_id', $sale_id);
@@ -498,7 +528,7 @@ class Sale extends CI_Model
 	}
 
 
-	/*
+	/**
 	 * Save the sale information after the sales is complete but before the final document is printed
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 */
@@ -767,6 +797,9 @@ class Sale extends CI_Model
 		}
 	}
 
+	/**
+	 * Saves sale tax
+	 */
 	public function save_sales_tax(&$sales_taxes)
 	{
 		foreach($sales_taxes as $line=>$sales_tax)
@@ -775,6 +808,9 @@ class Sale extends CI_Model
 		}
 	}
 
+	/**
+	 * Deletes list of sales
+	 */
 	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
 	{
 		$result = TRUE;
@@ -787,6 +823,9 @@ class Sale extends CI_Model
 		return $result;
 	}
 
+	/**
+	 * Delete sale
+	 */
 	public function delete($sale_id, $employee_id, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
@@ -836,6 +875,9 @@ class Sale extends CI_Model
 		return $this->db->trans_status();
 	}
 
+	/**
+	 * Gets sale item
+	 */
 	public function get_sale_items($sale_id)
 	{
 		$this->db->from('sales_items');
@@ -844,7 +886,7 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
-	/*
+	/**
 	 * Used by the invoice and receipt programs
 	 */
 	public function get_sale_items_ordered($sale_id)
@@ -897,6 +939,9 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
+	/**
+	 * Gets sale payments
+	 */
 	public function get_sale_payments($sale_id)
 	{
 		$this->db->from('sales_payments');
@@ -905,6 +950,9 @@ class Sale extends CI_Model
 		return $this->db->get();
 	}
 
+	/**
+	 * Gets sale payment options
+	 */
 	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE)
 	{
 		$payments = array();
@@ -943,6 +991,9 @@ class Sale extends CI_Model
 		return $payments;
 	}
 
+	/**
+	 * Gets sale customer name
+	 */
 	public function get_customer($sale_id)
 	{
 		$this->db->from('sales');
@@ -951,6 +1002,9 @@ class Sale extends CI_Model
 		return $this->Customer->get_info($this->db->get()->row()->customer_id);
 	}
 
+	/**
+	 * Gets sale employee name
+	 */
 	public function get_employee($sale_id)
 	{
 		$this->db->from('sales');
@@ -959,6 +1013,9 @@ class Sale extends CI_Model
 		return $this->Employee->get_info($this->db->get()->row()->employee_id);
 	}
 
+	/**
+	 * Checks if quote number exists
+	 */
 	// TODO change to use new quote_number field
 	public function check_quote_number_exists($quote_number, $sale_id = '')
 	{
@@ -972,6 +1029,9 @@ class Sale extends CI_Model
 		return ($this->db->get()->num_rows() == 1);
 	}
 
+	/**
+	 * Checks if invoice number exists
+	 */
 	public function check_invoice_number_exists($invoice_number, $sale_id = '')
 	{
 		$this->db->from('sales');
@@ -984,6 +1044,9 @@ class Sale extends CI_Model
 		return ($this->db->get()->num_rows() == 1);
 	}
 
+	/**
+	 * Gets Giftcard value
+	 */
 	public function get_giftcard_value($giftcardNumber)
 	{
 		if(!$this->Giftcard->exists($this->Giftcard->get_giftcard_id($giftcardNumber)))
@@ -997,7 +1060,10 @@ class Sale extends CI_Model
 		return $this->db->get()->row()->value;
 	}
 
-	//We create a temp table that allows us to do easy report/sales queries
+	/**
+	 * Creates sales temporary dimentional table
+	 * We create a temp table that allows us to do easy report/sales queries
+	 */
 	public function create_temp_table(array $inputs)
 	{
 		if(empty($inputs['sale_id']))
@@ -1133,7 +1199,7 @@ class Sale extends CI_Model
 		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp'));
 	}
 
-	/*
+	/**
 	 * Retrieves all sales that are in a suspended state
 	 */
 	public function get_all_suspended($customer_id = NULL)
@@ -1157,8 +1223,8 @@ class Sale extends CI_Model
 
 	}
 
-	/*
-	 * get the dinner table for the selected sale
+	/**
+	 * Gets the dinner table for the selected sale
 	 */
 	public function get_dinner_table($sale_id)
 	{
@@ -1168,8 +1234,8 @@ class Sale extends CI_Model
 		return $this->db->get()->row()->dinner_table_id;
 	}
 
-	/*
-	 * get the quote_number for the selected sale
+	/**
+	 * Gets the quote_number for the selected sale
  	 */
 	public function get_quote_number($sale_id)
 	{
@@ -1188,8 +1254,8 @@ class Sale extends CI_Model
 		}
 	}
 
-	/*
-	 * get the quote_number for the selected sale
+	/**
+	 * Gets the quote_number for the selected sale
 	 */
 	public function get_comment($sale_id)
 	{
@@ -1208,9 +1274,9 @@ class Sale extends CI_Model
 		}
 	}
 
-	/*
-	* Gets total of suspended invoices rows
-	*/
+	/**
+	 * Gets total of suspended invoices rows
+	 */
 	public function get_suspended_invoice_count()
 	{
 		$this->db->from('sales');
@@ -1220,8 +1286,8 @@ class Sale extends CI_Model
 		return $this->db->count_all_results();
 	}
 
-	/*
-	 * This will remove a selected sale from the sales table.
+	/**
+	 * Removes a selected sale from the sales table.
 	 * This function should only be called for suspended sales that are being restored to the current cart
 	 */
 	public function delete_suspended_sale($sale_id)
@@ -1248,6 +1314,9 @@ class Sale extends CI_Model
 		return $this->db->trans_status();
 	}
 
+	/**
+	 * Gets suspended sale info
+	 */
 	public function get_suspended_sale_info($sale_id)
 	{
 		$this->db->from('sales');
@@ -1256,6 +1325,5 @@ class Sale extends CI_Model
 
 		return $this->db->get();
 	}
-
 }
 ?>

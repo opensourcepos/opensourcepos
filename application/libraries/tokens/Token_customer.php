@@ -1,13 +1,19 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Token_customer class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  SteveIreland
+ */
 
 class Token_customer extends Token
 {
-	private $CI;
-
 	public function __construct()
 	{
 		parent::__construct();
-		$this->CI =& get_instance();
+
 		$this->CI->load->library('sale_lib');
 	}
 
@@ -25,7 +31,6 @@ class Token_customer extends Token
 		}
 
 		return '';
-
 	}
-
 }
+?>

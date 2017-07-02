@@ -1,25 +1,29 @@
-<?php
-class Module extends CI_Model 
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Module class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
+class Module extends CI_Model
 {
-    function __construct()
-    {
-        parent::__construct();
-    }
-	
 	public function get_module_name($module_id)
 	{
 		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
-		
+
 		if($query->num_rows() == 1)
 		{
 			$row = $query->row();
 
 			return $this->lang->line($row->name_lang_key);
 		}
-		
+
 		return $this->lang->line('error_unknown');
 	}
-	
+
 	public function get_module_desc($module_id)
 	{
 		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
@@ -30,17 +34,17 @@ class Module extends CI_Model
 
 			return $this->lang->line($row->desc_lang_key);
 		}
-	
-		return $this->lang->line('error_unknown');	
+
+		return $this->lang->line('error_unknown');
 	}
-	
+
 	public function get_all_permissions()
 	{
 		$this->db->from('permissions');
 
 		return $this->db->get();
 	}
-	
+
 	public function get_all_subpermissions()
 	{
 		$this->db->from('permissions');
@@ -50,15 +54,15 @@ class Module extends CI_Model
 
 		return $this->db->get();
 	}
-	
+
 	public function get_all_modules()
 	{
 		$this->db->from('modules');
 		$this->db->order_by('sort', 'asc');
 
-		return $this->db->get();		
+		return $this->db->get();
 	}
-	
+
 	public function get_allowed_modules($person_id)
 	{
 		$this->db->from('modules');
@@ -67,7 +71,7 @@ class Module extends CI_Model
 		$this->db->where('person_id', $person_id);
 		$this->db->order_by('sort', 'asc');
 
-		return $this->db->get();		
+		return $this->db->get();
 	}
 }
 ?>

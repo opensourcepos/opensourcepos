@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-abstract class Report extends CI_Model 
+abstract class Report extends CI_Model
 {
 	function __construct()
 	{
@@ -15,10 +15,10 @@ abstract class Report extends CI_Model
 
 	// Returns the column names used for the report
 	public abstract function getDataColumns();
-	
+
 	// Returns all the data to be populated into the report
 	public abstract function getData(array $inputs);
-	
+
 	// Returns key=>value pairing of summary data for the report
 	public abstract function getSummaryData(array $inputs);
 }

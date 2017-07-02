@@ -4,15 +4,8 @@ require_once("Report.php");
 
 abstract class Summary_report extends Report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	/*
-
 	Private interface
-
 	*/
 
 	private function _common_select(array $inputs)

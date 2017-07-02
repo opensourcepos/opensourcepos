@@ -2,8 +2,12 @@
 
 /**
  * MailChimp API v3 REST client Connector
- * 
+ *
  * Interface for communicating with the Mailchimp v3 API
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  daN4cat (FrancescoUK)
  *
  * Inspired by the work of:
  *   - Rajitha Bandara: https://github.com/rajitha-bandara/ci-mailchimp-v3-rest-client
@@ -66,7 +70,7 @@ class MailchimpConnector
 		{
 			return $this->_request($httpVerb, $method, $args);
 		}
-		
+
 		return FALSE;
 	}
 
@@ -88,13 +92,13 @@ class MailchimpConnector
 	}
 
     /**
-     * Performs the underlying HTTP request. 
+     * Performs the underlying HTTP request.
      * @param  string $httpVerb The HTTP method to be used
      * @param  string $method   The API method to be called
      * @param  array  $args     Assoc array of parameters to be passed
      * @return array            Assoc array of decoded result
      */
-	private function _request($httpVerb, $method, $args = array()) 
+	private function _request($httpVerb, $method, $args = array())
 	{
 		$result = FALSE;
 
@@ -123,8 +127,12 @@ class MailchimpConnector
 
 /**
  * Mailchimp library, usable from CI code
- * 
+ *
  * Library with utility queries to interface Mailchimp v3 API
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  daN4cat (FrancescoUK)
  *
  * Inspired by the work of ThinkShout: https://github.com/thinkshout/mailchimp-api-php
  */
@@ -138,7 +146,7 @@ class Mailchimp_lib
 		$api_key = (count($params) > 0 && !empty($params['api_key'])) ? $params['api_key'] : '';
 		$this->_connector = new MailchimpConnector($api_key);
 	}
-	
+
 	/**
 	* Gets information about all lists owned by the authenticated account.
 	*
@@ -191,7 +199,7 @@ class Mailchimp_lib
 			'count' => $count,
 			'offset' => $offset
 		];
-		
+
 		return $this->_connector->call('GET', '/lists/' . $list_id . '/members', $parameters);
 	}
 

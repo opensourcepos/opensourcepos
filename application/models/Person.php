@@ -1,7 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Base class for People classes.
+ * Base class for People classes
  *
  * @link    github.com/jekkos/opensourcepos
  * @since   1.0

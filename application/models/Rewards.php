@@ -1,4 +1,13 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Rewards class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  joshua1234511
+ */
+
 class Rewards extends CI_Model
 {
 	/*

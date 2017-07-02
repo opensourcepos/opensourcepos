@@ -1,11 +1,20 @@
-<?php
-class Inventory extends CI_Model 
-{	
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Inventory class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
+class Inventory extends CI_Model
+{
 	public function insert($inventory_data)
 	{
 		return $this->db->insert('inventory', $inventory_data);
 	}
-	
+
 	public function get_inventory_data_for_item($item_id, $location_id = FALSE)
 	{
 		$this->db->from('inventory');
@@ -16,7 +25,7 @@ class Inventory extends CI_Model
         }
 		$this->db->order_by('trans_date', 'desc');
 
-		return $this->db->get();		
+		return $this->db->get();
 	}
 
 	public function reset_quantity($item_id)

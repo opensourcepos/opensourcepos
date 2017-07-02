@@ -1,5 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Sale library
+ *
+ * Library with utilities to manage sales
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Sale_lib
 {
 	private $CI;
@@ -9,7 +19,6 @@ class Sale_lib
 		$this->CI =& get_instance();
 		$this->CI->load->library('tax_lib');
 		$this->CI->load->model('enums/Rounding_code');
-
 	}
 
 	public function get_line_sequence_options()
@@ -114,8 +123,8 @@ class Sale_lib
 	{
 		$this->CI->session->unset_userdata('sales_cart');
 	}
-	
-	public function get_comment() 
+
+	public function get_comment()
 	{
 		// avoid returning a NULL that results in a 0 in the comment if nothing is set/available
 		$comment = $this->CI->session->userdata('sales_comment');
@@ -123,16 +132,16 @@ class Sale_lib
 		return empty($comment) ? '' : $comment;
 	}
 
-	public function set_comment($comment) 
+	public function set_comment($comment)
 	{
 		$this->CI->session->set_userdata('sales_comment', $comment);
 	}
 
-	public function clear_comment() 	
+	public function clear_comment()
 	{
 		$this->CI->session->unset_userdata('sales_comment');
 	}
-	
+
 	public function get_invoice_number()
 	{
 		return $this->CI->session->userdata('sales_invoice_number');
@@ -203,29 +212,29 @@ class Sale_lib
 	{
 		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
 	}
-	
-	public function is_print_after_sale() 
+
+	public function is_print_after_sale()
 	{
 		return ($this->CI->session->userdata('sales_print_after_sale') == 'true' ||
 				$this->CI->session->userdata('sales_print_after_sale') == '1');
 	}
-	
+
 	public function set_print_after_sale($print_after_sale)
 	{
 		return $this->CI->session->set_userdata('sales_print_after_sale', $print_after_sale);
 	}
-	
-	public function get_email_receipt() 
+
+	public function get_email_receipt()
 	{
 		return $this->CI->session->userdata('sales_email_receipt');
 	}
 
-	public function set_email_receipt($email_receipt) 
+	public function set_email_receipt($email_receipt)
 	{
 		$this->CI->session->set_userdata('sales_email_receipt', $email_receipt);
 	}
 
-	public function clear_email_receipt() 	
+	public function clear_email_receipt()
 	{
 		$this->CI->session->unset_userdata('sales_email_receipt');
 	}
@@ -260,7 +269,7 @@ class Sale_lib
 		{
 			//add to existing array
 			$payment = array($payment_id => array('payment_type' => $payment_id, 'payment_amount' => $payment_amount));
-			
+
 			$payments += $payment;
 		}
 
@@ -459,7 +468,7 @@ class Sale_lib
 	{
 		$this->CI->session->unset_userdata('sales_customer');
 	}
-	
+
 	public function get_employee()
 	{
 		if(!$this->CI->session->userdata('sales_employee'))
@@ -593,7 +602,7 @@ class Sale_lib
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
-		//make sure item exists		
+		//make sure item exists
 		if(empty($item_info))
 		{
 			$item_id = -1;
@@ -707,10 +716,10 @@ class Sale_lib
 
 		return TRUE;
 	}
-	
+
 	public function out_of_stock($item_id, $item_location)
 	{
-		//make sure item exists		
+		//make sure item exists
 		if($item_id != -1)
 		{
 			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
@@ -733,7 +742,7 @@ class Sale_lib
 
 		return '';
 	}
-	
+
 	public function get_quantity_already_added($item_id, $item_location)
 	{
 		$items = $this->get_cart();
@@ -745,10 +754,10 @@ class Sale_lib
 				$quanity_already_added+=$item['quantity'];
 			}
 		}
-		
+
 		return $quanity_already_added;
 	}
-	
+
 	public function get_item_id($line_to_get)
 	{
 		$items = $this->get_cart();
@@ -760,14 +769,14 @@ class Sale_lib
 				return $item['item_id'];
 			}
 		}
-		
+
 		return -1;
 	}
 
 	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price)
 	{
 		$items = $this->get_cart();
-		if(isset($items[$line]))	
+		if(isset($items[$line]))
 		{
 			$line = &$items[$line];
 			$line['description'] = $description;
@@ -806,7 +815,7 @@ class Sale_lib
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
-	
+
 	public function add_item_kit($external_item_kit_id, $item_location, $discount, $price_option, $kit_print_option, &$stock_warning)
 	{
 		//KIT #
@@ -856,7 +865,7 @@ class Sale_lib
 				$stock_warning = $this->out_of_stock($item_kit_item['item_id'], $item_location);
 			}
 		}
-		
+
 		return $result;
 	}
 
@@ -893,7 +902,7 @@ class Sale_lib
 
 		return $this->CI->session->userdata('sales_cart');
 	}
-	
+
 	public function copy_entire_suspended_sale($sale_id)
 	{
 		$this->empty_cart();
@@ -987,12 +996,12 @@ class Sale_lib
 		}
 		$this->CI->session->set_userdata('cash_rounding', $cash_rounding);
 	}
-	
+
 	public function is_customer_taxable()
 	{
 		$customer_id = $this->get_customer();
 		$customer = $this->CI->Customer->get_info($customer_id);
-		
+
 		//Do not charge sales tax if we have a customer that is not taxable
 		return $customer->taxable or $customer_id == -1;
 	}
@@ -1061,10 +1070,10 @@ class Sale_lib
 	}
 
 	public function apply_customer_discount($discount_percent)
-	{	
+	{
 		// Get all items in the cart so far...
 		$items = $this->get_cart();
-		
+
 		foreach($items as &$item)
 		{
 			$quantity = $item['quantity'];
@@ -1081,7 +1090,7 @@ class Sale_lib
 
 		$this->set_cart($items);
 	}
-	
+
 	public function get_discount()
 	{
 		$discount = 0;
@@ -1101,8 +1110,8 @@ class Sale_lib
 	{
 		return $this->calculate_subtotal($include_discount, $exclude_tax);
 	}
-	
-	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE) 
+
+	public function get_item_total_tax_exclusive($item_id, $quantity, $price, $discount_percentage, $include_discount = FALSE)
 	{
 		$tax_info = $this->CI->Item_taxes->get_info($item_id);
 		$item_total = $this->get_item_total($quantity, $price, $discount_percentage, $include_discount);
@@ -1112,7 +1121,7 @@ class Sale_lib
 			$tax_percentage = $tax['percent'];
 			$item_total = bcsub($item_total, $this->get_item_tax($quantity, $price, $discount_percentage, $tax_percentage));
 		}
-		
+
 		return $item_total;
 	}
 
@@ -1128,7 +1137,7 @@ class Sale_lib
 
 		return $discounted_extended_amount;
 	}
-	public function get_item_total($quantity, $price, $discount_percentage, $include_discount = FALSE)  
+	public function get_item_total($quantity, $price, $discount_percentage, $include_discount = FALSE)
 	{
 		$total = bcmul($quantity, $price);
 		if($include_discount)
@@ -1154,8 +1163,8 @@ class Sale_lib
 
 		return bcmul($total, $discount_fraction);
 	}
-	
-	public function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage) 
+
+	public function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage)
 	{
 		$price = $this->get_item_total($quantity, $price, $discount_percentage, TRUE);
 		if($this->CI->config->item('tax_included'))
@@ -1180,7 +1189,7 @@ class Sale_lib
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total_tax_exclusive($item['item_id'], $item['quantity'], $item['price'], $item['discount'], $include_discount));
 			}
-			else 
+			else
 			{
 				$subtotal = bcadd($subtotal, $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $include_discount));
 			}
@@ -1210,7 +1219,7 @@ class Sale_lib
 
     public function get_empty_tables()
     {
-    	return $this->CI->Dinner_table->get_empty_tables();		
+    	return $this->CI->Dinner_table->get_empty_tables();
     }
 
 	public function check_for_cash_rounding($total)

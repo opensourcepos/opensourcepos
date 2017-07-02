@@ -1,4 +1,13 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Item_kit class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   1.0
+ * @author  N/A
+ */
+
 class Item_kit extends CI_Model
 {
 	/*
@@ -40,42 +49,42 @@ class Item_kit extends CI_Model
 
 		return $this->db->count_all_results();
 	}
-	
+
 	/*
 	Gets information about a particular item kit
 	*/
 	public function get_info($item_kit_id)
 	{
 		$this->db->select('
-		item_kit_id, 
-		item_kits.name as name, 
-		items.name as item_name, 
-		item_kits.description, 
-		items.description as item_description, 
-		item_kits.item_id as kit_item_id, 
-		kit_discount_percent, 
-		price_option, 
-		print_option, 
-		category, 
-		supplier_id, 
-		item_number, 
-		cost_price, 
-		unit_price, 
-		reorder_level, 
-		receiving_quantity, 
-		pic_filename, 
-		allow_alt_description, 
-		is_serialized, 
-		deleted, 
-		custom1, 
-		custom2, 
-		custom3, 
-		custom4, 
-		custom5, 
-		custom6, 
-		custom7, 
-		custom8, 
-		custom9, 
+		item_kit_id,
+		item_kits.name as name,
+		items.name as item_name,
+		item_kits.description,
+		items.description as item_description,
+		item_kits.item_id as kit_item_id,
+		kit_discount_percent,
+		price_option,
+		print_option,
+		category,
+		supplier_id,
+		item_number,
+		cost_price,
+		unit_price,
+		reorder_level,
+		receiving_quantity,
+		pic_filename,
+		allow_alt_description,
+		is_serialized,
+		deleted,
+		custom1,
+		custom2,
+		custom3,
+		custom4,
+		custom5,
+		custom6,
+		custom7,
+		custom8,
+		custom9,
 		custom10,
 		item_type,
 		stock_type');
@@ -83,7 +92,7 @@ class Item_kit extends CI_Model
 		$this->db->from('item_kits');
 		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
 		$this->db->where('item_kit_id', $item_kit_id);
-		
+
 		$query = $this->db->get();
 
 		if($query->num_rows()==1)
@@ -144,7 +153,7 @@ class Item_kit extends CI_Model
 	*/
 	public function delete($item_kit_id)
 	{
-		return $this->db->delete('item_kits', array('item_kit_id' => $id)); 	
+		return $this->db->delete('item_kits', array('item_kit_id' => $id));
 	}
 
 	/*
@@ -154,7 +163,7 @@ class Item_kit extends CI_Model
 	{
 		$this->db->where_in('item_kit_id', $item_kit_ids);
 
-		return $this->db->delete('item_kits');		
+		return $this->db->delete('item_kits');
 	}
 
 	public function get_search_suggestions($search, $limit = 25)
@@ -216,9 +225,9 @@ class Item_kit extends CI_Model
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();	
+		return $this->db->get();
 	}
-	
+
 	public function get_found_rows($search)
 	{
 		$this->db->from('item_kits');

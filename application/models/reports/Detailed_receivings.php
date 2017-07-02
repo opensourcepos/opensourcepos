@@ -4,11 +4,6 @@ require_once("Report.php");
 
 class Detailed_receivings extends Report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
@@ -42,16 +37,16 @@ class Detailed_receivings extends Report
 
 	public function getDataByReceivingId($receiving_id)
 	{
-		$this->db->select('receiving_id, 
-			MAX(receiving_date) as receiving_date, 
-			SUM(quantity_purchased) AS items_purchased, 
-			MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name, 
-			MAX(supplier.company_name) AS supplier_name, 
-			SUM(subtotal) AS subtotal, 
-			SUM(total) AS total, 
-			SUM(profit) AS profit, 
-			MAX(payment_type) as payment_type, 
-			MAX(comment) as comment, 
+		$this->db->select('receiving_id,
+			MAX(receiving_date) as receiving_date,
+			SUM(quantity_purchased) AS items_purchased,
+			MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
+			MAX(supplier.company_name) AS supplier_name,
+			SUM(subtotal) AS subtotal,
+			SUM(total) AS total,
+			SUM(profit) AS profit,
+			MAX(payment_type) as payment_type,
+			MAX(comment) as comment,
 			MAX(reference) as reference');
 		$this->db->from('receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');
@@ -64,15 +59,15 @@ class Detailed_receivings extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('receiving_id, 
-			MAX(receiving_date) as receiving_date, 
-			SUM(quantity_purchased) AS items_purchased, 
-			MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name, 
-			MAX(supplier.company_name) AS supplier_name, 
-			SUM(total) AS total, 
-			SUM(profit) AS profit, 
-			MAX(payment_type) AS payment_type, 
-			MAX(comment) AS comment, 
+		$this->db->select('receiving_id,
+			MAX(receiving_date) as receiving_date,
+			SUM(quantity_purchased) AS items_purchased,
+			MAX(CONCAT(employee.first_name," ",employee.last_name)) AS employee_name,
+			MAX(supplier.company_name) AS supplier_name,
+			SUM(total) AS total,
+			SUM(profit) AS profit,
+			MAX(payment_type) AS payment_type,
+			MAX(comment) AS comment,
 			MAX(reference) AS reference');
 		$this->db->from('receivings_items_temp AS receivings_items_temp');
 		$this->db->join('people AS employee', 'receivings_items_temp.employee_id = employee.person_id');

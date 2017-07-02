@@ -1,21 +1,23 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 class Migration_Sales_Tax_Data extends CI_Migration
 {
-
 	public function __construct()
 	{
 		parent::__construct();
+
 		$this->load->library('tax_lib');
 		$this->load->library('sale_lib');
 		$CI =& get_instance();
-
 	}
+
 	public function up()
 	{
 		$number_of_unmigrated = $this->get_count_of_unmigrated();
+
 		error_log('Migrating sales tax history.  The number of sales that will be migrated is '.$number_of_unmigrated);
-		if ($number_of_unmigrated > 0)
+
+		if($number_of_unmigrated > 0)
 		{
 			$unmigrated_invoices = $this->get_unmigrated($number_of_unmigrated)->result_array();
 
@@ -24,6 +26,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 				$this->upgrade_tax_history_for_sale($unmigrated_invoice['sale_id']);
 			}
 		}
+
 		error_log('Migrating sales tax history.  The number of sales that will be migrated is finished.');
 	}
 
@@ -68,6 +71,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 			$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, '0', $sale_id, $item['name']);
 			$tax_group_sequence += 1;
 		}
+
 		$this->tax_lib->apply_invoice_taxing($sales_taxes);
 
 		$this->save_sales_tax($sales_taxes);
@@ -75,7 +79,6 @@ class Migration_Sales_Tax_Data extends CI_Migration
 
 	private function get_unmigrated($block_count)
 	{
-
 		$this->db->select('SIT.sale_id');
 		$this->db->select('ST.sale_id as sales_taxes_sale_id');
 		$this->db->from('sales_items_taxes as SIT');
@@ -85,10 +88,8 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		$this->db->group_by('ST.sale_id');
 		$this->db->order_by('SIT.sale_id');
 		$this->db->limit($block_count);
-		$query = $this->db->get();
 
-		return $query;
-
+		return $this->db->get();
 	}
 
 	private function get_sale_items_for_migration($sale_id)
@@ -136,3 +137,4 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		}
 	}
 }
+?>

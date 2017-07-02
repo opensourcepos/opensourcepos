@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-function pdf_create($html, $filename = '') 
+function pdf_create($html, $filename = '')
 {
     // need to enable magic quotes for the
     $magic_quotes_enabled = get_magic_quotes_runtime();
@@ -28,4 +28,4 @@ function pdf_create($html, $filename = '')
         return $dompdf->output();
     }
 }
-?>  
+?>

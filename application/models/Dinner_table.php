@@ -1,15 +1,24 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Dinner_table class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  jlctmaster
+ */
+
 class Dinner_table extends CI_Model
 {
     public function exists($dinner_table_id)
     {
-        $this->db->from('dinner_tables');  
+        $this->db->from('dinner_tables');
         $this->db->where('dinner_table_id', $dinner_table_id);
 
         return ($this->db->get()->num_rows() >= 1);
     }
 
-    public function save($table_data, $dinner_table_id) 
+    public function save($table_data, $dinner_table_id)
     {
         $name = $table_data['name'];
 
@@ -25,7 +34,7 @@ class Dinner_table extends CI_Model
 
             return $this->db->trans_status();
         }
-        else 
+        else
         {
             $this->db->where('dinner_table_id', $dinner_table_id);
 

@@ -1,15 +1,24 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Customer_rewards class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  joshua1234511
+ */
+
 class Customer_rewards extends CI_Model
 {
     public function exists($package_id)
     {
-        $this->db->from('customers_packages');  
+        $this->db->from('customers_packages');
         $this->db->where('package_id', $package_id);
 
         return ($this->db->get()->num_rows() >= 1);
     }
 
-    public function save($package_data, $package_id) 
+    public function save($package_data, $package_id)
     {
         $name = $package_data['package_name'];
         $points_percent = $package_data['points_percent'];
@@ -26,7 +35,7 @@ class Customer_rewards extends CI_Model
 
             return $this->db->trans_status();
         }
-        else 
+        else
         {
             $this->db->where('package_id', $package_id);
 

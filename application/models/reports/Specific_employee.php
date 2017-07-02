@@ -4,11 +4,6 @@ require_once("Report.php");
 
 class Specific_employee extends Report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report

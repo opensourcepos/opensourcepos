@@ -1,14 +1,9 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Report.php");
 
 class Detailed_sales extends Report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function create(array $inputs)
 	{
 		//Create our temp tables to work with the data in our report
@@ -71,17 +66,17 @@ class Detailed_sales extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sale_id, 
-			MAX(sale_date) AS sale_date, 
-			SUM(quantity_purchased) AS items_purchased, 
-			MAX(employee_name) AS employee_name, 
-			MAX(customer_name) AS customer_name, 
-			SUM(subtotal) AS subtotal, 
-			SUM(tax) AS tax, 
-			SUM(total) AS total, 
-			SUM(cost) AS cost, 
-			SUM(profit) AS profit, 
-			MAX(payment_type) AS payment_type, 
+		$this->db->select('sale_id,
+			MAX(sale_date) AS sale_date,
+			SUM(quantity_purchased) AS items_purchased,
+			MAX(employee_name) AS employee_name,
+			MAX(customer_name) AS customer_name,
+			SUM(subtotal) AS subtotal,
+			SUM(tax) AS tax,
+			SUM(total) AS total,
+			SUM(cost) AS cost,
+			SUM(profit) AS profit,
+			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
 

@@ -1,4 +1,13 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Tax class
+ *
+ * @link    github.com/jekkos/opensourcepos
+ * @since   3.1
+ * @author  SteveIreland
+ */
+
 class Tax extends CI_Model
 {
 	/*
@@ -69,8 +78,8 @@ class Tax extends CI_Model
 	}
 
 	/*
-Gets information about a particular tax_code
-*/
+	Gets information about a particular tax_code
+	*/
 	public function get_rate_info($tax_code, $tax_category_id)
 	{
 		$this->db->from('tax_code_rates');
@@ -106,8 +115,8 @@ Gets information about a particular tax_code
 	}
 
 	/*
-	 * Gets the tax code to use for a given customer
-	 */
+	Gets the tax code to use for a given customer
+	*/
 	public function get_sales_tax_code($city = '', $state = '')
 	{
 		// if tax code using both city and state cannot be found then  try again using just the state
@@ -207,7 +216,7 @@ Gets information about a particular tax_code
 
 		if ($tax_rate_data != NULL)
 		{
-			foreach ($tax_rate_data as $row) 
+			foreach ($tax_rate_data as $row)
 			{
 				$row['rate_tax_code'] = $tax_code;
 				$success &= $this->db->insert('tax_code_rates', $row);
@@ -289,7 +298,8 @@ Gets information about a particular tax_code
 		return $this->db->get()->num_rows();
 	}
 
-	public function get_tax_code_type_name($tax_code_type) {
+	public function get_tax_code_type_name($tax_code_type)
+	{
 		if ($tax_code_type == '0')
 		{
 			return $this->lang->line('taxes_sales_tax');
@@ -302,7 +312,6 @@ Gets information about a particular tax_code
 
 	public function get_sales_tax_codes_search_suggestions($search, $limit = 25)
 	{
-
 		$suggestions = array();
 
 		$this->db->from('tax_codes');

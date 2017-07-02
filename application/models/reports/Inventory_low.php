@@ -4,11 +4,6 @@ require_once("Report.php");
 
 class Inventory_low extends Report
 {
-	function __construct()
-	{
-		parent::__construct();
-	}
-
 	public function getDataColumns()
 	{
 		return array(
@@ -18,7 +13,7 @@ class Inventory_low extends Report
 			array('reorder_level' => $this->lang->line('reports_reorder_level')),
 			array('location_name' => $this->lang->line('reports_stock_location')));
 	}
-	
+
 	public function getData(array $inputs)
 	{
 		$this->db->select('items.name, items.item_number, item_quantities.quantity, items.reorder_level, stock_locations.location_name');
@@ -33,7 +28,7 @@ class Inventory_low extends Report
 
 		return $this->db->get()->result_array();
 	}
-	
+
 	public function getSummaryData(array $inputs)
 	{
 		return array();
