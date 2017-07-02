@@ -74,6 +74,8 @@
 				<li><a href="class-Mailchimp_lib.html">Mailchimp_lib</a></li>
 				<li><a href="class-MailchimpConnector.html">MailchimpConnector</a></li>
 				<li><a href="class-Messages.html">Messages</a></li>
+				<li><a href="class-Migrate.html">Migrate</a></li>
+				<li><a href="class-Migration_Sales_Tax_Data.html">Migration_Sales_Tax_Data</a></li>
 				<li><a href="class-Module.html">Module</a></li>
 				<li><a href="class-MY_Lang.html">MY_Lang</a></li>
 				<li><a href="class-No_Access.html">No_Access</a></li>
@@ -251,7 +253,7 @@ CI_Model
 		
 		
 
-			<b>Located at</b> <a href="source-class-Summary_report.html#5-161" title="Go to source code">models/reports/Summary_report.php</a>
+			<b>Located at</b> <a href="source-class-Summary_report.html#5-150" title="Go to source code">models/reports/Summary_report.php</a>
 		<br>
 	</div>
 
@@ -259,38 +261,6 @@ CI_Model
 
 	<table class="summary methods" id="methods">
 	<caption>Methods summary</caption>
-	<tr data-order="__construct" id="___construct">
-
-		<td class="attributes"><code>
-			 public 
-
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Summary_report.html#7-10" title="Go to source code">__construct</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-				<h4>Overrides</h4>
-				<div class="list"><code><a href="class-Report.html#___construct">Report::__construct()</a></code></div>
-
-		</div>
-		</div></td>
-	</tr>
 	<tr data-order="_get_data_columns" id="__get_data_columns">
 
 		<td class="attributes"><code>
@@ -303,7 +273,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#__get_data_columns">#</a>
-		<code><a href="source-class-Summary_report.html#120" title="Go to source code">_get_data_columns</a>( )</code>
+		<code><a href="source-class-Summary_report.html#109" title="Go to source code">_get_data_columns</a>( )</code>
 
 		<div class="description short">
 			
@@ -333,7 +303,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#__select">#</a>
-		<code><a href="source-class-Summary_report.html#122" title="Go to source code">_select</a>( <span>array <var>$inputs</var></span> )</code>
+		<code><a href="source-class-Summary_report.html#111" title="Go to source code">_select</a>( <span>array <var>$inputs</var></span> )</code>
 
 		<div class="description short">
 			
@@ -363,7 +333,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#__from">#</a>
-		<code><a href="source-class-Summary_report.html#123" title="Go to source code">_from</a>( )</code>
+		<code><a href="source-class-Summary_report.html#112" title="Go to source code">_from</a>( )</code>
 
 		<div class="description short">
 			
@@ -393,7 +363,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#__where">#</a>
-		<code><a href="source-class-Summary_report.html#124" title="Go to source code">_where</a>( <span>array <var>$inputs</var></span> )</code>
+		<code><a href="source-class-Summary_report.html#113" title="Go to source code">_where</a>( <span>array <var>$inputs</var></span> )</code>
 
 		<div class="description short">
 			
@@ -423,7 +393,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#__group_order">#</a>
-		<code><a href="source-class-Summary_report.html#125" title="Go to source code">_group_order</a>( )</code>
+		<code><a href="source-class-Summary_report.html#114" title="Go to source code">_group_order</a>( )</code>
 
 		<div class="description short">
 			
@@ -453,7 +423,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getDataColumns">#</a>
-		<code><a href="source-class-Summary_report.html#133-136" title="Go to source code">getDataColumns</a>( )</code>
+		<code><a href="source-class-Summary_report.html#122-125" title="Go to source code">getDataColumns</a>( )</code>
 
 		<div class="description short">
 			
@@ -483,7 +453,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getData">#</a>
-		<code><a href="source-class-Summary_report.html#138-149" title="Go to source code">getData</a>( <span>array <var>$inputs</var></span> )</code>
+		<code><a href="source-class-Summary_report.html#127-138" title="Go to source code">getData</a>( <span>array <var>$inputs</var></span> )</code>
 
 		<div class="description short">
 			
@@ -513,7 +483,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getSummaryData">#</a>
-		<code><a href="source-class-Summary_report.html#151-160" title="Go to source code">getSummaryData</a>( <span>array <var>$inputs</var></span> )</code>
+		<code><a href="source-class-Summary_report.html#140-149" title="Go to source code">getSummaryData</a>( <span>array <var>$inputs</var></span> )</code>
 
 		<div class="description short">
 			
@@ -533,6 +503,14 @@ CI_Model
 	</tr>
 	</table>
 
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Report.html#methods">Report</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Report.html#___construct">__construct()</a>
+		</code></td>
+	</tr>
+	</table>
 
 
 

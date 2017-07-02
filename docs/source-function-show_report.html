@@ -80,6 +80,8 @@
 				<li><a href="class-Mailchimp_lib.html">Mailchimp_lib</a></li>
 				<li><a href="class-MailchimpConnector.html">MailchimpConnector</a></li>
 				<li><a href="class-Messages.html">Messages</a></li>
+				<li><a href="class-Migrate.html">Migrate</a></li>
+				<li><a href="class-Migration_Sales_Tax_Data.html">Migration_Sales_Tax_Data</a></li>
 				<li><a href="class-Module.html">Module</a></li>
 				<li><a href="class-MY_Lang.html">MY_Lang</a></li>
 				<li><a href="class-No_Access.html">No_Access</a></li>
@@ -206,13 +208,13 @@
 	</div>
 
 <pre class="numbers"><code><span class="l"><a href="#1"> 1: </a></span><span class="l"><a href="#2"> 2: </a></span><span class="l"><a href="#3"> 3: </a></span><span class="l"><a href="#4"> 4: </a></span><span class="l"><a href="#5"> 5: </a></span><span class="l"><a href="#6"> 6: </a></span><span class="l"><a href="#7"> 7: </a></span><span class="l"><a href="#8"> 8: </a></span><span class="l"><a href="#9"> 9: </a></span><span class="l"><a href="#10">10: </a></span><span class="l"><a href="#11">11: </a></span><span class="l"><a href="#12">12: </a></span><span class="l"><a href="#13">13: </a></span><span class="l"><a href="#14">14: </a></span><span class="l"><a href="#15">15: </a></span><span class="l"><a href="#16">16: </a></span><span class="l"><a href="#17">17: </a></span><span class="l"><a href="#18">18: </a></span><span class="l"><a href="#19">19: </a></span><span class="l"><a href="#20">20: </a></span><span class="l"><a href="#21">21: </a></span><span class="l"><a href="#22">22: </a></span><span class="l"><a href="#23">23: </a></span><span class="l"><a href="#24">24: </a></span><span class="l"><a href="#25">25: </a></span><span class="l"><a href="#26">26: </a></span><span class="l"><a href="#27">27: </a></span><span class="l"><a href="#28">28: </a></span><span class="l"><a href="#29">29: </a></span><span class="l"><a href="#30">30: </a></span></code></pre>
-<pre class="code"><code><span id="1" class="l"><span class="xlang">&lt;?php</span>
+<pre class="code"><code><span id="1" class="l"><span class="xlang">&lt;?php</span> <span class="php-keyword1">if</span> (!<span class="php-keyword2">defined</span>(<span class="php-quote">'BASEPATH'</span>)) <span class="php-keyword1">exit</span>(<span class="php-quote">'No direct script access allowed'</span>);
 </span><span id="2" class="l">
 </span><span id="3" class="l"><span class="php-keyword1">function</span> show_report_if_allowed(<span class="php-var">$report_prefix</span>, <span class="php-var">$report_name</span>, <span class="php-var">$person_id</span>, <span class="php-var">$permission_id</span> = <span class="php-quote">''</span>)
 </span><span id="4" class="l">{
 </span><span id="5" class="l">    <span class="php-var">$CI</span> =&amp; get_instance();
 </span><span id="6" class="l">
-</span><span id="7" class="l">    <span class="php-var">$permission_id</span> = <span class="php-keyword1">empty</span>(<span class="php-var">$permission_id</span>) ? <span class="php-quote">'reports_'</span> . <span class="php-var">$report_name</span> : <span class="php-var">$permission_id</span>;    
+</span><span id="7" class="l">    <span class="php-var">$permission_id</span> = <span class="php-keyword1">empty</span>(<span class="php-var">$permission_id</span>) ? <span class="php-quote">'reports_'</span> . <span class="php-var">$report_name</span> : <span class="php-var">$permission_id</span>;
 </span><span id="8" class="l">    <span class="php-keyword1">if</span>(<span class="php-var">$CI</span>-&gt;Employee-&gt;has_grant(<span class="php-var">$permission_id</span>, <span class="php-var">$person_id</span>))
 </span><span id="9" class="l">    {
 </span><span id="10" class="l">        show_report(<span class="php-var">$report_prefix</span>, <span class="php-var">$report_name</span>, <span class="php-var">$permission_id</span>);
@@ -231,11 +233,11 @@
 </span><span id="23" class="l">    {
 </span><span id="24" class="l">        <span class="xlang">?&gt;</span>
 </span><span id="25" class="l">            &lt;a <span class="php-keyword1">class</span>=<span class="php-quote">&quot;list-group-item&quot;</span> href=<span class="php-quote">&quot;&lt;?php echo site_url('reports/' . </span><span class="php-var">$report_prefix</span><span class="php-quote"> . preg_replace('/reports_(.*)/', '</span><span class="php-var">$1</span><span class="php-quote">', </span><span class="php-var">$report_name</span><span class="php-quote">));?&gt;&quot;</span>&gt;<span class="xlang">&lt;?php</span> <span class="php-keyword1">echo</span> <span class="php-var">$report_label</span>; <span class="xlang">?&gt;</span>&lt;/a&gt;
-</span><span id="26" class="l">        <span class="xlang">&lt;?php</span> 
+</span><span id="26" class="l">        <span class="xlang">&lt;?php</span>
 </span><span id="27" class="l">    }
 </span><span id="28" class="l">}
-</span><span id="29" class="l">
-</span><span id="30" class="l"><span class="xlang">?&gt;</span></span></code></pre>
+</span><span id="29" class="l"><span class="xlang">?&gt;</span>
+</span><span id="30" class="l"></span></code></pre>
 
 	<div id="footer">
 		 API documentation generated by <a href="http://apigen.org">ApiGen</a>
@@ -243,6 +245,6 @@
 </div>
 </div>
 <script src="resources/combined.js?ab7ddfe54adb05998edf888264c90e8da7a06c89"></script>
-<script src="elementlist.js?4cea969367a60459e538acabf8db5ac232c35138"></script>
+<script src="elementlist.js?defd62e485520280a0600a982109dbe4d14d3cd6"></script>
 </body>
 </html>

@@ -74,6 +74,8 @@
 				<li><a href="class-Mailchimp_lib.html">Mailchimp_lib</a></li>
 				<li><a href="class-MailchimpConnector.html">MailchimpConnector</a></li>
 				<li><a href="class-Messages.html">Messages</a></li>
+				<li><a href="class-Migrate.html">Migrate</a></li>
+				<li><a href="class-Migration_Sales_Tax_Data.html">Migration_Sales_Tax_Data</a></li>
 				<li><a href="class-Module.html">Module</a></li>
 				<li><a href="class-MY_Lang.html">MY_Lang</a></li>
 				<li><a href="class-No_Access.html">No_Access</a></li>
@@ -204,6 +206,11 @@
 	<h1>Class Tax_lib</h1>
 
 
+	<div class="description">
+	<p>Tax library</p>
+
+<p>Library with utilities to manage taxes</p>
+	</div>
 
 
 
@@ -219,7 +226,13 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Tax_lib.html#3-321" title="Go to source code">libraries/Tax_lib.php</a>
+				<b>Author:</b>
+				SteveIreland<br>
+				<b>Since:</b>
+				3.1<br>
+				<b>Link:</b>
+				github.com/jekkos/opensourcepos<br>
+			<b>Located at</b> <a href="source-class-Tax_lib.html#4-329" title="Go to source code">libraries/Tax_lib.php</a>
 		<br>
 	</div>
 
@@ -239,7 +252,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Tax_lib.html#11-15" title="Go to source code">__construct</a>( )</code>
+		<code><a href="source-class-Tax_lib.html#21-25" title="Go to source code">__construct</a>( )</code>
 
 		<div class="description short">
 			
@@ -269,7 +282,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tax_types">#</a>
-		<code><a href="source-class-Tax_lib.html#17-24" title="Go to source code">get_tax_types</a>( )</code>
+		<code><a href="source-class-Tax_lib.html#27-34" title="Go to source code">get_tax_types</a>( )</code>
 
 		<div class="description short">
 			
@@ -299,7 +312,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_item_sales_tax">#</a>
-		<code><a href="source-class-Tax_lib.html#29-37" title="Go to source code">get_item_sales_tax</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span>, <span> <var>$tax_percentage</var></span>, <span> <var>$rounding_code</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#39-47" title="Go to source code">get_item_sales_tax</a>( <span> <var>$quantity</var></span>, <span> <var>$price</var></span>, <span> <var>$discount_percentage</var></span>, <span> <var>$tax_percentage</var></span>, <span> <var>$rounding_code</var></span> )</code>
 
 		<div class="description short">
 			
@@ -329,7 +342,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sales_tax_for_amount">#</a>
-		<code><a href="source-class-Tax_lib.html#42-82" title="Go to source code">get_sales_tax_for_amount</a>( <span> <var>$tax_basis</var></span>, <span> <var>$tax_percentage</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$decimals</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#52-92" title="Go to source code">get_sales_tax_for_amount</a>( <span> <var>$tax_basis</var></span>, <span> <var>$tax_percentage</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$decimals</var></span> )</code>
 
 		<div class="description short">
 			
@@ -359,7 +372,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_sales_taxes">#</a>
-		<code><a href="source-class-Tax_lib.html#87-122" title="Go to source code">update_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span>, <span> <var>$tax_type</var></span>, <span> <var>$tax_group</var></span>, <span> <var>$tax_rate</var></span>, <span> <var>$tax_basis</var></span>, <span> <var>$item_tax_amount</var></span>, <span> <var>$tax_group_sequence</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$sale_id</var></span>, <span> <var>$name</var> = <span class="php-quote">''</span></span>, <span> <var>$tax_code</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-Tax_lib.html#97-129" title="Go to source code">update_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span>, <span> <var>$tax_type</var></span>, <span> <var>$tax_group</var></span>, <span> <var>$tax_rate</var></span>, <span> <var>$tax_basis</var></span>, <span> <var>$item_tax_amount</var></span>, <span> <var>$tax_group_sequence</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$sale_id</var></span>, <span> <var>$name</var> = <span class="php-quote">''</span></span>, <span> <var>$tax_code</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			
@@ -389,7 +402,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_apply_invoice_taxing">#</a>
-		<code><a href="source-class-Tax_lib.html#127-145" title="Go to source code">apply_invoice_taxing</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#134-152" title="Go to source code">apply_invoice_taxing</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
 
 		<div class="description short">
 			
@@ -419,7 +432,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_round_sales_taxes">#</a>
-		<code><a href="source-class-Tax_lib.html#150-203" title="Go to source code">round_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#157-210" title="Go to source code">round_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
 
 		<div class="description short">
 			
@@ -449,7 +462,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_apply_sales_tax">#</a>
-		<code><a href="source-class-Tax_lib.html#206-292" title="Go to source code">apply_sales_tax</a>( <span> <var>&amp; $item</var></span>, <span> <var>&amp; $city</var></span>, <span> <var>&amp; $state</var></span>, <span> <var>&amp; $sales_tax_code</var></span>, <span> <var>$register_mode</var></span>, <span> <var>$sale_id</var></span>, <span> <var>&amp; $sales_taxes</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#213-299" title="Go to source code">apply_sales_tax</a>( <span> <var>&amp; $item</var></span>, <span> <var>&amp; $city</var></span>, <span> <var>&amp; $state</var></span>, <span> <var>&amp; $sales_tax_code</var></span>, <span> <var>$register_mode</var></span>, <span> <var>$sale_id</var></span>, <span> <var>&amp; $sales_taxes</var></span> )</code>
 
 		<div class="description short">
 			<p>Determine the applicable tax code and then determine the tax amount to be applied.
@@ -481,7 +494,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_applicable_tax_mode">#</a>
-		<code><a href="source-class-Tax_lib.html#294-314" title="Go to source code">get_applicable_tax_mode</a>( <span> <var>$register_mode</var></span>, <span> <var>$city</var></span>, <span> <var>$state</var></span>, <span> <var>$sales_tax_code</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#301-321" title="Go to source code">get_applicable_tax_mode</a>( <span> <var>$register_mode</var></span>, <span> <var>$city</var></span>, <span> <var>$state</var></span>, <span> <var>$sales_tax_code</var></span> )</code>
 
 		<div class="description short">
 			
@@ -511,7 +524,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clean">#</a>
-		<code><a href="source-class-Tax_lib.html#316-320" title="Go to source code">clean</a>( <span> <var>$string</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#323-328" title="Go to source code">clean</a>( <span> <var>$string</var></span> )</code>
 
 		<div class="description short">
 			
@@ -545,7 +558,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Tax_lib.html#5" title="Go to source code"><b>TAX_TYPE_SALES</b></a>
+				<a href="source-class-Tax_lib.html#15" title="Go to source code"><b>TAX_TYPE_SALES</b></a>
 			</code>
 
 			<div class="description short">
@@ -569,7 +582,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Tax_lib.html#6" title="Go to source code"><b>TAX_TYPE_SALES_BY_INVOICE</b></a>
+				<a href="source-class-Tax_lib.html#16" title="Go to source code"><b>TAX_TYPE_SALES_BY_INVOICE</b></a>
 			</code>
 
 			<div class="description short">
@@ -593,7 +606,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Tax_lib.html#7" title="Go to source code"><b>TAX_TYPE_VAT</b></a>
+				<a href="source-class-Tax_lib.html#17" title="Go to source code"><b>TAX_TYPE_VAT</b></a>
 			</code>
 
 			<div class="description short">

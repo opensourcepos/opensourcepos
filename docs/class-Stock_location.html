@@ -74,6 +74,8 @@
 				<li><a href="class-Mailchimp_lib.html">Mailchimp_lib</a></li>
 				<li><a href="class-MailchimpConnector.html">MailchimpConnector</a></li>
 				<li><a href="class-Messages.html">Messages</a></li>
+				<li><a href="class-Migrate.html">Migrate</a></li>
+				<li><a href="class-Migration_Sales_Tax_Data.html">Migration_Sales_Tax_Data</a></li>
 				<li><a href="class-Module.html">Module</a></li>
 				<li><a href="class-MY_Lang.html">MY_Lang</a></li>
 				<li><a href="class-No_Access.html">No_Access</a></li>
@@ -204,6 +206,9 @@
 	<h1>Class Stock_location</h1>
 
 
+	<div class="description">
+	<p>Stock_location class</p>
+	</div>
 
 	<dl class="tree">
 		<dd style="padding-left:0px">
@@ -232,7 +237,13 @@ CI_Model
 		
 		
 
-			<b>Located at</b> <a href="source-class-Stock_location.html#2-159" title="Go to source code">models/Stock_location.php</a>
+				<b>Author:</b>
+				Padungsak<br>
+				<b>Since:</b>
+				2.x<br>
+				<b>Link:</b>
+				github.com/jekkos/opensourcepos<br>
+			<b>Located at</b> <a href="source-class-Stock_location.html#4-168" title="Go to source code">models/Stock_location.php</a>
 		<br>
 	</div>
 
@@ -252,7 +263,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Stock_location.html#4-10" title="Go to source code">exists</a>( <span> <var>$location_name</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-Stock_location.html#13-19" title="Go to source code">exists</a>( <span> <var>$location_name</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			
@@ -282,7 +293,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all">#</a>
-		<code><a href="source-class-Stock_location.html#12-19" title="Go to source code">get_all</a>( <span> <var>$limit</var> = <span class="php-num">10000</span></span>, <span> <var>$offset</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Stock_location.html#21-28" title="Go to source code">get_all</a>( <span> <var>$limit</var> = <span class="php-num">10000</span></span>, <span> <var>$offset</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			
@@ -312,7 +323,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_undeleted_all">#</a>
-		<code><a href="source-class-Stock_location.html#21-31" title="Go to source code">get_undeleted_all</a>( <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
+		<code><a href="source-class-Stock_location.html#30-40" title="Go to source code">get_undeleted_all</a>( <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -342,7 +353,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_show_locations">#</a>
-		<code><a href="source-class-Stock_location.html#33-38" title="Go to source code">show_locations</a>( <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
+		<code><a href="source-class-Stock_location.html#42-47" title="Go to source code">show_locations</a>( <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -372,7 +383,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_multiple_locations">#</a>
-		<code><a href="source-class-Stock_location.html#40-43" title="Go to source code">multiple_locations</a>( )</code>
+		<code><a href="source-class-Stock_location.html#49-52" title="Go to source code">multiple_locations</a>( )</code>
 
 		<div class="description short">
 			
@@ -402,7 +413,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_allowed_locations">#</a>
-		<code><a href="source-class-Stock_location.html#45-55" title="Go to source code">get_allowed_locations</a>( <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
+		<code><a href="source-class-Stock_location.html#54-64" title="Go to source code">get_allowed_locations</a>( <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -432,7 +443,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_allowed_location">#</a>
-		<code><a href="source-class-Stock_location.html#57-68" title="Go to source code">is_allowed_location</a>( <span> <var>$location_id</var></span>, <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
+		<code><a href="source-class-Stock_location.html#66-77" title="Go to source code">is_allowed_location</a>( <span> <var>$location_id</var></span>, <span> <var>$module_id</var> = <span class="php-quote">'items'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -462,7 +473,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_default_location_id">#</a>
-		<code><a href="source-class-Stock_location.html#70-80" title="Go to source code">get_default_location_id</a>( )</code>
+		<code><a href="source-class-Stock_location.html#79-89" title="Go to source code">get_default_location_id</a>( )</code>
 
 		<div class="description short">
 			
@@ -492,7 +503,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_location_name">#</a>
-		<code><a href="source-class-Stock_location.html#82-88" title="Go to source code">get_location_name</a>( <span> <var>$location_id</var></span> )</code>
+		<code><a href="source-class-Stock_location.html#91-97" title="Go to source code">get_location_name</a>( <span> <var>$location_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -522,7 +533,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Stock_location.html#90-124" title="Go to source code">save</a>( <span> <var>&amp; $location_data</var></span>, <span> <var>$location_id</var></span> )</code>
+		<code><a href="source-class-Stock_location.html#99-133" title="Go to source code">save</a>( <span> <var>&amp; $location_data</var></span>, <span> <var>$location_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -552,7 +563,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Stock_location.html#145-158" title="Go to source code">delete</a>( <span> <var>$location_id</var></span> )</code>
+		<code><a href="source-class-Stock_location.html#154-167" title="Go to source code">delete</a>( <span> <var>$location_id</var></span> )</code>
 
 		<div class="description short">
 			
