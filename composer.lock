@@ -9,20 +9,20 @@
     "packages": [
         {
             "name": "codeigniter/framework",
-            "version": "3.1.4",
+            "version": "3.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "873608df8be83420474e3cf9fc749a8ed12a6c09"
+                "reference": "6c7a4266410070d30f8f6bcdf9c9e67f3d6478e3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/873608df8be83420474e3cf9fc749a8ed12a6c09",
-                "reference": "873608df8be83420474e3cf9fc749a8ed12a6c09",
+                "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/6c7a4266410070d30f8f6bcdf9c9e67f3d6478e3",
+                "reference": "6c7a4266410070d30f8f6bcdf9c9e67f3d6478e3",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.2.4"
+                "php": ">=5.3.7"
             },
             "require-dev": {
                 "mikey179/vfsstream": "1.1.*",
@@ -38,7 +38,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2017-03-20 15:51:08"
+            "time": "2017-06-19 08:33:58"
         },
         {
             "name": "dompdf/dompdf",

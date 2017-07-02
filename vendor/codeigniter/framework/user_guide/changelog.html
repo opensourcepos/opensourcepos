@@ -7,7 +7,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Change Log &mdash; CodeIgniter 3.1.4 documentation</title>
+  <title>Change Log &mdash; CodeIgniter 3.1.5 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="CodeIgniter 3.1.4 documentation" href="index.html"/>
+    <link rel="top" title="CodeIgniter 3.1.5 documentation" href="index.html"/>
         <link rel="next" title="The MIT License (MIT)" href="license.html"/>
         <link rel="prev" title="Developer’s Certificate of Origin 1.1" href="DCO.html"/> 
 
@@ -422,9 +422,34 @@
             
   <div class="section" id="change-log">
 <h1>Change Log<a class="headerlink" href="#change-log" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="version-3-1-5">
+<h2>Version 3.1.5<a class="headerlink" href="#version-3-1-5" title="Permalink to this headline">¶</a></h2>
+<p>Release Date: Jun 19, 2017</p>
+<ul class="simple">
+<li><strong>Security</strong><ul>
+<li><a class="reference internal" href="libraries/form_validation.html"><em>Form Validation Library</em></a> rule <tt class="docutils literal"><span class="pre">valid_email</span></tt> could be bypassed if <tt class="docutils literal"><span class="pre">idn_to_ascii()</span></tt> is available.</li>
+</ul>
+</li>
+<li>General Changes<ul>
+<li>Updated <a class="reference internal" href="helpers/form_helper.html"><em>Form Helper</em></a> function <a class="reference internal" href="helpers/form_helper.html#form_label" title="form_label"><tt class="xref php php-func docutils literal"><span class="pre">form_label()</span></tt></a> to accept HTML attributes as a string.</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="bug-fixes-for-3-1-5">
+<h3>Bug fixes for 3.1.5<a class="headerlink" href="#bug-fixes-for-3-1-5" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Fixed a bug (#5070) - <a class="reference internal" href="libraries/email.html"><em>Email Library</em></a> didn&#8217;t properly detect 7-bit encoding.</li>
+<li>Fixed a bug (#5084) - <a class="reference internal" href="libraries/xmlrpc.html"><em>XML-RPC Library</em></a> errored because of a variable name typo.</li>
+<li>Fixed a bug (#5108) - <a class="reference internal" href="helpers/inflector_helper.html"><em>Inflector Helper</em></a> function <a class="reference internal" href="helpers/inflector_helper.html#singular" title="singular"><tt class="xref php php-func docutils literal"><span class="pre">singular()</span></tt></a> didn&#8217;t properly handle &#8216;quizzes&#8217;.</li>
+<li>Fixed a regression (#5131) - private controller methods triggered PHP errors instead of a 404 response.</li>
+<li>Fixed a bug (#5150) - <a class="reference internal" href="database/forge.html"><em>Database Forge</em></a> method <tt class="docutils literal"><span class="pre">modify_column()</span></tt> triggered an error while renaming columns with the &#8216;oci8&#8217;, &#8216;pdo/oci&#8217; drivers.</li>
+<li>Fixed a bug (#5155) - <a class="reference internal" href="database/query_builder.html"><em>Query Builder</em></a> method <tt class="docutils literal"><span class="pre">count_all_results()</span></tt> returned incorrect result for queries using <tt class="docutils literal"><span class="pre">LIMIT</span></tt>, <tt class="docutils literal"><span class="pre">OFFSET</span></tt>.</li>
+</ul>
+</div>
+</div>
 <div class="section" id="version-3-1-4">
 <h2>Version 3.1.4<a class="headerlink" href="#version-3-1-4" title="Permalink to this headline">¶</a></h2>
-<p>Release Date: March 23, 2017</p>
+<p>Release Date: Mar 20, 2017</p>
 <ul class="simple">
 <li><strong>Security</strong><ul>
 <li>Fixed a header injection vulnerability in <a class="reference internal" href="general/common_functions.html"><em>common function</em></a> <a class="reference internal" href="general/common_functions.html#set_status_header" title="set_status_header"><tt class="xref php php-func docutils literal"><span class="pre">set_status_header()</span></tt></a> under Apache (thanks to Guillermo Caminer from <a class="reference external" href="https://flowgate.net/">Flowgate</a>).</li>
@@ -4018,7 +4043,7 @@ and fixed various typos.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2014 - 2017, British Columbia Institute of Technology.
-      Last updated on Mar 20, 2017.
+      Last updated on Jun 19, 2017.
     </p>
   </div>
 
@@ -4039,7 +4064,7 @@ and fixed various typos.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'3.1.4',
+            VERSION:'3.1.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  false
