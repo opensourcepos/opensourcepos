@@ -410,13 +410,16 @@ class Sale_lib
 			$current_due = $amount_due;
 		}
 
+		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
+		$threshold = bcpow(10, -$this->CI->config->item('currency_decimals')) / 2;
+
 		if($this->get_mode() == 'return')
 		{
-			$totals['payments_cover_total'] = $current_due >= 0;
+			$totals['payments_cover_total'] = $current_due > -$threshold;
 		}
 		else
 		{
-			$totals['payments_cover_total'] =  $current_due <= 0;
+			$totals['payments_cover_total'] = $current_due < $threshold;
 		}
 
 		return $totals;
@@ -434,19 +437,6 @@ class Sale_lib
 		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_EVEN), 0, $precision);
 		// take care of rounding error introduced by round tripping payment amount to the browser
 		return $rounded_due == 0 ? 0 : $amount_due;
-	}
-
-	public function is_payment_covering_total()
-	{
-
-		if($this->get_mode() == 'return')
-		{
-			return $this->get_amount_due() >= 0;
-		}
-		else
-		{
-			return $this->get_amount_due() <= 0;
-		}
 	}
 
 	public function get_customer()
