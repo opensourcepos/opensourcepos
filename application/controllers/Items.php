@@ -317,7 +317,7 @@ class Items extends Secure_Controller
 		{
 			$item = $this->xss_clean($item);
 			
-			// update the UPC/EAN/ISBN field if empty / NULL with the newly generated barcode
+			// update the barcode field if empty / NULL with the newly generated barcode
 			if(empty($item['item_number']) && $this->config->item('barcode_generate_if_empty'))
 			{
 				// get the newly generated barcode
@@ -326,7 +326,7 @@ class Items extends Secure_Controller
 				
 				$save_item = array('item_number' => $item['item_number']);
 
-				// update the item in the database in order to save the UPC/EAN/ISBN field
+				// update the item in the database in order to save the barcode field
 				$this->Item->save($save_item, $item['item_id']);
 			}
 		}
