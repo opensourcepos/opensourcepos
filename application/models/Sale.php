@@ -146,17 +146,17 @@ class Sale extends CI_Model
 		$decimals = totals_decimals();
 
 		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
-		$sale_cost = 'ROUND(SUM(sales_items.item_cost_price * sales_items.quantity_purchased), ' . $decimals . ')';
-		$tax = 'ROUND(IFNULL(SUM(sales_items_taxes.tax), 0), ' . $decimals . ')';
+		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 
 		if($this->config->item('tax_included'))
 		{
-			$sale_total = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ')';
 			$sale_subtotal = $sale_total . ' - ' . $tax;
 		}
 		else
 		{
-			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ')';
 			$sale_total = $sale_subtotal . ' + ' . $tax;
 		}
 
@@ -1084,17 +1084,17 @@ class Sale extends CI_Model
 		$decimals = totals_decimals();
 
 		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
-		$sale_cost = 'ROUND(IFNULL(SUM(sales_items.item_cost_price * sales_items.quantity_purchased), 0), ' . $decimals . ')';
-		$tax = 'ROUND(IFNULL(SUM(sales_items_taxes.tax), 0), ' . $decimals . ')';
+		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
+		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 
 		if($this->config->item('tax_included'))
 		{
-			$sale_total = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_total = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ')';
 			$sale_subtotal = $sale_total . ' - ' . $tax;
 		}
 		else
 		{
-			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '),' . $decimals . ')';
+			$sale_subtotal = 'ROUND(SUM(' . $sale_price . '), ' . $decimals . ')';
 			$sale_total = $sale_subtotal . ' + ' . $tax;
 		}
 
