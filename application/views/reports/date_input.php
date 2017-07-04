@@ -31,6 +31,7 @@ if(isset($error))
 			<div id='report_sale_type' class="col-xs-3">
 				<?php echo form_dropdown('sale_type', array('all' => $this->lang->line('reports_all'),
 				'sales' => $this->lang->line('reports_sales'),
+				'quotes' => $this->lang->line('reports_quotes'),
 				'returns' => $this->lang->line('reports_returns')), 'all', array('id'=>'input_type', 'class'=>'form-control')); ?>
 			</div>
 		<?php

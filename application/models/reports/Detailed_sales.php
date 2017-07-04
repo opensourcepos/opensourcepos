@@ -67,6 +67,7 @@ class Detailed_sales extends Report
 	public function getData(array $inputs)
 	{
 		$this->db->select('sale_id,
+			MAX(sale_status) as sale_status,
 			MAX(sale_date) AS sale_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(employee_name) AS employee_name,
@@ -87,11 +88,19 @@ class Detailed_sales extends Report
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('quantity_purchased > 0');
+			$this->db->where('sale_status = 0 and quantity_purchased > 0');
+		}
+		elseif($inputs['sale_type'] == 'all')
+		{
+			$this->db->where('sale_status = 0');
+		}
+		elseif($inputs['sale_type'] == 'quotes')
+		{
+			$this->db->where('sale_status = 1 and quote_number IS NOT NULL');
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased < 0');
+			$this->db->where('sale_status = 0 and quantity_purchased < 0');
 		}
 
 		$this->db->group_by('sale_id');
@@ -104,7 +113,7 @@ class Detailed_sales extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount_percent');
+			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount_percent, sale_status');
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
@@ -129,11 +138,19 @@ class Detailed_sales extends Report
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('quantity_purchased > 0');
+			$this->db->where('sale_status = 0 and quantity_purchased > 0');
+		}
+		elseif($inputs['sale_type'] == 'all')
+		{
+			$this->db->where('sale_status = 0');
+		}
+		elseif($inputs['sale_type'] == 'quotes')
+		{
+			$this->db->where('sale_status = 1 and quote_number IS NOT NULL');
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased < 0');
+			$this->db->where('sale_status = 0 and quantity_purchased < 0');
 		}
 
 		return $this->db->get()->row_array();

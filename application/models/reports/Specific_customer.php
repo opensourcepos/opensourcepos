@@ -61,11 +61,19 @@ class Specific_customer extends Report
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('quantity_purchased > 0');
+			$this->db->where('sale_status = 0 and quantity_purchased > 0');
+		}
+		elseif($inputs['sale_type'] == 'all')
+		{
+			$this->db->where('sale_status = 0');
+		}
+		elseif($inputs['sale_type'] == 'quotes')
+		{
+			$this->db->where('sale_status = 1 and quote_number IS NOT NULL');
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased < 0');
+			$this->db->where('sale_status = 0 and quantity_purchased < 0');
 		}
 
 		$this->db->group_by('sale_id');
@@ -99,11 +107,19 @@ class Specific_customer extends Report
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('quantity_purchased > 0');
+			$this->db->where('sale_status = 0 and quantity_purchased > 0');
+		}
+		elseif($inputs['sale_type'] == 'all')
+		{
+			$this->db->where('sale_status = 0');
+		}
+		elseif($inputs['sale_type'] == 'quotes')
+		{
+			$this->db->where('sale_status = 1 and quote_number IS NOT NULL');
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('quantity_purchased < 0');
+			$this->db->where('sale_status = 0 and quantity_purchased < 0');
 		}
 
 		return $this->db->get()->row_array();

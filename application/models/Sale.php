@@ -120,11 +120,11 @@ class Sale extends CI_Model
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' AND sales.sale_status = 0 ';
+			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' ';
 		}
 		else
 		{
-			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])) . ' AND sales.sale_status = 0 ';
+			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])) . ' ';
 		}
 
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
@@ -240,11 +240,15 @@ class Sale extends CI_Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('sales_items.quantity_purchased > 0');
+			$this->db->where('sales.sale_status = 0 and sales_items.quantity_purchased > 0');
+		}
+		elseif($filters['sale_type'] == 'quotes')
+		{
+			$this->db->where('sales.sale_status = 1 and sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('sales_items.quantity_purchased < 0');
+			$this->db->where('sales.sale_status = 0 and sales_items.quantity_purchased < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
@@ -321,11 +325,15 @@ class Sale extends CI_Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('payment_amount > 0');
+			$this->db->where('sales.sale_status = 0 and payment_amount > 0');
+		}
+		elseif($filters['sale_type'] == 'quotes')
+		{
+			$this->db->where('sales.sale_status = 1 and sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('payment_amount < 0');
+			$this->db->where('sales.sale_status = 0 and payment_amount < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
@@ -1111,7 +1119,7 @@ class Sale extends CI_Model
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE sales.sale_status = 0 AND ' . $where . '
+				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)'
 		);
@@ -1126,7 +1134,7 @@ class Sale extends CI_Model
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
-				WHERE sales.sale_status = 0 AND ' . $where . '
+				WHERE ' . $where . '
 				GROUP BY payments.sale_id
 			)'
 		);
@@ -1138,6 +1146,7 @@ class Sale extends CI_Model
 					MAX(DATE(sales.sale_time)) AS sale_date,
 					MAX(sales.sale_time) AS sale_time,
 					sales.sale_id AS sale_id,
+					MAX(sales.sale_status) AS sale_status,
 					MAX(sales.comment) AS comment,
 					MAX(sales.invoice_number) AS invoice_number,
 					MAX(sales.quote_number) AS quote_number,
@@ -1188,7 +1197,7 @@ class Sale extends CI_Model
 					ON sales.employee_id = employee.person_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes_temp') . ' AS sales_items_taxes
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-				WHERE sales.sale_status = 0 AND ' . $where . '
+				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)'
 		);

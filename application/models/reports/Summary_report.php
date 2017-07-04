@@ -51,7 +51,7 @@ abstract class Summary_report extends Report
 					ON sales.sale_id = sales_items_taxes.sale_id
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
-				WHERE sales.sale_status = 0 AND ' . $where . '
+				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
 			)'
 		);
@@ -92,12 +92,22 @@ abstract class Summary_report extends Report
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sales_items.quantity_purchased >= 0');
+			$this->db->where('sale_status = 0 and quantity_purchased > 0');
+		}
+		elseif($inputs['sale_type'] == 'all')
+		{
+			$this->db->where('sale_status = 0');
+		}
+		elseif($inputs['sale_type'] == 'quotes')
+		{
+			$this->db->where('sale_status = 1 and quote_number IS NOT NULL');
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('sales_items.quantity_purchased < 0');
+			$this->db->where('sale_status = 0 and quantity_purchased < 0');
 		}
+
+
 	}
 
 	/**
