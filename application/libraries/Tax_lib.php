@@ -52,38 +52,7 @@ class Tax_lib
 		$tax_amount = bcmul($tax_basis, $tax_fraction);
 		$rounded_tax_amount = $tax_amount;
 
-		if($rounding_code == Rounding_code::HALF_UP)
-		{
-			$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_UP);
-		}
-		elseif($rounding_code == Rounding_code::HALF_DOWN)
-		{
-			$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_DOWN);
-		}
-		elseif($rounding_code == Rounding_code::HALF_EVEN)
-		{
-			$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_EVEN);
-		}
-		elseif($rounding_code == Rounding_code::HALF_ODD)
-		{
-			$rounded_tax_amount = round($tax_amount, $decimals, PHP_ROUND_HALF_UP);
-		}
-		elseif($rounding_code == Rounding_code::ROUND_UP) // ROUND_UP
-		{
-			$fig = (int) str_pad('1', $decimals, '0');
-			$rounded_tax_amount = (ceil($tax_amount * $fig) / $fig);
-		}
-		elseif($rounding_code == Rounding_code::ROUND_DOWN) // ROUND_DOWN
-		{
-			$fig = (int) str_pad('1', $decimals, '0');
-			$rounded_tax_amount = (floor($tax_amount * $fig) / $fig);
-		}
-		elseif($rounding_code == Rounding_code::HALF_FIVE)
-		{
-			$rounded_tax_amount = round($tax_amount / 5) * 5;
-		}
-
-		return $rounded_tax_amount;
+		return Rounding_mode::round_number($tax_amount, $decimals);
 	}
 
 	/*
@@ -168,33 +137,33 @@ class Tax_lib
 			$rounding_code = $sales_tax['rounding_code'];
 			$rounded_sale_tax_amount = $sale_tax_amount;
 
-			if($rounding_code == Rounding_code::HALF_UP)
+			if ($rounding_code == Rounding_mode::HALF_UP)
 			{
 				$rounded_sale_tax_amount = round($sale_tax_amount, $decimals, PHP_ROUND_HALF_UP);
 			}
-			elseif($rounding_code == Rounding_code::HALF_DOWN)
+			elseif($rounding_code == Rounding_mode::HALF_DOWN)
 			{
 				$rounded_sale_tax_amount = round($sale_tax_amount, $decimals, PHP_ROUND_HALF_DOWN);
 			}
-			elseif($rounding_code == Rounding_code::HALF_EVEN)
+			elseif($rounding_code == Rounding_mode::HALF_EVEN)
 			{
 				$rounded_sale_tax_amount = round($sale_tax_amount, $decimals, PHP_ROUND_HALF_EVEN);
 			}
-			elseif($rounding_code == Rounding_code::HALF_ODD)
+			elseif($rounding_code == Rounding_mode::HALF_ODD)
 			{
 				$rounded_sale_tax_amount = round($sale_tax_amount, $decimals, PHP_ROUND_HALF_UP);
 			}
-			elseif($rounding_code == Rounding_code::ROUND_UP)
+			elseif($rounding_code == Rounding_mode::ROUND_UP)
 			{
 				$fig = (int) str_pad('1', $decimals, '0');
 				$rounded_sale_tax_amount = (ceil($sale_tax_amount * $fig) / $fig);
 			}
-			elseif($rounding_code == Rounding_code::ROUND_DOWN)
+			elseif($rounding_code == Rounding_mode::ROUND_DOWN)
 			{
 				$fig = (int) str_pad('1', $decimals, '0');
 				$rounded_sale_tax_amount = (floor($sale_tax_amount * $fig) / $fig);
 			}
-			elseif($rounding_code == Rounding_code::HALF_FIVE)
+			elseif($rounding_code == Rounding_mode::HALF_FIVE)
 			{
 				$rounded_sale_tax_amount = round($sale_tax_amount / 5) * 5;
 			}
@@ -216,7 +185,7 @@ class Tax_lib
 		if($tax_code != '' && $item['price'] != 0)
 		{
 			$tax_rate = 0.0000;
-			$rounding_code = Rounding_code::HALF_UP;
+			$rounding_code = Rounding_mode::HALF_UP;
 
 			$tax_code_obj = $this->CI->Tax->get_info($tax_code);
 			$tax_category_id = $item['tax_category_id'];

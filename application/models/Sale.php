@@ -675,7 +675,7 @@ class Sale extends CI_Model
 				{
 					$tax_type = Tax_lib::TAX_TYPE_SALES;
 				}
-				$rounding_code = Rounding_code::HALF_UP; // half adjust
+				$rounding_code = Rounding_mode::HALF_UP; // half adjust
 				$tax_group_sequence = 0;
 				$item_total = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
 				$tax_basis = $item_total;

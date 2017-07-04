@@ -8,7 +8,7 @@ class Taxes extends Secure_Controller
 	{
 		parent::__construct('taxes');
 
-		$this->load->model('enums/Rounding_code');
+		$this->load->model('enums/Rounding_mode');
 
 	}
 
@@ -82,7 +82,7 @@ class Taxes extends Secure_Controller
 
 		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
 
-		$data['rounding_options'] = Rounding_code::get_rounding_options();
+		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 
 		if ($tax_code == -1)
 		{
@@ -134,7 +134,7 @@ class Taxes extends Secure_Controller
 
 	public static function get_html_rounding_options()
 	{
-		return Rounding_code::get_html_rounding_options();
+		return Rounding_mode::get_html_rounding_options();
 	}
 
 	public function save($tax_code = -1)
@@ -151,7 +151,7 @@ class Taxes extends Secure_Controller
 			'rate_tax_code' => $this->input->post('tax_code'),
 			'rate_tax_category_id' => 0,
 			'tax_rate' => parse_decimals($this->input->post('tax_rate')),
-			'rounding_code' => parse_decimals($this->input->post('rounding_code'))
+			'rounding_code' => $this->input->post('rounding_code')
 		);
 
 		if($this->Tax->save($tax_code_data, $tax_rate_data, $tax_code))
@@ -216,12 +216,6 @@ class Taxes extends Secure_Controller
 
 		echo json_encode($suggestions);
 	}
-
-	public function get_rounding_code_name($rounding_code)
-	{
-		return Rounding_code::get_rounding_code_name($rounding_code);
-	}
-
 
 }
 ?>

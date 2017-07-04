@@ -13,6 +13,11 @@ class Token_year_invoice_count extends Token
 		$this->CI->load->model('Sale');
 	}
 
+	public function token_id()
+	{
+		return 'YCO';
+	)
+
 	public function get_value()
 	{
 		return $this->CI->Sale->get_invoice_number_for_year();

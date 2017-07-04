@@ -13,6 +13,11 @@ class Token_customer extends Token
 		$this->CI->load->library('sale_lib');
 	}
 
+	public function token_id()
+	{
+		return 'CU';
+	}
+
 	public function get_value()
 	{
 		// substitute customer info

@@ -14,7 +14,7 @@ class Sale_lib
 	{
 		$this->CI =& get_instance();
 		$this->CI->load->library('tax_lib');
-		$this->CI->load->model('enums/Rounding_code');
+		$this->CI->load->model('enums/Rounding_mode');
 	}
 
 	public function get_line_sequence_options()
@@ -1036,7 +1036,7 @@ class Sale_lib
 
 				$tax_category = '';
 				$tax_rate = '';
-				$rounding_code = Rounding_code::HALF_UP;
+				$rounding_code = Rounding_mode::HALF_UP;
 				$tax_group_sequence = 0;
 				$tax_code = '';
 
@@ -1215,38 +1215,7 @@ class Sale_lib
 		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
 		$rounded_total = $total;
 
-		if($cash_rounding_code == Rounding_code::HALF_UP)
-		{
-			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_UP);
-		}
-		elseif($cash_rounding_code == Rounding_code::HALF_DOWN)
-		{
-			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_DOWN);
-		}
-		elseif($cash_rounding_code == Rounding_code::HALF_EVEN)
-		{
-			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_EVEN);
-		}
-		elseif($cash_rounding_code == Rounding_code::HALF_ODD)
-		{
-			$rounded_total = round ( $total, $cash_decimals, PHP_ROUND_HALF_UP);
-		}
-		elseif($cash_rounding_code == Rounding_code::ROUND_UP)
-		{
-			$fig = (int) str_pad('1', $cash_decimals, '0');
-			$rounded_total = (ceil($total * $fig) / $fig);
-		}
-		elseif($cash_rounding_code == Rounding_code::ROUND_DOWN)
-		{
-			$fig = (int) str_pad('1', $cash_decimals, '0');
-			$rounded_total = (floor($total * $fig) / $fig);
-		}
-		elseif($cash_rounding_code == Rounding_code::HALF_FIVE)
-		{
-			$rounded_total = round($total / 5) * 5;
-		}
-
-		return $rounded_total;
+		return Rounding_mode::round_number($total, $cash_decimals);
 	}
 }
 

@@ -204,7 +204,7 @@ class Config extends Secure_Controller
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
-		$data['rounding_options'] = Rounding_code::get_rounding_options();
+		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 		$data['tax_codes'] = $this->get_tax_code_options();
 
 		$data = $this->xss_clean($data);

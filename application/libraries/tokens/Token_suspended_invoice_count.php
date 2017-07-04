@@ -13,6 +13,11 @@ class Token_suspended_invoice_count extends Token
 		$this->CI->load->model('Sale');
 	}
 
+	public function token_id()
+	{
+		return 'SCO';
+	}
+
 	public function get_value()
 	{
 		return $this->CI->Sale->get_suspended_invoice_count();
