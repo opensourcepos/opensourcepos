@@ -541,7 +541,7 @@ class Sale extends CI_Model
 	 */
 	public function save(&$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, &$sales_taxes, $sale_id = FALSE)
 	{
-		$tax_decimals = $this->config->item('tax_decimals');
+		$tax_decimals = tax_decimals();
 
 		if(count($items) == 0)
 		{

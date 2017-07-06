@@ -38,6 +38,13 @@ function totals_decimals()
 	return $config->item('currency_decimals') ? $config->item('currency_decimals') : 0;
 }
 
+function cash_decimals()
+{
+	$config = get_instance()->config;
+
+	return $config->item('cash_decimals') ? $config->item('cash_decimals') : 0;
+}
+
 function tax_decimals()
 {
 	$config = get_instance()->config;
@@ -53,6 +60,11 @@ function to_currency($number)
 function to_currency_no_money($number)
 {
     return to_decimals($number, 'currency_decimals');
+}
+
+function to_currency_tax($number)
+{
+    return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
 }
 
 function to_tax_decimals($number)

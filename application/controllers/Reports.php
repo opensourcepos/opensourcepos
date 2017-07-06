@@ -55,7 +55,7 @@ class Reports extends Secure_Controller
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit'])
@@ -91,7 +91,7 @@ class Reports extends Secure_Controller
 				'category' => $row['category'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit'])
@@ -127,7 +127,7 @@ class Reports extends Secure_Controller
 				'customer_name' => $row['customer'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit'])
@@ -163,7 +163,7 @@ class Reports extends Secure_Controller
 				'supplier_name' => $row['supplier'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit'])
@@ -199,7 +199,7 @@ class Reports extends Secure_Controller
 				'item_name' => $row['name'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
-				'tax'  => to_currency($row['tax']),
+				'tax'  => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit'])
@@ -235,7 +235,7 @@ class Reports extends Secure_Controller
 				'employee_name' => $row['employee'],
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit'])
@@ -271,7 +271,7 @@ class Reports extends Secure_Controller
 				'tax_percent' => $row['percent'],
 				'report_count' => $row['count'],
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total'])
 			));
 		}
@@ -739,7 +739,7 @@ class Reports extends Secure_Controller
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
@@ -748,7 +748,18 @@ class Reports extends Secure_Controller
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
+				$details_data[$row['sale_id']][] = $this->xss_clean(array(
+					$drow['name'],
+					$drow['category'],
+					$drow['serialnumber'],
+					$drow['description'],
+					to_quantity_decimals($drow['quantity_purchased']),
+					to_currency($drow['subtotal']),
+					to_currency_tax($drow['tax']),
+					to_currency($drow['total']),
+					to_currency($drow['cost']),
+					to_currency($drow['profit']),
+					$drow['discount_percent'].'%'));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -813,7 +824,7 @@ class Reports extends Secure_Controller
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
@@ -822,7 +833,18 @@ class Reports extends Secure_Controller
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
+				$details_data[$row['sale_id']][] = $this->xss_clean(array(
+					$drow['name'],
+					$drow['category'],
+					$drow['serialnumber'],
+					$drow['description'],
+					to_quantity_decimals($drow['quantity_purchased']),
+					to_currency($drow['subtotal']),
+					to_currency_tax($drow['tax']),
+					to_currency($drow['total']),
+					to_currency($drow['cost']),
+					to_currency($drow['profit']),
+					$drow['discount_percent'].'%'));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -889,7 +911,7 @@ class Reports extends Secure_Controller
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
@@ -898,7 +920,17 @@ class Reports extends Secure_Controller
 
 			foreach($report_data['details'][$key] as $drow)
 			{
-				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], to_quantity_decimals($drow['quantity_purchased']), to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
+				$details_data[$row['sale_id']][] = $this->xss_clean(array(
+					$drow['name'],
+					$drow['category'],
+					$drow['serialnumber'],
+					$drow['description'],
+					to_quantity_decimals($drow['quantity_purchased']),
+					to_currency($drow['subtotal']),
+					to_currency_tax($drow['tax']),
+					to_currency($drow['total']),
+					to_currency($drow['profit']),
+					$drow['discount_percent'].'%'));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -941,7 +973,7 @@ class Reports extends Secure_Controller
 			'employee_name' => $report_data['employee_name'],
 			'customer_name' => $report_data['customer_name'],
 			'subtotal' => to_currency($report_data['subtotal']),
-			'tax' => to_currency($report_data['tax']),
+			'tax' => to_currency_tax($report_data['tax']),
 			'total' => to_currency($report_data['total']),
 			'cost' => to_currency($report_data['cost']),
 			'profit' => to_currency($report_data['profit']),
@@ -983,7 +1015,7 @@ class Reports extends Secure_Controller
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
-				'tax' => to_currency($row['tax']),
+				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
@@ -1001,7 +1033,18 @@ class Reports extends Secure_Controller
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$row['sale_id']][] = $this->xss_clean(array($drow['name'], $drow['category'], $drow['serialnumber'], $drow['description'], $quantity_purchased, to_currency($drow['subtotal']), to_currency($drow['tax']), to_currency($drow['total']), to_currency($drow['cost']), to_currency($drow['profit']), $drow['discount_percent'].'%'));
+				$details_data[$row['sale_id']][] = $this->xss_clean(array(
+					$drow['name'],
+					$drow['category'],
+					$drow['serialnumber'],
+					$drow['description'],
+					$quantity_purchased,
+					to_currency($drow['subtotal']),
+					to_currency_tax($drow['tax']),
+					to_currency($drow['total']),
+					to_currency($drow['cost']),
+					to_currency($drow['profit']),
+					$drow['discount_percent'].'%'));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1195,6 +1238,7 @@ class Reports extends Secure_Controller
 
 		$this->load->view('reports/tabular', $data);
 	}
+
 	//	Returns subtitle for the reports
 	private function _get_subtitle_report($inputs)
 	{

@@ -25,7 +25,7 @@
 						'name' => 'default_tax_1_rate',
 						'id' => 'default_tax_1_rate',
 						'class' => 'form-control input-sm',
-						'value'=>to_tax_decimals($this->config->item('default_tax_1_rate')))); ?>
+						'value'=> to_tax_decimals($this->config->item('default_tax_1_rate')))); ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
 			</div>
@@ -44,7 +44,7 @@
 						'name' => 'default_tax_2_rate',
 						'id' => 'default_tax_2_rate',
 						'class' => 'form-control input-sm',
-						'value'=>to_tax_decimals($this->config->item('default_tax_2_rate')))); ?>
+						'value'=> to_tax_decimals($this->config->item('default_tax_2_rate')))); ?>
 					<span class="input-group-addon input-sm">%</span>
 				</div>
 			</div>

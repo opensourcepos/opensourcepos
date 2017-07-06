@@ -411,7 +411,7 @@ class Sale_lib
 		}
 
 		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
-		$threshold = bcpow(10, -$this->CI->config->item('currency_decimals')) / 2;
+		$threshold = bcpow(10, -totals_decimals()) / 2;
 
 		if($this->get_mode() == 'return')
 		{
@@ -433,7 +433,7 @@ class Sale_lib
 		$payment_total = $this->get_payments_total();
 		$sales_total = $this->get_total();
 		$amount_due = bcsub($sales_total, $payment_total);
-		$precision = $this->CI->config->item('currency_decimals');
+		$precision = totals_decimals();
 		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_EVEN), 0, $precision);
 		// take care of rounding error introduced by round tripping payment amount to the browser
 		return $rounded_due == 0 ? 0 : $amount_due;
@@ -976,7 +976,7 @@ class Sale_lib
 		}
 		$this->CI->session->set_userdata('cash_mode', $cash_mode);
 
-		if($this->CI->config->item('cash_decimals') < $this->CI->config->item('currency_decimals'))
+		if(cash_decimals() < totals_decimals())
 		{
 			$cash_rounding = 1;
 		}
@@ -1002,7 +1002,7 @@ class Sale_lib
 	public function get_taxes()
 	{
 		$register_mode = $this->CI->config->item('default_register_mode');
-		$tax_decimals = $this->CI->config->item('tax_decimals');
+		$tax_decimals = tax_decimals();
 		$customer_id = $this->get_customer();
 		$customer = $this->CI->Customer->get_info($customer_id);
 		$sales_taxes = array();
@@ -1053,7 +1053,6 @@ class Sale_lib
 			}
 
 			$this->CI->tax_lib->round_sales_taxes($sales_taxes);
-
 		}
 
 		return $sales_taxes;
@@ -1144,6 +1143,7 @@ class Sale_lib
 	public function get_extended_amount($quantity, $price, $discount_amount = 0)
 	{
 		$extended_amount = bcmul($quantity, $price);
+
 		return bcsub($extended_amount, $discount_amount);
 	}
 
@@ -1202,9 +1202,9 @@ class Sale_lib
 
 		if($cash_rounding)
 		{
-			$rounded_total = $this->check_for_cash_rounding($total);
-			return $rounded_total;
+			$total = $this->check_for_cash_rounding($total);
 		}
+
 		return $total;
 	}
 
@@ -1215,7 +1215,7 @@ class Sale_lib
 
 	public function check_for_cash_rounding($total)
 	{
-		$cash_decimals = $this->CI->config->item('cash_decimals');
+		$cash_decimals = cash_decimals();
 		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
 		$rounded_total = $total;
 

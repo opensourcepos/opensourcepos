@@ -128,7 +128,7 @@
 			?>
 				<tr>
 					<td colspan="3" class="total-value"><?php echo $sales_tax['tax_group']; ?>:</td>
-					<td class="total-value"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></td>
+					<td class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
 			}

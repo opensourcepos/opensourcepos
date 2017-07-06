@@ -140,7 +140,7 @@ if (isset($error_message))
             <tr>
                 <td colspan="3" class="blank"> </td>
                 <td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
-                <td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></textarea></td>
+                <td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></textarea></td>
             </tr>
 			<?php
 		}

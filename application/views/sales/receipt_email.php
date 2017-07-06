@@ -123,7 +123,7 @@
 			?>
 				<tr>
 					<td colspan="3" style="text-align:right;"><?php echo $name; ?>:</td>
-					<td style="text-align:right;"><?php echo to_currency($value); ?></td>
+					<td style="text-align:right;"><?php echo to_currency_tax($value); ?></td>
 				</tr>
 			<?php
 			}

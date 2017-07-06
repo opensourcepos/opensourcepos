@@ -99,7 +99,7 @@ if (isset($error_message))
             <tr>
                 <td colspan="3" class="blank"> </td>
                 <td colspan="2" class="total-line"><?php echo $name; ?></td>
-                <td id="taxes" class="total-value"><?php echo to_currency($value); ?></td>
+                <td id="taxes" class="total-value"><?php echo to_currency_tax($value); ?></td>
             </tr>
 		<?php }; ?>
         <tr>

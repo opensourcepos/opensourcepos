@@ -359,7 +359,7 @@ if(isset($success))
 			?>
 				<tr>
 					<th style='width: 55%;'><?php echo $sales_tax['tax_group']; ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo to_currency($sales_tax['sale_tax_amount']); ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></th>
 				</tr>
 			<?php
 			}
