@@ -130,6 +130,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -165,6 +166,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -238,13 +240,7 @@ CI_Model
 		
 		
 
-				<b>Author:</b>
-				N/A<br>
-				<b>Since:</b>
-				1.0<br>
-				<b>Link:</b>
-				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Giftcard.html#4-318" title="Go to source code">models/Giftcard.php</a>
+			<b>Located at</b> <a href="source-class-Giftcard.html#4-314" title="Go to source code">models/Giftcard.php</a>
 		<br>
 	</div>
 
@@ -264,7 +260,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Giftcard.html#16-23" title="Go to source code">exists</a>( <span> <var>$giftcard_id</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#12-19" title="Go to source code">exists</a>( <span> <var>$giftcard_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -294,7 +290,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_max_number">#</a>
-		<code><a href="source-class-Giftcard.html#28-38" title="Go to source code">get_max_number</a>( )</code>
+		<code><a href="source-class-Giftcard.html#24-34" title="Go to source code">get_max_number</a>( )</code>
 
 		<div class="description short">
 			
@@ -324,7 +320,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_total_rows">#</a>
-		<code><a href="source-class-Giftcard.html#43-49" title="Go to source code">get_total_rows</a>( )</code>
+		<code><a href="source-class-Giftcard.html#39-45" title="Go to source code">get_total_rows</a>( )</code>
 
 		<div class="description short">
 			
@@ -354,7 +350,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Giftcard.html#54-80" title="Go to source code">get_info</a>( <span> <var>$giftcard_id</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#50-76" title="Go to source code">get_info</a>( <span> <var>$giftcard_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -384,7 +380,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_giftcard_id">#</a>
-		<code><a href="source-class-Giftcard.html#85-99" title="Go to source code">get_giftcard_id</a>( <span> <var>$giftcard_number</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#81-95" title="Go to source code">get_giftcard_id</a>( <span> <var>$giftcard_number</var></span> )</code>
 
 		<div class="description short">
 			
@@ -414,7 +410,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_multiple_info">#</a>
-		<code><a href="source-class-Giftcard.html#104-112" title="Go to source code">get_multiple_info</a>( <span> <var>$giftcard_ids</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#100-108" title="Go to source code">get_multiple_info</a>( <span> <var>$giftcard_ids</var></span> )</code>
 
 		<div class="description short">
 			
@@ -444,7 +440,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Giftcard.html#117-134" title="Go to source code">save</a>( <span> <var>&amp; $giftcard_data</var></span>, <span> <var>$giftcard_id</var> = -<span class="php-num">1</span></span> )</code>
+		<code><a href="source-class-Giftcard.html#113-130" title="Go to source code">save</a>( <span> <var>&amp; $giftcard_data</var></span>, <span> <var>$giftcard_id</var> = -<span class="php-num">1</span></span> )</code>
 
 		<div class="description short">
 			
@@ -474,7 +470,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_multiple">#</a>
-		<code><a href="source-class-Giftcard.html#139-144" title="Go to source code">update_multiple</a>( <span> <var>$giftcard_data</var></span>, <span> <var>$giftcard_ids</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#135-140" title="Go to source code">update_multiple</a>( <span> <var>$giftcard_data</var></span>, <span> <var>$giftcard_ids</var></span> )</code>
 
 		<div class="description short">
 			
@@ -504,7 +500,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Giftcard.html#149-154" title="Go to source code">delete</a>( <span> <var>$giftcard_id</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#145-150" title="Go to source code">delete</a>( <span> <var>$giftcard_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -534,7 +530,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_list">#</a>
-		<code><a href="source-class-Giftcard.html#159-164" title="Go to source code">delete_list</a>( <span> <var>$giftcard_ids</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#155-160" title="Go to source code">delete_list</a>( <span> <var>$giftcard_ids</var></span> )</code>
 
 		<div class="description short">
 			
@@ -564,7 +560,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_search_suggestions">#</a>
-		<code><a href="source-class-Giftcard.html#169-203" title="Go to source code">get_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Giftcard.html#165-199" title="Go to source code">get_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
 			
@@ -594,7 +590,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_search">#</a>
-		<code><a href="source-class-Giftcard.html#208-228" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'giftcard_number'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
+		<code><a href="source-class-Giftcard.html#204-224" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'giftcard_number'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -624,7 +620,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_found_rows">#</a>
-		<code><a href="source-class-Giftcard.html#233-247" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#229-243" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span> )</code>
 
 		<div class="description short">
 			
@@ -654,7 +650,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_giftcard_value">#</a>
-		<code><a href="source-class-Giftcard.html#252-263" title="Go to source code">get_giftcard_value</a>( <span> <var>$giftcard_number</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#248-259" title="Go to source code">get_giftcard_value</a>( <span> <var>$giftcard_number</var></span> )</code>
 
 		<div class="description short">
 			
@@ -684,7 +680,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_giftcard_value">#</a>
-		<code><a href="source-class-Giftcard.html#268-272" title="Go to source code">update_giftcard_value</a>( <span> <var>$giftcard_number</var></span>, <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#264-268" title="Go to source code">update_giftcard_value</a>( <span> <var>$giftcard_number</var></span>, <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -714,7 +710,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists_gitcard_name">#</a>
-		<code><a href="source-class-Giftcard.html#277-285" title="Go to source code">exists_gitcard_name</a>( <span> <var>$giftcard_name</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#273-281" title="Go to source code">exists_gitcard_name</a>( <span> <var>$giftcard_name</var></span> )</code>
 
 		<div class="description short">
 			
@@ -744,7 +740,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_generate_unique_giftcard_name">#</a>
-		<code><a href="source-class-Giftcard.html#290-301" title="Go to source code">generate_unique_giftcard_name</a>( <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#286-297" title="Go to source code">generate_unique_giftcard_name</a>( <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -774,7 +770,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_giftcard_customer">#</a>
-		<code><a href="source-class-Giftcard.html#306-317" title="Go to source code">get_giftcard_customer</a>( <span> <var>$giftcard_number</var></span> )</code>
+		<code><a href="source-class-Giftcard.html#302-313" title="Go to source code">get_giftcard_customer</a>( <span> <var>$giftcard_number</var></span> )</code>
 
 		<div class="description short">
 			

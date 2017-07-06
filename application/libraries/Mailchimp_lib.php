@@ -5,10 +5,6 @@
  *
  * Interface for communicating with the Mailchimp v3 API
  *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  daN4cat (FrancescoUK)
- *
  * Inspired by the work of:
  *   - Rajitha Bandara: https://github.com/rajitha-bandara/ci-mailchimp-v3-rest-client
  *   - Stefan Ashwell: https://github.com/stef686/codeigniter-mailchimp-api-v3
@@ -129,10 +125,6 @@ class MailchimpConnector
  * Mailchimp library, usable from CI code
  *
  * Library with utility queries to interface Mailchimp v3 API
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  daN4cat (FrancescoUK)
  *
  * Inspired by the work of ThinkShout: https://github.com/thinkshout/mailchimp-api-php
  */

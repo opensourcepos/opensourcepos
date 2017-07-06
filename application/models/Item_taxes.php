@@ -2,10 +2,6 @@
 
 /**
  * Item_taxes class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Item_taxes extends CI_Model

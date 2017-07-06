@@ -130,6 +130,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -165,6 +166,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -225,13 +227,7 @@
 		
 		
 
-				<b>Author:</b>
-				SteveIreland<br>
-				<b>Since:</b>
-				3.1<br>
-				<b>Link:</b>
-				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Rounding_code.html#4-88" title="Go to source code">models/enums/Rounding_code.php</a>
+			<b>Located at</b> <a href="source-class-Rounding_code.html#4-84" title="Go to source code">models/enums/Rounding_code.php</a>
 		<br>
 	</div>
 
@@ -251,7 +247,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_rounding_options">#</a>
-		<code><a href="source-class-Rounding_code.html#21-34" title="Go to source code">get_rounding_options</a>( )</code>
+		<code><a href="source-class-Rounding_code.html#17-30" title="Go to source code">get_rounding_options</a>( )</code>
 
 		<div class="description short">
 			
@@ -281,7 +277,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_rounding_code_name">#</a>
-		<code><a href="source-class-Rounding_code.html#36-72" title="Go to source code">get_rounding_code_name</a>( <span> <var>$rounding_code</var></span> )</code>
+		<code><a href="source-class-Rounding_code.html#32-68" title="Go to source code">get_rounding_code_name</a>( <span> <var>$rounding_code</var></span> )</code>
 
 		<div class="description short">
 			
@@ -311,7 +307,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_html_rounding_options">#</a>
-		<code><a href="source-class-Rounding_code.html#74-87" title="Go to source code">get_html_rounding_options</a>( )</code>
+		<code><a href="source-class-Rounding_code.html#70-83" title="Go to source code">get_html_rounding_options</a>( )</code>
 
 		<div class="description short">
 			
@@ -345,7 +341,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#13" title="Go to source code"><b>HALF_UP</b></a>
+				<a href="source-class-Rounding_code.html#9" title="Go to source code"><b>HALF_UP</b></a>
 			</code>
 
 			<div class="description short">
@@ -369,7 +365,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#14" title="Go to source code"><b>HALF_DOWN</b></a>
+				<a href="source-class-Rounding_code.html#10" title="Go to source code"><b>HALF_DOWN</b></a>
 			</code>
 
 			<div class="description short">
@@ -393,7 +389,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#15" title="Go to source code"><b>HALF_EVEN</b></a>
+				<a href="source-class-Rounding_code.html#11" title="Go to source code"><b>HALF_EVEN</b></a>
 			</code>
 
 			<div class="description short">
@@ -417,7 +413,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#16" title="Go to source code"><b>HALF_ODD</b></a>
+				<a href="source-class-Rounding_code.html#12" title="Go to source code"><b>HALF_ODD</b></a>
 			</code>
 
 			<div class="description short">
@@ -441,7 +437,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#17" title="Go to source code"><b>ROUND_UP</b></a>
+				<a href="source-class-Rounding_code.html#13" title="Go to source code"><b>ROUND_UP</b></a>
 			</code>
 
 			<div class="description short">
@@ -465,7 +461,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#18" title="Go to source code"><b>ROUND_DOWN</b></a>
+				<a href="source-class-Rounding_code.html#14" title="Go to source code"><b>ROUND_DOWN</b></a>
 			</code>
 
 			<div class="description short">
@@ -489,7 +485,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#19" title="Go to source code"><b>HALF_FIVE</b></a>
+				<a href="source-class-Rounding_code.html#15" title="Go to source code"><b>HALF_FIVE</b></a>
 			</code>
 
 			<div class="description short">

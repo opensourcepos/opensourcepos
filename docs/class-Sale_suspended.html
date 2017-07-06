@@ -130,6 +130,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -165,6 +166,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -238,13 +240,7 @@ CI_Model
 		
 		
 
-				<b>Author:</b>
-				N/A<br>
-				<b>Since:</b>
-				1.0<br>
-				<b>Link:</b>
-				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Sale_suspended.html#4-229" title="Go to source code">models/Sale_suspended.php</a>
+			<b>Located at</b> <a href="source-class-Sale_suspended.html#4-225" title="Go to source code">models/Sale_suspended.php</a>
 		<br>
 	</div>
 
@@ -264,7 +260,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all">#</a>
-		<code><a href="source-class-Sale_suspended.html#13-19" title="Go to source code">get_all</a>( )</code>
+		<code><a href="source-class-Sale_suspended.html#9-15" title="Go to source code">get_all</a>( )</code>
 
 		<div class="description short">
 			
@@ -294,7 +290,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Sale_suspended.html#21-28" title="Go to source code">get_info</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#17-24" title="Go to source code">get_info</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -324,7 +320,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_invoice_count">#</a>
-		<code><a href="source-class-Sale_suspended.html#33-39" title="Go to source code">get_invoice_count</a>( )</code>
+		<code><a href="source-class-Sale_suspended.html#29-35" title="Go to source code">get_invoice_count</a>( )</code>
 
 		<div class="description short">
 			
@@ -354,7 +350,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sale_by_invoice_number">#</a>
-		<code><a href="source-class-Sale_suspended.html#41-47" title="Go to source code">get_sale_by_invoice_number</a>( <span> <var>$invoice_number</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#37-43" title="Go to source code">get_sale_by_invoice_number</a>( <span> <var>$invoice_number</var></span> )</code>
 
 		<div class="description short">
 			
@@ -384,7 +380,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Sale_suspended.html#49-55" title="Go to source code">exists</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#45-51" title="Go to source code">exists</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -414,7 +410,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update">#</a>
-		<code><a href="source-class-Sale_suspended.html#57-62" title="Go to source code">update</a>( <span> <var>$sale_data</var></span>, <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#53-58" title="Go to source code">update</a>( <span> <var>$sale_data</var></span>, <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -444,7 +440,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Sale_suspended.html#64-159" title="Go to source code">save</a>( <span> <var>$items</var></span>, <span> <var>$customer_id</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$comment</var></span>, <span> <var>$invoice_number</var></span>, <span> <var>$quote_number</var></span>, <span> <var>$payments</var></span>, <span> <var>$dinner_table</var></span>, <span> <var>$sale_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#60-155" title="Go to source code">save</a>( <span> <var>$items</var></span>, <span> <var>$customer_id</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$comment</var></span>, <span> <var>$invoice_number</var></span>, <span> <var>$quote_number</var></span>, <span> <var>$payments</var></span>, <span> <var>$dinner_table</var></span>, <span> <var>$sale_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -474,7 +470,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Sale_suspended.html#161-182" title="Go to source code">delete</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#157-178" title="Go to source code">delete</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -504,7 +500,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sale_items">#</a>
-		<code><a href="source-class-Sale_suspended.html#184-204" title="Go to source code">get_sale_items</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#180-200" title="Go to source code">get_sale_items</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -534,7 +530,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sale_payments">#</a>
-		<code><a href="source-class-Sale_suspended.html#206-212" title="Go to source code">get_sale_payments</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#202-208" title="Go to source code">get_sale_payments</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -564,7 +560,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_comment">#</a>
-		<code><a href="source-class-Sale_suspended.html#214-220" title="Go to source code">get_comment</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#210-216" title="Go to source code">get_comment</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -594,7 +590,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_dinner_table">#</a>
-		<code><a href="source-class-Sale_suspended.html#222-228" title="Go to source code">get_dinner_table</a>( <span> <var>$sale_id</var></span> )</code>
+		<code><a href="source-class-Sale_suspended.html#218-224" title="Go to source code">get_dinner_table</a>( <span> <var>$sale_id</var></span> )</code>
 
 		<div class="description short">
 			

@@ -2,10 +2,6 @@
 
 /**
  * Token_invoice_sequence class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  SteveIreland
  */
 
 class Token_invoice_sequence extends Token

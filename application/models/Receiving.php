@@ -2,10 +2,6 @@
 
 /**
  * Receiving class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Receiving extends CI_Model

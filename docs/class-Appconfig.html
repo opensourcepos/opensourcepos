@@ -130,6 +130,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -165,6 +166,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -238,13 +240,7 @@ CI_Model
 		
 		
 
-				<b>Author:</b>
-				N/A<br>
-				<b>Since:</b>
-				1.0<br>
-				<b>Link:</b>
-				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Appconfig.html#4-100" title="Go to source code">models/Appconfig.php</a>
+			<b>Located at</b> <a href="source-class-Appconfig.html#4-96" title="Go to source code">models/Appconfig.php</a>
 		<br>
 	</div>
 
@@ -264,7 +260,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Appconfig.html#13-19" title="Go to source code">exists</a>( <span> <var>$key</var></span> )</code>
+		<code><a href="source-class-Appconfig.html#9-15" title="Go to source code">exists</a>( <span> <var>$key</var></span> )</code>
 
 		<div class="description short">
 			
@@ -294,7 +290,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all">#</a>
-		<code><a href="source-class-Appconfig.html#21-27" title="Go to source code">get_all</a>( )</code>
+		<code><a href="source-class-Appconfig.html#17-23" title="Go to source code">get_all</a>( )</code>
 
 		<div class="description short">
 			
@@ -324,7 +320,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get">#</a>
-		<code><a href="source-class-Appconfig.html#29-39" title="Go to source code">get</a>( <span> <var>$key</var></span> )</code>
+		<code><a href="source-class-Appconfig.html#25-35" title="Go to source code">get</a>( <span> <var>$key</var></span> )</code>
 
 		<div class="description short">
 			
@@ -354,7 +350,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Appconfig.html#41-56" title="Go to source code">save</a>( <span> <var>$key</var></span>, <span> <var>$value</var></span> )</code>
+		<code><a href="source-class-Appconfig.html#37-52" title="Go to source code">save</a>( <span> <var>$key</var></span>, <span> <var>$value</var></span> )</code>
 
 		<div class="description short">
 			
@@ -384,7 +380,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_batch_save">#</a>
-		<code><a href="source-class-Appconfig.html#58-75" title="Go to source code">batch_save</a>( <span> <var>$data</var></span> )</code>
+		<code><a href="source-class-Appconfig.html#54-71" title="Go to source code">batch_save</a>( <span> <var>$data</var></span> )</code>
 
 		<div class="description short">
 			
@@ -414,7 +410,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Appconfig.html#77-80" title="Go to source code">delete</a>( <span> <var>$key</var></span> )</code>
+		<code><a href="source-class-Appconfig.html#73-76" title="Go to source code">delete</a>( <span> <var>$key</var></span> )</code>
 
 		<div class="description short">
 			
@@ -444,7 +440,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_all">#</a>
-		<code><a href="source-class-Appconfig.html#82-85" title="Go to source code">delete_all</a>( )</code>
+		<code><a href="source-class-Appconfig.html#78-81" title="Go to source code">delete_all</a>( )</code>
 
 		<div class="description short">
 			
@@ -474,7 +470,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_acquire_save_next_invoice_sequence">#</a>
-		<code><a href="source-class-Appconfig.html#87-92" title="Go to source code">acquire_save_next_invoice_sequence</a>( )</code>
+		<code><a href="source-class-Appconfig.html#83-88" title="Go to source code">acquire_save_next_invoice_sequence</a>( )</code>
 
 		<div class="description short">
 			
@@ -504,7 +500,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_acquire_save_next_quote_sequence">#</a>
-		<code><a href="source-class-Appconfig.html#94-99" title="Go to source code">acquire_save_next_quote_sequence</a>( )</code>
+		<code><a href="source-class-Appconfig.html#90-95" title="Go to source code">acquire_save_next_quote_sequence</a>( )</code>
 
 		<div class="description short">
 			

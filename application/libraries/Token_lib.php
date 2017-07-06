@@ -6,10 +6,6 @@ require_once(APPPATH . 'libraries/tokens/Token.php');
  * Token library
  *
  * Library with utilities to manage tokens
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  SteveIreland
  */
 
 class Token_lib

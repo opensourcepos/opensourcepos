@@ -136,6 +136,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -171,6 +172,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -229,11 +231,11 @@
 </span><span id="18" class="l">    {
 </span><span id="19" class="l">        <span class="php-keyword1">if</span>(<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;config-&gt;item(<span class="php-quote">'date_or_time_format'</span>)))
 </span><span id="20" class="l">        {
-</span><span id="21" class="l">            <span class="php-var">$this</span>-&gt;db-&gt;where(<span class="php-quote">'sale_status = 0 AND DATE(sales.sale_time) BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>]) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>]));
+</span><span id="21" class="l">            <span class="php-var">$this</span>-&gt;db-&gt;where(<span class="php-quote">'DATE(sales.sale_time) BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>]) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>]));
 </span><span id="22" class="l">        }
 </span><span id="23" class="l">        <span class="php-keyword1">else</span>
 </span><span id="24" class="l">        {
-</span><span id="25" class="l">            <span class="php-var">$this</span>-&gt;db-&gt;where(<span class="php-quote">'sale_status = 0 AND sales.sale_time BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>])) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>])));
+</span><span id="25" class="l">            <span class="php-var">$this</span>-&gt;db-&gt;where(<span class="php-quote">'sales.sale_time BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>])) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>])));
 </span><span id="26" class="l">        }
 </span><span id="27" class="l">    }
 </span><span id="28" class="l">
@@ -243,11 +245,11 @@
 </span><span id="32" class="l">
 </span><span id="33" class="l">        <span class="php-keyword1">if</span>(<span class="php-keyword1">empty</span>(<span class="php-var">$this</span>-&gt;config-&gt;item(<span class="php-quote">'date_or_time_format'</span>)))
 </span><span id="34" class="l">        {
-</span><span id="35" class="l">            <span class="php-var">$where</span> .= <span class="php-quote">'WHERE sale_status = 0 AND DATE(sale_time) BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>]) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>]);
+</span><span id="35" class="l">            <span class="php-var">$where</span> .= <span class="php-quote">'WHERE DATE(sale_time) BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>]) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>]);
 </span><span id="36" class="l">        }
 </span><span id="37" class="l">        <span class="php-keyword1">else</span>
 </span><span id="38" class="l">        {
-</span><span id="39" class="l">            <span class="php-var">$where</span> .= <span class="php-quote">'WHERE sale_status = 0 AND sale_time BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>])) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>]));
+</span><span id="39" class="l">            <span class="php-var">$where</span> .= <span class="php-quote">'WHERE sale_time BETWEEN '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'start_date'</span>])) . <span class="php-quote">' AND '</span> . <span class="php-var">$this</span>-&gt;db-&gt;escape(<span class="php-keyword2">rawurldecode</span>(<span class="php-var">$inputs</span>[<span class="php-quote">'end_date'</span>]));
 </span><span id="40" class="l">        }
 </span><span id="41" class="l">
 </span><span id="42" class="l">        <span class="php-keyword1">if</span>(<span class="php-var">$this</span>-&gt;config-&gt;item(<span class="php-quote">'tax_included'</span>))
@@ -292,6 +294,6 @@
 </div>
 </div>
 <script src="resources/combined.js?ab7ddfe54adb05998edf888264c90e8da7a06c89"></script>
-<script src="elementlist.js?393598f38775c491011b04d46c7a40f307e10d0d"></script>
+<script src="elementlist.js?107bba78f0ace2667eb8cd2ee2df0b1a23c2c7af"></script>
 </body>
 </html>

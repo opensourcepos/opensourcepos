@@ -130,6 +130,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -165,6 +166,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -211,6 +213,8 @@
 	<p>Mailchimp library, usable from CI code</p>
 
 <p>Library with utility queries to interface Mailchimp v3 API</p>
+
+<p>Inspired by the work of ThinkShout: https://github.com/thinkshout/mailchimp-api-php</p>
 	</div>
 
 
@@ -227,15 +231,7 @@
 		
 		
 
-				<b>Author:</b>
-				<p>daN4cat (FrancescoUK)</p>
-
-<p>Inspired by the work of ThinkShout: https://github.com/thinkshout/mailchimp-api-php</p><br>
-				<b>Since:</b>
-				3.1<br>
-				<b>Link:</b>
-				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Mailchimp_lib.html#129-363" title="Go to source code">libraries/Mailchimp_lib.php</a>
+			<b>Located at</b> <a href="source-class-Mailchimp_lib.html#125-355" title="Go to source code">libraries/Mailchimp_lib.php</a>
 		<br>
 	</div>
 
@@ -255,7 +251,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#144-148" title="Go to source code">__construct</a>( <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#136-140" title="Go to source code">__construct</a>( <span>array <var>$params</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			
@@ -285,7 +281,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getLists">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#150-165" title="Go to source code">getLists</a>( <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'</span>)</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#142-157" title="Go to source code">getLists</a>( <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'lists.id,lists.name,lists.stats.member_count,lists.stats.merge_field_count'</span>)</span> )</code>
 
 		<div class="description short">
 			<p>Gets information about all lists owned by the authenticated account.</p>
@@ -330,7 +326,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getList">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#167-182" title="Go to source code">getList</a>( <span>string <var>$list_id</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'id,name,stats.member_count,stats.merge_field_count'</span>)</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#159-174" title="Go to source code">getList</a>( <span>string <var>$list_id</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'id,name,stats.member_count,stats.merge_field_count'</span>)</span> )</code>
 
 		<div class="description short">
 			<p>Gets a MailChimp list.</p>
@@ -375,7 +371,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getMembers">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#184-204" title="Go to source code">getMembers</a>( <span>string <var>$list_id</var></span>, <span>array <var>$count</var></span>, <span> <var>$offset</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'</span>)</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#176-196" title="Go to source code">getMembers</a>( <span>string <var>$list_id</var></span>, <span>array <var>$count</var></span>, <span> <var>$offset</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'members.id,members.email_address,members.unique_email_id,members.status,members.merge_fields'</span>)</span> )</code>
 
 		<div class="description short">
 			<p>Gets information about all members of a MailChimp list.</p>
@@ -425,7 +421,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getMemberInfoById">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#206-223" title="Go to source code">getMemberInfoById</a>( <span>string <var>$list_id</var></span>, <span>string <var>$md5id</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'email_address,status,merge_fields'</span>)</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#198-215" title="Go to source code">getMemberInfoById</a>( <span>string <var>$list_id</var></span>, <span>string <var>$md5id</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'fields'</span> =&gt; <span class="php-quote">'email_address,status,merge_fields'</span>)</span> )</code>
 
 		<div class="description short">
 			<p>Gets information about a member of a MailChimp list.</p>
@@ -472,7 +468,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getMemberInfo">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#225-242" title="Go to source code">getMemberInfo</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#217-234" title="Go to source code">getMemberInfo</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Gets information about a member of a MailChimp list.</p>
@@ -519,7 +515,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_getMemberActivity">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#244-261" title="Go to source code">getMemberActivity</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#236-253" title="Go to source code">getMemberActivity</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Gets activity related to a member of a MailChimp list.</p>
@@ -566,7 +562,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addMember">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#263-289" title="Go to source code">addMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$first_name</var></span>, <span> <var>$last_name</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#255-281" title="Go to source code">addMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$first_name</var></span>, <span> <var>$last_name</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Adds a new member to a MailChimp list.</p>
@@ -618,7 +614,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_removeMember">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#291-306" title="Go to source code">removeMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#283-298" title="Go to source code">removeMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span> )</code>
 
 		<div class="description short">
 			<p>Removes a member from a MailChimp list.</p>
@@ -663,7 +659,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_updateMember">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#308-333" title="Go to source code">updateMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$first_name</var></span>, <span> <var>$last_name</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#300-325" title="Go to source code">updateMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$first_name</var></span>, <span> <var>$last_name</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Updates a member of a MailChimp list.</p>
@@ -715,7 +711,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addOrUpdateMember">#</a>
-		<code><a href="source-class-Mailchimp_lib.html#335-362" title="Go to source code">addOrUpdateMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$first_name</var></span>, <span> <var>$last_name</var></span>, <span> <var>$status</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
+		<code><a href="source-class-Mailchimp_lib.html#327-354" title="Go to source code">addOrUpdateMember</a>( <span>string <var>$list_id</var></span>, <span>string <var>$email</var></span>, <span>array <var>$first_name</var></span>, <span> <var>$last_name</var></span>, <span> <var>$status</var></span>, <span> <var>$parameters</var> = <span class="php-keyword1">array</span>()</span> )</code>
 
 		<div class="description short">
 			<p>Adds a new or update an existing member of a MailChimp list.</p>

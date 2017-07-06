@@ -136,6 +136,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -171,6 +172,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -404,7 +406,7 @@
 </span><span id="193" class="l">            <span class="php-var">$data</span>[<span class="php-quote">'default_tax_1_rate'</span>] = <span class="php-var">$this</span>-&gt;config-&gt;item(<span class="php-quote">'default_tax_1_rate'</span>);
 </span><span id="194" class="l">            <span class="php-var">$data</span>[<span class="php-quote">'default_tax_2_rate'</span>] = <span class="php-var">$this</span>-&gt;config-&gt;item(<span class="php-quote">'default_tax_2_rate'</span>);
 </span><span id="195" class="l">
-</span><span id="196" class="l">            <span class="php-var">$item_info</span>-&gt;receiving_quantity = <span class="php-num">0</span>;
+</span><span id="196" class="l">            <span class="php-var">$item_info</span>-&gt;receiving_quantity = <span class="php-num">1</span>;
 </span><span id="197" class="l">            <span class="php-var">$item_info</span>-&gt;reorder_level = <span class="php-num">1</span>;
 </span><span id="198" class="l">            <span class="php-var">$item_info</span>-&gt;item_type = <span class="php-quote">'0'</span>; <span class="php-comment">// standard</span>
 </span><span id="199" class="l">            <span class="php-var">$item_info</span>-&gt;stock_type = <span class="php-quote">'0'</span>; <span class="php-comment">// stock</span>
@@ -528,7 +530,7 @@
 </span><span id="317" class="l">        {
 </span><span id="318" class="l">            <span class="php-var">$item</span> = <span class="php-var">$this</span>-&gt;xss_clean(<span class="php-var">$item</span>);
 </span><span id="319" class="l">            
-</span><span id="320" class="l">            <span class="php-comment">// update the UPC/EAN/ISBN field if empty / NULL with the newly generated barcode</span>
+</span><span id="320" class="l">            <span class="php-comment">// update the barcode field if empty / NULL with the newly generated barcode</span>
 </span><span id="321" class="l">            <span class="php-keyword1">if</span>(<span class="php-keyword1">empty</span>(<span class="php-var">$item</span>[<span class="php-quote">'item_number'</span>]) &amp;&amp; <span class="php-var">$this</span>-&gt;config-&gt;item(<span class="php-quote">'barcode_generate_if_empty'</span>))
 </span><span id="322" class="l">            {
 </span><span id="323" class="l">                <span class="php-comment">// get the newly generated barcode</span>
@@ -537,7 +539,7 @@
 </span><span id="326" class="l">                
 </span><span id="327" class="l">                <span class="php-var">$save_item</span> = <span class="php-keyword1">array</span>(<span class="php-quote">'item_number'</span> =&gt; <span class="php-var">$item</span>[<span class="php-quote">'item_number'</span>]);
 </span><span id="328" class="l">
-</span><span id="329" class="l">                <span class="php-comment">// update the item in the database in order to save the UPC/EAN/ISBN field</span>
+</span><span id="329" class="l">                <span class="php-comment">// update the item in the database in order to save the barcode field</span>
 </span><span id="330" class="l">                <span class="php-var">$this</span>-&gt;Item-&gt;save(<span class="php-var">$save_item</span>, <span class="php-var">$item</span>[<span class="php-quote">'item_id'</span>]);
 </span><span id="331" class="l">            }
 </span><span id="332" class="l">        }
@@ -1072,6 +1074,6 @@
 </div>
 </div>
 <script src="resources/combined.js?ab7ddfe54adb05998edf888264c90e8da7a06c89"></script>
-<script src="elementlist.js?393598f38775c491011b04d46c7a40f307e10d0d"></script>
+<script src="elementlist.js?107bba78f0ace2667eb8cd2ee2df0b1a23c2c7af"></script>
 </body>
 </html>

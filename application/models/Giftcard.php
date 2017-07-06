@@ -2,10 +2,6 @@
 
 /**
  * Giftcard class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Giftcard extends CI_Model

@@ -2,10 +2,6 @@
 
 /**
  * Base class for People classes
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Person extends CI_Model

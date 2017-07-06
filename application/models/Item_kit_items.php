@@ -2,10 +2,6 @@
 
 /**
  * Item_kit_items class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Item_kit_items extends CI_Model

@@ -2,10 +2,6 @@
 
 /**
  * Tax class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  SteveIreland
  */
 
 class Tax extends CI_Model

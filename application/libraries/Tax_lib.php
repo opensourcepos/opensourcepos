@@ -4,10 +4,6 @@
  * Tax library
  *
  * Library with utilities to manage taxes
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  SteveIreland
  */
 
 class Tax_lib

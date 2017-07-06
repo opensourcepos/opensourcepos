@@ -4,10 +4,6 @@
  * Sale library
  *
  * Library with utilities to manage sales
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Sale_lib

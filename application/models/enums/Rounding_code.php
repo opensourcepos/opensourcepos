@@ -2,10 +2,6 @@
 
 /**
  * Rounding_code class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  SteveIreland
  */
 
 class Rounding_code

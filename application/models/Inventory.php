@@ -2,10 +2,6 @@
 
 /**
  * Inventory class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Inventory extends CI_Model

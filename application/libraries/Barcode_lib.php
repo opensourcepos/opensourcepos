@@ -11,10 +11,6 @@ require APPPATH.'/views/barcodes/Ean8.php';
  * Barcode library
  *
  * Library with utilities to manage barcodes
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   2.x
- * @author  Jekkos
  */
 
 class Barcode_lib

@@ -2,10 +2,6 @@
 
 /**
  * Dinner_table class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  jlctmaster
  */
 
 class Dinner_table extends CI_Model

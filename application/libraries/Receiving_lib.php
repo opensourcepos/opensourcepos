@@ -4,10 +4,6 @@
  * Receiving library
  *
  * Library with utilities to manage receivings
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   1.0
- * @author  N/A
  */
 
 class Receiving_lib

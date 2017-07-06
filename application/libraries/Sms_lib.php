@@ -4,10 +4,6 @@
  * SMS library
  *
  * Library with utilities to send texts via SMS Gateway (requires proxy implementation)
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.0
- * @author  RamkrishnaMondal, daN4cat (FrancescoUK)
  */
 
 class Sms_lib

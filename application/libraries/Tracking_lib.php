@@ -4,10 +4,6 @@
  * Tracking library
  *
  * Library with utilities to manage statistics
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.0
- * @author  daN4cat (FrancescoUK)
  */
 
 class Tracking_lib

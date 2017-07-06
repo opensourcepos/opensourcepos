@@ -2,10 +2,6 @@
 
 /**
  * Stock_location class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   2.x
- * @author  Padungsak
  */
 
 class Stock_location extends CI_Model

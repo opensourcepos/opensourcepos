@@ -4,10 +4,6 @@
  * Email library
  *
  * Library with utilities to configure and send emails
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.0
- * @author  daN4cat (FrancescoUK)
  */
 
 class Email_lib

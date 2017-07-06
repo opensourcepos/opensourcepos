@@ -130,6 +130,7 @@
 
 			<h3>Functions</h3>
 			<ul>
+				<li><a href="function-cash_decimals.html">cash_decimals</a></li>
 				<li><a href="function-currency_side.html">currency_side</a></li>
 				<li><a href="function-current_language.html">current_language</a></li>
 				<li><a href="function-current_language_code.html">current_language_code</a></li>
@@ -165,6 +166,7 @@
 				<li><a href="function-tax_decimals.html">tax_decimals</a></li>
 				<li><a href="function-to_currency.html">to_currency</a></li>
 				<li><a href="function-to_currency_no_money.html">to_currency_no_money</a></li>
+				<li><a href="function-to_currency_tax.html">to_currency_tax</a></li>
 				<li><a href="function-to_decimals.html">to_decimals</a></li>
 				<li><a href="function-to_quantity_decimals.html">to_quantity_decimals</a></li>
 				<li><a href="function-to_tax_decimals.html">to_tax_decimals</a></li>
@@ -238,13 +240,7 @@ CI_Model
 		
 		
 
-				<b>Author:</b>
-				N/A<br>
-				<b>Since:</b>
-				1.0<br>
-				<b>Link:</b>
-				github.com/jekkos/opensourcepos<br>
-			<b>Located at</b> <a href="source-class-Receiving.html#4-291" title="Go to source code">models/Receiving.php</a>
+			<b>Located at</b> <a href="source-class-Receiving.html#4-287" title="Go to source code">models/Receiving.php</a>
 		<br>
 	</div>
 
@@ -264,7 +260,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Receiving.html#13-21" title="Go to source code">get_info</a>( <span> <var>$receiving_id</var></span> )</code>
+		<code><a href="source-class-Receiving.html#9-17" title="Go to source code">get_info</a>( <span> <var>$receiving_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -294,7 +290,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_receiving_by_reference">#</a>
-		<code><a href="source-class-Receiving.html#23-29" title="Go to source code">get_receiving_by_reference</a>( <span> <var>$reference</var></span> )</code>
+		<code><a href="source-class-Receiving.html#19-25" title="Go to source code">get_receiving_by_reference</a>( <span> <var>$reference</var></span> )</code>
 
 		<div class="description short">
 			
@@ -324,7 +320,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_is_valid_receipt">#</a>
-		<code><a href="source-class-Receiving.html#31-49" title="Go to source code">is_valid_receipt</a>( <span> <var>$receipt_receiving_id</var></span> )</code>
+		<code><a href="source-class-Receiving.html#27-45" title="Go to source code">is_valid_receipt</a>( <span> <var>$receipt_receiving_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -354,7 +350,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Receiving.html#51-57" title="Go to source code">exists</a>( <span> <var>$receiving_id</var></span> )</code>
+		<code><a href="source-class-Receiving.html#47-53" title="Go to source code">exists</a>( <span> <var>$receiving_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -384,7 +380,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update">#</a>
-		<code><a href="source-class-Receiving.html#59-64" title="Go to source code">update</a>( <span> <var>$receiving_data</var></span>, <span> <var>$receiving_id</var></span> )</code>
+		<code><a href="source-class-Receiving.html#55-60" title="Go to source code">update</a>( <span> <var>$receiving_data</var></span>, <span> <var>$receiving_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -414,7 +410,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Receiving.html#66-144" title="Go to source code">save</a>( <span> <var>$items</var></span>, <span> <var>$supplier_id</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$comment</var></span>, <span> <var>$reference</var></span>, <span> <var>$payment_type</var></span>, <span> <var>$receiving_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Receiving.html#62-140" title="Go to source code">save</a>( <span> <var>$items</var></span>, <span> <var>$supplier_id</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$comment</var></span>, <span> <var>$reference</var></span>, <span> <var>$payment_type</var></span>, <span> <var>$receiving_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -444,7 +440,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_list">#</a>
-		<code><a href="source-class-Receiving.html#146-164" title="Go to source code">delete_list</a>( <span> <var>$receiving_ids</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$update_inventory</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-Receiving.html#142-160" title="Go to source code">delete_list</a>( <span> <var>$receiving_ids</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$update_inventory</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -474,7 +470,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Receiving.html#166-204" title="Go to source code">delete</a>( <span> <var>$receiving_id</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$update_inventory</var> = <span class="php-keyword1">TRUE</span></span> )</code>
+		<code><a href="source-class-Receiving.html#162-200" title="Go to source code">delete</a>( <span> <var>$receiving_id</var></span>, <span> <var>$employee_id</var></span>, <span> <var>$update_inventory</var> = <span class="php-keyword1">TRUE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -504,7 +500,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_receiving_items">#</a>
-		<code><a href="source-class-Receiving.html#206-212" title="Go to source code">get_receiving_items</a>( <span> <var>$receiving_id</var></span> )</code>
+		<code><a href="source-class-Receiving.html#202-208" title="Go to source code">get_receiving_items</a>( <span> <var>$receiving_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -534,7 +530,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_supplier">#</a>
-		<code><a href="source-class-Receiving.html#214-220" title="Go to source code">get_supplier</a>( <span> <var>$receiving_id</var></span> )</code>
+		<code><a href="source-class-Receiving.html#210-216" title="Go to source code">get_supplier</a>( <span> <var>$receiving_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -564,7 +560,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_payment_options">#</a>
-		<code><a href="source-class-Receiving.html#222-230" title="Go to source code">get_payment_options</a>( )</code>
+		<code><a href="source-class-Receiving.html#218-226" title="Go to source code">get_payment_options</a>( )</code>
 
 		<div class="description short">
 			
@@ -594,7 +590,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_create_temp_table">#</a>
-		<code><a href="source-class-Receiving.html#235-290" title="Go to source code">create_temp_table</a>( <span>array <var>$inputs</var></span> )</code>
+		<code><a href="source-class-Receiving.html#231-286" title="Go to source code">create_temp_table</a>( <span>array <var>$inputs</var></span> )</code>
 
 		<div class="description short">
 			

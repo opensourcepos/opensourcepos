@@ -4,10 +4,6 @@
  * Item library
  *
  * Library with utilities to manage items
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   2.x
- * @author  Jekkos
  */
 
 class Item_lib

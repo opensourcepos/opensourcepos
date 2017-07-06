@@ -2,10 +2,6 @@
 
 /**
  * Rewards class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  joshua1234511
  */
 
 class Rewards extends CI_Model

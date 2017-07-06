@@ -2,10 +2,6 @@
 
 /**
  * Token_customer class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  SteveIreland
  */
 
 class Token_customer extends Token

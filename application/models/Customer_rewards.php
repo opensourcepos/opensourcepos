@@ -2,10 +2,6 @@
 
 /**
  * Customer_rewards class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   3.1
- * @author  joshua1234511
  */
 
 class Customer_rewards extends CI_Model

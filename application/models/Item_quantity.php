@@ -2,10 +2,6 @@
 
 /**
  * Item_quantity class
- *
- * @link    github.com/jekkos/opensourcepos
- * @since   2.x
- * @author  Padungsak
  */
 
 class Item_quantity extends CI_Model
