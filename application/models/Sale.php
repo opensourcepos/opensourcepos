@@ -88,12 +88,12 @@ class Sale extends CI_Model
 
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
-		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
-		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
+		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
+		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-			'left outer');
+			'LEFT OUTER');
 
 		$this->db->where('sales.sale_id', $sale_id);
 
@@ -120,11 +120,11 @@ class Sale extends CI_Model
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']) . ' ';
+			$where .= 'DATE(sales.sale_time) BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']);
 		}
 		else
 		{
-			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])) . ' ';
+			$where .= 'sales.sale_time BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date']));
 		}
 
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
@@ -202,12 +202,12 @@ class Sale extends CI_Model
 
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
-		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
-		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'left outer');
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
+		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
+		$this->db->join('sales_payments_temp AS payments', 'sales.sale_id = payments.sale_id', 'LEFT OUTER');
 		$this->db->join('sales_items_taxes_temp AS sales_items_taxes',
 			'sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line',
-			'left outer');
+			'LEFT OUTER');
 
 		$this->db->where($where);
 
@@ -240,15 +240,15 @@ class Sale extends CI_Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('sales.sale_status = 0 and sales_items.quantity_purchased > 0');
+			$this->db->where('sales.sale_status = 0 AND sales_items.quantity_purchased > 0');
 		}
 		elseif($filters['sale_type'] == 'quotes')
 		{
-			$this->db->where('sales.sale_status = 1 and sales.quote_number IS NOT NULL');
+			$this->db->where('sales.sale_status = 1 AND sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('sales.sale_status = 0 and sales_items.quantity_purchased < 0');
+			$this->db->where('sales.sale_status = 0 AND sales_items.quantity_purchased < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
@@ -289,8 +289,8 @@ class Sale extends CI_Model
 		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
-		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'left');
-		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'left');
+		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
+		$this->db->join('customers AS customer', 'sales.customer_id = customer.person_id', 'LEFT');
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
@@ -325,15 +325,15 @@ class Sale extends CI_Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('sales.sale_status = 0 and payment_amount > 0');
+			$this->db->where('sales.sale_status = 0 AND payment_amount > 0');
 		}
 		elseif($filters['sale_type'] == 'quotes')
 		{
-			$this->db->where('sales.sale_status = 1 and sales.quote_number IS NOT NULL');
+			$this->db->where('sales.sale_status = 1 AND sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('sales.sale_status = 0 and payment_amount < 0');
+			$this->db->where('sales.sale_status = 0 AND payment_amount < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
@@ -655,7 +655,7 @@ class Sale extends CI_Model
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
-				$this->Item_quantity->save(array('quantity'		=> $item_quantity->quantity - $item['quantity'],
+				$this->Item_quantity->save(array('quantity'	=> $item_quantity->quantity - $item['quantity'],
 					'item_id'		=> $item['item_id'],
 					'location_id'	=> $item['item_location']), $item['item_id'], $item['item_location']);
 
@@ -1222,7 +1222,7 @@ class Sale extends CI_Model
 		else
 		{
 			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1 and customer_id = ' . $customer_id
+				. $this->db->dbprefix('sales') . ' where sale_status = 1 AND customer_id = ' . $customer_id
 				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
 				. $this->db->dbprefix('sales_suspended') . ' where customer_id = ' . $customer_id);
 		}
