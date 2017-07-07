@@ -17,7 +17,7 @@ Please bear in mind that we will implement new features only on the current code
 
 ### Issue / Question / Bug
 
-Before submitting an issue please make sure you tick (add a x between the square brakets with no spaces) the following check boxes:
+Before submitting an issue please make sure you tick (add an x between the square brackets with no spaces) the following check boxes:
 
 - [] I'm reporting an issue of an unmodified OSPOS installation
 - [] I checked open and closed issues database and no similar issue was already discussed (please make sure you searched!)
