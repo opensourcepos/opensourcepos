@@ -12,6 +12,7 @@ Open Source Point of Sale is a web based point of sale system.
 The main features are:
 * Stock management (Items and Kits)
 * Sale register with transactions logging
+* Quote and invoicing
 * Receipt and invoice printing and/or emailing
 * Barcode generation and printing
 * Suppliers and Customers database
@@ -23,7 +24,7 @@ The main features are:
 * Restaurant tables
 * Messaging (SMS)
 * Multilanguage
-* Different UI themes
+* Selectable Boostrap based UI theme
 
 The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
