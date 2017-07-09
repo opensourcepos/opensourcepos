@@ -562,7 +562,7 @@ CREATE TABLE `ospos_sales` (
 CREATE TABLE `ospos_sales_items` (
   `sale_id` int(10) NOT NULL DEFAULT '0',
   `item_id` int(10) NOT NULL DEFAULT '0',
-  `description` varchar(30) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `serialnumber` varchar(30) DEFAULT NULL,
   `line` int(3) NOT NULL DEFAULT '0',
   `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
