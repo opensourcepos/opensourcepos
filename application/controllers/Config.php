@@ -243,9 +243,9 @@ class Config extends Secure_Controller
 			$b = $tax_code['tax_code_name'];
 			$tax_code_options[$a] = $b;
 		}
-
 		return $tax_code_options;
 	}
+
 
 	public function save_info()
 	{
@@ -614,6 +614,88 @@ class Config extends Secure_Controller
 			'success' => $success,
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
+	}
+
+	public function save_tax()
+	{
+		$this->db->trans_start();
+
+		$customer_sales_tax_support = $this->input->post('customer_sales_tax_support') != NULL;
+
+		$batch_save_data = array(
+			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
+			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
+			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),
+			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
+			'tax_included' => $this->input->post('tax_included') != NULL,
+			'customer_sales_tax_support' => $customer_sales_tax_support,
+			'default_origin_tax_code' => $this->input->post('default_origin_tax_code')
+		);
+
+		$result = $this->Appconfig->batch_save($batch_save_data);
+		$success = $result ? TRUE : FALSE;
+
+		if($customer_sales_tax_support)
+		{
+			$not_to_delete = array();
+			foreach($this->input->post() as $key => $value)
+			{
+				if(strstr($key, 'tax_category'))
+				{
+					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+					$not_to_delete[] = $tax_category_id;
+					$array_save[$tax_category_id]['tax_category'] = $value;
+				}
+				elseif(strstr($key, 'tax_group_sequence'))
+				{
+					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
+					$not_to_delete[] = $tax_category_id;
+					$array_save[$tax_category_id]['tax_group_sequence'] = $value;
+				}
+			}
+
+			if(!empty($array_save))
+			{
+				foreach($array_save as $key => $value)
+				{
+					// save or update
+					$prev_id = $key;
+					$category_data = array('tax_category' => $value['tax_category'], 'tax_group_sequence' => $value['tax_group_sequence']);
+					if($this->Tax->save_tax_category($category_data, $key))
+					{
+						if ($prev_id != $category_data['tax_category_id'])
+						{
+							unset($not_to_delete[$prev_id]);
+							$not_to_delete[] = $category_data['tax_category_id'];
+						}
+					}
+				}
+			}
+
+			// all locations not available in post will be deleted now
+			$tax_categories = $this->Tax->get_all_tax_categories()->result_array();
+
+			foreach($tax_categories as $tax_category)
+			{
+				if(!empty($tax_category['tax_category_id']) && !in_array($tax_category['tax_category_id'], $not_to_delete))
+				{
+					$this->Tax->delete_tax_category($tax_category['tax_category_id']);
+				}
+			}
+		}
+
+		$this->db->trans_complete();
+		$success2 = $this->db->trans_status();
+
+		$success3 = $success && $success2;
+
+		$this->_clear_session_state();
+
+		echo json_encode(array(
+			'success' => $success3,
+			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
+
 	}
 
 	public function save_tax()

@@ -244,8 +244,13 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 
 UPDATE ospos_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
 
--- long alternate description
+-- fix tax category maintenance
 
+ALTER TABLE `ospos_tax_categories`
+  MODIFY COLUMN `tax_category_id` int(10) NOT NULL AUTO_INCREMENT;
+  
+-- long alternate description
+  
 ALTER TABLE `ospos_sales_items`
   MODIFY COLUMN `description` varchar(255) DEFAULT NULL;
   
