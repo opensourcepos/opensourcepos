@@ -17,7 +17,7 @@
 
 /* first row */
 #logo { text-align: right; margin-top: 15px; float: left; position: relative; border: 1px solid #fff; max-height: 150px; overflow: hidden; }
-#logo img { max-height: 150px; max-width: 150px; }
+#logo img { max-height: 150px; max-width: 270px; }
 /*#logo:hover, #logo.edit { border: 1px solid #000; margin-top: 0px; max-height: 125px; }*/
 #logoctr { display: none; }
 #logo:hover #logoctr, #logo.edit #logoctr { display: block; text-align: right; line-height: 25px; background: #eee; padding: 0 5px; }
@@ -43,6 +43,7 @@
 #items tr.item-row td { border: 0; vertical-align: top; }
 #items td.description { width: 300px; }
 #items td.item-name { width: 175px; }
+#items td.item-description textarea { height: auto; width: 100%; }
 #items td.description textarea, #items td.item-name textarea { width: 100%; }
 #items td.total-line { border-right: 0; text-align: right; }
 #items td.total-value { border-left: 0; padding: 10px; }
