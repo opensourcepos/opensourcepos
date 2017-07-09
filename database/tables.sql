@@ -810,7 +810,7 @@ CREATE TABLE `ospos_suppliers` (
 --
 
 CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
-  `tax_category_id` int(10) NOT NULL,
+  `tax_category_id` int(10) NOT NULL AUTO_INCREMENT,
   `tax_category` varchar(32) NOT NULL,
   `tax_group_sequence` tinyint(2) NOT NULL,
   PRIMARY KEY (`tax_category_id`)

@@ -243,3 +243,8 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 -- update to receivings
 
 UPDATE ospos_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
+
+-- fix tax category maintenance
+
+ALTER TABLE `ospos_tax_categories`
+  MODIFY COLUMN `tax_category_id` int(10) NOT NULL AUTO_INCREMENT;

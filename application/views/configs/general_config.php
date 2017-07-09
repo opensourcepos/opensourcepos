@@ -11,77 +11,6 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_default_tax_rate_1'), 'default_tax_1_rate', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'default_tax_1_name',
-						'id' => 'default_tax_1_name',
-						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('default_tax_1_name')!==FALSE ? $this->config->item('default_tax_1_name') : $this->lang->line('items_sales_tax_1'))); ?>
-				</div>
-				<div class="col-xs-1 input-group">
-					<?php echo form_input(array(
-						'name' => 'default_tax_1_rate',
-						'id' => 'default_tax_1_rate',
-						'class' => 'form-control input-sm',
-						'value'=> to_tax_decimals($this->config->item('default_tax_1_rate')))); ?>
-					<span class="input-group-addon input-sm">%</span>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_default_tax_rate_2'), 'default_tax_2_rate', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'default_tax_2_name',
-						'id' => 'default_tax_2_name',
-						'class' => 'form-control input-sm',
-						'value'=>$this->config->item('default_tax_2_name')!==FALSE ? $this->config->item('default_tax_2_name') : $this->lang->line('items_sales_tax_2'))); ?>
-				</div>
-				<div class="col-xs-1 input-group">
-					<?php echo form_input(array(
-						'name' => 'default_tax_2_rate',
-						'id' => 'default_tax_2_rate',
-						'class' => 'form-control input-sm',
-						'value'=> to_tax_decimals($this->config->item('default_tax_2_rate')))); ?>
-					<span class="input-group-addon input-sm">%</span>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">	
-				<?php echo form_label($this->lang->line('config_tax_included'), 'tax_included', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_checkbox(array(
-						'name' => 'tax_included',
-						'id' => 'tax_included',
-						'value' => 'tax_included',
-						'checked'=>$this->config->item('tax_included'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_customer_sales_tax_support'), 'customer_sales_tax_support', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_checkbox(array(
-						'name' => 'customer_sales_tax_support',
-						'id' => 'customer_sales_tax_support',
-						'value' => 'customer_sales_tax_support',
-						'checked'=>$this->config->item('customer_sales_tax_support'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_default_origin_tax_code'), 'default_origin_tax_code', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'default_origin_tax_code',
-						'id' => 'default_origin_tax_code',
-						'class' => 'form-control input-sm text-uppercase',
-						'value'=>$this->config->item('default_origin_tax_code'))); ?>
-				</div>
-			</div>
-
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
@@ -323,14 +252,6 @@ $(document).ready(function()
 
 		rules: 
 		{
-			default_tax_1_rate:
-			{
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
-			default_tax2_rate:
-			{
-				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
-			},
 			lines_per_page:
 			{
 				required: true,
@@ -341,20 +262,16 @@ $(document).ready(function()
 				required: true,
 				remote: "<?php echo site_url($controller_name . '/check_numeric')?>"
 			}  		
-   		},
+		},
 
 		messages: 
 		{
-			default_tax_1_rate:
-			{
-				number: "<?php echo $this->lang->line('config_default_tax_rate_number'); ?>"
-			},
 			default_sales_discount:
-			{
-				required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
-				number: "<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
-			},
-			lines_per_page: 
+				{
+					required: "<?php echo $this->lang->line('config_default_sales_discount_required'); ?>",
+					number: "<?php echo $this->lang->line('config_default_sales_discount_number'); ?>"
+				},
+			lines_per_page:
 			{
 				required: "<?php echo $this->lang->line('config_lines_per_page_required'); ?>",
 				number: "<?php echo $this->lang->line('config_lines_per_page_number'); ?>"

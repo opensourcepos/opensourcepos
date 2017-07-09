@@ -26,6 +26,14 @@ class Tax extends CI_Model
 		return ($this->db->get()->num_rows() == 1);
 	}
 
+	public function tax_category_exists($tax_category_id)
+	{
+		$this->db->from('tax_categories');
+		$this->db->where('tax_category_id', $tax_category_id);
+
+		return ($this->db->get()->num_rows() == 1);
+	}
+
 	/*
 	Gets total of rows
 	*/
@@ -178,6 +186,33 @@ class Tax extends CI_Model
 		}
 	}
 
+	/**
+	 * Inserts or updates a tax_category
+	 */
+	public function save_tax_category(&$tax_category_data, $tax_category_id = -1)
+	{
+		if(!$this->tax_category_exists($tax_category_id))
+		{
+			$this->db->trans_start();
+
+			$this->db->insert('tax_categories', $tax_category_data);
+			$tax_category_id = $this->db->insert_id();
+			$tax_category_data['tax_category_id'] = $tax_category_id;
+
+			$this->db->trans_complete();
+
+			return $this->db->trans_status();
+		}
+		else
+		{
+			$this->db->where('tax_category_id', $tax_category_id);
+
+			return $this->db->update('tax_categories', $tax_category_data);
+		}
+
+	}
+
+
 	public function save_tax_rates(&$tax_rate_data, $tax_code)
 	{
 		if(!$this->tax_rate_exists($tax_code, $tax_rate_data['rate_tax_category_id']))
@@ -232,6 +267,14 @@ class Tax extends CI_Model
 	public function delete($tax_code)
 	{
 		return $this->db->delete('tax_codes', array('tax_code' => $tax_code));
+	}
+
+	/*
+	Deletes one tax_codes entry
+	*/
+	public function delete_tax_category($tax_category_id)
+	{
+		return $this->db->delete('tax_categories', array('tax_category_id' => $tax_category_id));
 	}
 
 	/*
@@ -365,6 +408,15 @@ class Tax extends CI_Model
 	{
 		$this->db->from('tax_categories');
 		$this->db->order_by('tax_category_id');
+
+		return $this->db->get();
+	}
+
+	public function get_all_tax_codes()
+	{
+		$this->db->select('tax_code, tax_code_name');
+		$this->db->from('tax_codes');
+		$this->db->order_by('tax_code_name');
 
 		return $this->db->get();
 	}
