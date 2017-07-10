@@ -243,3 +243,8 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 -- update to receivings
 
 UPDATE ospos_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
+
+-- long alternate description
+
+ALTER TABLE `ospos_sales_items`
+  MODIFY COLUMN `description` varchar(255) DEFAULT NULL;
