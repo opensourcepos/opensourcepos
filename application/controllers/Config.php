@@ -243,9 +243,9 @@ class Config extends Secure_Controller
 			$b = $tax_code['tax_code_name'];
 			$tax_code_options[$a] = $b;
 		}
-
 		return $tax_code_options;
 	}
+
 
 	public function save_info()
 	{
@@ -688,7 +688,6 @@ class Config extends Secure_Controller
 			'success' => $success,
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
-
 	}
 
 	public function save_rewards()
