@@ -243,6 +243,7 @@ class Config extends Secure_Controller
 			$b = $tax_code['tax_code_name'];
 			$tax_code_options[$a] = $b;
 		}
+
 		return $tax_code_options;
 	}
 
@@ -593,7 +594,7 @@ class Config extends Secure_Controller
 				}
 			}
 
-			// all locations not available in post will be deleted now
+			// all tables not available in post will be deleted now
 			$deleted_tables = $this->Dinner_table->get_all()->result_array();
 
 			foreach($deleted_tables as $dinner_table)
@@ -637,6 +638,7 @@ class Config extends Secure_Controller
 		if($customer_sales_tax_support)
 		{
 			$not_to_delete = array();
+			$array_save = array();
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'tax_category'))
@@ -658,20 +660,15 @@ class Config extends Secure_Controller
 				foreach($array_save as $key => $value)
 				{
 					// save or update
-					$prev_id = $key;
 					$category_data = array('tax_category' => $value['tax_category'], 'tax_group_sequence' => $value['tax_group_sequence']);
 					if($this->Tax->save_tax_category($category_data, $key))
 					{
-						if ($prev_id != $category_data['tax_category_id'])
-						{
-							unset($not_to_delete[$prev_id]);
-							$not_to_delete[] = $category_data['tax_category_id'];
-						}
+						$this->_clear_session_state();
 					}
 				}
 			}
 
-			// all locations not available in post will be deleted now
+			// all categories not available in post will be deleted now
 			$tax_categories = $this->Tax->get_all_tax_categories()->result_array();
 
 			foreach($tax_categories as $tax_category)
@@ -684,14 +681,11 @@ class Config extends Secure_Controller
 		}
 
 		$this->db->trans_complete();
-		$success2 = $this->db->trans_status();
 
-		$success3 = $success && $success2;
-
-		$this->_clear_session_state();
+		$success &= $this->db->trans_status();
 
 		echo json_encode(array(
-			'success' => $success3,
+			'success' => $success,
 			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
 		));
 
@@ -734,15 +728,15 @@ class Config extends Secure_Controller
 				foreach($array_save as $key => $value)
 				{
 					// save or update
-					$table_data = array('package_name' => $value['package_name'], 'points_percent' => $value['points_percent']);
-					if($this->Customer_rewards->save($table_data, $key))
+					$package_data = array('package_name' => $value['package_name'], 'points_percent' => $value['points_percent']);
+					if($this->Customer_rewards->save($package_data, $key))
 					{
 						$this->_clear_session_state();
 					}
 				}
 			}
 
-			// all locations not available in post will be deleted now
+			// all packages not available in post will be deleted now
 			$deleted_packages = $this->Customer_rewards->get_all()->result_array();
 
 			foreach($deleted_packages as $customer_reward)
