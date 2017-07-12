@@ -189,16 +189,11 @@ class Tax extends CI_Model
 	/**
 	 * Inserts or updates a tax_category
 	 */
-	public function save_tax_category(&$tax_category_data, $tax_category_id = -1)
+	public function save_tax_category(&$tax_category_data, $tax_category_id)
 	{
 		if(!$this->tax_category_exists($tax_category_id))
 		{
-			if($this->db->insert('tax_categories', $tax_category_data))
-			{
-				return TRUE;
-			}
-
-			return FALSE;
+			return $this->db->insert('tax_categories', $tax_category_data);
 		}
 
 		$this->db->where('tax_category_id', $tax_category_id);
@@ -213,12 +208,7 @@ class Tax extends CI_Model
 	{
 		if(!$this->tax_rate_exists($tax_code, $tax_rate_data['rate_tax_category_id']))
 		{
-			if($this->db->insert('tax_code_rates', $tax_rate_data))
-			{
-				return TRUE;
-			}
-
-			return FALSE;
+			return $this->db->insert('tax_code_rates', $tax_rate_data);
 		}
 
 		$this->db->where('rate_tax_code', $tax_code);
@@ -241,9 +231,9 @@ class Tax extends CI_Model
 		// Delete all exceptions for the given tax_code
 		$this->delete_tax_rate_exceptions($tax_code);
 
-		if ($tax_rate_data != NULL)
+		if($tax_rate_data != NULL)
 		{
-			foreach ($tax_rate_data as $row)
+			foreach($tax_rate_data as $row)
 			{
 				$row['rate_tax_code'] = $tax_code;
 				$success &= $this->db->insert('tax_code_rates', $row);

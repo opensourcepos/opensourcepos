@@ -484,7 +484,7 @@ class Config extends Secure_Controller
 		));
 	}
 
-	public function stock_locations()
+	public function ajax_stock_locations()
 	{
 		$stock_locations = $this->Stock_location->get_all()->result_array();
 
@@ -493,7 +493,7 @@ class Config extends Secure_Controller
 		$this->load->view('partial/stock_locations', array('stock_locations' => $stock_locations));
 	}
 
-	public function dinner_tables()
+	public function ajax_dinner_tables()
 	{
 		$dinner_tables = $this->Dinner_table->get_all()->result_array();
 
@@ -502,7 +502,7 @@ class Config extends Secure_Controller
 		$this->load->view('partial/dinner_tables', array('dinner_tables' => $dinner_tables));
 	}
 
-	public function tax_categories()
+	public function ajax_tax_categories()
 	{
 		$tax_categories = $this->Tax->get_all_tax_categories()->result_array();
 
@@ -511,7 +511,7 @@ class Config extends Secure_Controller
 		$this->load->view('partial/tax_categories', array('tax_categories' => $tax_categories));
 	}
 
-	public function customer_rewards()
+	public function ajax_customer_rewards()
 	{
 		$customer_rewards = $this->Customer_rewards->get_all()->result_array();
 
@@ -533,9 +533,10 @@ class Config extends Secure_Controller
 
 	public function save_locations()
 	{
+		$deleted_locations = $this->Stock_location->get_undeleted_all()->result_array();
+
 		$this->db->trans_start();
 
-		$deleted_locations = $this->Stock_location->get_allowed_locations();
 		foreach($this->input->post() as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
@@ -569,6 +570,8 @@ class Config extends Secure_Controller
 
 	public function save_tables()
 	{
+		$deleted_tables = $this->Dinner_table->get_undeleted_all()->result_array();
+
 		$this->db->trans_start();
 
 		$dinner_table_enable = $this->input->post('dinner_table_enable') != NULL;
@@ -577,14 +580,12 @@ class Config extends Secure_Controller
 
 		if($dinner_table_enable)
 		{
-			$not_to_delete = array();
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
 				{
 					$dinner_table_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$not_to_delete[] = $dinner_table_id;
-
+					unset($deleted_tables[$dinner_table_id]);
 					// save or update
 					$table_data = array('name' => $value);
 					if($this->Dinner_table->save($table_data, $dinner_table_id))
@@ -595,14 +596,9 @@ class Config extends Secure_Controller
 			}
 
 			// all tables not available in post will be deleted now
-			$deleted_tables = $this->Dinner_table->get_all()->result_array();
-
-			foreach($deleted_tables as $dinner_table)
+			foreach($deleted_tables as $dinner_table_id => $dinner_table_name)
 			{
-				if(!empty($customer_reward['dinner_table_id']) && !in_array($dinner_table['dinner_table_id'], $not_to_delete))
-				{
-					$this->Dinner_table->delete($dinner_table['dinner_table_id']);
-				}
+				$this->Dinner_table->delete($dinner_table_id);
 			}
 		}
 
@@ -618,6 +614,8 @@ class Config extends Secure_Controller
 
 	public function save_tax()
 	{
+		$deleted_categories = $this->Tax->get_all_tax_categories()->result_array();
+
 		$this->db->trans_start();
 
 		$customer_sales_tax_support = $this->input->post('customer_sales_tax_support') != NULL;
@@ -632,25 +630,22 @@ class Config extends Secure_Controller
 			'default_origin_tax_code' => $this->input->post('default_origin_tax_code')
 		);
 
-		$result = $this->Appconfig->batch_save($batch_save_data);
-		$success = $result ? TRUE : FALSE;
+		$success = $this->Appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
 
 		if($customer_sales_tax_support)
 		{
-			$not_to_delete = array();
 			$array_save = array();
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'tax_category'))
 				{
 					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$not_to_delete[] = $tax_category_id;
+					unset($deleted_categories[$tax_category_id]);
 					$array_save[$tax_category_id]['tax_category'] = $value;
 				}
 				elseif(strstr($key, 'tax_group_sequence'))
 				{
 					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$not_to_delete[] = $tax_category_id;
 					$array_save[$tax_category_id]['tax_group_sequence'] = $value;
 				}
 			}
@@ -661,22 +656,14 @@ class Config extends Secure_Controller
 				{
 					// save or update
 					$category_data = array('tax_category' => $value['tax_category'], 'tax_group_sequence' => $value['tax_group_sequence']);
-					if($this->Tax->save_tax_category($category_data, $key))
-					{
-						$this->_clear_session_state();
-					}
+					$this->Tax->save_tax_category($category_data, $key);
 				}
 			}
 
 			// all categories not available in post will be deleted now
-			$tax_categories = $this->Tax->get_all_tax_categories()->result_array();
-
-			foreach($tax_categories as $tax_category)
+			foreach($deleted_categories as $tax_category_id => $tax_category)
 			{
-				if(!empty($tax_category['tax_category_id']) && !in_array($tax_category['tax_category_id'], $not_to_delete))
-				{
-					$this->Tax->delete_tax_category($tax_category['tax_category_id']);
-				}
+				$this->Tax->delete_tax_category($tax_category_id);
 			}
 		}
 
@@ -692,6 +679,8 @@ class Config extends Secure_Controller
 
 	public function save_rewards()
 	{
+		$deleted_packages = $this->Customer_rewards->get_undeleted_all()->result_array();
+
 		$this->db->trans_start();
 
 		$customer_reward_enable = $this->input->post('customer_reward_enable') != NULL;
@@ -700,7 +689,6 @@ class Config extends Secure_Controller
 
 		if($customer_reward_enable)
 		{
-			$not_to_delete = array();
 			$array_save = array();
 			foreach($this->input->post() as $key => $value)
 			{
@@ -711,13 +699,12 @@ class Config extends Secure_Controller
 				elseif(strstr($key, 'customer_reward'))
 				{
 					$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$not_to_delete[] = $customer_reward_id;
+					unset($deleted_packages[$customer_reward_id]);
 					$array_save[$customer_reward_id]['package_name'] = $value;
 				}
 				elseif(strstr($key, 'reward_points'))
 				{
 					$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$not_to_delete[] = $customer_reward_id;
 					$array_save[$customer_reward_id]['points_percent'] = $value;
 				}
 			}
@@ -728,22 +715,14 @@ class Config extends Secure_Controller
 				{
 					// save or update
 					$package_data = array('package_name' => $value['package_name'], 'points_percent' => $value['points_percent']);
-					if($this->Customer_rewards->save($package_data, $key))
-					{
-						$this->_clear_session_state();
-					}
+					$this->Customer_rewards->save($package_data, $key);
 				}
 			}
 
 			// all packages not available in post will be deleted now
-			$deleted_packages = $this->Customer_rewards->get_all()->result_array();
-
-			foreach($deleted_packages as $customer_reward)
+			foreach($deleted_packages as $customer_reward_id => $customer_reward)
 			{
-				if(!empty($customer_reward['customer_reward_id']) && !in_array($customer_reward['customer_reward_id'], $not_to_delete))
-				{
-					$this->Customer_rewards->delete($customer_reward['customer_reward_id']);
-				}
+				$this->Customer_rewards->delete($customer_reward_id);
 			}
 		}
 

@@ -6,62 +6,51 @@
 
 class Dinner_table extends CI_Model
 {
-    public function exists($dinner_table_id)
-    {
-        $this->db->from('dinner_tables');
-        $this->db->where('dinner_table_id', $dinner_table_id);
+	public function exists($dinner_table_id)
+	{
+		$this->db->from('dinner_tables');
+		$this->db->where('dinner_table_id', $dinner_table_id);
 
-        return ($this->db->get()->num_rows() >= 1);
-    }
+		return ($this->db->get()->num_rows() >= 1);
+	}
 
-    public function save($table_data, $dinner_table_id)
-    {
-        $name = $table_data['name'];
+	public function save($table_data, $dinner_table_id)
+	{
+		$table_data_to_save = array('name' => $table_data['name'], 'deleted' => 0);
 
-        if(!$this->exists($dinner_table_id))
-        {
-            $this->db->trans_start();
+		if(!$this->exists($dinner_table_id))
+		{
+			return $this->db->insert('dinner_tables', $table_data_to_save);
+		}
 
-            $location_data = array('name' => $name, 'deleted' => 0);
-            $this->db->insert('dinner_tables', $table_data);
-            $dinner_table_id = $this->db->insert_id();
+		$this->db->where('dinner_table_id', $dinner_table_id);
 
-            $this->db->trans_complete();
+		return $this->db->update('dinner_tables', $table_data_to_save);
+	}
 
-            return $this->db->trans_status();
-        }
-        else
-        {
-            $this->db->where('dinner_table_id', $dinner_table_id);
+	/**
+	Get empty tables
+	*/
+	public function get_empty_tables()
+	{
+		$this->db->from('dinner_tables');
+		$this->db->where('status', 0);
+		$this->db->where('deleted', 0);
 
-            return $this->db->update('dinner_tables', $table_data);
-        }
-    }
+		$empty_tables = $this->db->get()->result_array();
 
-    /*
-    Get empty tables
-    */
-    public function get_empty_tables()
-    {
-        $this->db->from('dinner_tables');
-        $this->db->where('status', 0);
-        $this->db->where('deleted', 0);
+		$empty_tables_array = array();
+		foreach($empty_tables as $empty_table)
+		{
+			$empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];
+		}
 
-        $empty_tables = $this->db->get()->result_array();
+		return $empty_tables_array;
+	}
 
-        $empty_tables_array = array();
-        foreach($empty_tables as $empty_table)
-        {
-            $empty_tables_array[$empty_table['dinner_table_id']] = $empty_table['name'];
-        }
-
-        return $empty_tables_array;
-
-    }
-
-    public function get_name($dinner_table_id)
-    {
-    	if(empty($dinner_table_id))
+	public function get_name($dinner_table_id)
+	{
+		if(empty($dinner_table_id))
 		{
 			return '';
 		}
@@ -72,36 +61,31 @@ class Dinner_table extends CI_Model
 
 			return $this->db->get()->row()->name;
 		}
-    }
+	}
 
-    public function get_all()
-    {
-        $this->db->from('dinner_tables');
+	public function get_all()
+	{
+		$this->db->from('dinner_tables');
 
-        return $this->db->get();
-    }
+		return $this->db->get();
+	}
 
-    public function get_undeleted_all()
-    {
-        $this->db->from('dinner_tables');
-        $this->db->where('deleted', 0);
+	public function get_undeleted_all()
+	{
+		$this->db->from('dinner_tables');
+		$this->db->where('deleted', 0);
 
-        return $this->db->get();
-    }
+		return $this->db->get();
+	}
 
-    /*
-    Deletes one table
-    */
-    public function delete($dinner_table_id)
-    {
-        $this->db->trans_start();
+	/**
+	Deletes one table
+	*/
+	public function delete($dinner_table_id)
+	{
+		$this->db->where('dinner_table_id', $dinner_table_id);
 
-        $this->db->where('dinner_table_id', $dinner_table_id);
-        $this->db->update('dinner_tables', array('deleted' => 1));
-
-        $this->db->trans_complete();
-
-        return $this->db->trans_status();
-    }
+		return $this->db->update('dinner_tables', array('deleted' => 1));
+	}
 }
 ?>

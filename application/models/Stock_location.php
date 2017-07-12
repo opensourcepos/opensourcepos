@@ -6,10 +6,10 @@
 
 class Stock_location extends CI_Model
 {
-    public function exists($location_name = '')
+    public function exists($location_id = -1)
     {
         $this->db->from('stock_locations');
-        $this->db->where('location_name', $location_name);
+        $this->db->where('location_id', $location_id);
 
         return ($this->db->get()->num_rows() >= 1);
     }
@@ -96,12 +96,13 @@ class Stock_location extends CI_Model
     {
 		$location_name = $location_data['location_name'];
 
-    	if(!$this->exists($location_name))
+    	$location_data_to_save = array('location_name' => $location_name, 'deleted' => 0);
+
+    	if(!$this->exists($location_id))
     	{
     		$this->db->trans_start();
 
-    		$location_data = array('location_name'=>$location_name, 'deleted'=>0);
-   			$this->db->insert('stock_locations', $location_data);
+   			$this->db->insert('stock_locations', $location_data_to_save);
    			$location_id = $this->db->insert_id();
 
    			$this->_insert_new_permission('items', $location_id, $location_name);
@@ -120,12 +121,10 @@ class Stock_location extends CI_Model
 
 			return $this->db->trans_status();
    		}
-    	else
-    	{
-    		$this->db->where('location_id', $location_id);
 
-    		return $this->db->update('stock_locations', $location_data);
-    	}
+		$this->db->where('location_id', $location_id);
+
+		return $this->db->update('stock_locations', $location_data_to_save);
     }
 
     private function _insert_new_permission($module, $location_id, $location_name)
