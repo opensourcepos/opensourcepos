@@ -112,7 +112,8 @@ class Sale extends CI_Model
 	 */
 	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_time', $order = 'desc')
 	{
-		$where = '';
+		// Pick up only non-suspended records
+		$where = 'sales.sale_status = 0 AND ';
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
@@ -134,7 +135,7 @@ class Sale extends CI_Model
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
-				WHERE ' . $where . '
+				WHERE sales.sale_status = 0 AND ' . $where . '
 				GROUP BY sale_id
 			)'
 		);
@@ -232,19 +233,6 @@ class Sale extends CI_Model
 		if($filters['location_id'] != 'all')
 		{
 			$this->db->where('sales_items.item_location', $filters['location_id']);
-		}
-
-		if($filters['sale_type'] == 'sales')
-		{
-			$this->db->where('sales.sale_status = 0 AND sales_items.quantity_purchased > 0');
-		}
-		elseif($filters['sale_type'] == 'quotes')
-		{
-			$this->db->where('sales.sale_status = 1 AND sales.quote_number IS NOT NULL');
-		}
-		elseif($filters['sale_type'] == 'returns')
-		{
-			$this->db->where('sales.sale_status = 0 AND sales_items.quantity_purchased < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
