@@ -47,20 +47,13 @@ class Customer_rewards extends CI_Model
 	public function get_all()
 	{
 		$this->db->from('customers_packages');
-
-		return $this->db->get();
-	}
-
-	public function get_undeleted_all()
-	{
-		$this->db->from('customers_packages');
 		$this->db->where('deleted', 0);
 
 		return $this->db->get();
 	}
 
 	/**
-	Deletes one reward
+	Deletes one reward package
 	*/
 	public function delete($package_id)
 	{

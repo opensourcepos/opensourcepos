@@ -1,7 +1,7 @@
 <?php
 $i = 0;
 
-foreach($dinner_tables as $dinner_tables=>$table)
+foreach($dinner_tables as $dinner_tables => $table)
 {
 	$dinner_table_id = $table['dinner_table_id'];
 	$dinner_table_name = $table['name'];
@@ -15,7 +15,7 @@ foreach($dinner_tables as $dinner_tables=>$table)
 					'id'=>'dinner_table_' . $dinner_table_id,
 					'class'=>'dinner_table valid_chars form-control input-sm required',
 					'value'=>$dinner_table_name
-				); 
+				);
 				$table['deleted'] && $form_data['disabled'] = 'disabled';
 				echo form_input($form_data);
 			?>

@@ -66,13 +66,6 @@ class Dinner_table extends CI_Model
 	public function get_all()
 	{
 		$this->db->from('dinner_tables');
-
-		return $this->db->get();
-	}
-
-	public function get_undeleted_all()
-	{
-		$this->db->from('dinner_tables');
 		$this->db->where('deleted', 0);
 
 		return $this->db->get();

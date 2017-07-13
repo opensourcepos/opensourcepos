@@ -182,18 +182,22 @@ class Tax extends CI_Model
 		}
 		else
 		{
-			return  FALSE;
+			return FALSE;
 		}
 	}
 
 	/**
 	 * Inserts or updates a tax_category
 	 */
-	public function save_tax_category(&$tax_category_data, $tax_category_id)
+	public function save_tax_category(&$tax_category_data, &$tax_category_id)
 	{
 		if(!$this->tax_category_exists($tax_category_id))
 		{
-			return $this->db->insert('tax_categories', $tax_category_data);
+			$result = $this->db->insert('tax_categories', $tax_category_data);
+
+			$tax_category_id = $this->db->insert_id();
+
+			return $result;
 		}
 
 		$this->db->where('tax_category_id', $tax_category_id);

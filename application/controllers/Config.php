@@ -533,16 +533,15 @@ class Config extends Secure_Controller
 
 	public function save_locations()
 	{
-		$deleted_locations = $this->Stock_location->get_undeleted_all()->result_array();
-
 		$this->db->trans_start();
 
+		$not_to_delete = array();
 		foreach($this->input->post() as $key => $value)
 		{
 			if(strstr($key, 'stock_location'))
 			{
 				$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				unset($deleted_locations[$location_id]);
+				$not_to_delete[] = $location_id;
 				// save or update
 				$location_data = array('location_name' => $value);
 				if($this->Stock_location->save($location_data, $location_id))
@@ -553,9 +552,14 @@ class Config extends Secure_Controller
 		}
 
 		// all locations not available in post will be deleted now
-		foreach($deleted_locations as $location_id => $location_name)
+		$deleted_locations = $this->Stock_location->get_all()->result_array();
+
+		foreach($deleted_locations as $location => $location_data)
 		{
-			$this->Stock_location->delete($location_id);
+			if(!in_array($location_data['location_id'], $not_to_delete))
+			{
+				$this->Stock_location->delete($location_data['location_id']);
+			}
 		}
 
 		$this->db->trans_complete();
@@ -570,8 +574,6 @@ class Config extends Secure_Controller
 
 	public function save_tables()
 	{
-		$deleted_tables = $this->Dinner_table->get_undeleted_all()->result_array();
-
 		$this->db->trans_start();
 
 		$dinner_table_enable = $this->input->post('dinner_table_enable') != NULL;
@@ -580,12 +582,13 @@ class Config extends Secure_Controller
 
 		if($dinner_table_enable)
 		{
+			$not_to_delete = array();
 			foreach($this->input->post() as $key => $value)
 			{
 				if(strstr($key, 'dinner_table') && $key != 'dinner_table_enable')
 				{
 					$dinner_table_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					unset($deleted_tables[$dinner_table_id]);
+					$not_to_delete[] = $dinner_table_id;
 					// save or update
 					$table_data = array('name' => $value);
 					if($this->Dinner_table->save($table_data, $dinner_table_id))
@@ -596,9 +599,14 @@ class Config extends Secure_Controller
 			}
 
 			// all tables not available in post will be deleted now
-			foreach($deleted_tables as $dinner_table_id => $dinner_table_name)
+			$deleted_tables = $this->Dinner_table->get_all()->result_array();
+
+			foreach($deleted_tables as $dinner_tables => $table)
 			{
-				$this->Dinner_table->delete($dinner_table_id);
+				if(!in_array($table['dinner_table_id'], $not_to_delete))
+				{
+					$this->Dinner_table->delete($table['dinner_table_id']);
+				}
 			}
 		}
 
@@ -614,8 +622,6 @@ class Config extends Secure_Controller
 
 	public function save_tax()
 	{
-		$deleted_categories = $this->Tax->get_all_tax_categories()->result_array();
-
 		$this->db->trans_start();
 
 		$customer_sales_tax_support = $this->input->post('customer_sales_tax_support') != NULL;
@@ -640,7 +646,6 @@ class Config extends Secure_Controller
 				if(strstr($key, 'tax_category'))
 				{
 					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					unset($deleted_categories[$tax_category_id]);
 					$array_save[$tax_category_id]['tax_category'] = $value;
 				}
 				elseif(strstr($key, 'tax_group_sequence'))
@@ -650,6 +655,7 @@ class Config extends Secure_Controller
 				}
 			}
 
+			$not_to_delete = array();
 			if(!empty($array_save))
 			{
 				foreach($array_save as $key => $value)
@@ -657,13 +663,19 @@ class Config extends Secure_Controller
 					// save or update
 					$category_data = array('tax_category' => $value['tax_category'], 'tax_group_sequence' => $value['tax_group_sequence']);
 					$this->Tax->save_tax_category($category_data, $key);
+					$not_to_delete[] = $key;
 				}
 			}
 
 			// all categories not available in post will be deleted now
-			foreach($deleted_categories as $tax_category_id => $tax_category)
+			$deleted_categories = $this->Tax->get_all_tax_categories()->result_array();
+
+			foreach($deleted_categories as $tax_category => $category)
 			{
-				$this->Tax->delete_tax_category($tax_category_id);
+				if(!in_array($category['tax_category_id'], $not_to_delete))
+				{
+					$this->Tax->delete_tax_category($category['tax_category_id']);
+				}
 			}
 		}
 
@@ -679,8 +691,6 @@ class Config extends Secure_Controller
 
 	public function save_rewards()
 	{
-		$deleted_packages = $this->Customer_rewards->get_undeleted_all()->result_array();
-
 		$this->db->trans_start();
 
 		$customer_reward_enable = $this->input->post('customer_reward_enable') != NULL;
@@ -689,17 +699,14 @@ class Config extends Secure_Controller
 
 		if($customer_reward_enable)
 		{
+			$not_to_delete = array();
 			$array_save = array();
 			foreach($this->input->post() as $key => $value)
 			{
-				if(strstr($key, 'customer_reward_enable'))
-				{
-					// skip the check box
-				}
-				elseif(strstr($key, 'customer_reward'))
+				if(strstr($key, 'customer_reward') && $key != 'customer_reward_enable')
 				{
 					$customer_reward_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					unset($deleted_packages[$customer_reward_id]);
+					$not_to_delete[] = $customer_reward_id;
 					$array_save[$customer_reward_id]['package_name'] = $value;
 				}
 				elseif(strstr($key, 'reward_points'))
@@ -720,9 +727,14 @@ class Config extends Secure_Controller
 			}
 
 			// all packages not available in post will be deleted now
-			foreach($deleted_packages as $customer_reward_id => $customer_reward)
+			$deleted_packages = $this->Customer_rewards->get_all()->result_array();
+
+			foreach($deleted_packages as $customer_rewards => $reward_category)
 			{
-				$this->Customer_rewards->delete($customer_reward_id);
+				if(!in_array($reward_category['package_id'], $not_to_delete))
+				{
+					$this->Customer_rewards->delete($reward_category['package_id']);
+				}
 			}
 		}
 

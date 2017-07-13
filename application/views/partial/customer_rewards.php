@@ -1,14 +1,14 @@
 <?php
 $i = 0;
 
-foreach($customer_rewards as $customer_rewards=>$table)
+foreach($customer_rewards as $customer_rewards => $reward_category)
 {
-	$customer_reward_id = $table['package_id'];
-	$customer_reward_name = $table['package_name'];
-	$customer_points_percent = $table['points_percent'];
+	$customer_reward_id = $reward_category['package_id'];
+	$customer_reward_name = $reward_category['package_name'];
+	$customer_points_percent = $reward_category['points_percent'];
 	++$i;
 ?>
-	<div class="form-group form-group-sm" style="<?php echo $table['deleted'] ? 'display:none;' : 'display:block;' ?>">
+	<div class="form-group form-group-sm" style="<?php echo $reward_category['deleted'] ? 'display:none;' : 'display:block;' ?>">
 		<?php echo form_label($this->lang->line('config_customer_reward') . ' ' . $i, 'customer_reward_' . $i, array('class'=>'required control-label col-xs-2')); ?>
 		<div class='col-xs-2'>
 			<?php $form_data = array(
@@ -16,8 +16,8 @@ foreach($customer_rewards as $customer_rewards=>$table)
 					'id'=>'customer_reward_' . $customer_reward_id,
 					'class'=>'customer_reward valid_chars form-control input-sm required',
 					'value'=>$customer_reward_name
-				); 
-				$table['deleted'] && $form_data['disabled'] = 'disabled';
+				);
+				$reward_category['deleted'] && $form_data['disabled'] = 'disabled';
 				echo form_input($form_data);
 			?>
 		</div>
@@ -27,8 +27,8 @@ foreach($customer_rewards as $customer_rewards=>$table)
 					'id'=>'reward_points_' . $customer_reward_id,
 					'class'=>'customer_reward valid_chars form-control input-sm required',
 					'value'=>$customer_points_percent
-				); 
-				$table['deleted'] && $form_data['disabled'] = 'disabled';
+				);
+				$reward_category['deleted'] && $form_data['disabled'] = 'disabled';
 				echo form_input($form_data);
 			?>
 		</div>
