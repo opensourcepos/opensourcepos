@@ -135,7 +135,7 @@ class Sale extends CI_Model
 				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = payments.sale_id
-				WHERE sales.sale_status = 0 AND ' . $where . '
+				WHERE ' . $where . '
 				GROUP BY sale_id
 			)'
 		);
