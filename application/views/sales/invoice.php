@@ -1,7 +1,7 @@
 <?php $this->load->view("partial/header"); ?>
 
 <?php
-if (isset($error_message))
+if(isset($error_message))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 	exit;
@@ -68,7 +68,7 @@ $(document).ready(function()
 			?>
 			<div>&nbsp</div>
 			<?php
-			if ($this->Appconfig->get('receipt_show_company_name')) 
+			if($this->Appconfig->get('receipt_show_company_name')) 
 			{
 			?>
 				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
@@ -219,9 +219,9 @@ $(document).ready(function()
 $(window).on("load", function()
 {
 	// install firefox addon in order to use this plugin
-	if (window.jsPrintSetup) 
+	if(window.jsPrintSetup) 
 	{
-		<?php if (!$this->Appconfig->get('print_header'))
+		<?php if(!$this->Appconfig->get('print_header'))
 		{
 		?>
 			// set page header
@@ -231,7 +231,7 @@ $(window).on("load", function()
 		<?php 
 		}
 
-		if (!$this->Appconfig->get('print_footer'))
+		if(!$this->Appconfig->get('print_footer'))
 		{
 		?>
 			// set empty page footer

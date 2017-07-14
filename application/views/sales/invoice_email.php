@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -7,7 +7,7 @@
 
 <body>
 <?php
-if (isset($error_message))
+if(isset($error_message))
 {
 	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 	exit;
@@ -19,10 +19,10 @@ if (isset($error_message))
 	<table id="info">
 		<tr>
 			<td id="logo">
-		        <?php if($this->config->item('company_logo') != '') 
-		        { 
+		        <?php if($this->config->item('company_logo') != '')
+		        {
 				?>
-					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />			
+					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />
 				<?php
 				}
 				?>
@@ -46,14 +46,14 @@ if (isset($error_message))
 	                <td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
 	                <td><div><?php echo $transaction_date; ?></div></td>
 	            </tr>
-	            <?php if ($amount_due > 0)
+	            <?php if($amount_due > 0)
 	            {
 	            ?>
 	            <tr>
 	                <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
 	                <td><div class="due"><?php echo to_currency($total); ?></div></td>
 	            </tr>
-	            <?php 
+	            <?php
 				}
 	            ?>
 				</table>
@@ -62,16 +62,15 @@ if (isset($error_message))
 	</table>
 
 	<table id="items">
-	  <tr>
-	      <th><?php echo $this->lang->line('sales_item_number'); ?></th>
-	      <th><?php echo $this->lang->line('sales_item_name'); ?></th>
-	      <th><?php echo $this->lang->line('sales_quantity'); ?></th>
-	      <th><?php echo $this->lang->line('sales_price'); ?></th>
-	      <th><?php echo $this->lang->line('sales_discount'); ?></th>
-	      <th><?php echo $this->lang->line('sales_total'); ?></th>
-	  </tr>
-	  
-	<?php
+		<tr>
+			<th><?php echo $this->lang->line('sales_item_number'); ?></th>
+			<th><?php echo $this->lang->line('sales_item_name'); ?></th>
+			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
+			<th><?php echo $this->lang->line('sales_price'); ?></th>
+			<th><?php echo $this->lang->line('sales_discount'); ?></th>
+			<th><?php echo $this->lang->line('sales_total'); ?></th>
+		</tr>
+		<?php
 		foreach($cart as $line=>$item)
 		{
 		?>
@@ -89,26 +88,31 @@ if (isset($error_message))
 		<tr>
 			<td colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
 		</tr>
-		     
-	  <tr>
-	      <td colspan="3" class="blank"> </td>
-	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-	      <td id="subtotal" class="total-value"><?php echo to_currency($tax_exclusive_subtotal); ?></td>
-	  </tr>
-	  <?php foreach($taxes as $name=>$value) { ?>
-	  <tr>
-	      <td colspan="3" class="blank"> </td>
-	      <td colspan="2" class="total-line"><?php echo $name; ?></td>
-	      <td id="taxes" class="total-value"><?php echo to_currency_tax($value); ?></td>
-	  </tr>
-      <?php }; ?>
-	  <tr>
-	      <td colspan="3" class="blank"> </td>
-	      <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
-	      <td id="total" class="total-value"><?php echo to_currency($total); ?></td>
-	  </tr>
+		<tr>
+			<td colspan="3" class="blank"> </td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
+			<td id="subtotal" class="total-value"><?php echo to_currency($subtotal); ?></td>
+		</tr>
+
+		<?php
+		foreach($taxes as $tax_group_index=>$sales_tax)
+		{
+		?>
+			<tr>
+				<td colspan="3" class="blank"> </td>
+				<td colspan="2" class="total-line"><?php echo $sales_tax['tax_group']; ?></td>
+				<td id="taxes" class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+			</tr>
+		<?php
+		}
+		?>
+		<tr>
+			<td colspan="3" class="blank"> </td>
+			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
+			<td id="total" class="total-value"><?php echo to_currency($total); ?></td>
+		</tr>
 	</table>
-	
+
 	<div id="terms">
 		<div id="sale_return_policy">
 		 	<h5>
