@@ -52,6 +52,7 @@ $lang["reports_payments_summary_report"] = "Bericht: Zahlungen (summarisch)";
 $lang["reports_profit"] = "Gewinn";
 $lang["reports_quantity"] = "Menge";
 $lang["reports_quantity_purchased"] = "Menge gekauft";
+$lang["reports_quotes"] = "";
 $lang["reports_received_by"] = "Erhalten von";
 $lang["reports_receiving_id"] = "Einangs-ID";
 $lang["reports_receiving_type"] = "Eingangstyp";

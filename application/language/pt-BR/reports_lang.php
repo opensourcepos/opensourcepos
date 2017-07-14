@@ -52,6 +52,7 @@ $lang["reports_payments_summary_report"] = "Relatório Resumido de Pagamentos";
 $lang["reports_profit"] = "Lucro";
 $lang["reports_quantity"] = "Quantidade";
 $lang["reports_quantity_purchased"] = "Quantidade Comprada";
+$lang["reports_quotes"] = "";
 $lang["reports_received_by"] = "Recebido por";
 $lang["reports_receiving_id"] = "Recebimento ID";
 $lang["reports_receiving_type"] = "Tipo Recebimento";

@@ -52,6 +52,7 @@ $lang["reports_payments_summary_report"] = "Ödeme Özet Raporu";
 $lang["reports_profit"] = "Kâr";
 $lang["reports_quantity"] = "Adet";
 $lang["reports_quantity_purchased"] = "Satın Alınan Adet";
+$lang["reports_quotes"] = "";
 $lang["reports_received_by"] = "Alım Yapan";
 $lang["reports_receiving_id"] = "Alım No";
 $lang["reports_receiving_type"] = "Alım Türü";

@@ -52,6 +52,7 @@ $lang["reports_payments_summary_report"] = "Zbrojni izvještaj plaćanja";
 $lang["reports_profit"] = "RUC";
 $lang["reports_quantity"] = "Količina";
 $lang["reports_quantity_purchased"] = "Nabavna količina";
+$lang["reports_quotes"] = "";
 $lang["reports_received_by"] = "Primljeno od";
 $lang["reports_receiving_id"] = "Primka br.";
 $lang["reports_receiving_type"] = "Tip ulaza";

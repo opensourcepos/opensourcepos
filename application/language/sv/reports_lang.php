@@ -52,6 +52,7 @@ $lang["reports_payments_summary_report"] = "";
 $lang["reports_profit"] = "";
 $lang["reports_quantity"] = "";
 $lang["reports_quantity_purchased"] = "";
+$lang["reports_quotes"] = "";
 $lang["reports_received_by"] = "";
 $lang["reports_receiving_id"] = "";
 $lang["reports_receiving_type"] = "";

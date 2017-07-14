@@ -52,6 +52,7 @@ $lang["reports_payments_summary_report"] = "ملخص المدفوعات";
 $lang["reports_profit"] = "الربح";
 $lang["reports_quantity"] = "الكمية المشتراه";
 $lang["reports_quantity_purchased"] = "المستلم";
+$lang["reports_quotes"] = "";
 $lang["reports_received_by"] = "مستلمة بواسطة";
 $lang["reports_receiving_id"] = "كود الاستلام";
 $lang["reports_receiving_type"] = "نوع الاستلام";
