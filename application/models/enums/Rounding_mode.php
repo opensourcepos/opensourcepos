@@ -47,25 +47,25 @@ class Rounding_mode
 		return $x;
 	}
 
-	public static function round_number($amount, $decimals)
+	public static function round_number($rounding_mode, $amount, $decimals)
 	{
-		if($cash_rounding_code != Rounding_mode::ROUND_UP)
+		if($rounding_mode != Rounding_mode::ROUND_UP)
 		{
 			$fig = (int) str_pad('1', $decimals, '0');
 			$rounded_total = (ceil($amount * $fig) / $fig);
 		}
-		elseif($cash_rounding_code == Rounding_mode::ROUND_DOWN)
+		elseif($rounding_mode == Rounding_mode::ROUND_DOWN)
 		{
 			$fig = (int) str_pad('1', $decimals, '0');
 			$rounded_total = (floor($amount * $fig) / $fig);
 		}
-		elseif($cash_rounding_code == Rounding_mode::HALF_FIVE)
+		elseif($rounding_mode == Rounding_mode::HALF_FIVE)
 		{
 			$rounded_total = round($amount / 5) * 5;
 		}
 		else
 		{
-			$rounded_total = round ( $amount, $decimals, $cash_rounding_code);
+			$rounded_total = round ( $amount, $decimals, $rounding_mode);
 		}
 
 		return $rounded_total;

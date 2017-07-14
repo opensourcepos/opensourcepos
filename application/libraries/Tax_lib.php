@@ -45,14 +45,14 @@ class Tax_lib
 	/*
 	 * Computes the item level sales tax amount for a given tax basis
 	 */
-	public function get_sales_tax_for_amount($tax_basis, $tax_percentage, $rounding_code, $decimals)
+	public function get_sales_tax_for_amount($tax_basis, $tax_percentage, $rounding_mode, $decimals)
 	{
 		$tax_fraction = bcdiv($tax_percentage, 100);
 
 		$tax_amount = bcmul($tax_basis, $tax_fraction);
 		$rounded_tax_amount = $tax_amount;
 
-		return Rounding_mode::round_number($tax_amount, $decimals);
+		return Rounding_mode::round_number($rounding_mode, $tax_amount, $decimals);
 	}
 
 	/*

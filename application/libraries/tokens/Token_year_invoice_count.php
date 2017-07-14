@@ -16,7 +16,7 @@ class Token_year_invoice_count extends Token
 	public function token_id()
 	{
 		return 'YCO';
-	)
+	}
 
 	public function get_value()
 	{

@@ -16,13 +16,15 @@ class Token
 {
 	protected $CI;
 
-	private $token_list = array(new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
-		new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(), new Token_year_invoice_count());
-
 	public function __construct()
 	{
 		$this->CI =& get_instance();
+	}
 
+	static function get_tokens()
+	{
+		return array(new Token_customer(), new Token_invoice_count(), new Token_invoice_sequence(),
+			new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(), new Token_year_invoice_count());
 	}
 
 	function matches($token_id)
@@ -32,7 +34,7 @@ class Token
 
 	public function replace($token_id)
 	{
-		foreach($token_list as $token)
+		foreach(Token::get_tokens() as $token)
 		{
 			if ($token->token_id() == $token_id)
 			{
