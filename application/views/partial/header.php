@@ -70,11 +70,11 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=6f10bf8f1a"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=2b4d77cdea"/>
 		<link rel="stylesheet" type="text/css" href="dist/style.css"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=e467cdbc24"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=72d687ba47"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

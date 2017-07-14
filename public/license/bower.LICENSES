@@ -5,7 +5,7 @@
         ],
         "homepage": "http://jquery.malsup.com/block/"
     },
-    "bootstrap-select@1.12.2": {
+    "bootstrap-select@1.12.3": {
         "licenses": [
             "MIT"
         ],
@@ -37,17 +37,17 @@
         ],
         "homepage": "https://github.com/alexstanbury/chartist-plugin-axistitle"
     },
-    "chartist-plugin-pointlabels@0.0.4": {
-        "licenses": [
-            "WTF*"
-        ],
-        "homepage": "https://github.com/gionkunz/chartist-plugin-pointlabels"
-    },
     "chartist-plugin-barlabels@0.0.5": {
         "licenses": [
             "WTF*"
         ],
         "homepage": "https://github.com/mtgibbs/chartist-plugin-barlabels"
+    },
+    "chartist-plugin-pointlabels@0.0.4": {
+        "licenses": [
+            "WTF*"
+        ],
+        "homepage": "https://github.com/gionkunz/chartist-plugin-pointlabels"
     },
     "chartist-plugin-tooltip@0.0.13": {
         "licenses": [
@@ -95,19 +95,19 @@
         ],
         "homepage": "https://github.com/hhurz/tableExport.jquery.plugin"
     },
-    "bootstrap-daterangepicker@2.1.25": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
-        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
-    },
     "bootstrap@3.3.7": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://getbootstrap.com",
         "repository": "git+https://github.com/twbs/bootstrap"
+    },
+    "bootstrap-daterangepicker@2.1.25": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/dangrossman/bootstrap-daterangepicker",
+        "repository": "git+https://github.com/dangrossman/bootstrap-daterangepicker"
     },
     "bootstrap-table@undefined": {
         "licenses": [
