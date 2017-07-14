@@ -119,14 +119,15 @@ $(document).ready(function()
 				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
 				</td>
 			</tr>
-		<?php if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
-		{
-		?>
-			<tr class="item-row" >
-				<td ></td >
-				<td class="item-description" colspan = "4" ><textarea cols = "6" ><?php echo $item['description']; ?></textarea></td>
-			<td style='text-align:center;'><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
-			</tr>
+			<?php
+			if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
+			{
+			?>
+				<tr class="item-row" >
+					<td ></td >
+					<td class="item-description" colspan = "4" ><textarea cols = "6" ><?php echo $item['description']; ?></textarea></td>
+					<td style='text-align:center;'><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
+				</tr>
 		<?php
 			}
 		}
@@ -173,6 +174,7 @@ $(document).ready(function()
 			</tr>
 		<?php
 		}
+
 		if(isset($cur_giftcard_value) && $show_giftcard_remainder)
 		{
 		?>
@@ -183,6 +185,7 @@ $(document).ready(function()
 			</tr>
 			<?php
 		}
+
 		if(!empty($payments))
 		{
 		?>
@@ -227,6 +230,7 @@ $(window).on("load", function()
 			jsPrintSetup.setOption('headerStrRight', '');
 		<?php 
 		}
+
 		if (!$this->Appconfig->get('print_footer'))
 		{
 		?>

@@ -87,8 +87,7 @@ class Tax extends CI_Model
 	public function get_rate_info($tax_code, $tax_category_id)
 	{
 		$this->db->from('tax_code_rates');
-		$this->db->join('tax_categories',
-			'rate_tax_category_id = tax_category_id');
+		$this->db->join('tax_categories', 'rate_tax_category_id = tax_category_id');
 		$this->db->where('rate_tax_code', $tax_code);
 		$this->db->where('rate_tax_category_id', $tax_category_id);
 
