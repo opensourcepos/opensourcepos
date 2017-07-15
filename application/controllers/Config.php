@@ -637,6 +637,7 @@ class Config extends Secure_Controller
 		);
 
 		$success = $this->Appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
+		$delete_rejected = FALSE;
 
 		if($customer_sales_tax_support)
 		{
@@ -674,7 +675,16 @@ class Config extends Secure_Controller
 			{
 				if(!in_array($category['tax_category_id'], $not_to_delete))
 				{
-					$this->Tax->delete_tax_category($category['tax_category_id']);
+					$usg1 = $this->Tax->get_tax_category_usage($category['tax_category_id']);
+					$usg2 = $this->Item->get_tax_category_usage($category['tax_category_id']);
+					if(($usg1 + $usg2) == 0)
+					{
+						$this->Tax->delete_tax_category($category['tax_category_id']);
+					}
+					else
+					{
+						$delete_rejected = TRUE;
+					}
 				}
 			}
 		}
@@ -683,9 +693,20 @@ class Config extends Secure_Controller
 
 		$success &= $this->db->trans_status();
 
+		$message = "";
+		if($success && $delete_rejected)
+		{
+			$message = $this->lang->line('config_tax_category_used');
+			$success = false;
+		}
+		else
+		{
+			$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
+		}
+
 		echo json_encode(array(
 			'success' => $success,
-			'message' => $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully')
+			'message' => $message
 		));
 	}
 

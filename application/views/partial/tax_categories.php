@@ -32,7 +32,13 @@ foreach($tax_categories as $tax_category => $category)
         </div>
 		<span class="add_tax_category glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
-		<span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
+        <?php
+        if($tax_category_id > 0) {
+        ?>
+		    <span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
+        <?php
+		}
+        ?>
 	</div>
 <?php
 }
