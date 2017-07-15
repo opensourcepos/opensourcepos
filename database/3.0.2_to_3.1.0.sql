@@ -169,11 +169,6 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
   PRIMARY KEY (`tax_category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
-  (0, 'Standard', 10),
-  (1, 'Service', 12),
-  (2, 'Alcohol', 11);
-
 ALTER TABLE `ospos_items`
   ADD COLUMN `tax_category_id` int(10) NOT NULL DEFAULT 0;
 
@@ -244,17 +239,33 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 
 UPDATE ospos_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
 
--- fix tax category maintenance
-
-ALTER TABLE `ospos_tax_categories`
-  MODIFY COLUMN `tax_category_id` int(10) NOT NULL AUTO_INCREMENT;
-  
 -- long alternate description
   
 ALTER TABLE `ospos_sales_items`
   MODIFY COLUMN `description` varchar(255) DEFAULT NULL;
   
 -- fix tax category maintenance
-  
+
+DELETE FROM `ospos_tax_categories` where tax_category_id in (0, 1, 2, 3);
+
 ALTER TABLE `ospos_tax_categories`
   MODIFY COLUMN `tax_category_id` int(10) NOT NULL AUTO_INCREMENT;
+
+INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
+  (1, 'Standard', 10),
+  (2, 'Service', 12),
+  (3, 'Alcohol', 11);
+
+ALTER TABLE `ospos_items`
+  MODIFY COLUMN `tax_category_id` int(10) NOT NULL DEFAULT 1;
+
+UPDATE `ospos_items` SET `tax_category_id` = 1 WHERE `tax_category_id` = 0;
+
+-- If you have added any tax codes, the following will correct the rate_tax_category_id on the tax_code_rates table,
+-- but you might need to add more UPDATE statements depending on how may tax codes and/or tax categories you've added
+
+UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 4 WHERE rate_tax_category_id = 3;
+UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 3 WHERE rate_tax_category_id = 2;
+UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 2 WHERE rate_tax_category_id = 1;
+UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 1 WHERE rate_tax_category_id = 0;
+

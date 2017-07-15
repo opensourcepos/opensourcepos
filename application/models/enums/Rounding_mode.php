@@ -40,6 +40,7 @@ class Rounding_mode
 	{
 		$CI =& get_instance();
 		$CI->load->helper('language');
+		$x = '';
 		foreach (Rounding_mode::get_rounding_options() as $option => $label)
 		{
 			$x .= "<option value='$option'>".$label."</option>";
@@ -49,7 +50,7 @@ class Rounding_mode
 
 	public static function round_number($rounding_mode, $amount, $decimals)
 	{
-		if($rounding_mode != Rounding_mode::ROUND_UP)
+		if($rounding_mode == Rounding_mode::ROUND_UP)
 		{
 			$fig = (int) str_pad('1', $decimals, '0');
 			$rounded_total = (ceil($amount * $fig) / $fig);

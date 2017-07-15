@@ -150,63 +150,67 @@
         </table>
 
     </fieldset>
+
 <?php echo form_close(); ?>
 
 <script type="text/javascript">
-//validation and submit handling
-$(document).ready(function() {
+    //validation and submit handling
+    $(document).ready(function() {
 
-    $("#add_tax_category").autocomplete({
-        source: '<?php echo site_url("taxes/suggest_tax_categories"); ?>',
-        minChars: 0,
-        autoFocus: false,
-        delay: 10,
-        appendTo: ".modal-content",
-        select: function (e, ui) {
-            if ($("#tax_category_id" + ui.item.value).length == 1) {
-                $("#tax_category_id" + ui.item.value).val(parseFloat($("#tax_category_id" + ui.item.value).val()) + 1);
+        $('#tax_code_form').validate($.extend({
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    success: function (response) {
+                        dialog_support.hide();
+                        table_support.handle_submit('<?php echo site_url('taxes'); ?>', response);
+                    },
+                    dataType: 'json'
+                });
+
+            },
+            rules: {
+                tax_code: "required",
+                tax_rate: "required"
+            },
+            messages: {
+                tax_code: "<?php echo $this->lang->line('taxes_tax_code_required'); ?>",
+                tax_rate: "<?php echo $this->lang->line('taxes_tax_rate_required'); ?>"
             }
-            else {
-                $("#tax_code_rates").append("<tr>" +
-                    "<td><a href='#' onclick='return delete_tax_code_rate_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td>" +
-                    "<td>" + ui.item.label + "</td>" +
-                    "<td><input class='form-control input-sm' id='exception_tax_rate_" + ui.item.value + "' name=exception_tax_rate[" + ui.item.value + "] value=''/></td>" +
-                    "<td><select id='exception_rounding_code_" + ui.item.value + "' class='form-control input-sm' name=exception_rounding_code[" + ui.item.value +
-                    "] aria-invalid='false'><?php echo Taxes::get_html_rounding_options(); ?></select></td>" +
-                    "</tr>");
+        }, form_support.error));
+
+
+        $("#add_tax_category").autocomplete({
+            source: '<?php echo site_url("taxes/suggest_tax_categories"); ?>',
+            minChars: 0,
+            autoFocus: false,
+            delay: 10,
+            appendTo: ".modal-content",
+            select: function (e, ui) {
+
+                var rounding_options = "<?php echo $html_rounding_options; ?>";
+
+                if ($("#tax_category_id" + ui.item.value).length == 1) {
+                    $("#tax_category_id" + ui.item.value).val(parseFloat($("#tax_category_id" + ui.item.value).val()) + 1);
+                } else {
+                    $("#tax_code_rates").append("<tr>" +
+                        "<td><a href='#' onclick='return delete_tax_code_rate_row(this);'><span class='glyphicon glyphicon-trash'></span></a></td>" +
+                        "<td>" + ui.item.label + "</td>" +
+                        "<td><input class='form-control input-sm' id='exception_tax_rate_" + ui.item.value + "' name=exception_tax_rate[" + ui.item.value + "] value=''/></td>" +
+                        "<td><select id='exception_rounding_code_" + ui.item.value + "' class='form-control input-sm' name=exception_rounding_code[" + ui.item.value +
+                        "] aria-invalid='false'>" + rounding_options + "</select></td>" +
+                        "</tr>");
+                }
+                $("#add_tax_category").val("");
+                return false;
             }
-            $("#add_tax_category").val("");
-            return false;
-        }
+        });
+
+
     });
-
-    $('#tax_code_form').validate($.extend({
-        submitHandler: function (form) {
-            $(form).ajaxSubmit({
-                success: function (response) {
-                    dialog_support.hide();
-                    table_support.handle_submit('<?php echo site_url('taxes'); ?>', response);
-                },
-                dataType: 'json'
-            });
-
-        },
-        rules: {
-            tax_code: "required",
-            tax_rate: "required"
-        },
-        messages: {
-            tax_code: "<?php echo $this->lang->line('taxes_tax_code_required'); ?>",
-            tax_rate: "<?php echo $this->lang->line('taxes_tax_rate_required'); ?>"
-        }
-    }, form_support.error));
-
-});
 
     function delete_tax_code_rate_row(link) {
         $(link).parent().parent().remove();
         return false;
     }
-
 
 </script>

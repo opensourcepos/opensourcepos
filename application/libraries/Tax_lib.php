@@ -179,7 +179,7 @@ class Tax_lib
 	 */
 	public function apply_sales_tax(&$item, &$city, &$state, &$sales_tax_code, $register_mode, $sale_id, &$sales_taxes)
 	{
-		$tax_code = $this->get_applicable_tax_mode($register_mode, $city, $state, $sales_tax_code);
+		$tax_code = $this->get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code);
 
 		// If tax code cannot be determined or the price is zero then skip this item
 		if($tax_code != '' && $item['price'] != 0)
@@ -261,9 +261,9 @@ class Tax_lib
 		}
 	}
 
-	public function get_applicable_tax_mode($register_mode, $city, $state, $sales_tax_code)
+	public function get_applicable_tax_code($register_mode, $city, $state, $sales_tax_code)
 	{
-		if($register_mode == "SALE")
+		if($register_mode == "sale")
 		{
 			$tax_code = $this->CI->config->config['default_origin_tax_code']; // overrides customer assigned code
 		}

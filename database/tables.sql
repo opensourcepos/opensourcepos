@@ -821,9 +821,9 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
 --
 
 INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
-  (0, 'Standard', 10),
-  (1, 'Service', 12),
-  (2, 'Alcohol', 11);
+  (1, 'Standard', 10),
+  (2, 'Service', 12),
+  (3, 'Alcohol', 11);
 
 
 -- --------------------------------------------------------

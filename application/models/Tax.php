@@ -59,7 +59,7 @@ class Tax extends CI_Model
 	{
 		$this->db->from('tax_codes');
 		$this->db->join('tax_code_rates',
-			'tax_code = rate_tax_code and rate_tax_category_id = 0', 'LEFT');
+			'tax_code = rate_tax_code and rate_tax_category_id = 1', 'LEFT');
 		$this->db->join('tax_categories',
 			'rate_tax_category_id = tax_category_id');
 		$this->db->where('tax_code', $tax_code);
@@ -290,7 +290,7 @@ class Tax extends CI_Model
 	public function delete_tax_rate_exceptions($tax_code)
 	{
 		$this->db->where('rate_tax_code', $tax_code);
-		$this->db->where('rate_tax_category_id !=', 0);
+		$this->db->where('rate_tax_category_id !=', 1);
 
 		return $this->db->delete('tax_code_rates');
 	}
@@ -302,7 +302,7 @@ class Tax extends CI_Model
 	{
 		$this->db->from('tax_codes');
 		$this->db->join('tax_code_rates',
-			'tax_code = rate_tax_code and rate_tax_category_id = 0', 'LEFT');
+			'tax_code = rate_tax_code and rate_tax_category_id = 1', 'LEFT');
 		if (!empty($search))
 		{
 			$this->db->like('tax_code', $search);
@@ -376,7 +376,7 @@ class Tax extends CI_Model
 		$suggestions = array();
 
 		$this->db->from('tax_categories');
-		$this->db->where('tax_category_id !=', 0);
+		$this->db->where('tax_category_id !=', 1);
 		if (!empty($search))
 		{
 			$this->db->like('tax_category', '%'.$search.'%');
@@ -430,7 +430,7 @@ class Tax extends CI_Model
 		$this->db->from('tax_code_rates');
 		$this->db->join('tax_categories', 'rate_tax_category_id = tax_category_id');
 		$this->db->where('rate_tax_code', $tax_code);
-		$this->db->where('rate_tax_category_id !=', 0);
+		$this->db->where('rate_tax_category_id !=', 1);
 		$this->db->order_by('tax_category', 'asc');
 
 		return $this->db->get()->result_array();
