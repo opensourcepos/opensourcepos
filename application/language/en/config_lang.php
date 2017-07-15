@@ -225,6 +225,7 @@ $lang["config_table_configuration"] = "Table Configuration";
 $lang["config_takings_printer"] = "Takings Printer";
 $lang["config_tax"] = "Tax";
 $lang["config_tax_category"] = "Tax Category";
+$lang["config_tax_category_used"] = "Tax category cannot be deleted because it is being used.";
 $lang["config_tax_configuration"] = "Tax Configuration";
 $lang["config_tax_decimals"] = "Tax Decimals";
 $lang["config_tax_included"] = "Tax Included";

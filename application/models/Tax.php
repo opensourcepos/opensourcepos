@@ -44,6 +44,14 @@ class Tax extends CI_Model
 		return $this->db->count_all_results();
 	}
 
+	public function get_tax_category_usage($tax_category_id)
+	{
+		$this->db->from('tax_code_rates');
+		$this->db->where('rate_tax_category_id', $tax_category_id);
+
+		return $this->db->count_all_results();
+	}
+
 	/**
 	Gets information about a particular tax_code
 	*/

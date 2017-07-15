@@ -52,6 +52,14 @@ class Item extends CI_Model
 		return $this->db->count_all_results();
 	}
 
+	public function get_tax_category_usage($tax_category_id)
+	{
+		$this->db->from('items');
+		$this->db->where('tax_category_id', $tax_category_id);
+
+		return $this->db->count_all_results();
+	}
+
 	/*
 	Get number of rows
 	*/
