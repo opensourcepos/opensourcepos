@@ -77,12 +77,13 @@ class Taxes extends Secure_Controller
 	{
 		$tax_code_info = $this->Tax->get_info($tax_code);
 
-		$default_tax_category_id = 0; // Tax category id is always the default tax category
+		$default_tax_category_id = 1; // Tax category id is always the default tax category
 		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
 
 		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
 
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['html_rounding_options'] = $this->get_html_rounding_options();
 
 		if ($tax_code == -1)
 		{
@@ -93,7 +94,7 @@ class Taxes extends Secure_Controller
 			$data['state'] = '';
 			$data['tax_rate'] = '0.0000';
 			$data['rate_tax_code'] = '';
-			$data['rate_tax_category_id'] = '0';
+			$data['rate_tax_category_id'] = 1;
 			$data['tax_category'] = '';
 			$data['add_tax_category'] = '';
 			$data['rounding_code'] = '0';
@@ -149,7 +150,7 @@ class Taxes extends Secure_Controller
 
 		$tax_rate_data = array(
 			'rate_tax_code' => $this->input->post('tax_code'),
-			'rate_tax_category_id' => 0,
+			'rate_tax_category_id' => 1,
 			'tax_rate' => parse_decimals($this->input->post('tax_rate')),
 			'rounding_code' => $this->input->post('rounding_code')
 		);

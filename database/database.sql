@@ -217,7 +217,7 @@ CREATE TABLE `ospos_items` (
   `is_serialized` tinyint(1) NOT NULL,
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
-  `tax_category_id` int(10) NOT NULL DEFAULT 0,
+  `tax_category_id` int(10) NOT NULL DEFAULT 1,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(25) NOT NULL,
   `custom2` VARCHAR(25) NOT NULL,
@@ -821,9 +821,9 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
 --
 
 INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
-  (0, 'Standard', 10),
-  (1, 'Service', 12),
-  (2, 'Alcohol', 11);
+  (1, 'Standard', 10),
+  (2, 'Service', 12),
+  (3, 'Alcohol', 11);
 
 
 -- --------------------------------------------------------
