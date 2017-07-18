@@ -27,7 +27,7 @@
 	};
 
 	$.post = function() {
-		arguments[1] = $.extend(arguments[1], csrf_form_base());
+		arguments[1] = csrf_token() ? $.extend(arguments[1], csrf_form_base()) : arguments[1];
 		post.apply(this, arguments);
 	};
 
