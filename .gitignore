@@ -6,6 +6,7 @@ application/logs/*
 application/uploads/*
 public/license/.licenses
 public/bower_components
+!public/bower_components/bootswatch/*/bootstrap.min.css
 *.patch
 patches/
 .idea/

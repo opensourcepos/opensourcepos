@@ -26,24 +26,10 @@ module.exports = function(grunt) {
 			targetdistbootswatch: {
 				options: {
 					srcPrefix: 'public/bower_components/bootswatch',
-					destPrefix: 'public/dist/bootswatch'
+					destPrefix: 'public/dist'
 				},
 				files: {
-					'cerulean/bootstrap.min.css': 'cerulean/bootstrap.min.css',
-					'cosmo/bootstrap.min.css': 'cosmo/bootstrap.min.css',
-					'cyborg/bootstrap.min.css': 'cyborg/bootstrap.min.css',
-					'darkly/bootstrap.min.css': 'darkly/bootstrap.min.css',
-					'flatly/bootstrap.min.css': 'flatly/bootstrap.min.css',
-					'journal/bootstrap.min.css': 'journal/bootstrap.min.css',
-					'paper/bootstrap.min.css': 'paper/bootstrap.min.css',
-					'readable/bootstrap.min.css': 'readable/bootstrap.min.css',
-					'sandstone/bootstrap.min.css': 'sandstone/bootstrap.min.css',
-					'slate/bootstrap.min.css': 'slate/bootstrap.min.css',
-					'spacelab/bootstrap.min.css': 'spacelab/bootstrap.min.css',
-					'superhero/bootstrap.min.css': 'superhero/bootstrap.min.css',
-					'united/bootstrap.min.css': 'united/bootstrap.min.css',
-					'yeti/bootstrap.min.css': 'yeti/bootstrap.min.css',
-					'fonts': 'fonts'
+					bootswatch: '*/'
 				}
 			},
 			targetlicense: {
