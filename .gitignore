@@ -7,6 +7,9 @@ application/uploads/*
 public/license/.licenses
 public/bower_components
 !public/bower_components/bootswatch/*/bootstrap.min.css
+public/dist/bootswatch/
+!public/dist/bootswatch/*/bootstrap.min.css
+!public/dist/bootswatch/fonts/
 *.patch
 patches/
 .idea/
