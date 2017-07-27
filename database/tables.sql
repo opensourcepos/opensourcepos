@@ -217,7 +217,7 @@ CREATE TABLE `ospos_items` (
   `is_serialized` tinyint(1) NOT NULL,
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
-  `tax_category_id` int(10) NOT NULL DEFAULT 0,
+  `tax_category_id` int(10) NOT NULL DEFAULT 1,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(25) NOT NULL,
   `custom2` VARCHAR(25) NOT NULL,

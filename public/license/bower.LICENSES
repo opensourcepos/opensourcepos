@@ -5,17 +5,11 @@
         ],
         "homepage": "http://jquery.malsup.com/block/"
     },
-    "bootstrap-select@1.12.3": {
+    "bootstrap-select@1.12.4": {
         "licenses": [
             "MIT"
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
-    },
-    "bootstrap3-dialog@undefined": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "bootswatch@3.3.7": {
         "licenses": [
@@ -26,6 +20,12 @@
             "url": "git://github.com/thomaspark/bootswatch.git"
         },
         "homepage": "http://bootswatch.com"
+    },
+    "bootstrap3-dialog@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "chartist@0.9.8": {
         "licenses": "UNKNOWN",
@@ -138,19 +138,19 @@
         "repository": "https://github.com/jzaefferer/jquery-validation",
         "homepage": "http://jqueryvalidation.org/"
     },
-    "remarkable-bootstrap-notify@3.1.3": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://bootstrap-notify.remabledesigns.com/",
-        "repository": "https://github.com/mouse0270/bootstrap-notify"
-    },
     "jspdf-autotable@2.0.14": {
         "licenses": [
             "MIT"
         ],
         "homepage": "https://github.com/simonbengtsson/jspdf-autotable",
         "repository": "git+https://github.com/simonbengtsson/jsPDF-AutoTable"
+    },
+    "remarkable-bootstrap-notify@3.1.3": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://bootstrap-notify.remabledesigns.com/",
+        "repository": "https://github.com/mouse0270/bootstrap-notify"
     },
     "smalot-bootstrap-datetimepicker@2.4.4": {
         "licenses": [
