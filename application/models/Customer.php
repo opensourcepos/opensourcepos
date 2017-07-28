@@ -252,6 +252,11 @@ class Customer extends Person
 			$this->db->like('first_name', $search);
 			$this->db->or_like('last_name', $search);
 			$this->db->or_like('CONCAT(first_name, " ", last_name)', $search);
+			if($unique)
+			{
+				$this->db->or_like('email', $search);
+				$this->db->or_like('phone_number', $search);
+			}
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
 		$this->db->order_by('last_name', 'asc');
