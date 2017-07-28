@@ -32,7 +32,7 @@
     "jasny-bootstrap": "^3.1.3",
     "bootswatch": "^3.3.7",
     "smalot-bootstrap-datetimepicker": "^2.4.4",
-    "bootstrap-select": "^1.12.3",
+    "bootstrap-select": "^1.12.4",
     "bootstrap-table": "fde42200",
     "bootstrap-daterangepicker": "^2.1.24",
     "tableExport.jquery.plugin": "1.5.1",
