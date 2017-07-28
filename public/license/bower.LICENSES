@@ -11,6 +11,12 @@
         ],
         "homepage": "http://silviomoreto.github.io/bootstrap-select"
     },
+    "bootstrap3-dialog@undefined": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
+    },
     "bootswatch@3.3.7": {
         "licenses": [
             "MIT"
@@ -20,12 +26,6 @@
             "url": "git://github.com/thomaspark/bootswatch.git"
         },
         "homepage": "http://bootswatch.com"
-    },
-    "bootstrap3-dialog@undefined": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://nakupanda.github.io/bootstrap3-dialog/"
     },
     "chartist@0.9.8": {
         "licenses": "UNKNOWN",
@@ -49,7 +49,7 @@
         ],
         "homepage": "https://github.com/gionkunz/chartist-plugin-pointlabels"
     },
-    "chartist-plugin-tooltip@0.0.13": {
+    "chartist-plugin-tooltip@0.0.18": {
         "licenses": [
             "MIT*"
         ],
@@ -95,13 +95,6 @@
         ],
         "homepage": "https://github.com/hhurz/tableExport.jquery.plugin"
     },
-    "bootstrap@3.3.7": {
-        "licenses": [
-            "MIT"
-        ],
-        "homepage": "http://getbootstrap.com",
-        "repository": "git+https://github.com/twbs/bootstrap"
-    },
     "bootstrap-daterangepicker@2.1.25": {
         "licenses": [
             "MIT"
@@ -130,6 +123,13 @@
         ],
         "homepage": "https://github.com/jasny/bootstrap",
         "repository": "git+https://github.com/jasny/bootstrap"
+    },
+    "bootstrap@3.3.7": {
+        "licenses": [
+            "MIT"
+        ],
+        "homepage": "http://getbootstrap.com",
+        "repository": "git+https://github.com/twbs/bootstrap"
     },
     "jquery-validation@1.13.1": {
         "licenses": [
