@@ -16,7 +16,24 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_receipt_font_size'), 'receipt_font_size', array('class' => 'control-label col-xs-2 required')); ?>
+				<div class='col-xs-2'>
+					<div class="input-group">
+						<?php echo form_input(array(
+							'type' => 'number',
+							'min' => '0',
+							'max' => '20',
+							'name' => 'receipt_font_size',
+							'id' => 'receipt_font_size',
+							'class' => 'form-control input-sm required',
+							'value'=>$this->config->item('receipt_font_size'))); ?>
+						<span class="input-group-addon input-sm">px</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_company_name'), 'receipt_show_company_name', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -27,7 +44,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_taxes'), 'receipt_show_taxes', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -38,7 +55,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_total_discount'), 'receipt_show_total_discount', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -49,7 +66,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_description'), 'receipt_show_description', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -60,7 +77,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_serialnumber'), 'receipt_show_serialnumber', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -71,7 +88,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_silently'), 'print_silently', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -82,7 +99,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_header'), 'print_header', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -93,7 +110,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_footer'), 'print_footer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
@@ -104,28 +121,28 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_printer'), 'config_receipt_printer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('receipt_printer',	array(), ' ', 'id="receipt_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_invoice_printer'), 'config_invoice_printer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('invoice_printer', array(), ' ', 'id="invoice_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_takings_printer'), 'config_takings_printer', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('takings_printer', array(), ' ', 'id="takings_printer" class="form-control"'); ?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_top_margin'), 'print_top_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -142,7 +159,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_left_margin'), 'print_left_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -159,7 +176,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_bottom_margin'), 'print_bottom_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -176,7 +193,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_print_right_margin'), 'print_right_margin', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -206,34 +223,34 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	if (window.localStorage && window.jsPrintSetup) 
+	if (window.localStorage && window.jsPrintSetup)
 	{
 		var printers = (jsPrintSetup.getPrintersList() && jsPrintSetup.getPrintersList().split(',')) || [];
-		$('#receipt_printer, #invoice_printer, #takings_printer').each(function() 
+		$('#receipt_printer, #invoice_printer, #takings_printer').each(function()
 		{
 			var $this = $(this)
-			$(printers).each(function(key, value) 
-			{   
+			$(printers).each(function(key, value)
+			{
 				 $this.append($('<option>', { value : value }).text(value));
   	 		});
 			$("option[value='" + localStorage[$(this).attr('id')] + "']", this).prop('selected', true);
 			$(this).change(function()
 			{
-				localStorage[$(this).attr('id')] = $(this).val();		
+				localStorage[$(this).attr('id')] = $(this).val();
 			});
 		});
 	}
 	else
 	{
 		$("input[id*='margin'], #print_footer, #print_header, #receipt_printer, #invoice_printer, #takings_printer, #print_silently").prop('disabled', true);
-		$("#receipt_printer, #invoice_printer, #takings_printer").each(function() 
+		$("#receipt_printer, #invoice_printer, #takings_printer").each(function()
 		{
 			$(this).append($('<option>', {value : 'na'}).text('N/A'));
 		});
 	}
 
 	var dialog_confirmed = window.jsPrintSetup;
-			
+
 	$('#receipt_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -270,10 +287,15 @@ $(document).ready(function()
 			{
 				required:true,
 				number:true
-			}			
+			},
+			receipt_font_size:
+			{
+				required:true,
+				number:true
+			}
    		},
 
-		messages: 
+		messages:
 		{
 			print_top_margin:
 			{
@@ -294,6 +316,11 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('config_print_right_margin_required'); ?>",
 				number:"<?php echo $this->lang->line('config_print_right_margin_number'); ?>"
+			},
+			receipt_font_size:
+			{
+				required:"<?php echo $this->lang->line('config_receipt_font_size_required'); ?>",
+				number:"<?php echo $this->lang->line('config_receipt_font_size_number'); ?>"
 			}
 		}
 	}));

@@ -1,4 +1,4 @@
-<div id="receipt_wrapper">
+<div id="receipt_wrapper" style="font-size:<?php echo $this->config->item('receipt_font_size');?>px">
 	<div id="receipt_header">
 		<?php
 		if($this->config->item('company_logo') != '')

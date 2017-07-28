@@ -210,7 +210,7 @@ ALTER TABLE `ospos_people`
 -- add financial year start into config
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('financial_year','1');
+('financial_year', '1');
 
 -- alter giftcard field number to be varchar
 
@@ -268,4 +268,9 @@ UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 4 WHERE rate_tax_catego
 UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 3 WHERE rate_tax_category_id = 2;
 UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 2 WHERE rate_tax_category_id = 1;
 UPDATE `ospos_tax_code_rates` SET rate_tax_category_id = 1 WHERE rate_tax_category_id = 0;
+
+-- add receipt font size
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('receipt_font_size', '12');
 
