@@ -262,7 +262,7 @@ class Customer extends Person
 		$this->db->order_by('last_name', 'asc');
 		foreach($this->db->get()->result() as $row)
 		{
-			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name.' '.$row->last_name);
+			$suggestions[] = array('value' => $row->person_id, 'label' => $row->first_name . ' ' . $row->last_name . (!empty($row->phone_number) ? ' [' . $row->phone_number . ']' : ''));
 		}
 
 		if(!$unique)
