@@ -87,7 +87,7 @@
 				<li><a href="class-Report.html">Report</a></li>
 				<li><a href="class-Reports.html">Reports</a></li>
 				<li><a href="class-Rewards.html">Rewards</a></li>
-				<li><a href="class-Rounding_code.html">Rounding_code</a></li>
+				<li><a href="class-Rounding_mode.html">Rounding_mode</a></li>
 				<li><a href="class-Sale.html">Sale</a></li>
 				<li><a href="class-Sale_lib.html">Sale_lib</a></li>
 				<li><a href="class-Sale_suspended.html">Sale_suspended</a></li>
@@ -240,7 +240,7 @@ CI_Model
 		
 		
 
-			<b>Located at</b> <a href="source-class-Item.html#4-824" title="Go to source code">models/Item.php</a>
+			<b>Located at</b> <a href="source-class-Item.html#4-832" title="Go to source code">models/Item.php</a>
 		<br>
 	</div>
 
@@ -338,6 +338,36 @@ CI_Model
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="get_tax_category_usage" id="_get_tax_category_usage">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_tax_category_usage">#</a>
+		<code><a href="source-class-Item.html#55-61" title="Go to source code">get_tax_category_usage</a>( <span> <var>$tax_category_id</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="get_found_rows" id="_get_found_rows">
 
 		<td class="attributes"><code>
@@ -350,7 +380,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_found_rows">#</a>
-		<code><a href="source-class-Item.html#58-61" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span>, <span> <var>$filters</var></span> )</code>
+		<code><a href="source-class-Item.html#66-69" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span>, <span> <var>$filters</var></span> )</code>
 
 		<div class="description short">
 			
@@ -380,7 +410,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_search">#</a>
-		<code><a href="source-class-Item.html#66-193" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$filters</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'items.name'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
+		<code><a href="source-class-Item.html#74-201" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$filters</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'items.name'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
 
 		<div class="description short">
 			
@@ -410,7 +440,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all">#</a>
-		<code><a href="source-class-Item.html#198-220" title="Go to source code">get_all</a>( <span> <var>$stock_location_id</var> = -<span class="php-num">1</span></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span> )</code>
+		<code><a href="source-class-Item.html#206-228" title="Go to source code">get_all</a>( <span> <var>$stock_location_id</var> = -<span class="php-num">1</span></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span> )</code>
 
 		<div class="description short">
 			
@@ -440,7 +470,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Item.html#225-252" title="Go to source code">get_info</a>( <span> <var>$item_id</var></span> )</code>
+		<code><a href="source-class-Item.html#233-260" title="Go to source code">get_info</a>( <span> <var>$item_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -470,7 +500,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info_by_id_or_number">#</a>
-		<code><a href="source-class-Item.html#257-283" title="Go to source code">get_info_by_id_or_number</a>( <span> <var>$item_id</var></span> )</code>
+		<code><a href="source-class-Item.html#265-291" title="Go to source code">get_info_by_id_or_number</a>( <span> <var>$item_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -500,7 +530,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_item_id">#</a>
-		<code><a href="source-class-Item.html#288-306" title="Go to source code">get_item_id</a>( <span> <var>$item_number</var></span>, <span> <var>$ignore_deleted</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$deleted</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Item.html#296-314" title="Go to source code">get_item_id</a>( <span> <var>$item_number</var></span>, <span> <var>$ignore_deleted</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$deleted</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -530,7 +560,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_multiple_info">#</a>
-		<code><a href="source-class-Item.html#311-320" title="Go to source code">get_multiple_info</a>( <span> <var>$item_ids</var></span>, <span> <var>$location_id</var></span> )</code>
+		<code><a href="source-class-Item.html#319-328" title="Go to source code">get_multiple_info</a>( <span> <var>$item_ids</var></span>, <span> <var>$location_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -560,7 +590,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Item.html#325-342" title="Go to source code">save</a>( <span> <var>&amp; $item_data</var></span>, <span> <var>$item_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
+		<code><a href="source-class-Item.html#333-350" title="Go to source code">save</a>( <span> <var>&amp; $item_data</var></span>, <span> <var>$item_id</var> = <span class="php-keyword1">FALSE</span></span> )</code>
 
 		<div class="description short">
 			
@@ -590,7 +620,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_multiple">#</a>
-		<code><a href="source-class-Item.html#347-352" title="Go to source code">update_multiple</a>( <span> <var>$item_data</var></span>, <span> <var>$item_ids</var></span> )</code>
+		<code><a href="source-class-Item.html#355-360" title="Go to source code">update_multiple</a>( <span> <var>$item_data</var></span>, <span> <var>$item_ids</var></span> )</code>
 
 		<div class="description short">
 			
@@ -620,7 +650,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Item.html#357-373" title="Go to source code">delete</a>( <span> <var>$item_id</var></span> )</code>
+		<code><a href="source-class-Item.html#365-381" title="Go to source code">delete</a>( <span> <var>$item_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -650,7 +680,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_undelete">#</a>
-		<code><a href="source-class-Item.html#378-383" title="Go to source code">undelete</a>( <span> <var>$item_id</var></span> )</code>
+		<code><a href="source-class-Item.html#386-391" title="Go to source code">undelete</a>( <span> <var>$item_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -680,7 +710,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_list">#</a>
-		<code><a href="source-class-Item.html#388-408" title="Go to source code">delete_list</a>( <span> <var>$item_ids</var></span> )</code>
+		<code><a href="source-class-Item.html#396-416" title="Go to source code">delete_list</a>( <span> <var>$item_ids</var></span> )</code>
 
 		<div class="description short">
 			
@@ -710,7 +740,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_search_suggestions">#</a>
-		<code><a href="source-class-Item.html#410-514" title="Go to source code">get_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$filters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'is_deleted'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'search_custom'</span> =&gt; <span class="php-keyword1">FALSE</span>)</span>, <span> <var>$unique</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Item.html#418-522" title="Go to source code">get_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$filters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'is_deleted'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'search_custom'</span> =&gt; <span class="php-keyword1">FALSE</span>)</span>, <span> <var>$unique</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
 			
@@ -740,7 +770,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_stock_search_suggestions">#</a>
-		<code><a href="source-class-Item.html#517-625" title="Go to source code">get_stock_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$filters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'is_deleted'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'search_custom'</span> =&gt; <span class="php-keyword1">FALSE</span>)</span>, <span> <var>$unique</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Item.html#525-633" title="Go to source code">get_stock_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$filters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'is_deleted'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'search_custom'</span> =&gt; <span class="php-keyword1">FALSE</span>)</span>, <span> <var>$unique</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
 			
@@ -770,7 +800,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_kit_search_suggestions">#</a>
-		<code><a href="source-class-Item.html#627-725" title="Go to source code">get_kit_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$filters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'is_deleted'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'search_custom'</span> =&gt; <span class="php-keyword1">FALSE</span>)</span>, <span> <var>$unique</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Item.html#635-733" title="Go to source code">get_kit_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$filters</var> = <span class="php-keyword1">array</span>(<span class="php-quote">'is_deleted'</span> =&gt; <span class="php-keyword1">FALSE</span>, <span class="php-quote">'search_custom'</span> =&gt; <span class="php-keyword1">FALSE</span>)</span>, <span> <var>$unique</var> = <span class="php-keyword1">FALSE</span></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
 			
@@ -800,7 +830,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_category_suggestions">#</a>
-		<code><a href="source-class-Item.html#727-742" title="Go to source code">get_category_suggestions</a>( <span> <var>$search</var></span> )</code>
+		<code><a href="source-class-Item.html#735-750" title="Go to source code">get_category_suggestions</a>( <span> <var>$search</var></span> )</code>
 
 		<div class="description short">
 			
@@ -830,7 +860,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_location_suggestions">#</a>
-		<code><a href="source-class-Item.html#744-759" title="Go to source code">get_location_suggestions</a>( <span> <var>$search</var></span> )</code>
+		<code><a href="source-class-Item.html#752-767" title="Go to source code">get_location_suggestions</a>( <span> <var>$search</var></span> )</code>
 
 		<div class="description short">
 			
@@ -860,7 +890,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_custom_suggestions">#</a>
-		<code><a href="source-class-Item.html#761-777" title="Go to source code">get_custom_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$field_no</var></span> )</code>
+		<code><a href="source-class-Item.html#769-785" title="Go to source code">get_custom_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$field_no</var></span> )</code>
 
 		<div class="description short">
 			
@@ -890,7 +920,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_categories">#</a>
-		<code><a href="source-class-Item.html#779-788" title="Go to source code">get_categories</a>( )</code>
+		<code><a href="source-class-Item.html#787-796" title="Go to source code">get_categories</a>( )</code>
 
 		<div class="description short">
 			
@@ -920,7 +950,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_change_cost_price">#</a>
-		<code><a href="source-class-Item.html#802-823" title="Go to source code">change_cost_price</a>( <span> <var>$item_id</var></span>, <span> <var>$items_received</var></span>, <span> <var>$new_price</var></span>, <span> <var>$old_price</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-Item.html#810-831" title="Go to source code">change_cost_price</a>( <span> <var>$item_id</var></span>, <span> <var>$items_received</var></span>, <span> <var>$new_price</var></span>, <span> <var>$old_price</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			

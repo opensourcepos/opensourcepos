@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 
-	<title>Class Rounding_code</title>
+	<title>Class Rounding_mode</title>
 
 	<link rel="stylesheet" href="resources/style.css?c2f33731c1948fbed7c333554678bfa68d4817da">
 
@@ -87,7 +87,7 @@
 				<li><a href="class-Report.html">Report</a></li>
 				<li><a href="class-Reports.html">Reports</a></li>
 				<li><a href="class-Rewards.html">Rewards</a></li>
-				<li class="active"><a href="class-Rounding_code.html">Rounding_code</a></li>
+				<li class="active"><a href="class-Rounding_mode.html">Rounding_mode</a></li>
 				<li><a href="class-Sale.html">Sale</a></li>
 				<li><a href="class-Sale_lib.html">Sale_lib</a></li>
 				<li><a href="class-Sale_suspended.html">Sale_suspended</a></li>
@@ -206,12 +206,9 @@
 	</div>
 
 <div id="content" class="class">
-	<h1>Class Rounding_code</h1>
+	<h1>Class Rounding_mode</h1>
 
 
-	<div class="description">
-	<p>Rounding_code class</p>
-	</div>
 
 
 
@@ -227,7 +224,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Rounding_code.html#4-84" title="Go to source code">models/enums/Rounding_code.php</a>
+			<b>Located at</b> <a href="source-class-Rounding_mode.html#3-74" title="Go to source code">models/enums/Rounding_mode.php</a>
 		<br>
 	</div>
 
@@ -247,7 +244,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_rounding_options">#</a>
-		<code><a href="source-class-Rounding_code.html#17-30" title="Go to source code">get_rounding_options</a>( )</code>
+		<code><a href="source-class-Rounding_mode.html#13-24" title="Go to source code">get_rounding_options</a>( )</code>
 
 		<div class="description short">
 			
@@ -277,7 +274,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_rounding_code_name">#</a>
-		<code><a href="source-class-Rounding_code.html#32-68" title="Go to source code">get_rounding_code_name</a>( <span> <var>$rounding_code</var></span> )</code>
+		<code><a href="source-class-Rounding_mode.html#26-37" title="Go to source code">get_rounding_code_name</a>( <span> <var>$code</var></span> )</code>
 
 		<div class="description short">
 			
@@ -307,7 +304,37 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_html_rounding_options">#</a>
-		<code><a href="source-class-Rounding_code.html#70-83" title="Go to source code">get_html_rounding_options</a>( )</code>
+		<code><a href="source-class-Rounding_mode.html#39-49" title="Go to source code">get_html_rounding_options</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="round_number" id="_round_number">
+
+		<td class="attributes"><code>
+			 public static
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_round_number">#</a>
+		<code><a href="source-class-Rounding_mode.html#51-73" title="Go to source code">round_number</a>( <span> <var>$rounding_mode</var></span>, <span> <var>$amount</var></span>, <span> <var>$decimals</var></span> )</code>
 
 		<div class="description short">
 			
@@ -341,7 +368,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#9" title="Go to source code"><b>HALF_UP</b></a>
+				<a href="source-class-Rounding_mode.html#5" title="Go to source code"><b>HALF_UP</b></a>
 			</code>
 
 			<div class="description short">
@@ -356,7 +383,7 @@
 		<td class="value">
 			<div>
 				<a href="#HALF_UP" class="anchor">#</a>
-				<code><span class="php-num">0</span></code>
+				<code>PHP_ROUND_HALF_UP</code>
 			</div>
 		</td>
 	</tr>
@@ -365,7 +392,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#10" title="Go to source code"><b>HALF_DOWN</b></a>
+				<a href="source-class-Rounding_mode.html#6" title="Go to source code"><b>HALF_DOWN</b></a>
 			</code>
 
 			<div class="description short">
@@ -380,7 +407,7 @@
 		<td class="value">
 			<div>
 				<a href="#HALF_DOWN" class="anchor">#</a>
-				<code><span class="php-num">1</span></code>
+				<code>PHP_ROUND_HALF_DOWN</code>
 			</div>
 		</td>
 	</tr>
@@ -389,7 +416,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#11" title="Go to source code"><b>HALF_EVEN</b></a>
+				<a href="source-class-Rounding_mode.html#7" title="Go to source code"><b>HALF_EVEN</b></a>
 			</code>
 
 			<div class="description short">
@@ -404,7 +431,7 @@
 		<td class="value">
 			<div>
 				<a href="#HALF_EVEN" class="anchor">#</a>
-				<code><span class="php-num">2</span></code>
+				<code>PHP_ROUND_HALF_EVEN</code>
 			</div>
 		</td>
 	</tr>
@@ -413,7 +440,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#12" title="Go to source code"><b>HALF_ODD</b></a>
+				<a href="source-class-Rounding_mode.html#8" title="Go to source code"><b>HALF_ODD</b></a>
 			</code>
 
 			<div class="description short">
@@ -428,7 +455,7 @@
 		<td class="value">
 			<div>
 				<a href="#HALF_ODD" class="anchor">#</a>
-				<code><span class="php-num">3</span></code>
+				<code>PHP_ROUND_HALF_ODD</code>
 			</div>
 		</td>
 	</tr>
@@ -437,7 +464,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#13" title="Go to source code"><b>ROUND_UP</b></a>
+				<a href="source-class-Rounding_mode.html#9" title="Go to source code"><b>ROUND_UP</b></a>
 			</code>
 
 			<div class="description short">
@@ -452,7 +479,7 @@
 		<td class="value">
 			<div>
 				<a href="#ROUND_UP" class="anchor">#</a>
-				<code><span class="php-num">4</span></code>
+				<code><span class="php-num">5</span></code>
 			</div>
 		</td>
 	</tr>
@@ -461,7 +488,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#14" title="Go to source code"><b>ROUND_DOWN</b></a>
+				<a href="source-class-Rounding_mode.html#10" title="Go to source code"><b>ROUND_DOWN</b></a>
 			</code>
 
 			<div class="description short">
@@ -476,7 +503,7 @@
 		<td class="value">
 			<div>
 				<a href="#ROUND_DOWN" class="anchor">#</a>
-				<code><span class="php-num">5</span></code>
+				<code><span class="php-num">6</span></code>
 			</div>
 		</td>
 	</tr>
@@ -485,7 +512,7 @@
 		<td class="attributes"><code>integer</code></td>
 		<td class="name">
 			<code>
-				<a href="source-class-Rounding_code.html#15" title="Go to source code"><b>HALF_FIVE</b></a>
+				<a href="source-class-Rounding_mode.html#11" title="Go to source code"><b>HALF_FIVE</b></a>
 			</code>
 
 			<div class="description short">
@@ -500,7 +527,7 @@
 		<td class="value">
 			<div>
 				<a href="#HALF_FIVE" class="anchor">#</a>
-				<code><span class="php-num">6</span></code>
+				<code><span class="php-num">7</span></code>
 			</div>
 		</td>
 	</tr>

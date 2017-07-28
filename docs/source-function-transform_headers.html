@@ -93,7 +93,7 @@
 				<li><a href="class-Report.html">Report</a></li>
 				<li><a href="class-Reports.html">Reports</a></li>
 				<li><a href="class-Rewards.html">Rewards</a></li>
-				<li><a href="class-Rounding_code.html">Rounding_code</a></li>
+				<li><a href="class-Rounding_mode.html">Rounding_mode</a></li>
 				<li><a href="class-Sale.html">Sale</a></li>
 				<li><a href="class-Sale_lib.html">Sale_lib</a></li>
 				<li><a href="class-Sale_suspended.html">Sale_suspended</a></li>
@@ -625,7 +625,7 @@
 </span><span id="412" class="l">        <span class="php-quote">'tax_rate'</span> =&gt; <span class="php-var">$tax_code_row</span>-&gt;tax_rate,
 </span><span id="413" class="l">        <span class="php-quote">'rounding_code'</span> =&gt;<span class="php-var">$tax_code_row</span>-&gt;rounding_code,
 </span><span id="414" class="l">        <span class="php-quote">'tax_code_type_name'</span> =&gt; <span class="php-var">$CI</span>-&gt;Tax-&gt;get_tax_code_type_name(<span class="php-var">$tax_code_row</span>-&gt;tax_code_type),
-</span><span id="415" class="l">        <span class="php-quote">'rounding_code_name'</span> =&gt; <span class="php-var">$CI</span>-&gt;get_rounding_code_name(<span class="php-var">$tax_code_row</span>-&gt;rounding_code),
+</span><span id="415" class="l">        <span class="php-quote">'rounding_code_name'</span> =&gt; Rounding_mode::get_rounding_code_name(<span class="php-var">$tax_code_row</span>-&gt;rounding_code),
 </span><span id="416" class="l">        <span class="php-quote">'city'</span> =&gt; <span class="php-var">$tax_code_row</span>-&gt;city,
 </span><span id="417" class="l">        <span class="php-quote">'state'</span> =&gt; <span class="php-var">$tax_code_row</span>-&gt;state,
 </span><span id="418" class="l">        <span class="php-quote">'edit'</span> =&gt; anchor(<span class="php-var">$controller_name</span>.<span class="php-quote">&quot;/view/</span><span class="php-var">$tax_code_row</span><span class="php-quote">-&gt;tax_code&quot;</span>, <span class="php-quote">'&lt;span class=&quot;glyphicon glyphicon-edit&quot;&gt;&lt;/span&gt;'</span>,
@@ -672,6 +672,6 @@
 </div>
 </div>
 <script src="resources/combined.js?ab7ddfe54adb05998edf888264c90e8da7a06c89"></script>
-<script src="elementlist.js?107bba78f0ace2667eb8cd2ee2df0b1a23c2c7af"></script>
+<script src="elementlist.js?feb046d0ce822e87cb6be8691f855378535d6bb6"></script>
 </body>
 </html>

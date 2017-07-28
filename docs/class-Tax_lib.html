@@ -87,7 +87,7 @@
 				<li><a href="class-Report.html">Report</a></li>
 				<li><a href="class-Reports.html">Reports</a></li>
 				<li><a href="class-Rewards.html">Rewards</a></li>
-				<li><a href="class-Rounding_code.html">Rounding_code</a></li>
+				<li><a href="class-Rounding_mode.html">Rounding_mode</a></li>
 				<li><a href="class-Sale.html">Sale</a></li>
 				<li><a href="class-Sale_lib.html">Sale_lib</a></li>
 				<li><a href="class-Sale_suspended.html">Sale_suspended</a></li>
@@ -229,7 +229,7 @@
 		
 		
 
-			<b>Located at</b> <a href="source-class-Tax_lib.html#4-323" title="Go to source code">libraries/Tax_lib.php</a>
+			<b>Located at</b> <a href="source-class-Tax_lib.html#4-292" title="Go to source code">libraries/Tax_lib.php</a>
 		<br>
 	</div>
 
@@ -339,7 +339,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sales_tax_for_amount">#</a>
-		<code><a href="source-class-Tax_lib.html#48-87" title="Go to source code">get_sales_tax_for_amount</a>( <span> <var>$tax_basis</var></span>, <span> <var>$tax_percentage</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$decimals</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#48-56" title="Go to source code">get_sales_tax_for_amount</a>( <span> <var>$tax_basis</var></span>, <span> <var>$tax_percentage</var></span>, <span> <var>$rounding_mode</var></span>, <span> <var>$decimals</var></span> )</code>
 
 		<div class="description short">
 			
@@ -369,7 +369,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_update_sales_taxes">#</a>
-		<code><a href="source-class-Tax_lib.html#92-123" title="Go to source code">update_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span>, <span> <var>$tax_type</var></span>, <span> <var>$tax_group</var></span>, <span> <var>$tax_rate</var></span>, <span> <var>$tax_basis</var></span>, <span> <var>$item_tax_amount</var></span>, <span> <var>$tax_group_sequence</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$sale_id</var></span>, <span> <var>$name</var> = <span class="php-quote">''</span></span>, <span> <var>$tax_code</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-Tax_lib.html#61-92" title="Go to source code">update_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span>, <span> <var>$tax_type</var></span>, <span> <var>$tax_group</var></span>, <span> <var>$tax_rate</var></span>, <span> <var>$tax_basis</var></span>, <span> <var>$item_tax_amount</var></span>, <span> <var>$tax_group_sequence</var></span>, <span> <var>$rounding_code</var></span>, <span> <var>$sale_id</var></span>, <span> <var>$name</var> = <span class="php-quote">''</span></span>, <span> <var>$tax_code</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			
@@ -399,7 +399,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_apply_invoice_taxing">#</a>
-		<code><a href="source-class-Tax_lib.html#128-146" title="Go to source code">apply_invoice_taxing</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#97-115" title="Go to source code">apply_invoice_taxing</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
 
 		<div class="description short">
 			
@@ -429,7 +429,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_round_sales_taxes">#</a>
-		<code><a href="source-class-Tax_lib.html#151-204" title="Go to source code">round_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#120-173" title="Go to source code">round_sales_taxes</a>( <span> <var>&amp; $sales_taxes</var></span> )</code>
 
 		<div class="description short">
 			
@@ -459,7 +459,7 @@
 
 		<td class="name"><div>
 		<a class="anchor" href="#_apply_sales_tax">#</a>
-		<code><a href="source-class-Tax_lib.html#207-293" title="Go to source code">apply_sales_tax</a>( <span> <var>&amp; $item</var></span>, <span> <var>&amp; $city</var></span>, <span> <var>&amp; $state</var></span>, <span> <var>&amp; $sales_tax_code</var></span>, <span> <var>$register_mode</var></span>, <span> <var>$sale_id</var></span>, <span> <var>&amp; $sales_taxes</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#176-262" title="Go to source code">apply_sales_tax</a>( <span> <var>&amp; $item</var></span>, <span> <var>&amp; $city</var></span>, <span> <var>&amp; $state</var></span>, <span> <var>&amp; $sales_tax_code</var></span>, <span> <var>$register_mode</var></span>, <span> <var>$sale_id</var></span>, <span> <var>&amp; $sales_taxes</var></span> )</code>
 
 		<div class="description short">
 			<p>Determine the applicable tax code and then determine the tax amount to be applied.
@@ -479,7 +479,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 		</div>
 		</div></td>
 	</tr>
-	<tr data-order="get_applicable_tax_mode" id="_get_applicable_tax_mode">
+	<tr data-order="get_applicable_tax_code" id="_get_applicable_tax_code">
 
 		<td class="attributes"><code>
 			 public 
@@ -490,8 +490,8 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 		</td>
 
 		<td class="name"><div>
-		<a class="anchor" href="#_get_applicable_tax_mode">#</a>
-		<code><a href="source-class-Tax_lib.html#295-315" title="Go to source code">get_applicable_tax_mode</a>( <span> <var>$register_mode</var></span>, <span> <var>$city</var></span>, <span> <var>$state</var></span>, <span> <var>$sales_tax_code</var></span> )</code>
+		<a class="anchor" href="#_get_applicable_tax_code">#</a>
+		<code><a href="source-class-Tax_lib.html#264-284" title="Go to source code">get_applicable_tax_code</a>( <span> <var>$register_mode</var></span>, <span> <var>$city</var></span>, <span> <var>$state</var></span>, <span> <var>$sales_tax_code</var></span> )</code>
 
 		<div class="description short">
 			
@@ -521,7 +521,7 @@ If a tax amount was identified then accumulate into the sales_taxes array</p>
 
 		<td class="name"><div>
 		<a class="anchor" href="#_clean">#</a>
-		<code><a href="source-class-Tax_lib.html#317-322" title="Go to source code">clean</a>( <span> <var>$string</var></span> )</code>
+		<code><a href="source-class-Tax_lib.html#286-291" title="Go to source code">clean</a>( <span> <var>$string</var></span> )</code>
 
 		<div class="description short">
 			

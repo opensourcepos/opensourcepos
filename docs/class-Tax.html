@@ -87,7 +87,7 @@
 				<li><a href="class-Report.html">Report</a></li>
 				<li><a href="class-Reports.html">Reports</a></li>
 				<li><a href="class-Rewards.html">Rewards</a></li>
-				<li><a href="class-Rounding_code.html">Rounding_code</a></li>
+				<li><a href="class-Rounding_mode.html">Rounding_mode</a></li>
 				<li><a href="class-Sale.html">Sale</a></li>
 				<li><a href="class-Sale_lib.html">Sale_lib</a></li>
 				<li><a href="class-Sale_suspended.html">Sale_suspended</a></li>
@@ -240,7 +240,7 @@ CI_Model
 		
 		
 
-			<b>Located at</b> <a href="source-class-Tax.html#4-390" title="Go to source code">models/Tax.php</a>
+			<b>Located at</b> <a href="source-class-Tax.html#4-438" title="Go to source code">models/Tax.php</a>
 		<br>
 	</div>
 
@@ -260,14 +260,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_exists">#</a>
-		<code><a href="source-class-Tax.html#12-18" title="Go to source code">exists</a>( <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#9-18" title="Go to source code">exists</a>( <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Determines if a given tax_code is on file</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Determines if a given tax_code is on file</p>
 
 
 
@@ -308,6 +308,36 @@ CI_Model
 		</div>
 		</div></td>
 	</tr>
+	<tr data-order="tax_category_exists" id="_tax_category_exists">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_tax_category_exists">#</a>
+		<code><a href="source-class-Tax.html#29-35" title="Go to source code">tax_category_exists</a>( <span> <var>$tax_category_id</var></span> )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
 	<tr data-order="get_total_rows" id="_get_total_rows">
 
 		<td class="attributes"><code>
@@ -320,7 +350,37 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_total_rows">#</a>
-		<code><a href="source-class-Tax.html#32-37" title="Go to source code">get_total_rows</a>( )</code>
+		<code><a href="source-class-Tax.html#37-45" title="Go to source code">get_total_rows</a>( )</code>
+
+		<div class="description short">
+			<p>Gets total of rows</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Gets total of rows</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_tax_category_usage" id="_get_tax_category_usage">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_tax_category_usage">#</a>
+		<code><a href="source-class-Tax.html#47-53" title="Go to source code">get_tax_category_usage</a>( <span> <var>$tax_category_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -350,14 +410,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_info">#</a>
-		<code><a href="source-class-Tax.html#42-74" title="Go to source code">get_info</a>( <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#55-90" title="Go to source code">get_info</a>( <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets information about a particular tax_code</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets information about a particular tax_code</p>
 
 
 
@@ -380,14 +440,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_rate_info">#</a>
-		<code><a href="source-class-Tax.html#79-111" title="Go to source code">get_rate_info</a>( <span> <var>$tax_code</var></span>, <span> <var>$tax_category_id</var></span> )</code>
+		<code><a href="source-class-Tax.html#92-126" title="Go to source code">get_rate_info</a>( <span> <var>$tax_code</var></span>, <span> <var>$tax_category_id</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets information about a particular tax_code</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets information about a particular tax_code</p>
 
 
 
@@ -410,14 +470,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sales_tax_code">#</a>
-		<code><a href="source-class-Tax.html#116-151" title="Go to source code">get_sales_tax_code</a>( <span> <var>$city</var> = <span class="php-quote">''</span></span>, <span> <var>$state</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-Tax.html#128-166" title="Go to source code">get_sales_tax_code</a>( <span> <var>$city</var> = <span class="php-quote">''</span></span>, <span> <var>$state</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets the tax code to use for a given customer</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets the tax code to use for a given customer</p>
 
 
 
@@ -440,14 +500,44 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save">#</a>
-		<code><a href="source-class-Tax.html#156-179" title="Go to source code">save</a>( <span> <var>&amp; $tax_code_data</var></span>, <span> <var>$tax_rate_data</var></span>, <span> <var>$tax_code</var> = -<span class="php-num">1</span></span> )</code>
+		<code><a href="source-class-Tax.html#168-194" title="Go to source code">save</a>( <span> <var>&amp; $tax_code_data</var></span>, <span> <var>$tax_rate_data</var></span>, <span> <var>$tax_code</var> = -<span class="php-num">1</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Inserts or updates a tax_codes entry</p>
 		</div>
 
 		<div class="description detailed hidden">
+			<p>Inserts or updates a tax_codes entry</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="save_tax_category" id="_save_tax_category">
+
+		<td class="attributes"><code>
+			 public 
+
 			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_save_tax_category">#</a>
+		<code><a href="source-class-Tax.html#196-213" title="Go to source code">save_tax_category</a>( <span> <var>&amp; $tax_category_data</var></span>, <span> <var>&amp; $tax_category_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Inserts or updates a tax_category</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Inserts or updates a tax_category</p>
 
 
 
@@ -470,14 +560,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save_tax_rates">#</a>
-		<code><a href="source-class-Tax.html#181-197" title="Go to source code">save_tax_rates</a>( <span> <var>&amp; $tax_rate_data</var></span>, <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#215-229" title="Go to source code">save_tax_rates</a>( <span> <var>&amp; $tax_rate_data</var></span>, <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Inserts or updates a tax_rate</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Inserts or updates a tax_rate</p>
 
 
 
@@ -500,14 +590,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_save_tax_rate_exceptions">#</a>
-		<code><a href="source-class-Tax.html#202-227" title="Go to source code">save_tax_rate_exceptions</a>( <span> <var>&amp; $tax_rate_data</var></span>, <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#231-259" title="Go to source code">save_tax_rate_exceptions</a>( <span> <var>&amp; $tax_rate_data</var></span>, <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Inserts or updates an item kit's items</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Inserts or updates an item kit's items</p>
 
 
 
@@ -530,14 +620,44 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete">#</a>
-		<code><a href="source-class-Tax.html#232-235" title="Go to source code">delete</a>( <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#261-267" title="Go to source code">delete</a>( <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes one tax_codes entry</p>
 		</div>
 
 		<div class="description detailed hidden">
+			<p>Deletes one tax_codes entry</p>
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="delete_tax_category" id="_delete_tax_category">
+
+		<td class="attributes"><code>
+			 public 
+
 			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_delete_tax_category">#</a>
+		<code><a href="source-class-Tax.html#269-275" title="Go to source code">delete_tax_category</a>( <span> <var>$tax_category_id</var></span> )</code>
+
+		<div class="description short">
+			<p>Deletes one tax_codes entry</p>
+		</div>
+
+		<div class="description detailed hidden">
+			<p>Deletes one tax_codes entry</p>
 
 
 
@@ -560,14 +680,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_list">#</a>
-		<code><a href="source-class-Tax.html#240-245" title="Go to source code">delete_list</a>( <span> <var>$tax_codes</var></span> )</code>
+		<code><a href="source-class-Tax.html#277-285" title="Go to source code">delete_list</a>( <span> <var>$tax_codes</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes a list of tax codes</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Deletes a list of tax codes</p>
 
 
 
@@ -590,14 +710,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_delete_tax_rate_exceptions">#</a>
-		<code><a href="source-class-Tax.html#251-257" title="Go to source code">delete_tax_rate_exceptions</a>( <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#287-296" title="Go to source code">delete_tax_rate_exceptions</a>( <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Deletes all tax_rate_exceptions for given tax codes</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Deletes all tax_rate_exceptions for given tax codes</p>
 
 
 
@@ -620,14 +740,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_search">#</a>
-		<code><a href="source-class-Tax.html#262-280" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'tax_code'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
+		<code><a href="source-class-Tax.html#298-319" title="Go to source code">search</a>( <span> <var>$search</var></span>, <span> <var>$rows</var> = <span class="php-num">0</span></span>, <span> <var>$limit_from</var> = <span class="php-num">0</span></span>, <span> <var>$sort</var> = <span class="php-quote">'tax_code'</span></span>, <span> <var>$order</var> = <span class="php-quote">'asc'</span></span> )</code>
 
 		<div class="description short">
-			
+			<p>Performs a search on tax_codes</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Performs a search on tax_codes</p>
 
 
 
@@ -650,14 +770,14 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_found_rows">#</a>
-		<code><a href="source-class-Tax.html#285-295" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span> )</code>
+		<code><a href="source-class-Tax.html#321-334" title="Go to source code">get_found_rows</a>( <span> <var>$search</var></span> )</code>
 
 		<div class="description short">
-			
+			<p>Gets tax_codes</p>
 		</div>
 
 		<div class="description detailed hidden">
-			
+			<p>Gets tax_codes</p>
 
 
 
@@ -680,7 +800,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tax_code_type_name">#</a>
-		<code><a href="source-class-Tax.html#297-307" title="Go to source code">get_tax_code_type_name</a>( <span> <var>$tax_code_type</var></span> )</code>
+		<code><a href="source-class-Tax.html#336-346" title="Go to source code">get_tax_code_type_name</a>( <span> <var>$tax_code_type</var></span> )</code>
 
 		<div class="description short">
 			
@@ -710,7 +830,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_sales_tax_codes_search_suggestions">#</a>
-		<code><a href="source-class-Tax.html#309-333" title="Go to source code">get_sales_tax_codes_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
+		<code><a href="source-class-Tax.html#348-372" title="Go to source code">get_sales_tax_codes_search_suggestions</a>( <span> <var>$search</var></span>, <span> <var>$limit</var> = <span class="php-num">25</span></span> )</code>
 
 		<div class="description short">
 			
@@ -740,7 +860,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tax_category_suggestions">#</a>
-		<code><a href="source-class-Tax.html#335-353" title="Go to source code">get_tax_category_suggestions</a>( <span> <var>$search</var></span> )</code>
+		<code><a href="source-class-Tax.html#374-392" title="Go to source code">get_tax_category_suggestions</a>( <span> <var>$search</var></span> )</code>
 
 		<div class="description short">
 			
@@ -770,7 +890,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tax_category">#</a>
-		<code><a href="source-class-Tax.html#355-362" title="Go to source code">get_tax_category</a>( <span> <var>$tax_category_id</var></span> )</code>
+		<code><a href="source-class-Tax.html#394-401" title="Go to source code">get_tax_category</a>( <span> <var>$tax_category_id</var></span> )</code>
 
 		<div class="description short">
 			
@@ -800,7 +920,37 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_all_tax_categories">#</a>
-		<code><a href="source-class-Tax.html#364-370" title="Go to source code">get_all_tax_categories</a>( )</code>
+		<code><a href="source-class-Tax.html#403-409" title="Go to source code">get_all_tax_categories</a>( )</code>
+
+		<div class="description short">
+			
+		</div>
+
+		<div class="description detailed hidden">
+			
+
+
+
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_all_tax_codes" id="_get_all_tax_codes">
+
+		<td class="attributes"><code>
+			 public 
+
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_all_tax_codes">#</a>
+		<code><a href="source-class-Tax.html#411-418" title="Go to source code">get_all_tax_codes</a>( )</code>
 
 		<div class="description short">
 			
@@ -830,7 +980,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tax_category_id">#</a>
-		<code><a href="source-class-Tax.html#372-378" title="Go to source code">get_tax_category_id</a>( <span> <var>$tax_category</var></span> )</code>
+		<code><a href="source-class-Tax.html#420-426" title="Go to source code">get_tax_category_id</a>( <span> <var>$tax_category</var></span> )</code>
 
 		<div class="description short">
 			
@@ -860,7 +1010,7 @@ CI_Model
 
 		<td class="name"><div>
 		<a class="anchor" href="#_get_tax_code_rate_exceptions">#</a>
-		<code><a href="source-class-Tax.html#380-389" title="Go to source code">get_tax_code_rate_exceptions</a>( <span> <var>$tax_code</var></span> )</code>
+		<code><a href="source-class-Tax.html#428-437" title="Go to source code">get_tax_code_rate_exceptions</a>( <span> <var>$tax_code</var></span> )</code>
 
 		<div class="description short">
 			
