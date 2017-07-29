@@ -42,6 +42,40 @@ class Item extends CI_Model
 	}
 
 	/*
+	 * Determines if an item exists for the given number and only one item has that number
+	 * If not found or more than one record exists then return false
+	 * else return the item data
+	 */
+	public function get_item_by_number($item_number)
+	{
+		$this->db->from('items');
+		$this->db->where('item_number', (string) $item_number);
+
+		return $this->db->get()->result_array();
+	}
+
+	/*
+	 * Determines if an item exists for the given name and only one item has that name
+	 * If not found then return false
+	 * else return the array of item data
+	 */
+	public function get_item_by_name($item_name)
+	{
+		$this->db->from('items');
+		$this->db->where('name', $item_name);
+
+		$q = $this->db->get();
+		if($q->num_rows() > 0)
+		{
+			return $q->result_array();
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/*
 	Gets total of rows
 	*/
 	public function get_total_rows()
@@ -337,10 +371,8 @@ class Item extends CI_Model
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
-
 				return TRUE;
 			}
-
 			return FALSE;
 		}
 
@@ -364,7 +396,7 @@ class Item extends CI_Model
 	*/
 	public function delete($item_id)
 	{
-		//Run these queries as a transaction, we want to make sure we do all or nothing
+		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
 		// set to 0 quantities

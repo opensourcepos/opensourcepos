@@ -1,4 +1,4 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php if( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 require_once("Secure_Controller.php");
 
@@ -497,7 +497,7 @@ class Items extends Secure_Controller
 	*/
 	public function check_kit_exists()
 	{
-		if ($this->input->post('item_number') === -1)
+		if($this->input->post('item_number') === -1)
 		{
 			$exists = $this->Item_kit->item_kit_exists_for_name($this->input->post('name'));
 		}
@@ -663,161 +663,277 @@ class Items extends Secure_Controller
 				// Skip the first row as it's the table description
 				fgetcsv($handle);
 				$i = 1;
-				
+
 				$failCodes = array();
-		
+				$added = 0;
+				$changed = 0;
+
 				while(($data = fgetcsv($handle)) !== FALSE)
 				{
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
-					
-					/* haven't touched this so old templates will work, or so I guess... */
-					if(sizeof($data) >= 23)
+
+					// If there are at least 24 columns of data and the item name ($data[1]) is provided
+					// then process the record
+
+					$item_name = $data[1];
+					$item_id = '';
+
+					if(sizeof($data) >= 23 && $item_name != '')
 					{
 						$item_data = array(
-							'name'					=> $data[1],
-							'description'			=> $data[11],
-							'category'				=> $data[2],
-							'cost_price'			=> $data[4],
-							'unit_price'			=> $data[5],
-							'reorder_level'			=> $data[10],
-							'supplier_id'			=> $this->Supplier->exists($data[3]) ? $data[3] : NULL,
-							'allow_alt_description'	=> $data[12] != '' ? '1' : '0',
-							'is_serialized'			=> $data[13] != '' ? '1' : '0',
-							'custom1'				=> $data[14],
-							'custom2'				=> $data[15],
-							'custom3'				=> $data[16],
-							'custom4'				=> $data[17],
-							'custom5'				=> $data[18],
-							'custom6'				=> $data[19],
-							'custom7'				=> $data[20],
-							'custom8'				=> $data[21],
-							'custom9'				=> $data[22],
-							'custom10'				=> $data[23]
+							'name' => $item_name,
+							'description' => $data[11],
+							'category' => $data[2],
+							'cost_price' => $data[4],
+							'unit_price' => $data[5],
+							'reorder_level' => $data[10],
+							'supplier_id' => $this->Supplier->exists($data[3]) ? $data[3] : NULL,
+							'allow_alt_description' => $data[12] != '' ? '1' : '0',
+							'is_serialized' => $data[13] != '' ? '1' : '0',
+							'custom1' => $data[14],
+							'custom2' => $data[15],
+							'custom3' => $data[16],
+							'custom4' => $data[17],
+							'custom5' => $data[18],
+							'custom6' => $data[19],
+							'custom7' => $data[20],
+							'custom8' => $data[21],
+							'custom9' => $data[22],
+							'custom10' => $data[23]
 						);
 
-						/* we could do something like this, however, the effectiveness of
-						  this is rather limited, since for now, you have to upload files manually
-						  into that directory, so you really can do whatever you want, this probably
-						  needs further discussion  */
-
 						$pic_file = $data[24];
-						/*if(strcmp('.htaccess', $pic_file)==0) {
-							$pic_file='';
-						}*/
+
 						$item_data['pic_filename'] = $pic_file;
 
+						$change_item = FALSE;
+						$new_item = FALSE;
+						$unique_item_found = FALSE;
+
 						$item_number = $data[0];
-						$invalidated = FALSE;
+						$item_data['item_number'] = $item_number;
+
+						// These are the setof flags that determine what is to be used as the unique identifier
+						// The barcode is the preferred identifier, but if that's not provided then it will need to
+						// be either a unique description or a custom field or combination of custom fields
+						$identifier_established = FALSE;
+
+						// First try to find the item by unique number (barcode)
+						// The barcode will either be null or garaunteed to be unique
 						if($item_number != '')
 						{
-							$item_data['item_number'] = $item_number;
-							$invalidated = $this->Item->item_number_exists($item_number);
-						}
-					}
-					else 
-					{
-						$invalidated = TRUE;
-					}
-
-					if(!$invalidated && $this->Item->save($item_data))
-					{
-						$items_taxes_data = NULL;
-						//tax 1
-						if(is_numeric($data[7]) && $data[6] != '')
-						{
-							$items_taxes_data[] = array('name' => $data[6], 'percent' => $data[7] );
+							$identifier_established = TRUE;
+							$item_update_data = $this->Item->get_item_by_number($item_number)[0];
+							if(!($item_update_data == FALSE))
+							{
+								$item_id = $item_update_data['item_id'];
+								$change_item = TRUE;
+							}
+							else
+							{
+								$new_item = TRUE;
+							}
 						}
 
-						//tax 2
-						if(is_numeric($data[9]) && $data[8] != '')
+						if(!$identifier_established)
 						{
-							$items_taxes_data[] = array('name' => $data[8], 'percent' => $data[9] );
+							// Item name should be last choice in search for a proper identifier
+							$item_update_data_array = $this->Item->get_item_by_name($item_name);
+							if(!($item_update_data_array == FALSE))
+							{
+								// Check to see if more than one item with the same description is found
+								if(sizeof($item_update_data_array) > 1)
+								{
+									// We cannot update the item based on a name identifier because we don't know
+									// which item to update and we don't want to add it because it would potentially
+									// create a duplicate item. This is reported as an error condition
+								}
+								else
+								{
+									// The name is unique
+									$change_item = TRUE;
+									$item_update_data = $item_update_data_array[0];
+									$identifier_established = TRUE;
+									$item_id = $item_update_data['item_id'];
+								}
+							}
+							else
+							{
+								// An item with the given name could not be found so it is okay to add it
+								$new_item = TRUE;
+							}
 						}
 
-						// save tax values
-						if(count($items_taxes_data) > 0)
+						if($new_item)
 						{
-							$this->Item_taxes->save($items_taxes_data, $item_data['item_id']);
+							// If the item number is blank then unset it so that it is written to the database with
+							// null as the default value
+							if($item_data['item_number'] == '')
+							{
+								unset($item_data['item_number']);
+							}
+							unset($item_data['item_id']);
+							$good_update = $this->Item->save($item_data);
+							if($good_update)
+							{
+								$added++;
+							}
+						}
+						elseif($identifier_established && $change_item)
+						{
+							// Update an existing item
+							$diff = FALSE;
+
+							reset($item_data);
+							foreach($item_data as $key => $value)
+							{
+								if($item_data[$key] != '' && $item_data[$key] != $item_update_data[$key])
+								{
+									$item_update_data[$key] = $item_data[$key];
+									$diff = TRUE;
+								}
+							}
+
+							if($diff)
+							{
+								$good_update = $this->Item->save($item_update_data, $item_id);
+								$changed++;
+							}
+							else
+							{
+								// Even though nothing was changed it is considered a "good update" because it wasn't a "bad update".
+								$good_update = TRUE;
+							}
+
+						}
+						else
+						{
+							$good_update = FALSE;
 						}
 
-						// quantities & inventory Info
-						$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-						$emp_info = $this->Employee->get_info($employee_id);
-						$comment ='Qty CSV Imported';
-
-						$cols = count($data);
-
-						// array to store information if location got a quantity
-						$allowed_locations = $this->Stock_location->get_allowed_locations();
-						for ($col = 25; $col < $cols; $col = $col + 2)
+						if(!$good_update)
 						{
-							$location_id = $data[$col];
-							if(array_key_exists($location_id, $allowed_locations))
+							$failCodes[] = $i;
+						}
+
+						if($good_update && $new_item)
+						{
+							$items_taxes_data = NULL;
+							//tax 1
+							if(is_numeric($data[7]) && $data[6] != '')
+							{
+								$items_taxes_data[] = array('name' => $data[6], 'percent' => $data[7]);
+							}
+
+							//tax 2
+							if(is_numeric($data[9]) && $data[8] != '')
+							{
+								$items_taxes_data[] = array('name' => $data[8], 'percent' => $data[9]);
+							}
+
+							// save tax values
+							if(count($items_taxes_data) > 0)
+							{
+								$this->Item_taxes->save($items_taxes_data, $item_data['item_id']);
+							}
+
+							// array to store information if location got a quantity
+							$allowed_locations = $this->Stock_location->get_allowed_locations();
+
+							// quantities & inventory Info
+							$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+							$emp_info = $this->Employee->get_info($employee_id);
+							$comment = 'Qty CSV Imported';
+
+							$cols = count($data);
+
+							for($col = 25; $col < $cols; $col = $col + 2)
+							{
+								$location_id = $data[$col];
+								if(array_key_exists($location_id, $allowed_locations))
+								{
+									if($data[$col + 1] = '')
+									{
+										$data[$col + 1] = 0;
+									}
+
+									$item_quantity_data = array(
+										'item_id' => $item_data['item_id'],
+										'location_id' => $location_id,
+										'quantity' => $data[$col + 1],
+									);
+
+									$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);
+
+									$excel_data = array(
+										'trans_items' => $item_data['item_id'],
+										'trans_user' => $employee_id,
+										'trans_comment' => $comment,
+										'trans_location' => $data[$col],
+										'trans_inventory' => $data[$col + 1]
+									);
+
+									$this->Inventory->insert($excel_data);
+									unset($allowed_locations[$location_id]);
+								}
+							}
+
+							/*
+							 * now iterate through the array and check for which location_id no entry into item_quantities was made yet
+							 * those get an entry with quantity as 0.
+							 * unfortunately a bit duplicate code from above...
+							 */
+							foreach($allowed_locations as $location_id => $location_name)
 							{
 								$item_quantity_data = array(
 									'item_id' => $item_data['item_id'],
 									'location_id' => $location_id,
-									'quantity' => $data[$col + 1],
+									'quantity' => 0,
 								);
-								$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $location_id);
+								$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $data[$col]);
 
 								$excel_data = array(
 									'trans_items' => $item_data['item_id'],
 									'trans_user' => $employee_id,
 									'trans_comment' => $comment,
-									'trans_location' => $data[$col],
-									'trans_inventory' => $data[$col + 1]
+									'trans_location' => $location_id,
+									'trans_inventory' => 0
 								);
-								
+
 								$this->Inventory->insert($excel_data);
-								unset($allowed_locations[$location_id]);
 							}
 						}
-
-						/*
-						 * now iterate through the array and check for which location_id no entry into item_quantities was made yet
-						 * those get an entry with quantity as 0.
-						 * unfortunately a bit duplicate code from above...
-						 */
-						foreach($allowed_locations as $location_id => $location_name)
+					}
+					else
+					{
+						// invalid data ... do nothing
+						// Do not flag entries without a name because they are usually an Excel "empty row" anomoly.
+						$good_update = FALSE;
+						if($data[1] != '')
 						{
-							$item_quantity_data = array(
-								'item_id' => $item_data['item_id'],
-								'location_id' => $location_id,
-								'quantity' => 0,
-							);
-							$this->Item_quantity->save($item_quantity_data, $item_data['item_id'], $data[$col]);
-
-							$excel_data = array(
-								'trans_items' => $item_data['item_id'],
-								'trans_user' => $employee_id,
-								'trans_comment' => $comment,
-								'trans_location' => $location_id,
-								'trans_inventory' => 0
-							);
-
-							$this->Inventory->insert($excel_data);
+							$failCodes[] = $i;
 						}
 					}
-					else //insert or update item failure
-					{
-						$failCodes[] = $i;
-					}
-
 					++$i;
 				}
 
 				if(count($failCodes) > 0)
 				{
-					$message = $this->lang->line('items_excel_import_partially_failed') . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
-					
-					echo json_encode(array('success' => FALSE, 'message' => $message));
+					$success = FALSE;
+					$message = $this->lang->line('items_excel_import_partially_failed', $added, $changed, count($failCodes));
+					$message = $message . ' (' . count($failCodes) . '): ' . implode(', ', $failCodes);
 				}
 				else
 				{
-					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('items_excel_import_success')));
+					$success = TRUE;
+					$message = $this->lang->line('items_excel_import_success', $added, $changed);
 				}
+
+				echo json_encode(array('success' => $success, 'message' => $message));
+
+				error_log($_FILES['file_path']['name'] . ' ' . $message);
+
 			}
 			else 
 			{
@@ -842,9 +958,11 @@ class Items extends Secure_Controller
 		}
 		
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
-		if ($ext == '') {
+		if($ext == '')
+		{
 			$images = glob('./uploads/item_pics/' . $item->pic_filename . '.*');
-			if (sizeof($images) > 0) {
+			if(sizeof($images) > 0)
+			{
 				$new_pic_filename = pathinfo($images[0], PATHINFO_BASENAME);
 				$item_data = array('pic_filename' => $new_pic_filename);
 				$this->Item->save($item_data, $item->item_id);
