@@ -117,7 +117,8 @@ CREATE TABLE `ospos_customers` (
   `points` int(11) DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
-  KEY `person_id` (`person_id`)
+  KEY `person_id` (`person_id`),
+  KEY `package_id` (`package_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -923,7 +924,10 @@ CREATE TABLE IF NOT EXISTS `ospos_customers_points` (
   `package_id` int(11) NOT NULL,
   `sale_id` int(11) NOT NULL,
   `points_earned` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `person_id` (`person_id`),
+  KEY `package_id` (`package_id`),
+  KEY `sale_id` (`sale_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
@@ -938,7 +942,8 @@ CREATE TABLE IF NOT EXISTS `ospos_sales_reward_points` (
   `sale_id` int(11) NOT NULL,
   `earned` float NOT NULL,
   `used` float NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `sale_id` (`sale_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 

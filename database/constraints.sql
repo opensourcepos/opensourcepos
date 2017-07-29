@@ -6,7 +6,8 @@
 -- Constraints for table `ospos_customers`
 --
 ALTER TABLE `ospos_customers`
-  ADD CONSTRAINT `ospos_customers_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);
+  ADD CONSTRAINT `ospos_customers_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`),
+  ADD CONSTRAINT `ospos_customers_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `ospos_customers_packages` (`package_id`);
 
 --
 -- Constraints for table `ospos_employees`
@@ -146,3 +147,16 @@ ALTER TABLE `ospos_suppliers`
 ALTER TABLE `ospos_giftcards`
   ADD CONSTRAINT `ospos_giftcards_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);
 
+--
+-- Constraints for table `ospos_customers_points`
+--
+ALTER TABLE `ospos_customers_points`
+ ADD CONSTRAINT `ospos_customers_points_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_customers` (`person_id`),
+ ADD CONSTRAINT `ospos_customers_points_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `ospos_customers_packages` (`package_id`),
+ ADD CONSTRAINT `ospos_customers_points_ibfk_3` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_items` (`sale_id`);
+
+--
+-- Constraints for table `ospos_sales_reward_points`
+--
+ALTER TABLE `ospos_sales_reward_points`
+ ADD CONSTRAINT `ospos_sales_reward_points_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_items` (`sale_id`);
