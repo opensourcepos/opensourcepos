@@ -69,6 +69,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('last_used_invoice_number', '0'),
   ('last_used_quote_number', '0'),
   ('line_sequence', '0'),
+('barcode_formats' '[]'),
   ('dinner_table_enable','');
 
 --

@@ -98,8 +98,10 @@
 						$this->config->item('cash_decimals'), array('class' => 'form-control input-sm'));
 					?>
                 </div>
-                <div class="checkbox col-xs-1">
-                    <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
+                <div class='col-xs-1'>
+	                <label class="control-label">
+                        <span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
+	                </label>
                 </div>
             </div>
 
@@ -129,8 +131,10 @@
 				<div class='col-xs-1'>
 					<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class' => 'form-control input-sm')); ?>
 				</div>
-				<div class="checkbox col-xs-1">
-					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
+				<div class="col-xs-1">
+					<label class="control-label">
+						<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
+					</label>
 				</div>
 			</div>
 

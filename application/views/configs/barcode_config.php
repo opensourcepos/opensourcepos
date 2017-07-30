@@ -103,6 +103,20 @@
 				</div>
 			</div>
 
+            <div class="form-group form-group-sm">
+                <?php echo form_label($this->lang->line('config_barcode_formats'), 'barcode_formats', array('class'=>'control-label col-xs-2')); ?>
+                <div class='col-xs-4'>
+                    <?php
+                    $barcode_formats = json_decode($this->config->item('barcode_formats'));
+                    echo form_dropdown(array(
+                        'name' => 'barcode_formats[]',
+                        'id' => 'barcode_formats',
+                        'options' => !empty($barcode_formats) ? array_combine($barcode_formats, $barcode_formats) : array(),
+                        'multiple' => 'multiple',
+                        'data-role' => 'tagsinput'));?>
+                </div>
+            </div>
+
             <div class="form-group form-group-sm">    
 				<?php echo form_label($this->lang->line('config_barcode_layout'), 'barcode_layout', array('class' => 'control-label col-xs-2')); ?>
                 <div class="col-sm-10">

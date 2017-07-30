@@ -143,8 +143,9 @@
 						'value' => 'statistics',
 						'checked' => $this->config->item('statistics'))); ?>
 					&nbsp
-					&nbsp
-					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
+					<label class="control-label">
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
+					</label>
 				</div>
 			</div>
 

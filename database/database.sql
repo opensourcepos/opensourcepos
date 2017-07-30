@@ -29,6 +29,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('tax_included', '0'),
 ('barcode_content', 'id'),
 ('barcode_type', 'Code39'),
+('barcode_formats', '[]'),
 ('barcode_width', '250'),
 ('barcode_height', '50'),
 ('barcode_quality', '100'),
