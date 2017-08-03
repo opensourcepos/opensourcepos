@@ -265,18 +265,14 @@
 				var rows = $(selector.join(",")).length;
 				if (rows > 0 && rows < 15) {
 					var ids = response.id.split(":");
-				    $.get({
-						url: [url || resource + '/get_row', id].join("/"),
-						success: function (response) {
-							$.each(selector, function (index, element) {
-								var id = $(element).data('uniqueid');
-								table().updateByUniqueId({id: id, row: response[id] || response});
-							});
-							dialog_support.init("a.modal-dlg");
-							highlight_row(ids);
-						},
-						dataType: 'json'
-					});
+				    $.get([url || resource + '/get_row', id].join("/"), {}, function (response) {
+						$.each(selector, function (index, element) {
+							var id = $(element).data('uniqueid');
+							table().updateByUniqueId({id: id, row: response[id] || response});
+						});
+						dialog_support.init("a.modal-dlg");
+						highlight_row(ids);
+					}, 'json');
 				} else {
 					// call hightlight function once after refresh
 					options.load_callback = function () {
