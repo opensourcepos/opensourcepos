@@ -231,9 +231,9 @@ module.exports = function(grunt) {
 				files: [
 					{src: ['public/**', 'vendor/**', 'application/**', 'database/**', '*.txt', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '.htaccess', 'public/.htaccess']}
 				]
-            }
-        }
-    });
+			}
+		}
+	});
 
     require('load-grunt-tasks')(grunt);
     grunt.loadNpmTasks('grunt-mocha-webdriver');
