@@ -222,15 +222,15 @@ module.exports = function(grunt) {
 				}
 			}
 		},
-        compress: {
-            main: {
-                options: {
-                    mode: 'zip',
-                    archive: 'dist/opensourcepos.zip'
-                },
-                files: [
-                    {src: ['public/**', 'vendor/**', 'application/**', 'database/**', '*.txt', '*.md', 'LICENSE', 'docker*', 'Dockerfile']}
-                ]
+		compress: {
+			main: {
+				options: {
+					mode: 'zip',
+					archive: 'dist/opensourcepos.zip'
+				},
+				files: [
+					{src: ['public/**', 'vendor/**', 'application/**', 'database/**', '*.txt', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '.htaccess', 'public/.htaccess']}
+				]
             }
         }
     });
