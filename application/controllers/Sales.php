@@ -205,6 +205,7 @@ class Sales extends Secure_Controller
 		{
 			$this->form_validation->set_rules('amount_tendered', 'lang:sales_amount_tendered', 'trim|required');
 		}
+
 		if($this->form_validation->run() == FALSE)
 		{
 			if($payment_type == $this->lang->line('sales_giftcard'))
