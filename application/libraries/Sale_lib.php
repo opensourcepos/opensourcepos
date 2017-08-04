@@ -319,11 +319,6 @@ class Sale_lib
 		return $subtotal;
 	}
 
-	public function get_cash_rounding()
-	{
-
-	}
-
 	/**
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
 	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'
@@ -483,7 +478,8 @@ class Sale_lib
 			{
 				$this->set_mode($this->CI->config->item('default_register_mode'));
 			}
-			else{
+			else
+			{
 				$this->set_mode('sale');
 			}
 		}
@@ -650,14 +646,7 @@ class Sale_lib
 		// 0 will print, 2 will not print.   The decision about 1 is made here
 		if($print_option =='1')
 		{
-			if($price == 0)
-			{
-				$print_option = '2';
-			}
-			else
-			{
-				$print_option = '0';
-			}
+			$print_option = ($price == 0) ? '2' : '0';
 		}
 
 		$total = $this->get_item_total($quantity, $price, $discount);
@@ -887,55 +876,6 @@ class Sale_lib
 		}
 
 		return $this->CI->session->userdata('sales_cart');
-	}
-
-	public function copy_entire_suspended_sale($sale_id)
-	{
-		$this->empty_cart();
-		$this->remove_customer();
-
-		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
-				$row->description, $row->serialnumber, TRUE, $row->print_option, $row->stock_type);
-		}
-
-		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
-		{
-			$this->add_payment($row->payment_type, $row->payment_amount);
-		}
-
-		$suspended_sale_info = $this->CI->Sale->get_info($sale_id)->row();
-		$this->set_customer($suspended_sale_info->person_id);
-		$this->set_comment($suspended_sale_info->comment);
-		$this->set_invoice_number($suspended_sale_info->invoice_number);
-		$this->set_quote_number($suspended_sale_info->quote_number);
-		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
-	}
-
-	public function copy_entire_suspended_tables_sale($sale_id)
-	{
-		$this->empty_cart();
-		$this->remove_customer();
-
-		foreach($this->CI->Sale_suspended->get_sale_items($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
-				$row->description, $row->serialnumber, TRUE, $row->print_option, $row->stock_type);
-		}
-
-		foreach($this->CI->Sale_suspended->get_sale_payments($sale_id)->result() as $row)
-		{
-			$this->add_payment($row->payment_type, $row->payment_amount);
-		}
-
-		$suspended_sale_info = $this->CI->Sale_suspended->get_info($sale_id)->row();
-		$this->set_customer($suspended_sale_info->person_id);
-		$this->set_comment($suspended_sale_info->comment);
-
-		$this->set_invoice_number($suspended_sale_info->invoice_number);
-		$this->set_quote_number($suspended_sale_info->quote_number);
-		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
 	}
 
 	public function clear_all()

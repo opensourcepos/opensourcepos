@@ -51,10 +51,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('last_used_invoice_number', '0'),
 ('last_used_quote_number', '0'),
 ('line_sequence', '0'),
-('recv_invoice_format', '$CO'),
-('sales_invoice_format', '$CO'),
+('recv_invoice_format', '{CO}'),
+('sales_invoice_format', '{CO}'),
 ('sales_quote_format', 'Q%y{QSEQ:6}'),
-('invoice_email_message', 'Dear $CU, In attachment the receipt for sale $INV'),
+('invoice_email_message', 'Dear {CU}, In attachment the receipt for sale $INV'),
 ('invoice_default_comments', 'This is a default comment'),
 ('print_silently', '1'),
 ('print_header', '0'),
@@ -151,7 +151,7 @@ CREATE TABLE `ospos_employees` (
 --
 
 INSERT INTO `ospos_employees` (`username`, `password`, `person_id`, `deleted`, `hash_version`) VALUES
-('admin', '$2y$10$vJBSMlD02EC7ENSrKfVQXuvq9tNRHMtcOA8MSK2NYS748HHWm.gcG', 1, 0, 2);
+  ('admin', '$2y$10$vJBSMlD02EC7ENSrKfVQXuvq9tNRHMtcOA8MSK2NYS748HHWm.gcG', 1, 0, 2);
 
 -- --------------------------------------------------------
 
@@ -663,99 +663,6 @@ CREATE TABLE `ospos_sales_taxes` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ospos_sales_suspended`
---
-
-CREATE TABLE `ospos_sales_suspended` (
-  `sale_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `customer_id` int(10) DEFAULT NULL,
-  `employee_id` int(10) NOT NULL DEFAULT '0',
-  `comment` text NOT NULL,
-  `invoice_number` varchar(32) DEFAULT NULL,
-  `quote_number` varchar(32) DEFAULT NULL,
-  `sale_id` int(10) NOT NULL AUTO_INCREMENT,
-  `dinner_table_id` int(11) NULL,
-  PRIMARY KEY (`sale_id`),
-  KEY `customer_id` (`customer_id`),
-  KEY `employee_id` (`employee_id`),
-  KEY `dinner_table_id` (`dinner_table_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_sales_suspended`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ospos_sales_suspended_items`
---
-
-CREATE TABLE `ospos_sales_suspended_items` (
-  `sale_id` int(10) NOT NULL DEFAULT '0',
-  `item_id` int(10) NOT NULL DEFAULT '0',
-  `description` varchar(30) DEFAULT NULL,
-  `serialnumber` varchar(30) DEFAULT NULL,
-  `line` int(3) NOT NULL DEFAULT '0',
-  `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
-  `item_cost_price` decimal(15,2) NOT NULL,
-  `item_unit_price` decimal(15,2) NOT NULL,
-  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
-  `item_location` int(11) NOT NULL,
-  `print_option` TINYINT(2) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`sale_id`,`item_id`,`line`),
-  KEY `sale_id` (`sale_id`),
-  KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_sales_suspended_items`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ospos_sales_suspended_items_taxes`
---
-
-CREATE TABLE `ospos_sales_suspended_items_taxes` (
-  `sale_id` int(10) NOT NULL,
-  `item_id` int(10) NOT NULL,
-  `line` int(3) NOT NULL DEFAULT '0',
-  `name` varchar(255) NOT NULL,
-  `percent` decimal(15,3) NOT NULL,
-  PRIMARY KEY (`sale_id`,`item_id`,`line`,`name`,`percent`),
-  KEY `item_id` (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_sales_suspended_items_taxes`
---
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ospos_sales_suspended_payments`
---
-
-CREATE TABLE `ospos_sales_suspended_payments` (
-  `sale_id` int(10) NOT NULL,
-  `payment_type` varchar(40) NOT NULL,
-  `payment_amount` decimal(15,2) NOT NULL,
-  PRIMARY KEY (`sale_id`,`payment_type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ospos_sales_suspended_payments`
---
-
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `ospos_sessions`
 --
 
@@ -789,7 +696,7 @@ CREATE TABLE `ospos_stock_locations` (
 -- Dumping data for table `ospos_stock_locations`
 --
 
-INSERT INTO `ospos_stock_locations` ( `deleted`, `location_name` ) VALUES ('0', 'stock');
+INSERT INTO `ospos_stock_locations` (`location_name` ) VALUES ('stock');
 
 
 -- --------------------------------------------------------
@@ -806,7 +713,7 @@ CREATE TABLE `ospos_suppliers` (
   `deleted` int(1) NOT NULL DEFAULT '0',
   UNIQUE KEY `account_number` (`account_number`),
   KEY `person_id` (`person_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 
 -- --------------------------------------------------------
@@ -820,16 +727,16 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
   `tax_category` varchar(32) NOT NULL,
   `tax_group_sequence` tinyint(2) NOT NULL,
   PRIMARY KEY (`tax_category_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `ospos_stock_locations`
 --
 
-INSERT INTO `ospos_tax_categories` ( `tax_category_id`,`tax_category`, `tax_group_sequence` ) VALUES
-  (1, 'Standard', 10),
-  (2, 'Service', 12),
-  (3, 'Alcohol', 11);
+INSERT INTO `ospos_tax_categories` (`tax_category`, `tax_group_sequence` ) VALUES
+  ('Standard', 10),
+  ('Service', 12),
+  ('Alcohol', 11);
 
 
 -- --------------------------------------------------------
@@ -883,15 +790,13 @@ CREATE TABLE `ospos_dinner_tables` (
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `deleted` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`dinner_table_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 --
 -- Dumping data for table `ospos_dinner_tables`
 --
 
-INSERT INTO `ospos_dinner_tables` (`dinner_table_id`, `name`, `status`, `deleted`) VALUES
-(1, 'Delivery', 0, 0),
-(2, 'Take Away', 0, 0);
+INSERT INTO `ospos_dinner_tables` (`name`) VALUES ('Delivery'), ('Take Away');
 
 
 -- --------------------------------------------------------
@@ -908,12 +813,12 @@ CREATE TABLE IF NOT EXISTS `ospos_customers_packages` (
   PRIMARY KEY (`package_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-INSERT INTO `ospos_customers_packages` (`package_id`, `package_name`, `points_percent`, `deleted`) VALUES
-(1, 'Default', 0, 0),
-(2, 'Bronze', 10, 0),
-(3, 'Silver', 20, 0),
-(4, 'Gold', 30, 0),
-(5, 'Premium', 50, 0);
+INSERT INTO `ospos_customers_packages` (`package_name`, `points_percent`) VALUES
+  ('Default', 0),
+  ('Bronze', 10),
+  ('Silver', 20),
+  ('Gold', 30),
+  ('Premium', 50);
 
 
 -- --------------------------------------------------------
@@ -1053,35 +958,6 @@ ALTER TABLE `ospos_sales_items_taxes`
 --
 ALTER TABLE `ospos_sales_payments`
   ADD CONSTRAINT `ospos_sales_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`);
-
---
--- Constraints for table `ospos_sales_suspended`
---
-ALTER TABLE `ospos_sales_suspended`
-  ADD CONSTRAINT `ospos_sales_suspended_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `ospos_customers` (`person_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_ibfk_3` FOREIGN KEY (`dinner_table_id`) REFERENCES `ospos_dinner_tables` (`dinner_table_id`);
-
---
--- Constraints for table `ospos_sales_suspended_items`
---
-ALTER TABLE `ospos_sales_suspended_items`
-  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_1` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_2` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_items_ibfk_3` FOREIGN KEY (`item_location`) REFERENCES `ospos_stock_locations` (`location_id`);
-
---
--- Constraints for table `ospos_sales_suspended_items_taxes`
---
-ALTER TABLE `ospos_sales_suspended_items_taxes`
-  ADD CONSTRAINT `ospos_sales_suspended_items_taxes_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended_items` (`sale_id`),
-  ADD CONSTRAINT `ospos_sales_suspended_items_taxes_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `ospos_items` (`item_id`);
-
---
--- Constraints for table `ospos_sales_suspended_payments`
---
-ALTER TABLE `ospos_sales_suspended_payments`
-  ADD CONSTRAINT `ospos_sales_suspended_payments_ibfk_1` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales_suspended` (`sale_id`);
 
 --
 -- Constraints for table `ospos_item_quantities`

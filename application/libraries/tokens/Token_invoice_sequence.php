@@ -6,6 +6,12 @@
 
 class Token_invoice_sequence extends Token
 {
+
+	public function __construct($value = '')
+	{
+		parent::__construct($value);
+	}
+
 	public function token_id()
 	{
 		return 'ISEQ';

@@ -532,27 +532,14 @@ class Sale extends CI_Model
 			return -1;
 		}
 
-		if($sale_status == '1')	//suspend sales
-		{
-			if($dinner_table > 2)	//not delivery or take away
-			{
-				$table_status = 1;
-			}
-			else
-			{
-				$table_status = 0;
-			}
-		}
-		else
-		{
-			$table_status = 0;
-		}
+		$table_status = $this->determine_sale_status($sale_status, $dinner_table);
 
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'	 => $employee_id,
 			'comment'		 => $comment,
+			'sale_status'    => $sale_status,
 			'invoice_number' => $invoice_number,
 			'quote_number' => $quote_number,
 			'dinner_table_id'=> $dinner_table,
@@ -593,23 +580,7 @@ class Sale extends CI_Model
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
 		}
 
-		if(!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
-		{
-			$package_id = $this->Customer->get_info($customer_id)->package_id;
-
-			if(!empty($package_id))
-			{
-				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
-				$points = $this->Customer->get_info($customer_id)->points;
-				$points = ($points==NULL ? 0 : $points);
-				$points_percent = ($points_percent==NULL ? 0 : $points_percent);
-				$total_amount_earned = ($total_amount*$points_percent/100);
-				$points = $points + $total_amount_earned;
-				$this->Customer->update_reward_points_value($customer_id, $points);
-				$rewards_data = array('sale_id'=>$sale_id, 'earned'=>$total_amount_earned, 'used'=>$total_amount_used);
-				$this->Rewards->save($rewards_data);
-			}
-		}
+		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
 
 		$customer = $this->Customer->get_info($customer_id);
 
@@ -1199,16 +1170,12 @@ class Sale extends CI_Model
 		if($customer_id == -1)
 		{
 			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1 '
-				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales_suspended'));
+				. $this->db->dbprefix('sales') . ' where sale_status = 1');
 		}
 		else
 		{
-			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1 AND customer_id = ' . $customer_id
-				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales_suspended') . ' where customer_id = ' . $customer_id);
+			$query = $this->db->query('select sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. $this->db->dbprefix('sales') . ' where sale_status = 1 AND customer_id = ' . $customer_id);
 		}
 
 		return $query->result_array();
@@ -1299,7 +1266,7 @@ class Sale extends CI_Model
 		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
 		$this->db->delete('sales_items', array('sale_id' => $sale_id));
 		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
-		$this->db->delete('sales', array('sale_id' => $sale_id));
+		$this->db->delete('sales', array('sale_id' => $sale_id, 'sale_status' => 1));
 
 		$this->db->trans_complete();
 
@@ -1316,6 +1283,97 @@ class Sale extends CI_Model
 		$this->db->join('people', 'people.person_id = sales_suspended.customer_id', 'LEFT');
 
 		return $this->db->get();
+	}
+
+	function get_day_total($sale_time)
+	{
+		$this->db->select("SUM(ROUND((item_unit_price*quantity_purchased-item_unit_price*quantity_purchased*discount_percent/100),2)) as total", FALSE);
+		$this->db->from('sales');
+		$this->db->join('sales_items', "sales_items.sale_id = sales.sale_id");
+		$this->db->where("DATE_FORMAT(sale_time, '%Y-%m-%d') = '" .  date('Y-m-d', strtotime($sale_time)) . "'");
+		return $this->db->get()->result_array();
+	}
+
+	function get_totals($from, $to=NULL)
+	{
+		$this->db->select("SUM(payment_amount)");
+		$this->db->select('sale_time');
+		$this->db->from('sales');
+		$this->db->join('sales_payments', "sales_payments.sale_id = sales.sale_id");
+		if (isset($to))
+		{
+			$this->db->where("sale_time BETWEEN DATE(" . $this->db->escape($from) . ") AND DATE(" . $this->db->escape($to) . ")");
+			$this->db->group_by("DAY(sale_time)");
+		}
+		else
+		{
+			$this->db->where("DATE(sale_time) = DATE(" . $this->db->escape($from) . ")");
+		}
+		return $this->db->get();
+	}
+
+	function get_payments_by_day($sale_time)
+	{
+		$this->db->from('sales');
+		$this->db->join('sales_payments', "sales_payments.sale_id = sales.sale_id");
+		$this->db->where("DATE_FORMAT(sale_time,'%Y-%m-%d') = " . $this->db->escape(date('Y-m-d', strtotime($sale_time))));
+		$this->db->where('payment_type', 'Contant');
+		$this->db->where('invoice_number IS NULL');
+		$this->db->or_where('invoice_number', '');
+		return $this->db->get()->result_array();
+	}
+
+	function update_sale_item($sale_id, $item_id, $sale_item)
+	{
+		$this->db->where('sale_id', $sale_id);
+		$this->db->where('item_id', $item_id);
+		$this->db->update('sales_items', $sale_item);
+	}
+
+	function update_sale_payment($sale_payment_id, $sale_payment)
+	{
+		$this->db->where('sale_id', $sale_payment_id);
+		$this->db->where('payment_type', 'Contant');
+		$this->db->update('sales_payments', $sale_payment);
+	}
+
+	/**
+	 * @param $customer_id
+	 * @param $sale_id
+	 * @param $total_amount
+	 * @param $total_amount_used
+	 */
+	private function save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used)
+	{
+		if (!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE) {
+			$package_id = $this->Customer->get_info($customer_id)->package_id;
+
+			if (!empty($package_id)) {
+				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
+				$points = $this->Customer->get_info($customer_id)->points;
+				$points = ($points == NULL ? 0 : $points);
+				$points_percent = ($points_percent == NULL ? 0 : $points_percent);
+				$total_amount_earned = ($total_amount * $points_percent / 100);
+				$points = $points + $total_amount_earned;
+				$this->Customer->update_reward_points_value($customer_id, $points);
+				$rewards_data = array('sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
+				$this->Rewards->save($rewards_data);
+			}
+		}
+	}
+
+	/**
+	 * @param $sale_status
+	 * @param $dinner_table
+	 * @return int
+	 */
+	private function determine_sale_status(&$sale_status, $dinner_table)
+	{
+		if ($sale_status == '1' && $dinner_table > 2)    //not delivery or take away
+		{
+			return 1;
+		}
+		return 0;
 	}
 }
 ?>

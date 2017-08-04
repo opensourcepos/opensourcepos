@@ -14,7 +14,7 @@ if (isset($error_message))
 		{
 			var send_email = function()
 			{
-				$.get('<?php echo site_url() . "/sales/send_quote/" . $sale_id_num; ?>',
+				$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_id_num . "/quote"; ?>',
 					function(response)
 					{
 						$.notify(response.message, { type: response.success ? 'success' : 'danger'} );

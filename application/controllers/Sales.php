@@ -438,11 +438,6 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
-	public function complete_receipt()
-	{
-		$this->complete();
-	}
-
 	public function complete()
 	{
 		$data = array();
@@ -619,7 +614,7 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function send_invoice($sale_id)
+	public function send_pdf($sale_id, $type = 'invoice')
 	{
 		$sale_data = $this->_load_sale_data($sale_id);
 
@@ -629,61 +624,26 @@ class Sales extends Secure_Controller
 		if(!empty($sale_data['customer_email']))
 		{
 			$to = $sale_data['customer_email'];
-			$subject = $this->lang->line('sales_invoice') . ' ' . $sale_data['invoice_number'];
+			$number = $sale_data[$type."_number"];
+			$subject = $this->lang->line("sales_$type") . ' ' . $number;
 
 			$text = $this->config->item('invoice_email_message');
-			$text = str_replace('$INV', $sale_data['invoice_number'], $text);
-			$text = str_replace('$CO', 'POS ' . $sale_data['sale_id'], $text);
-			$text = $this->_substitute_customer($text, (object)$sale_data);
+			$tokens = array(new Token_invoice_sequence($sale_data['invoice_number']),
+				new Token_invoice_count('POS ' . $sale_data['sale_id']),
+				new Token_customer((object)$sale_data));
+			$text = $this->token_lib->render($text, $tokens);
 
 			// generate email attachment: invoice in pdf format
-			$html = $this->load->view('sales/invoice_email', $sale_data, TRUE);
+			$html = $this->load->view("sales/" . $type . "_email", $sale_data, TRUE);
 			// load pdf helper
 			$this->load->helper(array('dompdf', 'file'));
-			$filename = sys_get_temp_dir() . '/' . $this->lang->line('sales_invoice') . '-' . str_replace('/', '-', $sale_data['invoice_number']) . '.pdf';
+			$filename = sys_get_temp_dir() . '/' . $this->lang->line("sales_N") . '-' . str_replace('/', '-', $number) . '.pdf';
 			if(file_put_contents($filename, pdf_create($html)) !== FALSE)
 			{
 				$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
 			}
 
-			$message = $this->lang->line($result ? 'sales_invoice_sent' : 'sales_invoice_unsent') . ' ' . $to;
-		}
-
-		echo json_encode(array('success' => $result, 'message' => $message, 'id' => $sale_id));
-
-		$this->sale_lib->clear_all();
-
-		return $result;
-	}
-
-	public function send_quote($sale_id)
-	{
-		$sale_data = $this->_load_sale_data($sale_id);
-
-		$result = FALSE;
-		$message = $this->lang->line('sales_invoice_no_email');
-
-		if(!empty($sale_data['customer_email']))
-		{
-			$to = $sale_data['customer_email'];
-			$subject = $this->lang->line('sales_quote') . ' ' . $sale_data['quote_number'];
-
-			$text = $this->config->item('invoice_email_message');
-			$text = str_replace('$INV', $sale_data['invoice_number'], $text);
-			$text = str_replace('$CO', 'POS ' . $sale_data['sale_id'], $text);
-			$text = $this->_substitute_customer($text, (object)$sale_data);
-
-			// generate email attachment: invoice in pdf format
-			$html = $this->load->view('sales/quote_email', $sale_data, TRUE);
-			// load pdf helper
-			$this->load->helper(array('dompdf', 'file'));
-			$filename = sys_get_temp_dir() . '/' . $this->lang->line('sales_quote') . '-' . str_replace('/', '-', $sale_data['quote_number']) . '.pdf';
-			if(file_put_contents($filename, pdf_create($html)) !== FALSE)
-			{
-				$result = $this->email_lib->sendEmail($to, $subject, $text, $filename);
-			}
-
-			$message = $this->lang->line($result ? 'sales_quote_sent' : 'sales_quote_unsent') . ' ' . $to;
+			$message = $this->lang->line($result ? "sales_" . $type . "_sent" : "sales_" . $type . "_unsent") . ' ' . $to;
 		}
 
 		echo json_encode(array('success' => $result, 'message' => $message, 'id' => $sale_id));
@@ -719,83 +679,6 @@ class Sales extends Secure_Controller
 		$this->sale_lib->clear_all();
 
 		return $result;
-	}
-
-	private function _substitute_variable($text, $variable, $object, $function)
-	{
-		// don't query if this variable isn't used
-		if(strstr($text, $variable))
-		{
-			$value = call_user_func(array($object, $function));
-			$text = str_replace($variable, $value, $text);
-		}
-
-		return $text;
-	}
-
-	private function _substitute_customer($text, $customer_info)
-	{
-		// substitute customer info
-		$customer_id = $this->sale_lib->get_customer();
-		if($customer_id != -1 && $customer_info != '')
-		{
-			$text = str_replace('$CU', $customer_info->first_name . ' ' . $customer_info->last_name, $text);
-			$words = preg_split("/\s+/", trim($customer_info->first_name . ' ' . $customer_info->last_name));
-			$acronym = '';
-
-			foreach($words as $w)
-			{
-				$acronym .= $w[0];
-			}
-			$text = str_replace('$CI', $acronym, $text);
-		}
-
-		return $text;
-	}
-
-	private function _is_custom_invoice_number($customer_info)
-	{
-		$invoice_number = $this->config->config['sales_invoice_format'];
-		$invoice_number = $this->_substitute_variables($invoice_number, $customer_info);
-
-		return $this->sale_lib->get_invoice_number() != $invoice_number;
-	}
-
-	private function _is_custom_quote_number($customer_info)
-	{
-		$quote_number = $this->config->config['sales_quote_format'];
-		$quote_number = $this->_substitute_variables($quote_number, $customer_info);
-
-		return $this->sale_lib->get_quote_number() != $quote_number;
-	}
-
-	private function _substitute_variables($text, $customer_info)
-	{
-		$text = $this->_substitute_variable($text, '$YCO', $this->Sale, 'get_invoice_number_for_year');
-		$text = $this->_substitute_variable($text, '$CO', $this->Sale, 'get_invoice_count');
-		$text = $this->_substitute_variable($text, '$SCO', $this->Sale, 'get_suspended_invoice_count');
-		$text = strftime($text);
-		$text = $this->_substitute_customer($text, $customer_info);
-
-		return $text;
-	}
-
-	private function _substitute_invoice_number($customer_info)
-	{
-		$invoice_number = $this->config->config['sales_invoice_format'];
-		$invoice_number = $this->_substitute_variables($invoice_number, $customer_info);
-		$this->sale_lib->set_invoice_number($invoice_number, TRUE);
-
-		return $this->sale_lib->get_invoice_number();
-	}
-
-	private function _substitute_quote_number($customer_info)
-	{
-		$quote_number = $this->config->config['sales_quote_format'];
-		$quote_number = $this->_substitute_variables($quote_number, $customer_info);
-		$this->sale_lib->set_quote_number($quote_number, TRUE);
-
-		return $this->sale_lib->get_quote_number();
 	}
 
 	private function _load_customer_data($customer_id, &$data, $stats = FALSE)
@@ -1171,10 +1054,10 @@ class Sales extends Secure_Controller
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$customer_id = $this->sale_lib->get_customer();
 		$customer_info = $this->Customer->get_info($customer_id);
-		$invoice_number = $this->_is_custom_invoice_number($customer_info) ? $this->sale_lib->get_invoice_number() : NULL;
+		$invoice_number = $this->sale_lib->get_invoice_number();
 		$quote_number = $this->sale_lib->get_quote_number();
 		$comment = $this->sale_lib->get_comment();
-		$sale_status = '1';
+		$sale_status = $this->sale_lib->is_quote_mode() ? '2' : '1';
 
 		$data = array();
 		$sales_taxes = array();
@@ -1189,30 +1072,6 @@ class Sales extends Secure_Controller
 
 		$this->sale_lib->clear_all();
 		$this->_reload($data);
-	}
-
-	public function suspend_quote($quote_number)
-	{
-		$cart = $this->sale_lib->get_cart();
-		$payments = $this->sale_lib->get_payments();
-		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$customer_id = $this->sale_lib->get_customer();
-		$customer_info = $this->Customer->get_info($customer_id);
-		$dinner_table = $this->sale_lib->get_dinner_table();
-		$invoice_number = $this->_is_custom_invoice_number($customer_info) ? $this->sale_lib->get_invoice_number() : NULL;
-		$comment = $this->sale_lib->get_comment();
-		$sale_status = '2'; // Suspend
-
-		$data = array();
-		$sales_taxes = array();
-		if($this->Sale->save($sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sales_taxes) == '-1')
-		{
-			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
-		}
-		else
-		{
-			$data['success'] = $this->lang->line('sales_successfully_suspended_sale');
-		}
 	}
 
 	public function suspended()
@@ -1237,13 +1096,6 @@ class Sales extends Secure_Controller
 		{
 			$this->sale_lib->copy_entire_sale($sale_id);
 			$this->Sale->delete_suspended_sale($sale_id);
-		}
-		else
-		{
-			// This will unsuspended older suspended sales
-			$sale_id = $sale_id * -1;
-			$this->sale_lib->copy_entire_suspended_tables_sale($sale_id);
-			$this->Sale_suspended->delete($sale_id);
 		}
 
 		$this->_reload();

@@ -12,13 +12,16 @@ require_once(APPPATH . 'libraries/tokens/Token_year_invoice_count.php');
  * Token class
  */
 
-class Token
+abstract class Token
 {
 	protected $CI;
 
-	public function __construct()
+	protected $value = '';
+
+	public function __construct($value = '')
 	{
 		$this->CI =& get_instance();
+		$this->value = $value;
 	}
 
 	static function get_tokens()
@@ -27,23 +30,23 @@ class Token
 			new Token_quote_sequence(), new Token_suspended_invoice_count(), new Token_quote_sequence(), new Token_year_invoice_count());
 	}
 
+	abstract public function token_id();
+
+	abstract public function get_value();
+
 	function matches($token_id)
 	{
-		return false;
+		return token_id() == $token_id;
 	}
 
-	public function replace($token_id)
+	function replace($text)
 	{
-		foreach(Token::get_tokens() as $token)
+		if (strstr($text, $this->token_id()))
 		{
-			if ($token->token_id() == $token_id)
-			{
-				return $token->get_value();
-			}
+			return str_replace($this->token_id(), $this->get_value(), $text);
 		}
-		return '';
+		return $text;
 	}
-
 
 }
 ?>

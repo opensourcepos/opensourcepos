@@ -99,7 +99,7 @@ $(document).ready(function()
 	<?php if(!empty($sale_info['email'])): ?>
 		$("#send_invoice").click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get('<?php echo site_url() . "/sales/send_invoice/" . $sale_info['sale_id']; ?>',
+				$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_info['sale_id']; ?>',
 					function(response) {
 						dialog_support.hide();
 						table_support.handle_submit('<?php echo site_url('sales'); ?>', response);

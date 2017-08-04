@@ -299,13 +299,29 @@ ALTER TABLE `ospos_customers`
 
 -- add reCAPTCHA configuration
 
+
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('gcaptcha_enable', '0'),
   ('gcaptcha_secret_key', ''),
   ('gcaptcha_site_key', '');
 
+-- replace old tokens in ospos_app_config
 
--- add Barcode formats
+UPDATE `ospos_app_config` SET `value` = REPLACE(`value`, '$CO', '{CO}');
+UPDATE `ospos_app_config` SET `value` = REPLACE(`value`, '$CU', '{CU}');
+UPDATE `ospos_app_config` SET `value` = REPLACE(`value`, '$INV', '{ISEQ}');
+UPDATE `ospos_app_config` SET `value` = REPLACE(`value`, '$SCO', '{SCO}');
 
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-  ('barcode_formats', '[]');
+--
+-- Copy suspended sales to sales table
+--
+
+INSERT INTO `ospos_sales` (sale_time, customer_id, employee_id, comment, invoice_number, sale_status)
+  SELECT sale_time, customer_id, employee_id, comment, invoice_number, 1 FROM `ospos_sales_suspended`;
+INSERT INTO `ospos_sales_items` (sale_id, item_id, description, serialnumber, line, quantity_purchased, item_cost_price, item_unit_price,
+  discount_percent, item_location) SELECT sale_id, item_id, description, serialnumber, line, quantity_purchased, item_cost_price, item_unit_price,
+  discount_percent, item_location FROM ospos_sales_suspended_items;
+INSERT INTO `ospos_sales_payments` (sale_id, payment_type, payment_amount) SELECT sale_id, payment_type, payment_amount FROM `ospos_sales_suspended_payments`;
+INSERT INTO `ospos_sales_items_taxes` (sale_id, item_id, line, name, percent) SELECT sale_id, item_id, line, name, percent FROM `ospos_sales_suspended_items_taxes`;
+
+DROP TABLE ospos_sales_suspended_payments, ospos_sales_suspended_item_taxes, ospos_sales_suspended_items, ospos_sales_suspended;
