@@ -89,7 +89,6 @@
 //validation and submit handling
 $(document).ready(function()
 {
-
     var enable_disable_customer_sales_tax_support = (function() {
         var customer_sales_tax_support = $("#customer_sales_tax_support").is(":checked");
 //        $("input[name*='tax_category']:not(input[name=customer_sales_tax_support])").prop("disabled", !customer_sales_tax_support);

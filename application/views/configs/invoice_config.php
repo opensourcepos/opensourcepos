@@ -2,7 +2,7 @@
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-			<ul id="receipt_error_message_box" class="error_message_box"></ul>
+			<ul id="invoice_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_invoice_enable'), 'invoice_enable', array('class' => 'control-label col-xs-2')); ?>
@@ -130,6 +130,9 @@ $(document).ready(function()
 	$("#invoice_enable").change(enable_disable_invoice_enable);
 
 	$("#invoice_config_form").validate($.extend(form_support.handler, {
+
+		errorLabelContainer: "#invoice_error_message_box",
+
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
@@ -143,9 +146,7 @@ $(document).ready(function()
 				},
 				dataType:'json'
 			});
-		},
-
-		errorLabelContainer: "#receipt_error_message_box"
+		}
 	}));
 });
 </script>

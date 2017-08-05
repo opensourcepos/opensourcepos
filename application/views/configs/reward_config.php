@@ -2,7 +2,7 @@
     <div id="config_wrapper">
         <fieldset id="config_info">
             <div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
-            <ul id="table_error_message_box" class="error_message_box"></ul>
+            <ul id="reward_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">	
 				<?php echo form_label($this->lang->line('config_customer_reward_enable'), 'customer_reward_enable', array('class' => 'control-label col-xs-2')); ?>
@@ -122,7 +122,7 @@ $(document).ready(function()
 			});
 		},
 
-		errorLabelContainer: "#table_error_message_box",
+		errorLabelContainer: "#reward_error_message_box",
 
 		rules:
 		{

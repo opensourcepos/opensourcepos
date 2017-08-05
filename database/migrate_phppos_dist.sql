@@ -97,7 +97,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('cash_decimals', '2'),
 ('financial_year', '1'),
 ('giftcard_number', 'series'),
-('receipt_font_size', '12');
+('receipt_font_size', '12'),
+('gcaptcha_enable', '0'),
+('gcaptcha_secret_key', ''),
+('gcaptcha_site_key', '');
 
 
 -- --------------------------------------------------------

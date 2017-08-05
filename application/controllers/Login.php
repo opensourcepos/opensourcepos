@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Login extends CI_Controller 
+class Login extends CI_Controller
 {
 	public function index()
 	{
@@ -10,9 +10,15 @@ class Login extends CI_Controller
 		}
 		else
 		{
-			$this->form_validation->set_rules('username', 'lang:login_undername', 'callback_login_check');
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
-			
+
+			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
+
+			if($this->config->item('gcaptcha_enable'))
+			{
+				$this->form_validation->set_rules('g-recaptcha-response', 'lang:login_gcaptcha', 'required|callback_gcaptcha_check');
+			}
+
 			if($this->form_validation->run() == FALSE)
 			{
 				$this->load->view('login');
@@ -22,9 +28,9 @@ class Login extends CI_Controller
 				if($this->config->item('statistics'))
 				{
 					$this->load->library('tracking_lib');
-					
+
 					$this->tracking_lib->track_page('login', 'login');
-					
+
 					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
 					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
 					$this->tracking_lib->track_event('Stats', 'Timezone', $this->config->item('timezone'));
@@ -48,9 +54,9 @@ class Login extends CI_Controller
 	{
 		$password = $this->input->post('password');
 
-		if($this->_security_check($username, $password))
+		if($this->_security_check())
 		{
-			$this->form_validation->set_message('login_check', 'Security check failure');
+			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_security'));
 
 			return FALSE;
 		}
@@ -62,10 +68,33 @@ class Login extends CI_Controller
 			return FALSE;
 		}
 
-		return TRUE;		
+		return TRUE;
 	}
-	
-	private function _security_check($username, $password)
+
+	public function gcaptcha_check($recaptchaResponse)
+	{
+		$url = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $this->config->item('gcaptcha_secret_key') . '&response=' . $recaptchaResponse . '&remoteip=' . $this->input->ip_address();
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($ch, CURLOPT_URL, $url);
+		$result = curl_exec($ch);
+		curl_close($ch);
+
+		$status = json_decode($result, TRUE);
+
+		if(empty($status['success']))
+		{
+			$this->form_validation->set_message('gcaptcha_check', $this->lang->line('login_invalid_gcaptcha'));
+
+			return FALSE;
+		}
+
+		return TRUE;
+	}
+
+	private function _security_check()
 	{
 		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
 	}

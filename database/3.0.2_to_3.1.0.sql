@@ -296,3 +296,10 @@ ALTER TABLE `ospos_customers`
   ADD KEY `package_id` (`package_id`),
   ADD CONSTRAINT `ospos_customers_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `ospos_customers_packages` (`package_id`);
 
+
+-- add reCaptcha configuration
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+  ('gcaptcha_enable', '0'),
+  ('gcaptcha_secret_key', ''),
+  ('gcaptcha_site_key', '');

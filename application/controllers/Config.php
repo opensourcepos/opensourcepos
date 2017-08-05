@@ -286,11 +286,16 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array(
 			'theme' => $this->input->post('theme'),
+			'default_sales_discount' => $this->input->post('default_sales_discount'),
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),
-			'default_sales_discount' => $this->input->post('default_sales_discount'),
 			'notify_horizontal_position' => $this->input->post('notify_horizontal_position'),
 			'notify_vertical_position' => $this->input->post('notify_vertical_position'),
+			'gcaptcha_enable' => $this->input->post('gcaptcha_enable') != NULL,
+			'gcaptcha_secret_key' => $this->input->post('gcaptcha_secret_key'),
+			'gcaptcha_site_key' => $this->input->post('gcaptcha_site_key'),
+			'giftcard_number' => $this->input->post('giftcard_number'),
+			'statistics' => $this->input->post('statistics') != NULL,
 			'custom1_name' => $this->input->post('custom1_name'),
 			'custom2_name' => $this->input->post('custom2_name'),
 			'custom3_name' => $this->input->post('custom3_name'),
@@ -300,9 +305,7 @@ class Config extends Secure_Controller
 			'custom7_name' => $this->input->post('custom7_name'),
 			'custom8_name' => $this->input->post('custom8_name'),
 			'custom9_name' => $this->input->post('custom9_name'),
-			'custom10_name' => $this->input->post('custom10_name'),
-			'statistics' => $this->input->post('statistics') != NULL,
-			'giftcard_number' => $this->input->post('giftcard_number'),
+			'custom10_name' => $this->input->post('custom10_name')
 		);
 
 		$result = $this->Appconfig->batch_save($batch_save_data);

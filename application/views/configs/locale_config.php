@@ -13,7 +13,7 @@
 					<div class="col-xs-2">
 						<label class="control-label">
 							<a href="https://github.com/jekkos/opensourcepos/wiki/Localisation-support" target="_blank">
-								<span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_number_locale_tooltip'); ?>"></span>
+								<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_number_locale_tooltip'); ?>"></span>
 							</a>
 							<span id="number_locale_example">
 								&nbsp&nbsp<?php echo to_currency(1234567890.12300); ?>
@@ -99,7 +99,7 @@
 					?>
                 </div>
                 <div class='col-xs-1'>
-                    <span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
+                    <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
                 </div>
             </div>
 
@@ -130,7 +130,7 @@
 					<?php echo form_input('country_codes', $this->config->item('country_codes'), array('class' => 'form-control input-sm')); ?>
 				</div>
 				<div class="checkbox col-xs-1">
-					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tootltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
+					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_country_codes_tooltip'); ?>"></span></a>
 				</div>
 			</div>
 

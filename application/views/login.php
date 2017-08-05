@@ -18,24 +18,33 @@
 		<?php echo form_open('login') ?>
 			<div id="container">
 				<div align="center" style="color:red"><?php echo validation_errors(); ?></div>
-				
+
 				<div id="login_form">
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
 						<input class="form-control" placeholder="<?php echo $this->lang->line('login_username')?>" name="username" type="username" size=20 autofocus></input>
 					</div>
-					
+
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-lock"></span></span>
 						<input class="form-control" placeholder="<?php echo $this->lang->line('login_password')?>" name="password" type="password" size=20></input>
 					</div>
-					
+
+					<?php
+					if($this->config->item('gcaptcha_enable'))
+					{
+						echo '<script src="https://www.google.com/recaptcha/api.js"></script>';
+						echo '<div class="g-recaptcha" align="center" data-sitekey="' . $this->config->item('gcaptcha_site_key') . '"></div>';
+					}
+					?>
+
 					<input class="btn btn-primary btn-block" type="submit" name="loginButton" value="Go"/>
 				</div>
 			</div>
 		<?php echo form_close(); ?>
-		
+
 		<h1>Open Source Point Of Sale <?php echo $this->config->item('application_version'); ?></h1>
+
 	</div>
 </body>
 </html>
