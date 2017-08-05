@@ -5,6 +5,7 @@ application/sessions/*
 application/logs/*
 application/uploads/*
 public/license/.licenses
+public/license/bower.LICENSES
 public/dist
 dist/
 docs/
