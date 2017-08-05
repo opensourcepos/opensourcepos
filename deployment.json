@@ -14,14 +14,13 @@
         "public_download_numbers": true,
         "public_stats": true
     },
-
-    "version": {
+"version": {
         "name": "3.1.0"
     },
 
     "files":
     [
-        {"includePattern": "dist/(.*)(\..*)", "uploadPattern": "$1.$2"}
+        {"includePattern": "dist/(.*)\.(.*)", "uploadPattern": "$1.$2"}
     ],
     "matrixParams": {
         "override": 1
