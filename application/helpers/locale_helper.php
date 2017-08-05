@@ -64,7 +64,16 @@ function to_currency_no_money($number)
 
 function to_currency_tax($number)
 {
-    return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
+	$config = get_instance()->config;
+
+    if($config->item('customer_sales_tax_support') == '1')
+    {
+		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+    }
+    else
+    {
+		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
+    }
 }
 
 function to_tax_decimals($number)
