@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "137741ac54e015539c74a0871e3c85fb",
+    "hash": "7829229f32a5ad3338386388f6eb61f3",
     "content-hash": "5f6ba4cd8a7aadbc1220fdce09849270",
     "packages": [
         {
@@ -111,7 +111,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/2b3aef2375837339f5b2bfe88e76994481f86264",
+                "url": "https://api.github.com/repos/ins0/google-measurement-php-client/zipball/415cabca0c6d83cd0bd6a8ed6fb695b35f892018",
                 "reference": "2b3aef2375837339f5b2bfe88e76994481f86264",
                 "shasum": ""
             },
