@@ -69,8 +69,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('last_used_invoice_number', '0'),
   ('last_used_quote_number', '0'),
   ('line_sequence', '0'),
-('barcode_formats' '[]'),
-  ('dinner_table_enable','');
+  ('dinner_table_enable', '');
 
 --
 -- Table structure for table `ospos_customer_packages`
@@ -242,10 +241,10 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 UPDATE ospos_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
 
 -- long alternate description
-  
+
 ALTER TABLE `ospos_sales_items`
   MODIFY COLUMN `description` varchar(255) DEFAULT NULL;
-  
+
 -- fix tax category maintenance
 
 DELETE FROM `ospos_tax_categories` where tax_category_id in (0, 1, 2, 3);
@@ -304,3 +303,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('gcaptcha_enable', '0'),
   ('gcaptcha_secret_key', ''),
   ('gcaptcha_site_key', '');
+
+
+-- add Barcode formats
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+  ('barcode_formats', '[]');

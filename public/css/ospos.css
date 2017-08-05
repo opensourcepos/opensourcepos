@@ -138,6 +138,14 @@ button.btn.dropdown-toggle.btn-sm
 	font-size: 13px;
 }
 
+.bootstrap-tagsinput
+{
+	background-color: white;
+	color: black;
+	border: 2px solid #dce4ec;
+	box-shadow: none;
+}
+
 label.required
 {
 	color:red;
