@@ -21,7 +21,8 @@
 		"codeigniter/framework": "^3.1.2",
 		"ins0/google-measurement-php-client": "dev-master#2b3aef2375837339f5b2bfe88e76994481f86264",
 		"dompdf/dompdf": "^0.7.0",
-        "tamtamchik/namecase": "^1.0"
+		"tamtamchik/namecase": "^1.0",
+		"paragonie/random_compat": "^2.0"
 	},
 	"require-dev": {
 		"mikey179/vfsStream": "1.1.*",
