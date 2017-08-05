@@ -26,8 +26,8 @@
   "dependencies": {
     "jquery-form": "~3.46.0",
     "jquery-validate": "~1.13.1",
-    "jquery": "~2.1.1",
-    "jquery-ui": "1.11.4",
+    "jquery": "~2.1.4",
+    "jquery-ui": "~1.11.4",
     "bootstrap3-dialog": "https://github.com/nakupanda/bootstrap3-dialog.git#master",
     "jasny-bootstrap": "~3.1.3",
     "bootswatch": "^3.3.7",
@@ -42,12 +42,9 @@
     "chartist-plugin-tooltip": "~0.0.18",
     "chartist-plugin-barlabels": "https://github.com/mtgibbs/chartist-plugin-barlabels.git#~0.0.5",
     "remarkable-bootstrap-notify": "~3.1.3",
-    "js-cookie": "^2.1.3",
+    "js-cookie": "~2.1.4",
     "blockUI": "*",
-    "bootstrap-tagsinput": "^0.8.0"
-  },
-  "resolutions": {
-    "jquery": "~1.12.4"
+    "bootstrap-tagsinput": "~0.8.0"
   },
   "overrides": {
     "jquery-ui": {
