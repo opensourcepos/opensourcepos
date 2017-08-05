@@ -116,7 +116,8 @@ module.exports = function(grunt) {
 					closeTag: '<!-- end mincss template tags -->',
 					ignorePath: '../../../public/'
 				},
-				src: ['public/dist/*.css', 'public/dist/jquery-ui/*.css'],
+				// jquery-ui must be first or at least before opensourcepos.min.css
+				src: ['public/dist/jquery-ui/*.css', 'public/dist/*.css'],
 				dest: 'application/views/partial/header.php',
 			},
 			css_login: {
