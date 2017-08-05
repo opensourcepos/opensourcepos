@@ -11,6 +11,7 @@ $lang["config_barcode_configuration"] = "Barcode Configuration";
 $lang["config_barcode_content"] = "Barcode Content";
 $lang["config_barcode_first_row"] = "Row 1";
 $lang["config_barcode_font"] = "Font";
+$lang["config_barcode_formats"] = "Input Formats";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_barcode_height"] = "Height (px)";
 $lang["config_barcode_id"] = "Item Id/Name";

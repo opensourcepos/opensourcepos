@@ -4,7 +4,7 @@
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
 			<ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_mailchimp_api_key'), 'mailchimp_api_key', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
@@ -16,8 +16,10 @@
 							'value' => $mailchimp['api_key'])); ?>
 					</div>
 				</div>
-				<div class="checkbox col-xs-1">
-					<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_mailchimp_tooltip'); ?>"></span></a>
+				<div class="col-xs-1">
+					<label class="control-label">
+						<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_mailchimp_tooltip'); ?>"></span></a>
+					</label>
 				</div>
 			</div>
 
@@ -26,7 +28,7 @@
 				<div class='col-xs-4'>
 					<div class="input-group">
 						<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-user"></span></span>
-						<?php echo form_dropdown('mailchimp_list_id', 
+						<?php echo form_dropdown('mailchimp_list_id',
 							$mailchimp['lists'],
 							$mailchimp['list_id'],
 							array('id' => 'mailchimp_list_id', 'class' => 'form-control input-sm')); ?>
@@ -55,7 +57,7 @@ $(document).ready(function()
 			},
 			{
 				data: $.extend(csrf_form_base(), {
-					'mailchimp_api_key': $('#mailchimp_api_key').val()				
+					'mailchimp_api_key': $('#mailchimp_api_key').val()
 				}),
 				success: function(response) {
 					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
@@ -79,7 +81,7 @@ $(document).ready(function()
 				dataType: 'json'
 			});
 		},
-		
+
 		errorLabelContainer: '#mailchimp_error_message_box'
 	}));
 });

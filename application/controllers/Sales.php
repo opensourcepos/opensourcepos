@@ -324,10 +324,11 @@ class Sales extends Secure_Controller
 			$discount = $this->config->item('default_sales_discount');
 		}
 
-		$mode = $this->sale_lib->get_mode();
-		$quantity = ($mode == 'return') ? -1 : 1;
-		$item_location = $this->sale_lib->get_sale_location();
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
+		$this->barcode_lib->parse_barcode_fields($quantity, $item_id_or_number_or_item_kit_or_receipt);
+		$mode = $this->sale_lib->get_mode();
+		$quantity = ($mode == 'return') ? -$quantity : $quantity;
+		$item_location = $this->sale_lib->get_sale_location();
 
 		if($mode == 'return' && $this->Sale->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{

@@ -85,10 +85,11 @@
 						'value' => 'gcaptcha_enable',
 						'checked' => $this->config->item('gcaptcha_enable'))); ?>
 					&nbsp
-					&nbsp
-					<a href="https://www.google.com/recaptcha/admin" target="_blank">
-						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_gcaptcha_tooltip'); ?>"></span>
-					</a>
+					<label class="control-label">
+						<a href="https://www.google.com/recaptcha/admin" target="_blank">
+							<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_gcaptcha_tooltip'); ?>"></span>
+						</a>
+					</label>
 				</div>
 			</div>
 
@@ -143,8 +144,9 @@
 						'value' => 'statistics',
 						'checked' => $this->config->item('statistics'))); ?>
 					&nbsp
-					&nbsp
-					<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
+					<label class="control-label">
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
+					</label>
 				</div>
 			</div>
 

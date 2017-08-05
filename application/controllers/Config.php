@@ -788,7 +788,8 @@ class Config extends Secure_Controller
 			'barcode_page_width' => $this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
-			'barcode_content' => $this->input->post('barcode_content')
+			'barcode_content' => $this->input->post('barcode_content'),
+			'barcode_formats' => json_encode($this->input->post('barcode_formats'))
 		);
 
 		$result = $this->Appconfig->batch_save($batch_save_data);
