@@ -244,7 +244,6 @@ module.exports = function(grunt) {
     
     grunt.registerTask('default', ['wiredep', 'bower_concat', 'bowercopy', 'concat', 'uglify', 'cssmin', 'tags', 'cachebreaker']);
     grunt.registerTask('update', ['composer:update', 'bower:update']);
-    grunt.registerTask('gendocs', ['apigen:generate']);
     grunt.registerTask('genlicense', ['clean:license', 'license', 'bower-licensechecker']);
     grunt.registerTask('package', ['default', 'compress']);
     grunt.registerTask('packages', ['composer:update']);
