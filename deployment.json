@@ -21,7 +21,7 @@
 
     "files":
     [
-        {"includePattern": "dist/(.*)(\..*)", "uploadPattern": "$1-20170805234033.$2"}
+        {"includePattern": "dist/(.*)(\..*)", "uploadPattern": "$1.$2"}
     ],
     "matrixParams": {
         "override": 1
