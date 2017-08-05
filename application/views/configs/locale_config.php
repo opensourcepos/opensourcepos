@@ -98,7 +98,7 @@
 						$this->config->item('cash_decimals'), array('class' => 'form-control input-sm'));
 					?>
                 </div>
-                <div class='col-xs-1'>
+                <div class="checkbox col-xs-1">
                     <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_cash_decimals_tooltip'); ?>"></span>
                 </div>
             </div>

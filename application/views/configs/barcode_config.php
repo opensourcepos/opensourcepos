@@ -91,6 +91,8 @@
                             'checked'=>$this->config->item('barcode_content') === "number")); ?>
                         <?php echo $this->lang->line('config_barcode_number'); ?>
                     </label>
+					&nbsp
+					&nbsp
 					<label class="checkbox-inline">
                         <?php echo form_checkbox(array(
                             'name' => 'barcode_generate_if_empty',

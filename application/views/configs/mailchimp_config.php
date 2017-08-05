@@ -16,6 +16,9 @@
 							'value' => $mailchimp['api_key'])); ?>
 					</div>
 				</div>
+				<div class="checkbox col-xs-1">
+					<a href="http://eepurl.com/b9a05b" target="_blank"><span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_mailchimp_tooltip'); ?>"></span></a>
+				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
