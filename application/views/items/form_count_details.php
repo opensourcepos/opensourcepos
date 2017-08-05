@@ -70,13 +70,13 @@
 <table id="items_count_details" class="table table-striped table-hover">
 	<thead>
 		<tr style="background-color: #999 !important;">
-			<th colspan="4">Inventory Data Tracking</th>
+			<th colspan="4"><?php echo $this->lang->line('items_inventory_data_tracking'); ?></th>
 		</tr>
 		<tr>
-			<th width="30%">Date</th>
-			<th width="20%">Employee</th>
-			<th width="20%">In/Out Qty</th>
-			<th width="30%">Remarks</th>
+			<th width="30%"><?php echo $this->lang->line('items_inventory_date'); ?></th>
+			<th width="20%"><?php echo $this->lang->line('items_inventory_employee'); ?></th>
+			<th width="20%"><?php echo $this->lang->line('items_inventory_in_out_quantity'); ?></th>
+			<th width="30%"><?php echo $this->lang->line('items_inventory_remarks'); ?></th>
 		</tr>
 	</thead>
 	<tbody id="inventory_result">
