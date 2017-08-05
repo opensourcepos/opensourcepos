@@ -1294,10 +1294,12 @@ class Sale extends CI_Model
 	 */
 	private function save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used)
 	{
-		if (!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE) {
+		if (!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
+		{
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
 
-			if (!empty($package_id)) {
+			if (!empty($package_id))
+			{
 				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
 				$points = $this->Customer->get_info($customer_id)->points;
 				$points = ($points == NULL ? 0 : $points);

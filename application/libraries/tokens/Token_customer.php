@@ -33,10 +33,6 @@ class Token_customer extends Token
 				return trim($customer_info->first_name . ' ' . $customer_info->last_name);
 			}
 		}
-		elseif (!empty($this->customer_info))
-		{
-
-		}
 
 		return $value;
 	}
