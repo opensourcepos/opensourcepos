@@ -6,9 +6,9 @@
 
 class Token_invoice_count extends Token
 {
-	public function __construct()
+	public function __construct($value = '')
 	{
-		parent::__construct();
+		parent::__construct($value);
 
 		$this->CI->load->model('Sale');
 	}
@@ -20,7 +20,7 @@ class Token_invoice_count extends Token
 
 	public function get_value()
 	{
-		return $this->CI->Sale->get_invoice_count();
+		return empty($value) ? $this->CI->Sale->get_invoice_count() : $value;
 	}
 }
 ?>

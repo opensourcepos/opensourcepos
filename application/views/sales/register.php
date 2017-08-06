@@ -686,7 +686,7 @@ $(document).ready(function()
 	
 	$("#finish_sale_button").click(function()
 	{
-		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete_receipt"); ?>');
+		$('#buttons_form').attr('action', '<?php echo site_url($controller_name."/complete"); ?>');
 		$('#buttons_form').submit();
 	});
 

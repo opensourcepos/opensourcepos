@@ -88,7 +88,7 @@ class Item_kits extends Secure_Controller
 		if($item_kit_id == -1)
 		{
 			$info->price_option = '0';
-			$info->print_option = '0';
+			$info->print_option = PRINT_ALL;
 			$info->kit_item_id = 0;
 		}
 		foreach(get_object_vars($info) as $property => $value)

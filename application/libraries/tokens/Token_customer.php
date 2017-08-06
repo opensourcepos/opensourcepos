@@ -6,10 +6,13 @@
 
 class Token_customer extends Token
 {
-	public function __construct()
+
+	private $customer_info;
+
+	public function __construct($customer_info = '')
 	{
 		parent::__construct();
-
+		$this->customer_info = $customer_info;
 		$this->CI->load->library('sale_lib');
 	}
 
@@ -22,7 +25,7 @@ class Token_customer extends Token
 	{
 		// substitute customer info
 		$customer_id = $this->CI->sale_lib->get_customer();
-		if($customer_id != -1)
+		if ($customer_id != -1 && empty($this->customer_info))
 		{
 			$customer_info = $this->CI->Customer->get_info($customer_id);
 			if($customer_info != '')
@@ -31,7 +34,7 @@ class Token_customer extends Token
 			}
 		}
 
-		return '';
+		return $value;
 	}
 }
 ?>

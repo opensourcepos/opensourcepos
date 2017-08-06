@@ -130,7 +130,7 @@ class Customer extends Person
 		$this->db->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id');
 		$this->db->join('sales_items_temp AS sales_items_temp', 'sales.sale_id = sales_items_temp.sale_id');
 		$this->db->where('sales.customer_id', $customer_id);
-		$this->db->where('sales.sale_status', 0);
+		$this->db->where('sales.sale_status', COMPLETED);
 		$this->db->group_by('sales.customer_id');
 
 		$stat = $this->db->get()->row();

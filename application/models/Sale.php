@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+define('COMPLETED', 0);
+define('SUSPENDED', 1);
+define('QUOTE', 2);
+
 /**
  * Sale class
  */
@@ -309,15 +313,15 @@ class Sale extends CI_Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('sales.sale_status = 0 AND payment_amount > 0');
+			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
 		}
 		elseif($filters['sale_type'] == 'quotes')
 		{
-			$this->db->where('sales.sale_status = 1 AND sales.quote_number IS NOT NULL');
+			$this->db->where('sales.sale_status = ' . SUSPENDED . ' AND sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('sales.sale_status = 0 AND payment_amount < 0');
+			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
@@ -532,27 +536,14 @@ class Sale extends CI_Model
 			return -1;
 		}
 
-		if($sale_status == '1')	//suspend sales
-		{
-			if($dinner_table > 2)	//not delivery or take away
-			{
-				$table_status = 1;
-			}
-			else
-			{
-				$table_status = 0;
-			}
-		}
-		else
-		{
-			$table_status = 0;
-		}
+		$table_status = $this->determine_sale_status($sale_status, $dinner_table);
 
 		$sales_data = array(
 			'sale_time'		 => date('Y-m-d H:i:s'),
 			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
 			'employee_id'	 => $employee_id,
 			'comment'		 => $comment,
+			'sale_status'    => $sale_status,
 			'invoice_number' => $invoice_number,
 			'quote_number' => $quote_number,
 			'dinner_table_id'=> $dinner_table,
@@ -593,23 +584,7 @@ class Sale extends CI_Model
 			$total_amount = floatval($total_amount) + floatval($payment['payment_amount']);
 		}
 
-		if(!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
-		{
-			$package_id = $this->Customer->get_info($customer_id)->package_id;
-
-			if(!empty($package_id))
-			{
-				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
-				$points = $this->Customer->get_info($customer_id)->points;
-				$points = ($points==NULL ? 0 : $points);
-				$points_percent = ($points_percent==NULL ? 0 : $points_percent);
-				$total_amount_earned = ($total_amount*$points_percent/100);
-				$points = $points + $total_amount_earned;
-				$this->Customer->update_reward_points_value($customer_id, $points);
-				$rewards_data = array('sale_id'=>$sale_id, 'earned'=>$total_amount_earned, 'used'=>$total_amount_used);
-				$this->Rewards->save($rewards_data);
-			}
-		}
+		$this->save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used);
 
 		$customer = $this->Customer->get_info($customer_id);
 
@@ -635,7 +610,7 @@ class Sale extends CI_Model
 
 			$this->db->insert('sales_items', $sales_items_data);
 
-			if($cur_item_info->stock_type === '0' && $sale_status === '0')
+			if($cur_item_info->stock_type === HAS_STOCK && $sale_status === COMPLETED)
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
@@ -836,7 +811,7 @@ class Sale extends CI_Model
 			{
 				$cur_item_info = $this->Item->get_info($item['item_id']);
 
-				if($cur_item_info->stock_type === '0') {
+				if($cur_item_info->stock_type === HAS_STOCK) {
 					// create query to update inventory tracking
 					$inv_data = array(
 						'trans_date' => date('Y-m-d H:i:s'),
@@ -1199,16 +1174,12 @@ class Sale extends CI_Model
 		if($customer_id == -1)
 		{
 			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1 '
-				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales_suspended'));
+				. $this->db->dbprefix('sales') . ' where sale_status = ' . SUSPENDED);
 		}
 		else
 		{
-			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1 AND customer_id = ' . $customer_id
-				. ' union select sale_id, sale_id*-1 as suspended_sale_id, 2 as sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales_suspended') . ' where customer_id = ' . $customer_id);
+			$query = $this->db->query('select sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+				. $this->db->dbprefix('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 
 		return $query->result_array();
@@ -1273,7 +1244,7 @@ class Sale extends CI_Model
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number IS NOT NULL');
-		$this->db->where('sale_status', '1');
+		$this->db->where('sale_status', SUSPENDED);
 
 		return $this->db->count_all_results();
 	}
@@ -1299,7 +1270,7 @@ class Sale extends CI_Model
 		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
 		$this->db->delete('sales_items', array('sale_id' => $sale_id));
 		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
-		$this->db->delete('sales', array('sale_id' => $sale_id));
+		$this->db->delete('sales', array('sale_id' => $sale_id, 'sale_status' => SUSPENDED));
 
 		$this->db->trans_complete();
 
@@ -1313,9 +1284,51 @@ class Sale extends CI_Model
 	{
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
-		$this->db->join('people', 'people.person_id = sales_suspended.customer_id', 'LEFT');
+		$this->db->join('people', 'people.person_id = sales.customer_id', 'LEFT');
+		$this->db-where('sale_status', SUSPENDED);
 
 		return $this->db->get();
+	}
+
+	/**
+	 * @param $customer_id
+	 * @param $sale_id
+	 * @param $total_amount
+	 * @param $total_amount_used
+	 */
+	private function save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used)
+	{
+		if (!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
+		{
+			$package_id = $this->Customer->get_info($customer_id)->package_id;
+
+			if (!empty($package_id))
+			{
+				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
+				$points = $this->Customer->get_info($customer_id)->points;
+				$points = ($points == NULL ? 0 : $points);
+				$points_percent = ($points_percent == NULL ? 0 : $points_percent);
+				$total_amount_earned = ($total_amount * $points_percent / 100);
+				$points = $points + $total_amount_earned;
+				$this->Customer->update_reward_points_value($customer_id, $points);
+				$rewards_data = array('sale_id' => $sale_id, 'earned' => $total_amount_earned, 'used' => $total_amount_used);
+				$this->Rewards->save($rewards_data);
+			}
+		}
+	}
+
+	/**
+	 * @param $sale_status
+	 * @param $dinner_table
+	 * @return int
+	 */
+	private function determine_sale_status(&$sale_status, $dinner_table)
+	{
+		if ($sale_status == SUSPENDED && $dinner_table > 2)    //not delivery or take away
+		{
+			return SUSPENDED;
+		}
+		return COMPLETED;
 	}
 }
 ?>

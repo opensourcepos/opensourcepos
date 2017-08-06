@@ -319,11 +319,6 @@ class Sale_lib
 		return $subtotal;
 	}
 
-	public function get_cash_rounding()
-	{
-
-	}
-
 	/**
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
 	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'
@@ -483,7 +478,8 @@ class Sale_lib
 			{
 				$this->set_mode($this->CI->config->item('default_register_mode'));
 			}
-			else{
+			else
+			{
 				$this->set_mode('sale');
 			}
 		}
@@ -584,7 +580,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = '0')
+	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = HAS_STOCK)
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
@@ -648,16 +644,9 @@ class Sale_lib
 
 		// For print purposes this simpifies line selection
 		// 0 will print, 2 will not print.   The decision about 1 is made here
-		if($print_option =='1')
+		if($print_option == PRINT_PRICED)
 		{
-			if($price == 0)
-			{
-				$print_option = '2';
-			}
-			else
-			{
-				$print_option = '0';
-			}
+			$print_option = ($price == 0) ? PRINT_KIT : PRINT_ALL;
 		}
 
 		$total = $this->get_item_total($quantity, $price, $discount);
@@ -710,7 +699,7 @@ class Sale_lib
 		{
 			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
-			if($item_info->stock_type == '0')
+			if($item_info->stock_type == HAS_STOCK)
 			{
 				$item_quantity = $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity;
 				$quantity_added = $this->get_quantity_already_added($item_id, $item_location);
@@ -811,17 +800,17 @@ class Sale_lib
 
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			if($price_option == '0') // all
+			if($price_option == PRICE_ALL) // all
 			{
 				$price = null;
 			}
-			elseif($price_option == '1') // item kit only
+			elseif($price_option == PRICE_KIT) // item kit only
 			{
 				$price = 0;
 			}
-			elseif($price_option == '2') // item kit plus stock items (assuming materials)
+			elseif($price_option == PRICE_ITEMS) // item kit plus stock items (assuming materials)
 			{
-				if($item_kit_item['stock_type'] == 0) // stock item
+				if($item_kit_item['stock_type'] == ITEM) // stock item
 				{
 					$price = null;
 				}
@@ -831,17 +820,17 @@ class Sale_lib
 				}
 			}
 
-			if($kit_print_option == '0') // all
+			if($kit_print_option == PRINT_ALL)
 			{
-				$print_option = '0'; // print always
+				$print_option = PRINT_ALL;
 			}
-			elseif($kit_print_option == '1') // priced
+			elseif($kit_print_option == PRINT_PRICED) // priced
 			{
-				$print_option = '1'; // print if price not zero
+				$print_option = PRINT_PRICED; // print if price not zero
 			}
-			elseif($kit_print_option == '2') // kit only if price is not zero
+			elseif($kit_print_option == PRINT_KIT) // kit only if price is not zero
 			{
-				$print_option = '2'; // Do not include in list
+				$print_option = PRINT_KIT; // Do not include in list
 			}
 
 			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $price, null, null, null, $print_option, $item_kit_item['stock_type']);
@@ -887,55 +876,6 @@ class Sale_lib
 		}
 
 		return $this->CI->session->userdata('sales_cart');
-	}
-
-	public function copy_entire_suspended_sale($sale_id)
-	{
-		$this->empty_cart();
-		$this->remove_customer();
-
-		foreach($this->CI->Sale->get_sale_items($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
-				$row->description, $row->serialnumber, TRUE, $row->print_option, $row->stock_type);
-		}
-
-		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
-		{
-			$this->add_payment($row->payment_type, $row->payment_amount);
-		}
-
-		$suspended_sale_info = $this->CI->Sale->get_info($sale_id)->row();
-		$this->set_customer($suspended_sale_info->person_id);
-		$this->set_comment($suspended_sale_info->comment);
-		$this->set_invoice_number($suspended_sale_info->invoice_number);
-		$this->set_quote_number($suspended_sale_info->quote_number);
-		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
-	}
-
-	public function copy_entire_suspended_tables_sale($sale_id)
-	{
-		$this->empty_cart();
-		$this->remove_customer();
-
-		foreach($this->CI->Sale_suspended->get_sale_items($sale_id)->result() as $row)
-		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
-				$row->description, $row->serialnumber, TRUE, $row->print_option, $row->stock_type);
-		}
-
-		foreach($this->CI->Sale_suspended->get_sale_payments($sale_id)->result() as $row)
-		{
-			$this->add_payment($row->payment_type, $row->payment_amount);
-		}
-
-		$suspended_sale_info = $this->CI->Sale_suspended->get_info($sale_id)->row();
-		$this->set_customer($suspended_sale_info->person_id);
-		$this->set_comment($suspended_sale_info->comment);
-
-		$this->set_invoice_number($suspended_sale_info->invoice_number);
-		$this->set_quote_number($suspended_sale_info->quote_number);
-		$this->set_dinner_table($suspended_sale_info->dinner_table_id);
 	}
 
 	public function clear_all()

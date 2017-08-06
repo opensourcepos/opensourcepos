@@ -20,17 +20,8 @@ class Token_lib
 	/**
 	 * Expands all of the tokens found in a given text string and returns the results.
 	 */
-	public function render($tokened_text)
+	public function render($tokened_text, $tokens = array())
 	{
-
-		// Transform legacy "$" tokens to their brace token equivalent
-		if(strpos($tokened_text, '$') !== FALSE)
-		{
-			$tokened_text = str_replace('$YCO', '{YCO}', $tokened_text);
-			$tokened_text = str_replace('$CO', '{CO}', $tokened_text);
-			$tokened_text = str_replace('$SCO', '{SCO}', $tokened_text);
-			$tokened_text = str_replace('$CU', '{CU}', $tokened_text);
-		}
 
 		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== FALSE)
@@ -55,7 +46,7 @@ class Token_lib
 
 		$token_values = array();
 		$tokens_to_replace = array();
-		$this->generate($token_tree, $tokens_to_replace, $token_values);
+		$this->generate($token_tree, $tokens_to_replace, $token_values, $tokens);
 
 		return str_replace($tokens_to_replace, $token_values, $tokened_text);
 	}
@@ -87,12 +78,12 @@ class Token_lib
 		return $token_tree;
 	}
 
-	public function generate($used_tokens, &$tokens_to_replace, &$token_values)
+	public function generate($used_tokens, &$tokens_to_replace, &$token_values, $tokens)
 	{
 		foreach($used_tokens as $token_code => $token_info)
 		{
 			// Generate value here based on the key value
-			$token_value = (new Token())->replace($token_code);
+			$token_value = $this->resolveToken($token_code);
 
 			foreach($token_info as $length => $token_spec)
 			{
@@ -108,6 +99,17 @@ class Token_lib
 			}
 		}
 		return $token_values;
+	}
+
+	private function resolveToken($token_code, $tokens = array())
+	{
+		foreach (array_merge($tokens, Token::get_tokens()) as $token) {
+			if ($token->token_id() == $token_code)
+			{
+				return $token->get_value();
+			}
+		}
+		return '';
 	}
 }
 
