@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+define('COMPLETED', 0);
+define('SUSPENDED', 1);
+define('QUOTE', 2);
+
 /**
  * Sale class
  */
@@ -309,15 +313,15 @@ class Sale extends CI_Model
 
 		if($filters['sale_type'] == 'sales')
 		{
-			$this->db->where('sales.sale_status = 0 AND payment_amount > 0');
+			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount > 0');
 		}
 		elseif($filters['sale_type'] == 'quotes')
 		{
-			$this->db->where('sales.sale_status = 1 AND sales.quote_number IS NOT NULL');
+			$this->db->where('sales.sale_status = ' . SUSPENDED . ' AND sales.quote_number IS NOT NULL');
 		}
 		elseif($filters['sale_type'] == 'returns')
 		{
-			$this->db->where('sales.sale_status = 0 AND payment_amount < 0');
+			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount < 0');
 		}
 
 		if($filters['only_invoices'] != FALSE)
@@ -606,7 +610,7 @@ class Sale extends CI_Model
 
 			$this->db->insert('sales_items', $sales_items_data);
 
-			if($cur_item_info->stock_type === '0' && $sale_status === '0')
+			if($cur_item_info->stock_type === HAS_STOCK && $sale_status === COMPLETED)
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
@@ -807,7 +811,7 @@ class Sale extends CI_Model
 			{
 				$cur_item_info = $this->Item->get_info($item['item_id']);
 
-				if($cur_item_info->stock_type === '0') {
+				if($cur_item_info->stock_type === HAS_STOCK) {
 					// create query to update inventory tracking
 					$inv_data = array(
 						'trans_date' => date('Y-m-d H:i:s'),
@@ -1170,12 +1174,12 @@ class Sale extends CI_Model
 		if($customer_id == -1)
 		{
 			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1');
+				. $this->db->dbprefix('sales') . ' where sale_status = ' . SUSPENDED);
 		}
 		else
 		{
 			$query = $this->db->query('select sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
-				. $this->db->dbprefix('sales') . ' where sale_status = 1 AND customer_id = ' . $customer_id);
+				. $this->db->dbprefix('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 
 		return $query->result_array();
@@ -1240,7 +1244,7 @@ class Sale extends CI_Model
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number IS NOT NULL');
-		$this->db->where('sale_status', '1');
+		$this->db->where('sale_status', SUSPENDED);
 
 		return $this->db->count_all_results();
 	}
@@ -1266,7 +1270,7 @@ class Sale extends CI_Model
 		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
 		$this->db->delete('sales_items', array('sale_id' => $sale_id));
 		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
-		$this->db->delete('sales', array('sale_id' => $sale_id, 'sale_status' => 1));
+		$this->db->delete('sales', array('sale_id' => $sale_id, 'sale_status' => SUSPENDED));
 
 		$this->db->trans_complete();
 
@@ -1281,7 +1285,7 @@ class Sale extends CI_Model
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
 		$this->db->join('people', 'people.person_id = sales.customer_id', 'LEFT');
-		$this->db-where('sale_status', 1);
+		$this->db-where('sale_status', SUSPENDED);
 
 		return $this->db->get();
 	}
@@ -1320,11 +1324,11 @@ class Sale extends CI_Model
 	 */
 	private function determine_sale_status(&$sale_status, $dinner_table)
 	{
-		if ($sale_status == '1' && $dinner_table > 2)    //not delivery or take away
+		if ($sale_status == SUSPENDED && $dinner_table > 2)    //not delivery or take away
 		{
-			return 1;
+			return SUSPENDED;
 		}
-		return 0;
+		return COMPLETED;
 	}
 }
 ?>

@@ -351,7 +351,7 @@ class Sales extends Secure_Controller
 			}
 
 			$price = NULL;
-			$print_option = 0; // Always include in list of items on invoice
+			$print_option = PRINT_ALL; // Always include in list of items on invoice
 
 			if(!empty($kit_item_id))
 			{
@@ -525,7 +525,7 @@ class Sales extends Secure_Controller
 			else
 			{
 				$data['invoice_number'] = $invoice_number;
-				$data['sale_status'] = '0'; // Complete
+				$data['sale_status'] = COMPLETED;
 
 				// Save the data to the sales table
 				$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data["quote_number"], $data['payments'], $data['dinner_table'], $data['taxes']);
@@ -570,7 +570,7 @@ class Sales extends Secure_Controller
 			{
 				$data['invoice_number'] = $invoice_number;
 				$data['quote_number'] = $quote_number;
-				$data['sale_status'] = '1'; // Suspended
+				$data['sale_status'] = SUSPENDED;
 
 				$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $quote_number, $data['payments'], $data['dinner_table'], $data['taxes']);
 				$this->sale_lib->set_suspended_id($data['sale_id_num']);
@@ -1057,7 +1057,7 @@ class Sales extends Secure_Controller
 		$invoice_number = $this->sale_lib->get_invoice_number();
 		$quote_number = $this->sale_lib->get_quote_number();
 		$comment = $this->sale_lib->get_comment();
-		$sale_status = $this->sale_lib->is_quote_mode() ? '2' : '1';
+		$sale_status = $this->sale_lib->is_quote_mode() ? QUOTE : SUSPENDED;
 
 		$data = array();
 		$sales_taxes = array();
@@ -1114,11 +1114,11 @@ class Sales extends Secure_Controller
 		$filtered_cart = array();
 		foreach($cart as $id => $item)
 		{
-			if($item['print_option'] == '0') // always include
+			if($item['print_option'] == PRINT_ALL) // always include
 			{
 				$filtered_cart[$id] = $item;
 			}
-			elseif($item['print_option'] == '1' && $item['price'] != 0)  // include only if the price is not zero
+			elseif($item['print_option'] == PRINT_PRICED && $item['price'] != 0)  // include only if the price is not zero
 			{
 				$filtered_cart[$id] = $item;
 			}

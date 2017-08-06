@@ -56,7 +56,7 @@
 							'type'=>'radio',
 							'id'=>'stock_type',
 							'value'=>0,
-							'checked'=>$item_info->stock_type === '0')
+							'checked'=>$item_info->stock_type === HAS_STOCK)
 					); ?> <?php echo $this->lang->line('items_stock'); ?>
 				</label>
 				<label class="radio-inline">
@@ -65,7 +65,7 @@
 							'type'=>'radio',
 							'id'=>'stock_type',
 							'value'=>1,
-							'checked'=>$item_info->stock_type === '1')
+							'checked'=>$item_info->stock_type === HAS_NO_STOCK)
 					); ?> <?php echo $this->lang->line('items_nonstock'); ?>
 				</label>
 			</div>
@@ -80,7 +80,7 @@
 							'type'=>'radio',
 							'id'=>'item_type',
 							'value'=>0,
-							'checked'=>$item_info->item_type === '0')
+							'checked'=>$item_info->item_type === ITEM)
 					); ?> <?php echo $this->lang->line('items_standard'); ?>
 				</label>
 				<label class="radio-inline">
@@ -89,7 +89,7 @@
 							'type'=>'radio',
 							'id'=>'item_type',
 							'value'=>1,
-							'checked'=>$item_info->item_type === '1')
+							'checked'=>$item_info->item_type === ITEM_KIT)
 					); ?> <?php echo $this->lang->line('items_kit'); ?>
 				</label>
 			</div>
