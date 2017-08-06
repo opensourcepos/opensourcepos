@@ -123,8 +123,8 @@ if (isset($error_message))
 			?>
 			<tr class="item-row">
 				<td></td>
-				<td class="item-name"><textarea cols="6"><?php echo $item['description']; ?></textarea></td>
-				<td style='text-align:center;' colspan="4"><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
+				<td class="item-name"  colspan = "4"><div><?php echo $item['description']; ?></div></td>
+				<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
 			</tr>
 		<?php
 			}

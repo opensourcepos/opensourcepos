@@ -125,8 +125,8 @@ $(document).ready(function()
 			?>
 				<tr class="item-row" >
 					<td ></td >
-					<td class="item-description" colspan = "4" ><textarea cols = "6" ><?php echo $item['description']; ?></textarea></td>
-					<td style='text-align:center;'><textarea cols="6"><?php echo $item['serialnumber']; ?></textarea></td>
+					<td class="item-description" colspan = "4" ><div><?php echo $item['description']; ?></div></td>
+					<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
 				</tr>
 		<?php
 			}
