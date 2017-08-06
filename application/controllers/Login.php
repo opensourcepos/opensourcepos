@@ -54,9 +54,9 @@ class Login extends CI_Controller
 	{
 		$password = $this->input->post('password');
 
-		if($this->_security_check())
+		if(!$this->_installation_check())
 		{
-			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_security'));
+			$this->form_validation->set_message('login_check', $this->lang->line('login_invalid_installation'));
 
 			return FALSE;
 		}
@@ -94,9 +94,31 @@ class Login extends CI_Controller
 		return TRUE;
 	}
 
-	private function _security_check()
+	private function _installation_check()
 	{
-		return preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php'));
+		// get PHP extensions and check that the required ones are installed
+		$extensions = implode(', ', get_loaded_extensions());
+		$keys = array('bcmath', 'intl', 'gd', 'sockets', 'mcrypt');
+		$pattern = '/';
+		foreach($keys as $key) 
+		{
+			$pattern .= '(?=.*\b' . preg_quote($key, '/') . '\b)';
+		}
+		$pattern .= '/i';
+		$result = preg_match($pattern, $extensions);
+
+		if(!$result)
+		{
+			error_log('Check your php.ini');
+			error_log('PHP installed extensions: ' . $extensions);
+			error_log('PHP required extensions: ' . implode(', ', $keys));
+		}
+		else
+		{
+			$result = preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php')) != TRUE;
+		}
+
+		return $result;
 	}
 }
 ?>
