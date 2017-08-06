@@ -26,7 +26,6 @@ deploy:
     provider: bintray
     file: deployment.json
     user: jekkos
-    on:
-        all_branches: true
+    on: master
     key:
         secure: NGzLiwBZ4A6zO9AqUsVeht29A7UZejO/LKEJntQMdzYaBXD6Ao3zXpS3bPN3UwU/YTNdcm3I7DemAL2ypAkCxcdzfp842eeTlFMDuzUiD5MxrQyWeZnbFxyeN4bJgXOnH/93eXxoIg0qT7ORVzwHrrA6vOqfxB1Nq/DAV2MpK/0=
