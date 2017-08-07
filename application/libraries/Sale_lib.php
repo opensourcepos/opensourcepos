@@ -808,7 +808,7 @@ class Sale_lib
 			{
 				$price = 0;
 			}
-			elseif($price_option == PRICE_ITEMS) // item kit plus stock items (assuming materials)
+			elseif($price_option == PRICE_KIT_ITEMS) // item kit plus stock items (assuming materials)
 			{
 				if($item_kit_item['stock_type'] == ITEM) // stock item
 				{

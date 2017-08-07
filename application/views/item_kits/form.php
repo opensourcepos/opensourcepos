@@ -77,7 +77,7 @@
                             'type'=>'radio',
                             'id'=>'price_option',
                             'value'=>2,
-                            'checked'=>$item_kit_info->price_option == PRICE_ITEMS)
+                            'checked'=>$item_kit_info->price_option == PRICE_KIT_ITEMS)
                     ); ?> <?php echo $this->lang->line('item_kits_kit_and_stock'); ?>
                 </label>
 
