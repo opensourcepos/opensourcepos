@@ -325,15 +325,17 @@ INSERT INTO `ospos_sales_items` (sale_id, item_id, description, serialnumber, li
 INSERT INTO `ospos_sales_payments` (sale_id, payment_type, payment_amount) SELECT sale_id, payment_type, payment_amount FROM `ospos_sales_suspended_payments`;
 INSERT INTO `ospos_sales_items_taxes` (sale_id, item_id, line, name, percent) SELECT sale_id, item_id, line, name, percent FROM `ospos_sales_suspended_items_taxes`;
 
-ALTER TABLE ospos_sales_suspended_items_taxes DROP FOREIGN KEY ospos_sales_suspended_items_taxes_ibfk_1;
-ALTER TABLE ospos_sales_suspended_items_taxes DROP FOREIGN KEY ospos_sales_suspended_items_taxes_ibfk_2;
+ALTER TABLE `ospos_sales_suspended_payments` DROP FOREIGN KEY `ospos_sales_suspended_payments_ibfk_1`;
 
-ALTER TABLE ospos_sales_suspended_items DROP FOREIGN KEY ospos_sales_suspended_items_ibfk_1;
-ALTER TABLE ospos_sales_suspended_items DROP FOREIGN KEY ospos_sales_suspended_items_ibfk_2;
-ALTER TABLE ospos_sales_suspended_items DROP FOREIGN KEY ospos_sales_suspended_items_ibfk_3;
+ALTER TABLE `ospos_sales_suspended_items_taxes` DROP FOREIGN KEY `ospos_sales_suspended_items_taxes_ibfk_1`;
+ALTER TABLE `ospos_sales_suspended_items_taxes` DROP FOREIGN KEY `ospos_sales_suspended_items_taxes_ibfk_2`;
 
-ALTER TABLE ospos_sales_suspended DROP FOREIGN KEY ospos_sales_suspended_ibfk_1;
-ALTER TABLE ospos_sales_suspended DROP FOREIGN KEY ospos_sales_suspended_ibfk_2;
-ALTER TABLE ospos_sales_suspended DROP FOREIGN KEY ospos_sales_suspended_ibfk_3;
+ALTER TABLE `ospos_sales_suspended_items` DROP FOREIGN KEY `ospos_sales_suspended_items_ibfk_1`;
+ALTER TABLE `ospos_sales_suspended_items` DROP FOREIGN KEY `ospos_sales_suspended_items_ibfk_2`;
+ALTER TABLE `ospos_sales_suspended_items` DROP FOREIGN KEY `ospos_sales_suspended_items_ibfk_3`;
 
-DROP TABLE ospos_sales_suspended_payments, ospos_sales_suspended_item_taxes, ospos_sales_suspended_items, ospos_sales_suspended;
+ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk_1`;
+ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk_2`;
+ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk_3`;
+
+DROP TABLE `ospos_sales_suspended_payments`, `ospos_sales_suspended_items_taxes`, `ospos_sales_suspended_items`, `ospos_sales_suspended`;
