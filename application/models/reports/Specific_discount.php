@@ -67,7 +67,7 @@ class Specific_discount extends Report
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
-			$this->db->where('sale_status = '. SUSPENDED .' and quote_number IS NOT NULL');
+			$this->db->where('sale_status = ' . SUSPENDED . ' and quote_number IS NOT NULL');
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{

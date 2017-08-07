@@ -610,7 +610,7 @@ class Sale extends CI_Model
 
 			$this->db->insert('sales_items', $sales_items_data);
 
-			if($cur_item_info->stock_type === HAS_STOCK && $sale_status === COMPLETED)
+			if($cur_item_info->stock_type == HAS_STOCK && $sale_status == COMPLETED)
 			{
 				// Update stock quantity if item type is a standard stock item and the sale is a standard sale
 				$item_quantity = $this->Item_quantity->get_item_quantity($item['item_id'], $item['item_location']);
@@ -811,7 +811,7 @@ class Sale extends CI_Model
 			{
 				$cur_item_info = $this->Item->get_info($item['item_id']);
 
-				if($cur_item_info->stock_type === HAS_STOCK) {
+				if($cur_item_info->stock_type == HAS_STOCK) {
 					// create query to update inventory tracking
 					$inv_data = array(
 						'trans_date' => date('Y-m-d H:i:s'),

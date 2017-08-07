@@ -92,11 +92,11 @@ abstract class Summary_report extends Report
 
 		if($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sale_status = '. COMPLETED . ' and quantity_purchased > 0');
+			$this->db->where('sale_status = ' . COMPLETED . ' and quantity_purchased > 0');
 		}
 		elseif($inputs['sale_type'] == 'all')
 		{
-			$this->db->where('sale_status = '. COMPLETED);
+			$this->db->where('sale_status = ' . COMPLETED);
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{

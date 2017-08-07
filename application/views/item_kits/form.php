@@ -59,7 +59,7 @@
                             'type'=>'radio',
                             'id'=>'price_option',
                             'value'=>0,
-                            'checked'=>$item_kit_info->price_option === PRICE_ALL)
+                            'checked'=>$item_kit_info->price_option == PRICE_ALL)
                     ); ?> <?php echo $this->lang->line('item_kits_kit_and_components'); ?>
                 </label>
                 <label class="radio-inline">
@@ -68,7 +68,7 @@
                             'type'=>'radio',
                             'id'=>'price_option',
                             'value'=>1,
-                            'checked'=>$item_kit_info->price_option === PRICE_KIT)
+                            'checked'=>$item_kit_info->price_option == PRICE_KIT)
                     ); ?> <?php echo $this->lang->line('item_kits_kit_only'); ?>
                 </label>
                 <label class="radio-inline">
@@ -77,7 +77,7 @@
                             'type'=>'radio',
                             'id'=>'price_option',
                             'value'=>2,
-                            'checked'=>$item_kit_info->price_option === PRICE_ITEMS)
+                            'checked'=>$item_kit_info->price_option == PRICE_ITEMS)
                     ); ?> <?php echo $this->lang->line('item_kits_kit_and_stock'); ?>
                 </label>
 
@@ -93,7 +93,7 @@
                             'type'=>'radio',
                             'id'=>'print_option',
                             'value'=>0,
-                            'checked'=>$item_kit_info->print_option === PRINT_ALL)
+                            'checked'=>$item_kit_info->print_option == PRINT_ALL)
                     ); ?> <?php echo $this->lang->line('item_kits_all'); ?>
                 </label>
                 <label class="radio-inline">
@@ -102,7 +102,7 @@
                             'type'=>'radio',
                             'id'=>'print_option',
                             'value'=>1,
-                            'checked'=>$item_kit_info->print_option === PRINT_PRICED)
+                            'checked'=>$item_kit_info->print_option == PRINT_PRICED)
                     ); ?> <?php echo $this->lang->line('item_kits_priced_only'); ?>
                 </label>
                 <label class="radio-inline">
@@ -111,7 +111,7 @@
                             'type'=>'radio',
                             'id'=>'print_option',
                             'value'=>2,
-                            'checked'=>$item_kit_info->print_option === PRINT_KIT)
+                            'checked'=>$item_kit_info->print_option == PRINT_KIT)
                     ); ?> <?php echo $this->lang->line('item_kits_kit_only'); ?>
                 </label>
 
