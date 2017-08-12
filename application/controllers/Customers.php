@@ -25,6 +25,32 @@ class Customers extends Persons
 	}
 
 	/*
+	Gets one row for a customer manage table. This is called using AJAX to update one row.
+	*/
+	public function get_row($row_id)
+	{
+		$person = $this->Customer->get_info($row_id);
+
+		// retrieve the total amount the customer spent so far together with min, max and average values
+		$stats = $this->Customer->get_stats($person->person_id);
+		if(empty($stats))
+		{
+			//create object with empty properties.
+			$stats = new stdClass;
+			$stats->total = 0;
+			$stats->min = 0;
+			$stats->max = 0;
+			$stats->average = 0;
+			$stats->avg_discount = 0;
+			$stats->quantity = 0;
+		}
+
+		$data_row = $this->xss_clean(get_customer_data_row($person, $stats, $this));
+
+		echo json_encode($data_row);
+	}
+
+	/*
 	Returns customer table data rows. This will be called with AJAX.
 	*/
 	public function search()
