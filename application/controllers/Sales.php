@@ -36,12 +36,14 @@ class Sales extends Secure_Controller
 			if($this->config->item('invoice_enable') == TRUE)
 			{
 				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+					'only_due' => $this->lang->line('sales_due_filter'),
 					'only_check' => $this->lang->line('sales_check_filter'),
 					'only_invoices' => $this->lang->line('sales_invoice_filter'));
 			}
 			else
 			{
 				$data['filters'] = array('only_cash' => $this->lang->line('sales_cash_filter'),
+					'only_due' => $this->lang->line('sales_due_filter'),
 					'only_check' => $this->lang->line('sales_check_filter'));
 			}
 
@@ -70,6 +72,7 @@ class Sales extends Secure_Controller
 						 'start_date' => $this->input->get('start_date'),
 						 'end_date' => $this->input->get('end_date'),
 						 'only_cash' => FALSE,
+						 'only_due' => FALSE,
 						 'only_check' => FALSE,
 						 'only_invoices' => $this->config->item('invoice_enable') && $this->input->get('only_invoices'),
 						 'is_valid_receipt' => $this->Sale->is_valid_receipt($search));
