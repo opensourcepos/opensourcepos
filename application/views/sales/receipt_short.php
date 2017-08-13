@@ -62,9 +62,6 @@
 		?>
 			<tr>
 				<td><?php echo ucfirst($item['name']); ?></td>
-			</tr>
-			<tr>
-				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td class="total-value"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
 			</tr>
