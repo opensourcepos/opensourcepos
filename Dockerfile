@@ -16,4 +16,4 @@ COPY . /app
 RUN ln -s /app/*[^public] /var/www && rm -rf /var/www/html && ln -nsf /app/public /var/www/html
 RUN chmod 755 /app/public/uploads && chown -R www-data:www-data /app/public /app/application
 
-RUN sed -i -e "s/\(localhost\)/web/g" test/ospos.js
+RUN [ ! -f test/ospos.js ] || sed -i -e "s/\(localhost\)/web/g" test/ospos.js
