@@ -230,7 +230,7 @@ module.exports = function(grunt) {
 					archive: 'dist/opensourcepos.zip'
 				},
 				files: [
-					{src: ['public/**', 'vendor/**', 'application/**', '!/public/images/menubar/png/', '!/public/dist/bootswatch/', '/public/dist/bootswatch/*/*.css', 'database/**', '*.txt', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '.htaccess', 'public/.htaccess']}
+					{src: ['public/**', 'vendor/**', 'application/**', '!/public/images/menubar/png/', '!/public/dist/bootswatch/', '/public/dist/bootswatch/*/*.css', 'database/**', '*.txt', '*.md', 'LICENSE', 'docker*', 'Dockerfile', '**/.htaccess', '*.csv']}
 				]
 			}
 		}
