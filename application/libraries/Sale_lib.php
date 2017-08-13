@@ -1155,7 +1155,7 @@ class Sale_lib
 		$cash_rounding_code = $this->CI->config->item('cash_rounding_code');
 		$rounded_total = $total;
 
-		return Rounding_mode::round_number($total, $cash_decimals);
+		return Rounding_mode::round_number($cash_rounding_code, $total, $cash_decimals);
 	}
 }
 
