@@ -1,6 +1,9 @@
 <?php 
 
+$lang["login_gcaptcha"] = "";
 $lang["login_go"] = "Juhúúúúúú!";
+$lang["login_invalid_gcaptcha"] = "";
+$lang["login_invalid_installation"] = "";
 $lang["login_invalid_username_and_password"] = "Érvénytelen felhasználói név vagy jelszó";
 $lang["login_login"] = "Belépés";
 $lang["login_password"] = "Jelszó";

@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "Ara";
 $lang["common_state"] = "Bölge";
 $lang["common_submit"] = "Onayla";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "Yeni satışları göster";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "Hoşgeldiniz";

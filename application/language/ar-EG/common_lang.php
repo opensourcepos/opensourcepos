@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "بحث عن";
 $lang["common_state"] = "المحافظة";
 $lang["common_submit"] = "حفظ";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "عرض أحدث المبيعات";
 $lang["common_website"] = "الموقع الإلكترونى";
 $lang["common_welcome"] = "مرحباً";

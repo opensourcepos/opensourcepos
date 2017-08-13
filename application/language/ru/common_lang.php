@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "Искали за";
 $lang["common_state"] = "Штат";
 $lang["common_submit"] = "Подавать";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "Посмотреть Недавние Продажи";
 $lang["common_website"] = "веб-сайт";
 $lang["common_welcome"] = "Добро пожаловать";

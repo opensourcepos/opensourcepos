@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "Keresett ";
 $lang["common_state"] = "Megye";
 $lang["common_submit"] = "Elküld";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "Eladások megtekintése";
 $lang["common_website"] = "weboldalt";
 $lang["common_welcome"] = "Üdvözlet";

@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "ค้นหาสำหรับ";
 $lang["common_state"] = "จังหวัด";
 $lang["common_submit"] = "ส่งข้อมูล";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "การขายล่าสุด";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "ยินดีต้อนรับ";

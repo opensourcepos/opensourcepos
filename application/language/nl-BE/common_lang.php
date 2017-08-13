@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "Gezocht op";
 $lang["common_state"] = "Provincie";
 $lang["common_submit"] = "Verzend";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "Bekijk recente verkoop";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "Welkom";

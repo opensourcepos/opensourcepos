@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "Gescuht nach";
 $lang["common_state"] = "BL/Kanton";
 $lang["common_submit"] = "Senden";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "Letzte Verkäufe";
 $lang["common_website"] = "Website";
 $lang["common_welcome"] = "Willkommen";

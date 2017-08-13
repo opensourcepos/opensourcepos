@@ -58,6 +58,7 @@ $lang["common_searched_for"] = "Tražili";
 $lang["common_state"] = "Država";
 $lang["common_submit"] = "Prihvati";
 $lang["common_total_spent"] = "";
+$lang["common_unknown"] = "";
 $lang["common_view_recent_sales"] = "Pogledaj nedavne prodaje";
 $lang["common_website"] = "web stranicu";
 $lang["common_welcome"] = "Dobrodošli";
