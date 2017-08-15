@@ -97,7 +97,7 @@
 				source: function (request, response) {
 					var params = default_params(key, value.response && value.response.field, options.language);
 					var request_params = {q: request.term};
-					$.each(options.extra_params, function(key, param) {
+					options.extra_params && $.each(options.extra_params, function(key, param) {
 						request_params[key] = typeof param == "function" ? param() : param;
 					});
 
