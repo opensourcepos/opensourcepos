@@ -2,7 +2,7 @@
 
 $lang["datepicker_all_time"] = "全部";
 $lang["datepicker_apply"] = "Apply";
-$lang["datepicker_cancel"] = "Cancel";
+$lang["datepicker_cancel"] = "取消銷售";
 $lang["datepicker_custom"] = "Custom";
 $lang["datepicker_from"] = "From";
 $lang["datepicker_last_30"] = "過去七天";
