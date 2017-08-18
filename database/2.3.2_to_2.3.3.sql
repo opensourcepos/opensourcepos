@@ -13,6 +13,15 @@ ALTER TABLE `ospos_items`
   CHANGE COLUMN `item_pic` `pic_id` int(10) DEFAULT NULL;
 
 -- Clear out emptied comments (0 inserted in comment if empty #192)
+ALTER TABLE ospos_sales
+MODIFY COLUMN comment text DEFAULT NULL;
+
+ALTER TABLE ospos_receivings
+MODIFY COLUMN comment text DEFAULT NULL;
+
+ALTER TABLE ospos_sales_suspended
+MODIFY COLUMN comment text DEFAULT NULL;
+
 UPDATE `ospos_sales` SET comment = NULL WHERE comment = '0';
 UPDATE `ospos_receivings` SET comment = NULL WHERE comment = '0';
 UPDATE `ospos_sales_suspended` SET comment = NULL WHERE comment = '0';
