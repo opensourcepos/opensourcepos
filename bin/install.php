@@ -255,6 +255,11 @@ class Installer
             if ($file->isDir()) {
                 @mkdir($dst . '/' . $iterator->getSubPathName());
             } else {
+                if (!is_dir($dst)) 
+                {
+                    @mkdir($dst);
+                }
+
                 $success = copy($file, $dst . '/' . $iterator->getSubPathName());
                 if ($success) {
                     echo 'copied: ' . $dst . '/' . $iterator->getSubPathName() . PHP_EOL;
