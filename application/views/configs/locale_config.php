@@ -227,7 +227,7 @@
 					'Asia/Dubai' => '(GMT+04:00) Abu Dhabi, Muscat',
 					'Asia/Yerevan' => '(GMT+04:00) Yerevan',
 					'Asia/Kabul' => '(GMT+04:30) Kabul',
-					'Asia/Baku' => '(GMT+05:00) Baku',
+					'Asia/Baku' => '(GMT+04:00) Baku',
 					'Asia/Yekaterinburg' => '(GMT+05:00) Ekaterinburg',
 					'Asia/Tashkent' => '(GMT+05:00) Tashkent',
 					'Asia/Kolkata' => '(GMT+05:30) Chennai, Kolkata, Mumbai, New Delhi',
