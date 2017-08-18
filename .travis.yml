@@ -12,7 +12,7 @@ before_install:
     - date=`date +%Y%m%d%H%M%S` && branch=`git rev-parse --abbrev-ref HEAD` && rev=`git rev-parse --short=6 HEAD` && sed -i "s/\$1/\$1.$date.$branch.$rev/g" deployment.json
 script:
     - docker run --rm -v $(pwd):/app composer/composer install
-    - php bin/install.php translations develop
+    - sudo php bin/install.php translations develop
     - docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt sh -c "npm install && bower install && grunt package"
     - docker-compose build
 env:
