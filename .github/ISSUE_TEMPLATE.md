@@ -1,6 +1,6 @@
 ### IMPORTANT IMPORTANT IMPORTANT
 
-1. Chose what you want to report between the sections "New Feature / Enhacement" and "Issue / Question / Bug".
+1. Chose what you want to report between the sections "New Feature / Enhancement" and "Issue / Question / Bug".
 2. Remove just the one of the two sections you don't need 
 3. Remove this section as it's just a guideline
 4. Fill in all the details as requested by the section you chose
@@ -8,9 +8,9 @@
 If you remove the complete template when submitting a Bug your issue will be closed as we cannot help without basic information.
 
 
-### New Feature / Enhacement
+### New Feature / Enhancement
 
-*For New Features or Enhacements please clearly write your proposal.
+*For New Features or Enhancements please clearly write your proposal.
 It's important to state whether you expect the community to implement it or you will contribute the work.
 Please bear in mind that we will implement new features only on the current code, there is no support for older versions.*
 
