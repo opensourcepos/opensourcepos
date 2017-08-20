@@ -11,4 +11,6 @@ How to Upgrade
    Please try not to use the old layout, use the new one and just copy the content of the config variables
 8. Restore the content of the old uploads/ folder into public/uploads/ one
 9. Once new code is in place, database is updated and config files are sorted you are good to start the new OSPOS
-10. If any issue please check FAQ and/or GitHub issues as somebody else might have had your problem already or post a question
+10. Once logged in in OSPOS go to Migrate (see Migrate button after Store Config) and run the Migrate script
+11. Now you can use OSPOS
+12. If any issue please check FAQ and/or GitHub issues as somebody else might have had your problem already or post a question
