@@ -1,3 +1,9 @@
+# redirect to public page
+RewriteEngine On
+
+RewriteCond %{REQUEST_URI} !^/public$
+RewriteRule ^(.*)/$ /public/ [R=301,L]
+
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.
 Options +ExecCGI +Includes +IncludesNOEXEC +SymLinksIfOwnerMatch -Indexes
