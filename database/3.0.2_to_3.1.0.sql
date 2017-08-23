@@ -346,3 +346,53 @@ ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk
 ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk_3`;
 
 DROP TABLE `ospos_sales_suspended_payments`, `ospos_sales_suspended_items_taxes`, `ospos_sales_suspended_items`, `ospos_sales_suspended`;
+
+--
+-- General fixing to realign upgraded database to clean database structure
+--
+
+ALTER TABLE ospos_giftcards ADD record_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
+ALTER TABLE ospos_giftcards MODIFY value decimal(15,2) NOT NULL;
+ALTER TABLE ospos_items MODIFY cost_price decimal(15,2) NOT NULL;
+ALTER TABLE ospos_items MODIFY unit_price decimal(15,2) NOT NULL;
+ALTER TABLE ospos_receivings MODIFY comment text NOT NULL;
+ALTER TABLE ospos_receivings_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE ospos_receivings_items MODIFY item_unit_price decimal(15,2) NOT NULL;
+ALTER TABLE ospos_sales MODIFY comment text NOT NULL;
+ALTER TABLE ospos_sales_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE ospos_sales_items MODIFY item_unit_price decimal(15,2) NOT NULL;
+
+-- Change collation on columns to be utf8_general_ci
+
+ALTER TABLE ospos_app_config CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_customers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_customers_packages CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_customers_points CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_dinner_tables CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_employees CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_giftcards CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_grants CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_inventory CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_item_kit_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_item_kits CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_item_quantities CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_migrations CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_modules CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_people CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_permissions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_receivings CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_receivings_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_payments CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_reward_points CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sessions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_stock_locations CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_suppliers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_tax_categories CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_tax_code_rates CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_tax_codes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
