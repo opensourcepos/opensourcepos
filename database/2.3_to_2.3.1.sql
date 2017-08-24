@@ -34,7 +34,9 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('reports', 'reports'),
 ('sales', 'sales'),
 ('config', 'config'),
-('suppliers', 'suppliers');
+('suppliers', 'suppliers'),
+('sales_stock', 'sales'),
+('receivings_stock', 'receivings');
 
 -- add permissions for existing stock locations
 INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
