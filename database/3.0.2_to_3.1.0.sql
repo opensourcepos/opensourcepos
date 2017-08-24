@@ -187,7 +187,7 @@ ALTER TABLE `ospos_sales_items_taxes`
 ALTER TABLE `ospos_customers`
   ADD COLUMN `sales_tax_code` varchar(32) NOT NULL DEFAULT '1';
 
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+INSERT IGNORE INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_sales_tax_support', '0'),
 ('default_origin_tax_code', ''),
 ('default_tax_category', 'Standard'),
