@@ -355,10 +355,8 @@ ALTER TABLE ospos_giftcards ADD record_time timestamp NOT NULL DEFAULT CURRENT_T
 ALTER TABLE ospos_giftcards MODIFY value decimal(15,2) NOT NULL;
 ALTER TABLE ospos_items MODIFY cost_price decimal(15,2) NOT NULL;
 ALTER TABLE ospos_items MODIFY unit_price decimal(15,2) NOT NULL;
-ALTER TABLE ospos_receivings MODIFY comment text NOT NULL;
 ALTER TABLE ospos_receivings_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE ospos_receivings_items MODIFY item_unit_price decimal(15,2) NOT NULL;
-ALTER TABLE ospos_sales MODIFY comment text DEFAULT NULL;
 ALTER TABLE ospos_sales_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE ospos_sales_items MODIFY item_unit_price decimal(15,2) NOT NULL;
 
