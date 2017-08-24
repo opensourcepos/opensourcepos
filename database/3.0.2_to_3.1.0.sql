@@ -196,10 +196,10 @@ INSERT IGNORE INTO `ospos_app_config` (`key`, `value`) VALUES
 ('default_tax_2_name', ''),
 ('default_tax_2_rate', '');
 
-INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
+INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
 ('module_taxes', 'module_taxes_desc', 105, 'taxes');
 
-INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+INSERT IGNORE INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('taxes', 'taxes');
 
 -- add support for cash rounding into config
