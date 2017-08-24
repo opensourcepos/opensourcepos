@@ -22,10 +22,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('lines_per_page', '25'),
 ('show_total_discount', '25');
 
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
+INSERT IGNORE INTO `ospos_permissions` (permission_id, module_id, location_id) 
 (SELECT CONCAT('sales_', location_name), 'sales', location_id FROM ospos_stock_locations);
 
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
+INSERT IGNORE INTO `ospos_permissions` (permission_id, module_id, location_id)
 (SELECT CONCAT('receivings_', location_name), 'receivings', location_id FROM ospos_stock_locations);
 
 -- add item_pic column to items table
