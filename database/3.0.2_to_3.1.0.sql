@@ -187,7 +187,7 @@ ALTER TABLE `ospos_sales_items_taxes`
 ALTER TABLE `ospos_customers`
   ADD COLUMN `sales_tax_code` varchar(32) NOT NULL DEFAULT '1';
 
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+INSERT IGNORE INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_sales_tax_support', '0'),
 ('default_origin_tax_code', ''),
 ('default_tax_category', 'Standard'),
@@ -196,10 +196,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('default_tax_2_name', ''),
 ('default_tax_2_rate', '');
 
-INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
+INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
 ('module_taxes', 'module_taxes_desc', 105, 'taxes');
 
-INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+INSERT IGNORE INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('taxes', 'taxes');
 
 -- add support for cash rounding into config
@@ -358,7 +358,7 @@ ALTER TABLE ospos_items MODIFY unit_price decimal(15,2) NOT NULL;
 ALTER TABLE ospos_receivings MODIFY comment text NOT NULL;
 ALTER TABLE ospos_receivings_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE ospos_receivings_items MODIFY item_unit_price decimal(15,2) NOT NULL;
-ALTER TABLE ospos_sales MODIFY comment text NOT NULL;
+ALTER TABLE ospos_sales MODIFY comment text DEFAULT NULL;
 ALTER TABLE ospos_sales_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
 ALTER TABLE ospos_sales_items MODIFY item_unit_price decimal(15,2) NOT NULL;
 
