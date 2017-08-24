@@ -378,7 +378,6 @@ ALTER TABLE ospos_item_kits CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_c
 ALTER TABLE ospos_item_quantities CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
-ALTER TABLE ospos_migrations CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_modules CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_people CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_permissions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
