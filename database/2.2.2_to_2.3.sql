@@ -28,8 +28,6 @@ ALTER TABLE `ospos_inventory`
  ADD KEY `trans_location` (`trans_location`),
  ADD CONSTRAINT `ospos_inventory_ibfk_3` FOREIGN KEY (`trans_location`) REFERENCES `ospos_stock_locations` (`location_id`); 
 
--- ALTER TABLE ospos_items DROP COLUMN location;
-
 ALTER TABLE `ospos_receivings_items`
  ADD COLUMN item_location int(11);
  
