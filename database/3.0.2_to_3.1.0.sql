@@ -318,8 +318,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_quality', '100'),
 ('barcode_type', 'Code39'),
 ('barcode_width', '250'),
-('cash_decimals', '2'),
-('cash_rounding_code', '0'),
 ('receiving_calculate_average_price', '0');
 
 -- replace old tokens in ospos_app_config
