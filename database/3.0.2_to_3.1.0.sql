@@ -205,7 +205,6 @@ INSERT IGNORE INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 -- add support for cash rounding into config
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('currency_decimals', '2'),
 ('cash_decimals', '2'),
 ('cash_rounding_code', '0');
 
