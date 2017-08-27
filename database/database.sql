@@ -110,7 +110,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_font_size', '12'),
 ('gcaptcha_enable', '0'),
 ('gcaptcha_secret_key', ''),
-('gcaptcha_site_key', '');
+('gcaptcha_site_key', ''),
+('receiving_calculate_average_price', '0');
 
 
 -- --------------------------------------------------------
@@ -234,16 +235,16 @@ CREATE TABLE `ospos_items` (
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
   `tax_category_id` int(10) NOT NULL DEFAULT 1,
   `deleted` int(1) NOT NULL DEFAULT '0',
-  `custom1` VARCHAR(25) NOT NULL,
-  `custom2` VARCHAR(25) NOT NULL,
-  `custom3` VARCHAR(25) NOT NULL,
-  `custom4` VARCHAR(25) NOT NULL,
-  `custom5` VARCHAR(25) NOT NULL,
-  `custom6` VARCHAR(25) NOT NULL,
-  `custom7` VARCHAR(25) NOT NULL,
-  `custom8` VARCHAR(25) NOT NULL,
-  `custom9` VARCHAR(25) NOT NULL,
-  `custom10` VARCHAR(25) NOT NULL,
+  `custom1` VARCHAR(255) DEFAULT NULL,
+  `custom2` VARCHAR(255) DEFAULT NULL,
+  `custom3` VARCHAR(255) DEFAULT NULL,
+  `custom4` VARCHAR(255) DEFAULT NULL,
+  `custom5` VARCHAR(255) DEFAULT NULL,
+  `custom6` VARCHAR(255) DEFAULT NULL,
+  `custom7` VARCHAR(255) DEFAULT NULL,
+  `custom8` VARCHAR(255) DEFAULT NULL,
+  `custom9` VARCHAR(255) DEFAULT NULL,
+  `custom10` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   UNIQUE KEY `item_number` (`item_number`),
   KEY `supplier_id` (`supplier_id`)
