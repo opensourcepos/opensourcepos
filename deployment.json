@@ -20,7 +20,7 @@
 
     "files":
     [
-        {"includePattern": "dist/(.*)\\.(.*)", "uploadPattern": "$1.$2"}
+        {"includePattern": "dist(.*)\\.(zip)", "uploadPattern": "$1.$2"}
     ],
     "matrixParams": {
         "override": 1
