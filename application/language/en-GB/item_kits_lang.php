@@ -26,6 +26,6 @@ $lang["item_kits_print_option"] = "Print Option";
 $lang["item_kits_quantity"] = "Quantity";
 $lang["item_kits_sequence"] = "Sequence";
 $lang["item_kits_successful_adding"] = "You have successfully added Item Kit";
-$lang["item_kits_successful_deleted"] = "You have successfully deleted";
+$lang["item_kits_successful_deleted"] = "You have successfully deleted a Giftcard";
 $lang["item_kits_successful_updating"] = "You have successfully updated Item Kit";
 $lang["item_kits_update"] = "Update Item Kit";
