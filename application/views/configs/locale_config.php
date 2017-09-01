@@ -142,7 +142,8 @@
 				<?php echo form_label($this->lang->line('config_language'), 'language', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_dropdown('language', array(
-						'en:english' => 'English',
+						'en-US:english' => 'American English',
+						'en-GB:english' => 'British English',
 						'es:spanish' => 'Spanish',
 						'nl-BE:dutch' => 'Dutch (Belgium)',
 						'de:german' => 'German (Germany)',

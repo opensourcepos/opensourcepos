@@ -417,3 +417,7 @@ ALTER TABLE ospos_items
   MODIFY custom8 VARCHAR(255) DEFAULT NULL,
   MODIFY custom9 VARCHAR(255) DEFAULT NULL,
   MODIFY custom10 VARCHAR(255) DEFAULT NULL;
+
+-- Change language code en to be en-US
+
+UPDATE `ospos_app_config` SET `language_code` = 'en-US' WHERE `language_code` = 'en';

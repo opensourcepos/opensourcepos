@@ -16,7 +16,7 @@ function load_config()
         if (!file_exists('../application/language/' . current_language_code()))
         {
             $CI->config->set_item('language', 'english');
-            $CI->config->set_item('language_code', 'en');
+            $CI->config->set_item('language_code', 'en-US');
         }
 
         load_language_files('../vendor/codeigniter/framework/system/language', current_language());

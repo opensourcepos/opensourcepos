@@ -98,7 +98,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_sales_tax_support', '0'),
 ('statistics', '1'),
 ('language', 'english'),
-('language_code', 'en'),
+('language_code', 'en-US'),
 ('date_or_time_format', ''),
 ('dinner_table_enable', '0'),
 ('customer_reward_enable', '0'),
