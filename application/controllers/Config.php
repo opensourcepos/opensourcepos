@@ -844,7 +844,10 @@ class Config extends Secure_Controller
 			'invoice_email_message' => $this->input->post('invoice_email_message'),
 			'line_sequence' => $this->input->post('line_sequence'),
 			'last_used_invoice_number' =>$this->input->post('last_used_invoice_number'),
-			'last_used_quote_number' =>$this->input->post('last_used_quote_number')
+			'last_used_quote_number' =>$this->input->post('last_used_quote_number'),
+			'work_order_enable' => $this->input->post('work_order_enable') != NULL,
+			'work_order_format' => $this->input->post('work_order_format'),
+			'last_used_work_order_number' =>$this->input->post('last_used_work_order_number')
 		);
 
 		$result = $this->Appconfig->batch_save($batch_save_data);
