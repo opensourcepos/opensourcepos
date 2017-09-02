@@ -545,8 +545,6 @@ class Sale extends CI_Model
 	 */
 	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
 	{
-
-		error_log('>>>save sale_id-' . $sale_id . ', sale_type-' . $sale_type);
 		if($sale_id != -1)
 		{
 			$this->clear_suspended_sale_detail($sale_id);
@@ -578,8 +576,6 @@ class Sale extends CI_Model
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		error_log('>>> sales_data-' . print_r($sales_data, true));
-		error_log('>>> sales_id-' . $sale_id);
 		if($sale_id == -1)
 		{
 			$this->db->insert('sales', $sales_data);
@@ -1158,6 +1154,7 @@ class Sale extends CI_Model
 					MAX(sales.sale_time) AS sale_time,
 					sales.sale_id AS sale_id,
 					MAX(sales.sale_status) AS sale_status,
+					MAX(sales.sale_type) AS sale_type,
 					MAX(sales.comment) AS comment,
 					MAX(sales.invoice_number) AS invoice_number,
 					MAX(sales.quote_number) AS quote_number,
@@ -1247,7 +1244,6 @@ class Sale extends CI_Model
 		{
 			return NULL;
 		}
-		error_log('>>>get_dinner_table sale_id-'.$sale_id);
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
 

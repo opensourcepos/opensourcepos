@@ -249,6 +249,11 @@ class Sale_lib
 		return ($this->CI->session->userdata('sales_mode') == 'sale_quote');
 	}
 
+	public function is_return_mode()
+	{
+		return ($this->CI->session->userdata('sales_mode') == 'return');
+	}
+
 	public function is_work_order_mode()
 	{
 		return ($this->CI->session->userdata('sales_mode') == 'sale_work_order');

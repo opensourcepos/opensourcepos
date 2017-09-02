@@ -358,6 +358,7 @@ class Reports extends Secure_Controller
 		$stock_locations['all'] = $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 		$data['mode'] = 'sale';
+		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$this->load->view('reports/date_input', $data);
 	}
@@ -370,6 +371,7 @@ class Reports extends Secure_Controller
 		$stock_locations['all'] =  $this->lang->line('reports_all');
 		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
 		$data['mode'] = 'sale';
+		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$this->load->view('reports/date_input', $data);
 	}
@@ -711,6 +713,7 @@ class Reports extends Secure_Controller
 			$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name);
 		}
 		$data['specific_input_data'] = $customers;
+		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$this->load->view('reports/specific_input', $data);
 	}
@@ -735,6 +738,7 @@ class Reports extends Secure_Controller
 		{
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
@@ -796,6 +800,7 @@ class Reports extends Secure_Controller
 			$employees[$employee->person_id] = $this->xss_clean($employee->first_name . ' ' . $employee->last_name);
 		}
 		$data['specific_input_data'] = $employees;
+		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$this->load->view('reports/specific_input', $data);
 	}
@@ -820,6 +825,7 @@ class Reports extends Secure_Controller
 		{
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'customer_name' => $row['customer_name'],
@@ -881,7 +887,8 @@ class Reports extends Secure_Controller
 			$discounts[$i] = $i . '%';
 		}
 		$data['specific_input_data'] = $discounts;
-		
+		$data['sale_type_options'] = $this->get_sale_type_options();
+
 		$data = $this->xss_clean($data);
 
 		$this->load->view('reports/specific_input', $data);
@@ -907,6 +914,7 @@ class Reports extends Secure_Controller
 		{
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'customer_name' => $row['customer_name'],
@@ -987,6 +995,24 @@ class Reports extends Secure_Controller
 		echo json_encode(array($sale_id => $summary_data));
 	}
 
+	public function get_sale_type_options()
+	{
+		$sale_type_options = array();
+		$sale_type_options['complete'] = $this->lang->line('reports_complete');
+		$sale_type_options['sales'] = $this->lang->line('reports_completed_sales');
+		if($this->config->item('invoice_enable') == '1')
+		{
+			$sale_type_options['quotes'] = $this->lang->line('reports_quotes');
+			if($this->config->item('work_order_enable') == '1')
+			{
+				$sale_type_options['work_orders'] = $this->lang->line('reports_work_orders');
+				$sale_type_options['canceled'] = $this->lang->line('reports_canceled');
+			}
+		}
+		$sale_type_options['returns'] = $this->lang->line('reports_returns');
+		return $sale_type_options;
+	}
+
 	public function detailed_sales($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -1010,6 +1036,7 @@ class Reports extends Secure_Controller
 		{
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
+				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],

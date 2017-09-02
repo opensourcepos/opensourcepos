@@ -204,6 +204,10 @@ class Sales extends Secure_Controller
 		{
 			$this->sale_lib->set_mode('sale_invoice');
 		}
+		elseif($sale_type == SALE_TYPE_RETURN)
+		{
+			$this->sale_lib->set_mode('return');
+		}
 		else
 		{
 			$this->sale_lib->set_mode('sale');
@@ -709,7 +713,14 @@ class Sales extends Secure_Controller
 		{
 			// Save the data to the sales table
 			$data['sale_status'] = COMPLETED;
-			$sale_type = SALE_TYPE_POS;
+			if($this->sale_lib->is_return_mode())
+			{
+				$sale_type = SALE_TYPE_RETURN;
+			}
+			else
+			{
+				$sale_type = SALE_TYPE_POS;
+			}
 
 			$data['sale_id_num'] = $this->Sale->save($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $data['taxes']);
 
