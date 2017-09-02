@@ -206,6 +206,7 @@ class Config extends Secure_Controller
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 		$data['tax_codes'] = $this->get_tax_code_options();
+		$data['show_office_group'] = $this->Module->get_show_office_group();
 
 		$data = $this->xss_clean($data);
 
@@ -307,6 +308,8 @@ class Config extends Secure_Controller
 			'custom9_name' => $this->input->post('custom9_name'),
 			'custom10_name' => $this->input->post('custom10_name')
 		);
+
+		$this->Module->set_show_office_group($this->input->post('show_office_group') != NULL);
 
 		$result = $this->Appconfig->batch_save($batch_save_data);
 		$success = $result ? TRUE : FALSE;
