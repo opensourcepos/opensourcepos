@@ -111,9 +111,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('gcaptcha_enable', '0'),
 ('gcaptcha_secret_key', ''),
 ('gcaptcha_site_key', ''),
-('receiving_calculate_average_price', '0');
-
-
+('receiving_calculate_average_price', '0'),
+('work_order_enable', '0'),
+('work_order_format', 'W%y{WSEQ:6}'),
+('last_used_work_order_number', '0');
 -- --------------------------------------------------------
 
 --
@@ -563,6 +564,8 @@ CREATE TABLE `ospos_sales` (
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
   `sale_status` tinyint(2) NOT NULL DEFAULT 0,
   `dinner_table_id` int(11) NULL,
+  `work_order_number` varchar(32) DEFAULT NULL,
+  `sale_type` tinyint(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),
