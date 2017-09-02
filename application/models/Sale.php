@@ -2,7 +2,13 @@
 
 define('COMPLETED', 0);
 define('SUSPENDED', 1);
-define('QUOTE', 2);
+define('CANCELED', 2);
+
+define('SALE_TYPE_POS', 0);
+define('SALE_TYPE_INVOICE', 1);
+define('SALE_TYPE_WORK_ORDER', 2);
+define('SALE_TYPE_QUOTE', 3);
+define('SALE_TYPE_RETURN', 4);
 
 /**
  * Sale class
@@ -537,8 +543,15 @@ class Sale extends CI_Model
 	 * Save the sale information after the sales is complete but before the final document is printed
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 */
-	public function save(&$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, &$sales_taxes, $sale_id = FALSE)
+	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
 	{
+
+		error_log('>>>save sale_id-' . $sale_id . ', sale_type-' . $sale_type);
+		if($sale_id != -1)
+		{
+			$this->clear_suspended_sale_detail($sale_id);
+		}
+
 		$tax_decimals = tax_decimals();
 
 		if(count($items) == 0)
@@ -549,22 +562,34 @@ class Sale extends CI_Model
 		$table_status = $this->determine_sale_status($sale_status, $dinner_table);
 
 		$sales_data = array(
-			'sale_time'		 => date('Y-m-d H:i:s'),
-			'customer_id'	 => $this->Customer->exists($customer_id) ? $customer_id : null,
-			'employee_id'	 => $employee_id,
-			'comment'		 => $comment,
-			'sale_status'    => $sale_status,
-			'invoice_number' => $invoice_number,
-			'quote_number' => $quote_number,
-			'dinner_table_id'=> $dinner_table,
-			'sale_status'	 => $sale_status
+			'sale_time'			=> date('Y-m-d H:i:s'),
+			'customer_id'		=> $this->Customer->exists($customer_id) ? $customer_id : null,
+			'employee_id'		=> $employee_id,
+			'comment'			=> $comment,
+			'sale_status'		=> $sale_status,
+			'invoice_number'	=> $invoice_number,
+			'quote_number'		=> $quote_number,
+			'work_order_number'	=> $work_order_number,
+			'dinner_table_id'	=> $dinner_table,
+			'sale_status'		=> $sale_status,
+			'sale_type'			=> $sale_type
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 
-		$this->db->insert('sales', $sales_data);
-		$sale_id = $this->db->insert_id();
+		error_log('>>> sales_data-' . print_r($sales_data, true));
+		error_log('>>> sales_id-' . $sale_id);
+		if($sale_id == -1)
+		{
+			$this->db->insert('sales', $sales_data);
+			$sale_id = $this->db->insert_id();
+		}
+		else
+		{
+			$this->db->where('sale_id', $sale_id);
+			$this->db->update('sales', $sales_data);
+		}
 		$total_amount = 0;
 		$total_amount_used = 0;
 		foreach($payments as $payment_id=>$payment)
@@ -800,19 +825,16 @@ class Sale extends CI_Model
 	}
 
 	/**
-	 * Delete sale
+	 * Delete sale.  Hard deletes are not supported for sales transactions.
+	 * When a sale is "deleted" it is simply changed to a status of canceled.
+	 * However, if applicable the inventory still needs to be updated
 	 */
 	public function delete($sale_id, $employee_id, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
 
-		// first delete all payments
-		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
-		// then delete all taxes on items
-		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
-
-		if($update_inventory)
+		if($update_inventory && $sale_status = $this->get_sale_status($sale_id) == COMPLETED)
 		{
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
@@ -840,10 +862,8 @@ class Sale extends CI_Model
 			}
 		}
 
-		// delete all items
-		$this->db->delete('sales_items', array('sale_id' => $sale_id));
-		// delete sale itself
-		$this->db->delete('sales', array('sale_id' => $sale_id));
+		// Set the status of the sale to canceled
+		$this->update_sale_status($sale_id, CANCELED);
 
 		// execute transaction
 		$this->db->trans_complete();
@@ -965,6 +985,12 @@ class Sale extends CI_Model
 			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
 		}
 
+		if($this->sale_lib->get_mode() == 'sale_work_order')
+		{
+			$payments[$this->lang->line('sales_cash_deposit')] = $this->lang->line('sales_cash_deposit');
+			$payments[$this->lang->line('sales_credit_deposit')] = $this->lang->line('sales_credit_deposit');
+		}
+
 		return $payments;
 	}
 
@@ -1013,6 +1039,21 @@ class Sale extends CI_Model
 	{
 		$this->db->from('sales');
 		$this->db->where('invoice_number', $invoice_number);
+		if(!empty($sale_id))
+		{
+			$this->db->where('sale_id !=', $sale_id);
+		}
+
+		return ($this->db->get()->num_rows() == 1);
+	}
+
+	/**
+	 * Checks if work order number exists
+	 */
+	public function check_work_order_number_exists($work_order_number, $sale_id = '')
+	{
+		$this->db->from('sales');
+		$this->db->where('invoice_number', $work_order_number);
 		if(!empty($sale_id))
 		{
 			$this->db->where('sale_id !=', $sale_id);
@@ -1184,12 +1225,12 @@ class Sale extends CI_Model
 	{
 		if($customer_id == -1)
 		{
-			$query = $this->db->query('select sale_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from "
 				. $this->db->dbprefix('sales') . ' where sale_status = ' . SUSPENDED);
 		}
 		else
 		{
-			$query = $this->db->query('select sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from '
+			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, comment from "
 				. $this->db->dbprefix('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 
@@ -1202,11 +1243,45 @@ class Sale extends CI_Model
 	 */
 	public function get_dinner_table($sale_id)
 	{
+		if($sale_id == -1)
+		{
+			return NULL;
+		}
+		error_log('>>>get_dinner_table sale_id-'.$sale_id);
 		$this->db->from('sales');
 		$this->db->where('sale_id', $sale_id);
 
 		return $this->db->get()->row()->dinner_table_id;
 	}
+
+	/**
+	 * Gets the sale type for the selected sale
+	 */
+	public function get_sale_type($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		return $this->db->get()->row()->sale_type;
+	}
+
+	/**
+	 * Gets the sale status for the selected sale
+	 */
+	public function get_sale_status($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		return $this->db->get()->row()->sale_status;
+	}
+
+	public function update_sale_status($sale_id, $sale_status)
+	{
+		$this->db->where('sale_id', $sale_id);
+		$this->db->update('sales', array('sale_status'=>$sale_status));
+	}
+
 
 	/**
 	 * Gets the quote_number for the selected sale
@@ -1277,17 +1352,38 @@ class Sale extends CI_Model
 		$this->db->where('dinner_table_id',$dinner_table);
 		$this->db->update('dinner_tables', $dinner_table_data);
 
-		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
-		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
-		$this->db->delete('sales_items', array('sale_id' => $sale_id));
-		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
-		$this->db->delete('sales', array('sale_id' => $sale_id, 'sale_status' => SUSPENDED));
+		$this->update_sale_status($sale_id, CANCELED);
 
 		$this->db->trans_complete();
 
 		return $this->db->trans_status();
 	}
 
+	/**
+	 * This clears the sales detail for a given sale_id before the detail is resaved.
+	 * This allows us to reuse the same sale_id
+	 */
+	public function clear_suspended_sale_detail($sale_id)
+	{
+		$this->db->trans_start();
+
+		$dinner_table = $this->get_dinner_table($sale_id);
+		$dinner_table_data = array(
+			'status' => 0
+		);
+
+		$this->db->where('dinner_table_id',$dinner_table);
+		$this->db->update('dinner_tables', $dinner_table_data);
+
+		$this->db->delete('sales_payments', array('sale_id' => $sale_id));
+		$this->db->delete('sales_items_taxes', array('sale_id' => $sale_id));
+		$this->db->delete('sales_items', array('sale_id' => $sale_id));
+		$this->db->delete('sales_taxes', array('sale_id' => $sale_id));
+
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
+	}
 	/**
 	 * Gets suspended sale info
 	 */
