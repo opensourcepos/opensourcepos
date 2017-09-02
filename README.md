@@ -14,13 +14,13 @@ The main features are:
 * Stock management (Items and Kits)
 * VAT, customer and multi tiers taxation
 * Sale register with transactions logging
-* Quote and invoicing
+* Quotation and invoicing
 * Receipt and invoice printing and/or emailing
 * Barcode generation and printing
 * Suppliers and Customers database
 * Multiuser with permission control
 * Receivings
-* Gift card
+* Giftcard
 * Rewards
 * Restaurant tables
 * Messaging (SMS)

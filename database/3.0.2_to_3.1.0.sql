@@ -420,4 +420,4 @@ ALTER TABLE ospos_items
 
 -- Change language code en to be en-US
 
-UPDATE `ospos_app_config` SET `language_code` = 'en-US' WHERE `language_code` = 'en';
+UPDATE `ospos_app_config` SET `value` = 'en-US' WHERE `key` = 'language_code' AND `value` = 'en';

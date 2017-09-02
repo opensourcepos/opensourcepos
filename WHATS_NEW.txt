@@ -1,3 +1,32 @@
+Version 3.1.0
+-----------
++ MySQL 5.7 and PHP 7.x support
++ Advanced Tax support with customer tax categories and etc,
++ Better HORECA use case support with Dinner Table sale tagging
++ Customer Rewards support
++ Added quote support and better invoice support
++ Added integration with Mailchimp to connect Customer list with Mailchimp list
++ Prevent inserting two customers with same email address
++ Customer total spending and stats
++ Added reCAPTCHA to Login page to increase protection from Brute Force attacks
++ Added due payment for credit sale support
++ Gifcard numbering with two options: Series and Random
++ Extended Item Kits functionality
++ Employee allowed to change their own password clicking their name on top bar
++ Cash rounding support, extended decimals
++ Reworked Item Pictures and file name and storing
++ Financial year start date and selection from date range pickers
++ Date time range filters can be date & time or date only
++ Added two new Bootswatch themes
++ Receipts font size support
++ Fix automatically people's name first capital letter, emails in lower case only
++ Fixes to Receiving
++ Various amendments to database script updates from older versions
++ Added dotenv support
++ Updates to language translations (split English to American English and British English)
++ Various Dockers support improvements
++ Minor bugfixes
+
 Version 3.0.2
 -----------
 + Fixed error when performing scans multiple times in a row
