@@ -2,16 +2,16 @@
 
 require_once("Secure_Controller.php");
 
-class Home extends Secure_Controller 
+class Office extends Secure_Controller
 {
 	function __construct()
 	{
-		parent::__construct(NULL,NULL,'home');
+		parent::__construct('office',NULL,'office');
 	}
 
 	public function index()
 	{
-		$this->load->view('home');
+		$this->load->view('office');
 	}
 
 	public function logout()
