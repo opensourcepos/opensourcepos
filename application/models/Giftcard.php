@@ -76,7 +76,7 @@ class Giftcard extends CI_Model
 	}
 
 	/*
-	Gets an giftcard id given an giftcard number
+	Gets an giftcard id given a giftcard number
 	*/
 	public function get_giftcard_id($giftcard_number)
 	{
@@ -117,6 +117,7 @@ class Giftcard extends CI_Model
 			if($this->db->insert('giftcards', $giftcard_data))
 			{
 				$giftcard_data['giftcard_number'] = $this->db->insert_id();
+				$giftcard_data['giftcard_id'] = $this->db->insert_id();
 
 				return TRUE;
 			}
