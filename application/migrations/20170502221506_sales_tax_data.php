@@ -8,7 +8,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 
 		$this->load->library('tax_lib');
 		$this->load->library('sale_lib');
-		$CI =& get_instance();
+
 	}
 
 	public function up()
@@ -37,8 +37,10 @@ class Migration_Sales_Tax_Data extends CI_Migration
 
 	private function upgrade_tax_history_for_sale($sale_id)
 	{
-		$tax_decimals = $this->CI->config->config['tax_decimals'];
-		$tax_included = $this->CI->config->config['tax_included'];
+		$CI =& get_instance();
+		$tax_decimals = $CI->config->config['tax_decimals'];
+		$tax_included = $CI->config->config['tax_included'];
+		$customer_sales_tax_support = $CI->config->config['customer_sales_tax_support'];
 
 		if($tax_included)
 		{
@@ -65,15 +67,20 @@ class Migration_Sales_Tax_Data extends CI_Migration
 			}
 			else
 			{
-				$item_tax_amount = $this->tax_lib->get_sales_tax_for_amount($tax_basis, $item['percent'], '0', $tax_decimals);
+				$item_tax_amount = $this->tax_lib->get_sales_tax_for_amount($tax_basis, $item['percent'], PHP_ROUND_HALF_UP, $tax_decimals);
 			}
 			$this->update_sales_items_taxes_amount($sale_id, $item['line'], $item['name'], $item['percent'], $tax_type, $item_tax_amount);
-			$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, '0', $sale_id, $item['name']);
+			$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, PHP_ROUND_HALF_UP, $sale_id, $item['name']);
 			$tax_group_sequence += 1;
 		}
 
-		$this->tax_lib->apply_invoice_taxing($sales_taxes);
+		// Not sure when this would ever kick in, but this is technically the correct logic.
+		if($customer_sales_tax_support)
+		{
+			$this->tax_lib->apply_invoice_taxing($sales_taxes);
+		}
 
+		$this->tax_lib->round_sales_taxes($sales_taxes);
 		$this->save_sales_tax($sales_taxes);
 	}
 
