@@ -115,6 +115,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('work_order_enable', '0'),
 ('work_order_format', 'W%y{WSEQ:6}'),
 ('last_used_work_order_number', '0');
+
+
+
 -- --------------------------------------------------------
 
 --
@@ -443,6 +446,8 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('config', 'config'),
 ('suppliers', 'suppliers'),
 ('taxes', 'taxes');
+
+
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VALUES
 ('items_stock', 'items', 1),
