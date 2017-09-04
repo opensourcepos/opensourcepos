@@ -311,12 +311,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_formats', '[]'),
-('barcode_font', 'Arial'),
-('barcode_font_size', '10'),
-('barcode_height', '50'),
-('barcode_quality', '100'),
-('barcode_type', 'Code39'),
-('barcode_width', '250'),
 ('receiving_calculate_average_price', '0');
 
 -- replace old tokens in ospos_app_config
@@ -359,7 +353,6 @@ DROP TABLE `ospos_sales_suspended_payments`, `ospos_sales_suspended_items_taxes`
 
 DELETE FROM `ospos_app_config` WHERE `key` = 'print_after_sale';
 
-ALTER TABLE ospos_giftcards ADD record_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
 ALTER TABLE ospos_giftcards MODIFY value decimal(15,2) NOT NULL;
 ALTER TABLE ospos_items MODIFY cost_price decimal(15,2) NOT NULL;
 ALTER TABLE ospos_items MODIFY unit_price decimal(15,2) NOT NULL;
