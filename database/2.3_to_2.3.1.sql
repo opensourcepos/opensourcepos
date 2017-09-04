@@ -105,6 +105,9 @@ ALTER TABLE `ospos_items`
    ADD COLUMN `receiving_quantity` int(11) DEFAULT '1',
    DROP COLUMN `quantity`;
 
+-- add record_time column to ospos_giftcards table
+ALTER TABLE ospos_giftcards ADD record_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
 -- add foreign key to giftcards table
 ALTER TABLE `ospos_giftcards`
   ADD CONSTRAINT `ospos_giftcards_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);
