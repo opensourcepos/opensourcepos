@@ -111,9 +111,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('gcaptcha_enable', '0'),
 ('gcaptcha_secret_key', ''),
 ('gcaptcha_site_key', ''),
-('receiving_calculate_average_price', '0');
-
-
+('receiving_calculate_average_price', '0'),
+('work_order_enable', '0'),
+('work_order_format', 'W%y{WSEQ:6}'),
+('last_used_work_order_number', '0');
 -- --------------------------------------------------------
 
 --
@@ -354,10 +355,12 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 ('module_customers', 'module_customers_desc', 10, 'customers'),
 ('module_employees', 'module_employees_desc', 80, 'employees'),
 ('module_giftcards', 'module_giftcards_desc', 90, 'giftcards'),
+('module_home', 'module_home_desc', 1, 'home'),
 ('module_items', 'module_items_desc', 20, 'items'),
 ('module_item_kits', 'module_item_kits_desc', 30, 'item_kits'),
 ('module_messages', 'module_messages_desc', 100, 'messages'),
 ('module_migrate', 'module_migrate_desc', 120, 'migrate'),
+('module_office', 'module_office_desc', 1, 'office'),
 ('module_receivings', 'module_receivings_desc', 60, 'receivings'),
 ('module_reports', 'module_reports_desc', 50, 'reports'),
 ('module_sales', 'module_sales_desc', 70, 'sales'),
@@ -428,10 +431,12 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('customers', 'customers'),
 ('employees', 'employees'),
 ('giftcards', 'giftcards'),
+('home', 'home'),
 ('items', 'items'),
 ('item_kits', 'item_kits'),
 ('messages', 'messages'),
 ('migrate', 'migrate'),
+('office', 'office'),
 ('receivings', 'receivings'),
 ('reports', 'reports'),
 ('sales', 'sales'),
@@ -453,6 +458,7 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`, `location_id`) VA
 CREATE TABLE `ospos_grants` (
   `permission_id` varchar(255) NOT NULL,
   `person_id` int(10) NOT NULL,
+  `menu_group` varchar(32) DEFAULT 'home',
   PRIMARY KEY (`permission_id`,`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -461,34 +467,36 @@ CREATE TABLE `ospos_grants` (
 --
 -- --------------------------------------------------------
 
-INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
-('reports_customers', 1),
-('reports_receivings', 1), 
-('reports_items', 1),
-('reports_inventory', 1),
-('reports_employees', 1),
-('reports_suppliers', 1),
-('reports_sales', 1),
-('reports_discounts', 1),
-('reports_taxes', 1),
-('reports_categories', 1),
-('reports_payments', 1),    
-('customers', 1),
-('employees', 1),
-('giftcards', 1),
-('items', 1),
-('item_kits', 1),
-('messages', 1),
-('migrate', 1),
-('receivings', 1),
-('reports', 1),
-('sales', 1),
-('config', 1),
-('items_stock', 1),
-('sales_stock', 1),
-('receivings_stock', 1),
-('suppliers', 1),
-('taxes', 1);
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
+('reports_customers', 1, 'home'),
+('reports_receivings', 1, 'home'),
+('reports_items', 1, 'home'),
+('reports_inventory', 1, 'home'),
+('reports_employees', 1, 'home'),
+('reports_suppliers', 1, 'home'),
+('reports_sales', 1, 'home'),
+('reports_discounts', 1, 'home'),
+('reports_taxes', 1, 'home'),
+('reports_categories', 1, 'home'),
+('reports_payments', 1, 'home'),
+('customers', 1, 'home'),
+('employees', 1, 'office'),
+('giftcards', 1, 'home'),
+('items', 1, 'home'),
+('item_kits', 1, 'home'),
+('messages', 1, 'home'),
+('migrate', 1, 'office'),
+('receivings', 1, 'home'),
+('reports', 1, 'home'),
+('sales', 1, 'home'),
+('config', 1, 'office'),
+('items_stock', 1, 'home'),
+('sales_stock', 1, 'home'),
+('receivings_stock', 1, 'home'),
+('suppliers', 1, 'home'),
+('taxes', 1, 'office'),
+('office', 1, 'home'),
+('home', 1, 'office');
 
 --
 -- Table structure for table `ospos_receivings`
@@ -556,6 +564,8 @@ CREATE TABLE `ospos_sales` (
   `sale_id` int(10) NOT NULL AUTO_INCREMENT,
   `sale_status` tinyint(2) NOT NULL DEFAULT 0,
   `dinner_table_id` int(11) NULL,
+  `work_order_number` varchar(32) DEFAULT NULL,
+  `sale_type` tinyint(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`),
   KEY `customer_id` (`customer_id`),
   KEY `employee_id` (`employee_id`),

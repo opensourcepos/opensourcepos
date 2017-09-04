@@ -6,6 +6,11 @@
 
 class Module extends CI_Model
 {
+	function __construct()
+	{
+		parent::__construct();
+	}
+
 	public function get_module_name($module_id)
 	{
 		$query = $this->db->get_where('modules', array('module_id' => $module_id), 1);
@@ -55,19 +60,69 @@ class Module extends CI_Model
 	{
 		$this->db->from('modules');
 		$this->db->order_by('sort', 'asc');
-
 		return $this->db->get();
 	}
 
-	public function get_allowed_modules($person_id)
+	public function get_allowed_home_modules($person_id)
 	{
+		$menus = array('home', 'both');
 		$this->db->from('modules');
 		$this->db->join('permissions', 'permissions.permission_id = modules.module_id');
 		$this->db->join('grants', 'permissions.permission_id = grants.permission_id');
 		$this->db->where('person_id', $person_id);
+		$this->db->where_in('menu_group', $menus);
+		$this->db->where('sort !=', 0);
 		$this->db->order_by('sort', 'asc');
-
 		return $this->db->get();
 	}
+
+	public function get_allowed_office_modules($person_id)
+	{
+		$menus = array('office', 'both');
+		$this->db->from('modules');
+		$this->db->join('permissions', 'permissions.permission_id = modules.module_id');
+		$this->db->join('grants', 'permissions.permission_id = grants.permission_id');
+		$this->db->where('person_id', $person_id);
+		$this->db->where_in('menu_group', $menus);
+		$this->db->where('sort !=', 0);
+		$this->db->order_by('sort', 'asc');
+		return $this->db->get();
+	}
+
+	/**
+	 * This method is used to set the show the office navigation icon on the home page
+	 * which happens when the sort value is greater than zero
+	 */
+	public function set_show_office_group($show_office_group)
+	{
+		if($show_office_group)
+		{
+			$sort = 1;
+		}
+		else
+		{
+			$sort = 0;
+		}
+
+		$modules_data = array(
+			'sort' => $sort
+		);
+		$this->db->where('module_id', 'office');
+		$this->db->update('modules', $modules_data);
+	}
+
+	/**
+	 * This method is used to show the office navigation icon on the home page
+	 * which happens when the sort value is greater than zero
+	 */
+	public function get_show_office_group()
+	{
+		$this->db->select('sort');
+		$this->db->from('grants');
+		$this->db->where('module_id', 'office');
+		$this->db->from('modules');
+		return $this->db->get()->row()->sort;
+	}
+
 }
 ?>

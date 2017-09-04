@@ -28,11 +28,23 @@ class Sale_lib
 
 	public function get_register_mode_options()
 	{
-		return array(
-			'sale' => $this->CI->lang->line('sales_receipt'),
-			'sale_invoice' => $this->CI->lang->line('sales_invoice'),
-			'sale_quote' => $this->CI->lang->line('sales_quote')
-		);
+		$register_modes = array();
+		if($this->CI->config->item('invoice_enable') == '0')
+		{
+			$register_modes['sale'] = $this->CI->lang->line('sales_sale');
+		}
+		else
+		{
+			$register_modes['sale'] = $this->CI->lang->line('sales_receipt');
+			$register_modes['sale_quote'] = $this->CI->lang->line('sales_quote');
+			if($this->CI->config->item('work_order_enable') == '1')
+			{
+				$register_modes['sale_work_order'] = $this->CI->lang->line('sales_work_order');
+			}
+			$register_modes['sale_invoice'] = $this->CI->lang->line('sales_invoice');
+		}
+		$register_modes['return'] = $this->CI->lang->line('sales_return');
+		return $register_modes;
 	}
 
 	public function get_cart()
@@ -148,6 +160,16 @@ class Sale_lib
 		return $this->CI->session->userdata('sales_quote_number');
 	}
 
+	public function get_work_order_number()
+	{
+		return $this->CI->session->userdata('sales_work_order_number');
+	}
+
+	public function get_sale_type()
+	{
+		return $this->CI->session->userdata('sale_type');
+	}
+
 	public function set_invoice_number($invoice_number, $keep_custom = FALSE)
 	{
 		$current_invoice_number = $this->CI->session->userdata('sales_invoice_number');
@@ -166,6 +188,24 @@ class Sale_lib
 		}
 	}
 
+	public function set_work_order_number($work_order_number, $keep_custom = FALSE)
+	{
+		$current_work_order_number = $this->CI->session->userdata('sales_work_order_number');
+		if(!$keep_custom || empty($current_work_order_number))
+		{
+			$this->CI->session->set_userdata('sales_work_order_number', $work_order_number);
+		}
+	}
+
+	public function set_sale_type($sale_type, $keep_custom = FALSE)
+	{
+		$current_sale_type = $this->CI->session->userdata('sale_type');
+		if(!$keep_custom || empty($current_sale_type))
+		{
+			$this->CI->session->set_userdata('sale_type', $sale_type);
+		}
+	}
+
 	public function clear_invoice_number()
 	{
 		$this->CI->session->unset_userdata('sales_invoice_number');
@@ -174,6 +214,11 @@ class Sale_lib
 	public function clear_quote_number()
 	{
 		$this->CI->session->unset_userdata('sales_quote_number');
+	}
+
+	public function clear_sale_type()
+	{
+		$this->CI->session->unset_userdata('sale_type');
 	}
 
 	public function set_suspended_id($suspended_id)
@@ -204,6 +249,11 @@ class Sale_lib
 		return ($this->CI->session->userdata('sales_mode') == 'sale_quote');
 	}
 
+	public function is_work_order_mode()
+	{
+		return ($this->CI->session->userdata('sales_mode') == 'sale_work_order');
+	}
+
 	public function set_invoice_number_enabled($invoice_number_enabled)
 	{
 		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
@@ -215,9 +265,20 @@ class Sale_lib
 				$this->CI->session->userdata('sales_print_after_sale') == '1');
 	}
 
+	public function is_price_work_orders()
+	{
+		return ($this->CI->session->userdata('sales_price_work_orders') == 'true' ||
+			$this->CI->session->userdata('sales_price_work_orders') == '1');
+	}
+
 	public function set_print_after_sale($print_after_sale)
 	{
 		return $this->CI->session->set_userdata('sales_print_after_sale', $print_after_sale);
+	}
+
+	public function set_price_work_orders($price_work_orders)
+	{
+		return $this->CI->session->set_userdata('sales_price_work_orders', $price_work_orders);
 	}
 
 	public function get_email_receipt()
@@ -380,7 +441,6 @@ class Sale_lib
 		{
 			$cash_total = $total;
 			$totals['cash_total'] = $cash_total;
-
 		}
 
 		$payment_total = $this->get_payments_total();
@@ -862,8 +922,14 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
+		$this->set_sale_type($this->CI->Sale->get_sale_type($sale_id));
 		$this->set_comment($this->CI->Sale->get_comment($sale_id));
 		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
+		$this->CI->session->set_userdata('sale_id', $sale_id);
+	}
+
+	public function get_sale_id() {
+		return $this->CI->session->userdata('sale_id');
 	}
 
 	public function get_cart_reordered($sale_id)
@@ -880,6 +946,7 @@ class Sale_lib
 
 	public function clear_all()
 	{
+		$this->CI->session->set_userdata('sale_id', -1);
 		$this->set_invoice_number_enabled(FALSE);
 		$this->clear_table();
 		$this->empty_cart();
@@ -887,6 +954,7 @@ class Sale_lib
 		$this->clear_email_receipt();
 		$this->clear_invoice_number();
 		$this->clear_quote_number();
+		$this->clear_sale_type();
 		$this->clear_giftcard_remainder();
 		$this->empty_payments();
 		$this->remove_customer();

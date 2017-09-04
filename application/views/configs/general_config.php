@@ -94,7 +94,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_gcaptcha_site_key'), 'config_gcaptcha_site_key', array('class' => 'required control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_gcaptcha_site_key'), 'config_gcaptcha_site_key', array('class' => 'required control-label col-xs-2','id' => 'config_gcaptcha_site_key')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 						'name' => 'gcaptcha_site_key',
@@ -105,7 +105,7 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_gcaptcha_secret_key'), 'config_gcaptcha_secret_key', array('class' => 'required control-label col-xs-2')); ?>
+				<?php echo form_label($this->lang->line('config_gcaptcha_secret_key'), 'config_gcaptcha_secret_key', array('class' => 'required control-label col-xs-2','id' => 'config_gcaptcha_secret_key')); ?>
 				<div class='col-xs-4'>
 					<?php echo form_input(array(
 						'name' => 'gcaptcha_secret_key',
@@ -147,6 +147,17 @@
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
 					</label>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_show_office_group'), 'show_office_group', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'show_office_group',
+						'id' => 'show_office_group',
+						'value' => 'show_office_group',
+						'checked' => $show_office_group)); ?>
 				</div>
 			</div>
 
@@ -284,7 +295,17 @@ $(document).ready(function()
 {
 	var enable_disable_gcaptcha_enable = (function() {
 		var gcaptcha_enable = $("#gcaptcha_enable").is(":checked");
-		$("#gcaptcha_site_key, #gcaptcha_secret_key").prop("disabled", !gcaptcha_enable);
+		if(gcaptcha_enable)
+		{
+			$("#gcaptcha_site_key, #gcaptcha_secret_key").prop("disabled", !gcaptcha_enable).addClass("required");
+			$("#config_gcaptcha_site_key, #config_gcaptcha_secret_key").addClass("required");
+		}
+		else
+		{
+			$("#gcaptcha_site_key, #gcaptcha_secret_key").prop("disabled", gcaptcha_enable).removeClass("required");
+			$("#config_gcaptcha_site_key, #config_gcaptcha_secret_key").removeClass("required");
+		}
+
 		return arguments.callee;
 	})();
 
@@ -293,6 +314,7 @@ $(document).ready(function()
 	$("#backup_db").click(function() {
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
+
 
 	$('#general_config_form').validate($.extend(form_support.handler, {
 
@@ -312,11 +334,11 @@ $(document).ready(function()
 			},
 			gcaptcha_site_key:
 			{
-				required: true
+				required: "#gcaptcha_enable:checked"
 			},
 			gcaptcha_secret_key:
 			{
-				required: true
+				required: "#gcaptcha_enable:checked"
 			}
 		},
 
