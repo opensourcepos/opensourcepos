@@ -468,7 +468,7 @@ CREATE TABLE `ospos_grants` (
 --
 -- --------------------------------------------------------
 
-INSERT INTO `ospos_grants` (`permission_id`, `person_id`, 'menu_group') VALUES
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
 ('reports_customers', 1, 'home'),
 ('reports_receivings', 1, 'home'),
 ('reports_items', 1, 'home'),
