@@ -340,25 +340,17 @@ $(document).ready(function()
 {
 	$("span").tooltip();
 
-	var number_locale_params = {
-		url: "<?php echo site_url($controller_name . '/check_number_locale')?>",
-		type: "POST"
-	};
-
 	$("#currency_symbol, #thousands_separator").change(function() {
 		var field = $(this).attr('id');
 		var value = $(this).is(":checkbox") ? $(this).is(":checked") : $(this).val();
-		var data =
-		{
-			number_locale: $("#number_locale").val()
-		};
+		var data = { number_locale: $("#number_locale").val() };
 		data[field] = value;
-		$.post($.extend(number_locale_params, {
-			data: $.extend(csrf_form_base(), data),
-			success: function(response) {
+		$.post("<?php echo site_url($controller_name . '/check_number_locale')?>",
+			$.extend(csrf_form_base(), data),
+			function(response) {
 				$("#number_locale_example").text(response.number_locale_example);
 			}
-		}));
+		);
 	});
 
 	$('#locale_config_form').validate($.extend(form_support.handler, {
@@ -368,7 +360,10 @@ $(document).ready(function()
 			number_locale:
 			{
 				required: true,
-				remote: $.extend(number_locale_params, {
+				remote: $.extend({
+						url: "<?php echo site_url($controller_name . '/check_number_locale')?>",
+						type: "POST"
+					}, {
 					data: $.extend(csrf_form_base(), {
 						"number_locale" : function() {
 							return $("#number_locale").val();

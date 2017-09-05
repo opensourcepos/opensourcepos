@@ -50,26 +50,19 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post($.extend(
-			{
-				url: "<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key')?>",
-				type: 'POST'
-			},
-			{
-				data: $.extend(csrf_form_base(), {
+		$.post("<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key')?>",
+			$.extend(csrf_form_base(), {
 					'mailchimp_api_key': $('#mailchimp_api_key').val()
-				}),
-				success: function(response) {
-					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
-					$('#mailchimp_list_id').empty();
-					$.each(response.mailchimp_lists, function(val, text) {
-						$('#mailchimp_list_id').append(new Option(text, val));
-					});
-					$('#mailchimp_list_id').prop('selectedIndex', 0);
-				},
-				dataType: 'json'
+			}),
+			function(response) {
+				$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+				$('#mailchimp_list_id').empty();
+				$.each(response.mailchimp_lists, function(val, text) {
+					$('#mailchimp_list_id').append(new Option(text, val));
+				});
+				$('#mailchimp_list_id').prop('selectedIndex', 0);
 			}
-		));
+		);
 	});
 
 	$('#mailchimp_config_form').validate($.extend(form_support.handler, {
