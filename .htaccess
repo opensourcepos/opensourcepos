@@ -1,8 +1,9 @@
 # redirect to public page
-RewriteEngine On
-
-RewriteCond %{REQUEST_URI} !^/public$
-RewriteRule ^(.*)/$ /public/ [R=301,L]
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^public$
+    RewriteRule ^(.*)$ %{REQUEST_URI}public/ [R=301,L]
+  </IfModule>
 
 # disable directory browsing
 # For security reasons, Option all cannot be overridden.
