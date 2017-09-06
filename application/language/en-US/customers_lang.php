@@ -1,7 +1,7 @@
 <?php 
 
 $lang["customers_account_number"] = "Account #";
-$lang["customers_account_number_duplicate"] = "Account Number is already present in the database";
+$lang["customers_account_number_duplicate"] = "Account Number is already present in the database.";
 $lang["customers_available_points"] = "Available Points";
 $lang["customers_average"] = "Average spent";
 $lang["customers_avg_discount"] = "Average discount";
@@ -11,12 +11,12 @@ $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customers?";
 $lang["customers_customer"] = "Customer";
 $lang["customers_discount"] = "Discount";
-$lang["customers_email_duplicate"] = "Email Address is already present in the database";
-$lang["customers_error_adding_updating"] = "Error adding/updating customer";
+$lang["customers_email_duplicate"] = "Email Address is already present in the database.";
+$lang["customers_error_adding_updating"] = "adding/updating Customer failed.";
 $lang["customers_excel_import_failed"] = "Excel import failed";
-$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or incorrectly formatted";
-$lang["customers_excel_import_partially_failed"] = "Customer import successful with some failures";
-$lang["customers_excel_import_success"] = "Customer Import successful";
+$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or incorrectly formatted.";
+$lang["customers_excel_import_partially_failed"] = "Customer import successful with some failures.";
+$lang["customers_excel_import_success"] = "Customer Import successful.";
 $lang["customers_import_items_excel"] = "Customer Import from Excel";
 $lang["customers_mailchimp_activity_click"] = "Email click";
 $lang["customers_mailchimp_activity_lastopen"] = "Last open email";
@@ -31,7 +31,7 @@ $lang["customers_mailchimp_vip"] = "VIP";
 $lang["customers_max"] = "Max. spent";
 $lang["customers_min"] = "Min. spent";
 $lang["customers_new"] = "New Customer";
-$lang["customers_none_selected"] = "You have not selected customers to delete";
+$lang["customers_none_selected"] = "You have not selected customer(s) to delete.";
 $lang["customers_one_or_multiple"] = "customer(s)";
 $lang["customers_quantity"] = "Quantity";
 $lang["customers_stats_info"] = "Stats";
