@@ -1,7 +1,7 @@
 <?php 
 
 $lang["customers_account_number"] = "Account #";
-$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
+$lang["customers_account_number_duplicate"] = "Account Number is already present in the database";
 $lang["customers_available_points"] = "Available points";
 $lang["customers_average"] = "Average spent";
 $lang["customers_avg_discount"] = "Average discount";
@@ -11,13 +11,13 @@ $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "Are you sure you want to delete the selected Customer(s)?";
 $lang["customers_customer"] = "Customer";
 $lang["customers_discount"] = "Discount";
-$lang["customers_email_duplicate"] = "The email address is already present in the database";
+$lang["customers_email_duplicate"] = "Email address is already present in the database";
 $lang["customers_error_adding_updating"] = "Error adding/updating Customer";
 $lang["customers_excel_import_failed"] = "The excel import failed";
-$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or has some wrong format";
-$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
-$lang["customers_excel_import_success"] = "Import of Customers successful";
-$lang["customers_import_items_excel"] = "Import Customers from Excel sheet";
+$lang["customers_excel_import_nodata_wrongformat"] = "The uploaded file has no data or is incorrectly formatted";
+$lang["customers_excel_import_partially_failed"] = "Customer import successful with some failures:";
+$lang["customers_excel_import_success"] = "Customer import successful";
+$lang["customers_import_items_excel"] = "Customer Import from Excel";
 $lang["customers_mailchimp_activity_click"] = "Email click";
 $lang["customers_mailchimp_activity_lastopen"] = "Last open email";
 $lang["customers_mailchimp_activity_open"] = "Email open";
