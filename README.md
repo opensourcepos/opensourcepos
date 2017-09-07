@@ -33,7 +33,7 @@ The main features are:
 The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
 The latest 3.x version is a complete overhaul of the original software.
-It is now based on Bootstrap 3.x using Bootswatch themes, and still uses CodeIgniter 3.x as framework.
+It is now based on Bootstrap 3 using Bootswatch themes, and still uses CodeIgniter 3 as framework.
 It also has improved functionality and security.
 
 Deployed to a Cloud it's a SaaS (Software as a Service) solution.
@@ -104,6 +104,7 @@ Local install
   * password: pointofsale
 9. Enjoy
 10. Oops an issue? Please make sure you read the FAQ, wiki page and you checked open and closed issue on GitHub. PHP display_errors is disabled by default. Create an application/config/.env file from the .env.example to enable it in a development environment. 
+
 
 Local install using Docker
 --------------------------
@@ -185,3 +186,5 @@ FAQ
 * If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755
 
 * If you have problems with the encryption support or you get an error please make sure `php5-mcrypt` is installed
+
+* If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/jekkos/opensourcepos/issues/1492)
