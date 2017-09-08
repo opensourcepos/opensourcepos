@@ -1,9 +1,16 @@
 <?php 
 
 $lang["reports_all"] = "All";
+$lang["reports_canceled"] = "Canceled";
 $lang["reports_categories"] = "Categories";
 $lang["reports_categories_summary_report"] = "Categories Summary Report";
 $lang["reports_category"] = "Category";
+$lang["reports_code_canceled"] = "CNL";
+$lang["reports_code_invoice"] = "INV";
+$lang["reports_code_quote"] = "Q";
+$lang["reports_code_return"] = "RET";
+$lang["reports_code_type"] = "Type";
+$lang["reports_code_work_order"] = "W/O";
 $lang["reports_comments"] = "Comments";
 $lang["reports_cost"] = "Wholesale";
 $lang["reports_cost_price"] = "Wholesale Price";
@@ -97,4 +104,5 @@ $lang["reports_total_inventory_value"] = "Total Inventory Value";
 $lang["reports_type"] = "Type";
 $lang["reports_unit_price"] = "Retail Price";
 $lang["reports_used"] = "Points Used";
+$lang["reports_work_orders"] = "Work Orders";
 $lang["reports_zero_and_less"] = "Zero and less";

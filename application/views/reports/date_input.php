@@ -29,10 +29,7 @@ if(isset($error))
 		?>
 			<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required control-label col-xs-2')); ?>
 			<div id='report_sale_type' class="col-xs-3">
-				<?php echo form_dropdown('sale_type', array('all' => $this->lang->line('reports_all'),
-				'sales' => $this->lang->line('reports_sales'),
-				'quotes' => $this->lang->line('reports_quotes'),
-				'returns' => $this->lang->line('reports_returns')), 'all', array('id'=>'input_type', 'class'=>'form-control')); ?>
+				<?php echo form_dropdown('sale_type', $sale_type_options, 'complete', array('id'=>'input_type', 'class'=>'form-control')); ?>
 			</div>
 		<?php
 		}
