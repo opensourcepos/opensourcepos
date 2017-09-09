@@ -71,10 +71,10 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=87da435917"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=7f52cbc5d2"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=9fa876b344"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=f6ce7fb090"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -123,14 +123,17 @@
 
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<?php foreach($allowed_modules->result() as $module): ?>
-						<li class="<?php echo $module->module_id == $this->uri->segment(1)? 'active': ''; ?>">
-							<a href="<?php echo site_url("$module->module_id");?>" title="<?php echo $this->lang->line("module_".$module->module_id);?>" class="menu-icon">
-								<img src="<?php echo base_url().'images/menubar/'.$module->module_id.'.png';?>" border="0" alt="Module Icon" /><br />
-								<?php echo $this->lang->line("module_".$module->module_id) ?>
-							</a>
-						</li>
-						<?php endforeach; ?>
+						<?php foreach($allowed_modules as $module): ?>
+						   <li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : ''; ?>">
+							   <a href="<?php echo site_url("$module->module_id"); ?>"
+								   title="<?php echo $this->lang->line("module_" . $module->module_id); ?>"
+								   class="menu-icon">
+									<img src="<?php echo base_url() . 'images/menubar/' . $module->module_id . '.png'; ?>"
+										 border="0" alt="Module Icon"/><br/>
+									<?php echo $this->lang->line("module_" . $module->module_id) ?>
+								</a>
+							</li>
+							<?php endforeach; ?>
 					</ul>
 				</div>
 			</div>

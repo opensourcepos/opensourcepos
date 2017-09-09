@@ -12,13 +12,13 @@ before_install:
     - date=`date +%Y%m%d%H%M%S` && branch=${TRAVIS_BRANCH} && rev=`git rev-parse --short=6 HEAD` && sed -i "s/\$1/\$1.$date.$branch.$rev/g" deployment.json
 script:
     - docker run --rm -v $(pwd):/app composer/composer install
-    - php bin/install.php translations develop
+    - git clone https://github.com/bcit-ci/codeigniter3-translations dist/ci-translations && sudo cp -r dist/ci-translations/language/* vendor/codeigniter/framework/system/language
     - docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt sh -c "npm install && bower install && grunt package"
     - docker-compose build
 env:
     - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success:
-    - '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+     '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
       && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker tag opensourcepos_sqlscript
       jekkos/opensourcepos:sqlscript && docker push "jekkos/opensourcepos:$TAG" &&  docker
       push jekkos/opensourcepos:sqlscript'

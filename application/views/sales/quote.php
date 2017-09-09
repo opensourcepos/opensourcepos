@@ -40,7 +40,7 @@ if (isset($error_message))
 		<a href="javascript:void(0);"><div class="btn btn-info btn-sm", id="show_email_button"><?php echo '<span class="glyphicon glyphicon-envelope">&nbsp</span>' . $this->lang->line('sales_send_quote'); ?></div></a>
 	<?php endif; ?>
 	<?php echo anchor("sales", '<span class="glyphicon glyphicon-shopping-cart">&nbsp</span>' . $this->lang->line('sales_register'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_sales_button')); ?>
-	<?php echo anchor("sales/discard_quote", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('sales_discard_quote'), array('class'=>'btn btn-danger btn-sm', 'id'=>'discard_quote_button')); ?>
+	<?php echo anchor("sales/discard_suspended_sale", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('sales_discard'), array('class'=>'btn btn-danger btn-sm', 'id'=>'discard_quote_button')); ?>
 </div>
 
 <div id="page-wrap">

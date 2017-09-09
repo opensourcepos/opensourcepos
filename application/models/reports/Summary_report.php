@@ -90,21 +90,41 @@ abstract class Summary_report extends Report
 			$this->db->where('sales_items.item_location', $inputs['location_id']);
 		}
 
-		if($inputs['sale_type'] == 'sales')
+		if($inputs['sale_type'] == 'complete')
 		{
-			$this->db->where('sale_status = ' . COMPLETED . ' and quantity_purchased > 0');
+			$this->db->where('sale_status', COMPLETED);
+			$this->db->group_start();
+			$this->db->where('sale_type', SALE_TYPE_POS);
+			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+			$this->db->group_end();
 		}
-		elseif($inputs['sale_type'] == 'all')
+		elseif($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sale_status = ' . COMPLETED);
+			$this->db->where('sale_status', COMPLETED);
+			$this->db->group_start();
+			$this->db->where('sale_type', SALE_TYPE_POS);
+			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
-			$this->db->where('sale_status = ' . SUSPENDED . ' and quote_number IS NOT NULL');
+			$this->db->where('sale_status', SUSPENDED);
+			$this->db->where('sale_type', SALE_TYPE_QUOTE);
+		}
+		elseif($inputs['sale_type'] == 'work_orders')
+		{
+			$this->db->where('sale_status', SUSPENDED);
+			$this->db->where('sale_type', SALE_TYPE_WORK_ORDER);
+		}
+		elseif($inputs['sale_type'] == 'canceled')
+		{
+			$this->db->where('sale_status', CANCELED);
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('sale_status = ' . COMPLETED . ' and quantity_purchased < 0');
+			$this->db->where('sale_status', COMPLETED);
+			$this->db->where('sale_type', SALE_TYPE_RETURN);
 		}
 
 

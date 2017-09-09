@@ -1,5 +1,4 @@
 {
-
     "package": {
         "name": "opensourcepos",
         "repo": "opensourcepos",
@@ -14,13 +13,12 @@
         "public_download_numbers": true,
         "public_stats": true
     },
-"version": {
-        "name": "3.1.0"
+	"version": {
+        "name": "3.2.0"
     },
-
     "files":
     [
-        {"includePattern": "dist/(.*)\\.(.*)", "uploadPattern": "$1.$2"}
+        {"includePattern": "dist(.*)\\.(zip)", "uploadPattern": "$1.$2"}
     ],
     "matrixParams": {
         "override": 1

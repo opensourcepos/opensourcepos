@@ -1,5 +1,45 @@
+Version 3.1.1
+-------------
++ Updated en-US and en-GB translations, better grammar and consistency
++ Fixed database migration issue with VAT tax included
++ Fixed database backup bug
++ Fixed Gift card error
++ Fixed database upgrade to 3.1.x script (now it's to 3.1.1 and there is no 3.1.0 anymore)
++ Fixed old database upgrade scripts for people upgrading from 2.x versions
++ Fixed .htaccess file in opensourcepos root dir (it was not forwarding to public subdir)
++ Fixed few jQuery 2.0 upgrade issues
+
+Version 3.1.0
+-------------
++ MySQL 5.7 and PHP 7.x support
++ Advanced Tax support with customer tax categories and etc,
++ Better HORECA use case support with Dinner Table sale tagging
++ Customer Rewards support
++ Added quote support and better invoice support
++ Added integration with Mailchimp to connect Customer list with Mailchimp list
++ Prevent inserting two customers with same email address
++ Customer total spending and stats
++ Added reCAPTCHA to Login page to increase protection from Brute Force attacks
++ Added due payment for credit sale support
++ Gifcard numbering with two options: Series and Random
++ Extended Item Kits functionality
++ Employee allowed to change their own password clicking their name on top bar
++ Cash rounding support, extended decimals
++ Reworked Item Pictures and file name and storing
++ Financial year start date and selection from date range pickers
++ Date time range filters can be date & time or date only
++ Added two new Bootswatch themes
++ Receipts font size support
++ Fix automatically people's name first capital letter, emails in lower case only
++ Fixes to Receiving
++ Various amendments to database script updates from older versions
++ Added dotenv support
++ Updates to language translations (split English to American English and British English)
++ Various Dockers support improvements
++ Minor bugfixes
+
 Version 3.0.2
------------
+-------------
 + Fixed error when performing scans multiple times in a row
 + Fixed summary reports
 + Protect Employee privacy printing just the first letter of the family name
@@ -8,7 +48,7 @@ Version 3.0.2
 + Minor bugfixes
 
 Version 3.0.1
------------
+-------------
 + *CodeIgniter 3.1.2 Upgrade*
 + *Substantial database performance improvements*
 + *Improved security: email and sms passwords encryption, removed phpinfo.php*
@@ -23,7 +63,7 @@ Version 3.0.1
 + Minor bugfixes and some general code clean up
 
 Version 3.0.0
------------
+-------------
 + *CodeIgniter 3.1 Upgrade*
 + Major UI overhaul based on *Boostrap 3.0 and Bootswatch Themes*
 + New tabular views with advanced filtering using *Bootstrap Tables*
@@ -41,8 +81,8 @@ Version 3.0.0
 + About 280 closed issues under 3.0.0 release label, too many to produce a meaningful list
 + Various code cleanup, refactoring, optimisation and etc.
 
-Version 2.4
------------
+Version 2.4.0
+-------------
 + *CodeIgniter 3.0.5* Upgrade (please read UPGRADE.txt)
 + Fix for spurious logouts
 + Apache .htaccess mod_expiry caching and security optimizations
@@ -115,7 +155,6 @@ Version 2.3.2
 
 Version 2.3.1
 -------------
-
 + Extra report permissions (this includes a refactoring of the database model - new grants table)
 + Tax inclusive/exclusive pricing
 + Receivings amount multiplication (can be configured in items section)
@@ -124,8 +163,8 @@ Version 2.3.1
 + Fix item import through csv
 + Bug fixes for reports
 
-Version 2.3
------------
+Version 2.3.0
+-------------
 + Support for multiple stock locations
 
 Version 2.2.2
@@ -137,7 +176,7 @@ Version 2.2.2
 + Fix duplicated session cookies in http headers (this broke the application when running on nginx)
 
 Version 2.1.1
--------------
+---------------
 + Barcodes on the order receipt weren't generated correctly
 + Sales edit screen for detailed sales reports is now available with thickbox as in the rest of the application
 + Indonesian language files updated (Oktafianus)

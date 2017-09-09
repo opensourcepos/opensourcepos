@@ -34,7 +34,9 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('reports', 'reports'),
 ('sales', 'sales'),
 ('config', 'config'),
-('suppliers', 'suppliers');
+('suppliers', 'suppliers'),
+('sales_stock', 'sales'),
+('receivings_stock', 'receivings');
 
 -- add permissions for existing stock locations
 INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
@@ -102,6 +104,9 @@ ALTER TABLE `ospos_sales_suspended`
 ALTER TABLE `ospos_items` 
    ADD COLUMN `receiving_quantity` int(11) DEFAULT '1',
    DROP COLUMN `quantity`;
+
+-- add record_time column to ospos_giftcards table
+ALTER TABLE ospos_giftcards ADD record_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP;
 
 -- add foreign key to giftcards table
 ALTER TABLE `ospos_giftcards`
