@@ -38,14 +38,27 @@ class Secure_Controller extends CI_Controller
 		{
 			$this->session->set_userdata('menu_group', $menu_group);
 		}
+
 		if($menu_group == 'home')
 		{
-			$data['allowed_modules'] = $this->Module->get_allowed_home_modules($logged_in_employee_info->person_id);
+			$allowed_modules = $this->Module->get_allowed_home_modules($logged_in_employee_info->person_id);
 		}
 		else
 		{
-			$data['allowed_modules'] = $this->Module->get_allowed_office_modules($logged_in_employee_info->person_id);
+			$allowed_modules = $this->Module->get_allowed_office_modules($logged_in_employee_info->person_id);
 		}
+
+		// do not show migrate module if no migration is required
+
+		$this->load->library('migration');
+		foreach($allowed_modules->result() as $module)
+		{
+			if(!$this->migration->latest() || $module->module_id != 'migrate')
+			{
+				$data['allowed_modules'][] = $module;
+			}
+		}
+
 		$data['user_info'] = $logged_in_employee_info;
 		$data['controller_name'] = $module_id;
 

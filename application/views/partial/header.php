@@ -123,7 +123,7 @@
 
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-						<?php foreach($allowed_modules->result() as $module): ?>
+						<?php foreach($allowed_modules as $module): ?>
 						   <li class="<?php echo $module->module_id == $this->uri->segment(1) ? 'active' : ''; ?>">
 							   <a href="<?php echo site_url("$module->module_id"); ?>"
 								   title="<?php echo $this->lang->line("module_" . $module->module_id); ?>"

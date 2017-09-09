@@ -8,7 +8,7 @@
 
 <div id="office_module_list">
 	<?php
-	foreach($allowed_modules->result() as $module)
+	foreach($allowed_modules as $module)
 	{
 	?>
 		<div class="module_item" title="<?php echo $this->lang->line('module_'.$module->module_id.'_desc');?>">
