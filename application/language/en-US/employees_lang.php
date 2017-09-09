@@ -10,6 +10,7 @@ $lang["employees_employee"] = "Employee";
 $lang["employees_error_adding_updating"] = "Employee add or update failed.";
 $lang["employees_error_deleting_demo_admin"] = "You can not delete the demo admin user.";
 $lang["employees_error_updating_demo_admin"] = "You can not change the demo admin user.";
+$lang["employees_language"] = "Language";
 $lang["employees_login_info"] = "Login";
 $lang["employees_new"] = "New Employee";
 $lang["employees_none_selected"] = "You have not selected any employee(s) to delete.";
