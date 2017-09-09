@@ -411,7 +411,7 @@ if(isset($success))
 					<?php echo form_close(); ?>
 	   					<?php
 						// Only show this part if the payment cover the total and in sale or return mode
-						if($sales_or_return_mode == '1')
+						if($pos_mode == '1')
 						{
 						?>
   						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
@@ -485,7 +485,7 @@ if(isset($success))
 					<div class='btn btn-sm btn-default pull-left' id='suspend_sale_button'><span class="glyphicon glyphicon-align-justify">&nbsp</span><?php echo $this->lang->line('sales_suspend_sale'); ?></div>
 					<?php
 					// Only show this part if the payment cover the total
-					if($quote_or_invoice_mode && isset($customer))
+					if(!$pos_mode && isset($customer))
 					{
 					?>
 					<div class='btn btn-sm btn-success' id='finish_invoice_quote_button'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $mode_label; ?></div>
@@ -500,7 +500,7 @@ if(isset($success))
 
 			<?php
 			// Only show this part if the payment cover the total
-			if($payments_cover_total || $quote_or_invoice_mode)
+			if($payments_cover_total || !$pos_mode)
 			{
 			?>
 				<div class="container-fluid">
@@ -535,7 +535,20 @@ if(isset($success))
 							<?php
 							}
 							?>
-						</div>
+            				<?php
+			            	if($mode == "sale_work_order")
+		            		{
+				        	?>
+                                <div class="col-xs-6">
+                                    <label for="price_work_orders" class="control-label checkbox">
+                                    <?php echo form_checkbox(array('name'=>'price_work_orders', 'id'=>'price_work_orders', 'value'=>1, 'checked'=>$price_work_orders)); ?>
+                                    <?php echo $this->lang->line('sales_include_prices');?>
+                                    </label>
+                                </div>
+                            <?php
+                            }
+                            ?>
+                        </div>
 					</div>
 				<?php
 				if(($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
@@ -678,7 +691,12 @@ $(document).ready(function()
 	{
 		$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
 	});
-	
+
+    $("#price_work_orders").change(function()
+    {
+        $.post('<?php echo site_url($controller_name."/set_price_work_orders");?>', {price_work_orders: $(this).is(":checked")});
+    });
+
 	$('#email_receipt').change(function() 
 	{
 		$.post('<?php echo site_url($controller_name."/set_email_receipt");?>', {email_receipt: $('#email_receipt').is(':checked') ? '1' : '0'});
