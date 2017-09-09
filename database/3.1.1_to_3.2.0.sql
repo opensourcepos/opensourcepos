@@ -17,10 +17,10 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
 ('office', 1, 'home'),
 ('home', 1, 'office');
 
-update `ospos_grants`
-set menu_group = 'office'
-where permission_id in ('config', 'home', 'employees', 'taxes', 'migrate')
-and person_id = 1;
+UPDATE `ospos_grants`
+SET menu_group = 'office'
+WHERE permission_id in ('config', 'home', 'employees', 'taxes', 'migrate')
+AND person_id = 1;
 
 --
 -- Add support for Work Orders
