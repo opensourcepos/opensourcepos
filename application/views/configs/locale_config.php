@@ -157,7 +157,8 @@
 						'hu-HU:hungarian' => 'Hungarian',
 						'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
 						'hr-HR' => 'Croatian (Croatia)',
-						'ar-EG:arabic' => 'Arabic (Egypt)'
+						'ar-EG:arabic' => 'Arabic (Egypt)',
+						'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'	
 					),
 					current_language_code() . ':' . current_language(), array('class' => 'form-control input-sm'));
 					?>
