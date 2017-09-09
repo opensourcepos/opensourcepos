@@ -1099,16 +1099,34 @@ class Sales extends Secure_Controller
 	public function delete($sale_id = -1, $update_inventory = TRUE)
 	{
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$sale_ids = $sale_id == -1 ? $this->input->post('ids') : array($sale_id);
+		$has_grant = $this->Employee->has_grant('sales_delete', $employee_id);
 
-		if($this->Sale->delete_list($sale_ids, $employee_id, $update_inventory))
+		if(!$has_grant)
 		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_deleted') . ' ' .
-				count($sale_ids) . ' ' . $this->lang->line('sales_one_or_multiple'), 'ids' => $sale_ids));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_not_authorized')));
 		}
 		else
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_deleted')));
+			$sale_ids = $sale_id == -1 ? $this->input->post('ids') : array($sale_id);
+			$reactivate = FALSE;
+
+			if($this->Sale->delete_list($sale_ids, $employee_id, $update_inventory, $reactivate))
+			{
+				if(!$reactivate)
+				{
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_deleted') . ' ' .
+						count($sale_ids) . ' ' . $this->lang->line('sales_one_or_multiple'), 'ids' => $sale_ids));
+				}
+				else
+				{
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_reactivated') . ' ' .
+						count($sale_ids) . ' ' . $this->lang->line('sales_one_or_multiple'), 'ids' => $sale_ids));
+				}
+			}
+			else
+			{
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_deleted')));
+			}
 		}
 	}
 
