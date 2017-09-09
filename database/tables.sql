@@ -146,15 +146,15 @@ CREATE TABLE `ospos_customers` (
 --
 
 CREATE TABLE `ospos_employees` (
-  `username` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `person_id` int(10) NOT NULL,
-  `deleted` int(1) NOT NULL DEFAULT '0',
-  `hash_version` int(1) NOT NULL DEFAULT '2',
-  `language` VARCHAR(500) DEFAULT NULL,
-	`language_code` VARCHAR(500) DEFAULT NULL,
-  UNIQUE KEY `username` (`username`),
-  KEY `person_id` (`person_id`)
+  	`username` varchar(255) NOT NULL,
+  	`password` varchar(255) NOT NULL,
+  	`person_id` int(10) NOT NULL,
+  	`deleted` int(1) NOT NULL DEFAULT '0',
+  	`hash_version` int(1) NOT NULL DEFAULT '2',
+  	`language` VARCHAR(48) DEFAULT NULL,
+	`language_code` VARCHAR(8) DEFAULT NULL,
+  	UNIQUE KEY `username` (`username`),
+  	KEY `person_id` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
