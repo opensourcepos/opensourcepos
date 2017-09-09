@@ -148,6 +148,16 @@ month of uptime on the platform. A full setup will only take about 2 minutes by 
 More info [on maintaining a docker](https://github.com/jekkos/opensourcepos/wiki/Docker-cloud-maintenance) install can be found on the wiki
 
 
+Language Translations
+---------------------
+
+To help us with OSPOS translations please use [Weblate website here](http://weblate.jpeelaer.net) and sign up. After registering you can subscribe to different languages and you will be notified once a new translation is added.
+
+Please also read the [wiki page here](https://github.com/jekkos/opensourcepos/wiki/Adding-translations) to find our Translations Guideline.
+
+Only with the help of the community we can keep language translations up to date.
+
+
 Reporting Bugs
 --------------
 
