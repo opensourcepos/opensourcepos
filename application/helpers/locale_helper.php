@@ -11,12 +11,15 @@ function current_language_code()
 	{
 		$employee_language_code = get_instance()->Employee->get_logged_in_employee_info()->language_code;
 		if($employee_language_code != NULL && $employee_language_code != '')
+		{
 			return $employee_language_code;
+		}
 		return get_instance()->config->item('language_code');
 	}
 	else
+	{	
 		return get_instance()->config->item('language_code');
-
+	}
 }
 
 function current_language()
@@ -26,12 +29,15 @@ function current_language()
 	{
 		$employee_language = get_instance()->Employee->get_logged_in_employee_info()->language;
 		if($employee_language != NULL && $employee_language != '')
+		{
 			return $employee_language;
+		}
 		return get_instance()->config->item('language');
 	}
 	else
+	{	
 		return get_instance()->config->item('language');
-
+	}
 }
 
 function currency_side()
