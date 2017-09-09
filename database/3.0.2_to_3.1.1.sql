@@ -187,7 +187,7 @@ ALTER TABLE `ospos_sales_items_taxes`
 ALTER TABLE `ospos_customers`
   ADD COLUMN `sales_tax_code` varchar(32) NOT NULL DEFAULT '1';
 
-INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+INSERT IGNORE INTO `ospos_app_config` (`key`, `value`) VALUES
 ('customer_sales_tax_support', '0'),
 ('default_origin_tax_code', ''),
 ('default_tax_category', 'Standard'),
@@ -196,16 +196,15 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('default_tax_2_name', ''),
 ('default_tax_2_rate', '');
 
-INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
+INSERT IGNORE INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
 ('module_taxes', 'module_taxes_desc', 105, 'taxes');
 
-INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+INSERT IGNORE INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('taxes', 'taxes');
 
 -- add support for cash rounding into config
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('currency_decimals', '2'),
 ('cash_decimals', '2'),
 ('cash_rounding_code', '0');
 
@@ -308,10 +307,11 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('gcaptcha_secret_key', ''),
 ('gcaptcha_site_key', '');
 
--- add Barcode formats
+-- add Barcode formats and other missing keys
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('barcode_formats', '[]');
+('barcode_formats', '[]'),
+('receiving_calculate_average_price', '0');
 
 -- replace old tokens in ospos_app_config
 
@@ -346,3 +346,71 @@ ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk
 ALTER TABLE `ospos_sales_suspended` DROP FOREIGN KEY `ospos_sales_suspended_ibfk_3`;
 
 DROP TABLE `ospos_sales_suspended_payments`, `ospos_sales_suspended_items_taxes`, `ospos_sales_suspended_items`, `ospos_sales_suspended`;
+
+--
+-- General fixing to realign upgraded database to clean database structure
+--
+
+DELETE FROM `ospos_app_config` WHERE `key` = 'print_after_sale';
+
+ALTER TABLE ospos_giftcards MODIFY value decimal(15,2) NOT NULL;
+ALTER TABLE ospos_items MODIFY cost_price decimal(15,2) NOT NULL;
+ALTER TABLE ospos_items MODIFY unit_price decimal(15,2) NOT NULL;
+ALTER TABLE ospos_receivings_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE ospos_receivings_items MODIFY item_unit_price decimal(15,2) NOT NULL;
+ALTER TABLE ospos_sales_items MODIFY discount_percent decimal(15,2) NOT NULL DEFAULT '0.00';
+ALTER TABLE ospos_sales_items MODIFY item_unit_price decimal(15,2) NOT NULL;
+
+-- Change collation on columns to be utf8_general_ci
+
+ALTER TABLE ospos_app_config CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_customers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_customers_packages CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_customers_points CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_dinner_tables CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_employees CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_giftcards CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_grants CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_inventory CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_item_kit_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_item_kits CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_item_quantities CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_modules CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_people CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_permissions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_receivings CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_receivings_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_items CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_items_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_payments CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_reward_points CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sales_taxes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_sessions CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_stock_locations CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_suppliers CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_tax_categories CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_tax_code_rates CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_tax_codes CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+--
+-- Increase acceptable length of custom fields and allow null values
+--
+
+ALTER TABLE ospos_items
+  MODIFY custom1 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom2 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom3 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom4 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom5 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom6 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom7 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom8 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom9 VARCHAR(255) DEFAULT NULL,
+  MODIFY custom10 VARCHAR(255) DEFAULT NULL;
+
+-- Change language code en to be en-US
+
+UPDATE `ospos_app_config` SET `value` = 'en-US' WHERE `key` = 'language_code' AND `value` = 'en';

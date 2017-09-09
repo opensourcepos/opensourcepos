@@ -18,7 +18,7 @@ class Migrate extends Secure_Controller
 
 	public function perform_migration()
 	{
-		if( ! $this->migration->latest())
+		if(!$this->migration->latest())
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('migrate_failed - ' . $this->migration->error_string())));
 		}

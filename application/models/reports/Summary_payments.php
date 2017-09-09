@@ -14,7 +14,7 @@ class Summary_payments extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sales_payments.payment_type, COUNT(*) AS count, SUM(sales_payments.payment_amount) AS payment_amount');
+		$this->db->select('sales_payments.payment_type, COUNT(sales_payments.sale_id) AS count, SUM(sales_payments.payment_amount) AS payment_amount');
 		$this->db->from('sales_payments AS sales_payments');
 		$this->db->join('sales AS sales', 'sales.sale_id = sales_payments.sale_id');
 

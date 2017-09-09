@@ -61,6 +61,7 @@ class Employees extends Persons
 		{
 			$module->module_id = $this->xss_clean($module->module_id);
 			$module->grant = $this->xss_clean($this->Employee->has_grant($module->module_id, $person_info->person_id));
+			$module->menu_group = $this->xss_clean($this->Employee->get_menu_group($module->module_id, $person_info->person_id));
 
 			$modules[] = $module;
 		}
@@ -134,6 +135,16 @@ class Employees extends Persons
 				'comments' => $this->input->post('comments'),
 			);
 			$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
+			$menu_groups = $this->input->post('menu_groups') != NULL ? $this->input->post('menu_groups') : array();
+
+			$grants_array = array();
+			foreach ($grants_data as $key => $value)
+			{
+				$grants = array();
+				$grants['permission_id'] = $value;
+				$grants['menu_group'] = $menu_groups[$key];
+				$grants_array[] = $grants;
+			}
 
 			//Password has been changed OR first time password set
 			if($this->input->post('password') != '')
@@ -157,7 +168,7 @@ class Employees extends Persons
 				);
 			}
 
-			if($this->Employee->save_employee($person_data, $employee_data, $grants_data, $employee_id))
+			if($this->Employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))
 			{
 				// New employee
 				if($employee_id == -1)

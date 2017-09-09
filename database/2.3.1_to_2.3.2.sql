@@ -4,6 +4,12 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_second_row', 'item_code'),
 ('barcode_third_row', 'cost_price'),
 ('barcode_num_in_row', '2'),
+('barcode_font', 'Arial'),
+('barcode_font_size', '10'),
+('barcode_height', '50'),
+('barcode_quality', '100'),
+('barcode_type', 'Code39'),
+('barcode_width', '250'),
 ('company_logo', ''),
 ('barcode_page_width', '100'),      
 ('barcode_page_cellspacing', '20'),
@@ -22,10 +28,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('lines_per_page', '25'),
 ('show_total_discount', '25');
 
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id) 
+INSERT IGNORE INTO `ospos_permissions` (permission_id, module_id, location_id) 
 (SELECT CONCAT('sales_', location_name), 'sales', location_id FROM ospos_stock_locations);
 
-INSERT INTO `ospos_permissions` (permission_id, module_id, location_id)
+INSERT IGNORE INTO `ospos_permissions` (permission_id, module_id, location_id)
 (SELECT CONCAT('receivings_', location_name), 'receivings', location_id FROM ospos_stock_locations);
 
 -- add item_pic column to items table
@@ -45,10 +51,6 @@ ALTER TABLE `ospos_customers`
 
 ALTER TABLE `ospos_giftcards`
     MODIFY `person_id` int(10) DEFAULT NULL;
-
-INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
-('sales_stock', 1),
-('receivings_stock', 1);
 
 ALTER TABLE `ospos_receivings_items`
     ADD COLUMN `receiving_quantity` int(11) NOT NULL DEFAULT '1';

@@ -113,6 +113,11 @@
 					?>
 						<li>	
 							<?php echo form_checkbox("grants[]", $module->module_id, $module->grant, "class='module'"); ?>
+							<?php echo form_dropdown("menu_groups[]", array(
+								'home' => $this->lang->line('module_home'),
+								'office' => $this->lang->line('module_office'),
+								'both' => $this->lang->line('module_both')
+							), $module->menu_group, "class='module'"); ?>
 							<span class="medium"><?php echo $this->lang->line('module_'.$module->module_id);?>:</span>
 							<span class="small"><?php echo $this->lang->line('module_'.$module->module_id.'_desc');?></span>
 							<?php
@@ -130,6 +135,7 @@
 											<ul>
 												<li>
 													<?php echo form_checkbox("grants[]", $permission->permission_id, $permission->grant); ?>
+													<?php echo form_hidden("menu_groups[]", "--"); ?>
 													<span class="medium"><?php echo $lang_line ?></span>
 												</li>
 											</ul>
@@ -170,20 +176,20 @@ $(document).ready(function()
 
 	$("ul#permission_list > li > input[name='grants[]']").each(function() 
 	{
-	    var $this = $(this);
-	    $("ul > li > input", $this.parent()).each(function() 
-	    {
-		    var $that = $(this);
-	        var updateCheckboxes = function (checked) 
-	        {
+		var $this = $(this);
+		$("ul > li > input", $this.parent()).each(function()
+		{
+			var $that = $(this);
+			var updateCheckboxes = function (checked)
+			{
 				$that.prop("disabled", !checked);
-	         	!checked && $that.prop("checked", false);
-	        }
-	       $this.change(function() {
-	            updateCheckboxes($this.is(":checked"));
-	        });
+				!checked && $that.prop("checked", false);
+			}
+		   $this.change(function() {
+				updateCheckboxes($this.is(":checked"));
+			});
 			updateCheckboxes($this.is(":checked"));
-	    });
+		});
 	});
 	
 	$('#employee_form').validate($.extend({
@@ -222,20 +228,20 @@ $(document).ready(function()
 			},	
 			repeat_password:
 			{
- 				equalTo: "#password"
+				equalTo: "#password"
 			},
-    		email: "email"
-   		},
+			email: "email"
+		},
 		messages: 
 		{
-     		first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
-     		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-     		username:
-     		{
-     			required: "<?php echo $this->lang->line('employees_username_required'); ?>",
-     			minlength: "<?php echo $this->lang->line('employees_username_minlength'); ?>"
-     		},
-     		
+			first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
+			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
+			username:
+			{
+				required: "<?php echo $this->lang->line('employees_username_required'); ?>",
+				minlength: "<?php echo $this->lang->line('employees_username_minlength'); ?>"
+			},
+
 			password:
 			{
 				<?php
@@ -251,8 +257,8 @@ $(document).ready(function()
 			repeat_password:
 			{
 				equalTo: "<?php echo $this->lang->line('employees_password_must_match'); ?>"
-     		},
-     		email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
+			},
+			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
 		}
 	}, form_support.error));
 });

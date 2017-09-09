@@ -72,7 +72,7 @@ a.none
 	text-align: center;
 }
 
-#home_module_list
+#home_module_list, #office_module_list
 {
 	position: relative;
 	padding: 2em 0;

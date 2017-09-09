@@ -147,13 +147,36 @@ class Sales extends Secure_Controller
 
 	public function change_mode()
 	{
+		$mode = $this->input->post('mode');
+		$this->sale_lib->set_mode($mode);
+
+		if($mode == 'sale')
+		{
+			$this->sale_lib->set_sale_type(SALE_TYPE_POS);
+		}
+		else if($mode == 'sale_quote')
+		{
+			$this->sale_lib->set_sale_type(SALE_TYPE_QUOTE);
+		}
+		else if($mode == 'sale_work_order')
+		{
+			$this->sale_lib->set_sale_type(SALE_TYPE_WORK_ORDER);
+		}
+		else if($mode == 'sale_invoice')
+		{
+			$this->sale_lib->set_sale_type(SALE_TYPE_INVOICE);
+		}
+		else
+		{
+			$this->sale_lib->set_sale_type(SALE_SALE);
+		}
+
 		$stock_location = $this->input->post('stock_location');
 		if(!$stock_location || $stock_location == $this->sale_lib->get_sale_location())
 		{
-			$mode = $this->input->post('mode');
-			$this->sale_lib->set_mode($mode);
 			$dinner_table = $this->input->post('dinner_table');
 			$this->sale_lib->set_dinner_table($dinner_table);
+
 		}
 		elseif($this->Stock_location->is_allowed_location($stock_location, 'sales'))
 		{
@@ -161,6 +184,34 @@ class Sales extends Secure_Controller
 		}
 
 		$this->_reload();
+	}
+
+	public function change_register_mode($sale_type)
+	{
+		if($sale_type == SALE_TYPE_POS)
+		{
+			$this->sale_lib->set_mode('sale');
+		}
+		elseif($sale_type == SALE_TYPE_QUOTE)
+		{
+			$this->sale_lib->set_mode('sale_quote');
+		}
+		elseif($sale_type == SALE_TYPE_WORK_ORDER)
+		{
+			$this->sale_lib->set_mode('sale_work_order');
+		}
+		elseif($sale_type == SALE_TYPE_INVOICE)
+		{
+			$this->sale_lib->set_mode('sale_invoice');
+		}
+		elseif($sale_type == SALE_TYPE_RETURN)
+		{
+			$this->sale_lib->set_mode('return');
+		}
+		else
+		{
+			$this->sale_lib->set_mode('sale');
+		}
 	}
 
 	public function set_comment()
@@ -187,6 +238,11 @@ class Sales extends Secure_Controller
 	public function set_print_after_sale()
 	{
 		$this->sale_lib->set_print_after_sale($this->input->post('sales_print_after_sale'));
+	}
+
+	public function set_price_work_orders()
+	{
+		$this->sale_lib->set_price_work_orders($this->input->post('price_work_orders'));
 	}
 
 	public function set_email_receipt()
@@ -443,6 +499,8 @@ class Sales extends Secure_Controller
 
 	public function complete()
 	{
+		$sale_id = $this->sale_lib->get_sale_id();
+		$sale_type = $this->sale_lib->get_sale_type();
 		$data = array();
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 		$data['cart'] = $this->sale_lib->get_cart();
@@ -463,10 +521,15 @@ class Sales extends Secure_Controller
 		$data['cur_giftcard_value'] = $this->sale_lib->get_giftcard_remainder();
 		$data['cur_rewards_value'] = $this->sale_lib->get_rewards_remainder();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
+		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
-		$data["invoice_number"] = $this->sale_lib->get_invoice_number();
-		$data["quote_number"] = $this->sale_lib->get_quote_number();
+		$invoice_number = $this->sale_lib->get_invoice_number();
+		$data["invoice_number"] = $invoice_number;
+		$work_order_number = $this->sale_lib->get_work_order_number();
+		$data["work_order_number"] = $work_order_number;
+		$quote_number = $this->sale_lib->get_quote_number();
+		$data["quote_number"] = $quote_number;
 		$customer_info = $this->_load_customer_data($customer_id, $data);
 		if($customer_info != NULL)
 		{
@@ -501,13 +564,26 @@ class Sales extends Secure_Controller
 		}
 		$data['amount_change'] = $data['amount_due'] * -1;
 
-		if($this->sale_lib->is_invoice_mode() || $data['invoice_number_enabled'] == TRUE)
+		$data['print_price_info'] = TRUE;
+
+		if($this->sale_lib->is_sale_by_receipt_mode() && $this->input->post('sales_invoice_enable') == '1' )
+		{
+			$pos_invoice = TRUE;
+		}
+		else
+		{
+			$pos_invoice = FALSE;
+		}
+
+		if($this->sale_lib->is_invoice_mode() || $pos_invoice)
 		{
 			// generate final invoice number (if using the invoice in sales by receipt mode then the invoice number can be manually entered or altered in some way
-			if($this->sale_lib->is_sale_by_receipt_mode())
+			if($pos_invoice)
 			{
+				// The user can retain the default encoded format or can manually override it.  It still passes through the rendering step.
 				$this->sale_lib->set_invoice_number($this->input->post('invoice_number'), $keep_custom = TRUE);
 				$invoice_format = $this->sale_lib->get_invoice_number();
+				// If the user blanks out the invoice number and doesn't put anything in there then revert back to the default format encoding
 				if(empty($invoice_format))
 				{
 					$invoice_format = $this->config->item('sales_invoice_format');
@@ -517,10 +593,11 @@ class Sales extends Secure_Controller
 			{
 				$invoice_format = $this->config->item('sales_invoice_format');
 			}
-			$invoice_number = $this->token_lib->render($invoice_format);
 
-			// TODO If duplicate invoice then determine the number of employees and repeat until until success or tried the number of employees (if QSEQ was used).
-			if($this->Sale->check_invoice_number_exists($invoice_number))
+			$invoice_number = $this->token_lib->render($invoice_format);
+			$data['invoice_number'] = $invoice_number;
+
+			if($sale_id == -1 && $this->Sale->check_invoice_number_exists($invoice_number))
 			{
 				$data['error'] = $this->lang->line('sales_invoice_number_duplicate');
 				$this->_reload($data);
@@ -529,9 +606,10 @@ class Sales extends Secure_Controller
 			{
 				$data['invoice_number'] = $invoice_number;
 				$data['sale_status'] = COMPLETED;
+				$sale_type = SALE_TYPE_INVOICE;
 
 				// Save the data to the sales table
-				$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $data["quote_number"], $data['payments'], $data['dinner_table'], $data['taxes']);
+				$data['sale_id_num'] = $this->Sale->save($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $data['taxes']);
 				$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
 				// Resort and filter cart lines for printing
@@ -551,10 +629,53 @@ class Sales extends Secure_Controller
 				}
 			}
 		}
+		elseif($this->sale_lib->is_work_order_mode())
+		{
+
+			if(!($data['price_work_orders'] == 1))
+			{
+				$data['print_price_info'] = FALSE;
+			}
+
+			$data['sales_work_order'] = $this->lang->line('sales_work_order');
+			$data['work_order_number_label'] = $this->lang->line('sales_work_order_number');
+
+			if($work_order_number == NULL)
+			{
+				// generate work order number
+				$work_order_format = $this->config->item('work_order_format');
+				$work_order_number = $this->token_lib->render($work_order_format);
+			}
+
+			if($sale_id == -1 && $this->Sale->check_work_order_number_exists($work_order_number))
+			{
+				$data['error'] = $this->lang->line('sales_work_order_number_duplicate');
+				$this->_reload($data);
+			}
+			else
+			{
+				$data['work_order_number'] = $work_order_number;
+				$data['sale_status'] = SUSPENDED;
+				$sale_type = SALE_TYPE_WORK_ORDER;
+
+				$data['sale_id_num'] = $this->Sale->save($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $data['taxes']);
+				$this->sale_lib->set_suspended_id($data['sale_id_num']);
+
+				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
+
+				$data = $this->xss_clean($data);
+
+				$data['barcode'] = NULL;
+
+				$this->load->view('sales/work_order', $data);
+				$this->sale_lib->clear_mode();
+				$this->sale_lib->clear_all();
+			}
+		}
 		elseif($this->sale_lib->is_quote_mode())
 		{
-			$invoice_number = NULL;
-			$quote_number = $this->sale_lib->get_quote_number();
+			$data['sales_quote'] = $this->lang->line('sales_quote');
+			$data['quote_number_label'] = $this->lang->line('sales_quote_number');
 
 			if($quote_number == NULL)
 			{
@@ -563,19 +684,18 @@ class Sales extends Secure_Controller
 				$quote_number = $this->token_lib->render($quote_format);
 			}
 
-			// TODO If duplicate quote then determine the number of employees and repeat until until success or tried the number of employees (if QSEQ was used).
-			if($this->Sale->check_quote_number_exists($quote_number))
+			if($sale_id == -1 && $this->Sale->check_quote_number_exists($quote_number))
 			{
 				$data['error'] = $this->lang->line('sales_quote_number_duplicate');
 				$this->_reload($data);
 			}
 			else
 			{
-				$data['invoice_number'] = $invoice_number;
 				$data['quote_number'] = $quote_number;
 				$data['sale_status'] = SUSPENDED;
+				$sale_type = SALE_TYPE_QUOTE;
 
-				$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $quote_number, $data['payments'], $data['dinner_table'], $data['taxes']);
+				$data['sale_id_num'] = $this->Sale->save($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $data['taxes']);
 				$this->sale_lib->set_suspended_id($data['sale_id_num']);
 
 				$data['cart'] = $this->sale_lib->sort_and_filter_cart($data['cart']);
@@ -592,8 +712,17 @@ class Sales extends Secure_Controller
 		else
 		{
 			// Save the data to the sales table
-			$data['sale_status'] = '0'; // Complete
-			$data['sale_id_num'] = $this->Sale->save($data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], NULL, NULL, $data['payments'], $data['dinner_table'], $data['taxes']);
+			$data['sale_status'] = COMPLETED;
+			if($this->sale_lib->is_return_mode())
+			{
+				$sale_type = SALE_TYPE_RETURN;
+			}
+			else
+			{
+				$sale_type = SALE_TYPE_POS;
+			}
+
+			$data['sale_id_num'] = $this->Sale->save($sale_id, $data['sale_status'], $data['cart'], $customer_id, $employee_id, $data['comments'], $invoice_number, $work_order_number, $quote_number, $sale_type, $data['payments'], $data['dinner_table'], $data['taxes']);
 
 			$data['sale_id'] = 'POS ' . $data['sale_id_num'];
 
@@ -801,6 +930,8 @@ class Sales extends Secure_Controller
 		));
 		$data['barcode'] = $this->barcode_lib->generate_receipt_barcode($data['sale_id']);
 		$data['print_after_sale'] = FALSE;
+		$data['price_work_orders'] = FALSE;
+
 		if($this->sale_lib->get_mode() == 'sale_invoice')
 		{
 			$data['mode_label'] = $this->lang->line('sales_invoice');
@@ -809,29 +940,26 @@ class Sales extends Secure_Controller
 		{
 			$data['mode_label'] = $this->lang->line('sales_quote');
 		}
+		elseif($this->sale_lib->get_mode() == 'sale_work_order')
+		{
+			$data['mode_label'] = $this->lang->line('sales_work_order');
+		}
 
 		return $this->xss_clean($data);
 	}
 
 	private function _reload($data = array())
 	{
+		$sale_id = $this->session->userdata('sale_id');
+		if($sale_id == '')
+		{
+			$sale_id = -1;
+			$this->session->set_userdata('sale_id', -1);
+		}
 		$data['cart'] = $this->sale_lib->get_cart();
 		$customer_info = $this->_load_customer_data($this->sale_lib->get_customer(), $data, TRUE);
 
-		if($this->config->item('invoice_enable') == '0')
-		{
-			$data['modes'] = array(
-				'sale' => $this->lang->line('sales_sale'),
-				'return' => $this->lang->line('sales_return'));
-		}
-		else
-		{
-			$data['modes'] = array(
-				'sale' => $this->lang->line('sales_sale'),
-				'sale_invoice' => $this->lang->line('sales_sale_by_invoice'),
-				'sale_quote' => $this->lang->line('sales_quote'),
-				'return' => $this->lang->line('sales_return'));
-		}
+		$data['modes'] = $this->sale_lib->get_register_mode_options();
 		$data['mode'] = $this->sale_lib->get_mode();
 		$data['empty_tables'] = $this->sale_lib->get_empty_tables();
 		$data['selected_table'] = $this->sale_lib->get_dinner_table();
@@ -841,6 +969,8 @@ class Sales extends Secure_Controller
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['payments'] = $this->sale_lib->get_payments();
+		// sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return
+		$sale_type = $this->sale_lib->get_sale_type();
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals();
@@ -878,11 +1008,6 @@ class Sales extends Secure_Controller
 		{
 			$data['payment_options'] = $this->Sale->get_payment_options();
 		}
-		$quote_number = $this->sale_lib->get_quote_number();
-		if($quote_number != NULL)
-		{
-			$data['quote_number'] = $quote_number;
-		}
 
 		$data['items_module_allowed'] = $this->Employee->has_grant('items', $this->Employee->get_logged_in_employee_info()->person_id);
 
@@ -894,8 +1019,13 @@ class Sales extends Secure_Controller
 
 		$data['invoice_number_enabled'] = $this->sale_lib->is_invoice_mode();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
-		$data['quote_or_invoice_mode'] = $data['mode'] == 'sale_invoice' || $data['mode'] == 'sale_quote';
-		$data['sales_or_return_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
+		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
+
+		$data['pos_mode'] = $data['mode'] == 'sale' || $data['mode'] == 'return';
+
+		$data['quote_number'] = $this->sale_lib->get_quote_number();
+		$data['work_order_number'] = $this->sale_lib->get_work_order_number();
+
 		if($this->sale_lib->get_mode() == 'sale_invoice')
 		{
 			$data['mode_label'] = $this->lang->line('sales_invoice');
@@ -903,6 +1033,10 @@ class Sales extends Secure_Controller
 		elseif($this->sale_lib->get_mode() == 'sale_quote')
 		{
 			$data['mode_label'] = $this->lang->line('sales_quote');
+		}
+		elseif($this->sale_lib->get_mode() == 'sale_work_order')
+		{
+			$data['mode_label'] = $this->lang->line('sales_work_order');
 		}
 		else
 		{
@@ -978,70 +1112,33 @@ class Sales extends Secure_Controller
 		}
 	}
 
-	public function save($sale_id = -1)
+	/**
+	 * This is used to cancel a suspended pos sale, quote.
+	 * Completed sales (POS Sales or Invoiced Sales) can not be removed from the system
+	 * Work orders can be canceled but are not physically removed from the sales history
+	 */
+	public function cancel()
 	{
-		$newdate = $this->input->post('date');
-		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $newdate);
-		$sale_data = array(
-			'sale_time' => $date_formatter->format('Y-m-d H:i:s'),
-			'customer_id' => $this->input->post('customer_id') != '' ? $this->input->post('customer_id') : NULL,
-			'employee_id' => $this->input->post('employee_id'),
-			'comment' => $this->input->post('comment'),
-			'invoice_number' => $this->input->post('invoice_number') != '' ? $this->input->post('invoice_number') : NULL
-		);
-
-		// go through all the payment type input from the form, make sure the form matches the name and iterator number
-		$payments = array();
-		$number_of_payments = $this->input->post('number_of_payments');
-		for($i = 0; $i < $number_of_payments; ++$i)
+		$sale_id = $this->sale_lib->get_sale_id();
+		if($sale_id != -1 && $sale_id != '')
 		{
-			$payment_amount = $this->input->post('payment_amount_' . $i);
-			$payment_type = $this->input->post('payment_type_' . $i);
-			// remove any 0 payment if by mistake any was introduced at sale time
-			if($payment_amount != 0)
+			$sale_type = $this->sale_lib->get_sale_type();
+			if($sale_type == SALE_TYPE_WORK_ORDER)
 			{
-				// search for any payment of the same type that was already added, if that's the case add up the new payment amount
-				$key = FALSE;
-				if(!empty($payments))
-				{
-					// search in the multi array the key of the entry containing the current payment_type
-					// NOTE: in PHP5.5 the array_map could be replaced by an array_column
-					$key = array_search($payment_type, array_map(function ($v)
-					{
-						return $v['payment_type'];
-					}, $payments));
-				}
-
-				// if no previous payment is found add a new one
-				if($key === FALSE)
-				{
-					$payments[] = array('payment_type' => $payment_type, 'payment_amount' => $payment_amount);
-				}
-				else
-				{
-					// add up the new payment amount to an existing payment type
-					$payments[$key]['payment_amount'] += $payment_amount;
-				}
+				$this->Sale->update_sale_status($sale_id, CANCELED);
+			}
+			else
+			{
+				$this->Sale->delete($sale_id, FALSE);
+				$this->session->set_userdata('sale_id', -1);
 			}
 		}
 
-		if($this->Sale->update($sale_id, $sale_data, $payments))
-		{
-			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('sales_successfully_updated'), 'id' => $sale_id));
-		}
-		else
-		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('sales_unsuccessfully_updated'), 'id' => $sale_id));
-		}
-	}
-
-	public function cancel()
-	{
 		$this->sale_lib->clear_all();
 		$this->_reload();
 	}
 
-	public function discard_quote()
+	public function discard_suspended_sale()
 	{
 		$suspended_id = $this->sale_lib->get_suspended_id();
 		$this->sale_lib->clear_all();
@@ -1049,8 +1146,15 @@ class Sales extends Secure_Controller
 		$this->_reload();
 	}
 
+	/**
+	 * Suspend the current sale.
+	 * If the current sale is already suspended then update the existing suspended sale.
+	 * Otherwise create it as a new suspended sale
+	 */
 	public function suspend()
 	{
+		$mode = $this->sale_lib->get_mode();
+		$sale_id = $this->sale_lib->get_sale_id();
 		$dinner_table = $this->sale_lib->get_dinner_table();
 		$cart = $this->sale_lib->get_cart();
 		$payments = $this->sale_lib->get_payments();
@@ -1058,13 +1162,20 @@ class Sales extends Secure_Controller
 		$customer_id = $this->sale_lib->get_customer();
 		$customer_info = $this->Customer->get_info($customer_id);
 		$invoice_number = $this->sale_lib->get_invoice_number();
+		$work_order_number = $this->sale_lib->get_work_order_number();
 		$quote_number = $this->sale_lib->get_quote_number();
+		$sale_id = $this->sale_lib->get_sale_id();
+		$sale_type = $this->sale_lib->get_sale_type();
+		if($sale_type == '')
+		{
+			$sale_type = SALE_TYPE_POS;
+		}
 		$comment = $this->sale_lib->get_comment();
-		$sale_status = $this->sale_lib->is_quote_mode() ? QUOTE : SUSPENDED;
+		$sale_status = SUSPENDED;
 
 		$data = array();
 		$sales_taxes = array();
-		if($this->Sale->save($sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $quote_number, $payments, $dinner_table, $sales_taxes) == '-1')
+		if($this->Sale->save($sale_id, $sale_status, $cart, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, $sales_taxes) == '-1')
 		{
 			$data['error'] = $this->lang->line('sales_unsuccessfully_suspended_sale');
 		}
@@ -1077,6 +1188,9 @@ class Sales extends Secure_Controller
 		$this->_reload($data);
 	}
 
+	/**
+	 * List suspended sales
+	 */
 	public function suspended()
 	{
 		$customer_id = $this->sale_lib->get_customer();
@@ -1087,8 +1201,8 @@ class Sales extends Secure_Controller
 	}
 
 	/*
-	 * We will eventually drop the current set of "suspended" tables since suspended sales
-	 * are now stored in the sales tables with a sale_status value of suspended.
+	 * Unsuspended sales are now left in the tables and are only removed
+	 * when they are intentionally cancelled.
 	 */
 	public function unsuspend()
 	{
@@ -1098,8 +1212,10 @@ class Sales extends Secure_Controller
 		if($sale_id > 0)
 		{
 			$this->sale_lib->copy_entire_sale($sale_id);
-			$this->Sale->delete_suspended_sale($sale_id);
 		}
+
+		// Set current register mode to reflect that of unsuspended order type
+		$this->change_register_mode($this->sale_lib->get_sale_type());
 
 		$this->_reload();
 	}

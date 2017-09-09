@@ -93,5 +93,12 @@ class Appconfig extends CI_Model
 		$this->save('last_used_quote_number', $last_used);
 		return $last_used;
 	}
+
+	public function acquire_save_next_work_order_sequence()
+	{
+		$last_used = $this->get('last_used_work_order_number') + 1;
+		$this->save('last_used_work_order_number', $last_used);
+		return $last_used;
+	}
 }
 ?>
