@@ -1006,9 +1006,9 @@ class Reports extends Secure_Controller
 			if($this->config->item('work_order_enable') == '1')
 			{
 				$sale_type_options['work_orders'] = $this->lang->line('reports_work_orders');
-				$sale_type_options['canceled'] = $this->lang->line('reports_canceled');
 			}
 		}
+		$sale_type_options['canceled'] = $this->lang->line('reports_canceled');
 		$sale_type_options['returns'] = $this->lang->line('reports_returns');
 		return $sale_type_options;
 	}
