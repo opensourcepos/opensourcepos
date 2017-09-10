@@ -141,26 +141,12 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_language'), 'language', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
-					<?php echo form_dropdown('language', array(
-						'en-US:english' => 'American English',
-						'en-GB:english' => 'British English',
-						'es:spanish' => 'Spanish',
-						'nl-BE:dutch' => 'Dutch (Belgium)',
-						'de:german' => 'German (Germany)',
-						'de-CH:german' => 'German (Swiss)',
-						'fr:french' => 'French',
-						'zh:simplified-chinese' => 'Chinese',
-						'id:indonesian' => 'Indonesian',
-						'th:thai' => 'Thai',
-						'tr:turkish' => 'Turkish',
-						'ru:russian' => 'Russian',
-						'hu-HU:hungarian' => 'Hungarian',
-						'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
-						'hr-HR' => 'Croatian (Croatia)',
-						'ar-EG:arabic' => 'Arabic (Egypt)',
-						'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'	
-					),
-					current_language_code(TRUE) . ':' . current_language(TRUE), array('class' => 'form-control input-sm'));
+					<?php echo form_dropdown(
+							'language',
+							get_languages(),
+							current_language_code(TRUE) . ':' . current_language(TRUE), 
+							array('class' => 'form-control input-sm')
+						);
 					?>
 				</div>
 			</div>
