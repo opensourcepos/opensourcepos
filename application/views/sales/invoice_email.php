@@ -7,11 +7,14 @@
 
 <body>
 <?php
-if(isset($error_message))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
-	exit;
-}
+	if(isset($error_message))
+	{
+		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+		exit;
+	}
+
+//Temporarily loads the system language for sales_lang to print invoice in the system language rather than user defined.
+	$this->lang->load('sales',current_language_code(TRUE));
 ?>
 
 <div id="page-wrap">
@@ -130,3 +133,7 @@ if(isset($error_message))
 
 </body>
 </html>
+<?php 
+//Reloads the user sales_lang 
+	$this->lang->load('sales',current_language_code());
+?>
