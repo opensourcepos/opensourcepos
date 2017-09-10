@@ -40,6 +40,29 @@ function current_language($load_system_language = FALSE)
 	}
 }
 
+function get_languages()
+{
+	return array(
+		'en-US:english' => 'American English',
+		'en-GB:english' => 'British English',
+		'es:spanish' => 'Spanish',
+		'nl-BE:dutch' => 'Dutch (Belgium)',
+		'de:german' => 'German (Germany)',
+		'de-CH:german' => 'German (Swiss)',
+		'fr:french' => 'French',
+		'zh:simplified-chinese' => 'Chinese',
+		'id:indonesian' => 'Indonesian',
+		'th:thai' => 'Thai',
+		'tr:turkish' => 'Turkish',
+		'ru:russian' => 'Russian',
+		'hu-HU:hungarian' => 'Hungarian',
+		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'hr-HR' => 'Croatian (Croatia)',
+		'ar-EG:arabic' => 'Arabic (Egypt)',
+		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'
+	);
+}
+
 function currency_side()
 {
     $config = get_instance()->config;
