@@ -16,10 +16,7 @@ function current_language_code($load_system_language = FALSE)
 		}
 		return get_instance()->config->item('language_code');
 	}
-	else
-	{	
-		return get_instance()->config->item('language_code');
-	}
+	return get_instance()->config->item('language_code');
 }
 
 function current_language($load_system_language = FALSE)
@@ -34,10 +31,7 @@ function current_language($load_system_language = FALSE)
 		}
 		return get_instance()->config->item('language');
 	}
-	else
-	{	
-		return get_instance()->config->item('language');
-	}
+	return get_instance()->config->item('language');
 }
 
 function get_languages()
