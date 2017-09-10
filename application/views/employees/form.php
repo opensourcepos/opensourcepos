@@ -81,8 +81,8 @@
 					{
 					?>
 						<li>	
-							<?php echo form_checkbox("grants[]", $module->module_id, $module->grant, "class='module'"); ?>
-							<?php echo form_dropdown("menu_groups[]", array(
+							<?php echo form_checkbox("grant_".$module->module_id, $module->module_id, $module->grant, "class='module'"); ?>
+							<?php echo form_dropdown("menu_group_".$module->module_id, array(
 								'home' => $this->lang->line('module_home'),
 								'office' => $this->lang->line('module_office'),
 								'both' => $this->lang->line('module_both')
@@ -103,8 +103,8 @@
 							?>
 											<ul>
 												<li>
-													<?php echo form_checkbox("grants[]", $permission->permission_id, $permission->grant); ?>
-													<?php echo form_hidden("menu_groups[]", "--"); ?>
+													<?php echo form_checkbox("grant_".$permission->permission_id, $permission->permission_id, $permission->grant); ?>
+													<?php echo form_hidden("menu_group_".$permission->permission_id, "--"); ?>
 													<span class="medium"><?php echo $lang_line ?></span>
 												</li>
 											</ul>
