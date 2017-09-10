@@ -43,8 +43,8 @@ function current_language($load_system_language = FALSE)
 function get_languages()
 {
 	return array(
-		'en-US:english' => 'American English',
-		'en-GB:english' => 'British English',
+		'en-US:english' => 'English (United States)',
+		'en-GB:english' => 'English (Great Britain)',
 		'es:spanish' => 'Spanish',
 		'nl-BE:dutch' => 'Dutch (Belgium)',
 		'de:german' => 'German (Germany)',
