@@ -808,13 +808,13 @@ class Sale extends CI_Model
 	/**
 	 * Deletes list of sales
 	 */
-	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
+	public function delete_list($sale_ids, $employee_id, &$reactivated, $update_inventory = TRUE)
 	{
 		$result = TRUE;
 
 		foreach($sale_ids as $sale_id)
 		{
-			$result &= $this->delete($sale_id, $employee_id, $update_inventory);
+			$result &= $this->delete($sale_id, $employee_id, $reactivated, $update_inventory);
 		}
 
 		return $result;
@@ -825,12 +825,14 @@ class Sale extends CI_Model
 	 * When a sale is "deleted" it is simply changed to a status of canceled.
 	 * However, if applicable the inventory still needs to be updated
 	 */
-	public function delete($sale_id, $employee_id, $update_inventory = TRUE)
+	public function delete($sale_id, $employee_id, &$reactivated, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
 
-		if($update_inventory && $sale_status = $this->get_sale_status($sale_id) == COMPLETED)
+		$sale_status = $this->get_sale_status($sale_id);
+
+		if($update_inventory && $sale_status == COMPLETED)
 		{
 			// defect, not all item deletions will be undone??
 			// get array with all the items involved in the sale to update the inventory tracking
@@ -858,8 +860,17 @@ class Sale extends CI_Model
 			}
 		}
 
-		// Set the status of the sale to canceled
-		$this->update_sale_status($sale_id, CANCELED);
+		// Set the sale_status is canceled the reactive the sale by setting the status to suspended
+		// otherwise set the status to canceled
+		if($sale_status == CANCELED)
+		{
+			$this->update_sale_status($sale_id, SUSPENDED);
+			$reactivated = TRUE;
+		}
+		else
+		{
+			$this->update_sale_status($sale_id, CANCELED);
+		}
 
 		// execute transaction
 		$this->db->trans_complete();
@@ -1401,11 +1412,11 @@ class Sale extends CI_Model
 	 */
 	private function save_customer_rewards($customer_id, $sale_id, $total_amount, $total_amount_used)
 	{
-		if (!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
+		if(!empty($customer_id) && $this->config->item('customer_reward_enable') == TRUE)
 		{
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
 
-			if (!empty($package_id))
+			if(!empty($package_id))
 			{
 				$points_percent = $this->Customer_rewards->get_points_percent($package_id);
 				$points = $this->Customer->get_info($customer_id)->points;
@@ -1427,7 +1438,7 @@ class Sale extends CI_Model
 	 */
 	private function determine_sale_status(&$sale_status, $dinner_table)
 	{
-		if ($sale_status == SUSPENDED && $dinner_table > 2)    //not delivery or take away
+		if($sale_status == SUSPENDED && $dinner_table > 2)    //not delivery or take away
 		{
 			return SUSPENDED;
 		}

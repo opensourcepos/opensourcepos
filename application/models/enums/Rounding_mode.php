@@ -28,7 +28,7 @@ class Rounding_mode
 		$CI =& get_instance();
 		$CI->load->helper('language');
 
-		if (empty($code))
+		if(empty($code))
 		{
 			return lang('common_unknown');
 		}
