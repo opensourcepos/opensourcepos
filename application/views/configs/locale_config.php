@@ -160,7 +160,7 @@
 						'ar-EG:arabic' => 'Arabic (Egypt)',
 						'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'	
 					),
-					current_language_code() . ':' . current_language(), array('class' => 'form-control input-sm'));
+					$this->config->item('language_code') . ':' . $this->config->item('langugage'), array('class' => 'form-control input-sm'));
 					?>
 				</div>
 			</div>
