@@ -13,8 +13,9 @@
 		exit;
 	}
 
-//Temporarily loads the system language for sales_lang to print invoice in the system language rather than user defined.
+//Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
 	$this->lang->load('sales',current_language_code(TRUE));
+	$this->lang->load('common',current_language_code(TRUE));
 ?>
 
 <div id="page-wrap">
@@ -134,6 +135,7 @@
 </body>
 </html>
 <?php 
-//Reloads the user sales_lang 
+//Reloads the user _lang 
 	$this->lang->load('sales',current_language_code());
+	$this->lang->load('common',current_language_code());
 ?>
