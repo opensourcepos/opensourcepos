@@ -1,3 +1,10 @@
+<?php 
+//Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
+	$this->lang->load('customers',current_language_code(TRUE));
+	$this->lang->load('sales',current_language_code(TRUE));
+	$this->lang->load('employees',current_language_code(TRUE));
+?>
+
 <div id="receipt_wrapper" style="width:100%;">
 	<div id="receipt_header" style="text-align:center;">
 		<?php
@@ -200,3 +207,9 @@
 		<?php echo $sale_id; ?>
 	</div>
 </div>
+<?php 
+//Reloads the user _lang 
+	$this->lang->load('customers',current_language_code());
+	$this->lang->load('sales',current_language_code());
+	$this->lang->load('employees',current_language_code());
+?>
