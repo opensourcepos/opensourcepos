@@ -1,7 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "All";
-$lang["reports_canceled"] = "Canceled";
+$lang["reports_canceled"] = "Cancelled";
 $lang["reports_categories"] = "Categories";
 $lang["reports_categories_summary_report"] = "Categories Summary Report";
 $lang["reports_category"] = "Category";
