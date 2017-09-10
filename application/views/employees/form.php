@@ -93,7 +93,7 @@
 									'ar-EG:arabic' => 'Arabic (Egypt)',
 									'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'
 									),
-									$person_info->language_code . ':' . $person_info->language, array('class' => 'form-control input-sm'));
+									current_language_code() . ':' . current_language(), array('class' => 'form-control input-sm'));
 							?>
 						</div>
 					</div>
