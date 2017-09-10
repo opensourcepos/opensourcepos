@@ -254,6 +254,5 @@ $(window).on("load", function()
 <?php 
 //Reloads the user sales_lang 
 	$this->lang->load('sales',current_language_code());
-	//load user language
 	$this->load->view("partial/footer"); 
 ?>
