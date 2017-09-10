@@ -73,27 +73,14 @@
 					<div class='col-xs-8'>
 						<div class="input-group">
 							<?php 
-								echo form_dropdown('language', array(
-									':' => 'System Language',
-									'en-US:english' => 'American English',
-									'en-GB:english' => 'British English',
-									'es:spanish' => 'Spanish',
-									'nl-BE:dutch' => 'Dutch (Belgium)',
-									'de:german' => 'German (Germany)',
-									'de-CH:german' => 'German (Swiss)',
-									'fr:french' => 'French',
-									'zh:simplified-chinese' => 'Chinese',
-									'id:indonesian' => 'Indonesian',
-									'th:thai' => 'Thai',
-									'tr:turkish' => 'Turkish',
-									'ru:russian' => 'Russian',
-									'hu-HU:hungarian' => 'Hungarian',
-									'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
-									'hr-HR' => 'Croatian (Croatia)',
-									'ar-EG:arabic' => 'Arabic (Egypt)',
-									'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'
-									),
-									current_language_code() . ':' . current_language(), array('class' => 'form-control input-sm'));
+								$languages = get_languages();
+								$languages[':'] = 'System Language';
+								echo form_dropdown(
+									'language',
+									$languages,
+									current_language_code() . ':' . current_language(),
+									array('class' => 'form-control input-sm')
+									);
 							?>
 						</div>
 					</div>
