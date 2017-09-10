@@ -4,10 +4,10 @@
  * Currency locale helper
  */
 
-function current_language_code()
+function current_language_code($load_system_language = FALSE)
 {
 //Returns the language code of the employee if set or system language code if not
-	if(get_instance()->Employee->is_logged_in())
+	if(get_instance()->Employee->is_logged_in() && $load_system_language != TRUE)
 	{
 		$employee_language_code = get_instance()->Employee->get_logged_in_employee_info()->language_code;
 		if($employee_language_code != NULL && $employee_language_code != '')
@@ -22,10 +22,10 @@ function current_language_code()
 	}
 }
 
-function current_language()
+function current_language($load_system_language = FALSE)
 {
 //Returns the language of the employee if set or system language if not
-	if(get_instance()->Employee->is_logged_in())
+	if(get_instance()->Employee->is_logged_in() && $load_system_language != TRUE)
 	{
 		$employee_language = get_instance()->Employee->get_logged_in_employee_info()->language;
 		if($employee_language != NULL && $employee_language != '')
