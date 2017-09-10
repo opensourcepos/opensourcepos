@@ -8,7 +8,17 @@ if (isset($error_message))
 }
 ?>
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
+<?php 
+	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
+
+//Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
+	$this->lang->load('common',current_language_code(TRUE));
+	$this->lang->load('receivings',current_language_code(TRUE));
+	$this->lang->load('suppliers',current_language_code(TRUE));
+	$this->lang->load('employees',current_language_code(TRUE));
+	$this->lang->load('items',current_language_code(TRUE));
+	$this->lang->load('sales',current_language_code(TRUE));
+?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
@@ -140,4 +150,14 @@ if (isset($error_message))
 	</div>
 </div>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php
+//Reloads the user _lang
+	$this->lang->load('common',current_language_code());
+	$this->lang->load('receivings',current_language_code());
+	$this->lang->load('suppliers',current_language_code());
+	$this->lang->load('employees',current_language_code());
+	$this->lang->load('items',current_language_code());
+	$this->lang->load('sales',current_language_code());
+
+	$this->load->view("partial/footer"); 
+?>
