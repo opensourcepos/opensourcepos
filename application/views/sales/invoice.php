@@ -43,6 +43,12 @@ $(document).ready(function()
 	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
+<?php 
+//Temporarily loads the system language for sales_lang to print invoice in the system language rather than user defined.
+	$system_language = $this->config->item('language_code');
+	$this->lang->load('sales',$system_language);
+?>
+
 <div id="page-wrap">
 	<div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
 	<div id="block1">
@@ -245,4 +251,9 @@ $(window).on("load", function()
 });
 </script>
 
-<?php $this->load->view("partial/footer"); ?>
+<?php 
+//Reloads the user sales_lang 
+	$this->lang->load('sales',current_language_code());
+	//load user language
+	$this->load->view("partial/footer"); 
+?>
