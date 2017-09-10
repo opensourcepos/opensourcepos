@@ -45,9 +45,7 @@ $(document).ready(function()
 
 <?php 
 //Temporarily loads the system language for sales_lang to print invoice in the system language rather than user defined.
-	$system_language = $this->config->item('language_code');
-	$this->lang->load('sales',$system_language);
-?>
+	$this->lang->load('sales',current_language_code(TRUE));?>
 
 <div id="page-wrap">
 	<div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
