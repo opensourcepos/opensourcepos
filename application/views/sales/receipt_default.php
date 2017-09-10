@@ -1,3 +1,10 @@
+<?php 
+//Temporarily loads the system language for to print receipt in the system language rather than user defined.
+	$this->lang->load('customers',current_language_code(TRUE));
+	$this->lang->load('sales',current_language_code(TRUE));
+	$this->lang->load('employees',current_language_code(TRUE));
+?>
+
 <div id="receipt_wrapper" style="font-size:<?php echo $this->config->item('receipt_font_size');?>px">
 	<div id="receipt_header">
 		<?php
@@ -199,3 +206,9 @@
 		<?php echo $sale_id; ?>
 	</div>
 </div>
+<?php 
+//Reloads the user _lang files 
+	$this->lang->load('customers',current_language_code());
+	$this->lang->load('sales',current_language_code());
+	$this->lang->load('employees',current_language_code());
+?>
