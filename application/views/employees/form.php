@@ -74,7 +74,7 @@
 						<div class="input-group">
 							<?php 
 								$languages = get_languages();
-								$languages[':'] = 'System Language';
+								$languages[':'] = $this->lang->line('employees_system_language');
 								$language_code = current_language_code();
 								$language = current_language();
 								
