@@ -66,3 +66,11 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 
 INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
 ('sales_delete', 1, '--');
+
+--
+-- Add support for custom search suggestion format
+--
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('suggestions_first_column', 'name'),
+('suggestions_second_column', ''),
+('suggestions_third_column', '');	
