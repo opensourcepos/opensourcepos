@@ -504,7 +504,12 @@ class Sales extends Secure_Controller
 		$data = array();
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 		$data['cart'] = $this->sale_lib->get_cart();
+
+	//Load system language show receipt shows sales receipt in proper language
+		load_language(TRUE,array('sales'));
 		$data['receipt_title'] = $this->lang->line('sales_receipt');
+		load_language(array('sales'));
+
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');

@@ -43,6 +43,11 @@ $(document).ready(function()
 	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
+<?php 
+//Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
+	load_language(TRUE,array('sales','common'));
+?>
+
 <div id="page-wrap">
 	<div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
 	<div id="block1">

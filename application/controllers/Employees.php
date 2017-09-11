@@ -151,15 +151,23 @@ class Employees extends Persons
 			//Password has been changed OR first time password set
 			if($this->input->post('password') != '')
 			{
+				$exploded = explode(":", $this->input->post('language'));
 				$employee_data = array(
-					'username' => $this->input->post('username'),
-					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
-					'hash_version' => 2
+					'username' 	=> $this->input->post('username'),
+					'password' 	=> password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+					'hash_version' 	=> 2,
+					'language_code' => $exploded[0],
+					'language' 	=> $exploded[1]
 				);
 			}
 			else //Password not changed
 			{
-				$employee_data = array('username' => $this->input->post('username'));
+				$exploded = explode(":", $this->input->post('language'));
+				$employee_data = array(
+					'username' 	=> $this->input->post('username'),
+					'language_code'	=> $exploded[0],
+					'language' 	=> $exploded[1]					
+				);
 			}
 
 			if($this->Employee->save_employee($person_data, $employee_data, $grants_array, $employee_id))

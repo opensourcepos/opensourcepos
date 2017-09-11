@@ -1,3 +1,8 @@
+<?php 
+//Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
+	load_language(TRUE,array('customers','sales','employees'));
+?>
+
 <div id="receipt_wrapper" style="width:100%;">
 	<div id="receipt_header" style="text-align:center;">
 		<?php

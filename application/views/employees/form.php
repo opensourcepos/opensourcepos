@@ -68,6 +68,34 @@
 						</div>
 					</div>
 				</div>
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('employees_language'), 'language', array('class' => 'control-label col-xs-3')); ?>
+					<div class='col-xs-8'>
+						<div class="input-group">
+							<?php 
+								$languages = get_languages();
+								$languages[':'] = $this->lang->line('employees_system_language');
+								$language_code = current_language_code();
+								$language = current_language();
+								
+							//If No language is set then it will display "System Language"
+								if($language_code === current_language_code(TRUE))
+								{
+									$language_code = '';
+									$language = '';
+								}
+								
+								echo form_dropdown(
+									'language',
+									$languages,
+									$language_code . ':' . $language,
+									array('class' => 'form-control input-sm')
+									);
+							?>
+						</div>
+					</div>
+				</div>
+
 			</fieldset>
 		</div>
 

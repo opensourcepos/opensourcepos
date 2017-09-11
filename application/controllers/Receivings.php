@@ -198,7 +198,12 @@ class Receivings extends Secure_Controller
 		
 		$data['cart'] = $this->receiving_lib->get_cart();
 		$data['total'] = $this->receiving_lib->get_total();
+
+	//Load system language
+		load_language(TRUE,array('receivings'));
 		$data['receipt_title'] = $this->lang->line('receivings_receipt');
+		load_language(array('receivings'));
+
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['mode'] = $this->receiving_lib->get_mode();
 		$data['comment'] = $this->receiving_lib->get_comment();
