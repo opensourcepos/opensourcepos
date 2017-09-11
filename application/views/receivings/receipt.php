@@ -1,14 +1,17 @@
 <?php $this->load->view("partial/header"); ?>
 
 <?php
-if (isset($error_message))
-{
-	echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
-	exit;
-}
-?>
+	if (isset($error_message))
+	{
+		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
+		exit;
+	}
 
-<?php $this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); ?>
+	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
+
+	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
+	load_language(TRUE,array('common','receivings','suppliers','employees','items','sales'));
+?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
@@ -37,7 +40,7 @@ if (isset($error_message))
 
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
-		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
+		<div id="sale_receipt"><?php echo $this->lang->line('receivings_receipt'); ?></div>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 	</div>
 
@@ -139,5 +142,4 @@ if (isset($error_message))
 		<?php echo $receiving_id; ?>
 	</div>
 </div>
-
 <?php $this->load->view("partial/footer"); ?>

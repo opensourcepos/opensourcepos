@@ -504,7 +504,6 @@ class Sales extends Secure_Controller
 		$data = array();
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 		$data['cart'] = $this->sale_lib->get_cart();
-		$data['receipt_title'] = $this->lang->line('sales_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
@@ -882,7 +881,6 @@ class Sales extends Secure_Controller
 
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
-		$data['receipt_title'] = $this->lang->line('sales_receipt');
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time']));
 		$data['transaction_date'] = date($this->config->item('dateformat'), strtotime($sale_info['sale_time']));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
