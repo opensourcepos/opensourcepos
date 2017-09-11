@@ -79,7 +79,7 @@
 								$language = current_language();
 								
 							//If No language is set then it will display "System Language"
-								if(strcmp($language_code,current_language_code(TRUE)) == 0)
+								if($language_code === current_language_code(TRUE))
 								{
 									$language_code = '';
 									$language = '';
