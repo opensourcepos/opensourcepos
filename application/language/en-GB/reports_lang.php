@@ -1,7 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "All";
-$lang["reports_canceled"] = "Canceled";
+$lang["reports_canceled"] = "Cancelled";
 $lang["reports_categories"] = "Categories";
 $lang["reports_categories_summary_report"] = "Categories Summary Report";
 $lang["reports_category"] = "Category";
@@ -12,6 +12,8 @@ $lang["reports_code_return"] = "RET";
 $lang["reports_code_type"] = "Type";
 $lang["reports_code_work_order"] = "W/O";
 $lang["reports_comments"] = "Comments";
+$lang["reports_complete"] = "Completed Sales and Returns";
+$lang["reports_completed_sales"] = "Completed Sales";
 $lang["reports_cost"] = "Cost";
 $lang["reports_cost_price"] = "Cost Price";
 $lang["reports_count"] = "Count";

@@ -57,3 +57,12 @@ WHERE `quote_number` IS NOT NULL;
 UPDATE `ospos_sales`
   SET `sale_type` = 1
 WHERE `invoice_number` IS NOT NULL;
+
+
+--  Add permissions for deleting sales and default grant for employee id 1
+
+INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+('sales_delete', 'sales');
+
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
+('sales_delete', 1, '--');

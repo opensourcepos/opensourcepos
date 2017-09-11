@@ -134,16 +134,18 @@ class Employees extends Persons
 				'country' => $this->input->post('country'),
 				'comments' => $this->input->post('comments'),
 			);
-			$grants_data = $this->input->post('grants') != NULL ? $this->input->post('grants') : array();
-			$menu_groups = $this->input->post('menu_groups') != NULL ? $this->input->post('menu_groups') : array();
 
 			$grants_array = array();
-			foreach ($grants_data as $key => $value)
+			foreach($this->Module->get_all_permissions()->result() as $permission)
 			{
 				$grants = array();
-				$grants['permission_id'] = $value;
-				$grants['menu_group'] = $menu_groups[$key];
-				$grants_array[] = $grants;
+				$grant = $this->input->post('grant_'.$permission->permission_id) != NULL ? $this->input->post('grant_'.$permission->permission_id) : '';
+				if($grant == $permission->permission_id)
+				{
+					$grants['permission_id'] = $permission->permission_id;
+					$grants['menu_group'] = $this->input->post('menu_group_'.$permission->permission_id) != NULL ? $this->input->post('menu_group_'.$permission->permission_id) : '--';
+					$grants_array[] = $grants;
+				}
 			}
 
 			//Password has been changed OR first time password set
