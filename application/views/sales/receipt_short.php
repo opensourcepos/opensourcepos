@@ -1,6 +1,6 @@
 <?php 
 //Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('customers','sales','employees'))
+	load_language(TRUE,array('customers','sales','employees'));
 ?>
 
 <div id="receipt_wrapper" style="font-size:<?php echo $this->config->item('receipt_font_size');?>px">
