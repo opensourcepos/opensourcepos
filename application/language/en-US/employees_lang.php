@@ -27,6 +27,7 @@ $lang["employees_successful_adding"] = "Employee add successful.";
 $lang["employees_successful_change_password"] = "Password change successful.";
 $lang["employees_successful_deleted"] = "You have successfully deleted";
 $lang["employees_successful_updating"] = "You have successfully updated employee";
+$lang["employees_system_language"] = "System Language";
 $lang["employees_unsuccessful_change_password"] = "Password change failed.";
 $lang["employees_update"] = "Update Employee";
 $lang["employees_username"] = "Username";
