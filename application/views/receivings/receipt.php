@@ -144,3 +144,4 @@ if (isset($error_message))
 		<?php echo $receiving_id; ?>
 	</div>
 </div>
+<?php $this->load->view("partial/footer"); ?>
