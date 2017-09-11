@@ -12,7 +12,7 @@
 					</div>
 					<div class="col-xs-2">
 						<label class="control-label">
-							<a href="https://github.com/jekkos/opensourcepos/wiki/Localisation-support" target="_blank">
+							<a href="https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support" target="_blank">
 								<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_number_locale_tooltip'); ?>"></span>
 							</a>
 							<span id="number_locale_example">
