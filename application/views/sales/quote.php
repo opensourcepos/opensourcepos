@@ -35,8 +35,7 @@ if (isset($error_message))
 	$this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); 
 
 //Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	$this->lang->load('sales',current_language_code(TRUE));
-	$this->lang->load('common',current_language_code(TRUE));
+	load_language(TRUE,array('sales','common'));
 ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
@@ -210,9 +209,4 @@ if (isset($error_message))
 	});
 </script>
 
-<?php 
-//Reloads the user _lang
-	$this->lang->load('sales',current_language_code());
-	$this->lang->load('common',current_language_code());
-
-	$this->load->view("partial/footer"); ?>
+<?php $this->load->view("partial/footer"); ?>
