@@ -75,10 +75,20 @@
 							<?php 
 								$languages = get_languages();
 								$languages[':'] = 'System Language';
+								$language_code = current_language_code();
+								$language = current_language();
+								
+							//If No language is set then it will display "System Language"
+								if(strcmp($language_code,current_language_code(TRUE)) == 0)
+								{
+									$language_code = '';
+									$language = '';
+								}
+								
 								echo form_dropdown(
 									'language',
 									$languages,
-									current_language_code() . ':' . current_language(),
+									$language_code . ':' . $language,
 									array('class' => 'form-control input-sm')
 									);
 							?>
