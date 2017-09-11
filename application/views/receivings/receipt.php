@@ -12,12 +12,7 @@ if (isset($error_message))
 	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
 
 //Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	$this->lang->load('common',current_language_code(TRUE));
-	$this->lang->load('receivings',current_language_code(TRUE));
-	$this->lang->load('suppliers',current_language_code(TRUE));
-	$this->lang->load('employees',current_language_code(TRUE));
-	$this->lang->load('items',current_language_code(TRUE));
-	$this->lang->load('sales',current_language_code(TRUE));
+	load_language(TRUE,array('common','receivings','suppliers','employees','items','sales'));
 ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">
@@ -149,15 +144,3 @@ if (isset($error_message))
 		<?php echo $receiving_id; ?>
 	</div>
 </div>
-
-<?php
-//Reloads the user _lang
-	$this->lang->load('common',current_language_code());
-	$this->lang->load('receivings',current_language_code());
-	$this->lang->load('suppliers',current_language_code());
-	$this->lang->load('employees',current_language_code());
-	$this->lang->load('items',current_language_code());
-	$this->lang->load('sales',current_language_code());
-
-	$this->load->view("partial/footer"); 
-?>
