@@ -61,14 +61,14 @@ function load_language($load_system_language = FALSE, array $lang_array)
 	{
 		foreach($lang_array as $language_file) 
 		{
-			$this->lang->load($language_file,current_language_code(TRUE));
+			get_instance()->lang->load($language_file,current_language_code(TRUE));
 		}
 	}
 	else
 	{
 		foreach($lang_array as $language_file)
 		{
-			$this->lang->load($language_file,current_language_code());
+			get_instance()->lang->load($language_file,current_language_code());
 		}
 	}
 }
