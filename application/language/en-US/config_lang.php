@@ -2,6 +2,7 @@
 
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company address is a required field.";
+$lang["config_allow_duplicate_barcodes"] = "Allow Duplicate Barcodes";
 $lang["config_apostrophe"] = "apostrophe";
 $lang["config_backup_button"] = "Backup";
 $lang["config_backup_database"] = "Backup Database";
