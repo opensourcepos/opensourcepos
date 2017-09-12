@@ -114,9 +114,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receiving_calculate_average_price', '0'),
 ('work_order_enable', '0'),
 ('work_order_format', 'W%y{WSEQ:6}'),
-('last_used_work_order_number', '0');
-
-
+('last_used_work_order_number', '0'),
+('allow_duplicate_barcodes','0');
 
 -- --------------------------------------------------------
 
@@ -252,7 +251,7 @@ CREATE TABLE `ospos_items` (
   `custom9` VARCHAR(255) DEFAULT NULL,
   `custom10` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
-  UNIQUE KEY `item_number` (`item_number`),
+  KEY `item_number` (`item_number`),
   KEY `supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
