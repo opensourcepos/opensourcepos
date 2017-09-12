@@ -4,14 +4,73 @@
  * Currency locale helper
  */
 
-function current_language_code()
+function current_language_code($load_system_language = FALSE)
 {
-    return get_instance()->config->item('language_code');
+	// Returns the language code of the employee if set or system language code if not
+	if(get_instance()->Employee->is_logged_in() && $load_system_language != TRUE)
+	{
+		$employee_language_code = get_instance()->Employee->get_logged_in_employee_info()->language_code;
+		if($employee_language_code != NULL && $employee_language_code != '')
+		{
+			return $employee_language_code;
+		}
+	}
+	return get_instance()->config->item('language_code');
 }
 
-function current_language()
+function current_language($load_system_language = FALSE)
 {
-    return get_instance()->config->item('language');
+	// Returns the language of the employee if set or system language if not
+	if(get_instance()->Employee->is_logged_in() && $load_system_language != TRUE)
+	{
+		$employee_language = get_instance()->Employee->get_logged_in_employee_info()->language;
+		if($employee_language != NULL && $employee_language != '')
+		{
+			return $employee_language;
+		}
+	}
+	return get_instance()->config->item('language');
+}
+
+function get_languages()
+{
+	return array(
+		'en-US:english' => 'English (United States)',
+		'en-GB:english' => 'English (Great Britain)',
+		'es:spanish' => 'Spanish',
+		'nl-BE:dutch' => 'Dutch (Belgium)',
+		'de:german' => 'German (Germany)',
+		'de-CH:german' => 'German (Swiss)',
+		'fr:french' => 'French',
+		'zh:simplified-chinese' => 'Chinese',
+		'id:indonesian' => 'Indonesian',
+		'th:thai' => 'Thai',
+		'tr:turkish' => 'Turkish',
+		'ru:russian' => 'Russian',
+		'hu-HU:hungarian' => 'Hungarian',
+		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'hr-HR' => 'Croatian (Croatia)',
+		'ar-EG:arabic' => 'Arabic (Egypt)',
+		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'
+	);
+}
+
+function load_language($load_system_language = FALSE, array $lang_array)
+{
+	if($load_system_language = TRUE)
+	{
+		foreach($lang_array as $language_file) 
+		{
+			get_instance()->lang->load($language_file,current_language_code(TRUE));
+		}
+	}
+	else
+	{
+		foreach($lang_array as $language_file)
+		{
+			get_instance()->lang->load($language_file,current_language_code());
+		}
+	}
 }
 
 function currency_side()

@@ -1,5 +1,8 @@
-<?php
-// Name of function same as mentioned in Hooks Config
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Name of function same as mentioned in Hooks Config
+ */
 function db_log_queries()
 {
 	$CI = & get_instance();
@@ -14,7 +17,7 @@ function db_log_queries()
 
 		// Get execution time of all the queries executed by controller
 		$times = $CI->db->query_times;
-		foreach ($CI->db->queries as $key => $query)
+		foreach($CI->db->queries as $key => $query)
 		{ 
 			// Generating SQL file alongwith execution time
 			$sql = $query . " \n Execution Time:" . $times[$key];
@@ -26,4 +29,5 @@ function db_log_queries()
 		fclose($handle);
 	}
 }
+
 ?>
