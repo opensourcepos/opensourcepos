@@ -289,6 +289,7 @@ class Config extends Secure_Controller
 			'theme' => $this->input->post('theme'),
 			'default_sales_discount' => $this->input->post('default_sales_discount'),
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
+			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),
 			'notify_horizontal_position' => $this->input->post('notify_horizontal_position'),
 			'notify_vertical_position' => $this->input->post('notify_vertical_position'),
