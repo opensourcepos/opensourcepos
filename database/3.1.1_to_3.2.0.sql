@@ -81,3 +81,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_first_column', 'name'),
 ('suggestions_second_column', ''),
 ('suggestions_third_column', '');
+
+
+-- Add key->value to save setting for allowing duplicate barcodes
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('allow_duplicate_barcode','');
