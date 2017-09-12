@@ -116,6 +116,43 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_suggestions_layout'), 'suggestions_layout', array('class' => 'control-label col-xs-2')); ?>
+				<div class="col-sm-10">
+					<div class="form-group form-group-sm row">
+						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_suggestions_first_column').' '; ?></label>
+						<div class='col-sm-2'>
+							<?php echo form_dropdown('suggestions_first_column', array(
+								'name' => $this->lang->line('items_name'),
+								'item_number' => $this->lang->line('items_number_information'),
+								'unit_price' => $this->lang->line('items_unit_price')
+							),
+							$this->config->item('suggestions_first_column'), array('class' => 'form-control input-sm')); ?>
+						</div>
+						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_suggestions_second_column').' '; ?></label>
+						<div class='col-sm-2'>
+							<?php echo form_dropdown('suggestions_second_column', array(
+									'' => $this->lang->line('config_none'),
+									'name' => $this->lang->line('items_name'),
+									'item_number' => $this->lang->line('items_number_information'),
+									'unit_price' => $this->lang->line('items_unit_price')
+							),
+							$this->config->item('suggestions_second_column'), array('class' => 'form-control input-sm')); ?>
+						</div>
+						<label class="control-label col-sm-1"><?php echo $this->lang->line('config_suggestions_third_column').' '; ?></label>
+						<div class='col-sm-2'>
+							<?php echo form_dropdown('suggestions_third_column', array(
+									'' => $this->lang->line('config_none'),
+									'name' => $this->lang->line('items_name'),
+									'item_number' => $this->lang->line('items_number_information'),
+									'unit_price' => $this->lang->line('items_unit_price')
+							),
+							$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-8'>
 					<label class="radio-inline">
