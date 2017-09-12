@@ -1,3 +1,8 @@
+<?php 
+	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
+	load_language(TRUE,array('customers','sales','employees'));
+?>
+
 <div id="receipt_wrapper" style="font-size:<?php echo $this->config->item('receipt_font_size');?>px">
 	<div id="receipt_header">
 		<?php
@@ -22,7 +27,7 @@
 
 		<div id="company_address"><?php echo nl2br($this->config->item('address')); ?></div>
 		<div id="company_phone"><?php echo $this->config->item('phone'); ?></div>
-		<div id="sale_receipt"><?php echo $receipt_title; ?></div>
+		<div id="sale_receipt"><?php echo $this->lang->line('sales_receipt'); ?></div>
 		<div id="sale_time"><?php echo $transaction_time ?></div>
 	</div>
 

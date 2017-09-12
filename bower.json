@@ -11,7 +11,7 @@
     "point-of-sale",
     "POS"
   ],
-  "homepage": "https://github.com/jekkos/opensourcepos",
+  "homepage": "https://github.com/opensourcepos/opensourcepos",
   "private": true,
   "moduleType": [
     "globals"
