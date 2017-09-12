@@ -117,7 +117,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('last_used_work_order_number', '0'),
 ('suggestions_first_column', 'name'),
 ('suggestions_second_column', ''),
-('suggestions_third_column', '');
+('suggestions_third_column', ''),
+('allow_duplicate_barcode', '0');
 
 
 
