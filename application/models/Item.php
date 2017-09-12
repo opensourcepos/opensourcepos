@@ -577,7 +577,7 @@ class Item extends CI_Model
 	{
 		$suggestions = array();
 
-		$this->db->select('item_id, name');
+		$this->db->select($this->get_search_suggestion_format('item_id, name'));
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = " . ITEM); // standard, exclude kit items since kits will be picked up later
@@ -586,10 +586,10 @@ class Item extends CI_Model
 		$this->db->order_by('name', 'asc');
 		foreach($this->db->get()->result() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
-		$this->db->select('item_id, item_number');
+		$this->db->select($this->get_search_suggestion_format('item_id, item_number'));
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where("item_type = " . ITEM); // standard, exclude kit items since kits will be picked up later
@@ -598,7 +598,7 @@ class Item extends CI_Model
 		$this->db->order_by('item_number', 'asc');
 		foreach($this->db->get()->result() as $row)
 		{
-			$suggestions[] = array('value' => $row->item_id, 'label' => $row->item_number);
+			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
 		if(!$unique)
@@ -631,7 +631,7 @@ class Item extends CI_Model
 			}
 
 			//Search by description
-			$this->db->select('item_id, name, description');
+			$this->db->select($this->get_search_suggestion_format('item_id, name, description'));
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where("item_type = " . ITEM); // standard, exclude kit items since kits will be picked up later
@@ -640,7 +640,7 @@ class Item extends CI_Model
 			$this->db->order_by('description', 'asc');
 			foreach($this->db->get()->result() as $row)
 			{
-				$entry = array('value' => $row->item_id, 'label' => $row->name);
+				$entry = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				if(!array_walk($suggestions, function($value, $label) use ($entry) { return $entry['label'] != $label; } ))
 				{
 					$suggestions[] = $entry;
@@ -668,7 +668,7 @@ class Item extends CI_Model
 				$this->db->where('deleted', $filters['is_deleted']);
 				foreach($this->db->get()->result() as $row)
 				{
-					$suggestions[] = array('value' => $row->item_id, 'label' => $row->name);
+					$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 				}
 			}
 		}
