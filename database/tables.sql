@@ -114,7 +114,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receiving_calculate_average_price', '0'),
 ('work_order_enable', '0'),
 ('work_order_format', 'W%y{WSEQ:6}'),
-('last_used_work_order_number', '0');
+('last_used_work_order_number', '0'),
+('allow_duplicate_barcode','');
 
 
 
