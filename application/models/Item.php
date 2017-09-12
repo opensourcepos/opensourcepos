@@ -44,6 +44,11 @@ class Item extends CI_Model
 	*/
 	public function item_number_exists($item_number, $item_id = '')
 	{
+		if($this->config->item('allow_duplicate_barcodes') != FALSE)
+		{			
+			return FALSE;
+		}
+
 		$this->db->from('items');
 		$this->db->where('item_number', (string) $item_number);
 		if(ctype_digit($item_id))
@@ -51,7 +56,7 @@ class Item extends CI_Model
 			$this->db->where('item_id !=', (int) $item_id);
 		}
 
-		return ($this->db->get()->num_rows() == 1);
+		return ($this->db->get()->num_rows() >= 1);
 	}
 
 	/*
