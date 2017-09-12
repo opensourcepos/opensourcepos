@@ -40,6 +40,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_allow_duplicate_barcodes'), 'allow_duplicate_barcodes', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'allow_duplicate_barcodes',
+						'id' => 'allow_duplicate_barcodes',
+						'value' => 'allow_duplicate_barcodes',
+						'checked' => $this->config->item('allow_duplicate_barcodes'))); ?>
+				</div>
+			</div>
+			
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_lines_per_page'), 'lines_per_page', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
