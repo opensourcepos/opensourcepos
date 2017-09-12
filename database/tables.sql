@@ -251,7 +251,7 @@ CREATE TABLE `ospos_items` (
   `custom9` VARCHAR(255) DEFAULT NULL,
   `custom10` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
-  UNIQUE KEY `item_number` (`item_number`),
+  KEY `item_number` (`item_number`),
   KEY `supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
