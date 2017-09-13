@@ -117,9 +117,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('last_used_work_order_number', '0'),
 ('suggestions_first_column', 'name'),
 ('suggestions_second_column', ''),
-('suggestions_third_column', '');
-
-
+('suggestions_third_column', ''),
+('allow_duplicate_barcodes', '0');
 
 -- --------------------------------------------------------
 
@@ -255,7 +254,7 @@ CREATE TABLE `ospos_items` (
   `custom9` VARCHAR(255) DEFAULT NULL,
   `custom10` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
-  UNIQUE KEY `item_number` (`item_number`),
+  KEY `item_number` (`item_number`),
   KEY `supplier_id` (`supplier_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

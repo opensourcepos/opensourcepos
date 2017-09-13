@@ -791,6 +791,7 @@ class Config extends Secure_Controller
 			'barcode_page_width' => $this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
+			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,			
 			'barcode_content' => $this->input->post('barcode_content'),
 			'barcode_formats' => json_encode($this->input->post('barcode_formats'))
 		);
