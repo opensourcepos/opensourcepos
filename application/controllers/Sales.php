@@ -168,7 +168,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$this->sale_lib->set_sale_type(SALE_SALE);
+			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
 		}
 
 		$stock_location = $this->input->post('stock_location');
