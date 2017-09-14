@@ -10,9 +10,18 @@ define('PRINT_ALL', 0);
 define('PRINT_PRICED', 1);
 define('PRINT_KIT', 2);
 
+define('PRINT_YES', 0);
+define('PRINT_NO', 1);
+
 define('PRICE_ALL', 0);
 define('PRICE_KIT', 1);
 define('PRICE_KIT_ITEMS', 2);
+
+define('PRICE_OPTION_ALL', 0);
+define('PRICE_OPTION_KIT', 1);
+define('PRICE_OPTION_KIT_STOCK', 2);
+
+
 /**
  * Item class
  */
@@ -393,7 +402,7 @@ class Item extends CI_Model
 
 		$this->db->trans_complete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->trans_();
 
 		return $success;
 	}
@@ -428,7 +437,7 @@ class Item extends CI_Model
 
 		$this->db->trans_complete();
 
-		$success &= $this->db->trans_status();
+		$success &= $this->db->trans_();
 
 		return $success;
 	}

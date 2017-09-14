@@ -348,6 +348,10 @@ if(isset($success))
 		?>
 
 		<table class="sales_table_100" id="sale_totals">
+            <tr>
+                <th style="width: 55%;"><?php echo $this->lang->line('sales_quantity_of_items',$item_count); ?></th>
+                <th style="width: 45%; text-align: right;"><?php echo $total_units; ?></th>
+            </tr>
 			<tr>
 				<th style="width: 55%;"><?php echo $this->lang->line('sales_sub_total'); ?></th>
 				<th style="width: 45%; text-align: right;"><?php echo to_currency($subtotal); ?></th>

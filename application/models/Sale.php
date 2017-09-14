@@ -633,7 +633,7 @@ class Sale extends CI_Model
 				'serialnumber'		=> character_limiter($item['serialnumber'], 30),
 				'quantity_purchased'=> $item['quantity'],
 				'discount_percent'	=> $item['discount'],
-				'item_cost_price'	=> $cur_item_info->cost_price,
+				'item_cost_price'	=> $item['cost_price'],
 				'item_unit_price'	=> $item['price'],
 				'item_location'		=> $item['item_location'],
 				'print_option'		=> $item['print_option']
