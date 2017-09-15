@@ -433,18 +433,18 @@ class Item extends CI_Model
 		return $success;
 	}
 
-	function get_search_suggestion_format(string $seed = NULL)
+	function get_search_suggestion_format($seed = NULL)
 	{
-		$seed .= ','.$this->config->item('suggestions_first_column');
+		$seed .= ',' . $this->config->item('suggestions_first_column');
 		
 		if($this->config->item('suggestions_second_column') !== '')
 		{
-			$seed .= ','.$this->config->item('suggestions_second_column');
+			$seed .= ',' . $this->config->item('suggestions_second_column');
 		}
 			
 		if($this->config->item('suggestions_third_column') !== '')
 		{
-			$seed .= ','.$this->config->item('suggestions_third_column');
+			$seed .= ',' . $this->config->item('suggestions_third_column');
 		}
 		
 		return $seed;
