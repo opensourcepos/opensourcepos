@@ -97,6 +97,7 @@ $lang["sales_print_after_sale"] = "Print after Sale";
 $lang["sales_quantity"] = "Qty.";
 $lang["sales_quantity_less_than_reorder_level"] = "Warning: Desired Quantity is below Reorder Level for that Item";
 $lang["sales_quantity_less_than_zero"] = "Warning: Desired Quantity is insufficient. You can still process the sale, but audit your inventory";
+$lang["sales_quantity_of_items"] = "Quantity of %1 Items";
 $lang["sales_quote"] = "Quote";
 $lang["sales_quote_number"] = "Quote Number";
 $lang["sales_quote_number_duplicate"] = "Quote Number must be unique";
