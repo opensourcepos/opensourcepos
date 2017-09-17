@@ -1311,6 +1311,26 @@ class Sale extends CI_Model
 	}
 
 	/**
+	 * Gets the work order number for the selected sale
+	 */
+	public function get_work_order_number($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->work_order_number;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+
+	/**
 	 * Gets the quote_number for the selected sale
 	 */
 	public function get_comment($sale_id)

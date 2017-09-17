@@ -958,6 +958,7 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
+		$this->set_work_order_number($this->CI->Sale->get_work_order_number($sale_id));
 		$this->set_sale_type($this->CI->Sale->get_sale_type($sale_id));
 		$this->set_comment($this->CI->Sale->get_comment($sale_id));
 		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
