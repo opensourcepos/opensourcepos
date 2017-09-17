@@ -92,5 +92,5 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 -- Modify items table to allow duplicate barcodes
 
 ALTER TABLE `ospos_items`
-  DROP INDEX item_number,
-  ADD KEY (item_number);
+  DROP INDEX `item_number`,
+  ADD KEY `item_number` (item_number);
