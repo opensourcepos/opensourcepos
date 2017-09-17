@@ -57,7 +57,7 @@ class Sales extends Secure_Controller
 	public function get_row($row_id)
 	{
 		$sale_info = $this->Sale->get_info($row_id)->row();
-		$data_row = $this->xss_clean(get_sale_data_row($sale_info, $this));
+		$data_row = $this->xss_clean(get_sale_data_row($sale_info));
 
 		echo json_encode($data_row);
 	}
@@ -87,17 +87,17 @@ class Sales extends Secure_Controller
 		$sales = $this->Sale->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Sale->get_found_rows($search, $filters);
 		$payments = $this->Sale->get_payments_summary($search, $filters);
-		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments, $sales, $this));
+		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments, $sales));
 
 		$data_rows = array();
 		foreach($sales->result() as $sale)
 		{
-			$data_rows[] = $this->xss_clean(get_sale_data_row($sale, $this));
+			$data_rows[] = $this->xss_clean(get_sale_data_row($sale));
 		}
 
 		if($total_rows > 0)
 		{
-			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales, $this));
+			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales));
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary));

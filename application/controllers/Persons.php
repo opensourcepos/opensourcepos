@@ -31,7 +31,7 @@ abstract class Persons extends Secure_Controller
 	*/
 	public function get_row($row_id)
 	{
-		$data_row = $this->xss_clean(get_person_data_row($this->Person->get_info($row_id), $this));
+		$data_row = $this->xss_clean(get_person_data_row($this->Person->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}

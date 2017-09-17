@@ -580,7 +580,7 @@ class Item extends CI_Model
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
@@ -691,7 +691,7 @@ class Item extends CI_Model
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;
@@ -791,7 +791,7 @@ class Item extends CI_Model
 		//only return $limit suggestions
 		if(count($suggestions > $limit))
 		{
-			$suggestions = array_slice($suggestions, 0,$limit);
+			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
 		return $suggestions;

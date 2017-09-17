@@ -895,7 +895,7 @@ class Sale extends CI_Model
 	public function get_sale_items_ordered($sale_id)
 	{
 		$this->db->select('
-			sale_id,
+			sales_items.sale_id,
 			sales_items.item_id,
 			sales_items.description,
 			serialnumber,
@@ -912,7 +912,7 @@ class Sale extends CI_Model
 			stock_type');
 		$this->db->from('sales_items as sales_items');
 		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
-		$this->db->where('sale_id', $sale_id);
+		$this->db->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
 		if($this->config->item('line_sequence') == '0')

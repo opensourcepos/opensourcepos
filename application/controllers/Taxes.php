@@ -37,10 +37,8 @@ class Taxes extends Secure_Controller
 		$data_rows = array();
 		foreach($tax_codes->result() as $tax_code_row)
 		{
-			$data_rows[] = get_tax_data_row($tax_code_row, $this);
+			$data_rows[] = $this->xss_clean(get_tax_data_row($tax_code_row));
 		}
-
-		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}

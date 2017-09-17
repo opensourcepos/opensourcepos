@@ -45,7 +45,7 @@ class Customers extends Persons
 			$stats->quantity = 0;
 		}
 
-		$data_row = $this->xss_clean(get_customer_data_row($person, $stats, $this));
+		$data_row = $this->xss_clean(get_customer_data_row($person, $stats));
 
 		echo json_encode($data_row);
 	}
@@ -81,10 +81,8 @@ class Customers extends Persons
 				$stats->quantity = 0;
 			}
 
-			$data_rows[] = get_customer_data_row($person, $stats, $this);
+			$data_rows[] = $this->xss_clean(get_customer_data_row($person, $stats));
 		}
-
-		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}

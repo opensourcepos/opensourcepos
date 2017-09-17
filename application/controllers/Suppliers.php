@@ -21,7 +21,7 @@ class Suppliers extends Persons
 	*/
 	public function get_row($row_id)
 	{
-		$data_row = $this->xss_clean(get_supplier_data_row($this->Supplier->get_info($row_id), $this));
+		$data_row = $this->xss_clean(get_supplier_data_row($this->Supplier->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
@@ -43,10 +43,8 @@ class Suppliers extends Persons
 		$data_rows = array();
 		foreach($suppliers->result() as $supplier)
 		{
-			$data_rows[] = get_supplier_data_row($supplier, $this);
+			$data_rows[] = $this->xss_clean(get_supplier_data_row($supplier));
 		}
-
-		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}

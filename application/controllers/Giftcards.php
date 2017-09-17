@@ -33,10 +33,8 @@ class Giftcards extends Secure_Controller
 		$data_rows = array();
 		foreach($giftcards->result() as $giftcard)
 		{
-			$data_rows[] = get_giftcard_data_row($giftcard, $this);
+			$data_rows[] = $this->xss_clean(get_giftcard_data_row($giftcard));
 		}
-
-		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
@@ -61,7 +59,7 @@ class Giftcards extends Secure_Controller
 
 	public function get_row($row_id)
 	{
-		$data_row = $this->xss_clean(get_giftcard_data_row($this->Giftcard->get_info($row_id), $this));
+		$data_row = $this->xss_clean(get_giftcard_data_row($this->Giftcard->get_info($row_id)));
 
 		echo json_encode($data_row);
 	}
