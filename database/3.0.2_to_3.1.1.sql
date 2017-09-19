@@ -310,8 +310,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 -- add Barcode formats and other missing keys
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('barcode_formats', '[]'),
-('receiving_calculate_average_price', '0');
+('barcode_formats', '[]');
 
 -- replace old tokens in ospos_app_config
 
