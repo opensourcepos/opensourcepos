@@ -74,18 +74,20 @@ ALTER TABLE `ospos_employees`
   ADD COLUMN `language` VARCHAR(48) DEFAULT NULL,
   ADD COLUMN `language_code` VARCHAR(8) DEFAULT NULL;
 
---
+
 -- Add support for custom search suggestion format
---
+
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_first_column', 'name'),
 ('suggestions_second_column', ''),
-('suggestions_third_column', '');	
+('suggestions_third_column', '');
+
 
 -- Add key->value to save setting for allowing duplicate barcodes
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('allow_duplicate_barcodes', '0');
+
 
 -- Modify items table to allow duplicate barcodes
 
