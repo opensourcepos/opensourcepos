@@ -82,12 +82,11 @@
 						'id' => 'allow_duplicate_barcodes',
 						'value' => 'allow_duplicate_barcodes',
 						'checked' => $this->config->item('allow_duplicate_barcodes'))); ?>
+					&nbsp
+					<label class="control-label">
+						<span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_barcode_tooltip'); ?>"></span>
+					</label>
 				</div>
-			</div>
-			<div class="col-xs-1">
-				<label class="control-label">
-					<span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_barcode_tooltip'); ?>"></span>
-				</label>
 			</div>
 
 			<div class="form-group form-group-sm">
