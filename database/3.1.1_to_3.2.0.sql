@@ -94,3 +94,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ALTER TABLE `ospos_items`
   DROP INDEX `item_number`,
   ADD KEY `item_number` (item_number);
+
+--
+-- Move Office Module Icon to right side of top bar
+--
+UPDATE `ospos_modules` SET `sort` = 99 WHERE `name_lang_key` = 'module_office';
+UPDATE `ospos_modules` SET `sort` = 98 WHERE `name_lang_key` = 'module_messages';
