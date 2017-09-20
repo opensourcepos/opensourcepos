@@ -27,6 +27,7 @@ $lang["config_barcode_price"] = "Price";
 $lang["config_barcode_quality"] = "Quality (1-100)";
 $lang["config_barcode_second_row"] = "Row 2";
 $lang["config_barcode_third_row"] = "Row 3";
+$lang["config_barcode_tooltip"] = "Warning: This feature can cause duplicate items to be imported or created.  Do not use if you do not want duplicate barcodes.";
 $lang["config_barcode_type"] = "Barcode Type";
 $lang["config_barcode_width"] = "Width (px)";
 $lang["config_bottom"] = "Bottom";
