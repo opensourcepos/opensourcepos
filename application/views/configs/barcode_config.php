@@ -84,6 +84,11 @@
 						'checked' => $this->config->item('allow_duplicate_barcodes'))); ?>
 				</div>
 			</div>
+			<div class="col-xs-1">
+				<label class="control-label">
+					<a href="http://wiki.openstreetmap.org/wiki/Nominatim/Country_Codes" target="_blank"><span class="glyphicon glyphicon-warning-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_barcode_tooltip'); ?>"></span></a>
+				</label>
+			</div>
 
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_barcode_content'), 'barcode_content', array('class' => 'control-label col-xs-2')); ?>
