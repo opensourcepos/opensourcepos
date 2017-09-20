@@ -71,7 +71,7 @@ class Item_kit extends CI_Model
 		pic_filename,
 		allow_alt_description,
 		is_serialized,
-		deleted,
+		items.deleted,
 		custom1,
 		custom2,
 		custom3,

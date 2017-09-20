@@ -2,6 +2,7 @@
 
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company address is a required field.";
+$lang["config_allow_duplicate_barcodes"] = "Allow Duplicate Barcodes";
 $lang["config_apostrophe"] = "apostrophe";
 $lang["config_backup_button"] = "Backup";
 $lang["config_backup_database"] = "Backup Database";
@@ -238,6 +239,10 @@ $lang["config_stock_location"] = "Stock location";
 $lang["config_stock_location_duplicate"] = "Stock Location must be unique.";
 $lang["config_stock_location_invalid_chars"] = "Stock Location can not contain '_'.";
 $lang["config_stock_location_required"] = "Stock location is a required field.";
+$lang["config_suggestions_first_column"] = "Column 1";
+$lang["config_suggestions_layout"] = "Search Suggestions Layout";
+$lang["config_suggestions_second_column"] = "Column 2";
+$lang["config_suggestions_third_column"] = "Column 3";
 $lang["config_table"] = "Table";
 $lang["config_table_configuration"] = "Table Configuration";
 $lang["config_takings_printer"] = "Receipt Printer";

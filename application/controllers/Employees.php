@@ -26,10 +26,8 @@ class Employees extends Persons
 		$data_rows = array();
 		foreach($employees->result() as $person)
 		{
-			$data_rows[] = get_person_data_row($person, $this);
+			$data_rows[] = $this->xss_clean(get_person_data_row($person));
 		}
-
-		$data_rows = $this->xss_clean($data_rows);
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}

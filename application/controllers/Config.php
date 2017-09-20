@@ -295,6 +295,9 @@ class Config extends Secure_Controller
 			'gcaptcha_enable' => $this->input->post('gcaptcha_enable') != NULL,
 			'gcaptcha_secret_key' => $this->input->post('gcaptcha_secret_key'),
 			'gcaptcha_site_key' => $this->input->post('gcaptcha_site_key'),
+			'suggestions_first_column' => $this->input->post('suggestions_first_column'),
+			'suggestions_second_column' => $this->input->post('suggestions_second_column'),
+			'suggestions_third_column' => $this->input->post('suggestions_third_column'),
 			'giftcard_number' => $this->input->post('giftcard_number'),
 			'statistics' => $this->input->post('statistics') != NULL,
 			'custom1_name' => $this->input->post('custom1_name'),
@@ -791,6 +794,7 @@ class Config extends Secure_Controller
 			'barcode_page_width' => $this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
+			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,			
 			'barcode_content' => $this->input->post('barcode_content'),
 			'barcode_formats' => json_encode($this->input->post('barcode_formats'))
 		);

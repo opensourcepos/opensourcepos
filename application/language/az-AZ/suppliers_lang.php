@@ -1,18 +1,18 @@
 <?php 
 
-$lang["suppliers_account_number"] = "Account #";
-$lang["suppliers_agency_name"] = "Agency Name";
-$lang["suppliers_cannot_be_deleted"] = "Could not deleted selected suppliers, one or more of the selected suppliers has sales.";
-$lang["suppliers_company_name"] = "Company Name";
-$lang["suppliers_company_name_required"] = "Company Name is a required field";
-$lang["suppliers_confirm_delete"] = "Are you sure you want to delete the selected suppliers?";
-$lang["suppliers_error_adding_updating"] = "Error adding/updating supplier";
-$lang["suppliers_new"] = "New Supplier";
-$lang["suppliers_none_selected"] = "You have not selected any suppliers to delete";
-$lang["suppliers_one_or_multiple"] = "supplier(s)";
-$lang["suppliers_successful_adding"] = "You have successfully added supplier";
-$lang["suppliers_successful_deleted"] = "You have successfully deleted";
-$lang["suppliers_successful_updating"] = "You have successfully updated supplier";
-$lang["suppliers_supplier"] = "Supplier";
-$lang["suppliers_supplier_id"] = "Id";
-$lang["suppliers_update"] = "Update Supplier";
+$lang["suppliers_account_number"] = "Hesab #";
+$lang["suppliers_agency_name"] = "";
+$lang["suppliers_cannot_be_deleted"] = "təchizatçı silmək olmaz onlar bəzisi satılıb.";
+$lang["suppliers_company_name"] = "Kompaniyanın Adı";
+$lang["suppliers_company_name_required"] = "Kompaniyanın adı və mütləq məsafə.";
+$lang["suppliers_confirm_delete"] = "Siz əminsiniz ki seçilmiş təchizatçıları silmək istəyirsiniz?";
+$lang["suppliers_error_adding_updating"] = "Təchizatçı əlavə etməkdə və yeniləməkdə səhv var.";
+$lang["suppliers_new"] = "Yeni Təchizatçı";
+$lang["suppliers_none_selected"] = "Siz silmək üçün heç bir təchizatçı seçmədiniz.";
+$lang["suppliers_one_or_multiple"] = "təchizatçı(lar)";
+$lang["suppliers_successful_adding"] = "Siz uğurla təchizatçı əlavə etdiniz.";
+$lang["suppliers_successful_deleted"] = "Siz uğurla sildiniz";
+$lang["suppliers_successful_updating"] = "siz ugurla təchizatçı yenilədiniz";
+$lang["suppliers_supplier"] = "Təchizatçı";
+$lang["suppliers_supplier_id"] = "";
+$lang["suppliers_update"] = "Təchizatçı Yenilənməsi";

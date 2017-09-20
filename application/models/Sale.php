@@ -633,7 +633,7 @@ class Sale extends CI_Model
 				'serialnumber'		=> character_limiter($item['serialnumber'], 30),
 				'quantity_purchased'=> $item['quantity'],
 				'discount_percent'	=> $item['discount'],
-				'item_cost_price'	=> $cur_item_info->cost_price,
+				'item_cost_price'	=> $item['cost_price'],
 				'item_unit_price'	=> $item['price'],
 				'item_location'		=> $item['item_location'],
 				'print_option'		=> $item['print_option']
@@ -895,7 +895,7 @@ class Sale extends CI_Model
 	public function get_sale_items_ordered($sale_id)
 	{
 		$this->db->select('
-			sale_id,
+			sales_items.sale_id,
 			sales_items.item_id,
 			sales_items.description,
 			serialnumber,
@@ -912,7 +912,7 @@ class Sale extends CI_Model
 			stock_type');
 		$this->db->from('sales_items as sales_items');
 		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
-		$this->db->where('sale_id', $sale_id);
+		$this->db->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
 		if($this->config->item('line_sequence') == '0')
@@ -1303,6 +1303,26 @@ class Sale extends CI_Model
 		if($row != NULL)
 		{
 			return $row->quote_number;
+		}
+		else
+		{
+			return NULL;
+		}
+	}
+
+	/**
+	 * Gets the work order number for the selected sale
+	 */
+	public function get_work_order_number($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->work_order_number;
 		}
 		else
 		{

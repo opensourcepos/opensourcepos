@@ -98,17 +98,20 @@ class Token_lib
 				}
 			}
 		}
+
 		return $token_values;
 	}
 
 	private function resolveToken($token_code, $tokens = array())
 	{
-		foreach (array_merge($tokens, Token::get_tokens()) as $token) {
-			if ($token->token_id() == $token_code)
+		foreach(array_merge($tokens, Token::get_tokens()) as $token)
+		{
+			if($token->token_id() == $token_code)
 			{
 				return $token->get_value();
 			}
 		}
+
 		return '';
 	}
 }

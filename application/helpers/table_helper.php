@@ -26,7 +26,7 @@ function get_sales_manage_table_headers()
 /*
  Gets the html data rows for the sales.
  */
-function get_sale_data_last_row($sales, $controller)
+function get_sale_data_last_row($sales)
 {
 	$CI =& get_instance();
 	$sum_amount_due = 0;
@@ -49,7 +49,7 @@ function get_sale_data_last_row($sales, $controller)
 	);
 }
 
-function get_sale_data_row($sale, $controller)
+function get_sale_data_row($sale)
 {
 	$CI =& get_instance();
 	$controller_name = $CI->uri->segment(1);
@@ -85,7 +85,7 @@ function get_sale_data_row($sale, $controller)
 /*
 Get the sales payments summary
 */
-function get_sales_manage_payments_summary($payments, $sales, $controller)
+function get_sales_manage_payments_summary($payments, $sales)
 {
 	$CI =& get_instance();
 	$table = '<div id="report_summary">';
@@ -174,7 +174,7 @@ function get_people_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_person_data_row($person, $controller)
+function get_person_data_row($person)
 {
 	$CI =& get_instance();
 	$controller_name = strtolower(get_class($CI));
@@ -213,7 +213,7 @@ function get_customer_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_customer_data_row($person, $stats, $controller)
+function get_customer_data_row($person, $stats)
 {
 	$CI =& get_instance();
 	$controller_name = strtolower(get_class($CI));
@@ -254,7 +254,7 @@ function get_suppliers_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_supplier_data_row($supplier, $controller)
+function get_supplier_data_row($supplier)
 {
 	$CI =& get_instance();
 	$controller_name = strtolower(get_class($CI));
@@ -296,7 +296,7 @@ function get_items_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_item_data_row($item, $controller)
+function get_item_data_row($item)
 {
 	$CI =& get_instance();
 	$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
@@ -384,7 +384,7 @@ function get_taxes_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_giftcard_data_row($giftcard, $controller)
+function get_giftcard_data_row($giftcard)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
@@ -400,7 +400,7 @@ function get_giftcard_data_row($giftcard, $controller)
 		));
 }
 
-function get_tax_data_row($tax_code_row, $controller)
+function get_tax_data_row($tax_code_row)
 {
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
@@ -435,7 +435,7 @@ function get_item_kits_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_item_kit_data_row($item_kit, $controller)
+function get_item_kit_data_row($item_kit)
 {
 	$CI =& get_instance();
 	$controller_name = strtolower(get_class($CI));

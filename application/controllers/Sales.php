@@ -2,6 +2,9 @@
 
 require_once("Secure_Controller.php");
 
+define('PRICE_MODE_STANDARD', 0);
+define('PRICE_MODE_KIT', 1);
+
 class Sales extends Secure_Controller
 {
 	public function __construct()
@@ -54,7 +57,7 @@ class Sales extends Secure_Controller
 	public function get_row($row_id)
 	{
 		$sale_info = $this->Sale->get_info($row_id)->row();
-		$data_row = $this->xss_clean(get_sale_data_row($sale_info, $this));
+		$data_row = $this->xss_clean(get_sale_data_row($sale_info));
 
 		echo json_encode($data_row);
 	}
@@ -84,17 +87,17 @@ class Sales extends Secure_Controller
 		$sales = $this->Sale->search($search, $filters, $limit, $offset, $sort, $order);
 		$total_rows = $this->Sale->get_found_rows($search, $filters);
 		$payments = $this->Sale->get_payments_summary($search, $filters);
-		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments, $sales, $this));
+		$payment_summary = $this->xss_clean(get_sales_manage_payments_summary($payments, $sales));
 
 		$data_rows = array();
 		foreach($sales->result() as $sale)
 		{
-			$data_rows[] = $this->xss_clean(get_sale_data_row($sale, $this));
+			$data_rows[] = $this->xss_clean(get_sale_data_row($sale));
 		}
 
 		if($total_rows > 0)
 		{
-			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales, $this));
+			$data_rows[] = $this->xss_clean(get_sale_data_last_row($sales));
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows, 'payment_summary' => $payment_summary));
@@ -168,7 +171,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			$this->sale_lib->set_sale_type(SALE_SALE);
+			$this->sale_lib->set_sale_type(SALE_TYPE_RETURN);
 		}
 
 		$stock_location = $this->input->post('stock_location');
@@ -400,8 +403,7 @@ class Sales extends Secure_Controller
 			$item_kit_id = $pieces[1];
 			$item_kit_info = $this->Item_kit->get_info($item_kit_id);
 			$kit_item_id = $item_kit_info->kit_item_id;
-			$price_option = $item_kit_info->price_option;
-			$stock_type = $item_kit_info->stock_type;
+			$kit_price_option = $item_kit_info->price_option;
 			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
 
 			if($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
@@ -414,7 +416,7 @@ class Sales extends Secure_Controller
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $price, NULL, NULL, NULL, $print_option, $stock_type))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, PRICE_MODE_STANDARD))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}
@@ -426,7 +428,7 @@ class Sales extends Secure_Controller
 
 			// Add item kit items to order
 			$stock_warning = NULL;
-			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $price_option, $kit_print_option, $stock_warning))
+			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $kit_price_option, $kit_print_option, $stock_warning))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
@@ -437,7 +439,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount))
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, PRICE_MODE_STANDARD))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
@@ -972,6 +974,8 @@ class Sales extends Secure_Controller
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'
 		$totals = $this->sale_lib->get_totals();
+		$data['item_count'] = $totals['item_count'];
+		$data['total_units'] = $totals['total_units'];
 		$data['subtotal'] = $totals['subtotal'];
 		$data['total'] = $totals['total'];
 		$data['payments_total'] = $totals['payment_total'];

@@ -387,7 +387,7 @@ class Sale_lib
 
 	/**
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
-	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal'
+	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units'
 	 */
 	public function get_totals()
 	{
@@ -399,9 +399,16 @@ class Sale_lib
 		$subtotal = 0;
 		$total = 0;
 		$total_discount = 0;
+		$item_count = 0;
+		$total_units = 0;
 
 		foreach($this->get_cart() as $item)
 		{
+			if($item['stock_type'] == HAS_STOCK)
+			{
+				$item_count++;
+				$total_units += $item['quantity'];
+			}
 			$discount_amount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount']);
 			$total_discount = bcadd($total_discount, $discount_amount);
 
@@ -477,6 +484,9 @@ class Sale_lib
 		{
 			$totals['payments_cover_total'] = $current_due < $threshold;
 		}
+
+		$totals['item_count'] = $item_count;
+		$totals['total_units'] = $total_units;
 
 		return $totals;
 	}
@@ -645,7 +655,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = '0', $stock_type = HAS_STOCK)
+	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE )
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
@@ -657,6 +667,52 @@ class Sale_lib
 		}
 
 		$item_id = $item_info->item_id;
+		$item_type = $item_info->item_type;
+		$stock_type = $item_info->stock_type;
+
+		if($price_mode == PRICE_MODE_STANDARD)
+		{
+			$price = $item_info->unit_price;
+			$cost_price = $item_info->cost_price;
+		}
+		elseif($price_mode == PRICE_MODE_KIT)
+		{
+			if($kit_price_option == PRICE_OPTION_ALL)
+			{
+				$price = $item_info->unit_price;
+				$cost_price = $item_info->cost_price;
+			}
+			elseif($kit_price_option == PRICE_OPTION_KIT  && $item_type == ITEM_KIT)
+			{
+				$price = $item_info->unit_price;
+				$cost_price = $item_info->cost_price;
+			}
+			elseif($kit_price_option == PRICE_OPTION_KIT_STOCK && $stock_type == HAS_STOCK)
+			{
+				$price = $item_info->unit_price;
+				$cost_price = $item_info->cost_price;
+			}
+			else
+			{
+				$price = 0.00;
+				$cost_price = 0.00;
+			}
+		}
+		else
+		{
+			$price= 0.00;
+			$cost_price = 0.00;
+		}
+
+		if($price_override != NULL)
+		{
+			$price = $price_override;
+		}
+
+		if($price == 0.00)
+		{
+			$discount = 0.00;
+		}
 
 		// Serialization and Description
 
@@ -697,21 +753,28 @@ class Sale_lib
 		$insertkey = $maxkey + 1;
 		//array/cart records are identified by $insertkey and item_id is just another field.
 
-		if(is_null($price))
+		if($price_mode == PRICE_MODE_KIT)
 		{
-			$price = $item_info->unit_price;
+			if($kit_print_option == PRINT_ALL)
+			{
+				$print_option_selected = PRINT_YES;
+			}
+			elseif($kit_print_option == PRINT_KIT && $item_type == ITEM_KIT)
+			{
+				$print_option_selected = PRINT_YES;
+			}
+			elseif($kit_print_option == PRINT_PRICED && $price > 0)
+			{
+				$print_option_selected = PRINT_YES;
+			}
+			else
+			{
+				$print_option_selected = PRINT_NO;
+			}
 		}
-		elseif($price == 0)
+		else
 		{
-			$price = 0.00;
-			$discount = 0.00;
-		}
-
-		// For print purposes this simpifies line selection
-		// 0 will print, 2 will not print.   The decision about 1 is made here
-		if($print_option == PRINT_PRICED)
-		{
-			$print_option = ($price == 0) ? PRINT_KIT : PRINT_ALL;
+			$print_option_selected = PRINT_YES;
 		}
 
 		$total = $this->get_item_total($quantity, $price, $discount);
@@ -734,9 +797,10 @@ class Sale_lib
 					'discount' => $discount,
 					'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 					'price' => $price,
+					'cost_price' => $cost_price,
 					'total' => $total,
 					'discounted_total' => $discounted_total,
-					'print_option' => $print_option,
+					'print_option' => $print_option_selected,
 					'stock_type' => $stock_type,
 					'tax_category_id' => $item_info->tax_category_id
 				)
@@ -850,13 +914,13 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option, $row->print_option);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
 
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 	}
 
-	public function add_item_kit($external_item_kit_id, $item_location, $discount, $price_option, $kit_print_option, &$stock_warning)
+	public function add_item_kit($external_item_kit_id, $item_location, $discount, $kit_price_option, $kit_print_option, &$stock_warning)
 	{
 		//KIT #
 		$pieces = explode(' ', $external_item_kit_id);
@@ -865,42 +929,9 @@ class Sale_lib
 
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			if($price_option == PRICE_ALL) // all
-			{
-				$price = null;
-			}
-			elseif($price_option == PRICE_KIT) // item kit only
-			{
-				$price = 0;
-			}
-			elseif($price_option == PRICE_KIT_ITEMS) // item kit plus stock items (assuming materials)
-			{
-				if($item_kit_item['stock_type'] == ITEM) // stock item
-				{
-					$price = null;
-				}
-				else
-				{
-					$price = 0;
-				}
-			}
+			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, PRICE_MODE_KIT, $kit_price_option, $kit_print_option, NULL, NULL, NULL, NULL);
 
-			if($kit_print_option == PRINT_ALL)
-			{
-				$print_option = PRINT_ALL;
-			}
-			elseif($kit_print_option == PRINT_PRICED) // priced
-			{
-				$print_option = PRINT_PRICED; // print if price not zero
-			}
-			elseif($kit_print_option == PRINT_KIT) // kit only if price is not zero
-			{
-				$print_option = PRINT_KIT; // Do not include in list
-			}
-
-			$result &= $this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $price, null, null, null, $print_option, $item_kit_item['stock_type']);
-
-			if($stock_warning == null)
+			if($stock_warning == NULL)
 			{
 				$stock_warning = $this->out_of_stock($item_kit_item['item_id'], $item_location);
 			}
@@ -916,7 +947,7 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
 
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
@@ -927,6 +958,7 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
+		$this->set_work_order_number($this->CI->Sale->get_work_order_number($sale_id));
 		$this->set_sale_type($this->CI->Sale->get_sale_type($sale_id));
 		$this->set_comment($this->CI->Sale->get_comment($sale_id));
 		$this->set_dinner_table($this->CI->Sale->get_dinner_table($sale_id));
@@ -942,8 +974,7 @@ class Sale_lib
 		$this->empty_cart();
 		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price,
-				$row->description, $row->serialnumber, TRUE, $row->print_option, $row->stock_type);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
 		}
 
 		return $this->CI->session->userdata('sales_cart');
