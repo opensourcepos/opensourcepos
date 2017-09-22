@@ -79,7 +79,6 @@ $lang["items_retrive_item_info"] = "Mal Haqqında Məlumat";
 $lang["items_sales_tax_1"] = "Satış Vergisi";
 $lang["items_sales_tax_2"] = "Satış Vergisi 2";
 $lang["items_search_attributes"] = "Atributları Axtar";
-$lang["items_search_custom_items"] = "Xüsusi Mallar Axtar";
 $lang["items_select_image"] = "Şəkil Seç";
 $lang["items_serialized_items"] = "Seriyalı Mallar";
 $lang["items_standard"] = "Standart";

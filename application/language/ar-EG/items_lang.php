@@ -78,7 +78,6 @@ $lang["items_retrive_item_info"] = "استرجاع بيانات الصنف";
 $lang["items_sales_tax_1"] = "ضريبة المبيعات";
 $lang["items_sales_tax_2"] = "ضريبة المبيعات 2";
 $lang["items_search_attributes"] = "بحث الحقول المخصصة";
-$lang["items_search_custom_items"] = "بحث الاصناف المخصصة";
 $lang["items_select_image"] = "اختار صورة";
 $lang["items_serialized_items"] = "أصناف مسلسلة";
 $lang["items_standard"] = "اساسي";

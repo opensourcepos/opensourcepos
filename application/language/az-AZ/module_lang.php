@@ -1,6 +1,8 @@
 <?php 
 
 $lang["module_both"] = "";
+$lang["module_attributes"] = "Attributes";
+$lang["module_attributes_desc"] = "Add, Update, Delete, and Search item attributes";
 $lang["module_config"] = "Konfiqursiya";
 $lang["module_config_desc"] = "OSPOS's Konfiqurasiyasını dəyiş";
 $lang["module_customers"] = "Müştərilər";

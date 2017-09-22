@@ -229,7 +229,6 @@ CREATE TABLE `ospos_inventory` (
 
 CREATE TABLE `ospos_items` (
   `name` varchar(255) NOT NULL,
-  `category` varchar(255) NOT NULL,
   `supplier_id` int(11) DEFAULT NULL,
   `item_number` varchar(255) DEFAULT NULL,
   `description` varchar(255) NOT NULL,
@@ -248,16 +247,6 @@ CREATE TABLE `ospos_items` (
   `pack_name` varchar(8) DEFAULT '',
   `low_sell_item_id` int(10) DEFAULT 0,
   `deleted` int(1) NOT NULL DEFAULT '0',
-  `custom1` VARCHAR(255) DEFAULT NULL,
-  `custom2` VARCHAR(255) DEFAULT NULL,
-  `custom3` VARCHAR(255) DEFAULT NULL,
-  `custom4` VARCHAR(255) DEFAULT NULL,
-  `custom5` VARCHAR(255) DEFAULT NULL,
-  `custom6` VARCHAR(255) DEFAULT NULL,
-  `custom7` VARCHAR(255) DEFAULT NULL,
-  `custom8` VARCHAR(255) DEFAULT NULL,
-  `custom9` VARCHAR(255) DEFAULT NULL,
-  `custom10` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`item_id`),
   KEY `item_number` (`item_number`),
   KEY `supplier_id` (`supplier_id`)
@@ -363,7 +352,7 @@ CREATE TABLE `ospos_modules` (
 --
 
 INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
-('module_config', 'module_config_desc', 110, 'config'),
+('module_config', 'module_config_desc', 120, 'config'),
 ('module_customers', 'module_customers_desc', 10, 'customers'),
 ('module_employees', 'module_employees_desc', 80, 'employees'),
 ('module_giftcards', 'module_giftcards_desc', 90, 'giftcards'),
@@ -376,7 +365,8 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 ('module_reports', 'module_reports_desc', 50, 'reports'),
 ('module_sales', 'module_sales_desc', 70, 'sales'),
 ('module_suppliers', 'module_suppliers_desc', 40, 'suppliers'),
-('module_taxes', 'module_taxes_desc', 105, 'taxes');
+('module_taxes', 'module_taxes_desc', 105, 'taxes'),
+('module_attributes', 'module_attributes_desc', 110, 'attributes');
 
 -- --------------------------------------------------------
 
@@ -452,7 +442,8 @@ INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('sales', 'sales'),
 ('config', 'config'),
 ('suppliers', 'suppliers'),
-('taxes', 'taxes');
+('taxes', 'taxes'),
+('attributes', 'attributes');
 
 
 
@@ -507,6 +498,7 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
 ('suppliers', 1, 'home'),
 ('taxes', 1, 'office'),
 ('office', 1, 'home'),
+('attributes', 1, 'office'),
 ('home', 1, 'office');
 
 --
@@ -808,6 +800,68 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_code_rates` (
 -- Dumping data for table `ospos_tax_code_rates`
 --
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_attribute_definitions`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_attribute_definitions` (
+ `definition_id` INT(10) NOT NULL AUTO_INCREMENT,
+ `definition_name` VARCHAR(255) NOT NULL,
+ `definition_type` VARCHAR(45) NOT NULL,
+ `definition_flags` TINYINT(4) NOT NULL,
+ `definition_fk` INT(10) NULL,
+ `deleted` TINYINT(1) NOT NULL DEFAULT 0,
+ PRIMARY KEY (`definition_id`),
+ KEY `definition_fk` (`definition_fk`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+--
+-- Dumping data for table `ospos_attribute_definitions`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_attribute_values`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_attribute_values` (
+ `attribute_id` INT NOT NULL AUTO_INCREMENT,
+ `attribute_value` VARCHAR(45) NULL,
+ PRIMARY KEY (`attribute_id`)
+) ENGINE = InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+--
+-- Dumping data for table `ospos_attribute_values`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ospos_attribute_links`
+--
+
+CREATE TABLE IF NOT EXISTS `ospos_attribute_links` (
+ `attribute_id` INT NULL,
+ `definition_id` INT NOT NULL,
+ `item_id` INT NULL,
+ `sale_id` INT NULL,
+ `receiving_id` INT NULL,
+ KEY `attribute_id` (`attribute_id`),
+ KEY `definition_id` (`definition_id`),
+ KEY `item_id` (`item_id`),
+ KEY `sale_id` (`sale_id`),
+ KEY `receiving_id` (`receiving_id`),
+ UNIQUE `attribute_links_uq1` (`attribute_id`, `definition_id`, `item_id`, `sale_id`, `receiving_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+--
+-- Dumping data for table `ospos_attribute_links`
+--
 
 -- --------------------------------------------------------
 

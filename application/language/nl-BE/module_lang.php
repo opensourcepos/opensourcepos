@@ -1,6 +1,7 @@
 <?php 
 
 $lang["module_both"] = "Beide";
+$lang["module_attributes_desc"] = "";
 $lang["module_config"] = "Configuratie";
 $lang["module_config_desc"] = "Globale configuratie aanpassen.";
 $lang["module_customers"] = "Klanten";

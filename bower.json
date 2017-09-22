@@ -46,6 +46,9 @@
     "bootstrap-tagsinput": "~0.8.0",
     "bootstrap-toggle": "^2.2.2"
   },
+  "resolutions": {
+    "jquery": "~1.12.4"
+  },
   "overrides": {
     "jquery-ui": {
       "main": [

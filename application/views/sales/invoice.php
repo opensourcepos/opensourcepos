@@ -129,7 +129,7 @@ $(document).ready(function()
 			?>
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
-					<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
+					<td class="item-name"><textarea rows="4" cols="6"><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values']; ?></textarea></td>
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
 					</td>
 					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>

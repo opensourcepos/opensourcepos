@@ -156,7 +156,7 @@ if(isset($success))
 							?>
 								<td><?php echo $item['item_number']; ?></td>
 								<td style="align: center;">
-									<?php echo $item['name']; ?>
+									<?php echo $item['name'] . ' ' . $item['attribute_values']; ?><br /> <?php if($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
 									<br/>
 									<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
 								</td>

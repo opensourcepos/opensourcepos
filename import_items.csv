@@ -1,2 +1,2 @@
-Barcode,Item Name,Category,Supplier ID,Cost Price,Unit Price,Tax 1 Name,Tax 1 Percent,Tax 2 Name ,Tax 2 Percent,Reorder Level,Description,Allow Alt Description,Item has Serial Number,custom1,custom2,custom3,custom4,custom5,custom6,custom7,custom8,custom9,custom10,item_image,location1,quantity1
-33333333,Apple iMac,Computers,,800,1200,Tax 1,8,Tax 2,10,1,Best Computer ever,y,,"Oz, Frank",The Bunny and the Hill,"Monkeys,Giraffes,Gorillas",English,New,Apple,,1999,D3lk3jlkjs,Hardbound,item.jpg,1,100
+Barcode,Item Name,Category,Supplier ID,Cost Price,Unit Price,Tax 1 Name,Tax 1 Percent,Tax 2 Name ,Tax 2 Percent,Reorder Level,Description,Allow Alt Description,Item has Serial Number,location_id,quantity,pic_idN
+33333334,Apple iMac,Computers,,800,1200,Tax 1,8,Tax 2,10,1,Best Computer ever,y,,1,100,null

@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Bulan yang sama tahun kemarin";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Bulan yang sama untuk hari yang sama tahun yang lalu";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "Bulan ini";
+$lang["datepicker_this_month_last_year"] = "Same Month Last Year";
 $lang["datepicker_this_year"] = "Tahun ini";
 $lang["datepicker_to"] = "sampai";
 $lang["datepicker_today"] = "Hari ini";

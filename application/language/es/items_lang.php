@@ -79,7 +79,6 @@ $lang["items_retrive_item_info"] = "Obtener Info de Artículo";
 $lang["items_sales_tax_1"] = "Impuesto de Ventas 1";
 $lang["items_sales_tax_2"] = "Impuesto de Ventas 2";
 $lang["items_search_attributes"] = "Atributos de búsqueda";
-$lang["items_search_custom_items"] = "Buscar en campos personalizados";
 $lang["items_select_image"] = "Seleccionar  Imagen";
 $lang["items_serialized_items"] = "Artículos Serializados";
 $lang["items_standard"] = "Estándar";

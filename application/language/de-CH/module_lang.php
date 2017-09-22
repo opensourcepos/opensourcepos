@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_attributes"] = "";
+$lang["module_attributes_desc"] = "";
 $lang["module_both"] = "";
 $lang["module_config"] = "Einstellungen";
 $lang["module_config_desc"] = "Einstellungen ändern";
