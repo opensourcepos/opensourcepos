@@ -79,7 +79,6 @@ $lang["items_retrive_item_info"] = "Получить Детальная инфо
 $lang["items_sales_tax_1"] = "Налог на покупку";
 $lang["items_sales_tax_2"] = "Налог на покупку 2";
 $lang["items_search_attributes"] = "Поиск Атрибуты";
-$lang["items_search_custom_items"] = "Искать в дополнительных товарях";
 $lang["items_select_image"] = "выбор изображения";
 $lang["items_serialized_items"] = "Сериализованные товары";
 $lang["items_standard"] = "типичный";

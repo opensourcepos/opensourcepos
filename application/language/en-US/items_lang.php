@@ -83,7 +83,6 @@ $lang["items_retrive_item_info"] = "Retrive Item Info";
 $lang["items_sales_tax_1"] = "Sales Tax";
 $lang["items_sales_tax_2"] = "Sales Tax 2";
 $lang["items_search_attributes"] = "Search Attributes";
-$lang["items_search_custom_items"] = "Search Custom Items";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "Serialized Items";
 $lang["items_standard"] = "Standard";

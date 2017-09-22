@@ -79,7 +79,6 @@ $lang["items_retrive_item_info"] = "Återställ artikelinfo";
 $lang["items_sales_tax_1"] = "Moms";
 $lang["items_sales_tax_2"] = "Moms 2";
 $lang["items_search_attributes"] = "Sök attribut";
-$lang["items_search_custom_items"] = "Sök anpassade artiklar";
 $lang["items_select_image"] = "Välj Bild";
 $lang["items_serialized_items"] = "Serialiserade artiklar";
 $lang["items_standard"] = "Standard";

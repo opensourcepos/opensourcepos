@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_attributes"] = "";
+$lang["module_attributes_desc"] = "";
 $lang["module_both"] = "";
 $lang["module_config"] = "系統配置";
 $lang["module_config_desc"] = "修改系統配置";

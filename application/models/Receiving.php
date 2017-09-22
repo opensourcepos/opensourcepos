@@ -59,7 +59,7 @@ class Receiving extends CI_Model
 		return $this->db->update('receivings', $receiving_data);
 	}
 
-	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type, $receiving_id = FALSE)
+	public function save($items, $supplier_id, $employee_id, $comment, $reference, $payment_type)
 	{
 		if(count($items) == 0)
 		{
@@ -126,6 +126,8 @@ class Receiving extends CI_Model
 			);
 
 			$this->Inventory->insert($inv_data);
+
+			$this->Attribute->copy_attribute_links($item['item_id'], 'receiving_id', $receiving_id);
 
 			$supplier = $this->Supplier->get_info($supplier_id);
 		}
