@@ -296,7 +296,7 @@ class Sales extends Secure_Controller
 				{
 					$data['error'] = $this->lang->line('giftcards_cannot_use', $giftcard_num);
 				}
-				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0)
+				elseif(($cur_giftcard_value - $current_payments_with_giftcard) <= 0 && $this->sale_lib->get_mode() == 'sale')
 				{
 					$data['error'] = $this->lang->line('giftcards_remaining_balance', $giftcard_num, to_currency($cur_giftcard_value));
 				}
@@ -320,7 +320,7 @@ class Sales extends Secure_Controller
 				{
 					$package_name = $this->Customer_rewards->get_name($package_id);
 					$points = $this->Customer->get_info($customer_id)->points;
-					$points = ($points==NULL ? 0 : $points);
+					$points = ($points == NULL ? 0 : $points);
 
 					$payments = $this->sale_lib->get_payments();
 					$payment_type = $payment_type;
