@@ -48,15 +48,9 @@ class Secure_Controller extends CI_Controller
 			$allowed_modules = $this->Module->get_allowed_office_modules($logged_in_employee_info->person_id);
 		}
 
-		// do not show migrate module if no migration is required
-
-		$this->load->library('migration');
 		foreach($allowed_modules->result() as $module)
 		{
-			if(!$this->migration->latest() || $module->module_id != 'migrate')
-			{
-				$data['allowed_modules'][] = $module;
-			}
+			$data['allowed_modules'][] = $module;
 		}
 
 		$data['user_info'] = $logged_in_employee_info;

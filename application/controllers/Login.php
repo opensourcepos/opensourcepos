@@ -68,6 +68,10 @@ class Login extends CI_Controller
 			return FALSE;
 		}
 
+		// trigger any required upgrade before starting the application
+		$this->load->library('migration');
+		$this->migration->latest();
+
 		return TRUE;
 	}
 

@@ -94,3 +94,10 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ALTER TABLE `ospos_items`
   DROP INDEX `item_number`,
   ADD KEY `item_number` (item_number);
+
+
+-- Remove Migrate module as auto migration is supported
+
+DELETE FROM `ospos_modules` WHERE `ospos_modules`.`module_id` = 'migrate';
+DELETE FROM `ospos_permissions` WHERE `ospos_permissions`.`permission_id` = 'migrate';
+DELETE FROM `ospos_grants` WHERE `ospos_grants`.`permission_id` = 'migrate' AND `ospos_grants`.`person_id` = 1;

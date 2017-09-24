@@ -8,7 +8,6 @@ class Migration_Sales_Tax_Data extends CI_Migration
 
 		$this->load->library('tax_lib');
 		$this->load->library('sale_lib');
-
 	}
 
 	public function up()
