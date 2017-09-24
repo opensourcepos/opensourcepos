@@ -525,6 +525,7 @@ class Sales extends Secure_Controller
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
 		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
+		$invoice_number_enabled = $this->sale_lib->get_invoice_number_enabled();
 		$invoice_number = $this->sale_lib->get_invoice_number();
 		$data["invoice_number"] = $invoice_number;
 		$work_order_number = $this->sale_lib->get_work_order_number();
@@ -567,9 +568,20 @@ class Sales extends Secure_Controller
 
 		$data['print_price_info'] = TRUE;
 
-		if($this->sale_lib->is_sale_by_receipt_mode() && $this->input->post('sales_invoice_enable') == '1' )
+		$override_invoice_number = NULL;
+
+		if($this->sale_lib->is_sale_by_receipt_mode() && $invoice_number_enabled )
 		{
 			$pos_invoice = TRUE;
+			$candidate_invoice_number = $invoice_number;
+			if($candidate_invoice_number != NULL && strlen($candidate_invoice_number) > 3)
+			{
+				if (strpos($candidate_invoice_number, '{') == false) {
+					$override_invoice_number = $candidate_invoice_number;
+				}
+			}
+
+
 		}
 		else
 		{
@@ -595,8 +607,14 @@ class Sales extends Secure_Controller
 				$invoice_format = $this->config->item('sales_invoice_format');
 			}
 
-			$invoice_number = $this->token_lib->render($invoice_format);
-			$data['invoice_number'] = $invoice_number;
+			if ($override_invoice_number == NULL)
+			{
+				$invoice_number = $this->token_lib->render($invoice_format);
+			}
+			else
+			{
+				$invoice_number = $override_invoice_number;
+			}
 
 			if($sale_id == -1 && $this->Sale->check_invoice_number_exists($invoice_number))
 			{

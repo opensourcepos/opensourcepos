@@ -264,6 +264,11 @@ class Sale_lib
 		return $this->CI->session->set_userdata('sales_invoice_number_enabled', $invoice_number_enabled);
 	}
 
+	public function get_invoice_number_enabled()
+	{
+		return $this->CI->session->userdata('sales_invoice_number_enabled');
+	}
+
 	public function is_print_after_sale()
 	{
 		return ($this->CI->session->userdata('sales_print_after_sale') == 'true' ||
