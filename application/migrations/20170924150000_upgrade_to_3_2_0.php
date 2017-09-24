@@ -23,7 +23,7 @@ class Migration_Upgrade_To_3_2_0 extends CI_Migration
 
 		foreach($sqls as $statement)
 		{
-			$statment = $statement . ";";
+			$statement = $statement . ';';
 
 			if(!$this->db->simple_query($statement))
 			{
