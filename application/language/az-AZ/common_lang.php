@@ -2,8 +2,8 @@
 
 $lang["common_address_1"] = "Ünvan 1 ";
 $lang["common_address_2"] = "Ünvan 2";
-$lang["common_address_1"] = "şəhər ";
-$lang["common_address_2"] = "";
+$lang["common_address_1"] = "Ünvan 1 ";
+$lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "rəy bildirmək ";
 $lang["common_close"] = "ümumi";
 $lang["common_comments"] = "siz bir neçə sətiri seçdiniz,bunlar artiq axtarış üçün seçilməyəcək.Əminsiniz axtarışa? ";
