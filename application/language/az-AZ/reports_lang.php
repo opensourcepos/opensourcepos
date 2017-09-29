@@ -2,8 +2,8 @@
 
 $lang["reports_all"] = "hamısı";
 $lang["reports_categories"] = "kateqoriyalar";
-$lang["reports_all"] = "hesabat kateqoriyası";
-$lang["reports_categories"] = "kateqoriya";
+$lang["reports_all"] = "hamısı";
+$lang["reports_categories"] = "kateqoriyalar";
 $lang["reports_categories_summary_report"] = "komentariyalar";
 $lang["reports_category"] = "";
 $lang["reports_comments"] = "Wholesale Price";
@@ -31,10 +31,10 @@ $lang["reports_employees_summary_report"] = "";
 $lang["reports_graphical_reports"] = "";
 $lang["reports_inventory"] = "";
 $lang["reports_inventory_low"] = "inventor hesabatları";
-$lang["reports_employees_summary_report"] = " inventar";
-$lang["reports_graphical_reports"] = "inventor hesabatı";
-$lang["reports_inventory"] = "mal";
-$lang["reports_inventory_low"] = "";
+$lang["reports_employees_summary_report"] = "";
+$lang["reports_graphical_reports"] = "";
+$lang["reports_inventory"] = "";
+$lang["reports_inventory_low"] = "inventor hesabatları";
 $lang["reports_inventory_low_report"] = "mal adı";
 $lang["reports_inventory_reports"] = "malın nomrəsi";
 $lang["reports_inventory_summary"] = "mallar";
