@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Инвентарь для сложения/вычитания";
 $lang["giftcards_allow_alt_description"] = "Разрешить альтернативные Описание";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Массовое изменение";
 $lang["giftcards_cannot_be_deleted"] = "Не удалось удалить выбранные подарочные карты, одну или несколько из выбранных подарочные карты имеет продаж.";
 $lang["giftcards_cannot_find_giftcard"] = "Не можете найти любую информацию о Подарочную карту";

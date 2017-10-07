@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "สินค้าคงคลัง เพิ่ม/ลด";
 $lang["giftcards_allow_alt_description"] = "";
-$lang["giftcards_amazon"] = "อเมซอน";
 $lang["giftcards_bulk_edit"] = "แก้ไขเป็นกลุ่ม";
 $lang["giftcards_cannot_be_deleted"] = "ไม่สามารถลบข้อมูลบัตรของขวัญที่เลือก, หรือบัตรของขวัญได้มีการใช้ไปแล้ว";
 $lang["giftcards_cannot_find_giftcard"] = "ไม่พบข้อมูลเกี่ยวกับบัตรของขวัญนี้";

@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "المخزن المضاف أو المطروح منه";
 $lang["giftcards_allow_alt_description"] = "السماح بوصف بديل";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "تحرير جماعى";
 $lang["giftcards_cannot_be_deleted"] = "لايمكن حذف بطاقات الهدية المختارة، واحد أو أكثر منها لديه مبيعات";
 $lang["giftcards_cannot_find_giftcard"] = "لايمكن إيجاد معلومات حول كارت الهدية";

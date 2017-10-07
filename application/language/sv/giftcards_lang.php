@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "";
 $lang["giftcards_allow_alt_description"] = "";
-$lang["giftcards_amazon"] = "";
 $lang["giftcards_bulk_edit"] = "";
 $lang["giftcards_cannot_be_deleted"] = "";
 $lang["giftcards_cannot_find_giftcard"] = "";

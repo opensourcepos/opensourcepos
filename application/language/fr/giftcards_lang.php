@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Ajout/Soustraction à l'inventaire";
 $lang["giftcards_allow_alt_description"] = "Autorisér Description Alt";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Édition en groupe";
 $lang["giftcards_cannot_be_deleted"] = "Impossible de supprimer. Une ou plusieurs carte(s) ont des ventes.";
 $lang["giftcards_cannot_find_giftcard"] = "Aucune information sur la carte";

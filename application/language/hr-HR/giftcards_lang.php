@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Inventuru dodati/oduzeti";
 $lang["giftcards_allow_alt_description"] = "Dozvoli Alt opis";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Grupno uređivanje";
 $lang["giftcards_cannot_be_deleted"] = "Nije moguće obrisati poklon bon, jedan ili više poklon bonova ima prodaju.";
 $lang["giftcards_cannot_find_giftcard"] = "Ne možemo pronaći informacije o poklon bonu";

@@ -2,9 +2,8 @@
 
 $lang["giftcards_add_minus"] = "Inventory to add or subtract";
 $lang["giftcards_allow_alt_description"] = "Allow Alternate Description";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Bulk Edit";
-$lang["giftcards_cannot_be_deleted"] = "Could not delete selected Gift Card(s), one or more of the selected Giftcard(s) has sales";
+$lang["giftcards_cannot_be_deleted"] = "Could not delete selected Gift Card(s), one or more of the selected Gift Card(s) has sales";
 $lang["giftcards_cannot_find_giftcard"] = "Gift Card not found";
 $lang["giftcards_cannot_use"] = "Gift Card %1 cannot be used for this sale. invalid Customer!";
 $lang["giftcards_card_value"] = "Value";

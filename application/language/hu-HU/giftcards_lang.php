@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Hozzáadás/levonás";
 $lang["giftcards_allow_alt_description"] = "Alternativ leirás eng.";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Tömeges mód.";
 $lang["giftcards_cannot_be_deleted"] = "Utalvány nem törölhető, mert folyamatban van egy eladás.";
 $lang["giftcards_cannot_find_giftcard"] = "Nem található információ az utalványról";

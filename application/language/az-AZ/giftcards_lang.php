@@ -2,11 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Inventor mənfi müsbət üçün ";
 $lang["giftcards_allow_alt_description"] = "alternativ icaze haqqında";
-$lang["giftcards_amazon"] = "Amazon";
-$lang["giftcards_bulk_edit"] = "toplu dəyişiklər";
-$lang["giftcards_add_minus"] = "Inventor mənfi müsbət üçün ";
-$lang["giftcards_allow_alt_description"] = "alternativ icaze haqqında";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "toplu dəyişiklər";
 $lang["giftcards_cannot_be_deleted"] = "kateqoriyalar";
 $lang["giftcards_cannot_find_giftcard"] = "hər biri üçün alternativ təsvir icazəsi";

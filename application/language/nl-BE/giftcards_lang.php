@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Corrigatie hoeveelheid";
 $lang["giftcards_allow_alt_description"] = "Aanpasbare omschrijving";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Bewerk Selectie";
 $lang["giftcards_cannot_be_deleted"] = "De cadeaubons konden niet worden verwijderd.";
 $lang["giftcards_cannot_find_giftcard"] = "Kan geen cadeaubon niet vinden";
