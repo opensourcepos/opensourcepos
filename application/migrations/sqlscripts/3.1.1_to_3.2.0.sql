@@ -101,13 +101,3 @@ ALTER TABLE `ospos_items`
 DELETE FROM `ospos_modules` WHERE `ospos_modules`.`module_id` = 'migrate';
 DELETE FROM `ospos_permissions` WHERE `ospos_permissions`.`permission_id` = 'migrate';
 DELETE FROM `ospos_grants` WHERE `ospos_grants`.`permission_id` = 'migrate' AND `ospos_grants`.`person_id` = 1;
-
--- Move Office Module to Right side of Modules list
-
-UPDATE `ospos_modules`
-SET `sort` = 99
-WHERE `name_lang_key` = 'module_office';
-
-UPDATE `ospos_modules`
-SET `sort` = 98
-WHERE `name_lang_key` = 'module_messages';
