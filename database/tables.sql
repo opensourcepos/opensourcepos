@@ -366,7 +366,7 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 ('module_items', 'module_items_desc', 20, 'items'),
 ('module_item_kits', 'module_item_kits_desc', 30, 'item_kits'),
 ('module_messages', 'module_messages_desc', 98, 'messages'),
-('module_office', 'module_office_desc', 99, 'office'),
+('module_office', 'module_office_desc', 999, 'office'),
 ('module_receivings', 'module_receivings_desc', 60, 'receivings'),
 ('module_reports', 'module_reports_desc', 50, 'reports'),
 ('module_sales', 'module_sales_desc', 70, 'sales'),

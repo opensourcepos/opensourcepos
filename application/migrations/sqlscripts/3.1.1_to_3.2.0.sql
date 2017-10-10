@@ -105,7 +105,7 @@ DELETE FROM `ospos_grants` WHERE `ospos_grants`.`permission_id` = 'migrate' AND 
 -- Move Office Module to Right side of Modules list
 
 UPDATE `ospos_modules`
-SET `sort` = 99
+SET `sort` = 999
 WHERE `name_lang_key` = 'module_office';
 
 UPDATE `ospos_modules`
