@@ -189,7 +189,14 @@ function parse_decimals($number)
         $fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
     }
 
-    return $fmt->parse($number);
+    try
+    {
+    	return $fmt->parse($number);
+    }
+    catch (Exception $e)
+    {
+    	echo 'Caught exception: ', $e->getMessage(), "\n";
+    }
 }
 
 /*
