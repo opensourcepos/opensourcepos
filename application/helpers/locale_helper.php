@@ -195,7 +195,6 @@ function parse_decimals($number)
     }
     catch (Exception $e)
     {
-    	echo 'Caught exception: ', $e->getMessage(), "\n";
     }
 }
 
