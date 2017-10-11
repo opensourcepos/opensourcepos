@@ -195,6 +195,7 @@ function parse_decimals($number)
     }
     catch (Exception $e)
     {
+		return FALSE;
     }
 }
 
