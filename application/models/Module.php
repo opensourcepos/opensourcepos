@@ -97,7 +97,7 @@ class Module extends CI_Model
 	{
 		if($show_office_group)
 		{
-			$sort = 1;
+			$sort = 999;
 		}
 		else
 		{
