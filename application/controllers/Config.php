@@ -702,7 +702,7 @@ class Config extends Secure_Controller
 
 		$success &= $this->db->trans_status();
 
-		$message = "";
+		$message = '';
 		if($success && $delete_rejected)
 		{
 			$message = $this->lang->line('config_tax_category_used');

@@ -114,7 +114,7 @@ class Secure_Controller extends CI_Controller
 
 		foreach($this->input->get() as $str)
 		{
-			$result = parse_decimals($str);
+			$result &= parse_decimals($str);
 		}
 
 		echo $result !== FALSE ? 'true' : 'false';
