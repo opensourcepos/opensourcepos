@@ -207,6 +207,7 @@
 			showColumns: true,
 			clickToSelect: true,
 			showExport: true,
+			exportDataType: 'all',
 			exportOptions: {
 				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
 			},
