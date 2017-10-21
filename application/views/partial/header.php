@@ -71,10 +71,10 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=7f52cbc5d2"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=94a8b206d6"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=b7fe20579d"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=47cade4b67"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
