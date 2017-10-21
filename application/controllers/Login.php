@@ -102,7 +102,7 @@ class Login extends CI_Controller
 	{
 		// get PHP extensions and check that the required ones are installed
 		$extensions = implode(', ', get_loaded_extensions());
-		$keys = array('bcmath', 'intl', 'gd', 'sockets', 'mcrypt');
+		$keys = array('bcmath', 'intl', 'gd', 'sockets', 'mcrypt', 'mbstring');
 		$pattern = '/';
 		foreach($keys as $key) 
 		{

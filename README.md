@@ -78,7 +78,7 @@ If you like the project, and you are making money out of it on a daily basis, th
 Server Requirements
 -------------------
 
-PHP version 5.6 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt` and `php-curl` installed and enabled.
+PHP version 5.6 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt`, `php-mbstring` and `php-curl` installed and enabled.
 
 MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance.
 
@@ -198,3 +198,5 @@ FAQ
 * If you have problems with the encryption support or you get an error please make sure `php5-mcrypt` is installed
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492)
+
+* If new customer or supplier fails please make sure `php-mbstring` is installed see [issue #1673](https://github.com/opensourcepos/opensourcepos/issues/1673) for more details
