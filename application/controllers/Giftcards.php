@@ -76,7 +76,8 @@ class Giftcards extends Secure_Controller
 		}
 		else
 		{
-			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : $this->Giftcard->get_max_number()->giftcard_number + 1;
+			$max_giftnumber = isset($this->Giftcard->get_max_number()->giftcard_number) ? $this->Giftcard->get_max_number()->giftcard_number : 0;
+			$data['giftcard_number'] = $giftcard_id > 0 ? $giftcard_info->giftcard_number : $max_giftnumber + 1;
 		}
 		$data['giftcard_id'] = $giftcard_id;
 		$data['giftcard_value'] = $giftcard_info->value;
