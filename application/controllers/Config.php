@@ -550,11 +550,13 @@ class Config extends Secure_Controller
 			if(strstr($key, 'stock_location'))
 			{
 				$location_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$not_to_delete[] = $location_id;
+
 				// save or update
 				$location_data = array('location_name' => $value);
 				if($this->Stock_location->save($location_data, $location_id))
 				{
+					$location_id = $this->Stock_location->get_location_id($value);
+					$not_to_delete[] = $location_id;
 					$this->_clear_session_state();
 				}
 			}
