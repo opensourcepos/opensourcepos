@@ -1,21 +1,23 @@
-### IMPORTANT IMPORTANT IMPORTANT
+### ---> IMPORTANT INSTRUCTIONS IMPORTANT <---- READ THIS
 
-1. Chose what you want to report between the sections "New Feature / Enhancement" and "Issue / Question / Bug".
-2. Remove just the one of the two sections you don't need 
-3. Remove this section as it's just a guideline
-4. Fill in all the details as requested by the section you chose
+1. Chose what you want to report between the following sections below: "New Feature / Enhancement" and "Issue / Question / Bug".
+2. Remove just the one of the two sections you don't need, this means, by example if report a bug, remove the feature section.
+3. Fill in all the details as requested by the section you chose
+4. Remove this section as it's just a guideline, only the part from head to "erase this header note"
 
 If you remove the complete template when submitting a Bug your issue will be closed as we cannot help without basic information.
 
+### ---> end of IMPORTANT INSTRUCTIONS IMPORTANT <---- please erase this header note until here
 
-### New Feature / Enhancement
+## New Feature / Enhancement
+
+### Decription behaviour
 
 *For New Features or Enhancements please clearly write your proposal.
 It's important to state whether you expect the community to implement it or you will contribute the work.
 Please bear in mind that we will implement new features only on the current code, there is no support for older versions.*
 
-
-### Issue / Question / Bug
+## Issue / Question / Bug
 
 Before submitting an issue please make sure you tick (add an x between the square brackets with no spaces) the following check boxes:
 
