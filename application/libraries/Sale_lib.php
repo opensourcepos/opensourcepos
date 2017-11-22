@@ -1240,9 +1240,12 @@ class Sale_lib
 
 		$cash_rounding = $this->CI->session->userdata('cash_rounding');
 
-		foreach($this->get_taxes() as $sales_tax)
+		if(!$this->CI->config->item('tax_included'))
 		{
-			$total = bcadd($total, $sales_tax['sale_tax_amount']);
+			foreach($this->get_taxes() as $sales_tax)
+			{
+				$total = bcadd($total, $sales_tax['sale_tax_amount']);
+			}
 		}
 
 		if($cash_rounding)
@@ -1253,10 +1256,10 @@ class Sale_lib
 		return $total;
 	}
 
-    public function get_empty_tables()
-    {
-    	return $this->CI->Dinner_table->get_empty_tables();
-    }
+	public function get_empty_tables()
+	{
+		return $this->CI->Dinner_table->get_empty_tables();
+	}
 
 	public function check_for_cash_rounding($total)
 	{
