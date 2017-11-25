@@ -808,16 +808,29 @@ class Sale extends CI_Model
 	/**
 	 * Deletes list of sales
 	 */
-	public function delete_list($sale_ids, $employee_id, &$reactivated, $update_inventory = TRUE)
+	public function delete_list($sale_ids, $employee_id, $update_inventory = TRUE)
 	{
 		$result = TRUE;
 
 		foreach($sale_ids as $sale_id)
 		{
-			$result &= $this->delete($sale_id, $employee_id, $reactivated, $update_inventory);
+			$result &= $this->delete($sale_id, $employee_id, $update_inventory);
 		}
 
 		return $result;
+	}
+
+	/**
+	 * Restores list of sales
+	 */
+	public function restore_list($sale_ids, $employee_id, $update_inventory = TRUE)
+	{
+		foreach($sale_ids as $sale_id)
+		{
+            $this->update_sale_status($sale_id, SUSPENDED);
+		}
+
+		return TRUE;
 	}
 
 	/**
@@ -825,7 +838,7 @@ class Sale extends CI_Model
 	 * When a sale is "deleted" it is simply changed to a status of canceled.
 	 * However, if applicable the inventory still needs to be updated
 	 */
-	public function delete($sale_id, $employee_id, &$reactivated, $update_inventory = TRUE)
+	public function delete($sale_id, $employee_id, $update_inventory = TRUE)
 	{
 		// start a transaction to assure data integrity
 		$this->db->trans_start();
@@ -860,17 +873,7 @@ class Sale extends CI_Model
 			}
 		}
 
-		// Set the sale_status is canceled the reactive the sale by setting the status to suspended
-		// otherwise set the status to canceled
-		if($sale_status == CANCELED)
-		{
-			$this->update_sale_status($sale_id, SUSPENDED);
-			$reactivated = TRUE;
-		}
-		else
-		{
-			$this->update_sale_status($sale_id, CANCELED);
-		}
+		$this->update_sale_status($sale_id, CANCELED);
 
 		// execute transaction
 		$this->db->trans_complete();

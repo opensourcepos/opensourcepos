@@ -160,6 +160,11 @@ $(document).ready(function()
 		table_support.do_delete('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
 	});
 
+	$('button#restore').click(function() {
+		dialog_support.hide();
+		table_support.do_restore('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
+	});
+
 	var submit_form = function()
 	{ 
 		$(this).ajaxSubmit(

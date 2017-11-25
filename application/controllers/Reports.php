@@ -974,6 +974,17 @@ class Reports extends Secure_Controller
 
 		$report_data = $model->getDataBySaleId($sale_id);
 
+		if($report_data['sale_status'] == CANCELED)
+		{
+			$button_key = 'data-btn-restore';
+			$button_label = $this->lang->line('common_restore');
+		}
+		else
+		{
+			$button_key = 'data-btn-delete';
+			$button_label = $this->lang->line('common_delete');
+		}
+
 		$summary_data = $this->xss_clean(array(
 			'sale_id' => $report_data['sale_id'],
 			'sale_date' => $report_data['sale_date'],
@@ -988,8 +999,7 @@ class Reports extends Secure_Controller
 			'payment_type' => $report_data['payment_type'],
 			'comment' => $report_data['comment'],
 			'edit' => anchor('sales/edit/'. $report_data['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-				array('class'=>'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
-			)
+				array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update')))
 		));
 
 		echo json_encode(array($sale_id => $summary_data));
@@ -1034,6 +1044,17 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
+			if($row['sale_status'] == CANCELED)
+			{
+				$button_key = 'data-btn-restore';
+				$button_label = $this->lang->line('common_restore');
+			}
+			else
+			{
+				$button_key = 'data-btn-delete';
+				$button_label = $this->lang->line('common_delete');
+			}
+
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
@@ -1049,8 +1070,7 @@ class Reports extends Secure_Controller
 				'payment_type' => $row['payment_type'],
 				'comment' => $row['comment'],
 				'edit' => anchor('sales/edit/'.$row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
-					array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $this->lang->line('common_delete'), 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update'))
-				)
+					array('class' => 'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update')))
 			));
 
 			foreach($report_data['details'][$key] as $drow)
