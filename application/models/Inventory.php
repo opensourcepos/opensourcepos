@@ -40,6 +40,7 @@ class Inventory extends CI_Model
 				);
 			}
 		}
+
 		return TRUE;
 	}
 

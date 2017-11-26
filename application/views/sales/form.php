@@ -12,7 +12,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm'));?>
 			</div>
 		</div>
 		
@@ -91,7 +91,6 @@
 		</div>
 	</fieldset>
 <?php echo form_close(); ?>
-		
 
 <script type="text/javascript">
 $(document).ready(function()
@@ -112,7 +111,7 @@ $(document).ready(function()
 	<?php $this->load->view('partial/datepicker_locale'); ?>
 	
 	$('#datetime').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->item("dateformat")) . ' ' . dateformat_bootstrap($this->config->item("timeformat"));?>",
+		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
 		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
 		<?php
 		$t = $this->config->item('timeformat');
@@ -135,7 +134,7 @@ $(document).ready(function()
 		todayBtn: true,
 		todayHighlight: true,
 		bootcssVer: 3,
-		language: "<?php echo current_language_code(); ?>"
+		language: '<?php echo current_language_code(); ?>'
 	});
 
 	var fill_value =  function(event, ui) {
@@ -180,7 +179,7 @@ $(document).ready(function()
 
 	$('#sales_edit_form').validate($.extend(
 	{
-		submitHandler : function(form)
+		submitHandler: function(form)
 		{
 			submit_form.call(form);
 		},
@@ -208,6 +207,5 @@ $(document).ready(function()
 			invoice_number: '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>'
 		}
 	}, form_support.error));
-
 });
 </script>

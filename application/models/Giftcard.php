@@ -29,7 +29,6 @@ class Giftcard extends CI_Model
 		$this->db->order_by("giftcard_number","desc");
 		$this->db->limit(1);
 
-
 		return $this->db->get()->row();
 	}
 

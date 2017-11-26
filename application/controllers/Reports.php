@@ -29,7 +29,7 @@ class Reports extends Secure_Controller
 		$this->load->helper('report');
 	}
 
-	//Initial report listing screen
+	//Initial Report listing screen
 	public function index()
 	{
 		$data['grants'] = $this->xss_clean($this->Employee->get_employee_grants($this->session->userdata('person_id')));
@@ -73,7 +73,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary categories report
+	//Summary Categories report
 	public function summary_categories($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -108,8 +108,40 @@ class Reports extends Secure_Controller
 
 		$this->load->view('reports/tabular', $data);
 	}
+	
+	//Summary Expenses by Categories report
+	public function summary_expenses_categories($start_date, $end_date, $sale_type)
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type);
 
-	//Summary customers report
+		$this->load->model('reports/Summary_expenses_categories');
+		$model = $this->Summary_expenses_categories;
+
+		$report_data = $model->getData($inputs);
+		$summary = $this->xss_clean($model->getSummaryData($inputs));
+
+		$tabular_data = array();
+		foreach($report_data as $row)
+		{
+			$tabular_data[] = $this->xss_clean(array(
+				'category_name' => $row['category_name'],
+				'count' => $row['count'],
+				'total_amount' => to_currency($row['total_amount'])
+			));
+		}
+
+		$data = array(
+			'title' => $this->lang->line('reports_expenses_categories_summary_report'),
+			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $summary
+		);
+
+		$this->load->view('reports/tabular', $data);
+	}
+
+	//Summary Customers report
 	public function summary_customers($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -145,7 +177,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary suppliers report
+	//Summary Suppliers report
 	public function summary_suppliers($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -181,7 +213,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary items report
+	//Summary Items report
 	public function summary_items($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -217,7 +249,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary employees report
+	//Summary Employees report
 	public function summary_employees($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -253,7 +285,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary taxes report
+	//Summary Taxes report
 	public function summary_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -287,7 +319,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary discounts report
+	//Summary Discounts report
 	public function summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -318,7 +350,7 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary payments report
+	//Summary Payments report
 	public function summary_payments($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
@@ -364,6 +396,14 @@ class Reports extends Secure_Controller
 	}
 
 	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
+	public function date_input_only()
+	{
+		$data = array();
+
+		$this->load->view('reports/date_input', $data);
+	}
+
+	//Input for reports that require only a date range. (see routes.php to see that all graphical summary reports route here)
 	public function date_input_sales()
 	{
 		$data = array();
@@ -385,6 +425,40 @@ class Reports extends Secure_Controller
 		$data['mode'] = 'receiving';
 
 		$this->load->view('reports/date_input', $data);
+	}
+
+	//Graphical Expenses by Categories report
+	public function graphical_summary_expenses_categories($start_date, $end_date, $sale_type)
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type);
+		
+		$this->load->model('reports/Summary_expenses_categories');
+		$model = $this->Summary_expenses_categories;
+		
+		$report_data = $model->getData($inputs);
+		$summary = $this->xss_clean($model->getSummaryData($inputs));
+
+		$labels = array();
+		$series = array();
+		foreach($report_data as $row)
+		{
+			$row = $this->xss_clean($row);
+
+			$labels[] = $row['category_name'];
+			$series[] = array('meta' => $row['category_name'] . ' ' . round($row['total_amount'] / $summary['expenses_total_amount'] * 100, 2) . '%', 'value' => $row['total_amount']);
+		}
+
+		$data = array(
+			'title' => $this->lang->line('reports_expenses_categories_summary_report'),
+			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
+		);
+
+		$this->load->view('reports/graphical', $data);
 	}
 
 	//Graphical summary sales report
@@ -882,7 +956,7 @@ class Reports extends Secure_Controller
 		$data['specific_input_name'] = $this->lang->line('reports_discount');
 
 		$discounts = array();
-		for ($i = 0; $i <= 100; $i += 10)
+		for($i = 0; $i <= 100; $i += 10)
 		{
 			$discounts[$i] = $i . '%';
 		}

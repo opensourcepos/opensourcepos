@@ -22,31 +22,38 @@ if(isset($error))
 		</div>
 	</div>
 
-	<div class="form-group form-group-sm">
-		<?php
-		if($mode == 'sale')
-		{
-		?>
-			<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required control-label col-xs-2')); ?>
-			<div id='report_sale_type' class="col-xs-3">
-				<?php echo form_dropdown('sale_type', $sale_type_options, 'complete', array('id'=>'input_type', 'class'=>'form-control')); ?>
-			</div>
-		<?php
-		}
-		elseif($mode == 'receiving')
-		{
-		?>
-			<?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required control-label col-xs-2')); ?>
-			<div id='report_receiving_type' class="col-xs-3">
-				<?php echo form_dropdown('receiving_type', array('all' => $this->lang->line('reports_all'),
-					'receiving' => $this->lang->line('reports_receivings'),
-					'returns' => $this->lang->line('reports_returns'),
-					'requisitions' => $this->lang->line('reports_requisitions')), 'all', array('id'=>'input_type', 'class'=>'form-control')); ?>
-			</div>
-		<?php
-		}
-		?>
-	</div>
+	<?php	
+	if(!empty($mode))
+	{
+	?>
+		<div class="form-group form-group-sm">
+			<?php
+			if($mode == 'sale')
+			{
+			?>
+				<?php echo form_label($this->lang->line('reports_sale_type'), 'reports_sale_type_label', array('class'=>'required control-label col-xs-2')); ?>
+				<div id='report_sale_type' class="col-xs-3">
+					<?php echo form_dropdown('sale_type', $sale_type_options, 'complete', array('id'=>'input_type', 'class'=>'form-control')); ?>
+				</div>
+			<?php
+			}
+			elseif($mode == 'receiving')
+			{
+			?>
+				<?php echo form_label($this->lang->line('reports_receiving_type'), 'reports_receiving_type_label', array('class'=>'required control-label col-xs-2')); ?>
+				<div id='report_receiving_type' class="col-xs-3">
+					<?php echo form_dropdown('receiving_type', array('all' => $this->lang->line('reports_all'),
+						'receiving' => $this->lang->line('reports_receivings'),
+						'returns' => $this->lang->line('reports_returns'),
+						'requisitions' => $this->lang->line('reports_requisitions')), 'all', array('id'=>'input_type', 'class'=>'form-control')); ?>
+				</div>
+			<?php
+			}
+			?>
+		</div>
+	<?php
+	}
+	?>
 
 	<?php	
 	if (!empty($stock_locations) && count($stock_locations) > 1)

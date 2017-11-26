@@ -20,7 +20,9 @@ function get_sales_manage_table_headers()
 		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
 	}
 
-	return transform_headers(array_merge($headers, array(array('receipt' => '&nbsp', 'sortable' => FALSE))));
+	$headers[] = array('receipt' => '&nbsp', 'sortable' => FALSE);
+
+	return transform_headers($headers);
 }
 
 /*
@@ -450,4 +452,112 @@ function get_item_kit_data_row($item_kit)
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
 }
+
+
+function get_expense_category_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('expense_category_id' => $CI->lang->line('expenses_categories_category_id')),
+		array('category_name' => $CI->lang->line('expenses_categories_name')),
+		array('category_description' => $CI->lang->line('expenses_categories_description'))
+	);
+
+	return transform_headers($headers);
+}
+
+/*
+Gets the html data rows for the expenses categories.
+*/
+
+function get_expense_category_data_row($expense_category)
+{
+	$CI =& get_instance();
+	$controller_name = strtolower(get_class($CI));
+
+	return array (
+		'expense_category_id' => $expense_category->expense_category_id,
+		'category_name' => $expense_category->category_name,
+		'category_description' => $expense_category->category_description,
+		'edit' => anchor($controller_name."/view/$expense_category->expense_category_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
+
+
+function get_expenses_manage_table_headers()
+{
+	$CI =& get_instance();
+	$headers = array(
+		array('expense_id' => $CI->lang->line('expenses_expense_id')),
+		array('date' => $CI->lang->line('expenses_date')),
+		array('amount' => $CI->lang->line('expenses_amount')),
+		array('payment_type' => $CI->lang->line('expenses_payment')),
+		array('category_name' => $CI->lang->line('expenses_categories_name')),
+		array('description' => $CI->lang->line('expenses_description')),
+		array('createdBy' => $CI->lang->line('expenses_employee'))
+	);
+
+	return transform_headers($headers);
+}
+
+
+/*
+Gets the html data rows for the expenses.
+*/
+function get_expenses_data_row($expense)
+{
+	$CI =& get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array (
+		'expense_id' => $expense->expense_id,
+		'date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($expense->date)),
+		'amount' => to_currency($expense->amount),
+		'payment_type' => $expense->payment_type,
+		'category_name' => $expense->category_name,
+		'description' => $expense->description,
+	    'createdBy' => $expense->first_name.' '. $expense->last_name,
+		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
+
+function get_expenses_data_last_row($expense)
+{
+	$CI =& get_instance();
+	$table_data_rows = '';
+	$sum_amount_expense = 0;
+
+	foreach($expense->result() as $key=>$expense)
+	{
+		$sum_amount_expense += $expense->amount;		
+	}
+
+	return array(
+		'expense_id' => '-',
+		'date' => '<b>'.$CI->lang->line('sales_total').'</b>',
+		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>'
+	);
+}
+
+
+/*
+Get the expenses payments summary
+*/
+function get_expenses_manage_payments_summary($payments, $expenses)
+{
+	$CI =& get_instance();
+	$table = '<div id="report_summary">';
+
+	foreach($payments as $key=>$payment)
+	{
+		$amount = $payment['amount'];		
+		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
+	}
+	$table .= '</div>';
+
+	return $table;
+}
+
 ?>

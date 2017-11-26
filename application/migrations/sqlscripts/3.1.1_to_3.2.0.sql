@@ -112,3 +112,89 @@ WHERE `name_lang_key` = 'module_office';
 UPDATE `ospos_modules`
 SET `sort` = 98
 WHERE `name_lang_key` = 'module_messages';
+
+
+--
+-- Add support for expenses tracking
+--
+
+INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
+('module_expenses', 'module_expenses_desc', 108, 'expenses'),
+('module_expenses_categories', 'module_expenses_categories_desc', 109, 'expenses_categories');
+
+INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
+('expenses_categories', 'expenses_categories'),
+('expenses', 'expenses'),
+('reports_expenses_categories', 'reports'); 
+
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES 
+('expenses', 1),
+('expenses_categories', 1),
+('reports_expenses_categories', 1);
+ 
+
+-- Table structure for table `ospos_expense_categories`
+
+CREATE TABLE IF NOT EXISTS `ospos_expense_categories` (
+  `expense_category_id` int(10) NOT NULL,
+  `category_name` varchar(255) DEFAULT NULL,
+  `category_description` varchar(255) NOT NULL,
+  `deleted` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `ospos_expense_categories` (`expense_category_id`, `category_name`, `category_description`) VALUES
+(1, 'Utilities', 'Water');
+
+
+-- Table structure for table `ospos_expenses`
+
+CREATE TABLE IF NOT EXISTS `ospos_expenses` (
+  `expense_id` int(10) NOT NULL,
+  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `amount` decimal(15,2) NOT NULL,
+  `payment_type` varchar(40) NOT NULL,
+  `expense_category_id` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `employee_id` int(10) NOT NULL,
+  `deleted` int(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- Dumping data for table `ospos_expenses`
+
+INSERT INTO `ospos_expenses` (`expense_id`, `date`, `amount`, `expense_category_id`, `description`, `employee_id`) VALUES
+(1, '2017-04-20 07:00:00', '15.00', 1, 'Water', 1);
+
+
+-- Indexes for table `ospos_expense_categories`
+
+ALTER TABLE `ospos_expense_categories`
+  ADD PRIMARY KEY (`expense_category_id`),
+  ADD UNIQUE KEY `category_name` (`category_name`);
+
+
+-- Indexes for table `ospos_expenses`
+
+ALTER TABLE `ospos_expenses`
+  ADD PRIMARY KEY (`expense_id`),
+  ADD KEY `expense_category_id` (`expense_category_id`),
+  ADD KEY `employee_id` (`employee_id`);
+
+
+-- AUTO_INCREMENT for table `ospos_expense_categories`
+
+ALTER TABLE `ospos_expense_categories`
+  MODIFY `expense_category_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+
+-- AUTO_INCREMENT for table `ospos_expenses`
+
+ALTER TABLE `ospos_expenses`
+  MODIFY `expense_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+
+
+-- Constraints for table `ospos_expenses`
+
+ALTER TABLE `ospos_expenses`
+  ADD CONSTRAINT `ospos_expenses_ibfk_1` FOREIGN KEY (`expense_category_id`) REFERENCES `ospos_expense_categories` (`expense_category_id`),
+  ADD CONSTRAINT `ospos_expenses_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`);

@@ -5,7 +5,7 @@ require_once("Report.php");
 abstract class Summary_report extends Report
 {
 	/**
-	 * Private interface
+	 * Private interface implementing the core basic functionality for all reports
 	 */
 
 	private function _common_select(array $inputs)
@@ -94,17 +94,17 @@ abstract class Summary_report extends Report
 		{
 			$this->db->where('sale_status', COMPLETED);
 			$this->db->group_start();
-			$this->db->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+				$this->db->where('sale_type', SALE_TYPE_POS);
+				$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+				$this->db->or_where('sale_type', SALE_TYPE_RETURN);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
 			$this->db->where('sale_status', COMPLETED);
 			$this->db->group_start();
-			$this->db->where('sale_type', SALE_TYPE_POS);
-			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+				$this->db->where('sale_type', SALE_TYPE_POS);
+				$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -126,12 +126,10 @@ abstract class Summary_report extends Report
 			$this->db->where('sale_status', COMPLETED);
 			$this->db->where('sale_type', SALE_TYPE_RETURN);
 		}
-
-
 	}
 
 	/**
-	 * Protected class interface implemented by derived classes
+	 * Protected class interface implemented by derived classes if necessary
 	 */
 
 	abstract protected function _get_data_columns();
@@ -142,7 +140,7 @@ abstract class Summary_report extends Report
 	protected function _group_order()			{}
 
 	/**
-	 * Public interface implementing the base abstract class, in general it should not be extended unless there is a valid reason
+	 * Public interface implementing the base abstract class, in general it should not be extended unless there is a valid reason like a non sale report (e.g. expenses)
 	*/
 
 	public function getDataColumns()

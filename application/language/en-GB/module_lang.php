@@ -2,11 +2,15 @@
 
 $lang["module_both"] = "Both";
 $lang["module_config"] = "Configuration";
-$lang["module_config_desc"] = "Change the OSPOS's Configuration";
+$lang["module_config_desc"] = "Change OSPOS's Configuration";
 $lang["module_customers"] = "Customers";
 $lang["module_customers_desc"] = "Add, Update, Delete, and Search Customers";
 $lang["module_employees"] = "Employees";
 $lang["module_employees_desc"] = "Add, Update, Delete, and Search Employees";
+$lang["module_expenses"] = "Expenses";
+$lang["module_expenses_desc"] = "Add, Update, Delete, and Search Expenses";
+$lang["module_expenses_categories"] = "Expenses Categories";
+$lang["module_expenses_categories_desc"] = "Add, Update, and Delete Expenses Categories";
 $lang["module_giftcards"] = "Gift Cards";
 $lang["module_giftcards_desc"] = "Add, Update, Delete and Search Gift Cards";
 $lang["module_home"] = "Home";

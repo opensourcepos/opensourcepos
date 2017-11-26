@@ -114,8 +114,8 @@
 	{
 ?>
 		$('#daterangepicker').css("width","305");
-		var start_date = "<?php echo date('Y-m-d H:i:s',mktime(0,0,0,date("m"),date("d"),date("Y")))?>";
-		var end_date = "<?php echo date('Y-m-d H:i:s',mktime(23,59,59,date("m"),date("d"),date("Y")))?>";
+		var start_date = "<?php echo date('Y-m-d H:i:s', mktime(0,0,0,date("m"),date("d"),date("Y")))?>";
+		var end_date = "<?php echo date('Y-m-d H:i:s', mktime(23,59,59,date("m"),date("d"),date("Y")))?>";
 		$('#daterangepicker').daterangepicker({
 			"ranges": {
 				"<?php echo $this->lang->line("datepicker_today"); ?>": [
