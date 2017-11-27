@@ -517,7 +517,7 @@ function get_expenses_data_row($expense)
 		'payment_type' => $expense->payment_type,
 		'category_name' => $expense->category_name,
 		'description' => $expense->description,
-	    'createdBy' => $expense->first_name.' '. $expense->last_name,
+		'createdBy' => $expense->first_name.' '. $expense->last_name,
 		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
@@ -531,7 +531,7 @@ function get_expenses_data_last_row($expense)
 
 	foreach($expense->result() as $key=>$expense)
 	{
-		$sum_amount_expense += $expense->amount;		
+		$sum_amount_expense += $expense->amount;
 	}
 
 	return array(
@@ -552,7 +552,7 @@ function get_expenses_manage_payments_summary($payments, $expenses)
 
 	foreach($payments as $key=>$payment)
 	{
-		$amount = $payment['amount'];		
+		$amount = $payment['amount'];
 		$table .= '<div class="summary_row">' . $payment['payment_type'] . ': ' . to_currency($amount) . '</div>';
 	}
 	$table .= '</div>';

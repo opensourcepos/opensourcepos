@@ -26,9 +26,9 @@ class MailchimpConnector
 	 */
 	private $_api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';
 
-    /**
-     * Constructor
-     */
+	/**
+	 * Constructor
+	 */
 	public function __construct($api_key = '')
 	{
 		$CI =& get_instance();
@@ -53,13 +53,13 @@ class MailchimpConnector
 		}
 	}
 
-    /**
-     * Call an API method. Every request needs the API key
-     * @param  string $httpVerb The HTTP method to be used
-     * @param  string $method   The API method to call, e.g. 'lists/list'
-     * @param  array  $args     An array of arguments to pass to the method. Will be json-encoded for you.
-     * @return array            Associative array of json decoded API response.
-     */
+	/**
+	 * Call an API method. Every request needs the API key
+	 * @param  string $httpVerb The HTTP method to be used
+	 * @param  string $method   The API method to call, e.g. 'lists/list'
+	 * @param  array  $args     An array of arguments to pass to the method. Will be json-encoded for you.
+	 * @return array            Associative array of json decoded API response.
+	 */
 	public function call($httpVerb = 'POST', $method, $args = array())
 	{
 		if(!empty($this->_api_key))
@@ -70,13 +70,13 @@ class MailchimpConnector
 		return FALSE;
 	}
 
-    /**
-     * Builds the request URL based on request type
-     * @param  string $httpVerb The HTTP method to be used
-     * @param  string $method   The API method to be called
-     * @param  array  $args     Assoc array of parameters to be passed
-     * @return string           Request URL
-     */
+	/**
+	 * Builds the request URL based on request type
+	 * @param  string $httpVerb The HTTP method to be used
+	 * @param  string $method   The API method to be called
+	 * @param  array  $args     Assoc array of parameters to be passed
+	 * @return string           Request URL
+	 */
 	private function _build_request_url($httpVerb = 'POST', $method, $args = array())
 	{
 		if($httpVerb == 'GET')
@@ -87,13 +87,13 @@ class MailchimpConnector
 		return $this->_api_endpoint . $method;
 	}
 
-    /**
-     * Performs the underlying HTTP request.
-     * @param  string $httpVerb The HTTP method to be used
-     * @param  string $method   The API method to be called
-     * @param  array  $args     Assoc array of parameters to be passed
-     * @return array            Assoc array of decoded result
-     */
+	/**
+	 * Performs the underlying HTTP request.
+	 * @param  string $httpVerb The HTTP method to be used
+	 * @param  string $method   The API method to be called
+	 * @param  array  $args     Assoc array of parameters to be passed
+	 * @return array            Assoc array of decoded result
+	 */
 	private function _request($httpVerb, $method, $args = array())
 	{
 		$result = FALSE;

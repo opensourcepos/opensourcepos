@@ -63,18 +63,19 @@ class Expense_category extends CI_Model
 	public function get_all($rows = 0, $limit_from = 0, $no_deleted = FALSE)
 	{
 		$this->db->from('expense_categories');
-		$this->db->order_by('category_name', 'asc');
 		if($no_deleted == TRUE)
 		{
 			$this->db->where('deleted', 0);
 		}
+
+		$this->db->order_by('category_name', 'asc');
 
 		if($rows > 0)
 		{
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();		
+		return $this->db->get();
 	}
 
 	/*
@@ -110,7 +111,7 @@ class Expense_category extends CI_Model
 
 		return $this->db->update('expense_categories', $expense_category_data);
 	}
-	
+
 	/*
 	Deletes a list of expense_category
 	*/
@@ -118,8 +119,8 @@ class Expense_category extends CI_Model
 	{
 		$this->db->where_in('expense_category_id', $expense_category_ids);
 
-		return $this->db->update('expense_categories', array('deleted' => 1));	
- 	} 	
+		return $this->db->update('expense_categories', array('deleted' => 1));
+ 	}
 
 	/*
 	Perform a search on expense_category
@@ -130,7 +131,7 @@ class Expense_category extends CI_Model
 		$this->db->group_start();
 			$this->db->like('category_name', $search);
 			$this->db->or_like('category_description', $search);
-        $this->db->group_end();
+		$this->db->group_end();
 		$this->db->where('deleted', 0);
 
 		$this->db->order_by($sort, $order);
@@ -140,9 +141,9 @@ class Expense_category extends CI_Model
 			$this->db->limit($rows, $limit_from);
 		}
 
-		return $this->db->get();	
+		return $this->db->get();
 	}
-	
+
 	public function get_found_rows($search)
 	{
 		$this->db->from('expense_categories');
@@ -150,7 +151,7 @@ class Expense_category extends CI_Model
 			$this->db->like('category_name', $search);
 			$this->db->or_like('category_description', $search);
 		$this->db->group_end();
-        $this->db->where('deleted', 0);
+		$this->db->where('deleted', 0);
 
 		return $this->db->get()->num_rows();
 	}

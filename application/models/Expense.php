@@ -7,17 +7,17 @@
 class Expense extends CI_Model
 {
 	/*
-	Determines if a given Expense_id is an Expense 
+	Determines if a given Expense_id is an Expense
 	*/
 	public function exists($expense_id)
 	{
-		$this->db->from('expenses');		
+		$this->db->from('expenses');
 		$this->db->where('expense_id', $expense_id);
 
 		return ($this->db->get()->num_rows() == 1);
-	}	   
-	
-	/* 
+	}
+
+	/*
 	Gets category info
 	*/
 	public function get_expense_category($expense_id)
@@ -28,7 +28,7 @@ class Expense extends CI_Model
 		return $this->Expense_category->get_info($this->db->get()->row()->expense_category_id);
 	}
 
-	/* 
+	/*
 	Gets employee info
 	*/
 	public function get_employee($expense_id)
@@ -38,10 +38,10 @@ class Expense extends CI_Model
 
 		return $this->Employee->get_info($this->db->get()->row()->employee_id);
 	}
-	
+
 	public function get_multiple_info($expense_ids)
 	{
-		$this->db->from('expenses');				
+		$this->db->from('expenses');
 		$this->db->where_in('expenses.expense_id', $expense_ids);
 		$this->db->order_by('expense_id', 'asc');
 
@@ -54,7 +54,7 @@ class Expense extends CI_Model
 	public function get_found_rows($search, $filters)
 	{
 		return $this->search($search, $filters)->num_rows();
-	}	
+	}
 
 	/*
 	Searches expenses
@@ -71,10 +71,10 @@ class Expense extends CI_Model
 			MAX(employees.last_name) AS last_name,
 			MAX(expense_categories.category_name) AS category_name
 		');
-		$this->db->from('expenses AS expenses');		
+		$this->db->from('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
-        $this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		
+		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+
 		$this->db->group_start();
 			$this->db->like('employees.first_name', $search);
 			$this->db->or_like('expenses.date', $search);
@@ -83,10 +83,10 @@ class Expense extends CI_Model
 			$this->db->or_like('expenses.amount', $search);
 			$this->db->or_like('expense_categories.category_name', $search);
 			$this->db->or_like('CONCAT(employees.first_name, " ", employees.last_name)', $search);
-		$this->db->group_end();		
-		
+		$this->db->group_end();
+
 		$this->db->where('expenses.deleted', $filters['is_deleted']);
-				
+
 		if(empty($this->config->item('date_or_time_format')))
 		{
 			$this->db->where('DATE_FORMAT(expenses.date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
@@ -95,12 +95,12 @@ class Expense extends CI_Model
 		{
 			$this->db->where('expenses.date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
-		
+
 		if($filters['only_debit'] != FALSE)
 		{
 			$this->db->like('expenses.payment_type', $this->lang->line('expenses_debit'));
 		}
-		
+
 		if($filters['only_credit'] != FALSE)
 		{
 			$this->db->like('expenses.payment_type', $this->lang->line('expenses_credit'));
@@ -123,16 +123,16 @@ class Expense extends CI_Model
 		{
 			$this->db->like('expenses.payment_type', $this->lang->line('expenses_check'));
 		}
-		
+
 		$this->db->group_by('expense_id');
-		$this->db->order_by($sort, $order);       
-		
+		$this->db->order_by($sort, $order);
+
 		if($rows > 0)
-		{			
+		{
 			$this->db->limit($rows, $limit);
 		}
 
-		return $this->db->get();	
+		return $this->db->get();
 	}
 
 	/*
@@ -153,9 +153,9 @@ class Expense extends CI_Model
 			expense_categories.expense_category_id AS expense_category_id,
 			expense_categories.category_name AS category_name
 		');
-		$this->db->from('expenses AS expenses');		
+		$this->db->from('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
-        $this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
+		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
 		$this->db->where('expense_id', $expense_id);
 
 		$query = $this->db->get();
@@ -187,18 +187,18 @@ class Expense extends CI_Model
 		if(!$expense_id == -1 || !$this->exists($expense_id))
 		{
 			if($this->db->insert('expenses', $expense_data))
-			{				
+			{
 				$expense_data['expense_id'] = $this->db->insert_id();
-                
+
 				return TRUE;
 			}
 
 			return FALSE;
 		}
-        
+
 		$this->db->where('expense_id', $expense_id);
 
-		return $this->db->update('expenses', $expense_data);	
+		return $this->db->update('expenses', $expense_data);
 	}
 
 	/*
@@ -206,23 +206,23 @@ class Expense extends CI_Model
 	*/
 	public function delete_list($expense_ids)
 	{
-		$success = FALSE;	
+		$success = FALSE;
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();					
-			$this->db->where_in('expense_id', $expense_ids);		
+		$this->db->trans_start();
+			$this->db->where_in('expense_id', $expense_ids);
 			$success = $this->db->update('expenses', array('deleted'=>1));
 		$this->db->trans_complete();
 
 		return $success;
 	}
-	
+
 	/*
 	Gets the payment summary for the expenses (expenses/manage) view
 	*/
 	public function get_payments_summary($search, $filters)
 	{
-		// get payment summary				
+		// get payment summary
 		$this->db->select('payment_type, COUNT(amount) AS count, SUM(amount) AS amount');
 		$this->db->from('expenses');
 		$this->db->where('deleted', $filters['is_deleted']);
@@ -250,19 +250,19 @@ class Expense extends CI_Model
 		{
 			$this->db->like('payment_type', $this->lang->line('expenses_check'));
 		}
-		
+
 		if($filters['only_credit'] != FALSE)
 		{
 			$this->db->like('payment_type', $this->lang->line('expenses_credit'));
 		}
-		
+
 		if($filters['only_debit'] != FALSE)
 		{
 			$this->db->like('payment_type', $this->lang->line('expenses_debit'));
 		}
 
 		$this->db->group_by('payment_type');
-		
+
 		$payments = $this->db->get()->result_array();
 
 		return $payments;
@@ -298,7 +298,7 @@ class Expense extends CI_Model
 		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
 
 		return $payments;
-	}	
+	}
 
 	/*
 	Gets the expense payment
