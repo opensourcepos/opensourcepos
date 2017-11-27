@@ -77,17 +77,24 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('expenses_is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-5'>
-				<?php echo form_checkbox(array(
-					'name'=>'deleted',
-					'id'=>'deleted',
-					'value'=>1,
-					'checked'=>($expenses_info->deleted) ? 1 : 0)
-				);?>
+		<?php
+		if(!empty($expenses_info->expense_id))
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('expenses_is_deleted').':', 'deleted', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-5'>
+					<?php echo form_checkbox(array(
+						'name'=>'deleted',
+						'id'=>'deleted',
+						'value'=>1,
+						'checked'=>($expenses_info->deleted) ? 1 : 0)
+					);?>
+				</div>
 			</div>
-		</div>
+		<?php
+		}
+		?>
 	</fieldset>
 <?php echo form_close(); ?>
 
