@@ -53,6 +53,7 @@
 			uniqueId: 'id',
 			showExport: true,
 			exportDataType: 'all',
+			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 			data: <?php echo json_encode($summary_data); ?>,
 			iconSize: 'sm',
 			paginationVAlign: 'bottom',

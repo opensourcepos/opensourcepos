@@ -238,6 +238,7 @@
 			clickToSelect: true,
 			showExport: true,
 			exportDataType: 'all',
+			exportTypes: ['json', 'xml', 'csv', 'txt', 'sql', 'excel', 'pdf'],
 			exportOptions: {
 				fileName: options.resource.replace(/.*\/(.*?)$/g, '$1')
 			},
