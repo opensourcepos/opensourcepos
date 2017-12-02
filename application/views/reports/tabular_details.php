@@ -52,6 +52,7 @@
 			showColumns: true,
 			uniqueId: 'id',
 			showExport: true,
+			exportDataType: 'all',
 			data: <?php echo json_encode($summary_data); ?>,
 			iconSize: 'sm',
 			paginationVAlign: 'bottom',

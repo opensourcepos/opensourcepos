@@ -33,7 +33,7 @@
     "bootswatch": "^3.3.7",
     "smalot-bootstrap-datetimepicker": "~2.4.4",
     "bootstrap-select": "~1.12.4",
-    "bootstrap-table": "master",
+    "bootstrap-table": "https://github.com/opensourcepos/bootstrap-table.git#master",
     "bootstrap-daterangepicker": "~2.1.25",
     "tableExport.jquery.plugin": "1.5.1",
     "chartist": "~0.9.8",
