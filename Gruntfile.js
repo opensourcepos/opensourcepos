@@ -11,7 +11,7 @@ module.exports = function(grunt) {
 		bower_concat: {
 			all: {
 				mainFiles: {
-					'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js", "dist/extensions/mobile/bootstrap-table-mobile.js"]
+					'bootstrap-table': [ "src/bootstrap-table.js", "src/bootstrap-table.css", "dist/extensions/export/bootstrap-table-export.js", "dist/extensions/mobile/bootstrap-table-mobile.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.js", "dist/extensions/sticky-header/bootstrap-table-sticky-header.css"]
 				},
 				dest: {
 					'js': 'tmp/opensourcepos_bower.js',

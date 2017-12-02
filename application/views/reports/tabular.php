@@ -30,6 +30,7 @@
 
 		$('#table').bootstrapTable({
 			columns: <?php echo transform_headers($headers, TRUE, FALSE); ?>,
+			stickyHeader: true,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			sortable: true,

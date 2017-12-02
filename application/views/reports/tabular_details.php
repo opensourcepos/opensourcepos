@@ -45,6 +45,7 @@
 
 		$('#table').bootstrapTable({
 			columns: <?php echo transform_headers($headers['summary'], TRUE); ?>,
+			stickyHeader: true,
 			pageSize: <?php echo $this->config->item('lines_per_page'); ?>,
 			striped: true,
 			pagination: true,

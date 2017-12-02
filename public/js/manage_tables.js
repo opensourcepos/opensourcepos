@@ -228,6 +228,7 @@
 		load_success = load_success(options.onLoadSuccess);
 		$('#table').bootstrapTable($.extend(options, {
 			columns: options.headers,
+			stickyHeader: true,
 			url: options.resource + '/search',
 			sidePagination: 'server',
 			pageSize: options.pageSize,

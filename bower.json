@@ -63,7 +63,9 @@
         "src/bootstrap-table.js",
         "src/bootstrap-table.css",
         "dist/extensions/export/bootstrap-table-export.js",
-        "dist/extensions/mobile/bootstrap-table-mobile.js"
+        "dist/extensions/mobile/bootstrap-table-mobile.js",
+        "dist/extensions/sticky-header/bootstrap-table-sticky-header.js",
+        "dist/extensions/sticky-header/bootstrap-table-sticky-header.css"
       ]
     }
   }
