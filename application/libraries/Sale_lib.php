@@ -478,16 +478,44 @@ class Sale_lib
 			$current_due = $amount_due;
 		}
 
-		// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
-		$threshold = bcpow(10, -totals_decimals()) / 2;
-
 		if($this->get_mode() == 'return')
 		{
-			$totals['payments_cover_total'] = $current_due > -$threshold;
+			if($current_due >= 0)
+			{
+				$totals['payments_cover_total'] = TRUE;
+			}
+			else
+			{
+				// 0 decimal -> 1 / 2 = 0.5, 1 decimals -> 0.1 / 2 = 0.05, 2 decimals -> 0.01 / 2 = 0.005
+				$threshold = bcpow(10, -totals_decimals()) / 2;
+				if($current_due > -$threshold)
+				{
+					$totals['payments_cover_total'] = TRUE;
+				}
+				else
+				{
+					$totals['payments_cover_total'] = FALSE;
+				}
+			}
 		}
 		else
 		{
-			$totals['payments_cover_total'] = $current_due < $threshold;
+			if($current_due <= 0)
+			{
+				$totals['payments_cover_total'] = TRUE;
+			}
+			else
+			{
+				$threshold = bcpow(10, -totals_decimals()) / 2;
+				if($current_due < $threshold)
+				{
+					$totals['payments_cover_total'] = TRUE;
+				}
+				else
+				{
+					$totals['payments_cover_total'] = FALSE;
+				}
+			}
 		}
 
 		$totals['item_count'] = $item_count;
