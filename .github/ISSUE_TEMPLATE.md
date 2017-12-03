@@ -1,6 +1,6 @@
 ### Background information
 
-__IMPORTANT: If you ignore this issue report template when you submit an issue, your issue will be closed as we cannot help without the requested information.__
+__IMPORTANT: If you choose to ignore this issue report template, your issue will be closed as we cannot help without the requested information.__
 
 Please make sure you tick (add an x between the square brackets with no spaces) the following check boxes:
 
