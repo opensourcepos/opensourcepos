@@ -15,10 +15,12 @@ The main features are:
 * VAT, customer and multi tiers taxation
 * Sale register with transactions logging
 * Quotation and invoicing
+* Expenses logging
 * Receipt and invoice printing and/or emailing
 * Barcode generation and printing
 * Suppliers and Customers database
 * Multiuser with permission control
+* Reporting on sales, orders, expenses, inventory status
 * Receivings
 * Giftcard
 * Rewards
@@ -28,7 +30,6 @@ The main features are:
 * Selectable Boostrap (Bootswatch) based UI theme
 * Mailchimp integration
 * reCAPTCHA to protect login page from brute force attacks
-* Reporting on sales, orders, inventory status
 
 The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
@@ -183,20 +184,24 @@ If missing information is not provided within a week we will close your issue.
 FAQ
 ---
 
+* If at login time you read "The installation is not correct, check your php.ini file.", please check the error_log in public folder to understand what's wrong. Any PHP extension related issue is due to one of the point below.
+
 * If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check `php5-gd` presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
-* If sales and receiving views don't show properly, please make sure BCMath lib (`php-bcmath`) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out
+* If sales and receiving views don't show properly, please make sure BCMath lib (`php-bcmath`) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out.
 
-* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/opensourcepos/opensourcepos/issues/949)
+* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/opensourcepos/opensourcepos/issues/949).
 
-* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php5-gd`, `php-intl` and `php-sockets`. Restart the web server)
+* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php5-gd`, `php-intl` and `php-sockets`. Restart the web server).
 
-* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/opensourcepos/opensourcepos/issues/920) for more help
+* If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/opensourcepos/opensourcepos/issues/920) for more help.
 
-* If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755
+* If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755.
 
-* If you have problems with the encryption support or you get an error please make sure `php5-mcrypt` is installed
+* If you have problems with the encryption support or you get an error please make sure `php5-mcrypt` is installed.
 
-* If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492)
+* If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 
-* If new customer or supplier fails please make sure `php-mbstring` is installed see [issue #1673](https://github.com/opensourcepos/opensourcepos/issues/1673) for more details
+* If new customer or supplier fails please make sure `php-mbstring` is installed see [issue #1673](https://github.com/opensourcepos/opensourcepos/issues/1673) for more details.
+
+* Apache server configurations are SysAdmin issues and not strictly related to OSPOS. Please make sure you first can show a "hello world" html page before pointing to OSPOS public directory. Make sure .htaccess is correctly configured.
