@@ -483,11 +483,25 @@ class Sale_lib
 
 		if($this->get_mode() == 'return')
 		{
-			$totals['payments_cover_total'] = $current_due > -$threshold;
+			if($current_due >= 0 || $current_due > -$threshold)
+			{
+				$totals['payments_cover_total'] = TRUE;
+			}
+			else
+			{
+				$totals['payments_cover_total'] = FALSE;
+			}
 		}
 		else
 		{
-			$totals['payments_cover_total'] = $current_due < $threshold;
+			if($current_due <= 0 || $current_due < $threshold)
+			{
+				$totals['payments_cover_total'] = TRUE;
+			}
+			else
+			{
+				$totals['payments_cover_total'] = FALSE;
+			}
 		}
 
 		$totals['item_count'] = $item_count;
@@ -495,7 +509,6 @@ class Sale_lib
 
 		return $totals;
 	}
-
 
 	// Multiple Payments
 	public function get_amount_due()
