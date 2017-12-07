@@ -518,7 +518,7 @@ class Sale_lib
 		$sales_total = $this->get_total();
 		$amount_due = bcsub($sales_total, $payment_total);
 		$precision = totals_decimals();
-		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_EVEN), 0, $precision);
+		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_UP), 0, $precision);
 		// take care of rounding error introduced by round tripping payment amount to the browser
 		return $rounded_due == 0 ? 0 : $amount_due;
 	}
@@ -1210,7 +1210,7 @@ class Sale_lib
 		$total = bcmul($quantity, $price);
 		$discount_fraction = bcdiv($discount_percentage, 100);
 
-		return bcmul($total, $discount_fraction);
+		return round(bcmul($total, $discount_fraction), totals_decimals(), PHP_ROUND_HALF_UP);
 	}
 
 	public function get_item_tax($quantity, $price, $discount_percentage, $tax_percentage)
