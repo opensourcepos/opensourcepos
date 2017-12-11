@@ -198,3 +198,11 @@ ALTER TABLE `ospos_expenses`
 ALTER TABLE `ospos_expenses`
   ADD CONSTRAINT `ospos_expenses_ibfk_1` FOREIGN KEY (`expense_category_id`) REFERENCES `ospos_expense_categories` (`expense_category_id`),
   ADD CONSTRAINT `ospos_expenses_ibfk_2` FOREIGN KEY (`employee_id`) REFERENCES `ospos_employees` (`person_id`);
+
+
+-- Add extra columns to `ospos_expenses`
+
+ALTER TABLE `ospos_expenses`
+  ADD COLUMN `supplier_name` varchar(255) DEFAULT NULL,
+  ADD COLUMN `supplier_tax_code` varchar(255) DEFAULT NULL,
+  ADD COLUMN `tax_amount` decimal(15,2) DEFAULT NULL;

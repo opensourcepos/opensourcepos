@@ -492,7 +492,10 @@ function get_expenses_manage_table_headers()
 	$headers = array(
 		array('expense_id' => $CI->lang->line('expenses_expense_id')),
 		array('date' => $CI->lang->line('expenses_date')),
+		array('supplier_name' => $CI->lang->line('expenses_supplier_name')),
+		array('supplier_tax_code' => $CI->lang->line('expenses_supplier_tax_code')),
 		array('amount' => $CI->lang->line('expenses_amount')),
+		array('tax_amount' => $CI->lang->line('expenses_tax_amount')),
 		array('payment_type' => $CI->lang->line('expenses_payment')),
 		array('category_name' => $CI->lang->line('expenses_categories_name')),
 		array('description' => $CI->lang->line('expenses_description')),
@@ -502,10 +505,10 @@ function get_expenses_manage_table_headers()
 	return transform_headers($headers);
 }
 
-
 /*
 Gets the html data rows for the expenses.
 */
+
 function get_expenses_data_row($expense)
 {
 	$CI =& get_instance();
@@ -513,7 +516,10 @@ function get_expenses_data_row($expense)
 	return array (
 		'expense_id' => $expense->expense_id,
 		'date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($expense->date)),
+		'supplier_name' => $expense->supplier_name,
+		'supplier_tax_code' => $expense->supplier_tax_code,
 		'amount' => to_currency($expense->amount),
+		'tax_amount' => to_currency($expense->tax_amount),
 		'payment_type' => $expense->payment_type,
 		'category_name' => $expense->category_name,
 		'description' => $expense->description,
@@ -528,16 +534,19 @@ function get_expenses_data_last_row($expense)
 	$CI =& get_instance();
 	$table_data_rows = '';
 	$sum_amount_expense = 0;
+	$sum_tax_amount_expense = 0;
 
 	foreach($expense->result() as $key=>$expense)
 	{
 		$sum_amount_expense += $expense->amount;
+		$sum_tax_amount_expense += $expense->tax_amount;
 	}
 
 	return array(
 		'expense_id' => '-',
 		'date' => '<b>'.$CI->lang->line('sales_total').'</b>',
-		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>'
+		'amount' => '<b>'. to_currency($sum_amount_expense).'</b>',
+		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
 	);
 }
 

@@ -25,6 +25,30 @@
 		</div>
 
 		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('expenses_supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+						'name'=>'supplier_name',
+						'id'=>'supplier_name',
+						'class'=>'form-control input-sm',
+						'value'=>$expenses_info->supplier_name)
+						);?>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('expenses_supplier_tax_code'), 'supplier_tax_code', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_input(array(
+						'name'=>'supplier_tax_code',
+						'id'=>'supplier_tax_code',
+						'class'=>'form-control input-sm',
+						'value'=>$expenses_info->supplier_tax_code)
+						);?>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('expenses_amount'), 'amount', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<div class="input-group input-group-sm">
@@ -36,6 +60,26 @@
 							'id'=>'amount',
 							'class'=>'form-control input-sm',
 							'value'=>to_currency_no_money($expenses_info->amount))
+							);?>
+					<?php if (currency_side()): ?>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('expenses_tax_amount'), 'tax_amount', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<div class="input-group input-group-sm">
+					<?php if (!currency_side()): ?>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php endif; ?>
+					<?php echo form_input(array(
+							'name'=>'tax_amount',
+							'id'=>'tax_amount',
+							'class'=>'form-control input-sm',
+							'value'=>to_currency_no_money($expenses_info->tax_amount))
 							);?>
 					<?php if (currency_side()): ?>
 						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>

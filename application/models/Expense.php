@@ -64,7 +64,10 @@ class Expense extends CI_Model
 		$this->db->select('
 			expenses.expense_id,
 			MAX(expenses.date) AS date,
+			MAX(expenses.supplier_name) AS supplier_name,
+			MAX(expenses.supplier_tax_code) AS supplier_tax_code,
 			MAX(expenses.amount) AS amount,
+			MAX(expenses.tax_amount) AS tax_amount,
 			MAX(expenses.payment_type) AS payment_type,
 			MAX(expenses.description) AS description,
 			MAX(employees.first_name) AS first_name,
@@ -143,7 +146,10 @@ class Expense extends CI_Model
 		$this->db->select('
 			expenses.expense_id AS expense_id,
 			expenses.date AS date,
+			expenses.supplier_name AS supplier_name,
+			expenses.supplier_tax_code AS supplier_tax_code,
 			expenses.amount AS amount,
+			expenses.tax_amount AS tax_amount,
 			expenses.payment_type AS payment_type,
 			expenses.description AS description,
 			expenses.employee_id AS employee_id,
