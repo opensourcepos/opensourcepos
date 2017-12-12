@@ -55,6 +55,7 @@ class Specific_employee extends Report
 			WHEN sale_status = ' . CANCELED . ' THEN \'' . $this->lang->line('reports_code_canceled') . '\'
 			ELSE \'\'
 			END) AS type_code,
+			MAX(sale_status) as sale_status,
 			MAX(sale_date) AS sale_date,
 			SUM(quantity_purchased) AS items_purchased,
 			MAX(customer_name) AS customer_name,

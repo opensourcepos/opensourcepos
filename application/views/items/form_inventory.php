@@ -106,7 +106,7 @@ $(document).ready(function()
 				dialog_support.hide();
 				table_support.handle_submit('<?php echo site_url('items'); ?>', response);
 			},
-			dataType:'json'
+			dataType: 'json'
 		});
 
 		},
@@ -122,11 +122,10 @@ $(document).ready(function()
    		},
 		messages: 
 		{
-			
 			newquantity:
 			{
-				required:"<?php echo $this->lang->line('items_quantity_required'); ?>",
-				number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
+				required: "<?php echo $this->lang->line('items_quantity_required'); ?>",
+				number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
 			}
 		}
 	});

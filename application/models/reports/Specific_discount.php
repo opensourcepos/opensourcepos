@@ -18,10 +18,12 @@ class Specific_discount extends Report
 				array('type_code' => $this->lang->line('reports_code_type')),
 				array('sale_date' => $this->lang->line('reports_date')),
 				array('quantity' => $this->lang->line('reports_quantity')),
+				array('employee_name' => $this->lang->line('reports_sold_by')),
 				array('customer_name' => $this->lang->line('reports_sold_to')),
 				array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
 				array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
+				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
 				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
 				array('payment_type' => $this->lang->line('reports_payment_type')),
 				array('comment' => $this->lang->line('reports_comments'))),
@@ -53,8 +55,10 @@ class Specific_discount extends Report
 			WHEN sale_status = ' . CANCELED . ' THEN \'' . $this->lang->line('reports_code_canceled') . '\'
 			ELSE \'\'
 			END) AS type_code,
+			MAX(sale_status) as sale_status,
 			MAX(sale_date) AS sale_date,
 			SUM(quantity_purchased) AS items_purchased,
+			MAX(employee_name) AS employee_name,
 			MAX(customer_name) AS customer_name,
 			SUM(subtotal) AS subtotal,
 			SUM(tax) AS tax,

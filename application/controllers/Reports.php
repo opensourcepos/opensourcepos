@@ -811,6 +811,17 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
+			if($row['sale_status'] == CANCELED)
+			{
+				$button_key = 'data-btn-restore';
+				$button_label = $this->lang->line('common_restore');
+			}
+			else
+			{
+				$button_key = 'data-btn-delete';
+				$button_label = $this->lang->line('common_delete');
+			}
+
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
 				'type_code' => $row['type_code'],
@@ -823,7 +834,10 @@ class Reports extends Secure_Controller
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
-				'comment' => $row['comment']));
+				'comment' => $row['comment'],
+				'edit' => anchor('sales/edit/'. $row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update')))
+			));
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -898,6 +912,17 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
+			if($row['sale_status'] == CANCELED)
+			{
+				$button_key = 'data-btn-restore';
+				$button_label = $this->lang->line('common_restore');
+			}
+			else
+			{
+				$button_key = 'data-btn-delete';
+				$button_label = $this->lang->line('common_delete');
+			}
+
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
 				'type_code' => $row['type_code'],
@@ -910,7 +935,10 @@ class Reports extends Secure_Controller
 				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
-				'comment' => $row['comment']));
+				'comment' => $row['comment'],
+				'edit' => anchor('sales/edit/'. $row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update')))
+			));
 
 			foreach($report_data['details'][$key] as $drow)
 			{
@@ -987,18 +1015,33 @@ class Reports extends Secure_Controller
 
 		foreach($report_data['summary'] as $key => $row)
 		{
+			if($row['sale_status'] == CANCELED)
+			{
+				$button_key = 'data-btn-restore';
+				$button_label = $this->lang->line('common_restore');
+			}
+			else
+			{
+				$button_key = 'data-btn-delete';
+				$button_label = $this->lang->line('common_delete');
+			}
+
 			$summary_data[] = $this->xss_clean(array(
 				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
 				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
+				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency_tax($row['tax']),
 				'total' => to_currency($row['total']),
+				'cost' => to_currency($row['cost']),
 				'profit' => to_currency($row['profit']),
 				'payment_type' => $row['payment_type'],
-				'comment' => $row['comment']
+				'comment' => $row['comment'],
+				'edit' => anchor('sales/edit/'. $row['sale_id'], '<span class="glyphicon glyphicon-edit"></span>',
+					array('class'=>'modal-dlg print_hide', $button_key => $button_label, 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('sales_update')))
 			));
 
 			foreach($report_data['details'][$key] as $drow)
@@ -1262,7 +1305,13 @@ class Reports extends Secure_Controller
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$row['receiving_id']][] = $this->xss_clean(array($drow['item_number'], $drow['name'], $drow['category'], $quantity_purchased, to_currency($drow['total']), $drow['discount_percent'].'%'));
+				$details_data[$row['receiving_id']][] = $this->xss_clean(array(
+					$drow['item_number'],
+					$drow['name'],
+					$drow['category'],
+					$quantity_purchased,
+					to_currency($drow['total']),
+					$drow['discount_percent'].'%'));
 			}
 		}
 

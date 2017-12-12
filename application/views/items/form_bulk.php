@@ -4,7 +4,7 @@
 
 <?php echo form_open('items/bulk_update/', array('id'=>'item_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="bulk_item_basic_info">
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_name'), 'name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
@@ -15,7 +15,7 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_category'), 'category', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<div class="input-group">
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_supplier'), 'supplier', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_dropdown('supplier_id', $suppliers, '', array('class'=>'form-control'));?>
@@ -120,7 +120,7 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_reorder_level'), 'reorder_level', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
@@ -131,7 +131,7 @@
 			</div>
 		</div>
 
-		<div class="form-group form-group-sm">	
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_description'), 'description', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_textarea(array(
@@ -161,8 +161,8 @@
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
-{	
-	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",appendTo:'.modal-content',delay:10});
+{
+	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>", appendTo:'.modal-content', delay:10});
 
 	var confirm_message = false;
 	$("#tax_percent_name_2, #tax_name_2").prop('disabled', true),
@@ -179,7 +179,7 @@ $(document).ready(function()
 			{
 				$(form).ajaxSubmit({
 					beforeSubmit: function(arr, $form, options) {
-						arr.push({name: 'item_ids', value: table_support.selected_ids().join(":")});
+						arr.push({name: 'item_ids', value: table_support.selected_ids().join(": ")});
 					},
 					success:function(response)
 					{
@@ -208,26 +208,25 @@ $(document).ready(function()
 			{
 				number:true
 			}
-   		},
-		messages: 
+		},
+		messages:
 		{
 			unit_price:
 			{
-				number:"<?php echo $this->lang->line('items_unit_price_number'); ?>"
+				number: "<?php echo $this->lang->line('items_unit_price_number'); ?>"
 			},
 			tax_percent:
 			{
-				number:"<?php echo $this->lang->line('items_tax_percent_number'); ?>"
+				number: "<?php echo $this->lang->line('items_tax_percent_number'); ?>"
 			},
 			quantity:
 			{
-				number:"<?php echo $this->lang->line('items_quantity_number'); ?>"
+				number: "<?php echo $this->lang->line('items_quantity_number'); ?>"
 			},
 			reorder_level:
 			{
-				number:"<?php echo $this->lang->line('items_reorder_level_number'); ?>"
+				number: "<?php echo $this->lang->line('items_reorder_level_number'); ?>"
 			}
-
 		}
 	}, form_support.error));
 });

@@ -1183,6 +1183,7 @@ class Sale extends CI_Model
 					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 					items.item_id AS item_id,
 					MAX(items.name) AS name,
+					MAX(items.item_number) AS item_number,
 					MAX(items.category) AS category,
 					MAX(items.supplier_id) AS supplier_id,
 					MAX(sales_items.quantity_purchased) AS quantity_purchased,

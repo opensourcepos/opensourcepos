@@ -91,7 +91,7 @@
 		foreach($inventory_array as $row)
 		{
 			$employee = $this->Employee->get_info($row['trans_user']);
-			array_push($employee_name, $employee->first_name . ' ' . $employee->last_name);   
+			array_push($employee_name, $employee->first_name . ' ' . $employee->last_name);
 		}
 		?>
 	</tbody>
@@ -107,22 +107,22 @@ function display_stock(location_id)
 {
     var item_quantities = <?php echo json_encode($item_quantities); ?>;
     document.getElementById("quantity").value = parseFloat(item_quantities[location_id]).toFixed(<?php echo quantity_decimals(); ?>);
-    
+
     var inventory_data = <?php echo json_encode($inventory_array); ?>;
     var employee_data = <?php echo json_encode($employee_name); ?>;
-    
+
     var table = document.getElementById("inventory_result");
 
     // Remove old query from tbody
     var rowCount = table.rows.length;
     for (var index = rowCount; index > 0; index--)
     {
-        table.deleteRow(index-1);       
+        table.deleteRow(index-1);
     }
-				
+
     // Add new query to tbody
-    for (var index = 0; index < inventory_data.length; index++) 
-    {                
+    for (var index = 0; index < inventory_data.length; index++)
+    {
         var data = inventory_data[index];
         if(data['trans_location'] == location_id)
         {
@@ -131,17 +131,17 @@ function display_stock(location_id)
             var td = document.createElement('td');
             td.appendChild(document.createTextNode(data['trans_date']));
             tr.appendChild(td);
-            
+
             td = document.createElement('td');
             td.appendChild(document.createTextNode(employee_data[index]));
             tr.appendChild(td);
-            
+
             td = document.createElement('td');
             td.appendChild(document.createTextNode(parseFloat(data['trans_inventory']).toFixed(<?php echo quantity_decimals(); ?>)));
 			td.setAttribute("style", "text-align:center");
             tr.appendChild(td);
-            
-            td = document.createElement('td');            
+
+            td = document.createElement('td');
             td.appendChild(document.createTextNode(data['trans_comment']));
             tr.appendChild(td);
 

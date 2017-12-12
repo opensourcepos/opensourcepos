@@ -25,7 +25,7 @@ class Detailed_sales extends Report
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
 				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
 				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
-				array('payment_type' => $this->lang->line('sales_amount_tendered')),
+				array('payment_type' => $this->lang->line('reports_payment_type')),
 				array('comment' => $this->lang->line('reports_comments'))),
 			'details' => array(
 				$this->lang->line('reports_name'),
@@ -50,14 +50,14 @@ class Detailed_sales extends Report
 		$this->db->select('sale_id,
 			sale_date,
 			SUM(quantity_purchased) AS items_purchased,
-			employee_name,
-			customer_name,
+			MAX(employee_name) AS employee_name,
+			MAX(customer_name) AS customer_name,
 			SUM(subtotal) AS subtotal,
 			SUM(tax) AS tax,
 			SUM(total) AS total,
 			SUM(cost) AS cost,
 			SUM(profit) AS profit,
-			payment_type,
+			MAX(payment_type) AS payment_type,
 			comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_id', $sale_id);
