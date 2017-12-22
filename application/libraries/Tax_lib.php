@@ -17,7 +17,6 @@ class Tax_lib
 	public function __construct()
 	{
 		$this->CI =& get_instance();
-		$this->CI->load->library('sale_lib');
 	}
 
 	public function get_tax_types()
