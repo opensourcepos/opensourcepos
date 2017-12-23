@@ -33,11 +33,13 @@ class Item extends CI_Model
 	*/
 	public function exists($item_id, $ignore_deleted = FALSE, $deleted = FALSE)
 	{
-		if (ctype_digit($item_id))
+		// check if $item_id is a number and not a string starting with 0
+		// because cases like 00012345 will be seen as a number where it is a barcode
+		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
 			$this->db->from('items');
 			$this->db->where('item_id', (int) $item_id);
-			if ($ignore_deleted == FALSE)
+			if($ignore_deleted == FALSE)
 			{
 				$this->db->where('deleted', $deleted);
 			}
@@ -60,7 +62,9 @@ class Item extends CI_Model
 
 		$this->db->from('items');
 		$this->db->where('item_number', (string) $item_number);
-		if(ctype_digit($item_id))
+		// check if $item_id is a number and not a string starting with 0
+		// because cases like 00012345 will be seen as a number where it is a barcode
+		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
 			$this->db->where('item_id !=', (int) $item_id);
 		}
@@ -293,19 +297,24 @@ class Item extends CI_Model
 	{
 		$this->db->from('items');
 
-		if (ctype_digit($item_id))
+		$this->db->group_start();
+
+		$this->db->where('items.item_number', $item_id);
+
+		// check if $item_id is a number and not a string starting with 0
+		// because cases like 00012345 will be seen as a number where it is a barcode
+		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
-			$this->db->group_start();
-				$this->db->where('item_id', (int) $item_id);
-				$this->db->or_where('items.item_number', $item_id);
-			$this->db->group_end();
-		}
-		else
-		{
-			$this->db->where('item_number', $item_id);
+			$this->db->or_where('items.item_id', (int) $item_id);
 		}
 
+		$this->db->group_end();
+
 		$this->db->where('items.deleted', 0);
+
+		// limit to only 1 so there is a result in case two are returned 
+		// due to barcode and item_id clash
+		$this->db->limit(1);
 
 		$query = $this->db->get();
 
@@ -870,9 +879,9 @@ class Item extends CI_Model
 	 * caution: must be used before item_quantities gets updated, otherwise the average price is wrong!
 	 *
 	 */
-	public function change_cost_price($item_id, $items_received, $new_price, $old_price = null)
+	public function change_cost_price($item_id, $items_received, $new_price, $old_price = NULL)
 	{
-		if($old_price === null)
+		if($old_price === NULL)
 		{
 			$item_info = $this->get_info($item_id);
 			$old_price = $item_info->cost_price;
