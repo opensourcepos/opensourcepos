@@ -13,7 +13,7 @@ Version 3.2.0
 + Allow duplicate barcodes (Config option)
 + Search suggestion formatting
 + Improved Items Kit
-+ Added few other languages support
++ Added Swedish, Khmer and Bulgarian languages support (yet translations are not complete)
 + Various bugfixes (a.g. Tax, Rounding, Reports, Library circular dependency)
 
 Version 3.1.1

@@ -51,7 +51,10 @@ function get_languages()
 		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
 		'hr-HR' => 'Croatian (Croatia)',
 		'ar-EG:arabic' => 'Arabic (Egypt)',
-		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)'
+		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
+		'sv:swedish' => 'Swedish',
+		'km:khmer' => 'Central Khmer (Cambodia)',
+		'bg:bulgarian' => 'Bulgarian'
 	);
 }
 
