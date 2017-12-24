@@ -1,9 +1,9 @@
 <?php 
 
-$lang["taxes_add_exception"] = "";
-$lang["taxes_confirm_delete"] = "";
-$lang["taxes_default_tax_category"] = "";
-$lang["taxes_error_adding_updating"] = "";
+$lang["taxes_add_exception"] = "Voeg uitzondering toe";
+$lang["taxes_confirm_delete"] = "Bent u zeker dat u deze code wil verwijderen? Dit kan niet ongedaan gemaakt worden.";
+$lang["taxes_default_tax_category"] = "Standaard Tax Categorie";
+$lang["taxes_error_adding_updating"] = "Tax code kon niet worden geüpdatet.";
 $lang["taxes_new"] = "";
 $lang["taxes_no_taxes_to_display"] = "";
 $lang["taxes_round_half_down"] = "";
