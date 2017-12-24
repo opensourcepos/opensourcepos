@@ -1,19 +1,19 @@
 <?php 
 
-$lang["common_address_1"] = "Address 1";
-$lang["common_address_2"] = "";
+$lang["common_address_1"] = "Adress 1";
+$lang["common_address_2"] = "Adress 2";
 $lang["common_city"] = "";
 $lang["common_close"] = "";
-$lang["common_comments"] = "";
+$lang["common_comments"] = "Kommentarer";
 $lang["common_common"] = "";
 $lang["common_confirm_search"] = "";
 $lang["common_country"] = "";
-$lang["common_date"] = "";
+$lang["common_date"] = "Datum";
 $lang["common_delete"] = "";
 $lang["common_det"] = "";
 $lang["common_download_import_template"] = "";
-$lang["common_edit"] = "";
-$lang["common_email"] = "";
+$lang["common_edit"] = "Ändra";
+$lang["common_email"] = "E-mail";
 $lang["common_email_invalid_format"] = "";
 $lang["common_export_excel"] = "";
 $lang["common_export_excel_no"] = "";
