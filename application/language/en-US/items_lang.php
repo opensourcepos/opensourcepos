@@ -4,6 +4,7 @@ $lang["items_add_minus"] = "Inventory to add or subtract.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Allow Alternate Description";
 $lang["items_amazon"] = "Amazon";
+$lang["items_amount_entry"] = "Amount Entry";
 $lang["items_bulk_edit"] = "Bulk Edit";
 $lang["items_buy_price_required"] = "Purchase Price is a required field.";
 $lang["items_cannot_be_deleted"] = "Could not delete selected Item(s), one or more of the selected Items have sales.";

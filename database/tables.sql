@@ -118,7 +118,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_first_column', 'name'),
 ('suggestions_second_column', ''),
 ('suggestions_third_column', ''),
-('allow_duplicate_barcodes', '0');
+('allow_duplicate_barcodes', '0'),
+('derive_sale_quantity', '0');
 
 -- --------------------------------------------------------
 

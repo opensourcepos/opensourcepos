@@ -464,10 +464,12 @@ class Sales extends Secure_Controller
 		$quantity = parse_decimals($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
 		$item_location = $this->input->post('location');
+        $total = $this->input->post('total') != '' ? $this->input->post('total') : NULL;
+        error_log('>>>Sales.php total-' . $total);
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price);
+			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $total);
 		}
 		else
 		{

@@ -807,6 +807,7 @@ class Sale_lib
 					'discounted_total' => $discounted_total,
 					'print_option' => $print_option_selected,
 					'stock_type' => $stock_type,
+					'item_type' => $item_type,
 					'tax_category_id' => $item_info->tax_category_id
 				)
 			);
@@ -882,12 +883,16 @@ class Sale_lib
 		return -1;
 	}
 
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price)
+	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $total=NULL)
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
 			$line = &$items[$line];
+			if($total != NULL && $total != $line['total'])
+			{
+				$quantity = $this->get_quantity_sold($total, $price);
+			}
 			$line['description'] = $description;
 			$line['serialnumber'] = $serialnumber;
 			$line['quantity'] = $quantity;
@@ -1183,6 +1188,21 @@ class Sale_lib
 		}
 
 		return $total;
+	}
+
+	/**
+	 * Derive the quantity sold based on the new total entered, returning the quanitity rounded to the
+	 * appropriate decimal positions.
+	 * @param $total
+	 * @param $price
+	 * @return string
+	 */
+	public function get_quantity_sold($total, $price)
+	{
+
+		$quantity = bcdiv($total, $price, quantity_decimals());
+
+		return $quantity;
 	}
 
 	public function get_extended_amount($quantity, $price, $discount_amount = 0)
