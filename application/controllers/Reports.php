@@ -1055,6 +1055,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['subtotal']),
 					to_currency_tax($drow['tax']),
 					to_currency($drow['total']),
+					to_currency($drow['cost']),
 					to_currency($drow['profit']),
 					$drow['discount_percent'].'%'));
 			}

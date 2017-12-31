@@ -34,8 +34,9 @@ class Specific_discount extends Report
 				$this->lang->line('reports_description'),
 				$this->lang->line('reports_quantity'),
 				$this->lang->line('reports_subtotal'),
-				$this->lang->line('reports_total'),
 				$this->lang->line('reports_tax'),
+				$this->lang->line('reports_total'),
+				$this->lang->line('reports_cost'),
 				$this->lang->line('reports_profit'),
 				$this->lang->line('reports_discount')),
 			'details_rewards' => array(

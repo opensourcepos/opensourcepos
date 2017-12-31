@@ -26,8 +26,8 @@ function get_sales_manage_table_headers()
 }
 
 /*
- Gets the html data rows for the sales.
- */
+Gets the html data rows for the sales.
+*/
 function get_sale_data_last_row($sales)
 {
 	$CI =& get_instance();
@@ -470,7 +470,6 @@ function get_expense_category_manage_table_headers()
 /*
 Gets the html data rows for the expenses categories.
 */
-
 function get_expense_category_data_row($expense_category)
 {
 	$CI =& get_instance();
@@ -508,7 +507,6 @@ function get_expenses_manage_table_headers()
 /*
 Gets the html data rows for the expenses.
 */
-
 function get_expenses_data_row($expense)
 {
 	$CI =& get_instance();
