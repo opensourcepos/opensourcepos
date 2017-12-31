@@ -12,20 +12,6 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_barcode_quality'), 'barcode_quality', array('class' => 'control-label col-xs-2 required')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'max' => '100',
-						'min' => '10',
-						'type' => 'number',
-						'name' => 'barcode_quality',
-						'id' => 'barcode_quality',
-						'class' => 'form-control input-sm required',
-						'value'=>$this->config->item('barcode_quality'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_barcode_width'), 'barcode_width', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_input(array(
@@ -245,11 +231,6 @@ $(document).ready(function()
 				required:true,
 				number:true
 			},
-			barcode_quality:
-			{
-				required:true,
-				number:true
-			},
 			barcode_font_size:
 			{
 				required:true,
@@ -283,11 +264,6 @@ $(document).ready(function()
 			{
 				required:"<?php echo $this->lang->line('config_default_barcode_height_required'); ?>",
 				number:"<?php echo $this->lang->line('config_default_barcode_height_number'); ?>"
-			},
-			barcode_quality:
-			{
-				required:"<?php echo $this->lang->line('config_default_barcode_quality_required'); ?>",
-				number:"<?php echo $this->lang->line('config_default_barcode_quality_number'); ?>"
 			},
 			barcode_font_size:
 			{

@@ -784,7 +784,6 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array(
 			'barcode_type' => $this->input->post('barcode_type'),
-			'barcode_quality' => $this->input->post('barcode_quality'),
 			'barcode_width' => $this->input->post('barcode_width'),
 			'barcode_height' => $this->input->post('barcode_height'),
 			'barcode_font' => $this->input->post('barcode_font'),

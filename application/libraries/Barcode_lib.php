@@ -37,7 +37,6 @@ class Barcode_lib
 		$data['barcode_font_size'] = $this->CI->config->item('barcode_font_size');
 		$data['barcode_height'] = $this->CI->config->item('barcode_height');
 		$data['barcode_width'] = $this->CI->config->item('barcode_width');
-		$data['barcode_quality'] = $this->CI->config->item('barcode_quality');
 		$data['barcode_first_row'] = $this->CI->config->item('barcode_first_row');
 		$data['barcode_second_row'] = $this->CI->config->item('barcode_second_row');
 		$data['barcode_third_row'] = $this->CI->config->item('barcode_third_row');
@@ -150,7 +149,6 @@ class Barcode_lib
 		try
 		{
 			$barcode_instance = Barcode_lib::barcode_instance($item, $barcode_config);
-			$barcode_instance->setQuality($barcode_config['barcode_quality']);
 			$barcode_instance->setDimensions($barcode_config['barcode_width'], $barcode_config['barcode_height']);
 
 			$barcode_instance->draw();
@@ -172,9 +170,6 @@ class Barcode_lib
 
 			// set the receipt number to generate the barcode for
 			$barcode->setData($barcode_content);
-
-			// image quality 100
-			$barcode->setQuality(100);
 
 			// width: 200, height: 30
 			$barcode->setDimensions(200, 30);
