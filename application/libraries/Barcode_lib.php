@@ -171,8 +171,8 @@ class Barcode_lib
 			// set the receipt number to generate the barcode for
 			$barcode->setData($barcode_content);
 
-			// width: 200, height: 30
-			$barcode->setDimensions(200, 30);
+			// width: 300, height: 50
+			$barcode->setDimensions(300, 50);
 
 			// draw the image
 			$barcode->draw();
