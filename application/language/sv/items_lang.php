@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "";
-$lang["items_amazon"] = "";
 $lang["items_bulk_edit"] = "";
 $lang["items_buy_price_required"] = "";
 $lang["items_cannot_be_deleted"] = "";

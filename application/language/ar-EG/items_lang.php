@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "تحرير جماعى";
 $lang["items_buy_price_required"] = "سعر الشراء مطلوب";
 $lang["items_cannot_be_deleted"] = "لايمكن حذف الأصناف المختارة، واحد أو أكثر منها لديه مبيعات";

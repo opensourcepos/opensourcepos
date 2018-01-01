@@ -2,7 +2,6 @@
 
 $lang["giftcards_add_minus"] = "Eklenen/Çıkarılan Adet";
 $lang["giftcards_allow_alt_description"] = "Dip Nota izin ver";
-$lang["giftcards_amazon"] = "Amazon";
 $lang["giftcards_bulk_edit"] = "Çoklu Düzenleme";
 $lang["giftcards_cannot_be_deleted"] = "Seçili Hediye Çekleri silinemedi, bir veya fazla Hediye Çekinde satış bulunmaktadır.";
 $lang["giftcards_cannot_find_giftcard"] = "Hediye Çekine ait bilgi bulunamadı";

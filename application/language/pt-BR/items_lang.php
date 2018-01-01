@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair";
 $lang["items_allow_alt_desciption"] = "Descrição longa";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Editar Múltiplos Itens";
 $lang["items_buy_price_required"] = "Preço de compra é um campo obrigatório";
 $lang["items_cannot_be_deleted"] = "Não foi possível excluir os itens selecionados um ou mais dos itens selecionados tem vendas.";

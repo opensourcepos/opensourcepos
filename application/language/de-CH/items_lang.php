@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Bestandsänderung";
 $lang["items_allow_alt_desciption"] = "Erlaube Alt. Bez.";
 $lang["items_allow_alt_description"] = "Erlaube Alt. Bez.";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Sammeländerung";
 $lang["items_buy_price_required"] = "Einkaufspreis ist erforderlich";
 $lang["items_cannot_be_deleted"] = "Gewählte Artikel können nicht gelöscht werden, einer odere mehrere weisen Verkäufe auf";

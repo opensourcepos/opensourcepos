@@ -1199,7 +1199,6 @@ class Sale_lib
 	 */
 	public function get_quantity_sold($total, $price)
 	{
-
 		$quantity = bcdiv($total, $price, quantity_decimals());
 
 		return $quantity;

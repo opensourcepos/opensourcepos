@@ -151,7 +151,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_giftcard_number'), 'giftcard_number', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-8'>
@@ -172,22 +172,22 @@
 				</div>
 			</div>
 
-            <div class="form-group form-group-sm">
-                <?php echo form_label($this->lang->line('config_derive_sale_quantity'), 'derive_sale_quantity', array('class' => 'control-label col-xs-2')); ?>
-                <div class='col-xs-1'>
-                    <?php echo form_checkbox(array(
-                        'name' => 'derive_sale_quantity',
-                        'id' => 'derive_sale_quantity',
-                        'value' => 'derive_sale_quantity',
-                        'checked' => $this->config->item('derive_sale_quantity'))); ?>
-                    &nbsp
-                    <label class="control-label">
-                        <span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_derive_sale_quantity_tooltip'); ?>"></span>
-                    </label>
-                </div>
-            </div>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_derive_sale_quantity'), 'derive_sale_quantity', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+					'name' => 'derive_sale_quantity',
+					'id' => 'derive_sale_quantity',
+					'value' => 'derive_sale_quantity',
+					'checked' => $this->config->item('derive_sale_quantity'))); ?>
+					&nbsp
+					<label class="control-label">
+						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_derive_sale_quantity_tooltip'); ?>"></span>
+					</label>
+				</div>
+			</div>
 
-            <div class="form-group form-group-sm">
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_statistics'), 'statistics', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(

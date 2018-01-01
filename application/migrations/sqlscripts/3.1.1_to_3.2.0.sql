@@ -206,3 +206,14 @@ ALTER TABLE `ospos_expenses`
   ADD COLUMN `supplier_name` varchar(255) DEFAULT NULL,
   ADD COLUMN `supplier_tax_code` varchar(255) DEFAULT NULL,
   ADD COLUMN `tax_amount` decimal(15,2) DEFAULT NULL;
+
+
+-- Remove unused barcode quality
+
+DELETE FROM `ospos_app_config` WHERE `key` = 'barcode_quality';
+
+
+-- Add new config option to allow derive sale quantity feature
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('derive_sale_quantity', '0');

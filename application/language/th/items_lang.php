@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "เพิ่ม/ลบ จำนวนสินค้าคงคลัง";
 $lang["items_allow_alt_desciption"] = "อนุญาตให้เพิ่มรายละเอียด";
 $lang["items_allow_alt_description"] = "แสดงข้อมูลเพิ่มเติม";
-$lang["items_amazon"] = "อเมซอน";
 $lang["items_bulk_edit"] = "แก้ไขความจุ";
 $lang["items_buy_price_required"] = "ราคาซื้อขายต้องกรอก";
 $lang["items_cannot_be_deleted"] = "ไม่สามารถลบสินค้าที่เลือก, สินค้าที่เลือกถูกขายไปแล้ว.";

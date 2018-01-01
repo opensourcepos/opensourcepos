@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Penyesuaian Inventori TAMBAH / KURANG (-)";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Ubah Massal";
 $lang["items_buy_price_required"] = "Harga Beli wajib diisi";
 $lang["items_cannot_be_deleted"] = "Tidak dapat menghapus item terpilih, satu atau lebih item yang dipilih memiliki penjualan.";

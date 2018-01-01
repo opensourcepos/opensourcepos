@@ -464,8 +464,7 @@ class Sales extends Secure_Controller
 		$quantity = parse_decimals($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
 		$item_location = $this->input->post('location');
-        $total = $this->input->post('total') != '' ? $this->input->post('total') : NULL;
-        error_log('>>>Sales.php total-' . $total);
+		$total = $this->input->post('total') != '' ? $this->input->post('total') : NULL;
 
 		if($this->form_validation->run() != FALSE)
 		{

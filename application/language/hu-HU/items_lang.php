@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Mennyiség hozzáadása/elvétele";
 $lang["items_allow_alt_desciption"] = "Alternativ leirás eng.";
 $lang["items_allow_alt_description"] = "Alternativ leirás eng.";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Tömeges módosítás";
 $lang["items_buy_price_required"] = "Vételár kötelező mező";
 $lang["items_cannot_be_deleted"] = "Nem törölhető a kiválasztott termék, mert van folyamatban lévő eladás!";
