@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "增/減庫存";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "允許ALT描述";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "批次編輯";
 $lang["items_buy_price_required"] = "進貨價為必填欄位";
 $lang["items_cannot_be_deleted"] = "無法刪除選定產品，所選產品中的一個或多個有銷售紀綠。";

@@ -175,10 +175,18 @@ if(isset($success))
 							</td>
 
 							<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex));?></td>
-							<td><?php echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100); ?></td>
+							<td>
+								<?php
+								if($item['item_type'] == 2) {
+									echo form_input(array('name'=>'total', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['total']), 'tabindex'=>++$tabindex));
+								} else {
+									echo to_currency($item['total']);
+								}
+								?>
+							</td>
 							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
-						</tr>
-						<tr>
+							</tr>
+							<tr>
 							<?php 
 							if($item['allow_alt_description']==1)
 							{
@@ -413,16 +421,16 @@ if(isset($success))
 							</tr>
 						</table>
 					<?php echo form_close(); ?>
-	   					<?php
+						<?php
 						// Only show this part if the payment cover the total and in sale or return mode
 						if($pos_mode == '1')
 						{
 						?>
-  						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
 						}
-	   					?>
- 				<?php
+						?>
+				<?php
 				}
 				else
 				{
@@ -539,20 +547,20 @@ if(isset($success))
 							<?php
 							}
 							?>
-            				<?php
-			            	if($mode == "sale_work_order")
-		            		{
-				        	?>
-                                <div class="col-xs-6">
-                                    <label for="price_work_orders" class="control-label checkbox">
-                                    <?php echo form_checkbox(array('name'=>'price_work_orders', 'id'=>'price_work_orders', 'value'=>1, 'checked'=>$price_work_orders)); ?>
-                                    <?php echo $this->lang->line('sales_include_prices');?>
-                                    </label>
-                                </div>
-                            <?php
-                            }
-                            ?>
-                        </div>
+							<?php
+							if($mode == "sale_work_order")
+							{
+							?>
+								<div class="col-xs-6">
+									<label for="price_work_orders" class="control-label checkbox">
+									<?php echo form_checkbox(array('name'=>'price_work_orders', 'id'=>'price_work_orders', 'value'=>1, 'checked'=>$price_work_orders)); ?>
+									<?php echo $this->lang->line('sales_include_prices');?>
+									</label>
+								</div>
+							<?php
+							}
+							?>
+						</div>
 					</div>
 				<?php
 				if(($mode == "sale") && $this->config->item('invoice_enable') == TRUE)
@@ -597,7 +605,7 @@ $(document).ready(function()
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
 		minChars: 0,
 		autoFocus: false,
-	   	delay: 500,
+		delay: 500,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
@@ -696,10 +704,10 @@ $(document).ready(function()
 		$.post('<?php echo site_url($controller_name."/set_print_after_sale");?>', {sales_print_after_sale: $(this).is(":checked")});
 	});
 
-    $("#price_work_orders").change(function()
-    {
-        $.post('<?php echo site_url($controller_name."/set_price_work_orders");?>', {price_work_orders: $(this).is(":checked")});
-    });
+	$("#price_work_orders").change(function()
+	{
+		$.post('<?php echo site_url($controller_name."/set_price_work_orders");?>', {price_work_orders: $(this).is(":checked")});
+	});
 
 	$('#email_receipt').change(function() 
 	{
@@ -792,7 +800,7 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').change(function() {
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="total"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
 	

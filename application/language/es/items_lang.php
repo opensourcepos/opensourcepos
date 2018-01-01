@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Inventario a agregar/substraer";
 $lang["items_allow_alt_desciption"] = "Permitir Descripción Alternativa";
 $lang["items_allow_alt_description"] = "Permitir Descripción Alternativa";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Edición Múltiple";
 $lang["items_buy_price_required"] = "Precio de Compra es requerido";
 $lang["items_cannot_be_deleted"] = "No se pueden borrar los artículos seleccionados. Uno o más tiene(n) ventas.";

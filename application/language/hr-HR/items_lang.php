@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Dodavanje/skidanje s inventure";
 $lang["items_allow_alt_desciption"] = "Dozvoli Alt opis";
 $lang["items_allow_alt_description"] = "Dozvoli Alt opis";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Zajedno uređenje";
 $lang["items_buy_price_required"] = "Prodajna cijena je potrebna";
 $lang["items_cannot_be_deleted"] = "Nemožete obrisati odabranu stavku, jedna ili više odabranih stavki ima prodaju.";

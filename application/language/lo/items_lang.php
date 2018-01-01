@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "ເພີ່ມຫລືຫລຸດປະລິມານສິນຄ້າໃນສາງ";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "ອະນຸຍາດໃຫ້ມີລາຍລະອຽດເສີມ";
-$lang["items_amazon"] = "ອາເມຊອນ";
 $lang["items_bulk_edit"] = "ແກ້ໄຂເປັນກຸ່ມ";
 $lang["items_buy_price_required"] = "ກະລຸນາກຳນົດລາຄາ.";
 $lang["items_cannot_be_deleted"] = "ບໍ່ສາມາດລຶບສິນຄ້າທີ່ເລືອກໄດ້, ໃນສິນຄ້າທີ່ເລືອກໄດ້ມີການຂາຍແລ້ວ.";

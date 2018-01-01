@@ -3,7 +3,6 @@
 $lang["items_add_minus"] = "Инвентарь для сложения/вычитания";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Разрешить альтернативные описания";
-$lang["items_amazon"] = "Amazon";
 $lang["items_bulk_edit"] = "Массовое изменение";
 $lang["items_buy_price_required"] = "Цена покупки обязательное пробелья";
 $lang["items_cannot_be_deleted"] = "Невозможно удалить выбранные товари, один или более из выбранных товаров имеет продаж.";
