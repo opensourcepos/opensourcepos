@@ -179,11 +179,11 @@ if(isset($success))
 								<?php
 								if($item['item_type'] == 2)
 								{
-									echo form_input(array('name'=>'total', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['total']), 'tabindex'=>++$tabindex));
+									echo form_input(array('name'=>'discounted_total', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['discounted_total']), 'tabindex'=>++$tabindex));
 								}
 								else
 								{
-									echo to_currency($item['price']*$item['quantity']-$item['price']*$item['quantity']*$item['discount']/100);
+									echo to_currency($item['discounted_total']);
 								}
 								?>
 							</td>
@@ -803,7 +803,7 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="total"]').change(function() {
+	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
 	
