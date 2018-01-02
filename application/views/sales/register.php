@@ -177,7 +177,7 @@ if(isset($success))
 							<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex));?></td>
 							<td>
 								<?php
-								if($item['item_type'] == 2)
+								if($item['item_type'] == ITEM_AMOUNT_ENTRY)
 								{
 									echo form_input(array('name'=>'discounted_total', 'class'=>'form-control input-sm', 'value'=>to_currency_no_money($item['discounted_total']), 'tabindex'=>++$tabindex));
 								}
