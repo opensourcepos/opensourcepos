@@ -454,9 +454,9 @@ class Sales extends Secure_Controller
 	{
 		$data = array();
 
-		$this->form_validation->set_rules('price', 'lang:items_price', 'required|callback_numeric');
-		$this->form_validation->set_rules('quantity', 'lang:items_quantity', 'required|callback_numeric');
-		$this->form_validation->set_rules('discount', 'lang:items_discount', 'required|callback_numeric');
+		$this->form_validation->set_rules('price', 'lang:sales_price', 'required|callback_numeric');
+		$this->form_validation->set_rules('quantity', 'lang:sales_quantity', 'required|callback_numeric');
+		$this->form_validation->set_rules('discount', 'lang:sales_discount', 'required|callback_numeric');
 
 		$description = $this->input->post('description');
 		$serialnumber = $this->input->post('serialnumber');
@@ -464,11 +464,11 @@ class Sales extends Secure_Controller
 		$quantity = parse_decimals($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
 		$item_location = $this->input->post('location');
-		$total = $this->input->post('total') != '' ? $this->input->post('total') : NULL;
+		$discounted_total = $this->input->post('discounted_total') != '' ? $this->input->post('discounted_total') : NULL;
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $total);
+			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $discounted_total);
 		}
 		else
 		{

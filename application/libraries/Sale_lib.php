@@ -883,15 +883,16 @@ class Sale_lib
 		return -1;
 	}
 
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $total=NULL)
+	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $discounted_total=NULL)
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
 		{
 			$line = &$items[$line];
-			if($total != NULL && $total != $line['total'])
+			if($discounted_total != NULL && $discounted_total != $line['discounted_total'])
 			{
-				$quantity = $this->get_quantity_sold($total, $price);
+			    // Note when entered the "discounted_total" is expected to be entered without a discount
+				$quantity = $this->get_quantity_sold($discounted_total, $price);
 			}
 			$line['description'] = $description;
 			$line['serialnumber'] = $serialnumber;
