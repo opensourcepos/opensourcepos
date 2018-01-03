@@ -79,7 +79,7 @@ If you like the project, and you are making money out of it on a daily basis, th
 Server Requirements
 -------------------
 
-PHP version 5.6 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-mcrypt`, `php-mbstring` and `php-curl` installed and enabled.
+PHP version 5.6 or newer is recommended (PHP 7.x is supported). Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-sockets`, `php-openssl`, `php-mbstring` and `php-curl` installed and enabled.
 
 MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance.
 
@@ -186,19 +186,19 @@ FAQ
 
 * If at login time you read "The installation is not correct, check your php.ini file.", please check the error_log in public folder to understand what's wrong. Any PHP extension related issue is due to one of the point below.
 
-* If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check `php5-gd` presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
+* If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check `php-gd` presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
 
 * If sales and receiving views don't show properly, please make sure BCMath lib (`php-bcmath`) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out.
 
-* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php5-intl` extension installed. Please check the [wiki](https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/opensourcepos/opensourcepos/issues/949).
+* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php-intl` extension installed. Please check the [wiki](https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/opensourcepos/opensourcepos/issues/949).
 
-* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php5-gd`, `php-intl` and `php-sockets`. Restart the web server).
+* If you read errors containing messages with Socket word in it, please make sure you have installed PHP Sockets support (e.g. go to PHP.ini and make sure all the needed modules are not commented out. This means `php-gd`, `php-intl` and `php-sockets`. Restart the web server).
 
 * If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/opensourcepos/opensourcepos/issues/920) for more help.
 
 * If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755.
 
-* If you have problems with the encryption support or you get an error please make sure `php5-mcrypt` is installed.
+* If you have problems with the encryption support or you get an error please make sure `php-openssl` is installed. With PHP 7 MCrypt is deprecated so you must use OpenSSL.
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
 
