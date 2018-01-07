@@ -33,8 +33,6 @@ $(document).ready(function()
 		<button id="delete" class="btn btn-default btn-sm print_hide">
 			<span class="glyphicon glyphicon-trash">&nbsp</span><?php echo $this->lang->line("common_delete");?>
 		</button>
-
-		<!--<?php echo form_multiselect('filters[]', $filters, '', array('id'=>'filters', 'class'=>'selectpicker show-menu-arrow', 'data-selected-text-format'=>'count > 1', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>-->
 	</div>
 </div>
 
