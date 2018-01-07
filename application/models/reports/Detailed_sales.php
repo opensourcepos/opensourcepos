@@ -58,6 +58,7 @@ class Detailed_sales extends Report
 			SUM(cost) AS cost,
 			SUM(profit) AS profit,
 			MAX(payment_type) AS payment_type,
+			MAX(sale_status) AS sale_status,
 			comment');
 		$this->db->from('sales_items_temp');
 		$this->db->where('sale_id', $sale_id);

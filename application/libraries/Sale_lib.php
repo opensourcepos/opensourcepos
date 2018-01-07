@@ -1017,7 +1017,7 @@ class Sale_lib
 
 	public function reset_cash_flags()
 	{
-		if($this->CI->lang->line('payment_options_order') != 'cashdebitcredit')
+		if($this->CI->config->item('payment_options_order') != 'cashdebitcredit')
 		{
 			$cash_mode = 1;
 		}
