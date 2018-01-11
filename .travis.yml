@@ -1,6 +1,6 @@
-sudo: true
+sudo: required
 dist: trusty
-group: edge  #
+group: deprecated-2017Q4
 
 branches:
     except:
