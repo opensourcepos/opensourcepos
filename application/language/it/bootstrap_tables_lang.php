@@ -1,10 +1,10 @@
 <?php 
 
-$lang["tables_all"] = "All";
-$lang["tables_columns"] = "Columns";
-$lang["tables_hide_show_pagination"] = "Hide/Show pagination";
-$lang["tables_loading"] = "Loading, please wait...";
-$lang["tables_page_from_to"] = "Showing {0} to {1} of {2} rows";
-$lang["tables_refresh"] = "Refresh";
-$lang["tables_rows_per_page"] = "{0} rows per page";
-$lang["tables_toggle"] = "Toggle";
+$lang["tables_all"] = "Tutti/e";
+$lang["tables_columns"] = "Colonne";
+$lang["tables_hide_show_pagination"] = "Nascondi/mostra paginazione";
+$lang["tables_loading"] = "Caricamento, attendere prego...";
+$lang["tables_page_from_to"] = "Mostro {0} a {1} di {2} righe";
+$lang["tables_refresh"] = "Ricarica";
+$lang["tables_rows_per_page"] = "{0} righe per pagina";
+$lang["tables_toggle"] = "Inverti";
