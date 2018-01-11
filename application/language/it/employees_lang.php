@@ -1,9 +1,9 @@
 <?php 
 
-$lang["employees_basic_information"] = "Information";
-$lang["employees_cannot_be_deleted"] = "Unable to delete selected employee(s), one or more of the has processed sales or you are trying to delete your account.";
-$lang["employees_change_password"] = "Change Password";
-$lang["employees_confirm_delete"] = "Are you sure you want to delete the selected employee(s)?";
+$lang["employees_basic_information"] = "Informazioni";
+$lang["employees_cannot_be_deleted"] = "Eliminazione dell'impiegato/i non consentita, uno o più hanno trattato delle vendite o stai cancellando il tuo account.";
+$lang["employees_change_password"] = "Cambia Password";
+$lang["employees_confirm_delete"] = "Sei sicuro di voler eliminare l'impiegato/i selezionato?";
 $lang["employees_current_password"] = "Current Password";
 $lang["employees_current_password_invalid"] = "Current Password is invalid.";
 $lang["employees_employee"] = "Employee";
