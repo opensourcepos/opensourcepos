@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Change All To Serialised";
 $lang["giftcards_change_all_to_unserialized"] = "Change All To Unserialised";
 $lang["giftcards_confirm_bulk_edit"] = "Are you sure you want to edit all the selected Gift Card(s)?";
 $lang["giftcards_confirm_delete"] = "Are you sure you want to delete the selected Gift Card(s)?";
+$lang["giftcards_confirm_restore"] = "Are you sure you want to restore the selected Gift Card(s)?";
 $lang["giftcards_cost_price"] = "Cost Price";
 $lang["giftcards_count"] = "Update Inventory";
 $lang["giftcards_current_quantity"] = "Current Quantity";

@@ -37,6 +37,7 @@ $lang["reports_earned"] = "Points Earned";
 $lang["reports_employee"] = "Employee";
 $lang["reports_employees"] = "Employees";
 $lang["reports_employees_summary_report"] = "Employees Summary Report";
+$lang["reports_expenses"] = "Expenses";
 $lang["reports_expenses_categories"] = "Expenses";
 $lang["reports_expenses_categories_summary_report"] = "Expense Categories Summary Report";
 $lang["reports_expenses_category"] = "Category";

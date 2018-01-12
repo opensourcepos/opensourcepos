@@ -3,6 +3,7 @@
 $lang["expenses_add_item"] = "Add Expense";
 $lang["expenses_cannot_be_deleted"] = "Could not delete Category Expense(s)";
 $lang["expenses_confirm_delete"] = "Are you sure you want to delete the selected Expense?";
+$lang["expenses_confirm_restore"] = "Are you sure you want to restore the selected Expense?";
 $lang["expenses_description"] = "Description";
 $lang["expenses_error_adding_updating"] = "Error adding/updating Expense";
 $lang["expenses_info"] = "Expense Info";

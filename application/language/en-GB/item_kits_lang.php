@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Add Item";
 $lang["item_kits_all"] = "All";
 $lang["item_kits_cannot_be_deleted"] = "Item Kit(s) delete failed";
 $lang["item_kits_confirm_delete"] = "Are you sure you want to delete the selected Item Kit(s)?";
+$lang["item_kits_confirm_restore"] = "Are you sure you want to restore the selected Item Kit(s)?";
 $lang["item_kits_description"] = "Item Kit Description";
 $lang["item_kits_discount_percent"] = "Discount Percent";
 $lang["item_kits_error_adding_updating"] = "Item Kit add or update failed";
