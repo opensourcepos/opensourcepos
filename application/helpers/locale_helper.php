@@ -35,27 +35,28 @@ function current_language($load_system_language = FALSE)
 function get_languages()
 {
 	return array(
-		'en-US:english' => 'English (United States)',
-		'en-GB:english' => 'English (Great Britain)',
-		'es:spanish' => 'Spanish',
-		'nl-BE:dutch' => 'Dutch (Belgium)',
-		'de:german' => 'German (Germany)',
-		'de-CH:german' => 'German (Swiss)',
-		'fr:french' => 'French',
-		'zh:simplified-chinese' => 'Chinese',
-		'id:indonesian' => 'Indonesian',
-		'th:thai' => 'Thai',
-		'tr:turkish' => 'Turkish',
-		'ru:russian' => 'Russian',
-		'hu-HU:hungarian' => 'Hungarian (Hungary)',
-		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
-		'hr-HR' => 'Croatian (Croatia)',
 		'ar-EG:arabic' => 'Arabic (Egypt)',
 		'az-AZ:azerbaijani' => 'Azerbaijani (Azerbaijan)',
-		'sv:swedish' => 'Swedish',
-		'km:khmer' => 'Central Khmer (Cambodia)',
 		'bg:bulgarian' => 'Bulgarian',
-		'lo:lao' => 'Lao (Laos)'
+		'de:german' => 'German (Germany)',
+		'de-CH:german' => 'German (Swiss)',
+		'en-GB:english' => 'English (Great Britain)',
+		'en-US:english' => 'English (United States)',
+		'es:spanish' => 'Spanish',
+		'fr:french' => 'French',
+		'hr-HR:croatian' => 'Croatian (Croatia)',
+		'hu-HU:hungarian' => 'Hungarian (Hungary)',
+		'id:indonesian' => 'Indonesian',
+		'it:italian' => 'Italian',
+		'km:khmer' => 'Central Khmer (Cambodia)',
+		'lo:lao' => 'Lao (Laos)',
+		'nl-BE:dutch' => 'Dutch (Belgium)',
+		'pt-BR:portuguese-brazilian' => 'Portuguese (Brazil)',
+		'ru:russian' => 'Russian',
+		'sv:swedish' => 'Swedish',
+		'th:thai' => 'Thai',
+		'tr:turkish' => 'Turkish',
+		'zh:simplified-chinese' => 'Chinese'
 	);
 }
 
