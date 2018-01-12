@@ -149,7 +149,6 @@ $lang["config_license"] = "License";
 $lang["config_license_configuration"] = "License Statement";
 $lang["config_line_sequence"] = "Line Sequence";
 $lang["config_lines_per_page"] = "Lines per Page";
-$lang["config_lines_per_page_number"] = "";
 $lang["config_lines_per_page_required"] = "Lines per Page is a required field.";
 $lang["config_lines_per_page_number"] = "Lines per Page must be a number.";
 $lang["config_locale"] = "Localization";
