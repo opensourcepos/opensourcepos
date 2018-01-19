@@ -1,13 +1,13 @@
 <?php 
 
 $lang["item_kits_add_item"] = "Neuer Artikel";
-$lang["item_kits_all"] = "";
-$lang["item_kits_cannot_be_deleted"] = "Konnte Artikel-Set(s) nicht löschen";
+$lang["item_kits_all"] = "Alles";
+$lang["item_kits_cannot_be_deleted"] = "Konnte Artikel-Set(s) nicht löschen.";
 $lang["item_kits_confirm_delete"] = "Wollen Sie die gewählten Artikel-Sets wirklich löschen?";
 $lang["item_kits_description"] = "Beschreibung Artikel-Set";
-$lang["item_kits_discount_percent"] = "";
-$lang["item_kits_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern";
-$lang["item_kits_find_kit_item"] = "";
+$lang["item_kits_discount_percent"] = "Prozent Rabatt";
+$lang["item_kits_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern.";
+$lang["item_kits_find_kit_item"] = "Artikel-Set";
 $lang["item_kits_info"] = "Artikel-Set Information";
 $lang["item_kits_item"] = "Artikel";
 $lang["item_kits_items"] = "Artikel";
