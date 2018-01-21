@@ -1,12 +1,12 @@
 <?php 
 
 $lang["receivings_cancel_receiving"] = "Cancella";
-$lang["receivings_cannot_be_deleted"] = "Ricezione dell'eliminazione fallita.";
+$lang["receivings_cannot_be_deleted"] = "Eliminazione Ricezione(i) fallita.";
 $lang["receivings_comments"] = "Commenti";
 $lang["receivings_complete_receiving"] = "Finito";
 $lang["receivings_confirm_cancel_receiving"] = "Sei sicuro che vuoi cancellare questa ricezione? Tutti gli elementi saranno eliminati.";
-$lang["receivings_confirm_delete"] = "Sei sicuro di voler eliminare questa ricezione? Questa azione non può essere annullata.";
-$lang["receivings_confirm_finish_receiving"] = "Sei sicuro che vuoi inserire questa ricezione? Questa operazione non può essere annullata.";
+$lang["receivings_confirm_delete"] = "Sei sicuro di voler eliminare questa Incasso? Questa azione non può essere annullata.";
+$lang["receivings_confirm_finish_receiving"] = "Sei sicuro che vuoi inserire questa Incasso? Questa operazione non può essere annullata.";
 $lang["receivings_cost"] = "Costo";
 $lang["receivings_date"] = "Data di ricezione";
 $lang["receivings_date_required"] = "Deve essere inserita una data corretta.";
