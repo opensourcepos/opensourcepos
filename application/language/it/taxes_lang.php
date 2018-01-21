@@ -26,6 +26,6 @@ $lang["taxes_tax_code_successfully_added"] = "Aggiunto correttamente";
 $lang["taxes_tax_code_type"] = "Tipo Codice Tassa";
 $lang["taxes_tax_rate"] = "Tasso di tassa";
 $lang["taxes_tax_rate_numeric"] = "Tasso di tassa deve essere un numero";
-$lang["taxes_tax_rate_required"] = "il campo Tasso di Rata è richiesto.";
+$lang["taxes_tax_rate_required"] = "Il campo Tasso di Rata è richiesto.";
 $lang["taxes_update"] = "Update Sales Category Tax";
 $lang["taxes_vat_tax"] = "VAT Tax";
