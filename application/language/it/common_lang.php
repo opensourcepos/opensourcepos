@@ -1,7 +1,7 @@
 <?php 
 
-$lang["common_address_1"] = "Address 1";
-$lang["common_address_2"] = "Address 2";
+$lang["common_address_1"] = "Indirizzo 1";
+$lang["common_address_2"] = "Indirizzo 2";
 $lang["common_city"] = "Città";
 $lang["common_close"] = "Chiudere";
 $lang["common_comments"] = "Commenti";
@@ -27,12 +27,12 @@ $lang["common_gender_female"] = "F";
 $lang["common_gender_male"] = "M";
 $lang["common_id"] = "Id";
 $lang["common_import"] = "Importa";
-$lang["common_import_change_file"] = "Change";
+$lang["common_import_change_file"] = "Sostituisci";
 $lang["common_import_excel"] = "Importa Excell";
 $lang["common_import_full_path"] = "E' richiesto il percorso completo";
 $lang["common_import_remove_file"] = "Rimuovi";
 $lang["common_import_select_file"] = "Seleziona file";
-$lang["common_inv"] = "inv";
+$lang["common_inv"] = "fatt";
 $lang["common_last_name"] = "Cognome";
 $lang["common_last_name_required"] = "Il campo Cognome è richiesto.";
 $lang["common_last_page"] = "Ultimo";
@@ -41,7 +41,7 @@ $lang["common_list_of"] = "Lista di";
 $lang["common_logout"] = "Esci";
 $lang["common_new"] = "Nuovo";
 $lang["common_no_persons_to_display"] = "Non ci sono persone da mostrare.";
-$lang["common_none_selected_text"] = "Niente è selezionato";
+$lang["common_none_selected_text"] = "Nessuna selezione.";
 $lang["common_or"] = "OR";
 $lang["common_phone_number"] = "Numero di Telefono";
 $lang["common_phone_number_required"] = "";
