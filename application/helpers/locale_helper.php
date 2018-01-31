@@ -56,6 +56,7 @@ function get_languages()
 		'sv:swedish' => 'Swedish',
 		'th:thai' => 'Thai',
 		'tr:turkish' => 'Turkish',
+		'vi:vietnamese' => 'Vietnamese',
 		'zh:simplified-chinese' => 'Chinese'
 	);
 }
