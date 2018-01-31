@@ -2,7 +2,7 @@
 
 $lang["receivings_cancel_receiving"] = "Cancel";
 $lang["receivings_cannot_be_deleted"] = "Receiving(s) delete failed.";
-$lang["receivings_comments"] = "Comments";
+$lang["receivings_comments"] = "Comment";
 $lang["receivings_complete_receiving"] = "Finish";
 $lang["receivings_confirm_cancel_receiving"] = "Are you sure you want to clear this receiving? All items will cleared.";
 $lang["receivings_confirm_delete"] = "Are you sure you want to delete this receiving? This action cannot be undone.";
