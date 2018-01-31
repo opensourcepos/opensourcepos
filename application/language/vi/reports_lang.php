@@ -1,7 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Tất cả";
-$lang["reports_canceled"] = "Bị hủy bỏ";
+$lang["reports_canceled"] = "Đã hủy";
 $lang["reports_categories"] = "Thể loại";
 $lang["reports_categories_summary_report"] = "Báo cáo tông thể thể loại";
 $lang["reports_category"] = "Thể loại";
