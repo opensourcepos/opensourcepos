@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_cancel_receiving"] = "Cancel";
+$lang["receivings_cancel_receiving"] = "Thôi";
 $lang["receivings_cannot_be_deleted"] = "Receiving(s) delete failed.";
 $lang["receivings_comments"] = "Comment";
 $lang["receivings_complete_receiving"] = "Finish";
