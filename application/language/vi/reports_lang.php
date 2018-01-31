@@ -1,23 +1,23 @@
 <?php 
 
-$lang["reports_all"] = "All";
-$lang["reports_canceled"] = "Canceled";
-$lang["reports_categories"] = "Categories";
-$lang["reports_categories_summary_report"] = "Categories Summary Report";
-$lang["reports_category"] = "Category";
+$lang["reports_all"] = "Tất cả";
+$lang["reports_canceled"] = "Bị hủy bỏ";
+$lang["reports_categories"] = "Thể loại";
+$lang["reports_categories_summary_report"] = "Báo cáo tông thể thể loại";
+$lang["reports_category"] = "Thể loại";
 $lang["reports_code_canceled"] = "CNL";
 $lang["reports_code_invoice"] = "INV";
 $lang["reports_code_quote"] = "Q";
 $lang["reports_code_return"] = "RET";
-$lang["reports_code_type"] = "Type";
+$lang["reports_code_type"] = "Kiểu";
 $lang["reports_code_work_order"] = "W/O";
-$lang["reports_comments"] = "Comments";
-$lang["reports_complete"] = "Completed Sales and Returns";
-$lang["reports_completed_sales"] = "Completed Sales";
-$lang["reports_confirm_delete"] = "Are you sure you want to delete selected entry(s)?";
+$lang["reports_comments"] = "Ghi chú";
+$lang["reports_complete"] = "Bán và Trả hoàn tất";
+$lang["reports_completed_sales"] = "Bán hoàn tất";
+$lang["reports_confirm_delete"] = "Bạn có thực sự muốn xóa các mục tin đã chọn?";
 $lang["reports_confirm_restore"] = "Are you sure you want to restore selected entry(s)?";
-$lang["reports_cost"] = "Wholesale";
-$lang["reports_cost_price"] = "Wholesale Price";
+$lang["reports_cost"] = "Bán buôn";
+$lang["reports_cost_price"] = "Giá bán buôn";
 $lang["reports_count"] = "Count";
 $lang["reports_customer"] = "Customer";
 $lang["reports_customers"] = "Customers";
