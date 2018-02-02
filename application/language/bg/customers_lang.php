@@ -1,14 +1,14 @@
 <?php 
 
-$lang["customers_account_number"] = "Account #";
-$lang["customers_account_number_duplicate"] = "Account Number is already present in the database.";
-$lang["customers_available_points"] = "Available Points";
-$lang["customers_average"] = "Average spent";
-$lang["customers_avg_discount"] = "Average discount";
-$lang["customers_basic_information"] = "Information";
-$lang["customers_cannot_be_deleted"] = "Could not delete selected customers, one or more of the selected customers has sales.";
-$lang["customers_company_name"] = "Company";
-$lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customer(s)?";
+$lang["customers_account_number"] = "Сметка #";
+$lang["customers_account_number_duplicate"] = "Номерът на сметката вече е в базата данни.";
+$lang["customers_available_points"] = "Налични точки";
+$lang["customers_average"] = "Средно изразходвани";
+$lang["customers_avg_discount"] = "Средна отстъпка";
+$lang["customers_basic_information"] = "Информация";
+$lang["customers_cannot_be_deleted"] = "Избраните клиенти не могат да бъдат изтрити, един или повече от избраните клиенти имат продажби.";
+$lang["customers_company_name"] = "Компания";
+$lang["customers_confirm_delete"] = "Наистина ли искате да изтриете избраните клиенти?";
 $lang["customers_customer"] = "Customer";
 $lang["customers_discount"] = "Discount";
 $lang["customers_email_duplicate"] = "Email Address is already present in the database.";
