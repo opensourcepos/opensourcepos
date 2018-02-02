@@ -1,10 +1,10 @@
 <?php 
 
-$lang["tables_all"] = "All";
-$lang["tables_columns"] = "Columns";
-$lang["tables_hide_show_pagination"] = "Hide/Show pagination";
-$lang["tables_loading"] = "Loading, please wait...";
-$lang["tables_page_from_to"] = "Showing {0} to {1} of {2} rows";
-$lang["tables_refresh"] = "Refresh";
-$lang["tables_rows_per_page"] = "{0} rows per page";
-$lang["tables_toggle"] = "Toggle";
+$lang["tables_all"] = "Tất cả";
+$lang["tables_columns"] = "Các cột";
+$lang["tables_hide_show_pagination"] = "Ẩn/hiện phân trang";
+$lang["tables_loading"] = "Đang tải, vui lòng đợi...";
+$lang["tables_page_from_to"] = "Đang hiển thị {0} đến {1} trên {2} dòng";
+$lang["tables_refresh"] = "Làm mới lại";
+$lang["tables_rows_per_page"] = "{0} dòng mỗi trang";
+$lang["tables_toggle"] = "Bật/Tắt";
