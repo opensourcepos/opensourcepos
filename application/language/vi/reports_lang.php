@@ -117,4 +117,4 @@ $lang["reports_type"] = "Kiểu";
 $lang["reports_unit_price"] = "Giá bán lẻ";
 $lang["reports_used"] = "Các điểm bán hàng đã dùng";
 $lang["reports_work_orders"] = "Các đặt hàng hoạt động";
-$lang["reports_zero_and_less"] = "Không hay nhỏ ";
+$lang["reports_zero_and_less"] = "Không hay nhỏ hơn";
