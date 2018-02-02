@@ -1,4 +1,4 @@
 <?php 
 
-$lang["error_no_permission_module"] = "Грешка";
-$lang["error_unknown"] = "unknown";
+$lang["error_no_permission_module"] = "Нямате разрешение за достъп до модула с име";
+$lang["error_unknown"] = "неизвестен";
