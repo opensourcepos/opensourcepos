@@ -1,14 +1,14 @@
 <?php 
 
-$lang["messages_first_name"] = "First name";
-$lang["messages_last_name"] = "Last name";
-$lang["messages_message"] = "Message";
-$lang["messages_message_placeholder"] = "Your Message here...";
-$lang["messages_message_required"] = "Message required";
-$lang["messages_multiple_phones"] = "(In case of multiple recipients, enter mobile numbers separated by commas)";
-$lang["messages_phone"] = "Phone number";
-$lang["messages_phone_number_required"] = "Phone number required";
-$lang["messages_phone_placeholder"] = "Mobile Number(s) here...";
-$lang["messages_sms_send"] = "Send SMS";
-$lang["messages_successfully_sent"] = "Message successfully sent to: ";
-$lang["messages_unsuccessfully_sent"] = "Message unsuccessfully sent to: ";
+$lang["messages_first_name"] = "Tên";
+$lang["messages_last_name"] = "Họ";
+$lang["messages_message"] = "Tin nhắn";
+$lang["messages_message_placeholder"] = "Tin nhắn của bạn ở đây...";
+$lang["messages_message_required"] = "Cần tin nhắn";
+$lang["messages_multiple_phones"] = "(Trong trường hợp gửi cho nhiều người, nhập danh sách điện thoại ngăn cách nhau bởi dấu phẩy)";
+$lang["messages_phone"] = "Số điện thoại";
+$lang["messages_phone_number_required"] = "Cần số điện thoại";
+$lang["messages_phone_placeholder"] = "Các số di động ở đây...";
+$lang["messages_sms_send"] = "Gửi SMS";
+$lang["messages_successfully_sent"] = "Tin nhắn được gửi thành công cho: ";
+$lang["messages_unsuccessfully_sent"] = "Tin nhắn được gửi không thành công cho: ";
