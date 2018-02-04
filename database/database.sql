@@ -39,7 +39,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('barcode_second_row', 'item_code'),
 ('barcode_third_row', 'unit_price'),
 ('barcode_num_in_row', '2'),
-('barcode_page_width', '100'),
+('barcode_page_width', '100'),      
 ('barcode_page_cellspacing', '20'),
 ('barcode_generate_if_empty', '0'),
 ('receipt_show_company_name', '1'),
@@ -997,7 +997,7 @@ ALTER TABLE `ospos_item_quantities`
 --
 ALTER TABLE `ospos_suppliers`
   ADD CONSTRAINT `ospos_suppliers_ibfk_1` FOREIGN KEY (`person_id`) REFERENCES `ospos_people` (`person_id`);
-
+  
 --
 -- Constraints for table `ospos_giftcards`
 --
