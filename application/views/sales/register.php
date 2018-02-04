@@ -542,7 +542,7 @@ if(isset($success))
 							{
 							?>
 								<div class="col-xs-6">
-									<label for="email-receipt" class="control-label checkbox">
+									<label for="email_receipt" class="control-label checkbox">
 										<?php echo form_checkbox(array('name'=>'email_receipt', 'id'=>'email_receipt', 'value'=>1, 'checked'=>$email_receipt)); ?>
 										<?php echo $this->lang->line('sales_email_receipt');?>
 									</label>
@@ -573,7 +573,7 @@ if(isset($success))
 						<div class="form-group form-group-sm">
 
 							<div class="col-xs-6">
-								<label class="control-label checkbox" for="sales_invoice_enable">
+								<label for="sales_invoice_enable" class="control-label checkbox">
 									<?php echo form_checkbox(array('name'=>'sales_invoice_enable', 'id'=>'sales_invoice_enable', 'value'=>1, 'checked'=>$invoice_number_enabled)); ?>
 									<?php echo $this->lang->line('sales_invoice_enable');?>
 								</label>
