@@ -1,7 +1,7 @@
 <?php 
 
-$lang["taxes_add_exception"] = "Add Exception";
-$lang["taxes_confirm_delete"] = "Confirm deletion of tax code";
+$lang["taxes_add_exception"] = "İstisna Əlavə Et";
+$lang["taxes_confirm_delete"] = "Siz Vergi Kodunu silməyə əminsiniz? Bu əməliyyat yenidən bərpa edilə bilməz";
 $lang["taxes_default_tax_category"] = "Default Tax Category";
 $lang["taxes_error_adding_updating"] = "Error adding/updating tax code";
 $lang["taxes_new"] = "New Tax Code";
