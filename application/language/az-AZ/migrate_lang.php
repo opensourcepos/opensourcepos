@@ -1,7 +1,7 @@
 <?php 
 
-$lang["migrate_backup"] = "Be sure to back up your database before applying any database upgrades.";
-$lang["migrate_failed"] = "The migration did not complete.";
-$lang["migrate_info"] = "Click on Start Migration only if you are ready to apply all database changes and data upgrades to your database";
+$lang["migrate_backup"] = "Hər hansı bir məlumat bazasını yeniləmədən öncə əmin olun ki məlumat bazası yaddaşda saxlanılmışdır.";
+$lang["migrate_failed"] = "Yer dəyişmə uğursuz alındı";
+$lang["migrate_info"] = "Yalnız hazır olduqdan sonra bütun məlumat bazasına dəyişikliklər və məlumat bazasını yeniləmək tətbiqi üçün Köçurməyə Başla düyməsinə basın.";
 $lang["migrate_start"] = "Start Migration ";
-$lang["migrate_success"] = "Migration completed successfully";
+$lang["migrate_success"] = "Köçurülmə Uğurlu Alındı";
