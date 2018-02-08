@@ -2,10 +2,10 @@
 
 $lang["taxes_add_exception"] = "İstisna Əlavə Et";
 $lang["taxes_confirm_delete"] = "Siz Vergi Kodunu silməyə əminsiniz? Bu əməliyyat yenidən bərpa edilə bilməz";
-$lang["taxes_default_tax_category"] = "Default Tax Category";
-$lang["taxes_error_adding_updating"] = "Error adding/updating tax code";
-$lang["taxes_new"] = "New Tax Code";
-$lang["taxes_no_taxes_to_display"] = "No taxes code available to display";
+$lang["taxes_default_tax_category"] = "Cari Vergi Kategoriyası";
+$lang["taxes_error_adding_updating"] = "Vergi Kodu Əlavəsi ya da uğursuz yeniləmə";
+$lang["taxes_new"] = "Yeni Vergi Kodu";
+$lang["taxes_no_taxes_to_display"] = "Göstərmək Üçün uyğun Vergi Kodu yoxdur.";
 $lang["taxes_round_half_down"] = "Half Down";
 $lang["taxes_round_half_even"] = "Half Even";
 $lang["taxes_round_half_odd"] = "Half Odd";
