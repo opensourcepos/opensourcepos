@@ -152,7 +152,7 @@ More info [on maintaining a docker](https://github.com/opensourcepos/opensourcep
 Language Translations
 ---------------------
 
-To help us with OSPOS translations please use [Weblate website here](http://weblate.jpeelaer.net) and sign up. After registering you can subscribe to different languages and you will be notified once a new translation is added.
+To help us with OSPOS translations please use [Weblate website here](http://translate.opensourcepos.org) and sign up. After registering you can subscribe to different languages and you will be notified once a new translation is added.
 
 Please also read the [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Adding-translations) to find our Translations Guideline.
 
