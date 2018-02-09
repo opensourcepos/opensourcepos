@@ -1,16 +1,16 @@
 <?php 
 
-$lang["config_address"] = "Company Address";
-$lang["config_address_required"] = "Company address is a required field.";
-$lang["config_allow_duplicate_barcodes"] = "Allow Duplicate Barcodes";
-$lang["config_apostrophe"] = "apostrophe";
-$lang["config_backup_button"] = "Backup";
-$lang["config_backup_database"] = "Backup Database";
-$lang["config_barcode"] = "Barcode";
-$lang["config_barcode_company"] = "Company Name";
-$lang["config_barcode_configuration"] = "Barcode Configuration";
-$lang["config_barcode_content"] = "Barcode Content";
-$lang["config_barcode_first_row"] = "Row 1";
+$lang["config_address"] = "Адрес на компанията";
+$lang["config_address_required"] = "Адресът на компанията е задължително поле.";
+$lang["config_allow_duplicate_barcodes"] = "Разрешаване на дублирани баркодове";
+$lang["config_apostrophe"] = "апостроф";
+$lang["config_backup_button"] = "резервно копие";
+$lang["config_backup_database"] = "Резервно копие база данни";
+$lang["config_barcode"] = "Баркод";
+$lang["config_barcode_company"] = "Име на компанията";
+$lang["config_barcode_configuration"] = "Конфигуриране на баркод";
+$lang["config_barcode_content"] = "Съдържание на баркод";
+$lang["config_barcode_first_row"] = "Ред 1";
 $lang["config_barcode_font"] = "Font";
 $lang["config_barcode_formats"] = "Input Formats";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty.";
@@ -147,7 +147,7 @@ $lang["config_license"] = "License";
 $lang["config_license_configuration"] = "License Statement";
 $lang["config_line_sequence"] = "Line Sequence";
 $lang["config_lines_per_page"] = "Lines per Page";
-$lang["config_lines_per_page_number"] = "";
+$lang["config_lines_per_page_number"] = "Линиите на страница трябва да са число.";
 $lang["config_lines_per_page_required"] = "Lines per Page is a required field.";
 $lang["config_locale"] = "Localization";
 $lang["config_locale_configuration"] = "Localization Configuration";
