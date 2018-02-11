@@ -7,6 +7,7 @@ $lang["reports_categories_summary_report"] = "Categories Summary Report";
 $lang["reports_category"] = "Category";
 $lang["reports_code_canceled"] = "CNL";
 $lang["reports_code_invoice"] = "INV";
+$lang["reports_code_pos"] = "POS";
 $lang["reports_code_quote"] = "Q";
 $lang["reports_code_return"] = "RET";
 $lang["reports_code_type"] = "Type";

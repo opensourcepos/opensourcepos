@@ -780,22 +780,41 @@ class Reports extends Secure_Controller
 	public function specific_customer_input()
 	{
 		$data = array();
-		$data['specific_input_name'] = $this->lang->line('reports_customer');
-
+		$data['specific_input_name'] = $this->lang->line('reports_customer');		
 		$customers = array();
 		foreach($this->Customer->get_all()->result() as $customer)
 		{		
-			$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name);
+			if(isset($customer->company_name))
+				{	
+					$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name. ' ' . ' [ '.$customer->company_name.' ] ');
+				}
+			else
+				{
+					$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name);
+				}
 		}
 		$data['specific_input_data'] = $customers;
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
-		$this->load->view('reports/specific_input', $data);
+		$data['payment_type'] = $this->get_payment_type();		
+		$this->load->view('reports/specific_customer_input', $data);
 	}
+	
+	public function get_payment_type()
+	{		
+			$payment_type = array( 'all' => $this->lang->line('common_none_selected_text'),
+					'cash' => $this->lang->line('sales_cash'),
+					'due' => $this->lang->line('sales_due'),
+					'check' => $this->lang->line('sales_check'),
+					'credit' => $this->lang->line('sales_credit'),
+					'debit' => $this->lang->line('sales_debit'),
+					'invoices' => $this->lang->line('sales_invoice'));
+			return $payment_type;		
+	}	
 
-	public function specific_customer($start_date, $end_date, $customer_id, $sale_type)
+	public function specific_customer($start_date, $end_date, $customer_id, $sale_type, $payment_type)
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type);
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type);
 		
 		$this->load->model('reports/Specific_customer');
 		$model = $this->Specific_customer;
@@ -823,7 +842,7 @@ class Reports extends Secure_Controller
 			}
 
 			$summary_data[] = $this->xss_clean(array(
-				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
@@ -865,10 +884,20 @@ class Reports extends Secure_Controller
 		}
 
 		$customer_info = $this->Customer->get_info($customer_id);
+		if(!empty($customer_info->company_name))
+		{
+			$customer_name ='[ '.$customer_info->company_name.' ]';
+		}
+		else
+		{
+		$customer_name = $customer_info->company_name;
+		}		
+		
 		$data = array(
 			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . $this->lang->line('reports_report')),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
+			'editable' => 'sales',
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
 			'details_data_rewards' => $details_data_rewards,
@@ -924,7 +953,7 @@ class Reports extends Secure_Controller
 			}
 
 			$summary_data[] = $this->xss_clean(array(
-				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
@@ -970,6 +999,7 @@ class Reports extends Secure_Controller
 			'title' => $this->xss_clean($employee_info->first_name . ' ' . $employee_info->last_name . ' ' . $this->lang->line('reports_report')),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'headers' => $headers,
+			'editable' => 'sales',
 			'summary_data' => $summary_data,
 			'details_data' => $details_data,
 			'details_data_rewards' => $details_data_rewards,
