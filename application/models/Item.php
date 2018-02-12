@@ -600,7 +600,7 @@ class Item extends CI_Model
 	public function get_stock_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
-		$non_kit = array(ITEM, ITEM_PRICE_BASED);
+		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select($this->get_search_suggestion_format('item_id, name'));
 		$this->db->from('items');
@@ -710,7 +710,7 @@ class Item extends CI_Model
 	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
-		$non_kit = array(ITEM, ITEM_PRICE_BASED);
+		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
 		$this->db->select('item_id, name');
 		$this->db->from('items');
