@@ -178,6 +178,13 @@ if (isset($error_message))
 		}
 		?>
 	</table>
+	<div id="terms">
+		<div id="sale_return_policy">
+			<h5>
+				<textarea rows="5" cols="6"><?php echo $this->lang->line('sales_comments'). ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></textarea>
+			</h5>
+		</div>
+	</div>
 </div>
 
 <script type="text/javascript">
