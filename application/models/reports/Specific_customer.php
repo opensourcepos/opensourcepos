@@ -48,7 +48,6 @@ class Specific_customer extends Report
 	{
 		$this->db->select('sale_id,
 			MAX(CASE
-			WHEN sale_type = ' . SALE_TYPE_POS . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_pos') . '\'			
 			WHEN sale_type = ' . SALE_TYPE_INVOICE . ' && sale_status = ' . COMPLETED . ' THEN \'' . $this->lang->line('reports_code_invoice') . '\'
 			WHEN sale_type = ' . SALE_TYPE_WORK_ORDER . ' && sale_status = ' . SUSPENDED . ' THEN \'' . $this->lang->line('reports_code_work_order') . '\'
 			WHEN sale_type = ' . SALE_TYPE_QUOTE . ' && sale_status = ' . SUSPENDED . ' THEN \'' . $this->lang->line('reports_code_quote') . '\'
@@ -68,15 +67,46 @@ class Specific_customer extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
-		$this->db->where('customer_id', $inputs['customer_id']);
+		$this->db->where('customer_id', $inputs['customer_id']);  
+		
+		if($inputs['payment_type'] == 'cash')
+		{
+			$this->db->group_start();
+				$this->db->like('payment_type', $this->lang->line('sales_cash'));
+			$this->db->group_end();
+		}
+		if($inputs['payment_type'] == 'due')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_due'));
+		}
 
+		if($inputs['payment_type'] == 'check')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_check'));
+		}
+		
+		if($inputs['payment_type'] == 'credit')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_credit'));
+		}
+		if($inputs['payment_type'] == 'debit')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_debit'));
+		}		
+		
+		if($inputs['payment_type'] == 'invoices')
+		{
+			$this->db->where('sale_type', SALE_TYPE_INVOICE);
+		}
+
+		
 		if($inputs['sale_type'] == 'complete')
 		{
 			$this->db->where('sale_status', COMPLETED);
 			$this->db->group_start();
 			$this->db->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-			$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+			$this->db->or_where('sale_type', SALE_TYPE_RETURN);			
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'sales')
@@ -85,6 +115,7 @@ class Specific_customer extends Report
 			$this->db->group_start();
 			$this->db->where('sale_type', SALE_TYPE_POS);
 			$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+			
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
@@ -135,7 +166,35 @@ class Specific_customer extends Report
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where('customer_id', $inputs['customer_id']);
+		if($inputs['payment_type'] == 'cash')
+		{
+			$this->db->group_start();
+				$this->db->like('payment_type', $this->lang->line('sales_cash'));
+			$this->db->group_end();
+		}
+		if($inputs['payment_type'] == 'due')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_due'));
+		}
 
+		if($inputs['payment_type'] == 'check')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_check'));
+		}
+		
+		if($inputs['payment_type'] == 'credit')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_credit'));
+		}
+		if($inputs['payment_type'] == 'debit')
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_debit'));
+		}
+		if($inputs['payment_type'] == 'invoices')
+		{
+			$this->db->where('sale_type', SALE_TYPE_INVOICE);
+		}
+		
 		if($inputs['sale_type'] == 'complete')
 		{
 			$this->db->where('sale_status', COMPLETED);
@@ -171,7 +230,7 @@ class Specific_customer extends Report
 		{
 			$this->db->where('sale_status', COMPLETED);
 			$this->db->where('sale_type', SALE_TYPE_RETURN);
-		}
+		}		
 
 		return $this->db->get()->row_array();
 	}
