@@ -69,35 +69,14 @@ class Specific_customer extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->where('customer_id', $inputs['customer_id']);  
 		
-		if($inputs['payment_type'] == 'cash')
+		if ($inputs['payment_type'] != 'all') 
 		{
-			$this->db->group_start();
-				$this->db->like('payment_type', $this->lang->line('sales_cash'));
-			$this->db->group_end();
+			$this->db->like('payment_type', $this->lang->line('sales_'.$inputs['payment_type']));
 		}
-		if($inputs['payment_type'] == 'due')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_due'));
-		}
-
-		if($inputs['payment_type'] == 'check')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_check'));
-		}
-		
-		if($inputs['payment_type'] == 'credit')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_credit'));
-		}
-		if($inputs['payment_type'] == 'debit')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_debit'));
-		}		
-		
-		if($inputs['payment_type'] == 'invoices')
+		elseif($inputs['payment_type'] == 'invoices')
 		{
 			$this->db->where('sale_type', SALE_TYPE_INVOICE);
-		}
+		}	
 
 		
 		if($inputs['sale_type'] == 'complete')
@@ -166,34 +145,15 @@ class Specific_customer extends Report
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
 		$this->db->where('customer_id', $inputs['customer_id']);
-		if($inputs['payment_type'] == 'cash')
-		{
-			$this->db->group_start();
-				$this->db->like('payment_type', $this->lang->line('sales_cash'));
-			$this->db->group_end();
-		}
-		if($inputs['payment_type'] == 'due')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_due'));
-		}
-
-		if($inputs['payment_type'] == 'check')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_check'));
-		}
 		
-		if($inputs['payment_type'] == 'credit')
+		if ($inputs['payment_type'] != 'all') 
 		{
-			$this->db->like('payment_type', $this->lang->line('sales_credit'));
+			$this->db->like('payment_type', $this->lang->line('sales_'.$inputs['payment_type']));
 		}
-		if($inputs['payment_type'] == 'debit')
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_debit'));
-		}
-		if($inputs['payment_type'] == 'invoices')
+		elseif($inputs['payment_type'] == 'invoices')
 		{
 			$this->db->where('sale_type', SALE_TYPE_INVOICE);
-		}
+		}	
 		
 		if($inputs['sale_type'] == 'complete')
 		{
