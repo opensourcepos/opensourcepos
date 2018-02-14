@@ -890,7 +890,7 @@ class Reports extends Secure_Controller
 		}
 		else
 		{
-		$customer_name = $customer_info->company_name;
+			$customer_name = $customer_info->company_name;
 		}		
 		
 		$data = array(
