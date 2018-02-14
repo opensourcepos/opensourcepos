@@ -1,11 +1,11 @@
 <?php 
 
-$lang["customers_account_number"] = "Account #";
+$lang["customers_account_number"] = "Codice Fiscale";
 $lang["customers_account_number_duplicate"] = "Il numero dell'account è già presente nel database.";
 $lang["customers_available_points"] = "Punti Disponibili";
 $lang["customers_average"] = "Spesa media";
 $lang["customers_avg_discount"] = "Sconto medio";
-$lang["customers_basic_information"] = "Information";
+$lang["customers_basic_information"] = "Informazioni";
 $lang["customers_cannot_be_deleted"] = "Non puoi eliminare i clienti selezionati, alcuni di questi hanno delle vendite.";
 $lang["customers_company_name"] = "Compagnia";
 $lang["customers_confirm_delete"] = "Sei sicuro che vuoi eliminare i clienti selezionati?";
@@ -17,7 +17,7 @@ $lang["customers_excel_import_failed"] = "Importazione Excel fallita";
 $lang["customers_excel_import_nodata_wrongformat"] = "Il file caricato non ha dati o non è formattato correttamente.";
 $lang["customers_excel_import_partially_failed"] = "Importazione dei clienti è corretta con dei fallimenti:";
 $lang["customers_excel_import_success"] = "Importazione dei clienti Corretta.";
-$lang["customers_import_items_excel"] = "Importazione dei clienti da Excell";
+$lang["customers_import_items_excel"] = "Importazione dei clienti da Excel";
 $lang["customers_mailchimp_activity_click"] = "Email click";
 $lang["customers_mailchimp_activity_lastopen"] = "Ultima mail aperta";
 $lang["customers_mailchimp_activity_open"] = "Email open";
