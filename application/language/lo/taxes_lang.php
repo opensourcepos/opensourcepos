@@ -2,6 +2,7 @@
 
 $lang["taxes_add_exception"] = "Add Exception";
 $lang["taxes_confirm_delete"] = "Are you sure you want to delete this Tax Code? This action cannot be undone.";
+$lang["taxes_confirm_restore"] = "";
 $lang["taxes_default_tax_category"] = "Default Tax Category";
 $lang["taxes_error_adding_updating"] = "Tax Code add or update failed.";
 $lang["taxes_new"] = "New Tax Code";

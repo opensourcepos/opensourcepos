@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Kann gewählte Lieferanten nicht lösche
 $lang["suppliers_company_name"] = "Firmenname";
 $lang["suppliers_company_name_required"] = "Firmenname ist erforderlich";
 $lang["suppliers_confirm_delete"] = "Wollen Sie die gewählten Lieferanten löschen?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern";
 $lang["suppliers_new"] = "Neuer Lieferant";
 $lang["suppliers_none_selected"] = "Sie haben keinen Lieferanten zum Löschen ausgewählt";

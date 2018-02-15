@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Mal Əlavə Etmək";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Mal(lar) silinə bilməz.";
 $lang["item_kits_confirm_delete"] = "Siz əminsiniz ki seçilmiş malları silmək istəyirsiniz?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Malın Təsviri";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Mal yeniləmək və ya əlavə etməkdə səhv var.";

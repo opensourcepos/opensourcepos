@@ -2,8 +2,6 @@
 
 $lang["common_address_1"] = "Ünvan 1 ";
 $lang["common_address_2"] = "Ünvan 2";
-$lang["common_address_1"] = "Ünvan 1 ";
-$lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "Şəhər";
 $lang["common_close"] = "Bağlı";
 $lang["common_comments"] = "Rəylər";
@@ -53,6 +51,7 @@ $lang["common_price"] = "Qiymət";
 $lang["common_print"] = "Çap";
 $lang["common_remove"] = "Silmək";
 $lang["common_required"] = "Tələb olunan";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Geri qaytarmaq haqqında nizamnamə";
 $lang["common_search"] = "Axtarış";
 $lang["common_search_options"] = "Axtarış variantları";
@@ -65,3 +64,5 @@ $lang["common_view_recent_sales"] = "Son Satışları Göstər";
 $lang["common_website"] = "Web-adres";
 $lang["common_welcome"] = "Xoş Gəlmisiniz";
 $lang["common_welcome_message"] = "OSPOS-a Xoş gəlmisiniz, başlamaq üçün bir modula basın.";
+$lang["common_you_are_using_ospos"] = "";
+$lang["common_zip"] = "";

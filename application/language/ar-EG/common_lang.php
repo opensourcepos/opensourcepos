@@ -51,6 +51,7 @@ $lang["common_price"] = "السعر";
 $lang["common_print"] = "طباعة";
 $lang["common_remove"] = "إزالة";
 $lang["common_required"] = "مطلوب";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "سياسة الاسترجاع";
 $lang["common_search"] = "بحث";
 $lang["common_search_options"] = "خيارات البحث";

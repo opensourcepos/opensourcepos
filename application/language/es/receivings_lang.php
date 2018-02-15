@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "Requisición";
 $lang["receivings_return"] = "Devolver";
 $lang["receivings_select_supplier"] = "Seleccionar Proveedor (Opcional)";
 $lang["receivings_start_typing_supplier_name"] = "Empieza a escribir el nombre del proveedor...";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Inventario de Destino";
 $lang["receivings_stock_locaiton"] = "Ubicación de Inventario";
 $lang["receivings_stock_source"] = "Inventario de Origen";

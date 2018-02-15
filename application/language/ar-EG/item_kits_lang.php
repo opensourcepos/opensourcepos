@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "إضافة مجموعة";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "لايمكن حذف مجموعة/مجموعات";
 $lang["item_kits_confirm_delete"] = "هل أنت متأكد أنك تريد حذف المجموعة؟";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "وصف المجموعة";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "خطاء فى إضافة/تحديث المجموعة";

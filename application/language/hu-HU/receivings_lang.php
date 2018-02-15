@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "Átadás";
 $lang["receivings_return"] = "Visszáru";
 $lang["receivings_select_supplier"] = "Beszállitó kiválasztása (opcionális)";
 $lang["receivings_start_typing_supplier_name"] = "Kezdje gépelni a beszállitó nevét";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Célraktár";
 $lang["receivings_stock_locaiton"] = "Raktár helyszin";
 $lang["receivings_stock_source"] = "Raktár forrás";

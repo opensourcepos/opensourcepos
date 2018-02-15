@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "เหิ่มสินคัา";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "ไม่สามารถลบได้";
 $lang["item_kits_confirm_delete"] = "แน่ใจหรือไม่ที่จะลบสินค้าหมู่ที่ถูกเลือก?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "แนะนำสินค้าหมู่";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "เพิ่ม/ปรับปรุงสินค้าหมู่ล้มเหลว";

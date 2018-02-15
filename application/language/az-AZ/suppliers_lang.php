@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "təchizatçı silmək olmaz onlar bəzis
 $lang["suppliers_company_name"] = "Kompaniyanın Adı";
 $lang["suppliers_company_name_required"] = "Kompaniyanın adı və mütləq məsafə.";
 $lang["suppliers_confirm_delete"] = "Siz əminsiniz ki seçilmiş təchizatçıları silmək istəyirsiniz?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Təchizatçı əlavə etməkdə və yeniləməkdə səhv var.";
 $lang["suppliers_new"] = "Yeni Təchizatçı";
 $lang["suppliers_none_selected"] = "Siz silmək üçün heç bir təchizatçı seçmədiniz.";

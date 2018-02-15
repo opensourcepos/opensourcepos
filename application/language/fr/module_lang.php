@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Paramètres";
 $lang["module_config_desc"] = "Paramètres de la boutique";
 $lang["module_customers"] = "Clients";
 $lang["module_customers_desc"] = "Ajouter, Éditer, Supprimer, et Chercher des clients";
 $lang["module_employees"] = "Employés";
 $lang["module_employees_desc"] = "Ajouter, Éditer, Supprimer, et Chercher des employés";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Cartes Cadeau";
 $lang["module_giftcards_desc"] = "Ajouter, Éditer, Supprimer, et Chercher des cartes cadeau";
 $lang["module_home"] = "Accueil";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Articles vendus en Kits";
 $lang["module_item_kits_desc"] = "Ajouter, Éditer, Supprimer, et Chercher des articles vendus en kits";
 $lang["module_items"] = "Articles vendus";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Messages";
 $lang["module_messages_desc"] = "Envoyer un message aux Client, Fournisseurs, Employés et al.";
 $lang["module_migrate"] = "";
 $lang["module_migrate_desc"] = "";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Entrées Stock";
 $lang["module_receivings_desc"] = "Gérer les ordres d'achat";
 $lang["module_reports"] = "Rapports";

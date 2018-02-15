@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Impossible de supprimer le(s) fournisseu
 $lang["suppliers_company_name"] = "Nom d'Entreprise";
 $lang["suppliers_company_name_required"] = "Le Nom d'Entreprise est un champ requis";
 $lang["suppliers_confirm_delete"] = "Etes vous sûr(e) de vouloir supprimer ce(s) fournisseur(s)?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Error lors de l'ajout/suppression de fournisseur";
 $lang["suppliers_new"] = "Nouveau Fournisseur";
 $lang["suppliers_none_selected"] = "Vous n'avez pas sélectionné de fournisseur à supprimer";

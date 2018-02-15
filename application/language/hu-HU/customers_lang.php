@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Nem lehet törölni a kiválasztott vevőket, mert néhánynak már van eladása.";
 $lang["customers_company_name"] = "Cég neve.";
 $lang["customers_confirm_delete"] = "Biztos törölni kívánja a kiválasztott vevőket?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Vevő";
 $lang["customers_discount"] = "Kedvezmény";
 $lang["customers_email_duplicate"] = "";

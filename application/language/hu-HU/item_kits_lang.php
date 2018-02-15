@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Termék hozzáadása";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Termékcsomag(ok) nem törölhető(ek)";
 $lang["item_kits_confirm_delete"] = "Biztos, hogy törli a kiválasztott csomagokat?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Termékcsomag leírás";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Hiba a termékcsomag hozzáadásánál/módosításánál";

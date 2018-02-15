@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Eliminazione del fornitore/i non possibi
 $lang["suppliers_company_name"] = "Nome della ditta";
 $lang["suppliers_company_name_required"] = "Nome della ditta è un campo obbligatorio.";
 $lang["suppliers_confirm_delete"] = "Sei sicuro di voler eliminare il/i Fonritore/i selezionati?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Fallito aggiornamento o aggiunta Fornitore.";
 $lang["suppliers_new"] = "Nuovo Fornitore";
 $lang["suppliers_none_selected"] = "Non hai selezionato alcun Fornitore da eliminare.";

@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Добавить товар";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Не могу удалить Товара комплект (ы)";
 $lang["item_kits_confirm_delete"] = "Вы уверены, что хотите удалить выбранные товар? комплекты";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Описание товара Комплект";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Ошибка при добавлении/обновлении товара комплекта";

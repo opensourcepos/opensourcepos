@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Postavke";
 $lang["module_config_desc"] = "Promijeni postavke";
 $lang["module_customers"] = "Kupci";
 $lang["module_customers_desc"] = "Dodaj, ažuriraj, obriši ili traži kupce";
 $lang["module_employees"] = "Radnici";
 $lang["module_employees_desc"] = "Dodaj, ažuriraj, obriši ili traži radnike";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Poklon bon";
 $lang["module_giftcards_desc"] = "Dodaj, ažuriraj, obriši ili traži poklon bon";
 $lang["module_home"] = "Početna";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Normativi";
 $lang["module_item_kits_desc"] = "Dodaj, ažuriraj, obriši ili traži normative";
 $lang["module_items"] = "Artikli";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Messages";
 $lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
 $lang["module_migrate"] = "";
 $lang["module_migrate_desc"] = "";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Primka";
 $lang["module_receivings_desc"] = "Dodaj, ažuriraj, obriši ili traži primke";
 $lang["module_reports"] = "Izvještaji";

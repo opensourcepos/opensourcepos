@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Could not delete selected Supplier(s). O
 $lang["suppliers_company_name"] = "Company Name";
 $lang["suppliers_company_name_required"] = "Company Name is a required field.";
 $lang["suppliers_confirm_delete"] = "Are you sure you want to delete the selected Supplier(s)?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Supplier update or add failed.";
 $lang["suppliers_new"] = "New Supplier";
 $lang["suppliers_none_selected"] = "You have not selected Supplier(s) to delete.";

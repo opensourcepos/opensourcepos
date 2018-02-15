@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Kunde kann nicht gelöscht werden, ein oder mehrere Kunden weisen Verkäufe auf";
 $lang["customers_company_name"] = "Firmenname";
 $lang["customers_confirm_delete"] = "Wollen Sie die gewählten Kunden wirklich löschen?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Kunde";
 $lang["customers_discount"] = "Discount";
 $lang["customers_email_duplicate"] = "";

@@ -51,6 +51,7 @@ $lang["common_price"] = "ราคา";
 $lang["common_print"] = "พิมพ์";
 $lang["common_remove"] = "ลบ";
 $lang["common_required"] = "ต้องกรอก";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "นโยบายคืนสินค้า";
 $lang["common_search"] = "ค้นหา";
 $lang["common_search_options"] = "Search options";

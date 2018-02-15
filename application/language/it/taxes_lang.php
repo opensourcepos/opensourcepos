@@ -2,6 +2,7 @@
 
 $lang["taxes_add_exception"] = "Aggiungi Eccezione";
 $lang["taxes_confirm_delete"] = "Sei sicuro che vuoi eliminare questo Codice Tassa? Questa operazione non può essere annullata.";
+$lang["taxes_confirm_restore"] = "";
 $lang["taxes_default_tax_category"] = "Categoria Tassa Default";
 $lang["taxes_error_adding_updating"] = "Codice Tassa aggiunto o aggiornamento Fallito.";
 $lang["taxes_new"] = "Nuovo Codice Tassa";

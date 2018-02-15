@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Dodaj artikl";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Ne možete obrisati normativ(e)";
 $lang["item_kits_confirm_delete"] = "Jeste li sigurni da želite obrisati normativ";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Opis normativa";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Greška kod dodavanja/ažuriranja normativa";

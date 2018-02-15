@@ -51,6 +51,7 @@ $lang["common_price"] = "Pris";
 $lang["common_print"] = "";
 $lang["common_remove"] = "";
 $lang["common_required"] = "";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "";
 $lang["common_search"] = "";
 $lang["common_search_options"] = "";

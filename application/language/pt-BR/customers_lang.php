@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Não foi possível excluir clientes selecionados um ou mais dos Clientes selecionados tem vendas.";
 $lang["customers_company_name"] = "Empresa";
 $lang["customers_confirm_delete"] = "Tem certeza de que deseja excluir os clientes selecionados?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Cliente";
 $lang["customers_discount"] = "Desconto";
 $lang["customers_email_duplicate"] = "";

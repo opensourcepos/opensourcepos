@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Configuración de la Tienda";
 $lang["module_config_desc"] = "Cambiar la configuración de OSPOS.";
 $lang["module_customers"] = "Clientes";
 $lang["module_customers_desc"] = "Agregar, Actualizar, Borrar y Buscar Clientes.";
 $lang["module_employees"] = "Empleados";
 $lang["module_employees_desc"] = "Agregar, Actualizar, Borrar y Buscar Empleados.";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Tarjetas de Regalo";
 $lang["module_giftcards_desc"] = "Agregar, Actualizar, Borrar y Buscar Tarjetas de Regalo.";
 $lang["module_home"] = "Inicio";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Kits de Artículos";
 $lang["module_item_kits_desc"] = "Agregar, Actualizar, Borrar y Buscar Kits de Artículos.";
 $lang["module_items"] = "Artículos";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Mensajes";
 $lang["module_messages_desc"] = "Enviar mensajes a Clientes, Proveedores, Empleados.";
 $lang["module_migrate"] = "Migrar";
 $lang["module_migrate_desc"] = "Actualizar la base de datos OSPOS.";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Recepción";
 $lang["module_receivings_desc"] = "Procesar Ordenes de Compra.";
 $lang["module_reports"] = "Reportes";

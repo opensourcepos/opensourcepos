@@ -51,6 +51,7 @@ $lang["common_price"] = "Цена";
 $lang["common_print"] = "печать";
 $lang["common_remove"] = "Снимать";
 $lang["common_required"] = "потребовал";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Возвратний полис";
 $lang["common_search"] = "Пойск";
 $lang["common_search_options"] = "Параметры поиска";

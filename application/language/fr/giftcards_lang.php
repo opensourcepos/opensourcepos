@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Tout Sérialiser";
 $lang["giftcards_change_all_to_unserialized"] = "Tout Désérialiser";
 $lang["giftcards_confirm_bulk_edit"] = "Etes vous sûr(e) de vouloir éditer toutes les cartes sélectionnés?";
 $lang["giftcards_confirm_delete"] = "Etes vous sûr(e) de vouloir supprimer ces cates?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Cout";
 $lang["giftcards_count"] = "Mise à Jour Inventaire";
 $lang["giftcards_current_quantity"] = "Quantité Restante";
