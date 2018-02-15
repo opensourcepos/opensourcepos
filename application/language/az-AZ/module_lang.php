@@ -1,7 +1,7 @@
 <?php 
 
 $lang["module_config"] = "Konfiqursiya";
-$lang["module_config_desc"] = "Maqazin konfiqurasiyasını dəyişmək";
+$lang["module_config_desc"] = "OSPOS's Konfiqurasiyasını dəyiş";
 $lang["module_customers"] = "Müştərilər";
 $lang["module_customers_desc"] = "Əlavə et,Yenilə,Sil və Müştəriləri axtar";
 $lang["module_employees"] = "Əməkdaşlar";
