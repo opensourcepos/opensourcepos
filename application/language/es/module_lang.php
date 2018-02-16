@@ -1,16 +1,16 @@
 <?php 
 
-$lang["module_both"] = "";
+$lang["module_both"] = "Ambos";
 $lang["module_config"] = "Configuración de la Tienda";
 $lang["module_config_desc"] = "Cambiar la configuración de OSPOS.";
 $lang["module_customers"] = "Clientes";
 $lang["module_customers_desc"] = "Agregar, Actualizar, Borrar y Buscar Clientes.";
 $lang["module_employees"] = "Empleados";
 $lang["module_employees_desc"] = "Agregar, Actualizar, Borrar y Buscar Empleados.";
-$lang["module_expenses"] = "";
-$lang["module_expenses_categories"] = "";
-$lang["module_expenses_categories_desc"] = "";
-$lang["module_expenses_desc"] = "";
+$lang["module_expenses"] = "Gastos";
+$lang["module_expenses_categories"] = "Categorias Gastos";
+$lang["module_expenses_categories_desc"] = "Agregar, Actualizar y Borrar Categorias de Gastos.";
+$lang["module_expenses_desc"] = "Agregar, Actualizar, Buscar y Borrar Gastos.";
 $lang["module_giftcards"] = "Tarjetas de Regalo";
 $lang["module_giftcards_desc"] = "Agregar, Actualizar, Borrar y Buscar Tarjetas de Regalo.";
 $lang["module_home"] = "Inicio";
