@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Tambah Item Barang";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Item Paket tidak dapat dihapus";
 $lang["item_kits_confirm_delete"] = "Apakah Anda yakin ingin menghapus Item Paket dipilih?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Deskripsi Item Paket";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Tambah/Ubah Item Paket tidak berhasil";

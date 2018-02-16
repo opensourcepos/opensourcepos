@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "لايمكن حذف هؤلاء العملاء، أحدهم/كلهم مرتبط/مرتبطين بمبيعات";
 $lang["customers_company_name"] = "اسم الشركة";
 $lang["customers_confirm_delete"] = "هل تريد حذف هؤلاء العملاء حقاً؟";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "العميل";
 $lang["customers_discount"] = "نسبة الخصم";
 $lang["customers_email_duplicate"] = "";

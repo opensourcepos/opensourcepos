@@ -51,6 +51,7 @@ $lang["common_price"] = "Harga";
 $lang["common_print"] = "Cetak";
 $lang["common_remove"] = "Hapus";
 $lang["common_required"] = "Diperlukan";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Kebijakan Retur";
 $lang["common_search"] = "Cari";
 $lang["common_search_options"] = "Pilihan pencarian";

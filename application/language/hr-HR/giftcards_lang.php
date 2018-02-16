@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Promijeni sve u Seralized";
 $lang["giftcards_change_all_to_unserialized"] = "Promijeni sve u Unseralized";
 $lang["giftcards_confirm_bulk_edit"] = "Jeste li sigurni da želite grupno urediti sve odabrane poklon bonove?";
 $lang["giftcards_confirm_delete"] = "Jeste li sigurni da želite obrisati sve odabrane poklon bonove?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Nabavna cijena";
 $lang["giftcards_count"] = "Ažuriraj inventuru";
 $lang["giftcards_current_quantity"] = "Trenutna količina";

@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "";
 $lang["receivings_return"] = "退貨";
 $lang["receivings_select_supplier"] = "選擇供應商 (Optional)";
 $lang["receivings_start_typing_supplier_name"] = "開始輸入供應商名稱...";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Stock destination";
 $lang["receivings_stock_locaiton"] = "倉庫地址";
 $lang["receivings_stock_source"] = "Stock source";

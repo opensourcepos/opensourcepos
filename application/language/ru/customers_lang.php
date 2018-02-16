@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Невозможно удалить выбранных клиентов, один или более из них имеет продаж.";
 $lang["customers_company_name"] = "";
 $lang["customers_confirm_delete"] = "Вы уверены, что хотите удалить выбранных клиентов?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Клиент";
 $lang["customers_discount"] = "";
 $lang["customers_email_duplicate"] = "";

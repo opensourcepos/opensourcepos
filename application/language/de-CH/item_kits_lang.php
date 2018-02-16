@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Neuer Artikel";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Konnte Artikel-Set(s) nicht löschen";
 $lang["item_kits_confirm_delete"] = "Wollen Sie die gewählten Artikel-Sets wirklich löschen?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Beschreibung Artikel-Set";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern";

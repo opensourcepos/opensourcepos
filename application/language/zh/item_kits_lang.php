@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "新增套件";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "無法刪除產品套件";
 $lang["item_kits_confirm_delete"] = "你確定你要刪除選取的產品套件嗎？";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "產品套件描述";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "新增/更新產品套件錯誤";

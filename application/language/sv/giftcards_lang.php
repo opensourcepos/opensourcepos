@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "";
 $lang["giftcards_change_all_to_unserialized"] = "";
 $lang["giftcards_confirm_bulk_edit"] = "";
 $lang["giftcards_confirm_delete"] = "";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "";
 $lang["giftcards_count"] = "";
 $lang["giftcards_current_quantity"] = "";

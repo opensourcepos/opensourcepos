@@ -51,6 +51,7 @@ $lang["common_price"] = "價值";
 $lang["common_print"] = "Print";
 $lang["common_remove"] = "移除";
 $lang["common_required"] = "Required";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "退貨政策";
 $lang["common_search"] = "搜尋";
 $lang["common_search_options"] = "Search options";

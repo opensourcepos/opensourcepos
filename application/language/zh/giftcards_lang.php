@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "全部更改序號至序列化";
 $lang["giftcards_change_all_to_unserialized"] = "全部更改序號至非序列化";
 $lang["giftcards_confirm_bulk_edit"] = "您確定您要編輯的所有選擇的禮金券嗎？";
 $lang["giftcards_confirm_delete"] = "你確定你要刪除選定的禮金券?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "成本價格";
 $lang["giftcards_count"] = "更新庫存";
 $lang["giftcards_current_quantity"] = "當前數量";

@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "เบิกสินค้า";
 $lang["receivings_return"] = "คืนสินค้า";
 $lang["receivings_select_supplier"] = "เลือกผู้ผลิต (ทางเลือก)";
 $lang["receivings_start_typing_supplier_name"] = "เริ่มต้นพิมพ์ชื่อผู้ผลิต...";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Stock destination";
 $lang["receivings_stock_locaiton"] = "สถานที่เก็บสินค้า";
 $lang["receivings_stock_source"] = "Stock source";

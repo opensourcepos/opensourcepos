@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Nem lehet törölni a beszállítót, me
 $lang["suppliers_company_name"] = "Cégnév";
 $lang["suppliers_company_name_required"] = "Cégnév kötelező mező";
 $lang["suppliers_confirm_delete"] = "Biztos, hogy törölni kívánja a kiválasztott beszállítókat?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Hiba beszállító hozzáadásánál/módosításánál";
 $lang["suppliers_new"] = "Új beszállító";
 $lang["suppliers_none_selected"] = "Nem választott ki beszállítót a törléshez";

@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Ändere alle zu serialisiert";
 $lang["giftcards_change_all_to_unserialized"] = "Ändere alle zu NICHT serialisiert";
 $lang["giftcards_confirm_bulk_edit"] = "Wollen Sie alle gewählten Gutscheine ändern?";
 $lang["giftcards_confirm_delete"] = "Wollen Sie alle gewählten Gutscheine löschen?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Einstandspreis";
 $lang["giftcards_count"] = "Bestandsänderung";
 $lang["giftcards_current_quantity"] = "Aktuelle Menge";

@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "تغيير الجميع لأرق�
 $lang["giftcards_change_all_to_unserialized"] = "تغير الجميع لأرقام غير مسلسلة";
 $lang["giftcards_confirm_bulk_edit"] = "هل أنت متأكد انك تريد تحرير كل بطاقات الهدايا المختارة؟";
 $lang["giftcards_confirm_delete"] = "هل أنت متأكد انك تريد حذف كل بطاقات الهدايا المختارة؟";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "سعر التكلفة";
 $lang["giftcards_count"] = "تحديث المخزون";
 $lang["giftcards_current_quantity"] = "الكميات الحالية";

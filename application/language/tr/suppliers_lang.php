@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Sağlayıcı silinemedi, bazı sağlayı
 $lang["suppliers_company_name"] = "Şirket Adı";
 $lang["suppliers_company_name_required"] = "Şirket Adı zorunlu alandır";
 $lang["suppliers_confirm_delete"] = "Seçili sağlayıcıları düzenlemek istiyor musunuz?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Sağlayıcı ekleme/düzenleme hatası";
 $lang["suppliers_new"] = "Yeni Sağlayıcı";
 $lang["suppliers_none_selected"] = "Silmek için sağlayıcı seçmediniz";

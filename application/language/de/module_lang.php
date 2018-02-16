@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Einstellungen";
 $lang["module_config_desc"] = "Einstellungen ändern";
 $lang["module_customers"] = "Kunden";
 $lang["module_customers_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
 $lang["module_employees"] = "Mitarbeiter";
 $lang["module_employees_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Gutscheine";
 $lang["module_giftcards_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
 $lang["module_home"] = "Home";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Artikel-Sets";
 $lang["module_item_kits_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
 $lang["module_items"] = "Artikel";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Nachrichten";
 $lang["module_messages_desc"] = "SMS an Kunden, Zuflieferer, Mitarbeiter etc. senden.";
 $lang["module_migrate"] = "";
 $lang["module_migrate_desc"] = "";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Eingänge";
 $lang["module_receivings_desc"] = "Hinzufügen, Ändern, Löschen und Suchen";
 $lang["module_reports"] = "Berichte";

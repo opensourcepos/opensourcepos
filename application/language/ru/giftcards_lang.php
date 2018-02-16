@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Заменить все в сер
 $lang["giftcards_change_all_to_unserialized"] = "Чтобы изменить все десериализуются";
 $lang["giftcards_confirm_bulk_edit"] = "Вы уверены, что хотите редактировать все выбранные Подарочные карты?";
 $lang["giftcards_confirm_delete"] = "Вы уверены, что хотите удалить выбранную Подарочные карты?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Оптовая Цена";
 $lang["giftcards_count"] = "Обновление перечня";
 $lang["giftcards_current_quantity"] = "Токовые";

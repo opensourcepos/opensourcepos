@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "";
 $lang["customers_company_name"] = "";
 $lang["customers_confirm_delete"] = "";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "";
 $lang["customers_discount"] = "";
 $lang["customers_email_duplicate"] = "";

@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Impossible de supprimer. Un ou plusiers client(s) sélectionné(s) ont des ventes.";
 $lang["customers_company_name"] = "Compagnie";
 $lang["customers_confirm_delete"] = "Etes vous sûr(e) de vouloir supprimer ces clients?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Client";
 $lang["customers_discount"] = "Rabais";
 $lang["customers_email_duplicate"] = "";

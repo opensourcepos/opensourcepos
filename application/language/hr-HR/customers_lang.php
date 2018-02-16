@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Ne može se obrisati odabranog kupca, jer jedan ili više odabranih kupaca imaju prodaju.";
 $lang["customers_company_name"] = "Naziv tvrtke";
 $lang["customers_confirm_delete"] = "Želite li obrisati odabranog kupca?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Kupac";
 $lang["customers_discount"] = "Discount";
 $lang["customers_email_duplicate"] = "";

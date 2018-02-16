@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "No se pudo borrar los proveedores selecc
 $lang["suppliers_company_name"] = "Nombre de la Compañía";
 $lang["suppliers_company_name_required"] = "Nombre de la Compañía es requerido";
 $lang["suppliers_confirm_delete"] = "¿Seguro(a) de querer borrar los proveedores seleccionados?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Error agregando/actualizando proveedor";
 $lang["suppliers_new"] = "Nuevo Proveedor";
 $lang["suppliers_none_selected"] = "No has seleccionado proveedores para borrar";

@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Ürün Ekle";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Ürün seti silinemedi";
 $lang["item_kits_confirm_delete"] = "Seçili ürün setini silmek istediğinize emin misiniz?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Ürün Seti Tanımı";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Ürün seti ekleme/güncelleme hatası";
