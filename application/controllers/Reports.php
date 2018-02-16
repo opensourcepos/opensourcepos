@@ -785,13 +785,13 @@ class Reports extends Secure_Controller
 		foreach($this->Customer->get_all()->result() as $customer)
 		{		
 			if(isset($customer->company_name))
-				{	
-					$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name. ' ' . ' [ '.$customer->company_name.' ] ');
-				}
+			{	
+				$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name. ' ' . ' [ '.$customer->company_name.' ] ');
+			}
 			else
-				{
-					$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name);
-				}
+			{
+				$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name);
+			}
 		}
 		$data['specific_input_data'] = $customers;
 		$data['sale_type_options'] = $this->get_sale_type_options();
