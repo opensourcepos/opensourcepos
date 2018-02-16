@@ -951,14 +951,27 @@ class Sales extends Secure_Controller
 		if($this->sale_lib->get_mode() == 'sale_invoice')
 		{
 			$data['mode_label'] = $this->lang->line('sales_invoice');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
 		elseif($this->sale_lib->get_mode() == 'sale_quote')
 		{
 			$data['mode_label'] = $this->lang->line('sales_quote');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
 		elseif($this->sale_lib->get_mode() == 'sale_work_order')
 		{
 			$data['mode_label'] = $this->lang->line('sales_work_order');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
+		}
+        elseif($this->sale_lib->get_mode() == 'return')
+        {
+            $data['mode_label'] = $this->lang->line('return');
+            $data['customer_required'] = $this->lang->line('sales_customer_optional');
+        }
+		else
+		{
+			$data['mode_label'] = $this->lang->line('sales_receipt');
+			$data['customer_required'] = $this->lang->line('sales_customer_optional');
 		}
 
 		return $this->xss_clean($data);
@@ -1047,19 +1060,29 @@ class Sales extends Secure_Controller
 		if($this->sale_lib->get_mode() == 'sale_invoice')
 		{
 			$data['mode_label'] = $this->lang->line('sales_invoice');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
 		elseif($this->sale_lib->get_mode() == 'sale_quote')
 		{
 			$data['mode_label'] = $this->lang->line('sales_quote');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
 		elseif($this->sale_lib->get_mode() == 'sale_work_order')
 		{
 			$data['mode_label'] = $this->lang->line('sales_work_order');
+			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
+        elseif($this->sale_lib->get_mode() == 'return')
+        {
+            $data['mode_label'] = $this->lang->line('return');
+            $data['customer_required'] = $this->lang->line('sales_customer_optional');
+        }
 		else
 		{
 			$data['mode_label'] = $this->lang->line('sales_receipt');
+			$data['customer_required'] = $this->lang->line('sales_customer_optional');
 		}
+
 		$data = $this->xss_clean($data);
 
 		$this->load->view("sales/register", $data);
