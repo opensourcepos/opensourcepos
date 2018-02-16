@@ -963,11 +963,11 @@ class Sales extends Secure_Controller
 			$data['mode_label'] = $this->lang->line('sales_work_order');
 			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
-        elseif($this->sale_lib->get_mode() == 'return')
-        {
-            $data['mode_label'] = $this->lang->line('return');
-            $data['customer_required'] = $this->lang->line('sales_customer_optional');
-        }
+		elseif($this->sale_lib->get_mode() == 'return')
+		{
+			$data['mode_label'] = $this->lang->line('return');
+			$data['customer_required'] = $this->lang->line('sales_customer_optional');
+		}
 		else
 		{
 			$data['mode_label'] = $this->lang->line('sales_receipt');
@@ -1072,11 +1072,11 @@ class Sales extends Secure_Controller
 			$data['mode_label'] = $this->lang->line('sales_work_order');
 			$data['customer_required'] = $this->lang->line('sales_customer_required');
 		}
-        elseif($this->sale_lib->get_mode() == 'return')
-        {
-            $data['mode_label'] = $this->lang->line('return');
-            $data['customer_required'] = $this->lang->line('sales_customer_optional');
-        }
+		elseif($this->sale_lib->get_mode() == 'return')
+		{
+			$data['mode_label'] = $this->lang->line('return');
+			$data['customer_required'] = $this->lang->line('sales_customer_optional');
+		}
 		else
 		{
 			$data['mode_label'] = $this->lang->line('sales_receipt');
