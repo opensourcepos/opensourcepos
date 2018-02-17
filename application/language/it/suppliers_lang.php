@@ -1,6 +1,6 @@
 <?php 
 
-$lang["suppliers_account_number"] = "Account Number";
+$lang["suppliers_account_number"] = "Partita IVA";
 $lang["suppliers_agency_name"] = "Nome Agenzia";
 $lang["suppliers_cannot_be_deleted"] = "Eliminazione del fornitore/i non possibile. Uno o più hanno delle vendite.";
 $lang["suppliers_company_name"] = "Nome della ditta";
