@@ -1,10 +1,10 @@
 <?php 
 
-$lang["receivings_cancel_receiving"] = "";
-$lang["receivings_cannot_be_deleted"] = "";
-$lang["receivings_comments"] = "siz əminsiniz ki bu alışı silmək istəyirsiz.hər şey silinəcək.";
-$lang["receivings_complete_receiving"] = "";
-$lang["receivings_confirm_cancel_receiving"] = "siz əminsiniz ki alışı göstərmək istəyirsiniz.bu ləğv oluna bilməz.";
+$lang["receivings_cancel_receiving"] = "Ləğv";
+$lang["receivings_cannot_be_deleted"] = "Qəbul olunanlar silinmədi";
+$lang["receivings_comments"] = "Rəylər";
+$lang["receivings_complete_receiving"] = "Bitirmək";
+$lang["receivings_confirm_cancel_receiving"] = "Siz əminsinizmi bu qəbul olunanları silməyinizə? Bütün mallar təmizlənəcək";
 $lang["receivings_confirm_delete"] = "dəyəri";
 $lang["receivings_confirm_finish_receiving"] = "";
 $lang["receivings_cost"] = "";
