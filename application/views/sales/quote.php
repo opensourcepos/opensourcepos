@@ -108,8 +108,10 @@ if (isset($error_message))
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
+			<th><?php echo $this->lang->line('sales_customer_discount');?></th>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
+
 		<?php
 		foreach($cart as $line=>$item)
 		{
@@ -120,6 +122,7 @@ if (isset($error_message))
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 				<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea></td>
+				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea></td>
 				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
 			</tr>
 
@@ -135,31 +138,36 @@ if (isset($error_message))
 			}
 		}
 		?>
+
 		<tr>
-			<td class="blank" colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
+			<td class="blank" colspan="7" align="center"><?php echo '&nbsp;'; ?></td>
 		</tr>
+
 		<tr>
-			<td colspan="3" class="blank-bottom"> </td>
+			<td colspan="4" class="blank-bottom"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
 		</tr>
+
 		<?php
 		foreach($taxes as $tax_group_index=>$sales_tax)
 		{
 		?>
 			<tr>
-				<td colspan="3" class="blank"> </td>
+				<td colspan="4" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php
 		}
 		?>
+
 		<tr>
-			<td colspan="3" class="blank"> </td>
+			<td colspan="4" class="blank"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
 		</tr>
+
 		<?php
 		$only_sale_check = FALSE;
 		$show_giftcard_remainder = FALSE;
@@ -170,7 +178,7 @@ if (isset($error_message))
 			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
 		?>
 			<tr>
-				<td colspan="3" class="blank"> </td>
+				<td colspan="4" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] ); ?></textarea></td>
 			</tr>
