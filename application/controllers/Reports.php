@@ -1057,7 +1057,7 @@ class Reports extends Secure_Controller
 			}
 
 			$summary_data[] = $this->xss_clean(array(
-				'id' => anchor('sales/receipt/'.$row['sale_id'], 'POS '.$row['sale_id'], array('target'=>'_blank')),
+				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
 				'sale_date' => $row['sale_date'],
 				'quantity' => to_quantity_decimals($row['items_purchased']),
