@@ -2,9 +2,9 @@
 
 $lang["config_address"] = "Kampaniyanın adresi";
 $lang["config_address_required"] = "Kampaniyanın adresi və mütləq məsafə";
-$lang["config_allow_duplicate_barcodes"] = "";
-$lang["config_apostrophe"] = "";
-$lang["config_backup_button"] = "";
+$lang["config_allow_duplicate_barcodes"] = "Dublikat barkodlara izin Ver";
+$lang["config_apostrophe"] = "Apastrof";
+$lang["config_backup_button"] = "Ehtiyyat Köçürmə";
 $lang["config_backup_database"] = "Məlumat Bazasını Ehtiyyat Yaddaşına Göndər";
 $lang["config_barcode"] = "Ştrix kod";
 $lang["config_barcode_company"] = "Şirkətin Adı";
