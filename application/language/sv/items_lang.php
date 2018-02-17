@@ -1,11 +1,11 @@
 <?php 
 
-$lang["items_add_minus"] = "";
+$lang["items_add_minus"] = "Lager att lägga till eller ta bort.";
 $lang["items_allow_alt_desciption"] = "";
-$lang["items_allow_alt_description"] = "";
-$lang["items_amount_entry"] = "";
-$lang["items_bulk_edit"] = "";
-$lang["items_buy_price_required"] = "";
+$lang["items_allow_alt_description"] = "Tillåt alternativ beskrivning";
+$lang["items_amount_entry"] = "Belopp";
+$lang["items_bulk_edit"] = "Massändra";
+$lang["items_buy_price_required"] = "Köppriset är ett obligatoriskt fält.";
 $lang["items_cannot_be_deleted"] = "";
 $lang["items_cannot_find_item"] = "";
 $lang["items_category"] = "";
