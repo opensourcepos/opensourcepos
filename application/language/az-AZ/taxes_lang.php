@@ -1,8 +1,8 @@
 <?php 
 
 $lang["taxes_add_exception"] = "İstisna Əlavə Et";
-$lang["taxes_confirm_delete"] = "Siz Vergi Kodunu silməyə əminsiniz? Bu əməliyyat yenidən bərpa edilə bilməz";
-$lang["taxes_confirm_restore"] = "";
+$lang["taxes_confirm_delete"] = "Siz Vergi Məcəlləsini silməyə əminsinizmi? Bu əməliyyat yenidən bərpa edilə bilməz";
+$lang["taxes_confirm_restore"] = "Seçilmiş Vergi Məcəlləsini (lər) bərpa etmək istədiyinizə əminsinizmi?";
 $lang["taxes_default_tax_category"] = "Cari Vergi Kategoriyası";
 $lang["taxes_error_adding_updating"] = "Vergi Kodu Əlavəsi ya da uğursuz yeniləmə";
 $lang["taxes_new"] = "Yeni Vergi Kodu";
