@@ -159,14 +159,14 @@
 						<?php echo form_radio(array(
 							'name' => 'giftcard_number',
 							'value' => 'series',
-							'checked' => $this->config->item('giftcard_number') === "series")); ?>
+							'checked' => $this->config->item('giftcard_number') == 'series')); ?>
 						<?php echo $this->lang->line('config_giftcard_series'); ?>
 					</label>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
 							'name' => 'giftcard_number',
 							'value' => 'random',
-							'checked' => $this->config->item('giftcard_number') === "random")); ?>
+							'checked' => $this->config->item('giftcard_number') == 'random')); ?>
 						<?php echo $this->lang->line('config_giftcard_random'); ?>
 					</label>
 				</div>

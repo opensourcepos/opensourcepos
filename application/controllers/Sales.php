@@ -523,7 +523,7 @@ class Sales extends Secure_Controller
 		$data['cur_rewards_value'] = $this->sale_lib->get_rewards_remainder();
 		$data['print_after_sale'] = $this->sale_lib->is_print_after_sale();
 		$data['price_work_orders'] = $this->sale_lib->is_price_work_orders();
-		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
+		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 		$customer_id = $this->sale_lib->get_customer();
 		$invoice_number_enabled = $this->sale_lib->get_invoice_number_enabled();
 		$invoice_number = $this->sale_lib->get_invoice_number();
@@ -1016,7 +1016,7 @@ class Sales extends Secure_Controller
 		$data['amount_change'] = $data['amount_due'] * -1;
 
 		$data['comment'] = $this->sale_lib->get_comment();
-		$data['email_receipt'] = $this->sale_lib->get_email_receipt();
+		$data['email_receipt'] = $this->sale_lib->is_email_receipt();
 		$data['selected_payment_type'] = $this->sale_lib->get_payment_type();
 		if($customer_info && $this->config->item('customer_reward_enable') == TRUE)
 		{

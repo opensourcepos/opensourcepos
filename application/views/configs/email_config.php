@@ -17,7 +17,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_email_mailpath'), 'mailpath', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<?php echo form_input(array(
@@ -28,7 +28,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_email_smtp_host'), 'smtp_host', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<?php echo form_input(array(
@@ -39,7 +39,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_email_smtp_port'), 'smtp_port', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<?php echo form_input(array(
@@ -63,7 +63,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_email_smtp_timeout'), 'smtp_timeout', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-2">
 					<?php echo form_input(array(
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_email_smtp_user'), 'smtp_user', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
@@ -88,7 +88,7 @@
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_email_smtp_pass'), 'smtp_pass', array('class' => 'control-label col-xs-2')); ?>
 				<div class="col-xs-4">
 					<div class="input-group">
@@ -138,7 +138,7 @@ $(document).ready(function()
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					$("#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop("disabled", false); 
+					$("#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop("disabled", false);
 					return true;
 				},
 				success: function(response) {
@@ -149,7 +149,7 @@ $(document).ready(function()
 				dataType:'json'
 			});
 		},
-		
+
 		errorLabelContainer: "#email_error_message_box"
 	}));
 });

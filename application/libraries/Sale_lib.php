@@ -269,16 +269,15 @@ class Sale_lib
 		return $this->CI->session->userdata('sales_invoice_number_enabled');
 	}
 
-	public function is_print_after_sale()
+	public function set_price_work_orders($price_work_orders)
 	{
-		return ($this->CI->session->userdata('sales_print_after_sale') == 'true' ||
-				$this->CI->session->userdata('sales_print_after_sale') == '1');
+		return $this->CI->session->set_userdata('sales_price_work_orders', $price_work_orders);
 	}
 
 	public function is_price_work_orders()
 	{
 		return ($this->CI->session->userdata('sales_price_work_orders') == 'true' ||
-			$this->CI->session->userdata('sales_price_work_orders') == '1');
+				$this->CI->session->userdata('sales_price_work_orders') == '1');
 	}
 
 	public function set_print_after_sale($print_after_sale)
@@ -286,14 +285,21 @@ class Sale_lib
 		return $this->CI->session->set_userdata('sales_print_after_sale', $print_after_sale);
 	}
 
-	public function set_price_work_orders($price_work_orders)
+	public function is_print_after_sale()
 	{
-		return $this->CI->session->set_userdata('sales_price_work_orders', $price_work_orders);
-	}
-
-	public function get_email_receipt()
-	{
-		return $this->CI->session->userdata('sales_email_receipt');
+		if($this->CI->config->item('print_receipt_check_behaviour') == 'always')
+		{
+			return TRUE;
+		}
+		elseif($this->CI->config->item('print_receipt_check_behaviour') == 'never')
+		{
+			return FALSE;
+		}
+		else // remember last setting, session based though
+		{
+			return ($this->CI->session->userdata('sales_print_after_sale') == 'true' ||
+					$this->CI->session->userdata('sales_print_after_sale') == '1');
+		}
 	}
 
 	public function set_email_receipt($email_receipt)
@@ -304,6 +310,23 @@ class Sale_lib
 	public function clear_email_receipt()
 	{
 		$this->CI->session->unset_userdata('sales_email_receipt');
+	}
+
+	public function is_email_receipt()
+	{
+		if($this->CI->config->item('email_receipt_check_behaviour') == 'always')
+		{
+			return TRUE;
+		}
+		elseif($this->CI->config->item('email_receipt_check_behaviour') == 'never')
+		{
+			return FALSE;
+		}
+		else // remember last setting, session based though
+		{
+			return ($this->CI->session->userdata('sales_email_receipt') == 'true' ||
+					$this->CI->session->userdata('sales_email_receipt') == '1');
+		}
 	}
 
 	// Multiple Payments

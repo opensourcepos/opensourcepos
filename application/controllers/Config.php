@@ -233,7 +233,6 @@ class Config extends Secure_Controller
 		$this->load->view("configs/manage", $data);
 	}
 
-
 	public function get_tax_code_options()
 	{
 		$tax_codes = $this->Tax->get_all_tax_codes()->result_array();
@@ -246,7 +245,6 @@ class Config extends Secure_Controller
 		}
 		return $tax_code_options;
 	}
-
 
 	public function save_info()
 	{
@@ -796,7 +794,7 @@ class Config extends Secure_Controller
 			'barcode_page_width' => $this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
-			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,			
+			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,
 			'barcode_content' => $this->input->post('barcode_content'),
 			'barcode_formats' => json_encode($this->input->post('barcode_formats'))
 		);
@@ -815,6 +813,8 @@ class Config extends Secure_Controller
 		$batch_save_data = array (
 			'receipt_template' => $this->input->post('receipt_template'),
 			'receipt_font_size' => $this->input->post('receipt_font_size'),
+			'email_receipt_check_behaviour' => $this->input->post('email_receipt_check_behaviour'),
+			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,
 			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != NULL,
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,

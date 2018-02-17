@@ -217,3 +217,10 @@ DELETE FROM `ospos_app_config` WHERE `key` = 'barcode_quality';
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('derive_sale_quantity', '0');
+
+
+-- Add new config option to set print and email receipt behaviour
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('email_receipt_check_behaviour', 'last'),
+('print_receipt_check_behaviour', 'last');

@@ -34,6 +34,60 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_email_receipt_check_behaviour'), 'email_receipt_check_behaviour', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-8'>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'email_receipt_check_behaviour',
+							'value' => 'always',
+							'checked' => $this->config->item('email_receipt_check_behaviour') == 'always')); ?>
+						<?php echo $this->lang->line('config_email_receipt_check_behaviour_always'); ?>
+					</label>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'email_receipt_check_behaviour',
+							'value' => 'never',
+							'checked' => $this->config->item('email_receipt_check_behaviour') == 'never')); ?>
+						<?php echo $this->lang->line('config_email_receipt_check_behaviour_never'); ?>
+					</label>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'email_receipt_check_behaviour',
+							'value' => 'last',
+							'checked' => $this->config->item('email_receipt_check_behaviour') == 'last')); ?>
+						<?php echo $this->lang->line('config_email_receipt_check_behaviour_last'); ?>
+					</label>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_print_receipt_check_behaviour'), 'print_receipt_check_behaviour', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-8'>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'print_receipt_check_behaviour',
+							'value' => 'always',
+							'checked' => $this->config->item('print_receipt_check_behaviour') == 'always')); ?>
+						<?php echo $this->lang->line('config_print_receipt_check_behaviour_always'); ?>
+					</label>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'print_receipt_check_behaviour',
+							'value' => 'never',
+							'checked' => $this->config->item('print_receipt_check_behaviour') == 'never')); ?>
+						<?php echo $this->lang->line('config_print_receipt_check_behaviour_never'); ?>
+					</label>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+							'name' => 'print_receipt_check_behaviour',
+							'value' => 'last',
+							'checked' => $this->config->item('print_receipt_check_behaviour') == 'last')); ?>
+						<?php echo $this->lang->line('config_print_receipt_check_behaviour_last'); ?>
+					</label>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_receipt_show_company_name'), 'receipt_show_company_name', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(
