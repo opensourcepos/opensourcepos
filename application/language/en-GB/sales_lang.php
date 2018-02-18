@@ -108,6 +108,7 @@ $lang["sales_quote_number_duplicate"] = "Quote Number must be unique";
 $lang["sales_quote_sent"] = "Quote sent to";
 $lang["sales_quote_unsent"] = "Quote failed to be sent to";
 $lang["sales_receipt"] = "Sales Receipt";
+$lang["sales_receipt_no_email"] = "This customer does not have a valid email address";
 $lang["sales_receipt_number"] = "Sale #";
 $lang["sales_receipt_sent"] = "Receipt sent to";
 $lang["sales_receipt_unsent"] = "Receipt failed to be sent to";
