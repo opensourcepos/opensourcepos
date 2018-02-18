@@ -18,7 +18,7 @@
 ?>
 
 <div id="page-wrap">
-    <div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
+    <div id="header"><?php echo $this->lang->line('sales_quote'); ?></div>
     <table id="info">
         <tr>
             <td id="logo">
@@ -42,8 +42,8 @@
             <td id="meta">
                 <table align="right">
                     <tr>
-                        <td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
-                        <td><div><?php echo $invoice_number; ?></div></td>
+                        <td class="meta-head"><?php echo $this->lang->line('sales_quote_number');?> </td>
+                        <td><div><?php echo $quote_number; ?></div></td>
                     </tr>
                     <tr>
                         <td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
@@ -99,18 +99,19 @@
         <tr>
             <td colspan="4" class="blank"> </td>
             <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-            <td id="subtotal" class="total-value"><?php echo to_currency($tax_exclusive_subtotal); ?></td>
+       		<td class="total-value"><?php echo to_currency($subtotal); ?></td>
+
         </tr>
 
 		<?php
-		foreach($taxes as $name=>$value)
+		foreach($taxes as $tax_group_index=>$sales_tax)
 		{
 		?>
-            <tr>
-                <td colspan="4" class="blank"> </td>
-                <td colspan="2" class="total-line"><?php echo $name; ?></td>
-                <td id="taxes" class="total-value"><?php echo to_currency_tax($value); ?></td>
-            </tr>
+			<tr>
+				<td colspan="4" class="blank"> </td>
+				<td colspan="2" class="total-line"><?php echo $sales_tax['tax_group']; ?></td>
+				<td class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+			</tr>
 		<?php
 		}
 		?>
@@ -130,9 +131,8 @@
             </h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
         </div>
-        <div id='barcode'>
-            <img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-			<?php echo $sale_id; ?>
+        <div id='barcode'>            
+			<?php echo $quote_number; ?>
         </div>
     </div>
 </div>

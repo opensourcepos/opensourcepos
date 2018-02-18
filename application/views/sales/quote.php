@@ -31,8 +31,8 @@ if (isset($error_message))
 	</script>
 <?php endif; ?>
 
-<?php 
-	$this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer')); 
+<?php
+	$this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer'));
 
 	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
 	load_language(TRUE,array('sales','common'));
@@ -73,7 +73,7 @@ if (isset($error_message))
 			?>
 			<div>&nbsp</div>
 			<?php
-			if ($this->Appconfig->get('receipt_show_company_name')) 
+			if ($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
 				<div id="company_name"><?php echo $this->config->item('company'); ?></div>

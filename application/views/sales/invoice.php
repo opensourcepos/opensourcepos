@@ -43,7 +43,7 @@ $(document).ready(function()
 	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
-<?php 
+<?php
 	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
 	load_language(TRUE,array('sales','common'));
 ?>
@@ -64,16 +64,16 @@ $(document).ready(function()
 
 		<div id="logo">
 			<?php
-			if($this->Appconfig->get('company_logo') != '') 
+			if($this->Appconfig->get('company_logo') != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
+				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />
 			<?php
 			}
 			?>
 			<div>&nbsp</div>
 			<?php
-			if($this->Appconfig->get('receipt_show_company_name')) 
+			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
 				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
@@ -209,7 +209,7 @@ $(document).ready(function()
 		?>
 
 	</table>
-	
+
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
@@ -230,7 +230,7 @@ $(document).ready(function()
 $(window).on("load", function()
 {
 	// install firefox addon in order to use this plugin
-	if(window.jsPrintSetup) 
+	if(window.jsPrintSetup)
 	{
 		<?php if(!$this->Appconfig->get('print_header'))
 		{
@@ -239,7 +239,7 @@ $(window).on("load", function()
 			jsPrintSetup.setOption('headerStrLeft', '');
 			jsPrintSetup.setOption('headerStrCenter', '');
 			jsPrintSetup.setOption('headerStrRight', '');
-		<?php 
+		<?php
 		}
 
 		if(!$this->Appconfig->get('print_footer'))
@@ -249,8 +249,8 @@ $(window).on("load", function()
 			jsPrintSetup.setOption('footerStrLeft', '');
 			jsPrintSetup.setOption('footerStrCenter', '');
 			jsPrintSetup.setOption('footerStrRight', '');
-		<?php 
-		} 
+		<?php
+		}
 		?>
 	}
 });
