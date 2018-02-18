@@ -72,7 +72,6 @@
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
-			<th><?php echo $this->lang->line('sales_customer_discount');?></th>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 
@@ -86,7 +85,6 @@
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo $item['discount'] .'%'; ?></td>
-				<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
 				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 			</tr>
 		<?php
@@ -94,30 +92,30 @@
 		?>
 
 		<tr>
-			<td colspan="7" align="center"><?php echo '&nbsp;'; ?></td>
+			<td colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
 		</tr>
 
 		<tr>
-			<td colspan="4" class="blank"> </td>
+			<td colspan="3" class="blank"> </td>
 			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-			<td id="subtotal" class="total-value"><?php echo to_currency($subtotal); ?></td>
+			<td id="subtotal" class="total-value"><?php echo to_currency($tax_exclusive_subtotal); ?></td>
 		</tr>
 
 		<?php
-		foreach($taxes as $tax_group_index=>$sales_tax)
+		foreach($taxes as $name=>$value)
 		{
 		?>
 			<tr>
-				<td colspan="4" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo $sales_tax['tax_group']; ?></td>
-				<td id="taxes" class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+				<td colspan="3" class="blank"> </td>
+				<td colspan="2" class="total-line"><?php echo $name; ?></td>
+				<td id="taxes" class="total-value"><?php echo to_currency_tax($value); ?></td>
 			</tr>
 		<?php
 		}
 		?>
 
 		<tr>
-			<td colspan="4" class="blank"> </td>
+			<td colspan="3" class="blank"> </td>
 			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
 			<td id="total" class="total-value"><?php echo to_currency($total); ?></td>
 		</tr>
