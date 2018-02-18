@@ -7,14 +7,14 @@
 
 <body>
 <?php
-	if (isset($error_message))
+	if(isset($error_message))
 	{
 		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 		exit;
 	}
 
 	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('sales','common'));
+	load_language(TRUE, array('sales', 'common'));
 ?>
 
 <div id="page-wrap">
@@ -24,9 +24,9 @@
             <td id="logo">
 				<?php if($this->config->item('company_logo') != '')
 				{
-					?>
+				?>
                     <img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />
-					<?php
+				<?php
 				}
 				?>
             </td>
@@ -49,14 +49,15 @@
                         <td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
                         <td><div><?php echo $transaction_date; ?></div></td>
                     </tr>
-					<?php if ($amount_due > 0)
+					<?php
+					if($amount_due > 0)
 					{
-						?>
+					?>
                         <tr>
                             <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
                             <td><div class="due"><?php echo to_currency($total); ?></div></td>
                         </tr>
-						<?php
+					<?php
 					}
 					?>
                 </table>
@@ -99,8 +100,7 @@
         <tr>
             <td colspan="4" class="blank"> </td>
             <td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-       		<td class="total-value"><?php echo to_currency($subtotal); ?></td>
-
+			<td id="subtotal" class="total-value"><?php echo to_currency($subtotal); ?></td>
         </tr>
 
 		<?php
@@ -110,7 +110,7 @@
 			<tr>
 				<td colspan="4" class="blank"> </td>
 				<td colspan="2" class="total-line"><?php echo $sales_tax['tax_group']; ?></td>
-				<td class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+				<td id="taxes" class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
 			</tr>
 		<?php
 		}

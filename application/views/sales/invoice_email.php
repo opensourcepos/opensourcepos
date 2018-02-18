@@ -14,7 +14,7 @@
 	}
 
 	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('sales','common'));
+	load_language(TRUE, array('sales', 'common'));
 ?>
 
 <div id="page-wrap">
@@ -49,13 +49,14 @@
 	                <td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
 	                <td><div><?php echo $transaction_date; ?></div></td>
 	            </tr>
-	            <?php if($amount_due > 0)
+	            <?php 
+				if($amount_due > 0)
 	            {
 	            ?>
-	            <tr>
-	                <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-	                <td><div class="due"><?php echo to_currency($total); ?></div></td>
-	            </tr>
+			        <tr>
+			            <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
+			            <td><div class="due"><?php echo to_currency($total); ?></div></td>
+			        </tr>
 	            <?php
 				}
 	            ?>
