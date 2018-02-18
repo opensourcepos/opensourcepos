@@ -2,8 +2,8 @@
 
 $lang["expenses_add_item"] = "Thên chi phí";
 $lang["expenses_amount"] = "Tổng số";
-$lang["expenses_amount_number"] = "Tổng số phải là một con số";
-$lang["expenses_amount_required"] = "Expense Amount required";
+$lang["expenses_amount_number"] = "Tổng số phải là dạng số";
+$lang["expenses_amount_required"] = "Cần tổng số chi phí";
 $lang["expenses_by_category"] = "Thể loại";
 $lang["expenses_cannot_be_deleted"] = "Không thể xóa thể loại Chi phí";
 $lang["expenses_cash"] = "Tiền mặt";
@@ -17,13 +17,13 @@ $lang["expenses_confirm_restore"] = "Bạn có chắc muốn hoàn lại các Ch
 $lang["expenses_credit"] = "Thẻ tín dụng";
 $lang["expenses_credit_filter"] = "Thẻ tín dụng";
 $lang["expenses_date"] = "Ngày";
-$lang["expenses_date_number"] = "ngày tháng phải là một con số";
+$lang["expenses_date_number"] = "ngày tháng phải là dạng số";
 $lang["expenses_date_required"] = "trường ngày tháng là bắt buộc";
 $lang["expenses_debit"] = "Thẻ ghi nợ";
 $lang["expenses_debit_filter"] = "Thẻ ghi nợ";
 $lang["expenses_description"] = "Mô tả";
-$lang["expenses_due"] = "Nợ";
-$lang["expenses_due_filter"] = "Nợ";
+$lang["expenses_due"] = "Trả chậm";
+$lang["expenses_due_filter"] = "Trả chậm";
 $lang["expenses_employee"] = "Tạo bởi";
 $lang["expenses_error_adding_updating"] = "Lỗi thêm/cập nhật Chi phí";
 $lang["expenses_expense_id"] = "Mã số";
