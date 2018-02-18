@@ -5,11 +5,12 @@ application/sessions/*
 application/logs/*
 application/uploads/*
 public/license/.licenses
-public/license/bower.LICENSES
-public/dist
-dist/
-docs/
 public/bower_components
+!public/bower_components/bootswatch/*/bootstrap.min.css
+!public/dist/bootswatch/
+public/dist/bootswatch/*/*
+!public/dist/bootswatch/*/bootstrap.min.css
+!public/dist/bootswatch/fonts/
 *.patch
 patches/
 .idea/
@@ -19,7 +20,6 @@ git-svn-diff.py
 .buildpath
 .project
 .settings/*
-vendor/
 *.swp
 *.rej
 *.orig

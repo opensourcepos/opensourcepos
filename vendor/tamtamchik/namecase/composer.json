@@ -1,0 +1,50 @@
+{
+    "name": "tamtamchik/namecase",
+    "type": "library",
+    "description": "This package allows you to convert names into the correct case where possible.",
+    "keywords": [
+        "tamtamchik",
+        "namecase",
+        "strings",
+        "properly",
+        "cased"
+    ],
+    "homepage": "https://github.com/tamtamchik/namecase",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Yuri Tkachenko",
+            "email": "yuri.tam.tkachenko@gmail.com",
+            "homepage": "http://tamtamchika.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.*",
+        "scrutinizer/ocular": "1.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tamtamchik\\NameCase\\": "src"
+        },
+        "files": [
+            "src/functions.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tamtamchik\\NameCase\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "tests": "vendor/bin/phpunit",
+        "demo": "php examples/demo.php"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
