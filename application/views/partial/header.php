@@ -33,7 +33,7 @@
 		<!-- end css template tags -->
 		<!-- bower:js -->
 		<script src="bower_components/jquery/dist/jquery.js"></script>
-		<script src="bower_components/jquery-form/jquery.form.js"></script>
+		<script src="bower_components/jquery-form/src/jquery.form.js"></script>
 		<script src="bower_components/jquery-validate/dist/jquery.validate.js"></script>
 		<script src="bower_components/jquery-ui/jquery-ui.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
@@ -61,6 +61,7 @@
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
 		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
 		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+		<script src="bower_components/accounting-js/accounting.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
@@ -76,7 +77,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=1831dfe53b"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=3d4bb30c88"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a5c8dae3d1"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
