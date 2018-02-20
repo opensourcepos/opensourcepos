@@ -2,10 +2,10 @@
 
 $lang["suppliers_account_number"] = "Partita IVA";
 $lang["suppliers_agency_name"] = "Nome Agenzia";
-$lang["suppliers_cannot_be_deleted"] = "Eliminazione del fornitore/i non possibile. Uno o più hanno delle vendite.";
+$lang["suppliers_cannot_be_deleted"] = "Eliminazione del/i Fornitore/i non possibile. Uno o più hanno delle vendite.";
 $lang["suppliers_company_name"] = "Nome della ditta";
 $lang["suppliers_company_name_required"] = "Nome della ditta è un campo obbligatorio.";
-$lang["suppliers_confirm_delete"] = "Sei sicuro di voler eliminare il/i Fonritore/i selezionati?";
+$lang["suppliers_confirm_delete"] = "Sei sicuro di voler eliminare il/i Fornitore/i selezionati?";
 $lang["suppliers_confirm_restore"] = "Sei sicuro di voler ripristinare i Fornitori selezionati?";
 $lang["suppliers_error_adding_updating"] = "Fallito aggiornamento o aggiunta Fornitore.";
 $lang["suppliers_new"] = "Nuovo Fornitore";
