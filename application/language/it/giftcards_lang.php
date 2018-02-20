@@ -1,7 +1,7 @@
 <?php 
 
 $lang["giftcards_add_minus"] = "Inventario da aggiungere o sottrarre.";
-$lang["giftcards_allow_alt_description"] = "Permetti descrizione allternativa";
+$lang["giftcards_allow_alt_description"] = "Permetti descrizione alternativa";
 $lang["giftcards_bulk_edit"] = "Modifica multipla";
 $lang["giftcards_cannot_be_deleted"] = "Non è possibile eliminare la Carta Regalo selezionata, una o più di esse sono state usate in una vendita.";
 $lang["giftcards_cannot_find_giftcard"] = "Carta Regalo non trovata.";
@@ -16,7 +16,7 @@ $lang["giftcards_confirm_bulk_edit"] = "Sei sicuro che vuoi modificare la Carta 
 $lang["giftcards_confirm_delete"] = "Sei sicuro che vuoi eliminare la Carta Regalo selezionata?";
 $lang["giftcards_confirm_bulk_edit"] = "Sei sicuro che vuoi modificare la Carta Regalo selezionata?";
 $lang["giftcards_confirm_delete"] = "Sei sicuro che vuoi eliminare la Carta Regalo selezionata?";
-$lang["giftcards_confirm_restore"] = "Sei sicuro di voler ripristinare le Carte regalo selezionate?";
+$lang["giftcards_confirm_restore"] = "Sei sicuro di voler ripristinare le Carte Regalo selezionate?";
 $lang["giftcards_cost_price"] = "Prezzo Ingrosso";
 $lang["giftcards_count"] = "Aggiorna Inventario";
 $lang["giftcards_current_quantity"] = "Quantità Corrente";
