@@ -2,7 +2,7 @@
 
 $lang["customers_account_number"] = "# Compte";
 $lang["customers_account_number_duplicate"] = "Ce numéro de compte est déjà utilisé dans la base de données";
-$lang["customers_available_points"] = "";
+$lang["customers_available_points"] = "Points disponibles";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "";
