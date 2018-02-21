@@ -1,20 +1,20 @@
 <?php 
 
-$lang["module_both"] = "";
+$lang["module_both"] = "оба";
 $lang["module_config"] = "Конфигурацию магазина";
 $lang["module_config_desc"] = "Изменить конфигурацию магазина";
 $lang["module_customers"] = "Клиенты";
 $lang["module_customers_desc"] = "Добавление, обновление, удаление и поиск клиентов";
 $lang["module_employees"] = "Сотрудники";
 $lang["module_employees_desc"] = "Добавление, обновление, удаление и поиск сотрудники";
-$lang["module_expenses"] = "";
-$lang["module_expenses_categories"] = "";
-$lang["module_expenses_categories_desc"] = "";
-$lang["module_expenses_desc"] = "";
+$lang["module_expenses"] = "расходы модуля";
+$lang["module_expenses_categories"] = "расходы модуля категории";
+$lang["module_expenses_categories_desc"] = "расходы модуля категории описание";
+$lang["module_expenses_desc"] = "расходы модуля описание";
 $lang["module_giftcards"] = "Подарочные карты";
 $lang["module_giftcards_desc"] = "Добавление, обновление, удаление и поиск подарочные карты";
 $lang["module_home"] = "Дома";
-$lang["module_home_desc"] = "";
+$lang["module_home_desc"] = "Дома описание";
 $lang["module_item_kits"] = "товара комплекти";
 $lang["module_item_kits_desc"] = "Добавление, обновление, удаление и поиск товара комплекти";
 $lang["module_items"] = "Товары";
@@ -23,8 +23,8 @@ $lang["module_messages"] = "Messages";
 $lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
 $lang["module_migrate"] = "миграцию";
 $lang["module_migrate_desc"] = "Обновите базу данных OSPOS.";
-$lang["module_office"] = "";
-$lang["module_office_desc"] = "";
+$lang["module_office"] = "офис";
+$lang["module_office_desc"] = "офис описание";
 $lang["module_receivings"] = "получении";
 $lang["module_receivings_desc"] = "Процесс покупки заказов";
 $lang["module_reports"] = "Отчеты";
