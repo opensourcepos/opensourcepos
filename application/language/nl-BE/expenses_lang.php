@@ -1,11 +1,11 @@
 <?php 
 
-$lang["expenses_add_item"] = "";
-$lang["expenses_amount"] = "";
+$lang["expenses_add_item"] = "Voeg kosten toe";
+$lang["expenses_amount"] = "Bedrag";
 $lang["expenses_amount_number"] = "";
-$lang["expenses_amount_required"] = "";
-$lang["expenses_by_category"] = "";
-$lang["expenses_cannot_be_deleted"] = "";
+$lang["expenses_amount_required"] = "Kost bedrag verplicht";
+$lang["expenses_by_category"] = "Categorie";
+$lang["expenses_cannot_be_deleted"] = "Kan Categorie Kosten niet verwijderen";
 $lang["expenses_cash"] = "";
 $lang["expenses_cash_filter"] = "";
 $lang["expenses_categories_name"] = "";
