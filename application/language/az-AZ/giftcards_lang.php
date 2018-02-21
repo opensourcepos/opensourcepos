@@ -66,5 +66,5 @@ $lang["giftcards_unit_price"] = "Pərakəndə Dəyəri";
 $lang["giftcards_upc_database"] = "Barkod Məlumat Bazası";
 $lang["giftcards_update"] = "Hədiyyə kartını Yeniləyin";
 $lang["giftcards_use_inventory_menu"] = "İnventarlaşdırma menyusundan istifadə edin";
-$lang["giftcards_value"] = "";
-$lang["giftcards_value_required"] = "";
+$lang["giftcards_value"] = "Hədiyyə Kartı Dəyəri rəqəm ilə olmalıdır";
+$lang["giftcards_value_required"] = "Hədiyyə kartı dəyəri zəruri bir sahədir.";
