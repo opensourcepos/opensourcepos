@@ -1,24 +1,24 @@
 <?php 
 
 $lang["customers_account_number"] = "Номер счота";
-$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
+$lang["customers_account_number_duplicate"] = "Этот номер счета уже присутствует в базе данных";
 $lang["customers_available_points"] = "Доступные баллы";
-$lang["customers_average"] = "";
-$lang["customers_avg_discount"] = "";
-$lang["customers_basic_information"] = "";
+$lang["customers_average"] = "осредненный";
+$lang["customers_avg_discount"] = "усредненная скидка";
+$lang["customers_basic_information"] = "основная информация";
 $lang["customers_cannot_be_deleted"] = "Невозможно удалить выбранных клиентов, один или более из них имеет продаж.";
-$lang["customers_company_name"] = "";
+$lang["customers_company_name"] = "название компании";
 $lang["customers_confirm_delete"] = "Вы уверены, что хотите удалить выбранных клиентов?";
-$lang["customers_confirm_restore"] = "";
+$lang["customers_confirm_restore"] = "подтвердитиь восстановление";
 $lang["customers_customer"] = "Клиент";
-$lang["customers_discount"] = "";
-$lang["customers_email_duplicate"] = "";
+$lang["customers_discount"] = "скидка";
+$lang["customers_email_duplicate"] = "электронной почте дубликат";
 $lang["customers_error_adding_updating"] = "Ошибка при добавлении/обновлении клиента";
 $lang["customers_excel_import_failed"] = "Ошибка импорта Excel";
-$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
-$lang["customers_excel_import_success"] = "Import of Customers successful";
-$lang["customers_import_items_excel"] = "Import customers from Excel sheet";
+$lang["customers_excel_import_nodata_wrongformat"] = "Загруженный файл не имеет данных или неверного формата";
+$lang["customers_excel_import_partially_failed"] = "Большинство клиентов импортированный. Но некоторых не было, вот список";
+$lang["customers_excel_import_success"] = "Импорт клиентов успешный";
+$lang["customers_import_items_excel"] = "Импорт клиентов из Excel листа ";
 $lang["customers_mailchimp_activity_click"] = "";
 $lang["customers_mailchimp_activity_lastopen"] = "";
 $lang["customers_mailchimp_activity_open"] = "";
