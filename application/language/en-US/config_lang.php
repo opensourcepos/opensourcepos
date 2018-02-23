@@ -209,6 +209,7 @@ $lang["config_print_top_margin"] = "Margin Top";
 $lang["config_print_top_margin_number"] = "Margin Top must be a number.";
 $lang["config_print_top_margin_required"] = "Margin Top is a required field.";
 $lang["config_quantity_decimals"] = "Quantity Decimals";
+$lang["config_quote_default_comments"] = "Default Quote Comments";
 $lang["config_receipt"] = "Receipt";
 $lang["config_receipt_configuration"] = "Receipt Print Settings";
 $lang["config_receipt_default"] = "Default";
