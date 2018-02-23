@@ -124,14 +124,8 @@
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
-				<div><?php echo $this->lang->line('sales_comments'). ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></div>
+				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
 			</h5>
-			<?php echo nl2br($this->config->item('return_policy')); ?>
-		</div>
-		<div id='barcode'>
-			<img src='data:image/png;base64,<?php echo $barcode; ?>' /><br>
-			<?php echo $sale_id; ?>
 		</div>
 	</div>
 </div>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";
@@ -209,6 +209,7 @@ $lang["config_print_top_margin"] = "Margin Top";
 $lang["config_print_top_margin_number"] = "Default Top Margin must be a number";
 $lang["config_print_top_margin_required"] = "Default Top Margin is a required field";
 $lang["config_quantity_decimals"] = "Quantity Decimals";
+$lang["config_quote_default_comments"] = "Default Quote Comments";
 $lang["config_receipt"] = "Receipt";
 $lang["config_receipt_configuration"] = "Receipt Print Settings";
 $lang["config_receipt_default"] = "Default";

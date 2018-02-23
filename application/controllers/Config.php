@@ -851,6 +851,7 @@ class Config extends Secure_Controller
 			'line_sequence' => $this->input->post('line_sequence'),
 			'last_used_invoice_number' =>$this->input->post('last_used_invoice_number'),
 			'last_used_quote_number' =>$this->input->post('last_used_quote_number'),
+			'quote_default_comments' => $this->input->post('quote_default_comments'),
 			'work_order_enable' => $this->input->post('work_order_enable') != NULL,
 			'work_order_format' => $this->input->post('work_order_format'),
 			'last_used_work_order_number' =>$this->input->post('last_used_work_order_number')
