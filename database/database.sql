@@ -121,6 +121,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('allow_duplicate_barcodes', '0'),
 ('quote_default_comments', 'This is a default quote comment');
 
+
 -- --------------------------------------------------------
 
 --

@@ -29,7 +29,7 @@ AND person_id = 1;
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('work_order_enable', '0'),
 ('work_order_format', 'W%y{WSEQ:6}'),
-('last_used_work_order_number', '0'),;
+('last_used_work_order_number', '0');
 
 ALTER TABLE `ospos_sales`
   ADD COLUMN `work_order_number` varchar(32) DEFAULT NULL,
@@ -226,7 +226,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('print_receipt_check_behaviour', 'last');
 
 
--- This is provide distinct default comments for both quotes and invoices
+-- This is to provide distinct default comments for both quotes and invoices
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('quote_default_comments', 'This is a default quote comment');
