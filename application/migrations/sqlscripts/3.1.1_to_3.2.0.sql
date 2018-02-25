@@ -224,3 +224,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('email_receipt_check_behaviour', 'last'),
 ('print_receipt_check_behaviour', 'last');
+
+
+-- This is to provide distinct default comments for both quotes and invoices
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('quote_default_comments', 'This is a default quote comment');
