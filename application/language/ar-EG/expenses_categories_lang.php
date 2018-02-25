@@ -1,9 +1,9 @@
 <?php 
 
-$lang["category_name_required"] = "";
-$lang["expenses_categories_add_item"] = "";
-$lang["expenses_categories_cannot_be_deleted"] = "";
-$lang["expenses_categories_category_id"] = "";
+$lang["category_name_required"] = "اسم نوع المصاريف مطلوب";
+$lang["expenses_categories_add_item"] = "إضافة نوع";
+$lang["expenses_categories_cannot_be_deleted"] = "فشلت عملية مسح نوع المصاريف";
+$lang["expenses_categories_category_id"] = "الكود";
 $lang["expenses_categories_confirm_delete"] = "";
 $lang["expenses_categories_description"] = "";
 $lang["expenses_categories_error_adding_updating"] = "";
