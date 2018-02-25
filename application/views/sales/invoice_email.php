@@ -22,8 +22,8 @@
 	<table id="info">
 		<tr>
 			<td id="logo">
-		        <?php if($this->config->item('company_logo') != '')
-		        {
+				<?php if($this->config->item('company_logo') != '')
+				{
 				?>
 					<img id="image" src="<?php echo 'uploads/' . $this->config->item('company_logo'); ?>" alt="company_logo" />
 				<?php
@@ -31,37 +31,37 @@
 				?>
 			</td>
 			<td id="customer-title">
-	            <pre><?php if(isset($customer)) { echo $customer_info; } ?></pre>
+				<pre><?php if(isset($customer)) { echo $customer_info; } ?></pre>
 			</td>
 		</tr>
 		<tr>
-	       	<td id="company-title">
-	            <pre><?php echo $this->config->item('company'); ?></pre>
-	            <pre><?php echo $company_info; ?></pre>
+			<td id="company-title">
+				<pre><?php echo $this->config->item('company'); ?></pre>
+				<pre><?php echo $company_info; ?></pre>
 			</td>
-	        <td id="meta">
-	        	<table align="right">
-	            <tr>
-	                <td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
-	                <td><div><?php echo $invoice_number; ?></div></td>
-	            </tr>
-	            <tr>
-	                <td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
-	                <td><div><?php echo $transaction_date; ?></div></td>
-	            </tr>
-	            <?php 
+			<td id="meta">
+				<table align="right">
+				<tr>
+					<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
+					<td><div><?php echo $invoice_number; ?></div></td>
+				</tr>
+				<tr>
+					<td class="meta-head"><?php echo $this->lang->line('common_date'); ?></td>
+					<td><div><?php echo $transaction_date; ?></div></td>
+				</tr>
+				<?php
 				if($amount_due > 0)
-	            {
-	            ?>
-			        <tr>
-			            <td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-			            <td><div class="due"><?php echo to_currency($total); ?></div></td>
-			        </tr>
-	            <?php
+				{
+				?>
+					<tr>
+						<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
+						<td><div class="due"><?php echo to_currency($total); ?></div></td>
+					</tr>
+				<?php
 				}
-	            ?>
+				?>
 				</table>
-	        </td>
+			</td>
 		</tr>
 	</table>
 
@@ -125,10 +125,10 @@
 
 	<div id="terms">
 		<div id="sale_return_policy">
-		 	<h5>
-			 	<div><?php echo nl2br($this->config->item('payment_message')); ?></div>
-			  	<div><?php echo $this->lang->line('sales_comments'). ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></div>
-		  	</h5>
+			<h5>
+				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>
+				<textarea rows="5" cols="6"><?php echo $this->lang->line('sales_comments') . ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></textarea>
+			</h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
 		</div>
 		<div id='barcode'>

@@ -189,9 +189,9 @@ if (isset($error_message))
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
-				<textarea rows="5" cols="6"><?php echo $this->lang->line('sales_comments'). ': ' . $comments; ?></textarea>
-				<textarea rows="5" cols="6"><?php echo $this->config->item('invoice_default_comments'); ?></textarea>
-			</h5>
+				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
+				<textarea rows="5" cols="6"><?php echo $this->config->item('quote_default_comments'); ?></textarea>
+            </h5>
 		</div>
 	</div>
 </div>
