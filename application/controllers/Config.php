@@ -322,7 +322,7 @@ class Config extends Secure_Controller
 		));
 	}
 
-	public function check_number_locale()
+	public function ajax_check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);

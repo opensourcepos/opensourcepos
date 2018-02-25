@@ -61,7 +61,6 @@
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
 		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
 		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
-		<script src="bower_components/accounting-js/accounting.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
@@ -77,7 +76,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=1831dfe53b"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a5c8dae3d1"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=5418ab9c6b"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
