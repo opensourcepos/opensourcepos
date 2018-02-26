@@ -118,3 +118,5 @@ $lang["reports_unit_price"] = "Harga Jual";
 $lang["reports_used"] = "";
 $lang["reports_work_orders"] = "";
 $lang["reports_zero_and_less"] = "Stok habis dan minus";
+$lang["reports_total_retail"] = "Total Inv. Retail Value";
+$lang["reports_total_quantity"] = "Total Quantity";
