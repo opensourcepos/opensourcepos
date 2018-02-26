@@ -118,5 +118,3 @@ $lang["reports_unit_price"] = "Preço Varejo";
 $lang["reports_used"] = "";
 $lang["reports_work_orders"] = "";
 $lang["reports_zero_and_less"] = "Zero e menor";
-$lang["reports_total_retail"] = "Total Inv. Retail Value";
-$lang["reports_total_quantity"] = "Total Quantity";

@@ -118,5 +118,3 @@ $lang["reports_unit_price"] = "Försäljningspris";
 $lang["reports_used"] = "Poäng som använts";
 $lang["reports_work_orders"] = "Arbetsorders";
 $lang["reports_zero_and_less"] = "Noll eller mindre";
-$lang["reports_total_retail"] = "Total Inv. Retail Value";
-$lang["reports_total_quantity"] = "Total Quantity";

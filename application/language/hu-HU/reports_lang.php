@@ -118,5 +118,3 @@ $lang["reports_unit_price"] = "Kisker. ár";
 $lang["reports_used"] = "";
 $lang["reports_work_orders"] = "";
 $lang["reports_zero_and_less"] = "Nulla és kevesebb";
-$lang["reports_total_retail"] = "Total Inv. Retail Value";
-$lang["reports_total_quantity"] = "Total Quantity";
