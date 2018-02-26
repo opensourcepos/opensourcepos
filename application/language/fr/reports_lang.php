@@ -118,3 +118,5 @@ $lang["reports_unit_price"] = "Prix au Détail";
 $lang["reports_used"] = "";
 $lang["reports_work_orders"] = "";
 $lang["reports_zero_and_less"] = "Zéro ou moin";
+$lang["reports_total_retail"] = "Total Inv. Retail Value";
+$lang["reports_total_quantity"] = "Total Quantity";
