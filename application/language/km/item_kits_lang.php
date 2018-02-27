@@ -1,13 +1,13 @@
 <?php 
 
-$lang["item_kits_add_item"] = "";
-$lang["item_kits_all"] = "";
-$lang["item_kits_cannot_be_deleted"] = "";
-$lang["item_kits_confirm_delete"] = "";
-$lang["item_kits_confirm_restore"] = "";
-$lang["item_kits_description"] = "";
-$lang["item_kits_discount_percent"] = "";
-$lang["item_kits_error_adding_updating"] = "";
+$lang["item_kits_add_item"] = "បន្ថែមទំនិញ";
+$lang["item_kits_all"] = "ទាំងអស់";
+$lang["item_kits_cannot_be_deleted"] = "ក្រុមទំនិញលប់មិនបានជោគជ័យ។";
+$lang["item_kits_confirm_delete"] = "តើអ្នកពិតជាចង់លប់ក្រុមទំនិញដែលបានជ្រើសរើសមែនទេ?";
+$lang["item_kits_confirm_restore"] = "តើអ្នកពិតជាចង់ទាញយកមកវិញនៅក្រុមទំនិញដែលបានជ្រើសរើសមែនទេ?";
+$lang["item_kits_description"] = "ពិពណ៌នាក្រុមទំនិញ";
+$lang["item_kits_discount_percent"] = "បញ្ចុះតំលៃជាភាគរយ";
+$lang["item_kits_error_adding_updating"] = "បន្ថែម​ ឬក៏ធ្វើបច្ចុប្បន្នភាព​ ក្រុមទំនិញមិនបានជោគជ័យ។";
 $lang["item_kits_find_kit_item"] = "";
 $lang["item_kits_info"] = "";
 $lang["item_kits_item"] = "";
