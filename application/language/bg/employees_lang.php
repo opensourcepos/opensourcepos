@@ -1,10 +1,10 @@
 <?php 
 
-$lang["employees_basic_information"] = "Information";
+$lang["employees_basic_information"] = "Информация";
 $lang["employees_cannot_be_deleted"] = "Unable to delete selected employee(s), one or more of the has processed sales or you are trying to delete your account.";
 $lang["employees_change_password"] = "Change Password";
 $lang["employees_confirm_delete"] = "Are you sure you want to delete the selected employee(s)?";
-$lang["employees_confirm_restore"] = "";
+$lang["employees_confirm_restore"] = "Наистина ли искате да възстановите избраните служители?";
 $lang["employees_current_password"] = "Current Password";
 $lang["employees_current_password_invalid"] = "Current Password is invalid.";
 $lang["employees_employee"] = "Employee";
