@@ -1,10 +1,10 @@
 <?php 
 
-$lang["receivings_cancel_receiving"] = "";
-$lang["receivings_cannot_be_deleted"] = "";
-$lang["receivings_comments"] = "";
-$lang["receivings_complete_receiving"] = "";
-$lang["receivings_confirm_cancel_receiving"] = "";
+$lang["receivings_cancel_receiving"] = "បោះបង់";
+$lang["receivings_cannot_be_deleted"] = "លប់ការទទួលមិនបានជោគជ័យ។";
+$lang["receivings_comments"] = "មតិយោបល់";
+$lang["receivings_complete_receiving"] = "រួចរាល់";
+$lang["receivings_confirm_cancel_receiving"] = "អ្នកពិតជាចង់លប់ការទទួលនេះមែនទេ? រាល់ទំនិញទាំងអស់នឹងត្រូវបានលប់ចោល។";
 $lang["receivings_confirm_delete"] = "";
 $lang["receivings_confirm_finish_receiving"] = "";
 $lang["receivings_cost"] = "";
