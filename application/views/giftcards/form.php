@@ -100,7 +100,8 @@ $(document).ready(function()
 		});
 	};
 	
-	$('#giftcard_form').validate($.extend({
+	$('#giftcard_form').validate($.extend(
+	{
 		submitHandler:function(form)
 		{
 			submit_form.call(form)
@@ -117,9 +118,24 @@ $(document).ready(function()
 			value:
 			{
 				required:true,
-				number:true
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
+					type: 'post',
+					data: $.extend(csrf_form_base(), 
+					{
+						'value': $("#value").val(),
+					}),
+					dataFilter: function(data) 
+					{
+						setup_csrf_token();
+						var response = JSON.parse(data);
+						$("#value").text(response.value);
+						return response.success;
+					}
+				}
 			}
-   		},
+		},
 		messages:
 		{
 			<?php if($this->config->item('giftcard_number') == "series"){ ?>
@@ -132,7 +148,7 @@ $(document).ready(function()
 			value:
 			{
 				required:"<?php echo $this->lang->line('giftcards_value_required'); ?>",
-				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
+				remote:"<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
 	}, form_support.error));

@@ -128,6 +128,30 @@ class Giftcards extends Secure_Controller
 		}
 	}
 
+	public function ajax_check_number_giftcard()
+	{
+	    $correct_fmt = new \NumberFormatter($this->config->item('number_locale'), \NumberFormatter::DECIMAL);
+	    
+	    $value = $this->input->post('value');
+	    if($correct_fmt->getAttribute(\NumberFormatter::DECIMAL_SEPARATOR_SYMBOL) == '.')
+	    {
+	        $regex = '/^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.]\d+)?$/';
+	    }
+	    else
+	    {
+	        $regex = '/^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[,]\d+)?$/';
+	    }
+	    
+	    if(preg_match($regex,$value) === 1)
+	    {
+	        echo json_encode(array('success' => TRUE));
+	    }
+	    else
+	    {
+	        echo json_encode(array('success' => FALSE));
+	    }
+	}
+	
 	public function delete()
 	{
 		$giftcards_to_delete = $this->xss_clean($this->input->post('ids'));
