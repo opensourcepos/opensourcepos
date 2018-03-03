@@ -65,7 +65,8 @@ $config['db_log_enabled'] = FALSE;
 | a PHP script and you can easily do that on your own.
 |
 */
-if (isset($_ENV['FORCE_HTTPS'])) $_SERVER['HTTPS'] = 'on';
+if (isset($_ENV['FORCE_HTTPS']))
+    $_SERVER['HTTPS'] = 'on';
 
 $config['base_url'] = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 'https' : 'http';
 $config['base_url'] .= '://' . $_SERVER['HTTP_HOST'];
