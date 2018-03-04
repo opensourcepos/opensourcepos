@@ -20,9 +20,9 @@
 			</div>
             
             <?php echo form_submit(array(
-                'name' => 'submit',
-                'id' => 'submit',
-                'value'=>$this->lang->line('common_submit'),
+                'name' => 'submit_reward',
+                'id' => 'submit_reward',
+                'value' => $this->lang->line('common_submit'),
                 'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>
