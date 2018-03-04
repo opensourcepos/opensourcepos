@@ -54,11 +54,13 @@ class Inventory_summary extends Report
 	 */
 	public function getSummaryData(array $inputs)
 	{
-		$return = array('total_inventory_value' => 0);
+		$return = array('total_inventory_value' => 0, 'total_quantity' => 0, 'total_retail' => 0);
 
 		foreach($inputs as $input)
 		{
 			$return['total_inventory_value'] += $input['sub_total_value'];
+			$return['total_quantity'] += $input['quantity'];
+			$return['total_retail'] += $input['unit_price'] * $input['quantity'];
 		}
 
 		return $return;
