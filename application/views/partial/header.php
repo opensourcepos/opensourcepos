@@ -59,7 +59,6 @@
 		<script src="bower_components/chartist-plugin-barlabels/dist/chartist-plugin-barlabels.min.js"></script>
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
-		<script src="bower_components/blockUI/jquery.blockUI.js"></script>
 		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
@@ -76,7 +75,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=1831dfe53b"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=5418ab9c6b"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=a3f7c802fe"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 

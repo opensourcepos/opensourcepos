@@ -51,6 +51,4 @@
 		submit.apply(this, arguments);
 	};
 
-	session_sha1 = '<?php echo $this->session->userdata('session_sha1'); ?>';
-
 </script>

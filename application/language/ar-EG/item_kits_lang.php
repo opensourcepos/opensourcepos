@@ -2,7 +2,7 @@
 
 $lang["item_kits_add_item"] = "إضافة مجموعة";
 $lang["item_kits_all"] = "الكل";
-$lang["item_kits_cannot_be_deleted"] = "لايمكن حذف مجموعة/مجموعات";
+$lang["item_kits_cannot_be_deleted"] = "لايمكن حذف مجموعة/مجموعات.";
 $lang["item_kits_confirm_delete"] = "هل أنت متأكد أنك تريد حذف المجموعة؟";
 $lang["item_kits_confirm_restore"] = "هل أنت متأكد أنك تريد استعادة المجموعة المحددة؟";
 $lang["item_kits_description"] = "وصف المجموعة";
@@ -18,7 +18,7 @@ $lang["item_kits_kit_and_stock"] = "المجموعه والصنف";
 $lang["item_kits_kit_only"] = "المجموعه فقط";
 $lang["item_kits_name"] = "اسم المجموعة";
 $lang["item_kits_new"] = "مجموعة جديده";
-$lang["item_kits_no_item_kits_to_display"] = "لاتوجد مجموعات لعرضها";
+$lang["item_kits_no_item_kits_to_display"] = "لاتوجد مجموعات لعرضها.";
 $lang["item_kits_none_selected"] = "لم تقم بإختيار مجموعات.";
 $lang["item_kits_one_or_multiple"] = "مجموعة/مجموعات";
 $lang["item_kits_price_option"] = "خيارات التسعير";

@@ -6,7 +6,7 @@
     ],
     "dependencies": {
         "codeigniter/framework": {
-            "version": "3.1.6",
+            "version": "3.1.7",
             "license": [
                 "MIT"
             ]
@@ -15,12 +15,6 @@
             "version": "v0.7.0",
             "license": [
                 "LGPL-2.1"
-            ]
-        },
-        "ins0/google-measurement-php-client": {
-            "version": "dev-master 2b3aef2",
-            "license": [
-                "BSD-3-Clause"
             ]
         },
         "mikey179/vfsStream": {
