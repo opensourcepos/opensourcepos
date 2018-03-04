@@ -118,3 +118,5 @@ $lang["reports_unit_price"] = "السعر";
 $lang["reports_used"] = "النقاط المستخدمة";
 $lang["reports_work_orders"] = "طلبات عمل";
 $lang["reports_zero_and_less"] = "صفر و أقل";
+$lang["reports_total_retail"] = "Total Inv. Retail Value";
+$lang["reports_total_quantity"] = "Total Quantity";
