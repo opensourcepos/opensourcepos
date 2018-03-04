@@ -18,13 +18,6 @@ $hook['post_controller_constructor'][] = array(
                                     'filepath' => 'hooks'
                                 );
 
-$hook['post_controller_constructor'][] = array(
-                                    'class'    => '',
-                                    'function' => 'load_stats',
-                                    'filename' => 'load_stats.php',
-                                    'filepath' => 'hooks'
-                                );
-
 // 'post_controller' indicated execution of hooks after controller is finished
 $hook['post_controller'] = array(
                                     'class' => '',

@@ -96,7 +96,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_template', 'receipt_default'),
 ('theme', 'flatly'),
 ('customer_sales_tax_support', '0'),
-('statistics', '1'),
 ('language', 'english'),
 ('language_code', 'en-US'),
 ('date_or_time_format', ''),

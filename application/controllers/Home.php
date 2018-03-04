@@ -16,8 +16,6 @@ class Home extends Secure_Controller
 
 	public function logout()
 	{
-		$this->track_page('logout', 'logout');
-
 		$this->Employee->logout();
 	}
 }
