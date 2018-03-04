@@ -15,8 +15,9 @@
 <div id="report_summary">
 	<?php
 	foreach($summary_data as $name=>$value)
-    { 
-	if ($name == "total_quantity"){
+	{ 
+	if ($name == "total_quantity")
+		{
 	?>
 		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.$value; ?></div>
 	<?php
@@ -24,7 +25,7 @@
 				?>
 		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name). ': '.to_currency($value); ?></div>
 	<?php
-	}
+		}
 	}
 	?>
 </div>
