@@ -2,6 +2,7 @@
 	<div id="config_wrapper">
 		<fieldset>
 			<?php
+			$counter = 0;
 			foreach($licenses as $license)
 			{
 			?>
@@ -10,7 +11,7 @@
 					<div class='col-xs-6'>
 						<?php echo form_textarea(array(
 							'name' => 'license',
-							'id' => 'license',
+							'id' => 'license_' . $counter++,
 							'class' => 'form-control',
 							'readonly' => '',
 							'value' => $license['text'])); ?>

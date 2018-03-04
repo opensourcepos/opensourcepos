@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 
 $lang["reports_all"] = "الكل";
 $lang["reports_canceled"] = "ملغى";
@@ -120,3 +120,4 @@ $lang["reports_work_orders"] = "طلبات عمل";
 $lang["reports_zero_and_less"] = "صفر و أقل";
 $lang["reports_total_retail"] = "قيمة مبيع البضائع";
 $lang["reports_total_quantity"] = "الكمية الاجمالية";
+

@@ -120,9 +120,9 @@
 			</div>
 
 			<?php echo form_submit(array(
-				'name' => 'submit_form',
-				'id' => 'submit_form',
-				'value'=>$this->lang->line('common_submit'),
+				'name' => 'submit_info',
+				'id' => 'submit_info',
+				'value' => $this->lang->line('common_submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
