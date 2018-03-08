@@ -43,11 +43,31 @@
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('sales_payment'), 'payment_'.$i, array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
-						<?php // no editing of Gift Card payments as it's a complex change ?>
-						<?php if( !empty(strstr($row->payment_type, $this->lang->line('sales_giftcard'))) ): ?>
-							<?php echo form_input(array('name'=>'payment_type_'.$i, 'value'=>$row->payment_type, 'id'=>'payment_type_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
-						<?php else: ?>
-							<?php echo form_dropdown('payment_type_'.$i, $payment_options, $row->payment_type, array('id'=>'payment_types_'.$i, 'class'=>'form-control')); ?>
+					<?php // no editing of Gift Card payments as it's a complex change ?>
+					<?php if( !empty(strstr($row->payment_type, $this->lang->line('sales_giftcard'))) ): ?>
+						<?php echo form_input(array('name'=>'payment_type_'.$i, 'value'=>$row->payment_type, 'id'=>'payment_type_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+					<?php else: ?>
+					<?php 
+						$sqlp = $this->db->query("SELECT * FROM ospos_sales_payments WHERE sale_id = $row->sale_id LIMIT 1");
+						if ($sqlp->num_rows() > 0) 
+						{
+						// output data of each row
+						foreach ($sqlp->result_array() as $row1)
+						{	
+				echo "<script>function change(){ var cash = document.getElementById('payment_amount_0'); var debt = document.getElementById('payment_amount_1'); var minus = document.getElementById('VallMinus'); var plus = document.getElementById('VallPlus'); var variable = document.getElementById('minusval'); minus.innerHTML = (debt.value - variable.value); plus.innerHTML = (+cash.value + +variable.value);}
+			 function SubmitChange(){ var cash = document.getElementById('payment_amount_0'); var debt = document.getElementById('payment_amount_1'); var minus = document.getElementById('VallMinus'); var plus = document.getElementById('VallPlus'); var variable = document.getElementById('minusval'); debt.value = (debt.value - variable.value); cash.value = plus.innerHTML;}</script>";
+			 
+						if($row1['payment_type'] == 'Cash' || $row1['payment_type'] == 'Debit Card' || $row1['payment_type'] == 'Credit Card' || $row1['payment_type'] == 'Gift Card' || $row1['payment_type'] == 'Check'){
+						echo form_dropdown('payment_type_'.$i, $payment_options, $row->payment_type, array('id'=>'payment_types_'.$i, 'class'=>'form-control')); 
+						} else {
+			  $j = $i + 1;
+			 	echo form_dropdown('payment_type_'.$i, $payment_options, $row->payment_type, array('id'=>'payment_types_'.$i, 'class'=>'form-control')); 
+			 	echo form_dropdown('payment_type_'.$j, $payment_options, $row->payment_type, array('id'=>'payment_types_'.$j, 'class'=>'form-control')); 
+								}
+						}
+						} else {
+     echo "";
+} ?>
 						<?php endif; ?>
 				</div>
 				<div class='col-xs-4'>
@@ -55,7 +75,43 @@
 						<?php if(!currency_side()): ?>
 							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 						<?php endif; ?>
+						<?php if($row->payment_type == "Due") { ?>
+						<?php
+$sql = $this->db->query("SELECT * FROM ospos_sales_payments WHERE sale_id = $row->sale_id LIMIT 1");
+
+if ($sql->num_rows() > 0) {
+     // output data of each row
+   
+foreach ($sql->result_array() as $row1)
+{		 
+		 echo "<script>function change(){ var cash = document.getElementById('payment_amount_0'); var debt = document.getElementById('payment_amount_1'); var minus = document.getElementById('VallMinus'); var plus = document.getElementById('VallPlus'); var variable = document.getElementById('minusval'); minus.innerHTML = (debt.value - variable.value); plus.innerHTML = (+cash.value + +variable.value);}
+			 function SubmitChange(){ var cash = document.getElementById('payment_amount_0'); var debt = document.getElementById('payment_amount_1'); var minus = document.getElementById('VallMinus'); var plus = document.getElementById('VallPlus'); var variable = document.getElementById('minusval'); debt.value = (debt.value - variable.value); cash.value = plus.innerHTML;}</script>";
+			 
+		 if($row1['payment_type'] == 'Cash' || $row1['payment_type'] == 'Debit Card' || $row1['payment_type'] == 'Credit Card' || $row1['payment_type'] == 'Gift Card' || $row1['payment_type'] == 'Check'){
+			 
+?>						
 						<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+						<input type="text" name="minusval" value="" id="minusval" class="form-control input-sm" oninput="change()">
+						<button onclick="SubmitChange()" class="glyphicon glyphicon-refresh" style="padding: 4px;"></button>
+						<span id="VallMinus" style="display: none;"></span>
+						<span id="VallPlus" style="display: none;"></span>
+								<?php } else { $i = $i +1; ?>
+										<?php echo form_input(array('name'=>'payment_amount_0', 'value'=>'0', 'id'=>'payment_amount_0', 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+										<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+										<input type="text" name="minusval" value="" id="minusval" class="form-control input-sm" oninput="change()">
+										<button onclick="SubmitChange()" class="glyphicon glyphicon-refresh" style="padding: 4px;"></button>
+						<div id="VallMinus" style="display: none;"></div>
+						<div id="VallPlus" style="display: none;"></div>
+							<?php	}
+     }
+} else {
+     echo "";
+} ?>
+						<?php 
+
+ } else { ?>
+						<?php echo form_input(array('name'=>'payment_amount_'.$i, 'value'=>$row->payment_amount, 'id'=>'payment_amount_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
+						<?php } ?>
 						<?php if (currency_side()): ?>
 							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 						<?php endif; ?>
@@ -67,6 +123,7 @@
 		}
 		echo form_hidden('number_of_payments', $i);			
 		?>
+		
 		
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>

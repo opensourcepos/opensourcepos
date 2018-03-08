@@ -1,4 +1,4 @@
-<?php 
+﻿<?php 
 
 $lang["reports_all"] = "الكل";
 $lang["reports_canceled"] = "ملغى";
@@ -118,5 +118,7 @@ $lang["reports_unit_price"] = "السعر";
 $lang["reports_used"] = "النقاط المستخدمة";
 $lang["reports_work_orders"] = "طلبات عمل";
 $lang["reports_zero_and_less"] = "صفر و أقل";
-$lang["reports_total_retail"] = "Total Inv. Retail Value";
-$lang["reports_total_quantity"] = "Total Quantity";
+$lang["reports_total_retail"] = "قيمة مبيع البضائع";
+$lang["reports_total_quantity"] = "الكمية الاجمالية";
+$lang["reports_due"] = "Due Amnt";
+$lang["reports_money"] = "Till's Money";
