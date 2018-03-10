@@ -171,21 +171,21 @@ $(document).ready(function()
 		return result;
 	}, '<?php echo $this->lang->line('employees_subpermission_required'); ?>');
 
-	$("ul#permission_list > li > input[name='grants[]']").each(function() 
+	$("ul#permission_list > li > input.module").each(function()
 	{
 		var $this = $(this);
-		$("ul > li > input", $this.parent()).each(function()
+		$("ul > li > input,select", $this.parent()).each(function()
 		{
 			var $that = $(this);
-			var updateCheckboxes = function (checked)
+			var updateInputs = function (checked)
 			{
 				$that.prop("disabled", !checked);
 				!checked && $that.prop("checked", false);
 			}
 			$this.change(function() {
-				updateCheckboxes($this.is(":checked"));
+				updateInputs($this.is(":checked"));
 			});
-			updateCheckboxes($this.is(":checked"));
+			updateInputs($this.is(":checked"));
 		});
 	});
 	
