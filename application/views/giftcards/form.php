@@ -5,7 +5,7 @@
 <?php echo form_open('giftcards/save/'.$giftcard_id, array('id'=>'giftcard_form', 'class'=>'form-horizontal')); ?>
 	<fieldset id="giftcard_basic_info">
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_person_id'), 'name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('giftcards_person_id'), 'person_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
 				<?php echo form_input(array(
 						'name'=>'person_name',
@@ -25,7 +25,7 @@
 		}
 		?>
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'name', array('class'=>'control-label col-xs-3'.$class)); ?>
+			<?php echo form_label($this->lang->line('giftcards_giftcard_number'), 'giftcard_number', array('class'=>'control-label col-xs-3'.$class)); ?>
 			<div class='col-xs-4'>
 				<?php echo form_input(array(
 						'name'=>'giftcard_number',
@@ -37,20 +37,20 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('giftcards_card_value'), 'name', array('class'=>'required control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('giftcards_card_value'), 'giftcard_amount', array('class'=>'required control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
 					<?php if (!currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><?php echo $this->config->item('currency_symbol'); ?></span>
 					<?php endif; ?>
 					<?php echo form_input(array(
-							'name'=>'value',
-							'id'=>'value',
+							'name'=>'giftcard_amount',
+							'id'=>'giftcard_amount',
 							'class'=>'form-control input-sm',
 							'value'=>to_currency_no_money($giftcard_value))
 							);?>
 					<?php if (currency_side()): ?>
-						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></span>
 					<?php endif; ?>
 				</div>
 			</div>
@@ -63,9 +63,7 @@
 $(document).ready(function()
 {
 	$("input[name='person_name']").change(function() {
-		if( ! $("input[name='person_name']").val() ) {
-			$("input[name='person_id']").val('');
-		}
+		!$(this).val() && $(this).val('');
 	});
 	
 	var fill_value = function(event, ui) {
@@ -100,39 +98,54 @@ $(document).ready(function()
 		});
 	};
 	
-	$('#giftcard_form').validate($.extend({
+	$('#giftcard_form').validate($.extend(form_support.handler,
+	{
 		submitHandler:function(form)
 		{
 			submit_form.call(form)
 		},
 		rules:
 		{
-			<?php if($this->config->item('giftcard_number') == "series"){ ?>
+			<?php if ($this->config->item('giftcard_number') == "series") { ?>
 			giftcard_number:
  			{
- 				required:true,
- 				number:true
+ 				required: true,
+ 				number: true
  			},
  			<?php } ?>
-			value:
+			giftcard_amount:
 			{
-				required:true,
-				number:true
+				required: true,
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
+					type: 'post',
+					data: $.extend(csrf_form_base(),
+					{
+						'amount': $("#giftcard_amount").val()
+					}),
+					dataFilter: function(data) 
+					{
+						var response = JSON.parse(data);
+						$("#giftcard_amount").text(response.value);
+						return response.success;
+					}
+				}
 			}
-   		},
+		},
 		messages:
 		{
 			<?php if($this->config->item('giftcard_number') == "series"){ ?>
 			giftcard_number:
  			{
- 				required:"<?php echo $this->lang->line('giftcards_number_required'); ?>",
- 				number:"<?php echo $this->lang->line('giftcards_number'); ?>"
+ 				required: "<?php echo $this->lang->line('giftcards_number_required'); ?>",
+ 				number: "<?php echo $this->lang->line('giftcards_number'); ?>"
  			},
  			<?php } ?>
-			value:
+			giftcard_amount:
 			{
-				required:"<?php echo $this->lang->line('giftcards_value_required'); ?>",
-				number:"<?php echo $this->lang->line('giftcards_value'); ?>"
+				required: "<?php echo $this->lang->line('giftcards_value_required'); ?>",
+				remote: "<?php echo $this->lang->line('giftcards_value'); ?>"
 			}
 		}
 	}, form_support.error));
