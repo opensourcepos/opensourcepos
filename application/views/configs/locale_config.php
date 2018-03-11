@@ -247,7 +247,8 @@ $(document).ready(function()
 			number_locale:
 			{
 				required: true,
-				remote: {
+				remote:
+				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_number_locale')?>",
 					type: 'post',
 					data: $.extend(csrf_form_base(), {
@@ -255,7 +256,6 @@ $(document).ready(function()
 						'thousands_separator': $("#thousands_separator").is(":checked")
 					}),
 					dataFilter: function(data) {
-						setup_csrf_token();
 						var response = JSON.parse(data);
 						$("#number_locale_example").text(response.number_locale_example);
 						$("#currency_symbol").val(response.currency_symbol);

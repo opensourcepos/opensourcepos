@@ -93,13 +93,13 @@ class Giftcards extends Secure_Controller
 
 		if($giftcard_id == -1 && trim($giftcard_number) == '')
 		{
-			$giftcard_number = $this->Giftcard->generate_unique_giftcard_name($this->input->post('value'));
+			$giftcard_number = $this->Giftcard->generate_unique_giftcard_name($this->input->post('giftcard_amount'));
 		}
 
 		$giftcard_data = array(
 			'record_time' => date('Y-m-d H:i:s'),
 			'giftcard_number' => $giftcard_number,
-			'value' => parse_decimals($this->input->post('value')),
+			'value' => parse_decimals($this->input->post('giftcard_amount')),
 			'person_id' => $this->input->post('person_id') == '' ? NULL : $this->input->post('person_id')
 		);
 
@@ -126,6 +126,12 @@ class Giftcards extends Secure_Controller
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('giftcards_error_adding_updating') . ' ' .
 							$giftcard_data['giftcard_number'], 'id' => -1));
 		}
+	}
+
+	public function ajax_check_number_giftcard()
+	{
+		$parsed_value = parse_decimals($this->input->post('giftcard_amount'));
+		echo json_encode(array('success' => !empty($parsed_value), 'giftcard_amount' => $parsed_value));
 	}
 
 	public function delete()
