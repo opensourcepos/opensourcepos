@@ -256,6 +256,7 @@ $(document).ready(function()
 						'thousands_separator': $("#thousands_separator").is(":checked")
 					}),
 					dataFilter: function(data) {
+						setup_csrf_token();
 						var response = JSON.parse(data);
 						$("#number_locale_example").text(response.number_locale_example);
 						$("#currency_symbol").val(response.currency_symbol);

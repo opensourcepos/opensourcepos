@@ -49,7 +49,7 @@ class Giftcards extends Secure_Controller
 
 		echo json_encode($suggestions);
 	}
-	
+
 	public function suggest_search()
 	{
 		$suggestions = $this->xss_clean($this->Giftcard->get_search_suggestions($this->input->post('term')));
@@ -86,7 +86,7 @@ class Giftcards extends Secure_Controller
 
 		$this->load->view("giftcards/form", $data);
 	}
-	
+
 	public function save($giftcard_id = -1)
 	{
 		$giftcard_number = $this->input->post('giftcard_number');
@@ -106,7 +106,7 @@ class Giftcards extends Secure_Controller
 		if($this->Giftcard->save($giftcard_data, $giftcard_id))
 		{
 			$giftcard_data = $this->xss_clean($giftcard_data);
-			
+
 			//New giftcard
 			if($giftcard_id == -1)
 			{
@@ -130,7 +130,12 @@ class Giftcards extends Secure_Controller
 
 	public function ajax_check_number_giftcard()
 	{
-		$parsed_value = parse_decimals($this->input->post('giftcard_amount'));
+		$value = $this->input->post('giftcard_amount');
+		$parsed_value = parse_decimals($value);
+		if(strcmp(strval($parsed_value), strval($value)) != 0)
+		{
+			$parsed_value = FALSE;
+		}
 		echo json_encode(array('success' => !empty($parsed_value), 'giftcard_amount' => $parsed_value));
 	}
 

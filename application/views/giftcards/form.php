@@ -106,7 +106,7 @@ $(document).ready(function()
 		},
 		rules:
 		{
-			<?php if ($this->config->item('giftcard_number') == "series") { ?>
+			<?php if($this->config->item('giftcard_number') == "series") { ?>
 			giftcard_number:
  			{
  				required: true,
@@ -120,12 +120,11 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
 					type: 'post',
-					data: $.extend(csrf_form_base(),
-					{
+					data: $.extend(csrf_form_base(), {
 						'amount': $("#giftcard_amount").val()
 					}),
-					dataFilter: function(data) 
-					{
+					dataFilter: function(data) {
+						setup_csrf_token();
 						var response = JSON.parse(data);
 						$("#giftcard_amount").text(response.value);
 						return response.success;
