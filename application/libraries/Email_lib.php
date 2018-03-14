@@ -45,10 +45,17 @@ class Email_lib
 		$email->to($to);
 		$email->subject($subject);
 		$email->message($message);
-		if(!empty($attachment))
-		{
-			$email->attach($attachment);
-		}
+		if(is_array($attachment)){
+      foreach($attachment as $file){
+        if(!empty($file))
+        {
+          $email->attach($file);
+        }
+      }
+    } else if(!empty($attachment))
+    {
+      $email->attach($attachment);
+    }
 
 		$result = $email->send();
 
