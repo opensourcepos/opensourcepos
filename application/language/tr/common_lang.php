@@ -51,6 +51,7 @@ $lang["common_price"] = "Fiyat";
 $lang["common_print"] = "Yazdır";
 $lang["common_remove"] = "Kaldır";
 $lang["common_required"] = "Zorunlu";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "İade Politikası";
 $lang["common_search"] = "Arama";
 $lang["common_search_options"] = "Arama seçenekleri";

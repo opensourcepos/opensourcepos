@@ -212,9 +212,9 @@
 			</div>
 
 			<?php echo form_submit(array(
-				'name' => 'submit_form',
-				'id' => 'submit_form',
-				'value'=>$this->lang->line('common_submit'),
+				'name' => 'submit_locale',
+				'id' => 'submit_locale',
+				'value' => $this->lang->line('common_submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>
 	</div>
@@ -231,11 +231,12 @@ $(document).ready(function()
 		var value = $(this).is(":checkbox") ? $(this).is(":checked") : $(this).val();
 		var data = { number_locale: $("#number_locale").val() };
 		data[field] = value;
-		$.post("<?php echo site_url($controller_name . '/check_number_locale')?>",
+		$.post("<?php echo site_url($controller_name . '/ajax_check_number_locale')?>",
 			$.extend(csrf_form_base(), data),
 			function(response) {
 				$("#number_locale_example").text(response.number_locale_example);
-			}
+			},
+			'json'
 		);
 	});
 
@@ -246,19 +247,15 @@ $(document).ready(function()
 			number_locale:
 			{
 				required: true,
-				remote: $.extend({
-						url: "<?php echo site_url($controller_name . '/check_number_locale')?>",
-						type: "POST"
-					}, {
+				remote:
+				{
+					url: "<?php echo site_url($controller_name . '/ajax_check_number_locale')?>",
+					type: 'post',
 					data: $.extend(csrf_form_base(), {
-						"number_locale" : function() {
-							return $("#number_locale").val();
-						},
-						"thousands_separator": function() {
-							return $("#thousands_separator").is(":checked");
-						}
+						'number_locale': $("#number_locale").val(),
+						'thousands_separator': $("#thousands_separator").is(":checked")
 					}),
-					dataFilter: function(data, dataType) {
+					dataFilter: function(data) {
 						setup_csrf_token();
 						var response = JSON.parse(data);
 						$("#number_locale_example").text(response.number_locale_example);
@@ -266,7 +263,7 @@ $(document).ready(function()
 						$("#thousands_separator").prop('checked', response.thousands_separator);
 						return response.success;
 					}
-				})
+				}
 			}
 		},
 

@@ -43,7 +43,7 @@ $(document).ready(function()
 	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
-<?php 
+<?php
 	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
 	load_language(TRUE,array('sales','common'));
 ?>
@@ -64,16 +64,16 @@ $(document).ready(function()
 
 		<div id="logo">
 			<?php
-			if($this->Appconfig->get('company_logo') != '') 
+			if($this->Appconfig->get('company_logo') != '')
 			{
 			?>
-				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />			
+				<img id="image" src="<?php echo base_url('uploads/' . $this->Appconfig->get('company_logo')); ?>" alt="company_logo" />
 			<?php
 			}
 			?>
 			<div>&nbsp</div>
 			<?php
-			if($this->Appconfig->get('receipt_show_company_name')) 
+			if($this->Appconfig->get('receipt_show_company_name'))
 			{
 			?>
 				<div id="company_name"><?php echo $this->config->item('company'); ?></div>
@@ -108,8 +108,10 @@ $(document).ready(function()
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
+			<th><?php echo $this->lang->line('sales_customer_discount');?></th>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
+
 		<?php
 		foreach($cart as $line=>$item)
 		{
@@ -117,12 +119,11 @@ $(document).ready(function()
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
 				<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
-				</td>
+				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 				<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea></td>
-				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
-				</td>
+				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea></td>
+				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
 			</tr>
 			<?php
 			if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
@@ -137,28 +138,32 @@ $(document).ready(function()
 			}
 		}
 		?>
+
 		<tr>
-			<td class="blank" colspan="6" align="center"><?php echo '&nbsp;'; ?></td>
+			<td class="blank" colspan="7" align="center"><?php echo '&nbsp;'; ?></td>
 		</tr>
+
 		<tr>
-			<td colspan="3" class="blank-bottom"> </td>
+			<td colspan="4" class="blank-bottom"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
 		</tr>
+
 		<?php
 		foreach($taxes as $tax_group_index=>$sales_tax)
 		{
 		?>
 			<tr>
-				<td colspan="3" class="blank"> </td>
+				<td colspan="4" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php
 		}
 		?>
+
 		<tr>
-			<td colspan="3" class="blank"> </td>
+			<td colspan="4" class="blank"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
 		</tr>
@@ -173,7 +178,7 @@ $(document).ready(function()
 			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
 		?>
 			<tr>
-				<td colspan="3" class="blank"> </td>
+				<td colspan="4" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></textarea></td>
 			</tr>
@@ -184,7 +189,7 @@ $(document).ready(function()
 		{
 		?>
 			<tr>
-				<td colspan="3" class="blank"> </td>
+				<td colspan="4" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
 			</tr>
@@ -195,7 +200,7 @@ $(document).ready(function()
 		{
 		?>
 		<tr>
-			<td colspan="3" class="blank"> </td>
+			<td colspan="4" class="blank"> </td>
 			<td colspan="2" class="total-line"> <textarea rows="5" cols="6"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change); ?></textarea></td>
 		</tr>
@@ -204,12 +209,13 @@ $(document).ready(function()
 		?>
 
 	</table>
-	
+
 	<div id="terms">
 		<div id="sale_return_policy">
 			<h5>
 				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>
-				<textarea rows="5" cols="6"><?php echo $this->lang->line('sales_comments'). ': ' . (empty($comments) ? $this->config->item('invoice_default_comments') : $comments); ?></textarea>
+				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
+				<textarea rows="5" cols="6"><?php echo $this->config->item('invoice_default_comments'); ?></textarea>
 			</h5>
 			<?php echo nl2br($this->config->item('return_policy')); ?>
 		</div>
@@ -224,7 +230,7 @@ $(document).ready(function()
 $(window).on("load", function()
 {
 	// install firefox addon in order to use this plugin
-	if(window.jsPrintSetup) 
+	if(window.jsPrintSetup)
 	{
 		<?php if(!$this->Appconfig->get('print_header'))
 		{
@@ -233,7 +239,7 @@ $(window).on("load", function()
 			jsPrintSetup.setOption('headerStrLeft', '');
 			jsPrintSetup.setOption('headerStrCenter', '');
 			jsPrintSetup.setOption('headerStrRight', '');
-		<?php 
+		<?php
 		}
 
 		if(!$this->Appconfig->get('print_footer'))
@@ -243,8 +249,8 @@ $(window).on("load", function()
 			jsPrintSetup.setOption('footerStrLeft', '');
 			jsPrintSetup.setOption('footerStrCenter', '');
 			jsPrintSetup.setOption('footerStrRight', '');
-		<?php 
-		} 
+		<?php
+		}
 		?>
 	}
 });

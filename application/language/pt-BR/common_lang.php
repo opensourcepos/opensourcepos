@@ -51,6 +51,7 @@ $lang["common_price"] = "Preço";
 $lang["common_print"] = "Imprimir";
 $lang["common_remove"] = "Remover";
 $lang["common_required"] = "Requerido";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Política";
 $lang["common_search"] = "Pesquisar";
 $lang["common_search_options"] = "Opções de pesquisa";

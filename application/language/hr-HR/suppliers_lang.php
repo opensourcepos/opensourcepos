@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Ne mogu obrisati odabranog dobavljača. 
 $lang["suppliers_company_name"] = "Naziv tvrtke";
 $lang["suppliers_company_name_required"] = "Naziv tvrtke je potreban";
 $lang["suppliers_confirm_delete"] = "Jeste li ste sigurni da želite obrisati odabranog dobavljača?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Greška kod dodavanja/ažuriranja dobavljača";
 $lang["suppliers_new"] = "Novi dobavljač";
 $lang["suppliers_none_selected"] = "Niste odabrali nijednog dobavljača za brisanje";

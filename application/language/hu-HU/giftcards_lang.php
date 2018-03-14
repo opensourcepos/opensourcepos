@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Change All To Serialized";
 $lang["giftcards_change_all_to_unserialized"] = "Change All To Unserialized";
 $lang["giftcards_confirm_bulk_edit"] = "Biztos, hogy mindegyik kiválasztott utalványt módositja?";
 $lang["giftcards_confirm_delete"] = "Biztos, hogy törli a kiválasztott utalványokat?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Költség";
 $lang["giftcards_count"] = "Leltár módositása";
 $lang["giftcards_current_quantity"] = "Jelenlegi mennyiség";

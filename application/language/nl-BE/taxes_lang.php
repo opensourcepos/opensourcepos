@@ -2,6 +2,7 @@
 
 $lang["taxes_add_exception"] = "Voeg uitzondering toe";
 $lang["taxes_confirm_delete"] = "Bent u zeker dat u deze code wil verwijderen? Dit kan niet ongedaan gemaakt worden.";
+$lang["taxes_confirm_restore"] = "";
 $lang["taxes_default_tax_category"] = "Standaard Tax Categorie";
 $lang["taxes_error_adding_updating"] = "Tax code kon niet worden geüpdatet.";
 $lang["taxes_new"] = "";

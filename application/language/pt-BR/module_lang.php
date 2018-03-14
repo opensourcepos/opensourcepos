@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Configurações";
 $lang["module_config_desc"] = "Alterar configurações do sistema";
 $lang["module_customers"] = "Clientes";
 $lang["module_customers_desc"] = "Adicionar, atualizar,  excluir e Pesquisar clientes";
 $lang["module_employees"] = "Funcionários";
 $lang["module_employees_desc"] = "Adicionar , atualizar,  excluir e Pesquisar funcionários";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Cartões Presente";
 $lang["module_giftcards_desc"] = "Adicionar,  atualizar, excluir e Pesquisar cartões presente";
 $lang["module_home"] = "Início";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Conjuntos";
 $lang["module_item_kits_desc"] = "Adicionar , atualizar, excluir e Pesquisar conjunto de itens";
 $lang["module_items"] = "Itens";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Mensagens";
 $lang["module_messages_desc"] = "Enviar mensagens para os clientes, fornecedores, colaboradores etc.";
 $lang["module_migrate"] = "";
 $lang["module_migrate_desc"] = "";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Recebimento";
 $lang["module_receivings_desc"] = "Processar ordens";
 $lang["module_reports"] = "Relatórios";

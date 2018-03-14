@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "Međusklad.";
 $lang["receivings_return"] = "Povrat";
 $lang["receivings_select_supplier"] = "Odaberi dobavljača (neobavezno)";
 $lang["receivings_start_typing_supplier_name"] = "Počnite upisivati ime dobavljača ...";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Na skladište";
 $lang["receivings_stock_locaiton"] = "Mjesto skladišta";
 $lang["receivings_stock_source"] = "Iz skladišta";

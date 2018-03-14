@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "Information";
 $lang["customers_cannot_be_deleted"] = "Could not delete selected customers, one or more of the selected customers has sales.";
 $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "Are you sure you want to delete the selected customer(s)?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Customer";
 $lang["customers_discount"] = "Discount";
 $lang["customers_email_duplicate"] = "Email Address is already present in the database.";

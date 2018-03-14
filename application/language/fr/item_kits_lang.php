@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Ajouter un article";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "Impossible de supprimer";
 $lang["item_kits_confirm_delete"] = "Ètes vous sûr(e) de vouloir supprimer le(s) Kits sélectionnés?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Description du Kit";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Érreur d'ajout/édition de Kit";

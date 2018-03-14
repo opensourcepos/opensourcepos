@@ -77,9 +77,9 @@
 			</div>
             
             <?php echo form_submit(array(
-                'name' => 'submit',
-                'id' => 'submit',
-                'value'=>$this->lang->line('common_submit'),
+                'name' => 'submit_tax',
+                'id' => 'submit_tax',
+                'value' => $this->lang->line('common_submit'),
                 'class' => 'btn btn-primary btn-sm pull-right')); ?>
         </fieldset>
     </div>

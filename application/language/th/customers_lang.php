@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "ไม่สามารลบลูกค้าที่ถูกเลือก, ลูกค้าที่ถูกเลือกถูขายไปแล้ว.";
 $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "ยืนยันลบข้อมูลลูกค้า?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "ลูกค้า";
 $lang["customers_discount"] = "Discount";
 $lang["customers_email_duplicate"] = "";

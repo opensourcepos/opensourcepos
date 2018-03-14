@@ -51,6 +51,7 @@ $lang["common_price"] = "Ár";
 $lang["common_print"] = "Štampati";
 $lang["common_remove"] = "Ukloni";
 $lang["common_required"] = "Potreban";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Povratne obavijesti";
 $lang["common_search"] = "Traži";
 $lang["common_search_options"] = "Opcije pretrage";

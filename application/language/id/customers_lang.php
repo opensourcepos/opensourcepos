@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Pelanggan terpilih tidak bisa dihapus. satu atau lebih dari pelanggan yang dipilih memiliki penjualan.";
 $lang["customers_company_name"] = "Perusahaan";
 $lang["customers_confirm_delete"] = "Apakah Anda yakin ingin menghapus pelanggan yang dipilih?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Pelanggan";
 $lang["customers_discount"] = "Diskon";
 $lang["customers_email_duplicate"] = "";

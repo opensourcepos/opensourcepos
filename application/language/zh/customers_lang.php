@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "無法刪除選定的客戶，選定的客戶存有銷售紀錄。";
 $lang["customers_company_name"] = "Company";
 $lang["customers_confirm_delete"] = "你確定要刪除選定的客戶？";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "客戶";
 $lang["customers_discount"] = "折扣";
 $lang["customers_email_duplicate"] = "";

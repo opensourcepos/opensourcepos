@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";
@@ -100,6 +100,10 @@ $lang["config_email"] = "Email";
 $lang["config_email_configuration"] = "Email Configuration";
 $lang["config_email_mailpath"] = "Path to Sendmail";
 $lang["config_email_protocol"] = "Protocol";
+$lang["config_email_receipt_check_behaviour"] = "Email Receipt checkbox";
+$lang["config_email_receipt_check_behaviour_always"] = "Always checked";
+$lang["config_email_receipt_check_behaviour_last"] = "Remember last selection";
+$lang["config_email_receipt_check_behaviour_never"] = "Always unchecked";
 $lang["config_email_smtp_crypto"] = "SMTP Encryption";
 $lang["config_email_smtp_host"] = "SMTP Server";
 $lang["config_email_smtp_pass"] = "SMTP Password";
@@ -149,8 +153,8 @@ $lang["config_license"] = "License";
 $lang["config_license_configuration"] = "License Statement";
 $lang["config_line_sequence"] = "Line Sequence";
 $lang["config_lines_per_page"] = "Lines Per Page";
-$lang["config_lines_per_page_required"] = "Lines Per Page is a required field";
 $lang["config_lines_per_page_number"] = "Lines Per Page must be a number";
+$lang["config_lines_per_page_required"] = "Lines Per Page is a required field";
 $lang["config_locale"] = "Localisation";
 $lang["config_locale_configuration"] = "Localisation Configuration";
 $lang["config_locale_info"] = "Localisation Configuration Information";
@@ -193,6 +197,10 @@ $lang["config_print_header"] = "Print Browser Header";
 $lang["config_print_left_margin"] = "Margin Left";
 $lang["config_print_left_margin_number"] = "Default Left Margin must be a number";
 $lang["config_print_left_margin_required"] = "Default Left Margin is a required field";
+$lang["config_print_receipt_check_behaviour"] = "Print Receipt checkbox";
+$lang["config_print_receipt_check_behaviour_always"] = "Always checked";
+$lang["config_print_receipt_check_behaviour_last"] = "Remember last selection";
+$lang["config_print_receipt_check_behaviour_never"] = "Always unchecked";
 $lang["config_print_right_margin"] = "Margin Right";
 $lang["config_print_right_margin_number"] = "Default Right Margin must be a number";
 $lang["config_print_right_margin_required"] = "Default Right Margin is a required field";
@@ -201,6 +209,7 @@ $lang["config_print_top_margin"] = "Margin Top";
 $lang["config_print_top_margin_number"] = "Default Top Margin must be a number";
 $lang["config_print_top_margin_required"] = "Default Top Margin is a required field";
 $lang["config_quantity_decimals"] = "Quantity Decimals";
+$lang["config_quote_default_comments"] = "Default Quote Comments";
 $lang["config_receipt"] = "Receipt";
 $lang["config_receipt_configuration"] = "Receipt Print Settings";
 $lang["config_receipt_default"] = "Default";

@@ -159,14 +159,14 @@
 						<?php echo form_radio(array(
 							'name' => 'giftcard_number',
 							'value' => 'series',
-							'checked' => $this->config->item('giftcard_number') === "series")); ?>
+							'checked' => $this->config->item('giftcard_number') == 'series')); ?>
 						<?php echo $this->lang->line('config_giftcard_series'); ?>
 					</label>
 					<label class="radio-inline">
 						<?php echo form_radio(array(
 							'name' => 'giftcard_number',
 							'value' => 'random',
-							'checked' => $this->config->item('giftcard_number') === "random")); ?>
+							'checked' => $this->config->item('giftcard_number') == 'random')); ?>
 						<?php echo $this->lang->line('config_giftcard_random'); ?>
 					</label>
 				</div>
@@ -183,21 +183,6 @@
 					&nbsp
 					<label class="control-label">
 						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_derive_sale_quantity_tooltip'); ?>"></span>
-					</label>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_statistics'), 'statistics', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-1'>
-					<?php echo form_checkbox(array(
-						'name' => 'statistics',
-						'id' => 'statistics',
-						'value' => 'statistics',
-						'checked' => $this->config->item('statistics'))); ?>
-					&nbsp
-					<label class="control-label">
-						<span class="glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="<?php echo $this->lang->line('config_statistics_tooltip'); ?>"></span>
 					</label>
 				</div>
 			</div>
@@ -333,8 +318,8 @@
 			</div>
 
 			<?php echo form_submit(array(
-				'name' => 'submit_form',
-				'id' => 'submit_form',
+				'name' => 'submit_general',
+				'id' => 'submit_general',
 				'value' => $this->lang->line('common_submit'),
 				'class' => 'btn btn-primary btn-sm pull-right')); ?>
 		</fieldset>

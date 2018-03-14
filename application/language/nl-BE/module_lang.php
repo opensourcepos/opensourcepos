@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Configuratie";
 $lang["module_config_desc"] = "Globale configuratie aanpassen";
 $lang["module_customers"] = "Klanten";
 $lang["module_customers_desc"] = "Zoek, bewerk, verwijder en voeg klanten toe";
 $lang["module_employees"] = "Werknemers";
 $lang["module_employees_desc"] = "Zoek, bewerk, verwijder en voeg werknemers toe";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Cadeaubons";
 $lang["module_giftcards_desc"] = "Zoek, bewerk, verwijder en voeg cadeaubons toe";
 $lang["module_home"] = "Home";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Productsets";
 $lang["module_item_kits_desc"] = "Zoek, bewerk, verwijder en voeg productsets toe";
 $lang["module_items"] = "Producten";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Messages";
 $lang["module_messages_desc"] = "Send Messages to Customers, Suppliers, Employees et al.";
 $lang["module_migrate"] = "";
 $lang["module_migrate_desc"] = "";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Orders";
 $lang["module_receivings_desc"] = "Verwerk binnenkomende orders";
 $lang["module_reports"] = "Rapporten";

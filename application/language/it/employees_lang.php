@@ -4,6 +4,7 @@ $lang["employees_basic_information"] = "Informazioni";
 $lang["employees_cannot_be_deleted"] = "Eliminazione dell'impiegato/i non consentita, uno o più hanno trattato delle vendite o stai cancellando il tuo account.";
 $lang["employees_change_password"] = "Cambia Password";
 $lang["employees_confirm_delete"] = "Sei sicuro di voler eliminare l'impiegato/i selezionato?";
+$lang["employees_confirm_restore"] = "Sei sicuro di voler ripristinare gl'Impiegati selezionati?";
 $lang["employees_current_password"] = "Password Corrente";
 $lang["employees_current_password_invalid"] = "Password corrente non valida.";
 $lang["employees_employee"] = "Impiegato";

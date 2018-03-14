@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "De geselecteeerde leveranciers konden ni
 $lang["suppliers_company_name"] = "Leverancier";
 $lang["suppliers_company_name_required"] = "Bedrijfsnaam moet ingevuld worden";
 $lang["suppliers_confirm_delete"] = "Bent u zeker dat u de geselecteerde leveranciers wil verwijderen?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Fout bij het toevoegen/aanpassen van een leverancier";
 $lang["suppliers_new"] = "N. Leverancier";
 $lang["suppliers_none_selected"] = "U hebt geen leveranciers geselecteerd";

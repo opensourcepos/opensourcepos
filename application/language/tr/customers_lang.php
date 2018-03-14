@@ -9,6 +9,7 @@ $lang["customers_basic_information"] = "";
 $lang["customers_cannot_be_deleted"] = "Seçili müşteriler silinemedi, müşterilerin satışları var.";
 $lang["customers_company_name"] = "Şirket";
 $lang["customers_confirm_delete"] = "Seçili müşteriyi silmek istediğinize emin misiniz?";
+$lang["customers_confirm_restore"] = "";
 $lang["customers_customer"] = "Müşteri";
 $lang["customers_discount"] = "İndirim";
 $lang["customers_email_duplicate"] = "";

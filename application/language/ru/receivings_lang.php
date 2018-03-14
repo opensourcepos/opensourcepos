@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "";
 $lang["receivings_return"] = "возвращать";
 $lang["receivings_select_supplier"] = "Выберите поставщика (необязательно)";
 $lang["receivings_start_typing_supplier_name"] = "Начните вводить название поставщика...";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Stock destination";
 $lang["receivings_stock_locaiton"] = "Stock location";
 $lang["receivings_stock_source"] = "Stock source";

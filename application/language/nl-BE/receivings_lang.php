@@ -36,6 +36,7 @@ $lang["receivings_requisition"] = "Transfer";
 $lang["receivings_return"] = "Teruggave";
 $lang["receivings_select_supplier"] = "Selecteer Leverancier (Optioneel)";
 $lang["receivings_start_typing_supplier_name"] = "Typ naam leverancier..";
+$lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Stock bestemming";
 $lang["receivings_stock_locaiton"] = "Stock locatie";
 $lang["receivings_stock_source"] = "Stock bron";

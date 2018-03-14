@@ -2,6 +2,7 @@
 
 $lang["taxes_add_exception"] = "Añadir excepción";
 $lang["taxes_confirm_delete"] = "¿Estás seguro de borrar los impositivos seleccionados? Esto no tiene recuperacion.";
+$lang["taxes_confirm_restore"] = "Esta seguro de querer restaurar la(s) Imp(s) seleccionada(s)?";
 $lang["taxes_default_tax_category"] = "Categoría por defecto";
 $lang["taxes_error_adding_updating"] = "Error añadiendo/actualizando el impuesto.";
 $lang["taxes_new"] = "Impuesto nuevo";

@@ -24,12 +24,6 @@
 		<a data-toggle="tab" href="#stock_tab" title="<?php echo $this->lang->line('config_location_configuration'); ?>"><?php echo $this->lang->line('config_location'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#table_tab" title="<?php echo $this->lang->line('config_table_configuration'); ?>"><?php echo $this->lang->line('config_table'); ?></a>
-	</li>
-	<li role="presentation">
-		<a data-toggle="tab" href="#reward_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_reward'); ?></a>
-	</li>
-	<li role="presentation">
 		<a data-toggle="tab" href="#receipt_tab" title="<?php echo $this->lang->line('config_receipt_configuration'); ?>"><?php echo $this->lang->line('config_receipt'); ?></a>
 	</li>
 	<li role="presentation">
@@ -37,6 +31,12 @@
 	</li>
 	<li role="presentation">
 		<a data-toggle="tab" href="#email_tab" title="<?php echo $this->lang->line('config_email_configuration'); ?>"><?php echo $this->lang->line('config_email'); ?></a>
+	</li>
+	<li role="presentation">
+		<a data-toggle="tab" href="#reward_tab" title="<?php echo $this->lang->line('config_reward_configuration'); ?>"><?php echo $this->lang->line('config_reward'); ?></a>
+	</li>
+	<li role="presentation">
+		<a data-toggle="tab" href="#table_tab" title="<?php echo $this->lang->line('config_table_configuration'); ?>"><?php echo $this->lang->line('config_table'); ?></a>
 	</li>
 	<li role="presentation">
 		<a data-toggle="tab" href="#message_tab" title="<?php echo $this->lang->line('config_message_configuration'); ?>"><?php echo $this->lang->line('config_message'); ?></a>
@@ -68,12 +68,6 @@
 	<div class="tab-pane" id="stock_tab">
 		<?php $this->load->view("configs/stock_config"); ?>
 	</div>
-	<div class="tab-pane" id="table_tab">
-		<?php $this->load->view("configs/table_config"); ?>
-	</div>
-	<div class="tab-pane" id="reward_tab">
-		<?php $this->load->view("configs/reward_config"); ?>
-	</div>
 	<div class="tab-pane" id="receipt_tab">
 		<?php $this->load->view("configs/receipt_config"); ?>
 	</div>
@@ -82,6 +76,12 @@
 	</div>
 	<div class="tab-pane" id="email_tab">
 		<?php $this->load->view("configs/email_config"); ?>
+	</div>
+	<div class="tab-pane" id="reward_tab">
+		<?php $this->load->view("configs/reward_config"); ?>
+	</div>
+	<div class="tab-pane" id="table_tab">
+		<?php $this->load->view("configs/table_config"); ?>
 	</div>
 	<div class="tab-pane" id="message_tab">
 		<?php $this->load->view("configs/message_config"); ?>

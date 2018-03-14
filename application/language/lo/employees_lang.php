@@ -4,6 +4,7 @@ $lang["employees_basic_information"] = "ຂໍ້ມູນ";
 $lang["employees_cannot_be_deleted"] = "ບໍ່ສາມາດລຶບພະນັກງານທີ່ເລືອກໄດ້, ຢ່າງໜ້ອຍມີ 1 ລາຍການຫຼືຫຼາຍກວ່ານັ້ນ ຍັງມີການຊື້ຂາຍກັນຢູ່ ຫຼື ທ່ານກຳລັງພະຍາຍາມລຶບບັນຊີຂອງຕົວເອງ.";
 $lang["employees_change_password"] = "ປ່ຽນ Password";
 $lang["employees_confirm_delete"] = "ທ່ານຈະລຶບພະນັກງານທີ່ເລືອກແທ້ບໍ່ ?";
+$lang["employees_confirm_restore"] = "";
 $lang["employees_current_password"] = "Password ປັດຈຸບັນ";
 $lang["employees_current_password_invalid"] = "Password ປັດຈຸບັນບໍ່ຖືກຕ້ອງ.";
 $lang["employees_employee"] = "ພະນັກງານ";

@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Ubah semua menggunakan nomor seri
 $lang["giftcards_change_all_to_unserialized"] = "Ubah semua tanpa nomor serial";
 $lang["giftcards_confirm_bulk_edit"] = "Apakah Anda yakin ingin merubah semua GiftCard yang dipilih?";
 $lang["giftcards_confirm_delete"] = "Apakah anda yakin ingin menghapus GiftCard yang dipilih?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Harga Pokok";
 $lang["giftcards_count"] = "Mutasi/Penyesuaian Inventori";
 $lang["giftcards_current_quantity"] = "Jumlah saat ini";

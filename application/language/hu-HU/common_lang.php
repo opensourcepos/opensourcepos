@@ -51,6 +51,7 @@ $lang["common_price"] = "Ár";
 $lang["common_print"] = "Nyomtat";
 $lang["common_remove"] = "Eltávolít";
 $lang["common_required"] = "Kötelező";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Visszatérítési politika";
 $lang["common_search"] = "Keres";
 $lang["common_search_options"] = "Keresési opciók";

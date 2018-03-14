@@ -18,8 +18,6 @@ class Secure_Controller extends CI_Controller
 			redirect('login');
 		}
 
-		$this->track_page($module_id, $module_id);
-
 		$logged_in_employee_info = $model->get_logged_in_employee_info();
 		if(!$model->has_module_grant($module_id, $logged_in_employee_info->person_id) || 
 			(isset($submodule_id) && !$model->has_module_grant($submodule_id, $logged_in_employee_info->person_id)))
@@ -77,32 +75,6 @@ class Secure_Controller extends CI_Controller
 		}
 	}
 
-	protected function track_page($path, $page)
-	{
-		if(get_instance()->Appconfig->get('statistics'))
-		{
-			$this->load->library('tracking_lib');
-
-			if(empty($path))
-			{
-				$path = 'home';
-				$page = 'home';
-			}
-
-			$this->tracking_lib->track_page('controller/' . $path, $page);
-		}
-	}
-
-	protected function track_event($category, $action, $label, $value = NULL)
-	{
-		if(get_instance()->Appconfig->get('statistics'))
-		{
-			$this->load->library('tracking_lib');
-
-			$this->tracking_lib->track_event($category, $action, $label, $value);
-		}
-	}
-
 	public function numeric($str)
 	{
 		return parse_decimals($str);
@@ -120,7 +92,6 @@ class Secure_Controller extends CI_Controller
 		echo $result !== FALSE ? 'true' : 'false';
 	}
 
-
 	// this is the basic set of methods most OSPOS Controllers will implement
 	public function index() { return FALSE; }
 	public function search() { return FALSE; }
@@ -128,6 +99,5 @@ class Secure_Controller extends CI_Controller
 	public function view($data_item_id = -1) { return FALSE; }
 	public function save($data_item_id = -1) { return FALSE; }
 	public function delete() { return FALSE; }
-
 }
 ?>

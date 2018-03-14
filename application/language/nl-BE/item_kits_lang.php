@@ -4,6 +4,7 @@ $lang["item_kits_add_item"] = "Nieuw Product";
 $lang["item_kits_all"] = "";
 $lang["item_kits_cannot_be_deleted"] = "De sets konden niet worden verwijderd";
 $lang["item_kits_confirm_delete"] = "Bent u zeker dat u de geselecteerde sets wil verwijderen?";
+$lang["item_kits_confirm_restore"] = "";
 $lang["item_kits_description"] = "Omschrijving";
 $lang["item_kits_discount_percent"] = "";
 $lang["item_kits_error_adding_updating"] = "Fout bij het toevoegen/aanpassen van een set";

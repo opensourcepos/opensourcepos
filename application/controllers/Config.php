@@ -233,7 +233,6 @@ class Config extends Secure_Controller
 		$this->load->view("configs/manage", $data);
 	}
 
-
 	public function get_tax_code_options()
 	{
 		$tax_codes = $this->Tax->get_all_tax_codes()->result_array();
@@ -246,7 +245,6 @@ class Config extends Secure_Controller
 		}
 		return $tax_code_options;
 	}
-
 
 	public function save_info()
 	{
@@ -300,7 +298,6 @@ class Config extends Secure_Controller
 			'suggestions_third_column' => $this->input->post('suggestions_third_column'),
 			'giftcard_number' => $this->input->post('giftcard_number'),
 			'derive_sale_quantity' => $this->input->post('derive_sale_quantity') != NULL,
-			'statistics' => $this->input->post('statistics') != NULL,
 			'custom1_name' => $this->input->post('custom1_name'),
 			'custom2_name' => $this->input->post('custom2_name'),
 			'custom3_name' => $this->input->post('custom3_name'),
@@ -324,7 +321,7 @@ class Config extends Secure_Controller
 		));
 	}
 
-	public function check_number_locale()
+	public function ajax_check_number_locale()
 	{
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
@@ -796,7 +793,7 @@ class Config extends Secure_Controller
 			'barcode_page_width' => $this->input->post('barcode_page_width'),
 			'barcode_page_cellspacing' => $this->input->post('barcode_page_cellspacing'),
 			'barcode_generate_if_empty' => $this->input->post('barcode_generate_if_empty') != NULL,
-			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,			
+			'allow_duplicate_barcodes' => $this->input->post('allow_duplicate_barcodes') != NULL,
 			'barcode_content' => $this->input->post('barcode_content'),
 			'barcode_formats' => json_encode($this->input->post('barcode_formats'))
 		);
@@ -815,6 +812,8 @@ class Config extends Secure_Controller
 		$batch_save_data = array (
 			'receipt_template' => $this->input->post('receipt_template'),
 			'receipt_font_size' => $this->input->post('receipt_font_size'),
+			'email_receipt_check_behaviour' => $this->input->post('email_receipt_check_behaviour'),
+			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,
 			'receipt_show_taxes' => $this->input->post('receipt_show_taxes') != NULL,
 			'receipt_show_total_discount' => $this->input->post('receipt_show_total_discount') != NULL,
@@ -851,6 +850,7 @@ class Config extends Secure_Controller
 			'line_sequence' => $this->input->post('line_sequence'),
 			'last_used_invoice_number' =>$this->input->post('last_used_invoice_number'),
 			'last_used_quote_number' =>$this->input->post('last_used_quote_number'),
+			'quote_default_comments' => $this->input->post('quote_default_comments'),
 			'work_order_enable' => $this->input->post('work_order_enable') != NULL,
 			'work_order_format' => $this->input->post('work_order_format'),
 			'last_used_work_order_number' =>$this->input->post('last_used_work_order_number')

@@ -25,18 +25,6 @@ class Login extends CI_Controller
 			}
 			else
 			{
-				if($this->config->item('statistics'))
-				{
-					$this->load->library('tracking_lib');
-
-					$this->tracking_lib->track_page('login', 'login');
-
-					$this->tracking_lib->track_event('Stats', 'Theme', $this->config->item('theme'));
-					$this->tracking_lib->track_event('Stats', 'Language', $this->config->item('language'));
-					$this->tracking_lib->track_event('Stats', 'Timezone', $this->config->item('timezone'));
-					$this->tracking_lib->track_event('Stats', 'Currency', $this->config->item('currency_symbol'));
-				}
-
 				redirect('home');
 			}
 		}
@@ -108,10 +96,6 @@ class Login extends CI_Controller
 			error_log('Check your php.ini');
 			error_log('PHP installed extensions: ' . $extensions);
 			error_log('PHP required extensions: ' . implode(', ', $keys));
-		}
-		else
-		{
-			$result = preg_match('~\b(Copyright|(c)|©|All rights reserved|Developed|Crafted|Implemented|Made|Powered|Code|Design|unblockUI|blockUI|blockOverlay|hide|opacity|NuNu|wMDA|Zhafirah|Zendher|WEDIDIT|websol|wazo|Water|Trulance|Vision|Unlock|United|Total|Coddz|Tormuz|Toko|TIS|Store|Sigma|SECC|Motor|Scooper|Satelit|Infotech|Shop|Computer|Cell|Mina|Mila|Megawheel|Restaurant|Bazar|Farma|Linux|ERP|Jeera|Hotel|eCommerce|Stock)\b~i', file_get_contents(APPPATH . 'views/partial/footer.php')) != TRUE;
 		}
 
 		return $result;

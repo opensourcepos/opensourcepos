@@ -96,7 +96,6 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_template', 'receipt_default'),
 ('theme', 'flatly'),
 ('customer_sales_tax_support', '0'),
-('statistics', '1'),
 ('language', 'english'),
 ('language_code', 'en-US'),
 ('date_or_time_format', ''),
@@ -118,7 +117,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_first_column', 'name'),
 ('suggestions_second_column', ''),
 ('suggestions_third_column', ''),
-('allow_duplicate_barcodes', '0');
+('allow_duplicate_barcodes', '0'),
+('quote_default_comments', 'This is a default quote comment');
+
 
 -- --------------------------------------------------------
 

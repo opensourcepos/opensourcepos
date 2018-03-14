@@ -6,6 +6,7 @@ $lang["suppliers_cannot_be_deleted"] = "Tidak bisa dihapus pemasok yang dipilih,
 $lang["suppliers_company_name"] = "Nama Perusahaan";
 $lang["suppliers_company_name_required"] = "Nama Perusahaan wajib diisi";
 $lang["suppliers_confirm_delete"] = "Apakah Anda yakin ingin menghapus pemasok yang dipilih?";
+$lang["suppliers_confirm_restore"] = "";
 $lang["suppliers_error_adding_updating"] = "Kesalahan Menambah / memperbarui data pemasok";
 $lang["suppliers_new"] = "Pemasok Baru";
 $lang["suppliers_none_selected"] = "Anda belum memilih pemasok untuk dihapus";

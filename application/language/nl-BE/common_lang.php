@@ -51,6 +51,7 @@ $lang["common_price"] = "Prijs";
 $lang["common_print"] = "Print";
 $lang["common_remove"] = "Verwijder";
 $lang["common_required"] = "Vereist";
+$lang["common_restore"] = "";
 $lang["common_return_policy"] = "Retourvoorwaarden";
 $lang["common_search"] = "Zoek";
 $lang["common_search_options"] = "Zoek criteria";

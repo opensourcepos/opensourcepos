@@ -14,6 +14,7 @@ $lang["giftcards_change_all_to_serialized"] = "Genummerd";
 $lang["giftcards_change_all_to_unserialized"] = "Niet genummerd";
 $lang["giftcards_confirm_bulk_edit"] = "Bent u zeker dat u de geselecteerde cadeaubons wil aanpassen?";
 $lang["giftcards_confirm_delete"] = "Bent u zeker dat u de geselecteerde cadeaubons wil verwijderen?";
+$lang["giftcards_confirm_restore"] = "";
 $lang["giftcards_cost_price"] = "Aankoopprijs";
 $lang["giftcards_count"] = "Update Stock";
 $lang["giftcards_current_quantity"] = "Huidige hoeveelheid";
