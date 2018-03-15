@@ -75,3 +75,4 @@ class Email_lib {
 	}
 
 }
+?>
