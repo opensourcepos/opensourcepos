@@ -998,7 +998,7 @@ class Sales extends Secure_Controller
 		$data['taxes'] = $this->sale_lib->get_taxes();
 		$data['discount'] = $this->sale_lib->get_discount();
 		$data['payments'] = $this->sale_lib->get_payments();
-		// sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return
+		// sale_type (0=pos, 1=invoice, 2=work order, 3=quote, 4=return)
 		$sale_type = $this->sale_lib->get_sale_type();
 
 		// Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'payments_cover_total'

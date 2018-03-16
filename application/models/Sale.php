@@ -285,7 +285,7 @@ class Sale extends CI_Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
-		$this->db->select('payment_type, count(*) AS count, SUM(payment_amount) AS payment_amount');
+		$this->db->select('payment_type, count(payment_amount) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
@@ -333,6 +333,10 @@ class Sale extends CI_Model
 		elseif($filters['sale_type'] == 'returns')
 		{
 			$this->db->where('sales.sale_status = ' . COMPLETED . ' AND payment_amount < 0');
+		}
+		elseif($filters['sale_type'] == 'all')
+		{
+			$this->db->where('sales.sale_status = ' . COMPLETED);
 		}
 
 		if($filters['only_invoices'] != FALSE)
