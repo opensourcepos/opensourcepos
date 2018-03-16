@@ -130,13 +130,8 @@ class Giftcards extends Secure_Controller
 
 	public function ajax_check_number_giftcard()
 	{
-		$value = $this->input->post('giftcard_amount');
-		$parsed_value = parse_decimals($value);
-		if(strcmp(strval($parsed_value), strval($value)) != 0)
-		{
-			$parsed_value = FALSE;
-		}
-		echo json_encode(array('success' => !empty($parsed_value), 'giftcard_amount' => $parsed_value));
+		$parsed_value = parse_decimals($this->input->post('giftcard_amount'));
+		echo json_encode(array('success' => $parsed_value !== FALSE, 'giftcard_amount' => $parsed_value));
 	}
 
 	public function delete()

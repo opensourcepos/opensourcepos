@@ -308,7 +308,10 @@ function parse_decimals($number)
 	}
 
 	$config = get_instance()->config;
-	$fmt = new \NumberFormatter( $config->item('number_locale'), \NumberFormatter::DECIMAL );
+	$fmt = new \NumberFormatter($config->item('number_locale'), \NumberFormatter::DECIMAL);
+
+	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $config->item('currency_decimals'));
+
 	if (empty($config->item('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
@@ -318,7 +321,7 @@ function parse_decimals($number)
 	{
 		return $fmt->parse($number);
 	}
-	catch (Exception $e)
+	catch(Exception $e)
 	{
 		return FALSE;
 	}
