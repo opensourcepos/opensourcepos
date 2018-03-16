@@ -1,18 +1,22 @@
-<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+<?php
+
+if (!defined('BASEPATH'))
+{
+	exit('No direct script access allowed');
+}
 
 /**
  * Email library
  *
  * Library with utilities to configure and send emails
  */
+class Email_lib {
 
-class Email_lib
-{
 	private $CI;
 
-  	public function __construct()
+	public function __construct()
 	{
-		$this->CI =& get_instance();
+		$this->CI = & get_instance();
 
 		$this->CI->load->library('email');
 
@@ -45,20 +49,30 @@ class Email_lib
 		$email->to($to);
 		$email->subject($subject);
 		$email->message($message);
-		if(!empty($attachment))
+		if (is_array($attachment))
+		{
+			foreach ($attachment as $file)
+			{
+				if (!empty($file))
+				{
+					$email->attach($file);
+				}
+			}
+		}
+		else if (!empty($attachment))
 		{
 			$email->attach($attachment);
 		}
 
 		$result = $email->send();
 
-		if(!$result)
+		if (!$result)
 		{
 			error_log($email->print_debugger());
 		}
 
 		return $result;
 	}
-}
 
+}
 ?>

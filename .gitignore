@@ -27,3 +27,4 @@ vendor/
 *.~
 *.log
 .env
+nbproject/
