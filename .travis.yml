@@ -30,5 +30,5 @@ deploy:
     user: jekkos
     on:
         all_branches: true
-    key:
-        secure: NGzLiwBZ4A6zO9AqUsVeht29A7UZejO/LKEJntQMdzYaBXD6Ao3zXpS3bPN3UwU/YTNdcm3I7DemAL2ypAkCxcdzfp842eeTlFMDuzUiD5MxrQyWeZnbFxyeN4bJgXOnH/93eXxoIg0qT7ORVzwHrrA6vOqfxB1Nq/DAV2MpK/0=
+    key: 
+        secure: Olha628NjtSa1x4bvntN8tAb5CoFLDKqHCirkqPPM3lpzjgh0MhYdBEhxGPsMSQNr9lahyoxu0z0Z9CVFqDgdtA/pneBLWDzX2jeV+8eb1hq698ywTTCbyZ70R0HqkNjNTsUYtxAUzNoHjPb/OdQAhGe/L+SDgYIFarCCvtWl80= 
