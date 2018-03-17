@@ -27,9 +27,12 @@ after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" 
   jekkos/opensourcepos:sqlscript && docker push "jekkos/opensourcepos:$TAG" &&  docker
   push jekkos/opensourcepos:sqlscript'
 deploy:
-  provider: bintray
+  edge:
+    source: travis-ci/dpl
+    branch: master
   file: deployment.json
+  provider: bintray
+  key: ${BINTRAY_API_KEY}
   user: jekkos
   on:
     all_branches: true
-  key: ${BINTRAY_API_KEY}
