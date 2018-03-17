@@ -32,5 +32,4 @@ deploy:
   user: jekkos
   on:
     all_branches: true
-  key:
-    secure: E6ztaRpNjWVt/lP6WfbpQxzJrMr8TbhyZEldPCny9r8oaYnElQ3c2F2u7JgrzMxeoGlTjiEaCU22+kB/R3rd3JWjH2tInJgZCZ/IVCxl/Zmw3FvjQuayGU46yqj4YCiCyw6BSSjOsR1+jxN6VzSMljGiyO0r3/Qx8DpARrz8Djo=
+  key: ${BINTRAY_API_KEY}
