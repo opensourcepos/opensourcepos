@@ -32,6 +32,7 @@ deploy:
     branch: master
   file: deployment.json
   provider: bintray
+  skip_cleanup: true
   key: ${BINTRAY_API_KEY}
   user: jekkos
   on:
