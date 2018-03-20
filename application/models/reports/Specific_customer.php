@@ -69,13 +69,13 @@ class Specific_customer extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->where('customer_id', $inputs['customer_id']);  
 		
-		if ($inputs['payment_type'] != 'all') 
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_'.$inputs['payment_type']));
-		}
-		elseif($inputs['payment_type'] == 'invoices')
+		if($inputs['payment_type'] == 'invoices')
 		{
 			$this->db->where('sale_type', SALE_TYPE_INVOICE);
+		}	
+		elseif ($inputs['payment_type'] != 'all') 
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_'.$inputs['payment_type']));
 		}	
 
 		
@@ -146,13 +146,13 @@ class Specific_customer extends Report
 		$this->db->from('sales_items_temp');
 		$this->db->where('customer_id', $inputs['customer_id']);
 		
-		if ($inputs['payment_type'] != 'all') 
-		{
-			$this->db->like('payment_type', $this->lang->line('sales_'.$inputs['payment_type']));
-		}
-		elseif($inputs['payment_type'] == 'invoices')
+		if($inputs['payment_type'] == 'invoices')
 		{
 			$this->db->where('sale_type', SALE_TYPE_INVOICE);
+		}	
+		elseif ($inputs['payment_type'] != 'all') 
+		{
+			$this->db->like('payment_type', $this->lang->line('sales_'.$inputs['payment_type']));
 		}	
 		
 		if($inputs['sale_type'] == 'complete')
