@@ -142,8 +142,16 @@ class Specific_customer extends Report
 
 	public function getSummaryData(array $inputs)
 	{
-		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
+	$sql = $this->db->query("SELECT ospos_sales_payments.sale_id, ospos_sales_payments.payment_type, SUM(ospos_sales_payments.payment_amount) AS amount FROM ospos_sales_payments JOIN ospos_sales ON ospos_sales_payments.sale_id = ospos_sales.sale_id WHERE ospos_sales_payments.payment_type = 'Due' AND DATE(ospos_sales.sale_time) BETWEEN '".$inputs['start_date']."' AND '".$inputs['end_date']."' AND ospos_sales.customer_id ='" . $inputs['customer_id'] ."'");
+
+if ($sql->num_rows() > 0) {
+     // output data of each row
+
+foreach ($sql->result_array() as $row)
+{		 
+		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit, "'.floor($row['amount']).'" AS due');
 		$this->db->from('sales_items_temp');
+		$this->db->where('sale_date BETWEEN '. $this->db->escape($inputs['start_date']). ' AND '. $this->db->escape($inputs['end_date']));
 		$this->db->where('customer_id', $inputs['customer_id']);
 		
 		if($inputs['payment_type'] == 'invoices')
@@ -193,6 +201,10 @@ class Specific_customer extends Report
 		}		
 
 		return $this->db->get()->row_array();
+	}
+		}  else {
+     echo "";
+	}
 	}
 }
 ?>

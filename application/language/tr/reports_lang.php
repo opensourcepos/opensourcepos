@@ -120,3 +120,5 @@ $lang["reports_work_orders"] = "";
 $lang["reports_zero_and_less"] = "Sıfır ve sıfırdan az";
 $lang["reports_total_retail"] = "Total Inv. Retail Value";
 $lang["reports_total_quantity"] = "Total Quantity";
+$lang["reports_due"] = "Due Amnt";
+$lang["reports_money"] = "Till's Money";
