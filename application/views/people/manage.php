@@ -17,7 +17,7 @@ $(document).ready(function()
 		}
 	});
 
-	$("#email").click(function(evvent)
+	$("#email").click(function(event)
 	{
 		var recipients = $.map($("tr.selected a[href^='mailto:']"), function(element)
 		{

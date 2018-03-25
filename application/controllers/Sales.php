@@ -837,6 +837,7 @@ class Sales extends Secure_Controller
 		if($customer_id != -1)
 		{
 			$customer_info = $this->Customer->get_info($customer_id);
+			$data['customer_id'] = $customer_id;
 			if(isset($customer_info->company_name))
 			{
 				$data['customer'] = $customer_info->company_name;
@@ -865,7 +866,7 @@ class Sales extends Secure_Controller
 				$package_name = $this->Customer_rewards->get_name($package_id);
 				$points = $this->Customer->get_info($customer_id)->points;
 				$data['customer_rewards']['package_id'] = $package_id;
-				$data['customer_rewards']['points'] = ($points==NULL ? 0 : $points);
+				$data['customer_rewards']['points'] = empty($points) ? 0 : $points;
 				$data['customer_rewards']['package_name'] = $package_name;
 			}
 

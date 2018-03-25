@@ -38,7 +38,7 @@ if(isset($success))
 						<label class="control-label"><?php echo $this->lang->line('sales_table'); ?></label>
 					</li>
 					<li class="pull-left">
-						<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table,array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
+						<?php echo form_dropdown('dinner_table', $empty_tables, $selected_table, array('onchange'=>"$('#mode_form').submit();", 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'fit')); ?>
 					</li>
 				<?php
 				}
@@ -255,96 +255,96 @@ if(isset($success))
 
 <div id="overall_sale" class="panel panel-default">
 	<div class="panel-body">
-		<?php
-		if(isset($customer))
-		{
-		?>
-			<table class="sales_table_100">
-				<tr>
-					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer"); ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo $customer; ?></th>
-				</tr>
-				<?php
-				if(!empty($customer_email))
-				{
-				?>
+		<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
+			<?php
+			if(isset($customer))
+			{
+			?>
+				<table class="sales_table_100">
 					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_email"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $customer_email; ?></th>
+						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo anchor('customers/view/'.$customer_id, $customer, array('class' => 'modal-dlg', 'data-btn-submit' => $this->lang->line('common_submit'), 'title' => $this->lang->line('customers_update'))); ?></th>
 					</tr>
-				<?php
-				}
-				?>
-				<?php
-				if(!empty($customer_address))
-				{
-				?>
+					<?php
+					if(!empty($customer_email))
+					{
+					?>
+						<tr>
+							<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_email"); ?></th>
+							<th style="width: 45%; text-align: right;"><?php echo $customer_email; ?></th>
+						</tr>
+					<?php
+					}
+					?>
+					<?php
+					if(!empty($customer_address))
+					{
+					?>
+						<tr>
+							<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_address"); ?></th>
+							<th style="width: 45%; text-align: right;"><?php echo $customer_address; ?></th>
+						</tr>
+					<?php
+					}
+					?>
+					<?php
+					if(!empty($customer_location))
+					{
+					?>
+						<tr>
+							<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_location"); ?></th>
+							<th style="width: 45%; text-align: right;"><?php echo $customer_location; ?></th>
+						</tr>
+					<?php
+					}
+					?>
 					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_address"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $customer_address; ?></th>
+						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_discount"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo $customer_discount_percent . ' %'; ?></th>
 					</tr>
-				<?php
-				}
-				?>
-				<?php
-				if(!empty($customer_location))
-				{
-				?>
+					<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
+					<?php
+					if(!empty($customer_rewards))
+					{
+					?>
+						<tr>
+							<th style='width: 55%;'><?php echo $this->lang->line("rewards_package"); ?></th>
+							<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['package_name']; ?></th>
+						</tr>
+						<tr>
+							<th style='width: 55%;'><?php echo $this->lang->line("customers_available_points"); ?></th>
+							<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['points']; ?></th>
+						</tr>
+					<?php
+					}
+					?>
+					<?php endif; ?>
 					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_location"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $customer_location; ?></th>
+						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_total"); ?></th>
+						<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
 					</tr>
-				<?php
-				}
-				?>
-				<tr>
-					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_discount"); ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo $customer_discount_percent . ' %'; ?></th>
-				</tr>
-				<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
-				<?php
-				if(!empty($customer_rewards))
-				{
-				?>
-					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line("rewards_package"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['package_name']; ?></th>
-					</tr>
-					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line("customers_available_points"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $customer_rewards['points']; ?></th>
-					</tr>
-				<?php
-				}
-				?>
-				<?php endif; ?>
-				<tr>
-					<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_total"); ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo to_currency($customer_total); ?></th>
-				</tr>
-				<?php
-				if(!empty($mailchimp_info))
-				{
-				?>
-					<tr>
-						<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_mailchimp_status"); ?></th>
-						<th style="width: 45%; text-align: right;"><?php echo $mailchimp_info['status']; ?></th>
-					</tr>
-				<?php
-				}
-				?>
-			</table>
+					<?php
+					if(!empty($mailchimp_info))
+					{
+					?>
+						<tr>
+							<th style='width: 55%;'><?php echo $this->lang->line("sales_customer_mailchimp_status"); ?></th>
+							<th style="width: 45%; text-align: right;"><?php echo $mailchimp_info['status']; ?></th>
+						</tr>
+					<?php
+					}
+					?>
+				</table>
 
-			<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
+				<?php echo anchor($controller_name."/remove_customer", '<span class="glyphicon glyphicon-remove">&nbsp</span>' . $this->lang->line('common_remove').' '.$this->lang->line('customers_customer'),
 								array('class'=>'btn btn-danger btn-sm', 'id'=>'remove_customer_button', 'title'=>$this->lang->line('common_remove').' '.$this->lang->line('customers_customer'))); ?>
-		<?php
-		}
-		else
-		{
-		?>
-			<?php echo form_open($controller_name."/select_customer", array('id'=>'select_customer_form', 'class'=>'form-horizontal')); ?>
+			<?php
+			}
+			else
+			{
+			?>
 				<div class="form-group" id="select_customer">
-					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer') . " " . $customer_required; ?></label>
+					<label id="customer_label" for="customer" class="control-label" style="margin-bottom: 1em; margin-top: -1em;"><?php echo $this->lang->line('sales_select_customer') . ' ' . $customer_required; ?></label>
 					<?php echo form_input(array('name'=>'customer', 'id'=>'customer', 'class'=>'form-control input-sm', 'value'=>$this->lang->line('sales_start_typing_customer_name')));?>
 
 					<button class='btn btn-info btn-sm modal-dlg' data-btn-submit='<?php echo $this->lang->line('common_submit') ?>' data-href='<?php echo site_url("customers/view"); ?>'
@@ -353,10 +353,10 @@ if(isset($success))
 					</button>
 
 				</div>
-			<?php echo form_close(); ?>
-		<?php
-		}
-		?>
+			<?php
+			}
+			?>
+		<?php echo form_close(); ?>
 
 		<table class="sales_table_100" id="sale_totals">
 			<tr>
@@ -512,7 +512,6 @@ if(isset($success))
 				</div>
 			<?php echo form_close(); ?>
 
-
 			<?php
 			// Only show this part if the payment cover the total
 			if($payments_cover_total || !$pos_mode)
@@ -648,6 +647,16 @@ $(document).ready(function()
 		}
 	});
 
+	$('#item, #customer').click(clear_fields).dblclick(function(event)
+	{
+		$(this).autocomplete("search");
+	});
+
+	$('#customer').blur(function()
+	{
+		$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
+	});
+
 	$(".giftcard-input").autocomplete(
 	{
 		source: '<?php echo site_url("giftcards/suggest"); ?>',
@@ -657,16 +666,6 @@ $(document).ready(function()
 			$(this).val(ui.item.value);
 			$("#add_payment_form").submit();
 		}
-	});
-
-	$('#item, #customer').click(clear_fields).dblclick(function(event)
-	{
-		$(this).autocomplete("search");
-	});
-
-	$('#customer').blur(function()
-	{
-		$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
 	});
 
 	$('#comment').keyup(function()
@@ -778,6 +777,8 @@ $(document).ready(function()
 
 	table_support.handle_submit = function(resource, response, stay_open)
 	{
+		$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+
 		if(response.success)
 		{
 			if(resource.match(/customers$/))
@@ -805,7 +806,6 @@ $(document).ready(function()
 	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
-
 });
 
 function check_payment_type()
@@ -841,7 +841,6 @@ function check_payment_type()
 		$(".non-giftcard-input").attr('disabled', false);
 	}
 }
-
 </script>
 
 <?php $this->load->view("partial/footer"); ?>
