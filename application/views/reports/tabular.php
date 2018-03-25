@@ -14,18 +14,18 @@
 
 <div id="report_summary">
 	<?php
-	foreach($summary_data as $name=>$value)
+	foreach($summary_data as $name => $value)
 	{ 
 		if($name == "total_quantity")
 		{
 	?>
-		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name) . ': ' .$value; ?></div>
+			<div class="summary_row"><?php echo $this->lang->line('reports_'.$name) . ': ' .$value; ?></div>
 	<?php
 		}
 		else
 		{
 	?>
-		<div class="summary_row"><?php echo $this->lang->line('reports_'.$name) . ': ' . to_currency($value); ?></div>
+			<div class="summary_row"><?php echo $this->lang->line('reports_'.$name) . ': ' . to_currency($value); ?></div>
 	<?php
 		}
 	}

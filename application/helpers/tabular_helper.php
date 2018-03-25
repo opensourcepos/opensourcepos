@@ -1,5 +1,60 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Tabular views helper
+ */
+
+/*
+Basic tabular headers function
+*/
+function transform_headers_readonly($array)
+{
+	$result = array();
+
+	foreach($array as $key => $value)
+	{
+		$result[] = array('field' => $key, 'title' => $value, 'sortable' => $value != '', 'switchable' => !preg_match('(^$|&nbsp)', $value));
+	}
+
+	return json_encode($result);
+}
+
+/*
+Basic tabular headers function
+*/
+function transform_headers($array, $readonly = FALSE, $editable = TRUE)
+{
+	$result = array();
+
+	if(!$readonly)
+	{
+		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
+	}
+
+	if($editable)
+	{
+		$array[] = array('edit' => '');
+	}
+
+	foreach($array as $element)
+	{
+		reset($element);
+		$result[] = array('field' => key($element),
+			'title' => current($element),
+			'switchable' => isset($element['switchable']) ? $element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
+			'sortable' => isset($element['sortable']) ? $element['sortable'] : current($element) != '',
+			'checkbox' => isset($element['checkbox']) ? $element['checkbox'] : FALSE,
+			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ? 'print_hide' : '',
+			'sorter' => isset($element['sorter']) ? $element ['sorter'] : '');
+	}
+
+	return json_encode($result);
+}
+
+
+/*
+Get the header for the sales tabular view
+*/
 function get_sales_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -26,31 +81,8 @@ function get_sales_manage_table_headers()
 }
 
 /*
-Gets the html data rows for the sales.
+Get the html data row for the sales
 */
-function get_sale_data_last_row($sales)
-{
-	$CI =& get_instance();
-	$sum_amount_due = 0;
-	$sum_amount_tendered = 0;
-	$sum_change_due = 0;
-
-	foreach($sales->result() as $key=>$sale)
-	{
-		$sum_amount_due += $sale->amount_due;
-		$sum_amount_tendered += $sale->amount_tendered;
-		$sum_change_due += $sale->change_due;
-	}
-
-	return array(
-		'sale_id' => '-',
-		'sale_time' => '<b>'.$CI->lang->line('sales_total').'</b>',
-		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
-		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
-		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
-	);
-}
-
 function get_sale_data_row($sale)
 {
 	$CI =& get_instance();
@@ -58,7 +90,7 @@ function get_sale_data_row($sale)
 
 	$row = array (
 		'sale_id' => $sale->sale_id,
-		'sale_time' => date( $CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time) ),
+		'sale_time' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time)),
 		'customer_name' => $sale->customer_name,
 		'amount_due' => to_currency($sale->amount_due),
 		'amount_tendered' => to_currency($sale->amount_tendered),
@@ -82,6 +114,32 @@ function get_sale_data_row($sale)
 	);
 
 	return $row;
+}
+
+/*
+Get the html data last row for the sales
+*/
+function get_sale_data_last_row($sales)
+{
+	$CI =& get_instance();
+	$sum_amount_due = 0;
+	$sum_amount_tendered = 0;
+	$sum_change_due = 0;
+
+	foreach($sales->result() as $key=>$sale)
+	{
+		$sum_amount_due += $sale->amount_due;
+		$sum_amount_tendered += $sale->amount_tendered;
+		$sum_change_due += $sale->change_due;
+	}
+
+	return array(
+		'sale_id' => '-',
+		'sale_time' => '<b>'.$CI->lang->line('sales_total').'</b>',
+		'amount_due' => '<b>'.to_currency($sum_amount_due).'</b>',
+		'amount_tendered' => '<b>'. to_currency($sum_amount_tendered).'</b>',
+		'change_due' => '<b>'.to_currency($sum_change_due).'</b>'
+	);
 }
 
 /*
@@ -112,50 +170,10 @@ function get_sales_manage_payments_summary($payments, $sales)
 	return $table;
 }
 
-function transform_headers_readonly($array)
-{
-	$result = array();
-	foreach($array as $key => $value)
-	{
-		$result[] = array('field' => $key, 'title' => $value, 'sortable' => $value != '', 'switchable' => !preg_match('(^$|&nbsp)', $value));
-	}
 
-	return json_encode($result);
-}
-
-function transform_headers($array, $readonly = FALSE, $editable = TRUE)
-{
-	$result = array();
-
-	if (!$readonly)
-	{
-		$array = array_merge(array(array('checkbox' => 'select', 'sortable' => FALSE)), $array);
-	}
-
-	if ($editable)
-	{
-		$array[] = array('edit' => '');
-	}
-
-	foreach($array as $element)
-	{
-		reset($element);
-		$result[] = array('field' => key($element),
-			'title' => current($element),
-			'switchable' => isset($element['switchable']) ?
-				$element['switchable'] : !preg_match('(^$|&nbsp)', current($element)),
-			'sortable' => isset($element['sortable']) ?
-				$element['sortable'] : current($element) != '',
-			'checkbox' => isset($element['checkbox']) ?
-				$element['checkbox'] : FALSE,
-			'class' => isset($element['checkbox']) || preg_match('(^$|&nbsp)', current($element)) ?
-				'print_hide' : '',
-			'sorter' => isset($element['sorter']) ?
-				$element ['sorter'] : '');
-	}
-	return json_encode($result);
-}
-
+/*
+Get the header for the people tabular view
+*/
 function get_people_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -176,6 +194,9 @@ function get_people_manage_table_headers()
 	return transform_headers($headers);
 }
 
+/*
+Get the html data row for the person
+*/
 function get_person_data_row($person)
 {
 	$CI =& get_instance();
@@ -194,6 +215,10 @@ function get_person_data_row($person)
 	));
 }
 
+
+/*
+Get the header for the customer tabular view
+*/
 function get_customer_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -215,6 +240,9 @@ function get_customer_manage_table_headers()
 	return transform_headers($headers);
 }
 
+/*
+Get the html data row for the customer
+*/
 function get_customer_data_row($person, $stats)
 {
 	$CI =& get_instance();
@@ -234,6 +262,10 @@ function get_customer_data_row($person, $stats)
 	));
 }
 
+
+/*
+Get the header for the suppliers tabular view
+*/
 function get_suppliers_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -256,6 +288,9 @@ function get_suppliers_manage_table_headers()
 	return transform_headers($headers);
 }
 
+/*
+Get the html data row for the supplier
+*/
 function get_supplier_data_row($supplier)
 {
 	$CI =& get_instance();
@@ -276,6 +311,10 @@ function get_supplier_data_row($supplier)
 		);
 }
 
+
+/*
+Get the header for the items tabular view
+*/
 function get_items_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -298,6 +337,9 @@ function get_items_manage_table_headers()
 	return transform_headers($headers);
 }
 
+/*
+Get the html data row for the item
+*/
 function get_item_data_row($item)
 {
 	$CI =& get_instance();
@@ -354,6 +396,10 @@ function get_item_data_row($item)
 		));
 }
 
+
+/*
+Get the header for the giftcard tabular view
+*/
 function get_giftcards_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -369,6 +415,29 @@ function get_giftcards_manage_table_headers()
 	return transform_headers($headers);
 }
 
+/*
+Get the html data row for the giftcard
+*/
+function get_giftcard_data_row($giftcard)
+{
+	$CI =& get_instance();
+	$controller_name=strtolower(get_class($CI));
+
+	return array (
+		'giftcard_id' => $giftcard->giftcard_id,
+		'last_name' => $giftcard->last_name,
+		'first_name' => $giftcard->first_name,
+		'giftcard_number' => $giftcard->giftcard_number,
+		'value' => to_currency($giftcard->value),
+		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
+
+
+/*
+Get the header for the taxes tabular view
+*/
 function get_taxes_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -386,22 +455,9 @@ function get_taxes_manage_table_headers()
 	return transform_headers($headers);
 }
 
-function get_giftcard_data_row($giftcard)
-{
-	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
-
-	return array (
-		'giftcard_id' => $giftcard->giftcard_id,
-		'last_name' => $giftcard->last_name,
-		'first_name' => $giftcard->first_name,
-		'giftcard_number' => $giftcard->giftcard_number,
-		'value' => to_currency($giftcard->value),
-		'edit' => anchor($controller_name."/view/$giftcard->giftcard_id", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
-}
-
+/*
+Get the html data row for the tax
+*/
 function get_tax_data_row($tax_code_row)
 {
 	$CI =& get_instance();
@@ -422,6 +478,10 @@ function get_tax_data_row($tax_code_row)
 		));
 }
 
+
+/*
+Get the header for the item kits tabular view
+*/
 function get_item_kits_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -437,6 +497,9 @@ function get_item_kits_manage_table_headers()
 	return transform_headers($headers);
 }
 
+/*
+Get the html data row for the item kit
+*/
 function get_item_kit_data_row($item_kit)
 {
 	$CI =& get_instance();
@@ -454,6 +517,9 @@ function get_item_kit_data_row($item_kit)
 }
 
 
+/*
+Get the header for the expense categories tabular view
+*/
 function get_expense_category_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -468,7 +534,7 @@ function get_expense_category_manage_table_headers()
 }
 
 /*
-Gets the html data rows for the expenses categories.
+Gets the html data row for the expenses category
 */
 function get_expense_category_data_row($expense_category)
 {
@@ -485,6 +551,9 @@ function get_expense_category_data_row($expense_category)
 }
 
 
+/*
+Get the header for the expenses tabular view
+*/
 function get_expenses_manage_table_headers()
 {
 	$CI =& get_instance();
@@ -505,7 +574,7 @@ function get_expenses_manage_table_headers()
 }
 
 /*
-Gets the html data rows for the expenses.
+Gets the html data row for the expenses.
 */
 function get_expenses_data_row($expense)
 {
@@ -527,6 +596,9 @@ function get_expenses_data_row($expense)
 		));
 }
 
+/*
+Get the html data last row for the expenses
+*/
 function get_expenses_data_last_row($expense)
 {
 	$CI =& get_instance();
@@ -547,7 +619,6 @@ function get_expenses_data_last_row($expense)
 		'tax_amount' => '<b>'. to_currency($sum_tax_amount_expense).'</b>'
 	);
 }
-
 
 /*
 Get the expenses payments summary

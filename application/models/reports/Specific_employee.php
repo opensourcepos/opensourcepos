@@ -16,7 +16,7 @@ class Specific_employee extends Report
 			'summary' => array(
 				array('id' => $this->lang->line('reports_sale_id')),
 				array('type_code' => $this->lang->line('reports_code_type')),
-				array('sale_date' => $this->lang->line('reports_date')),
+				array('sale_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 				array('quantity' => $this->lang->line('reports_quantity')),
 				array('customer_name' => $this->lang->line('reports_sold_to')),
 				array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
@@ -24,7 +24,7 @@ class Specific_employee extends Report
 				array('total' => $this->lang->line('reports_total'), 'sorter' => 'number_sorter'),
 				array('cost' => $this->lang->line('reports_cost'), 'sorter' => 'number_sorter'),
 				array('profit' => $this->lang->line('reports_profit'), 'sorter' => 'number_sorter'),
-				array('payment_type' => $this->lang->line('reports_payment_type')),
+				array('payment_type' => $this->lang->line('reports_payment_type'), 'sortable' => FALSE),
 				array('comment' => $this->lang->line('reports_comments'))),
 			'details' => array(
 				$this->lang->line('reports_name'),

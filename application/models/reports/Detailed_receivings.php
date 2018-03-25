@@ -15,7 +15,7 @@ class Detailed_receivings extends Report
 		$columns = array(
 			'summary' => array(
 				array('id' => $this->lang->line('reports_receiving_id')),
-				array('receiving_date' => $this->lang->line('reports_date')),
+				array('receiving_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 				array('quantity' => $this->lang->line('reports_quantity')),
 				array('employee_name' => $this->lang->line('reports_received_by')),
 				array('supplier_name' => $this->lang->line('reports_supplied_by')),

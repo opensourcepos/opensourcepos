@@ -31,7 +31,7 @@ class Reports extends Secure_Controller
 	public function index()
 	{
 		$data['grants'] = $this->xss_clean($this->Employee->get_employee_grants($this->session->userdata('person_id')));
-		
+
 		$this->load->view('reports/listing', $data);
 	}
 
@@ -50,7 +50,7 @@ class Reports extends Secure_Controller
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
-				'sale_date' => $row['sale_date'],
+				'sale_date' => date($this->config->item('dateformat'), strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['quantity_purchased']),
 				'subtotal' => to_currency($row['subtotal']),
 				'tax' => to_currency_tax($row['tax']),
@@ -106,7 +106,7 @@ class Reports extends Secure_Controller
 
 		$this->load->view('reports/tabular', $data);
 	}
-	
+
 	//Summary Expenses by Categories report
 	public function summary_expenses_categories($start_date, $end_date, $sale_type)
 	{
@@ -430,10 +430,10 @@ class Reports extends Secure_Controller
 	public function graphical_summary_expenses_categories($start_date, $end_date, $sale_type)
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type);
-		
+
 		$this->load->model('reports/Summary_expenses_categories');
 		$model = $this->Summary_expenses_categories;
-		
+
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -608,7 +608,7 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_employees');
 		$model = $this->Summary_employees;
-		
+
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -642,7 +642,7 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_taxes');
 		$model = $this->Summary_taxes;
-		
+
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -673,10 +673,10 @@ class Reports extends Secure_Controller
 	public function graphical_summary_customers($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
-		
+
 		$this->load->model('reports/Summary_customers');
 		$model = $this->Summary_customers;
-		
+
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -712,7 +712,7 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
-		
+
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -745,10 +745,10 @@ class Reports extends Secure_Controller
 	public function graphical_summary_payments($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
-		
+
 		$this->load->model('reports/Summary_payments');
 		$model = $this->Summary_payments;
-		
+
 		$report_data = $model->getData($inputs);
 		$summary = $this->xss_clean($model->getSummaryData($inputs));
 
@@ -778,12 +778,12 @@ class Reports extends Secure_Controller
 	public function specific_customer_input()
 	{
 		$data = array();
-		$data['specific_input_name'] = $this->lang->line('reports_customer');		
+		$data['specific_input_name'] = $this->lang->line('reports_customer');
 		$customers = array();
 		foreach($this->Customer->get_all()->result() as $customer)
-		{		
+		{
 			if(isset($customer->company_name))
-			{	
+			{
 				$customers[$customer->person_id] = $this->xss_clean($customer->first_name . ' ' . $customer->last_name. ' ' . ' [ '.$customer->company_name.' ] ');
 			}
 			else
@@ -794,12 +794,12 @@ class Reports extends Secure_Controller
 		$data['specific_input_data'] = $customers;
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
-		$data['payment_type'] = $this->get_payment_type();		
+		$data['payment_type'] = $this->get_payment_type();
 		$this->load->view('reports/specific_customer_input', $data);
 	}
-	
+
 	public function get_payment_type()
-	{		
+	{
 			$payment_type = array( 'all' => $this->lang->line('common_none_selected_text'),
 					'cash' => $this->lang->line('sales_cash'),
 					'due' => $this->lang->line('sales_due'),
@@ -807,13 +807,13 @@ class Reports extends Secure_Controller
 					'credit' => $this->lang->line('sales_credit'),
 					'debit' => $this->lang->line('sales_debit'),
 					'invoices' => $this->lang->line('sales_invoice'));
-			return $payment_type;		
-	}	
+			return $payment_type;
+	}
 
 	public function specific_customer($start_date, $end_date, $customer_id, $sale_type, $payment_type)
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'customer_id' => $customer_id, 'sale_type' => $sale_type, 'payment_type' => $payment_type);
-		
+
 		$this->load->model('reports/Specific_customer');
 		$model = $this->Specific_customer;
 
@@ -842,7 +842,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_date' => $row['sale_date'],
+				'sale_date' => date($this->config->item('dateformat'), strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'subtotal' => to_currency($row['subtotal']),
@@ -889,8 +889,8 @@ class Reports extends Secure_Controller
 		else
 		{
 			$customer_name = $customer_info->company_name;
-		}		
-		
+		}
+
 		$data = array(
 			'title' => $this->xss_clean($customer_info->first_name . ' ' . $customer_info->last_name . ' ' . $this->lang->line('reports_report')),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
@@ -953,7 +953,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_date' => $row['sale_date'],
+				'sale_date' => date($this->config->item('dateformat'), strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'customer_name' => $row['customer_name'],
 				'subtotal' => to_currency($row['subtotal']),
@@ -1028,7 +1028,7 @@ class Reports extends Secure_Controller
 	public function specific_discount($start_date, $end_date, $discount, $sale_type)
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'discount' => $discount, 'sale_type' => $sale_type);
-		
+
 		$this->load->model('reports/Specific_discount');
 		$model = $this->Specific_discount;
 
@@ -1057,7 +1057,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_date' => $row['sale_date'],
+				'sale_date' => date($this->config->item('dateformat'), strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
@@ -1113,7 +1113,7 @@ class Reports extends Secure_Controller
 	public function get_detailed_sales_row($sale_id)
 	{
 		$inputs = array('sale_id' => $sale_id);
-		
+
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 
@@ -1134,7 +1134,7 @@ class Reports extends Secure_Controller
 
 		$summary_data = $this->xss_clean(array(
 			'sale_id' => $report_data['sale_id'],
-			'sale_date' => $report_data['sale_date'],
+			'sale_date' => date($this->config->item('dateformat'), strtotime($report_data['sale_date'])),
 			'quantity' => to_quantity_decimals($report_data['items_purchased']),
 			'employee_name' => $report_data['employee_name'],
 			'customer_name' => $report_data['customer_name'],
@@ -1173,7 +1173,7 @@ class Reports extends Secure_Controller
 	public function detailed_sales($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
-		
+
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 
@@ -1205,7 +1205,7 @@ class Reports extends Secure_Controller
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['sale_id'],
 				'type_code' => $row['type_code'],
-				'sale_date' => $row['sale_date'],
+				'sale_date' => date($this->config->item('dateformat'), strtotime($row['sale_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'customer_name' => $row['customer_name'],
@@ -1269,14 +1269,14 @@ class Reports extends Secure_Controller
 
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
-		
+
 		$model->create($inputs);
 
 		$report_data = $model->getDataByReceivingId($receiving_id);
 
 		$summary_data = $this->xss_clean(array(
 			'receiving_id' => $report_data['receiving_id'],
-			'receiving_date' => $report_data['receiving_date'],
+			'receiving_date' => date($this->config->item('dateformat'), strtotime($report_data['receiving_date'])),
 			'quantity' => to_quantity_decimals($report_data['items_purchased']),
 			'employee_name' => $report_data['employee_name'],
 			'supplier_name' => $report_data['supplier_name'],
@@ -1295,10 +1295,10 @@ class Reports extends Secure_Controller
 	public function detailed_receivings($start_date, $end_date, $receiving_type, $location_id = 'all')
 	{
 		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id);
-		
+
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
-		
+
 		$model->create($inputs);
 
 		$headers = $this->xss_clean($model->getDataColumns());
@@ -1313,7 +1313,7 @@ class Reports extends Secure_Controller
 		{
 			$summary_data[] = $this->xss_clean(array(
 				'id' => $row['receiving_id'],
-				'receiving_date' => $row['receiving_date'],
+				'receiving_date' => date($this->config->item('dateformat'), strtotime($row['receiving_date'])),
 				'quantity' => to_quantity_decimals($row['items_purchased']),
 				'employee_name' => $row['employee_name'],
 				'supplier_name' => $row['supplier_name'],
@@ -1365,7 +1365,7 @@ class Reports extends Secure_Controller
 		$model = $this->Inventory_low;
 
 		$report_data = $model->getData($inputs);
-		
+
 		$tabular_data = array();
 		foreach($report_data as $row)
 		{
@@ -1393,7 +1393,7 @@ class Reports extends Secure_Controller
 	{
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
-		
+
 		$data = array();
 		$data['item_count'] = $model->getItemCountDropdownArray();
 
@@ -1407,7 +1407,7 @@ class Reports extends Secure_Controller
 	public function inventory_summary($location_id = 'all', $item_count = 'all')
 	{
 		$inputs = array('location_id' => $location_id, 'item_count' => $item_count);
-		
+
 		$this->load->model('reports/Inventory_summary');
 		$model = $this->Inventory_summary;
 
@@ -1452,7 +1452,7 @@ class Reports extends Secure_Controller
 		{
 			$subtitle .= date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime(rawurldecode($inputs['start_date']))) . ' - ' . date($this->config->item('dateformat').' '.$this->config->item('timeformat'), strtotime(rawurldecode($inputs['end_date'])));
 		}
-		
+
 		return $subtitle;
 	}
 }

@@ -213,7 +213,7 @@
 
 	var options;
 
-	var toggle_column_visbility = function() {
+	var toggle_column_visibility = function() {
 		if (localStorage[options.employee_id]) {
 			var user_settings = JSON.parse(localStorage[options.employee_id]);
 			user_settings[options.resource] && $.each(user_settings[options.resource], function(index, element) {
@@ -274,7 +274,7 @@
 		enable_actions();
 		init_delete();
 		init_restore();
-		toggle_column_visbility();
+		toggle_column_visibility();
 		dialog_support.init("button.modal-dlg");
 	};
 
@@ -382,11 +382,8 @@
 
 })(window.form_support = window.form_support || {}, jQuery);
 
-function number_sorter(a, b)
-{
-	a = +a.replace(/[^\-0-9\.]+/g,"");
-	b = +b.replace(/[^\-0-9\.]+/g,"");
-	if (a > b) return 1;
-	if (a < b) return -1;
-	return 0;
+function number_sorter(a, b) {
+	a = +a.replace(/[^\-0-9\.]+/g, '');
+	b = +b.replace(/[^\-0-9\.]+/g, '');
+	return a - b;
 }

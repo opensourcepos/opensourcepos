@@ -20,12 +20,11 @@
 </div>
 
 <script type="text/javascript">
-
 	$(document).ready(function()
 	{
 	 	<?php $this->load->view('partial/bootstrap_tables_locale'); ?>
 
-		var detail_data = <?php echo json_encode($details_data); ?>;
+		var details_data = <?php echo json_encode($details_data); ?>;
 		<?php
 		if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
 		{
@@ -34,13 +33,16 @@
 		<?php
 		}
 		?>
-		var init_dialog = function()
-		{
-
-			<?php if (isset($editable)): ?>
-			table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
-			dialog_support.init("a.modal-dlg");
-			<?php endif; ?>
+		var init_dialog = function() {
+			<?php
+			if(isset($editable))
+			{
+			?>
+				table_support.submit_handler('<?php echo site_url("reports/get_detailed_" . $editable . "_row")?>');
+				dialog_support.init("a.modal-dlg");
+			<?php
+			}
+			?>
 		};
 
 		$('#table').bootstrapTable({
@@ -59,7 +61,6 @@
 			iconSize: 'sm',
 			paginationVAlign: 'bottom',
 			detailView: true,
-			uniqueId: 'id',
 			escape: false,
 			onPageChange: init_dialog,
 			onPostBody: function() {
@@ -68,8 +69,9 @@
 			onExpandRow: function (index, row, $detail) {
 				$detail.html('<table></table>').find("table").bootstrapTable({
 					columns: <?php echo transform_headers_readonly($headers['details']); ?>,
-					data: detail_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
+					data: details_data[(!isNaN(row.id) && row.id) || $(row[0] || row.id).text().replace(/(POS|RECV)\s*/g, '')]
 				});
+
 				<?php
 				if($this->config->item('customer_reward_enable') == TRUE && !empty($details_data_rewards))
 				{

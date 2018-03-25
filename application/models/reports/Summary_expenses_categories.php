@@ -8,7 +8,7 @@ class Summary_expenses_categories extends Summary_report
 	{
 		return array(
 			array('category_name' => $this->lang->line('reports_expenses_category')),
-			array('count' => $this->lang->line('reports_count'), 'sorter' => 'number_sorter'),
+			array('count' => $this->lang->line('reports_count')),
 			array('total_amount' => $this->lang->line('reports_expenses_amount'), 'sorter' => 'number_sorter'),
 			array('total_tax_amount' => $this->lang->line('reports_expenses_tax_amount'), 'sorter' => 'number_sorter'));
 	}

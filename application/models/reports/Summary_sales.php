@@ -7,7 +7,7 @@ class Summary_sales extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('sale_date' => $this->lang->line('reports_date')),
+			array('sale_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
 			array('quantity' => $this->lang->line('reports_quantity')),
 			array('subtotal' => $this->lang->line('reports_subtotal'), 'sorter' => 'number_sorter'),
 			array('tax' => $this->lang->line('reports_tax'), 'sorter' => 'number_sorter'),
