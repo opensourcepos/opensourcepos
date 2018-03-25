@@ -92,39 +92,39 @@ abstract class Summary_report extends Report
 
 		if($inputs['sale_type'] == 'complete')
 		{
-			$this->db->where('sale_status', COMPLETED);
+			$this->db->where('sales.sale_status', COMPLETED);
 			$this->db->group_start();
-				$this->db->where('sale_type', SALE_TYPE_POS);
-				$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
-				$this->db->or_where('sale_type', SALE_TYPE_RETURN);
+				$this->db->where('sales.sale_type', SALE_TYPE_POS);
+				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
+				$this->db->or_where('sales.sale_type', SALE_TYPE_RETURN);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'sales')
 		{
-			$this->db->where('sale_status', COMPLETED);
+			$this->db->where('sales.sale_status', COMPLETED);
 			$this->db->group_start();
-				$this->db->where('sale_type', SALE_TYPE_POS);
-				$this->db->or_where('sale_type', SALE_TYPE_INVOICE);
+				$this->db->where('sales.sale_type', SALE_TYPE_POS);
+				$this->db->or_where('sales.sale_type', SALE_TYPE_INVOICE);
 			$this->db->group_end();
 		}
 		elseif($inputs['sale_type'] == 'quotes')
 		{
-			$this->db->where('sale_status', SUSPENDED);
-			$this->db->where('sale_type', SALE_TYPE_QUOTE);
+			$this->db->where('sales.sale_status', SUSPENDED);
+			$this->db->where('sales.sale_type', SALE_TYPE_QUOTE);
 		}
 		elseif($inputs['sale_type'] == 'work_orders')
 		{
-			$this->db->where('sale_status', SUSPENDED);
-			$this->db->where('sale_type', SALE_TYPE_WORK_ORDER);
+			$this->db->where('sales.sale_status', SUSPENDED);
+			$this->db->where('sales.sale_type', SALE_TYPE_WORK_ORDER);
 		}
 		elseif($inputs['sale_type'] == 'canceled')
 		{
-			$this->db->where('sale_status', CANCELED);
+			$this->db->where('sales.sale_status', CANCELED);
 		}
 		elseif($inputs['sale_type'] == 'returns')
 		{
-			$this->db->where('sale_status', COMPLETED);
-			$this->db->where('sale_type', SALE_TYPE_RETURN);
+			$this->db->where('sales.sale_status', COMPLETED);
+			$this->db->where('sales.sale_type', SALE_TYPE_RETURN);
 		}
 	}
 
