@@ -41,7 +41,7 @@
 							'name' => 'msg_src',
 							'id' => 'msg_src',
 							'class' => 'form-control input-sm required',
-							'value'=>$this->config->item('msg_src') == null ? $this->config->item('company') : $this->config->item('msg_src')));?>
+							'value'=>$this->config->item('msg_src') == NULL ? $this->config->item('company') : $this->config->item('msg_src')));?>
 					</div>
 				</div>
 			</div>

@@ -332,7 +332,7 @@
 		{
 		?>
 			<?php
-			if($this->config->item('custom'.$i.'_name') != null)
+			if($this->config->item('custom'.$i.'_name') != NULL)
 			{
 				$item_arr = (array)$item_info;
 			?>

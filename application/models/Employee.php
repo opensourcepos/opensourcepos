@@ -421,9 +421,9 @@ class Employee extends Person
 		$row = $this->db->get()->row();
 
 		// If no grants are assigned yet then set the default to 'home'
-		if ($row == null)
+		if ($row == NULL)
 		{
-			return "home";
+			return 'home';
 		}
 		else
 		{

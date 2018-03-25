@@ -123,6 +123,5 @@ class Module extends CI_Model
 		$this->db->from('modules');
 		return $this->db->get()->row()->sort;
 	}
-
 }
 ?>

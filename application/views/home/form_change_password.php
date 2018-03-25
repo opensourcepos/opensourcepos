@@ -2,7 +2,7 @@
 
 <ul id="error_message_box" class="error_message_box"></ul>
 
-<?php echo form_open('employees/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=>'form-horizontal')); ?>
+<?php echo form_open('home/save/'.$person_info->person_id, array('id'=>'employee_form', 'class'=>'form-horizontal')); ?>
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="employee_login_info">
 			<fieldset>
@@ -87,14 +87,7 @@ $(document).ready(function()
 				success:function(response)
 				{
 					dialog_support.hide();
-					if(!response.success)
-					{
-						$.notify(response.message, {type: 'danger' });
-					}
-					else
-					{
-						$.notify(response.message, {type: 'success' });
-					}
+					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
 				},
 				dataType:'json'
 			});

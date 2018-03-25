@@ -11,7 +11,7 @@ class Home extends Secure_Controller
 
 	public function index()
 	{
-		$this->load->view('home');
+		$this->load->view('home/home');
 	}
 
 	public function logout()
@@ -20,7 +20,7 @@ class Home extends Secure_Controller
 	}
 
 	/*
-	Loads the change password form
+	Loads the change employee password form
 	*/
 	public function change_password($employee_id = -1)
 	{
@@ -31,7 +31,42 @@ class Home extends Secure_Controller
 		}
 		$data['person_info'] = $person_info;
 
-		$this->load->view('employees/form_change_password', $data);
+		$this->load->view('home/form_change_password', $data);
+	}
+
+	/*
+	Change employee password
+	*/
+	public function save($employee_id = -1)
+	{
+		if($this->input->post('current_password') != '' && $employee_id != -1)
+		{
+			if($this->Employee->check_password($this->input->post('username'), $this->input->post('current_password')))
+			{
+				$employee_data = array(
+					'username' => $this->input->post('username'),
+					'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT),
+					'hash_version' => 2
+				);
+
+				if($this->Employee->change_password($employee_data, $employee_id))
+				{
+					echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('employees_successful_change_password'), 'id' => $employee_id));
+				}
+				else//failure
+				{
+					echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_unsuccessful_change_password'), 'id' => -1));
+				}
+			}
+			else
+			{
+				echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid'), 'id' => -1));
+			}
+		}
+		else
+		{
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('employees_current_password_invalid'), 'id' => -1));
+		}
 	}
 }
 ?>

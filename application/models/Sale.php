@@ -565,7 +565,7 @@ class Sale extends CI_Model
 
 		$sales_data = array(
 			'sale_time'			=> date('Y-m-d H:i:s'),
-			'customer_id'		=> $this->Customer->exists($customer_id) ? $customer_id : null,
+			'customer_id'		=> $this->Customer->exists($customer_id) ? $customer_id : NULL,
 			'employee_id'		=> $employee_id,
 			'comment'			=> $comment,
 			'sale_status'		=> $sale_status,
