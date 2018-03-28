@@ -1,20 +1,26 @@
 Version 3.2.0
 -------------
-+ CodeIgniter 3.1.6 Upgrade
-+ Home and back Office menu switch support
-+ Added Work orders
-+ Made Sales having a state (e.g. suspended, cancel, proforma)
-+ Restrict Sale delete with permission
-+ Added ability to restore deleted Sale
-+ Added Expenses support
-+ Automatic upgrade at first login from 3.0.0 version onwards
-+ Export all records and export to pdf
-+ Added table sticky headers (header always visible during scrolling)
++ Code Igniter 3.1.7 upgrade
++ PHP 7.2 support (use OpenSSL and not MCrypt)
++ Automatic database upgrades from vs 3.0.0 at first login (no more sql scripts)
++ Home and (back) Office menu switch (top menu can be organised in two views)
++ Expenses feature
++ Quote, Work Order features
++ Improved Invoice support
++ Sale suspend, soft delete, complete as state not as different tables or hard delete
++ Restore deleted Sales
++ Improved Items Kits
++ Export tables all records and export to pdf
++ Table sticky header (headers visible during scrolling)
 + Allow duplicate barcodes (Config option)
-+ Search suggestion formatting
-+ Improved Items Kit
-+ Added Swedish, Khmer and Bulgarian languages support (yet translations are not complete)
-+ Various bugfixes (a.g. Tax, Rounding, Reports, Library circular dependency)
++ Search suggestion formatting (Config option)
++ Define print and email checkboxes behaviour (Config option)
++ Edit customer from sale register
++ Added and Updated translations
++ Various Jquery plugins upgrade
++ Fixed permission issues (e.g. password change)
++ Fixed various reports issues and renamed Sales to Transactions
++ Various bug fixes (e.g. Tax, Rounding, Library circular dependency)
 
 Version 3.1.1
 -------------
