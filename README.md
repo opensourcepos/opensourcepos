@@ -9,7 +9,8 @@
 Introduction
 ------------
 
-Open Source Point of Sale is a web based point of sale system.
+A web-base POS application and requiring just a web browser at your point of sale point, that allows you to manage your stock, sales, issuing receipts or invoices and providing you reports of sales and stock.
+
 The main features are:
 * Stock management (Items and Kits)
 * VAT, customer and multi tiers taxation
@@ -31,154 +32,76 @@ The main features are:
 * Mailchimp integration
 * reCAPTCHA to protect login page from brute force attacks
 
-The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
-
-The latest 3.x version is a complete overhaul of the original software.
-It is now based on Bootstrap 3 using Bootswatch themes, and still uses CodeIgniter 3 as framework.
-It also has improved functionality and security.
-
-Deployed to a Cloud it's a SaaS (Software as a Service) solution.
+OSPOS features evolved in a robust application thanks to active contributors, There's a complete list of features, please visit the OSPOS complete feature data sheet page for more information at https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-complete-feature-datasheet
 
 
-License
+Documentation and Installation
+-------------------
+
+Please refers to the wiki page [DOCS-USERS-Getting-Started-installations](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations) at https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations OSPOS wiki.
+
+Exact requirements and other flavours like differents operating systems (MAc, Linux, windows, etc) and software (Apache2, Nginx, php5, php7, etc) please refers to the [More advance and customized installations](https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#requirements) at the OSPOS development index page in https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#requirement 
+
+
+
+PLease take in consideration there two places to download:
+1. the stable release at https://github.com/opensourcepos/opensourcepos/releases (first it's lasted)
+2. the unstable build at https://bintray.com/package/files/jekkos/opensourcepos/opensourcepos?order=desc&sort=fileLastModified&basePath=&tab=files
+
+The bintray option are correcponding to each commit in the master repository, its a "build" from, to understand this please read the [Development how to start documetation wiki page](https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#2---how-to-start-develop) at https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#2---how-to-start-develop.
+
+Theres a special wiki page for docker installations, please be sure to read [DOCS-USER-Extras-for-Docker-cloud-maintenance](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USER-Extras-for-Docker-cloud-maintenance) at the https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USER-Extras-for-Docker-cloud-maintenance wiki page.
+
+Support and reporting bugs
 -------
 
-Open Source Point of Sale is licensed under MIT terms with an important addition:
+If you need assistance you can create a Support Ticket Issue by browsing at https://github.com/opensourcepos/opensourcepos/issues/new just few words ahead to your solution! 
 
-_The footer signature "You are using Open Source Point Of Sale" with version, 
-hash and link to the original distribution of the code MUST BE RETAINED, 
-MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED._
+It's very important that be carefully to fill all the screen template information first by these steps:
 
-Also worth noting:
+1. specify what installation procedure you was used **assumed there's no modifications** to ospos contents
+2. specify place, server, database, php and ospos version you perform install
+3. Make sure you read the FAQ, also the wiki pages if your issue was previously resolved or reported
 
-_The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software._
-
-For more details please read the file __LICENSE__.
-
-It's important to understand that althought you are free to use the software the copyright stays and the license agreement applies in all cases.
-Therefore any actions like:
-
-- Removing LICENSE and any license files is prohibited
-- Authoring the footer notice replacing it with your own or even worse claiming the copyright is absolutely prohibited
-- Claiming full ownership of the code is prohibited
-
-In short you are free to use the software but you cannot claim any property on it.
-
-Any person or company found breaching the license agreement will be chased up.
+**IF those steps are not property followed, issue will automatically closed and ignored** of course [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8) may help!
 
 
 Keep the Machine Running
 ------------------------
 
-If you like the project, and you are making money out of it on a daily basis, then consider buying me a coffee so I can keep adding features.
+Of course **support has cost** and if you like the project, and you are making money out of it on a daily basis, then **consider buying us a coffee** so we can keep adding features.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
 
-Server Requirements
--------------------
+License
+-------
 
-PHP version 5.6 to 7.2 is recommended. Please note that PHP needs to have `php-gd`, `php-bcmath`, `php-intl`, `php-openssl`, `php-mbstring` and `php-curl` installed and enabled.
+Open Source Point of Sale is licensed under MIT terms with an important additions:
 
-MySQL 5.5, 5.6 and 5.7 are supported, also MariaDB replacement is supported and apparently offering better performance.
+1. _The footer signature "You are using Open Source Point Of Sale" with version, 
+hash and link to the original distribution of the code MUST BE RETAINED, 
+MUST BE VISIBLE IN EVERY PAGE and CANNOT BE MODIFIED._
 
-Apache 2.2 and 2.4 are supported. Also Nginx has been proven to work fine, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Local-Deployment-using-LEMP)
+2. _The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software._
 
-Raspberry PI based installations proved to work, see [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Installing-on-Raspberry-PI---Orange-PI-(Headless-OSPOS))
+For more details please read the file [LICENSE](LICENSE).
 
-For Windows based installations please read [the wiki](https://github.com/opensourcepos/opensourcepos/wiki) and also existing closed issues as this topic has been covered well in all the variants and issues.
+So you are free to use the software but the copyright stays and the license agreement applies in all cases; 
+any actions like:
 
-
-Local install
--------------
-
-1. Dowload the latest [stable release](https://github.com/opensourcepos/opensourcepos/releases) from github or [unstable build](https://bintray.com/jekkos/opensourcepos/opensourcepos/view/files?sort=updated&order=asc#files) from bintray
-2. Create/locate a new mysql database to install open source point of sale into
-3. Execute the file database/database.sql to create the tables needed
-4. unzip and upload Open Source Point of Sale files to web server
-5. Modify application/config/database.php and modify credentials if needed to connect to your database
-6. Modify application/config/config.php encryption key with your own
-7. Go to your point of sale install public dir via the browser
-8. LOGIN using
-  * username: admin 
-  * password: pointofsale
-9. Enjoy
-10. Oops an issue? Please make sure you read the FAQ, wiki page and you checked open and closed issue on GitHub. PHP display_errors is disabled by default. Create an application/config/.env file from the .env.example to enable it in a development environment. 
-
-
-Local install using Docker
---------------------------
-
-From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
-
-To build and run the image, issue following commands in a terminal with docker installed
-
-    docker-compose build
-    docker-compose up 
-
-
-Cloud install
--------------
-
-A quick option would be to install directly to [Digitalocean](https://m.do.co/c/ac38c262507b) using their preconfigured LAMP stack. 
-Create a DO account first, add a droplet with preconfigured LAMP and follow the instructions for Local Install below. You will be running a provisioned VPS within minutes.
-
-
-Cloud install using Docker
---------------------------
-
-If you want to run a quick demo of ospos or run it permanently in the cloud, then we
-suggest using Docker cloud together with the DigitalOcean hosting platform. This way all the
-configuration is done automatically and the install will just work. 
-
-If you choose *DigitalOcean* [through this link](https://m.do.co/c/ac38c262507b), you will get a *$10 credit* for a first
-month of uptime on the platform. A full setup will only take about 2 minutes by following steps below.
-
-1. Create a [Digitalocean account](https://m.do.co/c/ac38c262507b)
-2. Create a [docker cloud account](https://cloud.docker.com)
-3. Login to docker cloud
-4. Associate your docker cloud account with your previously created digital ocean account under settings
-5. Create a new node on DigitalOcean through the `Infrastructure > Nodes` tab. Fill in a name (ospos) and choose a region near to you. We recommend to choose a node with minimum 1G RAM for the whole stack
-6. Click [![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/opensourcepos/opensourcepos) 
-7. Othewise create a new stack under `Applications > Stacks` and paste the [contents of docker-cloud.yml](https://github.com/opensourcepos/opensourcepos/blob/master/docker-cloud.yml) from the source repository in the text field and hit `Create and deploy` 
-8. Find your website url under `Infrastructure > Nodes > <yournode> > Endpoints > web`
-9. Login with default username/password admin/pointofsale
-10. DNS name for this server can be easily configured in the DigitalOcean control panel
-
-More info [on maintaining a docker](https://github.com/opensourcepos/opensourcepos/wiki/Docker-cloud-maintenance) install can be found on the wiki
-
+- Removing LICENSE and any license files is unnaceptable and break the license as topic 2 points!
+- Authoring with your own or even worse claiming the copyright is absolutely prohibited as topic 1 points!
+- Claiming full ownership of the code is prohibited as both topics points and LICENSE said!
 
 Language Translations
 ---------------------
 
 To help us with OSPOS translations please use [Weblate website here](http://translate.opensourcepos.org) and sign up. After registering you can subscribe to different languages and you will be notified once a new translation is added.
 
-Please also read the [wiki page here](https://github.com/opensourcepos/opensourcepos/wiki/Adding-translations) to find our Translations Guideline.
+Please also read the [OSPOS-development-index / Translations guide](https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#always-use-translations-event-hardcoded-strings) at the https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#always-use-translations-event-hardcoded-strings wiki page to find our Translations Guidelines.
 
-Only with the help of the community we can keep language translations up to date.
-
-
-Reporting Bugs
---------------
-
-If you are taking a release candidate code please make sure you always run the latest database upgrade script and you took the latest code from master.
-Please DO NOT post issues if you have not done those step.
-
-Bug reports must follow this schema:
-
-1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. Linux Ubuntu 16.04)
-3. Web Server name and version (e.g. Apache 2.4)
-4. Database name and version (e.g. MySQL 5.6)
-5. PHP version (e.g. PHP 5.6)
-6. Language selected in OSPOS (e.g. English, Spanish)
-7. Any configuration of OSPOS that you changed
-8. Exact steps to reproduce the issue (test case)
-9. Optionally some screenshots to illustrate each step
-
-If above information is not provided in full, your issue will be tagged as pending.
-If missing information is not provided within a week we will close your issue.
 
 
 FAQ
