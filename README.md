@@ -40,7 +40,7 @@ Documentation and Installation
 
 Please refers to the wiki page [DOCS-USERS-Getting-Started-installations](https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations) at https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USERS-Getting-Started-installations OSPOS wiki.
 
-Exact requirements and other flavours like differents operating systems (MAc, Linux, windows, etc) and software (Apache2, Nginx, php5, php7, etc) please refers to the [More advance and customized installations](https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#requirements) at the OSPOS development index page in https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#requirement 
+Exact requirements and other flavours like differents operating systems (MAC, Linux, MS win, etc) and software (Apache2, Nginx, php5, php7, etc) please refers to the [More advance and customized installations](OSPOS-development-index#1---officially-supported) at the OSPOS development index page in https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#1---officially-supported 
 
 
 
