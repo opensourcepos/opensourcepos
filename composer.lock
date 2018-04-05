@@ -9,7 +9,7 @@
     "packages": [
         {
             "name": "codeigniter/framework",
-            "version": "3.1.7",
+            "version": "3.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
