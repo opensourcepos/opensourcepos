@@ -108,7 +108,9 @@ if (isset($error_message))
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
+			<?php if ($item['discount'] > 0): ?>
 			<th><?php echo $this->lang->line('sales_customer_discount');?></th>
+			<?php endif; ?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 
@@ -122,7 +124,9 @@ if (isset($error_message))
 				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 				<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
 				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea></td>
+				<?php if ($item['discount'] > 0): ?>
 				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea></td>
+				<?php endif; ?>
 				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
 			</tr>
 

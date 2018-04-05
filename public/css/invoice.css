@@ -27,7 +27,7 @@
 .edit #save-logo, .edit #cancel-logo { display: inline; }
 .edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
 #customer-title {  height: 100px; float: right; margin-top:40px;}
-#customer-title textarea { width: 150px; }
+#customer-title textarea { width: 200px; }
 
 /* second row */
 #block2 { overflow: hidden; width: 100%; }
