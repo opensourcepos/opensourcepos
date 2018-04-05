@@ -112,11 +112,20 @@ Local install using Docker
 
 From now on ospos can be deployed using Docker on Linux, Mac or Windows. This setup dramatically reduces the number of possible issues as all setup is now done in a Dockerfile. Docker runs natively on mac and linux, but will require more overhead on windows. Please refer to the docker documentation for instructions on how to set it up on your platform.
 
-To build and run the image, issue following commands in a terminal with docker installed
+* To build and run the image, download the latest build from bintray and issue following commands in a terminal with docker installed
 
     docker-compose build
     docker-compose up 
 
+* If you want to build from source, use docker first to minify javascript
+
+```
+  docker run --rm -v $(pwd):/app composer/composer install
+  docker run --rm -v $(pwd):/app -w /app lucor/php7-cli php bin/install.php translations develop
+  docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt "sh -c "npm install && bower install && grunt package"
+  docker-compose build
+  docker-compose up
+```
 
 Cloud install
 -------------
