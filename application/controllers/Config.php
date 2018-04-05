@@ -930,17 +930,16 @@ class Config extends Secure_Controller
 			// Chmod the file
 			@chmod($config_path, 0777);
 
-			// Write the new config.php file
-			$handle = fopen($config_path, 'w+');
-
 			// Verify file permissions
 			if(is_writable($config_path))
 			{
+				// Write the new config.php file
+				$handle = @fopen($config_path, 'w+');
 				// Write the file
 				$result = (fwrite($handle, $config) === FALSE) ? FALSE : TRUE;
-			}
 
-			fclose($handle);
+				fclose($handle);
+			}
 
 			// Chmod the file
 			@chmod($config_path, 0444);
