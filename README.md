@@ -42,7 +42,7 @@ Deployed to a Cloud it's a SaaS (Software as a Service) solution.
 
 Installation
 ------------
-Read the [ _INSTALL.md__](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository.
+Read the [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository.
 
 
 License
@@ -59,7 +59,7 @@ Also worth noting:
 _The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software._
 
-For more details please read the file __LICENSE__.
+For more details please read the file [LICENSE](https://github.com/opensourcepos/opensourcepos/blob/master/LICENSE).
 
 It's important to understand that althought you are free to use the software the copyright stays and the license agreement applies in all cases.
 Therefore any actions like:
