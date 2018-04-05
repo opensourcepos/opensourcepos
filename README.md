@@ -39,9 +39,11 @@ It also has improved functionality and security.
 
 Deployed to a Cloud it's a SaaS (Software as a Service) solution.
 
+
 Installation
 ------------
-Read the [ _INSTALL.md__](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository
+Read the [ _INSTALL.md__](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository.
+
 
 License
 -------
@@ -68,15 +70,16 @@ Therefore any actions like:
 
 In short you are free to use the software but you cannot claim any property on it.
 
-Any person or company found breaching the license agreement will have a bunch of monkeys at the door ready to destroy his servers
+Any person or company found breaching the license agreement will have a bunch of monkeys at the door ready to destroy their servers.
 
 
 Keep the Machine Running
 ------------------------
 
-If you like the project, and you are making money out of it on a daily basis, then consider buying us a coffee so we can keep adding features.
+If you like the project, and you are making money out of it in some form, then consider buying us a coffee so we can keep adding features.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
+
 
 Language Translations
 ---------------------
