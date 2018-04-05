@@ -2,6 +2,8 @@
 
 function execute_script($path)
 {
+	$CI = get_instance();
+
 	$version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
 	error_log("Migrating to $version");
 
@@ -19,9 +21,9 @@ function execute_script($path)
 	{
 		$statement = $statement . ';';
 
-		if(!$this->db->simple_query($statement))
+		if(!$CI->db->simple_query($statement))
 		{
-			foreach($this->db->error() as $error)
+			foreach($CI->db->error() as $error)
 			{
 				error_log('error: ' . $error);
 			}
