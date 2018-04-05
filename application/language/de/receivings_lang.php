@@ -1,23 +1,23 @@
 <?php 
 
 $lang["receivings_cancel_receiving"] = "Abbrechen";
-$lang["receivings_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden";
+$lang["receivings_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden.";
 $lang["receivings_comments"] = "Kommentare";
 $lang["receivings_complete_receiving"] = "Abschliessen";
 $lang["receivings_confirm_cancel_receiving"] = "Wollen Siesen Wareneingang annullieren? Alle Einträge werden gelöscht.";
-$lang["receivings_confirm_delete"] = "Wollen Sie diesen Eingang wirklich löschen? Rückgängig nicht möglich";
+$lang["receivings_confirm_delete"] = "Wollen Sie diesen Eingang wirklich löschen? Rückgängig nicht möglich.";
 $lang["receivings_confirm_finish_receiving"] = "Wollen Sie diesen Wareneingang verabeiten? Dieser Schritt kann nicht rückgängig gemacht werden.";
 $lang["receivings_cost"] = "Kosten";
 $lang["receivings_date"] = "Eingangsdatum";
-$lang["receivings_date_required"] = "Ein korrektes Datum ist erforderlich";
-$lang["receivings_date_type"] = "Datum ist erforderlich";
+$lang["receivings_date_required"] = "Ein korrektes Datum ist erforderlich.";
+$lang["receivings_date_type"] = "Datum ist erforderlich.";
 $lang["receivings_delete_entire_sale"] = "Wareneingang löschen";
 $lang["receivings_discount"] = "Rabatt %";
 $lang["receivings_edit"] = "Ändern";
 $lang["receivings_edit_sale"] = "Wareneingang ändern";
 $lang["receivings_employee"] = "Mitarbeiter";
-$lang["receivings_error_editing_item"] = "Fehler beim Ändern des Artikels";
-$lang["receivings_error_requisition"] = "Kann Bestand nicht von oder zum gleichen Lagerort ändern";
+$lang["receivings_error_editing_item"] = "Fehler beim Ändern des Artikels.";
+$lang["receivings_error_requisition"] = "Kann Bestand nicht von oder zum gleichen Lagerort ändern.";
 $lang["receivings_find_or_scan_item"] = "Finde/Scanne Artikel";
 $lang["receivings_find_or_scan_item_or_receipt"] = "Finde/Scanne Artikel oder Quittung";
 $lang["receivings_id"] = "Eingangs-Nr.";

@@ -42,7 +42,7 @@ Please refers to the wiki page [DOCS-USERS-Getting-Started-installations](https:
 
 Exact requirements and other flavours like differents operating systems (MAC, Linux, MS win, etc) and software (Apache2, Nginx, php5, php7, etc) please refers to the [More advance and customized installations](OSPOS-development-index#1---officially-supported) at the OSPOS development index page in https://github.com/opensourcepos/opensourcepos/wiki/OSPOS-development-index#1---officially-supported 
 
-
+For docker installations please refers to the wiki page: https://github.com/opensourcepos/opensourcepos/wiki/DOCS-USER-Extras-for-Docker-cloud-maintenance
 
 PLease take in consideration there two places to download:
 1. the stable release at https://github.com/opensourcepos/opensourcepos/releases (first it's lasted)
@@ -73,8 +73,7 @@ Of course **support has cost** and if you like the project, and you are making m
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=MUN6AEG7NY6H8)
 
-
-License
+LICENSE
 -------
 
 Open Source Point of Sale is licensed under MIT terms with an important additions:

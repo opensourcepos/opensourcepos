@@ -72,7 +72,9 @@
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
+			<?php if ($item['discount'] > 0): ?>
 			<th><?php echo $this->lang->line('sales_customer_discount');?></th>
+			<?php endif; ?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 
@@ -86,7 +88,9 @@
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo $item['discount'] .'%'; ?></td>
+				<?php if ($item['discount'] > 0): ?>
 				<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
+				<?php endif; ?>
 				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 			</tr>
 		<?php
