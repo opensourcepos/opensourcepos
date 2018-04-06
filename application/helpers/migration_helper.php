@@ -1,8 +1,12 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+ * Migration helper
+ */
 
 function execute_script($path)
 {
-	$CI = get_instance();
+	$CI =& get_instance();
 
 	$version = preg_replace("/(.*_)?(.*).sql/", "$2", $path);
 	error_log("Migrating to $version");
@@ -32,3 +36,5 @@ function execute_script($path)
 
 	error_log("Migrated to $version");
 }
+
+?>

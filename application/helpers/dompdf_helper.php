@@ -1,5 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * PDF helper
+ */
+
 function pdf_create($html, $filename = '')
 {
     // need to enable magic quotes for the
