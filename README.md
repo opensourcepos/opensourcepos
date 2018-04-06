@@ -42,6 +42,7 @@ Deployed to a Cloud it's a SaaS (Software as a Service) solution.
 
 Installation
 ------------
+
 Please **refrain from creating issues** about installation issues **before reading the FAQ and going through existing github issues**. We have a build pipeline that checks the sanity of our latest repository commit and in case the application itself is broken then our build will be as well.
 
 This application **can be setup in many different ways** and we only **support the ones described in the INSTALL file linked below**.
@@ -104,10 +105,10 @@ Please DO NOT post issues if you have not done those step.
 Bug reports must follow this schema:
 
 1. Ospos **version string with git commit hash** (see ospos footer)
-2. OS name and version running your Web Server (e.g. Linux Ubuntu 16.04)
-3. Web Server name and version (e.g. Apache 2.4)
-4. Database name and version (e.g. MySQL 5.6)
-5. PHP version (e.g. PHP 5.6)
+2. OS name and version running your Web Server (e.g. CentOS 6.9, Ubuntu 16.4, Windows 10)
+3. Web Server name and version (e.g. Apache 2.2, Apache 2.4, Nginx 1.12, Nginx 1.13)
+4. Database name and version (e.g. MySQL 5.5, MySQL 5.6, MySQL 5.7, MariaDB 10.0, MariaDB 10.1, MariaDB 10.2)
+5. PHP version (e.g. 5.5, 5.6, 7.0, 7.1)
 6. Language selected in OSPOS (e.g. English, Spanish)
 7. Any configuration of OSPOS that you changed
 8. Exact steps to reproduce the issue (test case)
@@ -122,24 +123,14 @@ FAQ
 
 * If you are seeing the message **system folder missing**, then you have cloned the source using git and you need to run a build *first*. Check [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) for instructions or download latest zip file from [bintray](https://bintray.com/jekkos/opensourcepos/opensourcepos/view/files?sort=updated&order=desc#files) instead.
 
-* If at login time you read "The installation is not correct, check your php.ini file.", please check the error_log in public folder to understand what's wrong. Any PHP extension related issue is due to one of the point below.
-
-* If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check `php-gd` presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
-
-* If sales and receiving views don't show properly, please make sure BCMath lib (`php-bcmath`) is installed. On windows check php.ini and make sure php_bcmath extension is not commented out.
-
-* If the following error is seen in sales module `Message: Class 'NumberFormatter' not found` then you don't have `php-intl` extension installed. Please check the [wiki](https://github.com/opensourcepos/opensourcepos/wiki/Localisation-support#php5-intl-extension-installation) to resolve this issue on your platform. If you use WAMP, please read [issue #949](https://github.com/opensourcepos/opensourcepos/issues/949).
+* If at login time you read "The installation is not correct, check your php.ini file.", please check the error_log in public folder to understand what's wrong and make sure you read the [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md).
 
 * If you installed your OSPOS under a web server subdir, please edit public/.htaccess and go to the lines with comment `if in web root` and `if in subdir comment above line, uncomment below one and replace <OSPOS path> with your path` and follow the instruction on the second comment line. If you face more issues please read [issue #920](https://github.com/opensourcepos/opensourcepos/issues/920) for more help.
 
-* If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755.
+* Apache server configurations are SysAdmin issues and not strictly related to OSPOS. Please make sure you first can show a "hello world" html page before pointing to OSPOS public directory. Make sure .htaccess is correctly configured.
 
-* If you have problems with the encryption support or you get an error please make sure `php-openssl` is installed. With PHP 7 MCrypt is deprecated so you must use OpenSSL.
+* If the avatar pictures are not shown in Items or at Item save time you get an error, please make sure your public and subdirs are assigned to the correct owner and the access permission is set to 755.
 
 * If you install ospos in docker behind a proxy that performs ssloffloading, you can enable the url generated to be https instead of http, by activating the environment variable FORCE_HTTPS = 1.
 
 * If you have suhosin installed and face an issue with CSRF, please make sure you read [issue #1492](https://github.com/opensourcepos/opensourcepos/issues/1492).
-
-* If new customer or supplier fails please make sure `php-mbstring` is installed see [issue #1673](https://github.com/opensourcepos/opensourcepos/issues/1673) for more details.
-
-* Apache server configurations are SysAdmin issues and not strictly related to OSPOS. Please make sure you first can show a "hello world" html page before pointing to OSPOS public directory. Make sure .htaccess is correctly configured.
