@@ -1,12 +1,12 @@
 <?php 
 
 $lang["employees_basic_information"] = "Informatie";
-$lang["employees_cannot_be_deleted"] = "";
-$lang["employees_change_password"] = "";
+$lang["employees_cannot_be_deleted"] = "Kon de geselecteerde gebruilker(s) niet verwijderen, één of meerdere die u probeert te verwijderen hebben aankopen verwerkt.";
+$lang["employees_change_password"] = "Wijzig Paswoord";
 $lang["employees_confirm_delete"] = "Bent u zeker dat u de geselecteerde werknemers wil verwijderen?";
-$lang["employees_confirm_restore"] = "";
-$lang["employees_current_password"] = "";
-$lang["employees_current_password_invalid"] = "";
+$lang["employees_confirm_restore"] = "Bent u zeker dat u de geselecteerde werknemers wil herstellen?";
+$lang["employees_current_password"] = "Huidig Paswoord";
+$lang["employees_current_password_invalid"] = "Huidig paswoord is ongeldig.";
 $lang["employees_employee"] = "Werknemer";
 $lang["employees_error_adding_updating"] = "Fout tijden toevoegen/aanpassen medewerker";
 $lang["employees_error_deleting_demo_admin"] = "Je kan de demo admin niet verwijderen";
