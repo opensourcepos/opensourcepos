@@ -42,6 +42,10 @@ Deployed to a Cloud it's a SaaS (Software as a Service) solution.
 
 Installation
 ------------
+Please **refrain from creating issues** about installation issues **before reading the FAQ and going through existing github issues**. We have a build pipeline that checks the sanity of our latest repository commit and in case the application itself is broken then our build will be as well.
+
+This application **can be setup in many different ways** and we only **support the ones described in the INSTALL file linked below**.
+
 Read the [INSTALL.md](https://github.com/opensourcepos/opensourcepos/blob/master/INSTALL.md) in our repository.
 
 
