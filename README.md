@@ -116,6 +116,8 @@ If missing information is not provided within a week we will close your issue.
 FAQ
 ---
 
+* If you are seeing the message 'system folder missing', then you have cloned the source using git and you need to run a build *first*. Check INSTALL.md for instructions or download latest zip file from bintray instead.
+
 * If at login time you read "The installation is not correct, check your php.ini file.", please check the error_log in public folder to understand what's wrong. Any PHP extension related issue is due to one of the point below.
 
 * If a blank page (HTTP status 500) shows after search completion or receipt generation, then double check `php-gd` presence in your php installation. On windows check in php.ini whether the lib is installed. On Ubuntu issue `sudo apt-get install php5-gd`. Also have a look at the Dockerfile for a complete list of recommended packages.
