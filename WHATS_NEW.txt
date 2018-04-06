@@ -1,6 +1,6 @@
 Version 3.2.0
 -------------
-+ Code Igniter 3.1.7 upgrade
++ Code Igniter 3.1.8 upgrade
 + PHP 7.2 support (use OpenSSL and not MCrypt)
 + Automatic database upgrades from vs 3.0.0 at first login (no more sql scripts)
 + Home and (back) Office menu switch (top menu can be organised in two views)
