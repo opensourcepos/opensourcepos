@@ -1,16 +1,16 @@
 <?php 
 
 $lang["expenses_add_item"] = "добавить расход";
-$lang["expenses_amount"] = "";
-$lang["expenses_amount_number"] = "";
+$lang["expenses_amount"] = "Сумма";
+$lang["expenses_amount_number"] = "Сумма должна быть числом";
 $lang["expenses_amount_required"] = "";
-$lang["expenses_by_category"] = "";
-$lang["expenses_cannot_be_deleted"] = "";
-$lang["expenses_cash"] = "";
-$lang["expenses_cash_filter"] = "";
-$lang["expenses_categories_name"] = "";
+$lang["expenses_by_category"] = "Категория";
+$lang["expenses_cannot_be_deleted"] = "Не удалось удалить категорию расходов";
+$lang["expenses_cash"] = "Наличные";
+$lang["expenses_cash_filter"] = "Наличные";
+$lang["expenses_categories_name"] = "Категория";
 $lang["expenses_category_required"] = "";
-$lang["expenses_check"] = "";
+$lang["expenses_check"] = "банковский чек";
 $lang["expenses_check_filter"] = "";
 $lang["expenses_confirm_delete"] = "";
 $lang["expenses_confirm_restore"] = "";
