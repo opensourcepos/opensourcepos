@@ -60,8 +60,11 @@ A quick option would be to install directly to [Digitalocean](https://m.do.co/c/
 Create a DO account first, add a droplet with preconfigured LAMP and follow the instructions for Local Install below. You will be running a provisioned VPS within minutes.
 
 
-Cloud install using Docker
+Cloud install using Docker 
 --------------------------
+This installation is NOT Recommended anymore and will soon be replaced by a one click DO installation procedure.
+Existing setups will keep working until the 21th of May but will need to be migrated in time in order to ensure user's safety.
+
 
 If you want to run a quick demo of ospos or run it permanently in the cloud, then we
 suggest using Docker cloud together with the DigitalOcean hosting platform. This way all the
