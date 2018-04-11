@@ -1,6 +1,6 @@
 <?php 
 
-$lang["customers_available_points"] = "";
+$lang["customers_available_points"] = "Poin yg tersedia";
 $lang["rewards_package"] = "";
 $lang["rewards_remaining_balance"] = "";
 $lang["sales_add_payment"] = "TERIMA";
