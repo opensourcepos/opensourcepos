@@ -1,7 +1,7 @@
 <?php 
 
 $lang["customers_account_number"] = "Номер счота";
-$lang["customers_account_number_duplicate"] = "This account number is already present in the database";
+$lang["customers_account_number_duplicate"] = "Номер счета уже присутствует в базе данных.";
 $lang["customers_available_points"] = "Доступные баллы";
 $lang["customers_average"] = "Среднее потраченное";
 $lang["customers_avg_discount"] = "Средняя скидка";
@@ -13,11 +13,11 @@ $lang["customers_confirm_restore"] = "Вы уверены, что хотите �
 $lang["customers_customer"] = "Клиент";
 $lang["customers_discount"] = "Скидка";
 $lang["customers_email_duplicate"] = "Адрес электронной почты уже существует в базе данных.";
-$lang["customers_error_adding_updating"] = "Ошибка при добавлении/обновлении клиента";
+$lang["customers_error_adding_updating"] = "Ошибка при добавлении/обновлении клиента.";
 $lang["customers_excel_import_failed"] = "Ошибка импорта Excel";
-$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
-$lang["customers_excel_import_success"] = "Import of Customers successful";
+$lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format.";
+$lang["customers_excel_import_partially_failed"] = "Импорт клиента успешно с некоторыми сбоями:";
+$lang["customers_excel_import_success"] = "Import of Customers successful.";
 $lang["customers_import_items_excel"] = "Import customers from Excel sheet";
 $lang["customers_mailchimp_activity_click"] = "Электронной почты нажмите";
 $lang["customers_mailchimp_activity_lastopen"] = "Последнее открытое письмо";
