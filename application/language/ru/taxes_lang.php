@@ -27,5 +27,5 @@ $lang["taxes_tax_code_type"] = "Тип Налогового Кода";
 $lang["taxes_tax_rate"] = "Курс Налога";
 $lang["taxes_tax_rate_numeric"] = "Курс налога должен обозначаться числом.";
 $lang["taxes_tax_rate_required"] = "Курс Налога - обязательное поле для заполнения.";
-$lang["taxes_update"] = "Обновить Категорию Налога с Продаж ";
+$lang["taxes_update"] = "Обновить Категорию Налога с Продаж";
 $lang["taxes_vat_tax"] = "НДС Налог";
