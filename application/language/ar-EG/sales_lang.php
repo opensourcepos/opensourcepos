@@ -1,6 +1,6 @@
 <?php 
 
-$lang["customers_available_points"] = "النقاط الموجودة";
+$lang["customers_available_points"] = "النقاط المتاحة";
 $lang["rewards_package"] = "مكافآت";
 $lang["rewards_remaining_balance"] = "رصيد النقاط المتبقي هو ";
 $lang["sales_add_payment"] = "إضافة دفع";
