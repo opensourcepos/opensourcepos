@@ -63,6 +63,6 @@ $lang["common_unknown"] = "Desconocido";
 $lang["common_view_recent_sales"] = "Ver Ventas Recientes";
 $lang["common_website"] = "sitio";
 $lang["common_welcome"] = "Bienvenido(a)";
-$lang["common_welcome_message"] = "Bienvenido(a) a OSPOS. ¡Haz click en algún módulo, para empezar!";
+$lang["common_welcome_message"] = "Bienvenido(a) a OSPOS. ¡Haz click en algún módulo, para empezar.";
 $lang["common_you_are_using_ospos"] = "Estás usando Open Source Point Of Sale Versión";
 $lang["common_zip"] = "Código Postal";
