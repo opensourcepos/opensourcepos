@@ -407,33 +407,13 @@ if(isset($success))
 				// Show Complete sale button instead of Add Payment if there is no amount due left
 				if($payments_cover_total)
 				{
-				?>
-					<?php echo form_open($controller_name."/add_payment", array('id'=>'add_payment_form', 'class'=>'form-horizontal')); ?>
-						<table class="sales_table_100">
-							<tr>
-								<td><?php echo $this->lang->line('sales_payment');?></td>
-								<td>
-									<?php echo form_dropdown('payment_type', $payment_options, $selected_payment_type, array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto', 'disabled'=>'disabled')); ?>
-								</td>
-							</tr>
-							<tr>
-								<td><span id="amount_tendered_label"><?php echo $this->lang->line('sales_amount_tendered'); ?></span></td>
-								<td>
-									<?php echo form_input(array('name'=>'amount_tendered', 'id'=>'amount_tendered', 'class'=>'form-control input-sm disabled', 'disabled'=>'disabled', 'value'=>'0', 'size'=>'5', 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
-								</td>
-							</tr>
-						</table>
-					<?php echo form_close(); ?>
-						<?php
-						// Only show this part if the payment cover the total and in sale or return mode
-						if($pos_mode == '1')
-						{
-						?>
-						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
-						<?php
-						}
-						?>
-				<?php
+					// Only show this part if the payment cover the total and in sale or return mode
+					if($pos_mode == '1')
+					{
+					?>
+					<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex='<?php echo ++$tabindex; ?>'><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+					<?php
+					}
 				}
 				else
 				{
