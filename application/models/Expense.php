@@ -53,27 +53,36 @@ class Expense extends CI_Model
 	*/
 	public function get_found_rows($search, $filters)
 	{
-		return $this->search($search, $filters)->num_rows();
+		return $this->search($search, $filters, 0, 0, 'expense_id', 'asc', TRUE);
 	}
 
 	/*
 	Searches expenses
 	*/
-	public function search($search, $filters, $rows = 0, $limit = 0, $sort = 'expense_id', $order = 'asc')
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'expense_id', $order = 'asc', $count_only = FALSE)
 	{
-		$this->db->select('
-			expenses.expense_id,
-			MAX(expenses.date) AS date,
-			MAX(expenses.supplier_name) AS supplier_name,
-			MAX(expenses.supplier_tax_code) AS supplier_tax_code,
-			MAX(expenses.amount) AS amount,
-			MAX(expenses.tax_amount) AS tax_amount,
-			MAX(expenses.payment_type) AS payment_type,
-			MAX(expenses.description) AS description,
-			MAX(employees.first_name) AS first_name,
-			MAX(employees.last_name) AS last_name,
-			MAX(expense_categories.category_name) AS category_name
-		');
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			$this->db->select('COUNT(expenses.expense_id) as count');
+		}
+		else
+		{
+			$this->db->select('
+				expenses.expense_id,
+				MAX(expenses.date) AS date,
+				MAX(expenses.supplier_name) AS supplier_name,
+				MAX(expenses.supplier_tax_code) AS supplier_tax_code,
+				MAX(expenses.amount) AS amount,
+				MAX(expenses.tax_amount) AS tax_amount,
+				MAX(expenses.payment_type) AS payment_type,
+				MAX(expenses.description) AS description,
+				MAX(employees.first_name) AS first_name,
+				MAX(employees.last_name) AS last_name,
+				MAX(expense_categories.category_name) AS category_name
+			');
+		}
+
 		$this->db->from('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
@@ -128,14 +137,23 @@ class Expense extends CI_Model
 		}
 
 		$this->db->group_by('expense_id');
-		$this->db->order_by($sort, $order);
 
-		if($rows > 0)
+		// get_found_rows case
+		if($count_only == TRUE)
 		{
-			$this->db->limit($rows, $limit);
+			return $this->db->get()->row_array()['count'];
 		}
+		else
+		{
+			$this->db->order_by($sort, $order);
 
-		return $this->db->get();
+			if($rows > 0)
+			{
+				$this->db->limit($rows, $limit_from);
+			}
+
+			return $this->db->get();
+		}
 	}
 
 	/*

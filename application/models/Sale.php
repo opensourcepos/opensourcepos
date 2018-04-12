@@ -114,13 +114,13 @@ class Sale extends CI_Model
 	 */
 	public function get_found_rows($search, $filters)
 	{
-		return $this->search($search, $filters)->num_rows();
+		return $this->search($search, $filters, 0, 0, 'sales.sale_time', 'desc', TRUE);
 	}
 
 	/**
 	 * Get the sales data for the takings (sales/manage) view
 	 */
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sale_time', $order = 'desc')
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'sales.sale_time', $order = 'desc', $count_only = FALSE)
 	{
 		// Pick up only non-suspended records
 		$where = 'sales.sale_status = 0 AND ';
@@ -185,27 +185,35 @@ class Sale extends CI_Model
 			)'
 		);
 
-		$this->db->select('
-				sales.sale_id AS sale_id,
-				MAX(DATE(sales.sale_time)) AS sale_date,
-				MAX(sales.sale_time) AS sale_time,
-				MAX(sales.invoice_number) AS invoice_number,
-				MAX(sales.quote_number) AS quote_number,
-				SUM(sales_items.quantity_purchased) AS items_purchased,
-				MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
-				MAX(customer.company_name) AS company_name,
-				' . "
-				IFNULL($sale_subtotal, $sale_total) AS subtotal,
-				$tax AS tax,
-				IFNULL($sale_total, $sale_subtotal) AS total,
-				$sale_cost AS cost,
-				(IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit,
-				IFNULL($sale_total, $sale_subtotal) AS amount_due,
-				MAX(payments.sale_payment_amount) AS amount_tendered,
-				(MAX(payments.sale_payment_amount) - IFNULL($sale_total, $sale_subtotal)) AS change_due,
-				" . '
-				MAX(payments.payment_type) AS payment_type
-		');
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			$this->db->select('COUNT(sales.sale_id) as count');
+		}
+		else
+		{
+			$this->db->select('
+					sales.sale_id AS sale_id,
+					MAX(DATE(sales.sale_time)) AS sale_date,
+					MAX(sales.sale_time) AS sale_time,
+					MAX(sales.invoice_number) AS invoice_number,
+					MAX(sales.quote_number) AS quote_number,
+					SUM(sales_items.quantity_purchased) AS items_purchased,
+					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
+					MAX(customer.company_name) AS company_name,
+					' . "
+					IFNULL($sale_subtotal, $sale_total) AS subtotal,
+					$tax AS tax,
+					IFNULL($sale_total, $sale_subtotal) AS total,
+					$sale_cost AS cost,
+					(IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit,
+					IFNULL($sale_total, $sale_subtotal) AS amount_due,
+					MAX(payments.sale_payment_amount) AS amount_tendered,
+					(MAX(payments.sale_payment_amount) - IFNULL($sale_total, $sale_subtotal)) AS change_due,
+					" . '
+					MAX(payments.payment_type) AS payment_type
+			');
+		}
 
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
@@ -268,15 +276,25 @@ class Sale extends CI_Model
 			$this->db->like('payments.payment_type', $this->lang->line('sales_check'));
 		}
 
-		$this->db->group_by('sale_id');
-		$this->db->order_by($sort, $order);
+		$this->db->group_by('sales.sale_id');
 
-		if($rows > 0)
+		// get_found_rows case
+		if($count_only == TRUE)
 		{
-			$this->db->limit($rows, $limit_from);
+			return $this->db->get()->row_array()['count'];
 		}
+		else
+		{
+			// order by sale time by default
+			$this->db->order_by($sort, $order);
 
-		return $this->db->get();
+			if($rows > 0)
+			{
+				$this->db->limit($rows, $limit_from);
+			}
+
+			return $this->db->get();
+		}
 	}
 
 	/**

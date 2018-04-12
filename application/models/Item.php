@@ -97,58 +97,66 @@ class Item extends CI_Model
 	*/
 	public function get_found_rows($search, $filters)
 	{
-		return $this->search($search, $filters)->num_rows();
+		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
 
 	/*
 	Perform a search on items
 	*/
-	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
+	public function search($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc', $count_only = FALSE)
 	{
-		$this->db->select('MAX(items.name) as name');
-		$this->db->select('MAX(items.category) as category');
-		$this->db->select('MAX(items.supplier_id) as supplier_id');
-		$this->db->select('MAX(items.item_number) as item_number');
-		$this->db->select('MAX(items.description) as description');
-		$this->db->select('MAX(items.cost_price) as cost_price');
-		$this->db->select('MAX(items.unit_price) as unit_price');
-		$this->db->select('MAX(items.reorder_level) as reorder_level');
-		$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
-		$this->db->select('items.item_id as item_id');
-		$this->db->select('MAX(items.pic_filename) as pic_filename');
-		$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
-		$this->db->select('MAX(items.is_serialized) as is_serialized');
-		$this->db->select('MAX(items.deleted) as deleted');
-		$this->db->select('MAX(items.custom1) as custom1');
-		$this->db->select('MAX(items.custom2) as custom2');
-		$this->db->select('MAX(items.custom3) as custom3');
-		$this->db->select('MAX(items.custom4) as custom4');
-		$this->db->select('MAX(items.custom5) as custom5');
-		$this->db->select('MAX(items.custom6) as custom6');
-		$this->db->select('MAX(items.custom7) as custom7');
-		$this->db->select('MAX(items.custom8) as custom8');
-		$this->db->select('MAX(items.custom9) as custom9');
-		$this->db->select('MAX(items.custom10) as custom10');
-
-		$this->db->select('MAX(suppliers.person_id) as person_id');
-		$this->db->select('MAX(suppliers.company_name) as company_name');
-		$this->db->select('MAX(suppliers.agency_name) as agency_name');
-		$this->db->select('MAX(suppliers.account_number) as account_number');
-		$this->db->select('MAX(suppliers.deleted) as deleted');
-
-		$this->db->select('MAX(inventory.trans_id) as trans_id');
-		$this->db->select('MAX(inventory.trans_items) as trans_items');
-		$this->db->select('MAX(inventory.trans_user) as trans_user');
-		$this->db->select('MAX(inventory.trans_date) as trans_date');
-		$this->db->select('MAX(inventory.trans_comment) as trans_comment');
-		$this->db->select('MAX(inventory.trans_location) as trans_location');
-		$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
-
-		if($filters['stock_location_id'] > -1)
+		// get_found_rows case
+		if($count_only == TRUE)
 		{
-			$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
-			$this->db->select('MAX(item_quantities.location_id) as location_id');
-			$this->db->select('MAX(item_quantities.quantity) as quantity');
+			$this->db->select('COUNT(items.item_id) as count');
+		}
+		else
+		{
+			$this->db->select('items.item_id as item_id');
+			$this->db->select('MAX(items.name) as name');
+			$this->db->select('MAX(items.category) as category');
+			$this->db->select('MAX(items.supplier_id) as supplier_id');
+			$this->db->select('MAX(items.item_number) as item_number');
+			$this->db->select('MAX(items.description) as description');
+			$this->db->select('MAX(items.cost_price) as cost_price');
+			$this->db->select('MAX(items.unit_price) as unit_price');
+			$this->db->select('MAX(items.reorder_level) as reorder_level');
+			$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
+			$this->db->select('MAX(items.pic_filename) as pic_filename');
+			$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
+			$this->db->select('MAX(items.is_serialized) as is_serialized');
+			$this->db->select('MAX(items.deleted) as deleted');
+			$this->db->select('MAX(items.custom1) as custom1');
+			$this->db->select('MAX(items.custom2) as custom2');
+			$this->db->select('MAX(items.custom3) as custom3');
+			$this->db->select('MAX(items.custom4) as custom4');
+			$this->db->select('MAX(items.custom5) as custom5');
+			$this->db->select('MAX(items.custom6) as custom6');
+			$this->db->select('MAX(items.custom7) as custom7');
+			$this->db->select('MAX(items.custom8) as custom8');
+			$this->db->select('MAX(items.custom9) as custom9');
+			$this->db->select('MAX(items.custom10) as custom10');
+
+			$this->db->select('MAX(suppliers.person_id) as person_id');
+			$this->db->select('MAX(suppliers.company_name) as company_name');
+			$this->db->select('MAX(suppliers.agency_name) as agency_name');
+			$this->db->select('MAX(suppliers.account_number) as account_number');
+			$this->db->select('MAX(suppliers.deleted) as deleted');
+
+			$this->db->select('MAX(inventory.trans_id) as trans_id');
+			$this->db->select('MAX(inventory.trans_items) as trans_items');
+			$this->db->select('MAX(inventory.trans_user) as trans_user');
+			$this->db->select('MAX(inventory.trans_date) as trans_date');
+			$this->db->select('MAX(inventory.trans_comment) as trans_comment');
+			$this->db->select('MAX(inventory.trans_location) as trans_location');
+			$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
+
+			if($filters['stock_location_id'] > -1)
+			{
+				$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
+				$this->db->select('MAX(item_quantities.location_id) as location_id');
+				$this->db->select('MAX(item_quantities.quantity) as quantity');
+			}
 		}
 
 		$this->db->from('items as items');
@@ -221,15 +229,23 @@ class Item extends CI_Model
 		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
 		$this->db->group_by('items.item_id');
 
-		// order by name of item
-		$this->db->order_by($sort, $order);
-
-		if($rows > 0)
+		// get_found_rows case
+		if($count_only == TRUE)
 		{
-			$this->db->limit($rows, $limit_from);
+			return $this->db->get()->row_array()['count'];
 		}
+		else
+		{
+			// order by name of item by default
+			$this->db->order_by($sort, $order);
 
-		return $this->db->get();
+			if($rows > 0)
+			{
+				$this->db->limit($rows, $limit_from);
+			}
+
+			return $this->db->get();
+		}
 	}
 
 	/*

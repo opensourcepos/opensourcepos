@@ -199,12 +199,26 @@ class Item_kit extends CI_Model
 		return $suggestions;
 	}
 
+ 	/*
+	Gets rows
+	*/
+	public function get_found_rows($search)
+	{
+		return $this->search($search, 0, 0, 'name', 'asc', TRUE);
+	}
+
 	/*
 	Perform a search on items
 	*/
-	public function search($search, $rows=0, $limit_from=0, $sort='name', $order='asc')
+	public function search($search, $rows = 0, $limit_from = 0, $sort = 'name', $order = 'asc', $count_only = FALSE)
 	{
-		$this->db->from('item_kits');
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			$this->db->select('COUNT(item_kits.item_kit_id) as count');
+		}
+
+		$this->db->from('item_kits AS item_kits');
 		$this->db->like('name', $search);
 		$this->db->or_like('description', $search);
 
@@ -214,29 +228,22 @@ class Item_kit extends CI_Model
 			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
 		}
 
-		$this->db->order_by($sort, $order);
-
-		if($rows > 0)
+		// get_found_rows case
+		if($count_only == TRUE)
 		{
-			$this->db->limit($rows, $limit_from);
+			return $this->db->get()->row_array()['count'];
 		}
-
-		return $this->db->get();
-	}
-
-	public function get_found_rows($search)
-	{
-		$this->db->from('item_kits');
-		$this->db->like('name', $search);
-		$this->db->or_like('description', $search);
-
-		//KIT #
-		if(stripos($search, 'KIT ') !== FALSE)
+		else
 		{
-			$this->db->or_like('item_kit_id', str_ireplace('KIT ', '', $search));
-		}
+			$this->db->order_by($sort, $order);
 
-		return $this->db->get()->num_rows();
+			if($rows > 0)
+			{
+				$this->db->limit($rows, $limit_from);
+			}
+
+			return $this->db->get();
+		}
 	}
 }
 ?>

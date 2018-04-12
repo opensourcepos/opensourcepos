@@ -123,37 +123,47 @@ class Expense_category extends CI_Model
  	}
 
 	/*
-	Perform a search on expense_category
+	Gets rows
 	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'category_name', $order='asc')
-	{
-		$this->db->from('expense_categories');
-		$this->db->group_start();
-			$this->db->like('category_name', $search);
-			$this->db->or_like('category_description', $search);
-		$this->db->group_end();
-		$this->db->where('deleted', 0);
-
-		$this->db->order_by($sort, $order);
-
-		if($rows > 0)
-		{
-			$this->db->limit($rows, $limit_from);
-		}
-
-		return $this->db->get();
-	}
-
 	public function get_found_rows($search)
 	{
-		$this->db->from('expense_categories');
+		return $this->search($search, 0, 0, 'category_name', 'asc', TRUE);
+	}
+
+	/*
+	Perform a search on expense_category
+	*/
+	public function search($search, $rows = 0, $limit_from = 0, $sort = 'category_name', $order='asc', $count_only = FALSE)
+	{
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			$this->db->select('COUNT(expense_categories.expense_category_id) as count');
+		}
+
+		$this->db->from('expense_categories AS expense_categories');
 		$this->db->group_start();
 			$this->db->like('category_name', $search);
 			$this->db->or_like('category_description', $search);
 		$this->db->group_end();
 		$this->db->where('deleted', 0);
 
-		return $this->db->get()->num_rows();
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			return $this->db->get()->row_array()['count'];
+		}
+		else
+		{
+			$this->db->order_by($sort, $order);
+
+			if($rows > 0)
+			{
+				$this->db->limit($rows, $limit_from);
+			}
+
+			return $this->db->get();
+		}
 	}
 }
 ?>
