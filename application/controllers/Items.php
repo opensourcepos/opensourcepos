@@ -58,7 +58,7 @@ class Items extends Secure_Controller
 
 		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
 
-		$total_rows = $this->Item->get_found_rows($search, $filters);
+		$total_rows = $this->Item->get_search_count($search, $filters);
 
 		$data_rows = array();
 		foreach($items->result() as $item)
