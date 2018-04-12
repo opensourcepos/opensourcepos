@@ -233,6 +233,83 @@ class Item extends CI_Model
 	}
 
 	/*
+	Get a count of items from a given search to avoid grabbing the entire result set
+	*/
+	public function get_search_count($search, $filters, $rows = 0, $limit_from = 0, $sort = 'items.name', $order = 'asc')
+	{
+		$this->db->select('COUNT(items.name) as count');
+		$this->db->from('items as items');
+		$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+		$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
+		if($filters['stock_location_id'] > -1)
+		{
+			$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
+			$this->db->where('location_id', $filters['stock_location_id']);
+		}
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+		}
+		else
+		{
+			$this->db->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
+		}
+		if(!empty($search))
+		{
+			if($filters['search_custom'] == FALSE)
+			{
+				$this->db->group_start();
+					$this->db->like('name', $search);
+					$this->db->or_like('item_number', $search);
+					$this->db->or_like('items.item_id', $search);
+					$this->db->or_like('company_name', $search);
+					$this->db->or_like('category', $search);
+				$this->db->group_end();
+			}
+			else
+			{
+				$this->db->group_start();
+					$this->db->like('custom1', $search);
+					$this->db->or_like('custom2', $search);
+					$this->db->or_like('custom3', $search);
+					$this->db->or_like('custom4', $search);
+					$this->db->or_like('custom5', $search);
+					$this->db->or_like('custom6', $search);
+					$this->db->or_like('custom7', $search);
+					$this->db->or_like('custom8', $search);
+					$this->db->or_like('custom9', $search);
+					$this->db->or_like('custom10', $search);
+				$this->db->group_end();
+			}
+		}
+		$this->db->where('items.deleted', $filters['is_deleted']);
+		if($filters['empty_upc'] != FALSE)
+		{
+			$this->db->where('item_number', NULL);
+		}
+		if($filters['low_inventory'] != FALSE)
+		{
+			$this->db->where('quantity <=', 'reorder_level');
+		}
+		if($filters['is_serialized'] != FALSE)
+		{
+			$this->db->where('is_serialized', 1);
+		}
+		if($filters['no_description'] != FALSE)
+		{
+			$this->db->where('items.description', '');
+		}
+		// order by name of item
+		$this->db->order_by($sort, $order);
+		if($rows > 0)
+		{
+			$this->db->limit($rows, $limit_from);
+		}
+		return $this->db->get()->row_array()['count'];
+	}
+
+
+	/*
 	Returns all the items
 	*/
 	public function get_all($stock_location_id = -1, $rows = 0, $limit_from = 0)
