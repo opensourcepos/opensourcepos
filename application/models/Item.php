@@ -108,7 +108,7 @@ class Item extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(items.item_id) as count');
+			$this->db->select('COUNT(DISTINCT items.item_id) as count');
 		}
 		else
 		{
@@ -226,26 +226,24 @@ class Item extends CI_Model
 			$this->db->where('items.description', '');
 		}
 
-		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
-		$this->db->group_by('items.item_id');
-
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			return $this->db->get()->row_array()['count'];
 		}
-		else
+
+		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
+		$this->db->group_by('items.item_id');
+
+		// order by name of item by default
+		$this->db->order_by($sort, $order);
+
+		if($rows > 0)
 		{
-			// order by name of item by default
-			$this->db->order_by($sort, $order);
-
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
-
-			return $this->db->get();
+			$this->db->limit($rows, $limit_from);
 		}
+
+		return $this->db->get();
 	}
 
 	/*

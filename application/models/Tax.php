@@ -296,18 +296,39 @@ class Tax extends CI_Model
 	}
 
 	/**
+	Gets tax_codes
+	*/
+	public function get_found_rows($search)
+	{
+		return $this->search($search, 0, 0, 'tax_code', 'asc', TRUE);
+	}
+
+	/**
 	Performs a search on tax_codes
 	*/
-	public function search($search, $rows = 0, $limit_from = 0, $sort = 'tax_code', $order = 'asc')
+	public function search($search, $rows = 0, $limit_from = 0, $sort = 'tax_code', $order = 'asc', $count_only = FALSE)
 	{
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			$this->db->select('COUNT(tax_code) as count');
+		}
+
 		$this->db->from('tax_codes');
-		$this->db->join('tax_code_rates',
-			'tax_code = rate_tax_code and rate_tax_category_id = 1', 'LEFT');
-		if (!empty($search))
+		$this->db->join('tax_code_rates', 'tax_code = rate_tax_code AND rate_tax_category_id = 1', 'LEFT');
+
+		if(!empty($search))
 		{
 			$this->db->like('tax_code', $search);
 			$this->db->or_like('tax_code_name', $search);
 		}
+
+		// get_found_rows case
+		if($count_only == TRUE)
+		{
+			return $this->db->get()->row_array()['count'];
+		}
+
 		$this->db->order_by($sort, $order);
 
 		if($rows > 0)
@@ -316,21 +337,6 @@ class Tax extends CI_Model
 		}
 
 		return $this->db->get();
-	}
-
-	/**
-	Gets tax_codes
-	*/
-	public function get_found_rows($search)
-	{
-		$this->db->from('tax_codes');
-		if (!empty($search))
-		{
-			$this->db->like('tax_code', $search);
-			$this->db->or_like('tax_code_name', $search);
-		}
-
-		return $this->db->get()->num_rows();
 	}
 
 	public function get_tax_code_type_name($tax_code_type)

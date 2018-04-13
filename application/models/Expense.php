@@ -64,7 +64,7 @@ class Expense extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(expenses.expense_id) as count');
+			$this->db->select('COUNT(DISTINCT expenses.expense_id) as count');
 		}
 		else
 		{
@@ -136,24 +136,22 @@ class Expense extends CI_Model
 			$this->db->like('expenses.payment_type', $this->lang->line('expenses_check'));
 		}
 
-		$this->db->group_by('expense_id');
-
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			return $this->db->get()->row_array()['count'];
 		}
-		else
+
+		$this->db->group_by('expense_id');
+
+		$this->db->order_by($sort, $order);
+
+		if($rows > 0)
 		{
-			$this->db->order_by($sort, $order);
-
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
-
-			return $this->db->get();
+			$this->db->limit($rows, $limit_from);
 		}
+
+		return $this->db->get();
 	}
 
 	/*

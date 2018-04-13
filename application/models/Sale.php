@@ -188,7 +188,7 @@ class Sale extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(sales.sale_id) as count');
+			$this->db->select('COUNT(DISTINCT sales.sale_id) as count');
 		}
 		else
 		{
@@ -276,25 +276,23 @@ class Sale extends CI_Model
 			$this->db->like('payments.payment_type', $this->lang->line('sales_check'));
 		}
 
-		$this->db->group_by('sales.sale_id');
-
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
 			return $this->db->get()->row_array()['count'];
 		}
-		else
+
+		$this->db->group_by('sales.sale_id');
+
+		// order by sale time by default
+		$this->db->order_by($sort, $order);
+
+		if($rows > 0)
 		{
-			// order by sale time by default
-			$this->db->order_by($sort, $order);
-
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
-
-			return $this->db->get();
+			$this->db->limit($rows, $limit_from);
 		}
+
+		return $this->db->get();
 	}
 
 	/**

@@ -290,17 +290,15 @@ class Employee extends Person
 		{
 			return $this->db->get()->row_array()['count'];
 		}
-		else
+
+		$this->db->order_by($sort, $order);
+
+		if($rows > 0)
 		{
-			$this->db->order_by($sort, $order);
-
-			if($rows > 0)
-			{
-				$this->db->limit($rows, $limit_from);
-			}
-
-			return $this->db->get();
+			$this->db->limit($rows, $limit_from);
 		}
+
+		return $this->db->get();
 	}
 
 	/*
