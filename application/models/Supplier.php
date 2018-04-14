@@ -261,7 +261,7 @@ class Supplier extends Person
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $this->db->get()->row()->count;
 		}
 
 		$this->db->order_by($sort, $order);

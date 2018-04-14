@@ -84,7 +84,7 @@ class Expenses_categories extends Secure_Controller
 	{
 		$expense_category_to_delete = $this->input->post('ids');
 
-		if ($this->Expense_category->delete_list($expense_category_to_delete))
+		if($this->Expense_category->delete_list($expense_category_to_delete))
 		{
 			echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('expenses_categories_successful_deleted') . ' ' . count($expense_category_to_delete) . ' ' . $this->lang->line('expenses_categories_one_or_multiple')));
 		}

@@ -1330,7 +1330,7 @@ class Reports extends Secure_Controller
 			foreach($report_data['details'][$key] as $drow)
 			{
 				$quantity_purchased = $drow['receiving_quantity'] > 1 ? to_quantity_decimals($drow['quantity_purchased']) . ' x ' . to_quantity_decimals($drow['receiving_quantity']) : to_quantity_decimals($drow['quantity_purchased']);
-				if ($show_locations)
+				if($show_locations)
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}

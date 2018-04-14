@@ -16,7 +16,7 @@ function load_config()
     if(!empty(current_language()))
     {
         // fallback to English if language folder does not exist
-        if (!file_exists('../application/language/' . current_language_code()))
+        if(!file_exists('../application/language/' . current_language_code()))
         {
             $CI->config->set_item('language', 'english');
             $CI->config->set_item('language_code', 'en-US');

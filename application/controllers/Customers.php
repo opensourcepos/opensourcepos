@@ -126,7 +126,7 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if ($customer_sales_tax_support == '1')
+		if($customer_sales_tax_support == '1')
 		{
 			$data['customer_sales_tax_enabled'] = TRUE;
 		}

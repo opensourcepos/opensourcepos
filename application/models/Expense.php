@@ -139,7 +139,7 @@ class Expense extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $this->db->get()->row()->count;
 		}
 
 		$this->db->group_by('expense_id');

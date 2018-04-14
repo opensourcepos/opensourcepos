@@ -25,7 +25,7 @@ class Token_customer extends Token
 	{
 		// substitute customer info
 		$customer_id = $this->CI->sale_lib->get_customer();
-		if ($customer_id != -1 && empty($this->customer_info))
+		if($customer_id != -1 && empty($this->customer_info))
 		{
 			$customer_info = $this->CI->Customer->get_info($customer_id);
 			if($customer_info != '')

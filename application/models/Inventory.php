@@ -29,7 +29,7 @@ class Inventory extends CI_Model
 		$inventory_sums = $this->Inventory->get_inventory_sum($item_id);
 		foreach($inventory_sums as $inventory_sum)
 		{
-			if ($inventory_sum['sum'] > 0)
+			if($inventory_sum['sum'] > 0)
 			{
 				return $this->Inventory->insert(array(
 					'trans_inventory' => -1 * $inventory_sum['sum'],

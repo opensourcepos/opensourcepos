@@ -706,7 +706,7 @@ class Config extends Secure_Controller
 		if($success && $delete_rejected)
 		{
 			$message = $this->lang->line('config_tax_category_used');
-			$success = false;
+			$success = FALSE;
 		}
 		else
 		{

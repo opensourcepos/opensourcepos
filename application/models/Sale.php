@@ -279,7 +279,7 @@ class Sale extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $this->db->get()->row()->count;
 		}
 
 		$this->db->group_by('sales.sale_id');
@@ -301,7 +301,7 @@ class Sale extends CI_Model
 	public function get_payments_summary($search, $filters)
 	{
 		// get payment summary
-		$this->db->select('payment_type, count(payment_amount) AS count, SUM(payment_amount) AS payment_amount');
+		$this->db->select('payment_type, COUNT(payment_amount) AS count, SUM(payment_amount) AS payment_amount');
 		$this->db->from('sales AS sales');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales.sale_id');
 		$this->db->join('people AS customer_p', 'sales.customer_id = customer_p.person_id', 'LEFT');
@@ -874,7 +874,8 @@ class Sale extends CI_Model
 			{
 				$cur_item_info = $this->Item->get_info($item['item_id']);
 
-				if($cur_item_info->stock_type == HAS_STOCK) {
+				if($cur_item_info->stock_type == HAS_STOCK)
+				{
 					// create query to update inventory tracking
 					$inv_data = array(
 						'trans_date' => date('Y-m-d H:i:s'),

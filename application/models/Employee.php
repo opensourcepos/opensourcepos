@@ -288,7 +288,7 @@ class Employee extends Person
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $this->db->get()->row()->count;
 		}
 
 		$this->db->order_by($sort, $order);
@@ -422,7 +422,7 @@ class Employee extends Person
 		$row = $this->db->get()->row();
 
 		// If no grants are assigned yet then set the default to 'home'
-		if ($row == NULL)
+		if($row == NULL)
 		{
 			return 'home';
 		}

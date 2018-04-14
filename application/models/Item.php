@@ -229,7 +229,7 @@ class Item extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $this->db->get()->row()->count;
 		}
 
 		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range

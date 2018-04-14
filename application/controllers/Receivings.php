@@ -148,7 +148,7 @@ class Receivings extends Secure_Controller
 		}
 	
 		$data['employees'] = array();
-		foreach ($this->Employee->get_all()->result() as $employee)
+		foreach($this->Employee->get_all()->result() as $employee)
 		{
 			$data['employees'][$employee->person_id] = $this->xss_clean($employee->first_name . ' '. $employee->last_name);
 		}

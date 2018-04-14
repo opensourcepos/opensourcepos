@@ -354,7 +354,7 @@ function get_item_data_row($item)
 	$controller_name = strtolower(get_class($CI));
 
 	$image = NULL;
-	if ($item->pic_filename != '')
+	if($item->pic_filename != '')
 	{
 		$ext = pathinfo($item->pic_filename, PATHINFO_EXTENSION);
 		if($ext == '')
@@ -368,7 +368,7 @@ function get_item_data_row($item)
 			$images = glob('./uploads/item_pics/' . $item->pic_filename);
 		}
 
-		if (sizeof($images) > 0)
+		if(sizeof($images) > 0)
 		{
 			$image .= '<a class="rollover" href="'. base_url($images[0]) .'"><img src="'.site_url('items/pic_thumb/' . pathinfo($images[0], PATHINFO_BASENAME)) . '"></a>';
 		}

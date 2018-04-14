@@ -576,7 +576,8 @@ class Sales extends Secure_Controller
 			$candidate_invoice_number = $invoice_number;
 			if($candidate_invoice_number != NULL && strlen($candidate_invoice_number) > 3)
 			{
-				if (strpos($candidate_invoice_number, '{') == false) {
+				if(strpos($candidate_invoice_number, '{') == FALSE)
+				{
 					$override_invoice_number = $candidate_invoice_number;
 				}
 			}
@@ -605,7 +606,7 @@ class Sales extends Secure_Controller
 				$invoice_format = $this->config->item('sales_invoice_format');
 			}
 
-			if ($override_invoice_number == NULL)
+			if($override_invoice_number == NULL)
 			{
 				$invoice_number = $this->token_lib->render($invoice_format);
 			}

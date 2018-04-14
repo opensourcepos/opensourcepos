@@ -497,7 +497,7 @@ class Items extends Secure_Controller
 	*/
 	public function check_kit_exists()
 	{
-		if ($this->input->post('item_number') === -1)
+		if($this->input->post('item_number') === -1)
 		{
 			$exists = $this->Item_kit->item_kit_exists_for_name($this->input->post('name'));
 		}
@@ -702,7 +702,8 @@ class Items extends Secure_Controller
 						  needs further discussion  */
 
 						$pic_file = $data[24];
-						/*if(strcmp('.htaccess', $pic_file)==0) {
+						/*if(strcmp('.htaccess', $pic_file)==0)
+						{
 							$pic_file='';
 						}*/
 						$item_data['pic_filename'] = $pic_file;

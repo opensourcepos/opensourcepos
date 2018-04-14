@@ -43,7 +43,7 @@ abstract class Token
 
 	function replace($text)
 	{
-		if (strstr($text, $this->token_id()))
+		if(strstr($text, $this->token_id()))
 		{
 			return str_replace($this->token_id(), $this->get_value(), $text);
 		}

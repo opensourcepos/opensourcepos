@@ -131,7 +131,7 @@ class Item_kits extends Secure_Controller
 			$success = TRUE;
 			$new_item = FALSE;
 			//New item kit
-			if ($item_kit_id == -1)
+			if($item_kit_id == -1)
 			{
 				$item_kit_id = $item_kit_data['item_kit_id'];
 				$new_item = TRUE;

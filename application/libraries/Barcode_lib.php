@@ -79,6 +79,7 @@ class Barcode_lib
 	{
 		$barcode_type = $this->CI->config->item('barcode_type');
 		$barcode_instance = $this->get_barcode_instance($barcode_type);
+
 		return $barcode_instance->validate($barcode);
 	}
 
@@ -88,7 +89,7 @@ class Barcode_lib
 		$is_valid = empty($item['item_number']) && $barcode_config['barcode_generate_if_empty'] || $barcode_instance->validate($item['item_number']);
 
 		// if barcode validation does not succeed,
-		if (!$is_valid)
+		if(!$is_valid)
 		{
 			$barcode_instance = Barcode_lib::get_barcode_instance();
 		}
@@ -125,13 +126,13 @@ class Barcode_lib
 	{
 		$seed = $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']) ? $item['item_number'] : $item['item_id'];
 
-		if( $barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))
+		if($barcode_config['barcode_content'] !== "id" && !empty($item['item_number']))
 		{
 			$seed = $item['item_number'];
 		}
 		else
 		{
-			if ($barcode_config['barcode_generate_if_empty'])
+			if($barcode_config['barcode_generate_if_empty'])
 			{
 				// generate barcode with the correct instance
 				$seed = $barcode_instance->generate($seed);
@@ -234,9 +235,9 @@ class Barcode_lib
 	{
 		$array = array();
 
-		if (($handle = opendir($folder)) !== FALSE)
+		if(($handle = opendir($folder)) !== FALSE)
 		{
-			while (($file = readdir($handle)) !== FALSE)
+			while(($file = readdir($handle)) !== FALSE)
 			{
 				if(substr($file, -4, 4) === '.ttf')
 				{

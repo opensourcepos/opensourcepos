@@ -312,7 +312,7 @@ function parse_decimals($number)
 
 	$fmt->setAttribute(\NumberFormatter::FRACTION_DIGITS, $config->item('currency_decimals'));
 
-	if (empty($config->item('thousands_separator')))
+	if(empty($config->item('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}

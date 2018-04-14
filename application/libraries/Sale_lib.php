@@ -999,7 +999,8 @@ class Sale_lib
 		$this->CI->session->set_userdata('sale_id', $sale_id);
 	}
 
-	public function get_sale_id() {
+	public function get_sale_id()
+	{
 		return $this->CI->session->userdata('sale_id');
 	}
 

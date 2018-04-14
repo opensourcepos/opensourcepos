@@ -22,7 +22,6 @@ class Token_lib
 	 */
 	public function render($tokened_text, $tokens = array())
 	{
-
 		// Apply the transformation for the "%" tokens if any are used
 		if(strpos($tokened_text, '%') !== FALSE)
 		{
@@ -58,20 +57,21 @@ class Token_lib
 	{
 		// Matches tokens with the following pattern: [$token:$length]
 		preg_match_all('/
-      \{             # [ - pattern start
-      ([^\s\{\}:]+)  # match $token not containing whitespace : { or }
-      (?:
-      :              # : - separator
-      ([^\s\{\}:]+)     # match $length not containing whitespace : { or }
-      )?
-      \}             # ] - pattern end
-      /x', $text, $matches);
+				\{             # [ - pattern start
+				([^\s\{\}:]+)  # match $token not containing whitespace : { or }
+				(?:
+				:              # : - separator
+				([^\s\{\}:]+)     # match $length not containing whitespace : { or }
+				)?
+				\}             # ] - pattern end
+				/x', $text, $matches);
 
 		$tokens = $matches[1];
 		$lengths = $matches[2];
 
 		$token_tree = array();
-		for($i = 0; $i < count($tokens); $i++) {
+		for($i = 0; $i < count($tokens); $i++)
+		{
 			$token_tree[$tokens[$i]][$lengths[$i]] = $matches[0][$i];
 		}
 

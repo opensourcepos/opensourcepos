@@ -47,8 +47,10 @@ class Item_kit_items extends CI_Model
 
 		$this->delete($item_kit_id);
 
-		if ($item_kit_items_data != NULL) {
-			foreach ($item_kit_items_data as $row) {
+		if($item_kit_items_data != NULL)
+		{
+			foreach($item_kit_items_data as $row)
+			{
 				$row['item_kit_id'] = $item_kit_id;
 				$success &= $this->db->insert('item_kit_items', $row);
 			}

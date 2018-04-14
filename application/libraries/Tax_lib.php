@@ -136,7 +136,7 @@ class Tax_lib
 			$rounding_code = $sales_tax['rounding_code'];
 			$rounded_sale_tax_amount = $sale_tax_amount;
 
-			if ($rounding_code == Rounding_mode::HALF_UP)
+			if($rounding_code == Rounding_mode::HALF_UP)
 			{
 				$rounded_sale_tax_amount = round($sale_tax_amount, $decimals, PHP_ROUND_HALF_UP);
 			}

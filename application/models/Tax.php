@@ -326,7 +326,7 @@ class Tax extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			return $this->db->get()->row_array()['count'];
+			return $this->db->get()->row()->count;
 		}
 
 		$this->db->order_by($sort, $order);
@@ -341,7 +341,7 @@ class Tax extends CI_Model
 
 	public function get_tax_code_type_name($tax_code_type)
 	{
-		if ($tax_code_type == '0')
+		if($tax_code_type == '0')
 		{
 			return $this->lang->line('taxes_sales_tax');
 		}
@@ -356,7 +356,7 @@ class Tax extends CI_Model
 		$suggestions = array();
 
 		$this->db->from('tax_codes');
-		if (!empty($search))
+		if(!empty($search))
 		{
 			$this->db->like('tax_code', $search);
 			$this->db->or_like('tax_code_name', $search);
@@ -383,7 +383,7 @@ class Tax extends CI_Model
 
 		$this->db->from('tax_categories');
 		$this->db->where('tax_category_id !=', 1);
-		if (!empty($search))
+		if(!empty($search))
 		{
 			$this->db->like('tax_category', '%'.$search.'%');
 		}
