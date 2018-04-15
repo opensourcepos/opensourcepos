@@ -15,22 +15,22 @@ if(isset($error))
 	<?php echo form_open("receivings/change_mode",array('id'=>'mode_form')); ?>
 		<span><?php echo $this->lang->line('recvs_mode') ?></span>
 	<?php echo form_dropdown('mode',$modes,$mode,'onchange="$(\'#mode_form\').submit();"'); ?>
-	
-	<?php 
-	if ($show_stock_locations) 
+
+	<?php
+	if ($show_stock_locations)
 	{
 	?>
     <span><?php echo $this->lang->line('recvs_stock_source') ?></span>
     <?php echo form_dropdown('stock_source',$stock_locations,$stock_source,'onchange="$(\'#mode_form\').submit();"'); ?>
-    <?php 
+    <?php
     if($mode=='requisition')
     {
     ?>
     <span><?php echo $this->lang->line('recvs_stock_destination') ?></span>
-	<?php echo form_dropdown('stock_destination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();"');        
+	<?php echo form_dropdown('stock_destination',$stock_locations,$stock_destination,'onchange="$(\'#mode_form\').submit();"');
     }
 	}
-	?>    
+	?>
 	</form>
 	<?php echo form_open("receivings/add",array('id'=>'add_item_form')); ?>
 	<label id="item_label" for="item">
@@ -87,7 +87,7 @@ else
 	foreach(array_reverse($cart, true) as $line=>$item)
 	{
         echo form_open("receivings/edit_item/$line");
-		
+
 ?>
 	    <tr>
 	    <td><?php echo anchor("receivings/delete_item/$line",'['.$this->lang->line('common_delete').']');?></td>
@@ -112,22 +112,22 @@ else
     		<td>
 		<?php
             echo form_input(array('name'=>'quantity','value'=>$item['quantity'],'size'=>'2'));
-            if ($item['receiving_quantity'] > 1) 
+            if ($item['receiving_quantity'] > 1)
 			{
 		?>
 		</td>
-        <td>x <?php echo $item['receiving_quantity']; ?></td>	
-		<?php 
+        <td>x <?php echo $item['receiving_quantity']; ?></td>
+		<?php
 			}
 			else
 			{
 		?>
 		<td></td>
-		<?php 
+		<?php
 			}
 		?>
-		
-		<?php       
+
+		<?php
 			if ($items_module_allowed && $mode!='requisition')
 		    {
 		?>
@@ -146,16 +146,16 @@ else
 		<td><?php echo form_submit("edit_item", $this->lang->line('sales_edit_item'));?></td>
 		</tr>
 		<tr>
-		<?php 
+		<?php
 			if($item['allow_alt_description']==1)
 			{
 			?>
 			<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv').':';?></td>
-			<?php 
-			} 
+			<?php
+			}
 			?>
 			<td colspan="2" style="text-align: left;">
-		
+
 			<?php
 	        	if($item['allow_alt_description']==1)
 	        	{
@@ -201,7 +201,7 @@ else
 	{
 		echo form_open("receivings/select_supplier",array('id'=>'select_supplier_form')); ?>
 		<label id="supplier_label" for="supplier"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
-		<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')));?>
+		<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')),'required','required');?>
 		</form>
 		<div style="margin-top:5px;text-align:center;">
 		<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
@@ -214,7 +214,7 @@ else
 		<?php
 	}
 	?>
-	
+
     <?php
         if($mode != 'requisition')
         {
@@ -223,7 +223,7 @@ else
 		<div class="float_left" style='width:55%;'><?php echo $this->lang->line('sales_total'); ?>:</div>
 		<div class="float_left" style="width:45%;font-weight:bold;"><?php echo to_currency($total); ?></div>
 	</div>
-	<?php 
+	<?php
         }
 	?>
 	<?php
@@ -232,7 +232,7 @@ else
 		if($mode == 'requisition')
 		{
 		?>
-		    
+
 		    <div  style='border-top:2px solid #000;' />
 		    <div id="finish_sale">
 		        <?php echo form_open("receivings/requisition_complete",array('id'=>'finish_receiving_form')); ?>
@@ -240,11 +240,11 @@ else
 		        <label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?>:</label>
 		        <?php echo form_textarea(array('name'=>'comment','id'=>'comment','value'=>$comment,'rows'=>'4','cols'=>'23'));?>
 		        <br /><br />
-		        
+
 		        <div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
 		        	<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		        </div>
-		        </form>    
+		        </form>
 		        <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
 		        <div class='small_button' id='cancel_receiving_button' style='float:left;margin-top:5px;'>
 		        <span><?php echo $this->lang->line('recvs_cancel_receiving')?></span>
@@ -279,7 +279,7 @@ else
 				?>
 			</td>
 		</tr>
-		<?php if ($mode == "receive") 
+		<?php if ($mode == "receive")
 		{
 		?>
 		<tr>
@@ -298,7 +298,7 @@ else
 		?>
 		</td>
 		</tr>
-		
+
 		<tr>
 		<td>
 		<?php echo $this->lang->line('recvs_invoice_number').':   ';?>
@@ -307,7 +307,7 @@ else
 		<?php echo form_input(array('name'=>'recv_invoice_number','id'=>'recv_invoice_number','value'=>$invoice_number,'size'=>10));?>
 		</td>
 		</tr>
-		<?php 
+		<?php
 		}
 		?>
 		<tr><td>
@@ -335,7 +335,7 @@ else
 		<div class='small_button' id='finish_receiving_button' style='float:right;margin-top:5px;'>
 			<span><?php echo $this->lang->line('recvs_complete_receiving') ?></span>
 		</div>
-        
+
 		</form>
 
 	    <?php echo form_open("receivings/cancel_receiving",array('id'=>'cancel_receiving_form')); ?>
@@ -378,12 +378,12 @@ $(document).ready(function()
     	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
     });
 
-	$('#comment').keyup(function() 
+	$('#comment').keyup(function()
 	{
 		$.post('<?php echo site_url("receivings/set_comment");?>', {comment: $('#comment').val()});
 	});
 
-	$('#recv_invoice_number').keyup(function() 
+	$('#recv_invoice_number').keyup(function()
 	{
 		$.post('<?php echo site_url("receivings/set_invoice_number");?>', {recv_invoice_number: $('#recv_invoice_number').val()});
 	});
@@ -393,7 +393,7 @@ $(document).ready(function()
 		$.post('<?php echo site_url("receivings/set_print_after_sale");?>', {recv_print_after_sale: $(this).is(":checked")});
 	});
 
-	var enable_invoice_number = function() 
+	var enable_invoice_number = function()
 	{
 		var enabled = $("#recv_invoice_enable").is(":checked");
 		$("#recv_invoice_number").prop("disabled", !enabled).parents('tr').show();
@@ -405,7 +405,7 @@ $(document).ready(function()
 	$("#recv_invoice_enable").change(function() {
 		var enabled = enable_invoice_number();
 		$.post('<?php echo site_url("receivings/set_invoice_number_enabled");?>', {recv_invoice_number_enabled: enabled});
-		
+
 	});
 
 	$('#item,#supplier').click(function()
@@ -425,6 +425,7 @@ $(document).ready(function()
 
     $("#supplier").result(function(event, data, formatted)
     {
+		supplier_selected = true;
 		$("#select_supplier_form").submit();
     });
 
@@ -435,10 +436,14 @@ $(document).ready(function()
 
     $("#finish_receiving_button").click(function()
     {
-    	if (confirm('<?php echo $this->lang->line("recvs_confirm_finish_receiving"); ?>'))
-    	{
-    		$('#finish_receiving_form').submit();
-    	}
+		var supplier_selected = ($('#overall_sale').text().indexOf("[Delete Supplier]") > -1)
+		if (supplier_selected)
+		{
+    		if (confirm('<?php echo $this->lang->line("recvs_confirm_finish_receiving"); ?>'))
+    		{
+	    		$('#finish_receiving_form').submit();
+			}
+		}
     });
 
     $("#cancel_receiving_button").click(function()
