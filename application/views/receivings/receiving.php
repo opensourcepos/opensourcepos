@@ -201,7 +201,7 @@ else
 	{
 		echo form_open("receivings/select_supplier",array('id'=>'select_supplier_form')); ?>
 		<label id="supplier_label" for="supplier"><?php echo $this->lang->line('recvs_select_supplier'); ?></label>
-		<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')),'required','required');?>
+		<?php echo form_input(array('name'=>'supplier','id'=>'supplier','size'=>'30','value'=>$this->lang->line('recvs_start_typing_supplier_name')));?>
 		</form>
 		<div style="margin-top:5px;text-align:center;">
 		<h3 style="margin: 5px 0 5px 0"><?php echo $this->lang->line('common_or'); ?></h3>
