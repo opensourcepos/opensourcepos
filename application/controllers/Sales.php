@@ -721,7 +721,7 @@ class Sales extends Secure_area
 
 		/* Changed the conditional to account for floating point rounding */
 		if ( ($this->sale_lib->get_mode() == 'sale') &&
-		      ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
+		      ( abs(( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments )) > 1e-6 ) )
 		{
 			return false;
 		}
