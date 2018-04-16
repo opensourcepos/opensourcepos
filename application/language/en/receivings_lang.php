@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["receivings_transaction_failed"] = "Receivings Transactions Failed";
 $lang["recvs_basic_information"] = "Receiving information";
@@ -38,7 +38,7 @@ $lang["recvs_receiving"] = "Receive";
 $lang["recvs_register"] = "Items Receiving";
 $lang["recvs_requisition"] = "Requisition";
 $lang["recvs_return"] = "Return";
-$lang["recvs_select_supplier"] = "Select Supplier (Optional)";
+$lang["recvs_select_supplier"] = "Select Supplier (Required)";
 $lang["recvs_start_typing_supplier_name"] = "Start Typing supplier's name...";
 $lang["recvs_stock_destination"] = "Stock destination";
 $lang["recvs_stock_locaiton"] = "Stock location";

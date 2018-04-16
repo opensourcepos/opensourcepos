@@ -216,6 +216,8 @@ else
 	?>
 
     <?php
+		if(isset($supplier))
+		{
         if($mode != 'requisition')
         {
     ?>
@@ -224,7 +226,7 @@ else
 		<div class="float_left" style="width:45%;font-weight:bold;"><?php echo to_currency($total); ?></div>
 	</div>
 	<?php
-        }
+		}
 	?>
 	<?php
 	if(count($cart) > 0)
@@ -346,6 +348,7 @@ else
 	</div>
 	<?php
 	}
+	}
 }
 	?>
 
@@ -436,13 +439,9 @@ $(document).ready(function()
 
     $("#finish_receiving_button").click(function()
     {
-		var supplier_selected = ($('#overall_sale').text().indexOf("[Delete Supplier]") > -1)
-		if (supplier_selected)
+		if (confirm('<?php echo $this->lang->line("recvs_confirm_finish_receiving"); ?>'))
 		{
-    		if (confirm('<?php echo $this->lang->line("recvs_confirm_finish_receiving"); ?>'))
-    		{
-	    		$('#finish_receiving_form').submit();
-			}
+			$('#finish_receiving_form').submit();
 		}
     });
 
