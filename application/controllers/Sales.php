@@ -452,24 +452,18 @@ class Sales extends Secure_area
 			}
 			$this->sale_lib->clear_all();
 		}
-
 		$client_ip = $_SERVER['REMOTE_ADDR'];
-
-		//log_message('debug', var_export($data['cart'], TRUE));
-		//log_message('debug', var_export($client_ip, TRUE));
-		$is_sale = TRUE;
+		$is_sale = FALSE;
 		foreach ($data['cart'] as $cart_item)
 		{
 			$cart_item_quantity = $cart_item['quantity'];
-			//log_message('debug', var_export($cart_item_quantity, TRUE));
 			if ( $cart_item_quantity > 0)
 			{
+				$is_sale = TRUE;
 				break;
 			}
 			// Only if all quantities are negative then it is a return
-			$is_sale = FALSE;
 		}
-		//log_message('debug', var_export($is_sale, TRUE));
 		if ($is_sale)
 		{
 			//log_message('debug', 'Opening cash drawer');
@@ -718,6 +712,10 @@ class Sales extends Secure_area
 
 	private function _payments_cover_total()
 	{
+		if ( abs($this->sale_lib->get_total()) < 1e-6)
+		{
+			return false;
+		}
 		$total_payments = 0;
 
 		foreach($this->sale_lib->get_payments() as $payment)
@@ -727,7 +725,7 @@ class Sales extends Secure_area
 
 		/* Changed the conditional to account for floating point rounding */
 		if ( ($this->sale_lib->get_mode() == 'sale') &&
-		      ( ( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments ) > 1e-6 ) )
+		      ( abs(( to_currency_no_money( $this->sale_lib->get_total() ) - $total_payments )) > 1e-6 ) )
 		{
 			return false;
 		}

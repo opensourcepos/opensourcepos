@@ -7,7 +7,7 @@ echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_f
 <legend><?php echo $this->lang->line("customers_basic_information"); ?></legend>
 <?php $this->load->view("people/form_basic_info"); ?>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('customers_company_name').':', 'company_name'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -17,8 +17,8 @@ echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_f
 	</div>
 </div>
 
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('customers_account_number').':', 'account_number'); ?>
+<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('customers_account_number').':', 'account_number',array('class'=>'required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'account_number',
@@ -29,7 +29,7 @@ echo form_open('customers/save/'.$person_info->person_id,array('id'=>'customer_f
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('customers_taxable').':', 'taxable'); ?>
 	<div class='form_field'>
 	<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable);?>
@@ -45,7 +45,7 @@ echo form_submit(array(
 );
 ?>
 </fieldset>
-<?php 
+<?php
 echo form_close();
 ?>
 <script type='text/javascript'>
@@ -69,29 +69,14 @@ $(document).ready(function()
 		},
 		errorLabelContainer: "#error_message_box",
  		wrapper: "li",
-		rules: 
+		rules:
 		{
 			first_name: "required",
 			last_name: "required",
     		email: "email",
-    		account_number:
-			{
-				remote:
-				{
-					url: "<?php echo site_url($controller_name . '/check_account_number')?>",
-					type: "post",
-					data:
-					{
-						"person_id" : "<?php echo $person_info->person_id; ?>",
-						"account_number" : function()
-						{
-							return $("#account_number").val();
-						}
-					}
-				}
-			}
+    		account_number: "required"
    		},
-		messages: 
+		messages:
 		{
      		first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
      		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",

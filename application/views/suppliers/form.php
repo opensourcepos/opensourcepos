@@ -6,7 +6,7 @@ echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_f
 <fieldset id="supplier_basic_info">
 <legend><?php echo $this->lang->line("suppliers_basic_information"); ?></legend>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('suppliers_company_name').':', 'company_name', array('class'=>'required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -17,7 +17,7 @@ echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_f
 	</div>
 </div>
 
-<div class="field_row clearfix">	
+<div class="field_row clearfix">
 <?php echo form_label($this->lang->line('suppliers_agency_name').':', 'agency_name'); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
@@ -29,8 +29,8 @@ echo form_open('suppliers/save/'.$person_info->person_id,array('id'=>'supplier_f
 </div>
 
 <?php $this->load->view("people/form_basic_info"); ?>
-<div class="field_row clearfix">	
-<?php echo form_label($this->lang->line('suppliers_account_number').':', 'account_number'); ?>
+<div class="field_row clearfix">
+<?php echo form_label($this->lang->line('suppliers_account_number').':', 'account_number', array('class'=>'required')); ?>
 	<div class='form_field'>
 	<?php echo form_input(array(
 		'name'=>'account_number',
@@ -48,7 +48,7 @@ echo form_submit(array(
 );
 ?>
 </fieldset>
-<?php 
+<?php
 echo form_close();
 ?>
 <script type='text/javascript'>
@@ -71,18 +71,20 @@ $(document).ready(function()
 		},
 		errorLabelContainer: "#error_message_box",
  		wrapper: "li",
-		rules: 
+		rules:
 		{
 			company_name: "required",
 			first_name: "required",
 			last_name: "required",
-			email: "email"
+			email: "email",
+			account_number: "required"
    		},
-		messages: 
+		messages:
 		{
 			company_name: "<?php echo $this->lang->line('suppliers_company_name_required'); ?>",
 			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>"
+			email: "<?php echo $this->lang->line('common_email_invalid_format'); ?>",
+			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
 	});
 });
