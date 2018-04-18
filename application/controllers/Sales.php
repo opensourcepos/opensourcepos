@@ -712,10 +712,6 @@ class Sales extends Secure_area
 
 	private function _payments_cover_total()
 	{
-		if ( abs($this->sale_lib->get_total()) < 1e-6)
-		{
-			return false;
-		}
 		$total_payments = 0;
 
 		foreach($this->sale_lib->get_payments() as $payment)
