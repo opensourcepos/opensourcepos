@@ -65,43 +65,42 @@
 		<?php
 		foreach($cart as $line=>$item)
 		{
-		?>
-			<tr>
-				<td><?php echo ucfirst($item['name']); ?></td>
-				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-				<td class="total-value"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
-			</tr>
-			<tr>
-				<?php
-				if($this->config->item('receipt_show_description'))
-				{
-				?>
-					<td colspan="2"><?php echo $item['description']; ?></td>
-				<?php
-				}
-				?>
-				<?php
-				if($this->config->item('receipt_show_serialnumber'))
-				{
-				?>
-					<td><?php echo $item['serialnumber']; ?></td>
-				<?php
-				}
-				?>
-			</tr>
-			<?php
-			if($item['discount'] > 0)
+			if($item['print_option'] == PRINT_YES)
 			{
-			?>
+				?>
 				<tr>
-					<td colspan="3" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?></td>
-					<td class="total-value"><?php echo to_currency($item['discounted_total']) ; ?></td>
+					<td><?php echo ucfirst($item['name']); ?></td>
+					<td><?php echo to_currency($item['price']); ?></td>
+					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
+					<td class="total-value"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
 				</tr>
-			<?php
+				<tr>
+					<?php
+					if ($this->config->item('receipt_show_description')) {
+						?>
+						<td colspan="2"><?php echo $item['description']; ?></td>
+						<?php
+					}
+					?>
+					<?php
+					if ($this->config->item('receipt_show_serialnumber')) {
+						?>
+						<td><?php echo $item['serialnumber']; ?></td>
+						<?php
+					}
+					?>
+				</tr>
+				<?php
+				if ($item['discount'] > 0) {
+					?>
+					<tr>
+						<td colspan="3"
+							class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
+						<td class="total-value"><?php echo to_currency($item['discounted_total']); ?></td>
+					</tr>
+					<?php
+				}
 			}
-			?>
-		<?php
 		}
 		?>
 

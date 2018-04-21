@@ -81,19 +81,22 @@
 		<?php
 		foreach($cart as $line=>$item)
 		{
-		?>
+			if($item['print_option'] == PRINT_YES)
+			{
+			?>
 			<tr class="item-row">
 				<td><?php echo $item['item_number']; ?></td>
 				<td class="item-name"><?php echo $item['name']; ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo $item['discount'] .'%'; ?></td>
+				<td><?php echo $item['discount'] . '%'; ?></td>
 				<?php if ($item['discount'] > 0): ?>
-				<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
+					<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
 				<?php endif; ?>
 				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 			</tr>
-		<?php
+			<?php
+			}
 		}
 		?>
 

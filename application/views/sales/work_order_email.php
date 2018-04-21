@@ -78,16 +78,19 @@
 		<?php
 		foreach($cart as $line=>$item)
 		{
-		?>
-			<tr class="item-row">
-				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name"><?php echo $item['name']; ?></td>
-				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo $item['discount'] .'%'; ?></td>
-				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
-			</tr>
-		<?php
+			if($item['print_option'] == PRINT_YES)
+			{
+				?>
+				<tr class="item-row">
+					<td><?php echo $item['item_number']; ?></td>
+					<td class="item-name"><?php echo $item['name']; ?></td>
+					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
+					<td><?php echo to_currency($item['price']); ?></td>
+					<td><?php echo $item['discount'] . '%'; ?></td>
+					<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
+				</tr>
+				<?php
+			}
 		}
 		?>
 

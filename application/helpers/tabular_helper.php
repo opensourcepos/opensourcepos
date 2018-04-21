@@ -490,8 +490,8 @@ function get_item_kits_manage_table_headers()
 		array('item_kit_id' => $CI->lang->line('item_kits_kit')),
 		array('name' => $CI->lang->line('item_kits_name')),
 		array('description' => $CI->lang->line('item_kits_description')),
-		array('cost_price' => $CI->lang->line('items_cost_price'), 'sortable' => FALSE),
-		array('unit_price' => $CI->lang->line('items_unit_price'), 'sortable' => FALSE)
+		array('total_cost_price' => $CI->lang->line('items_cost_price'), 'sortable' => FALSE),
+		array('total_unit_price' => $CI->lang->line('items_unit_price'), 'sortable' => FALSE)
 	);
 
 	return transform_headers($headers);
@@ -509,8 +509,8 @@ function get_item_kit_data_row($item_kit)
 		'item_kit_id' => $item_kit->item_kit_id,
 		'name' => $item_kit->name,
 		'description' => $item_kit->description,
-		'cost_price' => to_currency($item_kit->total_cost_price),
-		'unit_price' => to_currency($item_kit->total_unit_price),
+		'total_cost_price' => to_currency($item_kit->total_cost_price),
+		'total_unit_price' => to_currency($item_kit->total_unit_price),
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
