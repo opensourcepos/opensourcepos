@@ -802,7 +802,7 @@ class Sale_lib
 		}
 		else
 		{
-			if ($print_option != NULL)
+			if($print_option != NULL)
 			{
 				$print_option_selected = $print_option;
 			}

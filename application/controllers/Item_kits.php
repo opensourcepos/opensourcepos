@@ -29,7 +29,8 @@ class Item_kits extends Secure_Controller
 
 			$item_kit->total_cost_price += $item_info->cost_price * $item_kit_item['quantity'];
 
-			if($item_kit->price_option == PRICE_OPTION_ALL || ($item_kit->price_option == PRICE_OPTION_KIT_STOCK && $item_info->stock_type == HAS_STOCK )) {
+			if($item_kit->price_option == PRICE_OPTION_ALL || ($item_kit->price_option == PRICE_OPTION_KIT_STOCK && $item_info->stock_type == HAS_STOCK ))
+			{
 				$item_kit->total_unit_price += $item_info->unit_price * $item_kit_item['quantity'];
 			}
 		}
@@ -57,8 +58,6 @@ class Item_kits extends Secure_Controller
 		$offset = $this->input->get('offset');
 		$sort   = $this->input->get('sort');
 		$order  = $this->input->get('order');
-
-		error_log('>>>search started');
 
 		$item_kits = $this->Item_kit->search($search, $limit, $offset, $sort, $order);
 		$total_rows = $this->Item_kit->get_found_rows($search);
