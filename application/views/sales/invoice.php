@@ -108,8 +108,8 @@ $(document).ready(function()
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
-			<?php if ($item['discount'] > 0): ?>
-			<th><?php echo $this->lang->line('sales_customer_discount');?></th>
+			<?php if($item['discount'] > 0): ?>
+				<th><?php echo $this->lang->line('sales_customer_discount');?></th>
 			<?php endif; ?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
@@ -117,28 +117,41 @@ $(document).ready(function()
 		<?php
 		foreach($cart as $line=>$item)
 		{
-		?>
-			<tr class="item-row">
-				<td><?php echo $item['item_number']; ?></td>
-				<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
-				<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea></td>
-				<?php if ($item['discount'] > 0): ?>
-				<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea></td>
-				<?php endif; ?>
-				<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea></td>
-			</tr>
-			<?php
-			if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
+			if($item['print_option'] == PRINT_YES)
 			{
 			?>
-				<tr class="item-row" >
-					<td ></td >
-					<td class="item-description" colspan = "4" ><div><?php echo $item['description']; ?></div></td>
-					<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
+				<tr class="item-row">
+					<td><?php echo $item['item_number']; ?></td>
+					<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
+					<td style='text-align:center;'><textarea rows="5"
+															 cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
+					</td>
+					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
+					<td style='text-align:center;'><textarea rows="4"
+															 cols="6"><?php echo $item['discount'] . '%'; ?></textarea>
+					</td>
+					<?php if($item['discount'] > 0): ?>
+						<td style='text-align:center;'><textarea rows="4"
+																 cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>
+						</td>
+					<?php endif; ?>
+					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4"
+																					 cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
+					</td>
 				</tr>
-		<?php
+				<?php
+				if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
+				{
+				?>
+					<tr class="item-row">
+						<td></td>
+						<td class="item-description" colspan="4">
+							<div><?php echo $item['description']; ?></div>
+						</td>
+						<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
+					</tr>
+				<?php
+				}
 			}
 		}
 		?>

@@ -68,7 +68,7 @@ class Sale_lib
 
 		foreach($cart as $k=>$v)
 		{
-			if($v['print_option'] == '0')
+			if($v['print_option'] == PRINT_YES)
 			{
 				$filtered_cart[] = $v;
 			}
@@ -683,7 +683,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE )
+	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = NULL )
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
@@ -802,7 +802,14 @@ class Sale_lib
 		}
 		else
 		{
-			$print_option_selected = PRINT_YES;
+			if($print_option != NULL)
+			{
+				$print_option_selected = $print_option;
+			}
+			else
+			{
+				$print_option_selected = PRINT_YES;
+			}
 		}
 
 		$total = $this->get_item_total($quantity, $price, $discount);
@@ -981,7 +988,7 @@ class Sale_lib
 
 		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option);
 		}
 
 		foreach($this->CI->Sale->get_sale_payments($sale_id)->result() as $row)
@@ -1009,7 +1016,7 @@ class Sale_lib
 		$this->empty_cart();
 		foreach($this->CI->Sale->get_sale_items_ordered($sale_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, PRICE_MODE_STANDARD, NULL, NULL, $row->item_unit_price, $row->description, $row->serialnumber, TRUE, $row->print_option);
 		}
 
 		return $this->CI->session->userdata('sales_cart');

@@ -729,7 +729,7 @@ class Item extends CI_Model
 		$this->db->select('item_id, name');
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
-		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
+		$this->db->where('item_type', ITEM_KIT);
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
 		foreach($this->db->get()->result() as $row)
@@ -741,6 +741,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->like('item_number', $search);
+		$this->db->where('item_type', ITEM_KIT);
 		$this->db->order_by('item_number', 'asc');
 		foreach($this->db->get()->result() as $row)
 		{
@@ -753,6 +754,7 @@ class Item extends CI_Model
 			$this->db->select('category');
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
+			$this->db->where('item_type', ITEM_KIT);
 			$this->db->distinct();
 			$this->db->like('category', $search);
 			$this->db->order_by('category', 'asc');
@@ -778,6 +780,7 @@ class Item extends CI_Model
 			$this->db->select('item_id, name, description');
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
+			$this->db->where('item_type', ITEM_KIT);
 			$this->db->like('description', $search);
 			$this->db->order_by('description', 'asc');
 			foreach($this->db->get()->result() as $row)
@@ -794,6 +797,7 @@ class Item extends CI_Model
 			{
 				$this->db->from('items');
 				$this->db->group_start();
+				$this->db->where('item_type', ITEM_KIT);
 				$this->db->like('custom1', $search);
 				$this->db->or_like('custom2', $search);
 				$this->db->or_like('custom3', $search);
