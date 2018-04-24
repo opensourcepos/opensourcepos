@@ -9,9 +9,9 @@ class Rewards extends CI_Model
 	/*
 	Inserts or updates a rewards
 	*/
-	public function save(&$rewards_data, $id = -1)
+	public function save(&$rewards_data, $rewards_id = FALSE)
 	{
-		if($id == -1 || !$this->exists($id))
+		if(!$rewards_id || !$this->exists($rewards_id))
 		{
 			if($this->db->insert('sales_reward_points', $rewards_data))
 			{
@@ -23,7 +23,7 @@ class Rewards extends CI_Model
 			return FALSE;
 		}
 
-		$this->db->where('id', $id);
+		$this->db->where('id', $rewards_id);
 
 		return $this->db->update('sales_reward_points', $rewards_data);
 	}

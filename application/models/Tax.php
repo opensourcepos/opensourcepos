@@ -175,22 +175,23 @@ class Tax extends CI_Model
 			if($this->db->insert('tax_codes', $tax_code_data))
 			{
 				$this->save_tax_rates($tax_rate_data, $tax_code);
+
 				return TRUE;
 			}
-
-			return FALSE;
-		}
-
-		$this->db->where('tax_code', $tax_code);
-		if($this->db->update('tax_codes', $tax_code_data))
-		{
-			$this->save_tax_rates($tax_rate_data, $tax_code);
-			return TRUE;
 		}
 		else
 		{
-			return FALSE;
+			$this->db->where('tax_code', $tax_code);
+
+			if($this->db->update('tax_codes', $tax_code_data))
+			{
+				$this->save_tax_rates($tax_rate_data, $tax_code);
+
+				return TRUE;
+			}
 		}
+
+		return FALSE;
 	}
 
 	/**

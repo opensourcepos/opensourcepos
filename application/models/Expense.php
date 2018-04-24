@@ -205,8 +205,7 @@ class Expense extends CI_Model
 	*/
 	public function save(&$expense_data, $expense_id = FALSE)
 	{
-		//$expense_id = $expense_data['expense_id'];
-		if(!$expense_id == -1 || !$this->exists($expense_id))
+		if(!$expense_id || !$this->exists($expense_id))
 		{
 			if($this->db->insert('expenses', $expense_data))
 			{
