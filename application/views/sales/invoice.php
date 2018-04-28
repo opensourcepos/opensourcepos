@@ -108,9 +108,16 @@ $(document).ready(function()
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
-			<?php if($item['discount'] > 0): ?>
-				<th><?php echo $this->lang->line('sales_customer_discount');?></th>
-			<?php endif; ?>
+			<?php
+			$invoice_columns = 6;
+			if($discount > 0)
+			{
+				$invoice_columns = $invoice_columns + 1;
+				?>
+				<th><?php echo $this->lang->line('sales_customer_discount'); ?></th>
+			<?php
+			}
+			?>
 			<th><?php echo $this->lang->line('sales_total'); ?></th>
 		</tr>
 
@@ -123,20 +130,16 @@ $(document).ready(function()
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
 					<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="5"
-															 cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
+					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
 					</td>
 					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4"
-															 cols="6"><?php echo $item['discount'] . '%'; ?></textarea>
+					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea>
 					</td>
-					<?php if($item['discount'] > 0): ?>
-						<td style='text-align:center;'><textarea rows="4"
-																 cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>
+					<?php if($discount > 0): ?>
+						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>
 						</td>
 					<?php endif; ?>
-					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4"
-																					 cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
+					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
 					</td>
 				</tr>
 				<?php
@@ -145,7 +148,7 @@ $(document).ready(function()
 				?>
 					<tr class="item-row">
 						<td></td>
-						<td class="item-description" colspan="4">
+						<td class="item-description" colspan="<?php echo $invoice_columns-2; ?>">
 							<div><?php echo $item['description']; ?></div>
 						</td>
 						<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
@@ -157,11 +160,11 @@ $(document).ready(function()
 		?>
 
 		<tr>
-			<td class="blank" colspan="7" align="center"><?php echo '&nbsp;'; ?></td>
+			<td class="blank" colspan="<?php echo $invoice_columns; ?>" align="center"><?php echo '&nbsp;'; ?></td>
 		</tr>
 
 		<tr>
-			<td colspan="4" class="blank-bottom"> </td>
+			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank-bottom"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
 		</tr>
@@ -171,7 +174,7 @@ $(document).ready(function()
 		{
 		?>
 			<tr>
-				<td colspan="4" class="blank"> </td>
+				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
@@ -180,7 +183,7 @@ $(document).ready(function()
 		?>
 
 		<tr>
-			<td colspan="4" class="blank"> </td>
+			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
 		</tr>
@@ -195,7 +198,7 @@ $(document).ready(function()
 			$show_giftcard_remainder |= $splitpayment[0] == $this->lang->line('sales_giftcard');
 		?>
 			<tr>
-				<td colspan="4" class="blank"> </td>
+				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></textarea></td>
 			</tr>
@@ -206,7 +209,7 @@ $(document).ready(function()
 		{
 		?>
 			<tr>
-				<td colspan="4" class="blank"> </td>
+				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
 			</tr>
@@ -217,7 +220,7 @@ $(document).ready(function()
 		{
 		?>
 		<tr>
-			<td colspan="4" class="blank"> </td>
+			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 			<td colspan="2" class="total-line"> <textarea rows="5" cols="6"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change); ?></textarea></td>
 		</tr>
