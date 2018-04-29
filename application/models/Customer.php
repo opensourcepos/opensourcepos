@@ -218,12 +218,19 @@ class Customer extends Person
 		$this->db->update('customers', array('points' => $value));
 	}
 
-
 	/*
 	Deletes one customer
 	*/
 	public function delete($customer_id)
 	{
+		// if privacy enforcement is selected scramble customer data
+		if($this->config->item('enforce_privacy'))
+		{
+			$this->db->where('person_id', $customer_id);
+
+			return $this->db->update('people', array('first_name' => $customer_id, 'last_name' => $customer_id, 'phone_number' => '', 'email' => ''));
+		}
+
 		$this->db->where('person_id', $customer_id);
 
 		return $this->db->update('customers', array('deleted' => 1));

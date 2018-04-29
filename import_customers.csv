@@ -1,2 +1,2 @@
-First Name,Last Name,Gender,Email,Phone Number,Address 1,Address2,City,State,Zip,Country,Comments,Company,Account Number,Discount,Taxable
-Bob,Smith,1,bsmith@nowhere.com,585-555-1111,123 Nowhere Street,Apt 4,Awesome,NY,11111,USA,Awesome guy,,,5.00,y
+First Name,Last Name,Gender,Consent,Email,Phone Number,Address 1,Address2,City,State,Zip,Country,Comments,Company,Account Number,Discount,Taxable
+Bob,Smith,1,y,bsmith@nowhere.com,585-555-1111,123 Nowhere Street,Apt 4,Awesome,NY,11111,USA,Awesome guy,,,5,y

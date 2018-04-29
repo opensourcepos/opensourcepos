@@ -117,6 +117,16 @@ class Customers extends Persons
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
+
+		if(empty($info->person_id) || empty($info->date) || empty($info->employee_id))
+		{
+			$data['person_info']->date = date('Y-m-d H:i:s');
+			$data['person_info']->employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
+		}
+
+		$employee_info = $this->Employee->get_info($info->employee_id);
+		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
+
 		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' . $this->Tax->get_info($info->sales_tax_code)->tax_code_name;
 		$packages = array('' => $this->lang->line('items_none'));
 		foreach($this->Customer_rewards->get_all()->result_array() as $row)
@@ -232,12 +242,17 @@ class Customers extends Persons
 			'comments' => $this->input->post('comments')
 		);
 
+		$date_formatter = date_create_from_format($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), $this->input->post('date'));
+
 		$customer_data = array(
+			'consent' => $this->input->post('consent') != NULL,
 			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
 			'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
 			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
-			'taxable' => $this->input->post('taxable') != NULL
+			'taxable' => $this->input->post('taxable') != NULL,
+			'date' => $date_formatter->format('Y-m-d H:i:s'),
+			'employee_id' => $this->input->post('employee_id')
 		);
 
 		$tax_code = $this->input->post('sales_tax_code');
@@ -305,16 +320,23 @@ class Customers extends Persons
 		$customers_to_delete = $this->input->post('ids');
 		$customers_info = $this->Customer->get_multiple_info($customers_to_delete);
 
-		if($this->Customer->delete_list($customers_to_delete))
+		$count = 0;
+
+		foreach($customers_info->result() as $info)
 		{
-			foreach($customers_info->result() as $info)
+			if($this->Customer->delete($info->person_id))
 			{
 				// remove customer from Mailchimp selected list
 				$this->mailchimp_lib->removeMember($this->_list_id, $info->email);
-			}
 
+				$count++;
+			}
+		}
+
+		if($count == count($customers_to_delete))
+		{
 			echo json_encode(array('success' => TRUE,
-				'message' => $this->lang->line('customers_successful_deleted') . ' ' . count($customers_to_delete) . ' ' . $this->lang->line('customers_one_or_multiple')));
+				'message' => $this->lang->line('customers_successful_deleted') . ' ' . $count . ' ' . $this->lang->line('customers_one_or_multiple')));
 		}
 		else
 		{
@@ -358,30 +380,31 @@ class Customers extends Persons
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
 
-					if(sizeof($data) >= 15)
+					if(sizeof($data) >= 16)
 					{
-						$email = strtolower($data[3]);
+						$email = strtolower($data[4]);
 						$person_data = array(
 							'first_name'	=> $data[0],
 							'last_name'		=> $data[1],
 							'gender'		=> $data[2],
+							'consent'		=> $data[3] == '' ? 0 : 1,
 							'email'			=> $email,
-							'phone_number'	=> $data[4],
-							'address_1'		=> $data[5],
-							'address_2'		=> $data[6],
-							'city'			=> $data[7],
-							'state'			=> $data[8],
-							'zip'			=> $data[9],
-							'country'		=> $data[10],
-							'comments'		=> $data[11]
+							'phone_number'	=> $data[5],
+							'address_1'		=> $data[6],
+							'address_2'		=> $data[7],
+							'city'			=> $data[8],
+							'state'			=> $data[9],
+							'zip'			=> $data[10],
+							'country'		=> $data[11],
+							'comments'		=> $data[12]
 						);
 
 						$customer_data = array(
-							'company_name'		=> $data[12],
-							'discount_percent'	=> $data[14],
-							'taxable'			=> $data[15] == '' ? 0 : 1
+							'company_name'		=> $data[13],
+							'discount_percent'	=> $data[15],
+							'taxable'			=> $data[16] == '' ? 0 : 1
 						);
-						$account_number = $data[13];
+						$account_number = $data[14];
 
 						// don't duplicate people with same email
 						$invalidated = $this->Customer->check_email_exists($email);

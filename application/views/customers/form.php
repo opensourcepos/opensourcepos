@@ -32,6 +32,13 @@
 	<div class="tab-content">
 		<div class="tab-pane fade in active" id="customer_basic_info">
 			<fieldset>
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_consent'), 'consent', array('class' => 'required control-label col-xs-3')); ?>
+					<div class='col-xs-1'>
+						<?php echo form_checkbox('consent', '1', $person_info->consent == '' ? (boolean)!$this->config->item('enforce_privacy') : (boolean)$person_info->consent); ?>
+					</div>
+				</div>
+
 				<?php $this->load->view("people/form_basic_info"); ?>
 
 				<div class="form-group form-group-sm">
@@ -43,7 +50,7 @@
 									'id'=>'discount_percent',
 									'class'=>'form-control input-sm',
 									'value'=>$person_info->discount_percent)
-									);?>
+									); ?>
 							<span class="input-group-addon input-sm"><b>%</b></span>
 						</div>
 					</div>	
@@ -57,7 +64,7 @@
 								'id'=>'company_name',
 								'class'=>'form-control input-sm',
 								'value'=>$person_info->company_name)
-								);?>
+								); ?>
 					</div>
 				</div>
 
@@ -69,7 +76,7 @@
 								'id'=>'account_number',
 								'class'=>'form-control input-sm',
 								'value'=>$person_info->account_number)
-								);?>
+								); ?>
 					</div>
 				</div>
 
@@ -90,7 +97,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$person_info->points,
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 				<?php endif; ?>
@@ -98,9 +105,63 @@
 				<div class="form-group form-group-sm">
 					<?php echo form_label($this->lang->line('customers_taxable'), 'taxable', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-1'>
-						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable);?>
+						<?php echo form_checkbox('taxable', '1', $person_info->taxable == '' ? TRUE : (boolean)$person_info->taxable); ?>
 					</div>
 				</div>
+
+				<?php
+				if($customer_sales_tax_enabled)
+				{
+				?>
+					<div class="form-group form-group-sm">
+						<?php echo form_label($this->lang->line('customers_tax_code'), 'sales_tax_code_name', array('class'=>'control-label col-xs-3')); ?>
+						<div class='col-xs-8'>
+							<div class="input-group input-group-sm">
+								<?php echo form_input(array(
+										'name'=>'sales_tax_code_name',
+										'id'=>'sales_tax_code_name',
+										'class'=>'form-control input-sm',
+										'size'=>'50',
+										'value'=>$sales_tax_code_label)
+								); ?>
+								<?php echo form_hidden('sales_tax_code', $person_info->sales_tax_code); ?>
+							</div>
+						</div>
+					</div>
+				<?php
+				}
+				?>
+
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
+					<div class='col-xs-8'>
+						<div class="input-group">
+							<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
+							<?php echo form_input(array(
+									'name'=>'date',
+									'id'=>'datetime',
+									'class'=>'form-control input-sm',
+									'value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($person_info->date)),
+									'readonly'=>'true')
+									); ?>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_employee'), 'employee', array('class'=>'control-label col-xs-3')); ?>
+					<div class='col-xs-8'>
+						<?php echo form_input(array(
+								'name'=>'employee',
+								'id'=>'employee',
+								'class'=>'form-control input-sm',
+								'value'=>$employee,
+								'readonly'=>'true')
+								); ?>
+					</div>
+				</div>
+
+				<?php echo form_hidden('employee_id', $person_info->employee_id); ?>
 			</fieldset>
 		</div>
 
@@ -123,7 +184,7 @@
 										'class'=>'form-control input-sm',
 										'value'=>to_currency_no_money($stats->total),
 										'disabled'=>'')
-										);?>
+										); ?>
 								<?php if (currency_side()): ?>
 									<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 								<?php endif; ?>
@@ -144,7 +205,7 @@
 										'class'=>'form-control input-sm',
 										'value'=>to_currency_no_money($stats->max),
 										'disabled'=>'')
-										);?>
+										); ?>
 								<?php if (currency_side()): ?>
 									<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 								<?php endif; ?>
@@ -165,7 +226,7 @@
 										'class'=>'form-control input-sm',
 										'value'=>to_currency_no_money($stats->min),
 										'disabled'=>'')
-										);?>
+										); ?>
 								<?php if (currency_side()): ?>
 									<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 								<?php endif; ?>
@@ -186,7 +247,7 @@
 										'class'=>'form-control input-sm',
 										'value'=>to_currency_no_money($stats->average),
 										'disabled'=>'')
-										);?>
+										); ?>
 								<?php if (currency_side()): ?>
 									<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
 								<?php endif; ?>
@@ -204,7 +265,7 @@
 										'class'=>'form-control input-sm',
 										'value'=>$stats->quantity,
 										'disabled'=>'')
-										);?>
+										); ?>
 							</div>
 						</div>
 					</div>
@@ -219,7 +280,7 @@
 										'class'=>'form-control input-sm',
 										'value'=>$stats->avg_discount,
 										'disabled'=>'')
-										);?>
+										); ?>
 								<span class="input-group-addon input-sm"><b>%</b></span>
 							</div>
 						</div>
@@ -254,7 +315,7 @@
 					<div class="form-group form-group-sm">
 						<?php echo form_label($this->lang->line('customers_mailchimp_vip'), 'mailchimp_vip', array('class' => 'control-label col-xs-3')); ?>
 						<div class='col-xs-1'>
-							<?php echo form_checkbox('mailchimp_vip', '1', $mailchimp_info['vip'] == '' ? FALSE : (boolean)$mailchimp_info['vip']);?>
+							<?php echo form_checkbox('mailchimp_vip', '1', $mailchimp_info['vip'] == '' ? FALSE : (boolean)$mailchimp_info['vip']); ?>
 						</div>
 					</div>
 
@@ -266,7 +327,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_info['member_rating'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 
@@ -278,7 +339,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_activity['total'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 
@@ -290,7 +351,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_activity['lastopen'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 
@@ -302,7 +363,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_activity['open'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 
@@ -314,7 +375,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_activity['click'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 
@@ -326,7 +387,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_activity['unopen'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 
@@ -338,7 +399,7 @@
 									'class'=>'form-control input-sm',
 									'value'=>$mailchimp_info['email_client'],
 									'disabled'=>'')
-									);?>
+									); ?>
 						</div>
 					</div>
 				</fieldset>
@@ -347,31 +408,34 @@
 		}
 		?>
 	</div>
-	
-
-	<?php if ($customer_sales_tax_enabled) { ?>
-		<div class="form-group  form-group-sm">
-			<?php echo form_label($this->lang->line('customers_tax_code'), 'sales_tax_code_name', array('class'=>'control-label col-xs-3')); ?>
-			<div class='col-xs-8'>
-				<div class="input-group input-group-sm">
-					<?php echo form_input(array(
-							'name'=>'sales_tax_code_name',
-							'id'=>'sales_tax_code_name',
-							'class'=>'form-control input-sm',
-							'size'=>'50',
-							'value'=>$sales_tax_code_label)
-					); ?>
-					<?php echo form_hidden('sales_tax_code', $person_info->sales_tax_code);?>
-				</div>
-			</div>
-		</div>
-	<?php } ?>
 <?php echo form_close(); ?>
 
 <script type="text/javascript">
 //validation and submit handling
 $(document).ready(function()
 {
+	$("input[name='sales_tax_code_name']").change(function() {
+		if( ! $("input[name='sales_tax_code_name']").val() ) {
+		    $("input[name='sales_tax_code']").val('');
+		}
+	});
+
+	var fill_value = function(event, ui) {
+		event.preventDefault();
+		$("input[name='sales_tax_code']").val(ui.item.value);
+		$("input[name='sales_tax_code_name']").val(ui.item.label);
+	};
+
+	$("#sales_tax_code_name").autocomplete({
+		source: '<?php echo site_url("taxes/suggest_sales_tax_codes"); ?>',
+		minChars: 0,
+		delay: 15,
+		cacheLength: 1,
+		appendTo: '.modal-content',
+		select: fill_value,
+		focus: fill_value
+	});
+
 	$('#customer_form').validate($.extend({
 		submitHandler: function(form)
 		{
@@ -389,6 +453,7 @@ $(document).ready(function()
 		{
 			first_name: "required",
 			last_name: "required",
+			consent: "required",
     		email:
 			{
 				remote:
@@ -421,32 +486,10 @@ $(document).ready(function()
 		{
      		first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
      		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
+     		consent: "<?php echo $this->lang->line('customers_consent_required'); ?>",
      		email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
 			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
 	}, form_support.error));
 });
-
-$("input[name='sales_tax_code_name']").change(function() {
-    if( ! $("input[name='sales_tax_code_name']").val() ) {
-        $("input[name='sales_tax_code']").val('');
-    }
-});
-
-var fill_value = function(event, ui) {
-    event.preventDefault();
-    $("input[name='sales_tax_code']").val(ui.item.value);
-    $("input[name='sales_tax_code_name']").val(ui.item.label);
-};
-
-$("#sales_tax_code_name").autocomplete({
-    source: '<?php echo site_url("taxes/suggest_sales_tax_codes"); ?>',
-    minChars: 0,
-    delay: 15,
-    cacheLength: 1,
-    appendTo: '.modal-content',
-    select: fill_value,
-    focus: fill_value
-});
-
 </script>
