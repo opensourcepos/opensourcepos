@@ -70,7 +70,7 @@ if($print_after_sale)
 	{
 	   // executes when complete page is fully loaded, including all frames, objects and images
 	   printdoc(); 
-	   window.location.replace('../public/sales');
+	   window.location.href = "<?php echo site_url('sales'); ?>";
 	}); 
 <?php
 }
