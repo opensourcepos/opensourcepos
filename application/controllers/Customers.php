@@ -380,14 +380,15 @@ class Customers extends Persons
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
 
-					if(sizeof($data) >= 16)
+					$consent = $data[3] == '' ? 0 : 1;
+
+					if(sizeof($data) >= 16 && $consent)
 					{
 						$email = strtolower($data[4]);
 						$person_data = array(
 							'first_name'	=> $data[0],
 							'last_name'		=> $data[1],
 							'gender'		=> $data[2],
-							'consent'		=> $data[3] == '' ? 0 : 1,
 							'email'			=> $email,
 							'phone_number'	=> $data[5],
 							'address_1'		=> $data[6],
@@ -400,9 +401,12 @@ class Customers extends Persons
 						);
 
 						$customer_data = array(
+							'consent'			=> $consent,
 							'company_name'		=> $data[13],
 							'discount_percent'	=> $data[15],
-							'taxable'			=> $data[16] == '' ? 0 : 1
+							'taxable'			=> $data[16] == '' ? 0 : 1,
+							'date'				=> date('Y-m-d H:i:s'),
+							'employee_id'		=> $this->Employee->get_logged_in_employee_info()->person_id
 						);
 						$account_number = $data[14];
 
