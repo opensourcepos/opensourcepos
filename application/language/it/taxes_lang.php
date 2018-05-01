@@ -2,19 +2,14 @@
 
 $lang["taxes_add_exception"] = "Aggiungi Eccezione";
 $lang["taxes_confirm_delete"] = "Sei sicuro che vuoi eliminare questo Codice Imposta? Questa operazione non può essere annullata.";
-$lang["taxes_default_tax_category"] = "Categoria Imposta Default";
-$lang["taxes_error_adding_updating"] = "Codice Imposta aggiunto o aggiornamento Fallito.";
-$lang["taxes_new"] = "Nuovo Codice Imposta";
-$lang["taxes_no_taxes_to_display"] = "Nessun Codice Imposta disponibile da mostrare.";
-$lang["taxes_confirm_delete"] = "Sei sicuro che vuoi eliminare questo Codice Imposta? Questa operazione non può essere annullata.";
 $lang["taxes_confirm_restore"] = "Sei sicuro di voler ripristinare i Codice Tassa selezionati?";
 $lang["taxes_default_tax_category"] = "Categoria Imposta Default";
 $lang["taxes_error_adding_updating"] = "Codice Imposta aggiunto o aggiornamento Fallito.";
 $lang["taxes_new"] = "Nuovo Codice Imposta";
 $lang["taxes_no_taxes_to_display"] = "Nessun Codice Imposta disponibile da mostrare.";
 $lang["taxes_round_half_down"] = "Arrotonda in difetto";
-$lang["taxes_round_half_even"] = "Arrotonda \"Half Even\"";
-$lang["taxes_round_half_odd"] = "Arrotonda \"Half Odd\"";
+$lang["taxes_round_half_even"] = "Arrotonda \\"Half Even\\"";
+$lang["taxes_round_half_odd"] = "Arrotonda \\"Half Odd\\"";
 $lang["taxes_round_half_up"] = "Arrotonda in eccesso";
 $lang["taxes_rounding_code"] = "Codice arrotondamento";
 $lang["taxes_sales_tax"] = "Imposte di vendita";

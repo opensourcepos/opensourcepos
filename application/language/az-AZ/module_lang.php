@@ -1,14 +1,20 @@
 <?php 
 
+$lang["module_both"] = "";
 $lang["module_config"] = "Konfiqursiya";
 $lang["module_config_desc"] = "OSPOS's Konfiqurasiyasını dəyiş";
 $lang["module_customers"] = "Müştərilər";
 $lang["module_customers_desc"] = "Əlavə et,Yenilə,Sil və Müştəriləri axtar";
 $lang["module_employees"] = "Əməkdaşlar";
 $lang["module_employees_desc"] = "Əlavə et,Yenilə,Sil və Əməkdaşları axtar";
+$lang["module_expenses"] = "";
+$lang["module_expenses_categories"] = "";
+$lang["module_expenses_categories_desc"] = "";
+$lang["module_expenses_desc"] = "";
 $lang["module_giftcards"] = "Hədiyyə kartı";
 $lang["module_giftcards_desc"] = "Əlavə et,Yenilə,Sil və Hədiyyə kartlarını axtar";
 $lang["module_home"] = "Ev";
+$lang["module_home_desc"] = "";
 $lang["module_item_kits"] = "Mal Dəstləri";
 $lang["module_item_kits_desc"] = "Əlavə et,Yenilə,Sil və Dəst Malları Axtar";
 $lang["module_items"] = "Mallar";
@@ -17,6 +23,8 @@ $lang["module_messages"] = "Mesajlar";
 $lang["module_messages_desc"] = "Müştərilərə, Təchizatçılara və İşçilərə Mesaj göndərin.";
 $lang["module_migrate"] = "Köçür";
 $lang["module_migrate_desc"] = "OSPOS in Məlumat Bazasıni Yenilə";
+$lang["module_office"] = "";
+$lang["module_office_desc"] = "";
 $lang["module_receivings"] = "Qəbul Edilənlər.";
 $lang["module_receivings_desc"] = "Edilmiş Sifarişləri Başla";
 $lang["module_reports"] = "Hesabatlar";
