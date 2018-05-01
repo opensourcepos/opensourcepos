@@ -69,7 +69,8 @@ if($print_after_sale)
 	$(window).load(function() 
 	{
 	   // executes when complete page is fully loaded, including all frames, objects and images
-	   printdoc();
+	   printdoc(); 
+	   window.location.href = "<?php echo site_url('sales'); ?>";
 	}); 
 <?php
 }
