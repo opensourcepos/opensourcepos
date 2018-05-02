@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Puntos disponibles";
 $lang["rewards_package"] = "Premios";
 $lang["rewards_remaining_balance"] = "El remanente de puntos es ";
@@ -108,7 +107,7 @@ $lang["sales_quote_number_duplicate"] = "Cotizacion debe ser unico.";
 $lang["sales_quote_sent"] = "Cotizacion enviada a";
 $lang["sales_quote_unsent"] = "Cotización no se pudo enviar";
 $lang["sales_receipt"] = "Recibo de Venta";
-$lang["sales_receipt_no_email"] = "Este cliente no tiene una direccion de correo valido";
+$lang["sales_receipt_no_email"] = "Este cliente no tiene una dirección de correo valido.";
 $lang["sales_receipt_number"] = "Venta #";
 $lang["sales_receipt_sent"] = "Recibo enviada a";
 $lang["sales_receipt_unsent"] = "Fallo el envio del recibo a";
