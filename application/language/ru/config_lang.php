@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Адрес Компании";
 $lang["config_address_required"] = "Адрес Компании - обязательный пробел.";
 $lang["config_allow_duplicate_barcodes"] = "Позволить Дублировать Штрих-Коды";
@@ -100,17 +99,17 @@ $lang["config_email"] = "Электронная почта";
 $lang["config_email_configuration"] = "Конфигурация Электронной Почты";
 $lang["config_email_mailpath"] = "Путь к Sendmail";
 $lang["config_email_protocol"] = "Протокол";
-$lang["config_email_receipt_check_behaviour"] = "";
-$lang["config_email_receipt_check_behaviour_always"] = "";
-$lang["config_email_receipt_check_behaviour_last"] = "";
-$lang["config_email_receipt_check_behaviour_never"] = "";
+$lang["config_email_receipt_check_behaviour"] = "Селектор «Получить по почте»";
+$lang["config_email_receipt_check_behaviour_always"] = "Всегда активен";
+$lang["config_email_receipt_check_behaviour_last"] = "запомнить";
+$lang["config_email_receipt_check_behaviour_never"] = "Всегда деактивировано";
 $lang["config_email_smtp_crypto"] = "Шифрование по протоколу SMTP";
 $lang["config_email_smtp_host"] = "SMTP Сервер";
 $lang["config_email_smtp_pass"] = "SMTP Пароль";
 $lang["config_email_smtp_port"] = "Порт SMTP";
 $lang["config_email_smtp_timeout"] = "Время ожидания SMTP";
 $lang["config_email_smtp_user"] = "Пользователя SMTP";
-$lang["config_enforce_privacy"] = "";
+$lang["config_enforce_privacy"] = "принудительной конфиденциальности";
 $lang["config_enforce_privacy_tooltip"] = "";
 $lang["config_fax"] = "Факс";
 $lang["config_financial_year"] = "Начала финансового года";
