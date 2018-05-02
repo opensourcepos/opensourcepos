@@ -3,7 +3,7 @@
 $lang["expenses_add_item"] = "Aggiungi Spesa";
 $lang["expenses_amount"] = "Importo";
 $lang["expenses_amount_number"] = "Importo deve essere un numero";
-$lang["expenses_amount_required"] = "Expense Amount required";
+$lang["expenses_amount_required"] = "Ammontare Spesa richiesto";
 $lang["expenses_by_category"] = "Categoria";
 $lang["expenses_cannot_be_deleted"] = "Non puoi eliminare la Categoria Spesa/e";
 $lang["expenses_cash"] = "Contanti";
