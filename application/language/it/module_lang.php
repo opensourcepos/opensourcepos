@@ -2,7 +2,7 @@
 
 $lang["module_both"] = "Entrambi";
 $lang["module_config"] = "Configurazione";
-$lang["module_config_desc"] = "Modifica Configurazione OSPOS";
+$lang["module_config_desc"] = "Modifica Configurazione OSPOS.";
 $lang["module_customers"] = "Clienti";
 $lang["module_customers_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Clienti.";
 $lang["module_employees"] = "Impiegati";
