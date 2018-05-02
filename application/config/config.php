@@ -487,7 +487,7 @@ $config['csrf_token_name'] = 'csrf_ospos_v3';
 $config['csrf_cookie_name'] = 'csrf_cookie_ospos_v3';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array();
+$config['csrf_exclude_uris'] = array('login');
 
 /*
 |--------------------------------------------------------------------------
