@@ -121,3 +121,5 @@ $lang["reports_unit_price"] = "Verkoopprijs";
 $lang["reports_used"] = "";
 $lang["reports_work_orders"] = "";
 $lang["reports_zero_and_less"] = "Nul en minder";
+$lang["reports_due"] = "Total Due";
+$lang["reports_money"] = "Money Available";

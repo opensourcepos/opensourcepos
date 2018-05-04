@@ -121,3 +121,5 @@ $lang["reports_unit_price"] = "Розничная Цена";
 $lang["reports_used"] = "Точки, Используемые";
 $lang["reports_work_orders"] = "рабочее задание";
 $lang["reports_zero_and_less"] = "Ноль и меньше";
+$lang["reports_due"] = "Total Due";
+$lang["reports_money"] = "Money Available";

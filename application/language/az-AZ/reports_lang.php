@@ -121,3 +121,5 @@ $lang["reports_unit_price"] = "Pərakəndə Qiyməti";
 $lang["reports_used"] = "";
 $lang["reports_work_orders"] = "İstifadə Olunan Ballar";
 $lang["reports_zero_and_less"] = "Sıfır və Aşağı";
+$lang["reports_due"] = "Total Due";
+$lang["reports_money"] = "Money Available";
