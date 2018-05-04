@@ -66,7 +66,7 @@ class Sale_lib
 
 		$filtered_cart = array();
 
-		foreach($cart as $k=>$v)
+		foreach($cart as $k => $v)
 		{
 			if($v['print_option'] == PRINT_YES)
 			{
@@ -78,7 +78,7 @@ class Sale_lib
 		if($this->CI->config->item('line_sequence') == '0')
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v)
+			foreach($filtered_cart as $k => $v)
 			{
 				$sort['line'][$k] = $v['line'];
 			}
@@ -88,19 +88,19 @@ class Sale_lib
 		elseif($this->CI->config->item('line_sequence') == '1')
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v)
+			foreach($filtered_cart as $k => $v)
 			{
 				$sort['stock_type'][$k] = $v['stock_type'];
 				$sort['description'][$k] = $v['description'];
 				$sort['name'][$k] = $v['name'];
 			}
-			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC. $filtered_cart);
+			array_multisort($sort['stock_type'], SORT_DESC, $sort['description'], SORT_ASC, $sort['name'], SORT_ASC . $filtered_cart);
 		}
 		// Group by Item Category
 		elseif($this->CI->config->item('line_sequence') == '2')
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v)
+			foreach($filtered_cart as $k => $v)
 			{
 				$sort['category'][$k] = $v['stock_type'];
 				$sort['description'][$k] = $v['description'];
@@ -112,7 +112,7 @@ class Sale_lib
 		else
 		{
 			$sort = array();
-			foreach($filtered_cart as $k=>$v)
+			foreach($filtered_cart as $k => $v)
 			{
 				$sort['line'][$k] = $v['line'];
 			}
@@ -130,6 +130,19 @@ class Sale_lib
 	public function empty_cart()
 	{
 		$this->CI->session->unset_userdata('sales_cart');
+	}
+
+	public function remove_temp_items()
+	{
+		// Loop through the cart items and delete temporary items specific to this sale
+		$cart = $this->get_cart();
+		foreach($cart as $line=>$item)
+		{
+			if($item['item_id'] < -1)
+			{
+				$this->CI->Item->delete($item['item_id']);
+			}
+		}
 	}
 
 	public function get_comment()
@@ -685,7 +698,7 @@ class Sale_lib
 
 	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = NULL )
 	{
-		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+		$item_info = $this->CI->Item->get_info_by_id($item_id);
 
 		//make sure item exists
 		if(empty($item_info))
@@ -862,7 +875,7 @@ class Sale_lib
 		//make sure item exists
 		if($item_id != -1)
 		{
-			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
+			$item_info = $this->CI->Item->get_info_by_id($item_id);
 
 			if($item_info->stock_type == HAS_STOCK)
 			{
@@ -940,6 +953,11 @@ class Sale_lib
 	public function delete_item($line)
 	{
 		$items = $this->get_cart();
+		$item_id = $items[$line]['item_id'];
+		if($item_id < -1)
+		{
+			$this->CI->Item->delete($item_id);
+		}
 		unset($items[$line]);
 		$this->set_cart($items);
 	}

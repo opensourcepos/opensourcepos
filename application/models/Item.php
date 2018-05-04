@@ -6,6 +6,7 @@ define('HAS_NO_STOCK', 1);
 define('ITEM', 0);
 define('ITEM_KIT', 1);
 define('ITEM_AMOUNT_ENTRY', 2);
+define('ITEM_TEMP', 3);
 
 define('PRINT_ALL', 0);
 define('PRINT_PRICED', 1);
@@ -65,7 +66,7 @@ class Item extends CI_Model
 		$this->db->where('item_number', (string) $item_number);
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
+		if(is_numeric($item_id) && substr($item_id, 0, 1) != '0')
 		{
 			$this->db->where('item_id !=', (int) $item_id);
 		}
@@ -225,6 +226,15 @@ class Item extends CI_Model
 		{
 			$this->db->where('items.description', '');
 		}
+		if($filters['temporary'] != FALSE)
+		{
+			$this->db->where('items.item_type', ITEM_TEMP);
+		}
+		else
+		{
+			$non_temp = array(ITEM, ITEM_KIT, ITEM_AMOUNT_ENTRY);
+			$this->db->where_in('items.item_type', $non_temp);
+		}
 
 		// get_found_rows case
 		if($count_only == TRUE)
@@ -342,6 +352,26 @@ class Item extends CI_Model
 	}
 
 	/*
+	 * 	Gets information about a particular active item by item id
+	 */
+	public function get_info_by_id($item_id)
+	{
+		$this->db->from('items');
+
+		$this->db->where('items.item_id', (int) $item_id);
+
+		$this->db->where('items.deleted', 0);
+
+		$query = $this->db->get();
+
+		if($query->num_rows() == 1)
+		{
+			return $query->row();
+		}
+
+		return '';
+	}
+	/*
 	Get an item id given an item number
 	*/
 	public function get_item_id($item_number, $ignore_deleted = FALSE, $deleted = FALSE)
@@ -385,13 +415,22 @@ class Item extends CI_Model
 	{
 		if(!$item_id || !$this->exists($item_id, TRUE))
 		{
-			if($this->db->insert('items', $item_data))
+			if($item_data['item_type'] == ITEM_TEMP)
 			{
-				$item_data['item_id'] = $this->db->insert_id();
-
-				return TRUE;
+				$item_data['item_id'] = $this->get_next_temp_id();
+				if($this->db->insert('items', $item_data))
+				{
+					return TRUE;
+				}
 			}
-
+			else
+			{
+				if($this->db->insert('items', $item_data))
+				{
+					$item_data['item_id'] = $this->db->insert_id();
+					return TRUE;
+				}
+			}
 			return FALSE;
 		}
 
@@ -400,6 +439,27 @@ class Item extends CI_Model
 		return $this->db->update('items', $item_data);
 	}
 
+	/**
+	 * Returns the next available item id for temporary items.
+	 * Temporary items use negative numbers for their identifier
+	 * ranging from -2 (to avoid conflict with the use of -1 to
+	 * indicate an unassigned item id to -999999
+	 */
+	public function get_next_temp_id()
+	{
+		$this->db->select('(min(item_id)-1) as next_item_id');
+		$this->db->from('items');
+
+		$next_item_id = -1;
+		$next_item_id = $this->db->get()->row()->next_item_id;
+
+		if($next_item_id == false || $next_item_id > -2)
+		{
+			$next_item_id = -2;
+		}
+
+		return $next_item_id;
+	}
 	/*
 	Updates multiple items at once
 	*/
@@ -923,5 +983,24 @@ class Item extends CI_Model
 
 		return $this->save($data, $item_id);
 	}
+
+	public function update_item_number($item_id, $item_number)
+	{
+		$this->db->where('item_id', $item_id);
+		$this->db->update('items', array('item_number'=>$item_number));
+	}
+
+	public function update_item_name($item_id, $item_name)
+	{
+		$this->db->where('item_id', $item_id);
+		$this->db->update('items', array('name'=>$item_name));
+	}
+
+	public function update_item_description($item_id, $item_description)
+	{
+		$this->db->where('item_id', $item_id);
+		$this->db->update('items', array('description'=>$item_description));
+	}
+
 }
 ?>

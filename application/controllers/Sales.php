@@ -19,6 +19,8 @@ class Sales extends Secure_Controller
 
 	public function index()
 	{
+		$this->session->set_userdata('allow_temp_items', 1);
+
 		$this->_reload();
 	}
 
@@ -1274,6 +1276,10 @@ class Sales extends Secure_Controller
 				$this->session->set_userdata('sale_id', -1);
 			}
 		}
+		else
+		{
+			$this->sale_lib->remove_temp_items();
+		}
 
 		$this->sale_lib->clear_all();
 		$this->_reload();
@@ -1387,6 +1393,58 @@ class Sales extends Secure_Controller
 
 		return $filtered_cart;
 	}
-}
 
+	public function change_item_number()
+	{
+		$item_id = $this->input->post('item_id');
+		$item_number = $this->input->post('item_number');
+		$this->Item->update_item_number($item_id, $item_number);
+		$cart = $this->sale_lib->get_cart();
+		$x = $this->search_cart_for_item_id($item_id, $cart);
+		if($x != NULL)
+		{
+			$cart[$x]['item_number'] = $item_number;
+		}
+		$this->sale_lib->set_cart($cart);
+	}
+
+	public function change_item_name()
+	{
+		$item_id = $this->input->post('item_id');
+		$name = $this->input->post('item_name');
+		$this->Item->update_item_name($item_id, $name);
+		$cart = $this->sale_lib->get_cart();
+		$x = $this->search_cart_for_item_id($item_id, $cart);
+		if($x != NULL) {
+			$cart[$x]['name'] = $name;
+		}
+		$this->sale_lib->set_cart($cart);
+	}
+
+	public function change_item_description()
+	{
+		$item_id = $this->input->post('item_id');
+		$description = $this->input->post('item_description');
+		$this->Item->update_item_description($item_id, $description);
+		$cart = $this->sale_lib->get_cart();
+		$x = $this->search_cart_for_item_id($item_id, $cart);
+		if($x != NULL)
+		{
+			$cart[$x]['description'] = $description;
+		}
+		$this->sale_lib->set_cart($cart);
+	}
+
+	function search_cart_for_item_id($id, $array)
+	{
+		foreach($array as $key => $val)
+		{
+			if ($val['item_id'] === $id)
+			{
+				return $key;
+			}
+		}
+		return NULL;
+	}
+}
 ?>

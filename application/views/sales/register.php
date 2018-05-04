@@ -135,13 +135,33 @@ if(isset($success))
 			?>
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
-							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
-							<td><?php echo $item['item_number']; ?></td>
-							<td style="align: center;">
-								<?php echo $item['name']; ?><br /> <?php if($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
+							<td>
+								<?php echo anchor($controller_name . "/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>'); ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
+								<?php echo form_input(array('type'=>'hidden', 'name'=>'item_id', 'value'=>$item['item_id'])); ?>
 							</td>
-
+							<?php
+							if($item['item_id'] < -1)
+							{
+							?>
+								<td><?php echo form_input(array('name'=>'item_number', 'id'=>'item_number','class'=>'form-control input-sm', 'value'=>$item['item_number'], 'tabindex'=>++$tabindex));?></td>
+								<td style="align: center;">
+									<?php echo form_input(array('name'=>'name','id'=>'name', 'class'=>'form-control input-sm', 'value'=>$item['name'], 'tabindex'=>++$tabindex));?>
+								</td>
+							<?php
+							}
+							else
+							{
+							?>
+								<td><?php echo $item['item_number']; ?></td>
+								<td style="align: center;">
+									<?php echo $item['name']; ?>
+									<br/>
+									<?php if ($item['stock_type'] == '0'): echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; endif; ?>
+								</td>
+							<?php
+							}
+							?>
 							<?php
 							if($items_module_allowed)
 							{
@@ -191,56 +211,75 @@ if(isset($success))
 							</tr>
 							<tr>
 							<?php
-							if($item['allow_alt_description']==1)
+							if($item['item_id'] < -1)
 							{
 							?>
-								<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv');?></td>
+								<td><?php echo form_input(array('type'=>'hidden', 'name'=>'item_id', 'value'=>$item['item_id'])); ?></td>
+								<td style="align: center;" colspan="6">
+									<?php echo form_input(array('name'=>'item_description', 'id'=>'item_description', 'class'=>'form-control input-sm', 'value'=>$item['description'], 'tabindex'=>++$tabindex));?>
+								</td>
+								<td> </td>
+							<?php
+							}
+							else
+							{
+							?>
+								<td> </td>
+								<?php
+								if($item['allow_alt_description']==1)
+								{
+									?>
+									<td style="color: #2F4F4F;"><?php echo $this->lang->line('sales_description_abbrv');?></td>
+									<?php
+								}
+								?>
+
+								<td colspan='2' style="text-align: left;">
+									<?php
+									if($item['allow_alt_description']==1)
+									{
+										echo form_input(array('name'=>'description', 'class'=>'form-control input-sm', 'value'=>$item['description'], 'onClick'=>'this.select();'));
+									}
+									else
+									{
+										if($item['description']!='')
+										{
+											echo $item['description'];
+											echo form_hidden('description', $item['description']);
+										}
+										else
+										{
+											echo $this->lang->line('sales_no_description');
+											echo form_hidden('description','');
+										}
+									}
+									?>
+								</td>
+								<td>&nbsp;</td>
+								<td style="color: #2F4F4F;">
+									<?php
+									if($item['is_serialized']==1)
+									{
+										echo $this->lang->line('sales_serial');
+									}
+									?>
+								</td>
+								<td colspan='4' style="text-align: left;">
+									<?php
+									if($item['is_serialized']==1)
+									{
+										echo form_input(array('name'=>'serialnumber', 'class'=>'form-control input-sm', 'value'=>$item['serialnumber'], 'onClick'=>'this.select();'));
+									}
+									else
+									{
+										echo form_hidden('serialnumber', '');
+									}
+									?>
+								</td>
 							<?php
 							}
 							?>
 
-							<td colspan='2' style="text-align: left;">
-								<?php
-								if($item['allow_alt_description']==1)
-								{
-									echo form_input(array('name'=>'description', 'class'=>'form-control input-sm', 'value'=>$item['description'], 'onClick'=>'this.select();'));
-								}
-								else
-								{
-									if($item['description']!='')
-									{
-										echo $item['description'];
-										echo form_hidden('description', $item['description']);
-									}
-									else
-									{
-										echo $this->lang->line('sales_no_description');
-										echo form_hidden('description','');
-									}
-								}
-								?>
-							</td>
-							<td>&nbsp;</td>
-							<td style="color: #2F4F4F;">
-								<?php
-								if($item['is_serialized']==1)
-								{
-									echo $this->lang->line('sales_serial');
-								}
-								?>
-							</td>
-							<td colspan='4' style="text-align: left;">
-								<?php
-								if($item['is_serialized']==1)
-								{
-									echo form_input(array('name'=>'serialnumber', 'class'=>'form-control input-sm', 'value'=>$item['serialnumber'], 'onClick'=>'this.select();'));
-								}
-								else
-								{
-									echo form_hidden('serialnumber', '');
-								}
-								?>
-							</td>
 						</tr>
 					<?php echo form_close(); ?>
 			<?php
@@ -601,6 +640,51 @@ if(isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$("input[name='item_number']").change(function(){
+		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
+		var item_number = $(this).val();
+		$.ajax({
+			url: "<?php echo site_url('sales/change_item_number');?>",
+			method: 'post',
+			data: $.extend(csrf_form_base(),
+				{
+					"item_id" : item_id,
+					"item_number" : item_number,
+				}),
+			dataType: 'json'
+		});
+	});
+
+	$("input[name='name']").change(function(){
+		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
+		var item_name = $(this).val();
+		$.ajax({
+			url: "<?php echo site_url('sales/change_item_name');?>",
+			method: 'post',
+			data: $.extend(csrf_form_base(),
+				{
+					"item_id" : item_id,
+					"item_name" : item_name,
+				}),
+			dataType: 'json'
+		});
+	});
+
+	$("input[name='item_description']").change(function(){
+		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
+		var item_description = $(this).val();
+		$.ajax({
+			url: "<?php echo site_url('sales/change_item_description');?>",
+			method: 'post',
+			data: $.extend(csrf_form_base(),
+				{
+					"item_id" : item_id,
+					"item_description" : item_description,
+				}),
+			dataType: 'json'
+		});
+	});
+
 	$('#item').focus();
 
 	$('#item').blur(function()

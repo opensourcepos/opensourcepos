@@ -107,7 +107,21 @@
 				<?php
 				}
 				?>
-
+				<?php
+				if($allow_temp_items == 1) {
+				?>
+					<label class="radio-inline">
+						<?php echo form_radio(array(
+								'name'=>'item_type',
+								'type'=>'radio',
+								'id'=>'item_type',
+								'value'=>3,
+								'checked'=>$item_info->item_type == ITEM_TEMP)
+						); ?> <?php echo $this->lang->line('items_temp'); ?>
+					</label>
+				<?php
+				}
+				?>
 			</div>
 		</div>
 		<?php endif; ?>
