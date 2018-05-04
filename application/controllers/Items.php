@@ -13,6 +13,8 @@ class Items extends Secure_Controller
 	
 	public function index()
 	{
+		$this->session->set_userdata('allow_temp_items', 0);
+
 		$data['table_headers'] = $this->xss_clean(get_items_manage_table_headers());
 		
 		$data['stock_location'] = $this->xss_clean($this->item_lib->get_item_location());
@@ -24,7 +26,8 @@ class Items extends Secure_Controller
 			'is_serialized' => $this->lang->line('items_serialized_items'),
 			'no_description' => $this->lang->line('items_no_description_items'),
 			'search_custom' => $this->lang->line('items_search_custom_items'),
-			'is_deleted' => $this->lang->line('items_is_deleted'));
+			'is_deleted' => $this->lang->line('items_is_deleted'),
+			'temporary' => $this->lang->line('items_temp'));
 
 		$this->load->view('items/manage', $data);
 	}
@@ -50,7 +53,8 @@ class Items extends Secure_Controller
 						'is_serialized' => FALSE,
 						'no_description' => FALSE,
 						'search_custom' => FALSE,
-						'is_deleted' => FALSE);
+						'is_deleted' => FALSE,
+						'temporary' => FALSE);
 		
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
@@ -177,6 +181,9 @@ class Items extends Secure_Controller
 
 	public function view($item_id = -1)
 	{
+		// allow_temp_items is set in the index function of items.php or sales.php
+		$data['allow_temp_item'] = $this->session->userdata('allow_temp_items');
+
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
@@ -187,6 +194,25 @@ class Items extends Secure_Controller
 		{
 			$item_info->$property = $this->xss_clean($value);
 		}
+
+		if($data['allow_temp_item'] == 1)
+		{
+			if($item_id != -1)
+			{
+				if($item_info->item_type != ITEM_TEMP)
+				{
+					$data['allow_temp_item'] = 0;
+				}
+			}
+		}
+		else
+		{
+			if($item_info->item_type == ITEM_TEMP)
+			{
+				$data['allow_temp_item'] = 1;
+			}
+		}
+
 
 		if($item_id == -1)
 		{
@@ -364,19 +390,26 @@ class Items extends Secure_Controller
 		$upload_success = $this->_handle_image_upload();
 		$upload_data = $this->upload->data();
 
+		$receiving_quantity = parse_decimals($this->input->post('receiving_quantity'));
+		$item_type = $this->input->post('item_type') == NULL ? ITEM : $this->input->post('item_type');
+
+		if($receiving_quantity == '0' && $item_type!= ITEM_TEMP)
+		{
+			$receiving_quantity = '1';
+		}
 		//Save item data
 		$item_data = array(
 			'name' => $this->input->post('name'),
 			'description' => $this->input->post('description'),
 			'category' => $this->input->post('category'),
-			'item_type' => $this->input->post('item_type') == NULL ? ITEM : $this->input->post('item_type'),
+			'item_type' => $item_type,
 			'stock_type' => $this->input->post('stock_type') == NULL ? HAS_STOCK : $this->input->post('stock_type'),
 			'supplier_id' => $this->input->post('supplier_id') == '' ? NULL : $this->input->post('supplier_id'),
 			'item_number' => $this->input->post('item_number') == '' ? NULL : $this->input->post('item_number'),
 			'cost_price' => parse_decimals($this->input->post('cost_price')),
 			'unit_price' => parse_decimals($this->input->post('unit_price')),
 			'reorder_level' => parse_decimals($this->input->post('reorder_level')),
-			'receiving_quantity' => parse_decimals($this->input->post('receiving_quantity')),
+			'receiving_quantity' => $receiving_quantity,
 			'allow_alt_description' => $this->input->post('allow_alt_description') != NULL,
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
 			'deleted' => $this->input->post('is_deleted') != NULL,
@@ -391,6 +424,13 @@ class Items extends Secure_Controller
 			'custom9' => $this->input->post('custom9') == NULL ? '' : $this->input->post('custom9'),
 			'custom10' => $this->input->post('custom10') == NULL ? '' : $this->input->post('custom10')
 		);
+
+		if($item_data['item_type'] == ITEM_TEMP)
+		{
+			$item_data['stock_type'] = HAS_NO_STOCK;
+			$item_data['receiving_quantity'] = 0;
+			$item_data['reorder_level'] = 0;
+		}
 
 		$x = $this->input->post('tax_category_id');
 		if(!isset($x))
@@ -412,8 +452,7 @@ class Items extends Secure_Controller
 		}
 		
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
-		$cur_item_info = $this->Item->get_info($item_id);
-		
+
 		if($this->Item->save($item_data, $item_id))
 		{
 			$success = TRUE;
@@ -424,7 +463,7 @@ class Items extends Secure_Controller
 				$item_id = $item_data['item_id'];
 				$new_item = TRUE;
 			}
-			
+
 			$items_taxes_data = array();
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
@@ -444,9 +483,15 @@ class Items extends Secure_Controller
 			foreach($stock_locations as $location)
 			{
 				$updated_quantity = parse_decimals($this->input->post('quantity_' . $location['location_id']));
+				if($item_data['item_type'] == ITEM_TEMP)
+				{
+					$updated_quantity = 0;
+				}
 				$location_detail = array('item_id' => $item_id,
 										'location_id' => $location['location_id'],
 										'quantity' => $updated_quantity);
+
+
 				$item_quantity = $this->Item_quantity->get_item_quantity($item_id, $location['location_id']);
 				if($item_quantity->quantity != $updated_quantity || $new_item)
 				{
