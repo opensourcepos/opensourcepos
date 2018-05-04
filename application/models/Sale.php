@@ -1292,7 +1292,6 @@ class Sale extends CI_Model
 		$this->db->update('sales', array('sale_status'=>$sale_status));
 	}
 
-
 	/**
 	 * Gets the quote_number for the selected sale
  	 */
