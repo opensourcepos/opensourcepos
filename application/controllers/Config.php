@@ -813,6 +813,7 @@ class Config extends Secure_Controller
 		$batch_save_data = array (
 			'receipt_template' => $this->input->post('receipt_template'),
 			'receipt_font_size' => $this->input->post('receipt_font_size'),
+			'print_delay_autoreturn' => $this->input->post('print_delay_autoreturn'),
 			'email_receipt_check_behaviour' => $this->input->post('email_receipt_check_behaviour'),
 			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,

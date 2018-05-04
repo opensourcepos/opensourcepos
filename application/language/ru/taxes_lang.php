@@ -2,6 +2,7 @@
 
 $lang["taxes_add_exception"] = "Добавить Исключение";
 $lang["taxes_confirm_delete"] = "Вы действительно хотите удалить этот Налоговый Код? Это действие не может быть отменено.";
+$lang["taxes_confirm_restore"] = "";
 $lang["taxes_default_tax_category"] = "Категория Налога по Умолчанию";
 $lang["taxes_error_adding_updating"] = "Не удалось добавить или обновить Налоговый Код.";
 $lang["taxes_new"] = "Новый Налоговый Код";

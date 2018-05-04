@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";
@@ -194,6 +194,9 @@ $lang["config_phone_required"] = "Company phone is a required field";
 $lang["config_print_bottom_margin"] = "Margin Bottom";
 $lang["config_print_bottom_margin_number"] = "Default Bottom Margin must be a number";
 $lang["config_print_bottom_margin_required"] = "Default Bottom Margin is a required field";
+$lang["config_print_delay_autoreturn"] = "Autoreturn to Sale delay";
+$lang["config_print_delay_autoreturn_number"] = "Autoreturn to Sale delay is a required field";
+$lang["config_print_delay_autoreturn_required"] = "Autoreturn to Sale delay must be a number";
 $lang["config_print_footer"] = "Print Browser Footer";
 $lang["config_print_header"] = "Print Browser Header";
 $lang["config_print_left_margin"] = "Margin Left";

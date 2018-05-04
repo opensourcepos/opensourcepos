@@ -20,6 +20,7 @@ services:
         volumes:
             - uploads:/app/public/uploads
         environment:
+            - FORCE_HTTPS=false
             - PHP_TIMEZONE=UTC
             - MYSQL_USERNAME=admin
             - MYSQL_PASSWORD=pointofsale

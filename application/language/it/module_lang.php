@@ -2,20 +2,7 @@
 
 $lang["module_both"] = "Entrambi";
 $lang["module_config"] = "Configurazione";
-$lang["module_config_desc"] = "Modifica Configurazione OSPOS";
-$lang["module_customers"] = "Clienti";
-$lang["module_customers_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Clienti.";
-$lang["module_employees"] = "Impiegati";
-$lang["module_employees_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Impiegati.";
-$lang["module_expenses"] = "Spese";
-$lang["module_expenses_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Spese.";
-$lang["module_expenses_categories"] = "Categorie di Spesa";
-$lang["module_expenses_categories_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Categorie di Spesa.";
-$lang["module_giftcards"] = "Carte Regalo";
-$lang["module_giftcards_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Carte Regalo.";
-$lang["module_both"] = "Entrambi";
-$lang["module_config"] = "Configurazione";
-$lang["module_config_desc"] = "Modifica Configurazione OSPOS";
+$lang["module_config_desc"] = "Modifica Configurazione OSPOS.";
 $lang["module_customers"] = "Clienti";
 $lang["module_customers_desc"] = "Aggiungi, Aggiorna, Modifica, e Ricerca Clienti.";
 $lang["module_employees"] = "Impiegati";

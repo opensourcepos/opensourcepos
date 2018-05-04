@@ -13,3 +13,9 @@ ALTER TABLE `ospos_customers`
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('enforce_privacy', '0');
+
+
+-- Add print receipt autoreturn delay
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('print_delay_autoreturn', '0');

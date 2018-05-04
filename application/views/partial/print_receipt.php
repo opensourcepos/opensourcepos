@@ -62,15 +62,20 @@ function printdoc()
 	}
 }
 
-<?php 
+<?php
 if($print_after_sale)
 {
 ?>
-	$(window).load(function() 
+	$(window).load(function()
 	{
-	   // executes when complete page is fully loaded, including all frames, objects and images
-	   printdoc();
-	}); 
+		// executes when complete page is fully loaded, including all frames, objects and images
+		printdoc();
+
+		// after a delay, return to sales view
+		setTimeout(function () {
+				window.location.href = "<?php echo site_url('sales'); ?>";
+			}, <?php echo $this->config->item('print_delay_autoreturn') * 1000; ?>);
+	});
 <?php
 }
 ?>
