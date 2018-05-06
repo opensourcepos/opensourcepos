@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Adres";
 $lang["config_address_required"] = "Het adres van het bedrijf moet ingevuld worden.";
 $lang["config_allow_duplicate_barcodes"] = "Sta gedupliceerde barcodes toe";
@@ -100,9 +99,9 @@ $lang["config_email"] = "Email";
 $lang["config_email_configuration"] = "Email Configuration";
 $lang["config_email_mailpath"] = "Pad naar Sendmail";
 $lang["config_email_protocol"] = "Protocol";
-$lang["config_email_receipt_check_behaviour"] = "";
-$lang["config_email_receipt_check_behaviour_always"] = "";
-$lang["config_email_receipt_check_behaviour_last"] = "";
+$lang["config_email_receipt_check_behaviour"] = "Email Ticket";
+$lang["config_email_receipt_check_behaviour_always"] = "Altijd aan";
+$lang["config_email_receipt_check_behaviour_last"] = "Onthoud de laatste selectie";
 $lang["config_email_receipt_check_behaviour_never"] = "";
 $lang["config_email_smtp_crypto"] = "SMTP Encryptie";
 $lang["config_email_smtp_host"] = "SMTP Server";
