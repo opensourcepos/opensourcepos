@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventario a agregar/substraer.";
 $lang["items_allow_alt_desciption"] = "Permitir Descripción Alternativa";
 $lang["items_allow_alt_description"] = "Permitir Descripción Alternativa";
@@ -56,7 +55,7 @@ $lang["items_kit"] = "Kits de artículos";
 $lang["items_location"] = "Ubicación";
 $lang["items_low_inventory_items"] = "Artículos de Inventario Escaso";
 $lang["items_manually_editing_of_quantity"] = "Edición Manual de Cantidad";
-$lang["items_name"] = "Nombre del Artículo";
+$lang["items_name"] = "Nombre Artículo";
 $lang["items_name_required"] = "Nombre de Artículo es requerido.";
 $lang["items_new"] = "Nuevo Artículo";
 $lang["items_no_description_items"] = "Artículos sin Descripción";
