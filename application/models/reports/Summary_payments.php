@@ -9,7 +9,7 @@ class Summary_payments extends Summary_report
 		return array(
 			array('payment_type' => $this->lang->line('reports_payment_type')),
 			array('report_count' => $this->lang->line('reports_count')),
-			array('amount_tendered' => $this->lang->line('sales_amount_tendered'), 'sorter' => 'number_sorter'));
+			array('amount_due' => $this->lang->line('sales_amount_due'), 'sorter' => 'number_sorter'));
 	}
 
 	public function getData(array $inputs)

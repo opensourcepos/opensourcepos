@@ -366,7 +366,7 @@ class Reports extends Secure_Controller
 			$tabular_data[] = $this->xss_clean(array(
 				'payment_type' => $row['payment_type'],
 				'report_count' => $row['count'],
-				'amount_tendered' => to_currency($row['payment_amount'])
+				'amount_due' => to_currency($row['payment_amount'])
 			));
 		}
 
