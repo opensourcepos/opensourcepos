@@ -384,7 +384,7 @@ class Sale extends CI_Model
 		$gift_card_amount = 0;
 		foreach($payments as $key=>$payment)
 		{
-			if( strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE )
+			if(strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE)
 			{
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
@@ -982,36 +982,14 @@ class Sale extends CI_Model
 	 */
 	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE)
 	{
-		$payments = array();
+		$payments = get_payment_options();
 
-		if($this->config->item('payment_options_order') == 'debitcreditcash')
-		{
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-		}
-		elseif($this->config->item('payment_options_order') == 'debitcashcredit')
-		{
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-		else // default: if($this->config->item('payment_options_order') == 'cashdebitcredit')
-		{
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-
-		$payments[$this->lang->line('sales_due')] = $this->lang->line('sales_due');
-		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
-
-		if($giftcard)
+		if($giftcard == TRUE)
 		{
 			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
 		}
 
-		if($reward_points)
+		if($reward_points == TRUE)
 		{
 			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
 		}
@@ -1329,10 +1307,8 @@ class Sale extends CI_Model
 		{
 			return $row->quote_number;
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	/**
@@ -1349,10 +1325,8 @@ class Sale extends CI_Model
 		{
 			return $row->work_order_number;
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	/**
@@ -1369,10 +1343,8 @@ class Sale extends CI_Model
 		{
 			return $row->comment;
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	/**
@@ -1487,6 +1459,7 @@ class Sale extends CI_Model
 		{
 			return SUSPENDED;
 		}
+
 		return COMPLETED;
 	}
 }

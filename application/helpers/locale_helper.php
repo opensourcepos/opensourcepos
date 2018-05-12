@@ -6,29 +6,35 @@
 
 function current_language_code($load_system_language = FALSE)
 {
+	$employee = get_instance()->Employee;
+
 	// Returns the language code of the employee if set or system language code if not
-	if(get_instance()->Employee->is_logged_in() && $load_system_language != TRUE)
+	if($employee->is_logged_in() && $load_system_language != TRUE)
 	{
-		$employee_language_code = get_instance()->Employee->get_logged_in_employee_info()->language_code;
+		$employee_language_code = $employee->get_logged_in_employee_info()->language_code;
 		if($employee_language_code != NULL && $employee_language_code != '')
 		{
 			return $employee_language_code;
 		}
 	}
+
 	return get_instance()->config->item('language_code');
 }
 
 function current_language($load_system_language = FALSE)
 {
+	$employee = get_instance()->Employee;
+
 	// Returns the language of the employee if set or system language if not
-	if(get_instance()->Employee->is_logged_in() && $load_system_language != TRUE)
+	if($employee->is_logged_in() && $load_system_language != TRUE)
 	{
-		$employee_language = get_instance()->Employee->get_logged_in_employee_info()->language;
+		$employee_language = $employee->get_logged_in_employee_info()->language;
 		if($employee_language != NULL && $employee_language != '')
 		{
 			return $employee_language;
 		}
 	}
+
 	return get_instance()->config->item('language');
 }
 
@@ -63,18 +69,20 @@ function get_languages()
 
 function load_language($load_system_language = FALSE, array $lang_array)
 {
+	$lang = get_instance()->lang;
+
 	if($load_system_language = TRUE)
 	{
 		foreach($lang_array as $language_file)
 		{
-			get_instance()->lang->load($language_file,current_language_code(TRUE));
+			$lang->load($language_file, current_language_code(TRUE));
 		}
 	}
 	else
 	{
 		foreach($lang_array as $language_file)
 		{
-			get_instance()->lang->load($language_file,current_language_code());
+			$lang->load($language_file, current_language_code());
 		}
 	}
 }
@@ -196,6 +204,53 @@ function get_timeformats()
 		'h:i:s a' => 'hh:mm:ss am/pm',
 		'h:i:s A' => 'hh:mm:ss AM/PM'
 	);
+}
+
+/*
+Gets the payment options
+*/
+function get_payment_options()
+{
+	$config = get_instance()->config;
+	$lang = get_instance()->lang;
+
+	$payments = array();
+
+	if($config->item('payment_options_order') == 'debitcreditcash')
+	{
+		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
+		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+	}
+	elseif($config->item('payment_options_order') == 'debitcashcredit')
+	{
+		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
+		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+	}
+	elseif($config->item('payment_options_order') == 'creditdebitcash')
+	{
+		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
+		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+	}
+	elseif($config->item('payment_options_order') == 'creditcashdebit')
+	{
+		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
+	}
+	else // default: if($config->item('payment_options_order') == 'cashdebitcredit')
+	{
+		$payments[$lang->line('sales_cash')] = $lang->line('sales_cash');
+		$payments[$lang->line('sales_debit')] = $lang->line('sales_debit');
+		$payments[$lang->line('sales_credit')] = $lang->line('sales_credit');
+	}
+
+	$payments[$lang->line('sales_due')] = $lang->line('sales_due');
+	$payments[$lang->line('sales_check')] = $lang->line('sales_check');
+
+	return $payments;
 }
 
 function currency_side()

@@ -119,7 +119,9 @@
 					<?php echo form_dropdown('payment_options_order', array(
 						'cashdebitcredit' => $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_credit'),
 						'debitcreditcash' => $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_credit') . ' / ' . $this->lang->line('sales_cash'),
-						'debitcashcredit' => $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_credit')
+						'debitcashcredit' => $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_credit'),
+						'creditdebitcash' => $this->lang->line('sales_credit') . ' / ' . $this->lang->line('sales_debit') . ' / ' . $this->lang->line('sales_cash'),
+						'creditcashdebit' => $this->lang->line('sales_credit') . ' / ' . $this->lang->line('sales_cash') . ' / ' . $this->lang->line('sales_debit')
 					),
 					$this->config->item('payment_options_order'), array('class' => 'form-control input-sm'));
 					?>
@@ -144,34 +146,34 @@
 					<?php echo form_dropdown(
 							'language',
 							get_languages(),
-							current_language_code(TRUE) . ':' . current_language(TRUE), 
+							current_language_code(TRUE) . ':' . current_language(TRUE),
 							array('class' => 'form-control input-sm')
 						);
 					?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('config_timezone'), 'timezone', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-4'>
 				<?php echo form_dropdown(
-					'timezone', 
+					'timezone',
 					get_timezones(),
 					$this->config->item('timezone') ? $this->config->item('timezone') : date_default_timezone_get(), array('class' => 'form-control input-sm'));
 					?>
 				</div>
 			</div>
 
-			<div class="form-group form-group-sm">	
+			<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('config_datetimeformat'), 'datetimeformat', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-sm-2'>
-				<?php echo form_dropdown('dateformat', 
+				<?php echo form_dropdown('dateformat',
 					get_dateformats(),
 					$this->config->item('dateformat'), array('class' => 'form-control input-sm'));
 					?>
 				</div>
 				<div class='col-sm-2'>
-				<?php echo form_dropdown('timeformat', 
+				<?php echo form_dropdown('timeformat',
 					get_timeformats(),
 					$this->config->item('timeformat'), array('class' => 'form-control input-sm'));
 					?>

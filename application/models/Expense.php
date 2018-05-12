@@ -294,31 +294,7 @@ class Expense extends CI_Model
 	*/
 	public function get_payment_options()
 	{
-		$payments = array();
-
-		if($this->config->item('payment_options_order') == 'debitcreditcash')
-		{
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-		}
-		elseif($this->config->item('payment_options_order') == 'debitcashcredit')
-		{
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-		else // default: if($this->config->item('payment_options_order') == 'cashdebitcredit')
-		{
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-
-		$payments[$this->lang->line('sales_due')] = $this->lang->line('sales_due');
-		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
-
-		return $payments;
+		return get_payment_options();
 	}
 
 	/*
