@@ -601,6 +601,13 @@ if(isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
+	$('#item').focus();
+
+	$('#item').blur(function()
+	{
+		$(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
+	});
+
 	$("#item").autocomplete(
 	{
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
@@ -614,18 +621,11 @@ $(document).ready(function()
 		}
 	});
 
-	$('#item').focus();
-
 	$('#item').keypress(function (e) {
 		if(e.which == 13) {
 			$('#add_item_form').submit();
 			return false;
 		}
-	});
-
-	$('#item').blur(function()
-	{
-		$(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
 	});
 
 	var clear_fields = function()
@@ -635,6 +635,16 @@ $(document).ready(function()
 			$(this).val('');
 		}
 	};
+
+	$('#item, #customer').click(clear_fields).dblclick(function(event)
+	{
+		$(this).autocomplete("search");
+	});
+
+	$('#customer').blur(function()
+	{
+		$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
+	});
 
 	$("#customer").autocomplete(
 	{
@@ -647,14 +657,11 @@ $(document).ready(function()
 		}
 	});
 
-	$('#item, #customer').click(clear_fields).dblclick(function(event)
-	{
-		$(this).autocomplete("search");
-	});
-
-	$('#customer').blur(function()
-	{
-		$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
+	$('#customer').keypress(function (e) {
+		if(e.which == 13) {
+			$('#select_customer_form').submit();
+			return false;
+		}
 	});
 
 	$(".giftcard-input").autocomplete(
