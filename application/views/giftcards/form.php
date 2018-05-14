@@ -120,9 +120,9 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
 					type: 'post',
-					data: $.extend(csrf_form_base(), {
+					data: {
 						'amount': $("#giftcard_amount").val()
-					}),
+					},
 					dataFilter: function(data) {
 						setup_csrf_token();
 						var response = JSON.parse(data);

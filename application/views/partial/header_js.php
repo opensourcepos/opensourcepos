@@ -16,8 +16,6 @@
 		from: '<?php echo $this->config->item('notify_vertical_position'); ?>'
 	}});
 
-	var post = $.post;
-
 	var csrf_token = function() {
 		return Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>');
 	};
@@ -26,9 +24,12 @@
 		return { <?php echo $this->security->get_csrf_token_name(); ?> : function () { return csrf_token();  } };
 	};
 
-	$.post = function() {
-		arguments[1] = csrf_token() ? $.extend(arguments[1], csrf_form_base()) : arguments[1];
-		post.apply(this, arguments);
+	var ajax = $.ajax;
+
+	$.ajax = function() {
+	    var args = arguments[0];
+		args['data'] = csrf_token() ? $.extend(args['data'], csrf_form_base()) : args;
+		return ajax.apply(this, arguments);
 	};
 
 	var setup_csrf_token = function() {
