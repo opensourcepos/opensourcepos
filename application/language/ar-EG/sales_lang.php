@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "النقاط المتاحة";
 $lang["rewards_package"] = "مكافآت";
 $lang["rewards_remaining_balance"] = "رصيد النقاط المتبقي هو ";
@@ -28,8 +27,8 @@ $lang["sales_customer_discount"] = "الخصم";
 $lang["sales_customer_email"] = "البريد الإلكترونى";
 $lang["sales_customer_location"] = "المكان";
 $lang["sales_customer_mailchimp_status"] = "حالة ميل تشيمب";
-$lang["sales_customer_optional"] = "";
-$lang["sales_customer_required"] = "";
+$lang["sales_customer_optional"] = "(اختياري)";
+$lang["sales_customer_required"] = "(اجباري)";
 $lang["sales_customer_total"] = "المجموع";
 $lang["sales_date"] = "تاريخ البيع";
 $lang["sales_date_range"] = "الفترة الزمنية";
@@ -108,7 +107,7 @@ $lang["sales_quote_number_duplicate"] = "رقم عرض الاسعار يجب ا�
 $lang["sales_quote_sent"] = "عرض الاسعار ارسل الى";
 $lang["sales_quote_unsent"] = "لم يتم ارسال عرض الاسعار الى";
 $lang["sales_receipt"] = "عملية بيع #";
-$lang["sales_receipt_no_email"] = "";
+$lang["sales_receipt_no_email"] = "هذا العميل ليس له اي بريد الكتروني صحيح.";
 $lang["sales_receipt_number"] = "إيصال بيع";
 $lang["sales_receipt_sent"] = "تم إرسال الإيصال إلى";
 $lang["sales_receipt_unsent"] = "فشل إرسال الإيصال إلى";
