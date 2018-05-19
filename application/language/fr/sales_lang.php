@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Points disponibles";
 $lang["rewards_package"] = "Récompenses";
 $lang["rewards_remaining_balance"] = "Vos points fidélité restants sont au nombre de ";
@@ -28,8 +27,8 @@ $lang["sales_customer_discount"] = "Rabais";
 $lang["sales_customer_email"] = "Email client";
 $lang["sales_customer_location"] = "Localisation client";
 $lang["sales_customer_mailchimp_status"] = "Statut de mailchimp";
-$lang["sales_customer_optional"] = "";
-$lang["sales_customer_required"] = "";
+$lang["sales_customer_optional"] = "(Optionnel)";
+$lang["sales_customer_required"] = "(Champs obligatoires)";
 $lang["sales_customer_total"] = "Total";
 $lang["sales_date"] = "Date de Vente";
 $lang["sales_date_range"] = "Plage de dates";
@@ -108,7 +107,7 @@ $lang["sales_quote_number_duplicate"] = "Le numéro de l'offre doit être unique
 $lang["sales_quote_sent"] = "Offre envoyée à";
 $lang["sales_quote_unsent"] = "L'offre n'est pas parvenue à être envoyée à";
 $lang["sales_receipt"] = "Reçu de Ventes";
-$lang["sales_receipt_no_email"] = "";
+$lang["sales_receipt_no_email"] = "Ce client n'a pas d'adresse e-mail valide.";
 $lang["sales_receipt_number"] = "# Caisse";
 $lang["sales_receipt_sent"] = "Reçu envoyé à";
 $lang["sales_receipt_unsent"] = "Reçu NON envoyé à";
