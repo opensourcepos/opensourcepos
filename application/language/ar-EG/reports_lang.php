@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "الكل";
 $lang["reports_canceled"] = "ملغى";
 $lang["reports_categories"] = "التصنيفات";
@@ -7,7 +6,7 @@ $lang["reports_categories_summary_report"] = "تقرير ملخص التصنيف
 $lang["reports_category"] = "تصنيف";
 $lang["reports_code_canceled"] = "كود العمليات الملغية";
 $lang["reports_code_invoice"] = "كود الفواتير الرسمية";
-$lang["reports_code_pos"] = "";
+$lang["reports_code_pos"] = "نقطة بيع";
 $lang["reports_code_quote"] = "كود عروض الاسعار";
 $lang["reports_code_return"] = "كود عمليات المرتجع";
 $lang["reports_code_type"] = "النوع";
