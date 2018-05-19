@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "رقم الحساب";
 $lang["customers_account_number_duplicate"] = "رقم الحساب هذا موجود فى قاعدة البيانات من قبل.";
 $lang["customers_available_points"] = "النقاط المتاحة";
@@ -10,13 +9,13 @@ $lang["customers_cannot_be_deleted"] = "لايمكن حذف هؤلاء العم�
 $lang["customers_company_name"] = "اسم الشركة";
 $lang["customers_confirm_delete"] = "هل تريد حذف هؤلاء العملاء حقاً؟";
 $lang["customers_confirm_restore"] = "هل انت متأكد من إستعادة قاعدة بيانات الزبائن ؟";
-$lang["customers_consent"] = "";
-$lang["customers_consent_required"] = "";
+$lang["customers_consent"] = "موافقة التسجيل";
+$lang["customers_consent_required"] = "موافقة التسجيل هي خانة اجبارية.";
 $lang["customers_customer"] = "العميل";
-$lang["customers_date"] = "";
+$lang["customers_date"] = "التاريخ";
 $lang["customers_discount"] = "نسبة الخصم";
 $lang["customers_email_duplicate"] = "البريد الالكتروني مكرر.";
-$lang["customers_employee"] = "";
+$lang["customers_employee"] = "الموظف";
 $lang["customers_error_adding_updating"] = "خطاء فى إضافة أو تحديث العميل.";
 $lang["customers_excel_import_failed"] = "فشل الإستيراد من اكسل";
 $lang["customers_excel_import_nodata_wrongformat"] = "الملف الذى رفعته إما فارغ أو أنه مختلف البنية.";
