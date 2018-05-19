@@ -62,6 +62,6 @@ $lang["common_unknown"] = "Onbekend";
 $lang["common_view_recent_sales"] = "Bekijk recente verkoop";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "Welkom";
-$lang["common_welcome_message"] = "Welkom in OSPOS, klik beneden een module aan om te beginnen!";
+$lang["common_welcome_message"] = "Welkom in OSPOS, klik beneden een module aan om te beginnen.";
 $lang["common_you_are_using_ospos"] = "U gebruikt Open Source Point Of Sale Version";
 $lang["common_zip"] = "Postcode";
