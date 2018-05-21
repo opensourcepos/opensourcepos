@@ -28,7 +28,18 @@
 
 	$.ajax = function() {
 	    var args = arguments[0];
-		args['data'] = csrf_token() ? $.extend(args['data'], csrf_form_base()) : args;
+
+		if (args['type'].toLowerCase() == 'post' && csrf_token()) {
+			if (typeof args['data'] === 'string')
+			{
+				args['data'] += $.param(csrf_form_base());
+			}
+			else
+			{
+				args['data'] = $.extend(args['data'], csrf_form_base());
+			}
+		}
+
 		return ajax.apply(this, arguments);
 	};
 
