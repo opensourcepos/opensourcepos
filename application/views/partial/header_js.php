@@ -29,7 +29,7 @@
 	$.ajax = function() {
 	    var args = arguments[0];
 
-		if (args['type'].toLowerCase() == 'post' && csrf_token()) {
+		if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
 			if (typeof args['data'] === 'string')
 			{
 				args['data'] += $.param(csrf_form_base());
