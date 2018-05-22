@@ -1,31 +1,30 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Ajouter un article";
-$lang["item_kits_all"] = "";
+$lang["item_kits_all"] = "Tous";
 $lang["item_kits_cannot_be_deleted"] = "Impossible de supprimer";
 $lang["item_kits_confirm_delete"] = "Ètes vous sûr(e) de vouloir supprimer le(s) Kits sélectionnés?";
-$lang["item_kits_confirm_restore"] = "";
+$lang["item_kits_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer le (s) kit (s) sélectionné (s) ?";
 $lang["item_kits_description"] = "Description du Kit";
-$lang["item_kits_discount_percent"] = "";
+$lang["item_kits_discount_percent"] = "Pourcentage d'escompte";
 $lang["item_kits_error_adding_updating"] = "Érreur d'ajout/édition de Kit";
-$lang["item_kits_find_kit_item"] = "";
+$lang["item_kits_find_kit_item"] = "Article de group";
 $lang["item_kits_info"] = "Détails du Kit";
 $lang["item_kits_item"] = "Article";
 $lang["item_kits_items"] = "Articles";
 $lang["item_kits_kit"] = "Id kit";
-$lang["item_kits_kit_and_components"] = "";
-$lang["item_kits_kit_and_stock"] = "";
-$lang["item_kits_kit_only"] = "";
+$lang["item_kits_kit_and_components"] = "Groupes et composants";
+$lang["item_kits_kit_and_stock"] = "Group Et Stock";
+$lang["item_kits_kit_only"] = "Group seulement";
 $lang["item_kits_name"] = "Nom du Kit";
 $lang["item_kits_new"] = "Nouveau Kit";
 $lang["item_kits_no_item_kits_to_display"] = "Aucun kit à afficher";
 $lang["item_kits_none_selected"] = "Vous n'avez sélectionné aucun kit";
 $lang["item_kits_one_or_multiple"] = "Kit(s)";
-$lang["item_kits_price_option"] = "";
-$lang["item_kits_priced_only"] = "";
-$lang["item_kits_print_option"] = "";
+$lang["item_kits_price_option"] = "Option de prix";
+$lang["item_kits_priced_only"] = "Prix seulement";
+$lang["item_kits_print_option"] = "Option d'impression";
 $lang["item_kits_quantity"] = "Quantité";
-$lang["item_kits_sequence"] = "";
+$lang["item_kits_sequence"] = "Séquence";
 $lang["item_kits_successful_adding"] = "Vous avez ajouté un Kit";
 $lang["item_kits_successful_deleted"] = "Suppréssion réussie";
 $lang["item_kits_successful_updating"] = "Vous avez édité un Kit";
