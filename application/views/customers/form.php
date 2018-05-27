@@ -451,18 +451,17 @@ $(document).ready(function()
 
 		rules:
 		{
-			first_name: "required",
-			last_name: "required",
-			consent: "required",
+			first_name: 'required',
+			last_name: 'required',
+			consent: 'required',
     		email:
 			{
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_email')?>",
-					type: "post",
-					data:
-					{
-						"person_id" : "<?php echo $person_info->person_id; ?>",
+					type: 'POST',
+					data: {
+						'person_id': '<?php echo $person_info->person_id; ?>'
 						// email is posted by default
 					}
 				}
@@ -472,9 +471,9 @@ $(document).ready(function()
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_account_number')?>",
-					type: "post",
+					type: 'POST',
 					data: {
-						"person_id" : "<?php echo $person_info->person_id; ?>"
+						'person_id': '<?php echo $person_info->person_id; ?>'
 						// account_number is posted by default
 					}
 				}
