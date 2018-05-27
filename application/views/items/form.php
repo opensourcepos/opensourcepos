@@ -376,10 +376,10 @@ $(document).ready(function()
 		$("#custom" + <?php echo $i; ?>).autocomplete({
 			source:function (request, response) {
 				$.ajax({
-					type: "POST",
+					type: 'POST',
 					url: "<?php echo site_url('items/suggest_custom');?>",
 					dataType: "json",
-					data: $.extend(request, $extend(csrf_form_base(), {field_no: <?php echo $i; ?>})),
+					data: $.extend(request, {field_no: <?php echo $i; ?>}),
 					success: function(data) {
 						response($.map(data, function(item) {
 							return {
@@ -438,15 +438,13 @@ $(document).ready(function()
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/check_item_number')?>",
-					type: "post",
-					data: $.extend(csrf_form_base(),
-					{
+					type: 'POST',
+					data: {
 						"item_id": "<?php echo $item_info->item_id; ?>",
-						"item_number": function()
-						{
+						"item_number": function() {
 							return $("#item_number").val();
-						},
-					})
+						}
+					}
 				}
 			},
 			cost_price:

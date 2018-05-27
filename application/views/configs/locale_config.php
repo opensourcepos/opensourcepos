@@ -226,17 +226,17 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$("span").tooltip();
+	$('span').tooltip();
 
-	$("#currency_symbol, #thousands_separator").change(function() {
+	$('#currency_symbol, #thousands_separator').change(function() {
 		var field = $(this).attr('id');
-		var value = $(this).is(":checkbox") ? $(this).is(":checked") : $(this).val();
-		var data = { number_locale: $("#number_locale").val() };
+		var value = $(this).is(':checkbox') ? $(this).is(':checked') : $(this).val();
+		var data = { number_locale: $('#number_locale').val() };
 		data[field] = value;
 		$.post("<?php echo site_url($controller_name . '/ajax_check_number_locale')?>",
 			data,
 			function(response) {
-				$("#number_locale_example").text(response.number_locale_example);
+				$('#number_locale_example').text(response.number_locale_example);
 			},
 			'json'
 		);
@@ -252,17 +252,17 @@ $(document).ready(function()
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_number_locale')?>",
-					type: 'post',
+					type: 'POST',
 					data: {
-						'number_locale': $("#number_locale").val(),
-						'thousands_separator': $("#thousands_separator").is(":checked")
+						'number_locale': $('#number_locale').val(),
+						'thousands_separator': $('#thousands_separator').is(':checked')
 					},
 					dataFilter: function(data) {
 						setup_csrf_token();
 						var response = JSON.parse(data);
-						$("#number_locale_example").text(response.number_locale_example);
-						$("#currency_symbol").val(response.currency_symbol);
-						$("#thousands_separator").prop('checked', response.thousands_separator);
+						$('#number_locale_example').text(response.number_locale_example);
+						$('#currency_symbol').val(response.currency_symbol);
+						$('#thousands_separator').prop('checked', response.thousands_separator);
 						return response.success;
 					}
 				}
