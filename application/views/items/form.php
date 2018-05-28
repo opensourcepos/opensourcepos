@@ -368,7 +368,7 @@ $(document).ready(function()
 	});
 
 	var no_op = function(event, data, formatted){};
-	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",delay:10,appendTo: '.modal-content'});
+	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>", delay:10, appendTo: '.modal-content'});
 
 	<?php for ($i = 1; $i <= 10; ++$i)
 	{
@@ -378,7 +378,7 @@ $(document).ready(function()
 				$.ajax({
 					type: 'POST',
 					url: "<?php echo site_url('items/suggest_custom');?>",
-					dataType: "json",
+					dataType: 'json',
 					data: $.extend(request, {field_no: <?php echo $i; ?>}),
 					success: function(data) {
 						response($.map(data, function(item) {
@@ -397,9 +397,9 @@ $(document).ready(function()
 
 	$("a.fileinput-exists").click(function() {
 		$.ajax({
-			type: "GET",
+			type: 'GET',
 			url: "<?php echo site_url("$controller_name/remove_logo/$item_info->item_id"); ?>",
-			dataType: "json"
+			dataType: 'json'
 		})
 	});
 
