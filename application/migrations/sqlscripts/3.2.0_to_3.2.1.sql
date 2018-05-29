@@ -19,3 +19,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('print_delay_autoreturn', '0');
+
+
+-- Insure that the receiving quantity is not zero
+
+UPDATE ospos_receivings_items SET receiving_quantity = 1 WHERE receiving_quantity = 0;
