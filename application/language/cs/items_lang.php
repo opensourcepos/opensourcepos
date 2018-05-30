@@ -1,5 +1,5 @@
 <?php
-$lang["items_add_minus"] = "Přidat nebo odebrat položku.";
+$lang["items_add_minus"] = "Změna množství.";
 $lang["items_allow_alt_description"] = "Povolit alternativní popis";
 $lang["items_amount_entry"] = "Množství";
 $lang["items_bulk_edit"] = "Hromadná editace";
