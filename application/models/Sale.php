@@ -937,7 +937,8 @@ class Sale extends CI_Model
 			item_location,
 			print_option,
 			' . $this->Item->get_item_name('name') . ',
-			definition_name,
+			category,
+            definition_name,
 			item_type,
 			stock_type');
 		$this->db->from('sales_items AS sales_items');
@@ -946,7 +947,7 @@ class Sale extends CI_Model
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id', 'left');
 		$this->db->where('sales_items.sale_id', $sale_id);
 
-		// Entry sequenate (this will render kits in the expected sequence)
+		// Entry sequence (this will render kits in the expected sequence)
 		if($this->config->item('line_sequence') == '0')
 		{
 			$this->db->order_by('line', 'asc');
@@ -962,7 +963,7 @@ class Sale extends CI_Model
 		// Group by Item Category
 		elseif($this->config->item('line_sequence') == '2')
 		{
-			$this->db->order_by('definition_name', 'asc');
+			$this->db->order_by('category', 'asc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
 			$this->db->order_by('items.qty_per_pack', 'asc');
@@ -1193,7 +1194,8 @@ class Sale extends CI_Model
 					items.item_id AS item_id,
 					MAX(' . $this->Item->get_item_name() . ') AS name,
 					MAX(items.item_number) AS item_number,
-					MAX(definition_name) AS category,
+					MAX(items.category) AS category,
+					MAX(definition_name) AS definition_name,
 					MAX(items.supplier_id) AS supplier_id,
 					MAX(sales_items.quantity_purchased) AS quantity_purchased,
 					MAX(sales_items.item_cost_price) AS item_cost_price,
@@ -1221,7 +1223,7 @@ class Sale extends CI_Model
 				LEFT OUTER JOIN ' . $this->db->dbprefix('attribute_links') . ' AS attribute_links
 					ON attribute_links.item_id = items.item_id AND attribute_links.sale_id = sales_items.sale_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('attribute_definitions') . ' AS attribute_definitions
-					ON attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'CATEGORY\'
+					ON attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'GROUP\'
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments_temp') . ' AS payments
 					ON sales_items.sale_id = payments.sale_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('suppliers') . ' AS supplier

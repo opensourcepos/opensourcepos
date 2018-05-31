@@ -1,11 +1,11 @@
 <?php
 
-define('CATEGORY', 'CATEGORY');
+define('GROUP', 'GROUP');
 define('DROPDOWN', 'DROPDOWN');
 define('DATE', 'DATE');
 define('TEXT', 'TEXT');
 
-const DEFINITION_TYPES = [CATEGORY, DROPDOWN, TEXT];
+const DEFINITION_TYPES = [GROUP, DROPDOWN, TEXT];
 
 class Attribute extends CI_Model
 {
@@ -86,9 +86,9 @@ class Attribute extends CI_Model
 	*/
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'definition.definition_name', $order = 'asc')
 	{
-		$this->db->select('parent_definition.definition_name AS parent_name, definition.*');
+		$this->db->select('definition_group.definition_name AS definition_group, definition.*');
 		$this->db->from('attribute_definitions AS definition');
-		$this->db->join('attribute_definitions AS parent_definition', 'parent_definition.definition_id = definition.definition_fk', 'left');
+		$this->db->join('attribute_definitions AS definition_group', 'definition_group.definition_id = definition.definition_fk', 'left');
 
 		$this->db->group_start();
 		$this->db->like('definition.definition_name', $search);
@@ -115,20 +115,23 @@ class Attribute extends CI_Model
 		return $this->db->get()->result_array();
 	}
 
-	public function get_values_by_parent($definition_fk)
+	public function get_values_by_definitions($definition_ids)
 	{
-		$this->db->from('attribute_definitions');
-		if ($definition_fk != -1)
-		{
-			$this->db->where('definition_fk', $definition_fk);
-		}
-		else
-		{
-			$this->db->where('definition_fk');
-		}
-		$this->db->where('deleted', 0);
+		if (count($definition_ids) > 0) {
+			$this->db->from('attribute_definitions');
 
-		return $this->db->get()->result_array();
+			$this->db->group_start();
+			$this->db->where_in('definition_fk', array_keys($definition_ids));
+			$this->db->or_where_in('definition_id', array_keys($definition_ids));
+			$this->db->where('definition_type !=', GROUP);
+			$this->db->group_end();
+
+			$this->db->where('deleted', 0);
+
+			return $this->db->get()->result_array();
+		}
+
+		return array();
 	}
 
 	public function get_definitions_by_type($attribute_type, $definition_id = -1)
@@ -143,6 +146,19 @@ class Attribute extends CI_Model
 		}
 
 		$this->db->where('definition_fk');
+		$results = $this->db->get()->result_array();
+
+		$attribute_definitions = array();
+		foreach($results as $result)
+		{
+			$attribute_definitions[$result['definition_id']] = $result['definition_name'];
+		}
+		return $attribute_definitions;
+	}
+
+	public function get_definition_names()
+	{
+		$this->db->from('attribute_definitions');
 		$results = $this->db->get()->result_array();
 
 		$attribute_definitions = array();
@@ -257,37 +273,7 @@ class Attribute extends CI_Model
 		return $this->db->delete('attribute_links', array('item_id' => $item_id));
 	}
 
-	public function set_selected_category($item_id, $definition_id)
-	{
-		$this->db->trans_start();
-
-		if ($this->link_exists($item_id))
-		{
-			$this->db->where('item_id', $item_id);
-			$this->db->where('attribute_id');
-			$this->db->update('attribute_links', array('definition_id' => $definition_id));
-		}
-		else
-		{
-			$this->db->insert('attribute_links', array('item_id' => $item_id, 'definition_id' => $definition_id));
-		}
-
-		$this->db->trans_complete();
-
-		return $this->db->trans_status();
-	}
-
-	public function get_selected_category($item_id)
-	{
-		$this->db->from('attribute_links');
-		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
-		$this->db->where('item_id', $item_id);
-		$this->db->where('definition_type', CATEGORY);
-		$this->db->where('definition_fk');
-		return $this->db->get()->row();
-	}
-
-	public function     get_link_value($item_id, $definition_id)
+	public function get_link_value($item_id, $definition_id)
 	{
 		$this->db->where('item_id', $item_id);
 		$this->db->where('definition_id', $definition_id);
@@ -302,7 +288,7 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_links');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
-		$this->db->where('definition_type <>', CATEGORY);
+		$this->db->where('definition_type <>', GROUP);
 		if (!empty($id))
 		{
 			$this->db->where($sale_receiving_fk, $id);

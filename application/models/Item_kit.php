@@ -62,7 +62,7 @@ class Item_kit extends CI_Model
 		kit_discount_type,
 		price_option,
 		print_option,
-		definition_name, 
+		category, 
 		supplier_id,
 		item_number,
 		cost_price,
@@ -78,8 +78,6 @@ class Item_kit extends CI_Model
 
 		$this->db->from('item_kits');
 		$this->db->join('items', 'item_kits.item_id = items.item_id', 'left');
-		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
-		$this->db->join('attribute_definitions', 'attribute_links.definition_id = attribute_definitions.definition_id AND definition_type = \'CATEGORY\'', 'left');
 		$this->db->where('item_kit_id', $item_kit_id);
 
 		$query = $this->db->get();

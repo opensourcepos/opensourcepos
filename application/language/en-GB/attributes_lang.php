@@ -1,6 +1,6 @@
 <?php 
 
-$lang["attributes_category"] = "Category";
+$lang["attributes_definition_group"] = "Category";
 $lang["attributes_confirm_delete"] = "Are you sure you want to delete the selected attribute(s)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Could not delete selected attribute(s)";
 $lang["attributes_definition_flags"] = "Attribute Visibility";

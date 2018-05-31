@@ -423,47 +423,7 @@
 		focus: fill_value
 		});
 
-		$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>",delay:10,appendTo: '.modal-content'});
-
-		var load_attributes = function(just_opened)
-		{
-			var definition_id = $(this).val() || 0;
-			var item_id = $("form").attr('action').split("/").pop();
-
-			var save_link = function()
-			{
-				var definition_attr_id = $(this).data('definition-id');
-				if (definition_attr_id)
-				{
-					$.post('<?php echo site_url("attributes/save_attribute_link/");?>' + item_id, {definition_id : definition_attr_id, attribute_id : $(this).val()});
-				}
-				else if (definition_id && definition_id != -1)
-				{
-					$.post('<?php echo site_url("attributes/save_attribute_link/");?>' + item_id, {definition_id : definition_id});
-				}
-			};
-
-			var delete_link = function()
-			{
-				$.get('<?php echo site_url("attributes/delete_attribute_link/");?>' + item_id);
-			};
-
-			save_link.call(this);
-
-			$("#attributes").load('<?php echo site_url("items/attributes");?>/' + [item_id, definition_id].join("/"), function()
-			{
-				var new_def = definition_id < 0;
-				new_def && typeof just_opened != 'boolean' && delete_link.call(this);
-
-				$("#attributes select, #attributes input[type='text']").each(function()
-				{
-					$(this).change(save_link) && save_link.call(this);
-				});
-			});
-		};
-
-		$("#category").change(load_attributes);
-		load_attributes.call($("#category"), true);
+		$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>", delay:10, appendTo: '.modal-content'});
 
 		$("a.fileinput-exists").click(function() {
 			$.ajax({
@@ -510,13 +470,13 @@
 					{
 						url: "<?php echo site_url($controller_name . '/check_item_number')?>",
 					type: 'POST',
-					data: {
+						data: {
 							"item_id" : "<?php echo $item_info->item_id; ?>",
 							"item_number" : function()
 							{
 								return $("#item_number").val();
 							},
-						})
+						}
 					}
 				},
 				cost_price:

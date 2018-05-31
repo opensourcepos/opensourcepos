@@ -42,37 +42,16 @@ class Attributes extends Secure_Controller
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
 	}
 
-	public function save_attribute_link($item_id)
-	{
-		if (!empty($this->input->post('attribute_id')))
-		{
-			$success = $this->Attribute->save_link($item_id, $this->input->post('definition_id'), $this->input->post('attribute_id'));
-		}
-		else
-		{
-			$success = $this->Attribute->set_selected_category($item_id, $this->input->post('definition_id'));
-		}
-
-		echo json_encode(array('success' => $success));
-	}
-
-	public function delete_attribute_link($item_id)
-	{
-		$success = $this->Attribute->delete_link($item_id);
-
-		echo json_encode(array('success' => $success));
-	}
-
 	public function save_attribute_value($attribute_value)
 	{
- 		$success = $this->Attribute->save_value($attribute_value, $this->input->post('definition_id'), $this->input->post('item_id'), $this->input->post('attribute_id'));
+ 		$success = $this->Attribute->save_value(urldecode($attribute_value), $this->input->post('definition_id'), $this->input->post('item_id'), $this->input->post('attribute_id'));
 
 		echo json_encode(array('success' => $success));
 	}
 
 	public function delete_attribute_value($attribute_value)
 	{
-		$success = $this->Attribute->delete_value($attribute_value, $this->input->post('$definition_id'));
+		$success = $this->Attribute->delete_value($attribute_value, $this->input->post('definition_id'));
 
 		echo json_encode(array('success' => $success));
 	}
@@ -90,7 +69,7 @@ class Attributes extends Secure_Controller
 			'definition_name' => $this->input->post('definition_name'),
 			'definition_type' => DEFINITION_TYPES[$this->input->post('definition_type')],
 			'definition_flags' => $definition_flags,
-			'definition_fk' => $this->input->post('definition_parent') != '' ? $this->input->post('definition_parent') : NULL
+			'definition_fk' => $this->input->post('definition_group') != '' ? $this->input->post('definition_group') : NULL
 		);
 
 		$definition_name = $this->xss_clean($definition_data['definition_name']);
@@ -162,8 +141,8 @@ class Attributes extends Secure_Controller
 
 		$data['definition_id'] = $definition_id;
 		$data['definition_values'] = $this->Attribute->get_definition_values($definition_id);
-		$data['definition_parent'] = $this->Attribute->get_definitions_by_type(CATEGORY, $definition_id);
-		$data['definition_parent'][''] = $this->lang->line('common_none_selected_text');
+		$data['definition_group'] = $this->Attribute->get_definitions_by_type(GROUP, $definition_id);
+		$data['definition_group'][''] = $this->lang->line('common_none_selected_text');
 		$data['definition_info'] = $info;
 
 		$data['definition_flags'] = $this->_get_attributes();

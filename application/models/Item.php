@@ -370,7 +370,7 @@ class Item extends CI_Model
 					sale_id, receiving_id, attribute_links.definition_id
 				FROM ' . $this->db->dbprefix('attribute_links') . ' AS attribute_links
 				INNER JOIN ' . $this->db->dbprefix('attribute_definitions') . ' AS attribute_definitions
-					ON attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'CATEGORY\'
+					ON attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'GROUP\'
 				WHERE sale_id IS NULL AND receiving_id IS NULL
 			)'
 		);
