@@ -19,15 +19,14 @@
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('attributes_definition_type'), 'definition_type', array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
-			<?php $disable_definition_type = $definition_info->definition_type == CATEGORY; ?>
-			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control" ' . ($disable_definition_type ? 'disabled="disabled"' : ''));?>
+			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control" ');?>
 		</div>
 	</div>
 
 	<div class="form-group form-group-sm">
-		<?php echo form_label($this->lang->line('attributes_category'), 'definition_parent', array('class' => 'control-label col-xs-3')); ?>
+		<?php echo form_label($this->lang->line('attributes_definition_group'), 'definition_group', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_parent', $definition_parent, $definition_info->definition_fk, 'id="definition_parent" class="form-control" ' . (empty($definition_parent) ? 'disabled="disabled"' : ''));?>
+			<?php echo form_dropdown('definition_group', $definition_group, $definition_info->definition_fk, 'id="definition_group" class="form-control" ' . (empty($definition_group) ? 'disabled="disabled"' : ''));?>
 		</div>
 	</div>
 

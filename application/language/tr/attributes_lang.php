@@ -1,6 +1,6 @@
 <?php 
 
-$lang["attributes_category"] = "";
+$lang["attributes_definition_group"] = "";
 $lang["attributes_confirm_delete"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
 $lang["attributes_definition_flags"] = "";

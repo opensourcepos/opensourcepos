@@ -532,7 +532,7 @@ function get_attribute_definition_manage_table_headers()
 		array('definition_name' => $CI->lang->line('attributes_definition_name')),
 		array('definition_type' => $CI->lang->line('attributes_definition_type')),
 		array('definition_flags' => $CI->lang->line('attributes_definition_flags')),
-		array('category' => $CI->lang->line('attributes_category')),
+		array('definition_group' => $CI->lang->line('attributes_definition_group')),
 	);
 
 	return transform_headers($headers);
@@ -547,7 +547,7 @@ function get_attribute_definition_data_row($attribute)
 		'definition_id' => $attribute->definition_id,
 		'definition_name' => $attribute->definition_name,
 		'definition_type' => $attribute->definition_type,
-		'category' => $attribute->parent_name,
+		'definition_group' => $attribute->definition_group,
 		'definition_flags' => count($attribute->definition_flags) == 0 ? $CI->lang->line('common_none_selected_text') : implode(', ', $attribute->definition_flags),
 		'edit' => anchor("$controller_name/view/$attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
