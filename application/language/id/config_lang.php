@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Alamat Perusahaan";
 $lang["config_address_required"] = "Alamat Perusahaan wajib diisi";
-$lang["config_allow_duplicate_barcodes"] = "";
+$lang["config_allow_duplicate_barcodes"] = "Ijinkan kode batang ganda";
 $lang["config_apostrophe"] = "apostrop";
 $lang["config_backup_button"] = "Cadangan";
 $lang["config_backup_database"] = "Cadangkan basis data";
@@ -12,7 +11,7 @@ $lang["config_barcode_configuration"] = "Konfigurasi kode batang";
 $lang["config_barcode_content"] = "Isi kode batang";
 $lang["config_barcode_first_row"] = "Baris 1";
 $lang["config_barcode_font"] = "Fonta";
-$lang["config_barcode_formats"] = "";
+$lang["config_barcode_formats"] = "Format masukan";
 $lang["config_barcode_generate_if_empty"] = "Buatkan kode batang otomatis jika kosong";
 $lang["config_barcode_height"] = "Tinggi (px)";
 $lang["config_barcode_id"] = "Item Id/Nama";
@@ -26,7 +25,7 @@ $lang["config_barcode_page_width"] = "Lebar halaman";
 $lang["config_barcode_price"] = "Harga";
 $lang["config_barcode_second_row"] = "Baris 2";
 $lang["config_barcode_third_row"] = "Baris 3";
-$lang["config_barcode_tooltip"] = "";
+$lang["config_barcode_tooltip"] = "Peringatan: Fitur ini meyebabkan item duplikat dapat diimpor atau dibuat. Jangan gunakan jika Anda tidak ingin menggandakan kode batang.";
 $lang["config_barcode_type"] = "Jenis kode batang";
 $lang["config_barcode_width"] = "Lebar (px)";
 $lang["config_bottom"] = "Bawah";
