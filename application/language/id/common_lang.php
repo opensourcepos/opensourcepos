@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Alamat 1";
 $lang["common_address_2"] = "Alamat 2";
 $lang["common_city"] = "Kota";
@@ -51,15 +50,15 @@ $lang["common_price"] = "Harga";
 $lang["common_print"] = "Cetak";
 $lang["common_remove"] = "Hapus";
 $lang["common_required"] = "Diperlukan";
-$lang["common_restore"] = "";
+$lang["common_restore"] = "Kembalikan";
 $lang["common_return_policy"] = "Kebijakan Retur";
 $lang["common_search"] = "Cari";
 $lang["common_search_options"] = "Pilihan pencarian";
 $lang["common_searched_for"] = "Mencari untuk";
 $lang["common_state"] = "Provinsi";
 $lang["common_submit"] = "Kirim";
-$lang["common_total_spent"] = "";
-$lang["common_unknown"] = "";
+$lang["common_total_spent"] = "Total";
+$lang["common_unknown"] = "Tidak diketahui";
 $lang["common_view_recent_sales"] = "Lihat Penjualan Terkini";
 $lang["common_website"] = "Situs";
 $lang["common_welcome"] = "Selamat Datang";
