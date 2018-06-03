@@ -12,7 +12,7 @@ class Detailed_receivings extends Report
 
 	public function getDataColumns()
 	{
-		$columns = array(
+		return array(
 			'summary' => array(
 				array('id' => $this->lang->line('reports_receiving_id')),
 				array('receiving_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
@@ -31,8 +31,6 @@ class Detailed_receivings extends Report
 				$this->lang->line('reports_total'),
 				$this->lang->line('reports_discount'))
 		);
-
-		return $columns;
 	}
 
 	public function getDataByReceivingId($receiving_id)
