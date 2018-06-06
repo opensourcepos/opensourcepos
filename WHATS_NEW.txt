@@ -1,3 +1,7 @@
+Version 3.2.2
+-------------
++ Revert CSRF change causing regression
+
 Version 3.2.1
 -------------
 + Support for GDPR
