@@ -165,7 +165,7 @@ $(document).ready(function()
 	});
 
 	var submit_form = function()
-	{ 
+	{
 		$(this).ajaxSubmit(
 		{
 			success: function(response)
@@ -191,12 +191,12 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
 					type: 'POST',
-					data: {
-						'sale_id': <?php echo $sale_info['sale_id']; ?>,
-						'invoice_number': function() {
+					data: $.extend(csrf_form_base(), {
+						'sale_id' : <?php echo $sale_info['sale_id']; ?>,
+						'invoice_number' : function() {
 							return $('#invoice_number').val();
 						}
-					}
+					})
 				}
 			}
 		},

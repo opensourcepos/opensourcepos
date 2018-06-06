@@ -454,38 +454,38 @@ $(document).ready(function()
 			first_name: 'required',
 			last_name: 'required',
 			consent: 'required',
-    		email:
+			email:
 			{
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_email')?>",
 					type: 'POST',
-					data: {
+					data: $.extend(csrf_form_base(), {
 						'person_id': '<?php echo $person_info->person_id; ?>'
 						// email is posted by default
-					}
+					})
 				}
 			},
-    		account_number:
+			account_number:
 			{
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_account_number')?>",
 					type: 'POST',
-					data: {
+					data: $.extend(csrf_form_base(), {
 						'person_id': '<?php echo $person_info->person_id; ?>'
 						// account_number is posted by default
-					}
+					})
 				}
 			}
-   		},
+		},
 
-		messages: 
+		messages:
 		{
-     		first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
-     		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-     		consent: "<?php echo $this->lang->line('customers_consent_required'); ?>",
-     		email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
+			first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
+			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
+			consent: "<?php echo $this->lang->line('customers_consent_required'); ?>",
+			email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
 			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
 	}, form_support.error));

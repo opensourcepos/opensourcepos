@@ -50,9 +50,10 @@
 $(document).ready(function()
 {
 	$('#mailchimp_api_key').change(function() {
-		$.post("<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key')?>", {
+		$.post("<?php echo site_url($controller_name . '/ajax_check_mailchimp_api_key')?>",
+			$.extend(csrf_form_base(), {
 				'mailchimp_api_key': $('#mailchimp_api_key').val()
-			},
+			}),
 			function(response) {
 				$.notify(response.message, {type: response.success ? 'success' : 'danger'} );
 				$('#mailchimp_list_id').empty();
