@@ -460,10 +460,10 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_email')?>",
 					type: 'POST',
-					data: $.extend(csrf_form_base(), {
+					data: {
 						'person_id': '<?php echo $person_info->person_id; ?>'
 						// email is posted by default
-					})
+					}
 				}
 			},
 			account_number:
@@ -472,10 +472,10 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_account_number')?>",
 					type: 'POST',
-					data: $.extend(csrf_form_base(), {
+					data: {
 						'person_id': '<?php echo $person_info->person_id; ?>'
 						// account_number is posted by default
-					})
+					}
 				}
 			}
 		},
