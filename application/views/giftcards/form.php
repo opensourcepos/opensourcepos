@@ -76,7 +76,7 @@ $(document).ready(function()
 		source: '<?php echo site_url("customers/suggest"); ?>',
 		minChars: 0,
 		delay: 15, 
-		cacheLength: 1,
+	   	cacheLength: 1,
 		appendTo: '.modal-content',
 		select: fill_value,
 		focus: fill_value
@@ -125,9 +125,9 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
 					type: 'POST',
-					data: $.extend(csrf_form_base(), {
+					data: {
 						'amount': $('#giftcard_amount').val()
-					}),
+					},
 					dataFilter: function(data) {
 						setup_csrf_token();
 						var response = JSON.parse(data);
