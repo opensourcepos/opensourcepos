@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/bcit-ci/CodeIgniter.git",
-                "reference": "02a0518e1c56ba3506f370362ac5ebdb8a138312"
+                "reference": "71e647782764184e3aab4faffe6d99176758979f"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/bcit-ci/CodeIgniter/zipball/71e647782764184e3aab4faffe6d99176758979f",
-                "reference": "02a0518e1c56ba3506f370362ac5ebdb8a138312",
+                "reference": "71e647782764184e3aab4faffe6d99176758979f",
                 "shasum": ""
             },
             "require": {
@@ -38,7 +38,7 @@
             ],
             "description": "The CodeIgniter framework",
             "homepage": "https://codeigniter.com",
-            "time": "2018-01-13 11:57:11"
+            "time": "2018-03-22 14:48:55"
         },
         {
             "name": "dompdf/dompdf",
@@ -103,16 +103,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.11",
+            "version": "v2.0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8"
+                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/5da4d3c796c275c55f057af5a643ae297d96b4d8",
-                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/10bcb46e8f3d365170f6de9d05245aa066b81f09",
+                "reference": "10bcb46e8f3d365170f6de9d05245aa066b81f09",
                 "shasum": ""
             },
             "require": {
@@ -144,10 +144,11 @@
             "description": "PHP 5.x polyfill for random_bytes() and random_int() from PHP 7",
             "keywords": [
                 "csprng",
+                "polyfill",
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-09-27 21:40:39"
+            "time": "2018-06-08 15:26:40"
         },
         {
             "name": "phenx/php-font-lib",
