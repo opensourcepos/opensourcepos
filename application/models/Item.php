@@ -66,7 +66,7 @@ class Item extends CI_Model
 		$this->db->where('item_number', (string) $item_number);
 		// check if $item_id is a number and not a string starting with 0
 		// because cases like 00012345 will be seen as a number where it is a barcode
-		if(is_numeric($item_id) && substr($item_id, 0, 1) != '0')
+		if(ctype_digit($item_id) && substr($item_id, 0, 1) != '0')
 		{
 			$this->db->where('item_id !=', (int) $item_id);
 		}
