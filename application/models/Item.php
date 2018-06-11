@@ -352,26 +352,6 @@ class Item extends CI_Model
 	}
 
 	/*
-	 * 	Gets information about a particular active item by item id
-	 */
-	public function get_info_by_id($item_id)
-	{
-		$this->db->from('items');
-
-		$this->db->where('items.item_id', (int) $item_id);
-
-		$this->db->where('items.deleted', 0);
-
-		$query = $this->db->get();
-
-		if($query->num_rows() == 1)
-		{
-			return $query->row();
-		}
-
-		return '';
-	}
-	/*
 	Get an item id given an item number
 	*/
 	public function get_item_id($item_number, $ignore_deleted = FALSE, $deleted = FALSE)
