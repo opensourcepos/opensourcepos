@@ -698,7 +698,7 @@ class Sale_lib
 
 	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $include_deleted = FALSE, $print_option = NULL )
 	{
-		$item_info = $this->CI->Item->get_info_by_id($item_id);
+		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
 		//make sure item exists
 		if(empty($item_info))
@@ -875,7 +875,7 @@ class Sale_lib
 		//make sure item exists
 		if($item_id != -1)
 		{
-			$item_info = $this->CI->Item->get_info_by_id($item_id);
+			$item_info = $this->CI->Item->get_info_by_id_or_number($item_id);
 
 			if($item_info->stock_type == HAS_STOCK)
 			{
