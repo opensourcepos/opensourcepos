@@ -160,7 +160,7 @@
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
 									'unit_price' => $this->lang->line('items_unit_price')
-							),
+						),
 							$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
 						</div>
 					</div>
@@ -210,6 +210,17 @@
 						'id' => 'show_office_group',
 						'value' => 'show_office_group',
 						'checked' => $show_office_group)); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_multi_pack_enabled'), 'multi_pack_enabled', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'multi_pack_enabled',
+						'id' => 'multi_pack_enabled',
+						'value' => 'multi_pack_enabled',
+						'checked' => $this->config->item('multi_pack_enabled'))); ?>
 				</div>
 			</div>
 

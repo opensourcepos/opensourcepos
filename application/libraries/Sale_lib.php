@@ -827,7 +827,14 @@ class Sale_lib
 
 		$total = $this->get_item_total($quantity, $price, $discount);
 		$discounted_total = $this->get_item_total($quantity, $price, $discount, TRUE);
-		//Item already exists and is not serialized, add to quantity
+
+		if($this->CI->config->item('multi_pack_enabled') == '1')
+		{
+			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
+		}
+
+
+	//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
 		{
 			$item = array($insertkey => array(

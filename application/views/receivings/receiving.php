@@ -103,10 +103,10 @@ if (isset($success))
 		<thead>
 			<tr>
 				<th style="width:5%;"><?php echo $this->lang->line('common_delete'); ?></th>
-				<th style="width:45%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
+				<th style="width:40%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_cost'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
-				<th style="width:5%;"></th>
+				<th style="width:10%;"><?php echo $this->lang->line('receivings_ship_pack'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_discount'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_total'); ?></th>
 				<th style="width:5%;"><?php echo $this->lang->line('receivings_update'); ?></th>
@@ -157,21 +157,8 @@ if (isset($success))
 							?>
 							
 							<td><?php echo form_input(array('name'=>'quantity', 'class'=>'form-control input-sm', 'value'=>to_quantity_decimals($item['quantity']))); ?></td>
-							<?php
-							if ($item['receiving_quantity'] > 1) 
-							{
-							?>
-								<td><?php echo 'x'.to_quantity_decimals($item['receiving_quantity']); ?></td>	
-							<?php 
-							}
-							else
-							{
-							?>
-								<td></td>
-							<?php 
-							}
-							?>
-						
+							<td><?php echo form_dropdown('receiving_quantity', $item['receiving_quantity_choices'], $item['receiving_quantity'], array('class'=>'form-control input-sm'));?></td>
+
 							<?php       
 							if ($items_module_allowed && $mode!='requisition')
 							{
@@ -214,7 +201,7 @@ if (isset($success))
 									}
 									else
 									{
-										echo $this->lang->line('sales_no_description');
+										echo "<i>".$this->lang->line('sales_no_description')."</i>";
 										echo form_hidden('description','');
 									}
 								}
@@ -351,42 +338,41 @@ if (isset($success))
 						<div class="form-group form-group-sm">
 							<label id="comment_label" for="comment"><?php echo $this->lang->line('common_comments'); ?></label>
 							<?php echo form_textarea(array('name'=>'comment', 'id'=>'comment', 'class'=>'form-control input-sm', 'value'=>$comment, 'rows'=>'4'));?>
-
-							<table class="sales_table_100" id="payment_details">
-								<tr>
-									<td><?php echo $this->lang->line('receivings_print_after_sale'); ?></td>
-									<td>
-										<?php echo form_checkbox(array('name'=>'recv_print_after_sale', 'id'=>'recv_print_after_sale', 'class'=>'checkbox', 'value'=>1, 'checked'=>$print_after_sale)); ?>
-									</td>
-								</tr>
-
-								<?php
-								if ($mode == "receive") 
-								{
-								?>
+							<div id="payment_details" >
+								<table class="sales_table_100" >
 									<tr>
-										<td><?php echo $this->lang->line('receivings_reference');?></td>
+										<td><?php echo $this->lang->line('receivings_print_after_sale'); ?></td>
 										<td>
-											<?php echo form_input(array('name'=>'recv_reference', 'id'=>'recv_reference', 'class'=>'form-control input-sm', 'value'=>$reference, 'size'=>5));?>
+											<?php echo form_checkbox(array('name'=>'recv_print_after_sale', 'id'=>'recv_print_after_sale', 'class'=>'checkbox', 'value'=>1, 'checked'=>$print_after_sale)); ?>
 										</td>
 									</tr>
-								<?php 
-								}
-								?>
-								<tr>
-									<td><?php echo $this->lang->line('sales_payment'); ?></td>
-									<td>
-										<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
-									</td>
-								</tr>
-
-								<tr>
-									<td><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
-									<td>
-										<?php echo form_input(array('name'=>'amount_tendered', 'value'=>'', 'class'=>'form-control input-sm', 'size'=>'5')); ?>
-									</td>
-								</tr>
-							</table>
+									<?php
+									if ($mode == "receive")
+									{
+									?>
+										<tr>
+											<td><?php echo $this->lang->line('receivings_reference');?></td>
+											<td>
+												<?php echo form_input(array('name'=>'recv_reference', 'id'=>'recv_reference', 'class'=>'form-control input-sm', 'value'=>$reference, 'size'=>5));?>
+											</td>
+										</tr>
+									<?php
+									}
+									?>
+									<tr>
+										<td><?php echo $this->lang->line('sales_payment'); ?></td>
+										<td>
+											<?php echo form_dropdown('payment_type', $payment_options, array(), array('id'=>'payment_types', 'class'=>'selectpicker show-menu-arrow', 'data-style'=>'btn-default btn-sm', 'data-width'=>'auto')); ?>
+										</td>
+									</tr>
+									<tr>
+										<td><?php echo $this->lang->line('sales_amount_tendered'); ?></td>
+										<td>
+											<?php echo form_input(array('name'=>'amount_tendered', 'value'=>'', 'class'=>'form-control input-sm', 'size'=>'5')); ?>
+										</td>
+									</tr>
+								</table>
+							</div>
 
 							<div class='btn btn-sm btn-danger pull-left' id='cancel_receiving_button'><span class="glyphicon glyphicon-remove">&nbsp</span><?php echo $this->lang->line('receivings_cancel_receiving') ?></div>
 							
@@ -517,7 +503,7 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"]').change(function() {
+	$('[name="price"],[name="quantity"],[name="receiving_quantity"],[name="discount"],[name="description"],[name="serialnumber"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
 

@@ -128,6 +128,15 @@ class Items extends Secure_Controller
 		echo json_encode($suggestions);
 	}
 
+
+	public function suggest_low_sell()
+	{
+		$suggestions = $this->xss_clean($this->Item->get_low_sell_suggestions($this->input->post_get('name')));
+
+		echo json_encode($suggestions);
+	}
+
+
 	public function suggest_kits()
 	{
 		$suggestions = $this->xss_clean($this->Item->get_kit_search_suggestions($this->input->post_get('term'),
@@ -181,9 +190,13 @@ class Items extends Secure_Controller
 
 	public function view($item_id = -1)
 	{
+		if($item_id == -1)
+		{
+			$data = array();
+		}
+
 		// allow_temp_items is set in the index function of items.php or sales.php
 		$data['allow_temp_item'] = $this->session->userdata('allow_temp_items');
-
 		$data['item_tax_info'] = $this->xss_clean($this->Item_taxes->get_info($item_id));
 		$data['default_tax_1_rate'] = '';
 		$data['default_tax_2_rate'] = '';
@@ -224,6 +237,8 @@ class Items extends Secure_Controller
 			$item_info->item_type = ITEM; // standard
 			$item_info->stock_type = HAS_STOCK;
 			$item_info->tax_category_id = 1;  // Standard
+			$item_info->qty_per_pack = 1;
+			$item_info->pack_name = $this->lang->line('items_default_pack_name');
 		}
 
 		$data['item_info'] = $item_info;
@@ -277,6 +292,18 @@ class Items extends Secure_Controller
 			$quantity = ($item_id == -1) ? 0 : $quantity;
 			$location_array[$location['location_id']] = array('location_name' => $location['location_name'], 'quantity' => $quantity);
 			$data['stock_locations'] = $location_array;
+		}
+
+		$data['selected_low_sell_item_id'] = $item_info->low_sell_item_id;
+
+		if($item_id != -1 && $item_info->item_id != $item_info->low_sell_item_id)
+		{
+			$low_sell_item_info = $this->Item->get_info($item_info->low_sell_item_id);
+			$data['selected_low_sell_item'] = implode(NAME_SEPARATOR, array($low_sell_item_info->name, $low_sell_item_info->pack_name));
+		}
+		else
+		{
+			$data['selected_low_sell_item'] = '';
 		}
 
 		$this->load->view('items/form', $data);
@@ -397,6 +424,8 @@ class Items extends Secure_Controller
 		{
 			$receiving_quantity = '1';
 		}
+		$default_pack_name = $this->lang->line('items_default_pack_name');
+
 		//Save item data
 		$item_data = array(
 			'name' => $this->input->post('name'),
@@ -412,6 +441,9 @@ class Items extends Secure_Controller
 			'receiving_quantity' => $receiving_quantity,
 			'allow_alt_description' => $this->input->post('allow_alt_description') != NULL,
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
+			'qty_per_pack' => $this->input->post('qty_per_pack') == NULL ? 1 : $this->input->post('qty_per_pack'),
+			'pack_name' => $this->input->post('pack_name') == NULL ? $default_pack_name : $this->input->post('pack_name'),
+			'low_sell_item_id' => $this->input->post('low_sell_item_id') == NULL ? -1 : $this->input->post('low_sell_item_id'),
 			'deleted' => $this->input->post('is_deleted') != NULL,
 			'custom1' => $this->input->post('custom1') == NULL ? '' : $this->input->post('custom1'),
 			'custom2' => $this->input->post('custom2') == NULL ? '' : $this->input->post('custom2'),

@@ -23,6 +23,8 @@ define('PRICE_OPTION_ALL', 0);
 define('PRICE_OPTION_KIT', 1);
 define('PRICE_OPTION_KIT_STOCK', 2);
 
+define('NAME_SEPARATOR', ' | ');
+
 
 /**
  * Item class
@@ -109,64 +111,65 @@ class Item extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(DISTINCT items.item_id) as count');
+			$this->db->select('COUNT(DISTINCT items.item_id) AS count');
 		}
 		else
 		{
-			$this->db->select('items.item_id as item_id');
-			$this->db->select('MAX(items.name) as name');
-			$this->db->select('MAX(items.category) as category');
-			$this->db->select('MAX(items.supplier_id) as supplier_id');
-			$this->db->select('MAX(items.item_number) as item_number');
-			$this->db->select('MAX(items.description) as description');
-			$this->db->select('MAX(items.cost_price) as cost_price');
-			$this->db->select('MAX(items.unit_price) as unit_price');
-			$this->db->select('MAX(items.reorder_level) as reorder_level');
-			$this->db->select('MAX(items.receiving_quantity) as receiving_quantity');
-			$this->db->select('MAX(items.pic_filename) as pic_filename');
-			$this->db->select('MAX(items.allow_alt_description) as allow_alt_description');
-			$this->db->select('MAX(items.is_serialized) as is_serialized');
-			$this->db->select('MAX(items.deleted) as deleted');
-			$this->db->select('MAX(items.custom1) as custom1');
-			$this->db->select('MAX(items.custom2) as custom2');
-			$this->db->select('MAX(items.custom3) as custom3');
-			$this->db->select('MAX(items.custom4) as custom4');
-			$this->db->select('MAX(items.custom5) as custom5');
-			$this->db->select('MAX(items.custom6) as custom6');
-			$this->db->select('MAX(items.custom7) as custom7');
-			$this->db->select('MAX(items.custom8) as custom8');
-			$this->db->select('MAX(items.custom9) as custom9');
-			$this->db->select('MAX(items.custom10) as custom10');
+			$this->db->select('items.item_id AS item_id');
+			$this->db->select('MAX(items.name) AS name');
+			$this->db->select('MAX(items.category) AS category');
+			$this->db->select('MAX(items.supplier_id) AS supplier_id');
+			$this->db->select('MAX(items.item_number) AS item_number');
+			$this->db->select('MAX(items.description) AS description');
+			$this->db->select('MAX(items.cost_price) AS cost_price');
+			$this->db->select('MAX(items.unit_price) AS unit_price');
+			$this->db->select('MAX(items.reorder_level) AS reorder_level');
+			$this->db->select('MAX(items.receiving_quantity) AS receiving_quantity');
+			$this->db->select('MAX(items.pic_filename) AS pic_filename');
+			$this->db->select('MAX(items.allow_alt_description) AS allow_alt_description');
+			$this->db->select('MAX(items.is_serialized) AS is_serialized');
+			$this->db->select('MAX(items.pack_name) AS pack_name');
+			$this->db->select('MAX(items.deleted) AS deleted');
+			$this->db->select('MAX(items.custom1) AS custom1');
+			$this->db->select('MAX(items.custom2) AS custom2');
+			$this->db->select('MAX(items.custom3) AS custom3');
+			$this->db->select('MAX(items.custom4) AS custom4');
+			$this->db->select('MAX(items.custom5) AS custom5');
+			$this->db->select('MAX(items.custom6) AS custom6');
+			$this->db->select('MAX(items.custom7) AS custom7');
+			$this->db->select('MAX(items.custom8) AS custom8');
+			$this->db->select('MAX(items.custom9) AS custom9');
+			$this->db->select('MAX(items.custom10) AS custom10');
 
-			$this->db->select('MAX(suppliers.person_id) as person_id');
-			$this->db->select('MAX(suppliers.company_name) as company_name');
-			$this->db->select('MAX(suppliers.agency_name) as agency_name');
-			$this->db->select('MAX(suppliers.account_number) as account_number');
-			$this->db->select('MAX(suppliers.deleted) as deleted');
+			$this->db->select('MAX(suppliers.person_id) AS person_id');
+			$this->db->select('MAX(suppliers.company_name) AS company_name');
+			$this->db->select('MAX(suppliers.agency_name) AS agency_name');
+			$this->db->select('MAX(suppliers.account_number) AS account_number');
+			$this->db->select('MAX(suppliers.deleted) AS deleted');
 
-			$this->db->select('MAX(inventory.trans_id) as trans_id');
-			$this->db->select('MAX(inventory.trans_items) as trans_items');
-			$this->db->select('MAX(inventory.trans_user) as trans_user');
-			$this->db->select('MAX(inventory.trans_date) as trans_date');
-			$this->db->select('MAX(inventory.trans_comment) as trans_comment');
-			$this->db->select('MAX(inventory.trans_location) as trans_location');
-			$this->db->select('MAX(inventory.trans_inventory) as trans_inventory');
+			$this->db->select('MAX(inventory.trans_id) AS trans_id');
+			$this->db->select('MAX(inventory.trans_items) AS trans_items');
+			$this->db->select('MAX(inventory.trans_user) AS trans_user');
+			$this->db->select('MAX(inventory.trans_date) AS trans_date');
+			$this->db->select('MAX(inventory.trans_comment) AS trans_comment');
+			$this->db->select('MAX(inventory.trans_location) AS trans_location');
+			$this->db->select('MAX(inventory.trans_inventory) AS trans_inventory');
 
 			if($filters['stock_location_id'] > -1)
 			{
-				$this->db->select('MAX(item_quantities.item_id) as qty_item_id');
-				$this->db->select('MAX(item_quantities.location_id) as location_id');
-				$this->db->select('MAX(item_quantities.quantity) as quantity');
+				$this->db->select('MAX(item_quantities.item_id) AS qty_item_id');
+				$this->db->select('MAX(item_quantities.location_id) AS location_id');
+				$this->db->select('MAX(item_quantities.quantity) AS quantity');
 			}
 		}
 
-		$this->db->from('items as items');
-		$this->db->join('suppliers as suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->join('inventory as inventory', 'inventory.trans_items = items.item_id');
+		$this->db->from('items AS items');
+		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+		$this->db->join('inventory AS inventory', 'inventory.trans_items = items.item_id');
 
 		if($filters['stock_location_id'] > -1)
 		{
-			$this->db->join('item_quantities as item_quantities', 'item_quantities.item_id = items.item_id');
+			$this->db->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
 			$this->db->where('location_id', $filters['stock_location_id']);
 		}
 
@@ -398,6 +401,11 @@ class Item extends CI_Model
 			if($this->db->insert('items', $item_data))
 			{
 				$item_data['item_id'] = $this->db->insert_id();
+				if($item_data['low_sell_item_id'] == -1)
+				{
+					$this->db->where('item_id', $item_data['item_id']);
+					$this->db->update('items', array('low_sell_item_id'=>$item_data['item_id']));
+				}
 				return TRUE;
 			}
 			return FALSE;
@@ -477,7 +485,7 @@ class Item extends CI_Model
 	function get_search_suggestion_format($seed = NULL)
 	{
 		$seed .= ',' . $this->config->item('suggestions_first_column');
-		
+
 		if($this->config->item('suggestions_second_column') !== '')
 		{
 			$seed .= ',' . $this->config->item('suggestions_second_column');
@@ -487,37 +495,77 @@ class Item extends CI_Model
 		{
 			$seed .= ',' . $this->config->item('suggestions_third_column');
 		}
-		
+
 		return $seed;
 	}
 	
 	function get_search_suggestion_label($result_row)
 	{
+		$label = '';
 		$label1 = $this->config->item('suggestions_first_column');
 		$label2 = $this->config->item('suggestions_second_column');
 		$label3 = $this->config->item('suggestions_third_column');
 
-		$label = $result_row->$label1;
-		
-		if($label2 !== '')
+		// If multi_pack enabled then if "name" is part of the search suggestions then append pack
+		if($this->config->item('multi_pack_enabled') == '1')
 		{
-			$label .= ' | '. $result_row->$label2;
+			$this->append_label($label, $label1, $result_row);
+			$this->append_label($label, $label2, $result_row);
+			$this->append_label($label, $label3, $result_row);
 		}
-		
-		if($label3 !== '')
+		else
 		{
-			$label .= ' | '. $result_row->$label3;
-		}	
-		
+			$label = $result_row->$label1;
+
+			if($label2 !== '')
+			{
+				$label .= NAME_SEPARATOR . $result_row->$label2;
+			}
+
+			if($label3 !== '')
+			{
+				$label .= NAME_SEPARATOR . $result_row->$label3;
+			}
+		}
+
 		return $label;
-	}	
+	}
+
+	private function append_label(&$label, $item_field_name, $item_info)
+	{
+		if($item_field_name !== '')
+		{
+			if($label == "")
+			{
+				if($item_field_name == 'name')
+				{
+					$label .= implode(NAME_SEPARATOR, array($item_info->name, $item_info->pack_name));
+				}
+				else
+				{
+					$label .= $item_info->$item_field_name;
+				}
+			}
+			else
+			{
+				if($item_field_name == 'name')
+				{
+					$label .= implode(NAME_SEPARATOR, array("", $item_info->name, $item_info->pack_name));
+				}
+				else
+				{
+					$label .= NAME_SEPARATOR . $item_info->$item_field_name;
+				}
+			}
+		}
+	}
 	
 	public function get_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
 	{
 		$suggestions = array();
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
-		$this->db->select($this->get_search_suggestion_format('item_id, name'));
+		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
@@ -528,7 +576,7 @@ class Item extends CI_Model
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
-		$this->db->select($this->get_search_suggestion_format('item_id, item_number'));
+		$this->db->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
@@ -569,7 +617,7 @@ class Item extends CI_Model
 			}
 
 			//Search by description
-			$this->db->select($this->get_search_suggestion_format('item_id, name, description'));
+			$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
@@ -624,7 +672,7 @@ class Item extends CI_Model
 		$suggestions = array();
 		$non_kit = array(ITEM, ITEM_AMOUNT_ENTRY);
 
-		$this->db->select($this->get_search_suggestion_format('item_id, name'));
+		$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name'));
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
@@ -636,7 +684,7 @@ class Item extends CI_Model
 			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
 		}
 
-		$this->db->select($this->get_search_suggestion_format('item_id, item_number'));
+		$this->db->select($this->get_search_suggestion_format('item_id, item_number, pack_name'));
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
@@ -678,7 +726,7 @@ class Item extends CI_Model
 			}
 
 			//Search by description
-			$this->db->select($this->get_search_suggestion_format('item_id, name, description'));
+			$this->db->select($this->get_search_suggestion_format('item_id, name, pack_name, description'));
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
@@ -834,6 +882,24 @@ class Item extends CI_Model
 		return $suggestions;
 	}
 
+	public function get_low_sell_suggestions($search)
+	{
+		$suggestions = array();
+
+		$this->db->select($this->get_search_suggestion_format('item_id, pack_name'));
+		$this->db->from('items');
+		$this->db->where('deleted', '0');
+		$this->db->where("stock_type = '0'"); // stocked items only
+		$this->db->like('name', $search);
+		$this->db->order_by('name', 'asc');
+		foreach($this->db->get()->result() as $row)
+		{
+			$suggestions[] = array('value' => $row->item_id, 'label' => $this->get_search_suggestion_label($row));
+		}
+
+		return $suggestions;
+	}
+
 	public function get_category_suggestions($search)
 	{
 		$suggestions = array();
@@ -950,5 +1016,31 @@ class Item extends CI_Model
 		$this->db->update('items', array('description'=>$item_description));
 	}
 
+	/**
+	 * Determine the item name to use taking into consideration that
+	 * for a multipack environment then the item name should have the
+	 * pack appended to it
+	 */
+	function get_item_name($as_name = NULL)
+	{
+		if($as_name == NULL)
+		{
+			$as_name = '';
+		}
+		else
+		{
+			$as_name = ' AS ' . $as_name;
+		}
+
+		if($this->config->item('multi_pack_enabled') == '1')
+		{
+			$item_name = "concat(items.name,'" . NAME_SEPARATOR . '\', items.pack_name)' . $as_name;
+		}
+		else
+		{
+			$item_name = 'items.name' . $as_name;
+		}
+		return $item_name;
+	}
 }
 ?>
