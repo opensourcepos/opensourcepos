@@ -453,12 +453,13 @@ $(document).ready(function()
 				{
 					url: "<?php echo site_url($controller_name . '/check_item_number')?>",
 					type: 'POST',
-					data: {
+					data: $.extend(csrf_form_base(), 
+					{
 						"item_id": "<?php echo $item_info->item_id; ?>",
 						"item_number": function() {
 							return $("#item_number").val();
 						}
-					}
+					})
 				}
 			},
 			cost_price:
