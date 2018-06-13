@@ -40,21 +40,16 @@
 			}
 		}
 
-		return ajax.apply(this, arguments);
+		var result = ajax.apply(this, arguments);
+
+		setup_csrf_token();
+
+		return result;
 	};
 
 	var setup_csrf_token = function() {
 		$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
 	};
-
-	setup_csrf_token();
-
-	$.ajaxSetup({
-		dataFilter: function(data) {
-			setup_csrf_token();
-			return data;
-		}
-	});
 
 	var submit = $.fn.submit;
 

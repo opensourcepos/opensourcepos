@@ -188,6 +188,18 @@ $(document).ready(function()
 		});
 	};
 
+	var amount_validator = function(field) {
+		return {
+			url: "<?php echo site_url($controller_name . '/ajax_check_amount')?>",
+			type: 'POST',
+			dataFilter: function(data) {
+				var response = JSON.parse(data);
+				$(field).val(response.amount);
+				return response.success;
+			}
+		}
+	}
+
 	$('#expenses_edit_form').validate($.extend(
 	{
 		submitHandler: function(form)
@@ -204,7 +216,11 @@ $(document).ready(function()
 			amount:
 			{
 				required: true,
-				number: true
+				remote: amount_validator("#amount")
+			},
+			tax_amount:
+			{
+				remote: amount_validator("#tax_amount")
 			}
 		},
 		messages:
@@ -218,7 +234,11 @@ $(document).ready(function()
 			amount:
 			{
 				required: '<?php echo $this->lang->line('expenses_amount_required'); ?>',
-				number: '<?php echo $this->lang->line('expenses_amount_number'); ?>'
+				remote: '<?php echo $this->lang->line('expenses_amount_number'); ?>'
+			},
+			tax_amount:
+			{
+				remote: '<?php echo $this->lang->line('expenses_tax_amount_number'); ?>'
 			}
 		}
 	}, form_support.error));

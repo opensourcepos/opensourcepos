@@ -159,6 +159,12 @@ class Expenses extends Secure_Controller
 		}
 	}
 
+	public function ajax_check_amount()
+	{
+		$parsed_value = parse_decimals(array_pop($this->input->post()));
+		echo json_encode(array('success' => $parsed_value !== FALSE, 'amount' => to_currency_no_money($parsed_value)));
+	}
+
 	public function delete()
 	{
 		$expenses_to_delete = $this->input->post('ids');

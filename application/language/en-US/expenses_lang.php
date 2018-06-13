@@ -2,6 +2,7 @@
 
 $lang["expenses_add_item"] = "Add Expense";
 $lang["expenses_amount"] = "Amount";
+$lang["expenses_tax_amount"] = "Amount";
 $lang["expenses_amount_number"] = "Amount must be a number";
 $lang["expenses_amount_required"] = "Expense Amount required";
 $lang["expenses_by_category"] = "Category";
