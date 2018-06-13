@@ -129,9 +129,8 @@ $(document).ready(function()
 						'amount': $('#giftcard_amount').val()
 					},
 					dataFilter: function(data) {
-						setup_csrf_token();
 						var response = JSON.parse(data);
-						$('#giftcard_amount').text(response.value);
+						$('#giftcard_amount').val(response.giftcard_amount);
 						return response.success;
 					}
 				}
