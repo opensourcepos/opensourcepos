@@ -30,6 +30,7 @@ The main features are:
 * Selectable Boostrap (Bootswatch) based UI theme
 * Mailchimp integration
 * reCAPTCHA to protect login page from brute force attacks
+* GDPR ready
 
 The software is written in PHP language, it uses MySQL (or MariaDB) as data storage back-end and has a simple but intuitive user interface.
 
