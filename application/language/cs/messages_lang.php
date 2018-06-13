@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["messages_first_name"] = "Jméno";
 $lang["messages_last_name"] = "Příjmení";
 $lang["messages_message"] = "Zpráva";

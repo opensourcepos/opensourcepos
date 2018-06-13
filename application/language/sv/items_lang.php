@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Skatt %";
 $lang["items_tax_percent_number"] = "Skattprocent måste vara ett numeriskt värde";
 $lang["items_tax_percent_required"] = "Skattprocent är ett obligatoriskt fält.";
 $lang["items_tax_percents"] = "Skatt %";
+$lang["items_temp"] = "";
 $lang["items_type"] = "Artikeltyp";
 $lang["items_unit_price"] = "Försäljningspris";
 $lang["items_unit_price_number"] = "Enhetspriset måste vara ett nummer.";

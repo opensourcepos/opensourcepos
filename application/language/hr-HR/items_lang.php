@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "% poreza";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "% poreza je obavezan";
 $lang["items_tax_percents"] = "%-ci poreza";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "Maloprodajna cijena";
 $lang["items_unit_price_number"] = "Maloprodajna cijena mora biti broj";

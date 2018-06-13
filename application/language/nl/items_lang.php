@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "VAT %";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "Taxpercentage moet ingevuld worden";
 $lang["items_tax_percents"] = "VAT";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "Verkoopprijs";
 $lang["items_unit_price_number"] = "Verkoopprijs moet een cijfer zijn";

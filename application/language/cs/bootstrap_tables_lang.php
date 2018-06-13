@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "Vše";
 $lang["tables_columns"] = "Sloupce";
 $lang["tables_hide_show_pagination"] = "Zobrazit/skrýt stránkování";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Ajoujer/Soustraire à l'Inventaire.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Autoriser Description Alt";
@@ -96,6 +97,7 @@ $lang["items_tax_percent"] = "Pourcentage d'imposition";
 $lang["items_tax_percent_number"] = "Le pourcentage d'imposition doit être une valeur numérique";
 $lang["items_tax_percent_required"] = "Le pourcentage d'imposition est requis.";
 $lang["items_tax_percents"] = "Pourcents(s) de taxes";
+$lang["items_temp"] = "";
 $lang["items_type"] = "Type d'élément";
 $lang["items_unit_price"] = "Prix au détail";
 $lang["items_unit_price_number"] = "Le prix unitaire doit etre un nombre.";

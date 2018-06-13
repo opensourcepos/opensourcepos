@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "ภาษี(%)";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "เปอร์เซ็นต์ต้องกรอก";
 $lang["items_tax_percents"] = "ภาษี(%)";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "ราคาขาย";
 $lang["items_unit_price_number"] = "ราคาต่อหน่วยต้องเป็นตัวเลข";

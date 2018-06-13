@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Nom de la catégorie de dépenses requis";
 $lang["expenses_categories_add_item"] = "Ajouter une catégorie";
 $lang["expenses_categories_cannot_be_deleted"] = "Impossible de supprimer la ou les dépenses de catégorie";

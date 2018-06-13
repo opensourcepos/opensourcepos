@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Aggiungi Eccezione";
 $lang["taxes_confirm_delete"] = "Sei sicuro che vuoi eliminare questo Codice Imposta? Questa operazione non può essere annullata.";
 $lang["taxes_confirm_restore"] = "Sei sicuro di voler ripristinare i Codice Tassa selezionati?";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["login_gcaptcha"] = "Nejsem robot.";
 $lang["login_go"] = "Přihlásit";
 $lang["login_invalid_gcaptcha"] = "Špatné zadání.";

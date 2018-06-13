@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "";
 $lang["items_tax_percents"] = "";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "";
 $lang["items_unit_price_number"] = "";

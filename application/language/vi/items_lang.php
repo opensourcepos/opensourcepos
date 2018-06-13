@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Phần trăm Thuế";
 $lang["items_tax_percent_number"] = "Phần trăm Thuế phải dạng số";
 $lang["items_tax_percent_required"] = "Trường Phần trăm Thuế là bắt buộc.";
 $lang["items_tax_percents"] = "Phần trăm Thuế";
+$lang["items_temp"] = "";
 $lang["items_type"] = "Kiểu Hàng hóa";
 $lang["items_unit_price"] = "Giá bán lẻ";
 $lang["items_unit_price_number"] = "Giá bán lẻ mỗi đơn vị phải là dạng số.";

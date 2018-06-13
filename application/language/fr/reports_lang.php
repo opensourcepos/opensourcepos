@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Tous";
 $lang["reports_canceled"] = "Annulé";
 $lang["reports_categories"] = "Catégories";

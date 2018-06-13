@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Vergi Yüzdesi";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "Vergi Oranı zorunlu alandır";
 $lang["items_tax_percents"] = "Vergi Yüzdesi";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "Satış Fiyatı";
 $lang["items_unit_price_number"] = "Fiyat sayı olmalıdır (9.90)";

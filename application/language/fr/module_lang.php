@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_both"] = "Tous les deux";
 $lang["module_config"] = "Paramètres";
 $lang["module_config_desc"] = "Paramètres de la boutique.";

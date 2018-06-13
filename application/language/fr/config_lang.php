@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Addresse";
 $lang["config_address_required"] = "L'adresse de l'entreprise est un champ obligatoire.";
 $lang["config_allow_duplicate_barcodes"] = "Autoriser les codes à barres en double";

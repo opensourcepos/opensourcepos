@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Vergi Faizi";
 $lang["items_tax_percent_number"] = "Vergi Faizi rəqəmli dəyər vahidi olmalıdir";
 $lang["items_tax_percent_required"] = "Vergi Faizi olan sahə boş qala bilməz";
 $lang["items_tax_percents"] = "Vergi Faiz(lər) i";
+$lang["items_temp"] = "";
 $lang["items_type"] = "Malın Növü";
 $lang["items_unit_price"] = "Pərakəndə Satış";
 $lang["items_unit_price_number"] = "Ədədin qiyməti rəqəm ilə olmalıdır";

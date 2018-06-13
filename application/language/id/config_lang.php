@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Alamat Perusahaan";
 $lang["config_address_required"] = "Alamat Perusahaan wajib diisi";
 $lang["config_allow_duplicate_barcodes"] = "Ijinkan kode batang ganda";

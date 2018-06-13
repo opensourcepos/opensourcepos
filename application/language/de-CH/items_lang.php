@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "MWSt %";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "MWSt % ist erforderlich";
 $lang["items_tax_percents"] = "Steuerprozent(e)";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "Preis";
 $lang["items_unit_price_number"] = "Preis muss eine Zahl sein";

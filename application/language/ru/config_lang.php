@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Адрес Компании";
 $lang["config_address_required"] = "Адрес Компании - обязательный пробел.";
 $lang["config_allow_duplicate_barcodes"] = "Позволить Дублировать Штрих-Коды";

@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Percentuale Imposta";
 $lang["items_tax_percent_number"] = "Percentuale Imposta deve essere un numero";
 $lang["items_tax_percent_required"] = "Percentuale Imposta è un campo richiesto.";
 $lang["items_tax_percents"] = "Percentuale Imposta(e)";
+$lang["items_temp"] = "";
 $lang["items_type"] = "Tipo Articoli";
 $lang["items_unit_price"] = "Prezzo al dettaglio";
 $lang["items_unit_price_number"] = "Prezzo unitario deve essere un numero.";

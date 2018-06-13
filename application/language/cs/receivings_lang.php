@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Zrušit";
 $lang["receivings_cannot_be_deleted"] = "Příjemku nelze smazat.";
 $lang["receivings_comments"] = "Poznámky";
@@ -10,6 +11,7 @@ $lang["receivings_cost"] = "Cena";
 $lang["receivings_date"] = "Datum příjmu";
 $lang["receivings_date_required"] = "Musíte zadat správné datum.";
 $lang["receivings_date_type"] = "Musíte zadat datum.";
+$lang["receivings_delete_entire_sale"] = "";
 $lang["receivings_discount"] = "Sleva %";
 $lang["receivings_edit"] = "Upravit";
 $lang["receivings_edit_sale"] = "Upravit příjemku";
@@ -22,6 +24,7 @@ $lang["receivings_id"] = "Číslo příjemky";
 $lang["receivings_item_name"] = "Název položky";
 $lang["receivings_mode"] = "Druh příjmu";
 $lang["receivings_new_supplier"] = "Nový dodavatel";
+$lang["receivings_one_or_multiple"] = "";
 $lang["receivings_print_after_sale"] = "Vytisknout po příjmu";
 $lang["receivings_quantity"] = "Ks.";
 $lang["receivings_receipt"] = "Příjemka";
@@ -29,3 +32,22 @@ $lang["receivings_receipt_number"] = "Příjemka č";
 $lang["receivings_receiving"] = "Příjem";
 $lang["receivings_reference"] = "Označení";
 $lang["receivings_register"] = "Přijaté položky";
+$lang["receivings_requisition"] = "";
+$lang["receivings_return"] = "";
+$lang["receivings_select_supplier"] = "";
+$lang["receivings_start_typing_supplier_name"] = "";
+$lang["receivings_stock"] = "";
+$lang["receivings_stock_destination"] = "";
+$lang["receivings_stock_locaiton"] = "";
+$lang["receivings_stock_source"] = "";
+$lang["receivings_successfully_deleted"] = "";
+$lang["receivings_successfully_updated"] = "";
+$lang["receivings_supplier"] = "";
+$lang["receivings_supplier_address"] = "";
+$lang["receivings_supplier_email"] = "";
+$lang["receivings_supplier_location"] = "";
+$lang["receivings_total"] = "";
+$lang["receivings_transaction_failed"] = "";
+$lang["receivings_unable_to_add_item"] = "";
+$lang["receivings_unsuccessfully_updated"] = "";
+$lang["receivings_update"] = "";

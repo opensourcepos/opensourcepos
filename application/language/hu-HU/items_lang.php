@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Adó %";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "Adó % kötelező mező";
 $lang["items_tax_percents"] = "Adó százalék(ok)";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "Kisker. Ár";
 $lang["items_unit_price_number"] = "Egységárnak számnak kell lennie";

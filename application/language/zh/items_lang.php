@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "稅率";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "稅率為必填欄位";
 $lang["items_tax_percents"] = "稅率 %";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "單價";
 $lang["items_unit_price_number"] = "單價必需是數值";

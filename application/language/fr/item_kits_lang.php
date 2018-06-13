@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Ajouter un article";
 $lang["item_kits_all"] = "Tous";
 $lang["item_kits_cannot_be_deleted"] = "Impossible de supprimer.";

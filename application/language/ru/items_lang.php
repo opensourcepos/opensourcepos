@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "процент налога";
 $lang["items_tax_percent_number"] = "Налоговый процент должен быть числовым";
 $lang["items_tax_percent_required"] = "Процент Налоги обязательное пробелья.";
 $lang["items_tax_percents"] = "процент налога(и)";
+$lang["items_temp"] = "";
 $lang["items_type"] = "тип элементов";
 $lang["items_unit_price"] = "Розничная Цена";
 $lang["items_unit_price_number"] = "Розничная Цена должно быть число.";

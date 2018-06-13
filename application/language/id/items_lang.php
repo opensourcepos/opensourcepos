@@ -97,6 +97,7 @@ $lang["items_tax_percent"] = "Tarif Pajak";
 $lang["items_tax_percent_number"] = "";
 $lang["items_tax_percent_required"] = "Tarif Pajak wajib diisi";
 $lang["items_tax_percents"] = "Tarif Pajak";
+$lang["items_temp"] = "";
 $lang["items_type"] = "";
 $lang["items_unit_price"] = "Harga Jual";
 $lang["items_unit_price_number"] = "Harga satuan harus angka";

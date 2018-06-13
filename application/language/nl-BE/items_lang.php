@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Correctie hoeveelheid.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
@@ -96,6 +97,7 @@ $lang["items_tax_percent"] = "VAT %";
 $lang["items_tax_percent_number"] = "Tax Percentage moet een numerieke waarde zijn";
 $lang["items_tax_percent_required"] = "Taxpercentage moet ingevuld worden.";
 $lang["items_tax_percents"] = "VAT";
+$lang["items_temp"] = "";
 $lang["items_type"] = "Item Type";
 $lang["items_unit_price"] = "Verkoopprijs";
 $lang["items_unit_price_number"] = "Verkoopprijs moet een cijfer zijn.";

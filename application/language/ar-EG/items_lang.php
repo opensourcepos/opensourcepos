@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
@@ -96,6 +97,7 @@ $lang["items_tax_percent"] = "نسبة الضريبة";
 $lang["items_tax_percent_number"] = "نسبة الضريبة يجب ان تكون رقم";
 $lang["items_tax_percent_required"] = "نسبة الضريبة مطلوبة.";
 $lang["items_tax_percents"] = "نسبة/نسب الضريبة";
+$lang["items_temp"] = "";
 $lang["items_type"] = "نوع الصنف";
 $lang["items_unit_price"] = "السعر";
 $lang["items_unit_price_number"] = "السعر يجب أن يكون رقم.";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_both"] = "Oba";
 $lang["module_config"] = "Nastavení";
 $lang["module_config_desc"] = "Změnit nastavení OSPOS.";
@@ -25,6 +26,7 @@ $lang["module_migrate_desc"] = "Aktualizovat databázi OSPOS.";
 $lang["module_office"] = "Správa";
 $lang["module_office_desc"] = "Seznam modulů pro správu.";
 $lang["module_receivings"] = "Příjem zboží";
+$lang["module_receivings_desc"] = "";
 $lang["module_reports"] = "Sestavy";
 $lang["module_reports_desc"] = "Slouží pro zobrazení a tvorbu sestav.";
 $lang["module_sales"] = "Prodej";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_both"] = "Keduanya";
 $lang["module_config"] = "Konfigurasi";
 $lang["module_config_desc"] = "Ubah Konfigurasi Toko";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Ajouter une exception";
 $lang["taxes_confirm_delete"] = "Êtes-vous sûr de vouloir supprimer ce code fiscal? Cette action ne peut pas être annulée.";
 $lang["taxes_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer le (s) code (s) fiscal (s) sélectionné (s) ?";

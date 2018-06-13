@@ -1,9 +1,11 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adresa 1";
 $lang["common_address_2"] = "Adresa 2";
 $lang["common_city"] = "Město";
 $lang["common_close"] = "Zavřít";
 $lang["common_comments"] = "Podrobnosti";
+$lang["common_common"] = "";
 $lang["common_confirm_search"] = "Máte vybráno jeden nebo více řádků a tyto po po vyhledání nebudou vybrány. Chcete opravdu pokračovat s vyhledáváním?";
 $lang["common_country"] = "Země";
 $lang["common_date"] = "Datum";
@@ -30,6 +32,7 @@ $lang["common_import_excel"] = "Import z Excelu";
 $lang["common_import_full_path"] = "Úplná cesta k souboru Excel je vyžadována";
 $lang["common_import_remove_file"] = "Vyjmout";
 $lang["common_import_select_file"] = "Vybrat soubor";
+$lang["common_inv"] = "";
 $lang["common_last_name"] = "Příjmení";
 $lang["common_last_name_required"] = "Příjmení je vyžadováno.";
 $lang["common_last_page"] = "Poslední";
@@ -41,6 +44,7 @@ $lang["common_no_persons_to_display"] = "Žádní zákazníci k zobrazení.";
 $lang["common_none_selected_text"] = "bez výběru";
 $lang["common_or"] = "Nebo";
 $lang["common_phone_number"] = "Telefon";
+$lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Navštivte prosím";
 $lang["common_powered_by"] = "Používá";
 $lang["common_price"] = "Cena";
