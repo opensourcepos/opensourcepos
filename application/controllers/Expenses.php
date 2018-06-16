@@ -161,7 +161,8 @@ class Expenses extends Secure_Controller
 
 	public function ajax_check_amount()
 	{
-		$parsed_value = parse_decimals(array_pop($this->input->post()));
+		$value = $this->input->post();
+		$parsed_value = parse_decimals(array_pop($value));
 		echo json_encode(array('success' => $parsed_value !== FALSE, 'amount' => to_currency_no_money($parsed_value)));
 	}
 
