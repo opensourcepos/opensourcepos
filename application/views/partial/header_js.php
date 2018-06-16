@@ -12,12 +12,12 @@
 	}
 
 	$.notifyDefaults({ placement: {
-		align: '<?php echo $this->config->item('notify_horizontal_position'); ?>',
-		from: '<?php echo $this->config->item('notify_vertical_position'); ?>'
+		align: "<?php echo $this->config->item('notify_horizontal_position'); ?>",
+		from: "<?php echo $this->config->item('notify_vertical_position'); ?>"
 	}});
 
 	var csrf_token = function() {
-		return Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>');
+		return Cookies.get("<?php echo $this->config->item('csrf_cookie_name'); ?>");
 	};
 
 	var csrf_form_base = function() {
@@ -27,7 +27,7 @@
 	var ajax = $.ajax;
 
 	$.ajax = function() {
-	    var args = arguments[0];
+		var args = arguments[0];
 
 		if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
 			if (typeof args['data'] === 'string')

@@ -162,53 +162,60 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>", appendTo:'.modal-content', delay:10});
+	$('#category').autocomplete({
+		source: "<?php echo site_url('items/suggest_category');?>",
+		appendTo: '.modal-content',
+		delay: 10
+	});
 
 	var confirm_message = false;
-	$("#tax_percent_name_2, #tax_name_2").prop('disabled', true),
-	$("#tax_percent_name_1, #tax_name_1").blur(function() {
-		var disabled = !($("#tax_percent_name_1").val() + $("#tax_name_1").val());
-		$("#tax_percent_name_2, #tax_name_2").prop('disabled', disabled);
-		confirm_message =  disabled ? "" : "<?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
+	$('#tax_percent_name_2, #tax_name_2').prop('disabled', true),
+	$('#tax_percent_name_1, #tax_name_1').blur(function() {
+		var disabled = !($('#tax_percent_name_1').val() + $('#tax_name_1').val());
+		$('#tax_percent_name_2, #tax_name_2').prop('disabled', disabled);
+		confirm_message =  disabled ? '' : "<?php echo $this->lang->line('items_confirm_bulk_edit_wipe_taxes') ?>";
 	});
 
 	$('#item_form').validate($.extend({
-		submitHandler:function(form)
-		{
+		submitHandler: function(form) {
 			if(!confirm_message || confirm(confirm_message))
 			{
 				$(form).ajaxSubmit({
 					beforeSubmit: function(arr, $form, options) {
 						arr.push({name: 'item_ids', value: table_support.selected_ids().join(": ")});
 					},
-					success:function(response)
+					success: function(response)
 					{
 						dialog_support.hide();
-						table_support.handle_submit('<?php echo site_url('items'); ?>', response);
+						table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
 					},
-					dataType:'json'
+					dataType: 'json'
 				});
 			}
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
 			unit_price:
 			{
-				number:true
+				number: true
 			},
 			tax_percent:
 			{
-				number:true
+				number: true
 			},
 			quantity:
 			{
-				number:true
+				number: true
 			},
 			reorder_level:
 			{
-				number:true
+				number: true
 			}
 		},
+
 		messages:
 		{
 			unit_price:

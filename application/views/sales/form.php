@@ -98,10 +98,10 @@ $(document).ready(function()
 	<?php if(!empty($sale_info['email'])): ?>
 		$('#send_invoice').click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_info['sale_id']; ?>',
+				$.get("<?php echo site_url($controller_name . '/send_pdf/' . $sale_info['sale_id']); ?>",
 					function(response) {
 						dialog_support.hide();
-						table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
+						table_support.handle_submit("<?php echo site_url('sales'); ?>", response);
 					}, 'json'
 				);	
 			}
@@ -134,7 +134,7 @@ $(document).ready(function()
 		todayBtn: true,
 		todayHighlight: true,
 		bootcssVer: 3,
-		language: '<?php echo current_language_code(); ?>'
+		language: "<?php echo current_language_code(); ?>"
 	});
 
 	var fill_value =  function(event, ui) {
@@ -145,7 +145,7 @@ $(document).ready(function()
 
 	$('#customer_name').autocomplete(
 	{
-		source: '<?php echo site_url("customers/suggest"); ?>',
+		source: "<?php echo site_url('customers/suggest'); ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -156,33 +156,29 @@ $(document).ready(function()
 
 	$('button#delete').click(function() {
 		dialog_support.hide();
-		table_support.do_delete('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
+		table_support.do_delete("<?php echo site_url($controller_name); ?>", <?php echo $sale_info['sale_id']; ?>);
 	});
 
 	$('button#restore').click(function() {
 		dialog_support.hide();
-		table_support.do_restore('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
+		table_support.do_restore("<?php echo site_url($controller_name); ?>", <?php echo $sale_info['sale_id']; ?>);
 	});
-
-	var submit_form = function()
-	{
-		$(this).ajaxSubmit(
-		{
-			success: function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
-			},
-			dataType: 'json'
-		});
-	};
 
 	$('#sales_edit_form').validate($.extend(
 	{
-		submitHandler: function(form)
-		{
-			submit_form.call(form);
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+				},
+				dataType: 'json'
+			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
 			invoice_number:
@@ -200,9 +196,10 @@ $(document).ready(function()
 				}
 			}
 		},
+
 		messages: 
 		{
-			invoice_number: '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>'
+			invoice_number: "<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>"
 		}
 	}, form_support.error));
 });

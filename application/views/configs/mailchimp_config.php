@@ -60,7 +60,8 @@ $(document).ready(function()
 					$('#mailchimp_list_id').append(new Option(text, val));
 				});
 				$('#mailchimp_list_id').prop('selectedIndex', 0);
-			}, 'json'
+			},
+			'json'
 		);
 	});
 

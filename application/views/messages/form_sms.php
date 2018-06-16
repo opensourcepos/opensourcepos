@@ -35,43 +35,47 @@
 <?php echo form_close(); ?>
 
 <script type="text/javascript">
+//validation and submit handling
 $(document).ready(function()
 {
 	$('#send_sms_form').validate($.extend({
-		submitHandler:function(form) 
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-				success:function(response)
+				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo site_url('messages'); ?>', response);
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
 				},
-				dataType:'json'
+				dataType: 'json'
 			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
 			phone:
 			{
-				required:true,
-				number:true
+				required: true,
+				number: true
 			},
 			message:
 			{
-				required:true,
-				number:false
+				required: true,
+				number: false
 			}
    		},
+
 		messages:
 		{
 			phone:
 			{
-				required:"<?php echo $this->lang->line('messages_phone_number_required'); ?>",
-				number:"<?php echo $this->lang->line('messages_phone'); ?>"
+				required: "<?php echo $this->lang->line('messages_phone_number_required'); ?>",
+				number: "<?php echo $this->lang->line('messages_phone'); ?>"
 			},
 			message:
 			{
-				required:"<?php echo $this->lang->line('messages_message_required'); ?>"
+				required: "<?php echo $this->lang->line('messages_message_required'); ?>"
 			}
 		}
 	}, form_support.error));
