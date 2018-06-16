@@ -644,13 +644,12 @@ $(document).ready(function()
 		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
 		var item_number = $(this).val();
 		$.ajax({
-			url: "<?php echo site_url('sales/change_item_number');?>",
+			url: '<?php echo site_url('sales/change_item_number');?>',
 			method: 'post',
-			data: $.extend(csrf_form_base(),
-				{
-					"item_id" : item_id,
-					"item_number" : item_number,
-				}),
+			data: {
+				"item_id" : item_id,
+				"item_number" : item_number,
+			},
 			dataType: 'json'
 		});
 	});
@@ -659,13 +658,12 @@ $(document).ready(function()
 		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
 		var item_name = $(this).val();
 		$.ajax({
-			url: "<?php echo site_url('sales/change_item_name');?>",
+			url: '<?php echo site_url('sales/change_item_name');?>',
 			method: 'post',
-			data: $.extend(csrf_form_base(),
-				{
-					"item_id" : item_id,
-					"item_name" : item_name,
-				}),
+			data: {
+				"item_id" : item_id,
+				"item_name" : item_name,
+			},
 			dataType: 'json'
 		});
 	});
@@ -674,13 +672,12 @@ $(document).ready(function()
 		var item_id = $(this).parents("tr").find("input[name='item_id']").val();
 		var item_description = $(this).val();
 		$.ajax({
-			url: "<?php echo site_url('sales/change_item_description');?>",
+			url: '<?php echo site_url('sales/change_item_description');?>',
 			method: 'post',
-			data: $.extend(csrf_form_base(),
-				{
-					"item_id" : item_id,
-					"item_description" : item_description,
-				}),
+			data: {
+				"item_id" : item_id,
+				"item_description" : item_description,
+			},
 			dataType: 'json'
 		});
 	});
@@ -689,10 +686,10 @@ $(document).ready(function()
 
 	$('#item').blur(function()
 	{
-		$(this).val("<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
+		$(this).val('<?php echo $this->lang->line('sales_start_typing_item_name'); ?>');
 	});
 
-	$("#item").autocomplete(
+	$('#item').autocomplete(
 	{
 		source: '<?php echo site_url($controller_name."/item_search"); ?>',
 		minChars: 0,
@@ -714,7 +711,7 @@ $(document).ready(function()
 
 	var clear_fields = function()
 	{
-		if($(this).val().match("<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . $this->lang->line('sales_start_typing_customer_name'); ?>"))
+		if($(this).val().match('<?php echo $this->lang->line('sales_start_typing_item_name') . '|' . $this->lang->line('sales_start_typing_customer_name'); ?>'))
 		{
 			$(this).val('');
 		}
@@ -727,7 +724,7 @@ $(document).ready(function()
 
 	$('#customer').blur(function()
 	{
-		$(this).val("<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>");
+		$(this).val('<?php echo $this->lang->line('sales_start_typing_customer_name'); ?>');
 	});
 
 	$("#customer").autocomplete(
@@ -903,30 +900,30 @@ function check_payment_type()
 {
 	var cash_rounding = <?php echo json_encode($cash_rounding); ?>;
 
-	if($("#payment_types").val() == "<?php echo $this->lang->line('sales_giftcard'); ?>")
+	if($("#payment_types").val() == '<?php echo $this->lang->line('sales_giftcard'); ?>')
 	{
-		$("#sale_total").html("<?php echo to_currency($total); ?>");
-		$("#sale_amount_due").html("<?php echo to_currency($amount_due); ?>");
-		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_giftcard_number'); ?>");
+		$("#sale_total").html('<?php echo to_currency($total); ?>');
+		$("#sale_amount_due").html('<?php echo to_currency($amount_due); ?>');
+		$("#amount_tendered_label").html('<?php echo $this->lang->line('sales_giftcard_number'); ?>');
 		$("#amount_tendered:enabled").val('').focus();
 		$(".giftcard-input").attr('disabled', false);
 		$(".non-giftcard-input").attr('disabled', true);
 		$(".giftcard-input:enabled").val('').focus();
 	}
-	else if($("#payment_types").val() == "<?php echo $this->lang->line('sales_cash'); ?>" && cash_rounding)
+	else if($("#payment_types").val() == '<?php echo $this->lang->line('sales_cash'); ?>' && cash_rounding)
 	{
-		$("#sale_total").html("<?php echo to_currency($cash_total); ?>");
-		$("#sale_amount_due").html("<?php echo to_currency($cash_amount_due); ?>");
-		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+		$("#sale_total").html('<?php echo to_currency($cash_total); ?>');
+		$("#sale_amount_due").html('<?php echo to_currency($cash_amount_due); ?>');
+		$("#amount_tendered_label").html('<?php echo $this->lang->line('sales_amount_tendered'); ?>');
 		$("#amount_tendered:enabled").val('<?php echo to_currency_no_money($cash_amount_due); ?>');
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);
 	}
 	else
 	{
-		$("#sale_total").html("<?php echo to_currency($non_cash_total); ?>");
-		$("#sale_amount_due").html("<?php echo to_currency($non_cash_amount_due); ?>");
-		$("#amount_tendered_label").html("<?php echo $this->lang->line('sales_amount_tendered'); ?>");
+		$("#sale_total").html('<?php echo to_currency($non_cash_total); ?>');
+		$("#sale_amount_due").html('<?php echo to_currency($non_cash_amount_due); ?>');
+		$("#amount_tendered_label").html('<?php echo $this->lang->line('sales_amount_tendered'); ?>');
 		$("#amount_tendered:enabled").val('<?php echo to_currency_no_money($non_cash_amount_due); ?>');
 		$(".giftcard-input").attr('disabled', true);
 		$(".non-giftcard-input").attr('disabled', false);
