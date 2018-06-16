@@ -372,26 +372,30 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$("#new").click(function() {
+	$('#new').click(function() {
 		stay_open = true;
-		$("#item_form").submit();
+		$('#item_form').submit();
 	});
 
-	$("#submit").click(function() {
+	$('#submit').click(function() {
 		stay_open = false;
 	});
 
 	var no_op = function(event, data, formatted){};
-	$("#category").autocomplete({source: "<?php echo site_url('items/suggest_category');?>", delay:10, appendTo: '.modal-content'});
+	$('#category').autocomplete({
+		source: "<?php echo site_url('items/suggest_category'); ?>",
+		appendTo: '.modal-content',
+		delay: 10
+	});
 
 	<?php for ($i = 1; $i <= 10; ++$i)
 	{
 	?>
-		$("#custom" + <?php echo $i; ?>).autocomplete({
+		$('#custom' + <?php echo $i; ?>).autocomplete({
 			source:function (request, response) {
 				$.ajax({
 					type: 'POST',
-					url: "<?php echo site_url('items/suggest_custom');?>",
+					url: "<?php echo site_url('items/suggest_custom'); ?>",
 					dataType: 'json',
 					data: $.extend(request, {field_no: <?php echo $i; ?>}),
 					success: function(data) {
@@ -409,10 +413,10 @@ $(document).ready(function()
 	}
 	?>
 
-	$("a.fileinput-exists").click(function() {
+	$('a.fileinput-exists').click(function() {
 		$.ajax({
 			type: 'GET',
-			url: "<?php echo site_url("$controller_name/remove_logo/$item_info->item_id"); ?>",
+			url: "<?php echo site_url($controller_name . '/remove_logo/' . $item_info->item_id); ?>",
 			dataType: 'json'
 		})
 	});
@@ -425,7 +429,7 @@ $(document).ready(function()
 					if (stay_open)
 					{
 						// set action of item_form to url without item id, so a new one can be created
-						$("#item_form").attr("action", "<?php echo site_url("items/save/")?>");
+						$('#item_form').attr('action', "<?php echo site_url($controller_name . '/save')?>");
 						// use a whitelist of fields to minimize unintended side effects
 						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' +
 							'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');
@@ -436,16 +440,18 @@ $(document).ready(function()
 					{
 						dialog_support.hide();
 					}
-					table_support.handle_submit('<?php echo site_url('items'); ?>', response, stay_open);
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response, stay_open);
 				},
 				dataType: 'json'
 			});
 		},
 
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
-			name: "required",
-			category: "required",
+			name: 'required',
+			category: 'required',
 			item_number:
 			{
 				required: false,

@@ -172,21 +172,8 @@ $(document).ready(function()
 		todayBtn: true,
 		todayHighlight: true,
 		bootcssVer: 3,
-		language: '<?php echo current_language_code(); ?>'
+		language: "<?php echo current_language_code(); ?>"
 	});
-
-	var submit_form = function()
-	{ 
-		$(this).ajaxSubmit(
-		{
-			success: function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('expenses'); ?>', response);
-			},
-			dataType: 'json'
-		});
-	};
 
 	var amount_validator = function(field) {
 		return {
@@ -200,12 +187,20 @@ $(document).ready(function()
 		}
 	}
 
-	$('#expenses_edit_form').validate($.extend(
-	{
-		submitHandler: function(form)
-		{
-			submit_form.call(form);
+	$('#expenses_edit_form').validate($.extend({
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+				},
+				dataType: 'json'
+			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
 			category: 'required',
@@ -216,29 +211,30 @@ $(document).ready(function()
 			amount:
 			{
 				required: true,
-				remote: amount_validator("#amount")
+				remote: amount_validator('#amount')
 			},
 			tax_amount:
 			{
-				remote: amount_validator("#tax_amount")
+				remote: amount_validator('#tax_amount')
 			}
 		},
+
 		messages:
 		{
-			category: '<?php echo $this->lang->line('expenses_category_required'); ?>',
+			category: "<?php echo $this->lang->line('expenses_category_required'); ?>",
 			date:
 			{
-				required: '<?php echo $this->lang->line('expenses_date_required'); ?>'
+				required: "<?php echo $this->lang->line('expenses_date_required'); ?>"
 
 			},
 			amount:
 			{
-				required: '<?php echo $this->lang->line('expenses_amount_required'); ?>',
-				remote: '<?php echo $this->lang->line('expenses_amount_number'); ?>'
+				required: "<?php echo $this->lang->line('expenses_amount_required'); ?>",
+				remote: "<?php echo $this->lang->line('expenses_amount_number'); ?>"
 			},
 			tax_amount:
 			{
-				remote: '<?php echo $this->lang->line('expenses_tax_amount_number'); ?>'
+				remote: "<?php echo $this->lang->line('expenses_tax_amount_number'); ?>"
 			}
 		}
 	}, form_support.error));

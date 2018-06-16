@@ -25,7 +25,7 @@
 $(document).ready(function()
 {	
 	$('#excel_form').validate($.extend({
-		submitHandler:function(form) {
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success:function(response)
 				{
@@ -35,12 +35,14 @@ $(document).ready(function()
 				dataType: 'json'
 			});
 		},
-		errorLabelContainer: "#error_message_box",
- 		wrapper: "li",
+
+		errorLabelContainer: '#error_message_box',
+ 
 		rules: 
 		{
-			file_path: "required"
+			file_path: 'required'
    		},
+
 		messages: 
 		{
    			file_path: "<?php echo $this->lang->line('common_import_full_path'); ?>"

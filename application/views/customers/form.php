@@ -416,7 +416,7 @@ $(document).ready(function()
 {
 	$("input[name='sales_tax_code_name']").change(function() {
 		if( ! $("input[name='sales_tax_code_name']").val() ) {
-		    $("input[name='sales_tax_code']").val('');
+			$("input[name='sales_tax_code']").val('');
 		}
 	});
 
@@ -426,8 +426,8 @@ $(document).ready(function()
 		$("input[name='sales_tax_code_name']").val(ui.item.label);
 	};
 
-	$("#sales_tax_code_name").autocomplete({
-		source: '<?php echo site_url("taxes/suggest_sales_tax_codes"); ?>',
+	$('#sales_tax_code_name').autocomplete({
+		source: "<?php echo site_url('taxes/suggest_sales_tax_codes'); ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -437,17 +437,18 @@ $(document).ready(function()
 	});
 
 	$('#customer_form').validate($.extend({
-		submitHandler: function(form)
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
 				},
 				dataType: 'json'
 			});
 		},
+
+		errorLabelContainer: '#error_message_box',
 
 		rules:
 		{
@@ -458,10 +459,10 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_email')?>",
+					url: "<?php echo site_url($controller_name . '/ajax_check_email') ?>",
 					type: 'POST',
 					data: {
-						'person_id': '<?php echo $person_info->person_id; ?>'
+						'person_id': "<?php echo $person_info->person_id; ?>"
 						// email is posted by default
 					}
 				}
@@ -470,10 +471,10 @@ $(document).ready(function()
 			{
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_account_number')?>",
+					url: "<?php echo site_url($controller_name . '/ajax_check_account_number') ?>",
 					type: 'POST',
 					data: {
-						'person_id': '<?php echo $person_info->person_id; ?>'
+						'person_id': "<?php echo $person_info->person_id; ?>"
 						// account_number is posted by default
 					}
 				}

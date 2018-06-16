@@ -207,7 +207,7 @@ $(document).ready(function()
 					enable_disable_invoice_enable();
 					enable_disable_work_order_enable();
 				},
-				dataType:'json'
+				dataType: 'json'
 			});
 		}
 	}));

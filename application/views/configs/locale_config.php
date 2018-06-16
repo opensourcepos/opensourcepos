@@ -243,7 +243,6 @@ $(document).ready(function()
 	});
 
 	$('#locale_config_form').validate($.extend(form_support.handler, {
-
 		rules:
 		{
 			number_locale:
@@ -271,12 +270,12 @@ $(document).ready(function()
 		messages:
 		{
 			number_locale: {
-				required: '<?php echo $this->lang->line('config_number_locale_required') ?>',
-				number_locale: '<?php echo $this->lang->line('config_number_locale_invalid') ?>'
+				required: "<?php echo $this->lang->line('config_number_locale_required') ?>",
+				number_locale: "<?php echo $this->lang->line('config_number_locale_invalid') ?>"
 			}
 		},
 
-		errorLabelContainer: "#locale_error_message_box"
+		errorLabelContainer: '#locale_error_message_box'
 	}));
 });
 </script>
