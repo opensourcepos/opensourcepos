@@ -51,9 +51,9 @@
 		$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
 	};
 
-    setup_csrf_token();
+	setup_csrf_token();
 
-    var submit = $.fn.submit;
+	var submit = $.fn.submit;
 
 	$.fn.submit = function() {
 		setup_csrf_token();
