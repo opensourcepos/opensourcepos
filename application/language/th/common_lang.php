@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_city"] = "อำเภอ";
@@ -51,15 +50,15 @@ $lang["common_price"] = "ราคา";
 $lang["common_print"] = "พิมพ์";
 $lang["common_remove"] = "ลบ";
 $lang["common_required"] = "ต้องกรอก";
-$lang["common_restore"] = "";
+$lang["common_restore"] = "เรียกคืน";
 $lang["common_return_policy"] = "นโยบายคืนสินค้า";
 $lang["common_search"] = "ค้นหา";
 $lang["common_search_options"] = "Search options";
 $lang["common_searched_for"] = "ค้นหาสำหรับ";
 $lang["common_state"] = "จังหวัด";
 $lang["common_submit"] = "ส่งข้อมูล";
-$lang["common_total_spent"] = "";
-$lang["common_unknown"] = "";
+$lang["common_total_spent"] = "ยอดชำระ";
+$lang["common_unknown"] = "ไม่ทราบ";
 $lang["common_view_recent_sales"] = "การขายล่าสุด";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "ยินดีต้อนรับ";
