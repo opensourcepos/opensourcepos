@@ -24,6 +24,10 @@
 		return { <?php echo $this->security->get_csrf_token_name(); ?> : function () { return csrf_token();  } };
 	};
 
+    var setup_csrf_token = function() {
+        $('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
+    };
+
 	var ajax = $.ajax;
 
 	$.ajax = function() {
@@ -40,18 +44,10 @@
 			}
 		}
 
-		var result = ajax.apply(this, arguments);
-
-		setup_csrf_token();
-
-		return result;
+		return ajax.apply(this, arguments);
 	};
 
-	var setup_csrf_token = function() {
-		$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
-	};
-
-	setup_csrf_token();
+	$(document).ajaxComplete(setup_csrf_token);
 
 	var submit = $.fn.submit;
 
