@@ -374,6 +374,11 @@ function get_item_data_row($item)
 		}
 	}
 
+	if ($CI->config->item('multi_pack_enabled') == '1')
+	{
+		$item->name .= NAME_SEPARATOR . $item->pack_name;
+	}
+
 	return array (
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,

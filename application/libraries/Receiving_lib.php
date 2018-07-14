@@ -209,6 +209,23 @@ class Receiving_lib
 		$item_info = $this->CI->Item->get_info($item_id,$item_location);
 		//array records are identified by $insertkey and item_id is just another field.
 		$price = $price != NULL ? $price : $item_info->cost_price;
+
+		if($this->CI->config->item('multi_pack_enabled') == '1')
+		{
+			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
+		}
+
+		if ($item_info->receiving_quantity == 0 || $item_info->receiving_quantity == 1)
+		{
+			$receiving_quantity_choices = array(1  => 'x1');
+		}
+		else
+		{
+			$receiving_quantity_choices = array(
+				to_quantity_decimals($item_info->receiving_quantity) => 'x' . to_quantity_decimals($item_info->receiving_quantity),
+				1  => 'x1');
+		}
+
 		$item = array($insertkey => array(
 				'item_id' => $item_id,
 				'item_location' => $item_location,
@@ -223,8 +240,9 @@ class Receiving_lib
 				'discount' => $discount,
 				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 				'price' => $price,
-				'receiving_quantity' => $receiving_quantity!=NULL ? $receiving_quantity : $item_info->receiving_quantity,
-				'total' => $this->get_item_total($quantity, $price, $discount, $receiving_quantity)
+				'receiving_quantity' => $item_info->receiving_quantity,
+				'receiving_quantity_choices' => $receiving_quantity_choices,
+				'total' => $this->get_item_total($quantity, $price, $discount, $item_info->receiving_quantity)
 			)
 		);
 
@@ -232,7 +250,7 @@ class Receiving_lib
 		if($itemalreadyinsale)
 		{
 			$items[$updatekey]['quantity'] += $quantity;
-			$items[$updatekey]['total'] = $this->get_item_total($items[$updatekey]['quantity'], $price, $discount);
+			$items[$updatekey]['total'] = $this->get_item_total($items[$updatekey]['quantity'], $price, $discount, $items[$updatekey]['receiving_quantity']);
 		}
 		else
 		{
@@ -245,7 +263,7 @@ class Receiving_lib
 		return TRUE;
 	}
 
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price)
+	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $receiving_quantity)
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
@@ -254,9 +272,10 @@ class Receiving_lib
 			$line['description'] = $description;
 			$line['serialnumber'] = $serialnumber;
 			$line['quantity'] = $quantity;
+			$line['receiving_quantity'] = $receiving_quantity;
 			$line['discount'] = $discount;
 			$line['price'] = $price;
-			$line['total'] = $this->get_item_total($quantity, $price, $discount); 
+			$line['total'] = $this->get_item_total($quantity, $price, $discount, $receiving_quantity);
 			$this->set_cart($items);
 		}
 
@@ -330,9 +349,10 @@ class Receiving_lib
 		$this->clear_reference();
 	}
 
-	public function get_item_total($quantity, $price, $discount_percentage)
+	public function get_item_total($quantity, $price, $discount_percentage, $receiving_quantity)
 	{
-		$total = bcmul($quantity, $price);
+		$extended_quantity = bcmul($quantity, $receiving_quantity);
+		$total = bcmul($extended_quantity, $price);
 		$discount_fraction = bcdiv($discount_percentage, 100);
 		$discount_amount = bcmul($total, $discount_fraction);
 
@@ -344,7 +364,7 @@ class Receiving_lib
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-			$total = bcadd($total, $this->get_item_total(($item['quantity']* $item['receiving_quantity']), $item['price'], $item['discount']));
+			$total = bcadd($total, $this->get_item_total(($item['quantity']), $item['price'], $item['discount'], $item['receiving_quantity']));
 		}
 		
 		return $total;

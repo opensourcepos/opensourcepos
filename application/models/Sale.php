@@ -174,7 +174,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) as tax
+					SUM(sales_items_taxes.item_tax_amount) AS tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -188,7 +188,7 @@ class Sale extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(DISTINCT sales.sale_id) as count');
+			$this->db->select('COUNT(DISTINCT sales.sale_id) AS count');
 		}
 		else
 		{
@@ -930,12 +930,12 @@ class Sale extends CI_Model
 			discount_percent,
 			item_location,
 			print_option,
-			items.name as name,
+			' . $this->Item->get_item_name('name') . ',
 			category,
 			item_type,
 			stock_type');
-		$this->db->from('sales_items as sales_items');
-		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
+		$this->db->from('sales_items AS sales_items');
+		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
 		$this->db->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
@@ -949,6 +949,7 @@ class Sale extends CI_Model
 			$this->db->order_by('stock_type', 'desc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
+			$this->db->order_by('items.qty_per_pack', 'asc');
 		}
 		// Group by Item Category
 		elseif($this->config->item('line_sequence') == '2')
@@ -956,6 +957,7 @@ class Sale extends CI_Model
 			$this->db->order_by('category', 'asc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
+			$this->db->order_by('items.qty_per_pack', 'asc');
 		}
 		// Group by entry sequence in descending sequence (the Standard)
 		else
@@ -1133,7 +1135,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) as tax
+					SUM(sales_items_taxes.item_tax_amount) AS tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -1181,7 +1183,7 @@ class Sale extends CI_Model
 					MAX(sales.employee_id) AS employee_id,
 					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 					items.item_id AS item_id,
-					MAX(items.name) AS name,
+					MAX(' . $this->Item->get_item_name() . ') AS name,
 					MAX(items.item_number) AS item_number,
 					MAX(items.category) AS category,
 					MAX(items.supplier_id) AS supplier_id,

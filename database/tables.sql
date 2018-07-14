@@ -118,7 +118,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_second_column', ''),
 ('suggestions_third_column', ''),
 ('allow_duplicate_barcodes', '0'),
-('quote_default_comments', 'This is a default quote comment');
+('quote_default_comments', 'This is a default quote comment'),
+('multi_pack_enabled', '0');
 
 
 -- --------------------------------------------------------
@@ -243,6 +244,9 @@ CREATE TABLE `ospos_items` (
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
   `tax_category_id` int(10) NOT NULL DEFAULT 1,
+  `qty_per_pack` decimal(15,3) NOT NULL DEFAULT 1,
+  `pack_name` varchar(8) DEFAULT '',
+  `low_sell_item_id` int(10) DEFAULT 0,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(255) DEFAULT NULL,
   `custom2` VARCHAR(255) DEFAULT NULL,

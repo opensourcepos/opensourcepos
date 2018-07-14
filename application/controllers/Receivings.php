@@ -124,10 +124,11 @@ class Receivings extends Secure_Controller
 		$quantity = parse_decimals($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
 		$item_location = $this->input->post('location');
+		$receiving_quantity = $this->input->post('receiving_quantity');
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price);
+			$this->receiving_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $receiving_quantity);
 		}
 		else
 		{

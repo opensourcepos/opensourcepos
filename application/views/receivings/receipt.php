@@ -82,7 +82,7 @@
 				<td><?php echo to_currency($item['price']); ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']) . " " . ($show_stock_locations ? " [" . $item['stock_name'] . "]" : ""); 
 				?>&nbsp;&nbsp;&nbsp;x <?php echo $item['receiving_quantity'] != 0 ? to_quantity_decimals($item['receiving_quantity']) : 1; ?></td>
-				<td><div class="total-value"><?php echo to_currency($item['total']*$item['receiving_quantity']); ?></div></td>
+				<td><div class="total-value"><?php echo to_currency($item['total']); ?></div></td>
 			</tr>
 			<tr>
 				<td ><?php echo $item['serialnumber']; ?></td>
