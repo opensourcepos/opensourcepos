@@ -535,7 +535,7 @@ class Item extends CI_Model
 	{
 		if($item_field_name !== '')
 		{
-			if($label == "")
+			if($label == '')
 			{
 				if($item_field_name == 'name')
 				{
@@ -550,7 +550,7 @@ class Item extends CI_Model
 			{
 				if($item_field_name == 'name')
 				{
-					$label .= implode(NAME_SEPARATOR, array("", $item_info->name, $item_info->pack_name));
+					$label .= implode(NAME_SEPARATOR, array('', $item_info->name, $item_info->pack_name));
 				}
 				else
 				{
@@ -676,7 +676,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-		$this->db->where("stock_type = '0'"); // stocked items only
+		$this->db->where('stock_type', '0'); // stocked items only
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
 		foreach($this->db->get()->result() as $row)
@@ -688,7 +688,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->where('deleted', $filters['is_deleted']);
 		$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-		$this->db->where("stock_type = '0'"); // stocked items only
+		$this->db->where('stock_type', '0'); // stocked items only
 		$this->db->like('item_number', $search);
 		$this->db->order_by('item_number', 'asc');
 		foreach($this->db->get()->result() as $row)
@@ -703,7 +703,7 @@ class Item extends CI_Model
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-			$this->db->where("stock_type = '0'"); // stocked items only
+			$this->db->where('stock_type', '0'); // stocked items only
 			$this->db->distinct();
 			$this->db->like('category', $search);
 			$this->db->order_by('category', 'asc');
@@ -730,7 +730,7 @@ class Item extends CI_Model
 			$this->db->from('items');
 			$this->db->where('deleted', $filters['is_deleted']);
 			$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-			$this->db->where("stock_type = '0'"); // stocked items only
+			$this->db->where('stock_type', '0'); // stocked items only
 			$this->db->like('description', $search);
 			$this->db->order_by('description', 'asc');
 			foreach($this->db->get()->result() as $row)
@@ -759,7 +759,7 @@ class Item extends CI_Model
 				$this->db->or_like('custom10', $search);
 				$this->db->group_end();
 				$this->db->where_in('item_type', $non_kit); // standard, exclude kit items since kits will be picked up later
-				$this->db->where("stock_type = '0'"); // stocked items only
+				$this->db->where('stock_type', '0'); // stocked items only
 				$this->db->where('deleted', $filters['is_deleted']);
 				foreach($this->db->get()->result() as $row)
 				{
@@ -889,7 +889,7 @@ class Item extends CI_Model
 		$this->db->select($this->get_search_suggestion_format('item_id, pack_name'));
 		$this->db->from('items');
 		$this->db->where('deleted', '0');
-		$this->db->where("stock_type = '0'"); // stocked items only
+		$this->db->where('stock_type', '0'); // stocked items only
 		$this->db->like('name', $search);
 		$this->db->order_by('name', 'asc');
 		foreach($this->db->get()->result() as $row)
