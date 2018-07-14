@@ -19,7 +19,7 @@ class Inventory_summary extends Report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select($this->Item->get_item_name('item_name') . ', items.item_number, item_quantities.quantity, item_quantities.quantity, (item_quantities.quantity * items.qty_per_pack) as low_sell_quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
+		$this->db->select($this->Item->get_item_name('name') . ', items.item_number, item_quantities.quantity, item_quantities.quantity, (item_quantities.quantity * items.qty_per_pack) as low_sell_quantity, items.reorder_level, stock_locations.location_name, items.cost_price, items.unit_price, (items.cost_price * item_quantities.quantity) AS sub_total_value');
 		$this->db->from('items AS items');
 		$this->db->join('item_quantities AS item_quantities', 'items.item_id = item_quantities.item_id');
 		$this->db->join('stock_locations AS stock_locations', 'item_quantities.location_id = stock_locations.location_id');
