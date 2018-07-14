@@ -433,8 +433,8 @@ $(document).ready(function()
 		$("input[name='low_sell_item_name']").val(ui.item.label);
 	};
 
-	$("#low_sell_item_name").autocomplete({
-		source: '<?php echo site_url("items/suggest_low_sell"); ?>',
+	$('#low_sell_item_name').autocomplete({
+		source: "<?php echo site_url("items/suggest_low_sell"); ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
