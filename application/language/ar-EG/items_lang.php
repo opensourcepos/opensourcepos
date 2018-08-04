@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
@@ -45,7 +44,7 @@ $lang["items_inventory_comments"] = "تعليقات";
 $lang["items_inventory_data_tracking"] = "تتبع بيانات المخزون";
 $lang["items_inventory_date"] = "التاريخ";
 $lang["items_inventory_employee"] = "الموظف";
-$lang["items_inventory_in_out_quantity"] = "+\- كمية";
+$lang["items_inventory_in_out_quantity"] = "+- كمية";
 $lang["items_inventory_remarks"] = "ملاحظات";
 $lang["items_is_deleted"] = "حذفت";
 $lang["items_is_serialized"] = "الصنف له رقم مسلسل";
@@ -97,7 +96,7 @@ $lang["items_tax_percent"] = "نسبة الضريبة";
 $lang["items_tax_percent_number"] = "نسبة الضريبة يجب ان تكون رقم";
 $lang["items_tax_percent_required"] = "نسبة الضريبة مطلوبة.";
 $lang["items_tax_percents"] = "نسبة/نسب الضريبة";
-$lang["items_temp"] = "";
+$lang["items_temp"] = "مؤقت";
 $lang["items_type"] = "نوع الصنف";
 $lang["items_unit_price"] = "السعر";
 $lang["items_unit_price_number"] = "السعر يجب أن يكون رقم.";
