@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Conta nº";
 $lang["customers_account_number_duplicate"] = "Este número de conta já está presente na base de dados.";
 $lang["customers_available_points"] = "Pontos Disponíveis";
@@ -10,13 +9,13 @@ $lang["customers_cannot_be_deleted"] = "Não foi possível excluir clientes sele
 $lang["customers_company_name"] = "Empresa";
 $lang["customers_confirm_delete"] = "Tem certeza de que deseja excluir os clientes selecionados?";
 $lang["customers_confirm_restore"] = "Tem certeza de que deseja restaurar o (s) cliente (s) selecionado (s)?";
-$lang["customers_consent"] = "";
-$lang["customers_consent_required"] = "";
+$lang["customers_consent"] = "Consentimento de registro";
+$lang["customers_consent_required"] = "O consentimento de registro é um campo obrigatório.";
 $lang["customers_customer"] = "Cliente";
-$lang["customers_date"] = "";
+$lang["customers_date"] = "Data";
 $lang["customers_discount"] = "Desconto";
 $lang["customers_email_duplicate"] = "O endereço de e-mail já está presente no banco de dados.";
-$lang["customers_employee"] = "";
+$lang["customers_employee"] = "Empregado";
 $lang["customers_error_adding_updating"] = "Erro adicionar/atualizar cliente.";
 $lang["customers_excel_import_failed"] = "Importação do Excel falhou";
 $lang["customers_excel_import_nodata_wrongformat"] = "Seu arquivo enviado não contém dados ou formato errado.";
