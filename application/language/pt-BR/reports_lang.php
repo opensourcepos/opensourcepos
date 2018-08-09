@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Todos";
 $lang["reports_canceled"] = "Cancelado";
 $lang["reports_categories"] = "Categorias";
@@ -7,7 +6,7 @@ $lang["reports_categories_summary_report"] = "Relatório Resumo de Categorias";
 $lang["reports_category"] = "Categoria";
 $lang["reports_code_canceled"] = "CNL";
 $lang["reports_code_invoice"] = "FAT";
-$lang["reports_code_pos"] = "";
+$lang["reports_code_pos"] = "POS";
 $lang["reports_code_quote"] = "Q";
 $lang["reports_code_return"] = "RET";
 $lang["reports_code_type"] = "Tipo";
