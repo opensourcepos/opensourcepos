@@ -221,7 +221,8 @@ class Receiving extends CI_Model
 			$this->lang->line('sales_cash') => $this->lang->line('sales_cash'),
 			$this->lang->line('sales_check') => $this->lang->line('sales_check'),
 			$this->lang->line('sales_debit') => $this->lang->line('sales_debit'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
+			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+			$this->lang->line('sales_due') => $this->lang->line('sales_due')
 		);
 	}
 
