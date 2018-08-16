@@ -44,8 +44,8 @@
 		<div class='col-xs-8'>
 			<div class="input-group">
 				<?php echo form_input(array('name'=>'definition_value', 'class'=>'form-control input-sm', 'id' => 'definition_value'));?>
-				<span class="input-group-btn">
-                    <button id="definition_value_add" class="btn input-sm" type="button"><span class="glyphicon glyphicon-plus-sign"></span></button>
+				<span id="definition_value_add" class="input-group-addon input-sm btn btn-default">
+                    <span class="glyphicon glyphicon-plus-sign"></span>
                 </span>
 			</div>
 		</div>
@@ -147,6 +147,7 @@
 			{
 				$(form).ajaxSubmit({
 					beforeSerialize: function($form, options) {
+
 						is_new && $('<input>').attr({
 							id: 'definition_values',
 							type: 'hidden',

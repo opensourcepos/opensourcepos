@@ -16,8 +16,10 @@
 		from: "<?php echo $this->config->item('notify_vertical_position'); ?>"
 	}});
 
+	var cookie_name = "<?php echo $this->config->item('csrf_cookie_name'); ?>";
+
 	var csrf_token = function() {
-		return Cookies.get("<?php echo $this->config->item('csrf_cookie_name'); ?>");
+		return Cookies.get(cookie_name);
 	};
 
 	var csrf_form_base = function() {
@@ -32,7 +34,6 @@
 
 	$.ajax = function() {
 		var args = arguments[0];
-
 		if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
 			if (typeof args['data'] === 'string')
 			{

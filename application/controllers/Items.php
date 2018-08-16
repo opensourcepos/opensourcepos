@@ -192,9 +192,12 @@ class Items extends Secure_Controller
 		$data['default_tax_2_rate'] = '';
 		$data['item_kits_enabled'] = $this->Employee->has_grant('item_kits', $this->Employee->get_logged_in_employee_info()->person_id);
 		$data['definition_values'] = $this->Attribute->get_attributes_by_item($item_id);
-		$definition_names = array(-1 => $this->lang->line('common_none_selected_text'));
+		$data['definition_names'] = $this->Attribute->get_definition_names();
 
-		$data['definition_names'] = $definition_names + $this->Attribute->get_definition_names();
+		foreach($data['definition_values'] as $definition_id => $definition)
+		{
+			unset($data['definition_names'][$definition_id]);
+		}
 
 		$item_info = $this->Item->get_info($item_id);
 		foreach(get_object_vars($item_info) as $property => $value)
@@ -391,9 +394,9 @@ class Items extends Secure_Controller
 		$data['definition_values'] = $this->Attribute->get_attributes_by_item($item_id) + $this->Attribute->get_values_by_definitions($definition_ids);
 		$data['definition_names'] = $this->Attribute->get_definition_names();
 
-		foreach($data['definition_values'] as $definition_value)
+		foreach($data['definition_values'] as $definition_id => $attribute_value)
 		{
-			unset($data['definition_names'][$definition_value['definition_id']]);
+			unset($data['definition_names'][$definition_id]);
 		}
 
  		$this->load->view('attributes/item', $data);
@@ -543,10 +546,16 @@ class Items extends Secure_Controller
 			}
 
 			// Save item attributes
-			$definition_values = json_decode($this->input->post('definition_values'), TRUE);
+			$attribute_links = $this->input->post('attribute_links');
+			$attribute_ids = $this->input->post('attribute_ids');
 			$this->Attribute->delete_link($item_id);
-			foreach ($definition_values as $definition_id => $attribute_id) {
-				$success &= $this->Attribute->save_link($item_id, $definition_id, $attribute_id);
+			foreach ($attribute_links as $definition_id => $attribute_id) {
+				$definition_type = $this->Attribute->get_info($definition_id)->definition_type;
+				if ($definition_type != DROPDOWN)
+				{
+					$attribute_id = $this->Attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id]);
+				}
+				$this->Attribute->save_link($item_id, $definition_id, $attribute_id);
 			}
 
 			if($success && $upload_success)
