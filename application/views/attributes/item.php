@@ -45,7 +45,7 @@ foreach($definition_values as $definition_id => $definition_value)
                 echo form_input("attribute_links[$definition_id]", $value, "class='form-control' data-definition-id='$definition_id'");
             }
             ?>
-            <span id="remove_attribute_link" class="input-group-addon input-sm btn btn-default"><span class="glyphicon glyphicon-trash"></span></span>
+            <span class="input-group-addon input-sm btn btn-default remove_attribute_btn"><span class="glyphicon glyphicon-trash"></span></span>
         </div>
     </div>
 </div>
@@ -58,11 +58,11 @@ foreach($definition_values as $definition_id => $definition_value)
     (function() {
         <?php $this->load->view('partial/datepicker_locale'); ?>
 
-        $(".datetime").datetimepicker(pickerconfig);
+        $(".datetime").datetimepicker(pickerconfig());
 
         var enable_delete = function() {
-            $("#remove_attribute_link").click(function() {
-                var parents = $(this).parents(".form-group").remove();
+            $(".remove_attribute_btn").click(function() {
+                $(this).parents(".form-group").remove();
             });
         };
 

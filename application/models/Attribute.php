@@ -160,6 +160,7 @@ class Attribute extends CI_Model
 	public function get_definition_names()
 	{
 		$this->db->from('attribute_definitions');
+		$this->db->where('deleted', 0);
 		$results = $this->db->get()->result_array();
 
 		$definition_name = array(-1 => $this->lang->line('common_none_selected_text'));
