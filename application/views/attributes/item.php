@@ -44,7 +44,7 @@ foreach($definition_values as $definition_id => $definition_value)
                 echo form_input("attribute_links[$definition_id]", $value, "class='form-control' data-definition-id='$definition_id'");
             }
             ?>
-            <span id="remove" class="input-group-addon input-sm btn btn-default"><span class="glyphicon glyphicon-trash"></span></span>
+            <span id="remove_attribute_link" class="input-group-addon input-sm btn btn-default"><span class="glyphicon glyphicon-trash"></span></span>
         </div>
     </div>
 </div>
@@ -55,6 +55,9 @@ foreach($definition_values as $definition_id => $definition_value)
 
 <script type="text/javascript">
     (function() {
+        $("#remove_attribute_link").click(function() {
+            $(this).parents(".form-group").remove();
+        });
 
         $("input[name*='attribute_links']").change(function() {
             var definition_id = $(this).data('definition-id');

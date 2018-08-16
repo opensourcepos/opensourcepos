@@ -44,7 +44,7 @@
 		<div class='col-xs-8'>
 			<div class="input-group">
 				<?php echo form_input(array('name'=>'definition_value', 'class'=>'form-control input-sm', 'id' => 'definition_value'));?>
-				<span id="definition_value_add" class="input-group-addon input-sm btn btn-default">
+				<span id="add_attribute_value" class="input-group-addon input-sm btn btn-default">
                     <span class="glyphicon glyphicon-plus-sign"></span>
                 </span>
 			</div>
@@ -128,7 +128,7 @@
 			$("#definition_value").val("");
 		};
 
-		$("#definition_value_add").click(add_attribute_value);
+		$("#add_attribute_value").click(add_attribute_value);
 
 		$("#definition_value").keypress(function (e) {
 			if (e.which == 13) {

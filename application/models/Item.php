@@ -361,28 +361,11 @@ class Item extends CI_Model
 		return FALSE;
 	}
 
-	private function create_temp_table()
-	{
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('item_categories') .
-			' (PRIMARY KEY(item_id, sale_id, receiving_id, definition_id), INDEX(item_id, sale_id, receiving_id, definition_id))
-			(
-				SELECT definition_name AS category, definition_type, attribute_links.item_id, 
-					sale_id, receiving_id, attribute_links.definition_id
-				FROM ' . $this->db->dbprefix('attribute_links') . ' AS attribute_links
-				INNER JOIN ' . $this->db->dbprefix('attribute_definitions') . ' AS attribute_definitions
-					ON attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'GROUP\'
-				WHERE sale_id IS NULL AND receiving_id IS NULL
-			)'
-		);
-	}
-
 	/*
 	Gets information about multiple items
 	*/
 	public function get_multiple_info($item_ids, $location_id)
 	{
-		$this->create_temp_table();
-
 		$this->db->select('items.*');
 		$this->db->select('company_name');
 		$this->db->select('category');
@@ -390,7 +373,6 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
-		$this->db->join('item_categories', 'item_categories.item_id = items.item_id', 'left');
 		$this->db->where('location_id', $location_id);
 		$this->db->where_in('items.item_id', $item_ids);
 
