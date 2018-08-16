@@ -55,7 +55,7 @@ class Attribute extends CI_Model
 	*/
 	public function get_info($definition_id)
 	{
-		$this->db->select('parent_definition.definition_name AS parent_name, definition.*');
+		$this->db->select('parent_definition.definition_name AS definition_group, definition.*');
 		$this->db->from('attribute_definitions AS definition');
 		$this->db->join('attribute_definitions AS parent_definition', 'parent_definition.definition_id = definition.definition_fk', 'left');
 		$this->db->where('definition.definition_id', $definition_id);
