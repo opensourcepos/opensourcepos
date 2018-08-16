@@ -3,6 +3,8 @@
 const DEFAULT_LANGUAGE = 'english';
 const DEFAULT_LANGUAGE_CODE = 'en-US';
 
+define('DEFAULT_DATETIME', mktime(0, 0, 0, 1, 1, 2010));
+
 /**
  * Currency locale helper
  */
@@ -297,6 +299,13 @@ function tax_decimals()
 	$config = get_instance()->config;
 
 	return $config->item('tax_decimals') ? $config->item('tax_decimals') : 0;
+}
+
+function to_datetime($datetime)
+{
+	$config = get_instance()->config;
+
+	return date($config->item('dateformat') . ' ' . $config->item('timeformat'), $datetime);
 }
 
 function to_currency($number)

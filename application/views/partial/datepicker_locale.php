@@ -1,5 +1,34 @@
 <?php $this->lang->load('calendar'); $this->lang->load('date'); ?>
 
+var pickerconfig = function(start) {
+    return {
+        format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
+        startDate: start || "<?php echo to_datetime(DEFAULT_DATETIME); ?>",
+        <?php
+        $t = $this->config->item('timeformat');
+        $m = $t[strlen($t)-1];
+        if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
+        {
+            ?>
+            showMeridian: true,
+            <?php
+        }
+        else
+        {
+            ?>
+            showMeridian: false,
+            <?php
+        }
+        ?>
+        minuteStep: 1,
+        autoclose: true,
+        todayBtn: true,
+        todayHighlight: true,
+        bootcssVer: 3,
+        language: "<?php echo current_language_code(); ?>"
+    };
+};
+
 $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
     days: [
 		"<?php echo $this->lang->line("cal_sunday"); ?>",

@@ -19,7 +19,7 @@
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('attributes_definition_type'), 'definition_type', array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control" ');?>
+			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control" ' . ($definition_id != -1 ? 'disabled="disabled"' : ''));?>
 		</div>
 	</div>
 

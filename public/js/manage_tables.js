@@ -142,16 +142,17 @@
 		});
 	};
 
-	var do_delete = function (url, ids) {
-		if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
-			$.post((url || options.resource) + '/delete', {'ids[]': ids || selected_ids()}, function (response) {
-				//delete was successful, remove checkbox rows
-				if (response.success) {
-					var selector = ids ? row_selector(ids) : selected_rows();
-					table().collapseAllRows();
-					$(selector).each(function (index, element) {
-						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
-							.end().animate({opacity: 0}, 1200, "linear", function () {
+	var do_action = function(action) {
+        return function (url, ids) {
+			if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
+				$.post((url || options.resource) + '/' + action, {'ids[]': ids || selected_ids()}, function (response) {
+					//delete was successful, remove checkbox rows
+					if (response.success) {
+						var selector = ids ? row_selector(ids) : selected_rows();
+						table().collapseAllRows();
+						$(selector).each(function (index, element) {
+							$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+								.end().animate({opacity: 0}, 1200, "linear", function () {
 								table().remove({
 									field: options.uniqueId,
 									values: selected_ids()
@@ -161,46 +162,17 @@
 									enable_actions();
 								}
 							});
-					});
-					$.notify(response.message, { type: 'success' });
-				} else {
-					$.notify(response.message, { type: 'danger' });
-				}
-			}, "json");
-		} else {
-			return false;
-		}
-	};
-
-	var do_restore = function (url, ids) {
-		if (confirm($.fn.bootstrapTable.defaults.formatConfirmRestore())) {
-			$.post((url || options.resource) + '/restore', {'ids[]': ids || selected_ids()}, function (response) {
-				//restore was successful, remove checkbox rows
-				if (response.success) {
-					var selector = ids ? row_selector(ids) : selected_rows();
-					table().collapseAllRows();
-					$(selector).each(function (index, element) {
-						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
-							.end().animate({opacity: 0}, 1200, "linear", function () {
-							table().remove({
-								field: options.uniqueId,
-								values: selected_ids()
-							});
-							if (index == $(selector).length - 1) {
-								refresh();
-								enable_actions();
-							}
 						});
-					});
-					$.notify(response.message, { type: 'success' });
-				} else {
-					$.notify(response.message, { type: 'danger' });
-				}
-			}, "json");
-		} else {
-			return false;
-		}
-	};
+						$.notify(response.message, {type: 'success'});
+					} else {
+						$.notify(response.message, {type: 'danger'});
+					}
+				}, "json");
+			} else {
+				return false;
+			}
+    	};
+    };
 
 	var load_success = function(callback) {
 		return function(response) {
@@ -279,15 +251,11 @@
 	};
 
 	var init_delete = function (confirmMessage) {
-		$("#delete").click(function (event) {
-			do_delete();
-		});
+		$("#delete").click(do_action("delete"));
 	};
 
 	var init_restore = function (confirmMessage) {
-		$("#restore").click(function (event) {
-			do_restore();
-		});
+		$("#restore").click(do_action("restore"));
 	};
 
 	var refresh = function() {
@@ -335,8 +303,8 @@
 		},
 		handle_submit: handle_submit,
 		init: init,
-		do_delete: do_delete,
-		do_restore: do_restore,
+		do_delete: do_action("delete"),
+		do_restore: do_action("restore"),
 		refresh : refresh,
 		selected_ids : selected_ids,
 	});

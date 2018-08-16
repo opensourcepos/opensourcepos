@@ -2,10 +2,10 @@
 
 define('GROUP', 'GROUP');
 define('DROPDOWN', 'DROPDOWN');
-define('DATE', 'DATE');
+define('DATETIME', 'DATETIME');
 define('TEXT', 'TEXT');
 
-const DEFINITION_TYPES = [GROUP, DROPDOWN, TEXT];
+const DEFINITION_TYPES = [GROUP, DROPDOWN, TEXT, DATETIME];
 
 class Attribute extends CI_Model
 {
@@ -110,6 +110,8 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_definitions');
 		$this->db->join('attribute_links', 'attribute_links.definition_id = attribute_definitions.definition_id');
 		$this->db->where('item_id', $item_id);
+		$this->db->where('receiving_id');
+		$this->db->where('sale_id');
 		$this->db->where('deleted', 0);
 
 		$results = $this->db->get()->result_array();
@@ -342,13 +344,19 @@ class Attribute extends CI_Model
 		return $suggestions;
 	}
 
-	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE)
+	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE, $definition_type = DROPDOWN)
 	{
 		$this->db->trans_start();
 
 		if (empty($attribute_id) || empty($item_id))
 		{
-			$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
+			if ($definition_type != DATETIME)
+			{
+				$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
+			} else
+			{
+				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
+			}
 			$attribute_id = $this->db->insert_id();
 
 			$this->db->insert('attribute_links', array(

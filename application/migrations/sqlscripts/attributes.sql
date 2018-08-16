@@ -14,6 +14,7 @@ CREATE TABLE IF NOT EXISTS `ospos_attribute_definitions` (
 CREATE TABLE IF NOT EXISTS `ospos_attribute_values` (
  `attribute_id` INT NOT NULL AUTO_INCREMENT,
  `attribute_value` VARCHAR(45) NULL,
+ `attribute_datetime` DATETIME NULL,
  PRIMARY KEY (`attribute_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 

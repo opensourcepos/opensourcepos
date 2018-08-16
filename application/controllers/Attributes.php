@@ -67,10 +67,16 @@ class Attributes extends Secure_Controller
 		//Save definition data
 		$definition_data = array(
 			'definition_name' => $this->input->post('definition_name'),
-			'definition_type' => DEFINITION_TYPES[$this->input->post('definition_type')],
 			'definition_flags' => $definition_flags,
 			'definition_fk' => $this->input->post('definition_group') != '' ? $this->input->post('definition_group') : NULL
 		);
+
+		$definition_type = empty($this->input->post('definition_type')) ? NULL : $this->input->post('definition_type');
+
+		if ($definition_type)
+		{
+			$definition_data['definition_type'] = DEFINITION_TYPES[$definition_type];
+		}
 
 		$definition_name = $this->xss_clean($definition_data['definition_name']);
 
