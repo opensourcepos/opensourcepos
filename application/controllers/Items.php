@@ -546,14 +546,14 @@ class Items extends Secure_Controller
 			}
 
 			// Save item attributes
-			$attribute_links = $this->input->post('attribute_links');
+			$attribute_links = $this->input->post('attribute_links') != null ? $this->input->post('attribute_links') : array();
 			$attribute_ids = $this->input->post('attribute_ids');
 			$this->Attribute->delete_link($item_id);
 			foreach ($attribute_links as $definition_id => $attribute_id) {
 				$definition_type = $this->Attribute->get_info($definition_id)->definition_type;
 				if ($definition_type != DROPDOWN)
 				{
-					$attribute_id = $this->Attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id]);
+					$attribute_id = $this->Attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
 				}
 				$this->Attribute->save_link($item_id, $definition_id, $attribute_id);
 			}
@@ -764,7 +764,7 @@ class Items extends Secure_Controller
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
 					
-					if(sizeof($data) >= 18)
+					if(sizeof($data) >= 17)
 					{
 						$item_data = array(
 							'name'					=> $data[1],
@@ -783,7 +783,7 @@ class Items extends Secure_Controller
 						  into that directory, so you really can do whatever you want, this probably
 						  needs further discussion  */
 
-						$pic_file = $data[19];
+						$pic_file = $data[14];
 						/*if(strcmp('.htaccess', $pic_file)==0)
 						{
 							$pic_file='';
@@ -833,7 +833,7 @@ class Items extends Secure_Controller
 
 						// array to store information if location got a quantity
 						$allowed_locations = $this->Stock_location->get_allowed_locations();
-						for($col = 25; $col < $cols; $col = $col + 2)
+						for($col = 15; $col < $cols; $col = $col + 2)
 						{
 							$location_id = $data[$col];
 							if(array_key_exists($location_id, $allowed_locations))

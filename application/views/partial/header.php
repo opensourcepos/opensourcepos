@@ -77,7 +77,7 @@
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=88039333a5"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=b84e7f49e4"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=1874cb8e83"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
