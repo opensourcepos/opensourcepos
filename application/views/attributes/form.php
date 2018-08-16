@@ -147,7 +147,7 @@
 			{
 				$(form).ajaxSubmit({
 					beforeSerialize: function($form, options) {
-
+					    $("select[disabled='disabled'").removeAttr("disabled");
 						is_new && $('<input>').attr({
 							id: 'definition_values',
 							type: 'hidden',
