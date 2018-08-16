@@ -112,7 +112,9 @@ class Attribute extends CI_Model
 		$this->db->where('item_id', $item_id);
 		$this->db->where('deleted', 0);
 
-		return $this->db->get()->result_array();
+		$results = $this->db->get()->result_array();
+
+		return $this->_to_array($results, 'definition_id');
 	}
 
 	public function get_values_by_definitions($definition_ids)
@@ -128,7 +130,9 @@ class Attribute extends CI_Model
 
 			$this->db->where('deleted', 0);
 
-			return $this->db->get()->result_array();
+			$results = $this->db->get()->result_array();
+
+			return $this->_to_array($results, 'definition_id');
 		}
 
 		return array();
@@ -148,12 +152,7 @@ class Attribute extends CI_Model
 		$this->db->where('definition_fk');
 		$results = $this->db->get()->result_array();
 
-		$attribute_definitions = array();
-		foreach($results as $result)
-		{
-			$attribute_definitions[$result['definition_id']] = $result['definition_name'];
-		}
-		return $attribute_definitions;
+		return $this->_to_array($results, 'definition_id', 'definition_name');
 	}
 
 	public function get_definition_names()
@@ -161,12 +160,8 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_definitions');
 		$results = $this->db->get()->result_array();
 
-		$attribute_definitions = array();
-		foreach($results as $result)
-		{
-			$attribute_definitions[$result['definition_id']] = $result['definition_name'];
-		}
-		return $attribute_definitions;
+		$definition_name = array(-1 => $this->lang->line('common_none_selected_text'));
+		return $definition_name + $this->_to_array($results, 'definition_id', 'definition_name');
 	}
 
 	public function get_definition_values($definition_id)
@@ -182,14 +177,16 @@ class Attribute extends CI_Model
 
 			$results = $this->db->get()->result_array();
 
-			$attribute_definitions = array();
-			foreach($results as $result)
-			{
-				$attribute_definitions[$result['attribute_id']] = $result['attribute_value'];
-			}
-			return $attribute_definitions;
+			return $this->_to_array($results, 'attribute_id', 'attribute_value');
 		}
 		return $attribute_values;
+	}
+
+	private function _to_array($results, $key, $value = '')
+	{
+		return array_column(array_map(function($result) use ($key, $value) {
+			return [$result[$key], empty($value) ? $result : $result[$value]];
+		}, $results), 1, 0);
 	}
 
 	/*
@@ -328,7 +325,7 @@ class Attribute extends CI_Model
 	{
 		$suggestions = array();
 		$this->db->distinct();
-		$this->db->select('attribute_value');
+		$this->db->select('attribute_value, attribute_values.attribute_id');
 		$this->db->from('attribute_definitions AS definition');
 		$this->db->join('attribute_links', 'attribute_links.definition_id = definition.definition_id');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
@@ -339,7 +336,7 @@ class Attribute extends CI_Model
 		foreach($this->db->get()->result() as $row)
 		{
 			$row_array = (array) $row;
-			$suggestions[] = array('label' => $row_array['attribute_value']);
+			$suggestions[] = array('value' => $row_array['attribute_id'], 'label' => $row_array['attribute_value']);
 		}
 
 		return $suggestions;
@@ -358,6 +355,7 @@ class Attribute extends CI_Model
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id));
+
 		}
 		else
 		{
@@ -367,7 +365,7 @@ class Attribute extends CI_Model
 
 		$this->db->trans_complete();
 
-		return $this->db->trans_status();
+		return $attribute_id;
 	}
 
 	public function delete_value($attribute_value, $definition_id)

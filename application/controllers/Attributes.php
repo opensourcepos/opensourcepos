@@ -46,7 +46,7 @@ class Attributes extends Secure_Controller
 	{
  		$success = $this->Attribute->save_value(urldecode($attribute_value), $this->input->post('definition_id'), $this->input->post('item_id'), $this->input->post('attribute_id'));
 
-		echo json_encode(array('success' => $success));
+		echo json_encode(array('success' => $success != 0));
 	}
 
 	public function delete_attribute_value($attribute_value)
