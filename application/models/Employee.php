@@ -119,11 +119,9 @@ class Employee extends Person
 				//Now insert the new grants
 				if($success)
 				{
-					$count = 0;
 					foreach($grants_data as $grant)
 					{
 						$success = $this->db->insert('grants', array('permission_id' => $grant['permission_id'], 'person_id' => $employee_id, 'menu_group' => $grant['menu_group']));
-						$count = $count+ 1;
 					}
 				}
 			}
@@ -472,6 +470,10 @@ class Employee extends Person
 	public function change_password($employee_data, $employee_id = FALSE)
 	{
 		$success = FALSE;
+
+		if (ENVIRONMENT == 'testing') {
+			return $success;
+		}
 
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
