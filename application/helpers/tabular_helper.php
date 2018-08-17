@@ -543,12 +543,25 @@ function get_attribute_definition_data_row($attribute)
 	$CI =& get_instance();
 	$controller_name=strtolower(get_class($CI));
 
+	if (count($attribute->definition_flags) == 0)
+	{
+		$definition_flags = $CI->lang->line('common_none_selected_text');
+	}
+	else if ($attribute->definition_type == GROUP)
+	{
+		$definition_flags = "-";
+	}
+	else
+	{
+		$definition_flags = implode(', ', $attribute->definition_flags);
+	}
+
 	return array (
 		'definition_id' => $attribute->definition_id,
 		'definition_name' => $attribute->definition_name,
 		'definition_type' => $attribute->definition_type,
 		'definition_group' => $attribute->definition_group,
-		'definition_flags' => count($attribute->definition_flags) == 0 ? $CI->lang->line('common_none_selected_text') : implode(', ', $attribute->definition_flags),
+		'definition_flags' => $definition_flags,
 		'edit' => anchor("$controller_name/view/$attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
