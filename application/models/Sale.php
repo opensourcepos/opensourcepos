@@ -938,13 +938,10 @@ class Sale extends CI_Model
 			print_option,
 			' . $this->Item->get_item_name('name') . ',
 			category,
-            definition_name,
 			item_type,
 			stock_type');
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
-		$this->db->join('attribute_links', 'items.item_id = attribute_links.item_id AND sales_items.sale_id = attribute_links.sale_id', 'left');
-		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id', 'left');
 		$this->db->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
@@ -1220,10 +1217,6 @@ class Sale extends CI_Model
 					ON sales_items.sale_id = sales.sale_id
 				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
 					ON sales_items.item_id = items.item_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('attribute_links') . ' AS attribute_links
-					ON attribute_links.item_id = items.item_id AND attribute_links.sale_id = sales_items.sale_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('attribute_definitions') . ' AS attribute_definitions
-					ON attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'GROUP\'
 				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments_temp') . ' AS payments
 					ON sales_items.sale_id = payments.sale_id
 				LEFT OUTER JOIN ' . $this->db->dbprefix('suppliers') . ' AS supplier
