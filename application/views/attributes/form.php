@@ -73,8 +73,10 @@
 
 		var show_hide_fields = function(event)
 		{
-			$("#definition_value, #definition_list_group").parents(".form-group").toggleClass("hidden", $("#definition_type").val() !== "1");
-			$("#definition_flags").parents(".form-group").toggleClass("hidden", $("definition_type").val() == "0");
+		    var is_dropdown = $("#definition_type").val() !== "1";
+		    var is_no_group = $("#definition_type").val() !== "0";
+			$("#definition_value, #definition_list_group").parents(".form-group").toggleClass("hidden", is_dropdown);
+			$("#definition_flags").parents(".form-group").toggleClass("hidden", !is_no_group);
 		};
 
 		$('#definition_type').change(show_hide_fields);

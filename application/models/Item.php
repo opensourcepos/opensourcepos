@@ -187,6 +187,7 @@ class Item extends CI_Model
 			}
 			else
 			{
+				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id');
 				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 				$this->db->like('attribute_value', $search);
 			}

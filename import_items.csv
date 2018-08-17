@@ -1,3 +1,2 @@
 Barcode,Item Name,Category,Supplier ID,Cost Price,Unit Price,Tax 1 Name,Tax 1 Percent,Tax 2 Name ,Tax 2 Percent,Reorder Level,Description,Allow Alt Description,Item has Serial Number,item_image,location_id,quantity
 33333334,Apple iMac,Computers,,800,1200,Tax 1,8,Tax 2,10,1,Best Computer ever,y,,item.jpg,1,100
-ma
