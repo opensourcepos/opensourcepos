@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["suppliers_account_number"] = "Nomor Akun Pemasok";
 $lang["suppliers_agency_name"] = "Nama";
 $lang["suppliers_cannot_be_deleted"] = "Tidak bisa dihapus pemasok yang dipilih, satu atau lebih dari pemasok yang dipilih memiliki penjualan.";
 $lang["suppliers_company_name"] = "Nama Perusahaan";
 $lang["suppliers_company_name_required"] = "Nama Perusahaan wajib diisi";
 $lang["suppliers_confirm_delete"] = "Apakah Anda yakin ingin menghapus pemasok yang dipilih?";
-$lang["suppliers_confirm_restore"] = "";
+$lang["suppliers_confirm_restore"] = "Anda yakin ingin mengembalikan Pemasok terpilih?";
 $lang["suppliers_error_adding_updating"] = "Kesalahan Menambah / memperbarui data pemasok";
 $lang["suppliers_new"] = "Pemasok Baru";
 $lang["suppliers_none_selected"] = "Anda belum memilih pemasok untuk dihapus";

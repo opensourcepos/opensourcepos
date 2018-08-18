@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["module_both"] = "Keduanya";
 $lang["module_config"] = "Konfigurasi";
 $lang["module_config_desc"] = "Ubah Konfigurasi Toko";
@@ -34,4 +33,4 @@ $lang["module_sales_desc"] = "Proses Penjualan dan Retur";
 $lang["module_suppliers"] = "Pemasok";
 $lang["module_suppliers_desc"] = "Tambah, Rubah, Hapus, dan Cari Pemasok";
 $lang["module_taxes"] = "Pajak";
-$lang["module_taxes_desc"] = "";
+$lang["module_taxes_desc"] = "Konfigurasi Pajak Penjualan.";

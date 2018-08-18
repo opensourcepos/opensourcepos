@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Batal";
 $lang["receivings_cannot_be_deleted"] = "Tidak bisa dihapus";
 $lang["receivings_comments"] = "Keterangan";
@@ -36,7 +35,7 @@ $lang["receivings_requisition"] = "Mutasi Antar Gudang";
 $lang["receivings_return"] = "Retur";
 $lang["receivings_select_supplier"] = "Pilih Pemasok (Opsional)";
 $lang["receivings_start_typing_supplier_name"] = "Ketik nama pemasok ...";
-$lang["receivings_stock"] = "";
+$lang["receivings_stock"] = "Stok";
 $lang["receivings_stock_destination"] = "Tujuan Stok";
 $lang["receivings_stock_locaiton"] = "Lokasi Stok";
 $lang["receivings_stock_source"] = "Asal Stok";
