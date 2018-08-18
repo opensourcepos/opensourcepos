@@ -8,10 +8,9 @@
 </div>
 
 <?php
-
 foreach($definition_values as $definition_id => $definition_value)
 {
-    ?>
+?>
 
 <div class="form-group form-group-sm">
     <?php echo form_label($definition_value['definition_name'], $definition_value['definition_name'], array('class' => 'control-label col-xs-3')); ?>
@@ -50,7 +49,7 @@ foreach($definition_values as $definition_id => $definition_value)
     </div>
 </div>
 
-    <?php
+<?php
 }
 ?>
 
@@ -58,11 +57,11 @@ foreach($definition_values as $definition_id => $definition_value)
     (function() {
         <?php $this->load->view('partial/datepicker_locale'); ?>
 
-        $(".datetime").datetimepicker(pickerconfig());
+        $('.datetime').datetimepicker(pickerconfig());
 
         var enable_delete = function() {
-            $(".remove_attribute_btn").click(function() {
-                $(this).parents(".form-group").remove();
+            $('.remove_attribute_btn').click(function() {
+                $(this).parents('.form-group').remove();
             });
         };
 
@@ -70,7 +69,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
         $("input[name*='attribute_links']").change(function() {
             var definition_id = $(this).data('definition-id');
-            $("input[name='attribute_ids[" + definition_id + "]").val("");
+            $("input[name='attribute_ids[" + definition_id + "]']").val('');
         }).autocomplete({
             source: function(request, response) {
                 $.get('<?php echo site_url('attributes/suggest_attribute/');?>' + this.element.data('definition-id') + '?term=' + request.term, function(data) {
@@ -82,7 +81,7 @@ foreach($definition_values as $definition_id => $definition_value)
                 event.preventDefault();
                 $(this).val(ui.item.label);
             },
-            delay:10
+            delay: 10
         });
 
         var definition_values = function() {
@@ -94,16 +93,13 @@ foreach($definition_values as $definition_id => $definition_value)
             return result;
         }
 
-        $("#definition_name").change(function() {
+        $('#definition_name').change(function() {
             var attribute_values = definition_values();
             var definition_id = $("option:selected", this).val();
-            attribute_values[definition_id] = "";
-            $("#attributes").load('<?php echo site_url("items/attributes/$item_id");?>', {
+            attribute_values[definition_id] = '';
+            $('#attributes').load('<?php echo site_url("items/attributes/$item_id");?>', {
                 'definition_ids': JSON.stringify(attribute_values)
             }, enable_delete);
         });
-
     })();
 </script>
-
-
