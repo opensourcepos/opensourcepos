@@ -503,7 +503,7 @@ class Items extends Secure_Controller
 			$tax_names = $this->input->post('tax_names');
 			$tax_percents = $this->input->post('tax_percents');
 			$count = count($tax_percents);
-			for ($k = 0; $k < $count; ++$k)
+			for($k = 0; $k < $count; ++$k)
 			{
 				$tax_percentage = parse_decimals($tax_percents[$k]);
 				if(is_numeric($tax_percentage))
@@ -546,12 +546,13 @@ class Items extends Secure_Controller
 			}
 
 			// Save item attributes
-			$attribute_links = $this->input->post('attribute_links') != null ? $this->input->post('attribute_links') : array();
+			$attribute_links = $this->input->post('attribute_links') != NULL ? $this->input->post('attribute_links') : array();
 			$attribute_ids = $this->input->post('attribute_ids');
 			$this->Attribute->delete_link($item_id);
-			foreach ($attribute_links as $definition_id => $attribute_id) {
+			foreach($attribute_links as $definition_id => $attribute_id)
+			{
 				$definition_type = $this->Attribute->get_info($definition_id)->definition_type;
-				if ($definition_type != DROPDOWN)
+				if($definition_type != DROPDOWN)
 				{
 					$attribute_id = $this->Attribute->save_value($attribute_id, $definition_id, $item_id, $attribute_ids[$definition_id], $definition_type);
 				}
@@ -690,7 +691,7 @@ class Items extends Secure_Controller
 			$tax_percents = $this->input->post('tax_percents');
 			$tax_updated = FALSE;
 			$count = count($tax_percents);
-			for ($k = 0; $k < $count; ++$k)
+			for($k = 0; $k < $count; ++$k)
 			{		
 				if(!empty($tax_names[$k]) && is_numeric($tax_percents[$k]))
 				{
