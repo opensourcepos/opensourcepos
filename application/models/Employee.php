@@ -364,7 +364,7 @@ class Employee extends Person
 
 	/*
 	Determines whether the employee has access to at least one submodule
-	 */
+	*/
 	public function has_module_grant($permission_id, $person_id)
 	{
 		$this->db->from('grants');
@@ -431,8 +431,8 @@ class Employee extends Person
 	}
 
 	/*
-   Gets employee permission grants
-   */
+	Gets employee permission grants
+	*/
 	public function get_employee_grants($person_id)
 	{
 		$this->db->from('grants');
@@ -440,7 +440,6 @@ class Employee extends Person
 
 		return $this->db->get()->result_array();
 	}
-
 
 	/*
 	Attempts to login employee and set session. Returns boolean based on outcome.
@@ -471,19 +470,18 @@ class Employee extends Person
 	{
 		$success = FALSE;
 
-		if (ENVIRONMENT == 'testing') {
-			return $success;
+		if(ENVIRONMENT != 'testing')
+		{
+			//Run these queries as a transaction, we want to make sure we do all or nothing
+			$this->db->trans_start();
+
+			$this->db->where('person_id', $employee_id);
+			$success = $this->db->update('employees', $employee_data);
+
+			$this->db->trans_complete();
+
+			$success &= $this->db->trans_status();
 		}
-
-		//Run these queries as a transaction, we want to make sure we do all or nothing
-		$this->db->trans_start();
-
-		$this->db->where('person_id', $employee_id);
-		$success = $this->db->update('employees', $employee_data);
-
-		$this->db->trans_complete();
-
-		$success &= $this->db->trans_status();
 
 		return $success;
 	}
