@@ -62,114 +62,113 @@
 <?php echo form_close(); ?>
 
 <script type="text/javascript">
+//validation and submit handling
+$(document).ready(function()
+{
+	$('.modal-body').css('overflow-y', 'visible');
+	var values = [];
+	var definition_id = <?php echo $definition_id; ?>;
+	var is_new = definition_id == -1;
 
-	//validation and submit handling
-	$(document).ready(function()
+	var show_hide_fields = function(event)
 	{
-		$(".modal-body").css("overflow-y", "visible");
-		var values = [];
-		var definition_id = <?php echo $definition_id; ?>;
-		var is_new = definition_id == -1;
+	    var is_dropdown = $('#definition_type').val() !== '1';
+	    var is_no_group = $('#definition_type').val() !== '0';
+		$('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
+		$('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
+	};
 
-		var show_hide_fields = function(event)
+	$('#definition_type').change(show_hide_fields);
+	show_hide_fields();
+
+	$('.selectpicker').each(function () {
+		var $selectpicker = $(this);
+		$.fn.selectpicker.call($selectpicker, $selectpicker.data());
+	});
+
+	var remove_attribute_value = function()
+	{
+		var value = $(this).parents("li").text();
+
+		if (is_new)
 		{
-		    var is_dropdown = $("#definition_type").val() !== "1";
-		    var is_no_group = $("#definition_type").val() !== "0";
-			$("#definition_value, #definition_list_group").parents(".form-group").toggleClass("hidden", is_dropdown);
-			$("#definition_flags").parents(".form-group").toggleClass("hidden", !is_no_group);
-		};
-
-		$('#definition_type').change(show_hide_fields);
-		show_hide_fields();
-
-		$('.selectpicker').each(function () {
-			var $selectpicker = $(this);
-			$.fn.selectpicker.call($selectpicker, $selectpicker.data());
-		});
-
-		var remove_attribute_value = function()
+			values.splice($.inArray(value, values), 1);
+		}
+		else
 		{
-			var value = $(this).parents("li").text();
+			$.post('<?php echo site_url($controller_name . "/delete_attribute_value/");?>' + value, {definition_id: definition_id});
+		}
+		$(this).parents("li").remove();
+	};
+
+	var add_attribute_value = function(value)
+	{
+		var is_event = typeof(value) !== 'string';
+
+		if (is_event)
+		{
+			value = $('#definition_value').val();
+
+			if (!value)
+			{
+				return;
+			}
 
 			if (is_new)
 			{
-				values.splice($.inArray(value, values), 1);
+				values.push(value);
 			}
 			else
 			{
-				$.post('<?php echo site_url($controller_name."/delete_attribute_value/");?>' + value, {definition_id: definition_id});
+				$.post('<?php echo site_url("attributes/save_attribute_value/");?>' + value, {definition_id: definition_id});
 			}
-			$(this).parents("li").remove();
-		};
+		}
 
-		var add_attribute_value = function(value)
-		{
-			var is_event = typeof(value) !== 'string';
+		$('#definition_list_group').append("<li class='list-group-item'>" + value + "<a href='javascript:void(0);'><span class='glyphicon glyphicon-trash pull-right'></span></a></li>")
+			.find(':last-child a').click(remove_attribute_value);
+		$('#definition_value').val('');
+	};
 
-			if (is_event)
-			{
-				value = $("#definition_value").val();
+	$('#add_attribute_value').click(add_attribute_value);
 
-				if (!value)
-				{
-					return;
-				}
-
-				if (is_new)
-				{
-					values.push(value);
-				}
-				else
-				{
-					$.post('<?php echo site_url("attributes/save_attribute_value/");?>' + value, {definition_id: definition_id});
-				}
-			}
-
-			$("#definition_list_group").append("<li class='list-group-item'>" + value + "<a href='javascript:void(0);'><span class='glyphicon glyphicon-trash pull-right'></span></a></li>")
-				.find(':last-child a').click(remove_attribute_value);
-			$("#definition_value").val("");
-		};
-
-		$("#add_attribute_value").click(add_attribute_value);
-
-		$("#definition_value").keypress(function (e) {
-			if (e.which == 13) {
-				add_attribute_value();
-				return false;
-			}
-		});
-
-		var definition_values = <?php echo json_encode($definition_values) ?>;
-		$.each(definition_values, function(index, element) {
-			add_attribute_value(element);
-		});
-
-		$('#attribute_form').validate($.extend({
-			submitHandler:function(form)
-			{
-				$(form).ajaxSubmit({
-					beforeSerialize: function($form, options) {
-					    $("select[disabled='disabled'").removeAttr("disabled");
-						is_new && $('<input>').attr({
-							id: 'definition_values',
-							type: 'hidden',
-							name: 'definition_values',
-							value: JSON.stringify(values)
-						}).appendTo($form);
-					},
-					success:function(response)
-					{
-						dialog_support.hide();
-						table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
-					},
-					dataType:'json'
-				});
-			},
-			rules:
-			{
-				definition_name: "required",
-				definition_type: "required"
-			}
-		}, form_support.error));
+	$('#definition_value').keypress(function (e) {
+		if (e.which == 13) {
+			add_attribute_value();
+			return false;
+		}
 	});
+
+	var definition_values = <?php echo json_encode($definition_values) ?>;
+	$.each(definition_values, function(index, element) {
+		add_attribute_value(element);
+	});
+
+	$('#attribute_form').validate($.extend({
+		submitHandler: function(form)
+		{
+			$(form).ajaxSubmit({
+				beforeSerialize: function($form, options) {
+				    $("select[disabled='disabled'").removeAttr('disabled');
+					is_new && $('<input>').attr({
+						id: 'definition_values',
+						type: 'hidden',
+						name: 'definition_values',
+						value: JSON.stringify(values)
+					}).appendTo($form);
+				},
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
+				},
+				dataType: 'json'
+			});
+		},
+		rules:
+		{
+			definition_name: 'required',
+			definition_type: 'required'
+		}
+	}, form_support.error));
+});
 </script>
