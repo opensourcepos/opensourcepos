@@ -1,4 +1,4 @@
-<?php
+<?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 define('GROUP', 'GROUP');
 define('DROPDOWN', 'DROPDOWN');
@@ -6,6 +6,10 @@ define('DATETIME', 'DATETIME');
 define('TEXT', 'TEXT');
 
 const DEFINITION_TYPES = [GROUP, DROPDOWN, TEXT, DATETIME];
+
+/**
+ * Attribute class
+ */
 
 class Attribute extends CI_Model
 {
@@ -16,6 +20,7 @@ class Attribute extends CI_Model
 	public static function get_definition_flags()
 	{
 		$class = new ReflectionClass(__CLASS__);
+
 		return array_flip($class->getConstants());
 	}
 
@@ -36,7 +41,7 @@ class Attribute extends CI_Model
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
 		$this->db->from('attribute_links');
-		if (empty($definition_id))
+		if(empty($definition_id))
 		{
 			$this->db->where('definition_id <>');
 			$this->db->where('attribute_id');
@@ -47,7 +52,8 @@ class Attribute extends CI_Model
 
 		}
 		$this->db->where('item_id', $item_id);
-		return $this->db->get()->num_rows() > 0;
+
+		return ($this->db->get()->num_rows() > 0);
 	}
 
 	/*
@@ -121,7 +127,8 @@ class Attribute extends CI_Model
 
 	public function get_values_by_definitions($definition_ids)
 	{
-		if (count($definition_ids) > 0) {
+		if (count($definition_ids) > 0)
+		{
 			$this->db->from('attribute_definitions');
 
 			$this->db->group_start();
@@ -146,7 +153,7 @@ class Attribute extends CI_Model
 		$this->db->where('definition_type', $attribute_type);
 		$this->db->where('deleted', 0);
 
-		if ($definition_id != -1)
+		if($definition_id != -1)
 		{
 			$this->db->where('definition_id != ', $definition_id);
 		}
@@ -164,6 +171,7 @@ class Attribute extends CI_Model
 		$results = $this->db->get()->result_array();
 
 		$definition_name = array(-1 => $this->lang->line('common_none_selected_text'));
+
 		return $definition_name + $this->_to_array($results, 'definition_id', 'definition_name');
 	}
 
@@ -171,7 +179,7 @@ class Attribute extends CI_Model
 	{
 		$attribute_values = [];
 
-		if ($definition_id > -1)
+		if($definition_id > -1)
 		{
 			$this->db->from('attribute_links');
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
@@ -182,6 +190,7 @@ class Attribute extends CI_Model
 
 			return $this->_to_array($results, 'attribute_id', 'attribute_value');
 		}
+
 		return $attribute_values;
 	}
 
@@ -243,13 +252,15 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_definitions');
 		$this->db->where('definition_name', $definition_name);
 		$this->db->where('definition_type', $definition_type);
+
 		return $this->db->get()->row_object();
 	}
 
 	public function save_link($item_id, $definition_id, $attribute_id)
 	{
 		$this->db->trans_start();
-		if ($this->link_exists($item_id, $definition_id))
+
+		if($this->link_exists($item_id, $definition_id))
 		{
 			$this->db->where('definition_id', $definition_id);
 			$this->db->where('item_id', $item_id);
@@ -263,6 +274,7 @@ class Attribute extends CI_Model
 		}
 
 		$this->db->trans_complete();
+
 		return $this->db->trans_status();
 	}
 
@@ -270,6 +282,7 @@ class Attribute extends CI_Model
 	{
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
+
 		return $this->db->delete('attribute_links', array('item_id' => $item_id));
 	}
 
@@ -279,6 +292,7 @@ class Attribute extends CI_Model
 		$this->db->where('definition_id', $definition_id);
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
+
 		return $this->db->get('attribute_links')->row_object();
 	}
 
@@ -289,7 +303,7 @@ class Attribute extends CI_Model
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$this->db->where('definition_type <>', GROUP);
-		if (!empty($id))
+		if(!empty($id))
 		{
 			$this->db->where($sale_receiving_fk, $id);
 		}
@@ -300,6 +314,7 @@ class Attribute extends CI_Model
 		}
  		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('definition_flags & ', $definition_flags);
+
 		return $this->db->get()->row_object();
 	}
 
@@ -311,6 +326,7 @@ class Attribute extends CI_Model
 		$this->db->where('sale_id');
 		$this->db->where('receiving_id');
 		$this->db->where('item_id', (int) $item_id);
+
 		return $this->db->get()->row_object();
 	}
 
@@ -349,12 +365,13 @@ class Attribute extends CI_Model
 	{
 		$this->db->trans_start();
 
-		if (empty($attribute_id) || empty($item_id))
+		if(empty($attribute_id) || empty($item_id))
 		{
-			if ($definition_type != DATETIME)
+			if($definition_type != DATETIME)
 			{
 				$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
-			} else
+			}
+			else
 			{
 				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
 			}
@@ -364,7 +381,6 @@ class Attribute extends CI_Model
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
 				'definition_id' => $definition_id));
-
 		}
 		else
 		{
@@ -396,6 +412,4 @@ class Attribute extends CI_Model
 
 		return $this->db->update('attribute_definitions', array('deleted' => 1));
 	}
-
-
 }
