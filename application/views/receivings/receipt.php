@@ -97,6 +97,16 @@
 			<?php
 			}
 			?>
+			<?php
+			if ($item['discount_fixed'] > 0 )
+			{
+			?>
+				<tr>
+					<td colspan="3" style="font-weight: bold;"> <?php echo to_currency($item['discount_fixed']) . " " . $this->lang->line("sales_discount")?> </td>
+				</tr>
+			<?php
+			}
+			?>
 		<?php
 		}
 		?>	

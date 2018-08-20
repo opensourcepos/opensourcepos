@@ -318,10 +318,25 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
-	//Summary Discounts report
-	public function summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function summary_discounts_input()
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+		$data = array();
+		$stock_locations = $data = $this->xss_clean($this->Stock_location->get_allowed_locations('sales'));
+		$stock_locations['all'] = $this->lang->line('reports_all');
+		$data['stock_locations'] = array_reverse($stock_locations, TRUE);
+		$data['mode'] = 'sale';
+		$data['discount_type_options'] = array(
+			'0' => $this->lang->line('reports_discount_percent'),
+			'1'=> $this->lang->line('reports_discount_fixed'));
+		$data['sale_type_options'] = $this->get_sale_type_options();
+
+		$this->load->view('reports/date_input', $data);
+	}
+
+	//Summary Discounts report
+	public function summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all', $discount_type=0)
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id,'discount_type'=>$discount_type);
 
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
@@ -333,7 +348,7 @@ class Reports extends Secure_Controller
 		foreach($report_data as $row)
 		{
 			$tabular_data[] = $this->xss_clean(array(
-				'discount' => $row['discount_percent'],
+				'discount' => $row['discount'],
 				'count' => $row['count']
 			));
 		}
@@ -869,7 +884,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'%'));
+					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -980,7 +995,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'%'));
+					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1018,6 +1033,9 @@ class Reports extends Secure_Controller
 			$discounts[$i] = $i . '%';
 		}
 		$data['specific_input_data'] = $discounts;
+		$data['discount_type_options'] = array(
+			'0' => $this->lang->line('reports_discount_percent'),
+			'1'=> $this->lang->line('reports_discount_fixed'));
 		$data['sale_type_options'] = $this->get_sale_type_options();
 
 		$data = $this->xss_clean($data);
@@ -1025,9 +1043,9 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/specific_input', $data);
 	}
 
-	public function specific_discount($start_date, $end_date, $discount, $sale_type)
+	public function specific_discount($start_date, $end_date, $discount, $sale_type, $discount_type)
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'discount' => $discount, 'sale_type' => $sale_type);
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'discount' => $discount, 'sale_type' => $sale_type, 'discount_type' => $discount_type);
 
 		$this->load->model('reports/Specific_discount');
 		$model = $this->Specific_discount;
@@ -1085,7 +1103,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'%'));
+					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1238,7 +1256,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'%'));
+					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1340,7 +1358,7 @@ class Reports extends Secure_Controller
 					$drow['category'],
 					$quantity_purchased,
 					to_currency($drow['total']),
-					$drow['discount_percent'].'%'));
+					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
 			}
 		}
 

@@ -70,7 +70,12 @@ class Specific_discount extends Report
 			MAX(payment_type) AS payment_type,
 			MAX(comment) AS comment');
 		$this->db->from('sales_items_temp');
-		$this->db->where('discount_percent >=', $inputs['discount']);
+		
+		if($inputs['discount_type']==1){
+			$this->db->where('discount_fixed >=', $inputs['discount']);
+		}else{
+			$this->db->where('discount_percent >=', $inputs['discount']);
+		}
 
 		if($inputs['sale_type'] == 'complete')
 		{
@@ -119,7 +124,7 @@ class Specific_discount extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, serialnumber, description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent');
+			$this->db->select('name, category, serialnumber, description, quantity_purchased, subtotal, tax, total, cost, profit, discount_percent, discount_fixed');
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
@@ -136,7 +141,12 @@ class Specific_discount extends Report
 	{
 		$this->db->select('SUM(subtotal) AS subtotal, SUM(tax) AS tax, SUM(total) AS total, SUM(cost) AS cost, SUM(profit) AS profit');
 		$this->db->from('sales_items_temp');
-		$this->db->where('discount_percent >=', $inputs['discount']);
+		
+		if($inputs['discount_type']==1){
+			$this->db->where('discount_fixed >=', $inputs['discount']);
+		}else{
+			$this->db->where('discount_percent >=', $inputs['discount']);
+		}
 
 		if($inputs['sale_type'] == 'complete')
 		{

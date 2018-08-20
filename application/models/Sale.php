@@ -38,7 +38,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)-sales_items.discount_fixed';
 		$tax = 'ROUND(IFNULL(SUM(sales_items_taxes.tax), 0), ' . $decimals . ')';
 
 		if($this->config->item('tax_included'))
@@ -152,7 +152,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)-sales_items.discount_fixed';
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 
@@ -653,6 +653,8 @@ class Sale extends CI_Model
 				'serialnumber'		=> character_limiter($item['serialnumber'], 30),
 				'quantity_purchased'=> $item['quantity'],
 				'discount_percent'	=> $item['discount'],
+				'discount_fixed'	=> $item['discount_fixed'],
+				'discount_type'		=> $item['discount_type'],
 				'item_cost_price'	=> $item['cost_price'],
 				'item_unit_price'	=> $item['price'],
 				'item_location'		=> $item['item_location'],
@@ -928,6 +930,8 @@ class Sale extends CI_Model
 			item_cost_price,
 			item_unit_price,
 			discount_percent,
+			discount_fixed,
+			discount_type,
 			item_location,
 			print_option,
 			' . $this->Item->get_item_name('name') . ',
@@ -1113,7 +1117,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)-sales_items.discount_fixed';
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 
@@ -1191,6 +1195,7 @@ class Sale extends CI_Model
 					MAX(sales_items.item_cost_price) AS item_cost_price,
 					MAX(sales_items.item_unit_price) AS item_unit_price,
 					MAX(sales_items.discount_percent) AS discount_percent,
+					MAX(sales_items.discount_fixed) AS discount_fixed,
 					sales_items.line AS line,
 					MAX(sales_items.serialnumber) AS serialnumber,
 					MAX(sales_items.item_location) AS item_location,

@@ -144,7 +144,7 @@ class Detailed_sales extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount_percent, sale_status');
+			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount_percent, discount_fixed, sale_status');
 			$this->db->from('sales_items_temp');
 			$this->db->where('sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();

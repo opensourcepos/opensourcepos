@@ -56,6 +56,20 @@ if(isset($error))
 	?>
 
 	<?php	
+	if (isset($discount_type_options))
+	{
+	?>
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('reports_discount_type'), 'reports_discount_type_label', array('class'=>'required control-label col-xs-2')); ?>
+			<div id='report_discount_type' class="col-xs-3">
+				<?php echo form_dropdown('discount_type', $discount_type_options, $this->config->item('default_sales_discount_type'), array('id'=>'discount_type_id', 'class'=>'form-control')); ?>
+			</div>
+		</div>
+	<?php
+	}
+	?>
+
+	<?php	
 	if (!empty($stock_locations) && count($stock_locations) > 1)
 	{
 	?>
@@ -88,7 +102,7 @@ $(document).ready(function()
 
 	$("#generate_report").click(function()
 	{		
-		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val()].join("/");
+		window.location = [window.location, start_date, end_date, $("#input_type").val() || 0, $("#location_id").val(), $("#discount_type_id").val() || 0 ].join("/");
 	});
 });
 </script>

@@ -271,3 +271,4 @@ $lang["config_top"] = "Arriba";
 $lang["config_website"] = "Sitio Web";
 $lang["config_work_order_enable"] = "Soporte Ordenes de Trabajo";
 $lang["config_work_order_format"] = "Formato Ordenes de trabajo";
+$lang["config_default_sales_discount_type"] = "Descuento Fijo en Ventas predeterminado";

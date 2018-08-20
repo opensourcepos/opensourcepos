@@ -13,16 +13,22 @@ class Summary_discounts extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('MAX(CONCAT(sales_items.discount_percent, "%")) AS discount_percent, count(*) AS count');
+		if($inputs['discount_type']==1){
+			$this->db->select('MAX(CONCAT("'.$this->config->item('currency_symbol').'",sales_items.discount_fixed)) AS discount, count(*) AS count');
+			$this->db->where('discount_fixed > 0');
+			$this->db->group_by('sales_items.discount_fixed');
+			$this->db->order_by('sales_items.discount_fixed');
+		}else{
+			$this->db->select('MAX(CONCAT(sales_items.discount_percent, "%")) AS discount, count(*) AS count');
+			$this->db->where('discount_percent > 0');
+			$this->db->group_by('sales_items.discount_percent');
+			$this->db->order_by('sales_items.discount_percent');
+		}
+
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
-		$this->db->where('discount_percent > 0');
-
 		$this->_where($inputs);
-
-		$this->db->group_by('sales_items.discount_percent');
-		$this->db->order_by('sales_items.discount_percent');
 
 		return $this->db->get()->result_array();
 	}

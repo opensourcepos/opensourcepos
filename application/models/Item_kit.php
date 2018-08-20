@@ -59,6 +59,7 @@ class Item_kit extends CI_Model
 		items.description as item_description,
 		item_kits.item_id as kit_item_id,
 		kit_discount_percent,
+		kit_discount_fixed,
 		price_option,
 		print_option,
 		category,

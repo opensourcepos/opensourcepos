@@ -107,10 +107,10 @@ if(isset($success))
 			<tr>
 				<th style="width: 5%;"><?php echo $this->lang->line('common_delete'); ?></th>
 				<th style="width: 15%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
-				<th style="width: 35%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
+				<th style="width: 30%;"><?php echo $this->lang->line('sales_item_name'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_price'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_quantity'); ?></th>
-				<th style="width: 10%;"><?php echo $this->lang->line('sales_discount'); ?></th>
+				<th style="width: 15%;"><?php echo $this->lang->line('sales_discount'); ?></th>
 				<th style="width: 10%;"><?php echo $this->lang->line('sales_total'); ?></th>
 				<th style="width: 5%;"><?php echo $this->lang->line('sales_update'); ?></th>
 			</tr>
@@ -195,7 +195,27 @@ if(isset($success))
 								?>
 							</td>
 
-							<td><?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));?></td>
+							<td>
+								<div class="input-group">
+									<?php
+									if($item['discount_type'])
+									{
+										echo form_input(array('name'=>'discount_fixed', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount_fixed'], 0), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));
+										echo form_hidden('discount', $item['discount']);
+									}
+									else
+									{
+										echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();'));
+										echo form_hidden('discount_fixed', $item['discount_fixed']);
+									}
+									?>
+									<span class="input-group-btn">
+										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
+
+
+									</span>
+								</div> 
+							</td>
 							<td>
 								<?php
 								if($item['item_type'] == ITEM_AMOUNT_ENTRY)
@@ -208,7 +228,7 @@ if(isset($success))
 								}
 								?>
 							</td>
-							<td><a href="javascript:document.getElementById("<?php echo 'cart_'.$line ?>").submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
+							<td><a href="javascript:document.getElementById('<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('sales_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 							</tr>
 							<tr>
 							<?php
@@ -892,9 +912,16 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="discount"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
+	$('[name="price"],[name="quantity"],[name="discount"],[name="discount_fixed"],[name="description"],[name="serialnumber"],[name="discounted_total"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
+
+	$('[name="discount_toggle"]').change(function() {
+
+		var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked'))?1:0);
+		$('#cart_'+ $(this).attr('data-line')).append($(input));
+		$('#cart_'+ $(this).attr('data-line')).submit();
+    });
 });
 
 function check_payment_type()

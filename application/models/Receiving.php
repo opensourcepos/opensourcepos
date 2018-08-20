@@ -94,6 +94,8 @@ class Receiving extends CI_Model
 				'quantity_purchased' => $item['quantity'],
 				'receiving_quantity' => $item['receiving_quantity'],
 				'discount_percent' => $item['discount'],
+				'discount_fixed' => $item['discount_fixed'],
+				'discount_type' => $item['discount_type'],
 				'item_cost_price' => $cur_item_info->cost_price,
 				'item_unit_price' => $item['price'],
 				'item_location' => $item['item_location']
@@ -266,12 +268,13 @@ class Receiving extends CI_Model
 					MAX(item_cost_price) AS item_cost_price,
 					MAX(item_unit_price) AS item_unit_price,
 					MAX(discount_percent) AS discount_percent,
+					MAX(discount_fixed) AS discount_fixed,
 					receivings_items.line,
 					MAX(serialnumber) AS serialnumber,
 					MAX(receivings_items.description) AS description,
-					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) AS subtotal,
-					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) AS total,
-					MAX((item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) - (item_cost_price * quantity_purchased)) AS profit,
+					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) - discount_fixed AS subtotal,
+					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) - discount_fixed AS total,
+					MAX((item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) - discount_fixed - (item_cost_price * quantity_purchased)) AS profit,
 					MAX(item_cost_price * quantity_purchased * receivings_items.receiving_quantity ) AS cost
 				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
 				INNER JOIN ' . $this->db->dbprefix('receivings') . ' AS receivings

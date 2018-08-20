@@ -53,6 +53,21 @@
 									); ?>
 							<span class="input-group-addon input-sm"><b>%</b></span>
 						</div>
+					</div>
+					
+					<div class='col-xs-3'>
+						<div class="input-group input-group-sm">
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+							<?php echo form_input(array(
+									'name'=>'discount_fixed',
+									'size'=>'5',
+									'maxlength'=>'5',
+									'id'=>'discount_fixed',
+									'class'=>'form-control input-sm',
+									'value'=>$person_info->discount_fixed)
+							);?>
+							
+						</div>
 					</div>	
 				</div>
 

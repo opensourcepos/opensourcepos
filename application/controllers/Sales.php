@@ -137,11 +137,12 @@ class Sales extends Secure_Controller
 		{
 			$this->sale_lib->set_customer($customer_id);
 			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+			$discount_fixed = $this->Customer->get_info($customer_id)->discount_fixed;
 
 			// apply customer default discount to items that have 0 discount
-			if($discount_percent != '')
+			if($discount_percent != '' OR $discount_fixed != '')
 			{
-				$this->sale_lib->apply_customer_discount($discount_percent);
+				$this->sale_lib->apply_customer_discount($discount_percent, $discount_fixed);
 			}
 		}
 
@@ -367,6 +368,8 @@ class Sales extends Secure_Controller
 		$data = array();
 
 		$discount = 0;
+		$discount_fixed = 0;
+		$discount_type = $this->config->item('default_sales_discount_type');
 
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
@@ -374,16 +377,29 @@ class Sales extends Secure_Controller
 		{
 			// load the customer discount if any
 			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+			$discount_cash = $this->Customer->get_info($customer_id)->discount_fixed;
 			if($discount_percent != '')
 			{
 				$discount = $discount_percent;
+				$discount_type = 0;
+			}
+
+			if($discount_cash != '')
+			{
+				$discount_fixed = $discount_cash;
+				$discount_type = 1;
 			}
 		}
 
 		// if the customer discount is 0 or no customer is selected apply the default sales discount
-		if($discount == 0)
+		if($discount == 0 )
 		{
 			$discount = $this->config->item('default_sales_discount');
+		}
+
+		if($discount_fixed == 0)
+		{			
+			$discount_fixed = $this->config->item('default_sales_discount_fixed');
 		}
 
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');
@@ -411,12 +427,17 @@ class Sales extends Secure_Controller
 				$discount = $item_kit_info->kit_discount_percent;
 			}
 
+			if($item_kit_info->kit_discount_fixed != 0 && $item_kit_info->kit_discount_fixed > $discount_fixed)
+			{
+				$discount_fixed = $item_kit_info->kit_discount_fixed;
+			}
+
 			$price = NULL;
 			$print_option = PRINT_ALL; // Always include in list of items on invoice
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, PRICE_MODE_STANDARD))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_fixed, $discount_type, PRICE_MODE_STANDARD))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}
@@ -428,7 +449,7 @@ class Sales extends Secure_Controller
 
 			// Add item kit items to order
 			$stock_warning = NULL;
-			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $kit_price_option, $kit_print_option, $stock_warning))
+			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_fixed, $discount_type, $kit_price_option, $kit_print_option, $stock_warning))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
@@ -439,7 +460,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, PRICE_MODE_STANDARD))
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_fixed, $discount_type, PRICE_MODE_STANDARD))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
@@ -458,18 +479,22 @@ class Sales extends Secure_Controller
 		$this->form_validation->set_rules('price', 'lang:sales_price', 'required|callback_numeric');
 		$this->form_validation->set_rules('quantity', 'lang:sales_quantity', 'required|callback_numeric');
 		$this->form_validation->set_rules('discount', 'lang:sales_discount', 'required|callback_numeric');
+		$this->form_validation->set_rules('discount_fixed', 'lang:sales_discount', 'required|callback_numeric');
 
 		$description = $this->input->post('description');
 		$serialnumber = $this->input->post('serialnumber');
 		$price = parse_decimals($this->input->post('price'));
 		$quantity = parse_decimals($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
+		$discount_fixed = parse_decimals($this->input->post('discount_fixed'));
+		$discount_type = $this->input->post('discount_type');
+		
 		$item_location = $this->input->post('location');
 		$discounted_total = $this->input->post('discounted_total') != '' ? $this->input->post('discounted_total') : NULL;
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $discounted_total);
+			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_fixed, $discount_type, $price, $discounted_total);
 		}
 		else
 		{

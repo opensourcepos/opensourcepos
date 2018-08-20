@@ -23,7 +23,7 @@ abstract class Summary_report extends Report
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)-sales_items.discount_fixed';
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 

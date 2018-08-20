@@ -48,6 +48,21 @@
 					<span class="input-group-addon input-sm"><b>%</b></span>
 				</div>
 			</div>
+			
+			<div class='col-xs-3'>
+				<div class="input-group input-group-sm">
+					<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php echo form_input(array(
+							'name'=>'kit_discount_fixed',
+							'size'=>'5',
+							'maxlength'=>'5',
+							'id'=>'kit_discount_fixed',
+							'class'=>'form-control input-sm',
+							'value'=>$item_kit_info->kit_discount_fixed)
+					);?>
+					
+				</div>
+			</div>
 		</div>
 
 		<div class="form-group form-group-sm">

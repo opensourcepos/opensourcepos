@@ -87,7 +87,7 @@
 					<td class="item-name"><?php echo $item['name']; ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 					<td><?php echo to_currency($item['price']); ?></td>
-					<td><?php echo $item['discount'] . '%'; ?></td>
+					<td><?php echo $item['discount'] . '% | ' .to_currency($item['discount_fixed']); ?></td>
 					<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 				</tr>
 			<?php

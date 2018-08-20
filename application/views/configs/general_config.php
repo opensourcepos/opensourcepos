@@ -12,6 +12,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_default_sales_discount_type'), 'default_sales_discount_type', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'default_sales_discount_type',
+						'id' => 'default_sales_discount_type',
+						'value' => 'default_sales_discount_type',
+						'checked' => $this->config->item('default_sales_discount_type'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_default_sales_discount'), 'default_sales_discount', array('class' => 'control-label col-xs-2 required')); ?>
 				<div class='col-xs-2'>
 					<div class="input-group">
@@ -24,6 +35,18 @@
 							'max' => 100,
 							'value' => $this->config->item('default_sales_discount'))); ?>
 						<span class="input-group-addon input-sm">%</span>
+					</div>
+				</div>
+				<div class='col-xs-2'>
+					<div class="input-group">
+						<span class="input-group-addon input-sm"><?php echo$this->config->item('currency_symbol'); ?></span>
+						<?php echo form_input(array(
+							'name' => 'default_sales_discount_fixed',
+							'id' => 'default_sales_discount_fixed',
+							'class' => 'form-control input-sm required',
+							'type' => 'number',
+							'min' => 0,
+							'value' => $this->config->item('default_sales_discount_fixed'))); ?>
 					</div>
 				</div>
 			</div>
