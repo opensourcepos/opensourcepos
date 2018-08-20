@@ -25,14 +25,24 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('expenses_supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3')); ?>
+			<?php echo form_label($this->lang->line('expenses_supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3 required')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
 						'name'=>'supplier_name',
 						'id'=>'supplier_name',
 						'class'=>'form-control input-sm',
-						'value'=>$expenses_info->supplier_name)
+						'value'=>$this->lang->line('expenses_start_typing_supplier_name'))
+					);
+					echo form_input(array(
+						'type'=>'hidden',
+						'name'=>'supplier_id',
+						'id'=>'supplier_id')
 						);?>
+			</div>
+			<div class="col-xs-2">
+				<a id="remove_supplier_button" class="btn btn-danger btn-sm" title="Remove Supplier">
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
 			</div>
 		</div>
 
@@ -187,6 +197,46 @@ $(document).ready(function()
 		}
 	}
 
+	$('#supplier_name').click(function() {
+		$(this).attr('value','');
+	});
+
+	$('#supplier_name').autocomplete({
+		source: '<?php echo site_url("suppliers/suggest"); ?>',
+		minChars:0,
+		delay:10,
+		select: function (event, ui) {
+			$('#supplier_id').val(ui.item.value);
+			$(this).val(ui.item.label);
+			$(this).attr('readonly', 'readonly');
+			$('#remove_supplier_button').css('display', 'inline-block');
+			return false;
+		}
+	});
+
+	$('#supplier_name').blur(function() {
+		$(this).attr('value',"<?php echo $this->lang->line('expenses_start_typing_supplier_name'); ?>");
+	});
+
+	$('#remove_supplier_button').css('display', 'none');
+
+	$('#remove_supplier_button').click(function() {
+		$('#supplier_id').val('');
+		$('#supplier_name').removeAttr('readonly');
+		$('#supplier_name').val('');
+		$(this).css('display', 'none');
+	});
+
+	<?php
+		if(!empty($expenses_info->expense_id)) {
+	?>
+			$('#supplier_id').val('<?php echo $expenses_info->supplier_id ?>');
+			$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>');
+			$('#supplier_name').attr('readonly', 'readonly');
+			$('#remove_supplier_button').css('display', 'inline-block');
+	<?php
+		}
+	?>
 	$('#expenses_edit_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
@@ -201,6 +251,8 @@ $(document).ready(function()
 
 		errorLabelContainer: '#error_message_box',
 
+		ignore: '',
+
 		rules:
 		{
 			category: 'required',
@@ -208,6 +260,7 @@ $(document).ready(function()
 			{
 				required: true
 			},
+			supplier_id: 'required',
 			amount:
 			{
 				required: true,
@@ -227,6 +280,7 @@ $(document).ready(function()
 				required: "<?php echo $this->lang->line('expenses_date_required'); ?>"
 
 			},
+			supplier_id: "<?php echo $this->lang->line('expenses_supplier_required'); ?>",
 			amount:
 			{
 				required: "<?php echo $this->lang->line('expenses_amount_required'); ?>",
