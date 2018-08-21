@@ -721,9 +721,9 @@ class Reports extends Secure_Controller
 	}
 
 	//Graphical summary discounts report
-	public function graphical_summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all')
+	public function graphical_summary_discounts($start_date, $end_date, $sale_type, $location_id = 'all', $discount_type=0)
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id,'discount_type'=>$discount_type);
 
 		$this->load->model('reports/Summary_discounts');
 		$model = $this->Summary_discounts;
@@ -737,7 +737,7 @@ class Reports extends Secure_Controller
 		{
 			$row = $this->xss_clean($row);
 
-			$labels[] = $row['discount_percent'];
+			$labels[] = $row['discount'];
 			$series[] = $row['count'];
 		}
 
@@ -749,7 +749,7 @@ class Reports extends Secure_Controller
 			'series_data_1' => $series,
 			'summary_data_1' => $summary,
 			'yaxis_title' => $this->lang->line('reports_count'),
-			'xaxis_title' => $this->lang->line('reports_discount_percent'),
+			'xaxis_title' => $this->lang->line('reports_discount'),
 			'show_currency' => FALSE
 		);
 

@@ -1214,6 +1214,12 @@ class Sale_lib
 				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_fixed']);
 				$discount = bcadd($discount, $item_discount);
 			}
+
+			if($item['discount_fixed'] > 0)
+			{
+				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_fixed']);
+				$discount = bcadd($discount, $item_discount);
+			}
 		}
 
 		return $discount;
@@ -1290,10 +1296,7 @@ class Sale_lib
 		$total = bcmul($quantity, $price);
 		$discount_fraction = bcdiv($discount_percentage, 100);
 
-		$discount_amount=bcadd(bcmul($total, $discount_fraction), $discount_fixed);
-
-		return round($discount_amount, totals_decimals(), PHP_ROUND_HALF_UP);
-
+		return round(bcadd(bcmul($total, $discount_fraction),$discount_fixed), totals_decimals(), PHP_ROUND_HALF_UP);
 	}
 
 	public function get_item_tax($quantity, $price, $discount_percentage, $discount_fixed, $tax_percentage)
