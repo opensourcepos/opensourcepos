@@ -663,7 +663,7 @@ class Item extends CI_Model
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
-		return $suggestions;
+		return array_unique($suggestions, SORT_REGULAR);
 	}
 
 
@@ -774,7 +774,7 @@ class Item extends CI_Model
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
-		return $suggestions;
+		return array_unique($suggestions, SORT_REGULAR);
 	}
 
 	public function get_kit_search_suggestions($search, $filters = array('is_deleted' => FALSE, 'search_custom' => FALSE), $unique = FALSE, $limit = 25)
@@ -879,7 +879,7 @@ class Item extends CI_Model
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
-		return array_unique($suggestions);
+		return array_unique($suggestions, SORT_REGULAR);
 	}
 
 	public function get_low_sell_suggestions($search)
