@@ -879,7 +879,7 @@ class Item extends CI_Model
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}
 
-		return $suggestions;
+		return array_unique($suggestions);
 	}
 
 	public function get_low_sell_suggestions($search)
