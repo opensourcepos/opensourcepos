@@ -97,11 +97,9 @@ class Detailed_receivings extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, item_number, category, definition_name, quantity_purchased, serialnumber, total, discount_percent, item_location, receivings_items_temp.receiving_quantity');
+			$this->db->select('name, item_number, category, quantity_purchased, serialnumber, total, discount_percent, item_location, receivings_items_temp.receiving_quantity');
 			$this->db->from('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
-			$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id', 'left');
-			$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id AND definition_type = \'GROUP\'', 'left');
 			$this->db->where('receivings_items_temp.receiving_id', $value['receiving_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}

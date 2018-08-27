@@ -1192,7 +1192,6 @@ class Sale extends CI_Model
 					MAX(' . $this->Item->get_item_name() . ') AS name,
 					MAX(items.item_number) AS item_number,
 					MAX(items.category) AS category,
-					MAX(definition_name) AS definition_name,
 					MAX(items.supplier_id) AS supplier_id,
 					MAX(sales_items.quantity_purchased) AS quantity_purchased,
 					MAX(sales_items.item_cost_price) AS item_cost_price,
