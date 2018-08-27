@@ -16,9 +16,9 @@
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
 					<?php echo form_input(array(
 							'name'=>'date',
-							'id'=>'datetime',
-							'class'=>'form-control input-sm datepicker',
-							'value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($expenses_info->date)))
+							'class'=>'form-control input-sm datetime',
+ 							'value'=>to_datetime(strtotime($expenses_info->date)),
+                            'readonly'=>'readonly')
 							);?>
 				</div>
 			</div>
@@ -147,8 +147,6 @@
 $(document).ready(function()
 {
 	<?php $this->load->view('partial/datepicker_locale'); ?>
-
-	$('#datetime').datetimepicker(pickerconfig)
 
 	var amount_validator = function(field) {
 		return {

@@ -109,3 +109,5 @@ $.fn.datetimepicker.dates['<?php echo $this->config->item("language"); ?>'] = {
     ?>
     weekStart: <?php echo $this->lang->line("datepicker_weekstart"); ?>
 };
+
+$(".datetime").datetimepicker(pickerconfig());

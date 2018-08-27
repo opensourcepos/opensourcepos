@@ -33,11 +33,12 @@
 		formatAllRows: function () {
 			return "<?php echo $this->lang->line('tables_all'); ?>";
 		},
-		formatConfirmDelete : function() {
-			return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_delete")?>";
+		formatConfirmDelete: function(action) {
+
+			return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_delete")?>" + action;
 		},
 		formatConfirmRestore : function() {
-		return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_restore")?>";
+    		return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_restore")?>";
 		}
 	};
 

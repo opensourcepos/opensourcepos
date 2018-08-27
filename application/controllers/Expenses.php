@@ -80,7 +80,7 @@ class Expenses extends Secure_Controller
 
 		$data['expenses_info'] = $this->Expense->get_info($expense_id);
 
-		$data['expense_categories'] = array();
+		$expense_categories = array();
 		foreach($this->Expense_category->get_all(0, 0, TRUE)->result_array() as $row)
 		{
 			$expense_categories[$row['expense_category_id']] = $row['category_name'];
