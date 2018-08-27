@@ -12,7 +12,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array('name'=>'date','value'=>to_datetime(strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm'));?>
+				<?php echo form_input(array('name'=>'date','value'=>to_datetime(strtotime($sale_info['sale_time'])), 'class'=>'datetime form-control input-sm'));?>
 			</div>
 		</div>
 		
@@ -109,8 +109,6 @@ $(document).ready(function()
 	<?php endif; ?>
 	
 	<?php $this->load->view('partial/datepicker_locale'); ?>
-	
-	$('#datetime').datetimepicker(pickerconfig);
 
 	var fill_value =  function(event, ui) {
 		event.preventDefault();

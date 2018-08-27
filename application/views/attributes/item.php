@@ -57,8 +57,6 @@ foreach($definition_values as $definition_id => $definition_value)
     (function() {
         <?php $this->load->view('partial/datepicker_locale'); ?>
 
-        $('.datetime').datetimepicker(pickerconfig());
-
         var enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
                 $(this).parents('.form-group').remove();

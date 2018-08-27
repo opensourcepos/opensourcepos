@@ -251,11 +251,15 @@
 	};
 
 	var init_delete = function (confirmMessage) {
-		$("#delete").click(do_action("delete"));
+		$("#delete").click(function(event) {
+			do_action("delete")();
+		});
 	};
 
 	var init_restore = function (confirmMessage) {
-		$("#restore").click(do_action("restore"));
+		$("#restore").click(function(event) {
+			do_action("restore")();
+		});
 	};
 
 	var refresh = function() {
