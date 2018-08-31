@@ -133,7 +133,7 @@ $(document).ready(function()
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
 					</td>
 					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '% | ' .to_currency($item['discount_fixed']); ?></textarea>
+					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></textarea>
 					</td>
 					<?php if($discount > 0): ?>
 						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>

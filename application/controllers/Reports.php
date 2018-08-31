@@ -884,7 +884,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
+					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -995,7 +995,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
+					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1103,7 +1103,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
+					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1256,7 +1256,7 @@ class Reports extends Secure_Controller
 					to_currency($drow['total']),
 					to_currency($drow['cost']),
 					to_currency($drow['profit']),
-					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
+					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])));
 			}
 
 			if(isset($report_data['rewards'][$key]))
@@ -1358,7 +1358,7 @@ class Reports extends Secure_Controller
 					$drow['category'],
 					$quantity_purchased,
 					to_currency($drow['total']),
-					$drow['discount_percent'].'% | '.to_currency($drow['discount_fixed'])));
+					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])));
 			}
 		}
 

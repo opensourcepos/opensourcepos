@@ -165,22 +165,9 @@ if (isset($success))
 							?>
 								<td>
 								<div class="input-group">
-									<?php
-									if($item['discount_type'])
-									{
-										echo form_input(array('name'=>'discount_fixed', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount_fixed'], 0), 'onClick'=>'this.select();'));
-										echo form_hidden('discount', $item['discount']);
-									}
-									else
-									{
-										echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'onClick'=>'this.select();'));
-										echo form_hidden('discount_fixed', $item['discount_fixed']);
-									}
-									?>
+									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'onClick'=>'this.select();')); ?>
 									<span class="input-group-btn">
 										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
-
-
 									</span>
 								</div> 
 							</td>
@@ -189,20 +176,13 @@ if (isset($success))
 							else
 							{
 							?>
-								<td><?php 
-									if($item['discount_type'])
-									{
-										echo $item['discount_fixed'];
-									}else{
-										echo $item['discount'];
-									}
-									?></td>
+								<td><?php echo $item['discount'];?></td>
 								<?php echo form_hidden('discount',$item['discount']); ?>
-								<?php echo form_hidden('discount_fixed',$item['discount_fixed']); ?>
 							<?php
 							}
 							?>
-							<td><?php echo to_currency($item['price']*$item['quantity']*$item['receiving_quantity']-$item['price']*$item['quantity']*$item['receiving_quantity']*$item['discount']/100-$item['discount_fixed']); ?></td> 
+							<td>
+							<?php echo to_currency(($item['discount_type'] == PERCENT) ? $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['price'] * $item['quantity'] * $item['receiving_quantity'] * $item['discount'] / 100 : $item['price']*$item['quantity']*$item['receiving_quantity'] - $item['discount']); ?></td> 
 							<td><a href="javascript:$('#<?php echo 'cart_'.$line ?>').submit();" title=<?php echo $this->lang->line('receivings_update')?> ><span class="glyphicon glyphicon-refresh"></span></a></td>
 						</tr>
 						<tr>
@@ -531,7 +511,7 @@ $(document).ready(function()
 		}
 	}
 
-	$('[name="price"],[name="quantity"],[name="receiving_quantity"],[name="discount"],[name="discount_fixed"],[name="description"],[name="serialnumber"]').change(function() {
+	$('[name="price"],[name="quantity"],[name="receiving_quantity"],[name="discount"],[name="description"],[name="serialnumber"]').change(function() {
 		$(this).parents("tr").prevAll("form:first").submit()
 	});
 

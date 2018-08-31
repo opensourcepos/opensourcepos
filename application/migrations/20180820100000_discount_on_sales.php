@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Migration_Upgrade_To_3_4_0 extends CI_Migration
+class Migration_Discount_on_sales extends CI_Migration
 {
 	public function __construct()
 	{
@@ -9,7 +9,7 @@ class Migration_Upgrade_To_3_4_0 extends CI_Migration
 
 	public function up()
 	{
-		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_to_3.4.0.sql');
+		execute_script(APPPATH . 'migrations/sqlscripts/discount_on_sales.sql');
 	}
 
 	public function down()
