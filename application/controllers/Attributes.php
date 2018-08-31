@@ -59,7 +59,10 @@ class Attributes extends Secure_Controller
 	public function save_definition($definition_id = -1)
 	{
 		$definition_flags = 0;
-		foreach($this->input->post('definition_flags') as $flag)
+
+		$flags = (empty($this->input->post('definition_flags'))) ? array() : $this->input->post('definition_flags');
+
+		foreach($flags as $flag)
 		{
 			$definition_flags |= $flag;
 		}

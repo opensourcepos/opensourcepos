@@ -33,13 +33,16 @@
 		formatAllRows: function () {
 			return "<?php echo $this->lang->line('tables_all'); ?>";
 		},
-		formatConfirmDelete: function(action) {
-
-			return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_delete")?>" + action;
-		},
-		formatConfirmRestore : function() {
-    		return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_restore")?>";
-		}
+		formatConfirmAction: function(action) {
+			if (action == "delete")
+			{
+				return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_delete")?>";
+			}
+			else
+			{
+				return "<?php echo $this->lang->line((isset($editable) ? $editable : $controller_name). "_confirm_restore")?>";
+			}
+        }
 	};
 
 	$.extend($.fn.bootstrapTable.defaults, $.fn.bootstrapTable.locales["<?php echo current_language_code();?>"]);

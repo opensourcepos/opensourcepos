@@ -144,7 +144,7 @@
 
 	var do_action = function(action) {
         return function (url, ids) {
-			if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
+			if (confirm($.fn.bootstrapTable.defaults.formatConfirmAction(action))) {
 				$.post((url || options.resource) + '/' + action, {'ids[]': ids || selected_ids()}, function (response) {
 					//delete was successful, remove checkbox rows
 					if (response.success) {

@@ -164,6 +164,17 @@ class Attribute extends CI_Model
 		return $this->_to_array($results, 'definition_id', 'definition_name');
 	}
 
+	public function get_definitions_by_flags($definition_flags)
+	{
+		$this->db->from('attribute_definitions');
+		$this->db->where('definition_flags &', $definition_flags);
+		$this->db->where('deleted', 0);
+		$this->db->order_by('definition_id');
+		$results = $this->db->get()->result_array();
+
+		return $this->_to_array($results, 'definition_id', 'definition_name');
+	}
+
 	public function get_definition_names()
 	{
 		$this->db->from('attribute_definitions');
@@ -298,11 +309,13 @@ class Attribute extends CI_Model
 
 	public function get_link_values($item_id, $sale_receiving_fk, $id, $definition_flags)
 	{
-		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR ",") AS attribute_values');
+			$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR ", ") AS attribute_values, GROUP_CONCAT(attribute_datetime SEPARATOR ", ") AS attribute_datetimevalues');
 		$this->db->from('attribute_links');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
 		$this->db->where('definition_type <>', GROUP);
+		$this->db->where('deleted', 0);
+
 		if(!empty($id))
 		{
 			$this->db->where($sale_receiving_fk, $id);
@@ -315,7 +328,23 @@ class Attribute extends CI_Model
  		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('definition_flags & ', $definition_flags);
 
-		return $this->db->get()->row_object();
+		$results = $this->db->get();
+
+		if ($results->num_rows() > 0)
+		{
+			$row_object = $results->row_object();
+
+			$datetime_values = explode(', ', $row_object->attribute_datetimevalues);
+			$attribute_values = array();
+
+			foreach (array_filter($datetime_values) as $datetime_value)
+			{
+				$attribute_values[] = to_datetime(strtotime($datetime_value));
+			}
+
+			return implode(',', $attribute_values) . $row_object->attribute_values;
+		}
+		return "";
 	}
 
 	public function get_attribute_value($item_id, $definition_id)

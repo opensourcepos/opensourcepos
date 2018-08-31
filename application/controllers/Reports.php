@@ -1191,14 +1191,19 @@ class Reports extends Secure_Controller
 
 	public function detailed_sales($start_date, $end_date, $sale_type, $location_id = 'all')
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+		$definition_names = $this->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_SALES);
+
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names));
 
 		$this->load->model('reports/Detailed_sales');
 		$model = $this->Detailed_sales;
 
 		$model->create($inputs);
 
-		$headers = $this->xss_clean($model->getDataColumns());
+		$columns = $model->getDataColumns();
+		$columns['details'] = array_merge($columns['details'], $definition_names);
+
+		$headers = $this->xss_clean($columns);
 
 		$report_data = $model->getData($inputs);
 
@@ -1313,14 +1318,19 @@ class Reports extends Secure_Controller
 
 	public function detailed_receivings($start_date, $end_date, $receiving_type, $location_id = 'all')
 	{
-		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id);
+		$definition_names = $this->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_RECEIVINGS);
+
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'receiving_type' => $receiving_type, 'location_id' => $location_id, 'definition_ids' => array_keys($definition_names));
 
 		$this->load->model('reports/Detailed_receivings');
 		$model = $this->Detailed_receivings;
 
 		$model->create($inputs);
 
-		$headers = $this->xss_clean($model->getDataColumns());
+		$columns = $model->getDataColumns();
+		$columns['details'] = array_merge($columns['details'], $definition_names);
+
+		$headers = $this->xss_clean($columns);
 		$report_data = $model->getData($inputs);
 
 		$summary_data = array();
@@ -1353,13 +1363,15 @@ class Reports extends Secure_Controller
 				{
 					$quantity_purchased .= ' [' . $this->Stock_location->get_location_name($drow['item_location']) . ']';
 				}
-				$details_data[$row['receiving_id']][] = $this->xss_clean(array(
+				$details_data[$row['receiving_id']][] = $this->xss_clean(array_merge(array(
 					$drow['item_number'],
 					$drow['name'],
 					$drow['category'],
 					$quantity_purchased,
 					to_currency($drow['total']),
-					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])));
+					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])),
+					explode(',', $drow['attribute_values'])
+					));
 			}
 		}
 

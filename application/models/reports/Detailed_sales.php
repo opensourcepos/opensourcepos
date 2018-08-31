@@ -146,7 +146,14 @@ class Detailed_sales extends Report
 		{
 			$this->db->select('name, category, quantity_purchased, item_location, serialnumber, description, subtotal, tax, total, cost, profit, discount, discount_type, sale_status');
 			$this->db->from('sales_items_temp');
-			$this->db->where('sale_id', $value['sale_id']);
+			if (count($inputs['definition_ids']) > 0)
+			{
+				$this->db->select('GROUP_CONCAT(attribute_value) AS attribute_values');
+				$this->db->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
+				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+				$this->db->order_by('definition_id');
+			}
+			$this->db->where('sales_items_temp.sale_id', $value['sale_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 			$this->db->select('used, earned');
 			$this->db->from('sales_reward_points');
