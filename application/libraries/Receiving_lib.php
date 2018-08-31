@@ -240,7 +240,7 @@ class Receiving_lib
 				'name' => $item_info->name,
 				'description' => $description != NULL ? $description: $item_info->description,
 				'serialnumber' => $serialnumber != NULL ? $serialnumber: '',
-				'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS)->attribute_values,
+				'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'receiving_id', $receiving_id, Attribute::SHOW_IN_RECEIVINGS),
 				'allow_alt_description' => $item_info->allow_alt_description,
 				'is_serialized' => $item_info->is_serialized,
 				'quantity' => $quantity,

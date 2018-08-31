@@ -843,7 +843,7 @@ class Sale_lib
 					'line' => $insertkey,
 					'name' => $item_info->name,
 					'item_number' => $item_info->item_number,
-					'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->attribute_values,
+					'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES),
 					'description' => $description != NULL ? $description : $item_info->description,
 					'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
 					'allow_alt_description' => $item_info->allow_alt_description,

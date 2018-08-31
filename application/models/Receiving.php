@@ -88,7 +88,7 @@ class Receiving extends CI_Model
 			$receivings_items_data = array(
 				'receiving_id' => $receiving_id,
 				'item_id' => $item['item_id'],
-				'line' => $item['line'],
+				'linae' => $item['line'],
 				'description' => $item['description'],
 				'serialnumber' => $item['serialnumber'],
 				'quantity_purchased' => $item['quantity'],
