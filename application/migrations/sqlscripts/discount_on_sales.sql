@@ -3,7 +3,6 @@
 --
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('default_sales_discount_fixed', '0'),
 ('default_sales_discount_type', '0');
 
 ALTER TABLE `ospos_item_kits`
