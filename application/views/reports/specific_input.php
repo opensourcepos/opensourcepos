@@ -53,7 +53,7 @@ if(isset($error))
 				'class' => 'form-control input-sm required',
 				'type' => 'number',
 				'min' => 0,
-				'value' => $this->config->item('default_sales_discount_fixed'))); ?>
+				'value' => $this->config->item('default_sales_discount'))); ?>
 		</div>
 		<?php
 		}
