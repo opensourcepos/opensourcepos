@@ -229,6 +229,7 @@ class Receiving_lib
 		$item = array($insertkey => array(
 				'item_id' => $item_id,
 				'item_location' => $item_location,
+				'item_number' => $item_info->item_number,
 				'stock_name' => $this->CI->Stock_location->get_location_name($item_location),
 				'line' => $insertkey,
 				'name' => $item_info->name,

@@ -103,11 +103,12 @@ if (isset($success))
 		<thead>
 			<tr>
 				<th style="width:5%;"><?php echo $this->lang->line('common_delete'); ?></th>
-				<th style="width:40%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
+				<th style="width:15%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
+				<th style="width:30%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_cost'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_ship_pack'); ?></th>
-				<th style="width:10%;"><?php echo $this->lang->line('receivings_discount'); ?></th>
+				<th style="width:5%;"><?php echo $this->lang->line('receivings_discount'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_total'); ?></th>
 				<th style="width:5%;"><?php echo $this->lang->line('receivings_update'); ?></th>
 			</tr>
@@ -133,6 +134,7 @@ if (isset($success))
 					<?php echo form_open($controller_name."/edit_item/$line", array('class'=>'form-horizontal', 'id'=>'cart_'.$line)); ?>
 						<tr>
 							<td><?php echo anchor($controller_name."/delete_item/$line", '<span class="glyphicon glyphicon-trash"></span>');?></td>
+							<td><?php echo $item['item_number']; ?></td>
 							<td style="align:center;">
 								<?php echo $item['name']; ?><br /> <?php echo '[' . to_quantity_decimals($item['in_stock']) . ' in ' . $item['stock_name'] . ']'; ?>
 								<?php echo form_hidden('location', $item['item_location']); ?>
