@@ -516,7 +516,6 @@ $(document).ready(function()
 	});
 
 	$('[name="discount_toggle"]').change(function() {
-
 		var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked'))?1:0);
 		$('#cart_'+ $(this).attr('data-line')).append($(input));
 		$('#cart_'+ $(this).attr('data-line')).submit();

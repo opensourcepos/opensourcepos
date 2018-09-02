@@ -385,7 +385,7 @@ class Sales extends Secure_Controller
 		}
 
 		// if the customer discount is 0 or no customer is selected apply the default sales discount
-		if($discount == 0 )
+		if($discount == 0)
 		{
 			$discount = $this->config->item('default_sales_discount');
 		}

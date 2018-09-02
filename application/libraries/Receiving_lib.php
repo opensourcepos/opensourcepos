@@ -226,7 +226,8 @@ class Receiving_lib
 				1  => 'x1');
 		}
 
-		if(is_null($receiving_quantity)){
+		if(is_null($receiving_quantity))
+		{
 			$receiving_quantity = $item_info->receiving_quantity;
 		}
 
@@ -279,7 +280,8 @@ class Receiving_lib
 			$line['quantity'] = $quantity;
 			$line['receiving_quantity'] = $receiving_quantity;
 			$line['discount'] = $discount;
-			if(!is_null($discount_type)){
+			if(!is_null($discount_type))
+			{
 				$line['discount_type'] = $discount_type;
 			}
 			$line['price'] = $price;
@@ -367,7 +369,6 @@ class Receiving_lib
 			$discount_fraction = bcdiv($discount, 100);
 			$discount_amount = bcmul($total, $discount_fraction);
 		}
-		
 
 		return bcsub($total, $discount_amount);
 	}

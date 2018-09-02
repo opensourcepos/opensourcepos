@@ -949,7 +949,8 @@ class Sale_lib
 			$line['serialnumber'] = $serialnumber;
 			$line['quantity'] = $quantity;
 			$line['discount'] = $discount;
-			if(!is_null($discount_type)){
+			if(!is_null($discount_type))
+			{
 				$line['discount_type'] = $discount_type;
 			}
 			$line['price'] = $price;

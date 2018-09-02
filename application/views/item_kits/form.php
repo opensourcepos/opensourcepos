@@ -59,8 +59,7 @@
 							'id'=>'kit_discount_fixed',
 							'class'=>'form-control input-sm',
 							'value'=>$item_kit_info->kit_discount_fixed)
-					);?>
-					
+					);?>		
 				</div>
 			</div>
 		</div>

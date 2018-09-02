@@ -141,7 +141,6 @@ class Specific_discount extends Report
 		
 		$this->db->where('discount >=', $inputs['discount']);
 		$this->db->where('discount_type',$inputs['discount_type']);
-		
 
 		if($inputs['sale_type'] == 'complete')
 		{
