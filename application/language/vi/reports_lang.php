@@ -121,3 +121,5 @@ $lang["reports_unit_price"] = "Giá bán lẻ";
 $lang["reports_used"] = "Các điểm bán hàng đã dùng";
 $lang["reports_work_orders"] = "Giấy giao việc";
 $lang["reports_zero_and_less"] = "Không hay nhỏ hơn";
+$lang["reports_due"] = "Total Due";
+$lang["reports_money"] = "Money Available";

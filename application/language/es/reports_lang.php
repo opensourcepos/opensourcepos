@@ -121,3 +121,5 @@ $lang["reports_unit_price"] = "Precio de Venta";
 $lang["reports_used"] = "Puntos usados";
 $lang["reports_work_orders"] = "Ordenes";
 $lang["reports_zero_and_less"] = "Cero y negativos";
+$lang["reports_due"] = "Total Due";
+$lang["reports_money"] = "Money Available";
