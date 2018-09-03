@@ -28,7 +28,7 @@ services:
             - MYSQL_HOST_NAME=mysql
 
     mysql:
-        image: mariadb:10.1.21
+        image: mariadb:10.3.9
         environment:
             - MYSQL_ROOT_PASSWORD=pointofsale
             - MYSQL_DATABASE=ospos
