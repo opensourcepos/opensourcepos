@@ -30,3 +30,7 @@ $lang["item_kits_successful_adding"] = "You have successfully added Item Kit";
 $lang["item_kits_successful_deleted"] = "You have successfully deleted";
 $lang["item_kits_successful_updating"] = "You have successfully updated Item Kit";
 $lang["item_kits_update"] = "Update Item Kit";
+$lang["item_kits_discount"] = "Discount";
+$lang["item_kits_discount_type"] = "Discount Type";
+$lang["item_kits_discount_fixed"] = "Fixed Discount";
+$lang["item_kits_discount_percent"] = "Percentage Discount";

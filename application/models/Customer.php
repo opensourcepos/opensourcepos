@@ -104,7 +104,7 @@ class Customer extends Person
 			(
 				SELECT
 					sales.sale_id AS sale_id,
-					AVG(sales_items.discount_percent) AS avg_discount,
+					AVG(sales_items.discount) AS avg_discount,
 					SUM(sales_items.quantity_purchased) AS quantity
 				FROM ' . $this->db->dbprefix('sales') . ' AS sales
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
@@ -252,7 +252,8 @@ class Customer extends Person
 					'company_name'		=> NULL,
 					'account_number'	=> NULL,
 					'taxable'			=> 0,
-					'discount_percent'	=> 0.00,
+					'discount'			=> 0.00,
+					'discount_type'		=> 0,
 					'package_id'		=> NULL,
 					'points'			=> NULL,
 					'sales_tax_code'	=> 1,

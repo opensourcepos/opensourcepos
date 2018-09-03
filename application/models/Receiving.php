@@ -93,7 +93,8 @@ class Receiving extends CI_Model
 				'serialnumber' => $item['serialnumber'],
 				'quantity_purchased' => $item['quantity'],
 				'receiving_quantity' => $item['receiving_quantity'],
-				'discount_percent' => $item['discount'],
+				'discount' => $item['discount'],
+				'discount_type' => $item['discount_type'],
 				'item_cost_price' => $cur_item_info->cost_price,
 				'item_unit_price' => $item['price'],
 				'item_location' => $item['item_location']
@@ -265,13 +266,14 @@ class Receiving extends CI_Model
 					MAX(receivings_items.receiving_quantity) AS receiving_quantity,
 					MAX(item_cost_price) AS item_cost_price,
 					MAX(item_unit_price) AS item_unit_price,
-					MAX(discount_percent) AS discount_percent,
+					MAX(discount) AS discount,
+					discount_type as discount_type,
 					receivings_items.line,
 					MAX(serialnumber) AS serialnumber,
 					MAX(receivings_items.description) AS description,
-					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) AS subtotal,
-					MAX(item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) AS total,
-					MAX((item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount_percent / 100) - (item_cost_price * quantity_purchased)) AS profit,
+					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS subtotal,
+					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS total,
+					MAX((CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) - (item_cost_price * quantity_purchased)) AS profit,
 					MAX(item_cost_price * quantity_purchased * receivings_items.receiving_quantity ) AS cost
 				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
 				INNER JOIN ' . $this->db->dbprefix('receivings') . ' AS receivings

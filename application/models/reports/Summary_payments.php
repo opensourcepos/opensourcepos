@@ -14,7 +14,7 @@ class Summary_payments extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sales_payments.payment_type, COUNT(DISTINCT sales_payments.sale_id) AS count, SUM(sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)) AS payment_amount');
+		$this->db->select('sales_payments.payment_type, COUNT(DISTINCT sales_payments.sale_id) AS count, SUM(CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END) AS payment_amount');
 		$this->db->from('sales_payments AS sales_payments');
 		$this->db->join('sales AS sales', 'sales.sale_id = sales_payments.sale_id');
 		$this->db->join('sales_items AS sales_items', 'sales_items.sale_id = sales_payments.sale_id', 'left');

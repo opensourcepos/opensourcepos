@@ -30,3 +30,7 @@ $lang["item_kits_successful_adding"] = "Has agregado satisfactoriamente un Kit d
 $lang["item_kits_successful_deleted"] = "Has borrado satisfactoriamente";
 $lang["item_kits_successful_updating"] = "Has actualizado satisfactoriamente un Kit de Artículos";
 $lang["item_kits_update"] = "Actualizar Kit de Artículos";
+$lang["item_kits_discount"] = "Descuento";
+$lang["item_kits_discount_type"] = "Tipo de Descuento";
+$lang["item_kits_discount_fixed"] = "Descuento Fijo";
+$lang["item_kits_discount_percent"] = "Descuento en Porcentaje";

@@ -159,7 +159,7 @@ class Receiving_lib
 		$this->CI->session->unset_userdata('recv_stock_destination');
 	}
 
-	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $include_deleted = FALSE)
+	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount_type = 0, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $include_deleted = FALSE)
 	{
 		//make sure item exists in database.
 		if(!$this->CI->Item->exists($item_id, $include_deleted))
@@ -226,6 +226,11 @@ class Receiving_lib
 				1  => 'x1');
 		}
 
+		if(is_null($receiving_quantity))
+		{
+			$receiving_quantity = $item_info->receiving_quantity;
+		}
+
 		$item = array($insertkey => array(
 				'item_id' => $item_id,
 				'item_location' => $item_location,
@@ -239,11 +244,12 @@ class Receiving_lib
 				'is_serialized' => $item_info->is_serialized,
 				'quantity' => $quantity,
 				'discount' => $discount,
+				'discount_type' => $discount_type,
 				'in_stock' => $this->CI->Item_quantity->get_item_quantity($item_id, $item_location)->quantity,
 				'price' => $price,
-				'receiving_quantity' => $item_info->receiving_quantity,
+				'receiving_quantity' => $receiving_quantity,
 				'receiving_quantity_choices' => $receiving_quantity_choices,
-				'total' => $this->get_item_total($quantity, $price, $discount, $item_info->receiving_quantity)
+				'total' => $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
 			)
 		);
 
@@ -251,7 +257,7 @@ class Receiving_lib
 		if($itemalreadyinsale)
 		{
 			$items[$updatekey]['quantity'] += $quantity;
-			$items[$updatekey]['total'] = $this->get_item_total($items[$updatekey]['quantity'], $price, $discount, $items[$updatekey]['receiving_quantity']);
+			$items[$updatekey]['total'] = $this->get_item_total($items[$updatekey]['quantity'], $price, $discount, $discount_type, $items[$updatekey]['receiving_quantity']);
 		}
 		else
 		{
@@ -264,7 +270,7 @@ class Receiving_lib
 		return TRUE;
 	}
 
-	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $price, $receiving_quantity)
+	public function edit_item($line, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $receiving_quantity)
 	{
 		$items = $this->get_cart();
 		if(isset($items[$line]))
@@ -275,8 +281,12 @@ class Receiving_lib
 			$line['quantity'] = $quantity;
 			$line['receiving_quantity'] = $receiving_quantity;
 			$line['discount'] = $discount;
+			if(!is_null($discount_type))
+			{
+				$line['discount_type'] = $discount_type;
+			}
 			$line['price'] = $price;
-			$line['total'] = $this->get_item_total($quantity, $price, $discount, $receiving_quantity);
+			$line['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity);
 			$this->set_cart($items);
 		}
 
@@ -309,13 +319,13 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_type, $row->discount, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
 		}
 
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 	}
 
-	public function add_item_kit($external_item_kit_id, $item_location)
+	public function add_item_kit($external_item_kit_id, $item_location, $discount_type)
 	{
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
@@ -323,7 +333,7 @@ class Receiving_lib
 		
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$this->add_item($item_kit_item['item_id'],$item_kit_item['quantity'], $item_location);
+			$this->add_item($item_kit_item['item_id'],$item_kit_item['quantity'], $item_location, $discount_type);
 		}
 	}
 
@@ -334,7 +344,7 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_percent, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_type, $row->discount, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, TRUE);
 		}
 
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
@@ -350,12 +360,16 @@ class Receiving_lib
 		$this->clear_reference();
 	}
 
-	public function get_item_total($quantity, $price, $discount_percentage, $receiving_quantity)
+	public function get_item_total($quantity, $price, $discount, $discount_type, $receiving_quantity)
 	{
 		$extended_quantity = bcmul($quantity, $receiving_quantity);
 		$total = bcmul($extended_quantity, $price);
-		$discount_fraction = bcdiv($discount_percentage, 100);
-		$discount_amount = bcmul($total, $discount_fraction);
+		$discount_amount = $discount;
+		if($discount_type == PERCENT)
+		{
+			$discount_fraction = bcdiv($discount, 100);
+			$discount_amount = bcmul($total, $discount_fraction);
+		}
 
 		return bcsub($total, $discount_amount);
 	}
@@ -365,7 +379,7 @@ class Receiving_lib
 		$total = 0;
 		foreach($this->get_cart() as $item)
 		{
-			$total = bcadd($total, $this->get_item_total(($item['quantity']), $item['price'], $item['discount'], $item['receiving_quantity']));
+			$total = bcadd($total, $this->get_item_total(($item['quantity']), $item['price'], $item['discount'], $item['discount_type'], $item['receiving_quantity']));
 		}
 		
 		return $total;

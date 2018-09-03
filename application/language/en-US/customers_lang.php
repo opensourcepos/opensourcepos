@@ -48,3 +48,6 @@ $lang["customers_taxable"] = "Taxable";
 $lang["customers_total"] = "Total spent";
 $lang["customers_update"] = "Update Customer";
 $lang["rewards_package"] = "Rewards Package";
+$lang["customers_discount_type"] = "Discount Type";
+$lang["customers_discount_fixed"] = "Fixed Discount";
+$lang["customers_discount_percent"] = "Percentage Discount";

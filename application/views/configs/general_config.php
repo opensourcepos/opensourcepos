@@ -23,7 +23,19 @@
 							'min' => 0,
 							'max' => 100,
 							'value' => $this->config->item('default_sales_discount'))); ?>
-						<span class="input-group-addon input-sm">%</span>
+						<span class="input-group-btn">
+							<?php echo form_checkbox(array(
+								'id'=>'default_sales_discount_type', 
+								'name'=>'default_sales_discount_type', 
+								'value'=>1, 
+								'data-toggle'=>"toggle",
+								'data-size'=>'small', 
+								'data-onstyle'=>'success', 
+								'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 
+								'data-off'=>'<b>%</b>', 
+								'checked'=>$this->config->item('default_sales_discount_type'))
+								); ?>
+						</span>
 					</div>
 				</div>
 			</div>

@@ -18,6 +18,7 @@ class Item_kits extends Secure_Controller
 
 		$item_kit->total_cost_price = 0;
 		$item_kit->total_unit_price = (float)$kit_item_info->unit_price;
+		$total_quantity = 0;
 
 		foreach($this->Item_kit_items->get_info($item_kit->item_kit_id) as $item_kit_item)
 		{
@@ -32,11 +33,13 @@ class Item_kits extends Secure_Controller
 			if($item_kit->price_option == PRICE_OPTION_ALL || ($item_kit->price_option == PRICE_OPTION_KIT_STOCK && $item_info->stock_type == HAS_STOCK ))
 			{
 				$item_kit->total_unit_price += $item_info->unit_price * $item_kit_item['quantity'];
+				$total_quantity += $item_kit_item['quantity'];
 			}
 		}
 
-		$discount_fraction = bcdiv($item_kit->kit_discount_percent, 100);
-		$item_kit->total_unit_price = $item_kit->total_unit_price - round(bcmul($item_kit->total_unit_price, $discount_fraction), totals_decimals(), PHP_ROUND_HALF_UP);
+		$discount_fraction = bcdiv($item_kit->kit_discount, 100);
+
+		$item_kit->total_unit_price = $item_kit->total_unit_price - round(($item_kit->kit_discount_type == PERCENT)?bcmul($item_kit->total_unit_price, $discount_fraction): $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
 
 		return $item_kit;
 	}
@@ -129,7 +132,8 @@ class Item_kits extends Secure_Controller
 		$item_kit_data = array(
 			'name' => $this->input->post('name'),
 			'item_id' => $this->input->post('kit_item_id'),
-			'kit_discount_percent' => $this->input->post('kit_discount_percent'),
+			'kit_discount' => $this->input->post('kit_discount'),
+			'kit_discount_type' => $this->input->post('kit_discount_type') == NULL ? PERCENT : $this->input->post('kit_discount_type'),
 			'price_option' => $this->input->post('price_option'),
 			'print_option' => $this->input->post('print_option'),
 			'description' => $this->input->post('description')

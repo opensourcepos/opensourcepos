@@ -248,7 +248,8 @@ class Customers extends Persons
 			'consent' => $this->input->post('consent') != NULL,
 			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
-			'discount_percent' => $this->input->post('discount_percent') == '' ? 0.00 : $this->input->post('discount_percent'),
+			'discount' => $this->input->post('discount') == '' ? 0.00 : $this->input->post('discount'),
+			'discount_type' => $this->input->post('discount_type') == NULL ? PERCENT : $this->input->post('discount_type'),
 			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
 			'taxable' => $this->input->post('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
@@ -403,8 +404,9 @@ class Customers extends Persons
 						$customer_data = array(
 							'consent'			=> $consent,
 							'company_name'		=> $data[13],
-							'discount_percent'	=> $data[15],
-							'taxable'			=> $data[16] == '' ? 0 : 1,
+							'discount'			=> $data[15],
+							'discount_type'		=> $data[16],
+							'taxable'			=> $data[17] == '' ? 0 : 1,
 							'date'				=> date('Y-m-d H:i:s'),
 							'employee_id'		=> $this->Employee->get_logged_in_employee_info()->person_id
 						);

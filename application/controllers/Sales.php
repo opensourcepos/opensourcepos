@@ -136,12 +136,13 @@ class Sales extends Secure_Controller
 		if($this->Customer->exists($customer_id))
 		{
 			$this->sale_lib->set_customer($customer_id);
-			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
+			$discount = $this->Customer->get_info($customer_id)->discount;
+			$discount_type = $this->Customer->get_info($customer_id)->discount_type;
 
 			// apply customer default discount to items that have 0 discount
-			if($discount_percent != '')
+			if($discount != '')
 			{
-				$this->sale_lib->apply_customer_discount($discount_percent);
+				$this->sale_lib->apply_customer_discount($discount, $discount_type);
 			}
 		}
 
@@ -367,16 +368,19 @@ class Sales extends Secure_Controller
 		$data = array();
 
 		$discount = 0;
+		$discount_type = $this->config->item('default_sales_discount_type');
 
 		// check if any discount is assigned to the selected customer
 		$customer_id = $this->sale_lib->get_customer();
 		if($customer_id != -1)
 		{
 			// load the customer discount if any
-			$discount_percent = $this->Customer->get_info($customer_id)->discount_percent;
-			if($discount_percent != '')
+			$customer_discount = $this->Customer->get_info($customer_id)->discount;
+			$customer_discount_type = $this->Customer->get_info($customer_id)->discount_type;
+			if($customer_discount != '')
 			{
-				$discount = $discount_percent;
+				$discount = $customer_discount;
+				$discount_type = $customer_discount_type;
 			}
 		}
 
@@ -406,9 +410,10 @@ class Sales extends Secure_Controller
 			$kit_price_option = $item_kit_info->price_option;
 			$kit_print_option = $item_kit_info->print_option; // 0-all, 1-priced, 2-kit-only
 
-			if($item_kit_info->kit_discount_percent != 0 && $item_kit_info->kit_discount_percent > $discount)
+			if($item_kit_info->kit_discount != 0 && $item_kit_info->kit_discount > $discount)
 			{
-				$discount = $item_kit_info->kit_discount_percent;
+				$discount = $item_kit_info->kit_discount;
+				$discount_type = $item_kit_info->kit_discount_type;
 			}
 
 			$price = NULL;
@@ -416,7 +421,7 @@ class Sales extends Secure_Controller
 
 			if(!empty($kit_item_id))
 			{
-				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, PRICE_MODE_STANDARD))
+				if(!$this->sale_lib->add_item($kit_item_id, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD))
 				{
 					$data['error'] = $this->lang->line('sales_unable_to_add_item');
 				}
@@ -428,7 +433,7 @@ class Sales extends Secure_Controller
 
 			// Add item kit items to order
 			$stock_warning = NULL;
-			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $kit_price_option, $kit_print_option, $stock_warning))
+			if(!$this->sale_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type, $kit_price_option, $kit_print_option, $stock_warning))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
@@ -439,7 +444,7 @@ class Sales extends Secure_Controller
 		}
 		else
 		{
-			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, PRICE_MODE_STANDARD))
+			if(!$this->sale_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount, $discount_type, PRICE_MODE_STANDARD))
 			{
 				$data['error'] = $this->lang->line('sales_unable_to_add_item');
 			}
@@ -464,12 +469,14 @@ class Sales extends Secure_Controller
 		$price = parse_decimals($this->input->post('price'));
 		$quantity = parse_decimals($this->input->post('quantity'));
 		$discount = parse_decimals($this->input->post('discount'));
+		$discount_type = $this->input->post('discount_type');
+		
 		$item_location = $this->input->post('location');
 		$discounted_total = $this->input->post('discounted_total') != '' ? $this->input->post('discounted_total') : NULL;
 
 		if($this->form_validation->run() != FALSE)
 		{
-			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $price, $discounted_total);
+			$this->sale_lib->edit_item($item_id, $description, $serialnumber, $quantity, $discount, $discount_type, $price, $discounted_total);
 		}
 		else
 		{
@@ -861,7 +868,8 @@ class Sales extends Secure_Controller
 				$data['customer_location'] = '';
 			}
 			$data['customer_account_number'] = $customer_info->account_number;
-			$data['customer_discount_percent'] = $customer_info->discount_percent;
+			$data['customer_discount'] = $customer_info->discount;
+			$data['customer_discount_type'] = $customer_info->discount_type;
 			$package_id = $this->Customer->get_info($customer_id)->package_id;
 			if($package_id != NULL)
 			{

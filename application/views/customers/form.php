@@ -40,18 +40,41 @@
 				</div>
 
 				<?php $this->load->view("people/form_basic_info"); ?>
+				
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_discount_type'), 'discount_type', array('class'=>'control-label col-xs-3')); ?>
+					<div class="col-xs-8">
+						<label class="radio-inline">
+							<?php echo form_radio(array(
+									'name'=>'discount_type',
+									'type'=>'radio',
+									'id'=>'discount_type',
+									'value'=>0,
+									'checked'=>$person_info->discount_type == PERCENT)
+							); ?> <?php echo $this->lang->line('customers_discount_percent'); ?>
+						</label>
+						<label class="radio-inline">
+							<?php echo form_radio(array(
+									'name'=>'discount_type',
+									'type'=>'radio',
+									'id'=>'discount_type',
+									'value'=>1,
+									'checked'=>$person_info->discount_type == FIXED)
+							); ?> <?php echo $this->lang->line('customers_discount_fixed'); ?>
+						</label>
+					</div>
+				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_discount'), 'discount_percent', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label($this->lang->line('customers_discount'), 'discount', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-3'>
 						<div class="input-group input-group-sm">
 							<?php echo form_input(array(
-									'name'=>'discount_percent',
-									'id'=>'discount_percent',
+									'name'=>'discount',
+									'id'=>'discount',
 									'class'=>'form-control input-sm',
-									'value'=>$person_info->discount_percent)
+									'value'=>$person_info->discount)
 									); ?>
-							<span class="input-group-addon input-sm"><b>%</b></span>
 						</div>
 					</div>	
 				</div>

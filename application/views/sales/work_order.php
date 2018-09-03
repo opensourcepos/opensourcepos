@@ -123,7 +123,7 @@ if(isset($error_message))
 					<td class="item-name"><textarea rows="4" cols="6"><?php echo $item['name']; ?></textarea></td>
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea></td>
 					<td><textarea rows="4" cols="6"><?php if($print_price_info) echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea></td>
+					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></textarea></td>
 					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php if($print_price_info) echo to_currency($item['discounted_total']); ?></textarea></td>
 				</tr>
 
