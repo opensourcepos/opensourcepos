@@ -413,7 +413,7 @@ class Sales extends Secure_Controller
 			if($item_kit_info->kit_discount != 0 && $item_kit_info->kit_discount > $discount)
 			{
 				$discount = $item_kit_info->kit_discount;
-				$discount_type = $item_kit_info->discount_type;
+				$discount_type = $item_kit_info->kit_discount_type;
 			}
 
 			$price = NULL;

@@ -37,8 +37,9 @@ class Item_kits extends Secure_Controller
 			}
 		}
 
-		$discount_fraction = bcdiv($item_kit->kit_discount_percent, 100);
-		$item_kit->total_unit_price = $item_kit->total_unit_price - round(bcadd(bcmul($item_kit->total_unit_price, $discount_fraction),bcmul($item_kit->kit_discount_fixed,$total_quantity)), totals_decimals(), PHP_ROUND_HALF_UP);
+		$discount_fraction = bcdiv($item_kit->kit_discount, 100);
+
+		$item_kit->total_unit_price = $item_kit->total_unit_price - round(($item_kit->kit_discount_type == PERCENT)?bcmul($item_kit->total_unit_price, $discount_fraction): $item_kit->kit_discount, totals_decimals(), PHP_ROUND_HALF_UP);
 
 		return $item_kit;
 	}
@@ -131,8 +132,8 @@ class Item_kits extends Secure_Controller
 		$item_kit_data = array(
 			'name' => $this->input->post('name'),
 			'item_id' => $this->input->post('kit_item_id'),
-			'kit_discount_percent' => $this->input->post('kit_discount_percent'),
-			'kit_discount_fixed' => $this->input->post('kit_discount_fixed'),
+			'kit_discount' => $this->input->post('kit_discount'),
+			'kit_discount_type' => $this->input->post('kit_discount_type') == NULL ? PERCENT : $this->input->post('kit_discount_type'),
 			'price_option' => $this->input->post('price_option'),
 			'print_option' => $this->input->post('print_option'),
 			'description' => $this->input->post('description')
