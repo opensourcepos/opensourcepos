@@ -3,8 +3,7 @@
 --
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
-('multi_pack_enabled', '0'),
-('default_sales_discount_type', '0');
+('multi_pack_enabled', '0');
 
 ALTER TABLE `ospos_items`
   ADD COLUMN `qty_per_pack` decimal(15,3) NOT NULL DEFAULT 1,
@@ -18,6 +17,9 @@ UPDATE `ospos_items`
 --
 -- Add support for Discount on Sales Fixed
 --
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+('default_sales_discount_type', '0');
 
 ALTER TABLE `ospos_item_kits`
 	CHANGE COLUMN `kit_discount_percent` `kit_discount` DECIMAL(15,2) NOT NULL DEFAULT 0 AFTER `item_id`,
