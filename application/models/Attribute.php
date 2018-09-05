@@ -169,6 +169,7 @@ class Attribute extends CI_Model
 		$this->db->from('attribute_definitions');
 		$this->db->where('definition_flags &', $definition_flags);
 		$this->db->where('deleted', 0);
+		$this->db->where('definition_type <>', GROUP);
 		$this->db->order_by('definition_id');
 		$results = $this->db->get()->result_array();
 
