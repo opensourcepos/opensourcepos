@@ -13,7 +13,7 @@ const DEFINITION_TYPES = [GROUP, DROPDOWN, TEXT, DATETIME];
 
 class Attribute extends CI_Model
 {
-	//const SHOW_IN_ITEMS = 1;
+	const SHOW_IN_ITEMS = 1;
 	const SHOW_IN_SALES = 2;
 	const SHOW_IN_RECEIVINGS = 4;
 

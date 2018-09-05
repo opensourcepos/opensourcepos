@@ -180,17 +180,23 @@ class Item extends CI_Model
 					$this->db->like('name', $search);
 					$this->db->or_like('item_number', $search);
 					$this->db->or_like('items.item_id', $search);
-					$this->db->or_like('definition_name', $search);
 					$this->db->or_like('company_name', $search);
 					$this->db->or_like('category', $search);
 				$this->db->group_end();
 			}
 			else
 			{
+				$this->db->like('attribute_value', $search);
 				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id');
 				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
-				$this->db->like('attribute_value', $search);
 			}
+		}
+		else if (count($filters['definition_ids']) > 0)
+		{
+				$this->db->select('GROUP_CONCAT(attribute_value) AS attribute_values');
+			$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
+			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+			$this->db->order_by('definition_id');
 		}
 
 		$this->db->where('items.deleted', $filters['is_deleted']);

@@ -321,6 +321,8 @@ function get_items_manage_table_headers()
 {
 	$CI =& get_instance();
 
+	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
 	$headers = array(
 		array('items.item_id' => $CI->lang->line('common_id')),
 		array('item_number' => $CI->lang->line('items_item_number')),
@@ -335,6 +337,11 @@ function get_items_manage_table_headers()
 		array('inventory' => ''),
 		array('stock' => '')
 	);
+
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$headers[] = array($definition_name => $definition_name);
+	}
 
 	return transform_headers($headers);
 }
@@ -381,7 +388,7 @@ function get_item_data_row($item)
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}
 
-	return array (
+	return array_merge(array (
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
 		'name' => $item->name,
@@ -400,7 +407,7 @@ function get_item_data_row($item)
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
-		));
+		), explode(',', $item->attribute_values)));
 }
 
 
