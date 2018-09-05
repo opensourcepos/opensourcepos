@@ -407,7 +407,7 @@ function get_item_data_row($item)
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
-		), explode(',', $item->attribute_values)));
+		), explode(',', (property_exists($item, 'attribute_values')) ? $item->attribute_values : "")));
 }
 
 
