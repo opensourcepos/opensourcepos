@@ -62,6 +62,6 @@ $lang["common_unknown"] = "ไม่ทราบ";
 $lang["common_view_recent_sales"] = "การขายล่าสุด";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "ยินดีต้อนรับ";
-$lang["common_welcome_message"] = "OSPOS. กรุณาเลือกคำสั่งเมนูด้านล่าง ";
+$lang["common_welcome_message"] = "OSPOS. กรุณาเลือกโมดูลด้านล่าง เพื่อเริ่ม";
 $lang["common_you_are_using_ospos"] = "คุณกำลังใช้ Open Source Point Of Sale รุ่น";
 $lang["common_zip"] = "รหัสไปรษณีย์";
