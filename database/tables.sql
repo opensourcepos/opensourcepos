@@ -119,8 +119,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_third_column', ''),
 ('allow_duplicate_barcodes', '0'),
 ('quote_default_comments', 'This is a default quote comment'),
-('multi_pack_enabled', '0');
-
+('multi_pack_enabled', '0'),
+('default_sales_discount_type', '0');
 
 -- --------------------------------------------------------
 
@@ -134,7 +134,8 @@ CREATE TABLE `ospos_customers` (
   `account_number` varchar(255) DEFAULT NULL,
   `taxable` int(1) NOT NULL DEFAULT '1',
   `sales_tax_code` varchar(32) NOT NULL DEFAULT '1',
-  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `discount` decimal(15,2) NOT NULL DEFAULT '0',
+  `discount_type` TINYINT(2) NOT NULL DEFAULT 0,
   `package_id` int(11) DEFAULT NULL,
   `points` int(11) DEFAULT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0',
@@ -296,7 +297,8 @@ CREATE TABLE `ospos_item_kits` (
   `item_kit_id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
   `item_id` INT(10) NOT NULL DEFAULT 0,
-  `kit_discount_percent` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+  `kit_discount` DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+  `kit_discount_type` TINYINT(2) NOT NULL DEFAULT 0,
   `price_option` TINYINT(2) NOT NULL DEFAULT 0,
   `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   `description` varchar(255) NOT NULL,
@@ -547,7 +549,8 @@ CREATE TABLE `ospos_receivings_items` (
   `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
-  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `discount` decimal(15,2) NOT NULL DEFAULT '0',
+  `discount_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_location` int(11) NOT NULL,
   `receiving_quantity` decimal(15,3) NOT NULL DEFAULT '1',
   PRIMARY KEY (`receiving_id`,`item_id`,`line`),
@@ -605,7 +608,8 @@ CREATE TABLE `ospos_sales_items` (
   `quantity_purchased` decimal(15,3) NOT NULL DEFAULT '0',
   `item_cost_price` decimal(15,2) NOT NULL,
   `item_unit_price` decimal(15,2) NOT NULL,
-  `discount_percent` decimal(15,2) NOT NULL DEFAULT '0',
+  `discount` decimal(15,2) NOT NULL DEFAULT '0',
+  `discount_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_location` int(11) NOT NULL,
   `print_option` TINYINT(2) NOT NULL DEFAULT 0,
   PRIMARY KEY (`sale_id`,`item_id`,`line`),
