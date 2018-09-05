@@ -45,6 +45,8 @@ class Items extends Secure_Controller
 
 		$this->item_lib->set_item_location($this->input->get('stock_location'));
 
+		$definition_names = $this->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
 		$filters = array('start_date' => $this->input->get('start_date'),
 						'end_date' => $this->input->get('end_date'),
 						'stock_location_id' => $this->item_lib->get_item_location(),
@@ -54,7 +56,8 @@ class Items extends Secure_Controller
 						'no_description' => FALSE,
 						'search_custom' => FALSE,
 						'is_deleted' => FALSE,
-						'temporary' => FALSE);
+						'temporary' => FALSE,
+						'definition_ids' => array_keys($definition_names));
 		
 		// check if any filter is set in the multiselect dropdown
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
