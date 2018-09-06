@@ -217,7 +217,7 @@ if (isset($success))
 								}
 								?>
 							</td>
-							<td colspan='6'></td>
+							<td colspan='7'></td>
 						</tr>
 					<?php echo form_close(); ?>
 			<?php
