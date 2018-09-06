@@ -514,13 +514,14 @@ class Sales extends Secure_Controller
 		$data = array();
 		$data['dinner_table'] = $this->sale_lib->get_dinner_table();
 		$data['cart'] = $this->sale_lib->get_cart();
+
 		$data['transaction_time'] = date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'));
 		$data['transaction_date'] = date($this->config->item('dateformat'));
 		$data['show_stock_locations'] = $this->Stock_location->show_locations('sales');
 		$data['comments'] = $this->sale_lib->get_comment();
 		$employee_id = $this->Employee->get_logged_in_employee_info()->person_id;
 		$employee_info = $this->Employee->get_info($employee_id);
-		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
+		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 		$data['company_info'] = implode("\n", array(
 			$this->config->item('address'),
 			$this->config->item('phone'),
@@ -941,7 +942,7 @@ class Sales extends Secure_Controller
 		$data['amount_change'] = $data['amount_due'] * -1;
 
 		$employee_info = $this->Employee->get_info($this->sale_lib->get_employee());
-		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name[0];
+		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 		$this->_load_customer_data($this->sale_lib->get_customer(), $data);
 
 		$data['sale_id_num'] = $sale_id;
