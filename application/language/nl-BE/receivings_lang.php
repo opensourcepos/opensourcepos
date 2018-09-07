@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Annuleer";
 $lang["receivings_cannot_be_deleted"] = "Order(s) konden niet verwijderd worden";
 $lang["receivings_comments"] = "Commentaar";
@@ -36,7 +35,7 @@ $lang["receivings_requisition"] = "Transfer";
 $lang["receivings_return"] = "Teruggave";
 $lang["receivings_select_supplier"] = "Selecteer Leverancier (Optioneel)";
 $lang["receivings_start_typing_supplier_name"] = "Typ naam leverancier..";
-$lang["receivings_stock"] = "";
+$lang["receivings_stock"] = "Stock";
 $lang["receivings_stock_destination"] = "Stock bestemming";
 $lang["receivings_stock_locaiton"] = "Stock locatie";
 $lang["receivings_stock_source"] = "Stock bron";
