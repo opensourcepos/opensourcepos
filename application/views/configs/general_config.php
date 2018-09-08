@@ -25,16 +25,15 @@
 							'value' => $this->config->item('default_sales_discount'))); ?>
 						<span class="input-group-btn">
 							<?php echo form_checkbox(array(
-								'id'=>'default_sales_discount_type', 
-								'name'=>'default_sales_discount_type', 
-								'value'=>1, 
-								'data-toggle'=>"toggle",
-								'data-size'=>'small', 
-								'data-onstyle'=>'success', 
-								'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 
-								'data-off'=>'<b>%</b>', 
-								'checked'=>$this->config->item('default_sales_discount_type'))
-								); ?>
+								'id' => 'default_sales_discount_type', 
+								'name' => 'default_sales_discount_type', 
+								'value' => 1, 
+								'data-toggle' => 'toggle',
+								'data-size' => 'normal', 
+								'data-onstyle' => 'success', 
+								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>', 
+								'data-off' => '<b>%</b>', 
+								'checked' => $this->config->item('default_sales_discount_type'))); ?>
 						</span>
 					</div>
 				</div>
@@ -86,17 +85,17 @@
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('notify_vertical_position', array(
-								'top' => $this->lang->line('config_top'),
-								'bottom' => $this->lang->line('config_bottom')
-							),
+									'top' => $this->lang->line('config_top'),
+									'bottom' => $this->lang->line('config_bottom')
+								),
 								$this->config->item('notify_vertical_position'), array('class' => 'form-control input-sm')); ?>
 						</div>
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('notify_horizontal_position', array(
-								'left' => $this->lang->line('config_left'),
-								'center' => $this->lang->line('config_center'),
-								'right' => $this->lang->line('config_right')
-							),
+									'left' => $this->lang->line('config_left'),
+									'center' => $this->lang->line('config_center'),
+									'right' => $this->lang->line('config_right')
+								),
 								$this->config->item('notify_horizontal_position'), array('class' => 'form-control input-sm')); ?>
 						</div>
 					</div>
@@ -390,7 +389,6 @@ $(document).ready(function()
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
 
-
 	$('#general_config_form').validate($.extend(form_support.handler, {
 
 		errorLabelContainer: "#general_error_message_box",
@@ -450,7 +448,7 @@ $(document).ready(function()
 					// set back disabled state
 					enable_disable_gcaptcha_enable();
 				},
-				dataType:'json'
+				dataType: 'json'
 			});
 		}
 	}));
