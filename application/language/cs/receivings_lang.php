@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Zrušit";
 $lang["receivings_cannot_be_deleted"] = "Příjemku nelze smazat.";
 $lang["receivings_comments"] = "Poznámky";
@@ -33,21 +32,21 @@ $lang["receivings_receiving"] = "Příjem";
 $lang["receivings_reference"] = "Označení";
 $lang["receivings_register"] = "Přijaté položky";
 $lang["receivings_requisition"] = "";
-$lang["receivings_return"] = "";
-$lang["receivings_select_supplier"] = "";
-$lang["receivings_start_typing_supplier_name"] = "";
-$lang["receivings_stock"] = "";
-$lang["receivings_stock_destination"] = "";
-$lang["receivings_stock_locaiton"] = "";
+$lang["receivings_return"] = "Vratka";
+$lang["receivings_select_supplier"] = "Vyberte dodavatele (volitelné)";
+$lang["receivings_start_typing_supplier_name"] = "Začněte psát jméno dodavatele...";
+$lang["receivings_stock"] = "Sklad";
+$lang["receivings_stock_destination"] = "Cílový sklad";
+$lang["receivings_stock_locaiton"] = "Umístění skladu";
 $lang["receivings_stock_source"] = "";
-$lang["receivings_successfully_deleted"] = "";
-$lang["receivings_successfully_updated"] = "";
-$lang["receivings_supplier"] = "";
-$lang["receivings_supplier_address"] = "";
-$lang["receivings_supplier_email"] = "";
+$lang["receivings_successfully_deleted"] = "Smazáno";
+$lang["receivings_successfully_updated"] = "Upraveno";
+$lang["receivings_supplier"] = "Dodavatel";
+$lang["receivings_supplier_address"] = "Adresa";
+$lang["receivings_supplier_email"] = "Email";
 $lang["receivings_supplier_location"] = "";
-$lang["receivings_total"] = "";
-$lang["receivings_transaction_failed"] = "";
-$lang["receivings_unable_to_add_item"] = "";
-$lang["receivings_unsuccessfully_updated"] = "";
-$lang["receivings_update"] = "";
+$lang["receivings_total"] = "Celkem";
+$lang["receivings_transaction_failed"] = "Zpracování příjmu neproběhlo.";
+$lang["receivings_unable_to_add_item"] = "Vložení položky do příjemky se nezdařilo.";
+$lang["receivings_unsuccessfully_updated"] = "Změna příjemky se nezdařila.";
+$lang["receivings_update"] = "Upravit";
