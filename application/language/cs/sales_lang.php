@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Dostupné body";
 $lang["rewards_package"] = "";
 $lang["rewards_remaining_balance"] = "";
@@ -11,7 +10,7 @@ $lang["sales_cash"] = "Hotovost";
 $lang["sales_cash_deposit"] = "";
 $lang["sales_cash_filter"] = "Hotově";
 $lang["sales_change_due"] = "Zbývá";
-$lang["sales_check"] = "";
+$lang["sales_check"] = "Bankovním převodem";
 $lang["sales_check_balance"] = "";
 $lang["sales_check_filter"] = "";
 $lang["sales_comment"] = "Komentář";
@@ -99,7 +98,7 @@ $lang["sales_payments_total"] = "Uhrazeno";
 $lang["sales_price"] = "Cena";
 $lang["sales_print_after_sale"] = "Vytisknout automaticky";
 $lang["sales_quantity"] = "ks";
-$lang["sales_quantity_less_than_reorder_level"] = "";
+$lang["sales_quantity_less_than_reorder_level"] = "Upozornění: Množství zboží je pod nastavenou úrovní pro doobjednání.";
 $lang["sales_quantity_less_than_zero"] = "Pozor: Není dostatek zboží. Můžete pokračovat v prodeji, ale zkontrolujte si stav skladu.";
 $lang["sales_quantity_of_items"] = "Množství položek %1";
 $lang["sales_quote"] = "Nabídka";
