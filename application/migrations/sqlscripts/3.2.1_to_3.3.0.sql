@@ -42,8 +42,16 @@ ALTER TABLE `ospos_receivings_items`
 -- Add support for module cashups
 --
 
+-- Set config module sort number to one of the latest
+
+UPDATE `ospos_modules`
+SET `sort` = 900
+WHERE `name_lang_key` = 'module_config';
+
+-- Add cashup module
+
 INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
-('module_cashups', 'module_cashups_desc', 107, 'cashups');
+('module_cashups', 'module_cashups_desc', 110, 'cashups');
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('cashups', 'cashups');
@@ -75,9 +83,17 @@ CREATE TABLE `ospos_cash_up` (
 ALTER TABLE `ospos_cash_up`
   ADD PRIMARY KEY (`cashup_id`),
   ADD KEY `open_employee_id` (`open_employee_id`),
-  ADD KEY `close_employee_id` (`close_employee_id`);
+  ADD KEY `close_employee_id` (`close_employee_id`),
+  ADD CONSTRAINT `ospos_cash_up_ibfk_1` FOREIGN KEY (`open_employee_id`) REFERENCES `ospos_employees` (`person_id`),
+  ADD CONSTRAINT `ospos_cash_up_ibfk_2` FOREIGN KEY (`close_employee_id`) REFERENCES `ospos_employees` (`person_id`);
 
 -- AUTO_INCREMENT for table `ospos_cash_up`
 
 ALTER TABLE `ospos_cash_up`
   MODIFY `cashup_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  
+-- Change collation on columns to be utf8_general_ci
+
+ALTER TABLE ospos_cash_up CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_expense_categories CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER TABLE ospos_expenses CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
