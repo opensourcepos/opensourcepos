@@ -3,6 +3,8 @@
 $lang["module_both"] = "Both";
 $lang["module_config"] = "Configuration";
 $lang["module_config_desc"] = "Change OSPOS's Configuration.";
+$lang["module_cashups"] = "Cashups";
+$lang["module_cashups_desc"] = "Add, Update, Delete, and Search Cashups.";
 $lang["module_customers"] = "Customers";
 $lang["module_customers_desc"] = "Add, Update, Delete, and Search Customers.";
 $lang["module_employees"] = "Employees";
