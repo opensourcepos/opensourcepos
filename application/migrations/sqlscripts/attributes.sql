@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `ospos_attribute_values` (
  `attribute_value` VARCHAR(45) NULL,
  `attribute_datetime` DATETIME NULL,
  PRIMARY KEY (`attribute_id`)
-) ENGINE = InnoDB DEFAULT CHARSET=utf8;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8_general_ci;
 
 
 CREATE TABLE IF NOT EXISTS `ospos_attribute_links` (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `ospos_attribute_links` (
  KEY `sale_id` (`sale_id`),
  KEY `receiving_id` (`receiving_id`),
  UNIQUE `attribute_links_uq1` (`attribute_id`, `definition_id`, `item_id`, `sale_id`, `receiving_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8_general_ci;
 
 
 ALTER TABLE `ospos_attribute_definitions`
@@ -45,11 +45,8 @@ ALTER TABLE `ospos_attribute_links`
  ADD CONSTRAINT `ospos_attribute_links_ibfk_4` FOREIGN KEY (`receiving_id`) REFERENCES `ospos_receivings` (`receiving_id`),
  ADD CONSTRAINT `ospos_attribute_links_ibfk_5` FOREIGN KEY (`sale_id`) REFERENCES `ospos_sales` (`sale_id`);
 
-
-UPDATE `ospos_modules` SET `sort` = 120 WHERE `name_lang_key` = 'module_config';
-
 INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_id`) VALUES
- ('module_attributes', 'module_attributes_desc', 110, 'attributes');
+ ('module_attributes', 'module_attributes_desc', 107, 'attributes');
 
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
  ('attributes', 'attributes');
