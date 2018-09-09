@@ -3,12 +3,13 @@ version: '2'
 volumes:
     uploads:
         driver: local
-  
+
 services:
     sqlscript:
         build:
             context: database/
             dockerfile: Dockerfile
+
     php:
         build:
             context: .
@@ -38,3 +39,15 @@ services:
             - "3306:3306"
         volumes_from:
             - sqlscript
+
+#    phpmyadmin:
+#        image: phpmyadmin/phpmyadmin
+#        restart: always
+#        ports:
+#           - "8000:80"
+#        links:
+#            - mysql:mysql
+#        environment:
+#            - MYSQL_USERNAME=admin
+#            - MYSQL_ROOT_PASSWORD=pointofsale
+#            - PMA_HOST=mysql
