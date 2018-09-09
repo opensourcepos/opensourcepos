@@ -388,7 +388,9 @@ function get_item_data_row($item)
 		$item->name .= NAME_SEPARATOR . $item->pack_name;
 	}
 
-	return array_merge(array (
+	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
+	$result = array (
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
 		'name' => $item->name,
@@ -407,7 +409,17 @@ function get_item_data_row($item)
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
-		), explode(',', (property_exists($item, 'attribute_values')) ? $item->attribute_values : "")));
+	));
+
+	$attribute_values = explode(',', (property_exists($item, 'attribute_values')) ? $item->attribute_values : "");
+
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$result[$definition_name] = array_shift($attribute_values);
+
+	}
+
+	return $result;
 }
 
 

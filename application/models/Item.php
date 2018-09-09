@@ -280,10 +280,13 @@ class Item extends CI_Model
 	public function get_info($item_id)
 	{
 		$this->db->select('items.*');
+		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
 		$this->db->select('suppliers.company_name');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->where('item_id', $item_id);
+		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
+		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
+		$this->db->where('items.item_id', $item_id);
 
 		$query = $this->db->get();
 
@@ -375,13 +378,17 @@ class Item extends CI_Model
 	{
 		$this->db->select('items.*');
 		$this->db->select('company_name');
+		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
 		$this->db->select('category');
 		$this->db->select('quantity');
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
+		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
+		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$this->db->where('location_id', $location_id);
 		$this->db->where_in('items.item_id', $item_ids);
+		$this->db->group_by('items.item_id');
 
 		return $this->db->get();
 	}

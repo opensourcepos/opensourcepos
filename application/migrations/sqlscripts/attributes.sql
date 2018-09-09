@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `ospos_attribute_values` (
  `attribute_value` VARCHAR(45) NULL,
  `attribute_datetime` DATETIME NULL,
  PRIMARY KEY (`attribute_id`)
-) ENGINE = InnoDB DEFAULT CHARSET=utf8_general_ci;
+) ENGINE = InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE IF NOT EXISTS `ospos_attribute_links` (
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `ospos_attribute_links` (
  KEY `sale_id` (`sale_id`),
  KEY `receiving_id` (`receiving_id`),
  UNIQUE `attribute_links_uq1` (`attribute_id`, `definition_id`, `item_id`, `sale_id`, `receiving_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 ALTER TABLE `ospos_attribute_definitions`
