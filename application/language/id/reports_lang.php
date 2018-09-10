@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Semua";
 $lang["reports_canceled"] = "Dibatalkan";
 $lang["reports_categories"] = "Kategori";
@@ -30,7 +31,9 @@ $lang["reports_detailed_reports"] = "Perincian Laporan";
 $lang["reports_detailed_requisition_report"] = "Rincian Daftar Laporan Permintaan";
 $lang["reports_detailed_sales_report"] = "Laporan Perincian Penjualan";
 $lang["reports_discount"] = "Diskon";
+$lang["reports_discount_fixed"] = "";
 $lang["reports_discount_percent"] = "Persen Diskon";
+$lang["reports_discount_type"] = "";
 $lang["reports_discounts"] = "Diskon";
 $lang["reports_discounts_summary_report"] = "Laporan Ringkasan Diskon";
 $lang["reports_earned"] = "Poin yang diperoleh";
@@ -62,6 +65,7 @@ $lang["reports_items_received"] = "Barang Masuk";
 $lang["reports_items_summary_report"] = "Laporan Ringkasan Produk/Item";
 $lang["reports_low_inventory"] = "Kurang Persediaan";
 $lang["reports_low_inventory_report"] = "Laporan Persediaan Kurang";
+$lang["reports_low_sell_quantity"] = "";
 $lang["reports_more_than_zero"] = "Stok belum habis";
 $lang["reports_name"] = "Nama";
 $lang["reports_no_reports_to_display"] = "Tidak ada item untuk ditampilkan";
@@ -113,6 +117,7 @@ $lang["reports_taxes"] = "Pajak";
 $lang["reports_taxes_summary_report"] = "Laporan Ringkasan Pajak";
 $lang["reports_total"] = "Total";
 $lang["reports_total_inventory_value"] = "Total Nilai Persediaan";
+$lang["reports_total_low_sell_quantity"] = "";
 $lang["reports_total_quantity"] = "Total Quantity";
 $lang["reports_total_retail"] = "Total Inv. Retail Value";
 $lang["reports_type"] = "Tipe";

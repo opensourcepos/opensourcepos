@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Geçen Sene Aynı Ay";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Geçen Sene Aynı Aydan Aynı Güne";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "Bu Ay";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Bu Yıl";
 $lang["datepicker_to"] = "Şuna";
 $lang["datepicker_today"] = "Bugün";

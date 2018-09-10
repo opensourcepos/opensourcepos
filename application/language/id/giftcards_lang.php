@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Penambahan atau pengurangan inventory.";
 $lang["giftcards_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["giftcards_bulk_edit"] = "Ubah Massal";

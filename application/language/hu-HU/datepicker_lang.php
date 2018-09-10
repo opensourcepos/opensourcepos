@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Ez a hónap, múlt évben";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Ez a hónap, mai nap, múlt évben";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "Ez a hónap";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Ezév";
 $lang["datepicker_to"] = "Ig";
 $lang["datepicker_today"] = "Ma";

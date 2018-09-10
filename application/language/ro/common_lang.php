@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adresă 1";
 $lang["common_address_2"] = "Adresă 2";
 $lang["common_city"] = "Oraș";
@@ -43,6 +44,7 @@ $lang["common_no_persons_to_display"] = "Nu există persoane de afișat.";
 $lang["common_none_selected_text"] = "Nimic nu a fost selectat.";
 $lang["common_or"] = "SAU";
 $lang["common_phone_number"] = "Număr de telefon";
+$lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Vă rugăm să vizitați";
 $lang["common_powered_by"] = "Produs de";
 $lang["common_price"] = "Preț";

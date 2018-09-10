@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "បន្ថែមប្រភេទ";
 $lang["expenses_categories_cannot_be_deleted"] = "មិនអាចលប់ប្រភេទចំណាយបាន";
 $lang["expenses_categories_category_id"] = "លេខសំគាល់";
 $lang["expenses_categories_confirm_delete"] = "តើអ្នកពិតជាចង់លប់ប្រភេទចំណាយដែលបានជ្រើរើសមែនទេ?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "ពិពណ៌នាអំពីប្រភេទ";
 $lang["expenses_categories_error_adding_updating"] = "កំហុសក្នុងការបន្ថែម / ធ្វើបច្ចុប្បន្នភាពប្រភេទចំណាយ";
 $lang["expenses_categories_info"] = "ពត៌មានប្រភេទចំណាយ";

@@ -181,6 +181,7 @@ $lang["config_msg_src"] = "";
 $lang["config_msg_src_required"] = "";
 $lang["config_msg_uid"] = "";
 $lang["config_msg_uid_required"] = "";
+$lang["config_multi_pack_enabled"] = "";
 $lang["config_none"] = "";
 $lang["config_notify_alignment"] = "";
 $lang["config_number_format"] = "";

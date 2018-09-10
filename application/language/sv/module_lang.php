@@ -3,6 +3,8 @@
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Both";
+$lang["module_cashups"] = "";
+$lang["module_cashups_desc"] = "";
 $lang["module_config"] = "Konfiguration";
 $lang["module_config_desc"] = "Ändra OSPOS: s konfiguration.";
 $lang["module_customers"] = "Kunder";

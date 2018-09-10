@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Cho phép Mô tả thay thế";
@@ -23,6 +24,7 @@ $lang["items_cost_price_number"] = "Giá bán buôn phải là dạng số.";
 $lang["items_cost_price_required"] = "Trường Giá bán buôn là bắt buộc.";
 $lang["items_count"] = "Cập hàng tồn kho";
 $lang["items_current_quantity"] = "Số lượng hiện tại";
+$lang["items_default_pack_name"] = "";
 $lang["items_description"] = "Mô tả";
 $lang["items_details_count"] = "Chi tiết số lượng tồn kho";
 $lang["items_do_nothing"] = "Không làm gì";
@@ -54,6 +56,7 @@ $lang["items_item_number_duplicate"] = "Số hàng hóa đã sẵn có trong cơ
 $lang["items_kit"] = "Kit";
 $lang["items_location"] = "Vị trí";
 $lang["items_low_inventory_items"] = "Hàng hóa hết hàng trong kho";
+$lang["items_low_sell_item"] = "";
 $lang["items_manually_editing_of_quantity"] = "Sửa số lượng bằng tay";
 $lang["items_name"] = "Tên Hàng hóa";
 $lang["items_name_required"] = "Trường Tên Hàng hóa là bắt buộc.";
@@ -66,6 +69,8 @@ $lang["items_nonstock"] = "Hết hàng";
 $lang["items_number_information"] = "Số hàng hóa";
 $lang["items_number_required"] = "Trường Mã vạch là bắt buộc.";
 $lang["items_one_or_multiple"] = "hàng hóa";
+$lang["items_pack_name"] = "";
+$lang["items_qty_per_pack"] = "";
 $lang["items_quantity"] = "Số lượng";
 $lang["items_quantity_number"] = "Số lượng phải là dạng số.";
 $lang["items_quantity_required"] = "Trường số lượng là bắt buộc.";

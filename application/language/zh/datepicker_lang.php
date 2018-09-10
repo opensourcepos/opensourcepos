@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Same Month Last Year";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Same Month To Same Day Last Year";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "這個月";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "今年";
 $lang["datepicker_to"] = "To";
 $lang["datepicker_today"] = "今天";

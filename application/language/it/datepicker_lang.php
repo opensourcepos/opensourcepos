@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Stesso Mese Ultimo Anno";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Stesso mese e giorno dell'ultimo Anno";
 $lang["datepicker_this_financial_year"] = "Anno Fiscale Corrente";
 $lang["datepicker_this_month"] = "Mese Corrente";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Anno Corrente";
 $lang["datepicker_to"] = "To";
 $lang["datepicker_today"] = "Oggi";

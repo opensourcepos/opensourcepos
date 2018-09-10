@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "";
 $lang["expenses_categories_cannot_be_deleted"] = "";
 $lang["expenses_categories_category_id"] = "";
 $lang["expenses_categories_confirm_delete"] = "";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "";
 $lang["expenses_categories_error_adding_updating"] = "";
 $lang["expenses_categories_info"] = "";

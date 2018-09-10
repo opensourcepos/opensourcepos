@@ -35,6 +35,7 @@ $lang["receivings_register"] = "Wareneingang";
 $lang["receivings_requisition"] = "Bedarf";
 $lang["receivings_return"] = "Retoure";
 $lang["receivings_select_supplier"] = "Wählen Sie Lieferanten (optional)";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "Lieferantenname eingeben";
 $lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Lagerort (Ziel)";

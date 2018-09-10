@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Dostupné body";
 $lang["rewards_package"] = "";
 $lang["rewards_remaining_balance"] = "";

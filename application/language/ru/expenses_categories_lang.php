@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Добавить Категорию";
 $lang["expenses_categories_cannot_be_deleted"] = "Не удалось удалить категорию расходов";
 $lang["expenses_categories_category_id"] = "ИД";
 $lang["expenses_categories_confirm_delete"] = "Вы уверены, что хотите удалить выбранную категорию расходов?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "описание категории";
 $lang["expenses_categories_error_adding_updating"] = "Ошибка добавления / обновления категории расходов";
 $lang["expenses_categories_info"] = "Категория Информация О Расходах";

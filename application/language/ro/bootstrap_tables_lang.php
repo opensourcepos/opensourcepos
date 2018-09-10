@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "Toate";
 $lang["tables_columns"] = "Coloane";
 $lang["tables_hide_show_pagination"] = "Ascunde/Arată paginare";

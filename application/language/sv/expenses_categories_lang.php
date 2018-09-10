@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Lägg till Kategori";
 $lang["expenses_categories_cannot_be_deleted"] = "Kunde inte ta bort kategorikostnad";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Är du säker på att du vill radera den valda utgiftskategorin?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Kategori Beskrivning";
 $lang["expenses_categories_error_adding_updating"] = "Det gick inte att lägga till / uppdatera kostnadskategorin";
 $lang["expenses_categories_info"] = "Information kostnadskategori";

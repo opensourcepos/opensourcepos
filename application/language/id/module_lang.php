@@ -1,5 +1,10 @@
-<?php
+<?php 
+
+$lang["module_attributes"] = "";
+$lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Keduanya";
+$lang["module_cashups"] = "";
+$lang["module_cashups_desc"] = "";
 $lang["module_config"] = "Konfigurasi";
 $lang["module_config_desc"] = "Ubah Konfigurasi Toko.";
 $lang["module_customers"] = "Pelanggan";

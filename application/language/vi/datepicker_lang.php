@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Cùng tháng năm ngoái";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Cùng tháng cùng ngày năm ngoái";
 $lang["datepicker_this_financial_year"] = "Năm tài chính hiện tại";
 $lang["datepicker_this_month"] = "Tháng này";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Năm nay";
 $lang["datepicker_to"] = "Đến";
 $lang["datepicker_today"] = "Hôm nay";

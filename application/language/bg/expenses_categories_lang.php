@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Add Category";
 $lang["expenses_categories_cannot_be_deleted"] = "Could not delete Category Expense(s)";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Are you sure you want to delete the selected Expense Category?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Category Description";
 $lang["expenses_categories_error_adding_updating"] = "Error adding/updating Expense Category";
 $lang["expenses_categories_info"] = "Category Expense Info";

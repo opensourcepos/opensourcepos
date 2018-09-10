@@ -181,6 +181,7 @@ $lang["config_msg_src"] = "Mã số bộ gửi SMS-API";
 $lang["config_msg_src_required"] = "Mã số bộ gửi SMS-API là trường bắt buộc";
 $lang["config_msg_uid"] = "Tài khoản SMS-API";
 $lang["config_msg_uid_required"] = "Tài khoản SMS-API là trường bắt buộc";
+$lang["config_multi_pack_enabled"] = "";
 $lang["config_none"] = "không";
 $lang["config_notify_alignment"] = "Vị trí của thông báo nổi lên";
 $lang["config_number_format"] = "Định dạng số";

@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Même mois de l'Année Dernière";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Même mois au même jour que l'an dernier";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "Ce mois";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Cette Année";
 $lang["datepicker_to"] = "To";
 $lang["datepicker_today"] = "Aujourd'hui";

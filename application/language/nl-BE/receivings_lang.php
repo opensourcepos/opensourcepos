@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Annuleer";
 $lang["receivings_cannot_be_deleted"] = "Order(s) konden niet bijgewerkt worden.";
 $lang["receivings_comments"] = "Commentaar";
@@ -34,6 +35,7 @@ $lang["receivings_register"] = "Orders";
 $lang["receivings_requisition"] = "Transfer";
 $lang["receivings_return"] = "Teruggave";
 $lang["receivings_select_supplier"] = "Selecteer Leverancier (Optioneel)";
+$lang["receivings_ship_pack"] = "Pakket";
 $lang["receivings_start_typing_supplier_name"] = "Typ naam leverancier..";
 $lang["receivings_stock"] = "Voorraad";
 $lang["receivings_stock_destination"] = "Stock bestemming";
