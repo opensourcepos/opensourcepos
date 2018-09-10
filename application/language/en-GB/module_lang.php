@@ -1,5 +1,7 @@
 <?php 
 
+$lang["module_attributes"] = "Attributes";
+$lang["module_attributes_desc"] = "Add, Update, Delete, and Search attributes";
 $lang["module_both"] = "Both";
 $lang["module_config"] = "Configuration";
 $lang["module_config_desc"] = "Change OSPOS's Configuration";
