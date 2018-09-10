@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Dezelfde maand vorig jaar";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Dezelfde maand op dezelfde dag vorig jaar";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "Deze Maand";
+$lang["datepicker_this_month_last_year"] = "Dezelfde maand vorig jaar";
 $lang["datepicker_this_year"] = "Dit Jaar";
 $lang["datepicker_to"] = "To";
 $lang["datepicker_today"] = "Vandaag";

@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Ajouter une catégorie";
 $lang["expenses_categories_cannot_be_deleted"] = "Impossible de supprimer la ou les dépenses de catégorie";
 $lang["expenses_categories_category_id"] = "ID";
 $lang["expenses_categories_confirm_delete"] = "Êtes-vous sûr de vouloir supprimer la catégorie de dépenses sélectionnée ?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Description de la catégorie";
 $lang["expenses_categories_error_adding_updating"] = "Erreur lors de l'ajout / mise à jour de la catégorie de dépenses";
 $lang["expenses_categories_info"] = "Catégorie Info sur les dépenses";

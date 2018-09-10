@@ -1,9 +1,9 @@
 <?php 
 
-$lang["attributes_definition_group"] = "";
 $lang["attributes_confirm_delete"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
 $lang["attributes_definition_flags"] = "";
+$lang["attributes_definition_group"] = "";
 $lang["attributes_definition_id"] = "";
 $lang["attributes_definition_name"] = "";
 $lang["attributes_definition_one_or_multiple"] = "";

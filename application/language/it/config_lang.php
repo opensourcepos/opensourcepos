@@ -181,6 +181,7 @@ $lang["config_msg_src"] = "SMS-API Sender ID";
 $lang["config_msg_src_required"] = "SMS-API Sender ID è un campo obbligatorio";
 $lang["config_msg_uid"] = "SMS-API Username";
 $lang["config_msg_uid_required"] = "SMS-API Username è un campo obbligatorio";
+$lang["config_multi_pack_enabled"] = "";
 $lang["config_none"] = "nessuno";
 $lang["config_notify_alignment"] = "Posizione Popup di Notifica";
 $lang["config_number_format"] = "Formato Numero";

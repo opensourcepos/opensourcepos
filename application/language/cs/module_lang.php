@@ -1,6 +1,10 @@
 <?php 
 
+$lang["module_attributes"] = "";
+$lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Oba";
+$lang["module_cashups"] = "";
+$lang["module_cashups_desc"] = "";
 $lang["module_config"] = "Nastavení";
 $lang["module_config_desc"] = "Změnit nastavení OSPOS.";
 $lang["module_customers"] = "Zákazníci";

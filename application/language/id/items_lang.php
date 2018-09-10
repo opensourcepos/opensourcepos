@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Menambahkan atau mengurangi inventaris.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
@@ -23,6 +24,7 @@ $lang["items_cost_price_number"] = "Harga Grosir haris berupa angka.";
 $lang["items_cost_price_required"] = "Harga beli wajib diisi.";
 $lang["items_count"] = "Mutasi/Penyesuaian Inventori";
 $lang["items_current_quantity"] = "Jumlah Saat ini";
+$lang["items_default_pack_name"] = "";
 $lang["items_description"] = "Deskripsi";
 $lang["items_details_count"] = "Jumlah Detail Inventori";
 $lang["items_do_nothing"] = "Tidak ada Perubahan";
@@ -54,6 +56,7 @@ $lang["items_item_number_duplicate"] = "Nomor item sudah ada dalam basis data.";
 $lang["items_kit"] = "Paket";
 $lang["items_location"] = "Lokasi Barang";
 $lang["items_low_inventory_items"] = "Daftar Stock Rendah";
+$lang["items_low_sell_item"] = "";
 $lang["items_manually_editing_of_quantity"] = "Perubahan jumlah Stok secara manual";
 $lang["items_name"] = "Nama Barang";
 $lang["items_name_required"] = "Nama item wajib diisi.";
@@ -66,6 +69,8 @@ $lang["items_nonstock"] = "Tidak ada stok";
 $lang["items_number_information"] = "Nomor Barang";
 $lang["items_number_required"] = "Kode Batang (Barcode) wajib diisi.";
 $lang["items_one_or_multiple"] = "Item Barang";
+$lang["items_pack_name"] = "";
+$lang["items_qty_per_pack"] = "";
 $lang["items_quantity"] = "Jumlah";
 $lang["items_quantity_number"] = "Jumlah harus berupa angka.";
 $lang["items_quantity_required"] = "Jumlah wajib diisi.";

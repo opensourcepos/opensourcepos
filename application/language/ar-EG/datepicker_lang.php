@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "نفس الشهر من العام ا
 $lang["datepicker_same_month_to_same_day_last_year"] = "نفس الشهر حتى اليوم من السنة الماضية";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "هذا الشهر";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "السنة الحالية";
 $lang["datepicker_to"] = "إلى";
 $lang["datepicker_today"] = "اليوم";

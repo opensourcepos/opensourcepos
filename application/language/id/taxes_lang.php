@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Tambah pengecualian";
 $lang["taxes_confirm_delete"] = "Anda yakin ingin menghapus Kode Pajak ini? Aksi ini tidak dapat dibatalkan.";
 $lang["taxes_confirm_restore"] = "Anda yakin ingin mengembalikan Kode Pajak terpilih?";

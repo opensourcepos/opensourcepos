@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "ເພີ່ມປະເພດ";
 $lang["expenses_categories_cannot_be_deleted"] = "ບໍ່ສາມາດລຶບປະເພດຄ່າໃຊ້ຈ່າຍໄດ້";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "ທ່ານຕ້ອງການລຶບປະເພດຄ່າໃຊ້ຈ່າຍທີ່ທ່ານເລືອກແທ້ບໍ່ ?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "ຄຳອະທິບາຍປະເພດ";
 $lang["expenses_categories_error_adding_updating"] = "ຜິດພາດ ການເພີ່ມ/ການແກ້ໄຂ ປະເພດຄ່າໃຊ້ຈ່າຍ";
 $lang["expenses_categories_info"] = "ຂໍ້ມູນປະເພດຄ່າໃຊ້ຈ່າຍ";

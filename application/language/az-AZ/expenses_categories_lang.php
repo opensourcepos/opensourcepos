@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Kategoriya əlavə et";
 $lang["expenses_categories_cannot_be_deleted"] = "Kategoriya Xərcləri silinmədi";
 $lang["expenses_categories_category_id"] = "Kimlik";
 $lang["expenses_categories_confirm_delete"] = "Seçilmiş xərc kateqoriyasını silmək istədiyinizə əminsinizmi?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Kateqoriya təsviri";
 $lang["expenses_categories_error_adding_updating"] = "Əlavədə Səhv/Xərcl Kategotiyasi yenilənir";
 $lang["expenses_categories_info"] = "Xərc Kategoriyası Məlumatı";

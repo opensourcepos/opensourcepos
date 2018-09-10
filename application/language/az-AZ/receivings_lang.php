@@ -35,6 +35,7 @@ $lang["receivings_register"] = "Qəbul Olunan Mallar";
 $lang["receivings_requisition"] = "Rəsmi Tələb";
 $lang["receivings_return"] = "Qaytar";
 $lang["receivings_select_supplier"] = "Təchizatçını Seç";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "tədarükçü";
 $lang["receivings_stock"] = "Ehtiyyat";
 $lang["receivings_stock_destination"] = "Ehtiyyatın Hədəfi";

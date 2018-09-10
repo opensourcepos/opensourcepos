@@ -368,7 +368,6 @@
 								'name'=>'low_sell_item_name',
 								'id'=>'low_sell_item_name',
 								'class'=>'form-control input-sm',
-								'size'=>'50',
 								'value'=>$selected_low_sell_item)
 						); ?>
 						<?php echo form_hidden('low_sell_item_id', $selected_low_sell_item_id);?>

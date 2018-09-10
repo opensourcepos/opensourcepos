@@ -35,6 +35,7 @@ $lang["receivings_register"] = "Nhập hàng hóa";
 $lang["receivings_requisition"] = "Yêu cầu";
 $lang["receivings_return"] = "Trả hàng";
 $lang["receivings_select_supplier"] = "Chọn nhà cung cấp (Tùy chọn)";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "Bắt đầu bằng cách gõ tên của nhà cung cấp...";
 $lang["receivings_stock"] = "Kho";
 $lang["receivings_stock_destination"] = "Kho đích";

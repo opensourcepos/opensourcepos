@@ -35,6 +35,7 @@ $lang["receivings_register"] = "Получение товаров";
 $lang["receivings_requisition"] = "Реквизиция";
 $lang["receivings_return"] = "возвращать";
 $lang["receivings_select_supplier"] = "Выберите поставщика (необязательно)";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "Начните вводить название поставщика...";
 $lang["receivings_stock"] = "инвентарь";
 $lang["receivings_stock_destination"] = "Stock destination";

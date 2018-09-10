@@ -3,6 +3,8 @@
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Оба";
+$lang["module_cashups"] = "";
+$lang["module_cashups_desc"] = "";
 $lang["module_config"] = "Конфигурация";
 $lang["module_config_desc"] = "Измените конфигурацию OSPOS.";
 $lang["module_customers"] = "Клиенты";

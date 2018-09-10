@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Alamat Perusahaan";
 $lang["config_address_required"] = "Alamat Perusahaan wajib diisi.";
 $lang["config_allow_duplicate_barcodes"] = "Ijinkan kode batang ganda";
@@ -180,6 +181,7 @@ $lang["config_msg_src"] = "ID pengirim SMS-API";
 $lang["config_msg_src_required"] = "SMS-API Sender ID harus diisi";
 $lang["config_msg_uid"] = "SMS-API User Name";
 $lang["config_msg_uid_required"] = "SMS-API Username harus diisi";
+$lang["config_multi_pack_enabled"] = "";
 $lang["config_none"] = "none";
 $lang["config_notify_alignment"] = "Posisi notifikasi Popup";
 $lang["config_number_format"] = "Format Nomor";

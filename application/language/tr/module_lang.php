@@ -3,6 +3,8 @@
 $lang["module_attributes"] = "";
 $lang["module_attributes_desc"] = "";
 $lang["module_both"] = "";
+$lang["module_cashups"] = "";
+$lang["module_cashups_desc"] = "";
 $lang["module_config"] = "Yapılandırma";
 $lang["module_config_desc"] = "Yapılandırma bilgisi görme ve düzenleme";
 $lang["module_customers"] = "Müşteriler";

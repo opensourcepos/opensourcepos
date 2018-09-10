@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "Informatie";
 $lang["employees_cannot_be_deleted"] = "Kon de geselecteerde gebruilker(s) niet verwijderen, één of meerdere die u probeert te verwijderen hebben aankopen verwerkt.";
 $lang["employees_change_password"] = "Wijzig Paswoord";

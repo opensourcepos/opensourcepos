@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Adres";
 $lang["config_address_required"] = "Het adres van het bedrijf moet ingevuld worden.";
 $lang["config_allow_duplicate_barcodes"] = "Sta gedupliceerde barcodes toe";
@@ -180,6 +181,7 @@ $lang["config_msg_src"] = "SMS-API Verzender ID";
 $lang["config_msg_src_required"] = "SMS-API Verzender ID is een verplicht veld";
 $lang["config_msg_uid"] = "SMS-API Gebruikersnaam";
 $lang["config_msg_uid_required"] = "SMS-API Gebruikersnaam is een verplicht veld";
+$lang["config_multi_pack_enabled"] = "Multipack Ingeschakeld";
 $lang["config_none"] = "none";
 $lang["config_notify_alignment"] = "Notificatie Pop-up positie";
 $lang["config_number_format"] = "Number Format";

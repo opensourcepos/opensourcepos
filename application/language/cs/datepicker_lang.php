@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Stejný měsíc v loňském roce";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Stejné období loni";
 $lang["datepicker_this_financial_year"] = "Aktuální účetní rok";
 $lang["datepicker_this_month"] = "Tento měsíc";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Tento rok";
 $lang["datepicker_to"] = "Do";
 $lang["datepicker_today"] = "Dnes";

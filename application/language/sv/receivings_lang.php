@@ -35,6 +35,7 @@ $lang["receivings_register"] = "Föremål som mottas";
 $lang["receivings_requisition"] = "Rekvisition";
 $lang["receivings_return"] = "Retur";
 $lang["receivings_select_supplier"] = "Välj leverantör (valfritt)";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "Börja skriva leverantörens namn ...";
 $lang["receivings_stock"] = "Lager";
 $lang["receivings_stock_destination"] = "Lagerplats";

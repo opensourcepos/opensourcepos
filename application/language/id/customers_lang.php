@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "No Pelanggan";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
 $lang["customers_available_points"] = "Poin yg tersedia";
@@ -14,6 +15,9 @@ $lang["customers_consent_required"] = "Persetujuan pendaftaran adalah bidang yan
 $lang["customers_customer"] = "Pelanggan";
 $lang["customers_date"] = "Tanggal";
 $lang["customers_discount"] = "Diskon";
+$lang["customers_discount_fixed"] = "";
+$lang["customers_discount_percent"] = "";
+$lang["customers_discount_type"] = "";
 $lang["customers_email_duplicate"] = "Alamat email telah digunakan.";
 $lang["customers_employee"] = "Karyawan";
 $lang["customers_error_adding_updating"] = "Kesalahan ketika menambah atau memperbaharui pelanggan.";

@@ -1,9 +1,9 @@
 <?php 
 
-$lang["attributes_definition_group"] = "Group";
 $lang["attributes_confirm_delete"] = "Are you sure you want to delete the selected attribute(s)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Could not delete selected attribute(s)";
 $lang["attributes_definition_flags"] = "Attribute Visibility";
+$lang["attributes_definition_group"] = "Group";
 $lang["attributes_definition_id"] = "Id";
 $lang["attributes_definition_name"] = "Add Attribute";
 $lang["attributes_definition_one_or_multiple"] = "attribute(s)";

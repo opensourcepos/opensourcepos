@@ -1,9 +1,11 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Nama Kategori Biaya harus diisi";
 $lang["expenses_categories_add_item"] = "Tambah Kategori";
 $lang["expenses_categories_cannot_be_deleted"] = "Tidak dapat menghapus Kategori Biaya";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Anda yakin ingin mengpus Kategori Biaya terpilih?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Deskripsi Kategori";
 $lang["expenses_categories_error_adding_updating"] = "Galat menambah / memperbaharui Kategori Biaya";
 $lang["expenses_categories_info"] = "Info Kategori Biaya";

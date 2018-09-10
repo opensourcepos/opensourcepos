@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["receivings_cancel_receiving"] = "Zrušit";
 $lang["receivings_cannot_be_deleted"] = "Příjemku nelze smazat.";
 $lang["receivings_comments"] = "Poznámky";
@@ -34,6 +35,7 @@ $lang["receivings_register"] = "Přijaté položky";
 $lang["receivings_requisition"] = "";
 $lang["receivings_return"] = "Vratka";
 $lang["receivings_select_supplier"] = "Vyberte dodavatele (volitelné)";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "Začněte psát jméno dodavatele...";
 $lang["receivings_stock"] = "Sklad";
 $lang["receivings_stock_destination"] = "Cílový sklad";
