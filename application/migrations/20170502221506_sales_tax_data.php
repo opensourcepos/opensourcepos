@@ -57,7 +57,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		{
 			// This computes tax for each line item and adds it to the tax type total
 			$tax_group = (float)$item['percent'] . '% ' . $item['name'];
-			$tax_basis = $this->sale_lib->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], TRUE);
+			$tax_basis = $this->sale_lib->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], PERCENT, TRUE);
 			$item_tax_amount = 0;
 			if($tax_included)
 			{
@@ -67,7 +67,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 			{
 				$item_tax_amount = $this->tax_lib->get_sales_tax_for_amount($tax_basis, $item['percent'], PHP_ROUND_HALF_UP, $tax_decimals);
 			}
-			$this->update_sales_items_taxes_amount($sale_id, $item['line'], $item['name'], $item['percent'], $tax_type, $item_tax_amount);
+			$this->update_sales_items_taxes_amount($sale_id, $item['line'], $item['name'], $item['percentcustomer_sales_tax_support'], $tax_type, $item_tax_amount);
 			$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $item['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, PHP_ROUND_HALF_UP, $sale_id, $item['name']);
 			$tax_group_sequence += 1;
 		}
