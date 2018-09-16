@@ -69,7 +69,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('last_used_invoice_number', '0'),
 ('last_used_quote_number', '0'),
 ('line_sequence', '0'),
-('dinner_table_enable', '0');
+('dinner_table_enable', '0'),
+('customer_sales_tax_support', '0');
 
 --
 -- Table structure for table `ospos_customer_packages`
@@ -415,3 +416,6 @@ ALTER TABLE ospos_items
 -- Change language code en to be en-US
 
 UPDATE `ospos_app_config` SET `value` = 'en-US' WHERE `key` = 'language_code' AND `value` = 'en';
+
+-- Delete any configured specific locale as folders were moved in this version
+DELETE FROM `ospos_app_config` WHERE `key` = 'language_code' and `value` LIKE '%_%';
