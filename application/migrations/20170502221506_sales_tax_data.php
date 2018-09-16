@@ -61,7 +61,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 			$item_tax_amount = 0;
 			if($tax_included)
 			{
-				$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], $item['percent']);
+				$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], PERCENT, $item['percent']);
 			}
 			else
 			{
