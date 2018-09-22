@@ -18,10 +18,9 @@ foreach($definition_values as $definition_id => $definition_value)
         <div class="input-group">
 
             <?php
-            $attribute_value = $this->Attribute->get_attribute_value($item_id, $definition_id);
-            $attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? NULL : $attribute_value->attribute_id;
-            echo form_hidden("attribute_ids[$definition_id]", $attribute_id);
 
+            echo form_hidden("attribute_ids[$definition_id]", $definition_value['attribute_id']);
+            $attribute_value = $definition_value['attribute_value'];
             if ($definition_value['definition_type'] == DATETIME)
             {
 	            $value = (empty($attribute_value) || empty($attribute_value->attribute_datetime)) ? DEFAULT_DATETIME : strtotime($attribute_value->attribute_datetime);
@@ -34,13 +33,12 @@ foreach($definition_values as $definition_id => $definition_value)
             }
             else if ($definition_value['definition_type'] == DROPDOWN)
             {
-                $values = $this->Attribute->get_definition_values($definition_id);
-                $selected_value = $this->Attribute->get_link_value($item_id, $definition_id);
-                echo form_dropdown("attribute_links[$definition_id]", $values, (empty($selected_value) ? NULL : $selected_value->attribute_id), "class='form-control' data-definition-id='$definition_id'");
+                $selected_value = empty($selected_value) ? $definition_value['selected_value'] : $selected_value->attribute_id;
+                echo form_dropdown("attribute_links[$definition_id]", $definition_value['values'], $selected_value, "class='form-control' data-definition-id='$definition_id'");
             }
             else if ($definition_value['definition_type'] == TEXT)
             {
-                $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? NULL : $attribute_value->attribute_value;
+                $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
                 echo form_input("attribute_links[$definition_id]", $value, "class='form-control' data-definition-id='$definition_id'");
             }
             ?>

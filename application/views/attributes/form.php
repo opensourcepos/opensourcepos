@@ -65,7 +65,6 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	$('.modal-body').css('overflow-y', 'visible');
 	var values = [];
 	var definition_id = <?php echo $definition_id; ?>;
 	var is_new = definition_id == -1;
