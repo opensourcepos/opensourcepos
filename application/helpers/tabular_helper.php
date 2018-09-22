@@ -340,7 +340,7 @@ function get_items_manage_table_headers()
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$headers[] = array($definition_name => $definition_name);
+		$headers[] = array($definition_id => $definition_name);
 	}
 
 	return transform_headers($headers);
@@ -411,12 +411,18 @@ function get_item_data_row($item)
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
 	));
 
-	$attribute_values = explode(',', (property_exists($item, 'attribute_values')) ? $item->attribute_values : "");
+	$attribute_values = explode('|', (property_exists($item, 'attribute_values')) ? $item->attribute_values : "");
+
+	$indexed_values = array();
+	foreach($attribute_values as $attribute_value)
+	{
+		$exploded_value = explode(':', $attribute_value);
+		$indexed_values[$exploded_value[0]] = $exploded_value[1];
+	}
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$result[$definition_name] = array_shift($attribute_values);
-
+		$result[$definition_id] = $indexed_values[$definition_id];
 	}
 
 	return $result;

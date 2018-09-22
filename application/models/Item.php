@@ -193,10 +193,9 @@ class Item extends CI_Model
 		}
 		else if (count($filters['definition_ids']) > 0)
 		{
-			$this->db->select('GROUP_CONCAT(attribute_value) AS attribute_values');
+			$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
 			$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
 			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
-			$this->db->order_by('definition_id');
 		}
 
 		$this->db->where('items.deleted', $filters['is_deleted']);

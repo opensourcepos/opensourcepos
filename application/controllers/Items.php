@@ -397,8 +397,25 @@ class Items extends Secure_Controller
 		$data['definition_values'] = $this->Attribute->get_attributes_by_item($item_id) + $this->Attribute->get_values_by_definitions($definition_ids);
 		$data['definition_names'] = $this->Attribute->get_definition_names();
 
-		foreach($data['definition_values'] as $definition_id => $attribute_value)
+		foreach($data['definition_values'] as $definition_id => $definition_value)
 		{
+			$attribute_value = $this->Attribute->get_attribute_value($item_id, $definition_id);
+			$attribute_id = (empty($attribute_value) || empty($attribute_value->attribute_id)) ? NULL : $attribute_value->attribute_id;
+			$values = &$data['definition_values'][$definition_id];
+			$values['attribute_id'] = $attribute_id;
+			$values['attribute_value'] = $attribute_value;
+
+			if ($definition_value['definition_type'] == DROPDOWN)
+			{
+				$values['values'] = $this->Attribute->get_definition_values($definition_id);
+				$values['selected_value'] = $this->Attribute->get_link_value($item_id, $definition_id);
+			}
+
+			if (!empty($definition_ids[$definition_id]))
+			{
+				$values['selected_value'] = $definition_ids[$definition_id];
+			}
+
 			unset($data['definition_names'][$definition_id]);
 		}
 

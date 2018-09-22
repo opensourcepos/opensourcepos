@@ -47,7 +47,9 @@
 		</div>
 
 		<div id="attributes">
-			<?php $this->load->view('attributes/item', array('item_id' => $item_info->item_id)); ?>
+			<script type="text/javascript">
+				$('#attributes').load('<?php echo site_url("items/attributes/$item_info->item_id");?>');
+			</script>
 		</div>
 
 		<?php if ($item_kits_enabled == '1'): ?>
