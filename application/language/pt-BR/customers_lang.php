@@ -47,3 +47,6 @@ $lang["customers_taxable"] = "Tributável";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Atualizar Cliente";
 $lang["rewards_package"] = "Pacote de recompensas";
+$lang["customers_discount_type"] = "Tipo de desconto";
+$lang["customers_discount_fixed"] = "Desconto fixo";
+$lang["customers_discount_percent"] = "Percentual de desconto";
