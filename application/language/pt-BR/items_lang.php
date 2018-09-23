@@ -104,3 +104,7 @@ $lang["items_unit_price_required"] = "Preço de varejo é um campo obrigatório.
 $lang["items_upc_database"] = "Base de dados UPC";
 $lang["items_update"] = "Atualizar Item";
 $lang["items_use_inventory_menu"] = "Usar Menu Inventário";
+$lang["items_default_pack_name"] = "Cada";
+$lang["items_low_sell_item"] = "Item de baixa venda";
+$lang["items_pack_name"] = "Nome do pacote";
+$lang["items_qty_per_pack"] = "Quantidade por embalagem";
