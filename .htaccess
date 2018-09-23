@@ -2,7 +2,7 @@
   <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^public$
-    RewriteRule ^(.*)$ %{REQUEST_URI}public/ [R=301,L]
+    RewriteRule "^(.*)$" "/public/" [R=301,L]
   </IfModule>
 
 # disable directory browsing
