@@ -417,5 +417,3 @@ ALTER TABLE ospos_items
 
 UPDATE `ospos_app_config` SET `value` = 'en-US' WHERE `key` = 'language_code' AND `value` = 'en';
 
--- Delete any configured specific locale as folders were moved in this version
-DELETE FROM `ospos_app_config` WHERE `key` = 'language_code' and `value` LIKE '%_%';
