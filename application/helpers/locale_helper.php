@@ -28,10 +28,10 @@ function current_language($load_system_language = FALSE)
 	// Returns the language of the employee if set or system language if not
 	if($employee->is_logged_in() && $load_system_language != TRUE)
 	{
-		$employee_language = $employee->get_logged_in_employee_info()->language;
-		if($employee_language != NULL && $employee_language != '')
+		$employee_info = $employee->get_logged_in_employee_info();
+		if(property_exists($employee_info, 'language') && !empty($employee_info->language))
 		{
-			return $employee_language;
+			return $employee_info->language;
 		}
 	}
 
