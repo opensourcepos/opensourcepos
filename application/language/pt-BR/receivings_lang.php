@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Cancelar";
 $lang["receivings_cannot_be_deleted"] = "Recebimento(s) não pode ser excluído.";
 $lang["receivings_comments"] = "Comentário";
@@ -12,7 +11,7 @@ $lang["receivings_date"] = "Data Recebimento";
 $lang["receivings_date_required"] = "A data correta precisa ser preenchida.";
 $lang["receivings_date_type"] = "Campo de data é obrigatório.";
 $lang["receivings_delete_entire_sale"] = "Apagar toda a venda";
-$lang["receivings_discount"] = "Desc. %";
+$lang["receivings_discount"] = "Desconto";
 $lang["receivings_edit"] = "Editar";
 $lang["receivings_edit_sale"] = "Editar Recebimento";
 $lang["receivings_employee"] = "Funcionário";
@@ -51,3 +50,4 @@ $lang["receivings_transaction_failed"] = "Recebimentos Transações Falharam.";
 $lang["receivings_unable_to_add_item"] = "Não é possível adicionar item para recebimento.";
 $lang["receivings_unsuccessfully_updated"] = "Recebimento não atualizado.";
 $lang["receivings_update"] = "Atualizar";
+$lang["receivings_ship_pack"] = "Pacote de envio";
