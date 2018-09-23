@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["category_name_required"] = "Nome da Categoria de Despesa Requerido";
 $lang["expenses_categories_add_item"] = "Adicionar categoria";
 $lang["expenses_categories_cannot_be_deleted"] = "Não foi possível excluir a (s) despesa (s) de categoria";
@@ -18,3 +17,4 @@ $lang["expenses_categories_successful_adding"] = "Categoria de despesa adiciona 
 $lang["expenses_categories_successful_deleted"] = "Categoria de Despesas excluída com sucesso";
 $lang["expenses_categories_successful_updating"] = "Atualização de categoria de despesa bem-sucedida";
 $lang["expenses_categories_update"] = "Atualizar categoria";
+$lang["expenses_categories_confirm_restore"] = "Tem certeza de que deseja restaurar a categoria de despesa selecionada?";
