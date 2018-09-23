@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["module_both"] = "Ambos";
 $lang["module_config"] = "Configurações";
 $lang["module_config_desc"] = "Alterar configurações do sistema.";
@@ -35,3 +34,5 @@ $lang["module_suppliers"] = "Fornecedores";
 $lang["module_suppliers_desc"] = "Adicionar,  atualizar,  excluir e Pesquisar fornecedores.";
 $lang["module_taxes"] = "Impostos";
 $lang["module_taxes_desc"] = "Configurar impostos sobre vendas.";
+$lang["module_cashups"] = "Liquidação";
+$lang["module_cashups_desc"] = "Adicione, atualize, exclua e pesquise as liquidações.";
