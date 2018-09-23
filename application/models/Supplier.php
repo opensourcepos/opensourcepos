@@ -273,5 +273,15 @@ class Supplier extends Person
 
 		return $this->db->get();
 	}
+
+	/*
+	Return supplier categories
+	*/
+	public function get_categories() {
+		return array(
+			$this->lang->line('suppliers_goods') => $this->lang->line('suppliers_goods'),
+			$this->lang->line('suppliers_cost')=> $this->lang->line('suppliers_cost')
+		);
+	}
 }
 ?>
