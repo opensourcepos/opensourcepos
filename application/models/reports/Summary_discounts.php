@@ -8,19 +8,20 @@ class Summary_discounts extends Summary_report
 	{
 		return array(
 			array('discount' => $this->lang->line('reports_discount_percent'), 'sorter' => 'number_sorter'),
-			array('count' => $this->lang->line('reports_count')));
+			array('count' => $this->lang->line('reports_count')),
+			array('total' => $this->lang->line('reports_total')));
 	}
 
 	public function getData(array $inputs)
 	{
 		if($inputs['discount_type'] == FIXED)
 		{
-			$this->db->select('MAX(CONCAT("'.$this->config->item('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
+			$this->db->select('SUM(payment_amount) AS total, MAX(CONCAT("'.$this->config->item('currency_symbol').'",sales_items.discount)) AS discount, count(*) AS count');
 			$this->db->where('discount_type',FIXED);
 		}
 		elseif($inputs['discount_type'] == PERCENT)
 		{
-			$this->db->select('MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
+			$this->db->select('SUM(payment_amount) AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
 			$this->db->where('discount_type',PERCENT);
 		}	
 		
@@ -30,6 +31,7 @@ class Summary_discounts extends Summary_report
 		
 
 		$this->db->from('sales_items AS sales_items');
+		$this->db->join('sales_payments', 'sales_payments.sale_id = sales_items.sale_id');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
 		$this->_where($inputs);
