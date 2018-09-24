@@ -43,7 +43,9 @@ class Suppliers extends Persons
 		$data_rows = array();
 		foreach($suppliers->result() as $supplier)
 		{
-			$data_rows[] = $this->xss_clean(get_supplier_data_row($supplier));
+			$row = $this->xss_clean(get_supplier_data_row($supplier));
+			$row['category'] = $this->Supplier->get_category_name($row['category']);
+			$data_rows[] = $row;
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));

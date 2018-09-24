@@ -10,11 +10,10 @@ class Migration_Supplier_Category extends CI_Migration
 	public function up()
 	{
 		$query	= "ALTER TABLE `ospos_suppliers` ";
-		$query .= "ADD COLUMN `category` VARCHAR(50) NOT NULL";
+		$query .= "ADD COLUMN `category` TINYINT NOT NULL";
 		$this->db->query($query);
-		$category = $this->lang->line('suppliers_goods');
 		$query	= "UPDATE `ospos_suppliers` ";
-		$query .= "SET `category` = '" . $category . "'";
+		$query .= "SET `category` = 0";
 		$this->db->query($query);
 	}
 

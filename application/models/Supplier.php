@@ -5,7 +5,11 @@
  */
 
 class Supplier extends Person
-{	
+{
+
+	const GOODS_SUPPLIER = 0;
+	const COST_SUPPLIER = 1;
+
 	/*
 	Determines if a given person_id is a customer
 	*/
@@ -279,9 +283,21 @@ class Supplier extends Person
 	*/
 	public function get_categories() {
 		return array(
-			$this->lang->line('suppliers_goods') => $this->lang->line('suppliers_goods'),
-			$this->lang->line('suppliers_cost')=> $this->lang->line('suppliers_cost')
+			self::GOODS_SUPPLIER => $this->lang->line('suppliers_goods'),
+			self::COST_SUPPLIER => $this->lang->line('suppliers_cost')
 		);
+	}
+
+	/*
+	Return a category name given its id
+	*/
+	public function get_category_name($id) {
+		if($id == self::GOODS_SUPPLIER) {
+			return $this->lang->line('suppliers_goods');
+		}
+		if($id == self::COST_SUPPLIER) {
+			return $this->lang->line('suppliers_cost');
+		}
 	}
 }
 ?>
