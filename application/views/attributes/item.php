@@ -58,6 +58,7 @@ foreach($definition_values as $definition_id => $definition_value)
         var enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
                 $(this).parents('.form-group').remove();
+                refresh();
             });
         };
 
@@ -82,20 +83,25 @@ foreach($definition_values as $definition_id => $definition_value)
 
         var definition_values = function() {
             var result = {};
-            $("input[name*='attribute_links'").each(function(index, element) {
+            $("[name*='attribute_links'").each(function() {
                 var definition_id = $(this).data('definition-id');
-                result[definition_id] = $(element).val();
+                result[definition_id] = $(this).val();
+
             });
             return result;
-        }
+        };
 
-        $('#definition_name').change(function() {
+        var refresh = function() {
+            var definition_id = $("#definition_name option:selected").val();
             var attribute_values = definition_values();
-            var definition_id = $("option:selected", this).val();
             attribute_values[definition_id] = '';
             $('#attributes').load('<?php echo site_url("items/attributes/$item_id");?>', {
                 'definition_ids': JSON.stringify(attribute_values)
             }, enable_delete);
+        };
+
+        $('#definition_name').change(function() {
+            refresh();
         });
     })();
 </script>
