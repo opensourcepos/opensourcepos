@@ -33,6 +33,7 @@ class Summary_discounts extends Summary_report
 		$this->db->from('sales_items AS sales_items');
 		$this->db->join('sales_payments', 'sales_payments.sale_id = sales_items.sale_id');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
+		$this->db->where('payment_type <>', 'Cash');
 
 		$this->_where($inputs);
 
