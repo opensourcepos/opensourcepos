@@ -377,7 +377,7 @@ class Item extends CI_Model
 	{
 		$this->db->select('items.*');
 		$this->db->select('company_name');
-		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR \'|\') AS attribute_values');
+		$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
 		$this->db->select('category');
 		$this->db->select('quantity');
 		$this->db->from('items');
