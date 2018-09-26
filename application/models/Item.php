@@ -338,9 +338,7 @@ class Item extends CI_Model
 
 		$this->db->group_end();
 
-		$this->db->where('items.deleted', 0);
-
-		// limit to only 1 so there is a result in case two are returned 
+		// limit to only 1 so there is a result in case two are returned
 		// due to barcode and item_id clash
 		$this->db->limit(1);
 
