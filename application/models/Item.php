@@ -321,7 +321,7 @@ class Item extends CI_Model
 	/*
 	Gets information about a particular item by item id or number
 	*/
-	public function get_info_by_id_or_number($item_id)
+	public function get_info_by_id_or_number($item_id, $include_deleted = TRUE)
 	{
 		$this->db->from('items');
 
@@ -337,6 +337,11 @@ class Item extends CI_Model
 		}
 
 		$this->db->group_end();
+
+		if(!$include_deleted)
+		{
+			$this->db->where("items.deleted = '0'");
+		}
 
 		// limit to only 1 so there is a result in case two are returned
 		// due to barcode and item_id clash
