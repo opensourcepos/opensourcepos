@@ -33,7 +33,7 @@ foreach($definition_values as $definition_id => $definition_value)
             }
             else if ($definition_value['definition_type'] == DROPDOWN)
             {
-                $selected_value = empty($selected_value) ? $definition_value['selected_value'] : $selected_value->attribute_id;
+                $selected_value = $definition_value['selected_value'];
                 echo form_dropdown("attribute_links[$definition_id]", $definition_value['values'], $selected_value, "class='form-control' data-definition-id='$definition_id'");
             }
             else if ($definition_value['definition_type'] == TEXT)
