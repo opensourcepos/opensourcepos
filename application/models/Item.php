@@ -383,7 +383,7 @@ class Item extends CI_Model
 		$this->db->from('items');
 		$this->db->join('suppliers', 'suppliers.person_id = items.supplier_id', 'left');
 		$this->db->join('item_quantities', 'item_quantities.item_id = items.item_id', 'left');
-		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id', 'left');
+		$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND sale_id IS NULL AND receiving_id IS NULL', 'left');
 		$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id', 'left');
 		$this->db->where('location_id', $location_id);
 		$this->db->where_in('items.item_id', $item_ids);

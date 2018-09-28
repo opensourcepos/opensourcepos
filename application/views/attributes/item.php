@@ -58,7 +58,6 @@ foreach($definition_values as $definition_id => $definition_value)
         var enable_delete = function() {
             $('.remove_attribute_btn').click(function() {
                 $(this).parents('.form-group').remove();
-                refresh();
             });
         };
 
