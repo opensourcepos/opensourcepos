@@ -422,7 +422,7 @@ function get_item_data_row($item)
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$result[$definition_id] = $indexed_values[$definition_id];
+		$result[$definition_id] = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '';
 	}
 
 	return $result;
