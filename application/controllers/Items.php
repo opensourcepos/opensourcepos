@@ -408,7 +408,8 @@ class Items extends Secure_Controller
 			if ($definition_value['definition_type'] == DROPDOWN)
 			{
 				$values['values'] = $this->Attribute->get_definition_values($definition_id);
-				$values['selected_value'] = $this->Attribute->get_link_value($item_id, $definition_id)->attribute_id;
+				$link_value = $this->Attribute->get_link_value($item_id, $definition_id);
+				$values['selected_value'] = (empty($link_value)) ? '' : $link_value->attribute_id;
 			}
 
 			if (!empty($definition_ids[$definition_id]))
