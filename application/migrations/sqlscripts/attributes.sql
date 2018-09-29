@@ -88,86 +88,86 @@ INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id,
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
  WHERE ospos_app_config.`key` = 'custom10_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom10 IS NOT NULL;
 
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom1 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom2 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom3 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom4 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom5 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom6 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom7 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom8 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom9 FROM ospos_items;
-INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom10 FROM ospos_items;
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom1 FROM ospos_items WHERE custom1 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom1_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom2 FROM ospos_items WHERE custom2 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom2_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom3 FROM ospos_items WHERE custom3 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom3_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom4 FROM ospos_items WHERE custom4 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom4_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom5 FROM ospos_items WHERE custom5 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom5_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom6 FROM ospos_items WHERE custom6 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom6_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom7 FROM ospos_items WHERE custom7 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom7_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom8 FROM ospos_items WHERE custom8 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom8_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom9 FROM ospos_items WHERE custom9 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom9_name');
+INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom10 FROM ospos_items WHERE custom10 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom10_name');
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom1
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom1_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom1_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom2
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom2_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom2_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom3
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom3_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom3_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom4
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom4_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom4_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom5
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom5_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom5_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom6
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom6_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom6_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom7
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom7_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom7_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom8
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom8_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom8_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom9
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom9_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom9_name' AND `value` IS NOT NULL));
 
 UPDATE ospos_attribute_links
  INNER JOIN ospos_items ON ospos_attribute_links.item_id = ospos_items.item_id
  INNER JOIN ospos_attribute_values ON attribute_value = custom10
  SET ospos_attribute_links.attribute_id = ospos_attribute_values.attribute_id
  WHERE definition_id IN (SELECT definition_id FROM ospos_attribute_definitions
- WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom10_name'));
+ WHERE definition_name = (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom10_name' AND `value` IS NOT NULL));
 
 ALTER TABLE `ospos_items`
  DROP COLUMN `custom1`,
