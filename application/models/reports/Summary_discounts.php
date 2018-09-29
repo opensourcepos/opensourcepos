@@ -21,7 +21,7 @@ class Summary_discounts extends Summary_report
 		}
 		elseif($inputs['discount_type'] == PERCENT)
 		{
-			$this->db->select('SUM(payment_amount) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
+			$this->db->select('SUM(item_unit_price) * sales_items.discount / 100.0 AS total, MAX(CONCAT(sales_items.discount, "%")) AS discount, count(*) AS count');
 			$this->db->where('discount_type',PERCENT);
 		}	
 		
@@ -31,7 +31,6 @@ class Summary_discounts extends Summary_report
 		
 
 		$this->db->from('sales_items AS sales_items');
-		$this->db->join('sales_payments', 'sales_payments.sale_id = sales_items.sale_id');
 		$this->db->join('sales AS sales', 'sales_items.sale_id = sales.sale_id', 'inner');
 
 		$this->_where($inputs);
