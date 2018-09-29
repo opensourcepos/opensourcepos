@@ -186,8 +186,9 @@ class Item extends CI_Model
 			}
 			else
 			{
+				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
 				$this->db->like('attribute_value', $search);
-				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id');
+				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND sale_id IS NULL AND receiving_id IS NULL');
 				$this->db->join('attribute_values', 'attribute_links.attribute_id = attribute_values.attribute_id');
 			}
 		}
