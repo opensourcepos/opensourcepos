@@ -417,7 +417,7 @@ function get_item_data_row($item)
 	foreach($attribute_values as $attribute_value)
 	{
 		$exploded_value = explode(':', $attribute_value);
-		$indexed_values[$exploded_value[0]] = $exploded_value[1];
+		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '';
 	}
 
 	foreach($definition_names as $definition_id => $definition_name)
