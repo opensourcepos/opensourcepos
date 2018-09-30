@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["employees_basic_information"] = "Информация";
 $lang["employees_cannot_be_deleted"] = "Невъзможно е да изтриете избрани служители, един или повече от тях са обработили продажби или се опитвате да изтриете профила си.";
 $lang["employees_change_password"] = "Промяна на паролата";
@@ -24,7 +23,7 @@ $lang["employees_password_required"] = "Изисква се парола.";
 $lang["employees_permission_desc"] = "Поставете отметка в квадратчетата по-долу, за да получите достъп до модулите.";
 $lang["employees_permission_info"] = "Разрешения";
 $lang["employees_repeat_password"] = "Паролата отново";
-$lang["employees_subpermission_required"] = "Add at least one grant for each module.";
+$lang["employees_subpermission_required"] = "Добавете поне един грант за всеки модул.";
 $lang["employees_successful_adding"] = "Служителя е добавен успешно.";
 $lang["employees_successful_change_password"] = "Промяна на паролата е успешна.";
 $lang["employees_successful_deleted"] = "Вие успешно сте изтрили";
