@@ -126,6 +126,26 @@
 		</div>
 
 		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('cashups_closed_amount_due'), 'closed_amount_due', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-4'>
+				<div class="input-group input-group-sm">
+					<?php if (!currency_side()): ?>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php endif; ?>
+					<?php echo form_input(array(
+							'name'=>'closed_amount_due',
+							'id'=>'closed_amount_due',
+							'class'=>'form-control input-sm',
+							'value'=>to_currency_no_money($cash_ups_info->closed_amount_due))
+							);?>
+					<?php if (currency_side()): ?>
+						<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+					<?php endif; ?>
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('cashups_closed_amount_card'), 'closed_amount_card', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
 				<div class="input-group input-group-sm">
@@ -279,10 +299,11 @@ $(document).ready(function()
 		language: '<?php echo current_language_code(); ?>'
 	});
 
-	$('#open_amount_cash, #transfer_amount_cash, #closed_amount_cash, #closed_amount_card, #closed_amount_check').keyup(function() {
+	$('#open_amount_cash, #transfer_amount_cash, #closed_amount_cash, #closed_amount_due, #closed_amount_card, #closed_amount_check').keyup(function() {
 		$.post("<?php echo site_url($controller_name . '/ajax_cashup_total')?>", {
 				'open_amount_cash': $('#open_amount_cash').val(),
 				'transfer_amount_cash': $('#transfer_amount_cash').val(),
+				'closed_amount_due': $('#closed_amount_due').val(),
 				'closed_amount_cash': $('#closed_amount_cash').val(),
 				'closed_amount_card': $('#closed_amount_card').val(),
 				'closed_amount_check': $('#closed_amount_check').val()

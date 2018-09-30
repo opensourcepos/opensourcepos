@@ -20,6 +20,7 @@ $lang['cashups_transfer_amount_cash'] = "In/Out Cash";
 $lang['cashups_closed_amount_cash'] = "Closed Cash";
 $lang['cashups_closed_amount_card'] = "Cards";
 $lang['cashups_closed_amount_check'] = "Cheques";
+$lang['cashups_closed_amount_due'] = "Dues";
 $lang["cashups_new"] = "New Cashup";
 $lang["cashups_no_cashups_to_display"] = "There are no Cashups to display";
 $lang["cashups_none_selected"] = "You have not selected any Cashups";
