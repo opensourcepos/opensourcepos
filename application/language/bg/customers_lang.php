@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Сметка #";
 $lang["customers_account_number_duplicate"] = "Номерът на сметката вече е в базата данни.";
 $lang["customers_available_points"] = "Налични точки";
@@ -9,14 +8,14 @@ $lang["customers_basic_information"] = "Информация";
 $lang["customers_cannot_be_deleted"] = "Избраните клиенти не могат да бъдат изтрити, един или повече от избраните клиенти имат продажби.";
 $lang["customers_company_name"] = "Компания";
 $lang["customers_confirm_delete"] = "Наистина ли искате да изтриете избраните клиенти?";
-$lang["customers_confirm_restore"] = "";
-$lang["customers_consent"] = "";
-$lang["customers_consent_required"] = "";
+$lang["customers_confirm_restore"] = "Наистина ли искате да възстановите избраните клиенти?";
+$lang["customers_consent"] = "Съгласие за регистрация";
+$lang["customers_consent_required"] = "Регистрационното съгласие е задължително поле.";
 $lang["customers_customer"] = "Клиент";
-$lang["customers_date"] = "";
+$lang["customers_date"] = "Дата";
 $lang["customers_discount"] = "Отстъпка";
 $lang["customers_email_duplicate"] = "Имейл адресът вече е в базата данни.";
-$lang["customers_employee"] = "";
+$lang["customers_employee"] = "Служител";
 $lang["customers_error_adding_updating"] = "Добавянето или актуализирането на клиента е неуспешно.";
 $lang["customers_excel_import_failed"] = "Вносът от Excel не бе успешен";
 $lang["customers_excel_import_nodata_wrongformat"] = "Каченият файл няма данни или е неправилно форматиран.";
@@ -29,7 +28,7 @@ $lang["customers_mailchimp_activity_open"] = "Имейлът е отворен";
 $lang["customers_mailchimp_activity_total"] = "Имейлът е изпратен";
 $lang["customers_mailchimp_activity_unopen"] = "Имейлът е неотворен";
 $lang["customers_mailchimp_email_client"] = "Имейл клиент";
-$lang["customers_mailchimp_info"] = "Mailchimp";
+$lang["customers_mailchimp_info"] = "Mailchimp (Услуга)";
 $lang["customers_mailchimp_member_rating"] = "Оценка";
 $lang["customers_mailchimp_status"] = "Статус";
 $lang["customers_mailchimp_vip"] = "VIP";
@@ -48,3 +47,6 @@ $lang["customers_taxable"] = "Облагаем";
 $lang["customers_total"] = "Общо изразходвани средства";
 $lang["customers_update"] = "Актуализиране на клиента";
 $lang["rewards_package"] = "Пакетни награди";
+$lang["customers_discount_type"] = "Тип отстъпка";
+$lang["customers_discount_fixed"] = "Фиксирана отстъпка";
+$lang["customers_discount_percent"] = "Процент отстъпка";
