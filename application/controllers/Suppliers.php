@@ -43,7 +43,9 @@ class Suppliers extends Persons
 		$data_rows = array();
 		foreach($suppliers->result() as $supplier)
 		{
-			$data_rows[] = $this->xss_clean(get_supplier_data_row($supplier));
+			$row = $this->xss_clean(get_supplier_data_row($supplier));
+			$row['category'] = $this->Supplier->get_category_name($row['category']);
+			$data_rows[] = $row;
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
@@ -77,6 +79,7 @@ class Suppliers extends Persons
 			$info->$property = $this->xss_clean($value);
 		}
 		$data['person_info'] = $info;
+		$data['categories'] = $this->Supplier->get_categories();
 
 		$this->load->view("suppliers/form", $data);
 	}
@@ -112,6 +115,7 @@ class Suppliers extends Persons
 		$supplier_data = array(
 			'company_name' => $this->input->post('company_name'),
 			'agency_name' => $this->input->post('agency_name'),
+			'category' => $this->input->post('category'),
 			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number')
 		);
 
