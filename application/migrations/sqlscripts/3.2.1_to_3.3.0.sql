@@ -69,7 +69,6 @@ CREATE TABLE `ospos_cash_up` (
   `transfer_amount_cash` decimal(15,2) NOT NULL,
   `note` int(1) NOT NULL,
   `closed_amount_cash` decimal(15,2) NOT NULL,
-  `closed_amount_due` decimal(15,2) NOT NULL,
   `closed_amount_card` decimal(15,2) NOT NULL,
   `closed_amount_check` decimal(15,2) NOT NULL,
   `closed_amount_total` decimal(15,2) NOT NULL,
@@ -98,3 +97,8 @@ ALTER TABLE `ospos_cash_up`
 ALTER TABLE ospos_cash_up CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_expense_categories CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
 ALTER TABLE ospos_expenses CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+-- Add amount due
+
+ALTER TABLE `ospos_cash_up`
+  ADD `closed_amount_due` decimal(15,2) NOT NULL;
