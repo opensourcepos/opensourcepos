@@ -16,6 +16,13 @@
 			</div>
 		</div>
 
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('suppliers_category'), 'category', array('class'=>'required control-label col-xs-3')); ?>
+			<div class='col-xs-6'>
+				<?php echo form_dropdown('category', $categories, $person_info->category, array('class'=>'form-control', 'id'=>'category'));?>
+			</div>
+		</div>
+
 		<div class="form-group form-group-sm">	
 			<?php echo form_label($this->lang->line('suppliers_agency_name'), 'agency_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
