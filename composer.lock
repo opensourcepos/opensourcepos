@@ -220,16 +220,16 @@
         },
         {
             "name": "tamtamchik/namecase",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tamtamchik/namecase.git",
-                "reference": "b4facc6022420bd1575d0c1d188c2ef870ef176b"
+                "reference": "a0d83e8c39141fc27898993c9339cfc4cf4680de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/b4facc6022420bd1575d0c1d188c2ef870ef176b",
-                "reference": "b4facc6022420bd1575d0c1d188c2ef870ef176b",
+                "url": "https://api.github.com/repos/tamtamchik/namecase/zipball/a0d83e8c39141fc27898993c9339cfc4cf4680de",
+                "reference": "a0d83e8c39141fc27898993c9339cfc4cf4680de",
                 "shasum": ""
             },
             "require": {
@@ -273,7 +273,7 @@
                 "strings",
                 "tamtamchik"
             ],
-            "time": "2016-02-06 10:46:26"
+            "time": "2018-09-12 10:40:55"
         }
     ],
     "packages-dev": [
