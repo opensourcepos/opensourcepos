@@ -5,7 +5,10 @@
  */
 
 class Supplier extends Person
-{	
+{
+	const GOODS_SUPPLIER = 0;
+	const COST_SUPPLIER = 1;
+
 	/*
 	Determines if a given person_id is a customer
 	*/
@@ -32,10 +35,11 @@ class Supplier extends Person
 	/*
 	Returns all the suppliers
 	*/
-	public function get_all($limit_from = 0, $rows = 0)
+	public function get_all($category = self::GOODS_SUPPLIER, $limit_from = 0, $rows = 0)
 	{
 		$this->db->from('suppliers');
-		$this->db->join('people', 'suppliers.person_id = people.person_id');			
+		$this->db->join('people', 'suppliers.person_id = people.person_id');
+		$this->db->where('category', $category);
 		$this->db->where('deleted', 0);
 		$this->db->order_by('company_name', 'asc');
 		if($rows > 0)
@@ -272,6 +276,32 @@ class Supplier extends Person
 		}
 
 		return $this->db->get();
+	}
+
+	/*
+	Return supplier categories
+	*/
+	public function get_categories()
+	{
+		return array(
+			self::GOODS_SUPPLIER => $this->lang->line('suppliers_goods'),
+			self::COST_SUPPLIER => $this->lang->line('suppliers_cost')
+		);
+	}
+
+	/*
+	Return a category name given its id
+	*/
+	public function get_category_name($id)
+	{
+		if($id == self::GOODS_SUPPLIER)
+		{
+			return $this->lang->line('suppliers_goods');
+		}
+		elseif($id == self::COST_SUPPLIER)
+		{
+			return $this->lang->line('suppliers_cost');
+		}
 	}
 }
 ?>

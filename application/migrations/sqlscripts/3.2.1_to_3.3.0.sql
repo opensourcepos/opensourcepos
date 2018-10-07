@@ -37,7 +37,6 @@ ALTER TABLE `ospos_receivings_items`
 	CHANGE COLUMN `discount_percent` `discount` DECIMAL(15,2) NOT NULL DEFAULT 0 AFTER `item_unit_price`,
 	ADD COLUMN `discount_type` TINYINT(2) NOT NULL DEFAULT '0' AFTER `discount`;
 
-
 --
 -- Add support for module cashups
 --
@@ -102,3 +101,13 @@ ALTER TABLE ospos_expenses CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci
 
 ALTER TABLE `ospos_cash_up`
   ADD `closed_amount_due` decimal(15,2) NOT NULL;
+
+--
+-- Add Suppliers category
+--
+
+ALTER TABLE `ospos_suppliers`
+  ADD COLUMN `category` TINYINT NOT NULL;
+
+UPDATE `ospos_suppliers`
+  SET `category` = 0;
