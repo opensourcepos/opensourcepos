@@ -104,6 +104,11 @@ $(document).ready(function()
 	{
 		var is_event = typeof(value) !== 'string';
 
+        if (!$('#attribute_form').valid())
+        {
+            return;
+        }
+
 		if (is_event)
 		{
 			value = $('#definition_value').val();
@@ -142,12 +147,16 @@ $(document).ready(function()
 		add_attribute_value(element);
 	});
 
+	$.validator.addMethod('valid_chars', function(value, element) {
+        return value.match(/(\||:)/g) == null;
+	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
+
 	$('#attribute_form').validate($.extend({
 		submitHandler: function(form)
 		{
 			$(form).ajaxSubmit({
 				beforeSerialize: function($form, options) {
-				    $("select[disabled='disabled']").removeAttr('disabled');
+				    $("select").removeAttr('disabled');
 					is_new && $('<input>').attr({
 						id: 'definition_values',
 						type: 'hidden',
@@ -166,8 +175,14 @@ $(document).ready(function()
 		rules:
 		{
 			definition_name: 'required',
+			definition_value: 'valid_chars',
 			definition_type: 'required'
-		}
+		},
+        messages:
+        {
+            definition_name: "<?php echo $this->lang->line('attributes_definition_name_required'); ?>",
+            definition_type: "<?php echo $this->lang->line('attributes_definition_type_required'); ?>"
+        }
 	}, form_support.error));
 });
 </script>
