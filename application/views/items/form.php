@@ -438,6 +438,10 @@ $(document).ready(function()
 		})
 	});
 
+	$.validator.addMethod('valid_chars', function(value, element) {
+		return value.match(/(\||:)/g) == null;
+	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
+
 	$('#item_form').validate($.extend({
 		submitHandler: function(form, event) {
 			$(form).ajaxSubmit({

@@ -411,19 +411,8 @@ function get_item_data_row($item)
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
 	));
 
-	$attribute_values = explode('|', (property_exists($item, 'attribute_values')) ? $item->attribute_values : "");
-
-	$indexed_values = array();
-	foreach($attribute_values as $attribute_value)
-	{
-		$exploded_value = explode(':', $attribute_value);
-		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '';
-	}
-
-	foreach($definition_names as $definition_id => $definition_name)
-	{
-		$result[$definition_id] = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '';
-	}
+	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
+	append_attribute_values($result, $definition_names, $attribute_values);
 
 	return $result;
 }
@@ -546,6 +535,24 @@ function get_item_kit_data_row($item_kit)
 		'edit' => anchor($controller_name."/view/$item_kit->item_kit_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
+}
+
+function append_attribute_values(&$result, $definition_names, $attribute_values)
+{
+	$values = explode('|', $attribute_values);
+
+	$indexed_values = array();
+	foreach($values as $attribute_value)
+	{
+		$exploded_value = explode(':', $attribute_value);
+		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '-';
+	}
+
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$attribute_value = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '-';
+		$result[$definition_id] = $attribute_value;
+	}
 }
 
 function get_attribute_definition_manage_table_headers()

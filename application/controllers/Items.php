@@ -416,6 +416,10 @@ class Items extends Secure_Controller
 			{
 				$values['selected_value'] = $definition_ids[$definition_id];
 			}
+			else
+			{
+				$values['selected_value'] = '';
+			}
 
 			unset($data['definition_names'][$definition_id]);
 		}
