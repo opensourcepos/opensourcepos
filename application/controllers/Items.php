@@ -404,7 +404,8 @@ class Items extends Secure_Controller
 			$values = &$data['definition_values'][$definition_id];
 			$values['attribute_id'] = $attribute_id;
 			$values['attribute_value'] = $attribute_value;
-
+			$values['selected_value'] = '';
+			
 			if ($definition_value['definition_type'] == DROPDOWN)
 			{
 				$values['values'] = $this->Attribute->get_definition_values($definition_id);
@@ -415,10 +416,6 @@ class Items extends Secure_Controller
 			if (!empty($definition_ids[$definition_id]))
 			{
 				$values['selected_value'] = $definition_ids[$definition_id];
-			}
-			else
-			{
-				$values['selected_value'] = '';
 			}
 
 			unset($data['definition_names'][$definition_id]);
