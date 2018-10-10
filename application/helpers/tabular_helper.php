@@ -412,9 +412,7 @@ function get_item_data_row($item)
 	));
 
 	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
-	append_attribute_values($result, $definition_names, $attribute_values);
-
-	return $result;
+	return $result + expand_attribute_values($definition_names, $attribute_values);
 }
 
 
@@ -537,7 +535,7 @@ function get_item_kit_data_row($item_kit)
 		));
 }
 
-function append_attribute_values(&$result, $definition_names, $attribute_values)
+function expand_attribute_values($definition_names, $attribute_values)
 {
 	$values = explode('|', $attribute_values);
 
@@ -548,11 +546,13 @@ function append_attribute_values(&$result, $definition_names, $attribute_values)
 		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '-';
 	}
 
+	$attribute_values = array();
 	foreach($definition_names as $definition_id => $definition_name)
 	{
 		$attribute_value = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '-';
-		$result[$definition_id] = $attribute_value;
+		$attribute_values["$definition_id"] = $attribute_value;
 	}
+	return $attribute_values;
 }
 
 function get_attribute_definition_manage_table_headers()
