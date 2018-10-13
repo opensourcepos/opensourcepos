@@ -383,7 +383,7 @@
 })(window.form_support = window.form_support || {}, jQuery);
 
 function number_sorter(a, b) {
-	a = +a.replace(/[^\-0-9\.]+/g, '');
-	b = +b.replace(/[^\-0-9\.]+/g, '');
+	a = +a.replace(/[^\-0-9]+/g, '');
+	b = +b.replace(/[^\-0-9]+/g, '');
 	return a - b;
 }
