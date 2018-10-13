@@ -191,7 +191,7 @@ class Item extends CI_Model
 					$this->db->or_like('item_number', $search);
 					$this->db->or_like('items.item_id', $search);
 					$this->db->or_like('company_name', $search);
-					$this->db->or_like('category', $search);
+					$this->db->or_like('items.category', $search);
 				$this->db->group_end();
 			}
 			else
