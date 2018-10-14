@@ -86,7 +86,7 @@ class Expense extends CI_Model
 		$this->db->from('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'INNER');
+		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
 
 		$this->db->group_start();
 			$this->db->like('employees.first_name', $search);
@@ -180,7 +180,7 @@ class Expense extends CI_Model
 		$this->db->from('expenses AS expenses');
 		$this->db->join('people AS employees', 'employees.person_id = expenses.employee_id', 'LEFT');
 		$this->db->join('expense_categories AS expense_categories', 'expense_categories.expense_category_id = expenses.expense_category_id', 'LEFT');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'INNER');
+		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = expenses.supplier_id', 'LEFT');
 		$this->db->where('expense_id', $expense_id);
 
 		$query = $this->db->get();
