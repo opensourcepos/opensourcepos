@@ -25,7 +25,7 @@
 		</div>
 
 		<div class="form-group form-group-sm">
-			<?php echo form_label($this->lang->line('expenses_supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3 required')); ?>
+			<?php echo form_label($this->lang->line('expenses_supplier_name'), 'supplier_name', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-6'>
 				<?php echo form_input(array(
 						'name'=>'supplier_name',
@@ -228,14 +228,14 @@ $(document).ready(function()
 	});
 
 	<?php
-		if(!empty($expenses_info->expense_id)) {
+	if(!empty($expenses_info->expense_id)) {
 	?>
-			$('#supplier_id').val('<?php echo $expenses_info->supplier_id ?>');
-			$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>');
-			$('#supplier_name').attr('readonly', 'readonly');
-			$('#remove_supplier_button').css('display', 'inline-block');
+		$('#supplier_id').val('<?php echo $expenses_info->supplier_id ?>');
+		$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>');
+		$('#supplier_name').attr('readonly', 'readonly');
+		$('#remove_supplier_button').css('display', 'inline-block');
 	<?php
-		}
+	}
 	?>
 	$('#expenses_edit_form').validate($.extend({
 		submitHandler: function(form) {
@@ -260,7 +260,6 @@ $(document).ready(function()
 			{
 				required: true
 			},
-			supplier_id: 'required',
 			amount:
 			{
 				required: true,
@@ -280,7 +279,6 @@ $(document).ready(function()
 				required: "<?php echo $this->lang->line('expenses_date_required'); ?>"
 
 			},
-			supplier_id: "<?php echo $this->lang->line('expenses_supplier_required'); ?>",
 			amount:
 			{
 				required: "<?php echo $this->lang->line('expenses_amount_required'); ?>",

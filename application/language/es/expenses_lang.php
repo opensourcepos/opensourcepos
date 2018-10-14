@@ -44,4 +44,3 @@ $lang["expenses_supplier_tax_code"] = "Codigo Imp";
 $lang["expenses_tax_amount"] = "Imp";
 $lang["expenses_update"] = "Actualizar Gasto";
 $lang["expenses_start_typing_supplier_name"] = "Empieza a escribir el nombre del proveedor...";
-$lang["expenses_supplier_required"] = "Selecciona un Proveedor válido";

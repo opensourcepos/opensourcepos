@@ -44,4 +44,3 @@ $lang["expenses_supplier_tax_code"] = "Tax Code";
 $lang["expenses_tax_amount"] = "Tax";
 $lang["expenses_update"] = "Update Expense";
 $lang["expenses_start_typing_supplier_name"] = "Start Typing Supplier's name...";
-$lang["expenses_supplier_required"] = "Please select a valid Supplier";
