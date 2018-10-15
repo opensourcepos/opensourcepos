@@ -128,7 +128,7 @@ class Expenses extends Secure_Controller
 
 		$expense_data = array(
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_id' => $this->input->post('supplier_id'),
+			'supplier_id' => $this->input->post('supplier_id') == '' ? NULL : $this->input->post('supplier_id'),
 			'supplier_tax_code' => $this->input->post('supplier_tax_code'),
 			'amount' => parse_decimals($this->input->post('amount')),
 			'tax_amount' => parse_decimals($this->input->post('tax_amount')),
@@ -138,10 +138,6 @@ class Expenses extends Secure_Controller
 			'employee_id' => $this->input->post('employee_id'),
 			'deleted' => $this->input->post('deleted') != NULL
 		);
-
-		if($expense_data['supplier_id'] == '') {
-			$expense_data['supplier_id'] = NULL;
-		}
 
 		if($this->Expense->save($expense_data, $expense_id))
 		{
