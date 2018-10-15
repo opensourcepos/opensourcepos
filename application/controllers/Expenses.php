@@ -139,9 +139,9 @@ class Expenses extends Secure_Controller
 			'deleted' => $this->input->post('deleted') != NULL
 		);
 
-        if($expense_data['supplier_id'] == '') {
-            $expense_data['supplier_id'] = NULL;
-        }
+		if($expense_data['supplier_id'] == '') {
+			$expense_data['supplier_id'] = NULL;
+		}
 
 		if($this->Expense->save($expense_data, $expense_id))
 		{
