@@ -24,5 +24,5 @@ $lang["attributes_show_in_sales"] = "Show in sales";
 $lang["attributes_show_in_sales_visibility"] = "Sales";
 $lang["attributes_update"] = "Update Attribute";
 $lang["attributes_definition_name_required"] = "Attribute name is a required field";
-$lang["attributes_definition_type_required"] = "Attriubte type is a required field";
+$lang["attributes_definition_type_required"] = "Attribute type is a required field";
 $lang["attributes_attribute_value_invalid_chars"] = "Attribute value cannot contain ':' or '|'";
