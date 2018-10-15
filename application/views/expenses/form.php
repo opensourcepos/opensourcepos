@@ -231,8 +231,8 @@ $(document).ready(function()
 	if(!empty($expenses_info->expense_id)) {
 	?>
 		$('#supplier_id').val('<?php echo $expenses_info->supplier_id ?>');
-		$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>');
-		$('#supplier_name').attr('readonly', 'readonly');
+	$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>')
+		.attr('readonly', 'readonly');
 		$('#remove_supplier_button').css('display', 'inline-block');
 	<?php
 	}
