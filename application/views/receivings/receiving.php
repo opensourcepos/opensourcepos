@@ -106,9 +106,9 @@ if (isset($success))
 				<th style="width:15%;"><?php echo $this->lang->line('sales_item_number'); ?></th>
 				<th style="width:23%;"><?php echo $this->lang->line('receivings_item_name'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_cost'); ?></th>
-				<th style="width:10%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
-				<th style="width:7%;"><?php echo $this->lang->line('receivings_ship_pack'); ?></th>
-				<th style="width:15%;"><?php echo $this->lang->line('receivings_discount'); ?></th>
+				<th style="width:8%;"><?php echo $this->lang->line('receivings_quantity'); ?></th>
+				<th style="width:10%;"><?php echo $this->lang->line('receivings_ship_pack'); ?></th>
+				<th style="width:14%;"><?php echo $this->lang->line('receivings_discount'); ?></th>
 				<th style="width:10%;"><?php echo $this->lang->line('receivings_total'); ?></th>
 				<th style="width:5%;"><?php echo $this->lang->line('receivings_update'); ?></th>
 			</tr>
@@ -207,7 +207,7 @@ if (isset($success))
 									if ($item['description']!='')
 									{
 										echo $item['description'];
-	        							echo form_hidden('description',$item['description']);
+										echo form_hidden('description',$item['description']);
 									}
 									else
 									{
@@ -402,20 +402,20 @@ if (isset($success))
 <script type="text/javascript">
 $(document).ready(function()
 {
-    $("#item").autocomplete(
-    {
+	$("#item").autocomplete(
+	{
 		source: '<?php echo site_url($controller_name."/stock_item_search"); ?>',
-    	minChars:0,
-       	delay:10,
-       	autoFocus: false,
+		minChars:0,
+		delay:10,
+		autoFocus: false,
 		select:	function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#add_item_form").submit();
 			return false;
 		}
-    });
+	});
 
-    $('#item').focus();
+	$('#item').focus();
 
 	$('#item').keypress(function (e) {
 		if (e.which == 13) {
@@ -425,9 +425,9 @@ $(document).ready(function()
 	});
 
 	$('#item').blur(function()
-    {
-    	$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
-    });
+	{
+		$(this).attr('value',"<?php echo $this->lang->line('sales_start_typing_item_name'); ?>");
+	});
 
 	$('#comment').keyup(function() 
 	{
@@ -445,41 +445,41 @@ $(document).ready(function()
 	});
 
 	$('#item,#supplier').click(function()
-    {
-    	$(this).attr('value','');
-    });
+	{
+		$(this).attr('value','');
+	});
 
-    $("#supplier").autocomplete(
-    {
+	$("#supplier").autocomplete(
+	{
 		source: '<?php echo site_url("suppliers/suggest"); ?>',
-    	minChars:0,
-    	delay:10,
+		minChars:0,
+		delay:10,
 		select: function (a, ui) {
 			$(this).val(ui.item.value);
 			$("#select_supplier_form").submit();
 		}
-    });
+	});
 
 	dialog_support.init("a.modal-dlg, button.modal-dlg");
 
 	$('#supplier').blur(function()
-    {
-    	$(this).attr('value',"<?php echo $this->lang->line('receivings_start_typing_supplier_name'); ?>");
-    });
+	{
+		$(this).attr('value',"<?php echo $this->lang->line('receivings_start_typing_supplier_name'); ?>");
+	});
 
-    $("#finish_receiving_button").click(function()
-    {
-   		$('#finish_receiving_form').submit();
-    });
+	$("#finish_receiving_button").click(function()
+	{
+		$('#finish_receiving_form').submit();
+	});
 
-    $("#cancel_receiving_button").click(function()
-    {
-    	if (confirm('<?php echo $this->lang->line("receivings_confirm_cancel_receiving"); ?>'))
-    	{
+	$("#cancel_receiving_button").click(function()
+	{
+		if (confirm('<?php echo $this->lang->line("receivings_confirm_cancel_receiving"); ?>'))
+		{
 			$('#finish_receiving_form').attr('action', '<?php echo site_url($controller_name."/cancel_receiving"); ?>');
-    		$('#finish_receiving_form').submit();
-    	}
-    });
+			$('#finish_receiving_form').submit();
+		}
+	});
 
 	$("#cart_contents input").keypress(function(event)
 	{
@@ -521,7 +521,7 @@ $(document).ready(function()
 		var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked'))?1:0);
 		$('#cart_'+ $(this).attr('data-line')).append($(input));
 		$('#cart_'+ $(this).attr('data-line')).submit();
-    });
+	});
 
 });
 

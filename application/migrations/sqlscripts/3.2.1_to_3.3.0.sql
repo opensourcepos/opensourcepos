@@ -6,9 +6,9 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('multi_pack_enabled', '0');
 
 ALTER TABLE `ospos_items`
-  ADD COLUMN `qty_per_pack` decimal(15,3) NOT NULL DEFAULT 1,
-  ADD COLUMN `pack_name` varchar(8) DEFAULT 'Each',
-  ADD COLUMN `low_sell_item_id` int(10) DEFAULT 0;
+  ADD COLUMN `qty_per_pack` decimal(15,3) NOT NULL DEFAULT 1 AFTER `tax_category_id`,
+  ADD COLUMN `pack_name` varchar(8) DEFAULT 'Each' AFTER `qty_per_pack`,
+  ADD COLUMN `low_sell_item_id` int(10) DEFAULT 0 AFTER `pack_name`;
 
 UPDATE `ospos_items`
   SET `low_sell_item_id` = `item_id`
@@ -55,7 +55,7 @@ INSERT INTO `ospos_modules` (`name_lang_key`, `desc_lang_key`, `sort`, `module_i
 INSERT INTO `ospos_permissions` (`permission_id`, `module_id`) VALUES
 ('cashups', 'cashups');
 
-INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES 
+INSERT INTO `ospos_grants` (`permission_id`, `person_id`) VALUES
 ('cashups', 1);
 
 -- Table structure for table `ospos_cash_up`
@@ -90,7 +90,7 @@ ALTER TABLE `ospos_cash_up`
 
 ALTER TABLE `ospos_cash_up`
   MODIFY `cashup_id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
-  
+
 -- Change collation on columns to be utf8_general_ci
 
 ALTER TABLE ospos_cash_up CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci;

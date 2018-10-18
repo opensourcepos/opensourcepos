@@ -43,11 +43,6 @@ $(document).ready(function()
 	<?php echo anchor("sales/manage", '<span class="glyphicon glyphicon-list-alt">&nbsp</span>' . $this->lang->line('sales_takings'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_takings_button')); ?>
 </div>
 
-<?php
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('sales','common'));
-?>
-
 <div id="page-wrap">
 	<div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
 	<div id="block1">
@@ -95,7 +90,7 @@ $(document).ready(function()
 				<td><textarea rows="5" cols="6"><?php echo $transaction_date; ?></textarea></td>
 			</tr>
 			<tr>
-				<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
+				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_total'); ?></td>
 				<td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
 			</tr>
 		</table>
@@ -104,15 +99,24 @@ $(document).ready(function()
 	<table id="items">
 		<tr>
 			<th><?php echo $this->lang->line('sales_item_number'); ?></th>
+			<?php
+				$invoice_columns = 6;
+				if($include_hsn)
+				{
+					$invoice_columns += 1;
+					?>
+					<th><?php echo $this->lang->line('sales_hsn'); ?></th>
+					<?php
+				}
+			?>
 			<th><?php echo $this->lang->line('sales_item_name'); ?></th>
 			<th><?php echo $this->lang->line('sales_quantity'); ?></th>
 			<th><?php echo $this->lang->line('sales_price'); ?></th>
 			<th><?php echo $this->lang->line('sales_discount'); ?></th>
 			<?php
-			$invoice_columns = 6;
 			if($discount > 0)
 			{
-				$invoice_columns = $invoice_columns + 1;
+				$invoice_columns += 1;
 				?>
 				<th><?php echo $this->lang->line('sales_customer_discount'); ?></th>
 			<?php
@@ -129,7 +133,11 @@ $(document).ready(function()
 			?>
 				<tr class="item-row">
 					<td><?php echo $item['item_number']; ?></td>
-					<td class="item-name"><textarea rows="4" cols="6"><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values']; ?></textarea></td>
+					<?php if($include_hsn): ?>
+						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['hsn_code']; ?></textarea>
+						</td>
+					<?php endif; ?>
+					<td class="item-name"><div><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values']; ?></div></td>
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
 					</td>
 					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
@@ -143,14 +151,11 @@ $(document).ready(function()
 					</td>
 				</tr>
 				<?php
-				if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
+				if($item['is_serialized'])
 				{
 				?>
 					<tr class="item-row">
-						<td></td>
-						<td class="item-description" colspan="<?php echo $invoice_columns-2; ?>">
-							<div><?php echo $item['description']; ?></div>
-						</td>
+						<td class="item-description" colspan="<?php echo $invoice_columns-1; ?>"></td>
 						<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
 					</tr>
 				<?php
@@ -170,13 +175,13 @@ $(document).ready(function()
 		</tr>
 
 		<?php
-		foreach($taxes as $tax_group_index=>$sales_tax)
+		foreach($taxes as $tax_group_index=>$tax)
 		{
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $tax['tax_group']; ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php
 		}

@@ -149,7 +149,7 @@ class Stock_location extends CI_Model
 	private function _insert_new_permission($module, $location_id, $location_name)
 	{
 		// insert new permission for stock location
-		$permission_id = $module . '_' . $location_name;
+		$permission_id = $module . '_' . str_replace(' ', '_', $location_name);
 		$permission_data = array('permission_id' => $permission_id, 'module_id' => $module, 'location_id' => $location_id);
 		$this->db->insert('permissions', $permission_data);
 

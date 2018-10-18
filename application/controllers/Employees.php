@@ -69,7 +69,7 @@ class Employees extends Persons
 		foreach($this->Module->get_all_subpermissions()->result() as $permission)
 		{
 			$permission->module_id = $this->xss_clean($permission->module_id);
-			$permission->permission_id = $this->xss_clean($permission->permission_id);
+			$permission->permission_id = str_replace(' ', '_', $this->xss_clean($permission->permission_id));
 			$permission->grant = $this->xss_clean($this->Employee->has_grant($permission->permission_id, $person_info->person_id));
 
 			$permissions[] = $permission;

@@ -12,9 +12,6 @@
 		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 		exit;
 	}
-
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE, array('sales', 'common'));
 ?>
 
 <div id="page-wrap">

@@ -261,6 +261,13 @@ function get_payment_options()
 	$payments[$lang->line('sales_due')] = $lang->line('sales_due');
 	$payments[$lang->line('sales_check')] = $lang->line('sales_check');
 
+	// If India (list of country codes include India) then include Unified Payment Interface
+	if (stripos(get_instance()->config->item('country_codes'), 'IN') !== false)
+	{
+		$payments[$lang->line('sales_upi')] = $lang->line('sales_upi');
+	}
+
+
 	return $payments;
 }
 
@@ -323,13 +330,13 @@ function to_currency_tax($number)
 {
 	$config = get_instance()->config;
 
-	if($config->item('customer_sales_tax_support') == '1')
+	if($config->item('tax_included') == '1')
 	{
-		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
 	}
 	else
 	{
-		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
+		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
 	}
 }
 
