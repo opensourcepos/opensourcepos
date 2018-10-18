@@ -180,6 +180,7 @@
 			</div>
 		</div>
 
+		<?php if(!$use_destination_based_tax) { ?>
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('items_tax_1'), 'tax_percent_1', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-4'>
@@ -226,14 +227,42 @@
 			</div>
 		</div>
 
-		<?php if($customer_sales_tax_enabled) { ?>
+		<?php } ?>
+
+		<?php if($use_destination_based_tax): ?>
 			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('taxes_tax_category'), 'tax_category', array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-8'>
-					<?php echo form_dropdown('tax_category_id', $tax_categories, $selected_tax_category, array('class'=>'form-control')); ?>
+					<div class="input-group input-group-sm">
+						<?php echo form_input(array(
+								'name'=>'tax_category',
+								'id'=>'tax_category',
+								'class'=>'form-control input-sm',
+								'size'=>'50',
+								'value'=>$tax_category)
+						); ?>
+						<?php echo form_hidden('tax_category_id', $tax_category_id); ?>
+					</div>
 				</div>
 			</div>
-		<?php } ?>
+		<?php endif; ?>
+
+		<?php if($include_hsn): ?>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('items_hsn_code'), 'category', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-8'>
+					<div class="input-group">
+						<?php echo form_input(array(
+								'name'=>'hsn_code',
+								'id'=>'hsn_code',
+								'class'=>'form-control input-sm',
+								'value'=>$hsn_code)
+						);?>
+					</div>
+				</div>
+			</div>
+		<?php endif; ?>
 
 		<?php
 		foreach($stock_locations as $key=>$location_detail)
@@ -407,6 +436,30 @@ $(document).ready(function()
 	$('#submit').click(function() {
 		stay_open = false;
 	});
+
+	$("input[name='tax_category']").change(function() {
+		if( ! $("input[name='tax_category']").val() ) {
+			$("input[name='tax_category']").val('');
+		}
+	});
+
+	var fill_value = function(event, ui) {
+		event.preventDefault();
+		$("input[name='tax_category_id']").val(ui.item.value);
+		$("input[name='tax_category']").val(ui.item.label);
+	};
+
+	$('#tax_category').autocomplete({
+		source: "<?php echo site_url('taxes/suggest_tax_categories'); ?>",
+		minChars: 0,
+		delay: 15,
+		cacheLength: 1,
+		appendTo: '.modal-content',
+		select: fill_value,
+		focus: fill_value
+	});
+
+
 
 	var fill_value = function(event, ui) {
 		event.preventDefault();

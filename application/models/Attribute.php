@@ -127,7 +127,7 @@ class Attribute extends CI_Model
 
 	public function get_values_by_definitions($definition_ids)
 	{
-		if (count($definition_ids) > 0)
+		if (count($definition_ids ? : []) > 0)
 		{
 			$this->db->from('attribute_definitions');
 

@@ -116,7 +116,8 @@ class Suppliers extends Persons
 			'company_name' => $this->input->post('company_name'),
 			'agency_name' => $this->input->post('agency_name'),
 			'category' => $this->input->post('category'),
-			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number')
+			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
+			'tax_id' => $this->input->post('tax_id') == '' ? NULL : $this->input->post('tax_id')
 		);
 
 		if($this->Supplier->save_supplier($person_data, $supplier_data, $supplier_id))

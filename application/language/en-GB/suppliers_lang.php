@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "You have successfully deleted Supplier"
 $lang["suppliers_successful_updating"] = "You have successfully updated Supplier";
 $lang["suppliers_supplier"] = "Supplier";
 $lang["suppliers_supplier_id"] = "ID";
+$lang["suppliers_tax_id"] = "Tax Id";
 $lang["suppliers_update"] = "Update Supplier";

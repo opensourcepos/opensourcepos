@@ -16,6 +16,35 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_invoice_format'), 'invoice_format', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-2'>
+					<?php echo form_dropdown('invoice_format', $invoice_format_options, $this->config->item('invoice_format'), array('class' => 'form-control input-sm')); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_custom_invoice'), 'custom_invoice', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'custom_invoice',
+						'value' => 'custom_invoice',
+						'id' => 'custom_invoice',
+						'checked' => $this->config->item('custom_invoice')));?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_custom_tax_invoice'), 'custom_tax_invoice', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'custom_tax_invoice',
+						'value' => 'custom_tax_invoice',
+						'id' => 'custom_tax_invoice',
+						'checked' => $this->config->item('custom_tax_invoice')));?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_register_mode_default'), 'default_register_mode', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<?php echo form_dropdown('default_register_mode', $register_mode_options, $this->config->item('default_register_mode'), array('class' => 'form-control input-sm')); ?>
@@ -169,7 +198,7 @@ $(document).ready(function()
 	var enable_disable_invoice_enable = (function() {
 		var invoice_enabled = $("#invoice_enable").is(":checked");
 		var work_order_enabled = $("#work_order_enable").is(":checked");
-		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message, select[name='default_register_mode'], #sales_quote_format, select[name='line_sequence'], #last_used_invoice_number, #last_used_quote_number, #quote_default_comments, #work_order_enable, #work_order_format, #last_used_work_order_number").prop("disabled", !invoice_enabled);
+		$("#sales_invoice_format, #recv_invoice_format, #invoice_default_comments, #invoice_email_message, select[name='default_register_mode'], select[name='invoice_format'], #custom_invoice, #custom_tax_invoice, #sales_quote_format, select[name='line_sequence'], #last_used_invoice_number, #last_used_quote_number, #quote_default_comments, #work_order_enable, #work_order_format, #last_used_work_order_number").prop("disabled", !invoice_enabled);
 		if(invoice_enabled) {
 			$("#work_order_format, #last_used_work_order_number").prop("disabled", !work_order_enabled);
 		} else {

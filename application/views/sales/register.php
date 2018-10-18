@@ -418,12 +418,12 @@ if(isset($success))
 			</tr>
 
 			<?php
-			foreach($taxes as $tax_group_index=>$sales_tax)
+			foreach($taxes as $tax_group_index=>$tax)
 			{
 			?>
 				<tr>
-					<th style='width: 55%;'><?php echo $sales_tax['tax_group']; ?></th>
-					<th style="width: 45%; text-align: right;"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></th>
+					<th style='width: 55%;'><?php echo $tax['tax_group']; ?></th>
+					<th style="width: 45%; text-align: right;"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></th>
 				</tr>
 			<?php
 			}

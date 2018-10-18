@@ -203,6 +203,7 @@ class Items extends Secure_Controller
 		}
 
 		$item_info = $this->Item->get_info($item_id);
+
 		foreach(get_object_vars($item_info) as $property => $value)
 		{
 			$item_info->$property = $this->xss_clean($value);
@@ -226,6 +227,8 @@ class Items extends Secure_Controller
 			}
 		}
 
+		$use_destination_based_tax = $this->config->item('use_destination_based_tax');
+		$data['include_hsn'] = $this->config->item('include_hsn') == '1';
 
 		if($item_id == -1)
 		{
@@ -237,9 +240,14 @@ class Items extends Secure_Controller
 			$item_info->item_type = ITEM; // standard
 			$item_info->item_id = $item_id;
 			$item_info->stock_type = HAS_STOCK;
-			$item_info->tax_category_id = 1;  // Standard
+			$item_info->tax_category_id = NULL;
 			$item_info->qty_per_pack = 1;
 			$item_info->pack_name = $this->lang->line('items_default_pack_name');
+			$data['hsn_code'] = '';
+			if($use_destination_based_tax == '1')
+			{
+				$item_info->tax_category_id = $this->config->item('default_tax_category');
+			}
 		}
 
 		$data['item_info'] = $item_info;
@@ -252,23 +260,38 @@ class Items extends Secure_Controller
 		$data['suppliers'] = $suppliers;
 		$data['selected_supplier'] = $item_info->supplier_id;
 
-		$customer_sales_tax_support = $this->config->item('customer_sales_tax_support');
-		if($customer_sales_tax_support == '1')
+		if($data['include_hsn'])
 		{
-			$data['customer_sales_tax_enabled'] = TRUE;
-			$tax_categories = array();
-			foreach($this->Tax->get_all_tax_categories()->result_array() as $row)
-			{
-				$tax_categories[$this->xss_clean($row['tax_category_id'])] = $this->xss_clean($row['tax_category']);
-			}
-			$data['tax_categories'] = $tax_categories;
-			$data['selected_tax_category'] = $item_info->tax_category_id;
+			$data['hsn_code'] = $item_info->hsn_code;
 		}
 		else
 		{
-			$data['customer_sales_tax_enabled'] = FALSE;
+			$data['hsn_code'] = '';
+		}
+
+		if($use_destination_based_tax == '1')
+		{
+			$data['use_destination_based_tax'] = TRUE;
+			$tax_categories = array();
+			foreach($this->Tax_category->get_all()->result_array() as $row)
+			{
+				$tax_categories[$this->xss_clean($row['tax_category_id'])] = $this->xss_clean($row['tax_category']);
+			}
+			$tax_category = "";
+			if ($item_info->tax_category_id != NULL)
+			{
+				$tax_category_info=$this->Tax_category->get_info($item_info->tax_category_id);
+				$tax_category= $tax_category_info->tax_category;
+			}
+			$data['tax_categories'] = $tax_categories;
+			$data['tax_category'] = $tax_category;
+			$data['tax_category_id'] = $item_info->tax_category_id;
+		}
+		else
+		{
+			$data['use_destination_based_tax'] = FALSE;
 			$data['tax_categories'] = array();
-			$data['selected_tax_category'] = '';
+			$data['tax_category'] = '';
 		}
 
 		$data['logo_exists'] = $item_info->pic_filename != '';
@@ -461,6 +484,23 @@ class Items extends Secure_Controller
 		}
 		$default_pack_name = $this->lang->line('items_default_pack_name');
 
+
+		if ($item_id == -1)
+		{
+			// Set low_sell_item_id to -1 for a new item so that when it is saved the item will point to itself for the
+			// low sell item.
+			$low_sell_item_id = $this->input->post('low_sell_item_id') == NULL ? -1 : $this->input->post('low_sell_item_id');
+		}
+		else
+		{
+			// On an existing item where the low sell item is not prompted for always force the item_id as the low sell item Id
+			$low_sell_item_id = $this->input->post('low_sell_item_id') == NULL ? $item_id : $this->input->post('low_sell_item_id');
+		}
+
+		if($this->config->item('multi_pack_enabled') == '1')
+		{
+		}
+
 		//Save item data
 		$item_data = array(
 			'name' => $this->input->post('name'),
@@ -478,8 +518,9 @@ class Items extends Secure_Controller
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
 			'qty_per_pack' => $this->input->post('qty_per_pack') == NULL ? 1 : $this->input->post('qty_per_pack'),
 			'pack_name' => $this->input->post('pack_name') == NULL ? $default_pack_name : $this->input->post('pack_name'),
-			'low_sell_item_id' => $this->input->post('low_sell_item_id') == NULL ? -1 : $this->input->post('low_sell_item_id'),
-			'deleted' => $this->input->post('is_deleted') != NULL
+			'low_sell_item_id' => $low_sell_item_id,
+			'deleted' => $this->input->post('is_deleted') != NULL,
+			'hsn_code' => $this->input->post('hsn_code') == NULL ? '' : $this->input->post('hsn_code')
 		);
 
 		if($item_data['item_type'] == ITEM_TEMP)
@@ -496,7 +537,7 @@ class Items extends Secure_Controller
 		}
 		else
 		{
-			$item_data['tax_category_id'] = $this->input->post('tax_category_id');
+			$item_data['tax_category_id'] = $this->input->post('tax_category_id') == '' ? NULL : $this->input->post('tax_category_id');
 		}
 		
 		if(!empty($upload_data['orig_name']))
@@ -521,19 +562,24 @@ class Items extends Secure_Controller
 				$new_item = TRUE;
 			}
 
-			$items_taxes_data = array();
-			$tax_names = $this->input->post('tax_names');
-			$tax_percents = $this->input->post('tax_percents');
-			$count = count($tax_percents);
-			for($k = 0; $k < $count; ++$k)
+			$use_destination_based_tax = $this->config->item('use_destination_based_tax');
+
+			if($use_destination_based_tax != '1')
 			{
-				$tax_percentage = parse_decimals($tax_percents[$k]);
-				if(is_numeric($tax_percentage))
+				$items_taxes_data = array();
+				$tax_names = $this->input->post('tax_names');
+				$tax_percents = $this->input->post('tax_percents');
+				$count = count($tax_percents);
+				for ($k = 0; $k < $count; ++$k)
 				{
-					$items_taxes_data[] = array('name' => $tax_names[$k], 'percent' => $tax_percentage);
+					$tax_percentage = parse_decimals($tax_percents[$k]);
+					if(is_numeric($tax_percentage))
+					{
+						$items_taxes_data[] = array('name' => $tax_names[$k], 'percent' => $tax_percentage);
+					}
 				}
+				$success &= $this->Item_taxes->save($items_taxes_data, $item_id);
 			}
-			$success &= $this->Item_taxes->save($items_taxes_data, $item_id);
 
 			//Save item quantity
 			$stock_locations = $this->Stock_location->get_undeleted_all()->result_array();
@@ -787,7 +833,7 @@ class Items extends Secure_Controller
 					// XSS file data sanity check
 					$data = $this->xss_clean($data);
 					
-					if(sizeof($data) >= 17)
+					if(sizeof($data) >= 18)
 					{
 						$item_data = array(
 							'name'					=> $data[1],
@@ -798,7 +844,8 @@ class Items extends Secure_Controller
 							'reorder_level'			=> $data[10],
 							'supplier_id'			=> $this->Supplier->exists($data[3]) ? $data[3] : NULL,
 							'allow_alt_description'	=> $data[12] != '' ? '1' : '0',
-							'is_serialized'			=> $data[13] != '' ? '1' : '0'
+							'is_serialized'			=> $data[13] != '' ? '1' : '0',
+							'hsn_code'					=> $data[15]
 						);
 
 						/* we could do something like this, however, the effectiveness of
@@ -856,7 +903,7 @@ class Items extends Secure_Controller
 
 						// array to store information if location got a quantity
 						$allowed_locations = $this->Stock_location->get_allowed_locations();
-						for($col = 15; $col < $cols; $col = $col + 2)
+						for($col = 16; $col < $cols; $col = $col + 2)
 						{
 							$location_id = $data[$col];
 							if(array_key_exists($location_id, $allowed_locations))

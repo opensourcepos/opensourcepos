@@ -129,6 +129,7 @@ class Item extends CI_Model
 			$this->db->select('MAX(items.allow_alt_description) AS allow_alt_description');
 			$this->db->select('MAX(items.is_serialized) AS is_serialized');
 			$this->db->select('MAX(items.pack_name) AS pack_name');
+			$this->db->select('MAX(items.tax_category_id) AS tax_category_id');
 			$this->db->select('MAX(items.deleted) AS deleted');
 
 			$this->db->select('MAX(suppliers.person_id) AS person_id');

@@ -109,7 +109,7 @@ class Customers extends Persons
 	*/
 	public function view($customer_id = -1)
 	{
-		$customer_sales_tax_support = $this->config->item('customer_sales_tax_support');
+		$use_destination_based_tax = $this->config->item('use_destination_based_tax');
 
 		$info = $this->Customer->get_info($customer_id);
 		foreach(get_object_vars($info) as $property => $value)
@@ -127,7 +127,10 @@ class Customers extends Persons
 		$employee_info = $this->Employee->get_info($info->employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . $employee_info->last_name;
 
-		$data['sales_tax_code_label'] = $info->sales_tax_code . ' ' . $this->Tax->get_info($info->sales_tax_code)->tax_code_name;
+		$tax_code_info = $this->Tax_code->get_info($info->sales_tax_code_id);
+		$tax_code_id = $tax_code_info->tax_code_id;
+
+		$data['sales_tax_code_label'] = $tax_code_info->tax_code . ' ' . $tax_code_info->tax_code_name;
 		$packages = array('' => $this->lang->line('items_none'));
 		foreach($this->Customer_rewards->get_all()->result_array() as $row)
 		{
@@ -136,13 +139,13 @@ class Customers extends Persons
 		$data['packages'] = $packages;
 		$data['selected_package'] = $info->package_id;
 
-		if($customer_sales_tax_support == '1')
+		if($use_destination_based_tax == '1')
 		{
-			$data['customer_sales_tax_enabled'] = TRUE;
+			$data['use_destination_based_tax'] = TRUE;
 		}
 		else
 		{
-			$data['customer_sales_tax_enabled'] = FALSE;
+			$data['use_destination_based_tax'] = FALSE;
 		}
 
 		// retrieve the total amount the customer spent so far together with min, max and average values
@@ -247,24 +250,16 @@ class Customers extends Persons
 		$customer_data = array(
 			'consent' => $this->input->post('consent') != NULL,
 			'account_number' => $this->input->post('account_number') == '' ? NULL : $this->input->post('account_number'),
+			'tax_id' => $this->input->post('tax_id'),
 			'company_name' => $this->input->post('company_name') == '' ? NULL : $this->input->post('company_name'),
 			'discount' => $this->input->post('discount') == '' ? 0.00 : $this->input->post('discount'),
 			'discount_type' => $this->input->post('discount_type') == NULL ? PERCENT : $this->input->post('discount_type'),
 			'package_id' => $this->input->post('package_id') == '' ? NULL : $this->input->post('package_id'),
 			'taxable' => $this->input->post('taxable') != NULL,
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
-			'employee_id' => $this->input->post('employee_id')
+			'employee_id' => $this->input->post('employee_id'),
+			'sales_tax_code_id' => $this->input->post('sales_tax_code_id') == '' ? NULL : $this->input->post('sales_tax_code_id')
 		);
-
-		$tax_code = $this->input->post('sales_tax_code');
-		if(!isset($tax_code))
-		{
-			$customer_data['sales_tax_code'] = '';
-		}
-		else
-		{
-			$customer_data['sales_tax_code'] = $tax_code;
-		}
 
 		if($this->Customer->save_customer($person_data, $customer_data, $customer_id))
 		{

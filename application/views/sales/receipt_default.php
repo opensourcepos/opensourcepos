@@ -143,12 +143,12 @@
 				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 			</tr>
 			<?php
-			foreach($taxes as $tax_group_index=>$sales_tax)
+			foreach($taxes as $tax_group_index=>$tax)
 			{
 			?>
 				<tr>
-					<td colspan="3" class="total-value"><?php echo $sales_tax['tax_group']; ?>:</td>
-					<td class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+					<td colspan="3" class="total-value"><?php echo $tax['tax_group']; ?>:</td>
+					<td class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
 			}

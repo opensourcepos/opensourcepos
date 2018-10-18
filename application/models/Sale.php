@@ -565,7 +565,8 @@ class Sale extends CI_Model
 	 * Save the sale information after the sales is complete but before the final document is printed
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 */
-	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
+	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number,
+							$work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
 	{
 		if($sale_id != -1)
 		{
@@ -641,8 +642,6 @@ class Sale extends CI_Model
 
 		$customer = $this->Customer->get_info($customer_id);
 
-		$sales_taxes = array();
-
 		foreach($items as $line=>$item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
@@ -693,81 +692,12 @@ class Sale extends CI_Model
 			}
 
 			$this->Attribute->copy_attribute_links($item['item_id'], 'sale_id', $sale_id);
-
-			// Calculate taxes and save the tax information for the sale.  Return the result for printing
-			$customer = $this->Customer->get_info($customer_id);
-			if($customer_id == -1 || $customer->taxable)
-			{
-				if($this->config->item('tax_included'))
-				{
-					$tax_type = Tax_lib::TAX_TYPE_VAT;
-				}
-				else
-				{
-					$tax_type = Tax_lib::TAX_TYPE_SALES;
-				}
-				$rounding_code = Rounding_mode::HALF_UP; // half adjust
-				$tax_group_sequence = 0;
-				$item_total = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
-				$tax_basis = $item_total;
-				$item_tax_amount = 0;
-
-				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
-				{
-
-					$sales_items_taxes = array(
-						'sale_id'			=> $sale_id,
-						'item_id'			=> $item['item_id'],
-						'line'				=> $item['line'],
-						'name'				=> character_limiter($row['name'], 255),
-						'percent'			=> $row['percent'],
-						'tax_type'			=> $tax_type,
-						'rounding_code'		=> $rounding_code,
-						'cascade_tax'		=> 0,
-						'cascade_sequence'	=> 0,
-						'item_tax_amount'	=> 0
-					);
-
-					// This computes tax for each line item and adds it to the tax type total
-					$tax_group = (float)$row['percent'] . '% ' . $row['name'];
-					$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
-
-					if($this->config->item('tax_included'))
-					{
-						$tax_type = Tax_lib::TAX_TYPE_VAT;
-						$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $row['percent']);
-					}
-					elseif($this->config->item('customer_sales_tax_support') == '0')
-					{
-						$tax_type = Tax_lib::TAX_TYPE_SALES;
-						$item_tax_amount = $this->tax_lib->get_sales_tax_for_amount($tax_basis, $row['percent'], '0', $tax_decimals);
-					}
-					else
-					{
-						$tax_type = Tax_lib::TAX_TYPE_SALES;
-					}
-
-					$sales_items_taxes['item_tax_amount'] = $item_tax_amount;
-					if($item_tax_amount != 0)
-					{
-						$this->db->insert('sales_items_taxes', $sales_items_taxes);
-						$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $row['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id,  $row['name'], '');
-						$tax_group_sequence += 1;
-					}
-
-				}
-
-				if($this->config->item('customer_sales_tax_support') == '1')
-				{
-					$this->save_sales_item_tax($customer, $sale_id, $item, $item_total, $sales_taxes, $sequence, $cur_item_info->tax_category_id);
-				}
-			}
 		}
 
 		if($customer_id == -1 || $customer->taxable)
 		{
-			$this->tax_lib->round_sales_taxes($sales_taxes);
-			$this->save_sales_tax($sales_taxes);
+			$this->save_sales_tax($sale_id, $sales_taxes[0]);
+			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
 		}
 
 		$dinner_table_data = array(
@@ -788,45 +718,45 @@ class Sale extends CI_Model
 	}
 
 	/**
+	 * Saves sale tax
+	 */
+	public function save_sales_tax($sale_id, $sales_taxes)
+	{
+		foreach($sales_taxes as $line=>$sales_tax)
+		{
+			$sales_tax['sale_id'] = $sale_id;
+			$this->db->insert('sales_taxes', $sales_tax);
+		}
+	}
+
+	/**
 	 * Apply customer sales tax if the customer sales tax is enabledl
 	 * The original tax is still supported if the user configures it,
 	 * but it won't make sense unless it's used exclusively for the purpose
 	 * of VAT tax which becomes a price component.  VAT taxes must still be reported
 	 * as a separate tax entry on the invoice.
 	 */
-	public function save_sales_item_tax(&$customer, &$sale_id, &$item, $tax_basis, &$sales_taxes, &$sequence, $tax_category_id)
+	public function save_sales_items_taxes($sale_id, $sales_item_taxes)
 	{
-		// if customer sales tax is enabled then update  sales_items_taxes with the
-		if($this->config->item('customer_sales_tax_support') == '1')
+		foreach($sales_item_taxes as $line => $tax_item)
 		{
-			$register_mode = $this->config->item('default_register_mode');
-			$tax_details = $this->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, $sale_id, $sales_taxes);
-
 			$sales_items_taxes = array(
-				'sale_id'			=> $sale_id,
-				'item_id'			=> $item['item_id'],
-				'line'				=> $item['line'],
-				'name'				=> $tax_details['tax_name'],
-				'percent'			=> $tax_details['tax_rate'],
-				'tax_type'			=> Tax_lib::TAX_TYPE_SALES,
-				'rounding_code'		=> $tax_details['rounding_code'],
-				'cascade_tax'		=> 0,
-				'cascade_sequence'	=> 0,
-				'item_tax_amount'	=> $tax_details['item_tax_amount']
+				'sale_id' => $sale_id,
+				'item_id' => $tax_item['item_id'],
+				'line' => $tax_item['line'],
+				'name' => $tax_item['name'],
+				'percent' => $tax_item['percent'],
+				'tax_type' => $tax_item['tax_type'],
+				'rounding_code' => $tax_item['rounding_code'],
+				'cascade_sequence' => $tax_item['cascade_sequence'],
+				'item_tax_amount' => $tax_item['item_tax_amount'],
+				'sales_tax_code_id' => $tax_item['sales_tax_code_id'],
+				'tax_category_id' => $tax_item['tax_category_id'],
+				'jurisdiction_id' => $tax_item['jurisdiction_id'],
+				'tax_category_id' => $tax_item['tax_category_id']
 			);
 
 			$this->db->insert('sales_items_taxes', $sales_items_taxes);
-		}
-	}
-
-	/**
-	 * Saves sale tax
-	 */
-	public function save_sales_tax(&$sales_taxes)
-	{
-		foreach($sales_taxes as $line=>$sales_tax)
-		{
-			$this->db->insert('sales_taxes', $sales_tax);
 		}
 	}
 
