@@ -49,7 +49,7 @@ $(document).ready(function()
 ?>
 
 <div id="page-wrap">
-	<div id="header"><?php echo $this->lang->line('sales_invoice'); ?></div>
+	<div id="header"><?php echo $this->lang->line('sales_tax_invoice'); ?></div>
 	<div id="block1">
 		<div id="customer-title">
 			<?php
@@ -142,11 +142,11 @@ $(document).ready(function()
 						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['hsn_code']; ?></textarea>
 						</td>
 					<?php endif; ?>
-					<td class="item-name"><div><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values']; ?></div></td>
+					<td class="item-name"><div><?php echo $item['name']; ?></div></td>
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
 					</td>
 					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></textarea>
+					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo $item['discount'] . '%'; ?></textarea>
 					</td>
 					<?php if($discount > 0): ?>
 						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>
@@ -233,14 +233,13 @@ $(document).ready(function()
 		{
 		?>
 		<tr>
-			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
+			<td colspan="<?php echo $invoice_columns-3; ?>" ><?php echo $this->lang->line('sales_authorized_signature');?>:</td>
 			<td colspan="2" class="total-line"> <textarea rows="5" cols="6"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></textarea></td>
 			<td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change); ?></textarea></td>
 		</tr>
 		<?php
 		}
 		?>
-
 	</table>
 
 	<div id="terms">

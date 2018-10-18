@@ -48,6 +48,18 @@
 					);?>
 			</div>
 		</div>
+
+		<div class="form-group form-group-sm">
+			<?php echo form_label($this->lang->line('suppliers_tax_id'), 'tax_id', array('class'=>'control-label col-xs-3')); ?>
+			<div class='col-xs-8'>
+				<?php echo form_input(array(
+						'name'=>'tax_id',
+						'id'=>'tax_id',
+						'class'=>'form-control input-sm',
+						'value'=>$person_info->tax_id)
+				);?>
+			</div>
+		</div>
 	</fieldset>
 <?php echo form_close(); ?>
 

@@ -236,6 +236,17 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_include_hsn'), 'include_hsn', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'include_hsn',
+						'id' => 'include_hsn',
+						'value' => 'include_hsn',
+						'checked' => $this->config->item('include_hsn'))); ?>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_backup_database'), 'config_backup_database', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-2'>
 					<div id="backup_db" class="btn btn-default btn-sm">

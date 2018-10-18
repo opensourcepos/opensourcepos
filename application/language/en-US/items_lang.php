@@ -38,6 +38,7 @@ $lang["items_excel_import_nodata_wrongformat"] = "The uploaded file has no data 
 $lang["items_excel_import_partially_failed"] = "Item import successful with some failures:";
 $lang["items_excel_import_success"] = "Item import successful.";
 $lang["items_generate_barcodes"] = "Generate Barcodes";
+$lang["items_hsn_code"] = "Harmonized System Nomenclature";
 $lang["items_image"] = "Avatar";
 $lang["items_import_items_excel"] = "Item Import from Excel";
 $lang["items_info_provided_by"] = "Information provided by";

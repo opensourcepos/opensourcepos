@@ -118,8 +118,7 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('suggestions_second_column', ''),
 ('suggestions_third_column', ''),
 ('allow_duplicate_barcodes', '0'),
-('quote_default_comments', 'This is a default quote comment'),
-('multi_pack_enabled', '0');
+('quote_default_comments', 'This is a default quote comment');
 
 
 -- --------------------------------------------------------
@@ -243,10 +242,6 @@ CREATE TABLE `ospos_items` (
   `is_serialized` tinyint(1) NOT NULL,
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
-  `tax_category_id` int(10) NOT NULL DEFAULT 1,
-  `qty_per_pack` decimal(15,3) NOT NULL DEFAULT 1,
-  `pack_name` varchar(8) DEFAULT '',
-  `low_sell_item_id` int(10) DEFAULT 0,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(255) DEFAULT NULL,
   `custom2` VARCHAR(255) DEFAULT NULL,
@@ -759,15 +754,6 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
   `tax_group_sequence` tinyint(2) NOT NULL,
   PRIMARY KEY (`tax_category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
---
--- Dumping data for table `ospos_stock_locations`
---
-
-INSERT INTO `ospos_tax_categories` (`tax_category`, `tax_group_sequence` ) VALUES
-  ('Standard', 10),
-  ('Service', 12),
-  ('Alcohol', 11);
 
 
 -- --------------------------------------------------------
