@@ -171,7 +171,7 @@ $(document).ready(function()
 	}
 
 	$('#supplier_name').click(function() {
-		$(this).attr('value','');
+		$(this).attr('value', '');
 	});
 
 	$('#supplier_name').autocomplete({
@@ -201,15 +201,16 @@ $(document).ready(function()
 	});
 
 	<?php
-	if(!empty($expenses_info->expense_id)) {
+	if(!empty($expenses_info->expense_id))
+	{
 	?>
 		$('#supplier_id').val('<?php echo $expenses_info->supplier_id ?>');
-	$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>')
-		.attr('readonly', 'readonly');
+		$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>').attr('readonly', 'readonly');
 		$('#remove_supplier_button').css('display', 'inline-block');
 	<?php
 	}
 	?>
+
 	$('#expenses_edit_form').validate($.extend({
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
