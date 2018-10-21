@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "There are no Expenses to display";
 $lang["expenses_none_selected"] = "You have not selected any Expense";
 $lang["expenses_one_or_multiple"] = "Expense(s)";
 $lang["expenses_payment"] = "Payment Type";
+$lang["expenses_start_typing_supplier_name"] = "Start Typing Supplier's name...";
 $lang["expenses_successful_adding"] = "Expense add successful";
 $lang["expenses_successful_deleted"] = "Expense delete successful";
 $lang["expenses_successful_updating"] = "Expense update successful";
