@@ -17,3 +17,6 @@ $lang["suppliers_successful_updating"] = "Anda telah berhasil memperbarui data p
 $lang["suppliers_supplier"] = "Pemasok";
 $lang["suppliers_supplier_id"] = "ID";
 $lang["suppliers_update"] = "Ubah data Pemasok";
+$lang["suppliers_category"] = "Kategori";
+$lang["suppliers_cost"] = "Biaya Pemasok";
+$lang["suppliers_goods"] = "Pemasok Barang";
