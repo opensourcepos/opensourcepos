@@ -1,7 +1,7 @@
 <?php 
 
 $lang["receivings_cancel_receiving"] = "Batal";
-$lang["receivings_cannot_be_deleted"] = "Tidak bisa dihapus";
+$lang["receivings_cannot_be_deleted"] = "Tidak bisa dihapus.";
 $lang["receivings_comments"] = "Keterangan";
 $lang["receivings_complete_receiving"] = "Selesai";
 $lang["receivings_confirm_cancel_receiving"] = "Apakah anda yakin untuk menghapus Penerimaan Barang masuk ini? Semua item Akan dihapus.";
@@ -48,8 +48,8 @@ $lang["receivings_supplier_address"] = "Alamat";
 $lang["receivings_supplier_email"] = "Email";
 $lang["receivings_supplier_location"] = "Lokasi";
 $lang["receivings_total"] = "Total";
-$lang["receivings_transaction_failed"] = "Transaksi Penerimaan Salah";
-$lang["receivings_unable_to_add_item"] = "Item tidak dapat ditambahkan ke penerimaan barang masuk";
-$lang["receivings_unsuccessfully_updated"] = "Tidak Berhasil Diperbaharui";
-$lang["receivings_update"] = "Ubah";
+$lang["receivings_transaction_failed"] = "Transaksi Penerimaan gagal.";
+$lang["receivings_unable_to_add_item"] = "Penambahan Item kedalam Penerimaan Barang gagal.";
+$lang["receivings_unsuccessfully_updated"] = "Penerimaan barang gagal Diperbaharui.";
+$lang["receivings_update"] = "Memperbarui";
 $lang["receivings_ship_pack"] = "Pengiriman Kapal";
