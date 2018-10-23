@@ -449,13 +449,17 @@ class Sale extends CI_Model
 	/**
 	 * Gets total of invoice rows
 	 */
-	public function get_invoice_count()
-	{
-		$this->db->from('sales');
-		$this->db->where('invoice_number IS NOT NULL');
+    public function get_invoice_count()
+    {
+        $this->db->from('sales');
+        $this->db->where('invoice_number IS NOT NULL');
 
-		return $this->db->count_all_results();
-	}
+        if ($this->db->count_all_results() == 0) {
+            return 1;
+        }else{
+            $this->db->count_all_results();
+        }
+    }
 
 	/**
 	 * Gets sale by invoice number
