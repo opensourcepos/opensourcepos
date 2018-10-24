@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "النقاط المتاحة";
 $lang["rewards_package"] = "مكافآت";
 $lang["rewards_remaining_balance"] = "رصيد النقاط المتبقي هو ";
@@ -44,7 +43,7 @@ $lang["sales_delete_unsuccessful"] = "لقد فشل حذف عملية البيع
 $lang["sales_description_abbrv"] = "الوصف.";
 $lang["sales_discard"] = "الغاء";
 $lang["sales_discard_quote"] = "";
-$lang["sales_discount"] = "خصم %";
+$lang["sales_discount"] = "خصم";
 $lang["sales_discount_included"] = "% خصم";
 $lang["sales_discount_short"] = "%";
 $lang["sales_due"] = "مستحق";
@@ -84,7 +83,7 @@ $lang["sales_must_enter_numeric"] = "يجب إدخال رقم للمبلغ ال�
 $lang["sales_must_enter_numeric_giftcard"] = "رقم بطاقة الهدية يجب أن يكون رقم.";
 $lang["sales_new_customer"] = "عميل جديد";
 $lang["sales_new_item"] = "صنف جديد";
-$lang["sales_no_description"] = "لايوجد";
+$lang["sales_no_description"] = "بدون وصف";
 $lang["sales_no_filter"] = "الكل";
 $lang["sales_no_items_in_cart"] = "لايوجد أصناف فى السلة.";
 $lang["sales_no_sales_to_display"] = "لاتوجد عمليات بيع لعرضها.";
