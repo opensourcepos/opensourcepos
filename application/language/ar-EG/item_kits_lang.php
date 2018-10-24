@@ -1,15 +1,14 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "إضافة مجموعة";
 $lang["item_kits_all"] = "الكل";
 $lang["item_kits_cannot_be_deleted"] = "لايمكن حذف مجموعة/مجموعات.";
 $lang["item_kits_confirm_delete"] = "هل أنت متأكد أنك تريد حذف المجموعة؟";
 $lang["item_kits_confirm_restore"] = "هل أنت متأكد أنك تريد استعادة المجموعة المحددة؟";
 $lang["item_kits_description"] = "وصف المجموعة";
-$lang["item_kits_discount"] = "";
-$lang["item_kits_discount_fixed"] = "";
+$lang["item_kits_discount"] = "الخصم";
+$lang["item_kits_discount_fixed"] = "خصم قابل للتعديل";
 $lang["item_kits_discount_percent"] = "نسبة الخصم";
-$lang["item_kits_discount_type"] = "";
+$lang["item_kits_discount_type"] = "نوع الخصم";
 $lang["item_kits_error_adding_updating"] = "خطاء فى إضافة/تحديث المجموعة.";
 $lang["item_kits_find_kit_item"] = "صنف لمجموعة";
 $lang["item_kits_info"] = "معلومات المجموعة";
