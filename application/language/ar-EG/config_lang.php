@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "عنوان الشركة";
 $lang["config_address_required"] = "عنوان الشركة مطلوب.";
 $lang["config_allow_duplicate_barcodes"] = "السماح بتشابة الباركود";
@@ -78,7 +77,7 @@ $lang["config_default_barcode_page_width_required"] = "عرض الصفحة ال�
 $lang["config_default_barcode_width_number"] = "العرض الافتراضي للباركود لابد ان يكون رقم.";
 $lang["config_default_barcode_width_required"] = "العرض الافتراضي للباركود مطلوب.";
 $lang["config_default_origin_tax_code"] = "كود الضريبة الاساسي الافتراضي";
-$lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية %";
+$lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية";
 $lang["config_default_sales_discount_number"] = "نسبة الخصم الافتراضية لابد ان تكون رقم.";
 $lang["config_default_sales_discount_required"] = "نسبة الخصم الافتراضية مطلوبة.";
 $lang["config_default_tax_name_number"] = "يجب أن يكون الاسم الافتراضي للضريبة سلسلة.";
@@ -181,7 +180,7 @@ $lang["config_msg_src"] = "SMS-API  كود المرسل لـ";
 $lang["config_msg_src_required"] = "مطلوب SMS-API كود المرسل لـ";
 $lang["config_msg_uid"] = "SMS-API اسم المستخدم لـ";
 $lang["config_msg_uid_required"] = "مطلوب SMS-API اسم المستخدم لـ";
-$lang["config_multi_pack_enabled"] = "";
+$lang["config_multi_pack_enabled"] = "رزم متعددة لكل صنف";
 $lang["config_none"] = "لايوجد";
 $lang["config_notify_alignment"] = "مكان عرض رسائل المعلومات";
 $lang["config_number_format"] = "شكل الرقم";
