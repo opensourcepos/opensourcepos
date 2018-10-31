@@ -71,7 +71,8 @@ function get_languages()
 		'th:thai' => 'Thai',
 		'tr:turkish' => 'Turkish',
 		'vi:vietnamese' => 'Vietnamese',
-		'zh:simplified-chinese' => 'Chinese'
+		'zh-Hans:simplified-chinese' => 'Chinese Simplified Script',
+		'zh-Hant:traditional-chinese' => 'Chinese Traditional Script'
 	);
 }
 
