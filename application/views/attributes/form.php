@@ -156,7 +156,6 @@ $(document).ready(function()
 		{
 			$(form).ajaxSubmit({
 				beforeSerialize: function($form, options) {
-				    $("select").removeAttr('disabled');
 					is_new && $('<input>').attr({
 						id: 'definition_values',
 						type: 'hidden',

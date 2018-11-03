@@ -58,6 +58,7 @@ class Attributes extends Secure_Controller
 
 	public function save_definition($definition_id = -1)
 	{
+
 		$definition_flags = 0;
 
 		$flags = (empty($this->input->post('definition_flags'))) ? array() : $this->input->post('definition_flags');
@@ -71,9 +72,13 @@ class Attributes extends Secure_Controller
 		$definition_data = array(
 			'definition_name' => $this->input->post('definition_name'),
 			'definition_flags' => $definition_flags,
-			'definition_type' => DEFINITION_TYPES[$this->input->post('definition_type')],
 			'definition_fk' => $this->input->post('definition_group') != '' ? $this->input->post('definition_group') : NULL
 		);
+
+		if ($this->input->post('definition_type') != null)
+		{
+			$definition_data['definition_type'] = DEFINITION_TYPES[$this->input->post('definition_type')];
+		}
 
 		$definition_name = $this->xss_clean($definition_data['definition_name']);
 
