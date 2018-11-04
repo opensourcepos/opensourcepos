@@ -22,7 +22,7 @@ class Appconfig extends CI_Model
 		return $this->db->get();
 	}
 
-	public function get($key)
+	public function get($key, $default = '')
 	{
 		$query = $this->db->get_where('app_config', array('key' => $key), 1);
 
@@ -31,7 +31,7 @@ class Appconfig extends CI_Model
 			return $query->row()->value;
 		}
 
-		return '';
+		return $default;
 	}
 
 	public function save($key, $value)
