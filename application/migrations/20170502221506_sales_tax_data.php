@@ -36,9 +36,9 @@ class Migration_Sales_Tax_Data extends CI_Migration
 	private function upgrade_tax_history_for_sale($sale_id)
 	{
 		$CI =& get_instance();
-		$tax_decimals = $CI->config->config['tax_decimals'];
-		$tax_included = $CI->config->config['tax_included'];
-		$customer_sales_tax_support = $CI->config->config['customer_sales_tax_support'];
+		$tax_decimals = $CI->Appconfig->get('tax_decimals', 2);
+		$tax_included = $CI->Appconfig->get('tax_included', 0);
+		$customer_sales_tax_support = $CI->Appconfig->get('customer_sales_tax_support', 0);
 
 		if($tax_included)
 		{
