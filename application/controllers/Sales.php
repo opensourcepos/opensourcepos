@@ -760,7 +760,8 @@ class Sales extends Secure_area
 			$this->lang->line('sales_oos_pmt') => $this->lang->line('sales_oos_pmt'),
 			$this->lang->line('sales_deposit') => $this->lang->line('sales_deposit'),
 			$this->lang->line('sales_house_acct') => $this->lang->line('sales_house_acct'),
-			$this->lang->line('sales_credit') => $this->lang->line('sales_credit')
+			$this->lang->line('sales_credit') => $this->lang->line('sales_credit'),
+			$this->lang->line('sales_paypal') => $this->lang->line('sales_paypal')
 		);
 
 		$customer_id = $this->sale_lib->get_customer();

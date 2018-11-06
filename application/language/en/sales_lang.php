@@ -119,3 +119,4 @@ $lang['sales_oos_pmt'] = 'OOS PMT';
 $lang['sales_house_acct'] = 'House Account';
 $lang['sales_layaway_bal'] = 'Layaway Bal';
 $lang['sales_deposit'] = 'Deposit';
+$lang['sales_paypal'] = 'PayPal';
