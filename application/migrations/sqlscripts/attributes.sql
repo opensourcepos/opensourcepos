@@ -56,16 +56,16 @@ INSERT INTO `ospos_grants` (`permission_id`, `person_id`, `menu_group`) VALUES
 
 -- migrate custom fields to text attributes
 -- NOTE: items with custom attributes won't keep their selected category!!
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom1_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom2_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom3_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom4_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom5_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom6_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom7_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom8_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom9_name' AND `value` <> '';
-INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type) SELECT `value`, 'TEXT' FROM ospos_app_config WHERE `key` = 'custom10_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom1_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom2_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom3_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom4_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom5_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom6_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom7_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom8_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom9_name' AND `value` <> '';
+INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 7 FROM ospos_app_config WHERE `key` = 'custom10_name' AND `value` <> '';
 
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
  WHERE ospos_app_config.`key` = 'custom1_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom1 IS NOT NULL;
