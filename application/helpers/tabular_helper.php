@@ -333,15 +333,16 @@ function get_items_manage_table_headers()
 		array('unit_price' => $CI->lang->line('items_unit_price')),
 		array('quantity' => $CI->lang->line('items_quantity')),
 		array('tax_percents' => $CI->lang->line('items_tax_percents'), 'sortable' => FALSE),
-		array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE),
-		array('inventory' => ''),
-		array('stock' => '')
+		array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE)
 	);
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
 		$headers[] = array($definition_id => $definition_name);
 	}
+
+	$headers[] = array('inventory' => '');
+	$headers[] = array('stock' => '');
 
 	return transform_headers($headers);
 }
@@ -390,7 +391,7 @@ function get_item_data_row($item)
 
 	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
 
-	$result = array (
+	$columns = array (
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
 		'name' => $item->name,
@@ -400,7 +401,10 @@ function get_item_data_row($item)
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
 		'tax_percents' => !$tax_percents ? '-' : $tax_percents,
-		'item_pic' => $image,
+		'item_pic' => $image
+	);
+
+	$icons = array(
 		'inventory' => anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_count'))
 		),
@@ -409,10 +413,11 @@ function get_item_data_row($item)
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
-	));
+		)
+	);
 
 	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
-	return $result + expand_attribute_values($definition_names, $attribute_values);
+	return $columns + expand_attribute_values($definition_names, $attribute_values) + $icons;
 }
 
 
