@@ -104,7 +104,7 @@ $(document).ready(function()
 	{
 		var is_event = typeof(value) !== 'string';
 
-        if (!$('#attribute_form').valid())
+        if ($("#definition_value").val().match(/(\||:)/g) != null)
         {
             return;
         }
