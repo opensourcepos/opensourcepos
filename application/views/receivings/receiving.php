@@ -86,8 +86,8 @@ if (isset($success))
 				</li>
 				<li class="pull-right">
 					<button id='new_item_button' class='btn btn-info btn-sm pull-right modal-dlg'
-						data-btn-new='<?php echo $this->lang->line('common_new') ?>'
 						data-btn-submit='<?php echo $this->lang->line('common_submit') ?>'
+						data-btn-new='<?php echo $this->lang->line('common_new') ?>'
 						data-href='<?php echo site_url("items/view"); ?>'
 						title='<?php echo $this->lang->line('sales_new_item'); ?>'>
 						<span class="glyphicon glyphicon-tag">&nbsp</span><?php echo $this->lang->line('sales_new_item'); ?>
@@ -495,12 +495,12 @@ $(document).ready(function()
 		{
 			if (resource.match(/suppliers$/))
 			{
-				$("#supplier").attr("value",response.id);
+				$("#supplier").val(response.id);
 				$("#select_supplier_form").submit();
 			}
 			else
 			{
-				$("#item").attr("value",response.id);
+				$("#item").val(response.id);
 				if (stay_open)
 				{
 					$("#add_item_form").ajaxSubmit();
