@@ -452,10 +452,10 @@ $(document).ready(function()
 						// set action of item_form to url without item id, so a new one can be created
 						$('#item_form').attr('action', "<?php echo site_url('items/save/')?>");
 						// use a whitelist of fields to minimize unintended side effects
-						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1,' +
-							'#tax_percent_name_1, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price').val('');
+						$(':text, :password, :file, #description, #item_form').not('.quantity, #reorder_level, #tax_name_1, #receiving_quantity, ' +
+							'#tax_percent_name_1, #category, #reference_number, #name, #cost_price, #unit_price, #taxed_cost_price, #taxed_unit_price, #definition_name, [name^="attribute_links"]').val('');
 						// de-select any checkboxes, radios and drop-down menus
-						$(':input', '#item_form').not('#category').removeAttr('checked').removeAttr('selected');
+						$(':input', '#item_form').removeAttr('checked').removeAttr('selected');
 					}
 					else
 					{

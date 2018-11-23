@@ -38,11 +38,14 @@
 				}
 			});
 
+			var has_new_btn = "btnNew" in $(this).data();
 			$.each($(this).data(), function(name, value) {
 				var btn_class = name.split("btn");
 				if (btn_class && btn_class.length > 1) {
 					var btn_name = btn_class[1].toLowerCase();
 					var is_submit = btn_name == 'submit';
+					var is_new = btn_name === 'new';
+					var is_enter = has_new_btn ? is_new: is_submit;
 					buttons.push({
 						id: btn_name,
 						label: value,
