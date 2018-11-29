@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `ospos_attribute_definitions` (
 
 CREATE TABLE IF NOT EXISTS `ospos_attribute_values` (
  `attribute_id` INT NOT NULL AUTO_INCREMENT,
- `attribute_value` VARCHAR(45) NULL,
+ `attribute_value` VARCHAR(255) NULL,
  `attribute_datetime` DATETIME NULL,
  PRIMARY KEY (`attribute_id`)
 ) ENGINE = InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
@@ -68,25 +68,25 @@ INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, def
 INSERT INTO `ospos_attribute_definitions` (definition_name, definition_type, definition_flags) SELECT `value`, 'TEXT', 1 FROM ospos_app_config WHERE `key` = 'custom10_name' AND `value` <> '';
 
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom1_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom1 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom1_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom1 IS NOT NULL AND custom1 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom2_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom2 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom2_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom2 IS NOT NULL AND custom2 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom3_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom3 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom3_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom3 IS NOT NULL AND custom3 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom4_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom4 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom4_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom4 IS NOT NULL AND custom4 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom5_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom5 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom5_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom5 IS NOT NULL AND custom5 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom6_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom6 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom6_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom6 IS NOT NULL AND custom6 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom7_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom7 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom7_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom7 IS NOT NULL AND custom7 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom8_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom8 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom8_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom8 IS NOT NULL AND custom8 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom9_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom9 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom9_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom9 IS NOT NULL AND custom9 != '';
 INSERT INTO ospos_attribute_links (definition_id, item_id) SELECT definition_id, item_id FROM ospos_attribute_definitions, ospos_app_config, ospos_items
- WHERE ospos_app_config.`key` = 'custom10_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom10 IS NOT NULL;
+ WHERE ospos_app_config.`key` = 'custom10_name' AND ospos_app_config.`value` = ospos_attribute_definitions.definition_name AND custom10 IS NOT NULL AND custom10 != '';
 
 INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom1 FROM ospos_items WHERE custom1 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom1_name');
 INSERT INTO ospos_attribute_values (attribute_value) SELECT DISTINCT custom2 FROM ospos_items WHERE custom2 <> '' AND '' <> (SELECT `value` FROM ospos_app_config WHERE `key` = 'custom2_name');
