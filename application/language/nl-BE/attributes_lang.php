@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["attributes_confirm_delete"] = "Bent u zeker dat u de geselecteerde attributen wil verwijderen?";
 $lang["attributes_definition_cannot_be_deleted"] = "De geselecteerde attributen konden niet verwijderd worden";
 $lang["attributes_definition_flags"] = "Zichtbaarheid";
@@ -23,3 +22,6 @@ $lang["attributes_show_in_receivings_visibility"] = "Orders";
 $lang["attributes_show_in_sales"] = "Toon in verkoop";
 $lang["attributes_show_in_sales_visibility"] = "Verkoop";
 $lang["attributes_update"] = "Wijzig Attribuut";
+$lang["attributes_definition_name_required"] = "Attribuut naam is een verplicht veld";
+$lang["attributes_definition_type_required"] = "Attribuut type is een verplicht veld";
+$lang["attributes_attribute_value_invalid_chars"] = "Attribuut waarde kan geen ':' of '|' bevatten";
