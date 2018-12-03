@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "ไม่มีรายจ่าย
 $lang["expenses_none_selected"] = "ท่านยังไม่ได้เลือกรายจ่าย";
 $lang["expenses_one_or_multiple"] = "รายจ่าย";
 $lang["expenses_payment"] = "ประเภทการชำระ";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "เพิ่มรายจ่ายสำเร็จ";
 $lang["expenses_successful_deleted"] = "ลบรายจ่ายสำเร็จ";
 $lang["expenses_successful_updating"] = "ปรับปรุงรายจ่ายสำเร็จ";

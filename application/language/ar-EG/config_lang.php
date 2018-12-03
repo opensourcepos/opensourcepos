@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "عنوان الشركة";
 $lang["config_address_required"] = "عنوان الشركة مطلوب.";
 $lang["config_allow_duplicate_barcodes"] = "السماح بتشابة الباركود";

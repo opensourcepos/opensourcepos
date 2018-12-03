@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair.";
 $lang["items_allow_alt_desciption"] = "Descrição longa";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
@@ -23,6 +24,7 @@ $lang["items_cost_price_number"] = "Preço de custo deve ser um número.";
 $lang["items_cost_price_required"] = "Preço de custo é um campo obrigatório.";
 $lang["items_count"] = "Acrescentar ao Inventário";
 $lang["items_current_quantity"] = "Quantidade Atual";
+$lang["items_default_pack_name"] = "Cada";
 $lang["items_description"] = "Descrição";
 $lang["items_details_count"] = "Detalhes da contagem de inventário";
 $lang["items_do_nothing"] = "Nada a fazer";
@@ -54,6 +56,7 @@ $lang["items_item_number_duplicate"] = "O número do item já está presente na 
 $lang["items_kit"] = "Conjunto";
 $lang["items_location"] = "Localização";
 $lang["items_low_inventory_items"] = "Itens sem estoque";
+$lang["items_low_sell_item"] = "Item de baixa venda";
 $lang["items_manually_editing_of_quantity"] = "Editar manualmente a quantidade";
 $lang["items_name"] = "Nome produto";
 $lang["items_name_required"] = "Nome do item é um campo obrigatório.";
@@ -66,6 +69,8 @@ $lang["items_nonstock"] = "Sem estoque";
 $lang["items_number_information"] = "Item Número";
 $lang["items_number_required"] = "Cod. Barra é um campo obrigatório.";
 $lang["items_one_or_multiple"] = "item(s)";
+$lang["items_pack_name"] = "Nome do pacote";
+$lang["items_qty_per_pack"] = "Quantidade por embalagem";
 $lang["items_quantity"] = "Quantidade";
 $lang["items_quantity_number"] = "Quantidade deve ser um número.";
 $lang["items_quantity_required"] = "Quantidade é um campo obrigatório.";
@@ -104,7 +109,3 @@ $lang["items_unit_price_required"] = "Preço de varejo é um campo obrigatório.
 $lang["items_upc_database"] = "Base de dados UPC";
 $lang["items_update"] = "Atualizar Item";
 $lang["items_use_inventory_menu"] = "Usar Menu Inventário";
-$lang["items_default_pack_name"] = "Cada";
-$lang["items_low_sell_item"] = "Item de baixa venda";
-$lang["items_pack_name"] = "Nome do pacote";
-$lang["items_qty_per_pack"] = "Quantidade por embalagem";

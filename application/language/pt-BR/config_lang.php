@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir códigos de barras duplicados";
@@ -180,6 +181,7 @@ $lang["config_msg_src"] = "SMS-API Remetente ID";
 $lang["config_msg_src_required"] = "SMS-API Remetente ID é um campo obrigatório";
 $lang["config_msg_uid"] = "SMS-API usuário";
 $lang["config_msg_uid_required"] = "SMS-API usuário é um campo obrigatório";
+$lang["config_multi_pack_enabled"] = "Vários pacotes por item";
 $lang["config_none"] = "nenhum";
 $lang["config_notify_alignment"] = "Notificação Posição Popup";
 $lang["config_number_format"] = "Formato do número";
@@ -270,4 +272,3 @@ $lang["config_top"] = "Topo";
 $lang["config_website"] = "Site da internet";
 $lang["config_work_order_enable"] = "Suporte para Ordem de Serviço";
 $lang["config_work_order_format"] = "Formato Ordem de Serviço";
-$lang["config_multi_pack_enabled"] = "Vários pacotes por item";

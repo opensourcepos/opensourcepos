@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Es gibt keine Ausgaben zum anzeigen"
 $lang["expenses_none_selected"] = "Sie haben keine Ausgaben ausgewählt";
 $lang["expenses_one_or_multiple"] = "Ausgaben";
 $lang["expenses_payment"] = "Zahlart";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Ausgabe erfolgreich hinzugefügt";
 $lang["expenses_successful_deleted"] = "Ausgabe erfolgreich gelöscht";
 $lang["expenses_successful_updating"] = "Ausgabe erfolgreich aktualisiert";

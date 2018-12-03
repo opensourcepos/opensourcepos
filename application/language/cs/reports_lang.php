@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Vše";
 $lang["reports_canceled"] = "Zrušené";
 $lang["reports_categories"] = "Kategorie";
@@ -30,7 +31,9 @@ $lang["reports_detailed_reports"] = "Podrobné sestavy";
 $lang["reports_detailed_requisition_report"] = "";
 $lang["reports_detailed_sales_report"] = "Podrobný přehled transakcí";
 $lang["reports_discount"] = "Sleva";
+$lang["reports_discount_fixed"] = "";
 $lang["reports_discount_percent"] = "Procentní sleva";
+$lang["reports_discount_type"] = "";
 $lang["reports_discounts"] = "Slevy";
 $lang["reports_discounts_summary_report"] = "Přehled podle slev";
 $lang["reports_earned"] = "Points Earned";
@@ -62,6 +65,7 @@ $lang["reports_items_received"] = "Přijaté položky";
 $lang["reports_items_summary_report"] = "Přehled položek";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
+$lang["reports_low_sell_quantity"] = "";
 $lang["reports_more_than_zero"] = "Více než nula";
 $lang["reports_name"] = "Název";
 $lang["reports_no_reports_to_display"] = "Nic k zobrazení.";
@@ -113,6 +117,7 @@ $lang["reports_taxes"] = "Daně";
 $lang["reports_taxes_summary_report"] = "Přehled podle DPH";
 $lang["reports_total"] = "Celkem";
 $lang["reports_total_inventory_value"] = "Celková cena skladu";
+$lang["reports_total_low_sell_quantity"] = "";
 $lang["reports_total_quantity"] = "Celkové množství";
 $lang["reports_total_retail"] = "Cena skladu v koncových cenách";
 $lang["reports_type"] = "Typ";

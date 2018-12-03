@@ -3,11 +3,14 @@
 $lang["suppliers_account_number"] = "Számla #";
 $lang["suppliers_agency_name"] = "Ügynökség neve";
 $lang["suppliers_cannot_be_deleted"] = "Nem lehet törölni a beszállítót, mert már van eladásuk.";
+$lang["suppliers_category"] = "";
 $lang["suppliers_company_name"] = "Cégnév";
 $lang["suppliers_company_name_required"] = "Cégnév kötelező mező";
 $lang["suppliers_confirm_delete"] = "Biztos, hogy törölni kívánja a kiválasztott beszállítókat?";
 $lang["suppliers_confirm_restore"] = "";
+$lang["suppliers_cost"] = "";
 $lang["suppliers_error_adding_updating"] = "Hiba beszállító hozzáadásánál/módosításánál";
+$lang["suppliers_goods"] = "";
 $lang["suppliers_new"] = "Új beszállító";
 $lang["suppliers_none_selected"] = "Nem választott ki beszállítót a törléshez";
 $lang["suppliers_one_or_multiple"] = "beszállító(k)";

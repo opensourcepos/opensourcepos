@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "Информация";
 $lang["employees_cannot_be_deleted"] = "Невъзможно е да изтриете избрани служители, един или повече от тях са обработили продажби или се опитвате да изтриете профила си.";
 $lang["employees_change_password"] = "Промяна на паролата";

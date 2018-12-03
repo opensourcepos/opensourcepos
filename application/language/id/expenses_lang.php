@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Belum ada Biaya yang ditampilkan";
 $lang["expenses_none_selected"] = "Anda belum memilih Biaya satu pun";
 $lang["expenses_one_or_multiple"] = "Biaya";
 $lang["expenses_payment"] = "Jenis Pembayaran";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Berhasil menambahkan Biaya";
 $lang["expenses_successful_deleted"] = "Berhasil menghapus Biaya";
 $lang["expenses_successful_updating"] = "Berhasil memperbaharui Biaya";

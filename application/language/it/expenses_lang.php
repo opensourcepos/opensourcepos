@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Non ci sono Spese da mostrare";
 $lang["expenses_none_selected"] = "Non hai selezionato alcuna Spesa";
 $lang["expenses_one_or_multiple"] = "Spesa/e";
 $lang["expenses_payment"] = "Tipo di Pagamento";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Spesa aggiunta correttamente";
 $lang["expenses_successful_deleted"] = "Spesa eliminata correttamente";
 $lang["expenses_successful_updating"] = "Spesa aggiornata correttamente";

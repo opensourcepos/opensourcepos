@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "";
 $lang["expenses_none_selected"] = "";
 $lang["expenses_one_or_multiple"] = "";
 $lang["expenses_payment"] = "";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "";
 $lang["expenses_successful_deleted"] = "";
 $lang["expenses_successful_updating"] = "";

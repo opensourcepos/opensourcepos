@@ -1,11 +1,15 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "Adicionar Item";
 $lang["item_kits_all"] = "Todos";
 $lang["item_kits_cannot_be_deleted"] = "Não foi possível eliminar conjunto de itens.";
 $lang["item_kits_confirm_delete"] = "Tem certeza de que deseja excluir os conjuntos de itens selecionados?";
 $lang["item_kits_confirm_restore"] = "Tem certeza de que deseja restaurar o Kit de Itens selecionado?";
 $lang["item_kits_description"] = "Descrição do conjunto de Itens";
+$lang["item_kits_discount"] = "Desconto";
+$lang["item_kits_discount_fixed"] = "Desconto fixo";
 $lang["item_kits_discount_percent"] = "Percentagem de desconto";
+$lang["item_kits_discount_type"] = "Tipo de desconto";
 $lang["item_kits_error_adding_updating"] = "Erro ao adicionar/atualizar conjunto de item.";
 $lang["item_kits_find_kit_item"] = "Item do Conjunto";
 $lang["item_kits_info"] = "Informação do conjunto de Itens";
@@ -29,6 +33,3 @@ $lang["item_kits_successful_adding"] = "Você adicionou com sucesso conjunto de 
 $lang["item_kits_successful_deleted"] = "Você excluiu com sucesso";
 $lang["item_kits_successful_updating"] = "Você atualizou com sucesso conjunto de item";
 $lang["item_kits_update"] = "Atualizar Item no conjunto";
-$lang["item_kits_discount"] = "Desconto";
-$lang["item_kits_discount_type"] = "Tipo de desconto";
-$lang["item_kits_discount_fixed"] = "Desconto fixo";
