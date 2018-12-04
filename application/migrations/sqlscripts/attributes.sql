@@ -180,3 +180,5 @@ ALTER TABLE `ospos_items`
  DROP COLUMN `custom8`,
  DROP COLUMN `custom9`,
  DROP COLUMN `custom10`;
+ 
+ DELETE FROM `ospos_app_config` WHERE `key` IN ('custom1_name','custom2_name','custom3_name','custom4_name','custom5_name','custom6_name','custom7_name','custom8_name','custom9_name','custom10_name');
