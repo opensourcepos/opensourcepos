@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "Attributen";
 $lang["module_attributes_desc"] = "Zoek, bewerk, verwijder en voeg attributen toe.";
 $lang["module_both"] = "Beide";
