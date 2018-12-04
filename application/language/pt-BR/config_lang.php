@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir códigos de barras duplicados";
@@ -260,6 +259,6 @@ $lang["config_theme"] = "Tema";
 $lang["config_thousands_separator"] = "Separador de milhar";
 $lang["config_timezone"] = "Fuso horário";
 $lang["config_top"] = "Topo";
-$lang["config_website"] = "Site da internet";
+$lang["config_website"] = "OSPOS";
 $lang["config_work_order_enable"] = "Suporte para Ordem de Serviço";
 $lang["config_work_order_format"] = "Formato Ordem de Serviço";

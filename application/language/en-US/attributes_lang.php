@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Attribute value cannot contain ':' or '|'";
 $lang["attributes_confirm_delete"] = "Are you sure you want to delete the selected attribute(s)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Could not delete selected attribute(s)";
@@ -14,7 +13,7 @@ $lang["attributes_definition_successful_deleted"] = "You have successfully delet
 $lang["attributes_definition_successful_updating"] = "You have successfully updated attribute";
 $lang["attributes_definition_type"] = "Attribute Type";
 $lang["attributes_definition_type_required"] = "Attribute type is a required field";
-$lang["attributes_definition_values"] = "Atttribute Values";
+$lang["attributes_definition_values"] = "Attribute Values";
 $lang["attributes_new"] = "New Attribute";
 $lang["attributes_no_attributes_to_display"] = "No Items to display";
 $lang["attributes_receipt_visibility"] = "Receipt";
