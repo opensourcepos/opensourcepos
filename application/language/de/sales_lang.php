@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Verfügbare Punkte";
 $lang["rewards_package"] = "Prämie";
 $lang["rewards_remaining_balance"] = "Prämienpunkte Verbleibend";
@@ -29,7 +28,7 @@ $lang["sales_customer_email"] = "Kunden eMail";
 $lang["sales_customer_location"] = "Kunden Stadt";
 $lang["sales_customer_mailchimp_status"] = "Mailchim Status";
 $lang["sales_customer_optional"] = "";
-$lang["sales_customer_required"] = "";
+$lang["sales_customer_required"] = "(Benötigt)";
 $lang["sales_customer_total"] = "Gesamtbetrag";
 $lang["sales_date"] = "Datum";
 $lang["sales_date_range"] = "Zeitraum";
@@ -42,7 +41,7 @@ $lang["sales_delete_entire_sale"] = "Auftrag löschen";
 $lang["sales_delete_successful"] = "Löschung erfolgreich";
 $lang["sales_delete_unsuccessful"] = "Löschung nicht erfolgreich";
 $lang["sales_description_abbrv"] = "Bez.";
-$lang["sales_discard"] = "";
+$lang["sales_discard"] = "Verwerfen";
 $lang["sales_discard_quote"] = "";
 $lang["sales_discount"] = "%";
 $lang["sales_discount_included"] = "% Rabatt";
@@ -108,7 +107,7 @@ $lang["sales_quote_number_duplicate"] = "";
 $lang["sales_quote_sent"] = "Angebot gesendet an";
 $lang["sales_quote_unsent"] = "Angebot senden fehlgeschlagen";
 $lang["sales_receipt"] = "Quittung";
-$lang["sales_receipt_no_email"] = "";
+$lang["sales_receipt_no_email"] = "Der Kunde hat keine gültige E-Mail Adresse.";
 $lang["sales_receipt_number"] = "Quittung Nr.";
 $lang["sales_receipt_sent"] = "Quittung gesendet an";
 $lang["sales_receipt_unsent"] = "Quittung nicht gesendet";
@@ -132,7 +131,7 @@ $lang["sales_show_invoice"] = "Rechnung";
 $lang["sales_show_receipt"] = "Quittung";
 $lang["sales_start_typing_customer_name"] = "Geben Sie den Kundennamen ein...";
 $lang["sales_start_typing_item_name"] = "Geben Sie den Artikel ein oder scannen Sie ihn...";
-$lang["sales_stock"] = "";
+$lang["sales_stock"] = "Vorrat";
 $lang["sales_stock_location"] = "Lagerort";
 $lang["sales_sub_total"] = "Zwischentotal";
 $lang["sales_successfully_deleted"] = "Löschung erfolgreich";
