@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adresse 1";
 $lang["common_address_2"] = "Adresse 2";
 $lang["common_city"] = "Stadt";
@@ -51,7 +50,7 @@ $lang["common_price"] = "Preis";
 $lang["common_print"] = "Drucken";
 $lang["common_remove"] = "Annulieren";
 $lang["common_required"] = "Erforderlich";
-$lang["common_restore"] = "";
+$lang["common_restore"] = "Wiederherstellen";
 $lang["common_return_policy"] = "Rücknahmeerklärung";
 $lang["common_search"] = "Suche";
 $lang["common_search_options"] = "Suchkriterien";
