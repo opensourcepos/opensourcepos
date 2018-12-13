@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "إلغاء";
 $lang["receivings_cannot_be_deleted"] = "لايمكن حذف الإستلام/الإستلامات.";
 $lang["receivings_comments"] = "تعليقات";
@@ -35,7 +34,7 @@ $lang["receivings_register"] = "استلام الأصناف";
 $lang["receivings_requisition"] = "طلب شراء";
 $lang["receivings_return"] = "إرتجاع لمورد";
 $lang["receivings_select_supplier"] = "اختار المورد (اختيارى)";
-$lang["receivings_ship_pack"] = "";
+$lang["receivings_ship_pack"] = "حزمة توصيل";
 $lang["receivings_start_typing_supplier_name"] = "ابداء بكتابة اسم المورد....";
 $lang["receivings_stock"] = "المخزون";
 $lang["receivings_stock_destination"] = "المخزون المحول له";
