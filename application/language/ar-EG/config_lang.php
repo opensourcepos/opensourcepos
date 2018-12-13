@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "عنوان الشركة";
 $lang["config_address_required"] = "عنوان الشركة مطلوب.";
 $lang["config_allow_duplicate_barcodes"] = "السماح بتشابة الباركود";
@@ -67,7 +66,7 @@ $lang["config_default_barcode_page_width_number"] = "عرض الصفحة الا�
 $lang["config_default_barcode_page_width_required"] = "عرض الصفحة الافتراضي للباركود مطلوب.";
 $lang["config_default_barcode_width_number"] = "العرض الافتراضي للباركود لابد ان يكون رقم.";
 $lang["config_default_barcode_width_required"] = "العرض الافتراضي للباركود مطلوب.";
-$lang["config_default_item_columns"] = "";
+$lang["config_default_item_columns"] = "الخانات المراد إظهارها";
 $lang["config_default_origin_tax_code"] = "كود الضريبة الاساسي الافتراضي";
 $lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية";
 $lang["config_default_sales_discount_number"] = "نسبة الخصم الافتراضية لابد ان تكون رقم.";
