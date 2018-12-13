@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["category_name_required"] = "اسم نوع المصاريف مطلوب";
 $lang["expenses_categories_add_item"] = "إضافة نوع";
 $lang["expenses_categories_cannot_be_deleted"] = "فشلت عملية مسح نوع المصاريف";
 $lang["expenses_categories_category_id"] = "الكود";
 $lang["expenses_categories_confirm_delete"] = "هل أنت متأكد من مسح نوع المصاريف الذي أخترته؟";
-$lang["expenses_categories_confirm_restore"] = "";
+$lang["expenses_categories_confirm_restore"] = "هل أنت متأكد من أنك تريد استعادة فئة المصاريف المحددة؟";
 $lang["expenses_categories_description"] = "وصف النوع";
 $lang["expenses_categories_error_adding_updating"] = "مشكلة أثناء أضافة أو تعديل نوع المصاريف";
 $lang["expenses_categories_info"] = "معلومات عن نوع المصاريف";
