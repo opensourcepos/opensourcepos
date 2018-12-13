@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "رقم الحساب";
 $lang["customers_account_number_duplicate"] = "رقم الحساب هذا موجود فى قاعدة البيانات من قبل.";
 $lang["customers_available_points"] = "النقاط المتاحة";
@@ -15,9 +14,9 @@ $lang["customers_consent_required"] = "موافقة التسجيل هي خانة
 $lang["customers_customer"] = "العميل";
 $lang["customers_date"] = "التاريخ";
 $lang["customers_discount"] = "نسبة الخصم";
-$lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
+$lang["customers_discount_fixed"] = "حسم ثابت";
+$lang["customers_discount_percent"] = "نسبة الحبم";
+$lang["customers_discount_type"] = "نوع الحسم";
 $lang["customers_email_duplicate"] = "البريد الالكتروني مكرر.";
 $lang["customers_employee"] = "الموظف";
 $lang["customers_error_adding_updating"] = "خطاء فى إضافة أو تحديث العميل.";
