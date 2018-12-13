@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
@@ -24,7 +23,7 @@ $lang["items_cost_price_number"] = "سعر التكلفة يجب أن يكون �
 $lang["items_cost_price_required"] = "سعر التكلفة مطلوب.";
 $lang["items_count"] = "تحديث المخزون";
 $lang["items_current_quantity"] = "الكمية الحالية";
-$lang["items_default_pack_name"] = "";
+$lang["items_default_pack_name"] = "كل";
 $lang["items_description"] = "الوصف";
 $lang["items_details_count"] = "حركة الصنف";
 $lang["items_do_nothing"] = "لاتفعل شئ";
@@ -56,7 +55,7 @@ $lang["items_item_number_duplicate"] = "رقم الصنف موجود فى قاع
 $lang["items_kit"] = "مجموعة اصناف";
 $lang["items_location"] = "مكان";
 $lang["items_low_inventory_items"] = "الأصناف التى لا يوجد لها مخزون";
-$lang["items_low_sell_item"] = "";
+$lang["items_low_sell_item"] = "الصنف المركب";
 $lang["items_manually_editing_of_quantity"] = "تحرير الكمية يدوياً";
 $lang["items_name"] = "اسم الصنف";
 $lang["items_name_required"] = "اسم الصنف مطلوب.";
@@ -69,8 +68,8 @@ $lang["items_nonstock"] = "غير مخزنة";
 $lang["items_number_information"] = "رقم الصنف";
 $lang["items_number_required"] = "مطلوب UPC/EAN/ISBN رقم الباركود.";
 $lang["items_one_or_multiple"] = "صنف/أصناف";
-$lang["items_pack_name"] = "";
-$lang["items_qty_per_pack"] = "";
+$lang["items_pack_name"] = "اسم الحزمة";
+$lang["items_qty_per_pack"] = "العدد بكل الحزمة";
 $lang["items_quantity"] = "الكمية";
 $lang["items_quantity_number"] = "الكمية يجب أن تكون رقم.";
 $lang["items_quantity_required"] = "الكمية مطلوبة.";
