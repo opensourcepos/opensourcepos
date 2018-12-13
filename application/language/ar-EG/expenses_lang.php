@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "لا يوجد مصاريف في ال
 $lang["expenses_none_selected"] = "لم يتم تحديد اي خيار";
 $lang["expenses_one_or_multiple"] = "واحد او أكثر";
 $lang["expenses_payment"] = "الدفع";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "تم إضافة المصاريف بنجاح";
 $lang["expenses_successful_deleted"] = "تم مسح المصاريف بنجاح";
 $lang["expenses_successful_updating"] = "تم تعديل المصاريف بنجاح";

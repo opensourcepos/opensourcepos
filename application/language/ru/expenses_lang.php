@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Нет никаких расходо
 $lang["expenses_none_selected"] = "Вы не выбрали никаких расходов";
 $lang["expenses_one_or_multiple"] = "Расходы";
 $lang["expenses_payment"] = "тип оплаты";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Расходы успешно добавлены";
 $lang["expenses_successful_deleted"] = "Расходы успешно удалены";
 $lang["expenses_successful_updating"] = "Расходы успешно обновлены";

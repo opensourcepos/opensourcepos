@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "عنوان الشركة";
 $lang["config_address_required"] = "عنوان الشركة مطلوب.";
 $lang["config_allow_duplicate_barcodes"] = "السماح بتشابة الباركود";
@@ -45,16 +46,6 @@ $lang["config_country_codes"] = "أكواد الدولة";
 $lang["config_country_codes_tooltip"] = "قائمة مفصولة بفاصلة لاسماء الدول للبحث.";
 $lang["config_currency_decimals"] = "العلامة العشرية للعملة";
 $lang["config_currency_symbol"] = "رمز العملة";
-$lang["config_custom1"] = "";
-$lang["config_custom10"] = "";
-$lang["config_custom2"] = "";
-$lang["config_custom3"] = "";
-$lang["config_custom4"] = "";
-$lang["config_custom5"] = "";
-$lang["config_custom6"] = "";
-$lang["config_custom7"] = "";
-$lang["config_custom8"] = "";
-$lang["config_custom9"] = "";
 $lang["config_customer_reward"] = "المكافآت";
 $lang["config_customer_reward_duplicate"] = "المكافئة يجب ان تكون فريدة.";
 $lang["config_customer_reward_enable"] = "تمكين مكافآت العميل";
@@ -76,6 +67,7 @@ $lang["config_default_barcode_page_width_number"] = "عرض الصفحة الا�
 $lang["config_default_barcode_page_width_required"] = "عرض الصفحة الافتراضي للباركود مطلوب.";
 $lang["config_default_barcode_width_number"] = "العرض الافتراضي للباركود لابد ان يكون رقم.";
 $lang["config_default_barcode_width_required"] = "العرض الافتراضي للباركود مطلوب.";
+$lang["config_default_item_columns"] = "";
 $lang["config_default_origin_tax_code"] = "كود الضريبة الاساسي الافتراضي";
 $lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية";
 $lang["config_default_sales_discount_number"] = "نسبة الخصم الافتراضية لابد ان تكون رقم.";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "Todos";
 $lang["reports_canceled"] = "Cancelado";
 $lang["reports_categories"] = "Categorias";
@@ -30,7 +31,9 @@ $lang["reports_detailed_reports"] = "Relatório Detalhado";
 $lang["reports_detailed_requisition_report"] = "Relatório Detalhado de Recebimentos";
 $lang["reports_detailed_sales_report"] = "Relatório Detalhado de Vendas";
 $lang["reports_discount"] = "Desconto";
+$lang["reports_discount_fixed"] = "Desconto fixo";
 $lang["reports_discount_percent"] = "Desconto Percentual";
+$lang["reports_discount_type"] = "Tipo de desconto";
 $lang["reports_discounts"] = "Descontos";
 $lang["reports_discounts_summary_report"] = "Relatório Resumo de Descontos";
 $lang["reports_earned"] = "Pontos ganhos";
@@ -62,6 +65,7 @@ $lang["reports_items_received"] = "Itens Recebidos";
 $lang["reports_items_summary_report"] = "Relatório Resumo de Itens";
 $lang["reports_low_inventory"] = "Relatório de estoque baixo";
 $lang["reports_low_inventory_report"] = "Relatório de inventário baixo";
+$lang["reports_low_sell_quantity"] = "Qtd de baixa venda";
 $lang["reports_more_than_zero"] = "Maior do que zero";
 $lang["reports_name"] = "Nome";
 $lang["reports_no_reports_to_display"] = "Sem itens para mostrar.";
@@ -113,6 +117,7 @@ $lang["reports_taxes"] = "Impostos";
 $lang["reports_taxes_summary_report"] = "Relatório Resumido de Impostos";
 $lang["reports_total"] = "Total";
 $lang["reports_total_inventory_value"] = "Valor Total Inventário";
+$lang["reports_total_low_sell_quantity"] = "Quantidade Total de Venda Baixa";
 $lang["reports_total_quantity"] = "Quantidade total";
 $lang["reports_total_retail"] = "Total Inv. Valor de varejo";
 $lang["reports_type"] = "Tipo";
@@ -120,7 +125,3 @@ $lang["reports_unit_price"] = "Preço Varejo";
 $lang["reports_used"] = "Pontos usados";
 $lang["reports_work_orders"] = "Ordens de trabalho";
 $lang["reports_zero_and_less"] = "Zero e menor";
-$lang["reports_low_sell_quantity"] = "Qtd de baixa venda";
-$lang["reports_total_low_sell_quantity"] = "Quantidade Total de Venda Baixa";
-$lang["reports_discount_type"] = "Tipo de desconto";
-$lang["reports_discount_fixed"] = "Desconto fixo";

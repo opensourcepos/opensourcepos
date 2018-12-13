@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Er zijn geen onkosten weer te geven"
 $lang["expenses_none_selected"] = "U heb geen onkosten geselecteerd";
 $lang["expenses_one_or_multiple"] = "Onkost(en)";
 $lang["expenses_payment"] = "Betaalwijze";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Onkosten toevoegen geslaagd";
 $lang["expenses_successful_deleted"] = "Onkosten verwijderen geslaagd";
 $lang["expenses_successful_updating"] = "Onkosten updaten geslaagd";

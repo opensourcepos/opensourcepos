@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Endereço";
 $lang["common_address_2"] = "Complemento";
 $lang["common_city"] = "Cidade";
@@ -36,7 +35,7 @@ $lang["common_inv"] = "fat";
 $lang["common_last_name"] = "Sobrenome";
 $lang["common_last_name_required"] = "O sobrenome é requerido.";
 $lang["common_last_page"] = "Última";
-$lang["common_learn_about_project"] = "para saber mais do projeto.";
+$lang["common_learn_about_project"] = "no GitHub.";
 $lang["common_list_of"] = "Lista de";
 $lang["common_logout"] = "Sair";
 $lang["common_new"] = "Novo";
@@ -45,7 +44,7 @@ $lang["common_none_selected_text"] = "Nada Selecionado.";
 $lang["common_or"] = "ou";
 $lang["common_phone_number"] = "Telefone";
 $lang["common_phone_number_required"] = "Número do telefone é requerido";
-$lang["common_please_visit_my"] = "Por favor visite o site da internet";
+$lang["common_please_visit_my"] = "Para saber mais sobre esta aplicação visite o website do projeto |";
 $lang["common_powered_by"] = "Desenvolvido por";
 $lang["common_price"] = "Preço";
 $lang["common_print"] = "Imprimir";
@@ -61,7 +60,7 @@ $lang["common_submit"] = "Enviar";
 $lang["common_total_spent"] = "Total gasto";
 $lang["common_unknown"] = "Desconhecido";
 $lang["common_view_recent_sales"] = "Ver Vendas Recentes";
-$lang["common_website"] = "site da internet";
+$lang["common_website"] = "OSPOS";
 $lang["common_welcome"] = "Bem-vindo";
 $lang["common_welcome_message"] = "Bem-vindo.";
 $lang["common_you_are_using_ospos"] = "Você está usando Open Source Point Of Sale Versão";

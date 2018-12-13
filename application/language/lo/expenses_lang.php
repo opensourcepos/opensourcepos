@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "ບໍ່ມີຄ່າໃຊ້ຈ
 $lang["expenses_none_selected"] = "ທ່ານຍັງບໍ່ທັນໄດ້ເລືອກຄ່າໃຊ້ຈ່າຍ";
 $lang["expenses_one_or_multiple"] = "ຄ່າໃຊ້ຈ່າຍ";
 $lang["expenses_payment"] = "ປະເພດການຊໍາລະເງິນ";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "ເພີ່ມຄ່າໃຊ້ຈ່າຍສຳເລັດ";
 $lang["expenses_successful_deleted"] = "ລຶບຄ່າໃຊ້ຈ່າຍສຳເລັດ";
 $lang["expenses_successful_updating"] = "ແກ້ໄຂຄ່າໃຊ້ຈ່າຍສຳເລັດ";

@@ -1,16 +1,18 @@
-<?php 
-
-$lang["attributes_confirm_delete"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "";
+$lang["attributes_confirm_delete"] = "هل أنت متأكد من أنك تريد حذف السمات المحددة ؟";
+$lang["attributes_definition_cannot_be_deleted"] = "لا يمكن حذف السمات المحددة";
 $lang["attributes_definition_flags"] = "";
-$lang["attributes_definition_group"] = "";
+$lang["attributes_definition_group"] = "المجموعة";
 $lang["attributes_definition_id"] = "";
 $lang["attributes_definition_name"] = "";
+$lang["attributes_definition_name_required"] = "";
 $lang["attributes_definition_one_or_multiple"] = "";
-$lang["attributes_definition_successful_adding"] = "";
+$lang["attributes_definition_successful_adding"] = "لقد تم إضافة صنف بنجاح";
 $lang["attributes_definition_successful_deleted"] = "";
 $lang["attributes_definition_successful_updating"] = "";
 $lang["attributes_definition_type"] = "";
+$lang["attributes_definition_type_required"] = "";
 $lang["attributes_definition_values"] = "";
 $lang["attributes_new"] = "";
 $lang["attributes_no_attributes_to_display"] = "";

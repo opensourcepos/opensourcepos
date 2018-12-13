@@ -1,7 +1,7 @@
 <?php 
 
-$lang["module_attributes"] = "";
-$lang["module_attributes_desc"] = "";
+$lang["module_attributes"] = "Attributen";
+$lang["module_attributes_desc"] = "Zoek, bewerk, verwijder en voeg attributen toe.";
 $lang["module_both"] = "Beide";
 $lang["module_cashups"] = "Cashups";
 $lang["module_cashups_desc"] = "Zoek, bewerk, verwijder en voeg cashups toe.";

@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Heç bir Xərclər göstərilmir";
 $lang["expenses_none_selected"] = "Siz heç bir xərc seçməmisiniz";
 $lang["expenses_one_or_multiple"] = "Xərc (lər)";
 $lang["expenses_payment"] = "Ödəmə Növü";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Xərc uğurla əlavə edildi";
 $lang["expenses_successful_deleted"] = "Xərc uğurla silindi";
 $lang["expenses_successful_updating"] = "Xərc Uğurla Yeniləndi";

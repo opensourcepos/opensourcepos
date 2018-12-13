@@ -1,14 +1,14 @@
-<?php 
-
+<?php
 $lang["item_kits_add_item"] = "Tambah Item Barang";
 $lang["item_kits_all"] = "Semua";
 $lang["item_kits_cannot_be_deleted"] = "Item Paket tidak dapat dihapus.";
 $lang["item_kits_confirm_delete"] = "Apakah Anda yakin ingin menghapus Item Paket dipilih?";
 $lang["item_kits_confirm_restore"] = "Apakah Anda yakin untuk mengembalikan Kit Item yang terpilih?";
 $lang["item_kits_description"] = "Deskripsi Item Paket";
-$lang["item_kits_discount"] = "";
-$lang["item_kits_discount_fixed"] = "";
-$lang["item_kits_discount_percent"] = "Persen Diskon";
+$lang["item_kits_discount"] = "Diskon";
+$lang["item_kits_discount_fixed"] = "Diskon Tetap";
+$lang["item_kits_discount_percent"] = "Persentase Diskon";
+$lang["item_kits_discount_type"] = "Jenis Diskon";
 $lang["item_kits_error_adding_updating"] = "Tambah/Ubah Item Paket tidak berhasil.";
 $lang["item_kits_find_kit_item"] = "Paket Item";
 $lang["item_kits_info"] = "Item Paket Info";

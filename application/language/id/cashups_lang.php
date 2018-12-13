@@ -1,14 +1,14 @@
-<?php 
-
-$lang["cashups_amount"] = "";
-$lang["cashups_amount_number"] = "";
-$lang["cashups_amount_required"] = "";
-$lang["cashups_cannot_be_deleted"] = "";
-$lang["cashups_close_date"] = "";
+<?php
+$lang["cashups_amount"] = "Jumlah";
+$lang["cashups_amount_number"] = "Jumlah harus berupa angka";
+$lang["cashups_amount_required"] = "Jumlah adalah Bidang yang Diperlukan.";
+$lang["cashups_cannot_be_deleted"] = "Cashup tidak dapat dihapus";
+$lang["cashups_close_date"] = "Tutup Tanggal";
 $lang["cashups_close_employee"] = "";
 $lang["cashups_closed_amount_card"] = "";
 $lang["cashups_closed_amount_cash"] = "";
 $lang["cashups_closed_amount_check"] = "";
+$lang["cashups_closed_amount_due"] = "";
 $lang["cashups_closed_amount_total"] = "";
 $lang["cashups_closed_date"] = "";
 $lang["cashups_confirm_delete"] = "";

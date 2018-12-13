@@ -3,11 +3,14 @@
 $lang["suppliers_account_number"] = "";
 $lang["suppliers_agency_name"] = "";
 $lang["suppliers_cannot_be_deleted"] = "";
+$lang["suppliers_category"] = "";
 $lang["suppliers_company_name"] = "";
 $lang["suppliers_company_name_required"] = "";
 $lang["suppliers_confirm_delete"] = "";
 $lang["suppliers_confirm_restore"] = "";
+$lang["suppliers_cost"] = "";
 $lang["suppliers_error_adding_updating"] = "";
+$lang["suppliers_goods"] = "";
 $lang["suppliers_new"] = "";
 $lang["suppliers_none_selected"] = "";
 $lang["suppliers_one_or_multiple"] = "";

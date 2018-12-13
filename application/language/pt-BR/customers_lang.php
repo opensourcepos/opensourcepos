@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Conta nº";
 $lang["customers_account_number_duplicate"] = "Este número de conta já está presente na base de dados.";
 $lang["customers_available_points"] = "Pontos Disponíveis";
@@ -14,6 +15,9 @@ $lang["customers_consent_required"] = "O consentimento de registro é um campo o
 $lang["customers_customer"] = "Cliente";
 $lang["customers_date"] = "Data";
 $lang["customers_discount"] = "Desconto";
+$lang["customers_discount_fixed"] = "Desconto fixo";
+$lang["customers_discount_percent"] = "Percentual de desconto";
+$lang["customers_discount_type"] = "Tipo de desconto";
 $lang["customers_email_duplicate"] = "O endereço de e-mail já está presente no banco de dados.";
 $lang["customers_employee"] = "Empregado";
 $lang["customers_error_adding_updating"] = "Erro adicionar/atualizar cliente.";
@@ -47,6 +51,3 @@ $lang["customers_taxable"] = "Tributável";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Atualizar Cliente";
 $lang["rewards_package"] = "Pacote de recompensas";
-$lang["customers_discount_type"] = "Tipo de desconto";
-$lang["customers_discount_fixed"] = "Desconto fixo";
-$lang["customers_discount_percent"] = "Percentual de desconto";

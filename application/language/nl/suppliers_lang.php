@@ -3,11 +3,14 @@
 $lang["suppliers_account_number"] = "Btw nummer";
 $lang["suppliers_agency_name"] = "Agencynaam";
 $lang["suppliers_cannot_be_deleted"] = "De geselecteeerde leveranciers konden niet worden verwijderd. Eén of meerdere leveranciers hebben ordergegevens in de database zitten.";
+$lang["suppliers_category"] = "";
 $lang["suppliers_company_name"] = "Leverancier";
 $lang["suppliers_company_name_required"] = "Bedrijfsnaam moet ingevuld worden";
 $lang["suppliers_confirm_delete"] = "Bent u zeker dat u de geselecteerde leveranciers wil verwijderen?";
 $lang["suppliers_confirm_restore"] = "";
+$lang["suppliers_cost"] = "";
 $lang["suppliers_error_adding_updating"] = "Fout bij het toevoegen/aanpassen van een leverancier";
+$lang["suppliers_goods"] = "";
 $lang["suppliers_new"] = "N. Leverancier";
 $lang["suppliers_none_selected"] = "U hebt geen leveranciers geselecteerd";
 $lang["suppliers_one_or_multiple"] = "leverancier(s) verwijderd";

@@ -52,4 +52,3 @@ $lang["receivings_transaction_failed"] = "Transaksi Penerimaan gagal.";
 $lang["receivings_unable_to_add_item"] = "Penambahan Item kedalam Penerimaan Barang gagal.";
 $lang["receivings_unsuccessfully_updated"] = "Penerimaan barang gagal Diperbaharui.";
 $lang["receivings_update"] = "Memperbarui";
-$lang["receivings_ship_pack"] = "Pengiriman Kapal";

@@ -19,4 +19,3 @@ $lang["expenses_categories_successful_adding"] = "Berhasil menambahkan Kategori 
 $lang["expenses_categories_successful_deleted"] = "Berhasil menghapus Kategori Biaya";
 $lang["expenses_categories_successful_updating"] = "Berhasil memperbaharui Kategori Biaya";
 $lang["expenses_categories_update"] = "Perbaharui Kategori";
-$lang["expenses_categories_confirm_restore"] = "Apakah Anda yakin mengembalikan Kategori Biaya yang sedang dipilih?";

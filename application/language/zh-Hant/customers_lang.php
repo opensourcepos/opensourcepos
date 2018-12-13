@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "帳號 #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
-$lang["customers_available_points"] = "";
+$lang["customers_available_points"] = "現有積分";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "";

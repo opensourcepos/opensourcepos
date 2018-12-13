@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Сметка #";
 $lang["customers_account_number_duplicate"] = "Номерът на сметката вече е в базата данни.";
 $lang["customers_available_points"] = "Налични точки";
@@ -50,6 +51,3 @@ $lang["customers_taxable"] = "Облагаем";
 $lang["customers_total"] = "Общо изразходвани средства";
 $lang["customers_update"] = "Актуализиране на клиента";
 $lang["rewards_package"] = "Пакетни награди";
-$lang["customers_discount_type"] = "Тип отстъпка";
-$lang["customers_discount_fixed"] = "Фиксирана отстъпка";
-$lang["customers_discount_percent"] = "Процент отстъпка";

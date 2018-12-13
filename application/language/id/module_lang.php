@@ -39,5 +39,3 @@ $lang["module_suppliers"] = "Pemasok";
 $lang["module_suppliers_desc"] = "Tambah, ubah, hapus dan cari Pemasok.";
 $lang["module_taxes"] = "Pajak";
 $lang["module_taxes_desc"] = "Konfigurasi Pajak Penjualan.";
-$lang["module_cashups"] = "Uang Tunai";
-$lang["module_cashups_desc"] = "Tambah, Ubah, Hapus, dan Cari Uang Tunai.";

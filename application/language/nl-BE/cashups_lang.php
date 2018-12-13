@@ -9,6 +9,7 @@ $lang["cashups_close_employee"] = "Werknemer";
 $lang["cashups_closed_amount_card"] = "Debitkaart";
 $lang["cashups_closed_amount_cash"] = "Cash";
 $lang["cashups_closed_amount_check"] = "Cheque";
+$lang["cashups_closed_amount_due"] = "";
 $lang["cashups_closed_amount_total"] = "Totaal";
 $lang["cashups_closed_date"] = "Datum afgesloten";
 $lang["cashups_confirm_delete"] = "";

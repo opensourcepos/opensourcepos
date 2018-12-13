@@ -9,6 +9,7 @@ $lang["cashups_close_employee"] = "";
 $lang["cashups_closed_amount_card"] = "";
 $lang["cashups_closed_amount_cash"] = "";
 $lang["cashups_closed_amount_check"] = "";
+$lang["cashups_closed_amount_due"] = "";
 $lang["cashups_closed_amount_total"] = "";
 $lang["cashups_closed_date"] = "";
 $lang["cashups_confirm_delete"] = "";
