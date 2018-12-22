@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Conta nº";
 $lang["suppliers_agency_name"] = "Nome da Agência";
 $lang["suppliers_cannot_be_deleted"] = "Não foi possível excluir fornecedores selecionados, um ou mais dos fornecedores selecionados tem vendas.";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "現有積分";
 $lang["rewards_package"] = "獎賞";
 $lang["rewards_remaining_balance"] = "剩餘獎賞積分 ";
