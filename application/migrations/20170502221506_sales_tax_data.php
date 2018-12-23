@@ -39,15 +39,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		$tax_decimals = $CI->Appconfig->get('tax_decimals', 2);
 		$tax_included = $CI->Appconfig->get('tax_included', 0);
 		$customer_sales_tax_support = $CI->Appconfig->get('customer_sales_tax_support', 0);
-
-		if($tax_included)
-		{
-			$tax_type = Tax_lib::TAX_TYPE_VAT;
-		}
-		else
-		{
-			$tax_type = Tax_lib::TAX_TYPE_SALES;
-		}
+		$tax_type = $tax_included ? Tax_lib::TAX_TYPE_INCLUDED : Tax_lib::TAX_TYPE_EXCLUDED;
 
 		$sales_taxes = array();
 		$tax_group_sequence = 0;
@@ -78,7 +70,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 			$this->tax_lib->apply_invoice_taxing($sales_taxes);
 		}
 
-		$this->tax_lib->round_sales_taxes($sales_taxes);
+		$this->tax_lib->round_taxes($sales_taxes);
 		$this->save_sales_tax($sales_taxes);
 	}
 

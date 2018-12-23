@@ -251,6 +251,7 @@ class Customer extends Person
 					'consent'			=> 0,
 					'company_name'		=> NULL,
 					'account_number'	=> NULL,
+					'tax_id'			=> '',
 					'taxable'			=> 0,
 					'discount'			=> 0.00,
 					'discount_type'		=> 0,

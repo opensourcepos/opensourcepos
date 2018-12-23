@@ -9,8 +9,6 @@
 
 	$this->load->view('partial/print_receipt', array('print_after_sale', $print_after_sale, 'selected_printer'=>'receipt_printer')); 
 
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('common','receivings','suppliers','employees','items','sales'));
 ?>
 
 <div class="print_hide" id="control_buttons" style="text-align:right">

@@ -103,6 +103,18 @@
 					</div>
 				</div>
 
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_tax_id'), 'tax_id', array('class' => 'control-label col-xs-3')); ?>
+					<div class='col-xs-4'>
+						<?php echo form_input(array(
+								'name'=>'tax_id',
+								'id'=>'tax_id',
+								'class'=>'form-control input-sm',
+								'value'=>$person_info->tax_id)
+						); ?>
+					</div>
+				</div>
+
 				<?php if($this->config->item('customer_reward_enable') == TRUE): ?>
 					<div class="form-group form-group-sm">
 						<?php echo form_label($this->lang->line('rewards_package'), 'rewards', array('class'=>'control-label col-xs-3')); ?>
@@ -133,7 +145,7 @@
 				</div>
 
 				<?php
-				if($customer_sales_tax_enabled)
+				if($use_destination_based_tax)
 				{
 				?>
 					<div class="form-group form-group-sm">
@@ -147,7 +159,7 @@
 										'size'=>'50',
 										'value'=>$sales_tax_code_label)
 								); ?>
-								<?php echo form_hidden('sales_tax_code', $person_info->sales_tax_code); ?>
+								<?php echo form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id); ?>
 							</div>
 						</div>
 					</div>
@@ -439,18 +451,18 @@ $(document).ready(function()
 {
 	$("input[name='sales_tax_code_name']").change(function() {
 		if( ! $("input[name='sales_tax_code_name']").val() ) {
-			$("input[name='sales_tax_code']").val('');
+			$("input[name='sales_tax_code_id']").val('');
 		}
 	});
 
 	var fill_value = function(event, ui) {
 		event.preventDefault();
-		$("input[name='sales_tax_code']").val(ui.item.value);
+		$("input[name='sales_tax_code_id']").val(ui.item.value);
 		$("input[name='sales_tax_code_name']").val(ui.item.label);
 	};
 
 	$('#sales_tax_code_name').autocomplete({
-		source: "<?php echo site_url('taxes/suggest_sales_tax_codes'); ?>",
+		source: "<?php echo site_url('taxes/suggest_tax_codes'); ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,

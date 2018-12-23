@@ -69,7 +69,6 @@ $(document).ready(function()
 		var previous_id = 'customer_reward_' + id;
 		var previous_id_next = 'reward_points_' + id;
 		var block = $(this).parent().clone(true);
-		console.log(block);
 		var new_block = block.insertAfter($(this).parent());
 		var new_block_id = 'customer_reward_' + ++id;
 		var new_block_id_next = 'reward_points_' + id;

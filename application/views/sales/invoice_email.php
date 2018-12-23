@@ -12,9 +12,6 @@
 		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 		exit;
 	}
-
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE, array('sales', 'common'));
 ?>
 
 <div id="page-wrap">
@@ -118,13 +115,13 @@
 		</tr>
 
 		<?php
-		foreach($taxes as $tax_group_index=>$sales_tax)
+		foreach($taxes as $tax_group_index=>$tax)
 		{
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo $sales_tax['tax_group']; ?></td>
-				<td id="taxes" class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+				<td colspan="2" class="total-line"><?php echo $tax['tax_group']; ?></td>
+				<td id="taxes" class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 			</tr>
 		<?php
 		}

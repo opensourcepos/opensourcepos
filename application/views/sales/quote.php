@@ -31,13 +31,6 @@ if (isset($error_message))
 	</script>
 <?php endif; ?>
 
-<?php
-	$this->load->view('partial/print_receipt', array('print_after_sale'=>$print_after_sale, 'selected_printer'=>'invoice_printer'));
-
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('sales','common'));
-?>
-
 <div class="print_hide" id="control_buttons" style="text-align:right">
 	<a href="javascript:printdoc();"><div class="btn btn-info btn-sm", id="show_print_button"><?php echo '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'); ?></div></a>
 	<?php /* this line will allow to print and go back to sales automatically.... echo anchor("sales", '<span class="glyphicon glyphicon-print">&nbsp</span>' . $this->lang->line('common_print'), array('class'=>'btn btn-info btn-sm', 'id'=>'show_print_button', 'onclick'=>'window.print();')); */ ?>
@@ -95,7 +88,7 @@ if (isset($error_message))
 				<td><textarea rows="5" cols="6"><?php echo $transaction_date; ?></textarea></td>
 			</tr>
 			<tr>
-				<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
+				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_total'); ?></td>
 				<td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
 			</tr>
 		</table>
@@ -146,14 +139,11 @@ if (isset($error_message))
 					</td>
 				</tr>
 
-				<?php if($item['is_serialized'] || $item['allow_alt_description'] && !empty($item['description']))
+				<?php if($item['is_serialized'])
 				{
 				?>
 					<tr class="item-row">
-						<td></td>
-						<td class="item-name" colspan="<?php echo $quote_columns-2; ?>">
-							<div><?php echo $item['description']; ?></div>
-						</td>
+						<td class="item-name" colspan="<?php echo $quote_columns-1; ?>"></td>
 						<td style='text-align:center;'><textarea><?php echo $item['serialnumber']; ?></textarea></td>
 					</tr>
 				<?php
@@ -173,13 +163,13 @@ if (isset($error_message))
 		</tr>
 
 		<?php
-		foreach($taxes as $tax_group_index=>$sales_tax)
+		foreach($taxes as $tax_group_index=>$tax)
 		{
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $sales_tax['tax_group']; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $tax['tax_group']; ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php
 		}
@@ -214,7 +204,7 @@ if (isset($error_message))
 			<h5>
 				<textarea rows="5" cols="6"><?php echo empty($comments) ? '' : $this->lang->line('sales_comments') . ': ' . $comments; ?></textarea>
 				<textarea rows="5" cols="6"><?php echo $this->config->item('quote_default_comments'); ?></textarea>
-            </h5>
+			</h5>
 		</div>
 	</div>
 </div>

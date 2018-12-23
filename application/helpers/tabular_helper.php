@@ -331,10 +331,19 @@ function get_items_manage_table_headers()
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
 		array('cost_price' => $CI->lang->line('items_cost_price')),
 		array('unit_price' => $CI->lang->line('items_unit_price')),
-		array('quantity' => $CI->lang->line('items_quantity')),
-		array('tax_percents' => $CI->lang->line('items_tax_percents'), 'sortable' => FALSE),
-		array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE)
+		array('quantity' => $CI->lang->line('items_quantity'))
 	);
+	if ($CI->config->item('use_destination_based_tax') == '1')
+	{
+		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_category'), 'sortable' => FALSE);
+	}
+	else
+	{
+		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_percents'), 'sortable' => FALSE);
+
+	}
+
+	$headers[] = array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE);
 
 	foreach($definition_names as $definition_id => $definition_name)
 	{
@@ -353,14 +362,32 @@ Get the html data row for the item
 function get_item_data_row($item)
 {
 	$CI =& get_instance();
-	$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
-	$tax_percents = '';
-	foreach($item_tax_info as $tax_info)
+
+	if ($CI->config->item('use_destination_based_tax') == '1')
 	{
-		$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
+		if ($item->tax_category_id == NULL)
+		{
+			$tax_percents = '-';
+		}
+		else
+		{
+			$tax_category_info = $CI->Tax_category->get_info($item->tax_category_id);
+			$tax_percents = $tax_category_info->tax_category;
+		}
 	}
-	// remove ', ' from last item
-	$tax_percents = substr($tax_percents, 0, -2);
+	else
+	{
+		$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
+		$tax_percents = '';
+		foreach($item_tax_info as $tax_info)
+		{
+			$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
+		}
+		// remove ', ' from last item
+		$tax_percents = substr($tax_percents, 0, -2);
+		$tax_percents = !$tax_percents ? '-' : $tax_percents;
+	}
+
 	$controller_name = strtolower(get_class($CI));
 
 	$image = NULL;
@@ -457,51 +484,6 @@ function get_giftcard_data_row($giftcard)
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
 }
-
-
-/*
-Get the header for the taxes tabular view
-*/
-function get_taxes_manage_table_headers()
-{
-	$CI =& get_instance();
-
-	$headers = array(
-		array('tax_code' => $CI->lang->line('taxes_tax_code')),
-		array('tax_code_name' => $CI->lang->line('taxes_tax_code_name')),
-		array('tax_code_type_name' => $CI->lang->line('taxes_tax_code_type')),
-		array('tax_rate' => $CI->lang->line('taxes_tax_rate')),
-		array('rounding_code_name' => $CI->lang->line('taxes_rounding_code')),
-		array('city' => $CI->lang->line('common_city')),
-		array('state' => $CI->lang->line('common_state'))
-	);
-
-	return transform_headers($headers);
-}
-
-/*
-Get the html data row for the tax
-*/
-function get_tax_data_row($tax_code_row)
-{
-	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
-
-	return array (
-		'tax_code' => $tax_code_row->tax_code,
-		'tax_code_name' => $tax_code_row->tax_code_name,
-		'tax_code_type' => $tax_code_row->tax_code_type,
-		'tax_rate' => $tax_code_row->tax_rate,
-		'rounding_code' =>$tax_code_row->rounding_code,
-		'tax_code_type_name' => $CI->Tax->get_tax_code_type_name($tax_code_row->tax_code_type),
-		'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_code_row->rounding_code),
-		'city' => $tax_code_row->city,
-		'state' => $tax_code_row->state,
-		'edit' => anchor($controller_name."/view/$tax_code_row->tax_code", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
-}
-
 
 /*
 Get the header for the item kits tabular view

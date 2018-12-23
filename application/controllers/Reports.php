@@ -318,6 +318,40 @@ class Reports extends Secure_Controller
 		$this->load->view('reports/tabular', $data);
 	}
 
+	//Summary Sales Taxes report
+	public function summary_sales_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+
+		$this->load->model('reports/Summary_sales_taxes');
+		$model = $this->Summary_sales_taxes;
+
+		$report_data = $model->getData($inputs);
+		$summary = $this->xss_clean($model->getSummaryData($inputs));
+
+		$tabular_data = array();
+		foreach($report_data as $row)
+		{
+			$tabular_data[] = $this->xss_clean(array(
+				'reporting_authority' => $row['reporting_authority'],
+				'jurisdiction_name' => $row['jurisdiction_name'],
+				'tax_category' => $row['tax_category'],
+				'tax_rate' => $row['tax_rate'],
+				'tax' => to_currency_tax($row['tax'])
+			));
+		}
+
+		$data = array(
+			'title' => $this->lang->line('reports_sales_taxes_summary_report'),
+			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'headers' => $this->xss_clean($model->getDataColumns()),
+			'data' => $tabular_data,
+			'summary_data' => $summary
+		);
+
+		$this->load->view('reports/tabular', $data);
+	}
+
 	public function summary_discounts_input()
 	{
 		$data = array();
@@ -674,6 +708,40 @@ class Reports extends Secure_Controller
 
 		$data = array(
 			'title' => $this->lang->line('reports_taxes_summary_report'),
+			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
+			'chart_type' => 'reports/graphs/pie',
+			'labels_1' => $labels,
+			'series_data_1' => $series,
+			'summary_data_1' => $summary,
+			'show_currency' => TRUE
+		);
+
+		$this->load->view('reports/graphical', $data);
+	}
+
+	//Graphical summary sales taxes report
+	public function graphical_summary_sales_taxes($start_date, $end_date, $sale_type, $location_id = 'all')
+	{
+		$inputs = array('start_date' => $start_date, 'end_date' => $end_date, 'sale_type' => $sale_type, 'location_id' => $location_id);
+
+		$this->load->model('reports/Summary_sales_taxes');
+		$model = $this->Summary_sales_taxes;
+
+		$report_data = $model->getData($inputs);
+		$summary = $this->xss_clean($model->getSummaryData($inputs));
+
+		$labels = array();
+		$series = array();
+		foreach($report_data as $row)
+		{
+			$row = $this->xss_clean($row);
+
+			$labels[] = $row['jurisdiction_name'];
+			$series[] = array('meta' => $row['tax_rate'] . '%', 'value' => $row['tax']);
+		}
+
+		$data = array(
+			'title' => $this->lang->line('reports_sales_taxes_summary_report'),
 			'subtitle' => $this->_get_subtitle_report(array('start_date' => $start_date, 'end_date' => $end_date)),
 			'chart_type' => 'reports/graphs/pie',
 			'labels_1' => $labels,

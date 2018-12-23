@@ -47,6 +47,16 @@ class Sale_lib
 		return $register_modes;
 	}
 
+	public function get_invoice_type_options()
+	{
+		$invoice_types = array();
+		$invoice_types['invoice'] = $this->CI->lang->line('sales_invoice_type_invoice');
+		$invoice_types['tax_invoice'] = $this->CI->lang->line('sales_invoice_type_tax_invoice');
+		$invoice_types['custom_invoice'] = $this->CI->lang->line('sales_invoice_type_custom_invoice');
+		$invoice_types['custom_tax_invoice'] = $this->CI->lang->line('sales_invoice_type_custom_tax_invoice');
+		return $invoice_types;
+	}
+
 	public function get_cart()
 	{
 		if(!$this->CI->session->userdata('sales_cart'))
@@ -70,6 +80,10 @@ class Sale_lib
 		{
 			if($v['print_option'] == PRINT_YES)
 			{
+				if($v['price'] == 0.0)
+				{
+					$v['discount'] = 0.0;
+				}
 				$filtered_cart[] = $v;
 			}
 		}
@@ -412,7 +426,7 @@ class Sale_lib
 	// Multiple Payments
 	public function get_payments_total()
 	{
-		$subtotal = 0;
+		$subtotal = 0.0;
 		$this->reset_cash_flags();
 		foreach($this->get_payments() as $payments)
 		{
@@ -430,18 +444,18 @@ class Sale_lib
 	 * Returns 'subtotal', 'total', 'cash_total', 'payment_total', 'amount_due', 'cash_amount_due', 'paid_in_full'
 	 * 'subtotal', 'discounted_subtotal', 'tax_exclusive_subtotal', 'item_count', 'total_units'
 	 */
-	public function get_totals()
+	public function get_totals($taxes)
 	{
 		$cash_rounding = $this->CI->session->userdata('cash_rounding');
 
 		$totals = array();
 
-		$prediscount_subtotal = 0;
-		$subtotal = 0;
-		$total = 0;
-		$total_discount = 0;
+		$prediscount_subtotal = 0.0;
+		$subtotal = 0.0;
+		$total = 0.0;
+		$total_discount = 0.0;
 		$item_count = 0;
-		$total_units = 0;
+		$total_units = 0.0;
 
 		foreach($this->get_cart() as $item)
 		{
@@ -472,18 +486,14 @@ class Sale_lib
 		$totals['total_discount'] = $total_discount;
 		$totals['subtotal'] = $subtotal;
 
-		if($this->CI->config->item('tax_included'))
+		foreach($taxes as $tax_excluded)
 		{
-			$totals['total'] = $total;
-		}
-		else
-		{
-			foreach($this->get_taxes() as $sales_tax)
+			if($tax_excluded['tax_type'] == Tax_lib::TAX_TYPE_EXCLUDED)
 			{
-				$total = bcadd($total, $sales_tax['sale_tax_amount']);
+				$total = bcadd($total, $tax_excluded['sale_tax_amount']);
 			}
-			$totals['total'] = $total;
 		}
+		$totals['total'] = $total;
 
 		if($cash_rounding)
 		{
@@ -543,7 +553,7 @@ class Sale_lib
 		$precision = totals_decimals();
 		$rounded_due = bccomp(round($amount_due, $precision, PHP_ROUND_HALF_UP), 0, $precision);
 		// take care of rounding error introduced by round tripping payment amount to the browser
-		return $rounded_due == 0 ? 0 : $amount_due;
+		return $rounded_due == 0.0 ? 0.0 : $amount_due;
 	}
 
 	public function get_customer()
@@ -696,7 +706,7 @@ class Sale_lib
 		$this->CI->session->unset_userdata('sales_rewards_remainder');
 	}
 
-	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL )
+	public function add_item(&$item_id, $quantity = 1, $item_location, $discount = 0.0, $discount_type = 0, $price_mode = PRICE_MODE_STANDARD, $kit_price_option = NULL, $kit_print_option = NULL, $price_override = NULL, $description = NULL, $serialnumber = NULL, $sale_id = NULL, $include_deleted = FALSE, $print_option = NULL, $line = NULL )
 	{
 		$item_info = $this->CI->Item->get_info_by_id_or_number($item_id, $include_deleted);
 		//make sure item exists
@@ -747,11 +757,6 @@ class Sale_lib
 		if($price_override != NULL)
 		{
 			$price = $price_override;
-		}
-
-		if($price == 0.00)
-		{
-			$discount = 0.00;
 		}
 
 		// Serialization and Description
@@ -859,6 +864,7 @@ class Sale_lib
 					'print_option' => $print_option_selected,
 					'stock_type' => $stock_type,
 					'item_type' => $item_type,
+					'hsn_code' => $item_info->hsn_code,
 					'tax_category_id' => $item_info->tax_category_id
 				)
 			);
@@ -1109,68 +1115,6 @@ class Sale_lib
 		return $customer->taxable or $customer_id == -1;
 	}
 
-	/*
-	 * This returns taxes for VAT taxes and for pre 3.1.0 sales taxes.
-	 */
-	public function get_taxes()
-	{
-		$register_mode = $this->CI->config->item('default_register_mode');
-		$tax_decimals = tax_decimals();
-		$customer_id = $this->get_customer();
-		$customer = $this->CI->Customer->get_info($customer_id);
-		$sales_taxes = array();
-		//Do not charge sales tax if we have a customer that is not taxable
-		if($customer->taxable or $customer_id == -1)
-		{
-			foreach($this->get_cart() as $line => $item)
-			{
-				// Start of current VAT tax apply
-				$tax_info = $this->CI->Item_taxes->get_info($item['item_id']);
-				$tax_group_sequence = 0;
-				foreach($tax_info as $tax)
-				{
-					// This computes tax for each line item and adds it to the tax type total
-					$tax_group = (float)$tax['percent'] . '% ' . $tax['name'];
-					$tax_type = Tax_lib::TAX_TYPE_VAT;
-					$tax_basis = $this->get_item_total($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], TRUE);
-					$tax_amount = 0;
-
-					if($this->CI->config->item('tax_included'))
-					{
-						$tax_amount = $this->get_item_tax($item['quantity'], $item['price'], $item['discount'], $item['discount_type'], $tax['percent']);
-					}
-					elseif($this->CI->config->item('customer_sales_tax_support') == '0')
-					{
-						$tax_amount = $this->CI->tax_lib->get_sales_tax_for_amount($tax_basis, $tax['percent'], '0', $tax_decimals);
-					}
-
-					if($tax_amount <> 0)
-					{
-						$this->CI->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, '0', -1);
-						$tax_group_sequence += 1;
-					}
-				}
-
-				$tax_category = '';
-				$tax_rate = '';
-				$rounding_code = Rounding_mode::HALF_UP;
-				$tax_group_sequence = 0;
-				$tax_code = '';
-
-				if($this->CI->config->item('customer_sales_tax_support') == '1')
-				{
-					// Now calculate what the sales taxes should be (storing them in the $sales_taxes array
-					$this->CI->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, 0, $sales_taxes, $tax_category, $tax_rate, $rounding_code, $tax_group_sequence, $tax_code);
-				}
-
-			}
-
-			$this->CI->tax_lib->round_sales_taxes($sales_taxes);
-		}
-
-		return $sales_taxes;
-	}
-
 	public function apply_customer_discount($discount, $discount_type)
 	{
 		// Get all items in the cart so far...
@@ -1182,7 +1126,7 @@ class Sale_lib
 			$price = $item['price'];
 
 			// set a new discount only if the current one is 0
-			if($item['discount'] == 0)
+			if($item['discount'] == 0.0)
 			{
 				$item['discount'] = $discount;
 				$item['total'] = $this->get_item_total($quantity, $price, $discount, $discount_type);
@@ -1195,10 +1139,10 @@ class Sale_lib
 
 	public function get_discount()
 	{
-		$discount = 0;
+		$discount = 0.0;
 		foreach($this->get_cart() as $item)
 		{
-			if($item['discount'] > 0)
+			if($item['discount'] > 0.0)
 			{
 				$item_discount = $this->get_item_discount($item['quantity'], $item['price'], $item['discount'], $item['discount_type']);
 				$discount = bcadd($discount, $item_discount);
@@ -1227,7 +1171,7 @@ class Sale_lib
 		return $item_total;
 	}
 
-	public function get_extended_total_tax_exclusive($item_id, $discounted_extended_amount, $quantity, $price, $discount = 0, $discount_type = 0)
+	public function get_extended_total_tax_exclusive($item_id, $discounted_extended_amount, $quantity, $price, $discount = 0.0, $discount_type = 0)
 	{
 		$tax_info = $this->CI->Item_taxes->get_info($item_id);
 		// only additive tax here
@@ -1267,7 +1211,7 @@ class Sale_lib
 		return $quantity;
 	}
 
-	public function get_extended_amount($quantity, $price, $discount_amount = 0)
+	public function get_extended_amount($quantity, $price, $discount_amount = 0.0)
 	{
 		$extended_amount = bcmul($quantity, $price);
 
@@ -1304,7 +1248,7 @@ class Sale_lib
 
 	public function calculate_subtotal($include_discount = FALSE, $exclude_tax = FALSE)
 	{
-		$subtotal = 0;
+		$subtotal = 0.0;
 		foreach($this->get_cart() as $item)
 		{
 			if($exclude_tax && $this->CI->config->item('tax_included'))
@@ -1328,9 +1272,9 @@ class Sale_lib
 
 		if(!$this->CI->config->item('tax_included'))
 		{
-			foreach($this->get_taxes() as $sales_tax)
+			foreach($this->CI->tax_lib->get_taxes($this->get_cart()) as $tax)
 			{
-				$total = bcadd($total, $sales_tax['sale_tax_amount']);
+				$total = bcadd($total, $tax['sales_tax_amount']);
 			}
 		}
 
