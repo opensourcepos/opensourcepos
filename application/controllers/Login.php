@@ -4,6 +4,7 @@ class Login extends CI_Controller
 {
 	public function index()
 	{
+		$this->load->library('migration');
 		if($this->Employee->is_logged_in())
 		{
 			redirect('home');
@@ -13,6 +14,7 @@ class Login extends CI_Controller
 			$this->form_validation->set_error_delimiters('<div class="error">', '</div>');
 
 			$this->form_validation->set_rules('username', 'lang:login_username', 'required|callback_login_check');
+
 
 			if($this->config->item('gcaptcha_enable'))
 			{
@@ -41,7 +43,6 @@ class Login extends CI_Controller
 			return FALSE;
 		}
 
-		$this->load->library('migration');
 		if (!$this->migration->is_latest())
 		{
 			set_time_limit(1200);

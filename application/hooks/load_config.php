@@ -7,6 +7,12 @@ function load_config()
 {
     $CI =& get_instance();
 
+    $migration = $CI->load->library('migration');
+    if (!$CI->migration->is_latest())
+    {
+        $CI->session->sess_destroy();
+    }
+
     foreach($CI->Appconfig->get_all()->result() as $app_config)
     {	
         $CI->config->set_item($CI->security->xss_clean($app_config->key), $CI->security->xss_clean($app_config->value));
