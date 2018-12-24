@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Alle";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "Categorieën";
 $lang["reports_categories_summary_report"] = "Rapport Overzicht Categorieën";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Producten";
 $lang["reports_items_purchased"] = "Hoeveelheid";
 $lang["reports_items_received"] = "Items Ontvangen";
 $lang["reports_items_summary_report"] = "Rapport Overzicht Producten";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Type";
 $lang["reports_sales"] = "Verkoop";
 $lang["reports_sales_amount"] = "Verkoopbedrag";
 $lang["reports_sales_summary_report"] = "Overzicht Verkoop";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Nummer";
 $lang["reports_sold_by"] = "Werknemer";
 $lang["reports_sold_to"] = "Klant";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Leverancier";
 $lang["reports_suppliers"] = "Leveranciers";
 $lang["reports_suppliers_summary_report"] = "Rapport Overzicht Leveranciers";
 $lang["reports_tax"] = "VAT";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "VAT Percentage";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Belastingen";
 $lang["reports_taxes_summary_report"] = "Rapport Overzicht Belastingen";
 $lang["reports_total"] = "Totaal";

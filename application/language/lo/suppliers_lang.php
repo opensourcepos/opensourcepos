@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "ທ່ານໄດ້ລຶບຜູ້
 $lang["suppliers_successful_updating"] = "ທ່ານໄດ້ແກ້ໄຂຜູ້ສະໜອງສຳເລັດແລ້ວ";
 $lang["suppliers_supplier"] = "ຜູ້ສະໜອງ";
 $lang["suppliers_supplier_id"] = "Id";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "ແກ້ໄຂຜູ້ສະໜອງ";

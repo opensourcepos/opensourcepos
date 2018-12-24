@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "إضافة مصاريف جديدة";
 $lang["expenses_amount"] = "قيمة المصاريف";
 $lang["expenses_amount_number"] = "القيمة يجب ان تكون رقم";

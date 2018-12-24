@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir códigos de barras duplicados";
@@ -71,6 +72,9 @@ $lang["config_default_origin_tax_code"] = "Código de imposto de origem padrão"
 $lang["config_default_sales_discount"] = "Desconto de vendas padrão";
 $lang["config_default_sales_discount_number"] = "O desconto de vendas padrão deve ser um número.";
 $lang["config_default_sales_discount_required"] = "O desconto de vendas padrão é um campo obrigatório.";
+$lang["config_default_tax_category"] = "";
+$lang["config_default_tax_code"] = "";
+$lang["config_default_tax_jurisdiction"] = "";
 $lang["config_default_tax_name_number"] = "O nome do imposto padrão deve ser uma string.";
 $lang["config_default_tax_name_required"] = "Nome da taxa padrão é requerida.";
 $lang["config_default_tax_rate"] = "Imposto Tarifa Padrão %";
@@ -127,6 +131,7 @@ $lang["config_general_configuration"] = "Configurações Gerais";
 $lang["config_giftcard_number"] = "Número cartão presente";
 $lang["config_giftcard_random"] = "Geração aleaória";
 $lang["config_giftcard_series"] = "Gerado em serie";
+$lang["config_include_hsn"] = "";
 $lang["config_info"] = "Informações";
 $lang["config_info_configuration"] = "Informações da loja";
 $lang["config_invoice"] = "Fatura";
@@ -135,6 +140,7 @@ $lang["config_invoice_default_comments"] = "Comentário";
 $lang["config_invoice_email_message"] = "Modelo de e-mail Fatura";
 $lang["config_invoice_enable"] = "Habilitar faturamento";
 $lang["config_invoice_printer"] = "Imprimir fatura";
+$lang["config_invoice_type"] = "";
 $lang["config_jsprintsetup_required"] = "Aviso! Esta funcionalidade só irá funcionar se você tem o addon FireFox jsPrintSetup instalado. Salvar de qualquer maneira?";
 $lang["config_language"] = "Linguagem";
 $lang["config_last_used_invoice_number"] = "Último número de fatura usado";
@@ -254,11 +260,13 @@ $lang["config_tax_category_required"] = "A  categoria de imposto é obrigatória
 $lang["config_tax_category_used"] = "A categoria de imposto não pode ser excluída porque está sendo usada.";
 $lang["config_tax_configuration"] = "Configuração de impostos";
 $lang["config_tax_decimals"] = "Decimais da taxa";
+$lang["config_tax_id"] = "";
 $lang["config_tax_included"] = "Imposto Incluído";
 $lang["config_theme"] = "Tema";
 $lang["config_thousands_separator"] = "Separador de milhar";
 $lang["config_timezone"] = "Fuso horário";
 $lang["config_top"] = "Topo";
+$lang["config_use_destination_based_tax"] = "";
 $lang["config_website"] = "OSPOS";
 $lang["config_work_order_enable"] = "Suporte para Ordem de Serviço";
 $lang["config_work_order_format"] = "Formato Ordem de Serviço";

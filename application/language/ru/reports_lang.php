@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "все";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Аннулированный";
 $lang["reports_categories"] = "Категории";
 $lang["reports_categories_summary_report"] = "Сводный отчет Категории";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "товары";
 $lang["reports_items_purchased"] = "купенный товары";
 $lang["reports_items_received"] = "полученные Товары";
 $lang["reports_items_summary_report"] = "Сводный отчет товары";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Вид Продажи";
 $lang["reports_sales"] = "Продажа";
 $lang["reports_sales_amount"] = "сумма продаж";
 $lang["reports_sales_summary_report"] = "Продажи Сводный отчет";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "серийный номер";
 $lang["reports_sold_by"] = "Продавал через";
 $lang["reports_sold_to"] = "Продано к";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Поставщик";
 $lang["reports_suppliers"] = "Поставщики";
 $lang["reports_suppliers_summary_report"] = "Сводный отчет Поставщики";
 $lang["reports_tax"] = "налог";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "процент налога";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Налоги";
 $lang["reports_taxes_summary_report"] = "Сводный отчет налоги";
 $lang["reports_total"] = "сумма";

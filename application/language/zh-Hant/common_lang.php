@@ -39,6 +39,7 @@ $lang["common_last_page"] = "最後一頁";
 $lang["common_learn_about_project"] = "了解系統開展進度";
 $lang["common_list_of"] = "列表";
 $lang["common_logout"] = "登出";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "沒有使用者資料可以顯示";
 $lang["common_none_selected_text"] = "沒有選取的項目";

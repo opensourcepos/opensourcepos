@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Alla";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Avbrutna";
 $lang["reports_categories"] = "Kategorier";
 $lang["reports_categories_summary_report"] = "Kategorier Sammanfattningsrapport";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Artiklar";
 $lang["reports_items_purchased"] = "Artiklar inköpta";
 $lang["reports_items_received"] = "Artiklar mottagna";
 $lang["reports_items_summary_report"] = "Sammanfattning av artiklar";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Överföringstyp";
 $lang["reports_sales"] = "Överföringar";
 $lang["reports_sales_amount"] = "Transaktionsbelopp";
 $lang["reports_sales_summary_report"] = "Sammanfattningsrapport för transaktioner";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Serienummer";
 $lang["reports_sold_by"] = "Såld av";
 $lang["reports_sold_to"] = "Såld till";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Leverantör";
 $lang["reports_suppliers"] = "Leverantörer";
 $lang["reports_suppliers_summary_report"] = "Leverantörs Sammanfattningsrapport";
 $lang["reports_tax"] = "Skatt";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Skatt %";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Skatter";
 $lang["reports_taxes_summary_report"] = "Sammanfattningsrapport för skatter";
 $lang["reports_total"] = "Totalt";

@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Última";
 $lang["common_learn_about_project"] = "no GitHub.";
 $lang["common_list_of"] = "Lista de";
 $lang["common_logout"] = "Sair";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Novo";
 $lang["common_no_persons_to_display"] = "Não existem pessoas para mostrar.";
 $lang["common_none_selected_text"] = "Nada Selecionado.";

@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Sikeres törlés";
 $lang["suppliers_successful_updating"] = "Sikeresen módosította a beszállítót";
 $lang["suppliers_supplier"] = "Beszállító információ";
 $lang["suppliers_supplier_id"] = "ID";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Bezsállító módosítása";

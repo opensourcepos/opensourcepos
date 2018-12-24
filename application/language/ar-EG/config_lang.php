@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "عنوان الشركة";
 $lang["config_address_required"] = "عنوان الشركة مطلوب.";
 $lang["config_allow_duplicate_barcodes"] = "السماح بتشابة الباركود";
@@ -71,6 +72,9 @@ $lang["config_default_origin_tax_code"] = "كود الضريبة الاساسي 
 $lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية";
 $lang["config_default_sales_discount_number"] = "نسبة الخصم الافتراضية لابد ان تكون رقم.";
 $lang["config_default_sales_discount_required"] = "نسبة الخصم الافتراضية مطلوبة.";
+$lang["config_default_tax_category"] = "";
+$lang["config_default_tax_code"] = "";
+$lang["config_default_tax_jurisdiction"] = "";
 $lang["config_default_tax_name_number"] = "يجب أن يكون الاسم الافتراضي للضريبة سلسلة.";
 $lang["config_default_tax_name_required"] = "اسم الضريبة الافتراضية مطلوب.";
 $lang["config_default_tax_rate"] = "معدل الضريبة الافتراضي %";
@@ -127,6 +131,7 @@ $lang["config_general_configuration"] = "إعدادات عامة";
 $lang["config_giftcard_number"] = "رقم كارت الهدية";
 $lang["config_giftcard_random"] = "توليد عشوائي";
 $lang["config_giftcard_series"] = "توليد في السلسلة";
+$lang["config_include_hsn"] = "";
 $lang["config_info"] = "معلومات";
 $lang["config_info_configuration"] = "معلومات الشركة";
 $lang["config_invoice"] = "الفاتورة";
@@ -135,6 +140,7 @@ $lang["config_invoice_default_comments"] = "التعليق الافتراضي ع
 $lang["config_invoice_email_message"] = "قالب البريد الإلكتروني للفاتورة";
 $lang["config_invoice_enable"] = "تفعيل الفوترة";
 $lang["config_invoice_printer"] = "طابعة الفواتير";
+$lang["config_invoice_type"] = "";
 $lang["config_jsprintsetup_required"] = "تحذير! هذه الخاصية غير المفعلة سوف تعمل فقط مع وجود الاضافة jsPrintSetup على متصفح فايرفوكس. حفظ على أى حال؟";
 $lang["config_language"] = "اللغة";
 $lang["config_last_used_invoice_number"] = "اخر رقم مستخدم للفاتورة";
@@ -254,11 +260,13 @@ $lang["config_tax_category_required"] = "الفئة الضريبية مطلوب�
 $lang["config_tax_category_used"] = "الفئة الضريبية اللتي تم تحديدها لا يمكن حذفها لانها قيد الاستعمال.";
 $lang["config_tax_configuration"] = "إعدادات الضريبة";
 $lang["config_tax_decimals"] = "العلامة العشرية للضريبة";
+$lang["config_tax_id"] = "";
 $lang["config_tax_included"] = "شامل الضريبة";
 $lang["config_theme"] = "السمة";
 $lang["config_thousands_separator"] = "فاصل الاف";
 $lang["config_timezone"] = "المنطقة الزمنية";
 $lang["config_top"] = "علوى";
+$lang["config_use_destination_based_tax"] = "";
 $lang["config_website"] = "موقع الشركة";
 $lang["config_work_order_enable"] = "تفعيل طلبات العمل";
 $lang["config_work_order_format"] = "شكل طلبات العمل";

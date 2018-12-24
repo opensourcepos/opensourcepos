@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "ทั้งหมด";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "หมวดหมู่";
 $lang["reports_categories_summary_report"] = "รายงานสรุปหมวดหมู่";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "สินค้า";
 $lang["reports_items_purchased"] = "สินค้าที่ถูกซื้อ";
 $lang["reports_items_received"] = "สินค้าเข้า";
 $lang["reports_items_summary_report"] = "รายงานสรุปสินค้า";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "ชนิดของการขาย";
 $lang["reports_sales"] = "ขาย";
 $lang["reports_sales_amount"] = "จำนวนขาย";
 $lang["reports_sales_summary_report"] = "รายงานสรุปการขาย";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "เลขที่ #";
 $lang["reports_sold_by"] = "ขายโดย";
 $lang["reports_sold_to"] = "ขายไปที่";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "ผู้ผลิต";
 $lang["reports_suppliers"] = "ผู้ผลิต";
 $lang["reports_suppliers_summary_report"] = "รายงานสรุปผู้ผลิต";
 $lang["reports_tax"] = "ภาษี";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "เปอร์เซ็นภาษี";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "ภาษี";
 $lang["reports_taxes_summary_report"] = "รายงานสรุปภาษี";
 $lang["reports_total"] = "ยอดรวม";

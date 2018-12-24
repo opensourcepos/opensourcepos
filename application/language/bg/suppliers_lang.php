@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Вие успешно изтрихте"
 $lang["suppliers_successful_updating"] = "Обновяването на доставчика е успешно";
 $lang["suppliers_supplier"] = "Доставчик";
 $lang["suppliers_supplier_id"] = "Id";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Актуализиране на доставчик";

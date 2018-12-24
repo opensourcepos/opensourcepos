@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Zadnja";
 $lang["common_learn_about_project"] = "za pregled zadnjih informacija o projektu";
 $lang["common_list_of"] = "Lista";
 $lang["common_logout"] = "Odjava";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Novi";
 $lang["common_no_persons_to_display"] = "Nema nijede osoba za prikazati";
 $lang["common_none_selected_text"] = "Nothing selected";

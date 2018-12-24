@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "成功新增顧客";
 $lang["customers_successful_deleted"] = "成功刪除";
 $lang["customers_successful_updating"] = "成功更新顧客";
 $lang["customers_tax_code"] = "";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "應課稅";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "更新客戶";

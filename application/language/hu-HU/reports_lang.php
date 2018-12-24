@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Összes";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "Kategóriák";
 $lang["reports_categories_summary_report"] = "Kategóriák összegző riport";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Termékek";
 $lang["reports_items_purchased"] = "Megvásárolt termékek";
 $lang["reports_items_received"] = "Fogadott termékek";
 $lang["reports_items_summary_report"] = "Termékek összefoglaló riport";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Értékesítési típus";
 $lang["reports_sales"] = "Értékesítés";
 $lang["reports_sales_amount"] = "Sales amount";
 $lang["reports_sales_summary_report"] = "Sales Summary Report";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Serial #";
 $lang["reports_sold_by"] = "Eladó";
 $lang["reports_sold_to"] = "Eladva";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Beszállító";
 $lang["reports_suppliers"] = "Beszállítók";
 $lang["reports_suppliers_summary_report"] = "Beszállítók összegző riport";
 $lang["reports_tax"] = "Adó";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Adó %";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Adók";
 $lang["reports_taxes_summary_report"] = "Adók összegző riport";
 $lang["reports_total"] = "Összesen";

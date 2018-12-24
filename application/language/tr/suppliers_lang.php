@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Sağlayıcı silindi";
 $lang["suppliers_successful_updating"] = "Sağlayıcı güncellendi";
 $lang["suppliers_supplier"] = "Sağlayıcı";
 $lang["suppliers_supplier_id"] = "Kimlik";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Sağlayıcıyı Düzenle";

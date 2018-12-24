@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Ultimul";
 $lang["common_learn_about_project"] = "pentru a afla ultimele informații despre proiect.";
 $lang["common_list_of"] = "Lista de";
 $lang["common_logout"] = "Deconectare";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Nou";
 $lang["common_no_persons_to_display"] = "Nu există persoane de afișat.";
 $lang["common_none_selected_text"] = "Nimic nu a fost selectat.";

@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Вы успешно добавили к�
 $lang["customers_successful_deleted"] = "Вы успешно удалили";
 $lang["customers_successful_updating"] = "Вы успешно обновили клиент";
 $lang["customers_tax_code"] = "налоговый кодекс";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "облагаемый";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Обновлять Клиент";

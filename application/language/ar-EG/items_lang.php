@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
@@ -37,6 +38,7 @@ $lang["items_excel_import_nodata_wrongformat"] = "الملف الذى رفعته
 $lang["items_excel_import_partially_failed"] = "تم استيراد معظم الأصناف. البعض لم يتم استيرادهم ، وهذه هى القائمة:";
 $lang["items_excel_import_success"] = "تم استيراد الأصناف بنجاح.";
 $lang["items_generate_barcodes"] = "توليد أكواد الباركود";
+$lang["items_hsn_code"] = "";
 $lang["items_image"] = "صورة";
 $lang["items_import_items_excel"] = "استيراد من اكسل";
 $lang["items_info_provided_by"] = "المعلومات مقدمة بواسطة";
@@ -96,6 +98,7 @@ $lang["items_successful_updating"] = "لقد تم تحديث بيانات صنف
 $lang["items_supplier"] = "المورد";
 $lang["items_tax_1"] = "الضريبة 1";
 $lang["items_tax_2"] = "الضريبة 2";
+$lang["items_tax_category"] = "";
 $lang["items_tax_percent"] = "نسبة الضريبة";
 $lang["items_tax_percent_number"] = "نسبة الضريبة يجب ان تكون رقم";
 $lang["items_tax_percent_required"] = "نسبة الضريبة مطلوبة.";

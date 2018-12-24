@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Hepsi";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "İptal edildi";
 $lang["reports_categories"] = "Kategoriler";
 $lang["reports_categories_summary_report"] = "Kategori Özet Raporu";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Ürünler";
 $lang["reports_items_purchased"] = "Satın Alınan Ürünler";
 $lang["reports_items_received"] = "Alınan Ürünler";
 $lang["reports_items_summary_report"] = "Ürün Özet Raporu";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "Düşük Stok";
 $lang["reports_low_inventory_report"] = "Düşük Stok Raporu";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Satış Türü";
 $lang["reports_sales"] = "Satış";
 $lang["reports_sales_amount"] = "Satış tutarı";
 $lang["reports_sales_summary_report"] = "Satış Özet Raporu";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Seri No";
 $lang["reports_sold_by"] = "Satışı Yapan";
 $lang["reports_sold_to"] = "Satış Yapılan";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Sağlayıcı";
 $lang["reports_suppliers"] = "Sağlayıcılar";
 $lang["reports_suppliers_summary_report"] = "Sağlayıcı Özet Raporu";
 $lang["reports_tax"] = "Vergi";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Vergi Oranı";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Vergiler";
 $lang["reports_taxes_summary_report"] = "Vergi Özet Raporu";
 $lang["reports_total"] = "Toplam";

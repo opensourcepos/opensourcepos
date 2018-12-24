@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Hai aggiunto con Successo un cliente";
 $lang["customers_successful_deleted"] = "Eliminazione con successo";
 $lang["customers_successful_updating"] = "Aggiornamento del cliente terminato correttamente";
 $lang["customers_tax_code"] = "Codice tassa";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Tassabile";
 $lang["customers_total"] = "Spesa Totale";
 $lang["customers_update"] = "Aggiorna Cliente";

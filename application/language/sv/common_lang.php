@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Sista";
 $lang["common_learn_about_project"] = "för att lära sig den senaste informationen om projektet.";
 $lang["common_list_of"] = "Lista av";
 $lang["common_logout"] = "Logga ut";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Ny";
 $lang["common_no_persons_to_display"] = "Det finns inga personer att visa.";
 $lang["common_none_selected_text"] = "Inget valt.";

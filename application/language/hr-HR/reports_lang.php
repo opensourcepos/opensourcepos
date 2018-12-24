@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Svi";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "Kategorije";
 $lang["reports_categories_summary_report"] = "Zbrojni izvještaj po kategorijama";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Artikli";
 $lang["reports_items_purchased"] = "Nabavni artikli";
 $lang["reports_items_received"] = "Artikli primke";
 $lang["reports_items_summary_report"] = "Artikli zbrojnog izvještaja";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "Niska inventura";
 $lang["reports_low_inventory_report"] = "Izvještaj niske inventure";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Tip prodaje";
 $lang["reports_sales"] = "Prodaje";
 $lang["reports_sales_amount"] = "Prodajna količina";
 $lang["reports_sales_summary_report"] = "Zbrojni izvještaj o prodaji";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Ser. broj";
 $lang["reports_sold_by"] = "Prodaje";
 $lang["reports_sold_to"] = "Prodano";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Dobavljač";
 $lang["reports_suppliers"] = "Dobavljači";
 $lang["reports_suppliers_summary_report"] = "Zbrojni izvještaj po dobavljačima";
 $lang["reports_tax"] = "Porez";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "% poreza";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Porezi";
 $lang["reports_taxes_summary_report"] = "Zbrojni izvještaj po porezima";
 $lang["reports_total"] = "Ukupno";

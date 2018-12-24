@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 $lang["customers_available_points"] = "Available Points";
 $lang["rewards_package"] = "Rewards";
@@ -72,15 +72,15 @@ $lang["sales_invoice"] = "Invoice";
 $lang["sales_invoice_confirm"] = "This invoice will be sent to";
 $lang["sales_invoice_enable"] = "Create Invoice";
 $lang["sales_invoice_filter"] = "Invoices";
-$lang["sales_invoice_type_invoice"] = "Invoice (invoice.php)";
-$lang["sales_invoice_type_tax_invoice"] = "Tax Invoice (tax_invoice.php)";
-$lang["sales_invoice_type_custom_invoice"] = "Custom Invoice (custom_invoice.php)";
-$lang["sales_invoice_type_custom_tax_invoice"] = "Custom Tax Invoice (custom_tax_invoice.php)";
 $lang["sales_invoice_no_email"] = "This customer does not have a valid email address.";
 $lang["sales_invoice_number"] = "Invoice #";
 $lang["sales_invoice_number_duplicate"] = "Invoice Number must be unique.";
 $lang["sales_invoice_sent"] = "Invoice sent to";
 $lang["sales_invoice_total"] = "Invoice Total";
+$lang["sales_invoice_type_custom_invoice"] = "Custom Invoice (custom_invoice.php)";
+$lang["sales_invoice_type_custom_tax_invoice"] = "Custom Tax Invoice (custom_tax_invoice.php)";
+$lang["sales_invoice_type_invoice"] = "Invoice (invoice.php)";
+$lang["sales_invoice_type_tax_invoice"] = "Tax Invoice (tax_invoice.php)";
 $lang["sales_invoice_unsent"] = "Invoice failed to be sent to";
 $lang["sales_invoice_update"] = "Recount";
 $lang["sales_item_insufficient_of_stock"] = "Item has insufficient stock.";
@@ -154,9 +154,9 @@ $lang["sales_suspended_sales"] = "Suspended";
 $lang["sales_table"] = "Table";
 $lang["sales_takings"] = "Daily Sales";
 $lang["sales_tax"] = "Tax";
+$lang["sales_tax_id"] = "Tax Id";
 $lang["sales_tax_invoice"] = "Tax Invoice";
 $lang["sales_tax_percent"] = "Tax %";
-$lang["sales_tax_id"] = "Tax Id";
 $lang["sales_total"] = "Total";
 $lang["sales_total_tax_exclusive"] = "Tax excluded";
 $lang["sales_transaction_failed"] = "Sales Transaction failed.";
@@ -167,8 +167,8 @@ $lang["sales_unsuccessfully_suspended_sale"] = "Sale suspend failed.";
 $lang["sales_unsuccessfully_updated"] = "Sale update failed.";
 $lang["sales_unsuspend"] = "Unsuspend";
 $lang["sales_unsuspend_and_delete"] = "Action";
-$lang["sales_upi"] = "UPI";
 $lang["sales_update"] = "Update";
+$lang["sales_upi"] = "UPI";
 $lang["sales_work_order"] = "Work Order";
 $lang["sales_work_order_number"] = "Work Order Number";
 $lang["sales_work_order_number_duplicate"] = "Work Order Number must be unique.";

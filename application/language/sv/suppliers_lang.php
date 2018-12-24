@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Du har lagt till leverantör";
 $lang["suppliers_successful_updating"] = "Du har lagt till leverantör";
 $lang["suppliers_supplier"] = "Leverantör";
 $lang["suppliers_supplier_id"] = "Id";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Uppdatera leverantör";

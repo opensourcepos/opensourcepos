@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Anda telah berhasil menghapus data pema
 $lang["suppliers_successful_updating"] = "Anda telah berhasil memperbarui data pemasok";
 $lang["suppliers_supplier"] = "Pemasok";
 $lang["suppliers_supplier_id"] = "ID";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Ubah data Pemasok";

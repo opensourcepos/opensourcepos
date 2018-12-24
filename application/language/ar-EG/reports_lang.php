@@ -1,5 +1,7 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "الكل";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "ملغى";
 $lang["reports_categories"] = "التصنيفات";
 $lang["reports_categories_summary_report"] = "تقرير ملخص التصنيفات";
@@ -62,6 +64,7 @@ $lang["reports_items"] = "الأصناف";
 $lang["reports_items_purchased"] = "الأصناف مشتراه";
 $lang["reports_items_received"] = "الأصناف مستلمة";
 $lang["reports_items_summary_report"] = "تقرير ملخص الأصناف";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "النواقص";
 $lang["reports_low_inventory_report"] = "تقرير نواقص المخزون";
 $lang["reports_low_sell_quantity"] = "كميات حسب الصنف الاولي";
@@ -99,6 +102,8 @@ $lang["reports_sale_type"] = "طريقة البيع";
 $lang["reports_sales"] = "بيع";
 $lang["reports_sales_amount"] = "كمية المبيعات";
 $lang["reports_sales_summary_report"] = "تقرير ملخص المبيعات";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "مسلسل";
 $lang["reports_sold_by"] = "البائع";
 $lang["reports_sold_to"] = "مباع الى";
@@ -111,7 +116,9 @@ $lang["reports_supplier"] = "المورد";
 $lang["reports_suppliers"] = "الموردين";
 $lang["reports_suppliers_summary_report"] = "تقرير ملخص الموردين";
 $lang["reports_tax"] = "الضريبة";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "نسبة الضريبة";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "الضرائب";
 $lang["reports_taxes_summary_report"] = "تقرير ملخص الضرائب";
 $lang["reports_total"] = "الإجمالى";

@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "全部";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "類別";
 $lang["reports_categories_summary_report"] = "分類摘要報告";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "產品";
 $lang["reports_items_purchased"] = "銷售產品";
 $lang["reports_items_received"] = "進貨產品";
 $lang["reports_items_summary_report"] = "產品摘要報告";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "銷售類型";
 $lang["reports_sales"] = "銷售";
 $lang["reports_sales_amount"] = "總銷售額";
 $lang["reports_sales_summary_report"] = "銷售摘要報告";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "序號 #";
 $lang["reports_sold_by"] = "銷售人";
 $lang["reports_sold_to"] = "購買人";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "供應商";
 $lang["reports_suppliers"] = "供應商";
 $lang["reports_suppliers_summary_report"] = "供應商摘要報告";
 $lang["reports_tax"] = "稅額";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "稅率";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "稅額";
 $lang["reports_taxes_summary_report"] = "稅金摘要報告";
 $lang["reports_total"] = "總計";

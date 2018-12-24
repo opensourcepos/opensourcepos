@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Son";
 $lang["common_learn_about_project"] = " ";
 $lang["common_list_of"] = "Liste";
 $lang["common_logout"] = "Çıkış";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Yeni";
 $lang["common_no_persons_to_display"] = "Gösterecek kişi yok";
 $lang["common_none_selected_text"] = "Filtre Yok";

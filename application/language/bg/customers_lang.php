@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Успешно добавихте кли
 $lang["customers_successful_deleted"] = "Вие успешно сте изтрили";
 $lang["customers_successful_updating"] = "Актуализирахте успешно клиента си";
 $lang["customers_tax_code"] = "Данъчен код";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Облагаем";
 $lang["customers_total"] = "Общо изразходвани средства";
 $lang["customers_update"] = "Актуализиране на клиента";

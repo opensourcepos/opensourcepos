@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "Jumlah";
 $lang["cashups_amount_number"] = "Jumlah harus berupa angka";
 $lang["cashups_amount_required"] = "Jumlah adalah Bidang yang Diperlukan.";

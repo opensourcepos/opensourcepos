@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Siz uğurla sildiniz";
 $lang["suppliers_successful_updating"] = "Siz uğurla Təchizatçını yenilədiniz";
 $lang["suppliers_supplier"] = "Təchizatçı";
 $lang["suppliers_supplier_id"] = "Kimlik";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Təchizatçı Yenilənməsi";

@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "";
 $lang["reports_categories"] = "";
 $lang["reports_categories_summary_report"] = "";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "";
 $lang["reports_items_purchased"] = "";
 $lang["reports_items_received"] = "";
 $lang["reports_items_summary_report"] = "";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "";
 $lang["reports_sales"] = "";
 $lang["reports_sales_amount"] = "";
 $lang["reports_sales_summary_report"] = "";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "";
 $lang["reports_sold_by"] = "";
 $lang["reports_sold_to"] = "";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "";
 $lang["reports_suppliers"] = "";
 $lang["reports_suppliers_summary_report"] = "";
 $lang["reports_tax"] = "";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "";
 $lang["reports_taxes_summary_report"] = "";
 $lang["reports_total"] = "";

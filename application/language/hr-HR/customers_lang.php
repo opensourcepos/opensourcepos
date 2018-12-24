@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Uspješno ste dodali kupca";
 $lang["customers_successful_deleted"] = "Kupac je uspješno obrisan";
 $lang["customers_successful_updating"] = "Podaci o kupcu su uspješno ažurirani";
 $lang["customers_tax_code"] = "";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Oporezivo";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Ažuriraj kupca";

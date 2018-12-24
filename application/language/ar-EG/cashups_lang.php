@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "قيمة المبلغ";
 $lang["cashups_amount_number"] = "قيمة المبلغ يجب ان تتكون من ارقام";
 $lang["cashups_amount_required"] = "قيمة المبلغ هي خانة إجبارية.";

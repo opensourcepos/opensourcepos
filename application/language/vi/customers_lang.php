@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Bạn đã thêm khách hàng thành cô
 $lang["customers_successful_deleted"] = "Bạn đã xóa thành công";
 $lang["customers_successful_updating"] = "Bạn đã cập nhật khách hàng thành công";
 $lang["customers_tax_code"] = "Mã thuế";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Phải đánh thuế";
 $lang["customers_total"] = "Trả tổng cộng";
 $lang["customers_update"] = "Cập nhật khách hàng";

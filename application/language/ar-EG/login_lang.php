@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["login_gcaptcha"] = "أنا لست بوت.";
 $lang["login_go"] = "البدء";
 $lang["login_invalid_gcaptcha"] = "رمز التحقق غير صحيح.";

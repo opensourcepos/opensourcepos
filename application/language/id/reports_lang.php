@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Semua";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Dibatalkan";
 $lang["reports_categories"] = "Kategori";
 $lang["reports_categories_summary_report"] = "Laporan Ringkasan Kategori";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Produk/Item";
 $lang["reports_items_purchased"] = "Produk Dibeli";
 $lang["reports_items_received"] = "Barang Masuk";
 $lang["reports_items_summary_report"] = "Laporan Ringkasan Produk/Item";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "Kurang Persediaan";
 $lang["reports_low_inventory_report"] = "Laporan Persediaan Kurang";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Jenis Penjualan";
 $lang["reports_sales"] = "Penjualan";
 $lang["reports_sales_amount"] = "Jumlah Penjualan";
 $lang["reports_sales_summary_report"] = "Laporan Ringkasan Penjualan";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "No. Seri #";
 $lang["reports_sold_by"] = "Dijual Oleh";
 $lang["reports_sold_to"] = "Dijual Kepada";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Pemasok";
 $lang["reports_suppliers"] = "Pemasok";
 $lang["reports_suppliers_summary_report"] = "Laporan Ringkasan Pemasok";
 $lang["reports_tax"] = "Pajak";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Persentase Pajak";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Pajak";
 $lang["reports_taxes_summary_report"] = "Laporan Ringkasan Pajak";
 $lang["reports_total"] = "Total";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "ميزات/مميزات";
 $lang["module_attributes_desc"] = "إضافة، تعديل، حذف، وبحث بالميزات.";
 $lang["module_both"] = "الاثنين";

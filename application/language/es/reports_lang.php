@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Todo";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Cancelado";
 $lang["reports_categories"] = "Categorías";
 $lang["reports_categories_summary_report"] = "Reporte de Resumen de Categorías";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Artículos";
 $lang["reports_items_purchased"] = "Artículos Comprados";
 $lang["reports_items_received"] = "Artículos Recibidos";
 $lang["reports_items_summary_report"] = "Reporte de Resumen de Artículos";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "Inventario Bajo";
 $lang["reports_low_inventory_report"] = "Reporte de Inventario Bajo";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Tipo de Venta";
 $lang["reports_sales"] = "Ventas";
 $lang["reports_sales_amount"] = "Monto de ventas";
 $lang["reports_sales_summary_report"] = "Reporte de Resumen de Ventas";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "S/N";
 $lang["reports_sold_by"] = "Vendido Por";
 $lang["reports_sold_to"] = "Vendido A";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Proveedor";
 $lang["reports_suppliers"] = "Proveedores";
 $lang["reports_suppliers_summary_report"] = "Reporte de Resumen de Proveedores";
 $lang["reports_tax"] = "Impuesto";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Porcentaje de Impuestos";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Impuestos";
 $lang["reports_taxes_summary_report"] = "Reporte de Resumen de Impuestos";
 $lang["reports_total"] = "Total";

@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Bạn đã xóa thành công";
 $lang["suppliers_successful_updating"] = "Bạn đã cập nhật Nhà cung cấp thành công";
 $lang["suppliers_supplier"] = "Nhà cung cấp";
 $lang["suppliers_supplier_id"] = "Mã số";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Cập nhật Nhà cung cấp";

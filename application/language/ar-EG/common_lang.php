@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "العنوان 1";
 $lang["common_address_2"] = "العنوان 2";
 $lang["common_city"] = "المدينة";
@@ -38,6 +39,7 @@ $lang["common_last_page"] = "الأخيرة";
 $lang["common_learn_about_project"] = "للتعرف على أخر المعلومات حول المشروع.";
 $lang["common_list_of"] = "قائمة بـ";
 $lang["common_logout"] = "خروج";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "جديد";
 $lang["common_no_persons_to_display"] = "لا يوجد اناس لعرضهم.";
 $lang["common_none_selected_text"] = "[إختيار]";

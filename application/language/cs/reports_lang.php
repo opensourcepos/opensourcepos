@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Vše";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Zrušené";
 $lang["reports_categories"] = "Kategorie";
 $lang["reports_categories_summary_report"] = "Přehled dle kategorií";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Položky";
 $lang["reports_items_purchased"] = "Zakoupené položky";
 $lang["reports_items_received"] = "Přijaté položky";
 $lang["reports_items_summary_report"] = "Přehled položek";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Typ transakce";
 $lang["reports_sales"] = "Transakce";
 $lang["reports_sales_amount"] = "Množství transakcí";
 $lang["reports_sales_summary_report"] = "Přehled podle transakcí";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Sériové číslo";
 $lang["reports_sold_by"] = "Prodejce";
 $lang["reports_sold_to"] = "Zákazník";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Dodavatel";
 $lang["reports_suppliers"] = "Dodavatelé";
 $lang["reports_suppliers_summary_report"] = "Přehled dodavatelů";
 $lang["reports_tax"] = "DPH";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Sazba";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Daně";
 $lang["reports_taxes_summary_report"] = "Přehled podle DPH";
 $lang["reports_total"] = "Celkem";

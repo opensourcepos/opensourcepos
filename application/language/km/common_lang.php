@@ -39,6 +39,7 @@ $lang["common_last_page"] = "";
 $lang["common_learn_about_project"] = "";
 $lang["common_list_of"] = "";
 $lang["common_logout"] = "";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "";
 $lang["common_no_persons_to_display"] = "";
 $lang["common_none_selected_text"] = "";

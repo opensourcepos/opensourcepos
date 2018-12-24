@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "hamısı";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Ləğv Edilmiş";
 $lang["reports_categories"] = "kateqoriyalar";
 $lang["reports_categories_summary_report"] = "komentariyalar";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Mallar";
 $lang["reports_items_purchased"] = "ad";
 $lang["reports_items_received"] = "Qəbul Olunan Mallar";
 $lang["reports_items_summary_report"] = "ödəniş tipi";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "ödənişlər";
 $lang["reports_low_inventory_report"] = "inventor hesabatı";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "satılıb kimə";
 $lang["reports_sales"] = "Əməliyyatlar";
 $lang["reports_sales_amount"] = "Əməliyyatların Məbləği";
 $lang["reports_sales_summary_report"] = "toplam";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "hesabatlar";
 $lang["reports_sold_by"] = "kim tərəfindən qoyulub";
 $lang["reports_sold_to"] = "təchizatçı";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "vergi hesabatı";
 $lang["reports_suppliers"] = "toplam";
 $lang["reports_suppliers_summary_report"] = "Təchizatçıların Yekun Hesabatı";
 $lang["reports_tax"] = "tip";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Retail Price";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Vergilər";
 $lang["reports_taxes_summary_report"] = "Vergi Yekun Hesabatı";
 $lang["reports_total"] = "Cəm";

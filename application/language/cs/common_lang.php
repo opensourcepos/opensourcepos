@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Poslední";
 $lang["common_learn_about_project"] = "pro získání dalších informací k projektu.";
 $lang["common_list_of"] = "Seznam";
 $lang["common_logout"] = "Odhlásit";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Nový";
 $lang["common_no_persons_to_display"] = "Žádní zákazníci k zobrazení.";
 $lang["common_none_selected_text"] = "bez výběru";

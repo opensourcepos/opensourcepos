@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Er werd(en)";
 $lang["suppliers_successful_updating"] = "Wijzigingen leveranciersgegevens bewaard";
 $lang["suppliers_supplier"] = "Leverancier";
 $lang["suppliers_supplier_id"] = "Id";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Bewerk Leverancier";

@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "";
 $lang["customers_successful_deleted"] = "";
 $lang["customers_successful_updating"] = "";
 $lang["customers_tax_code"] = "";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "";
 $lang["customers_total"] = "";
 $lang["customers_update"] = "";

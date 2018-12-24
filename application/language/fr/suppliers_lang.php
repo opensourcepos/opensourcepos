@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "Suppression réussie";
 $lang["suppliers_successful_updating"] = "Fournisseur édité avec succès";
 $lang["suppliers_supplier"] = "Fournisseur";
 $lang["suppliers_supplier_id"] = "Id";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "Éditer Fournisseur";

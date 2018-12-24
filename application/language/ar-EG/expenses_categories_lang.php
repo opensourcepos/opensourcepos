@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "اسم نوع المصاريف مطلوب";
 $lang["expenses_categories_add_item"] = "إضافة نوع";
 $lang["expenses_categories_cannot_be_deleted"] = "فشلت عملية مسح نوع المصاريف";

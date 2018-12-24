@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Siz uğurla müştəri əlavə etdiniz";
 $lang["customers_successful_deleted"] = "Siz uğurla sildiniz";
 $lang["customers_successful_updating"] = "Siz uğurla müştərini sildiniz";
 $lang["customers_tax_code"] = "Vergi Kodu";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "";
 $lang["customers_total"] = "";
 $lang["customers_update"] = "";

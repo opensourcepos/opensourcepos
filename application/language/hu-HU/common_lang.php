@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Utolsó";
 $lang["common_learn_about_project"] = "a legfrissebb információkért a projekttel kapcsolatban.";
 $lang["common_list_of"] = "Lista: ";
 $lang["common_logout"] = "Kilépés";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Új";
 $lang["common_no_persons_to_display"] = "Nincsenek megjeleníthető emberek";
 $lang["common_none_selected_text"] = "Nincs kiválaszva";

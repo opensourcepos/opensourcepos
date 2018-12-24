@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Ultima";
 $lang["common_learn_about_project"] = "para leer la información más reciente acerca del proyecto.";
 $lang["common_list_of"] = "Lista de";
 $lang["common_logout"] = "Salir";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Nuevo";
 $lang["common_no_persons_to_display"] = "No hay nadie que mostrar.";
 $lang["common_none_selected_text"] = "Nada Seleccionado.";

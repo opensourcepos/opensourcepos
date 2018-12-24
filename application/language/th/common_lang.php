@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "เพื่อศึกษาข้อมูลล่าสุดของโครงการ";
 $lang["common_list_of"] = "รายการ";
 $lang["common_logout"] = "ออกจากระบบ";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "New";
 $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตัวบุคคล";
 $lang["common_none_selected_text"] = "Nothing selected";

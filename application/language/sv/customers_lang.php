@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Du har lagt till en kund";
 $lang["customers_successful_deleted"] = "Du har tagit bort";
 $lang["customers_successful_updating"] = "Du har uppdaterat kunden";
 $lang["customers_tax_code"] = "Skattekod";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Skattetabell";
 $lang["customers_total"] = "Totalt spenderat";
 $lang["customers_update"] = "Uppdatera kund";

@@ -19,4 +19,5 @@ $lang["suppliers_successful_deleted"] = "";
 $lang["suppliers_successful_updating"] = "";
 $lang["suppliers_supplier"] = "";
 $lang["suppliers_supplier_id"] = "";
+$lang["suppliers_tax_id"] = "";
 $lang["suppliers_update"] = "";

@@ -1,6 +1,7 @@
 <?php 
 
 $lang["reports_all"] = "Tất cả";
+$lang["reports_authority"] = "";
 $lang["reports_canceled"] = "Đã hủy";
 $lang["reports_categories"] = "Thể loại";
 $lang["reports_categories_summary_report"] = "Báo cáo tổng thể thể loại";
@@ -63,6 +64,7 @@ $lang["reports_items"] = "Hàng hóa";
 $lang["reports_items_purchased"] = "Hàng hóa đã đặt mua";
 $lang["reports_items_received"] = "Hàng hóa đã nhập";
 $lang["reports_items_summary_report"] = "Báo cáo tổng thể Hàng hóa";
+$lang["reports_jurisdiction"] = "";
 $lang["reports_low_inventory"] = "";
 $lang["reports_low_inventory_report"] = "";
 $lang["reports_low_sell_quantity"] = "";
@@ -100,6 +102,8 @@ $lang["reports_sale_type"] = "Kiểu giao dịch";
 $lang["reports_sales"] = "Giao dịch";
 $lang["reports_sales_amount"] = "Tổng giao dịch";
 $lang["reports_sales_summary_report"] = "Báo cáo tổng thể Giao dịch";
+$lang["reports_sales_taxes"] = "";
+$lang["reports_sales_taxes_summary_report"] = "";
 $lang["reports_serial_number"] = "Số sê-ri";
 $lang["reports_sold_by"] = "Bán bởi";
 $lang["reports_sold_to"] = "Bán cho";
@@ -112,7 +116,9 @@ $lang["reports_supplier"] = "Nhà cung cấp";
 $lang["reports_suppliers"] = "Nhà cung cấp";
 $lang["reports_suppliers_summary_report"] = "Báo cáo tổng thể Nhà cung cấp";
 $lang["reports_tax"] = "Thuế";
+$lang["reports_tax_category"] = "";
 $lang["reports_tax_percent"] = "Phần trăm Thuế";
+$lang["reports_tax_rate"] = "";
 $lang["reports_taxes"] = "Thuế";
 $lang["reports_taxes_summary_report"] = "Báo cáo tổng thể Thuế";
 $lang["reports_total"] = "Tổng cộng";

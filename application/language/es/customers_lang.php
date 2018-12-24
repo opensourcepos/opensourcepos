@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Has agregado satisfactoriamente el clien
 $lang["customers_successful_deleted"] = "Has borrado satisfactoriamente a";
 $lang["customers_successful_updating"] = "No se ha podido agregar el cliente";
 $lang["customers_tax_code"] = "Código de impuesto";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Gravable";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Actualizar Cliente";

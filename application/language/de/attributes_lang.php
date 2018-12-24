@@ -1,5 +1,6 @@
-<?php
-$lang["attributes_attribute_value_invalid_chars"] = "Attributwert darf nicht \":\" oder \"|\" enthalten";
+<?php 
+
+$lang["attributes_attribute_value_invalid_chars"] = "Attributwert darf nicht \\\":\\\" oder \\\"|\\\" enthalten";
 $lang["attributes_confirm_delete"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
 $lang["attributes_definition_flags"] = "";

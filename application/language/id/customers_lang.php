@@ -47,6 +47,7 @@ $lang["customers_successful_adding"] = "Anda telah berhasil menambah pelanggan";
 $lang["customers_successful_deleted"] = "Anda telah berhasil menghapus pelanggan";
 $lang["customers_successful_updating"] = "Anda telah berhasil memperbarui pelanggan";
 $lang["customers_tax_code"] = "Kode pajak";
+$lang["customers_tax_id"] = "";
 $lang["customers_taxable"] = "Dikenakan pajak";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Ubah Pelanggan";

@@ -39,6 +39,7 @@ $lang["common_last_page"] = "Akhir";
 $lang["common_learn_about_project"] = "Untuk belajar informasi terbaru tentang proyek ini.";
 $lang["common_list_of"] = "Daftar";
 $lang["common_logout"] = "Keluar";
+$lang["common_migration_needed"] = "";
 $lang["common_new"] = "Baru";
 $lang["common_no_persons_to_display"] = "Tidak ada orang untuk ditampilkan.";
 $lang["common_none_selected_text"] = "Tidak ada yang dipilih.";
