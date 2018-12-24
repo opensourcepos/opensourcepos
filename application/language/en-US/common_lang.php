@@ -6,6 +6,7 @@ $lang["common_city"] = "City";
 $lang["common_close"] = "Close";
 $lang["common_comments"] = "Comments";
 $lang["common_common"] = "common";
+$lang["common_correct_errors"] = "Please correct identified errors before saving";
 $lang["common_confirm_search"] = "You have selected one or more rows, these will no longer be selected after your search. Are you sure you want to submit this search?";
 $lang["common_country"] = "Country";
 $lang["common_date"] = "Date";
