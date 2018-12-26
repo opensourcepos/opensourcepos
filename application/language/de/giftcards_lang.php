@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["giftcards_add_minus"] = "Bestandsänderung.";
 $lang["giftcards_allow_alt_description"] = "Erlaube Alternative Bezeichnung";
 $lang["giftcards_bulk_edit"] = "Sammeländerung";
@@ -14,21 +13,21 @@ $lang["giftcards_change_all_to_serialized"] = "Ändere alle zu serialisiert";
 $lang["giftcards_change_all_to_unserialized"] = "Ändere alle zu NICHT serialisiert";
 $lang["giftcards_confirm_bulk_edit"] = "Wollen Sie alle gewählten Gutscheine ändern?";
 $lang["giftcards_confirm_delete"] = "Wollen Sie alle gewählten Gutscheine löschen?";
-$lang["giftcards_confirm_restore"] = "";
+$lang["giftcards_confirm_restore"] = "Sind Sie sicher, dass Sie ausgewählte Gutscheine wiederherstellen möchten?";
 $lang["giftcards_cost_price"] = "Einkaufspreis";
 $lang["giftcards_count"] = "Bestandsänderung";
 $lang["giftcards_current_quantity"] = "Aktuelle Menge";
 $lang["giftcards_description"] = "Bezeichnung";
 $lang["giftcards_details_count"] = "Bestandsdetails";
 $lang["giftcards_do_nothing"] = "Tue nichts";
-$lang["giftcards_edit_fields_you_want_to_update"] = "Wollen Sie die Felder für ALLE gewählten Gutscheine ändern?";
+$lang["giftcards_edit_fields_you_want_to_update"] = "Felder für ausgewählte Gutscheine bearbeiten.";
 $lang["giftcards_edit_multiple_giftcards"] = "Sammeländerung.";
 $lang["giftcards_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern.";
 $lang["giftcards_error_updating_multiple"] = "Fehler beim Ändern.";
 $lang["giftcards_excel_import_failed"] = "Excel Import fehlerhaft.";
 $lang["giftcards_generate_barcodes"] = "Generiere Barcodes";
 $lang["giftcards_giftcard"] = "Gutschein";
-$lang["giftcards_giftcard_number"] = "Gutschein-Nr.";
+$lang["giftcards_giftcard_number"] = "Gutscheinnummer";
 $lang["giftcards_info_provided_by"] = "Informationen bereitgestellt von";
 $lang["giftcards_inventory_comments"] = "Kommentare";
 $lang["giftcards_is_serialized"] = "Gutschein hat Seriennummer";
