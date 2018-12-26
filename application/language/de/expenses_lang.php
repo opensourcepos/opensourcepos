@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Kosten Hinzufügen";
 $lang["expenses_amount"] = "Betrag";
 $lang["expenses_amount_number"] = "Betrag muss eine Zahl sein";
 $lang["expenses_amount_required"] = "Kosten Betrag erforderlich";
 $lang["expenses_by_category"] = "Kategorie";
-$lang["expenses_cannot_be_deleted"] = "Kosten Kategorien können nicht gelöscht werden";
+$lang["expenses_cannot_be_deleted"] = "Kosten können nicht gelöscht werden";
 $lang["expenses_cash"] = "Bar";
 $lang["expenses_cash_filter"] = "Bar";
 $lang["expenses_categories_name"] = "Kategorie";
