@@ -1,8 +1,7 @@
-<?php 
-
-$lang["attributes_attribute_value_invalid_chars"] = "Attributwert darf nicht \\\":\\\" oder \\\"|\\\" enthalten";
-$lang["attributes_confirm_delete"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "";
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "Attributwert darf nicht ':' oder '|' enthalten";
+$lang["attributes_confirm_delete"] = "Sind Sie sicher, dass Sie die ausgewählten Attribute löschen möchten?";
+$lang["attributes_definition_cannot_be_deleted"] = "Ausgewählte Attribute konnten nicht gelöscht werden";
 $lang["attributes_definition_flags"] = "";
 $lang["attributes_definition_group"] = "Gruppe";
 $lang["attributes_definition_id"] = "ID";
@@ -15,14 +14,14 @@ $lang["attributes_definition_successful_updating"] = "Sie haben das Attributerfo
 $lang["attributes_definition_type"] = "Attribut Typ";
 $lang["attributes_definition_type_required"] = "Attribut ist ein Pflichtfeld";
 $lang["attributes_definition_values"] = "Attribut Werte";
-$lang["attributes_new"] = "";
-$lang["attributes_no_attributes_to_display"] = "";
-$lang["attributes_receipt_visibility"] = "";
-$lang["attributes_show_in_items"] = "";
-$lang["attributes_show_in_items_visibility"] = "";
+$lang["attributes_new"] = "Neues Attribut";
+$lang["attributes_no_attributes_to_display"] = "Keine Elemente zum Anzeigen";
+$lang["attributes_receipt_visibility"] = "Quittung";
+$lang["attributes_show_in_items"] = "In Artikeln anzeigen";
+$lang["attributes_show_in_items_visibility"] = "Artikel";
 $lang["attributes_show_in_receipt"] = "";
 $lang["attributes_show_in_receivings"] = "";
-$lang["attributes_show_in_receivings_visibility"] = "";
+$lang["attributes_show_in_receivings_visibility"] = "Eingänge";
 $lang["attributes_show_in_sales"] = "";
-$lang["attributes_show_in_sales_visibility"] = "";
-$lang["attributes_update"] = "";
+$lang["attributes_show_in_sales_visibility"] = "Verkauf";
+$lang["attributes_update"] = "Attribut aktualisieren";
