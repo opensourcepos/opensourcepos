@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Valor do atributo não pode conter ':' ou '|'";
 $lang["attributes_confirm_delete"] = "Tem certeza de que deseja excluir os atributos selecionados?";
 $lang["attributes_definition_cannot_be_deleted"] = "Não foi possível excluir atributo selecionado (s)";
 $lang["attributes_definition_flags"] = "Visibilidade de atributo";
 $lang["attributes_definition_group"] = "Grupo";
 $lang["attributes_definition_id"] = "Id";
-$lang["attributes_definition_name"] = "Nome do Atributo";
+$lang["attributes_definition_name"] = "Adicionar Atributo";
 $lang["attributes_definition_name_required"] = "Nome do atributo é um campo obrigatório";
 $lang["attributes_definition_one_or_multiple"] = "Atributo(s)";
 $lang["attributes_definition_successful_adding"] = "Você adicionou com êxito o item";
