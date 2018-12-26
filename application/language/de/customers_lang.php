@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Kontonummer";
 $lang["customers_account_number_duplicate"] = "Diese Kontonummer existiert bereits.";
 $lang["customers_available_points"] = "Verfügbare Punkte";
@@ -10,16 +9,16 @@ $lang["customers_cannot_be_deleted"] = "Kunde kann nicht gelöscht werden, ein o
 $lang["customers_company_name"] = "Firmenname";
 $lang["customers_confirm_delete"] = "Wollen Sie die gewählten Kunden wirklich löschen?";
 $lang["customers_confirm_restore"] = "Möchten Sie die ausgewählten Kunden wirklich wiederherstellen?";
-$lang["customers_consent"] = "";
-$lang["customers_consent_required"] = "";
+$lang["customers_consent"] = "Einwilligung zur Registrierung";
+$lang["customers_consent_required"] = "Die Einwilligung zur Registrierung ist ein Pflichtfeld.";
 $lang["customers_customer"] = "Kunde";
-$lang["customers_date"] = "";
+$lang["customers_date"] = "Datum";
 $lang["customers_discount"] = "Rabatt";
-$lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
+$lang["customers_discount_fixed"] = "Fester Rabatt";
+$lang["customers_discount_percent"] = "Prozentualer Rabatt";
+$lang["customers_discount_type"] = "Rabattart";
 $lang["customers_email_duplicate"] = "E-Mail Adresse ist bereits in der Datenbank vorhanden.";
-$lang["customers_employee"] = "";
+$lang["customers_employee"] = "Mitarbeiter";
 $lang["customers_error_adding_updating"] = "Fehler beim Hinzufügen/Ändern.";
 $lang["customers_excel_import_failed"] = "Excel Import fehlerhaft";
 $lang["customers_excel_import_nodata_wrongformat"] = "Die hochgeladene Datei ist leer oder hat ein falsches Format.";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "Kunde erfolgreich hinzugefügt";
 $lang["customers_successful_deleted"] = "Löschung erfolgreich";
 $lang["customers_successful_updating"] = "Änderung erfolgreich";
 $lang["customers_tax_code"] = "Steuer-Code";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "Steuer ID";
 $lang["customers_taxable"] = "Steuerpflichtig";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Kunde ändern";
