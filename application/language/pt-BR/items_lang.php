@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair.";
 $lang["items_allow_alt_desciption"] = "Descrição longa";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
@@ -38,7 +37,7 @@ $lang["items_excel_import_nodata_wrongformat"] = "Seu arquivo enviado não cont�
 $lang["items_excel_import_partially_failed"] = "A maioria dos itens importados. Mas alguns não eram, aqui está a lista:";
 $lang["items_excel_import_success"] = "Importação de Itens com sucesso.";
 $lang["items_generate_barcodes"] = "Gerar Códigos de Barras";
-$lang["items_hsn_code"] = "";
+$lang["items_hsn_code"] = "Nomenclatura do Sistema Harmonizado";
 $lang["items_image"] = "Imagem";
 $lang["items_import_items_excel"] = "Importar planilha de produtos do Excel";
 $lang["items_info_provided_by"] = "Informação fornecida por";
@@ -98,7 +97,7 @@ $lang["items_successful_updating"] = "Você atualizou com sucesso o item";
 $lang["items_supplier"] = "Fornecedor";
 $lang["items_tax_1"] = "Imposto 1";
 $lang["items_tax_2"] = "Imposto 2";
-$lang["items_tax_category"] = "";
+$lang["items_tax_category"] = "Categoria de imposto";
 $lang["items_tax_percent"] = "Percentual Imposto";
 $lang["items_tax_percent_number"] = "Porcentagem de imposto deve ser um valor numérico";
 $lang["items_tax_percent_required"] = "Imposto Percentual um campo obrigatório.";
