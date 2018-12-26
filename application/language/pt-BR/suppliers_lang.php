@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["suppliers_account_number"] = "Conta nº";
 $lang["suppliers_agency_name"] = "Nome da Agência";
 $lang["suppliers_cannot_be_deleted"] = "Não foi possível excluir fornecedores selecionados, um ou mais dos fornecedores selecionados tem vendas.";
@@ -19,5 +18,5 @@ $lang["suppliers_successful_deleted"] = "excluído com sucesso";
 $lang["suppliers_successful_updating"] = "Você atualizou com sucesso fornecedor";
 $lang["suppliers_supplier"] = "Fornecedor";
 $lang["suppliers_supplier_id"] = "Id";
-$lang["suppliers_tax_id"] = "";
+$lang["suppliers_tax_id"] = "Id imposto";
 $lang["suppliers_update"] = "Atualização Fornecedor";
