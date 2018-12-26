@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Conta nº";
 $lang["customers_account_number_duplicate"] = "Este número de conta já está presente na base de dados.";
 $lang["customers_available_points"] = "Pontos Disponíveis";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "Você adicionou o cliente com sucesso";
 $lang["customers_successful_deleted"] = "Você excluiu com sucesso";
 $lang["customers_successful_updating"] = "Você atualizou o cliente com secesso";
 $lang["customers_tax_code"] = "Código de Imposto";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "Id imposto";
 $lang["customers_taxable"] = "Tributável";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Atualizar Cliente";
