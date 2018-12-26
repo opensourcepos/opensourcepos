@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["receivings_cancel_receiving"] = "Abbrechen";
 $lang["receivings_cannot_be_deleted"] = "Eingangsbestellung(en) konnten nicht gelöscht werden.";
 $lang["receivings_comments"] = "Kommentare";
@@ -20,7 +19,7 @@ $lang["receivings_error_editing_item"] = "Fehler beim Ändern des Artikels.";
 $lang["receivings_error_requisition"] = "Kann Bestand nicht von oder zum gleichen Lagerort ändern.";
 $lang["receivings_find_or_scan_item"] = "Finde/Scanne Artikel";
 $lang["receivings_find_or_scan_item_or_receipt"] = "Finde/Scanne Artikel oder Quittung";
-$lang["receivings_id"] = "Eingangs-Nr.";
+$lang["receivings_id"] = "Eingangs ID";
 $lang["receivings_item_name"] = "Artikelname";
 $lang["receivings_mode"] = "Eingangsmodus";
 $lang["receivings_new_supplier"] = "Neuer Lieferant";
@@ -28,15 +27,15 @@ $lang["receivings_one_or_multiple"] = "Wareneingäng(e)";
 $lang["receivings_print_after_sale"] = "Drucke Bon nach Verkauf";
 $lang["receivings_quantity"] = "Menge";
 $lang["receivings_receipt"] = "Eingangsquittung";
-$lang["receivings_receipt_number"] = "Eingangs-Nr.";
+$lang["receivings_receipt_number"] = "Eingangs Nummer";
 $lang["receivings_receiving"] = "Eingang";
 $lang["receivings_reference"] = "Referenz";
 $lang["receivings_register"] = "Wareneingang";
 $lang["receivings_requisition"] = "Bedarf";
 $lang["receivings_return"] = "Retoure";
 $lang["receivings_select_supplier"] = "Wählen Sie Lieferanten (optional)";
-$lang["receivings_ship_pack"] = "";
-$lang["receivings_start_typing_supplier_name"] = "Lieferantenname eingeben";
+$lang["receivings_ship_pack"] = "Versandpaket";
+$lang["receivings_start_typing_supplier_name"] = "Eintippen des Namens des Lieferanten beginnen...";
 $lang["receivings_stock"] = "Lager";
 $lang["receivings_stock_destination"] = "Lagerort (Ziel)";
 $lang["receivings_stock_locaiton"] = "Lagerort";
@@ -48,7 +47,7 @@ $lang["receivings_supplier_address"] = "Lieferant Address";
 $lang["receivings_supplier_email"] = "Lieferant Email";
 $lang["receivings_supplier_location"] = "Lieferant Location";
 $lang["receivings_total"] = "Total";
-$lang["receivings_transaction_failed"] = "Eingangstransaktion fehlerhaft";
-$lang["receivings_unable_to_add_item"] = "Kann Artikel nicht zum Eingang hinzufügen";
-$lang["receivings_unsuccessfully_updated"] = "Eingang nicht erfolgreich geändert";
+$lang["receivings_transaction_failed"] = "Eingangstransaktion fehlgeschlagen.";
+$lang["receivings_unable_to_add_item"] = "Kann Artikel nicht zum Eingang hinzufügen.";
+$lang["receivings_unsuccessfully_updated"] = "Eingang nicht erfolgreich geändert.";
 $lang["receivings_update"] = "Änd";
