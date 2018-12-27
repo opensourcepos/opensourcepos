@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "İstisna Ekle";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
@@ -65,6 +64,6 @@ $lang["taxes_tax_rate_successfully_added"] = "";
 $lang["taxes_tax_rates"] = "";
 $lang["taxes_tax_rates_configuration"] = "";
 $lang["taxes_tax_rounding"] = "";
-$lang["taxes_tax_type"] = "";
-$lang["taxes_update"] = "Satış Kategorisi Vergisini Güncelle";
+$lang["taxes_tax_type"] = "Tür";
+$lang["taxes_update"] = "Varsayılan Vergi Oranı %";
 $lang["taxes_vat_tax"] = "KDV Vergisi";
