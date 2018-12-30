@@ -636,7 +636,7 @@ function get_expenses_manage_table_headers()
 		array('payment_type' => $CI->lang->line('expenses_payment')),
 		array('category_name' => $CI->lang->line('expenses_categories_name')),
 		array('description' => $CI->lang->line('expenses_description')),
-		array('createdBy' => $CI->lang->line('expenses_employee'))
+		array('created_by' => $CI->lang->line('expenses_employee'))
 	);
 
 	return transform_headers($headers);
@@ -659,7 +659,7 @@ function get_expenses_data_row($expense)
 		'payment_type' => $expense->payment_type,
 		'category_name' => $expense->category_name,
 		'description' => $expense->description,
-		'createdBy' => $expense->first_name.' '. $expense->last_name,
+		'created_by' => $expense->first_name.' '. $expense->last_name,
 		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
