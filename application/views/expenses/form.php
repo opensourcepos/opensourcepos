@@ -164,7 +164,6 @@ $(document).ready(function()
 			type: 'POST',
 			dataFilter: function(data) {
 				var response = JSON.parse(data);
-				$(field).val(response.amount);
 				return response.success;
 			}
 		}
