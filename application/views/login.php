@@ -20,7 +20,7 @@
 				<div align="center" style="color:red"><?php echo validation_errors(); ?></div>
 
 				<?php if (!$this->migration->is_latest()): ?>
-				<div align="center" style="color:red"><?php echo $this->lang->line('common_migration_needed', $this->config->item('application_version  ')); ?></div>
+				<div align="center" style="color:red"><?php echo $this->lang->line('common_migration_needed', $this->config->item('application_version')); ?></div>
 				<?php endif; ?>
 
 				<div id="login_form">
