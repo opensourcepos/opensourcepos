@@ -239,6 +239,7 @@
 				user_settings[options.resource] = user_settings[options.resource] || {};
 				user_settings[options.resource][field] = checked;
 				localStorage[options.employee_id] = JSON.stringify(user_settings);
+				dialog_support.init("a.modal-dlg");
 			},
 			queryParamsType: 'limit',
 			iconSize: 'sm',
