@@ -1,13 +1,12 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "النقاط المتاحة";
 $lang["rewards_package"] = "مكافآت";
 $lang["rewards_remaining_balance"] = "رصيد النقاط المتبقي هو ";
-$lang["sales_account_number"] = "";
+$lang["sales_account_number"] = "حساب";
 $lang["sales_add_payment"] = "إضافة دفع";
 $lang["sales_amount_due"] = "المبلغ المطلوب";
 $lang["sales_amount_tendered"] = "المبلغ المدفوع";
-$lang["sales_authorized_signature"] = "";
+$lang["sales_authorized_signature"] = "توقيع معتمد";
 $lang["sales_cancel_sale"] = "الغاء عملية البيع";
 $lang["sales_cash"] = "نقدى";
 $lang["sales_cash_deposit"] = "ايداع نقدي";
