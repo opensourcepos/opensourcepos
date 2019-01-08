@@ -1,30 +1,29 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "أضافة أستثناء";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
-$lang["taxes_code"] = "";
+$lang["taxes_city"] = "مدينة";
+$lang["taxes_code"] = "الشفرة";
 $lang["taxes_confirm_delete"] = "هل أنت متأكد من تغيير الكود الضريبي؟ هذا الأجراء غير قابل للرجوع.";
 $lang["taxes_confirm_restore"] = "هل أنت متأكد من أستعادة الأكواد الضريبية؟";
 $lang["taxes_default_tax_category"] = "التصنيف الضريبي الأفتراضي";
-$lang["taxes_default_tax_rate"] = "";
+$lang["taxes_default_tax_rate"] = "معدل الضريبة الافتراضي";
 $lang["taxes_error_adding_updating"] = "فشل إضافة أو تغيير الكود الضريبي.";
-$lang["taxes_group_seq"] = "";
-$lang["taxes_jurisdiction_name"] = "";
-$lang["taxes_name"] = "";
+$lang["taxes_group_seq"] = "تسلسل المجموعة";
+$lang["taxes_jurisdiction_name"] = "اسم الولاية القضائية";
+$lang["taxes_name"] = "الاسم";
 $lang["taxes_new"] = "كود ضريبي جديد";
 $lang["taxes_no_taxes_to_display"] = "لا يوجد أكواد ضريبية للعرض.";
-$lang["taxes_reporting_authority"] = "";
-$lang["taxes_round_half_down"] = "تقريب Half Down";
-$lang["taxes_round_half_even"] = "تقريب Half Even";
-$lang["taxes_round_half_odd"] = "تقريب Half Odd";
-$lang["taxes_round_half_up"] = "تقريب Half Up";
+$lang["taxes_reporting_authority"] = "سلطة التقارير";
+$lang["taxes_round_half_down"] = "نصف الاسفل";
+$lang["taxes_round_half_even"] = "تقريب للنصف";
+$lang["taxes_round_half_odd"] = "تقريب غريب";
+$lang["taxes_round_half_up"] = "تقريب للاعلى";
 $lang["taxes_rounding_code"] = "كود التقريب";
 $lang["taxes_sales_tax"] = "ضريبة المبيعات";
 $lang["taxes_sales_tax_by_invoice"] = "ضريبة المبيعات بالفاتورة";
-$lang["taxes_sequence"] = "";
-$lang["taxes_state"] = "";
+$lang["taxes_sequence"] = "تسلسل";
+$lang["taxes_state"] = "حالة";
 $lang["taxes_successful_deleted"] = "تم المسح بنجاح";
 $lang["taxes_tax_categories"] = "";
 $lang["taxes_tax_categories_configuration"] = "";
