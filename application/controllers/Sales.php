@@ -367,7 +367,7 @@ class Sales extends Secure_Controller
 	{
 		$data = array();
 
-		$discount = 0.0;
+		$discount = $this->config->item('default_sales_discount');
 		$discount_type = $this->config->item('default_sales_discount_type');
 
 		// check if any discount is assigned to the selected customer
@@ -382,12 +382,6 @@ class Sales extends Secure_Controller
 				$discount = $customer_discount;
 				$discount_type = $customer_discount_type;
 			}
-		}
-
-		// if the customer discount is 0 or no customer is selected apply the default sales discount
-		if($discount == 0)
-		{
-			$discount = $this->config->item('default_sales_discount');
 		}
 
 		$item_id_or_number_or_item_kit_or_receipt = $this->input->post('item');

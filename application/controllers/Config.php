@@ -276,6 +276,8 @@ class Config extends Secure_Controller
 			'theme' => $this->input->post('theme'),
 			'default_sales_discount_type' => $this->input->post('default_sales_discount_type') != NULL,
 			'default_sales_discount' => $this->input->post('default_sales_discount'),
+			'default_receivings_discount_type' => $this->input->post('default_receivings_discount_type') != NULL,
+			'default_receivings_discount' => $this->input->post('default_receivings_discount'),
 			'enforce_privacy' => $this->input->post('enforce_privacy'),
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),

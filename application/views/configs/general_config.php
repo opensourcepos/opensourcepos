@@ -40,6 +40,34 @@
 			</div>
 
 			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_default_receivings_discount'), 'default_receivings_discount', array('class' => 'control-label col-xs-2 required')); ?>
+				<div class='col-xs-2'>
+					<div class="input-group">
+						<?php echo form_input(array(
+							'name' => 'default_receivings_discount',
+							'id' => 'default_receivings_discount',
+							'class' => 'form-control input-sm required',
+							'type' => 'number',
+							'min' => 0,
+							'max' => 100,
+							'value' => $this->config->item('default_receivings_discount'))); ?>
+						<span class="input-group-btn">
+							<?php echo form_checkbox(array(
+								'id' => 'default_receivings_discount_type',
+								'name' => 'default_receivings_discount_type',
+								'value' => 1,
+								'data-toggle' => 'toggle',
+								'data-size' => 'normal',
+								'data-onstyle' => 'success',
+								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>',
+								'data-off' => '<b>%</b>',
+								'checked' => $this->config->item('default_receivings_discount_type'))); ?>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
 				<?php echo form_label($this->lang->line('config_enforce_privacy'), 'enforce_privacy', array('class' => 'control-label col-xs-2')); ?>
 				<div class='col-xs-1'>
 					<?php echo form_checkbox(array(

@@ -159,7 +159,7 @@ class Receiving_lib
 		$this->CI->session->unset_userdata('recv_stock_destination');
 	}
 
-	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount_type = 0, $discount = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $receiving_id = NULL, $include_deleted = FALSE)
+	public function add_item($item_id, $quantity = 1, $item_location = NULL, $discount = 0, $discount_type = 0, $price = NULL, $description = NULL, $serialnumber = NULL, $receiving_quantity = NULL, $receiving_id = NULL, $include_deleted = FALSE)
 	{
 		//make sure item exists in database.
 		if(!$this->CI->Item->exists($item_id, $include_deleted))
@@ -320,13 +320,13 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount_type, $row->discount, $row->item_unit_price, $row->description, $row->serialnumber, $receiving_id, $row->receiving_quantity, TRUE);
+			$this->add_item($row->item_id, -$row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $receiving_id, $row->receiving_quantity, TRUE);
 		}
 
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);
 	}
 
-	public function add_item_kit($external_item_kit_id, $item_location, $discount_type)
+	public function add_item_kit($external_item_kit_id, $item_location, $discount, $discount_type)
 	{
 		//KIT #
 		$pieces = explode(' ',$external_item_kit_id);
@@ -334,7 +334,7 @@ class Receiving_lib
 		
 		foreach($this->CI->Item_kit_items->get_info($item_kit_id) as $item_kit_item)
 		{
-			$this->add_item($item_kit_item['item_id'],$item_kit_item['quantity'], $item_location, $discount_type);
+			$this->add_item($item_kit_item['item_id'], $item_kit_item['quantity'], $item_location, $discount, $discount_type);
 		}
 	}
 
@@ -345,7 +345,7 @@ class Receiving_lib
 
 		foreach($this->CI->Receiving->get_receiving_items($receiving_id)->result() as $row)
 		{
-			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount_type, $row->discount, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
+			$this->add_item($row->item_id, $row->quantity_purchased, $row->item_location, $row->discount, $row->discount_type, $row->item_unit_price, $row->description, $row->serialnumber, $row->receiving_quantity, $receiving_id, TRUE);
 		}
 
 		$this->set_supplier($this->CI->Receiving->get_supplier($receiving_id)->person_id);

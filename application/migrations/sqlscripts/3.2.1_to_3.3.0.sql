@@ -132,15 +132,19 @@ SET `ospos_expenses`.`supplier_id` = `ospos_suppliers`.`person_id`;
 -- Save name in description for those expenses whose supplier isn't registered
 
 UPDATE `ospos_expenses`
-SET `description` = CONCAT(`description`, CONCAT('\nSupplier name: ', `supplier_name`))
-WHERE `supplier_id` is NULL;
+  SET `description` = CONCAT(`description`, CONCAT('\nSupplier name: ', `supplier_name`))
+  WHERE `supplier_id` is NULL;
 
 -- Add foreign key
 
 ALTER TABLE `ospos_expenses`
-ADD CONSTRAINT `ospos_expenses_ibfk_3` FOREIGN KEY (`supplier_id`) REFERENCES `ospos_suppliers` (`person_id`);
+  ADD CONSTRAINT `ospos_expenses_ibfk_3` FOREIGN KEY (`supplier_id`) REFERENCES `ospos_suppliers` (`person_id`);
 
 -- Delete supplier name
 
 ALTER TABLE `ospos_expenses`
-DROP COLUMN `supplier_name`;
+  DROP COLUMN `supplier_name`;
+
+INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
+  ('default_receivings_discount_type', '0'),
+  ('default_receivings_discount', '0');
