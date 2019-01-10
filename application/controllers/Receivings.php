@@ -93,7 +93,8 @@ class Receivings extends Secure_Controller
 		$this->barcode_lib->parse_barcode_fields($quantity, $item_id_or_number_or_item_kit_or_receipt);
 		$quantity = ($mode == 'receive' || $mode == 'requisition') ? $quantity : -$quantity;
 		$item_location = $this->receiving_lib->get_stock_source();
-		$discount_type = $this->config->item('default_sales_discount_type');
+		$discount = $this->config->item('default_receivings_discount');
+		$discount_type = $this->config->item('default_receivings_discount_type');
 
 		if($mode == 'return' && $this->Receiving->is_valid_receipt($item_id_or_number_or_item_kit_or_receipt))
 		{
@@ -101,9 +102,9 @@ class Receivings extends Secure_Controller
 		}
 		elseif($this->Item_kit->is_valid_item_kit($item_id_or_number_or_item_kit_or_receipt))
 		{
-			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount_type);
+			$this->receiving_lib->add_item_kit($item_id_or_number_or_item_kit_or_receipt, $item_location, $discount, $discount_type);
 		}
-		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount_type))
+		elseif(!$this->receiving_lib->add_item($item_id_or_number_or_item_kit_or_receipt, $quantity, $item_location, $discount,  $discount_type))
 		{
 			$data['error'] = $this->lang->line('receivings_unable_to_add_item');
 		}
