@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Dirección 1";
 $lang["common_address_2"] = "Dirección 2";
 $lang["common_city"] = "Ciudad";
@@ -39,10 +38,10 @@ $lang["common_last_page"] = "Ultima";
 $lang["common_learn_about_project"] = "para leer la información más reciente acerca del proyecto.";
 $lang["common_list_of"] = "Lista de";
 $lang["common_logout"] = "Salir";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "La migración de la base de datos hacia %1 comenzará después de iniciar sesión.";
 $lang["common_new"] = "Nuevo";
 $lang["common_no_persons_to_display"] = "No hay nadie que mostrar.";
-$lang["common_none_selected_text"] = "Nada Seleccionado.";
+$lang["common_none_selected_text"] = "Seleccionar";
 $lang["common_or"] = "Ó";
 $lang["common_phone_number"] = "Teléfono";
 $lang["common_phone_number_required"] = "El numoero de telefono es requerido";
