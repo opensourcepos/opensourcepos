@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Dirección del Comercio";
 $lang["config_address_required"] = "Dirección del Comercio es requerida.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir código barras duplicados";
@@ -72,7 +71,7 @@ $lang["config_default_origin_tax_code"] = "Código de impuesto por defecto";
 $lang["config_default_sales_discount"] = "Descuento en Ventas predeterminado";
 $lang["config_default_sales_discount_number"] = "Descuento en ventas predeterminado debe ser un número.";
 $lang["config_default_sales_discount_required"] = "Descuento en ventas predeterminado es requerido.";
-$lang["config_default_tax_category"] = "";
+$lang["config_default_tax_category"] = "Categoría de Tasa predeterminada";
 $lang["config_default_tax_code"] = "";
 $lang["config_default_tax_jurisdiction"] = "";
 $lang["config_default_tax_name_number"] = "El nombre de el impuesto debe ser letras.";
