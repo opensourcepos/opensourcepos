@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_desciption"] = "وصف بديل";
@@ -111,3 +111,4 @@ $lang["items_unit_price_required"] = "السعر مطلوب.";
 $lang["items_upc_database"] = "UPC قاعدة بيانات";
 $lang["items_update"] = "تحديث بيانات صنف";
 $lang["items_use_inventory_menu"] = "استخدام تحديث المخزن";
+$lang["expiry_date"] = "تاريخ انتهاء الصلاحية";

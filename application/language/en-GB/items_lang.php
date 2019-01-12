@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Inventory to add or subtract";
 $lang["items_allow_alt_desciption"] = "";
@@ -111,3 +111,4 @@ $lang["items_unit_price_required"] = "Sell Price is a required field";
 $lang["items_upc_database"] = "Barcode Database";
 $lang["items_update"] = "Update Item";
 $lang["items_use_inventory_menu"] = "Use Inventory Menu";
+$lang["expiry_date"] = "Expiry Date";

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $lang["items_add_minus"] = "Ajoujer/Soustraire à l'Inventaire.";
 $lang["items_allow_alt_desciption"] = "";
@@ -111,3 +111,4 @@ $lang["items_unit_price_required"] = "Le prix de revente est requis.";
 $lang["items_upc_database"] = "Base de données UPC";
 $lang["items_update"] = "Éditer l'article";
 $lang["items_use_inventory_menu"] = "Utiliser Menu Inv";
+$lang["expiry_date"] = "Date expiration";
