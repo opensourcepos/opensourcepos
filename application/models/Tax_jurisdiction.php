@@ -210,5 +210,19 @@ class Tax_jurisdiction extends CI_Model
 
 		return $this->db->get();
 	}
+
+	public function get_empty_row()
+	{
+		return array('0' => array(
+			'jurisdiction_id' => -1,
+			'jurisdiction_name' => '',
+			'tax_group' => '',
+			'tax_type' => '1',
+			'reporting_authority' => '',
+			'tax_group_sequence' => 0,
+			'cascade_sequence' => 0,
+			'deleted' => 0));
+	}
+
 }
 ?>

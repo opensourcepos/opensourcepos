@@ -12,9 +12,9 @@ foreach($tax_categories as $key => $category)
 		<?php echo form_label($this->lang->line('taxes_tax_category') . ' ' . $i, 'tax_category_' . $i, array('class' => 'control-label col-xs-2')); ?>
 		<div class='col-xs-3'>
 			<?php $form_data = array(
-				'name' => 'tax_category_' . $i,
+				'name' => 'tax_category[]',
 				'id' => 'tax_category_' . $i,
-				'class' => 'valid_chars form-control input-sm required',
+				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => $this->lang->line('taxes_tax_category_name'),
 				'value' => $tax_category
 			);
@@ -23,8 +23,7 @@ foreach($tax_categories as $key => $category)
 		</div>
 		<div class='col-xs-2'>
 			<?php $form_data = array(
-				'name' => 'tax_group_sequence_' . $i,
-				'id' => 'tax_group_sequence_' . $i,
+				'name' => 'tax_group_sequence[]',
 				'class' => 'valid_chars form-control input-sm',
 				'placeholder' => $this->lang->line('taxes_sequence'),
 				'value' => $tax_group_sequence
@@ -35,42 +34,8 @@ foreach($tax_categories as $key => $category)
 		<span class="add_tax_category glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('tax_category_id_' . $i, $tax_category_id); ?>
+		<?php echo form_hidden('tax_category_id[]', $tax_category_id); ?>
 	</div>
-	<?php
-}
-if($i == 0)
-{
-	?>
-	<div class="form-group form-group-sm" style="display:block;">
-		<?php echo form_label($this->lang->line('taxes_tax_category') . ' 1', 'tax_category_1', array('class' => 'control-label col-xs-2')); ?>
-		<div class='col-xs-3'>
-			<?php $form_data = array(
-				'name' => 'tax_category_1',
-				'id' => 'tax_category_1',
-				'class' => 'valid_chars form-control input-sm required',
-				'placeholder' => $this->lang->line('taxes_tax_category_name'),
-				'value' => ''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<div class='col-xs-2'>
-			<?php $form_data = array(
-				'name' => 'tax_group_sequence_1',
-				'id' => 'tax_group_sequence_1',
-				'class' => 'valid_chars form-control input-sm',
-				'placeholder' => $this->lang->line('taxes_sequence'),
-				'value' => ''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<span class="add_tax_category glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
-		<span>&nbsp;&nbsp;</span>
-		<span class="remove_tax_category glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('tax_category_id_1', '-1') ?>
-	</div>
-	<?php
+<?php
 }
 ?>

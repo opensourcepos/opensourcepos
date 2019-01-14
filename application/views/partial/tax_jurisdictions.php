@@ -16,9 +16,9 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 		<?php echo form_label($this->lang->line('taxes_tax_jurisdiction') . ' ' . $i, 'jurisdiction_name_' . $i, array('class'=>'control-label col-xs-2')); ?>
 		<div class='col-xs-2'>
 			<?php $form_data = array(
-				'name'=>'jurisdiction_name_' . $i,
+				'name'=>'jurisdiction_name[]',
 				'id'=>'jurisdiction_name_' . $i,
-				'class'=>'valid_chars form-control input-sm required',
+				'class'=>'valid_chars form-control input-sm',
 				'placeholder'=>$this->lang->line('taxes_jurisdiction_name'),
 				'value'=>$jurisdiction_name
 				);
@@ -28,9 +28,8 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 
 		<div class='col-xs-1'>
 			<?php $form_data = array(
-				'name'=>'tax_group_' . $i,
-				'id'=>'tax_group_' . $i,
-				'class'=>'valid_chars form-control input-sm required',
+				'name'=>'tax_group[]',
+				'class'=>'valid_chars form-control input-sm',
 				'placeholder'=>$this->lang->line('taxes_tax_group'),
 				'value'=>$tax_group
 			);
@@ -39,13 +38,12 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 		</div>
 
 		<div class='col-xs-2'>
-			<?php echo form_dropdown('tax_type_' . $i, $tax_types, $tax_type, array('class'=>'form-control'));	?>
+			<?php echo form_dropdown('tax_type[]' . $i, $tax_types, $tax_type, array('class'=>'form-control'));	?>
 		</div>
 
 		<div class='col-xs-2'>
 			<?php $form_data = array(
-				'name'=>'reporting_authority_' . $i,
-				'id'=>'reporting_authority_' . $i,
+				'name'=>'reporting_authority[]',
 				'class'=>'valid_chars form-control input-sm',
 				'placeholder'=>$this->lang->line('taxes_reporting_authority'),
 				'value'=>$reporting_authority
@@ -56,8 +54,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 
 		<div class='col-xs-1'>
 			<?php $form_data = array(
-				'name'=>'tax_group_sequence_' . $i,
-				'id'=>'tax_group_sequence_' . $i,
+				'name'=>'tax_group_sequence[]',
 				'class'=>'valid_chars form-control input-sm',
 				'placeholder' => $this->lang->line('taxes_sequence'),
 				'value'=>$tax_group_sequence
@@ -68,8 +65,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 
 		<div class='col-xs-1'>
 			<?php $form_data = array(
-				'name'=>'cascade_sequence_' . $i,
-				'id'=>'cascade_sequence_' . $i,
+				'name'=>'cascade_sequence[]',
 				'class'=>'valid_chars form-control input-sm',
 				'placeholder'=>$this->lang->line('taxes_cascade_sequence'),
 				'value'=>$cascade_sequence
@@ -80,77 +76,7 @@ foreach($tax_jurisdictions as $tax_jurisdiction => $jurisdiction)
 		<span class="add_tax_jurisdiction glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
 		<span>&nbsp;&nbsp;</span>
 		<span class="remove_tax_jurisdiction glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('jurisdiction_id_' . $i, $jurisdiction_id); ?>
-	</div>
-<?php
-}
-if ($i == 0)
-{
-?>
-	<div class="form-group form-group-sm" style="display:block;" >
-		<?php echo form_label($this->lang->line('taxes_tax_jurisdiction') . ' 1', 'jurisdiction_name_1', array('class'=>'control-label col-xs-2')); ?>
-		<div class='col-xs-2'>
-			<?php $form_data = array(
-				'name'=>'jurisdiction_name_1',
-				'id'=>'jurisdiction_name_1',
-				'class'=>'valid_chars form-control input-sm required',
-				'placeholder'=>$this->lang->line('taxes_jurisdiction_name'),
-				'value'=>''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<div class='col-xs-1'>
-			<?php $form_data = array(
-				'name'=>'tax_group_1',
-				'id'=>'tax_group_1',
-				'class'=>'valid_chars form-control input-sm required',
-				'placeholder'=>$this->lang->line('taxes_tax_group'),
-				'value'=>''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<div class='col-xs-2'>
-			<?php echo form_dropdown('tax_type_1', $tax_types, $default_tax_type, array('class'=>'form-control'));	?>
-		</div>
-		<div class='col-xs-2'>
-			<?php $form_data = array(
-				'name'=>'reporting_authority_1',
-				'id'=>'reporting_authority_1',
-				'class'=>'valid_chars form-control input-sm',
-				'placeholder'=>$this->lang->line('taxes_reporting_authority'),
-				'value'=>''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<div class='col-xs-1'>
-			<?php $form_data = array(
-				'name'=>'tax_group_sequence_1',
-				'id'=>'tax_group_sequence_1',
-				'class'=>'valid_chars form-control input-sm',
-				'placeholder' => $this->lang->line('taxes_sequence'),
-				'value'=>''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<div class='col-xs-1'>
-			<?php $form_data = array(
-				'name'=>'cascade_sequence_1',
-				'id'=>'cascade_sequence_1',
-				'class'=>'valid_chars form-control input-sm',
-				'placeholder'=>$this->lang->line('taxes_cascade_sequence'),
-				'value'=>''
-			);
-			echo form_input($form_data);
-			?>
-		</div>
-		<span class="add_tax_jurisdiction glyphicon glyphicon-plus" style="padding-top: 0.5em;"></span>
-		<span>&nbsp;&nbsp;</span>
-		<span class="remove_tax_jurisdiction glyphicon glyphicon-minus" style="padding-top: 0.5em;"></span>
-		<?php echo form_hidden('jurisdiction_id_1', -1); ?>
+		<?php echo form_hidden('jurisdiction_id[]', $jurisdiction_id); ?>
 	</div>
 <?php
 }

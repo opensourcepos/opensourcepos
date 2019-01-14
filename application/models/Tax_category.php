@@ -230,6 +230,14 @@ class Tax_category extends CI_Model
 		return $suggestions;
 	}
 
+	public function get_empty_row()
+	{
+		return array('0' => array(
+			'tax_category_id' => -1,
+			'tax_category' => '',
+			'tax_group_sequence' => 0,
+			'deleted' => 0));
+	}
 
 }
 ?>

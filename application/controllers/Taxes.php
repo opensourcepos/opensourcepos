@@ -15,9 +15,21 @@ class Taxes extends Secure_Controller
 
 	public function index()
 	{
-		$data['tax_codes'] = $this->Tax_code->get_all()->result_array();
-		$data['tax_categories'] = $this->Tax_category->get_all()->result_array();
-		$data['tax_jurisdictions'] = $this->Tax_jurisdiction->get_all()->result_array();
+		$data['tax_codes'] = $this->xss_clean($this->Tax_code->get_all()->result_array());
+		if (count($data['tax_codes']) == 0)
+		{
+			$data['tax_codes'] = $this->Tax_code->get_empty_row();
+		}
+		$data['tax_categories'] = $this->xss_clean($this->Tax_category->get_all()->result_array());
+		if (count($data['tax_categories']) == 0)
+		{
+			$data['tax_categories'] = $this->Tax_category->get_empty_row();
+		}
+		$data['tax_jurisdictions'] = $this->xss_clean($this->Tax_jurisdiction->get_all()->result_array());
+		if (count($data['tax_jurisdictions']) == 0)
+		{
+			$data['tax_jurisdictions'] = $this->Tax_jurisdiction->get_empty_row();
+		}
 		$data['tax_rate_table_headers'] = $this->xss_clean(get_tax_rates_manage_table_headers());
 		$data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
 		$data['tax_types'] = $this->tax_lib->get_tax_types();
@@ -396,39 +408,19 @@ class Taxes extends Secure_Controller
 
 	public function save_tax_codes()
 	{
-		$array_save= array();
+		$tax_code_id = $this->input->post('tax_code_id');
+		$tax_code = $this->input->post('tax_code');
+		$tax_code_name = $this->input->post('tax_code_name');
+		$tax_code_id = $this->input->post('tax_code_id');
+		$city = $this->input->post('city');
+		$state = $this->input->post('state');
 
-		foreach($this->input->post() as $key => $value)
+		$array_save = array();
+		foreach($tax_code_id as $key=>$val)
 		{
-			if(!(strstr($key, 'tax_code_name_')=== FALSE))
-			{
-				$tax_code_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$array_save[$tax_code_id]['tax_code_name'] = $value;
-			}
-			elseif(!(strstr($key, 'tax_code_id_') === FALSE))
-			{
-				$tax_code_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$tax_code_id]['tax_code_id'] = strtoupper($value);
-			}
-			elseif(!(strstr($key, 'tax_code_') === FALSE))
-			{
-				$tax_code_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$tax_code_id]['tax_code'] = strtoupper($value);
-			}
-			elseif(!(strstr($key, 'city_') === FALSE))
-			{
-				$tax_code_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$tax_code_id]['city'] = $value;
-			}
-			elseif(!(strstr($key, 'state_') === FALSE))
-			{
-				$tax_code_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$tax_code_id]['state'] = $value;
-			}
+			$array_save[] = array('tax_code_id'=>$this->xss_clean($val), 'tax_code'=>$this->xss_clean($tax_code[$key]),
+			'tax_code_name'=>$this->xss_clean($tax_code_name[$key]), 'tax_code_id'=>$this->xss_clean($tax_code_id[$key]),
+			'city'=>$this->xss_clean($city[$key]), 'state'=>$this->xss_clean($state[$key]));
 		}
 
 		$success = $this->Tax_code->save_tax_codes($array_save);
@@ -441,59 +433,29 @@ class Taxes extends Secure_Controller
 
 	public function save_tax_jurisdictions()
 	{
+		$jurisdiction_id = $this->input->post('jurisdiction_id');
+		$jurisdiction_name = $this->input->post('jurisdiction_name');
+		$tax_group = $this->input->post('tax_group');
+		$tax_type = $this->input->post('tax_type');
+		$reporting_authority = $this->input->post('reporting_authority');
+		$tax_group_sequence = $this->input->post('tax_group_sequence');
+		$cascade_sequence = $this->input->post('cascade_sequence');
+
 		$array_save = array();
 
-		foreach($this->input->post() as $key => $value)
+		foreach($jurisdiction_id as $key => $val)
 		{
-
-			if(!(strstr($key, 'jurisdiction_id_')=== FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$array_save[$id]['jurisdiction_id'] = $value;
-			}
-			elseif(!(strstr($key, 'jurisdiction_name_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['jurisdiction_name'] = $value;
-			}
-			elseif(!(strstr($key, 'tax_type_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['tax_type'] = $value;
-			}
-			elseif(!(strstr($key, 'reporting_authority_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['reporting_authority'] = $value;
-			}
-			elseif(!(strstr($key, 'tax_group_sequence_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['tax_group_sequence'] = $value;
-			}
-			elseif(!(strstr($key, 'tax_group_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['tax_group'] = $value;
-			}
-			elseif(!(strstr($key, 'cascade_sequence_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['cascade_sequence'] = $value;
-			}
+			$array_save[] = array(
+				'jurisdiction_id'=>$this->xss_clean($val),
+				'jurisdiction_name'=>$this->xss_clean($jurisdiction_name[$key]),
+				'tax_group'=>$this->xss_clean($tax_group[$key]),
+				'tax_type'=>$this->xss_clean($tax_type[$key]),
+				'reporting_authority'=>$this->xss_clean($reporting_authority[$key]),
+				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]),
+				'cascade_sequence'=>$this->xss_clean($cascade_sequence[$key]));
 		}
 
 		$success = $this->Tax_jurisdiction->save_jurisdictions($array_save);
-
-//		if(!empty($array_save))
-//		{
-//		}
 
 		echo json_encode(array(
 			'success' => $success,
@@ -503,28 +465,18 @@ class Taxes extends Secure_Controller
 
 	public function save_tax_categories()
 	{
+		$tax_category_id = $this->input->post('tax_category_id');
+		$tax_category = $this->input->post('tax_category');
+		$tax_group_sequence = $this->input->post('tax_group_sequence');
+
 		$array_save= array();
 
-		foreach($this->input->post() as $key => $value)
+		foreach($tax_category_id as $key => $val)
 		{
-			// Note that for proper select tax_category_id and tax_category_code must precede tax_category
-			if(!(strstr($key, 'tax_category_id_')=== FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$array_save[$id]['tax_category_id'] = $value;
-			}
-			elseif(!(strstr($key, 'tax_category_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['tax_category'] = $value;
-			}
-			elseif(!(strstr($key, 'tax_group_sequence_') === FALSE))
-			{
-				$id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-				$value = isset($value) ? $value : '';
-				$array_save[$id]['tax_group_sequence'] = $value;
-			}
+			$array_save[] = array(
+				'tax_category_id'=>$this->xss_clean($val),
+				'tax_category'=>$this->xss_clean($tax_category[$key]),
+				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]));
 		}
 
 		$success = $this->Tax_category->save_categories($array_save);

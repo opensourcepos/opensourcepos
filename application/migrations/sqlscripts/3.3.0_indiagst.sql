@@ -29,9 +29,7 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_codes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `ospos_customers`
-	ADD COLUMN `tax_id` varchar(32) NOT NULL DEFAULT '' AFTER `taxable`;
-
-ALTER TABLE `ospos_customers`
+	ADD COLUMN `tax_id` varchar(32) NOT NULL DEFAULT '' AFTER `taxable`,
 	ADD COLUMN `sales_tax_code_id` int(11) DEFAULT NULL AFTER `tax_id`;
 
 ALTER TABLE `ospos_items`

@@ -269,5 +269,15 @@ class Tax_code extends CI_Model
 		return $suggestions;
 	}
 
+	public function get_empty_row()
+	{
+		return array('0' => array(
+			'tax_code_id' => -1,
+			'tax_code' => '',
+			'tax_code_name' => '',
+			'city' => '',
+			'state' => '',
+			'deleted' => 0));
+	}
 }
 ?>

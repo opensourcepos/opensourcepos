@@ -27,7 +27,7 @@
 		}
 		var tax_type_options = '<?php echo $tax_type_options; ?>';
 
-		var hide_show_remove = function() {
+		var hide_show_remove_tax_jurisdiction = function() {
 			if ($("input[name*='tax_jurisdiction']:enabled").length > 1)
 			{
 				$(".remove_tax_jurisdiction").show();
@@ -42,60 +42,60 @@
 			var id = $(this).parent().find('input').attr('id');
 			id = id.replace(/.*?_(\d+)$/g, "$1");
 
-			var previous_jurisdiction_id = 'jurisdiction_id_' + id;
 			var previous_jurisdiction_name_id = 'jurisdiction_name_' + id;
-            var previous_tax_group_id = 'tax_group_' + id;
-			var previous_tax_type_id = 'tax_type_' + id;
-			var previous_reporting_authority_id = 'reporting_authority_' + id;
-			var previous_tax_group_sequence_id = 'tax_group_sequence_' + id;
-			var previous_cascade_sequence_id = 'cascade_sequence_' + id;
 			var block = $(this).parent().clone(true);
 			var new_block = block.insertAfter($(this).parent());
 			++tax_jurisdictions_count;
-			var new_jurisdiction_id = 'jurisdiction_id_' + tax_jurisdictions_count;
 			var new_jurisdiction_name_id = 'jurisdiction_name_' + tax_jurisdictions_count;
-            var new_tax_group_id = 'tax_group_' + tax_jurisdictions_count;
-			var new_tax_type_id = 'tax_type_' + tax_jurisdictions_count;
-			var new_reporting_authority_id = 'reporting_authority_' + tax_jurisdictions_count;
-			var new_tax_group_sequence_id = 'tax_group_sequence_' + tax_jurisdictions_count;
-			var new_cascade_sequence_id = 'cascade_sequence_' + tax_jurisdictions_count;
 
 			$(new_block).find('label').html("<?php echo $this->lang->line('taxes_tax_jurisdiction'); ?> " + tax_jurisdictions_count).attr('for', new_jurisdiction_name_id).attr('class', 'control-label col-xs-2');
-			$(new_block).find("input[name='"+previous_jurisdiction_id+"']").attr('name', new_jurisdiction_id).val('-1');
-			$(new_block).find("input[id='"+previous_jurisdiction_name_id+"']").attr('id', new_jurisdiction_name_id).removeAttr('disabled').attr('name', new_jurisdiction_name_id).attr('class', 'form-control required input-sm').val('');
-            $(new_block).find("input[id='"+previous_tax_group_id+"']").attr('id', new_tax_group_id).removeAttr('disabled').attr('name', new_tax_group_id).attr('class', 'form-control required input-sm').val('');
-			$(new_block).find("select[name='"+previous_tax_type_id+"']").attr('name', new_tax_type_id).removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
-			$(new_block).find("input[id='"+previous_reporting_authority_id+"']").attr('id', new_reporting_authority_id).removeAttr('disabled').attr('name', new_reporting_authority_id).attr('class', 'form-control input-sm').val('');
-			$(new_block).find("input[id='"+previous_tax_group_sequence_id+"']").attr('id', new_tax_group_sequence_id).removeAttr('disabled').attr('name', new_tax_group_sequence_id).attr('class', 'form-control input-sm').val('');
-			$(new_block).find("input[id='"+previous_cascade_sequence_id+"']").attr('id', new_cascade_sequence_id).removeAttr('disabled').attr('name', new_cascade_sequence_id).attr('class', 'form-control input-sm').val('');
-			hide_show_remove();
+			$(new_block).find("input[name='jurisdiction_name[]']").attr('id', new_jurisdiction_name_id).removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
+			$(new_block).find("input[name='tax_group[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
+			$(new_block).find("select[name='tax_type[]']").removeAttr('disabled').attr('class', 'form-control required input-sm').val('');
+			$(new_block).find("input[name='reporting_authority[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
+			$(new_block).find("input[name='tax_group_sequence[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
+			$(new_block).find("input[name='cascade_sequence[]']").removeAttr('disabled').attr('class', 'form-control input-sm').val('');
+			$(new_block).find("input[name='jurisdiction_id[]']").val('-1');
+			hide_show_remove_tax_jurisdiction();
 		};
 
 		var remove_tax_jurisdiction = function() {
 			$(this).parent().remove();
-			hide_show_remove();
+			hide_show_remove_tax_jurisdiction();
 		};
 
 		var init_add_remove_tax_jurisdiction = function() {
 			$('.add_tax_jurisdiction').click(add_tax_jurisdiction);
 			$('.remove_tax_jurisdiction').click(remove_tax_jurisdiction);
-			hide_show_remove();
+			hide_show_remove_tax_jurisdiction();
 		};
 		init_add_remove_tax_jurisdiction();
 
-		var duplicate_found = false;
 		// run validator once for all fields
-		$.validator.addMethod('tax_jurisdiction' , function(value, element) {
+		$.validator.addMethod('check4TaxJurisdictionDups' , function(value, element) {
 			var value_count = 0;
-			$("input[name*='tax_jurisdiction']").each(function() {
+			$("input[name='jurisdiction_name[]']").each(function() {
 				value_count = $(this).val() == value ? value_count + 1 : value_count;
 			});
-			return value_count < 2;
+			if (value_count > 1) {
+				return false;
+			}
+			return true;
 		}, "<?php echo $this->lang->line('taxes_tax_jurisdiction_duplicate'); ?>");
 
-		$.validator.addMethod('valid_chars', function(value, element) {
-			return value.indexOf('_') === -1;
+		$.validator.addMethod('validateTaxJurisdictionCharacters', function(value, element) {
+			if ((value.indexOf('_') != -1)) {
+				return false;
+			}
+			return true;
 		}, "<?php echo $this->lang->line('taxes_tax_jurisdiction_invalid_chars'); ?>");
+
+		$.validator.addMethod('requireTaxJurisdiction', function(value, element) {
+			if (value .trim() == '') {
+				return false;
+			}
+			return true;
+		}, "<?php echo $this->lang->line('taxes_tax_jurisdiction_required'); ?>");
 
 		$('#tax_jurisdictions_form').validate($.extend(form_support.handler, {
 			submitHandler: function(form) {
@@ -107,41 +107,24 @@
 					dataType: 'json'
 				});
 			},
-
-			errorLabelContainer: "#tax_jurisdiction_error_message_box",
-
-			rules:
-			{
-				<?php
-				$i = 0;
-
-				foreach($tax_jurisdictions as $tax_jurisdiction=>$tax_jurisdiction_data)
-				{
-				?>
-				<?php echo 'tax_jurisdiction_' . ++$i ?>:
-				{
-					required: true,
-					tax_jurisdiction: true,
-					valid_chars: true
-				},
-				<?php
-				}
-				?>
+			invalidHandler: function(event, validator) {
+				$.notify("<?php echo $this->lang->line('common_correct_errors'); ?>");
 			},
-
-			messages:
-			{
-				<?php
-				$i = 0;
-
-				foreach($tax_jurisdictions as $tax_jurisdiction=>$tax_jurisdiction_data)
-				{
-				?>
-				<?php echo 'tax_jurisdiction_' . ++$i ?>: "<?php echo $this->lang->line('taxes_tax_jurisdiction_required'); ?>",
-				<?php
-				}
-				?>
-			}
+			errorLabelContainer: "#tax_jurisdiction_error_message_box"
 		}));
+
+		<?php
+		$i = 0;
+		foreach($tax_jurisdictions as $tax_jurisdiction=>$tax_jurisdiction_data)
+		{
+		?>
+		$('<?php echo '#jurisdiction_name_' . ++$i ?>').rules( "add", {
+			requireTaxJurisdiction: true,
+			check4TaxJurisdictionDups: true,
+			validateTaxJurisdictionCharacters: true
+		});
+		<?php
+		}
+		?>
 	});
 </script>
