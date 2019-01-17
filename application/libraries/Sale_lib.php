@@ -1272,9 +1272,9 @@ class Sale_lib
 
 		if(!$this->CI->config->item('tax_included'))
 		{
-			foreach($this->CI->tax_lib->get_taxes($this->get_cart()) as $tax)
+			foreach($this->CI->tax_lib->get_taxes($this->get_cart())[0] as $tax)
 			{
-				$total = bcadd($total, $tax['sales_tax_amount']);
+				$total = bcadd($total, $tax['sale_tax_amount']);
 			}
 		}
 
