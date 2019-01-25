@@ -105,9 +105,9 @@ class Attribute extends CI_Model
 	 */
 	public function search($search, $rows = 0, $limit_from = 0, $sort = 'definition.definition_name', $order = 'asc')
 	{
-		$this->db->select('definition_group.definition_name AS definition_group, definition.*');
+		$this->db->select('parent_definition.definition_name AS definition_group, definition.*');
 		$this->db->from('attribute_definitions AS definition');
-		$this->db->join('attribute_definitions AS definition_group', 'definition_group.definition_id = definition.definition_fk', 'left');
+		$this->db->join('attribute_definitions AS parent_definition', 'parent_definition.definition_id = definition.definition_fk', 'left');
 
 		$this->db->group_start();
 		$this->db->like('definition.definition_name', $search);
@@ -452,7 +452,9 @@ class Attribute extends CI_Model
 
 	public function get_link_values($item_id, $sale_receiving_fk, $id, $definition_flags)
 	{
-		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR ", ") AS attribute_values, GROUP_CONCAT(attribute_datetime SEPARATOR ", ") AS attribute_datetimevalues');
+		$format = $this->db->escape(dateformat_mysql());
+		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR ', ') AS attribute_values');
+		$this->db->select("GROUP_CONCAT(DATE_FORMAT(attribute_datetime, $format) SEPARATOR ', ') AS attribute_datetimevalues");
 		$this->db->from('attribute_links');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
@@ -471,23 +473,7 @@ class Attribute extends CI_Model
 		$this->db->where('item_id', (int) $item_id);
 		$this->db->where('definition_flags & ', $definition_flags);
 
-		$results = $this->db->get();
-
-		if ($results->num_rows() > 0)
-		{
-			$row_object = $results->row_object();
-
-			$datetime_values = explode(', ', $row_object->attribute_datetimevalues);
-			$attribute_values = array();
-
-			foreach (array_filter($datetime_values) as $datetime_value)
-			{
-				$attribute_values[] = to_datetime(strtotime($datetime_value));
-			}
-
-			return implode(',', $attribute_values) . $row_object->attribute_values;
-		}
-		return "";
+		return $this->db->get();
 	}
 
 	public function get_attribute_value($item_id, $definition_id)

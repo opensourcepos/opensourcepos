@@ -90,7 +90,7 @@ function get_sale_data_row($sale)
 
 	$row = array (
 		'sale_id' => $sale->sale_id,
-		'sale_time' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($sale->sale_time)),
+		'sale_time' => to_datetime(strtotime($sale->sale_time)),
 		'customer_name' => $sale->customer_name,
 		'amount_due' => to_currency($sale->amount_due),
 		'amount_tendered' => to_currency($sale->amount_tendered),
@@ -444,6 +444,7 @@ function get_item_data_row($item)
 	);
 
 	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
+	$attribute_values = (property_exists($item, 'attribute_datetimevalues')) ? $item->attribute_datetimevalues : $attribute_values;
 	return $columns + expand_attribute_values($definition_names, $attribute_values) + $icons;
 }
 
@@ -529,7 +530,7 @@ function expand_attribute_values($definition_names, $attribute_values)
 	$indexed_values = array();
 	foreach($values as $attribute_value)
 	{
-		$exploded_value = explode(':', $attribute_value);
+		$exploded_value = explode('_', $attribute_value);
 		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '-';
 	}
 
@@ -651,7 +652,7 @@ function get_expenses_data_row($expense)
 	$controller_name = strtolower(get_class($CI));
 	return array (
 		'expense_id' => $expense->expense_id,
-		'date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($expense->date)),
+		'date' => to_datetime(strtotime($expense->date)),
 		'supplier_name' => $expense->supplier_name,
 		'supplier_tax_code' => $expense->supplier_tax_code,
 		'amount' => to_currency($expense->amount),
@@ -742,11 +743,11 @@ function get_cash_up_data_row($cash_up)
 	$controller_name = strtolower(get_class($CI));
 	return array (
 		'cashup_id' => $cash_up->cashup_id,
-		'open_date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($cash_up->open_date)),
+		'open_date' => to_datetime(strtotime($cash_up->open_date)),
 		'open_employee_id' => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
 		'open_amount_cash' => to_currency($cash_up->open_amount_cash),
 		'transfer_amount_cash' => to_currency($cash_up->transfer_amount_cash),
-		'close_date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($cash_up->close_date)),
+		'close_date' => to_datetime(strtotime($cash_up->close_date)),
 		'close_employee_id' => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
 		'closed_amount_cash' => to_currency($cash_up->closed_amount_cash),
 		'note' => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',

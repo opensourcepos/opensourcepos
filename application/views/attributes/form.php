@@ -181,7 +181,7 @@ $(document).ready(function()
 	});
 
 	$.validator.addMethod('valid_chars', function(value, element) {
-        return value.match(/(\||:)/g) == null;
+        return value.match(/(\||_)/g) == null;
 	}, "<?php echo $this->lang->line('attributes_attribute_value_invalid_chars'); ?>");
 
 	$('#attribute_form').validate($.extend({

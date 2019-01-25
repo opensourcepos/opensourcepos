@@ -457,6 +457,50 @@ function dateformat_momentjs($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+function dateformat_mysql()
+{
+	$config = get_instance()->config;
+	$php_format = $config->item('dateformat') . ' ' . $config->item('timeformat');
+
+	$SYMBOLS_MATCHING = array(
+		// Day
+		'd' => '%d',
+		'D' => '%a',
+		'j' => '%e',
+		'l' => '%W',
+		'N' => '',
+		'S' => '',
+		'w' => '',
+		'z' => '',
+		// Week
+		'W' => '',
+		// Month
+		'F' => '',
+		'm' => '%m',
+		'M' => '%b',
+		'n' => '%c',
+		't' => '',
+		// Year
+		'L' => '',
+		'o' => '',
+		'Y' => '%Y',
+		'y' => '%y',
+		// Time
+		'a' => '',
+		'A' => '%p',
+		'B' => '',
+		'g' => '%l',
+		'G' => '%k',
+		'h' => '',
+		'H' => '%k',
+		'i' => '%i',
+		's' => '%S',
+		'u' => '%f'
+	);
+
+	return strtr($php_format, $SYMBOLS_MATCHING);
+}
+
 function dateformat_bootstrap($php_format)
 {
 	$SYMBOLS_MATCHING = array(
