@@ -57,6 +57,17 @@ class Attribute extends CI_Model
 	}
 
 	/*
+	 Determines if a given attribute_value exists in the attribute_values table
+	 */
+	public function value_exists($attribute_value)
+	{
+		$this->db->from('attribute_values');
+		$this->db->where('attribute_value', $attribute_value);
+		
+		return ($this->db->get()->num_rows() > 0);
+	}
+		
+	/*
 	Gets information about a particular attribute definition
 	*/
 	public function get_info($definition_id)
@@ -111,6 +122,18 @@ class Attribute extends CI_Model
 		return $this->db->get();
 	}
 
+	/*
+	 Given the attribute_value returns the associated attribute_id
+	 */
+	private function get_id_by_value($attribute_value)
+	{
+		$this->db->distinct('attribute_id');
+		$this->db->from('attribute_values');
+		$this->db->where('attribute_value',$attribute_value);
+		
+		return $this->db->get()->row()->attribute_id;
+	}
+	
 	public function get_attributes_by_item($item_id)
 	{
 		$this->db->from('attribute_definitions');
@@ -394,19 +417,27 @@ class Attribute extends CI_Model
 	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE, $definition_type = DROPDOWN)
 	{
 		$this->db->trans_start();
-
+		
 		if(empty($attribute_id) || empty($item_id))
 		{
 			if($definition_type != DATETIME)
 			{
-				$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
+				if($this->value_exists($attribute_value))
+				{
+					$attribute_id = $this->get_id_by_value($attribute_value);
+				}
+				else
+				{
+					$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
+					$attribute_id = $this->db->insert_id();
+				}
 			}
 			else
 			{
 				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
+				$attribute_id = $this->db->insert_id();
 			}
-			$attribute_id = $this->db->insert_id();
-
+			
 			$this->db->insert('attribute_links', array(
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
@@ -417,12 +448,12 @@ class Attribute extends CI_Model
 			$this->db->where('attribute_id', $attribute_id);
 			$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
 		}
-
+		
 		$this->db->trans_complete();
-
+		
 		return $attribute_id;
 	}
-
+	
 	public function delete_value($attribute_value, $definition_id)
 	{
 		return $this->db->query("DELETE atrv, atrl FROM " . $this->db->dbprefix('attribute_values') . " atrv, " . $this->db->dbprefix('attribute_links') .  " atrl " .
