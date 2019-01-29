@@ -2,6 +2,7 @@
 	<div id="config_wrapper">
 		<fieldset id="config_info">
 			<div id="required_fields_message"><?php echo $this->lang->line('common_fields_required_message'); ?></div>
+			<div id="header"><?php echo $this->lang->line('config_mailchimp_configuration')?></div>
 			<ul id="mailchimp_error_message_box" class="error_message_box"></ul>
 
 			<div class="form-group form-group-sm">
