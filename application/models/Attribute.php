@@ -57,14 +57,15 @@ class Attribute extends CI_Model
 	}
 
 	/*
-	 Determines if a given attribute_value exists in the attribute_values table
+	 Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
 	 */
 	public function value_exists($attribute_value)
 	{
+		$this->db->distinct('attribute_id');
 		$this->db->from('attribute_values');
 		$this->db->where('attribute_value', $attribute_value);
 		
-		return ($this->db->get()->num_rows() > 0);
+		return $this->db->get()->row()->attribute_id;
 	}
 		
 	/*
@@ -122,18 +123,6 @@ class Attribute extends CI_Model
 		return $this->db->get();
 	}
 
-	/*
-	 Given the attribute_value returns the associated attribute_id
-	 */
-	private function get_id_by_value($attribute_value)
-	{
-		$this->db->distinct('attribute_id');
-		$this->db->from('attribute_values');
-		$this->db->where('attribute_value',$attribute_value);
-		
-		return $this->db->get()->row()->attribute_id;
-	}
-	
 	public function get_attributes_by_item($item_id)
 	{
 		$this->db->from('attribute_definitions');
@@ -422,14 +411,15 @@ class Attribute extends CI_Model
 		{
 			if($definition_type != DATETIME)
 			{
-				if($this->value_exists($attribute_value))
-				{
-					$attribute_id = $this->get_id_by_value($attribute_value);
-				}
-				else
+				$attribute_id_check = $this->value_exists($attribute_value);
+				if(empty($attribute_id_check))
 				{
 					$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
 					$attribute_id = $this->db->insert_id();
+				}
+				else
+				{
+					$attribute_id = $attribute_id_check;
 				}
 			}
 			else
