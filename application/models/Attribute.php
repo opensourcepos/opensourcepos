@@ -453,8 +453,8 @@ class Attribute extends CI_Model
 	public function get_link_values($item_id, $sale_receiving_fk, $id, $definition_flags)
 	{
 		$format = $this->db->escape(dateformat_mysql());
-		$this->db->select('GROUP_CONCAT(attribute_value SEPARATOR ', ') AS attribute_values');
-		$this->db->select("GROUP_CONCAT(DATE_FORMAT(attribute_datetime, $format) SEPARATOR ', ') AS attribute_datetimevalues");
+		$this->db->select("GROUP_CONCAT(attribute_value SEPARATOR ', ') AS attribute_values");
+		$this->db->select("GROUP_CONCAT(DATE_FORMAT(attribute_datetime, $format) SEPARATOR ', ') AS attribute_dtvalues");
 		$this->db->from('attribute_links');
 		$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id');
 		$this->db->join('attribute_definitions', 'attribute_definitions.definition_id = attribute_links.definition_id');
@@ -521,7 +521,7 @@ class Attribute extends CI_Model
 
 	public function save_value($attribute_value, $definition_id, $item_id = FALSE, $attribute_id = FALSE, $definition_type = DROPDOWN)
 	{
-		$this->db->trans_start();
+		$this->db->trans_start();		
 
 		if(empty($attribute_id) || empty($item_id))
 		{
@@ -531,7 +531,6 @@ class Attribute extends CI_Model
 				if(empty($attribute_id_check))
 				{
 					$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
-					$attribute_id = $this->db->insert_id();
 				}
 				else
 				{
@@ -541,14 +540,14 @@ class Attribute extends CI_Model
 			else if($definition_type == DECIMAL)
 			{
 				$this->db->insert('attribute_values', array('attribute_decimal' => $attribute_value));
-				$attribute_id = $this->db->insert_id();
 			}
 			else
 			{
 				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
-				$attribute_id = $this->db->insert_id();
 			}
 
+			$attribute_id = $this->db->insert_id();
+			
 			$this->db->insert('attribute_links', array(
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
 				'item_id' => empty($item_id) ? NULL : $item_id,
@@ -557,8 +556,6 @@ class Attribute extends CI_Model
 		else
 		{
 			$this->db->where('attribute_id', $attribute_id);
-			$this->db->update('attribute_values', array('attribute_value' => $attribute_value));
-		}
 
 		$this->db->trans_complete();
 

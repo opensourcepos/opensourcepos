@@ -484,19 +484,6 @@ class Items extends Secure_Controller
 		}
 		$default_pack_name = $this->lang->line('items_default_pack_name');
 
-
-		if ($item_id == -1)
-		{
-			// Set low_sell_item_id to -1 for a new item so that when it is saved the item will point to itself for the
-			// low sell item.
-			$low_sell_item_id = $this->input->post('low_sell_item_id') == NULL ? -1 : $this->input->post('low_sell_item_id');
-		}
-		else
-		{
-			// On an existing item where the low sell item is not prompted for always force the item_id as the low sell item Id
-			$low_sell_item_id = $this->input->post('low_sell_item_id') == NULL ? $item_id : $this->input->post('low_sell_item_id');
-		}
-
 		//Save item data
 		$item_data = array(
 			'name' => $this->input->post('name'),
@@ -514,7 +501,7 @@ class Items extends Secure_Controller
 			'is_serialized' => $this->input->post('is_serialized') != NULL,
 			'qty_per_pack' => $this->input->post('qty_per_pack') == NULL ? 1 : $this->input->post('qty_per_pack'),
 			'pack_name' => $this->input->post('pack_name') == NULL ? $default_pack_name : $this->input->post('pack_name'),
-			'low_sell_item_id' => $low_sell_item_id,
+			'low_sell_item_id' => $this->input->post('low_sell_item_id') == NULL ? $item_id : $this->input->post('low_sell_item_id'),
 			'deleted' => $this->input->post('is_deleted') != NULL,
 			'hsn_code' => $this->input->post('hsn_code') == NULL ? '' : $this->input->post('hsn_code')
 		);

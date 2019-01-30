@@ -1345,6 +1345,7 @@ class Reports extends Secure_Controller
 				}
 
 				$attribute_values = (isset($drow['attribute_values'])) ? $drow['attribute_values'] : '';
+				$attribute_values = (isset($drow['attribute_dtvalues'])) ? $attribute_values . '|' . $drow['attribute_dtvalues'] : $attribute_values;
 				$attribute_values = expand_attribute_values($definition_names, $attribute_values);
 
 				$details_data[$row['sale_id']][] = $this->xss_clean(array_merge(array(
@@ -1462,6 +1463,8 @@ class Reports extends Secure_Controller
 				}
 
 				$attribute_values = (isset($drow['attribute_values'])) ? $drow['attribute_values'] : '';
+				$attribute_values = (isset($drow['attribute_dtvalues'])) ? $attribute_values . '|' . $drow['attribute_dtvalues'] : $attribute_values;
+
 				$attribute_values = expand_attribute_values($definition_names, $attribute_values);
 
 				$details_data[$row['receiving_id']][] = $this->xss_clean(array_merge(array(
@@ -1471,7 +1474,6 @@ class Reports extends Secure_Controller
 					$quantity_purchased,
 					to_currency($drow['total']),
 					($drow['discount_type'] == PERCENT)? $drow['discount'].'%':to_currency($drow['discount'])), $attribute_values));
-
 			}
 		}
 

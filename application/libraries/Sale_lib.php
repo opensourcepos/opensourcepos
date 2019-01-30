@@ -719,6 +719,8 @@ class Sale_lib
 			return FALSE;
 		}
 
+		$price = 0.00;
+		$cost_price = 0.00;
 		$item_id = $item_info->item_id;
 		$item_type = $item_info->item_type;
 		$stock_type = $item_info->stock_type;
@@ -745,16 +747,7 @@ class Sale_lib
 				$price = $item_info->unit_price;
 				$cost_price = $item_info->cost_price;
 			}
-			else
-			{
-				$price = 0.00;
-				$cost_price = 0.00;
-			}
-		}
-		else
-		{
-			$price= 0.00;
-			$cost_price = 0.00;
+
 		}
 
 		if($price_override != NULL)
@@ -840,6 +833,7 @@ class Sale_lib
 			$item_info->name .= NAME_SEPARATOR . $item_info->pack_name;
 		}
 
+		$attribute_links = $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES)->row_object();
 
 	//Item already exists and is not serialized, add to quantity
 		if(!$itemalreadyinsale || $item_info->is_serialized)
@@ -851,7 +845,8 @@ class Sale_lib
 					'line' => $insertkey,
 					'name' => $item_info->name,
 					'item_number' => $item_info->item_number,
-					'attribute_values' => $this->CI->Attribute->get_link_values($item_id, 'sale_id', $sale_id, Attribute::SHOW_IN_SALES),
+					'attribute_values' => $attribute_links->attribute_values,
+					'attribute_dtvalues' => $attribute_links->attribute_dtvalues,
 					'description' => $description != NULL ? $description : $item_info->description,
 					'serialnumber' => $serialnumber != NULL ? $serialnumber : '',
 					'allow_alt_description' => $item_info->allow_alt_description,

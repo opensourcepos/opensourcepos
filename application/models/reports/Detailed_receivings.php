@@ -102,7 +102,9 @@ class Detailed_receivings extends Report
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
 			if (count($inputs['definition_ids']) > 0)
 			{
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$format = $this->db->escape(dateformat_mysql());
+				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, attribute_value) ORDER BY definition_id SEPARATOR '|') AS attribute_values");
+				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_datetime, $format)) SEPARATOR '|') AS attribute_dtvalues");
 				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 				$this->db->group_by('receivings_items_temp.receiving_id, receivings_items_temp.item_id');

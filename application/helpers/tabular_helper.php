@@ -444,7 +444,7 @@ function get_item_data_row($item)
 	);
 
 	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
-	$attribute_values = (property_exists($item, 'attribute_datetimevalues')) ? $item->attribute_datetimevalues : $attribute_values;
+	$attribute_values = (property_exists($item, 'attribute_dtvalues')) ? $attribute_values . $item->attribute_dtvalues : $attribute_values;
 	return $columns + expand_attribute_values($definition_names, $attribute_values) + $icons;
 }
 
@@ -531,14 +531,21 @@ function expand_attribute_values($definition_names, $attribute_values)
 	foreach($values as $attribute_value)
 	{
 		$exploded_value = explode('_', $attribute_value);
-		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '-';
+		if (sizeof($exploded_value) > 1)
+		{
+			$indexed_values[$exploded_value[0]] = $exploded_value[1];
+		}
 	}
 
 	$attribute_values = array();
 	foreach($definition_names as $definition_id => $definition_name)
 	{
-		$attribute_value = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '-';
-		$attribute_values["$definition_id"] = $attribute_value;
+		if (isset($indexed_values[$definition_id]))
+		{
+			$attribute_value = $indexed_values[$definition_id];
+			$attribute_values["$definition_id"] = $attribute_value;
+		}
+
 	}
 	return $attribute_values;
 }

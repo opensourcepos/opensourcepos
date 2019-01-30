@@ -148,7 +148,9 @@ class Detailed_sales extends Report
 			$this->db->from('sales_items_temp');
 			if (count($inputs['definition_ids']) > 0)
 			{
-				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$format = $this->db->escape(dateformat_mysql());
+				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, attribute_value) ORDER BY definition_id SEPARATOR '|') AS attribute_values");
+				$this->db->select("GROUP_CONCAT(DISTINCT CONCAT_WS('_', definition_id, DATE_FORMAT(attribute_datetime, $format)) SEPARATOR '|') AS attribute_datetimevalues");
 				$this->db->join('attribute_links', 'attribute_links.item_id = sales_items_temp.item_id AND attribute_links.sale_id = sales_items_temp.sale_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
 				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 				$this->db->group_by('sales_items_temp.sale_id, sales_items_temp.item_id');
