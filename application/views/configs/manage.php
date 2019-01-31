@@ -86,7 +86,7 @@
 	<div class="tab-pane" id="message_tab">
 		<?php $this->load->view("configs/message_config"); ?>
 	</div>
-	<div class="tab-pane" id="mailchimp_tab">
+	<div class="tab-pane" id="integrations_tab">
 		<?php $this->load->view("configs/integrations_config"); ?>
 	</div>
 	<div class="tab-pane" id="license_tab">
