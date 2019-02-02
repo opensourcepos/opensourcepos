@@ -9,8 +9,12 @@ class Migration_IndiaGST extends CI_Migration
 
 	public function up()
 	{
-		// If number of entries is greater than zero then the tax data needs to be migrated
+		if (!$this->db->field_exists('sales_tax_code', 'customers'))
+		{
+			return;
+		}
 
+		// If number of entries is greater than zero then the tax data needs to be migrated
 		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_indiagst.sql');
 
 		error_log('Migrating tax configuration');
@@ -21,6 +25,7 @@ class Migration_IndiaGST extends CI_Migration
 			$this->migrate_tax_code_data();
 		}
 
+
 		$this->migrate_customer_tax_codes();
 
 		$count_of_rate_entries = $this->get_count_of_rate_entries();
@@ -30,21 +35,18 @@ class Migration_IndiaGST extends CI_Migration
 			$this->migrate_tax_rates();
 		}
 
-
 		$count_of_sales_taxes_entries = $this->get_count_of_sales_taxes_entries();
 		if($count_of_sales_taxes_entries > 0)
 		{
 			$this->migrate_sales_taxes_data();
 		}
 
-		$this->drop_backups();
-
 		error_log('Migrating tax configuration completed');
 	}
 
 	public function down()
 	{
-
+		$this->drop_backups();
 	}
 
 	private function get_count_of_tax_code_entries()
@@ -80,6 +82,7 @@ class Migration_IndiaGST extends CI_Migration
 	{
 		$this->db->query('INSERT INTO ' . $this->db->dbprefix('tax_codes') . ' (tax_code, tax_code_name, city, state)
 			SELECT tax_code, tax_code_name, city, state FROM ' . $this->db->dbprefix('tax_codes_backup'));
+
 	}
 
 	/* 
@@ -140,9 +143,9 @@ class Migration_IndiaGST extends CI_Migration
 
 	private function drop_backups()
 	{
-		$this->db->query('DROP TABLE ' . $this->db->dbprefix('tax_codes_backup'));
-		$this->db->query('DROP TABLE ' . $this->db->dbprefix('sales_taxes_backup'));
-		$this->db->query('DROP TABLE ' . $this->db->dbprefix('tax_code_rates_backup'));
+		$this->db->query('DROP TABLE IF EXISTS' . $this->db->dbprefix('tax_codes_backup'));
+		$this->db->query('DROP TABLE IF EXISTS' . $this->db->dbprefix('sales_taxes_backup'));
+		$this->db->query('DROP TABLE IF EXISTS' . $this->db->dbprefix('tax_code_rates_backup'));
 	}
 }
 ?>
