@@ -17,7 +17,7 @@ script:
   - docker run --rm -v $(pwd):/app composer/composer install
   - docker run --rm -v $(pwd):/app -w /app lucor/php7-cli php bin/install.php translations
     develop
-  - HEAD=$(git rev-parse HEAD) sed -i "s/\(\$Id\)/$HEAD/g" application/config/config.php
+  - sed -i "s/\(\$Id\)/$rev/g" application/config/config.php
   - docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt
     sh -c "npm install && bower install && grunt package"
   - docker-compose build
