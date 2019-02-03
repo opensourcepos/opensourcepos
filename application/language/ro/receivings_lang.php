@@ -1,10 +1,9 @@
-<?php 
-
-$lang["receivings_cancel_receiving"] = "";
-$lang["receivings_cannot_be_deleted"] = "";
-$lang["receivings_comments"] = "";
-$lang["receivings_complete_receiving"] = "";
-$lang["receivings_confirm_cancel_receiving"] = "";
+<?php
+$lang["receivings_cancel_receiving"] = "Anulare";
+$lang["receivings_cannot_be_deleted"] = "Stergere Recptie/Receptii esuata.";
+$lang["receivings_comments"] = "Comentarii";
+$lang["receivings_complete_receiving"] = "Finalizare";
+$lang["receivings_confirm_cancel_receiving"] = "Sigr doriti eliminarea acestei receptii? Toate articolele vor fi eliminate.";
 $lang["receivings_confirm_delete"] = "";
 $lang["receivings_confirm_finish_receiving"] = "";
 $lang["receivings_cost"] = "";
