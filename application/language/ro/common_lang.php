@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Adresă 1";
 $lang["common_address_2"] = "Adresă 2";
 $lang["common_city"] = "Oraș";
@@ -39,20 +38,20 @@ $lang["common_last_page"] = "Ultimul";
 $lang["common_learn_about_project"] = "pentru a afla ultimele informații despre proiect.";
 $lang["common_list_of"] = "Lista de";
 $lang["common_logout"] = "Deconectare";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "Migrarea bazei de date catre %1 va incepe dupa autentificare.";
 $lang["common_new"] = "Nou";
 $lang["common_no_persons_to_display"] = "Nu există persoane de afișat.";
-$lang["common_none_selected_text"] = "Nimic nu a fost selectat.";
+$lang["common_none_selected_text"] = "[Select]ati";
 $lang["common_or"] = "SAU";
 $lang["common_phone_number"] = "Număr de telefon";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "Vă rugăm să vizitați";
-$lang["common_powered_by"] = "Produs de";
+$lang["common_powered_by"] = "Sustinut de";
 $lang["common_price"] = "Preț";
 $lang["common_print"] = "Printează";
 $lang["common_remove"] = "Elimină";
 $lang["common_required"] = "Necesar";
-$lang["common_restore"] = "Restabili";
+$lang["common_restore"] = "Restabilire";
 $lang["common_return_policy"] = "Politica de returnare";
 $lang["common_search"] = "Caută";
 $lang["common_search_options"] = "Opțiuni de căutare";
@@ -65,5 +64,6 @@ $lang["common_view_recent_sales"] = "Vedeți vânzările recente";
 $lang["common_website"] = "website";
 $lang["common_welcome"] = "Bine ați venit";
 $lang["common_welcome_message"] = "Bine ați venit la OSPOS, faceți clic pe un modul de mai jos pentru a începe.";
-$lang["common_you_are_using_ospos"] = "Folosiți Open Source Point Of Sale version";
+$lang["common_you_are_using_ospos"] = "Folosiți Open Source Point Of Sale versiunea";
 $lang["common_zip"] = "Cod poștal";
+$lang["common_correct_errors"] = "Corectati va rog erorile identificate inainte de salvare";
