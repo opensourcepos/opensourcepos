@@ -42,7 +42,7 @@
 		<a data-toggle="tab" href="#message_tab" title="<?php echo $this->lang->line('config_message_configuration'); ?>"><?php echo $this->lang->line('config_message'); ?></a>
 	</li>
 	<li role="presentation">
-		<a data-toggle="tab" href="#mailchimp_tab" title="<?php echo $this->lang->line('config_mailchimp_configuration'); ?>"><?php echo $this->lang->line('config_mailchimp'); ?></a>
+		<a data-toggle="tab" href="#integrations_tab" title="<?php echo $this->lang->line('config_integrations_configuration'); ?>"><?php echo $this->lang->line('config_integrations'); ?></a>
 	</li>
 	<li role="presentation">
 		<a data-toggle="tab" href="#license_tab" title="<?php echo $this->lang->line('config_license_configuration'); ?>"><?php echo $this->lang->line('config_license'); ?></a>
@@ -86,8 +86,8 @@
 	<div class="tab-pane" id="message_tab">
 		<?php $this->load->view("configs/message_config"); ?>
 	</div>
-	<div class="tab-pane" id="mailchimp_tab">
-		<?php $this->load->view("configs/mailchimp_config"); ?>
+	<div class="tab-pane" id="integrations_tab">
+		<?php $this->load->view("configs/integrations_config"); ?>
 	</div>
 	<div class="tab-pane" id="license_tab">
 		<?php $this->load->view("configs/license_config"); ?>

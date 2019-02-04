@@ -106,6 +106,15 @@ a.none
 	width: 30%;
 }
 
+#integrations_header
+{
+	margin:10px 0;
+	text-align:center;
+	font-size:1.4em;
+	font-weight:normal;
+	padding:10px 0	
+}
+
 #footer
 {
 	margin-top: 5em;
