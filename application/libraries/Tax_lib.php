@@ -81,7 +81,6 @@ class Tax_lib
 					foreach($tax_info as $tax)
 					{
 						// This computes tax for each line item and adds it to the tax type total
-						$tax_group = (float)$tax['percent'] . '% ' . $tax['name'];
 						$tax_basis = $this->CI->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
 						$tax_amount = 0.0;
 
@@ -99,7 +98,7 @@ class Tax_lib
 						if($tax_amount <> 0)
 						{
 							$tax_group_sequence++;
-							$this->update_taxes($taxes, $tax_type, $tax_group, $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, Rounding_mode::HALF_UP, -1, $tax['name']);
+							$this->update_taxes($taxes, $tax_type, $tax['name'], $tax['percent'], $tax_basis, $tax_amount, $tax_group_sequence, Rounding_mode::HALF_UP, -1, $tax['name']);
 							$tax_group_sequence += 1;
 						}
 						$items_taxes_detail = array();
@@ -161,7 +160,7 @@ class Tax_lib
 	*/
 	public function update_taxes(&$taxes, $tax_type, $tax_group, $tax_rate, $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id, $name = '', $tax_code_id = NULL, $jurisdiction_id = NULL,$tax_category_id = NULL  )
 	{
-		$tax_group_index = $this->clean('X' . $tax_group);
+		$tax_group_index = $this->clean('X' . (float)$tax_rate . '% ' . $tax_group);
 
 		if(!array_key_exists($tax_group_index, $taxes))
 		{
@@ -336,12 +335,10 @@ class Tax_lib
 					$cascade_tax_amount = $cascade_tax_amount + $tax_amount;
 				}
 
-				$tax_group = (float)$tax_rate . '% ' . $tax['tax_group'];
-
 				if($tax_amount != 0)
 				{
 
-					$this->update_taxes($taxes, $tax_type, $tax_group, $tax_rate, $tax_basis, $tax_amount, $tax['tax_group_sequence'], $rounding_code, $sale_id, $tax['tax_group'], $tax_code_id, $tax['rate_jurisdiction_id'], $item['tax_category_id']);
+					$this->update_taxes($taxes, $tax_type, $tax['tax_group'], $tax_rate, $tax_basis, $tax_amount, $tax['tax_group_sequence'], $rounding_code, $sale_id, $tax['tax_group'], $tax_code_id, $tax['rate_jurisdiction_id'], $item['tax_category_id']);
 				}
 
 				$item_taxes_detail = array();

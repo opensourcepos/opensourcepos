@@ -422,7 +422,7 @@ if(isset($success))
 			{
 			?>
 				<tr>
-					<th style='width: 55%;'><?php echo $tax['tax_group']; ?></th>
+					<th style='width: 55%;'><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></th>
 					<th style="width: 45%; text-align: right;"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></th>
 				</tr>
 			<?php
