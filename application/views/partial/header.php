@@ -25,6 +25,7 @@
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
 		<link rel="stylesheet" type="text/css" href="css/invoice.css"/>
+		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<link rel="stylesheet" type="text/css" href="css/ospos_print.css"/>
 		<link rel="stylesheet" type="text/css" href="css/popupbox.css"/>
 		<link rel="stylesheet" type="text/css" href="css/receipt.css"/>
@@ -75,7 +76,6 @@
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
 		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c729835075"/>
 		<!-- end mincss template tags -->
-		<link rel="stylesheet" type="text/css" href="css/ospos.css"/>
 		<!-- start minjs template tags -->
 		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=b9e3a39941"></script>
 		<!-- end minjs template tags -->
