@@ -1,4 +1,5 @@
 <?php
+
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";
 $lang["config_allow_duplicate_barcodes"] = "Allow Duplicate Barcodes";
@@ -136,6 +137,7 @@ $lang["config_giftcard_series"] = "Generate in Series";
 $lang["config_include_hsn"] = "Include Support for HSN Codes";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Shop Information";
+$lang["config_integrations"] = "Integrations";
 $lang["config_invoice"] = "Invoice";
 $lang["config_invoice_configuration"] = "Invoice Print Settings";
 $lang["config_invoice_default_comments"] = "Default Invoice Comments";
