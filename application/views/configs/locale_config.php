@@ -91,6 +91,7 @@
 				<?php echo form_label($this->lang->line('config_cash_decimals'), 'cash_decimals', array('class' => 'control-label col-xs-2')); ?>
                 <div class='col-xs-2'>
 					<?php echo form_dropdown('cash_decimals', array(
+						'-1' => '-1',
 						'0' => '0',
 						'1' => '1',
 						'2' => '2'
