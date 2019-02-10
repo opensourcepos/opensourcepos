@@ -135,7 +135,7 @@
 			{
 			?>
 				<tr>
-					<td colspan="3" style="text-align:right;"><?php echo $tax['tax_group']; ?>:</td>
+					<td colspan="3" style="text-align:right;"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?>:</td>
 					<td style="text-align:right;"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
