@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["employees_basic_information"] = "Məlumat";
-$lang["employees_cannot_be_deleted"] = "Seçilmiş əməkdaş (lar) silinə bilməz, bir və ya birdən çox əməkdaş satışlar edib, əks halda siz öz heasabınızı silməyə çalışırsiz";
+$lang["employees_cannot_be_deleted"] = "Seçilmiş əməkdaş (lar) silinə bilməz, bir və ya birdən çox əməkdaş satışlar edib, əks halda siz öz heasabınızı silməyə çalışırsiz.";
 $lang["employees_change_password"] = "Şifrəni Dəyiş";
 $lang["employees_confirm_delete"] = "Siz əminsiniz ki seçilmiş əməkdaşları silmək istəyirsiniz?";
 $lang["employees_confirm_restore"] = "Seçilmiş əməkdaşı (lar) yenidən bərpa etməyinizə əminsinizmi?";
 $lang["employees_current_password"] = "İndiki Şifrə";
-$lang["employees_current_password_invalid"] = "Hazirki Şifrə düzgün deyil";
+$lang["employees_current_password_invalid"] = "Hazirki Şifrə düzgün deyil.";
 $lang["employees_employee"] = "Əməkdaş";
 $lang["employees_error_adding_updating"] = "Əməkdaş əlavə etməsk və ya yeniləməsi baş vermədi.";
 $lang["employees_error_deleting_demo_admin"] = "Demo administrator istifadəçisini silə bilməzsiniz.";
@@ -20,13 +19,13 @@ $lang["employees_password"] = "Şifrə";
 $lang["employees_password_minlength"] = "Şifrə ən azı 8 simvol olmalıdır.";
 $lang["employees_password_must_match"] = "Şifrələr uyğun gəlmir.";
 $lang["employees_password_not_must_match"] = "Hazırki şifrə və yeni şifrə unikal olmalıdır.";
-$lang["employees_password_required"] = "Şifrə tələb olunur";
+$lang["employees_password_required"] = "Şifrə tələb olunur.";
 $lang["employees_permission_desc"] = "Modullara giriş imkanı vermək üçün aşağıdakı qutuları yoxlayın.";
 $lang["employees_permission_info"] = "İcazələr";
 $lang["employees_repeat_password"] = "Şifrəni yenidən təkrar edin";
 $lang["employees_subpermission_required"] = "Hər bir modul üçün ən azı bir qrant əlavə edin.";
-$lang["employees_successful_adding"] = "Əməkdaş müvəffəqiyyətə əlavə olundu";
-$lang["employees_successful_change_password"] = "Şifrə müvəffəqiyyətlə dəyişildi";
+$lang["employees_successful_adding"] = "Əməkdaş müvəffəqiyyətə əlavə olundu.";
+$lang["employees_successful_change_password"] = "Şifrə müvəffəqiyyətlə dəyişildi.";
 $lang["employees_successful_deleted"] = "Siz uğurla sildiniz";
 $lang["employees_successful_updating"] = "Siz uğurla əməkdaşı yenilədiniz";
 $lang["employees_system_language"] = "Sistem Dili";
@@ -34,4 +33,4 @@ $lang["employees_unsuccessful_change_password"] = "Şifrə dəyişməsi uğursuz
 $lang["employees_update"] = "İşçini yeniləyin";
 $lang["employees_username"] = "İstifadəçi Adı";
 $lang["employees_username_minlength"] = "İstifadəçi adı ən azı 5 simvol olmalıdır.";
-$lang["employees_username_required"] = "İstifadəçi adı tələb olunan sahədir";
+$lang["employees_username_required"] = "İstifadəçi adı tələb olunan sahədir.";
