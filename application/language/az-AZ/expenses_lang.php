@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "Xərc Əlavə Et";
 $lang["expenses_amount"] = "Məbləğ";
 $lang["expenses_amount_number"] = "Məbləğ rəqəm ilə olmalıdır";

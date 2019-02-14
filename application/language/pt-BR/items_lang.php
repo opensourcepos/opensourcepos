@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair.";
 $lang["items_allow_alt_desciption"] = "Descrição longa";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";

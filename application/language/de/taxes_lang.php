@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "Ausnahme hinzufügen";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
@@ -31,10 +32,15 @@ $lang["taxes_tax_categories_saved_successfully"] = "Änderungen an Steuerkategor
 $lang["taxes_tax_categories_saved_unsuccessfully"] = "Änderungen an Steuerkategorien nicht gespeichert";
 $lang["taxes_tax_category"] = "Steuerkategorie";
 $lang["taxes_tax_category_code"] = "Steuerkategorie-Code";
+$lang["taxes_tax_category_duplicate"] = "";
+$lang["taxes_tax_category_invalid_chars"] = "";
 $lang["taxes_tax_category_name"] = "Name der Steuerkategorie";
 $lang["taxes_tax_category_new"] = "Neue Steuerkategorie";
+$lang["taxes_tax_category_required"] = "";
 $lang["taxes_tax_code"] = "Steuercode";
 $lang["taxes_tax_code_cannot_be_deleted"] = "Löschen des Steuercodes fehlgeschlagen";
+$lang["taxes_tax_code_duplicate"] = "";
+$lang["taxes_tax_code_invalid_chars"] = "";
 $lang["taxes_tax_code_name"] = "Name des Steuercodes";
 $lang["taxes_tax_code_required"] = "Der Steuercode ist ein Pflichtfeld";
 $lang["taxes_tax_code_successful_deleted"] = "Steuercode erfolgreich gelöscht";
@@ -51,11 +57,15 @@ $lang["taxes_tax_group"] = "Steuergruppe";
 $lang["taxes_tax_group_sequence"] = "";
 $lang["taxes_tax_included"] = "inkl. Steuer";
 $lang["taxes_tax_jurisdiction"] = "Steuerbehörde";
+$lang["taxes_tax_jurisdiction_duplicate"] = "";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "";
+$lang["taxes_tax_jurisdiction_required"] = "";
 $lang["taxes_tax_jurisdictions"] = "Steuerbehörden";
 $lang["taxes_tax_jurisdictions_configuration"] = "Konfiguration der Steuerbehörden";
 $lang["taxes_tax_jurisdictions_saved_successfully"] = "Änderungen der Steuerbehörde gespeichert";
 $lang["taxes_tax_jurisdictions_saved_unsuccessfully"] = "Änderungen der Steuerbehörde nicht gespeichert";
 $lang["taxes_tax_rate"] = "Steuersatz";
+$lang["taxes_tax_rate_configuration"] = "";
 $lang["taxes_tax_rate_error_adding_updating"] = "Hinzufügen oder Ändern des Steuersatzes fehlgeschlagen";
 $lang["taxes_tax_rate_numeric"] = "Der Steuersatz muss eine Zahl sein";
 $lang["taxes_tax_rate_required"] = "Der Steuersatz ist ein Pflichtfeld";

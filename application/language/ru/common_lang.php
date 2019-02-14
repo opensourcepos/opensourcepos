@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Адрес 1";
 $lang["common_address_2"] = "Адрес 2";
 $lang["common_city"] = "Город";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Закрыть";
 $lang["common_comments"] = "Комментарии";
 $lang["common_common"] = "общественно";
 $lang["common_confirm_search"] = "Вы выбрали одну или несколько строк, это больше не будет быть выбрано после поиска. Вы уверены, что хотите, чтобы представить этот поиск?";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "Страна";
 $lang["common_date"] = "дата";
 $lang["common_delete"] = "Удалить";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Adres";
 $lang["config_address_required"] = "Het adres van het bedrijf moet ingevuld worden.";
 $lang["config_allow_duplicate_barcodes"] = "Sta gedupliceerde barcodes toe";
@@ -136,6 +137,7 @@ $lang["config_giftcard_series"] = "Genereer in volgorde";
 $lang["config_include_hsn"] = "Ondersteuning voor HSN Codes";
 $lang["config_info"] = "Instellingen";
 $lang["config_info_configuration"] = "Instellingen";
+$lang["config_integrations"] = "";
 $lang["config_invoice"] = "Factuur";
 $lang["config_invoice_configuration"] = "Print Instellingen";
 $lang["config_invoice_default_comments"] = "Factuur Mededeling";

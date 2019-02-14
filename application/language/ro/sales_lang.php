@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Puncte disponibile";
 $lang["rewards_package"] = "Recompense";
 $lang["rewards_remaining_balance"] = "Valoarea ramasa a punctelor de fidelizare este ";

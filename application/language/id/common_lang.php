@@ -7,6 +7,7 @@ $lang["common_close"] = "Tutup";
 $lang["common_comments"] = "Catatan";
 $lang["common_common"] = "Biasa";
 $lang["common_confirm_search"] = "Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "Negara";
 $lang["common_date"] = "Tanggal";
 $lang["common_delete"] = "Hapus";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "Добавить/убрать товар.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Разрешить альтернативные описания";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adresse 1";
 $lang["common_address_2"] = "Adresse 2";
 $lang["common_city"] = "Stadt";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Schließen";
 $lang["common_comments"] = "Kommentare";
 $lang["common_common"] = "Allgemein";
 $lang["common_confirm_search"] = "Sie haben einen oder mehrere Zeilen gewählt. Nach der Verarbeitung werden diese nicht mehr selektiert sein. Wollen Sie die Suche dennoch verarbeiten?";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "Land";
 $lang["common_date"] = "Datum";
 $lang["common_delete"] = "Löschen";

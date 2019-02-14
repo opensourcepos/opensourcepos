@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "Xərc Kategoriyası adı tələb olunur";
 $lang["expenses_categories_add_item"] = "Kategoriya əlavə et";
 $lang["expenses_categories_cannot_be_deleted"] = "Kategoriya Xərcləri silinmədi";

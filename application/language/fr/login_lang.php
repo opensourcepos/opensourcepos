@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["login_gcaptcha"] = "";
 $lang["login_go"] = "Lancer";
 $lang["login_invalid_gcaptcha"] = "";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Hesab №";
 $lang["suppliers_agency_name"] = "Agentliyin Adı";
 $lang["suppliers_cannot_be_deleted"] = "Seçilmiş Təchizatçı (lar) silinə bilmədi. Bir və ya birdən çox satışlar var.";

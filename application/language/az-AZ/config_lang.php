@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Şirkət Adresi";
 $lang["config_address_required"] = "Şirkətin adı olan boşluq  sahəsi doldurulmalıdı.";
 $lang["config_allow_duplicate_barcodes"] = "Dublikat Barkodlarına icazə verin";
@@ -68,6 +69,9 @@ $lang["config_default_barcode_width_number"] = "Standart Barkod Genişliyi rəq�
 $lang["config_default_barcode_width_required"] = "Standart Barkod Genişliyi olan sahə boş qala bilməz.";
 $lang["config_default_item_columns"] = "Sabit Görünür Malların Sütunları";
 $lang["config_default_origin_tax_code"] = "Vergi Kodunun Standart Mənbəyi";
+$lang["config_default_receivings_discount"] = "Alışdan sonra standart endirim";
+$lang["config_default_receivings_discount_number"] = "Sabit alacaqlar endirimi bir nömrə olmalıdır.";
+$lang["config_default_receivings_discount_required"] = "Standart alış endirimi tələb olunan sahədir.";
 $lang["config_default_sales_discount"] = "Standart Satış Endirimi";
 $lang["config_default_sales_discount_number"] = "Standart Satış Endirimi rəqəm ilə olmalıdır.";
 $lang["config_default_sales_discount_required"] = "Standart Satış Endirimi tələb olunan sahədi.";
@@ -133,6 +137,7 @@ $lang["config_giftcard_series"] = "Bölümlərə görə Yarat";
 $lang["config_include_hsn"] = "HSN Kodlarına dəstək verin";
 $lang["config_info"] = "Məlumat";
 $lang["config_info_configuration"] = "Dükan İnformasiyası";
+$lang["config_integrations"] = "";
 $lang["config_invoice"] = "Faktura";
 $lang["config_invoice_configuration"] = "Faktura Çap Parametrləri";
 $lang["config_invoice_default_comments"] = "Standart Faktura Şərhləri";
@@ -269,6 +274,3 @@ $lang["config_use_destination_based_tax"] = "Təyinatından vergi istifadə edin
 $lang["config_website"] = "Vebsayt";
 $lang["config_work_order_enable"] = "İş Sifariş Dəstəyi";
 $lang["config_work_order_format"] = "İş Sifarş Farmatı";
-$lang["config_default_receivings_discount"] = "Alışdan sonra standart endirim";
-$lang["config_default_receivings_discount_number"] = "Sabit alacaqlar endirimi bir nömrə olmalıdır.";
-$lang["config_default_receivings_discount_required"] = "Standart alış endirimi tələb olunan sahədir.";

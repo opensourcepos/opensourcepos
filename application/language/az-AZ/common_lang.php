@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Ünvan 1";
 $lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "Şəhər";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Bağlı";
 $lang["common_comments"] = "Rəylər";
 $lang["common_common"] = "ortaq";
 $lang["common_confirm_search"] = "Bir və ya bir neçə sətir seçdiniz, bunlar axtarışınızdan sonra artıq seçilməyəcək. Bu axtarışı göndərmək istədiyinizə əminsinizmi?";
+$lang["common_correct_errors"] = "Xahiş edirik təsdiqlə-dən əvvəl səhvləri düzəldin";
 $lang["common_country"] = "Ölkə";
 $lang["common_date"] = "Təqvim";
 $lang["common_delete"] = "Sil";
@@ -66,4 +68,3 @@ $lang["common_welcome"] = "Xoş Gəlmisiniz";
 $lang["common_welcome_message"] = "OSPOS-a Xoş gəlmisiniz, başlamaq üçün bir modula basın.";
 $lang["common_you_are_using_ospos"] = "Open Source Point Of Sale versiya";
 $lang["common_zip"] = "Poçt Kodu";
-$lang["common_correct_errors"] = "Xahiş edirik təsdiqlə-dən əvvəl səhvləri düzəldin";

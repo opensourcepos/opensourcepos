@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "Bestandsänderung.";
 $lang["giftcards_allow_alt_description"] = "Erlaube Alternative Bezeichnung";
 $lang["giftcards_bulk_edit"] = "Sammeländerung";

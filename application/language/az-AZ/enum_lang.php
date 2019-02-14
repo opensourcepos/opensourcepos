@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["enum_half_down"] = "Yarım aşağı";
 $lang["enum_half_even"] = "Yarım hətta";
 $lang["enum_half_five"] = "Yarısı";

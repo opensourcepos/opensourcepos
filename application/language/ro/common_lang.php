@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "Adresă 1";
 $lang["common_address_2"] = "Adresă 2";
 $lang["common_city"] = "Oraș";
@@ -6,6 +7,7 @@ $lang["common_close"] = "Închide";
 $lang["common_comments"] = "Comnetarii";
 $lang["common_common"] = "comun";
 $lang["common_confirm_search"] = "Ați selectat unul sau mai multe rânduri, acestea nu vor mai fi selectate după căutarea dvs. Sigur doriți să trimiteți această căutare?";
+$lang["common_correct_errors"] = "Corectati va rog erorile identificate inainte de salvare";
 $lang["common_country"] = "Țară";
 $lang["common_date"] = "Dată";
 $lang["common_delete"] = "Ștergere";
@@ -66,4 +68,3 @@ $lang["common_welcome"] = "Bine ați venit";
 $lang["common_welcome_message"] = "Bine ați venit la OSPOS, faceți clic pe un modul de mai jos pentru a începe.";
 $lang["common_you_are_using_ospos"] = "Folosiți Open Source Point Of Sale versiunea";
 $lang["common_zip"] = "Cod poștal";
-$lang["common_correct_errors"] = "Corectati va rog erorile identificate inainte de salvare";
