@@ -77,6 +77,7 @@ class Sale extends CI_Model
 				MAX(sales.sale_time) AS sale_time,
 				MAX(sales.comment) AS comment,
 				MAX(sales.sale_status) AS sale_status,
+				MAX(sales.sale_type) AS sale_type,
 				MAX(sales.invoice_number) AS invoice_number,
 				MAX(sales.quote_number) AS quote_number,
 				MAX(sales.employee_id) AS employee_id,
@@ -200,6 +201,7 @@ class Sale extends CI_Model
 					MAX(sales.sale_time) AS sale_time,
 					MAX(sales.invoice_number) AS invoice_number,
 					MAX(sales.quote_number) AS quote_number,
+					MAX(sales.sale_type) AS sale_type,
 					SUM(sales_items.quantity_purchased) AS items_purchased,
 					MAX(CONCAT(customer_p.first_name, " ", customer_p.last_name)) AS customer_name,
 					MAX(customer.company_name) AS company_name,
@@ -566,7 +568,8 @@ class Sale extends CI_Model
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 */
 	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number,
-							$work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
+							$work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes,
+							$exchange_rate, $number_locale_alt, $currency_symbol_alt)
 	{
 		if($sale_id != -1)
 		{
@@ -583,17 +586,20 @@ class Sale extends CI_Model
 		$table_status = $this->determine_sale_status($sale_status, $dinner_table);
 
 		$sales_data = array(
-			'sale_time'			=> date('Y-m-d H:i:s'),
-			'customer_id'		=> $this->Customer->exists($customer_id) ? $customer_id : NULL,
-			'employee_id'		=> $employee_id,
-			'comment'			=> $comment,
-			'sale_status'		=> $sale_status,
-			'invoice_number'	=> $invoice_number,
-			'quote_number'		=> $quote_number,
-			'work_order_number'	=> $work_order_number,
-			'dinner_table_id'	=> $dinner_table,
-			'sale_status'		=> $sale_status,
-			'sale_type'			=> $sale_type
+			'sale_time'				=> date('Y-m-d H:i:s'),
+			'customer_id'			=> $this->Customer->exists($customer_id) ? $customer_id : NULL,
+			'employee_id'			=> $employee_id,
+			'comment'				=> $comment,
+			'sale_status'			=> $sale_status,
+			'invoice_number'		=> $invoice_number,
+			'quote_number'			=> $quote_number,
+			'work_order_number'		=> $work_order_number,
+			'dinner_table_id'		=> $dinner_table,
+			'sale_status'			=> $sale_status,
+			'sale_type'				=> $sale_type,
+			'exchange_rate'			=> $exchange_rate,
+			'number_locale_alt'		=> $number_locale_alt,
+			'currency_symbol_alt'	=> $currency_symbol_alt
 		);
 
 		// Run these queries as a transaction, we want to make sure we do all or nothing
@@ -1264,6 +1270,60 @@ class Sale extends CI_Model
 		if($row != NULL)
 		{
 			return $row->quote_number;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Gets the exchange_rate for the selected sale
+	 */
+	public function get_exchange_rate($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->exchange_rate;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Gets the exchange_rate for the selected sale
+	 */
+	public function get_currency_symbol_alt($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->currency_symbol_alt;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 * Gets the number_locale_alt for the selected sale
+	 */
+	public function get_number_locale_alt($sale_id)
+	{
+		$this->db->from('sales');
+		$this->db->where('sale_id', $sale_id);
+
+		$row = $this->db->get()->row();
+
+		if($row != NULL)
+		{
+			return $row->number_locale_alt;
 		}
 
 		return NULL;

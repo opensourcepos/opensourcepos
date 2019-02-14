@@ -591,6 +591,73 @@ class Sale_lib
 		$this->CI->session->set_userdata('sales_employee', $employee_id);
 	}
 
+	public function get_exchange_rate()
+	{
+		if(!$this->CI->session->userdata('sales_exchange_rate'))
+		{
+
+			$this->set_exchange_rate($this->CI->config->item('last_exchange_rate'));
+		}
+
+		return $this->CI->session->userdata('sales_exchange_rate');
+	}
+
+	public function set_exchange_rate($exchange_rate)
+	{
+		$this->CI->session->set_userdata('sales_exchange_rate', $exchange_rate);
+	}
+
+
+	public function set_last_exchange_rate($exchange_rate)
+	{
+		$this->CI->Appconfig->save('last_exchange_rate', $exchange_rate);
+	}
+
+	public function is_apply_exchange_rate()
+	{
+		if(!$this->CI->session->userdata('sales_apply_exchange_rate'))
+		{
+			$this->set_apply_exchange_rate(0);
+		}
+
+		return $this->CI->session->userdata('sales_apply_exchange_rate');
+	}
+
+	public function set_apply_exchange_rate($apply_exchange_rate)
+	{
+		$this->CI->session->set_userdata('sales_apply_exchange_rate', $apply_exchange_rate);
+	}
+
+	public function get_number_locale_alt()
+	{
+		if(!$this->CI->session->userdata('sales_number_locale_alt'))
+		{
+			$this->set_number_locale_alt($this->CI->config->item('number_locale_alt'));
+		}
+
+		return $this->CI->session->userdata('sales_number_locale_alt');
+	}
+
+	public function set_number_locale_alt($number_locale_alt)
+	{
+		$this->CI->session->set_userdata('sales_number_locale_alt', $number_locale_alt);
+	}
+
+	public function get_currency_symbol_alt()
+	{
+		if(!$this->CI->session->userdata('sales_currency_symbol_alt'))
+		{
+			$this->set_currency_symbol_alt($this->CI->config->item('currency_symbol_alt'));
+		}
+
+		return $this->CI->session->userdata('sales_currency_symbol_alt');
+	}
+
+	public function set_currency_symbol_alt($currency_symbol_alt)
+	{
+		$this->CI->session->set_userdata('sales_currency_symbol_alt', $currency_symbol_alt);
+	}
+
 	public function remove_employee()
 	{
 		$this->CI->session->unset_userdata('sales_employee');
@@ -1036,6 +1103,9 @@ class Sale_lib
 		$this->set_customer($this->CI->Sale->get_customer($sale_id)->person_id);
 		$this->set_employee($this->CI->Sale->get_employee($sale_id)->person_id);
 		$this->set_quote_number($this->CI->Sale->get_quote_number($sale_id));
+		$this->set_exchange_rate($this->CI->Sale->get_exchange_rate($sale_id));
+		$this->set_number_locale_alt($this->CI->Sale->get_number_locale_alt($sale_id));
+		$this->set_currency_symbol_alt($this->CI->Sale->get_currency_symbol_alt($sale_id));
 		$this->set_work_order_number($this->CI->Sale->get_work_order_number($sale_id));
 		$this->set_sale_type($this->CI->Sale->get_sale_type($sale_id));
 		$this->set_comment($this->CI->Sale->get_comment($sale_id));
@@ -1074,6 +1144,13 @@ class Sale_lib
 		$this->empty_payments();
 		$this->remove_customer();
 		$this->clear_cash_flags();
+		$this->clear_exchange_rate_info();
+	}
+
+	public function clear_exchange_rate_info()
+	{
+		$this->CI->session->unset_userdata('sales_apply_exchange_rate');
+		$this->CI->session->unset_userdata('sales_exchange_rate');
 	}
 
 	public function clear_cash_flags()

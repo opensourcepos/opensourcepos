@@ -72,10 +72,14 @@ function get_sales_manage_table_headers()
 	if($CI->config->item('invoice_enable') == TRUE)
 	{
 		$headers[] = array('invoice_number' => $CI->lang->line('sales_invoice_number'));
-		$headers[] = array('invoice' => '&nbsp', 'sortable' => FALSE);
 	}
 
-	$headers[] = array('receipt' => '&nbsp', 'sortable' => FALSE);
+	$headers[] = array('reprint' => '&nbsp', 'sortable' => FALSE);
+
+	if($CI->config->item('use_alternate_currency') == '1')
+	{
+		$headers[] = array('reprint_alt' => '&nbsp', 'sortable' => FALSE);
+	}
 
 	return transform_headers($headers);
 }
@@ -101,14 +105,34 @@ function get_sale_data_row($sale)
 	if($CI->config->item('invoice_enable'))
 	{
 		$row['invoice_number'] = $sale->invoice_number;
-		$row['invoice'] = empty($sale->invoice_number) ? '' : anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
-			array('title'=>$CI->lang->line('sales_show_invoice'))
-		);
+
+		$row['reprint'] = ($sale->sale_type != SALE_TYPE_INVOICE)
+			? anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
+				array('title' => $CI->lang->line('sales_show_receipt')))
+			: anchor($controller_name."/invoice/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt"></span>',
+				array('title'=>$CI->lang->line('sales_show_invoice')));
+
+		if($CI->config->item('use_alternate_currency') == '1')
+		{
+			$row['reprint_alt'] = ($sale->sale_type != SALE_TYPE_INVOICE)
+				? anchor($controller_name."/receipt_alt/$sale->sale_id", '<span class="glyphicon glyphicon-usd">&#8646;</span>',
+					array('title' => $CI->lang->line('sales_show_receipt_alt')))
+				: anchor($controller_name."/invoice_alt/$sale->sale_id", '<span class="glyphicon glyphicon-list-alt">&#8646;</span>',
+					array('title'=>$CI->lang->line('sales_show_invoice_alt')));
+		}
+	}
+	else
+	{
+		$row['reprint'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
+			array('title' => $CI->lang->line('sales_show_receipt')));
+
+		if($CI->config->item('use_alternate_currency') == '1')
+		{
+			$row['reprint_alt'] = anchor($controller_name."/receipt_alt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
+				array('title' => $CI->lang->line('sales_show_receipt_alt')));
+		}
 	}
 
-	$row['receipt'] = anchor($controller_name."/receipt/$sale->sale_id", '<span class="glyphicon glyphicon-usd"></span>',
-		array('title' => $CI->lang->line('sales_show_receipt'))
-	);
 	$row['edit'] = anchor($controller_name."/edit/$sale->sale_id", '<span class="glyphicon glyphicon-edit"></span>',
 		array('class' => 'modal-dlg print_hide', 'data-btn-delete' => $CI->lang->line('common_delete'), 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
 	);

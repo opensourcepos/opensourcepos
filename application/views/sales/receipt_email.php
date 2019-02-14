@@ -60,9 +60,9 @@
 			?>
 				<tr>
 					<td><?php echo ucfirst($item['name'] . ' ' . $item['attribute_values']); ?></td>
-					<td><?php echo to_currency($item['price']); ?></td>
+					<td><?php echo to_currency($item['price'], $exchange_rate_set); ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-					<td style="text-align:right;"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
+					<td style="text-align:right;"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')], $exchange_rate_set); ?></td>
 				</tr>
 				<tr>
 					<?php
@@ -90,7 +90,7 @@
 						if($item['discount_type'] == FIXED)
 						{
 						?>
-							<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . " " . $this->lang->line("sales_discount") ?></td>
+							<td colspan="3" class="discount"><?php echo to_currency($item['discount'], $exchange_rate_set) . " " . $this->lang->line("sales_discount") ?></td>
 						<?php
 						}
 						elseif($item['discount_type'] == PERCENT)
@@ -100,7 +100,7 @@
 						<?php
 						}	
 						?>
-						<td class="total-value"><?php echo to_currency($item['discounted_total']); ?></td>
+						<td class="total-value"><?php echo to_currency($item['discounted_total'], $exchange_rate_set); ?></td>
 					</tr>
 				<?php
 				}
@@ -112,11 +112,11 @@
 		?>
 			<tr>
 				<td colspan="3" style="text-align:right;border-top:2px solid #000000;"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-				<td style="text-align:right;border-top:2px solid #000000;"><?php echo to_currency($subtotal); ?></td>
+				<td style="text-align:right;border-top:2px solid #000000;"><?php echo to_currency($subtotal, $exchange_rate_set); ?></td>
 			</tr>
 			<tr>
 				<td colspan="3" style="text-align:right;"><?php echo $this->lang->line('sales_discount'); ?>:</td>
-				<td style="text-align:right;"><?php echo to_currency($discount*-1); ?></td>
+				<td style="text-align:right;"><?php echo to_currency($discount*-1, $exchange_rate_set); ?></td>
 			</tr>
 		<?php
 		}
@@ -128,15 +128,15 @@
 		?>
 			<tr>
 				<td colspan="3" style='text-align:right;border-top:2px solid #000000;'><?php echo $this->lang->line('sales_sub_total'); ?></td>
-				<td style="text-align:right;border-top:2px solid #000000;"><?php echo to_currency($subtotal); ?></td>
+				<td style="text-align:right;border-top:2px solid #000000;"><?php echo to_currency($subtotal, $exchange_rate_set); ?></td>
 			</tr>
 			<?php
 			foreach($taxes as $tax_group_index=>$tax)
 			{
 			?>
 				<tr>
-					<td colspan="3" style="text-align:right;"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?>:</td>
-					<td style="text-align:right;"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
+					<td colspan="3" style="text-align:right;"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['name']; ?>:</td>
+					<td style="text-align:right;"><?php echo to_currency_tax($tax['sale_tax_amount'], $exchange_rate_set); ?></td>
 				</tr>
 			<?php
 			}
@@ -151,7 +151,7 @@
 		<?php $border = (!$this->config->item('receipt_show_taxes') && !($this->config->item('receipt_show_total_discount') && $discount > 0)); ?>
 		<tr>
 			<td colspan="3" style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right;"><?php echo $this->lang->line('sales_total'); ?></td>
-			<td style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right"><?php echo to_currency($total); ?></td>
+			<td style="<?php echo $border? 'border-top: 2px solid black;' :''; ?>text-align:right"><?php echo to_currency($total, $exchange_rate_set); ?></td>
 		</tr>
 
 		<tr>
@@ -169,7 +169,7 @@
 		?>
 			<tr>
 				<td colspan="3" style="text-align:right;"><?php echo $splitpayment[0]; ?> </td>
-				<td style="text-align:right;"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></td>
+				<td style="text-align:right;"><?php echo to_currency( $payment['payment_amount'] * -1 , $exchange_rate_set); ?></td>
 			</tr>
 		<?php
 		}
@@ -185,21 +185,21 @@
 		?>
 		<tr>
 			<td colspan="3" style="text-align:right;"><?php echo $this->lang->line('sales_giftcard_balance'); ?></td>
-			<td style="text-align:right"><?php echo to_currency($cur_giftcard_value); ?></td>
+			<td style="text-align:right"><?php echo to_currency($cur_giftcard_value, $exchange_rate_set); ?></td>
 		</tr>
 		<?php
 		}
 		?>
 		<tr>
 			<td colspan="3" style="text-align:right;"> <?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?> </td>
-			<td style="text-align:right"><?php echo to_currency($amount_change); ?></td>
+			<td style="text-align:right"><?php echo to_currency($amount_change, $exchange_rate_set); ?></td>
 		</tr>
 
 		<tr>
 			<td colspan="4">&nbsp;</td>
 		</tr>
 	</table>
-
+	<?php if($apply_exchange_rate) echo $this->lang->line('sales_exchange_rate') . ': ' . (float)$exchange_rate; ?>
 	<div id="sale_return_policy" style="text-align:center">
 		<?php echo nl2br($this->config->item('return_policy')); ?>
 	</div>

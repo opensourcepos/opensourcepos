@@ -120,7 +120,7 @@
 		?>
 			<tr>
 				<td colspan="<?php echo $quote_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></td>
+				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['name']; ?></td>
 				<td id="taxes" class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 			</tr>
 		<?php

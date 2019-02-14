@@ -52,7 +52,7 @@
 				?>
 					<tr>
 						<td class="meta-head"><?php echo $this->lang->line('sales_amount_due'); ?></td>
-						<td><div class="due"><?php echo to_currency($total); ?></div></td>
+						<td><div class="due"><?php echo to_currency($total, $exchange_rate_set); ?></div></td>
 					</tr>
 				<?php
 				}
@@ -92,12 +92,12 @@
 				<td><?php echo $item['item_number']; ?></td>
 				<td class="item-name"><?php echo $item['name']; ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
-				<td><?php echo to_currency($item['price']); ?></td>
-				<td><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></td>
+				<td><?php echo to_currency($item['price'], $exchange_rate_set); ?></td>
+				<td><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount'], $exchange_rate_set):$item['discount'] . '%';?></td>
 				<?php if ($item['discount'] > 0): ?>
-					<td><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></td>
+					<td><?php echo to_currency($item['discounted_total'] / $item['quantity'], $exchange_rate_set); ?></td>
 				<?php endif; ?>
-				<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
+				<td class="total-line"><?php echo to_currency($item['discounted_total'], $exchange_rate_set); ?></td>
 			</tr>
 			<?php
 			}
@@ -111,7 +111,7 @@
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_sub_total'); ?></td>
-			<td id="subtotal" class="total-value"><?php echo to_currency($subtotal); ?></td>
+			<td id="subtotal" class="total-value"><?php echo to_currency($subtotal, $exchange_rate_set); ?></td>
 		</tr>
 
 		<?php
@@ -120,8 +120,8 @@
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></td>
-				<td id="taxes" class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
+				<td colspan="2" class="total-line"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['name']; ?></td>
+				<td id="taxes" class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount'], $exchange_rate_set); ?></td>
 			</tr>
 		<?php
 		}
@@ -130,11 +130,12 @@
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 			<td colspan="2" class="total-line"><?php echo $this->lang->line('sales_total'); ?></td>
-			<td id="total" class="total-value"><?php echo to_currency($total); ?></td>
+			<td id="total" class="total-value"><?php echo to_currency($total, $exchange_rate_set); ?></td>
 		</tr>
 	</table>
 
 	<div id="terms">
+		<?php if($apply_exchange_rate) echo $this->lang->line('sales_exchange_rate') . ': ' . (float)$exchange_rate; ?>
 		<div id="sale_return_policy">
 			<h5>
 				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>

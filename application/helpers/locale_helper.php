@@ -317,9 +317,9 @@ function to_datetime($datetime)
 	return date($config->item('dateformat') . ' ' . $config->item('timeformat'), $datetime);
 }
 
-function to_currency($number)
+function to_currency($number, $exchange_rate_set=NULL)
 {
-	return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+	return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY, $exchange_rate_set);
 }
 
 function to_currency_no_money($number)
@@ -327,21 +327,21 @@ function to_currency_no_money($number)
 	return to_decimals($number, 'currency_decimals');
 }
 
-function to_currency_tax($number)
+function to_currency_tax($number, $exchange_rate_set=NULL)
 {
 	$config = get_instance()->config;
 
 	if($config->item('tax_included') == '1')
 	{
-		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY);
+		return to_decimals($number, 'tax_decimals', \NumberFormatter::CURRENCY, $exchange_rate_set);
 	}
 	else
 	{
-		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY);
+		return to_decimals($number, 'currency_decimals', \NumberFormatter::CURRENCY, $exchange_rate_set);
 	}
 }
 
-function to_tax_decimals($number)
+function to_tax_decimals($number, $exchange_rate_set=NULL)
 {
 	// taxes that are NULL, '' or 0 don't need to be displayed
 	// NOTE: do not remove this line otherwise the items edit form will show a tax with 0 and it will save it
@@ -350,7 +350,7 @@ function to_tax_decimals($number)
 		return $number;
 	}
 
-	return to_decimals($number, 'tax_decimals');
+	return to_decimals($number, 'tax_decimals', $exchange_rate_set);
 }
 
 function to_quantity_decimals($number)
@@ -358,7 +358,7 @@ function to_quantity_decimals($number)
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimal_type, $type=\NumberFormatter::DECIMAL, $exchange_rate_set=NULL)
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -368,14 +368,30 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 	}
 
 	$config = get_instance()->config;
-	$fmt = new \NumberFormatter($config->item('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item($decimals));
+
+	$decimals = $config->item($decimal_type);
+
+	$apply_exchange_rate = $exchange_rate_set == NULL ? FALSE : $exchange_rate_set[0];
+
+	if($apply_exchange_rate)
+	{
+		$exchange_rate = $exchange_rate_set[1];
+		$number_locale_alt = $exchange_rate_set[2];
+		$number = round(bcmul($number, $exchange_rate, $decimals+1), $decimals);
+		$fmt = new \NumberFormatter($number_locale_alt, $type);
+		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $exchange_rate_set[3]);
+	}
+	else
+	{
+		$fmt = new \NumberFormatter($config->item('number_locale'), $type);
+		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
+	}
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $decimals);
+	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
 	if(empty($config->item('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
 
 	return $fmt->format($number);
 }

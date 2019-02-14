@@ -91,7 +91,7 @@ $(document).ready(function()
 			</tr>
 			<tr>
 				<td class="meta-head"><?php echo $this->lang->line('sales_invoice_total'); ?></td>
-				<td><textarea rows="5" cols="6"><?php echo to_currency($total); ?></textarea></td>
+				<td><textarea rows="5" cols="6"><?php echo to_currency($total, $exchange_rate_set); ?></textarea></td>
 			</tr>
 		</table>
 	</div>
@@ -140,14 +140,14 @@ $(document).ready(function()
 					<td class="item-name"><div><?php echo ($item['is_serialized'] || $item['allow_alt_description']) && !empty($item['description']) ? $item['description'] : $item['name'] . ' ' . $item['attribute_values']; ?></div></td>
 					<td style='text-align:center;'><textarea rows="5" cols="6"><?php echo to_quantity_decimals($item['quantity']); ?></textarea>
 					</td>
-					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price']); ?></textarea></td>
-					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></textarea>
+					<td><textarea rows="4" cols="6"><?php echo to_currency($item['price'], $exchange_rate_set); ?></textarea></td>
+					<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount'], $exchange_rate_set):$item['discount'] . '%';?></textarea>
 					</td>
 					<?php if($discount > 0): ?>
-						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity']); ?></textarea>
+						<td style='text-align:center;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'] / $item['quantity'], $exchange_rate_set); ?></textarea>
 						</td>
 					<?php endif; ?>
-					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total']); ?></textarea>
+					<td style='border-right: solid 1px; text-align:right;'><textarea rows="4" cols="6"><?php echo to_currency($item['discounted_total'], $exchange_rate_set); ?></textarea>
 					</td>
 				</tr>
 				<?php
@@ -171,7 +171,7 @@ $(document).ready(function()
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank-bottom"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_sub_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal); ?></textarea></td>
+			<td class="total-value"><textarea rows="5" cols="6" id="subtotal"><?php echo to_currency($subtotal, $exchange_rate_set); ?></textarea></td>
 		</tr>
 
 		<?php
@@ -180,8 +180,8 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['name']; ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount'], $exchange_rate_set); ?></textarea></td>
 			</tr>
 		<?php
 		}
@@ -190,7 +190,7 @@ $(document).ready(function()
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 			<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_total'); ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total); ?></textarea></td>
+			<td class="total-value"><textarea rows="5" cols="6" id="total"><?php echo to_currency($total, $exchange_rate_set); ?></textarea></td>
 		</tr>
 
 		<?php
@@ -205,7 +205,7 @@ $(document).ready(function()
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $splitpayment[0]; ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 ); ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="paid"><?php echo to_currency( $payment['payment_amount'] * -1 , $exchange_rate_set); ?></textarea></td>
 			</tr>
 		<?php
 		}
@@ -216,7 +216,7 @@ $(document).ready(function()
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo $this->lang->line('sales_giftcard_balance'); ?></textarea></td>
-				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value); ?></textarea></td>
+				<td class="total-value"><textarea rows="5" cols="6" id="giftcard"><?php echo to_currency($cur_giftcard_value, $exchange_rate_set); ?></textarea></td>
 			</tr>
 			<?php
 		}
@@ -227,7 +227,7 @@ $(document).ready(function()
 		<tr>
 			<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
 			<td colspan="2" class="total-line"> <textarea rows="5" cols="6"><?php echo $this->lang->line($amount_change >= 0 ? ($only_sale_check ? 'sales_check_balance' : 'sales_change_due') : 'sales_amount_due') ; ?></textarea></td>
-			<td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change); ?></textarea></td>
+			<td class="total-value"><textarea rows="5" cols="6" id="change"><?php echo to_currency($amount_change, $exchange_rate_set); ?></textarea></td>
 		</tr>
 		<?php
 		}
@@ -236,6 +236,7 @@ $(document).ready(function()
 	</table>
 
 	<div id="terms">
+		<?php if($apply_exchange_rate) echo $this->lang->line('sales_exchange_rate') . ': ' . (float)$exchange_rate; ?>
 		<div id="sale_return_policy">
 			<h5>
 				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>
