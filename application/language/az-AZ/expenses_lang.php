@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["expenses_add_item"] = "Xərc Əlavə Et";
 $lang["expenses_amount"] = "Məbləğ";
 $lang["expenses_amount_number"] = "Məbləğ rəqəm ilə olmalıdır";
@@ -17,7 +16,7 @@ $lang["expenses_confirm_restore"] = "Seçilmiş xərci (lər) bərpa etmək ist�
 $lang["expenses_credit"] = "Kredit Kartı";
 $lang["expenses_credit_filter"] = "Kredit Kartı";
 $lang["expenses_date"] = "Tarix";
-$lang["expenses_date_number"] = "Tarix rəqəm ilə olmalıdır.";
+$lang["expenses_date_number"] = "Tarix rəqəm ilə olmalıdır";
 $lang["expenses_date_required"] = "Tarix qeyd edilməlidir";
 $lang["expenses_debit"] = "Debit Kartı";
 $lang["expenses_debit_filter"] = "Debit Kard";
@@ -36,7 +35,7 @@ $lang["expenses_no_expenses_to_display"] = "Heç bir Xərclər göstərilmir";
 $lang["expenses_none_selected"] = "Siz heç bir xərc seçməmisiniz";
 $lang["expenses_one_or_multiple"] = "Xərc (lər)";
 $lang["expenses_payment"] = "Ödəmə Növü";
-$lang["expenses_start_typing_supplier_name"] = "";
+$lang["expenses_start_typing_supplier_name"] = "Təchizatçıın adını yazmağa başlayın ...";
 $lang["expenses_successful_adding"] = "Xərc uğurla əlavə edildi";
 $lang["expenses_successful_deleted"] = "Xərc uğurla silindi";
 $lang["expenses_successful_updating"] = "Xərc Uğurla Yeniləndi";

@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Адрес 1";
 $lang["common_address_2"] = "Адрес 2";
 $lang["common_city"] = "Город";
@@ -41,24 +40,24 @@ $lang["common_list_of"] = "Список";
 $lang["common_logout"] = "Выход";
 $lang["common_migration_needed"] = "";
 $lang["common_new"] = "Новый";
-$lang["common_no_persons_to_display"] = "Там нет людей, чтобы отобразить.";
+$lang["common_no_persons_to_display"] = "Нет людей для отображения.";
 $lang["common_none_selected_text"] = "Ничего не выбрано.";
 $lang["common_or"] = "ИЛИ";
 $lang["common_phone_number"] = "Номер телефона";
 $lang["common_phone_number_required"] = "";
-$lang["common_please_visit_my"] = "пожалуйста, посетите";
+$lang["common_please_visit_my"] = "Пожалуйста, посетите";
 $lang["common_powered_by"] = "самоходные из";
 $lang["common_price"] = "Цена";
-$lang["common_print"] = "печать";
+$lang["common_print"] = "Печать";
 $lang["common_remove"] = "Снимать";
 $lang["common_required"] = "потребовал";
 $lang["common_restore"] = "Восстановить";
-$lang["common_return_policy"] = "Возвратний полис";
+$lang["common_return_policy"] = "Правила возврата";
 $lang["common_search"] = "Пойск";
 $lang["common_search_options"] = "Параметры поиска";
-$lang["common_searched_for"] = "Искали за";
+$lang["common_searched_for"] = "Найдено";
 $lang["common_state"] = "Штат";
-$lang["common_submit"] = "Подавать";
+$lang["common_submit"] = "Сохранить";
 $lang["common_total_spent"] = "Всего потрачено";
 $lang["common_unknown"] = "неизвестный";
 $lang["common_view_recent_sales"] = "Посмотреть Недавние Продажи";

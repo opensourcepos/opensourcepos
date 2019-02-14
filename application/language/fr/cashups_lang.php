@@ -1,22 +1,21 @@
-<?php 
-
-$lang["cashups_amount"] = "";
-$lang["cashups_amount_number"] = "";
-$lang["cashups_amount_required"] = "";
-$lang["cashups_cannot_be_deleted"] = "";
-$lang["cashups_close_date"] = "";
-$lang["cashups_close_employee"] = "";
-$lang["cashups_closed_amount_card"] = "";
-$lang["cashups_closed_amount_cash"] = "";
-$lang["cashups_closed_amount_check"] = "";
-$lang["cashups_closed_amount_due"] = "";
-$lang["cashups_closed_amount_total"] = "";
-$lang["cashups_closed_date"] = "";
-$lang["cashups_confirm_delete"] = "";
-$lang["cashups_confirm_restore"] = "";
-$lang["cashups_date_number"] = "";
-$lang["cashups_date_required"] = "";
-$lang["cashups_description"] = "";
+<?php
+$lang["cashups_amount"] = "Montant";
+$lang["cashups_amount_number"] = "Le montant doit être un nombre";
+$lang["cashups_amount_required"] = "Le montant est un champs obligatoire.";
+$lang["cashups_cannot_be_deleted"] = "Le Cashup ne peut pas être supprimer";
+$lang["cashups_close_date"] = "Date de fermeture";
+$lang["cashups_close_employee"] = "Fermé par";
+$lang["cashups_closed_amount_card"] = "Cartes";
+$lang["cashups_closed_amount_cash"] = "Espèces à la fermeture";
+$lang["cashups_closed_amount_check"] = "Chèques";
+$lang["cashups_closed_amount_due"] = "Taxes";
+$lang["cashups_closed_amount_total"] = "Total";
+$lang["cashups_closed_date"] = "Date de fermeture";
+$lang["cashups_confirm_delete"] = "Êtes-vous sûr de vouloir supprimer le Cashup sélectionné?";
+$lang["cashups_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer le(s) Cashup(s) sélectionné?";
+$lang["cashups_date_number"] = "La date doit être numérique";
+$lang["cashups_date_required"] = "La date est requis";
+$lang["cashups_description"] = "Description";
 $lang["cashups_error_adding_updating"] = "";
 $lang["cashups_id"] = "";
 $lang["cashups_info"] = "";
