@@ -244,6 +244,42 @@ class Attribute extends CI_Model
 		return $this->search($search)->num_rows();
 	}
 
+	public function convert_definition_type($definition_id,$from_type,$to_type)
+	{
+		if($from_type === TEXT)
+		{
+			//From TEXT to DATETIME
+			if($to_type === DATETIME)
+			{
+				$this->db->trans_start();
+				
+				$query = 'UPDATE ospos_attribute_values ';
+				$query .= 'INNER JOIN ospos_attribute_links ';
+				$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
+				$query .= 'SET attribute_datetime = attribute_value, ';
+				$query .= 'attribute_value = NULL ';
+				$query .= 'WHERE definition_id = '.$definition_id;
+				$this->db->query($query);
+				
+				$this->db->trans_complete();
+			}
+		}
+		else if($from_type === DROPDOWN)
+		{
+			//From DROPDOWN to TEXT
+			$this->db->trans_start();
+			
+			$this->db->from('ospos_attribute_links');
+			$this->db->where('definition_id',$definition_id);
+			$this->db->where('item_id',NULL);
+			$success = $this->db->delete();
+			
+			$this->db->trans_complete();
+		}
+		
+		return $success;
+	}
+	
 	/*
 	Inserts or updates a definition
 	*/
@@ -251,23 +287,37 @@ class Attribute extends CI_Model
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-
+		
+		//Definition doesn't exist
 		if($definition_id === -1 || !$this->exists($definition_id))
 		{
 			$success = $this->db->insert('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $this->db->insert_id();
 		}
+		//Definition already exists
 		else
 		{
+			$this->db->select('definition_type');
+			$this->db->from('attribute_definitions');
+			$this->db->where('definition_id',$definition_id);
+			
+			$from_definition_type = $this->db->get()->row()->definition_type;
+			$to_definition_type = $definition_data['definition_type'];
+			
+			if($from_definition_type !== $to_definition_type)
+			{
+				$this->convert_definition_type($definition_id,$from_definition_type,$to_definition_type);
+			}
+			
 			$this->db->where('definition_id', $definition_id);
 			$success = $this->db->update('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $definition_id;
 		}
-
+		
 		$this->db->trans_complete();
-
- 		$success &= $this->db->trans_status();
-
+		
+		$success &= $this->db->trans_status();
+		
 		return $success;
 	}
 
