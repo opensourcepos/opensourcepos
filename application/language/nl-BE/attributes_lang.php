@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Attribuut waarde kan geen ':' of '|' bevatten";
 $lang["attributes_confirm_delete"] = "Bent u zeker dat u de geselecteerde attributen wil verwijderen?";
 $lang["attributes_definition_cannot_be_deleted"] = "De geselecteerde attributen konden niet verwijderd worden";
 $lang["attributes_definition_flags"] = "Zichtbaarheid";
 $lang["attributes_definition_group"] = "Groep";
 $lang["attributes_definition_id"] = "Id";
-$lang["attributes_definition_name"] = "Voeg attribuut toe";
+$lang["attributes_definition_name"] = "Nieuw attribuut";
 $lang["attributes_definition_name_required"] = "Attribuut naam is een verplicht veld";
 $lang["attributes_definition_one_or_multiple"] = "Attribu(u)t(en)";
 $lang["attributes_definition_successful_adding"] = "Attribuut succesvol toegevoegd";
