@@ -47,6 +47,9 @@
 	<li role="presentation">
 		<a data-toggle="tab" href="#license_tab" title="<?php echo $this->lang->line('config_license_configuration'); ?>"><?php echo $this->lang->line('config_license'); ?></a>
 	</li>
+	<li role="presentation">
+	<a data-toggle="tab" href="#system_info" title="<?php echo $this->lang->line('config_system_info'); ?>"><?php echo $this->lang->line('config_system_info'); ?></a>
+	</li>
 </ul>
 
 <div class="tab-content">
@@ -91,6 +94,9 @@
 	</div>
 	<div class="tab-pane" id="license_tab">
 		<?php $this->load->view("configs/license_config"); ?>
+	</div>
+	<div class="tab-pane" id="system_info">
+	<?php $this->load->view("configs/system_info"); ?>
 	</div>
 </div>
 
