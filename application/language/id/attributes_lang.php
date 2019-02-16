@@ -1,18 +1,17 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "";
 $lang["attributes_confirm_delete"] = "";
-$lang["attributes_definition_cannot_be_deleted"] = "";
-$lang["attributes_definition_flags"] = "";
-$lang["attributes_definition_group"] = "";
-$lang["attributes_definition_id"] = "";
-$lang["attributes_definition_name"] = "";
-$lang["attributes_definition_name_required"] = "";
-$lang["attributes_definition_one_or_multiple"] = "";
-$lang["attributes_definition_successful_adding"] = "";
-$lang["attributes_definition_successful_deleted"] = "";
-$lang["attributes_definition_successful_updating"] = "";
-$lang["attributes_definition_type"] = "";
+$lang["attributes_definition_cannot_be_deleted"] = "Tidak bisa menghapus atribut terpilih";
+$lang["attributes_definition_flags"] = "Visibilitas Atribut";
+$lang["attributes_definition_group"] = "Grup";
+$lang["attributes_definition_id"] = "Id";
+$lang["attributes_definition_name"] = "Tambah Atribut";
+$lang["attributes_definition_name_required"] = "Atribut Nama harus di isi";
+$lang["attributes_definition_one_or_multiple"] = "atribut";
+$lang["attributes_definition_successful_adding"] = "Anda berhasil menambahkan item";
+$lang["attributes_definition_successful_deleted"] = "Anda berhasil menghapus";
+$lang["attributes_definition_successful_updating"] = "Anda berhasil mengubah atribut";
+$lang["attributes_definition_type"] = "Tipe Atribut";
 $lang["attributes_definition_type_required"] = "";
 $lang["attributes_definition_values"] = "";
 $lang["attributes_new"] = "";
