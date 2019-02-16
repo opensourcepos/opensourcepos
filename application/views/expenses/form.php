@@ -16,9 +16,9 @@
 					<span class="input-group-addon input-sm"><span class="glyphicon glyphicon-calendar"></span></span>
 					<?php echo form_input(array(
 							'name'=>'date',
-							'id'=>'datetime',
-							'class'=>'form-control input-sm datepicker',
-							'value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($expenses_info->date)))
+							'class'=>'form-control input-sm datetime',
+ 							'value'=>to_datetime(strtotime($expenses_info->date)),
+                            'readonly'=>'readonly')
 							);?>
 				</div>
 			</div>
@@ -31,8 +31,18 @@
 						'name'=>'supplier_name',
 						'id'=>'supplier_name',
 						'class'=>'form-control input-sm',
-						'value'=>$expenses_info->supplier_name)
+						'value'=>$this->lang->line('expenses_start_typing_supplier_name'))
+					);
+					echo form_input(array(
+						'type'=>'hidden',
+						'name'=>'supplier_id',
+						'id'=>'supplier_id')
 						);?>
+			</div>
+			<div class="col-xs-2">
+				<a id="remove_supplier_button" class="btn btn-danger btn-sm" title="Remove Supplier">
+					<span class="glyphicon glyphicon-remove"></span>
+				</a>
 			</div>
 		</div>
 
@@ -148,52 +158,74 @@ $(document).ready(function()
 {
 	<?php $this->load->view('partial/datepicker_locale'); ?>
 
-	$('#datetime').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
-		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
-		<?php
-		$t = $this->config->item('timeformat');
-		$m = $t[strlen($t)-1];
-		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
-		{ 
-		?>
-			showMeridian: true,
-		<?php 
+	var amount_validator = function(field) {
+		return {
+			url: "<?php echo site_url($controller_name . '/ajax_check_amount')?>",
+			type: 'POST',
+			dataFilter: function(data) {
+				var response = JSON.parse(data);
+				return response.success;
+			}
 		}
-		else
-		{
-		?>
-			showMeridian: false,
-		<?php 
-		}
-		?>
-		minuteStep: 1,
-		autoclose: true,
-		todayBtn: true,
-		todayHighlight: true,
-		bootcssVer: 3,
-		language: '<?php echo current_language_code(); ?>'
+	}
+
+	$('#supplier_name').click(function() {
+		$(this).attr('value', '');
 	});
 
-	var submit_form = function()
-	{ 
-		$(this).ajaxSubmit(
-		{
-			success: function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('expenses'); ?>', response);
-			},
-			dataType: 'json'
-		});
-	};
+	$('#supplier_name').autocomplete({
+		source: '<?php echo site_url("suppliers/suggest"); ?>',
+		minChars:0,
+		delay:10,
+		select: function (event, ui) {
+			$('#supplier_id').val(ui.item.value);
+			$(this).val(ui.item.label);
+			$(this).attr('readonly', 'readonly');
+			$('#remove_supplier_button').css('display', 'inline-block');
+			return false;
+		}
+	});
 
-	$('#expenses_edit_form').validate($.extend(
+	$('#supplier_name').blur(function() {
+		$(this).attr('value',"<?php echo $this->lang->line('expenses_start_typing_supplier_name'); ?>");
+	});
+
+	$('#remove_supplier_button').css('display', 'none');
+
+	$('#remove_supplier_button').click(function() {
+		$('#supplier_id').val('');
+		$('#supplier_name').removeAttr('readonly');
+		$('#supplier_name').val('');
+		$(this).css('display', 'none');
+	});
+
+	<?php
+	if(!empty($expenses_info->expense_id))
 	{
-		submitHandler: function(form)
-		{
-			submit_form.call(form);
+	?>
+		$('#supplier_id').val('<?php echo $expenses_info->supplier_id ?>');
+		$('#supplier_name').val('<?php echo $expenses_info->supplier_name ?>').attr('readonly', 'readonly');
+		$('#remove_supplier_button').css('display', 'inline-block');
+	<?php
+	}
+	?>
+
+	$('#expenses_edit_form').validate($.extend({
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+				},
+				dataType: 'json'
+			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
+		ignore: '',
+
 		rules:
 		{
 			category: 'required',
@@ -204,21 +236,30 @@ $(document).ready(function()
 			amount:
 			{
 				required: true,
-				number: true
+				remote: amount_validator('#amount')
+			},
+			tax_amount:
+			{
+				remote: amount_validator('#tax_amount')
 			}
 		},
+
 		messages:
 		{
-			category: '<?php echo $this->lang->line('expenses_category_required'); ?>',
+			category: "<?php echo $this->lang->line('expenses_category_required'); ?>",
 			date:
 			{
-				required: '<?php echo $this->lang->line('expenses_date_required'); ?>'
+				required: "<?php echo $this->lang->line('expenses_date_required'); ?>"
 
 			},
 			amount:
 			{
-				required: '<?php echo $this->lang->line('expenses_amount_required'); ?>',
-				number: '<?php echo $this->lang->line('expenses_amount_number'); ?>'
+				required: "<?php echo $this->lang->line('expenses_amount_required'); ?>",
+				remote: "<?php echo $this->lang->line('expenses_amount_number'); ?>"
+			},
+			tax_amount:
+			{
+				remote: "<?php echo $this->lang->line('expenses_tax_amount_number'); ?>"
 			}
 		}
 	}, form_support.error));

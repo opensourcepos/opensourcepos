@@ -46,16 +46,6 @@ $lang["config_country_codes"] = "أكواد الدولة";
 $lang["config_country_codes_tooltip"] = "قائمة مفصولة بفاصلة لاسماء الدول للبحث.";
 $lang["config_currency_decimals"] = "العلامة العشرية للعملة";
 $lang["config_currency_symbol"] = "رمز العملة";
-$lang["config_custom1"] = "حقل مخصص 1";
-$lang["config_custom10"] = "حقل مخصص 10";
-$lang["config_custom2"] = "حقل مخصص 2";
-$lang["config_custom3"] = "حقل مخصص 3";
-$lang["config_custom4"] = "حقل مخصص 4";
-$lang["config_custom5"] = "حقل مخصص 5";
-$lang["config_custom6"] = "حقل مخصص 6";
-$lang["config_custom7"] = "حقل مخصص 7";
-$lang["config_custom8"] = "حقل مخصص 8";
-$lang["config_custom9"] = "حقل مخصص 9";
 $lang["config_customer_reward"] = "المكافآت";
 $lang["config_customer_reward_duplicate"] = "المكافئة يجب ان تكون فريدة.";
 $lang["config_customer_reward_enable"] = "تمكين مكافآت العميل";
@@ -77,10 +67,17 @@ $lang["config_default_barcode_page_width_number"] = "عرض الصفحة الا�
 $lang["config_default_barcode_page_width_required"] = "عرض الصفحة الافتراضي للباركود مطلوب.";
 $lang["config_default_barcode_width_number"] = "العرض الافتراضي للباركود لابد ان يكون رقم.";
 $lang["config_default_barcode_width_required"] = "العرض الافتراضي للباركود مطلوب.";
+$lang["config_default_item_columns"] = "الخانات المراد إظهارها";
 $lang["config_default_origin_tax_code"] = "كود الضريبة الاساسي الافتراضي";
-$lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية %";
+$lang["config_default_receivings_discount"] = "";
+$lang["config_default_receivings_discount_number"] = "";
+$lang["config_default_receivings_discount_required"] = "";
+$lang["config_default_sales_discount"] = "نسبة الخصم الافتراضية";
 $lang["config_default_sales_discount_number"] = "نسبة الخصم الافتراضية لابد ان تكون رقم.";
 $lang["config_default_sales_discount_required"] = "نسبة الخصم الافتراضية مطلوبة.";
+$lang["config_default_tax_category"] = "";
+$lang["config_default_tax_code"] = "";
+$lang["config_default_tax_jurisdiction"] = "";
 $lang["config_default_tax_name_number"] = "يجب أن يكون الاسم الافتراضي للضريبة سلسلة.";
 $lang["config_default_tax_name_required"] = "اسم الضريبة الافتراضية مطلوب.";
 $lang["config_default_tax_rate"] = "معدل الضريبة الافتراضي %";
@@ -100,12 +97,18 @@ $lang["config_email"] = "البريد الإلكتروني";
 $lang["config_email_configuration"] = "إعدادات البريد الإلكتروني";
 $lang["config_email_mailpath"] = "مسار ارسال البريد";
 $lang["config_email_protocol"] = "بروتوكول";
+$lang["config_email_receipt_check_behaviour"] = "ارسال رسائل الكترونية";
+$lang["config_email_receipt_check_behaviour_always"] = "مختار دائما";
+$lang["config_email_receipt_check_behaviour_last"] = "تذكر آخر إختيار";
+$lang["config_email_receipt_check_behaviour_never"] = "دائما غير مختار";
 $lang["config_email_smtp_crypto"] = "تشفير SMTP";
 $lang["config_email_smtp_host"] = "خادم SMTP";
 $lang["config_email_smtp_pass"] = "كلمة سر SMTP";
 $lang["config_email_smtp_port"] = "رقم منفذ SMTP";
 $lang["config_email_smtp_timeout"] = "وقت فشل المحاولة (ثوانى) لـ SMTP";
 $lang["config_email_smtp_user"] = "اسم مستخدم SMTP";
+$lang["config_enforce_privacy"] = "فرض نظام الخصوصية";
+$lang["config_enforce_privacy_tooltip"] = "حماية ملفات ومعلومات المستخدم عند الحذف";
 $lang["config_fax"] = "الفاكس";
 $lang["config_financial_year"] = "بداية السنة المالية";
 $lang["config_financial_year_apr"] = "1 أبريل";
@@ -131,14 +134,17 @@ $lang["config_general_configuration"] = "إعدادات عامة";
 $lang["config_giftcard_number"] = "رقم كارت الهدية";
 $lang["config_giftcard_random"] = "توليد عشوائي";
 $lang["config_giftcard_series"] = "توليد في السلسلة";
+$lang["config_include_hsn"] = "";
 $lang["config_info"] = "معلومات";
 $lang["config_info_configuration"] = "معلومات الشركة";
+$lang["config_integrations"] = "";
 $lang["config_invoice"] = "الفاتورة";
 $lang["config_invoice_configuration"] = "إعدادات طباعة الفاتورة";
 $lang["config_invoice_default_comments"] = "التعليق الافتراضي على الفاتورة";
 $lang["config_invoice_email_message"] = "قالب البريد الإلكتروني للفاتورة";
 $lang["config_invoice_enable"] = "تفعيل الفوترة";
 $lang["config_invoice_printer"] = "طابعة الفواتير";
+$lang["config_invoice_type"] = "";
 $lang["config_jsprintsetup_required"] = "تحذير! هذه الخاصية غير المفعلة سوف تعمل فقط مع وجود الاضافة jsPrintSetup على متصفح فايرفوكس. حفظ على أى حال؟";
 $lang["config_language"] = "اللغة";
 $lang["config_last_used_invoice_number"] = "اخر رقم مستخدم للفاتورة";
@@ -175,6 +181,7 @@ $lang["config_msg_src"] = "SMS-API  كود المرسل لـ";
 $lang["config_msg_src_required"] = "مطلوب SMS-API كود المرسل لـ";
 $lang["config_msg_uid"] = "SMS-API اسم المستخدم لـ";
 $lang["config_msg_uid_required"] = "مطلوب SMS-API اسم المستخدم لـ";
+$lang["config_multi_pack_enabled"] = "رزم متعددة لكل صنف";
 $lang["config_none"] = "لايوجد";
 $lang["config_notify_alignment"] = "مكان عرض رسائل المعلومات";
 $lang["config_number_format"] = "شكل الرقم";
@@ -188,11 +195,18 @@ $lang["config_phone_required"] = "هاتف الشركة مطلوب.";
 $lang["config_print_bottom_margin"] = "الهامش السفلي";
 $lang["config_print_bottom_margin_number"] = "الهامش السفلي يجب أن يكون رقم.";
 $lang["config_print_bottom_margin_required"] = "الهامش السفلي مطلوب.";
+$lang["config_print_delay_autoreturn"] = "العودة الى عمليات البيع تلقائيا ( عدد الثواني )";
+$lang["config_print_delay_autoreturn_number"] = "الزمن المحدد للعودة الى عمليات البيع هو خانة اجبارية.";
+$lang["config_print_delay_autoreturn_required"] = "الزمن المحدد للعودة الى عمليات البيع يجب ان يكون رقم.";
 $lang["config_print_footer"] = "طباعة تذييل المتصفح";
 $lang["config_print_header"] = "طباعة ترويسة المتصفح";
 $lang["config_print_left_margin"] = "الهامش الأيسر";
 $lang["config_print_left_margin_number"] = "الهامش الأيسر يجب ان يكون رقم.";
 $lang["config_print_left_margin_required"] = "الهامش الأيسر مطلوب.";
+$lang["config_print_receipt_check_behaviour"] = "خانة طباعة الفواتير";
+$lang["config_print_receipt_check_behaviour_always"] = "دائما مختار";
+$lang["config_print_receipt_check_behaviour_last"] = "تذكر آخر اختيار";
+$lang["config_print_receipt_check_behaviour_never"] = "دائما ليس مختار";
 $lang["config_print_right_margin"] = "الهامش الأيمن";
 $lang["config_print_right_margin_number"] = "الهامش الأيمن يجب أن يكون رقم.";
 $lang["config_print_right_margin_required"] = "الهامش الأيمن مطلوب.";
@@ -201,6 +215,7 @@ $lang["config_print_top_margin"] = "الهامش العلوى";
 $lang["config_print_top_margin_number"] = "الهامش العلوى يجب أن يكون رقم.";
 $lang["config_print_top_margin_required"] = "الهامش العلوى مطلوب.";
 $lang["config_quantity_decimals"] = "العلامة العشرية للكمية";
+$lang["config_quote_default_comments"] = "ملاحظات طلبات العمل الثابتة";
 $lang["config_receipt"] = "الإيصال";
 $lang["config_receipt_configuration"] = "إعدادات طباعة الايصالات";
 $lang["config_receipt_default"] = "افتراضى";
@@ -249,11 +264,13 @@ $lang["config_tax_category_required"] = "الفئة الضريبية مطلوب�
 $lang["config_tax_category_used"] = "الفئة الضريبية اللتي تم تحديدها لا يمكن حذفها لانها قيد الاستعمال.";
 $lang["config_tax_configuration"] = "إعدادات الضريبة";
 $lang["config_tax_decimals"] = "العلامة العشرية للضريبة";
+$lang["config_tax_id"] = "";
 $lang["config_tax_included"] = "شامل الضريبة";
 $lang["config_theme"] = "السمة";
 $lang["config_thousands_separator"] = "فاصل الاف";
 $lang["config_timezone"] = "المنطقة الزمنية";
 $lang["config_top"] = "علوى";
+$lang["config_use_destination_based_tax"] = "";
 $lang["config_website"] = "موقع الشركة";
 $lang["config_work_order_enable"] = "تفعيل طلبات العمل";
 $lang["config_work_order_format"] = "شكل طلبات العمل";

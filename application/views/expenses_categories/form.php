@@ -35,32 +35,28 @@
 //validation and submit handling
 $(document).ready(function()
 {
-	var submit_form = function()
-	{ 
-		$(this).ajaxSubmit(
-		{
-			success: function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('expenses_categories'); ?>', response);
-			},
-			dataType: 'json'
-		});
-	};
-
-	$('#expense_category_edit_form').validate($.extend(
-	{
-		submitHandler: function(form)
-		{
-			submit_form.call(form);
+	$('#expense_category_edit_form').validate($.extend({
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+				},
+				dataType: 'json'
+			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
 			category_name: 'required'
 		},
+
 		messages:
 		{
-			category_name: '<?php echo $this->lang->line('category_name_required'); ?>'
+			category_name: "<?php echo $this->lang->line('category_name_required'); ?>"
 		}
 	}, form_support.error));
 });

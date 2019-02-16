@@ -3,12 +3,13 @@ version: '2'
 volumes:
     uploads:
         driver: local
-  
+
 services:
     sqlscript:
         build:
             context: database/
             dockerfile: Dockerfile
+
     php:
         build:
             context: .
@@ -20,6 +21,7 @@ services:
         volumes:
             - uploads:/app/public/uploads
         environment:
+            - FORCE_HTTPS=false
             - PHP_TIMEZONE=UTC
             - MYSQL_USERNAME=admin
             - MYSQL_PASSWORD=pointofsale
@@ -27,7 +29,7 @@ services:
             - MYSQL_HOST_NAME=mysql
 
     mysql:
-        image: mariadb:10.1.21
+        image: mariadb:10.3.9
         environment:
             - MYSQL_ROOT_PASSWORD=pointofsale
             - MYSQL_DATABASE=ospos
@@ -37,3 +39,15 @@ services:
             - "3306:3306"
         volumes_from:
             - sqlscript
+
+#    phpmyadmin:
+#        image: phpmyadmin/phpmyadmin
+#        restart: always
+#        ports:
+#           - "8000:80"
+#        links:
+#            - mysql:mysql
+#        environment:
+#            - MYSQL_USERNAME=admin
+#            - MYSQL_ROOT_PASSWORD=pointofsale
+#            - PMA_HOST=mysql

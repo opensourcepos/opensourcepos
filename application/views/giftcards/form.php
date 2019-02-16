@@ -72,8 +72,8 @@ $(document).ready(function()
 		$("input[name='person_name']").val(ui.item.label);
 	};
 
-	var autocompleter = $("#person_name").autocomplete({
-		source: '<?php echo site_url("customers/suggest"); ?>',
+	$('#person_name').autocomplete({
+		source: "<?php echo site_url('customers/suggest'); ?>",
 		minChars: 0,
 		delay: 15, 
 	   	cacheLength: 1,
@@ -81,66 +81,72 @@ $(document).ready(function()
 		select: fill_value,
 		focus: fill_value
 	});
-
-	// declare submitHandler as an object.. will be reused
-	var submit_form = function() { 
-		$(this).ajaxSubmit({
-			success: function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
-			},
-			error: function(jqXHR, textStatus, errorThrown) 
-			{
-				table_support.handle_submit('<?php echo site_url($controller_name); ?>', {message: errorThrown});
-			},
-			dataType:'json'
-		});
-	};
 	
-	$('#giftcard_form').validate($.extend(form_support.handler,
-	{
-		submitHandler:function(form)
-		{
-			submit_form.call(form)
+	$('#giftcard_form').validate($.extend({
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+				},
+				error: function(jqXHR, textStatus, errorThrown) 
+				{
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", {message: errorThrown});
+				},
+				dataType: 'json'
+			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
-			<?php if($this->config->item('giftcard_number') == "series") { ?>
+			<?php
+			if($this->config->item('giftcard_number') == 'series')
+			{
+			?>
 			giftcard_number:
  			{
  				required: true,
  				number: true
  			},
- 			<?php } ?>
+ 			<?php
+			}
+			?>
 			giftcard_amount:
 			{
 				required: true,
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/ajax_check_number_giftcard')?>",
-					type: 'post',
-					data: $.extend(csrf_form_base(), {
-						'amount': $("#giftcard_amount").val()
-					}),
+					type: 'POST',
+					data: {
+						'amount': $('#giftcard_amount').val()
+					},
 					dataFilter: function(data) {
-						setup_csrf_token();
 						var response = JSON.parse(data);
-						$("#giftcard_amount").text(response.value);
+						$('#giftcard_amount').val(response.giftcard_amount);
 						return response.success;
 					}
 				}
 			}
 		},
+
 		messages:
 		{
-			<?php if($this->config->item('giftcard_number') == "series"){ ?>
-			giftcard_number:
- 			{
- 				required: "<?php echo $this->lang->line('giftcards_number_required'); ?>",
- 				number: "<?php echo $this->lang->line('giftcards_number'); ?>"
- 			},
- 			<?php } ?>
+			<?php
+			if($this->config->item('giftcard_number') == 'series')
+			{
+			?>
+				giftcard_number:
+				{
+					required: "<?php echo $this->lang->line('giftcards_number_required'); ?>",
+					number: "<?php echo $this->lang->line('giftcards_number'); ?>"
+				},
+ 			<?php
+			}
+			?>
 			giftcard_amount:
 			{
 				required: "<?php echo $this->lang->line('giftcards_value_required'); ?>",

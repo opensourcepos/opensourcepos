@@ -51,6 +51,7 @@ UPDATE `ospos_app_config` SET `key` = 'receipt_show_total_discount' WHERE `key` 
 
 DELETE FROM `ospos_app_config` WHERE `key` = 'use_invoice_template';
 DELETE FROM `ospos_app_config` WHERE `key` = 'language';
+DELETE FROM `ospos_app_config` WHERE `key` = 'thousands_separator';
 
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('receipt_show_description', '1'),

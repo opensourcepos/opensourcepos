@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Voeg categorie toe";
 $lang["expenses_categories_cannot_be_deleted"] = "Kan de categorie niet verwijderen";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Bent u zeker dat u de geselecteerde uitgave categorie wil verwijderen?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "";
 $lang["expenses_categories_error_adding_updating"] = "";
 $lang["expenses_categories_info"] = "";

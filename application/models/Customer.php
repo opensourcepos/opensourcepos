@@ -104,7 +104,7 @@ class Customer extends Person
 			(
 				SELECT
 					sales.sale_id AS sale_id,
-					AVG(sales_items.discount_percent) AS avg_discount,
+					AVG(sales_items.discount) AS avg_discount,
 					SUM(sales_items.quantity_purchased) AS quantity
 				FROM ' . $this->db->dbprefix('sales') . ' AS sales
 				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
@@ -223,17 +223,52 @@ class Customer extends Person
 	*/
 	public function delete($customer_id)
 	{
+		$result = TRUE;
+
 		// if privacy enforcement is selected scramble customer data
 		if($this->config->item('enforce_privacy'))
 		{
 			$this->db->where('person_id', $customer_id);
 
-			return $this->db->update('people', array('first_name' => $customer_id, 'last_name' => $customer_id, 'phone_number' => '', 'email' => ''));
+			$result &= $this->db->update('people', array(
+					'first_name'	=> $customer_id,
+					'last_name'		=> $customer_id,
+					'phone_number'	=> '',
+					'email'			=> '',
+					'gender'		=> NULL,
+					'address_1'		=> '',
+					'address_2'		=> '',
+					'city'			=> '',
+					'state'			=> '',
+					'zip'			=> '',
+					'country'		=> '',
+					'comments'		=> ''
+				));
+
+			$this->db->where('person_id', $customer_id);
+
+			$result &= $this->db->update('customers', array(
+					'consent'			=> 0,
+					'company_name'		=> NULL,
+					'account_number'	=> NULL,
+					'tax_id'			=> '',
+					'taxable'			=> 0,
+					'discount'			=> 0.00,
+					'discount_type'		=> 0,
+					'package_id'		=> NULL,
+					'points'			=> NULL,
+					'sales_tax_code'	=> 1,
+					'deleted'			=> 1
+				));
+		}
+		else
+		{
+			$this->db->where('person_id', $customer_id);
+
+			$result &= $this->db->update('customers', array('deleted' => 1));
 		}
 
-		$this->db->where('person_id', $customer_id);
-
-		return $this->db->update('customers', array('deleted' => 1));
+		return $result;
 	}
 
 	/*
@@ -316,7 +351,7 @@ class Customer extends Person
 		}
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
+		if(count($suggestions) > $limit)
 		{
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}

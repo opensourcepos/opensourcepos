@@ -10,5 +10,5 @@ $lang["messages_phone"] = "Numero de Telefono";
 $lang["messages_phone_number_required"] = "El Telefono es requerido";
 $lang["messages_phone_placeholder"] = "Numero de Celular aquí…";
 $lang["messages_sms_send"] = "Enviar SMS";
-$lang["messages_successfully_sent"] = "Mensaje exitosamente enviado a:";
-$lang["messages_unsuccessfully_sent"] = "Mensaje no pudo ser enviado a:";
+$lang["messages_successfully_sent"] = "Mensaje exitosamente enviado a: ";
+$lang["messages_unsuccessfully_sent"] = "Mensaje no pudo ser enviado a: ";

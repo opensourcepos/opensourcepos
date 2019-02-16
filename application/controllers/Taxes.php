@@ -9,15 +9,45 @@ class Taxes extends Secure_Controller
 		parent::__construct('taxes');
 
 		$this->load->model('enums/Rounding_mode');
-
+		$this->load->library('tax_lib');
+		$this->load->helper('tax_helper');
 	}
 
 	public function index()
 	{
-		$data['table_headers'] = $this->xss_clean(get_taxes_manage_table_headers());
+		$data['tax_codes'] = $this->xss_clean($this->Tax_code->get_all()->result_array());
+		if (count($data['tax_codes']) == 0)
+		{
+			$data['tax_codes'] = $this->Tax_code->get_empty_row();
+		}
+		$data['tax_categories'] = $this->xss_clean($this->Tax_category->get_all()->result_array());
+		if (count($data['tax_categories']) == 0)
+		{
+			$data['tax_categories'] = $this->Tax_category->get_empty_row();
+		}
+		$data['tax_jurisdictions'] = $this->xss_clean($this->Tax_jurisdiction->get_all()->result_array());
+		if (count($data['tax_jurisdictions']) == 0)
+		{
+			$data['tax_jurisdictions'] = $this->Tax_jurisdiction->get_empty_row();
+		}
+		$data['tax_rate_table_headers'] = $this->xss_clean(get_tax_rates_manage_table_headers());
+		$data['tax_categories_table_headers'] = $this->xss_clean(get_tax_categories_table_headers());
+		$data['tax_types'] = $this->tax_lib->get_tax_types();
+
+		if($this->config->item('tax_included') == '1')
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
+		}
+		else
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
+		}
+
+		$data['tax_type_options'] = $this->tax_lib->get_tax_type_options($data['default_tax_type']);
 
 		$this->load->view('taxes/manage', $data);
 	}
+
 
 	/*
 	Returns tax_codes table data rows. This will be called with AJAX.
@@ -30,14 +60,14 @@ class Taxes extends Secure_Controller
 		$sort = $this->input->get('sort');
 		$order = $this->input->get('order');
 
-		$tax_codes = $this->Tax->search($search, $limit, $offset, $sort, $order);
+		$tax_rates = $this->Tax->search($search, $limit, $offset, $sort, $order);
 
 		$total_rows = $this->Tax->get_found_rows($search);
 
 		$data_rows = array();
-		foreach($tax_codes->result() as $tax_code_row)
+		foreach($tax_rates->result() as $tax_rate_row)
 		{
-			$data_rows[] = $this->xss_clean(get_tax_data_row($tax_code_row));
+			$data_rows[] = $this->xss_clean(get_tax_rates_data_row($tax_rate_row));
 		}
 
 		echo json_encode(array('total' => $total_rows, 'rows' => $data_rows));
@@ -58,7 +88,7 @@ class Taxes extends Secure_Controller
 	*/
 	public function suggest_tax_categories()
 	{
-		$suggestions = $this->xss_clean($this->Tax->get_tax_category_suggestions($this->input->post('term')));
+		$suggestions = $this->xss_clean($this->Tax_category->get_tax_category_suggestions($this->input->post('term')));
 
 		echo json_encode($suggestions);
 	}
@@ -66,12 +96,12 @@ class Taxes extends Secure_Controller
 
 	public function get_row($row_id)
 	{
-		$data_row = $this->xss_clean(get_tax_codes_data_row($this->Tax->get_info($row_id), $this));
+		$data_row = $this->xss_clean(get_tax_rates_data_row($this->Tax->get_info($row_id), $this));
 
 		echo json_encode($data_row);
 	}
 
-	public function view($tax_code = -1)
+	public function view_tax_codes($tax_code = -1)
 	{
 		$tax_code_info = $this->Tax->get_info($tax_code);
 
@@ -79,6 +109,15 @@ class Taxes extends Secure_Controller
 		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
 
 		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
+
+		if($this->config->item('tax_included') == '1')
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
+		}
+		else
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
+		}
 
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
 		$data['html_rounding_options'] = $this->get_html_rounding_options();
@@ -114,21 +153,197 @@ class Taxes extends Secure_Controller
 
 		$data = $this->xss_clean($data);
 
-		$tax_code_rates = array();
+		$tax_rates = array();
 		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
 		{
-			$tax_code_row = array();
-			$tax_code_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
-			$tax_code_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
-			$tax_code_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
-			$tax_code_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+			$tax_rate_row = array();
+			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
+			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
+			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
+			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
 
-			$tax_code_rates[] = $tax_code_row;
+			$tax_rates[] = $tax_rate_row;
 		}
 
-		$data['tax_code_rates'] = $tax_code_rates;
+		$data['tax_rates'] = $tax_rates;
 
-		$this->load->view("taxes/form", $data);
+		$this->load->view('taxes/tax_code_form', $data);
+	}
+
+
+	public function view($tax_rate_id = -1)
+	{
+
+		$tax_rate_info = $this->Tax->get_info($tax_rate_id);
+
+		$data['tax_rate_id'] = $tax_rate_id;
+		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+
+		$data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
+		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
+		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
+
+		if($tax_rate_id == -1)
+		{
+			$data['rate_tax_code_id'] = $this->config->item('default_tax_code');
+			$data['rate_tax_category_id'] = $this->config->item('default_tax_category');
+			$data['rate_jurisdiction_id'] = $this->config->item('default_tax_jurisdiction');
+			$data['tax_rounding_code'] = Rounding_mode::HALF_UP;
+			$data['tax_rate'] = '0.0000';
+		}
+		else
+		{
+			$data['rate_tax_code_id'] = $tax_rate_info->rate_tax_code_id;
+			$data['rate_tax_code'] = $tax_rate_info->tax_code;
+			$data['rate_tax_category_id'] = $tax_rate_info->rate_tax_category_id;
+			$data['rate_jurisdiction_id'] = $tax_rate_info->rate_jurisdiction_id;
+			$data['tax_rounding_code'] = $tax_rate_info->tax_rounding_code;
+			$data['tax_rate'] = $tax_rate_info->tax_rate;
+		}
+
+		$data = $this->xss_clean($data);
+
+		$this->load->view('taxes/tax_rates_form', $data);
+	}
+
+
+
+	public function view_tax_categories($tax_code = -1)
+	{
+		$tax_code_info = $this->Tax->get_info($tax_code);
+
+		$default_tax_category_id = 1; // Tax category id is always the default tax category
+		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
+
+		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
+
+		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['html_rounding_options'] = $this->get_html_rounding_options();
+
+		if($this->config->item('tax_included') == '1')
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
+		}
+		else
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
+		}
+
+		if($tax_code == -1)
+		{
+			$data['tax_code'] = '';
+			$data['tax_code_name'] = '';
+			$data['tax_code_type'] = '0';
+			$data['city'] = '';
+			$data['state'] = '';
+			$data['tax_rate'] = '0.0000';
+			$data['rate_tax_code'] = '';
+			$data['rate_tax_category_id'] = 1;
+			$data['tax_category'] = '';
+			$data['add_tax_category'] = '';
+			$data['rounding_code'] = '0';
+		}
+		else
+		{
+			$data['tax_code'] = $tax_code;
+			$data['tax_code_name'] = $tax_code_info->tax_code_name;
+			$data['tax_code_type'] = $tax_code_info->tax_code_type;
+			$data['city'] = $tax_code_info->city;
+			$data['state'] = $tax_code_info->state;
+			$data['rate_tax_code'] = $tax_code_info->rate_tax_code;
+			$data['rate_tax_category_id'] = $tax_code_info->rate_tax_category_id;
+			$data['tax_category'] = $tax_code_info->tax_category;
+			$data['add_tax_category'] = '';
+			$data['tax_rate'] = $tax_rate_info->tax_rate;
+			$data['rounding_code'] = $tax_rate_info->rounding_code;
+		}
+
+		$data = $this->xss_clean($data);
+
+		$tax_rates = array();
+		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
+		{
+			$tax_rate_row = array();
+			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
+			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
+			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
+			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+
+			$tax_rates[] = $tax_rate_row;
+		}
+
+		$data['tax_rates'] = $tax_rates;
+
+		$this->load->view('taxes/tax_category_form', $data);
+	}
+
+	public function view_tax_jurisdictions($tax_code = -1)
+	{
+		$tax_code_info = $this->Tax->get_info($tax_code);
+
+		$default_tax_category_id = 1; // Tax category id is always the default tax category
+		$default_tax_category = $this->Tax->get_tax_category($default_tax_category_id);
+
+		$tax_rate_info = $this->Tax->get_rate_info($tax_code, $default_tax_category_id);
+
+		$data['rounding_options'] = Rounding_mode::get_rounding_options();
+		$data['html_rounding_options'] = $this->get_html_rounding_options();
+
+		if($this->config->item('tax_included') == '1')
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_INCLUDED;
+		}
+		else
+		{
+			$data['default_tax_type'] = Tax_lib::TAX_TYPE_EXCLUDED;
+		}
+
+		if($tax_code == -1)
+		{
+			$data['tax_code'] = '';
+			$data['tax_code_name'] = '';
+			$data['tax_code_type'] = '0';
+			$data['city'] = '';
+			$data['state'] = '';
+			$data['tax_rate'] = '0.0000';
+			$data['rate_tax_code'] = '';
+			$data['rate_tax_category_id'] = 1;
+			$data['tax_category'] = '';
+			$data['add_tax_category'] = '';
+			$data['rounding_code'] = '0';
+		}
+		else
+		{
+			$data['tax_code'] = $tax_code;
+			$data['tax_code_name'] = $tax_code_info->tax_code_name;
+			$data['tax_code_type'] = $tax_code_info->tax_code_type;
+			$data['city'] = $tax_code_info->city;
+			$data['state'] = $tax_code_info->state;
+			$data['rate_tax_code'] = $tax_code_info->rate_tax_code;
+			$data['rate_tax_category_id'] = $tax_code_info->rate_tax_category_id;
+			$data['tax_category'] = $tax_code_info->tax_category;
+			$data['add_tax_category'] = '';
+			$data['tax_rate'] = $tax_rate_info->tax_rate;
+			$data['rounding_code'] = $tax_rate_info->rounding_code;
+		}
+
+		$data = $this->xss_clean($data);
+
+		$tax_rates = array();
+		foreach($this->Tax->get_tax_code_rate_exceptions($tax_code) as $tax_code_rate)
+		{
+			$tax_rate_row = array();
+			$tax_rate_row['rate_tax_category_id'] = $this->xss_clean($tax_code_rate['rate_tax_category_id']);
+			$tax_rate_row['tax_category'] = $this->xss_clean($tax_code_rate['tax_category']);
+			$tax_rate_row['tax_rate'] = $this->xss_clean($tax_code_rate['tax_rate']);
+			$tax_rate_row['rounding_code'] = $this->xss_clean($tax_code_rate['rounding_code']);
+
+			$tax_rates[] = $tax_rate_row;
+		}
+
+		$data['tax_rates'] = $tax_rates;
+
+		$this->load->view('taxes/tax_jurisdiction_form', $data);
 	}
 
 	public static function get_html_rounding_options()
@@ -136,63 +351,37 @@ class Taxes extends Secure_Controller
 		return Rounding_mode::get_html_rounding_options();
 	}
 
-	public function save($tax_code = -1)
+	public function save($tax_rate_id = -1)
 	{
-		$entered_tax_code = $this->xss_clean($this->input->post('tax_code'));
-		$tax_code_data = array(
-			'tax_code' => strtoupper($this->input->post('tax_code')),
-			'tax_code_name' => $this->input->post('tax_code_name'),
-			'tax_code_type' => $this->input->post('tax_code_type'),
-			'city' => $this->input->post('city'),
-			'state' => $this->input->post('state'));
+		$tax_category_id = $this->input->post('rate_tax_category_id');
+		$tax_rate = parse_decimals($this->input->post('tax_rate'));
+
+		if ($tax_rate == 0) {
+			$tax_category_info = $this->Tax_category->get_info($tax_category_id);
+		}
 
 		$tax_rate_data = array(
-			'rate_tax_code' => $this->input->post('tax_code'),
-			'rate_tax_category_id' => 1,
-			'tax_rate' => parse_decimals($this->input->post('tax_rate')),
-			'rounding_code' => $this->input->post('rounding_code')
+			'rate_tax_code_id' => $this->input->post('rate_tax_code_id'),
+			'rate_tax_category_id' => $this->input->post('rate_tax_category_id'),
+			'rate_jurisdiction_id' => $this->input->post('rate_jurisdiction_id'),
+			'tax_rate' => $tax_rate,
+			'tax_rounding_code' => $this->input->post('tax_rounding_code')
 		);
 
-		if($this->Tax->save($tax_code_data, $tax_rate_data, $tax_code))
+		if($this->Tax->save($tax_rate_data, $tax_rate_id))
 		{
-			$tax_code_rate_exceptions = array();
-			if(!empty($this->input->post('exception_tax_rate')))
+			if($tax_rate_id == -1)
 			{
-				foreach($this->input->post('exception_tax_rate') as $tax_category_id => $exception_tax_rate)
-				{
-					$exception_rounding_code = $this->input->post('exception_rounding_code[' . $tax_category_id . ']');
-					$tax_code_rate_exceptions[] = array(
-						'rate_tax_code' => $entered_tax_code,
-						'rate_tax_category_id' => $tax_category_id,
-						'tax_rate' => $exception_tax_rate,
-						'rounding_code' => $exception_rounding_code
-					);
-				}
-			}
-
-			if(!empty($tax_code_rate_exceptions))
-			{
-				$success = $this->Tax->save_tax_rate_exceptions($tax_code_rate_exceptions, $entered_tax_code);
-			}
-
-			$tax_code_data = $this->xss_clean($tax_code_data);
-
-			//New tax_code record
-			if($tax_code == -1)
-			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_code_successfully_added') . ' ' . $entered_tax_code));
+				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_rate_successfully_added')));
 			}
 			else //Existing tax_code
 			{
-				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_code_successful_updated') . ' ' . $entered_tax_code));
+				echo json_encode(array('success' => TRUE, 'message' => $this->lang->line('taxes_tax_rate_successful_updated')));
 			}
 		}
-		else //failure
+		else
 		{
-			$tax_code_data = $this->xss_clean($tax_code_data);
-
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_tax_code_error_adding_updating') . ' ' .
-				$entered_tax_code));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('taxes_tax_rate_error_adding_updating')));
 		}
 	}
 
@@ -209,12 +398,130 @@ class Taxes extends Secure_Controller
 		}
 	}
 
-	public function suggest_sales_tax_codes()
+	public function suggest_tax_codes()
 	{
-		$suggestions = $this->xss_clean($this->Tax->get_sales_tax_codes_search_suggestions($this->input->post_get('term')));
+		$suggestions = $this->xss_clean($this->Tax_code->get_tax_codes_search_suggestions($this->input->post_get('term')));
 
 		echo json_encode($suggestions);
 	}
 
+
+	public function save_tax_codes()
+	{
+		$tax_code_id = $this->input->post('tax_code_id');
+		$tax_code = $this->input->post('tax_code');
+		$tax_code_name = $this->input->post('tax_code_name');
+		$tax_code_id = $this->input->post('tax_code_id');
+		$city = $this->input->post('city');
+		$state = $this->input->post('state');
+
+		$array_save = array();
+		foreach($tax_code_id as $key=>$val)
+		{
+			$array_save[] = array('tax_code_id'=>$this->xss_clean($val), 'tax_code'=>$this->xss_clean($tax_code[$key]),
+			'tax_code_name'=>$this->xss_clean($tax_code_name[$key]), 'tax_code_id'=>$this->xss_clean($tax_code_id[$key]),
+			'city'=>$this->xss_clean($city[$key]), 'state'=>$this->xss_clean($state[$key]));
+		}
+
+		$success = $this->Tax_code->save_tax_codes($array_save);
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('taxes_tax_codes_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
+	}
+
+	public function save_tax_jurisdictions()
+	{
+		$jurisdiction_id = $this->input->post('jurisdiction_id');
+		$jurisdiction_name = $this->input->post('jurisdiction_name');
+		$tax_group = $this->input->post('tax_group');
+		$tax_type = $this->input->post('tax_type');
+		$reporting_authority = $this->input->post('reporting_authority');
+		$tax_group_sequence = $this->input->post('tax_group_sequence');
+		$cascade_sequence = $this->input->post('cascade_sequence');
+
+		$array_save = array();
+
+		foreach($jurisdiction_id as $key => $val)
+		{
+			$array_save[] = array(
+				'jurisdiction_id'=>$this->xss_clean($val),
+				'jurisdiction_name'=>$this->xss_clean($jurisdiction_name[$key]),
+				'tax_group'=>$this->xss_clean($tax_group[$key]),
+				'tax_type'=>$this->xss_clean($tax_type[$key]),
+				'reporting_authority'=>$this->xss_clean($reporting_authority[$key]),
+				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]),
+				'cascade_sequence'=>$this->xss_clean($cascade_sequence[$key]));
+		}
+
+		$success = $this->Tax_jurisdiction->save_jurisdictions($array_save);
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('taxes_tax_jurisdictions_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
+	}
+
+	public function save_tax_categories()
+	{
+		$tax_category_id = $this->input->post('tax_category_id');
+		$tax_category = $this->input->post('tax_category');
+		$tax_group_sequence = $this->input->post('tax_group_sequence');
+
+		$array_save= array();
+
+		foreach($tax_category_id as $key => $val)
+		{
+			$array_save[] = array(
+				'tax_category_id'=>$this->xss_clean($val),
+				'tax_category'=>$this->xss_clean($tax_category[$key]),
+				'tax_group_sequence'=>$this->xss_clean($tax_group_sequence[$key]));
+		}
+
+		$success = $this->Tax_category->save_categories($array_save);
+
+		echo json_encode(array(
+			'success' => $success,
+			'message' => $this->lang->line('taxes_tax_categories_saved_' . ($success ? '' : 'un') . 'successfully')
+		));
+	}
+
+	public function ajax_tax_codes()
+	{
+		$tax_codes = $this->Tax_code->get_all()->result_array();
+
+		$tax_codes = $this->xss_clean($tax_codes);
+
+		$this->load->view('partial/tax_codes', array('tax_codes' => $tax_codes));
+	}
+
+	public function ajax_tax_categories()
+	{
+		$tax_categories = $this->Tax_category->get_all()->result_array();
+
+		$tax_categories = $this->xss_clean($tax_categories);
+
+		$this->load->view('partial/tax_categories', array('tax_categories' => $tax_categories));
+	}
+
+	public function ajax_tax_jurisdictions()
+	{
+		$tax_jurisdictions = $this->Tax_jurisdiction->get_all()->result_array();
+
+		if($this->config->item('tax_included') == '1')
+		{
+			$default_tax_type = Tax_lib::TAX_TYPE_INCLUDED;
+		}
+		else
+		{
+			$default_tax_type = Tax_lib::TAX_TYPE_EXCLUDED;
+		}
+
+		$tax_jurisdictions = $this->xss_clean($tax_jurisdictions);
+		$tax_types = $this->tax_lib->get_tax_types();
+
+		$this->load->view('partial/tax_jurisdictions', array('tax_jurisdictions' => $tax_jurisdictions, 'tax_types' => $tax_types, 'default_tax_type' => $default_tax_type));
+	}
 }
 ?>

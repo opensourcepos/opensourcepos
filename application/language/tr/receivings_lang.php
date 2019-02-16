@@ -1,6 +1,6 @@
 <?php 
 
-$lang["receivings_cancel_receiving"] = "";
+$lang["receivings_cancel_receiving"] = "İptal";
 $lang["receivings_cannot_be_deleted"] = "";
 $lang["receivings_comments"] = "";
 $lang["receivings_complete_receiving"] = "Tamamla";
@@ -35,6 +35,7 @@ $lang["receivings_register"] = "Ürün Alımları";
 $lang["receivings_requisition"] = "Talepler";
 $lang["receivings_return"] = "İade";
 $lang["receivings_select_supplier"] = "Sağlayıcı Seç (İsteğe Bağlı)";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "Sağlayıcı Adı...";
 $lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "Stok hedefi";

@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Ovaj mjesec prošle godine";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Ovaj mjesec do danas prošle godine";
 $lang["datepicker_this_financial_year"] = "";
 $lang["datepicker_this_month"] = "Ovaj mjesec";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Ova godina";
 $lang["datepicker_to"] = "Do";
 $lang["datepicker_today"] = "Danas";

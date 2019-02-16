@@ -12,7 +12,7 @@ class Detailed_receivings extends Report
 
 	public function getDataColumns()
 	{
-		$columns = array(
+		return array(
 			'summary' => array(
 				array('id' => $this->lang->line('reports_receiving_id')),
 				array('receiving_date' => $this->lang->line('reports_date'), 'sortable' => FALSE),
@@ -31,8 +31,6 @@ class Detailed_receivings extends Report
 				$this->lang->line('reports_total'),
 				$this->lang->line('reports_discount'))
 		);
-
-		return $columns;
 	}
 
 	public function getDataByReceivingId($receiving_id)
@@ -99,10 +97,17 @@ class Detailed_receivings extends Report
 
 		foreach($data['summary'] as $key=>$value)
 		{
-			$this->db->select('name, item_number, category, quantity_purchased, serialnumber,total, discount_percent, item_location, receivings_items_temp.receiving_quantity');
+			$this->db->select('name, item_number, category, quantity_purchased, serialnumber, total, discount, discount_type, item_location, receivings_items_temp.receiving_quantity');
 			$this->db->from('receivings_items_temp');
 			$this->db->join('items', 'receivings_items_temp.item_id = items.item_id');
-			$this->db->where('receiving_id = '.$value['receiving_id']);
+			if (count($inputs['definition_ids']) > 0)
+			{
+				$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
+				$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id = receivings_items_temp.receiving_id AND definition_id IN (' . implode(',', $inputs['definition_ids']) . ')', 'left');
+				$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+				$this->db->group_by('receivings_items_temp.receiving_id, receivings_items_temp.item_id');
+			}
+			$this->db->where('receivings_items_temp.receiving_id', $value['receiving_id']);
 			$data['details'][$key] = $this->db->get()->result_array();
 		}
 

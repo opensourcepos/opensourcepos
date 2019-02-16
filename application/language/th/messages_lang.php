@@ -1,10 +1,10 @@
 <?php 
 
-$lang["messages_first_name"] = "First name";
-$lang["messages_last_name"] = "Last name";
-$lang["messages_message"] = "Message";
-$lang["messages_message_placeholder"] = "Your Message here...";
-$lang["messages_message_required"] = "Message required";
+$lang["messages_first_name"] = "ชื่อ";
+$lang["messages_last_name"] = "นามสกุล";
+$lang["messages_message"] = "ข้อความ";
+$lang["messages_message_placeholder"] = "ข้อความของคุณ ...";
+$lang["messages_message_required"] = "ต้องระบุข้อความ";
 $lang["messages_multiple_phones"] = "(In case of multiple recipients, enter mobile numbers separated by commas)";
 $lang["messages_phone"] = "Phone number";
 $lang["messages_phone_number_required"] = "Phone number required";

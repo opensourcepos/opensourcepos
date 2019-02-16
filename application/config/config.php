@@ -8,7 +8,7 @@
 | 
 | 
 */ 
-$config['application_version'] = '3.2.1';
+$config['application_version'] = '3.3.0';
 
 /* 
 |-------------------------------------------------------------------------- 
@@ -19,7 +19,7 @@ $config['application_version'] = '3.2.1';
 | 
 | 
 */ 
-$config['commit_sha1'] = '$Id $';
+$config['commit_sha1'] = 'dev';
  
 /* 
 |-------------------------------------------------------------------------- 
@@ -65,7 +65,7 @@ $config['db_log_enabled'] = FALSE;
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || isset($_ENV['FORCE_HTTPS'])) ? 'https' : 'http';
+$config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_ENV['FORCE_HTTPS']) && $_ENV['FORCE_HTTPS'] == 'true')) ? 'https' : 'http';
 $config['base_url'] .= '://' . $_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
 
@@ -487,7 +487,7 @@ $config['csrf_token_name'] = 'csrf_ospos_v3';
 $config['csrf_cookie_name'] = 'csrf_cookie_ospos_v3';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array();
+$config['csrf_exclude_uris'] = array('login');
 
 /*
 |--------------------------------------------------------------------------

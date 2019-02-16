@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Det finns inga utgifter att visa";
 $lang["expenses_none_selected"] = "Du har inte valt någon kostnad";
 $lang["expenses_one_or_multiple"] = "Utgifter";
 $lang["expenses_payment"] = "Betalningstyp";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Kostnaden tillagd";
 $lang["expenses_successful_deleted"] = "Kostnaden raderas";
 $lang["expenses_successful_updating"] = "Kostnaden uppdaterades";

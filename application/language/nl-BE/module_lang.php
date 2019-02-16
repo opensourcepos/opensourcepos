@@ -1,6 +1,10 @@
 <?php 
 
+$lang["module_attributes"] = "Attributen";
+$lang["module_attributes_desc"] = "Zoek, bewerk, verwijder en voeg attributen toe.";
 $lang["module_both"] = "Beide";
+$lang["module_cashups"] = "Cashups";
+$lang["module_cashups_desc"] = "Zoek, bewerk, verwijder en voeg cashups toe.";
 $lang["module_config"] = "Configuratie";
 $lang["module_config_desc"] = "Globale configuratie aanpassen.";
 $lang["module_customers"] = "Klanten";

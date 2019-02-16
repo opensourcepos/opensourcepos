@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "គ្មានចំណាយសំ
 $lang["expenses_none_selected"] = "អ្នកមិនទាន់បានជ្រើរើសចំណាយណាមួយឡើយ";
 $lang["expenses_one_or_multiple"] = "ចំណាយ";
 $lang["expenses_payment"] = "ប្រភេទបង់ប្រាក់";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "បន្ថែមចំណាយបានជោគជ័យ";
 $lang["expenses_successful_deleted"] = "ការចំណាយលប់បានជោគជ័យ";
 $lang["expenses_successful_updating"] = "ការចំណាយធ្វើបច្ចុប្បន្នភាពបានជោគ";

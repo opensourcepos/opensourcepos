@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "Este Mes hace un año";
 $lang["datepicker_same_month_to_same_day_last_year"] = "Este mes hasta hoy, del año pasado";
 $lang["datepicker_this_financial_year"] = "Este año fiscal";
 $lang["datepicker_this_month"] = "Este Mes";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "Este Año";
 $lang["datepicker_to"] = "Hasta";
 $lang["datepicker_today"] = "Hoy";

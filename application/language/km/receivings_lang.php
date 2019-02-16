@@ -35,6 +35,7 @@ $lang["receivings_register"] = "ទទួលទំនិញ";
 $lang["receivings_requisition"] = "កម្មង់";
 $lang["receivings_return"] = "ប្រគល់ត្រឡប់ទៅវិញ";
 $lang["receivings_select_supplier"] = "";
+$lang["receivings_ship_pack"] = "";
 $lang["receivings_start_typing_supplier_name"] = "";
 $lang["receivings_stock"] = "";
 $lang["receivings_stock_destination"] = "";

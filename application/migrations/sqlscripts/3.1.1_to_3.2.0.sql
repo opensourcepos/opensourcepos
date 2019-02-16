@@ -142,9 +142,6 @@ CREATE TABLE IF NOT EXISTS `ospos_expense_categories` (
   `deleted` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `ospos_expense_categories` (`expense_category_id`, `category_name`, `category_description`) VALUES
-(1, 'Utilities', 'Water');
-
 
 -- Table structure for table `ospos_expenses`
 
@@ -158,12 +155,6 @@ CREATE TABLE IF NOT EXISTS `ospos_expenses` (
   `employee_id` int(10) NOT NULL,
   `deleted` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
--- Dumping data for table `ospos_expenses`
-
-INSERT INTO `ospos_expenses` (`expense_id`, `date`, `amount`, `expense_category_id`, `description`, `employee_id`) VALUES
-(1, '2017-04-20 07:00:00', '15.00', 1, 'Water', 1);
 
 
 -- Indexes for table `ospos_expense_categories`

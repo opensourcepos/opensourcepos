@@ -274,6 +274,7 @@ function get_suppliers_manage_table_headers()
 		array('people.person_id' => $CI->lang->line('common_id')),
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
 		array('agency_name' => $CI->lang->line('suppliers_agency_name')),
+		array('category' => $CI->lang->line('suppliers_category')),
 		array('last_name' => $CI->lang->line('common_last_name')),
 		array('first_name' => $CI->lang->line('common_first_name')),
 		array('email' => $CI->lang->line('common_email')),
@@ -300,6 +301,7 @@ function get_supplier_data_row($supplier)
 		'people.person_id' => $supplier->person_id,
 		'company_name' => $supplier->company_name,
 		'agency_name' => $supplier->agency_name,
+		'category' => $supplier->category,
 		'last_name' => $supplier->last_name,
 		'first_name' => $supplier->first_name,
 		'email' => empty($supplier->email) ? '' : mailto($supplier->email, $supplier->email),
@@ -319,6 +321,8 @@ function get_items_manage_table_headers()
 {
 	$CI =& get_instance();
 
+	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
 	$headers = array(
 		array('items.item_id' => $CI->lang->line('common_id')),
 		array('item_number' => $CI->lang->line('items_item_number')),
@@ -327,12 +331,27 @@ function get_items_manage_table_headers()
 		array('company_name' => $CI->lang->line('suppliers_company_name')),
 		array('cost_price' => $CI->lang->line('items_cost_price')),
 		array('unit_price' => $CI->lang->line('items_unit_price')),
-		array('quantity' => $CI->lang->line('items_quantity')),
-		array('tax_percents' => $CI->lang->line('items_tax_percents'), 'sortable' => FALSE),
-		array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE),
-		array('inventory' => ''),
-		array('stock' => '')
+		array('quantity' => $CI->lang->line('items_quantity'))
 	);
+	if ($CI->config->item('use_destination_based_tax') == '1')
+	{
+		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_category'), 'sortable' => FALSE);
+	}
+	else
+	{
+		$headers[] = array('tax_percents' => $CI->lang->line('items_tax_percents'), 'sortable' => FALSE);
+
+	}
+
+	$headers[] = array('item_pic' => $CI->lang->line('items_image'), 'sortable' => FALSE);
+
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$headers[] = array($definition_id => $definition_name);
+	}
+
+	$headers[] = array('inventory' => '');
+	$headers[] = array('stock' => '');
 
 	return transform_headers($headers);
 }
@@ -343,14 +362,32 @@ Get the html data row for the item
 function get_item_data_row($item)
 {
 	$CI =& get_instance();
-	$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
-	$tax_percents = '';
-	foreach($item_tax_info as $tax_info)
+
+	if ($CI->config->item('use_destination_based_tax') == '1')
 	{
-		$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
+		if ($item->tax_category_id == NULL)
+		{
+			$tax_percents = '-';
+		}
+		else
+		{
+			$tax_category_info = $CI->Tax_category->get_info($item->tax_category_id);
+			$tax_percents = $tax_category_info->tax_category;
+		}
 	}
-	// remove ', ' from last item
-	$tax_percents = substr($tax_percents, 0, -2);
+	else
+	{
+		$item_tax_info = $CI->Item_taxes->get_info($item->item_id);
+		$tax_percents = '';
+		foreach($item_tax_info as $tax_info)
+		{
+			$tax_percents .= to_tax_decimals($tax_info['percent']) . '%, ';
+		}
+		// remove ', ' from last item
+		$tax_percents = substr($tax_percents, 0, -2);
+		$tax_percents = !$tax_percents ? '-' : $tax_percents;
+	}
+
 	$controller_name = strtolower(get_class($CI));
 
 	$image = NULL;
@@ -374,7 +411,14 @@ function get_item_data_row($item)
 		}
 	}
 
-	return array (
+	if ($CI->config->item('multi_pack_enabled') == '1')
+	{
+		$item->name .= NAME_SEPARATOR . $item->pack_name;
+	}
+
+	$definition_names = $CI->Attribute->get_definitions_by_flags(Attribute::SHOW_IN_ITEMS);
+
+	$columns = array (
 		'items.item_id' => $item->item_id,
 		'item_number' => $item->item_number,
 		'name' => $item->name,
@@ -384,7 +428,10 @@ function get_item_data_row($item)
 		'unit_price' => to_currency($item->unit_price),
 		'quantity' => to_quantity_decimals($item->quantity),
 		'tax_percents' => !$tax_percents ? '-' : $tax_percents,
-		'item_pic' => $image,
+		'item_pic' => $image
+	);
+
+	$icons = array(
 		'inventory' => anchor($controller_name."/inventory/$item->item_id", '<span class="glyphicon glyphicon-pushpin"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_count'))
 		),
@@ -393,7 +440,11 @@ function get_item_data_row($item)
 		),
 		'edit' => anchor($controller_name."/view/$item->item_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class' => 'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title' => $CI->lang->line($controller_name.'_update'))
-		));
+		)
+	);
+
+	$attribute_values = (property_exists($item, 'attribute_values')) ? $item->attribute_values : "";
+	return $columns + expand_attribute_values($definition_names, $attribute_values) + $icons;
 }
 
 
@@ -434,51 +485,6 @@ function get_giftcard_data_row($giftcard)
 		));
 }
 
-
-/*
-Get the header for the taxes tabular view
-*/
-function get_taxes_manage_table_headers()
-{
-	$CI =& get_instance();
-
-	$headers = array(
-		array('tax_code' => $CI->lang->line('taxes_tax_code')),
-		array('tax_code_name' => $CI->lang->line('taxes_tax_code_name')),
-		array('tax_code_type_name' => $CI->lang->line('taxes_tax_code_type')),
-		array('tax_rate' => $CI->lang->line('taxes_tax_rate')),
-		array('rounding_code_name' => $CI->lang->line('taxes_rounding_code')),
-		array('city' => $CI->lang->line('common_city')),
-		array('state' => $CI->lang->line('common_state'))
-	);
-
-	return transform_headers($headers);
-}
-
-/*
-Get the html data row for the tax
-*/
-function get_tax_data_row($tax_code_row)
-{
-	$CI =& get_instance();
-	$controller_name=strtolower(get_class($CI));
-
-	return array (
-		'tax_code' => $tax_code_row->tax_code,
-		'tax_code_name' => $tax_code_row->tax_code_name,
-		'tax_code_type' => $tax_code_row->tax_code_type,
-		'tax_rate' => $tax_code_row->tax_rate,
-		'rounding_code' =>$tax_code_row->rounding_code,
-		'tax_code_type_name' => $CI->Tax->get_tax_code_type_name($tax_code_row->tax_code_type),
-		'rounding_code_name' => Rounding_mode::get_rounding_code_name($tax_code_row->rounding_code),
-		'city' => $tax_code_row->city,
-		'state' => $tax_code_row->state,
-		'edit' => anchor($controller_name."/view/$tax_code_row->tax_code", '<span class="glyphicon glyphicon-edit"></span>',
-			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
-		));
-}
-
-
 /*
 Get the header for the item kits tabular view
 */
@@ -516,6 +522,69 @@ function get_item_kit_data_row($item_kit)
 		));
 }
 
+function expand_attribute_values($definition_names, $attribute_values)
+{
+	$values = explode('|', $attribute_values);
+
+	$indexed_values = array();
+	foreach($values as $attribute_value)
+	{
+		$exploded_value = explode(':', $attribute_value);
+		$indexed_values[$exploded_value[0]] = isset($exploded_value[1]) ? $exploded_value[1] : '-';
+	}
+
+	$attribute_values = array();
+	foreach($definition_names as $definition_id => $definition_name)
+	{
+		$attribute_value = isset($indexed_values[$definition_id]) ? $indexed_values[$definition_id] : '-';
+		$attribute_values["$definition_id"] = $attribute_value;
+	}
+	return $attribute_values;
+}
+
+function get_attribute_definition_manage_table_headers()
+{
+	$CI =& get_instance();
+
+	$headers = array(
+		array('definition_id' => $CI->lang->line('attributes_definition_id')),
+		array('definition_name' => $CI->lang->line('attributes_definition_name')),
+		array('definition_type' => $CI->lang->line('attributes_definition_type')),
+		array('definition_flags' => $CI->lang->line('attributes_definition_flags')),
+		array('definition_group' => $CI->lang->line('attributes_definition_group')),
+	);
+
+	return transform_headers($headers);
+}
+
+function get_attribute_definition_data_row($attribute)
+{
+	$CI =& get_instance();
+	$controller_name=strtolower(get_class($CI));
+
+	if (count($attribute->definition_flags) == 0)
+	{
+		$definition_flags = $CI->lang->line('common_none_selected_text');
+	}
+	else if ($attribute->definition_type == GROUP)
+	{
+		$definition_flags = "-";
+	}
+	else
+	{
+		$definition_flags = implode(', ', $attribute->definition_flags);
+	}
+
+	return array (
+		'definition_id' => $attribute->definition_id,
+		'definition_name' => $attribute->definition_name,
+		'definition_type' => $attribute->definition_type,
+		'definition_group' => $attribute->definition_group,
+		'definition_flags' => $definition_flags,
+		'edit' => anchor("$controller_name/view/$attribute->definition_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
 
 /*
 Get the header for the expense categories tabular view
@@ -567,14 +636,14 @@ function get_expenses_manage_table_headers()
 		array('payment_type' => $CI->lang->line('expenses_payment')),
 		array('category_name' => $CI->lang->line('expenses_categories_name')),
 		array('description' => $CI->lang->line('expenses_description')),
-		array('createdBy' => $CI->lang->line('expenses_employee'))
+		array('created_by' => $CI->lang->line('expenses_employee'))
 	);
 
 	return transform_headers($headers);
 }
 
 /*
-Gets the html data row for the expenses.
+Gets the html data row for the expenses
 */
 function get_expenses_data_row($expense)
 {
@@ -590,7 +659,7 @@ function get_expenses_data_row($expense)
 		'payment_type' => $expense->payment_type,
 		'category_name' => $expense->category_name,
 		'description' => $expense->description,
-		'createdBy' => $expense->first_name.' '. $expense->last_name,
+		'created_by' => $expense->first_name.' '. $expense->last_name,
 		'edit' => anchor($controller_name."/view/$expense->expense_id", '<span class="glyphicon glyphicon-edit"></span>',
 			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
 		));
@@ -638,4 +707,55 @@ function get_expenses_manage_payments_summary($payments, $expenses)
 	return $table;
 }
 
+
+/*
+Get the header for the cashup tabular view
+*/
+function get_cashups_manage_table_headers()
+{
+	$CI =& get_instance();
+	$headers = array(
+		array('cashup_id' => $CI->lang->line('cashups_id')),
+		array('open_date' => $CI->lang->line('cashups_opened_date')),
+		array('open_employee_id' => $CI->lang->line('cashups_open_employee')),
+		array('open_amount_cash' => $CI->lang->line('cashups_open_amount_cash')),
+		array('transfer_amount_cash' => $CI->lang->line('cashups_transfer_amount_cash')),
+		array('close_date' => $CI->lang->line('cashups_closed_date')),
+		array('close_employee_id' => $CI->lang->line('cashups_close_employee')),
+		array('closed_amount_cash' => $CI->lang->line('cashups_closed_amount_cash')),
+		array('note' => $CI->lang->line('cashups_note')),
+		array('closed_amount_due' => $CI->lang->line('cashups_closed_amount_due')),
+		array('closed_amount_card' => $CI->lang->line('cashups_closed_amount_card')),
+		array('closed_amount_check' => $CI->lang->line('cashups_closed_amount_check')),
+		array('closed_amount_total' => $CI->lang->line('cashups_closed_amount_total'))
+	);
+
+	return transform_headers($headers);
+}
+
+/*
+Gets the html data row for the cashups
+*/
+function get_cash_up_data_row($cash_up)
+{
+	$CI =& get_instance();
+	$controller_name = strtolower(get_class($CI));
+	return array (
+		'cashup_id' => $cash_up->cashup_id,
+		'open_date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($cash_up->open_date)),
+		'open_employee_id' => $cash_up->open_first_name . ' ' . $cash_up->open_last_name,
+		'open_amount_cash' => to_currency($cash_up->open_amount_cash),
+		'transfer_amount_cash' => to_currency($cash_up->transfer_amount_cash),
+		'close_date' => date($CI->config->item('dateformat') . ' ' . $CI->config->item('timeformat'), strtotime($cash_up->close_date)),
+		'close_employee_id' => $cash_up->close_first_name . ' ' . $cash_up->close_last_name,
+		'closed_amount_cash' => to_currency($cash_up->closed_amount_cash),
+		'note' => $cash_up->note ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>',
+		'closed_amount_due' => to_currency($cash_up->closed_amount_due),
+		'closed_amount_card' => to_currency($cash_up->closed_amount_card),
+		'closed_amount_check' => to_currency($cash_up->closed_amount_check),
+		'closed_amount_total' => to_currency($cash_up->closed_amount_total),
+		'edit' => anchor($controller_name."/view/$cash_up->cashup_id", '<span class="glyphicon glyphicon-edit"></span>',
+			array('class'=>'modal-dlg', 'data-btn-submit' => $CI->lang->line('common_submit'), 'title'=>$CI->lang->line($controller_name.'_update'))
+		));
+}
 ?>

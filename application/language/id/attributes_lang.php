@@ -1,0 +1,27 @@
+<?php
+$lang["attributes_attribute_value_invalid_chars"] = "";
+$lang["attributes_confirm_delete"] = "";
+$lang["attributes_definition_cannot_be_deleted"] = "Tidak bisa menghapus atribut terpilih";
+$lang["attributes_definition_flags"] = "Visibilitas Atribut";
+$lang["attributes_definition_group"] = "Grup";
+$lang["attributes_definition_id"] = "Id";
+$lang["attributes_definition_name"] = "Tambah Atribut";
+$lang["attributes_definition_name_required"] = "Atribut Nama harus di isi";
+$lang["attributes_definition_one_or_multiple"] = "atribut";
+$lang["attributes_definition_successful_adding"] = "Anda berhasil menambahkan item";
+$lang["attributes_definition_successful_deleted"] = "Anda berhasil menghapus";
+$lang["attributes_definition_successful_updating"] = "Anda berhasil mengubah atribut";
+$lang["attributes_definition_type"] = "Tipe Atribut";
+$lang["attributes_definition_type_required"] = "";
+$lang["attributes_definition_values"] = "";
+$lang["attributes_new"] = "";
+$lang["attributes_no_attributes_to_display"] = "";
+$lang["attributes_receipt_visibility"] = "";
+$lang["attributes_show_in_items"] = "";
+$lang["attributes_show_in_items_visibility"] = "";
+$lang["attributes_show_in_receipt"] = "";
+$lang["attributes_show_in_receivings"] = "";
+$lang["attributes_show_in_receivings_visibility"] = "";
+$lang["attributes_show_in_sales"] = "";
+$lang["attributes_show_in_sales_visibility"] = "";
+$lang["attributes_update"] = "";

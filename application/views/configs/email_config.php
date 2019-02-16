@@ -116,29 +116,29 @@
 $(document).ready(function()
 {
 	var check_protocol = function() {
-		if($("#protocol").val() == 'sendmail')
+		if($('#protocol').val() == 'sendmail')
 		{
-			$("#mailpath").prop('disabled', false);
-			$("#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop('disabled', true);
+			$('#mailpath').prop('disabled', false);
+			$('#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', true);
 		}
-		else if($("#protocol").val() == 'smtp')
+		else if($('#protocol').val() == 'smtp')
 		{
-			$("#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop('disabled', false);
-			$("#mailpath").prop('disabled', true);
+			$('#smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', false);
+			$('#mailpath').prop('disabled', true);
 		}
 		else
 		{
-			$("#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop('disabled', true);
+			$('#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', true);
 		}
 	};
 
-	$("#protocol").change(check_protocol).ready(check_protocol);
+	$('#protocol').change(check_protocol).ready(check_protocol);
 
 	$('#email_config_form').validate($.extend(form_support.handler, {
 		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				beforeSerialize: function(arr, $form, options) {
-					$("#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto").prop("disabled", false);
+					$('#mailpath, #smtp_host, #smtp_user, #smtp_pass, #smtp_port, #smtp_timeout, #smtp_crypto').prop('disabled', false);
 					return true;
 				},
 				success: function(response) {
@@ -146,11 +146,11 @@ $(document).ready(function()
 					// set back disabled state
 					check_protocol();
 				},
-				dataType:'json'
+				dataType: 'json'
 			});
 		},
 
-		errorLabelContainer: "#email_error_message_box"
+		errorLabelContainer: '#email_error_message_box'
 	}));
 });
 </script>

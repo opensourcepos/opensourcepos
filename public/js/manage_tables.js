@@ -38,11 +38,14 @@
 				}
 			});
 
+			var has_new_btn = "btnNew" in $(this).data();
 			$.each($(this).data(), function(name, value) {
 				var btn_class = name.split("btn");
 				if (btn_class && btn_class.length > 1) {
 					var btn_name = btn_class[1].toLowerCase();
 					var is_submit = btn_name == 'submit';
+					var is_new = btn_name === 'new';
+					var is_enter = has_new_btn ? is_new: is_submit;
 					buttons.push({
 						id: btn_name,
 						label: value,
@@ -142,16 +145,17 @@
 		});
 	};
 
-	var do_delete = function (url, ids) {
-		if (confirm($.fn.bootstrapTable.defaults.formatConfirmDelete())) {
-			$.post((url || options.resource) + '/delete', {'ids[]': ids || selected_ids()}, function (response) {
-				//delete was successful, remove checkbox rows
-				if (response.success) {
-					var selector = ids ? row_selector(ids) : selected_rows();
-					table().collapseAllRows();
-					$(selector).each(function (index, element) {
-						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
-							.end().animate({opacity: 0}, 1200, "linear", function () {
+	var do_action = function(action) {
+        return function (url, ids) {
+			if (confirm($.fn.bootstrapTable.defaults.formatConfirmAction(action))) {
+				$.post((url || options.resource) + '/' + action, {'ids[]': ids || selected_ids()}, function (response) {
+					//delete was successful, remove checkbox rows
+					if (response.success) {
+						var selector = ids ? row_selector(ids) : selected_rows();
+						table().collapseAllRows();
+						$(selector).each(function (index, element) {
+							$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
+								.end().animate({opacity: 0}, 1200, "linear", function () {
 								table().remove({
 									field: options.uniqueId,
 									values: selected_ids()
@@ -161,46 +165,17 @@
 									enable_actions();
 								}
 							});
-					});
-					$.notify(response.message, { type: 'success' });
-				} else {
-					$.notify(response.message, { type: 'danger' });
-				}
-			}, "json");
-		} else {
-			return false;
-		}
-	};
-
-	var do_restore = function (url, ids) {
-		if (confirm($.fn.bootstrapTable.defaults.formatConfirmRestore())) {
-			$.post((url || options.resource) + '/restore', {'ids[]': ids || selected_ids()}, function (response) {
-				//restore was successful, remove checkbox rows
-				if (response.success) {
-					var selector = ids ? row_selector(ids) : selected_rows();
-					table().collapseAllRows();
-					$(selector).each(function (index, element) {
-						$(this).find("td").animate({backgroundColor: "green"}, 1200, "linear")
-							.end().animate({opacity: 0}, 1200, "linear", function () {
-							table().remove({
-								field: options.uniqueId,
-								values: selected_ids()
-							});
-							if (index == $(selector).length - 1) {
-								refresh();
-								enable_actions();
-							}
 						});
-					});
-					$.notify(response.message, { type: 'success' });
-				} else {
-					$.notify(response.message, { type: 'danger' });
-				}
-			}, "json");
-		} else {
-			return false;
-		}
-	};
+						$.notify(response.message, {type: 'success'});
+					} else {
+						$.notify(response.message, {type: 'danger'});
+					}
+				}, "json");
+			} else {
+				return false;
+			}
+    	};
+    };
 
 	var load_success = function(callback) {
 		return function(response) {
@@ -264,6 +239,7 @@
 				user_settings[options.resource] = user_settings[options.resource] || {};
 				user_settings[options.resource][field] = checked;
 				localStorage[options.employee_id] = JSON.stringify(user_settings);
+				dialog_support.init("a.modal-dlg");
 			},
 			queryParamsType: 'limit',
 			iconSize: 'sm',
@@ -279,14 +255,14 @@
 	};
 
 	var init_delete = function (confirmMessage) {
-		$("#delete").click(function (event) {
-			do_delete();
+		$("#delete").click(function(event) {
+			do_action("delete")();
 		});
 	};
 
 	var init_restore = function (confirmMessage) {
-		$("#restore").click(function (event) {
-			do_restore();
+		$("#restore").click(function(event) {
+			do_action("restore")();
 		});
 	};
 
@@ -335,8 +311,8 @@
 		},
 		handle_submit: handle_submit,
 		init: init,
-		do_delete: do_delete,
-		do_restore: do_restore,
+		do_delete: do_action("delete"),
+		do_restore: do_action("restore"),
 		refresh : refresh,
 		selected_ids : selected_ids,
 	});
@@ -383,7 +359,7 @@
 })(window.form_support = window.form_support || {}, jQuery);
 
 function number_sorter(a, b) {
-	a = +a.replace(/[^\-0-9\.]+/g, '');
-	b = +b.replace(/[^\-0-9\.]+/g, '');
+	a = +a.replace(/[^\-0-9]+/g, '');
+	b = +b.replace(/[^\-0-9]+/g, '');
 	return a - b;
 }

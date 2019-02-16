@@ -80,7 +80,7 @@ class Expenses extends Secure_Controller
 
 		$data['expenses_info'] = $this->Expense->get_info($expense_id);
 
-		$data['expense_categories'] = array();
+		$expense_categories = array();
 		foreach($this->Expense_category->get_all(0, 0, TRUE)->result_array() as $row)
 		{
 			$expense_categories[$row['expense_category_id']] = $row['category_name'];
@@ -128,7 +128,7 @@ class Expenses extends Secure_Controller
 
 		$expense_data = array(
 			'date' => $date_formatter->format('Y-m-d H:i:s'),
-			'supplier_name' => $this->input->post('supplier_name'),
+			'supplier_id' => $this->input->post('supplier_id') == '' ? NULL : $this->input->post('supplier_id'),
 			'supplier_tax_code' => $this->input->post('supplier_tax_code'),
 			'amount' => parse_decimals($this->input->post('amount')),
 			'tax_amount' => parse_decimals($this->input->post('tax_amount')),
@@ -157,6 +157,13 @@ class Expenses extends Secure_Controller
 		{
 			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('expenses_error_adding_updating'), 'id' => -1));
 		}
+	}
+
+	public function ajax_check_amount()
+	{
+		$value = $this->input->post();
+		$parsed_value = parse_decimals(array_pop($value));
+		echo json_encode(array('success' => $parsed_value !== FALSE));
 	}
 
 	public function delete()

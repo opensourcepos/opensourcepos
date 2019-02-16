@@ -1,6 +1,10 @@
 <?php 
 
+$lang["module_attributes"] = "ميزات/مميزات";
+$lang["module_attributes_desc"] = "إضافة، تعديل، حذف، وبحث بالميزات.";
 $lang["module_both"] = "الاثنين";
+$lang["module_cashups"] = "الصندوق النقدي";
+$lang["module_cashups_desc"] = "إضافة، تعديل، حذف، وبحث بالصندوق النقدي.";
 $lang["module_config"] = "إعدادات الشركة";
 $lang["module_config_desc"] = "تغيير إعدادات الشركة.";
 $lang["module_customers"] = "العملاء";

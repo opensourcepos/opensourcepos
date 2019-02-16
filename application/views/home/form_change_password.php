@@ -81,17 +81,17 @@ $(document).ready(function()
 	}, '<?php echo $this->lang->line('employees_password_not_must_match'); ?>');
 	
 	$('#employee_form').validate($.extend({
-		submitHandler:function(form) 
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
-				success:function(response)
+				success: function(response)
 				{
 					dialog_support.hide();
-					$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+					$.notify(response.message, {type: response.success ? 'success' : 'danger'});
 				},
-				dataType:'json'
+				dataType: 'json'
 			});
 		},
+
 		rules:
 		{
 			current_password:
@@ -110,6 +110,7 @@ $(document).ready(function()
  				equalTo: "#password"
 			}
    		},
+
 		messages: 
 		{
 			password:

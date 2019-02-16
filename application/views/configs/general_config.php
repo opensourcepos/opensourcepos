@@ -23,7 +23,46 @@
 							'min' => 0,
 							'max' => 100,
 							'value' => $this->config->item('default_sales_discount'))); ?>
-						<span class="input-group-addon input-sm">%</span>
+						<span class="input-group-btn">
+							<?php echo form_checkbox(array(
+								'id' => 'default_sales_discount_type', 
+								'name' => 'default_sales_discount_type', 
+								'value' => 1, 
+								'data-toggle' => 'toggle',
+								'data-size' => 'normal', 
+								'data-onstyle' => 'success', 
+								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>', 
+								'data-off' => '<b>%</b>', 
+								'checked' => $this->config->item('default_sales_discount_type'))); ?>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('config_default_receivings_discount'), 'default_receivings_discount', array('class' => 'control-label col-xs-2 required')); ?>
+				<div class='col-xs-2'>
+					<div class="input-group">
+						<?php echo form_input(array(
+							'name' => 'default_receivings_discount',
+							'id' => 'default_receivings_discount',
+							'class' => 'form-control input-sm required',
+							'type' => 'number',
+							'min' => 0,
+							'max' => 100,
+							'value' => $this->config->item('default_receivings_discount'))); ?>
+						<span class="input-group-btn">
+							<?php echo form_checkbox(array(
+								'id' => 'default_receivings_discount_type',
+								'name' => 'default_receivings_discount_type',
+								'value' => 1,
+								'data-toggle' => 'toggle',
+								'data-size' => 'normal',
+								'data-onstyle' => 'success',
+								'data-on' => '<b>'.$this->config->item('currency_symbol').'</b>',
+								'data-off' => '<b>%</b>',
+								'checked' => $this->config->item('default_receivings_discount_type'))); ?>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -74,17 +113,17 @@
 					<div class="form-group form-group-sm row">
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('notify_vertical_position', array(
-								'top' => $this->lang->line('config_top'),
-								'bottom' => $this->lang->line('config_bottom')
-							),
+									'top' => $this->lang->line('config_top'),
+									'bottom' => $this->lang->line('config_bottom')
+								),
 								$this->config->item('notify_vertical_position'), array('class' => 'form-control input-sm')); ?>
 						</div>
 						<div class='col-sm-2'>
 							<?php echo form_dropdown('notify_horizontal_position', array(
-								'left' => $this->lang->line('config_left'),
-								'center' => $this->lang->line('config_center'),
-								'right' => $this->lang->line('config_right')
-							),
+									'left' => $this->lang->line('config_left'),
+									'center' => $this->lang->line('config_center'),
+									'right' => $this->lang->line('config_right')
+								),
 								$this->config->item('notify_horizontal_position'), array('class' => 'form-control input-sm')); ?>
 						</div>
 					</div>
@@ -160,7 +199,7 @@
 									'name' => $this->lang->line('items_name'),
 									'item_number' => $this->lang->line('items_number_information'),
 									'unit_price' => $this->lang->line('items_unit_price')
-							),
+						),
 							$this->config->item('suggestions_third_column'), array('class' => 'form-control input-sm')); ?>
 						</div>
 					</div>
@@ -214,112 +253,24 @@
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom1'), 'config_custom1', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom1_name',
-						'id' => 'custom1_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom1_name'))); ?>
+				<?php echo form_label($this->lang->line('config_multi_pack_enabled'), 'multi_pack_enabled', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'multi_pack_enabled',
+						'id' => 'multi_pack_enabled',
+						'value' => 'multi_pack_enabled',
+						'checked' => $this->config->item('multi_pack_enabled'))); ?>
 				</div>
 			</div>
 
 			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom2'), 'config_custom2', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom2_name',
-						'id' => 'custom2_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom2_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom3'), 'config_custom3', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom3_name',
-						'id' => 'custom3_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom3_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom4'), 'config_custom4', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom4_name',
-						'id' => 'custom4_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom4_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom5'), 'config_custom5', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom5_name',
-						'id' => 'custom5_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom5_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom6'), 'config_custom6', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom6_name',
-						'id' => 'custom6_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom6_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom7'), 'config_custom7', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom7_name',
-						'id' => 'custom7_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom7_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom8'), 'config_custom8', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom8_name',
-						'id' => 'custom8_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom8_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom9'), 'config_custom9', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom9_name',
-						'id' => 'custom9_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom9_name'))); ?>
-				</div>
-			</div>
-
-			<div class="form-group form-group-sm">
-				<?php echo form_label($this->lang->line('config_custom10'), 'config_custom10', array('class' => 'control-label col-xs-2')); ?>
-				<div class='col-xs-2'>
-					<?php echo form_input(array(
-						'name' => 'custom10_name',
-						'id' => 'custom10_name',
-						'class' => 'form-control input-sm',
-						'value' => $this->config->item('custom10_name'))); ?>
+				<?php echo form_label($this->lang->line('config_include_hsn'), 'include_hsn', array('class' => 'control-label col-xs-2')); ?>
+				<div class='col-xs-1'>
+					<?php echo form_checkbox(array(
+						'name' => 'include_hsn',
+						'id' => 'include_hsn',
+						'value' => 'include_hsn',
+						'checked' => $this->config->item('include_hsn'))); ?>
 				</div>
 			</div>
 
@@ -366,7 +317,6 @@ $(document).ready(function()
 	$("#backup_db").click(function() {
 		window.location='<?php echo site_url('config/backup_db') ?>';
 	});
-
 
 	$('#general_config_form').validate($.extend(form_support.handler, {
 
@@ -427,7 +377,7 @@ $(document).ready(function()
 					// set back disabled state
 					enable_disable_gcaptcha_enable();
 				},
-				dataType:'json'
+				dataType: 'json'
 			});
 		}
 	}));

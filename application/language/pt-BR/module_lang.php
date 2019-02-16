@@ -1,6 +1,10 @@
 <?php 
 
+$lang["module_attributes"] = "Atributos";
+$lang["module_attributes_desc"] = "Adicionar, atualizar, excluir e pesquisar atributos.";
 $lang["module_both"] = "Ambos";
+$lang["module_cashups"] = "Liquidação";
+$lang["module_cashups_desc"] = "Adicione, atualize, exclua e pesquise as liquidações.";
 $lang["module_config"] = "Configurações";
 $lang["module_config_desc"] = "Alterar configurações do sistema.";
 $lang["module_customers"] = "Clientes";

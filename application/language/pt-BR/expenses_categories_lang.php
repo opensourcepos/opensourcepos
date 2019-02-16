@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Adicionar categoria";
 $lang["expenses_categories_cannot_be_deleted"] = "Não foi possível excluir a (s) despesa (s) de categoria";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Tem certeza de que deseja excluir a categoria de despesa selecionada?";
+$lang["expenses_categories_confirm_restore"] = "Tem certeza de que deseja restaurar a categoria de despesa selecionada?";
 $lang["expenses_categories_description"] = "Categoria Descrição";
 $lang["expenses_categories_error_adding_updating"] = "Erro ao adicionar / atualizar a categoria de despesa";
 $lang["expenses_categories_info"] = "Informações de despesas de categoria";

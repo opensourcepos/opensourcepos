@@ -58,7 +58,8 @@ class Item_kit extends CI_Model
 		item_kits.description,
 		items.description as item_description,
 		item_kits.item_id as kit_item_id,
-		kit_discount_percent,
+		kit_discount,
+		kit_discount_type,
 		price_option,
 		print_option,
 		category,
@@ -72,16 +73,6 @@ class Item_kit extends CI_Model
 		allow_alt_description,
 		is_serialized,
 		items.deleted,
-		custom1,
-		custom2,
-		custom3,
-		custom4,
-		custom5,
-		custom6,
-		custom7,
-		custom8,
-		custom9,
-		custom10,
 		item_type,
 		stock_type');
 
@@ -191,7 +182,7 @@ class Item_kit extends CI_Model
 		}
 
 		//only return $limit suggestions
-		if(count($suggestions > $limit))
+		if(count($suggestions) > $limit)
 		{
 			$suggestions = array_slice($suggestions, 0, $limit);
 		}

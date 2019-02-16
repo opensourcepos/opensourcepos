@@ -1,6 +1,10 @@
 <?php 
 
+$lang["module_attributes"] = "";
+$lang["module_attributes_desc"] = "";
 $lang["module_both"] = "Beide";
+$lang["module_cashups"] = "";
+$lang["module_cashups_desc"] = "";
 $lang["module_config"] = "Configuratie";
 $lang["module_config_desc"] = "Globale configuratie aanpassen.";
 $lang["module_customers"] = "Klanten";

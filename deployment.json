@@ -14,7 +14,7 @@
         "public_stats": true
     },
     "version": {
-        "name": "3.2.1"
+        "name": "3.3.0"
     },
     "files": [
         {"includePattern": "dist(.*)\\.(zip)", "uploadPattern": "$1.$2"}

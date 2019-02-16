@@ -36,6 +36,7 @@ $lang["expenses_no_expenses_to_display"] = "Không có Chi phí nào để hiể
 $lang["expenses_none_selected"] = "Bạn chưa chọn Chi phí nào";
 $lang["expenses_one_or_multiple"] = "Chi phí";
 $lang["expenses_payment"] = "Kiểu thanh toán";
+$lang["expenses_start_typing_supplier_name"] = "";
 $lang["expenses_successful_adding"] = "Đã thêm thành công chi phí";
 $lang["expenses_successful_deleted"] = "Đã xóa thành công chi phí";
 $lang["expenses_successful_updating"] = "Đã cập nhật thành công chi phí";

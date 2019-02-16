@@ -17,19 +17,15 @@ script:
   - docker run --rm -v $(pwd):/app composer/composer install
   - docker run --rm -v $(pwd):/app -w /app lucor/php7-cli php bin/install.php translations
     develop
+  - sed -i "s/'\(dev\)'/'$rev'/g" application/config/config.php
   - docker run --rm -it -v $(pwd):/app -w /app digitallyseamless/nodejs-bower-grunt
     sh -c "npm install && bower install && grunt package"
   - docker-compose build
 env:
   - TAG=$(echo ${TRAVIS_BRANCH} | sed s/feature\\///)
 after_success: '[ -n ${DOCKER_USERNAME} ] && docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
-  && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker tag opensourcepos_sqlscript
-  jekkos/opensourcepos:sqlscript && docker push "jekkos/opensourcepos:$TAG" &&  docker
-  push jekkos/opensourcepos:sqlscript'
+  && docker tag opensourcepos_php "jekkos/opensourcepos:$TAG" && docker push "jekkos/opensourcepos:$TAG"'
 deploy:
-  edge:
-    source: travis-ci/dpl
-    branch: master
   file: deployment.json
   provider: bintray
   skip_cleanup: true

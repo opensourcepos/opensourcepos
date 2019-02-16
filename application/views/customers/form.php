@@ -40,18 +40,41 @@
 				</div>
 
 				<?php $this->load->view("people/form_basic_info"); ?>
+				
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_discount_type'), 'discount_type', array('class'=>'control-label col-xs-3')); ?>
+					<div class="col-xs-8">
+						<label class="radio-inline">
+							<?php echo form_radio(array(
+									'name'=>'discount_type',
+									'type'=>'radio',
+									'id'=>'discount_type',
+									'value'=>0,
+									'checked'=>$person_info->discount_type == PERCENT)
+							); ?> <?php echo $this->lang->line('customers_discount_percent'); ?>
+						</label>
+						<label class="radio-inline">
+							<?php echo form_radio(array(
+									'name'=>'discount_type',
+									'type'=>'radio',
+									'id'=>'discount_type',
+									'value'=>1,
+									'checked'=>$person_info->discount_type == FIXED)
+							); ?> <?php echo $this->lang->line('customers_discount_fixed'); ?>
+						</label>
+					</div>
+				</div>
 
 				<div class="form-group form-group-sm">
-					<?php echo form_label($this->lang->line('customers_discount'), 'discount_percent', array('class' => 'control-label col-xs-3')); ?>
+					<?php echo form_label($this->lang->line('customers_discount'), 'discount', array('class' => 'control-label col-xs-3')); ?>
 					<div class='col-xs-3'>
 						<div class="input-group input-group-sm">
 							<?php echo form_input(array(
-									'name'=>'discount_percent',
-									'id'=>'discount_percent',
+									'name'=>'discount',
+									'id'=>'discount',
 									'class'=>'form-control input-sm',
-									'value'=>$person_info->discount_percent)
+									'value'=>$person_info->discount)
 									); ?>
-							<span class="input-group-addon input-sm"><b>%</b></span>
 						</div>
 					</div>	
 				</div>
@@ -77,6 +100,18 @@
 								'class'=>'form-control input-sm',
 								'value'=>$person_info->account_number)
 								); ?>
+					</div>
+				</div>
+
+				<div class="form-group form-group-sm">
+					<?php echo form_label($this->lang->line('customers_tax_id'), 'tax_id', array('class' => 'control-label col-xs-3')); ?>
+					<div class='col-xs-4'>
+						<?php echo form_input(array(
+								'name'=>'tax_id',
+								'id'=>'tax_id',
+								'class'=>'form-control input-sm',
+								'value'=>$person_info->tax_id)
+						); ?>
 					</div>
 				</div>
 
@@ -110,7 +145,7 @@
 				</div>
 
 				<?php
-				if($customer_sales_tax_enabled)
+				if($use_destination_based_tax)
 				{
 				?>
 					<div class="form-group form-group-sm">
@@ -124,7 +159,7 @@
 										'size'=>'50',
 										'value'=>$sales_tax_code_label)
 								); ?>
-								<?php echo form_hidden('sales_tax_code', $person_info->sales_tax_code); ?>
+								<?php echo form_hidden('sales_tax_code_id', $person_info->sales_tax_code_id); ?>
 							</div>
 						</div>
 					</div>
@@ -141,7 +176,7 @@
 									'name'=>'date',
 									'id'=>'datetime',
 									'class'=>'form-control input-sm',
-									'value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($person_info->date)),
+									'value'=>to_datetime(strtotime($person_info->date)),
 									'readonly'=>'true')
 									); ?>
 						</div>
@@ -416,18 +451,18 @@ $(document).ready(function()
 {
 	$("input[name='sales_tax_code_name']").change(function() {
 		if( ! $("input[name='sales_tax_code_name']").val() ) {
-		    $("input[name='sales_tax_code']").val('');
+			$("input[name='sales_tax_code_id']").val('');
 		}
 	});
 
 	var fill_value = function(event, ui) {
 		event.preventDefault();
-		$("input[name='sales_tax_code']").val(ui.item.value);
+		$("input[name='sales_tax_code_id']").val(ui.item.value);
 		$("input[name='sales_tax_code_name']").val(ui.item.label);
 	};
 
-	$("#sales_tax_code_name").autocomplete({
-		source: '<?php echo site_url("taxes/suggest_sales_tax_codes"); ?>',
+	$('#sales_tax_code_name').autocomplete({
+		source: "<?php echo site_url('taxes/suggest_tax_codes'); ?>",
 		minChars: 0,
 		delay: 15,
 		cacheLength: 1,
@@ -437,57 +472,56 @@ $(document).ready(function()
 	});
 
 	$('#customer_form').validate($.extend({
-		submitHandler: function(form)
-		{
+		submitHandler: function(form) {
 			$(form).ajaxSubmit({
 				success: function(response)
 				{
 					dialog_support.hide();
-					table_support.handle_submit('<?php echo site_url($controller_name); ?>', response);
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
 				},
 				dataType: 'json'
 			});
 		},
 
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
-			first_name: "required",
-			last_name: "required",
-			consent: "required",
-    		email:
+			first_name: 'required',
+			last_name: 'required',
+			consent: 'required',
+			email:
 			{
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_email')?>",
-					type: "post",
-					data: $.extend(csrf_form_base(),
-					{
-						"person_id" : "<?php echo $person_info->person_id; ?>",
+					url: "<?php echo site_url($controller_name . '/ajax_check_email') ?>",
+					type: 'POST',
+					data: {
+						'person_id': "<?php echo $person_info->person_id; ?>"
 						// email is posted by default
-					})
+					}
 				}
 			},
-    		account_number:
+			account_number:
 			{
 				remote:
 				{
-					url: "<?php echo site_url($controller_name . '/ajax_check_account_number')?>",
-					type: "post",
-					data: $.extend(csrf_form_base(),
-					{
-						"person_id" : "<?php echo $person_info->person_id; ?>"
+					url: "<?php echo site_url($controller_name . '/ajax_check_account_number') ?>",
+					type: 'POST',
+					data: {
+						'person_id': "<?php echo $person_info->person_id; ?>"
 						// account_number is posted by default
-					})
+					}
 				}
 			}
-   		},
+		},
 
-		messages: 
+		messages:
 		{
-     		first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
-     		last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
-     		consent: "<?php echo $this->lang->line('customers_consent_required'); ?>",
-     		email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
+			first_name: "<?php echo $this->lang->line('common_first_name_required'); ?>",
+			last_name: "<?php echo $this->lang->line('common_last_name_required'); ?>",
+			consent: "<?php echo $this->lang->line('customers_consent_required'); ?>",
+			email: "<?php echo $this->lang->line('customers_email_duplicate'); ?>",
 			account_number: "<?php echo $this->lang->line('customers_account_number_duplicate'); ?>"
 		}
 	}, form_support.error));

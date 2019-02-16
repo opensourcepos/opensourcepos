@@ -36,18 +36,10 @@ class Migration_Sales_Tax_Data extends CI_Migration
 	private function upgrade_tax_history_for_sale($sale_id)
 	{
 		$CI =& get_instance();
-		$tax_decimals = $CI->config->config['tax_decimals'];
-		$tax_included = $CI->config->config['tax_included'];
-		$customer_sales_tax_support = $CI->config->config['customer_sales_tax_support'];
-
-		if($tax_included)
-		{
-			$tax_type = Tax_lib::TAX_TYPE_VAT;
-		}
-		else
-		{
-			$tax_type = Tax_lib::TAX_TYPE_SALES;
-		}
+		$tax_decimals = $CI->Appconfig->get('tax_decimals', 2);
+		$tax_included = $CI->Appconfig->get('tax_included', 0);
+		$customer_sales_tax_support = $CI->Appconfig->get('customer_sales_tax_support', 0);
+		$tax_type = $tax_included ? Tax_lib::TAX_TYPE_INCLUDED : Tax_lib::TAX_TYPE_EXCLUDED;
 
 		$sales_taxes = array();
 		$tax_group_sequence = 0;
@@ -57,11 +49,11 @@ class Migration_Sales_Tax_Data extends CI_Migration
 		{
 			// This computes tax for each line item and adds it to the tax type total
 			$tax_group = (float)$item['percent'] . '% ' . $item['name'];
-			$tax_basis = $this->sale_lib->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], TRUE);
+			$tax_basis = $this->sale_lib->get_item_total($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], PERCENT, TRUE);
 			$item_tax_amount = 0;
 			if($tax_included)
 			{
-				$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], $item['percent']);
+				$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity_purchased'], $item['item_unit_price'], $item['discount_percent'], PERCENT, $item['percent']);
 			}
 			else
 			{
@@ -78,7 +70,7 @@ class Migration_Sales_Tax_Data extends CI_Migration
 			$this->tax_lib->apply_invoice_taxing($sales_taxes);
 		}
 
-		$this->tax_lib->round_sales_taxes($sales_taxes);
+		$this->tax_lib->round_taxes($sales_taxes);
 		$this->save_sales_tax($sales_taxes);
 	}
 

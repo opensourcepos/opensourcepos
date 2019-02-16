@@ -10,6 +10,8 @@ define('SALE_TYPE_WORK_ORDER', 2);
 define('SALE_TYPE_QUOTE', 3);
 define('SALE_TYPE_RETURN', 4);
 
+define('PERCENT', 0);
+define('FIXED', 1);
 /**
  * Sale class
  */
@@ -38,7 +40,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END';
 		$tax = 'ROUND(IFNULL(SUM(sales_items_taxes.tax), 0), ' . $decimals . ')';
 
 		if($this->config->item('tax_included'))
@@ -152,7 +154,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END';
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 
@@ -174,7 +176,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) as tax
+					SUM(sales_items_taxes.item_tax_amount) AS tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -188,7 +190,7 @@ class Sale extends CI_Model
 		// get_found_rows case
 		if($count_only == TRUE)
 		{
-			$this->db->select('COUNT(DISTINCT sales.sale_id) as count');
+			$this->db->select('COUNT(DISTINCT sales.sale_id) AS count');
 		}
 		else
 		{
@@ -384,7 +386,7 @@ class Sale extends CI_Model
 		$gift_card_amount = 0;
 		foreach($payments as $key=>$payment)
 		{
-			if( strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE )
+			if(strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) != FALSE)
 			{
 				$gift_card_count  += $payment['count'];
 				$gift_card_amount += $payment['payment_amount'];
@@ -563,7 +565,8 @@ class Sale extends CI_Model
 	 * Save the sale information after the sales is complete but before the final document is printed
 	 * The sales_taxes variable needs to be initialized to an empty array before calling
 	 */
-	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number, $work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
+	public function save($sale_id, &$sale_status, &$items, $customer_id, $employee_id, $comment, $invoice_number,
+							$work_order_number, $quote_number, $sale_type, $payments, $dinner_table, &$sales_taxes)
 	{
 		if($sale_id != -1)
 		{
@@ -639,11 +642,14 @@ class Sale extends CI_Model
 
 		$customer = $this->Customer->get_info($customer_id);
 
-		$sales_taxes = array();
-
 		foreach($items as $line=>$item)
 		{
 			$cur_item_info = $this->Item->get_info($item['item_id']);
+
+			if($item['price'] == 0.00)
+			{
+				$item['discount'] = 0.00;
+			}
 
 			$sales_items_data = array(
 				'sale_id'			=> $sale_id,
@@ -652,7 +658,8 @@ class Sale extends CI_Model
 				'description'		=> character_limiter($item['description'], 255),
 				'serialnumber'		=> character_limiter($item['serialnumber'], 30),
 				'quantity_purchased'=> $item['quantity'],
-				'discount_percent'	=> $item['discount'],
+				'discount'			=> $item['discount'],
+				'discount_type'		=> $item['discount_type'],
 				'item_cost_price'	=> $item['cost_price'],
 				'item_unit_price'	=> $item['price'],
 				'item_location'		=> $item['item_location'],
@@ -689,80 +696,13 @@ class Sale extends CI_Model
 				$this->Inventory->insert($inv_data);
 			}
 
-			// Calculate taxes and save the tax information for the sale.  Return the result for printing
-
-			if($customer_id == -1 || $customer->taxable)
-			{
-				if($this->config->item('tax_included'))
-				{
-					$tax_type = Tax_lib::TAX_TYPE_VAT;
-				}
-				else
-				{
-					$tax_type = Tax_lib::TAX_TYPE_SALES;
-				}
-				$rounding_code = Rounding_mode::HALF_UP; // half adjust
-				$tax_group_sequence = 0;
-				$item_total = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
-				$tax_basis = $item_total;
-				$item_tax_amount = 0;
-
-				foreach($this->Item_taxes->get_info($item['item_id']) as $row)
-				{
-
-					$sales_items_taxes = array(
-						'sale_id'			=> $sale_id,
-						'item_id'			=> $item['item_id'],
-						'line'				=> $item['line'],
-						'name'				=> character_limiter($row['name'], 255),
-						'percent'			=> $row['percent'],
-						'tax_type'			=> $tax_type,
-						'rounding_code'		=> $rounding_code,
-						'cascade_tax'		=> 0,
-						'cascade_sequence'	=> 0,
-						'item_tax_amount'	=> 0
-					);
-
-					// This computes tax for each line item and adds it to the tax type total
-					$tax_group = (float)$row['percent'] . '% ' . $row['name'];
-					$tax_basis = $this->sale_lib->get_item_total($item['quantity'], $item['price'], $item['discount'], TRUE);
-
-					if($this->config->item('tax_included'))
-					{
-						$tax_type = Tax_lib::TAX_TYPE_VAT;
-						$item_tax_amount = $this->sale_lib->get_item_tax($item['quantity'], $item['price'], $item['discount'],$row['percent']);
-					}
-					elseif($this->config->item('customer_sales_tax_support') == '0')
-					{
-						$tax_type = Tax_lib::TAX_TYPE_SALES;
-						$item_tax_amount = $this->tax_lib->get_sales_tax_for_amount($tax_basis, $row['percent'], '0', $tax_decimals);
-					}
-					else
-					{
-						$tax_type = Tax_lib::TAX_TYPE_SALES;
-					}
-
-					$sales_items_taxes['item_tax_amount'] = $item_tax_amount;
-					if($item_tax_amount != 0)
-					{
-						$this->db->insert('sales_items_taxes', $sales_items_taxes);
-						$this->tax_lib->update_sales_taxes($sales_taxes, $tax_type, $tax_group, $row['percent'], $tax_basis, $item_tax_amount, $tax_group_sequence, $rounding_code, $sale_id,  $row['name'], '');
-						$tax_group_sequence += 1;
-					}
-
-				}
-
-				if($this->config->item('customer_sales_tax_support') == '1')
-				{
-					$this->save_sales_item_tax($customer, $sale_id, $item, $item_total, $sales_taxes, $sequence, $cur_item_info->tax_category_id);
-				}
-			}
+			$this->Attribute->copy_attribute_links($item['item_id'], 'sale_id', $sale_id);
 		}
 
 		if($customer_id == -1 || $customer->taxable)
 		{
-			$this->tax_lib->round_sales_taxes($sales_taxes);
-			$this->save_sales_tax($sales_taxes);
+			$this->save_sales_tax($sale_id, $sales_taxes[0]);
+			$this->save_sales_items_taxes($sale_id, $sales_taxes[1]);
 		}
 
 		$dinner_table_data = array(
@@ -783,31 +723,43 @@ class Sale extends CI_Model
 	}
 
 	/**
+	 * Saves sale tax
+	 */
+	public function save_sales_tax($sale_id, $sales_taxes)
+	{
+		foreach($sales_taxes as $line=>$sales_tax)
+		{
+			$sales_tax['tax_group'] = (float)$sales_tax['tax_rate'] . '% ' . $sales_tax['tax_group'];
+			$sales_tax['sale_id'] = $sale_id;
+			$this->db->insert('sales_taxes', $sales_tax);
+		}
+	}
+
+	/**
 	 * Apply customer sales tax if the customer sales tax is enabledl
 	 * The original tax is still supported if the user configures it,
 	 * but it won't make sense unless it's used exclusively for the purpose
 	 * of VAT tax which becomes a price component.  VAT taxes must still be reported
 	 * as a separate tax entry on the invoice.
 	 */
-	public function save_sales_item_tax(&$customer, &$sale_id, &$item, $tax_basis, &$sales_taxes, &$sequence, $tax_category_id)
+	public function save_sales_items_taxes($sale_id, $sales_item_taxes)
 	{
-		// if customer sales tax is enabled then update  sales_items_taxes with the
-		if($this->config->item('customer_sales_tax_support') == '1')
+		foreach($sales_item_taxes as $line => $tax_item)
 		{
-			$register_mode = $this->config->item('default_register_mode');
-			$tax_details = $this->tax_lib->apply_sales_tax($item, $customer->city, $customer->state, $customer->sales_tax_code, $register_mode, $sale_id, $sales_taxes);
-
 			$sales_items_taxes = array(
-				'sale_id'			=> $sale_id,
-				'item_id'			=> $item['item_id'],
-				'line'				=> $item['line'],
-				'name'				=> $tax_details['tax_name'],
-				'percent'			=> $tax_details['tax_rate'],
-				'tax_type'			=> Tax_lib::TAX_TYPE_SALES,
-				'rounding_code'		=> $tax_details['rounding_code'],
-				'cascade_tax'		=> 0,
-				'cascade_sequence'	=> 0,
-				'item_tax_amount'	=> $tax_details['item_tax_amount']
+				'sale_id' => $sale_id,
+				'item_id' => $tax_item['item_id'],
+				'line' => $tax_item['line'],
+				'name' => $tax_item['name'],
+				'percent' => $tax_item['percent'],
+				'tax_type' => $tax_item['tax_type'],
+				'rounding_code' => $tax_item['rounding_code'],
+				'cascade_sequence' => $tax_item['cascade_sequence'],
+				'item_tax_amount' => $tax_item['item_tax_amount'],
+				'sales_tax_code_id' => $tax_item['sales_tax_code_id'],
+				'tax_category_id' => $tax_item['tax_category_id'],
+				'jurisdiction_id' => $tax_item['jurisdiction_id'],
+				'tax_category_id' => $tax_item['tax_category_id']
 			);
 
 			$this->db->insert('sales_items_taxes', $sales_items_taxes);
@@ -815,14 +767,17 @@ class Sale extends CI_Model
 	}
 
 	/**
-	 * Saves sale tax
+	 * Return the taxes that were charged
 	 */
-	public function save_sales_tax(&$sales_taxes)
+	public function get_sales_taxes($sale_id)
 	{
-		foreach($sales_taxes as $line=>$sales_tax)
-		{
-			$this->db->insert('sales_taxes', $sales_tax);
-		}
+		$this->db->from('sales_taxes');
+		$this->db->where('sale_id', $sale_id);
+		$this->db->order_by('print_sequence', 'asc');
+
+		$query = $this->db->get();
+
+		return $query->result_array();
 	}
 
 	/**
@@ -927,15 +882,16 @@ class Sale extends CI_Model
 			quantity_purchased,
 			item_cost_price,
 			item_unit_price,
-			discount_percent,
+			discount,
+			discount_type,
 			item_location,
 			print_option,
-			items.name as name,
+			' . $this->Item->get_item_name('name') . ',
 			category,
 			item_type,
 			stock_type');
-		$this->db->from('sales_items as sales_items');
-		$this->db->join('items as items', 'sales_items.item_id = items.item_id');
+		$this->db->from('sales_items AS sales_items');
+		$this->db->join('items AS items', 'sales_items.item_id = items.item_id');
 		$this->db->where('sales_items.sale_id', $sale_id);
 
 		// Entry sequence (this will render kits in the expected sequence)
@@ -949,6 +905,7 @@ class Sale extends CI_Model
 			$this->db->order_by('stock_type', 'desc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
+			$this->db->order_by('items.qty_per_pack', 'asc');
 		}
 		// Group by Item Category
 		elseif($this->config->item('line_sequence') == '2')
@@ -956,6 +913,7 @@ class Sale extends CI_Model
 			$this->db->order_by('category', 'asc');
 			$this->db->order_by('sales_items.description', 'asc');
 			$this->db->order_by('items.name', 'asc');
+			$this->db->order_by('items.qty_per_pack', 'asc');
 		}
 		// Group by entry sequence in descending sequence (the Standard)
 		else
@@ -982,36 +940,14 @@ class Sale extends CI_Model
 	 */
 	public function get_payment_options($giftcard = TRUE, $reward_points = FALSE)
 	{
-		$payments = array();
+		$payments = get_payment_options();
 
-		if($this->config->item('payment_options_order') == 'debitcreditcash')
-		{
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-		}
-		elseif($this->config->item('payment_options_order') == 'debitcashcredit')
-		{
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-		else // default: if($this->config->item('payment_options_order') == 'cashdebitcredit')
-		{
-			$payments[$this->lang->line('sales_cash')] = $this->lang->line('sales_cash');
-			$payments[$this->lang->line('sales_debit')] = $this->lang->line('sales_debit');
-			$payments[$this->lang->line('sales_credit')] = $this->lang->line('sales_credit');
-		}
-
-		$payments[$this->lang->line('sales_due')] = $this->lang->line('sales_due');
-		$payments[$this->lang->line('sales_check')] = $this->lang->line('sales_check');
-
-		if($giftcard)
+		if($giftcard == TRUE)
 		{
 			$payments[$this->lang->line('sales_giftcard')] = $this->lang->line('sales_giftcard');
 		}
 
-		if($reward_points)
+		if($reward_points == TRUE)
 		{
 			$payments[$this->lang->line('sales_rewards')] = $this->lang->line('sales_rewards');
 		}
@@ -1133,7 +1069,7 @@ class Sale extends CI_Model
 
 		$decimals = totals_decimals();
 
-		$sale_price = 'sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount_percent / 100)';
+		$sale_price = 'CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END';
 		$sale_cost = 'SUM(sales_items.item_cost_price * sales_items.quantity_purchased)';
 		$tax = 'IFNULL(SUM(sales_items_taxes.tax), 0)';
 
@@ -1155,7 +1091,7 @@ class Sale extends CI_Model
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
-					SUM(sales_items_taxes.item_tax_amount) as tax
+					SUM(sales_items_taxes.item_tax_amount) AS tax
 				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
 				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
@@ -1203,14 +1139,15 @@ class Sale extends CI_Model
 					MAX(sales.employee_id) AS employee_id,
 					MAX(CONCAT(employee.first_name, " ", employee.last_name)) AS employee_name,
 					items.item_id AS item_id,
-					MAX(items.name) AS name,
+					MAX(' . $this->Item->get_item_name() . ') AS name,
 					MAX(items.item_number) AS item_number,
 					MAX(items.category) AS category,
 					MAX(items.supplier_id) AS supplier_id,
 					MAX(sales_items.quantity_purchased) AS quantity_purchased,
 					MAX(sales_items.item_cost_price) AS item_cost_price,
 					MAX(sales_items.item_unit_price) AS item_unit_price,
-					MAX(sales_items.discount_percent) AS discount_percent,
+					MAX(sales_items.discount) AS discount,
+					sales_items.discount_type AS discount_type,
 					sales_items.line AS line,
 					MAX(sales_items.serialnumber) AS serialnumber,
 					MAX(sales_items.item_location) AS item_location,
@@ -1314,7 +1251,6 @@ class Sale extends CI_Model
 		$this->db->update('sales', array('sale_status'=>$sale_status));
 	}
 
-
 	/**
 	 * Gets the quote_number for the selected sale
  	 */
@@ -1329,10 +1265,8 @@ class Sale extends CI_Model
 		{
 			return $row->quote_number;
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	/**
@@ -1349,10 +1283,8 @@ class Sale extends CI_Model
 		{
 			return $row->work_order_number;
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	/**
@@ -1369,10 +1301,8 @@ class Sale extends CI_Model
 		{
 			return $row->comment;
 		}
-		else
-		{
-			return NULL;
-		}
+
+		return NULL;
 	}
 
 	/**
@@ -1487,6 +1417,7 @@ class Sale extends CI_Model
 		{
 			return SUSPENDED;
 		}
+
 		return COMPLETED;
 	}
 }

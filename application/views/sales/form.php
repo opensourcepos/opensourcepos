@@ -12,7 +12,7 @@
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_date'), 'date', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
-				<?php echo form_input(array('name'=>'date','value'=>date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), strtotime($sale_info['sale_time'])), 'id'=>'datetime', 'class'=>'form-control input-sm'));?>
+				<?php echo form_input(array('name'=>'date','value'=>to_datetime(strtotime($sale_info['sale_time'])), 'class'=>'datetime form-control input-sm'));?>
 			</div>
 		</div>
 		
@@ -96,46 +96,20 @@
 $(document).ready(function()
 {	
 	<?php if(!empty($sale_info['email'])): ?>
-		$("#send_invoice").click(function(event) {
+		$('#send_invoice').click(function(event) {
 			if (confirm("<?php echo $this->lang->line('sales_invoice_confirm') . ' ' . $sale_info['email'] ?>")) {
-				$.get('<?php echo site_url() . "/sales/send_pdf/" . $sale_info['sale_id']; ?>',
+				$.get("<?php echo site_url($controller_name . '/send_pdf/' . $sale_info['sale_id']); ?>",
 					function(response) {
 						dialog_support.hide();
-						table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
-					}, "json"
+						table_support.handle_submit("<?php echo site_url('sales'); ?>", response);
+						$.notify(response.message, { type: response.success ? 'success' : 'danger'} );
+					}, 'json'
 				);	
 			}
 		});
 	<?php endif; ?>
 	
 	<?php $this->load->view('partial/datepicker_locale'); ?>
-	
-	$('#datetime').datetimepicker({
-		format: "<?php echo dateformat_bootstrap($this->config->item('dateformat')) . ' ' . dateformat_bootstrap($this->config->item('timeformat'));?>",
-		startDate: "<?php echo date($this->config->item('dateformat') . ' ' . $this->config->item('timeformat'), mktime(0, 0, 0, 1, 1, 2010));?>",
-		<?php
-		$t = $this->config->item('timeformat');
-		$m = $t[strlen($t)-1];
-		if( strpos($this->config->item('timeformat'), 'a') !== false || strpos($this->config->item('timeformat'), 'A') !== false )
-		{ 
-		?>
-			showMeridian: true,
-		<?php 
-		}
-		else
-		{
-		?>
-			showMeridian: false,
-		<?php 
-		}
-		?>
-		minuteStep: 1,
-		autoclose: true,
-		todayBtn: true,
-		todayHighlight: true,
-		bootcssVer: 3,
-		language: '<?php echo current_language_code(); ?>'
-	});
 
 	var fill_value =  function(event, ui) {
 		event.preventDefault();
@@ -143,9 +117,9 @@ $(document).ready(function()
 		$("input[name='customer_name']").val(ui.item.label);
 	};
 
-	$("#customer_name").autocomplete(
+	$('#customer_name').autocomplete(
 	{
-		source: '<?php echo site_url("customers/suggest"); ?>',
+		source: "<?php echo site_url('customers/suggest'); ?>",
 		minChars: 0,
 		delay: 15, 
 		cacheLength: 1,
@@ -156,33 +130,29 @@ $(document).ready(function()
 
 	$('button#delete').click(function() {
 		dialog_support.hide();
-		table_support.do_delete('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
+		table_support.do_delete("<?php echo site_url($controller_name); ?>", <?php echo $sale_info['sale_id']; ?>);
 	});
 
 	$('button#restore').click(function() {
 		dialog_support.hide();
-		table_support.do_restore('<?php echo site_url('sales'); ?>', <?php echo $sale_info['sale_id']; ?>);
+		table_support.do_restore("<?php echo site_url($controller_name); ?>", <?php echo $sale_info['sale_id']; ?>);
 	});
-
-	var submit_form = function()
-	{ 
-		$(this).ajaxSubmit(
-		{
-			success: function(response)
-			{
-				dialog_support.hide();
-				table_support.handle_submit('<?php echo site_url('sales'); ?>', response);
-			},
-			dataType: 'json'
-		});
-	};
 
 	$('#sales_edit_form').validate($.extend(
 	{
-		submitHandler: function(form)
-		{
-			submit_form.call(form);
+		submitHandler: function(form) {
+			$(form).ajaxSubmit({
+				success: function(response)
+				{
+					dialog_support.hide();
+					table_support.handle_submit("<?php echo site_url($controller_name); ?>", response);
+				},
+				dataType: 'json'
+			});
 		},
+
+		errorLabelContainer: '#error_message_box',
+
 		rules:
 		{
 			invoice_number:
@@ -190,21 +160,20 @@ $(document).ready(function()
 				remote:
 				{
 					url: "<?php echo site_url($controller_name . '/check_invoice_number')?>",
-					type: "POST",
-					data: $.extend(csrf_form_base(),
-					{
-						"sale_id" : <?php echo $sale_info['sale_id']; ?>,
-						"invoice_number" : function()
-						{
-							return $("#invoice_number").val();
+					type: 'POST',
+					data: {
+						'sale_id': <?php echo $sale_info['sale_id']; ?>,
+						'invoice_number': function() {
+							return $('#invoice_number').val();
 						}
-					})
+					}
 				}
 			}
 		},
+
 		messages: 
 		{
-			invoice_number: '<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>'
+			invoice_number: "<?php echo $this->lang->line("sales_invoice_number_duplicate"); ?>"
 		}
 	}, form_support.error));
 });

@@ -44,7 +44,7 @@ pre { font-family: Helvetica; font-size: 13px; }
 #items td.total-line { text-align: right; border-width: 1px 0 1px 1px; border-style: solid; }
 #items td.total-value { text-align: right; border-width: 1px 0px 1px 0; border-style: solid; }
 #items td.centered-value { text-align: center; }
-#items td.balance { background: #eeeee; }
+#items td.balance { background: #eeeeee; }
 #items td.blank { border: 0; }
 
 #terms { text-align: center; margin: 20px 0; }

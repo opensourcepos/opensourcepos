@@ -12,37 +12,43 @@
 	}
 
 	$.notifyDefaults({ placement: {
-		align: '<?php echo $this->config->item('notify_horizontal_position'); ?>',
-		from: '<?php echo $this->config->item('notify_vertical_position'); ?>'
+		align: "<?php echo $this->config->item('notify_horizontal_position'); ?>",
+		from: "<?php echo $this->config->item('notify_vertical_position'); ?>"
 	}});
 
-	var post = $.post;
+	var cookie_name = "<?php echo $this->config->item('csrf_cookie_name'); ?>";
 
 	var csrf_token = function() {
-		return Cookies.get('<?php echo $this->config->item('csrf_cookie_name'); ?>');
+		return Cookies.get(cookie_name);
 	};
 
 	var csrf_form_base = function() {
 		return { <?php echo $this->security->get_csrf_token_name(); ?> : function () { return csrf_token();  } };
 	};
 
-	$.post = function() {
-		arguments[1] = csrf_token() ? $.extend(arguments[1], csrf_form_base()) : arguments[1];
-		post.apply(this, arguments);
-	};
-
 	var setup_csrf_token = function() {
 		$('input[name="<?php echo $this->security->get_csrf_token_name(); ?>"]').val(csrf_token());
 	};
 
-	setup_csrf_token();
+	var ajax = $.ajax;
 
-	$.ajaxSetup({
-		dataFilter: function(data) {
-			setup_csrf_token();
-			return data;
+	$.ajax = function() {
+		var args = arguments[0];
+		if (args['type'] && args['type'].toLowerCase() == 'post' && csrf_token()) {
+			if (typeof args['data'] === 'string')
+			{
+				args['data'] += '&' + $.param(csrf_form_base());
+			}
+			else
+			{
+				args['data'] = $.extend(args['data'], csrf_form_base());
+			}
 		}
-	});
+
+		return ajax.apply(this, arguments);
+	};
+
+	$(document).ajaxComplete(setup_csrf_token);
 
 	var submit = $.fn.submit;
 
@@ -50,5 +56,4 @@
 		setup_csrf_token();
 		submit.apply(this, arguments);
 	};
-
 </script>

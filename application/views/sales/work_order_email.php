@@ -12,9 +12,6 @@
 		echo "<div class='alert alert-dismissible alert-danger'>".$error_message."</div>";
 		exit;
 	}
-
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE, array('sales', 'common'));
 ?>
 
 <div id="page-wrap">
@@ -87,7 +84,7 @@
 					<td class="item-name"><?php echo $item['name']; ?></td>
 					<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 					<td><?php echo to_currency($item['price']); ?></td>
-					<td><?php echo $item['discount'] . '%'; ?></td>
+					<td><?php echo ($item['discount_type']==FIXED)?to_currency($item['discount']):$item['discount'] . '%';?></td>
 					<td class="total-line"><?php echo to_currency($item['discounted_total']); ?></td>
 				</tr>
 			<?php

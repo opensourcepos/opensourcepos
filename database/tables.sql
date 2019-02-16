@@ -242,7 +242,6 @@ CREATE TABLE `ospos_items` (
   `is_serialized` tinyint(1) NOT NULL,
   `stock_type` TINYINT(2) NOT NULL DEFAULT 0,
   `item_type` TINYINT(2) NOT NULL DEFAULT 0,
-  `tax_category_id` int(10) NOT NULL DEFAULT 1,
   `deleted` int(1) NOT NULL DEFAULT '0',
   `custom1` VARCHAR(255) DEFAULT NULL,
   `custom2` VARCHAR(255) DEFAULT NULL,
@@ -755,15 +754,6 @@ CREATE TABLE IF NOT EXISTS `ospos_tax_categories` (
   `tax_group_sequence` tinyint(2) NOT NULL,
   PRIMARY KEY (`tax_category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
---
--- Dumping data for table `ospos_stock_locations`
---
-
-INSERT INTO `ospos_tax_categories` (`tax_category`, `tax_group_sequence` ) VALUES
-  ('Standard', 10),
-  ('Service', 12),
-  ('Alcohol', 11);
 
 
 -- --------------------------------------------------------

@@ -198,14 +198,16 @@ class Config extends Secure_Controller
 	{
 		$data['stock_locations'] = $this->Stock_location->get_all()->result_array();
 		$data['dinner_tables'] = $this->Dinner_table->get_all()->result_array();
-		$data['tax_categories'] = $this->Tax->get_all_tax_categories()->result_array();
 		$data['customer_rewards'] = $this->Customer_rewards->get_all()->result_array();
 		$data['support_barcode'] = $this->barcode_lib->get_list_barcodes();
 		$data['logo_exists'] = $this->config->item('company_logo') != '';
 		$data['line_sequence_options'] = $this->sale_lib->get_line_sequence_options();
 		$data['register_mode_options'] = $this->sale_lib->get_register_mode_options();
+		$data['invoice_type_options'] = $this->sale_lib->get_invoice_type_options();
 		$data['rounding_options'] = Rounding_mode::get_rounding_options();
-		$data['tax_codes'] = $this->get_tax_code_options();
+		$data['tax_code_options'] = $this->tax_lib->get_tax_code_options();
+		$data['tax_category_options'] = $this->tax_lib->get_tax_category_options();
+		$data['tax_jurisdiction_options'] = $this->tax_lib->get_tax_jurisdiction_options();
 		$data['show_office_group'] = $this->Module->get_show_office_group();
 
 		$data = $this->xss_clean($data);
@@ -231,19 +233,6 @@ class Config extends Secure_Controller
 		$data['mailchimp']['lists'] = $this->_mailchimp();
 
 		$this->load->view("configs/manage", $data);
-	}
-
-	public function get_tax_code_options()
-	{
-		$tax_codes = $this->Tax->get_all_tax_codes()->result_array();
-		$tax_code_options = array();
-		foreach($tax_codes as $tax_code)
-		{
-			$a = $tax_code['tax_code'];
-			$b = $tax_code['tax_code_name'];
-			$tax_code_options[$a] = $b;
-		}
-		return $tax_code_options;
 	}
 
 	public function save_info()
@@ -285,7 +274,10 @@ class Config extends Secure_Controller
 	{
 		$batch_save_data = array(
 			'theme' => $this->input->post('theme'),
+			'default_sales_discount_type' => $this->input->post('default_sales_discount_type') != NULL,
 			'default_sales_discount' => $this->input->post('default_sales_discount'),
+			'default_receivings_discount_type' => $this->input->post('default_receivings_discount_type') != NULL,
+			'default_receivings_discount' => $this->input->post('default_receivings_discount'),
 			'enforce_privacy' => $this->input->post('enforce_privacy'),
 			'receiving_calculate_average_price' => $this->input->post('receiving_calculate_average_price') != NULL,
 			'lines_per_page' => $this->input->post('lines_per_page'),
@@ -299,16 +291,8 @@ class Config extends Secure_Controller
 			'suggestions_third_column' => $this->input->post('suggestions_third_column'),
 			'giftcard_number' => $this->input->post('giftcard_number'),
 			'derive_sale_quantity' => $this->input->post('derive_sale_quantity') != NULL,
-			'custom1_name' => $this->input->post('custom1_name'),
-			'custom2_name' => $this->input->post('custom2_name'),
-			'custom3_name' => $this->input->post('custom3_name'),
-			'custom4_name' => $this->input->post('custom4_name'),
-			'custom5_name' => $this->input->post('custom5_name'),
-			'custom6_name' => $this->input->post('custom6_name'),
-			'custom7_name' => $this->input->post('custom7_name'),
-			'custom8_name' => $this->input->post('custom8_name'),
-			'custom9_name' => $this->input->post('custom9_name'),
-			'custom10_name' => $this->input->post('custom10_name')
+			'multi_pack_enabled' => $this->input->post('multi_pack_enabled') != NULL,
+			'include_hsn' => $this->input->post('include_hsn') != NULL
 		);
 
 		$this->Module->set_show_office_group($this->input->post('show_office_group') != NULL);
@@ -634,85 +618,26 @@ class Config extends Secure_Controller
 	{
 		$this->db->trans_start();
 
-		$customer_sales_tax_support = $this->input->post('customer_sales_tax_support') != NULL;
-
 		$batch_save_data = array(
 			'default_tax_1_rate' => parse_decimals($this->input->post('default_tax_1_rate')),
 			'default_tax_1_name' => $this->input->post('default_tax_1_name'),
 			'default_tax_2_rate' => parse_decimals($this->input->post('default_tax_2_rate')),
 			'default_tax_2_name' => $this->input->post('default_tax_2_name'),
 			'tax_included' => $this->input->post('tax_included') != NULL,
-			'customer_sales_tax_support' => $customer_sales_tax_support,
-			'default_origin_tax_code' => $this->input->post('default_origin_tax_code')
+			'use_destination_based_tax' => $this->input->post('use_destination_based_tax') != NULL,
+			'default_tax_code' => $this->input->post('default_tax_code'),
+			'default_tax_category' => $this->input->post('default_tax_category'),
+			'default_tax_jurisdiction' => $this->input->post('default_tax_jurisdiction'),
+			'tax_id' => $this->input->post('tax_id')
 		);
 
 		$success = $this->Appconfig->batch_save($batch_save_data) ? TRUE : FALSE;
-		$delete_rejected = FALSE;
-
-		if($customer_sales_tax_support)
-		{
-			$array_save = array();
-			foreach($this->input->post() as $key => $value)
-			{
-				if(strstr($key, 'tax_category'))
-				{
-					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$array_save[$tax_category_id]['tax_category'] = $value;
-				}
-				elseif(strstr($key, 'tax_group_sequence'))
-				{
-					$tax_category_id = preg_replace("/.*?_(\d+)$/", "$1", $key);
-					$array_save[$tax_category_id]['tax_group_sequence'] = $value;
-				}
-			}
-
-			$not_to_delete = array();
-			if(!empty($array_save))
-			{
-				foreach($array_save as $key => $value)
-				{
-					// save or update
-					$category_data = array('tax_category' => $value['tax_category'], 'tax_group_sequence' => $value['tax_group_sequence']);
-					$this->Tax->save_tax_category($category_data, $key);
-					$not_to_delete[] = $key;
-				}
-			}
-
-			// all categories not available in post will be deleted now
-			$deleted_categories = $this->Tax->get_all_tax_categories()->result_array();
-
-			foreach($deleted_categories as $tax_category => $category)
-			{
-				if(!in_array($category['tax_category_id'], $not_to_delete))
-				{
-					$usg1 = $this->Tax->get_tax_category_usage($category['tax_category_id']);
-					$usg2 = $this->Item->get_tax_category_usage($category['tax_category_id']);
-					if(($usg1 + $usg2) == 0)
-					{
-						$this->Tax->delete_tax_category($category['tax_category_id']);
-					}
-					else
-					{
-						$delete_rejected = TRUE;
-					}
-				}
-			}
-		}
 
 		$this->db->trans_complete();
 
 		$success &= $this->db->trans_status();
 
-		$message = '';
-		if($success && $delete_rejected)
-		{
-			$message = $this->lang->line('config_tax_category_used');
-			$success = FALSE;
-		}
-		else
-		{
-			$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
-		}
+		$message = $this->lang->line('config_saved_' . ($success ? '' : 'un') . 'successfully');
 
 		echo json_encode(array(
 			'success' => $success,
@@ -813,6 +738,7 @@ class Config extends Secure_Controller
 		$batch_save_data = array (
 			'receipt_template' => $this->input->post('receipt_template'),
 			'receipt_font_size' => $this->input->post('receipt_font_size'),
+			'print_delay_autoreturn' => $this->input->post('print_delay_autoreturn'),
 			'email_receipt_check_behaviour' => $this->input->post('email_receipt_check_behaviour'),
 			'print_receipt_check_behaviour' => $this->input->post('print_receipt_check_behaviour'),
 			'receipt_show_company_name' => $this->input->post('receipt_show_company_name') != NULL,
@@ -849,12 +775,13 @@ class Config extends Secure_Controller
 			'invoice_default_comments' => $this->input->post('invoice_default_comments'),
 			'invoice_email_message' => $this->input->post('invoice_email_message'),
 			'line_sequence' => $this->input->post('line_sequence'),
-			'last_used_invoice_number' =>$this->input->post('last_used_invoice_number'),
-			'last_used_quote_number' =>$this->input->post('last_used_quote_number'),
+			'last_used_invoice_number' => $this->input->post('last_used_invoice_number'),
+			'last_used_quote_number' => $this->input->post('last_used_quote_number'),
 			'quote_default_comments' => $this->input->post('quote_default_comments'),
 			'work_order_enable' => $this->input->post('work_order_enable') != NULL,
 			'work_order_format' => $this->input->post('work_order_format'),
-			'last_used_work_order_number' =>$this->input->post('last_used_work_order_number')
+			'last_used_work_order_number' => $this->input->post('last_used_work_order_number'),
+			'invoice_type' => $this->input->post('invoice_type')
 		);
 
 		$result = $this->Appconfig->batch_save($batch_save_data);

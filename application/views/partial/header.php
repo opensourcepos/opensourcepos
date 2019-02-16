@@ -20,6 +20,7 @@
 		<link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css" />
 		<link rel="stylesheet" href="bower_components/chartist-plugin-tooltip/dist/chartist-plugin-tooltip.css" />
 		<link rel="stylesheet" href="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
+		<link rel="stylesheet" href="bower_components/bootstrap-toggle/css/bootstrap-toggle.min.css" />
 		<!-- endbower -->
 		<!-- start css template tags -->
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.autocomplete.css"/>
@@ -60,6 +61,7 @@
 		<script src="bower_components/remarkable-bootstrap-notify/bootstrap-notify.js"></script>
 		<script src="bower_components/js-cookie/src/js.cookie.js"></script>
 		<script src="bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+		<script src="bower_components/bootstrap-toggle/js/bootstrap-toggle.min.js"></script>
 		<!-- endbower -->
 		<!-- start js template tags -->
 		<script type="text/javascript" src="js/imgpreview.full.jquery.js"></script>
@@ -72,10 +74,10 @@
 		<![endif]-->
 		<!-- start mincss template tags -->
 		<link rel="stylesheet" type="text/css" href="dist/jquery-ui/jquery-ui.min.css"/>
-		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=a9e24293b8"/>
+		<link rel="stylesheet" type="text/css" href="dist/opensourcepos.min.css?rel=c729835075"/>
 		<!-- end mincss template tags -->
 		<!-- start minjs template tags -->
-		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=2b33cdf0fb"></script>
+		<script type="text/javascript" src="dist/opensourcepos.min.js?rel=aaf585bba7"></script>
 		<!-- end minjs template tags -->
 	<?php endif; ?>
 
@@ -118,7 +120,7 @@
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-			
+
 					<a class="navbar-brand hidden-sm" href="<?php echo site_url(); ?>">OSPOS</a>
 				</div>
 
@@ -139,4 +141,4 @@
 
 		<div class="container">
 			<div class="row">
-	 
+

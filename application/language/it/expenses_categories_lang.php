@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Aggiungi categoria";
 $lang["expenses_categories_cannot_be_deleted"] = "Non puoi eliminare la Categoria Spese";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Sei sicuro di voler eliminare la Categoria Spesa selezionata?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Descrizione Categoria";
 $lang["expenses_categories_error_adding_updating"] = "Errore aggiungi/aggiorna Categoria Spesa";
 $lang["expenses_categories_info"] = "Info Categoria Spesa";

@@ -5,6 +5,7 @@ $lang["expenses_categories_add_item"] = "Agregar categoria";
 $lang["expenses_categories_cannot_be_deleted"] = "No pudo borrar";
 $lang["expenses_categories_category_id"] = "Id";
 $lang["expenses_categories_confirm_delete"] = "Esta seguro de quere borrar lo(s) categorias(s) seleccionado(s)?";
+$lang["expenses_categories_confirm_restore"] = "";
 $lang["expenses_categories_description"] = "Descripcion Categoria";
 $lang["expenses_categories_error_adding_updating"] = "Error actualizando/adicinando categoria";
 $lang["expenses_categories_info"] = "Informacion Categoria";

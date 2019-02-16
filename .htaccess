@@ -2,7 +2,8 @@
   <IfModule mod_rewrite.c>
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^public$
-    RewriteRule ^(.*)$ %{REQUEST_URI}public/ [R=301,L]
+    RewriteCond %{REQUEST_URI} !^/.well-known/acme-challenge [NC]
+    RewriteRule "^(.*)$" "/public/" [R=301,L]
   </IfModule>
 
 # disable directory browsing

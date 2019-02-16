@@ -1,8 +1,3 @@
-<?php 
-	// Temporarily loads the system language for _lang to print invoice in the system language rather than user defined.
-	load_language(TRUE,array('customers','sales','employees'));
-?>
-
 <div id="receipt_wrapper" style="font-size:<?php echo $this->config->item('receipt_font_size');?>px">
 	<div id="receipt_header">
 		<?php
@@ -66,7 +61,7 @@
 		{
 		?>
 			<tr>
-				<td><?php echo ucfirst($item['name']); ?></td>
+				<td><?php echo ucfirst($item['name'] . ' ' . $item['attribute_values']); ?></td>
 				<td><?php echo to_quantity_decimals($item['quantity']); ?></td>
 				<td class="total-value"><?php echo to_currency($item[($this->config->item('receipt_show_total_discount') ? 'total' : 'discounted_total')]); ?></td>
 			</tr>
@@ -93,12 +88,26 @@
 			{
 			?>
 				<tr>
-					<td colspan="2" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included")?></td>
-					<td class="total-value"><?php echo to_currency($item['discounted_total']) ; ?></td>
+					<?php
+					if($item['discount_type'] == FIXED)
+					{
+					?>
+						<td colspan="3" class="discount"><?php echo to_currency($item['discount']) . " " . $this->lang->line("sales_discount") ?></td>
+					<?php
+					}
+					elseif($item['discount_type'] == PERCENT)
+					{
+					?>
+						<td colspan="3" class="discount"><?php echo number_format($item['discount'], 0) . " " . $this->lang->line("sales_discount_included") ?></td>
+					<?php
+					}	
+					?>
+					<td class="total-value"><?php echo to_currency($item['discounted_total']); ?></td>
 				</tr>
 			<?php
 			}
 			?>
+
 		<?php
 		}
 		?>
@@ -128,12 +137,12 @@
 				<td style='text-align:right;border-top:2px solid #000000;'><?php echo to_currency($subtotal); ?></td>
 			</tr>
 			<?php
-			foreach($taxes as $tax_group_index=>$sales_tax)
+			foreach($taxes as $tax_group_index=>$tax)
 			{
 			?>
 				<tr>
-					<td colspan="2" class="total-value"><?php echo $sales_tax['tax_group']; ?>:</td>
-					<td class="total-value"><?php echo to_currency_tax($sales_tax['sale_tax_amount']); ?></td>
+					<td colspan="2" class="total-value"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?>:</td>
+					<td class="total-value"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
 			}

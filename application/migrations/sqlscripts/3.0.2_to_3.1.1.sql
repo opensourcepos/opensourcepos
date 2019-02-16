@@ -69,7 +69,8 @@ INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
 ('last_used_invoice_number', '0'),
 ('last_used_quote_number', '0'),
 ('line_sequence', '0'),
-('dinner_table_enable', '0');
+('dinner_table_enable', '0'),
+('customer_sales_tax_support', '0');
 
 --
 -- Table structure for table `ospos_customer_packages`
@@ -259,15 +260,8 @@ DELETE FROM `ospos_tax_categories` where tax_category_id in (0, 1, 2, 3);
 ALTER TABLE `ospos_tax_categories`
   MODIFY COLUMN `tax_category_id` int(10) NOT NULL AUTO_INCREMENT;
 
-INSERT INTO `ospos_tax_categories` ( `tax_category_id`, `tax_category`, `tax_group_sequence` ) VALUES
-(1, 'Standard', 10),
-(2, 'Service', 12),
-(3, 'Alcohol', 11);
-
 ALTER TABLE `ospos_items`
-  MODIFY COLUMN `tax_category_id` int(10) NOT NULL DEFAULT 1;
-
-UPDATE `ospos_items` SET `tax_category_id` = 1 WHERE `tax_category_id` = 0;
+  MODIFY COLUMN `tax_category_id` int(10) DEFAULT NULL;
 
 -- If you have added any tax codes, the following will correct the rate_tax_category_id on the tax_code_rates table,
 -- but you might need to add more UPDATE statements depending on how may tax codes and/or tax categories you've added
@@ -415,3 +409,4 @@ ALTER TABLE ospos_items
 -- Change language code en to be en-US
 
 UPDATE `ospos_app_config` SET `value` = 'en-US' WHERE `key` = 'language_code' AND `value` = 'en';
+

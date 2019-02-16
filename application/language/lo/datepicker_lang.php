@@ -14,6 +14,7 @@ $lang["datepicker_same_month_last_year"] = "ເດືອນນີ້ຂອງປ
 $lang["datepicker_same_month_to_same_day_last_year"] = "ມື້ນີ້ ເດືອນນີ້ ຂອງປີກາຍ";
 $lang["datepicker_this_financial_year"] = "ສົກປີນີ້";
 $lang["datepicker_this_month"] = "ເດືອນປັດຈຸບັນ";
+$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "ປີປັດຈຸບັນ";
 $lang["datepicker_to"] = "ເຖິງ";
 $lang["datepicker_today"] = "ມື້ນີ້";
