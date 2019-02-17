@@ -1,13 +1,6 @@
 <div id="config_wrapper">
-	<?php echo $this->lang->line('config_server_notice'); ?>
 	<table class="table text-left" >
 		<tbody>
-		<tr>
-		  <th>OSPOS Info</th>
-			<td><?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br>
-				<?php echo current_language_code();	?>
-			</td>
-		</tr>
 		<tr>
 		  <th>Extensions & Modules</th>
 			<td>
