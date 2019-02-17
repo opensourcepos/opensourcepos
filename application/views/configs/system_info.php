@@ -18,9 +18,7 @@
 				echo "OpenSSL: ", extension_loaded('openssl') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
 				echo "MBString: ", extension_loaded('mbstring') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
 				echo "Curl: ", extension_loaded('curl') ? 'Enabled &#x2713' : 'MISSING &#x2717', '<br>';
-			//	echo print_r(apache_get_modules()); 
-				//echo "Rewrite Module: ", $isEnabled = in_array('mod_rewrite', apache_get_modules());
-				//echo ($isEnabled) ? 'OK &#x2713' : 'MISSING &#x2717', '<br>'; 
+			
 			?>	
 			</td>
 		</tr>
