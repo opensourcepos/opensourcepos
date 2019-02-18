@@ -244,6 +244,40 @@ class Attribute extends CI_Model
 		return $this->search($search)->num_rows();
 	}
 
+	private function check_data_validity($definition, $from, $to)
+	{
+		$success = TRUE;
+		
+		if($from === TEXT)
+		{
+			if($to === DATETIME)
+			{
+				$this->db->select('item_id,attribute_value');
+				$this->db->from('attribute_values');
+				$this->db->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
+				$this->db->where('definition_id',$definition);
+
+				foreach($this->db->get()->result_array() as $row)
+				{
+					if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
+					{
+						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
+						$success = FALSE;
+					}
+				}
+				return $success;
+			}
+			else
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
 	private function convert_definition_type($definition_id, $from_type, $to_type)
 	{
 		if($from_type === TEXT)
@@ -251,8 +285,13 @@ class Attribute extends CI_Model
 			//From TEXT to DATETIME
 			if($to_type === DATETIME)
 			{
+				if(!$this->check_data_validity($definition_id, $from_type, $to_type))
+				{
+					return FALSE;
+				}
+
 				$this->db->trans_start();
-				
+
 				$query = 'UPDATE ospos_attribute_values ';
 				$query .= 'INNER JOIN ospos_attribute_links ';
 				$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
@@ -260,7 +299,7 @@ class Attribute extends CI_Model
 				$query .= 'attribute_value = NULL ';
 				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
 				$success = $this->db->query($query);
-				
+
 				$this->db->trans_complete();
 			}
 		}
@@ -306,7 +345,10 @@ class Attribute extends CI_Model
 			
 			if($from_definition_type !== $to_definition_type)
 			{
-				$this->convert_definition_type($definition_id,$from_definition_type,$to_definition_type);
+				if(!$this->convert_definition_type($definition_id,$from_definition_type,$to_definition_type))
+				{
+					return FALSE;
+				}
 			}
 			
 			$this->db->where('definition_id', $definition_id);
