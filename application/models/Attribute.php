@@ -244,7 +244,7 @@ class Attribute extends CI_Model
 		return $this->search($search)->num_rows();
 	}
 
-	public function convert_definition_type($definition_id,$from_type,$to_type)
+	private function convert_definition_type($definition_id, $from_type, $to_type)
 	{
 		if($from_type === TEXT)
 		{
@@ -258,8 +258,8 @@ class Attribute extends CI_Model
 				$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
 				$query .= 'SET attribute_datetime = attribute_value, ';
 				$query .= 'attribute_value = NULL ';
-				$query .= 'WHERE definition_id = '.$definition_id;
-				$this->db->query($query);
+				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+				$success = $this->db->query($query);
 				
 				$this->db->trans_complete();
 			}
@@ -313,11 +313,11 @@ class Attribute extends CI_Model
 			$success = $this->db->update('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $definition_id;
 		}
-		
+
 		$this->db->trans_complete();
-		
+
 		$success &= $this->db->trans_status();
-		
+
 		return $success;
 	}
 
