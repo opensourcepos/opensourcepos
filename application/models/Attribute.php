@@ -246,8 +246,9 @@ class Attribute extends CI_Model
 
 	private function check_data_validity($definition, $from, $to)
 	{
-		$success = TRUE;
-		
+		$success = FALSE;
+		$fail = FALSE;
+
 		if($from === TEXT)
 		{
 			if($to === DATETIME)
@@ -262,20 +263,13 @@ class Attribute extends CI_Model
 					if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
 					{
 						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
-						$success = FALSE;
+						$fail = TRUE;
 					}
 				}
-				return $success;
-			}
-			else
-			{
-				return FALSE;
+				$success = $fail ? FALSE: TRUE;
 			}
 		}
-		else
-		{
-			return FALSE;
-		}
+		return $success;
 	}
 	
 	private function convert_definition_type($definition_id, $from_type, $to_type)
