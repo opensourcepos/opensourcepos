@@ -1,12 +1,11 @@
-<?php 
-
+<?php
 $lang["module_attributes"] = "Atributlar";
 $lang["module_attributes_desc"] = "Atributları əlavə et, yenilə, sil və ya axtar.";
 $lang["module_both"] = "Hər ikizi";
 $lang["module_cashups"] = "Qazanclar";
 $lang["module_cashups_desc"] = "Əlavə et, Yenilə, Sil və Qazancları axtar.";
 $lang["module_config"] = "Konfiqursiya";
-$lang["module_config_desc"] = "OSPOS Konfiqurasiyasını dəyiş.";
+$lang["module_config_desc"] = "ALSAN Konfiqurasiyasını dəyiş.";
 $lang["module_customers"] = "Müştərilər";
 $lang["module_customers_desc"] = "Əlavə et,Yenilə,Sil və Müştəriləri axtar.";
 $lang["module_employees"] = "Əməkdaşlar";
@@ -26,7 +25,7 @@ $lang["module_items_desc"] = "Əlavə et,Yenilə,Sil və ya Malları Axtar.";
 $lang["module_messages"] = "Mesajlar";
 $lang["module_messages_desc"] = "Müştərilərə, Təchizatçılara və İşçilərə Mesaj göndərin.";
 $lang["module_migrate"] = "Köçür";
-$lang["module_migrate_desc"] = "OSPOS Məlumat Bazasıni Yenilə.";
+$lang["module_migrate_desc"] = "ALSAN Məlumat Bazasıni Yenilə.";
 $lang["module_office"] = "Ofis";
 $lang["module_office_desc"] = "Ofis menyusu siyahısı modulları.";
 $lang["module_receivings"] = "Qəbul Edilənlər";
