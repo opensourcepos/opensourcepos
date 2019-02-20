@@ -463,7 +463,7 @@ class Attribute extends CI_Model
 		$this->db->query(
 			'INSERT INTO attribute_links (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')
 			  SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id) . '
-			  FROM ' . $this->db->dbprefix('attribute_links') . '
+			  FROM attribute_links 
 			  WHERE item_id = ' . $this->db->escape($item_id) . ' AND sale_id IS NULL AND receiving_id IS NULL'
 			);
 	}
@@ -532,7 +532,7 @@ class Attribute extends CI_Model
 	
 	public function delete_value($attribute_value, $definition_id)
 	{
-		return $this->db->query("DELETE atrv, atrl FROM " . $this->db->dbprefix('attribute_values') . " atrv, " . $this->db->dbprefix('attribute_links') .  " atrl " .
+		return $this->db->query("DELETE atrv, atrl FROM attribute_values atrv, attribute_links atrl " .
 			"WHERE atrl.attribute_id = atrv.attribute_id AND atrv.attribute_value = " . $this->db->escape($attribute_value) . " AND atrl.definition_id = " . $this->db->escape($definition_id));
 	}
 	

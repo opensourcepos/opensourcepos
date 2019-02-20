@@ -250,8 +250,8 @@ class Receiving extends CI_Model
 			$where = 'WHERE receivings_items.receiving_id = ' . $this->db->escape($inputs['receiving_id']);
 		}
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('receivings_items_temp') .
-			' (INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS receivings_items_temp
+			(INDEX(receiving_date), INDEX(receiving_time), INDEX(receiving_id))
 			(
 				SELECT 
 					MAX(DATE(receiving_time)) AS receiving_date,
@@ -277,10 +277,10 @@ class Receiving extends CI_Model
 					MAX(CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) AS total,
 					MAX((CASE WHEN receivings_items.discount_type = ' . PERCENT . ' THEN item_unit_price * quantity_purchased * receivings_items.receiving_quantity - item_unit_price * quantity_purchased * receivings_items.receiving_quantity * discount / 100 ELSE item_unit_price * quantity_purchased * receivings_items.receiving_quantity - discount END) - (item_cost_price * quantity_purchased)) AS profit,
 					MAX(item_cost_price * quantity_purchased * receivings_items.receiving_quantity ) AS cost
-				FROM ' . $this->db->dbprefix('receivings_items') . ' AS receivings_items
-				INNER JOIN ' . $this->db->dbprefix('receivings') . ' AS receivings
+				FROM receivings_items AS receivings_items
+				INNER JOIN receivings AS receivings
 					ON receivings_items.receiving_id = receivings.receiving_id
-				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
+				INNER JOIN items AS items
 					ON receivings_items.item_id = items.item_id
 				' . "
 				$where

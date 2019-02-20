@@ -99,15 +99,15 @@ class Customer extends Person
 	public function get_stats($customer_id)
 	{
 		// create a temporary table to contain all the sum and average of items
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') .
-			' (INDEX(sale_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_items_temp
+			(INDEX(sale_id))
 			(
 				SELECT
 					sales.sale_id AS sale_id,
 					AVG(sales_items.discount) AS avg_discount,
 					SUM(sales_items.quantity_purchased) AS quantity
-				FROM ' . $this->db->dbprefix('sales') . ' AS sales
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				FROM sales AS sales
+				INNER JOIN sales_items AS sales_items
 					ON sales_items.sale_id = sales.sale_id
 				WHERE sales.customer_id = ' . $this->db->escape($customer_id) . '
 				GROUP BY sale_id
@@ -136,7 +136,7 @@ class Customer extends Person
 		$stat = $this->db->get()->row();
 
 		// drop the temporary table to contain memory consumption as it's no longer required
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_items_temp'));
+		$this->db->query('DROP TEMPORARY TABLE IF EXISTS sales_items_temp');
 
 		return $stat;
 	}

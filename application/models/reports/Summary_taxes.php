@@ -59,16 +59,16 @@ class Summary_taxes extends Summary_report
 					$sale_subtotal AS subtotal,
 					IFNULL(sales_items_taxes.item_tax_amount, 0) AS tax,
 					IFNULL($sale_total, $sale_subtotal) AS total
-					FROM " . $this->db->dbprefix('sales_items') . ' AS sales_items
-					INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+					FROM sales_items AS sales_items
+					INNER JOIN sales AS sales
 						ON sales_items.sale_id = sales.sale_id
-					LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
+					LEFT OUTER JOIN sales_items_taxes AS sales_items_taxes
 						ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
-					' . $where . '
+					$where
 				) AS temp_taxes
-			GROUP BY percent'
-		);
-
+			GROUP BY percent"
+			);
+		
 		return $query->result_array();
 	}
 }

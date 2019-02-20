@@ -25,13 +25,13 @@ class Sale extends CI_Model
 	{
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
-			'(
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_payments_temp 
+			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_payments AS payments
+				INNER JOIN sales AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
 				GROUP BY sale_id
@@ -55,16 +55,16 @@ class Sale extends CI_Model
 		}
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			'(
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_items_taxes_temp
+			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
 					SUM(sales_items_taxes.item_tax_amount) AS tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_items_taxes AS sales_items_taxes
+				INNER JOIN sales AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				INNER JOIN sales_items AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE sales.sale_id = ' . $this->db->escape($sale_id) . '
 				GROUP BY sale_id, item_id, line
@@ -138,14 +138,14 @@ class Sale extends CI_Model
 
 		// NOTE: temporary tables are created to speed up searches due to the fact that they are ortogonal to the main query
 		// create a temporary table to contain all the payments per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
-			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_payments_temp
+			(PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_payments AS payments
+				INNER JOIN sales AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE ' . $where . '
 				GROUP BY sale_id
@@ -170,17 +170,17 @@ class Sale extends CI_Model
 		}
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			' (INDEX(sale_id), INDEX(item_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_items_taxes_temp
+			(INDEX(sale_id), INDEX(item_id))
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
 					SUM(sales_items_taxes.item_tax_amount) AS tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_items_taxes AS sales_items_taxes
+				INNER JOIN sales AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				INNER JOIN sales_items AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
@@ -1085,17 +1085,17 @@ class Sale extends CI_Model
 		}
 
 		// create a temporary table to contain all the sum of taxes per sale item
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp') .
-			' (INDEX(sale_id), INDEX(item_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_items_taxes_temp
+			(INDEX(sale_id), INDEX(item_id))
 			(
 				SELECT sales_items_taxes.sale_id AS sale_id,
 					sales_items_taxes.item_id AS item_id,
 					sales_items_taxes.line AS line,
 					SUM(sales_items_taxes.item_tax_amount) AS tax
-				FROM ' . $this->db->dbprefix('sales_items_taxes') . ' AS sales_items_taxes
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_items_taxes AS sales_items_taxes
+				INNER JOIN sales AS sales
 					ON sales.sale_id = sales_items_taxes.sale_id
-				INNER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items
+				INNER JOIN sales_items AS sales_items
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
@@ -1103,22 +1103,22 @@ class Sale extends CI_Model
 		);
 
 		// create a temporary table to contain all the payment types and amount
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_payments_temp') .
-			' (PRIMARY KEY(sale_id), INDEX(sale_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_payments_temp
+			(PRIMARY KEY(sale_id), INDEX(sale_id))
 			(
 				SELECT payments.sale_id AS sale_id,
 					IFNULL(SUM(payments.payment_amount), 0) AS sale_payment_amount,
 					GROUP_CONCAT(CONCAT(payments.payment_type, " ", payments.payment_amount) SEPARATOR ", ") AS payment_type
-				FROM ' . $this->db->dbprefix('sales_payments') . ' AS payments
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_payments AS payments
+				INNER JOIN sales AS sales
 					ON sales.sale_id = payments.sale_id
 				WHERE ' . $where . '
 				GROUP BY payments.sale_id
 			)'
 		);
 
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sales_items_temp') .
-			' (INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS sales_items_temp
+			(INDEX(sale_date), INDEX(sale_time), INDEX(sale_id))
 			(
 				SELECT
 					MAX(DATE(sales.sale_time)) AS sale_date,
@@ -1161,22 +1161,22 @@ class Sale extends CI_Model
 					$sale_cost AS cost,
 					(IFNULL($sale_subtotal, $sale_total) - $sale_cost) AS profit
 					" . '
-				FROM ' . $this->db->dbprefix('sales_items') . ' AS sales_items
-				INNER JOIN ' . $this->db->dbprefix('sales') . ' AS sales
+				FROM sales_items AS sales_items
+				INNER JOIN sales AS sales
 					ON sales_items.sale_id = sales.sale_id
-				INNER JOIN ' . $this->db->dbprefix('items') . ' AS items
+				INNER JOIN items AS items
 					ON sales_items.item_id = items.item_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments_temp') . ' AS payments
+				LEFT OUTER JOIN sales_payments_temp AS payments
 					ON sales_items.sale_id = payments.sale_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('suppliers') . ' AS supplier
+				LEFT OUTER JOIN suppliers AS supplier
 					ON items.supplier_id = supplier.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('people') . ' AS customer_p
+				LEFT OUTER JOIN people AS customer_p
 					ON sales.customer_id = customer_p.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('customers') . ' AS customer
+				LEFT OUTER JOIN customers AS customer
 					ON sales.customer_id = customer.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('people') . ' AS employee
+				LEFT OUTER JOIN people AS employee
 					ON sales.employee_id = employee.person_id
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items_taxes_temp') . ' AS sales_items_taxes
+				LEFT OUTER JOIN sales_items_taxes_temp AS sales_items_taxes
 					ON sales_items.sale_id = sales_items_taxes.sale_id AND sales_items.item_id = sales_items_taxes.item_id AND sales_items.line = sales_items_taxes.line
 				WHERE ' . $where . '
 				GROUP BY sale_id, item_id, line
@@ -1184,8 +1184,8 @@ class Sale extends CI_Model
 		);
 
 		// drop the temporary table to contain memory consumption as it's no longer required
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_payments_temp'));
-		$this->db->query('DROP TEMPORARY TABLE IF EXISTS ' . $this->db->dbprefix('sales_items_taxes_temp'));
+		$this->db->query('DROP TEMPORARY TABLE IF EXISTS sales_payments_temp');
+		$this->db->query('DROP TEMPORARY TABLE IF EXISTS sales_items_taxes_temp');
 	}
 
 	/**
@@ -1196,12 +1196,12 @@ class Sale extends CI_Model
 		if($customer_id == -1)
 		{
 			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_id as suspended_sale_id, sale_status, sale_time, dinner_table_id, customer_id, comment from "
-				. $this->db->dbprefix('sales') . ' where sale_status = ' . SUSPENDED);
+				. 'sales where sale_status = ' . SUSPENDED);
 		}
 		else
 		{
 			$query = $this->db->query("select sale_id, case when sale_type = '".SALE_TYPE_QUOTE."' then quote_number when sale_type = '".SALE_TYPE_WORK_ORDER."' then work_order_number else sale_id end as doc_id, sale_status, sale_time, dinner_table_id, customer_id, comment from "
-				. $this->db->dbprefix('sales') . ' where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
+				. 'sales where sale_status = '. SUSPENDED .' AND customer_id = ' . $customer_id);
 		}
 
 		return $query->result_array();

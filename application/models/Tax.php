@@ -96,10 +96,10 @@ class Tax extends CI_Model
 	{
 		$query = $this->db->query('select tax_rate_id, rate_tax_code_id, tax_code, tax_code_name, tax_type, cascade_sequence, rate_tax_category_id, tax_category, 
 			rate_jurisdiction_id, jurisdiction_name, tax_group, tax_rate, tax_rounding_code,tax_categories.tax_group_sequence + tax_jurisdictions.tax_group_sequence as tax_group_sequence 
-			from ' . $this->db->dbprefix('tax_rates') . ' 
-			left outer join ' . $this->db->dbprefix('tax_codes') . ' on rate_tax_code_id = tax_code_id 
-			left outer join ' . $this->db->dbprefix('tax_categories') . ' as tax_categories on rate_tax_category_id = tax_category_id 
-			left outer join ' . $this->db->dbprefix('tax_jurisdictions') . ' as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id 
+			from tax_rates 
+			left outer join tax_codes on rate_tax_code_id = tax_code_id 
+			left outer join tax_categories as tax_categories on rate_tax_category_id = tax_category_id 
+			left outer join tax_jurisdictions as tax_jurisdictions on rate_jurisdiction_id = jurisdiction_id 
 			where rate_tax_code_id = ' . $this->db->escape($tax_code_id) . ' and rate_tax_category_id = ' . $this->db->escape($tax_category_id) . '
 			order by cascade_sequence, tax_group, jurisdiction_name, tax_jurisdictions.tax_group_sequence + tax_categories.tax_group_sequence');
 

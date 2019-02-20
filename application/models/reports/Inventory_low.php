@@ -21,9 +21,9 @@ class Inventory_low extends Report
 			item_quantities.quantity, 
 			items.reorder_level, 
 			stock_locations.location_name
-			FROM " . $this->db->dbprefix('items') . " AS items
-			JOIN " . $this->db->dbprefix('item_quantities') . " AS item_quantities ON items.item_id = item_quantities.item_id
-			JOIN " . $this->db->dbprefix('stock_locations') . " AS stock_locations ON item_quantities.location_id = stock_locations.location_id
+			FROM items AS items
+			JOIN item_quantities AS item_quantities ON items.item_id = item_quantities.item_id
+			JOIN stock_locations AS stock_locations ON item_quantities.location_id = stock_locations.location_id
 			WHERE items.deleted = 0
 			AND items.stock_type = 0
 			AND item_quantities.quantity <= items.reorder_level
