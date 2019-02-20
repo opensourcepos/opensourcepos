@@ -73,7 +73,7 @@ $(document).ready(function()
 	{
 		var definition_type = $("#definition_type option:selected").text();
 
-		if(definition_type == "DATETIME" || definition_type == "GROUP")
+		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new))
 		{	 
 			$('#definition_type').prop("disabled",true);	
 		} 
