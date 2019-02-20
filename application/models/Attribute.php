@@ -247,7 +247,6 @@ class Attribute extends CI_Model
 	private function check_data_validity($definition, $from, $to)
 	{
 		$success = FALSE;
-		$fail = FALSE;
 
 		if($from === TEXT)
 		{
@@ -257,16 +256,16 @@ class Attribute extends CI_Model
 				$this->db->from('attribute_values');
 				$this->db->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
 				$this->db->where('definition_id',$definition);
-
+				$success = TRUE;
+				
 				foreach($this->db->get()->result_array() as $row)
 				{
 					if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
 					{
 						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
-						$fail = TRUE;
+						$success = FALSE;
 					}
 				}
-				$success = $fail ? FALSE: TRUE;
 			}
 		}
 		return $success;
@@ -274,27 +273,27 @@ class Attribute extends CI_Model
 	
 	private function convert_definition_type($definition_id, $from_type, $to_type)
 	{
+		$success = FALSE;
+		
 		if($from_type === TEXT)
 		{
 			//From TEXT to DATETIME
 			if($to_type === DATETIME)
 			{
-				if(!$this->check_data_validity($definition_id, $from_type, $to_type))
+				if($this->check_data_validity($definition_id, $from_type, $to_type))
 				{
-					return FALSE;
+					$this->db->trans_start();
+
+					$query = 'UPDATE ospos_attribute_values ';
+					$query .= 'INNER JOIN ospos_attribute_links ';
+					$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
+					$query .= 'SET attribute_datetime = attribute_value, ';
+					$query .= 'attribute_value = NULL ';
+					$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+					$success = $this->db->query($query);
+	
+					$this->db->trans_complete();
 				}
-
-				$this->db->trans_start();
-
-				$query = 'UPDATE ospos_attribute_values ';
-				$query .= 'INNER JOIN ospos_attribute_links ';
-				$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
-				$query .= 'SET attribute_datetime = attribute_value, ';
-				$query .= 'attribute_value = NULL ';
-				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
-				$success = $this->db->query($query);
-
-				$this->db->trans_complete();
 			}
 		}
 		else if($from_type === DROPDOWN)
