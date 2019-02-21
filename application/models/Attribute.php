@@ -258,7 +258,7 @@ class Attribute extends CI_Model
 			
 			foreach($this->db->get()->result_array() as $row)
 			{
-				if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
+				if(valid_datetime($row['attribute_value']) === FALSE)
 				{
 					log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
 					$success = FALSE;
