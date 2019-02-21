@@ -57,18 +57,6 @@ class Attribute extends CI_Model
 	}
 	
 	/*
-	 Determines if a given attribute_value exists in the attribute_values table and returns the attribute_id if it does
-	 */
-	public function value_exists($attribute_value)
-	{
-		$this->db->distinct('attribute_id');
-		$this->db->from('attribute_values');
-		$this->db->where('attribute_value', $attribute_value);
-		
-		return $this->db->get()->row()->attribute_id;
-	}
-	
-	/*
 	 Gets information about a particular attribute definition
 	 */
 	public function get_info($definition_id)
@@ -244,75 +232,6 @@ class Attribute extends CI_Model
 		return $this->search($search)->num_rows();
 	}
 	
-	private function check_data_validity($definition, $from, $to)
-	{
-		$success = FALSE;
-		$fail = FALSE;
-		
-		if($from === TEXT)
-		{
-			if($to === DATETIME)
-			{
-				$this->db->select('item_id,attribute_value');
-				$this->db->from('attribute_values');
-				$this->db->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
-				$this->db->where('definition_id',$definition);
-				
-				foreach($this->db->get()->result_array() as $row)
-				{
-					if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
-					{
-						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
-						$fail = TRUE;
-					}
-				}
-				$success = $fail ? FALSE: TRUE;
-			}
-		}
-		return $success;
-	}
-	
-	private function convert_definition_type($definition_id, $from_type, $to_type)
-	{
-		if($from_type === TEXT)
-		{
-			//From TEXT to DATETIME
-			if($to_type === DATETIME)
-			{
-				if(!$this->check_data_validity($definition_id, $from_type, $to_type))
-				{
-					return FALSE;
-				}
-				
-				$this->db->trans_start();
-				
-				$query = 'UPDATE attribute_values ';
-				$query .= 'INNER JOIN attribute_links ';
-				$query .= 'ON attribute_values.attribute_id = attribute_links.attribute_id ';
-				$query .= 'SET attribute_datetime = attribute_value, ';
-				$query .= 'attribute_value = NULL ';
-				$query .= 'WHERE definition_id = '. $this->db->escape($definition_id);
-				$success = $this->db->query($query);
-				
-				$this->db->trans_complete();
-			}
-		}
-		else if($from_type === DROPDOWN)
-		{
-			//From DROPDOWN to TEXT
-			$this->db->trans_start();
-			
-			$this->db->from('attribute_links');
-			$this->db->where('definition_id',$definition_id);
-			$this->db->where('item_id',NULL);
-			$success = $this->db->delete();
-			
-			$this->db->trans_complete();
-		}
-		
-		return $success;
-	}
-	
 	/*
 	 Inserts or updates a definition
 	 */
@@ -321,30 +240,13 @@ class Attribute extends CI_Model
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
 		
-		//Definition doesn't exist
 		if($definition_id === -1 || !$this->exists($definition_id))
 		{
 			$success = $this->db->insert('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $this->db->insert_id();
 		}
-		//Definition already exists
 		else
 		{
-			$this->db->select('definition_type');
-			$this->db->from('attribute_definitions');
-			$this->db->where('definition_id',$definition_id);
-			
-			$from_definition_type = $this->db->get()->row()->definition_type;
-			$to_definition_type = $definition_data['definition_type'];
-			
-			if($from_definition_type !== $to_definition_type)
-			{
-				if(!$this->convert_definition_type($definition_id,$from_definition_type,$to_definition_type))
-				{
-					return FALSE;
-				}
-			}
-			
 			$this->db->where('definition_id', $definition_id);
 			$success = $this->db->update('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $definition_id;
@@ -461,9 +363,9 @@ class Attribute extends CI_Model
 	public function copy_attribute_links($item_id, $sale_receiving_fk, $id)
 	{
 		$this->db->query(
-			'INSERT INTO attribute_links (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')
+			'INSERT INTO ospos_attribute_links (item_id, definition_id, attribute_id, ' . $sale_receiving_fk . ')
 			  SELECT ' . $this->db->escape($item_id) . ', definition_id, attribute_id, ' . $this->db->escape($id) . '
-			  FROM attribute_links 
+			  FROM attribute_links
 			  WHERE item_id = ' . $this->db->escape($item_id) . ' AND sale_id IS NULL AND receiving_id IS NULL'
 			);
 	}
@@ -497,22 +399,13 @@ class Attribute extends CI_Model
 		{
 			if($definition_type != DATETIME)
 			{
-				$attribute_id_check = $this->value_exists($attribute_value);
-				if(empty($attribute_id_check))
-				{
-					$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
-					$attribute_id = $this->db->insert_id();
-				}
-				else
-				{
-					$attribute_id = $attribute_id_check;
-				}
+				$this->db->insert('attribute_values', array('attribute_value' => $attribute_value));
 			}
 			else
 			{
 				$this->db->insert('attribute_values', array('attribute_datetime' => date('Y-m-d H:i:s', strtotime($attribute_value))));
-				$attribute_id = $this->db->insert_id();
 			}
+			$attribute_id = $this->db->insert_id();
 			
 			$this->db->insert('attribute_links', array(
 				'attribute_id' => empty($attribute_id) ? NULL : $attribute_id,
