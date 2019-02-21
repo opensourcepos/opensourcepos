@@ -248,23 +248,20 @@ class Attribute extends CI_Model
 	{
 		$success = FALSE;
 
-		if($from === TEXT)
+		if($from === TEXT && $to === DATETIME)
 		{
-			if($to === DATETIME)
+			$this->db->select('item_id,attribute_value');
+			$this->db->from('attribute_values');
+			$this->db->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
+			$this->db->where('definition_id',$definition);
+			$success = TRUE;
+			
+			foreach($this->db->get()->result_array() as $row)
 			{
-				$this->db->select('item_id,attribute_value');
-				$this->db->from('attribute_values');
-				$this->db->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
-				$this->db->where('definition_id',$definition);
-				$success = TRUE;
-				
-				foreach($this->db->get()->result_array() as $row)
+				if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
 				{
-					if(!preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $row['attribute_value']))
-					{
-						log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
-						$success = FALSE;
-					}
+					log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
+					$success = FALSE;
 				}
 			}
 		}
@@ -275,25 +272,22 @@ class Attribute extends CI_Model
 	{
 		$success = FALSE;
 		
-		if($from_type === TEXT)
+		//From TEXT to DATETIME
+		if($from_type === TEXT && $to_type === DATETIME)
 		{
-			//From TEXT to DATETIME
-			if($to_type === DATETIME)
+			if($this->check_data_validity($definition_id, $from_type, $to_type))
 			{
-				if($this->check_data_validity($definition_id, $from_type, $to_type))
-				{
-					$this->db->trans_start();
+				$this->db->trans_start();
 
-					$query = 'UPDATE ospos_attribute_values ';
-					$query .= 'INNER JOIN ospos_attribute_links ';
-					$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
-					$query .= 'SET attribute_datetime = attribute_value, ';
-					$query .= 'attribute_value = NULL ';
-					$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
-					$success = $this->db->query($query);
-	
-					$this->db->trans_complete();
-				}
+				$query = 'UPDATE ospos_attribute_values ';
+				$query .= 'INNER JOIN ospos_attribute_links ';
+				$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
+				$query .= 'SET attribute_datetime = attribute_value, ';
+				$query .= 'attribute_value = NULL ';
+				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+				$success = $this->db->query($query);
+
+				$this->db->trans_complete();
 			}
 		}
 		else if($from_type === DROPDOWN)
