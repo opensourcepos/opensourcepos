@@ -1,9 +1,8 @@
-<div id="config_wrapper">
 	<?php echo $this->lang->line('config_server_notice'); ?>
 	<table class="table text-left" >
 		<tbody>
 		<tr>
-		  <th>OSPOS Info</th>
+		  <th><?php echo $this->lang->line('config_ospos_info'); ?></th>
 			<td><?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br>
 				<?php echo current_language_code();	?>
 			</td>
@@ -96,16 +95,12 @@
 					} else {
 						echo 'NOT Writable/Read Only &#x2713 <br>';
 					} 
-				chmod("../.htaccess",0644);
-				chmod("../application/.htaccess",0644);
-				chmod("../public/.htaccess",0644); 
-				chmod("../import_items.csv",0444);
-				chmod("../import_customers.csv",0444); 
+				chmod("../import_items.csv",0664);
+				chmod("../import_customers.csv",0664); 
 				echo "<br>";
-				echo ".htaccess permissions were reset to 0644 <br>"; 
-				echo "CSV permissions were reset to 0444"; 
+				echo "CSV permissions were reset to 0664"; 
 				?><br>
 				<a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>
 			</td>
 	</table>
-</div>
+
