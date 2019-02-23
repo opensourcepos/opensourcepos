@@ -83,22 +83,22 @@
 				import_items.csv: 
 				<?php 
 					if (is_writable($import)) {
-						echo 'Writable &#x2717';
+						echo 'Writable &#x2713';
 					} else {
-						echo 'NOT Writable/Read Only &#x2713';
+						echo 'NOT Writable/Read Only &#x2717';
 					} 
 				?><br>
 				import_customers.csv: 
 				<?php 
 					if (is_writable($importcustomers)) {
-						echo 'Writable &#x2717 <br>';
+						echo 'Writable &#x2713 <br>';
 					} else {
-						echo 'NOT Writable/Read Only &#x2713 <br>';
+						echo 'NOT Writable/Read Only &#x2717 <br>';
 					} 
 				chmod("../import_items.csv",0664);
 				chmod("../import_customers.csv",0664); 
 				echo "<br>";
-				echo "CSV permissions were reset to 0664"; 
+				echo "CSV permissions were set to 0664"; 
 				?><br>
 				<a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>
 			</td>
