@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Ünvan 1";
 $lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "Şəhər";
@@ -65,6 +64,6 @@ $lang["common_unknown"] = "Naməlum";
 $lang["common_view_recent_sales"] = "Son Satışları Göstər";
 $lang["common_website"] = "Veb Sayt";
 $lang["common_welcome"] = "Xoş Gəlmisiniz";
-$lang["common_welcome_message"] = "OSPOS-a Xoş gəlmisiniz, başlamaq üçün bir modula basın.";
-$lang["common_you_are_using_ospos"] = "Open Source Point Of Sale versiya";
+$lang["common_welcome_message"] = "ALSAN-a Xoş gəlmisiniz, başlamaq üçün bir modula basın.";
+$lang["common_you_are_using_ospos"] = "Açıq Layihədə Satışın Avtomatlaşdırma Nöqtəsi versiya";
 $lang["common_zip"] = "Poçt Kodu";
