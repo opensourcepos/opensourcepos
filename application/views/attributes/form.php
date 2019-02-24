@@ -19,7 +19,7 @@
 	<div class="form-group form-group-sm">
 		<?php echo form_label($this->lang->line('attributes_definition_type'), 'definition_type', array('class'=>'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
-			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control" ' . ($definition_id != -1 ? 'disabled="disabled"' : ''));?>
+			<?php echo form_dropdown('definition_type', DEFINITION_TYPES, array_search($definition_info->definition_type, DEFINITION_TYPES), 'id="definition_type" class="form-control"');?>
 		</div>
 	</div>
 
@@ -69,10 +69,31 @@ $(document).ready(function()
 	var definition_id = <?php echo $definition_id; ?>;
 	var is_new = definition_id == -1;
 
+	var disable_definition_types = function()
+	{
+		var definition_type = $("#definition_type option:selected").text();
+
+		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new))
+		{	 
+			$('#definition_type').prop("disabled",true);	
+		} 
+		else if(definition_type == "DROPDOWN")
+		{
+			$("#definition_type option:contains('GROUP')").hide();
+			$("#definition_type option:contains('DATETIME')").hide();
+		}
+		else
+		{
+			$("#definition_type option:contains('GROUP')").hide();
+		}
+	}
+	disable_definition_types();
+	
 	var show_hide_fields = function(event)
 	{
 	    var is_dropdown = $('#definition_type').val() !== '1';
 	    var is_no_group = $('#definition_type').val() !== '0';
+
 		$('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
 		$('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
 	};
