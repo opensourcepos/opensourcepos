@@ -148,6 +148,3 @@ ALTER TABLE `ospos_expenses`
 INSERT INTO `ospos_app_config` (`key`, `value`) VALUES
   ('default_receivings_discount_type', '0'),
   ('default_receivings_discount', '0');
-
-ALTER TABLE `ospos_suppliers`
-  CHANGE COLUMN `tax_id` `tax_id` VARCHAR(32) NULL;
