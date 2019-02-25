@@ -1,3 +1,3 @@
 <?php
-$lang["error_no_permission_module"] = "You do not have permission to access the module named";
-$lang["error_unknown"] = "Unexpected error";
+$lang["error_no_permission_module"] = "אין לך הרשאה לגשת אל המודול ששמו";
+$lang["error_unknown"] = "שגיאה לא ידועה";
