@@ -1,8 +1,8 @@
 <?php
-$lang["enum_half_down"] = "Half Down";
-$lang["enum_half_even"] = "Half Even";
-$lang["enum_half_five"] = "Half Five";
-$lang["enum_half_odd"] = "Half Odd";
-$lang["enum_half_up"] = "Half Up";
-$lang["enum_round_down"] = "Round Down";
-$lang["enum_round_up"] = "Round Up";
+$lang["enum_half_down"] = "חצי למטה";
+$lang["enum_half_even"] = "חצי שווה";
+$lang["enum_half_five"] = "חצי חמש";
+$lang["enum_half_odd"] = "חצי מספר אי זוגי";
+$lang["enum_half_up"] = "חצי למעלה";
+$lang["enum_round_down"] = "לעגל למטה";
+$lang["enum_round_up"] = "לעגל למעלה";
