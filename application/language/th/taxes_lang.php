@@ -1,18 +1,17 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
+$lang["taxes_city"] = "เมือง";
 $lang["taxes_code"] = "";
 $lang["taxes_confirm_delete"] = "";
 $lang["taxes_confirm_restore"] = "";
 $lang["taxes_default_tax_category"] = "";
-$lang["taxes_default_tax_rate"] = "";
+$lang["taxes_default_tax_rate"] = "อัตราภาษีเริ่มต้น";
 $lang["taxes_error_adding_updating"] = "";
 $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
-$lang["taxes_name"] = "";
+$lang["taxes_name"] = "ชื่อ";
 $lang["taxes_new"] = "";
 $lang["taxes_no_taxes_to_display"] = "";
 $lang["taxes_reporting_authority"] = "";
