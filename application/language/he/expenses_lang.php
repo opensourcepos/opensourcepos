@@ -1,8 +1,8 @@
 <?php
-$lang["expenses_add_item"] = "Add Expense";
-$lang["expenses_amount"] = "Amount";
-$lang["expenses_amount_number"] = "Amount must be a number";
-$lang["expenses_amount_required"] = "Expense Amount required";
+$lang["expenses_add_item"] = "הוסף הוצאה";
+$lang["expenses_amount"] = "סכום";
+$lang["expenses_amount_number"] = "הסכום חייב להיות מספר";
+$lang["expenses_amount_required"] = "";
 $lang["expenses_by_category"] = "Category";
 $lang["expenses_cannot_be_deleted"] = "Could not delete Category Expense(s)";
 $lang["expenses_cash"] = "Cash";
