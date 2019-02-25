@@ -7,6 +7,7 @@ $lang["common_close"] = "Close";
 $lang["common_comments"] = "หมายเหตุ";
 $lang["common_common"] = "ธรรมดา";
 $lang["common_confirm_search"] = "คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "ประเทศ";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "ลบ";

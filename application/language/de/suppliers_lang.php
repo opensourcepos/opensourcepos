@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Kontonummer";
 $lang["suppliers_agency_name"] = "Name der Agentur";
 $lang["suppliers_cannot_be_deleted"] = "Kann gewählte Lieferanten nicht löschen, einer oder mehrere weisen Verkäufe aus.";

@@ -112,10 +112,11 @@ function get_timezones()
 		'America/Chihuahua' => '(GMT-07:00) Chihuahua, La Paz, Mazatlan',
 		'America/Dawson_Creek' => '(GMT-07:00) Arizona',
 		'America/Belize' => '(GMT-06:00) Saskatchewan, Central America',
-		'America/Cancun' => '(GMT-06:00) Guadalajara, Mexico City, Monterrey',
+		'America/Mexico_City' => '(GMT-06:00) Guadalajara, Mexico City, Monterrey',
 		'Chile/EasterIsland' => '(GMT-06:00) Easter Island',
 		'America/Chicago' => '(GMT-06:00) Central Time (US & Canada)',
 		'America/New_York' => '(GMT-05:00) Eastern Time (US & Canada)',
+		'America/Cancun' => '(GMT-05:00) Cancun',
 		'America/Havana' => '(GMT-05:00) Cuba',
 		'America/Bogota' => '(GMT-05:00) Bogota, Lima, Quito, Rio Branco',
 		'America/Caracas' => '(GMT-04:30) Caracas',
@@ -497,4 +498,8 @@ function dateformat_bootstrap($php_format)
 	return strtr($php_format, $SYMBOLS_MATCHING);
 }
 
+function valid_datetime($datetime)
+{
+	return preg_match('/^([0-9]{2,4})-([0-1][0-9])-([0-3][0-9])(?:( [0-2][0-9]):([0-5][0-9]):([0-5][0-9]))?$/', $datetime);
+}
 ?>

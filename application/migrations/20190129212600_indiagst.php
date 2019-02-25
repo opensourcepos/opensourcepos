@@ -36,17 +36,19 @@ class Migration_IndiaGST extends CI_Migration
 		}
 
 		$count_of_sales_taxes_entries = $this->get_count_of_sales_taxes_entries();
+
 		if($count_of_sales_taxes_entries > 0)
 		{
 			$this->migrate_sales_taxes_data();
 		}
+
+		$this->drop_backups();
 
 		error_log('Migrating tax configuration completed');
 	}
 
 	public function down()
 	{
-		$this->drop_backups();
 	}
 
 	private function get_count_of_tax_code_entries()
@@ -60,7 +62,7 @@ class Migration_IndiaGST extends CI_Migration
 	private function get_count_of_sales_taxes_entries()
 	{
 		$this->db->select('COUNT(*) as count');
-		$this->db->from('sales_taxes');
+		$this->db->from('sales_taxes_backup');
 
 		return $this->db->get()->row()->count;
 	}
@@ -143,9 +145,9 @@ class Migration_IndiaGST extends CI_Migration
 
 	private function drop_backups()
 	{
-		$this->db->query('DROP TABLE IF EXISTS' . $this->db->dbprefix('tax_codes_backup'));
-		$this->db->query('DROP TABLE IF EXISTS' . $this->db->dbprefix('sales_taxes_backup'));
-		$this->db->query('DROP TABLE IF EXISTS' . $this->db->dbprefix('tax_code_rates_backup'));
+		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->dbprefix('tax_codes_backup'));
+		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->dbprefix('sales_taxes_backup'));
+		$this->db->query('DROP TABLE IF EXISTS ' . $this->db->dbprefix('tax_code_rates_backup'));
 	}
 }
 ?>

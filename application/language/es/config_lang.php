@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Dirección del Comercio";
 $lang["config_address_required"] = "Dirección del Comercio es requerida.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir código barras duplicados";
@@ -68,6 +69,9 @@ $lang["config_default_barcode_width_number"] = "Ancho del código de barras debe
 $lang["config_default_barcode_width_required"] = "Ancho del código de barras es requerido.";
 $lang["config_default_item_columns"] = "";
 $lang["config_default_origin_tax_code"] = "Código de impuesto por defecto";
+$lang["config_default_receivings_discount"] = "";
+$lang["config_default_receivings_discount_number"] = "";
+$lang["config_default_receivings_discount_required"] = "";
 $lang["config_default_sales_discount"] = "Descuento en Ventas predeterminado";
 $lang["config_default_sales_discount_number"] = "Descuento en ventas predeterminado debe ser un número.";
 $lang["config_default_sales_discount_required"] = "Descuento en ventas predeterminado es requerido.";
@@ -133,6 +137,7 @@ $lang["config_giftcard_series"] = "Generar en serie";
 $lang["config_include_hsn"] = "";
 $lang["config_info"] = "Información";
 $lang["config_info_configuration"] = "Información del Comercio";
+$lang["config_integrations"] = "";
 $lang["config_invoice"] = "Factura";
 $lang["config_invoice_configuration"] = "Parámetros de Impresión";
 $lang["config_invoice_default_comments"] = "Comentarios predeterminados en la factura";

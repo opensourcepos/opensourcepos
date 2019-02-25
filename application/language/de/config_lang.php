@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Adresse";
 $lang["config_address_required"] = "Adresse ist erforderlich.";
 $lang["config_allow_duplicate_barcodes"] = "Erlaube doppelte Barcodes";
@@ -68,6 +69,9 @@ $lang["config_default_barcode_width_number"] = "Standard Barcode Breite muss ein
 $lang["config_default_barcode_width_required"] = "Die Barcode Breite ist erforderlich.";
 $lang["config_default_item_columns"] = "Standardmäßig sichtbare Spalten für Artikel";
 $lang["config_default_origin_tax_code"] = "Standard Steuer Kürzel";
+$lang["config_default_receivings_discount"] = "";
+$lang["config_default_receivings_discount_number"] = "";
+$lang["config_default_receivings_discount_required"] = "";
 $lang["config_default_sales_discount"] = "Standard-Verkaufsrabatt %";
 $lang["config_default_sales_discount_number"] = "Der Standard Verkaufsrabatt muss eine Zahl sein.";
 $lang["config_default_sales_discount_required"] = "Der Standard Verkaufsrabatt ist erforderlich.";
@@ -133,6 +137,7 @@ $lang["config_giftcard_series"] = "Serie Erzeugen";
 $lang["config_include_hsn"] = "Unterstützung für HSN-Codes einbinden";
 $lang["config_info"] = "Informationen";
 $lang["config_info_configuration"] = "Generelle Einstellungen";
+$lang["config_integrations"] = "";
 $lang["config_invoice"] = "Rechnungs";
 $lang["config_invoice_configuration"] = "Druckereinstellungen";
 $lang["config_invoice_default_comments"] = "Rechnungskommentar";

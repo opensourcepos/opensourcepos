@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Conta nº";
 $lang["customers_account_number_duplicate"] = "Este número de conta já está presente na base de dados.";
 $lang["customers_available_points"] = "Pontos Disponíveis";

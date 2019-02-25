@@ -7,6 +7,7 @@ $lang["common_close"] = "Đóng";
 $lang["common_comments"] = "Chú thích";
 $lang["common_common"] = "chung";
 $lang["common_confirm_search"] = "Bạn đã chọn một hay nhiều dòng, ở nơi đây sẽ không còn gì để chọn sau khi tìm kiếm. Bạn có chắc muốn gửi yêu cầu tìm kiếm này?";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "Quốc gia";
 $lang["common_date"] = "Ngày";
 $lang["common_delete"] = "Xóa";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_available_points"] = "Beschikbare Punten";
 $lang["rewards_package"] = "Spaarpunten";
 $lang["rewards_remaining_balance"] = "Saldo Spaarpunten is ";

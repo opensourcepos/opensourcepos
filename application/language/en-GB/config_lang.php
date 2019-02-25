@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 $lang["config_address"] = "Company Address";
 $lang["config_address_required"] = "Company Address is a required field";

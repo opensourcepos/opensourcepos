@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Dirección de la Empresa";
 $lang["config_address_required"] = "La Dirección de la Empresa es un campo requerido.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir Códigos de Barra Duplicados";
@@ -68,6 +69,9 @@ $lang["config_default_barcode_width_number"] = "Default Barcode Width must be a 
 $lang["config_default_barcode_width_required"] = "Default Barcode Width is a required field.";
 $lang["config_default_item_columns"] = "Default Visible Item Columns";
 $lang["config_default_origin_tax_code"] = "Default Origin Tax Code";
+$lang["config_default_receivings_discount"] = "";
+$lang["config_default_receivings_discount_number"] = "";
+$lang["config_default_receivings_discount_required"] = "";
 $lang["config_default_sales_discount"] = "Default Sales Discount %";
 $lang["config_default_sales_discount_number"] = "Default Sales Discount must be a number.";
 $lang["config_default_sales_discount_required"] = "Default Sales Discount is a required field.";
@@ -133,6 +137,7 @@ $lang["config_giftcard_series"] = "Generate in Series";
 $lang["config_include_hsn"] = "Include Support for HSN Codes";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Store Information";
+$lang["config_integrations"] = "";
 $lang["config_invoice"] = "Invoice";
 $lang["config_invoice_configuration"] = "Invoice Print Settings";
 $lang["config_invoice_default_comments"] = "Default Invoice Comments";

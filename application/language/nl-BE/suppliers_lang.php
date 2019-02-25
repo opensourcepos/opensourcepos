@@ -1,9 +1,8 @@
-<?php 
-
+<?php
 $lang["suppliers_account_number"] = "Btw nummer";
 $lang["suppliers_agency_name"] = "Agencynaam";
 $lang["suppliers_cannot_be_deleted"] = "De geselecteeerde leveranciers konden niet worden verwijderd. Eén of meerdere leveranciers hebben ordergegevens in de database zitten.";
-$lang["suppliers_category"] = "";
+$lang["suppliers_category"] = "Categorie";
 $lang["suppliers_company_name"] = "Leverancier";
 $lang["suppliers_company_name_required"] = "Bedrijfsnaam moet ingevuld worden.";
 $lang["suppliers_confirm_delete"] = "Bent u zeker dat u de geselecteerde leveranciers wil verwijderen?";

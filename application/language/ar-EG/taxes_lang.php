@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "أضافة أستثناء";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
@@ -31,10 +32,15 @@ $lang["taxes_tax_categories_saved_successfully"] = "";
 $lang["taxes_tax_categories_saved_unsuccessfully"] = "";
 $lang["taxes_tax_category"] = "نوع الضريبة";
 $lang["taxes_tax_category_code"] = "";
+$lang["taxes_tax_category_duplicate"] = "";
+$lang["taxes_tax_category_invalid_chars"] = "";
 $lang["taxes_tax_category_name"] = "";
 $lang["taxes_tax_category_new"] = "";
+$lang["taxes_tax_category_required"] = "";
 $lang["taxes_tax_code"] = "كود الضريبة";
 $lang["taxes_tax_code_cannot_be_deleted"] = "فشل مسح الكود الضريبي.";
+$lang["taxes_tax_code_duplicate"] = "";
+$lang["taxes_tax_code_invalid_chars"] = "";
 $lang["taxes_tax_code_name"] = "اسم الكود الضريبي";
 $lang["taxes_tax_code_required"] = "حقل الكود الضريبي مطلوب.";
 $lang["taxes_tax_code_successful_deleted"] = "تم مسح الكود الضريبي";
@@ -51,11 +57,15 @@ $lang["taxes_tax_group"] = "";
 $lang["taxes_tax_group_sequence"] = "";
 $lang["taxes_tax_included"] = "";
 $lang["taxes_tax_jurisdiction"] = "";
+$lang["taxes_tax_jurisdiction_duplicate"] = "";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "";
+$lang["taxes_tax_jurisdiction_required"] = "";
 $lang["taxes_tax_jurisdictions"] = "";
 $lang["taxes_tax_jurisdictions_configuration"] = "";
 $lang["taxes_tax_jurisdictions_saved_successfully"] = "";
 $lang["taxes_tax_jurisdictions_saved_unsuccessfully"] = "";
 $lang["taxes_tax_rate"] = "معدل الضريبة الافتراضي %";
+$lang["taxes_tax_rate_configuration"] = "";
 $lang["taxes_tax_rate_error_adding_updating"] = "";
 $lang["taxes_tax_rate_numeric"] = "معدل الضريبة الافتراضي يجب أن يكون رقم.";
 $lang["taxes_tax_rate_required"] = "معدل الضريبة الافتراضي مطلوب.";

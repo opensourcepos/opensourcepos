@@ -16,6 +16,8 @@ class Summary_sales_taxes extends Summary_report
 
 	protected function _where(array $inputs)
 	{
+		$this->db->where('sales.sale_status = ' . COMPLETED);
+
 		if(empty($this->config->item('date_or_time_format')))
 		{
 			$this->db->where('DATE(sales.sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']));
@@ -28,17 +30,16 @@ class Summary_sales_taxes extends Summary_report
 
 	public function getData(array $inputs)
 	{
-		$where = '';
-
-
+		$where = 'WHERE sale_status = ' . COMPLETED . ' ';
 
 		if(empty($this->config->item('date_or_time_format')))
 		{
-			$where .= 'WHERE DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+			$where .= 'AND DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date'])
+			. ' AND ' . $this->db->escape($inputs['end_date']);
 		}
 		else
 		{
-			$where .= 'WHERE sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+			$where .= 'AND sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 
 		$query = $this->db->query("SELECT reporting_authority, jurisdiction_name, tax_category, tax_rate,

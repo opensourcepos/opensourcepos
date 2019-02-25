@@ -7,6 +7,7 @@ $lang["common_close"] = "Close";
 $lang["common_comments"] = "評論";
 $lang["common_common"] = "一般";
 $lang["common_confirm_search"] = "您已經選擇一行或多行，在搜索後這些紀錄將不能再被選取。您確定要提交這個搜索？";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "國家";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "刪除";

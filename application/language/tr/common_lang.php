@@ -7,6 +7,7 @@ $lang["common_close"] = "Kapat";
 $lang["common_comments"] = "Yorumlar";
 $lang["common_common"] = "genel";
 $lang["common_confirm_search"] = "Birden fazla satır seçtiniz, arama yaptığınızda seçiminiz kaybolacak. Arama yapmak istediğinize emin misiniz?";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "Ülke";
 $lang["common_date"] = "Tarih";
 $lang["common_delete"] = "Sil";

@@ -7,6 +7,7 @@ $lang["common_close"] = "Κλείσιμο";
 $lang["common_comments"] = "Σχόλια";
 $lang["common_common"] = "κοινά";
 $lang["common_confirm_search"] = "";
+$lang["common_correct_errors"] = "";
 $lang["common_country"] = "Χώρα";
 $lang["common_date"] = "Ημερομηνία";
 $lang["common_delete"] = "Διαγραφή";
