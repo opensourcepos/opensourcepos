@@ -105,7 +105,7 @@ class Attributes extends Secure_Controller
 		}
 		else//failure
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('attribute_definitions_error_adding_updating').' '.
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('attribute_definition_error_adding_updating').' Attribute: '.
                 $definition_name, 'id' => -1));
 		}
 	}
