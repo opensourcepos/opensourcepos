@@ -1,13 +1,13 @@
 <?php
-$lang["messages_first_name"] = "First name";
-$lang["messages_last_name"] = "Last name";
-$lang["messages_message"] = "Message";
-$lang["messages_message_placeholder"] = "Your Message here...";
-$lang["messages_message_required"] = "Message required";
-$lang["messages_multiple_phones"] = "(In case of multiple recipients, enter mobile numbers separated by commas)";
-$lang["messages_phone"] = "Phone number";
-$lang["messages_phone_number_required"] = "Phone number required";
-$lang["messages_phone_placeholder"] = "Mobile Number(s) here...";
-$lang["messages_sms_send"] = "Send SMS";
-$lang["messages_successfully_sent"] = "Message successfully sent to: ";
-$lang["messages_unsuccessfully_sent"] = "Message unsuccessfully sent to: ";
+$lang["messages_first_name"] = "שם פרטי";
+$lang["messages_last_name"] = "שם משפחה";
+$lang["messages_message"] = "הודעה";
+$lang["messages_message_placeholder"] = "ההודעה שלך כאן...";
+$lang["messages_message_required"] = "רישום הודעה נדרש";
+$lang["messages_multiple_phones"] = "(במקרה של מספר נמענים, הזן מספרי טלפון המופרדים באמצעות פסיקים)";
+$lang["messages_phone"] = "מספר טלפון";
+$lang["messages_phone_number_required"] = "מספר טלפון נדרש";
+$lang["messages_phone_placeholder"] = "מספר נייד כאן ...";
+$lang["messages_sms_send"] = "שלח הודעת טקסט";
+$lang["messages_successfully_sent"] = "ההודעה נשלחה בהצלחה אל: ";
+$lang["messages_unsuccessfully_sent"] = "שגיאה בשליחת הודעה אל: ";
