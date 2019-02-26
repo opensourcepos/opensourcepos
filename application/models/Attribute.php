@@ -303,6 +303,12 @@ class Attribute extends CI_Model
 			$this->db->trans_complete();
 		}
 		
+		//Any other allowed conversion does not get checked here
+		else
+		{
+			$success = TRUE;
+		}
+
 		return $success;
 	}
 	
