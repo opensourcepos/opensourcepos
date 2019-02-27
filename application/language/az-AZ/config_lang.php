@@ -273,3 +273,5 @@ $lang["config_use_destination_based_tax"] = "Təyinatından vergi istifadə edin
 $lang["config_website"] = "Vebsayt";
 $lang["config_work_order_enable"] = "İş Sifariş Dəstəyi";
 $lang["config_work_order_format"] = "İş Sifarş Farmatı";
+$lang["config_system_info"] = "System Info";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";

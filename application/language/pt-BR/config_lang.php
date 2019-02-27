@@ -273,3 +273,5 @@ $lang["config_use_destination_based_tax"] = "Use o Imposto Baseado em Destino";
 $lang["config_website"] = "OSPOS";
 $lang["config_work_order_enable"] = "Suporte para Ordem de Serviço";
 $lang["config_work_order_format"] = "Formato Ordem de Serviço";
+$lang["config_system_info"] = "System Info";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";

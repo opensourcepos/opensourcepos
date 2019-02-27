@@ -274,3 +274,5 @@ $lang["config_use_destination_based_tax"] = "";
 $lang["config_website"] = "Sitio Web";
 $lang["config_work_order_enable"] = "Soporte Ordenes de Trabajo";
 $lang["config_work_order_format"] = "Formato Ordenes de trabajo";
+$lang["config_system_info"] = "System Info";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";
