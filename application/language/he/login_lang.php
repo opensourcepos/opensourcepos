@@ -1,9 +1,9 @@
 <?php
-$lang["login_gcaptcha"] = "I'm not a robot.";
-$lang["login_go"] = "Go";
-$lang["login_invalid_gcaptcha"] = "Invalid I'm not a robot.";
-$lang["login_invalid_installation"] = "The installation is not correct, check your php.ini file.";
-$lang["login_invalid_username_and_password"] = "Invalid Username or Password.";
-$lang["login_login"] = "Login";
-$lang["login_password"] = "Password";
-$lang["login_username"] = "Username";
+$lang["login_gcaptcha"] = "אני לא רובוט.";
+$lang["login_go"] = "שלח";
+$lang["login_invalid_gcaptcha"] = "שגיאת אימות.";
+$lang["login_invalid_installation"] = "ההתקנה אינה נכונה, בדוק את קובץ php.ini.";
+$lang["login_invalid_username_and_password"] = "שם משתמש או סיסמה לא נכונים.";
+$lang["login_login"] = "כניסה";
+$lang["login_password"] = "סיסמה";
+$lang["login_username"] = "שם משתמש";
