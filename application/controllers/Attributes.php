@@ -105,8 +105,7 @@ class Attributes extends Secure_Controller
 		}
 		else//failure
 		{
-			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('attribute_definition_error_adding_updating').' Attribute: '.
-                $definition_name, 'id' => -1));
+			echo json_encode(array('success' => FALSE, 'message' => $this->lang->line('attributes_definition_error_adding_updating', $definition_name), 'id' => -1));
 		}
 	}
 
@@ -119,7 +118,7 @@ class Attributes extends Secure_Controller
 
 	public function get_row($row_id)
 	{
-		$attribute_definition_info = $this->Attribute->get_info($row_id);
+		$definition_info = $this->Attribute->get_info($row_id);
 		$attribute_definition_info->definition_flags = $this->_get_attributes($attribute_definition_info->definition_flags);
 		$data_row = $this->xss_clean(get_attribute_definition_data_row($attribute_definition_info));
 
