@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Ünvan 1";
 $lang["common_address_2"] = "Ünvan 2";
 $lang["common_city"] = "Şəhər";
@@ -14,7 +13,7 @@ $lang["common_delete"] = "Sil";
 $lang["common_det"] = "detallar";
 $lang["common_download_import_template"] = "İdxal Excel Şablonunu Yüklə (CSV)";
 $lang["common_edit"] = "Redaktə Et";
-$lang["common_email"] = "elektron adres";
+$lang["common_email"] = "E-poçt";
 $lang["common_email_invalid_format"] = "E-poçt ünvanı düzgün formatda deyil.";
 $lang["common_export_excel"] = "Excel Export";
 $lang["common_export_excel_no"] = "Xeyir";
@@ -26,14 +25,14 @@ $lang["common_first_page"] = "Birinci";
 $lang["common_gender"] = "Cins";
 $lang["common_gender_female"] = "F";
 $lang["common_gender_male"] = "M";
-$lang["common_id"] = "Kimlik";
+$lang["common_id"] = "ID";
 $lang["common_import"] = "İmport";
 $lang["common_import_change_file"] = "Dəyiş";
 $lang["common_import_excel"] = "Excel Import";
 $lang["common_import_full_path"] = "Excel faylına tam yol tələb olunur";
-$lang["common_import_remove_file"] = "Sil";
+$lang["common_import_remove_file"] = "Sil(Gizlət)";
 $lang["common_import_select_file"] = "Fayl Seç";
-$lang["common_inv"] = "Soyad və mütləq məsafə";
+$lang["common_inv"] = "Qaimə";
 $lang["common_last_name"] = "Soyad";
 $lang["common_last_name_required"] = "Soyad tələb olunur.";
 $lang["common_last_page"] = "Son";
@@ -65,6 +64,6 @@ $lang["common_unknown"] = "Naməlum";
 $lang["common_view_recent_sales"] = "Son Satışları Göstər";
 $lang["common_website"] = "Veb Sayt";
 $lang["common_welcome"] = "Xoş Gəlmisiniz";
-$lang["common_welcome_message"] = "OSPOS-a Xoş gəlmisiniz, başlamaq üçün bir modula basın.";
-$lang["common_you_are_using_ospos"] = "Open Source Point Of Sale versiya";
+$lang["common_welcome_message"] = "ALSAN-a Xoş gəlmisiniz, başlamaq üçün bir modula basın.";
+$lang["common_you_are_using_ospos"] = "Açıq Layihədə Satışın Avtomatlaşdırma Nöqtəsi versiya";
 $lang["common_zip"] = "Poçt Kodu";

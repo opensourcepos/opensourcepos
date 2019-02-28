@@ -244,6 +244,74 @@ class Attribute extends CI_Model
 		return $this->search($search)->num_rows();
 	}
 
+	private function check_data_validity($definition, $from, $to)
+	{
+		$success = FALSE;
+
+		if($from === TEXT && $to === DATETIME)
+		{
+			$this->db->select('item_id,attribute_value');
+			$this->db->from('attribute_values');
+			$this->db->join('attribute_links', 'attribute_values.attribute_id = attribute_links.attribute_id');
+			$this->db->where('definition_id',$definition);
+			$success = TRUE;
+			
+			foreach($this->db->get()->result_array() as $row)
+			{
+				if(valid_datetime($row['attribute_value']) === FALSE)
+				{
+					log_message('ERROR', 'item_id: ' . $row['item_id'] . ' with attribute_value: ' . $row['attribute_value'] . ' cannot be converted to datetime');
+					$success = FALSE;
+				}
+			}
+		}
+		return $success;
+	}
+	
+	private function convert_definition_type($definition_id, $from_type, $to_type)
+	{
+		$success = FALSE;
+		
+		//From TEXT to DATETIME
+		if($from_type === TEXT && $to_type === DATETIME)
+		{
+			if($this->check_data_validity($definition_id, $from_type, $to_type))
+			{
+				$this->db->trans_start();
+
+				$query = 'UPDATE ospos_attribute_values ';
+				$query .= 'INNER JOIN ospos_attribute_links ';
+				$query .= 'ON ospos_attribute_values.attribute_id = ospos_attribute_links.attribute_id ';
+				$query .= 'SET attribute_datetime = attribute_value, ';
+				$query .= 'attribute_value = NULL ';
+				$query .= 'WHERE definition_id = ' . $this->db->escape($definition_id);
+				$success = $this->db->query($query);
+
+				$this->db->trans_complete();
+			}
+		}
+		else if($from_type === DROPDOWN)
+		{
+			//From DROPDOWN to TEXT
+			$this->db->trans_start();
+			
+			$this->db->from('ospos_attribute_links');
+			$this->db->where('definition_id',$definition_id);
+			$this->db->where('item_id',NULL);
+			$success = $this->db->delete();
+			
+			$this->db->trans_complete();
+		}
+		
+		//Any other allowed conversion does not get checked here
+		else
+		{
+			$success = TRUE;
+		}
+
+		return $success;
+	}
+	
 	/*
 	Inserts or updates a definition
 	*/
@@ -251,14 +319,31 @@ class Attribute extends CI_Model
 	{
 		//Run these queries as a transaction, we want to make sure we do all or nothing
 		$this->db->trans_start();
-
+		
+		//Definition doesn't exist
 		if($definition_id === -1 || !$this->exists($definition_id))
 		{
 			$success = $this->db->insert('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $this->db->insert_id();
 		}
+		//Definition already exists
 		else
 		{
+			$this->db->select('definition_type');
+			$this->db->from('attribute_definitions');
+			$this->db->where('definition_id',$definition_id);
+			
+			$from_definition_type = $this->db->get()->row()->definition_type;
+			$to_definition_type = $definition_data['definition_type'];
+			
+			if($from_definition_type !== $to_definition_type)
+			{
+				if(!$this->convert_definition_type($definition_id,$from_definition_type,$to_definition_type))
+				{
+					return FALSE;
+				}
+			}
+			
 			$this->db->where('definition_id', $definition_id);
 			$success = $this->db->update('attribute_definitions', $definition_data);
 			$definition_data['definition_id'] = $definition_id;
@@ -266,7 +351,7 @@ class Attribute extends CI_Model
 
 		$this->db->trans_complete();
 
- 		$success &= $this->db->trans_status();
+		$success &= $this->db->trans_status();
 
 		return $success;
 	}

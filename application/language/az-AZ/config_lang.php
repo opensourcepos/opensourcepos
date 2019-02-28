@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["config_address"] = "Şirkət Adresi";
 $lang["config_address_required"] = "Şirkətin adı olan boşluq  sahəsi doldurulmalıdı.";
 $lang["config_allow_duplicate_barcodes"] = "Dublikat Barkodlarına icazə verin";
@@ -137,7 +136,7 @@ $lang["config_giftcard_series"] = "Bölümlərə görə Yarat";
 $lang["config_include_hsn"] = "HSN Kodlarına dəstək verin";
 $lang["config_info"] = "Məlumat";
 $lang["config_info_configuration"] = "Dükan İnformasiyası";
-$lang["config_integrations"] = "";
+$lang["config_integrations"] = "İnteqrasiya";
 $lang["config_invoice"] = "Faktura";
 $lang["config_invoice_configuration"] = "Faktura Çap Parametrləri";
 $lang["config_invoice_default_comments"] = "Standart Faktura Şərhləri";
@@ -274,3 +273,5 @@ $lang["config_use_destination_based_tax"] = "Təyinatından vergi istifadə edin
 $lang["config_website"] = "Vebsayt";
 $lang["config_work_order_enable"] = "İş Sifariş Dəstəyi";
 $lang["config_work_order_format"] = "İş Sifarş Farmatı";
+$lang["config_system_info"] = "System Info";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";

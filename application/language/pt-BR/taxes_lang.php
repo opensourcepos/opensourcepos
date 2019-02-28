@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Adicione exceção";
 $lang["taxes_cascade"] = "Cascata";
 $lang["taxes_cascade_sequence"] = "Sequência em cascata";
@@ -32,15 +31,15 @@ $lang["taxes_tax_categories_saved_successfully"] = "Alterações nas categorias 
 $lang["taxes_tax_categories_saved_unsuccessfully"] = "Alterações nas categorias de impostos não salvas";
 $lang["taxes_tax_category"] = "Categoria de imposto";
 $lang["taxes_tax_category_code"] = "Código de Categoria Fiscal";
-$lang["taxes_tax_category_duplicate"] = "";
-$lang["taxes_tax_category_invalid_chars"] = "";
+$lang["taxes_tax_category_duplicate"] = "Duplicar categoria tributária";
+$lang["taxes_tax_category_invalid_chars"] = "Caracteres inválidos no nome da categoria do imposto";
 $lang["taxes_tax_category_name"] = "Nome da Categoria Fiscal";
 $lang["taxes_tax_category_new"] = "Nova Categoria Fiscal";
-$lang["taxes_tax_category_required"] = "";
+$lang["taxes_tax_category_required"] = "A categoria fiscal é obrigatória";
 $lang["taxes_tax_code"] = "Código do imposto";
 $lang["taxes_tax_code_cannot_be_deleted"] = "A exclusão do código de imposto falhou";
-$lang["taxes_tax_code_duplicate"] = "";
-$lang["taxes_tax_code_invalid_chars"] = "";
+$lang["taxes_tax_code_duplicate"] = "Código fiscal duplicado";
+$lang["taxes_tax_code_invalid_chars"] = "Caracteres inválidos no código de imposto";
 $lang["taxes_tax_code_name"] = "Nome do Código Tributário";
 $lang["taxes_tax_code_required"] = "Código Fiscal é um campo obrigatório";
 $lang["taxes_tax_code_successful_deleted"] = "Você excluiu o código do imposto";
@@ -57,15 +56,15 @@ $lang["taxes_tax_group"] = "Grupo de impostos";
 $lang["taxes_tax_group_sequence"] = "Sequência do Grupo Fiscal";
 $lang["taxes_tax_included"] = "Imposto incluído";
 $lang["taxes_tax_jurisdiction"] = "Jurisdição Fiscal";
-$lang["taxes_tax_jurisdiction_duplicate"] = "";
-$lang["taxes_tax_jurisdiction_invalid_chars"] = "";
-$lang["taxes_tax_jurisdiction_required"] = "";
+$lang["taxes_tax_jurisdiction_duplicate"] = "Jurisdição fiscal duplicada";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "Caracteres inválidos no nome da jurisdição";
+$lang["taxes_tax_jurisdiction_required"] = "A jurisdição fiscal é obrigatória";
 $lang["taxes_tax_jurisdictions"] = "Jurisdições Fiscais";
 $lang["taxes_tax_jurisdictions_configuration"] = "Configuração de Jurisdições Fiscais";
 $lang["taxes_tax_jurisdictions_saved_successfully"] = "Alterações na jurisdição fiscal salvas";
 $lang["taxes_tax_jurisdictions_saved_unsuccessfully"] = "Alterações na jurisdição fiscal não salvas";
 $lang["taxes_tax_rate"] = "Taxa de imposto";
-$lang["taxes_tax_rate_configuration"] = "";
+$lang["taxes_tax_rate_configuration"] = "Configuração de taxa de imposto";
 $lang["taxes_tax_rate_error_adding_updating"] = "A adição ou atualização de taxa de imposto falhou";
 $lang["taxes_tax_rate_numeric"] = "Taxa de imposto deve ser um número";
 $lang["taxes_tax_rate_required"] = "Taxa de imposto é um campo obrigatório";

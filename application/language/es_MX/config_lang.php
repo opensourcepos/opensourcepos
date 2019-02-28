@@ -274,3 +274,5 @@ $lang["config_use_destination_based_tax"] = "Use Destination Based Tax";
 $lang["config_website"] = "Website";
 $lang["config_work_order_enable"] = "Work Order Support";
 $lang["config_work_order_format"] = "Work Order Format";
+$lang["config_system_info"] = "System Info";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";
