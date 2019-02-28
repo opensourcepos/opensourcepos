@@ -1,3 +1,4 @@
+	<div id="config_wrapper">
 	<?php echo $this->lang->line('config_server_notice'); ?>
 	<table class="table text-left" >
 		<tbody>
@@ -103,4 +104,4 @@
 				<a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>
 			</td>
 	</table>
-
+	</div>
