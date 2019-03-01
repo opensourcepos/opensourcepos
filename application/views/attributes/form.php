@@ -73,7 +73,7 @@ $(document).ready(function()
 	{
 		var definition_type = $("#definition_type option:selected").text();
 
-		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new))
+		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new) || definition_type == "DECIMAL")
 		{	 
 			$('#definition_type').prop("disabled",true);	
 		} 
@@ -81,6 +81,7 @@ $(document).ready(function()
 		{
 			$("#definition_type option:contains('GROUP')").hide();
 			$("#definition_type option:contains('DATETIME')").hide();
+			$("#definition_type option:contains('DECIMAL')").hide();
 		}
 		else
 		{
