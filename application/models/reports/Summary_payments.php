@@ -7,45 +7,124 @@ class Summary_payments extends Summary_report
 	protected function _get_data_columns()
 	{
 		return array(
-			array('payment_type' => $this->lang->line('reports_payment_type')),
-			array('report_count' => $this->lang->line('reports_count')),
-			array('amount_due' => $this->lang->line('sales_amount_due'), 'sorter' => 'number_sorter'));
+			array('trans_group' => $this->lang->line('reports_trans_group')),
+			array('trans_type' => $this->lang->line('reports_trans_type')),
+			array('trans_count' => $this->lang->line('reports_count')),
+			array('trans_amount' => $this->lang->line('reports_trans_amount')),
+			array('trans_payments' => $this->lang->line('reports_trans_payments')),
+			array('trans_refunded' => $this->lang->line('reports_trans_refunded')),
+			array('trans_due' => $this->lang->line('reports_trans_due')));
 	}
 
 	public function getData(array $inputs)
 	{
-		$this->db->select('sales_payments.payment_type, COUNT(DISTINCT sales_payments.sale_id) AS count, SUM(CASE WHEN sales_items.discount_type = ' . PERCENT . ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END) AS payment_amount');
-		$this->db->from('sales_payments AS sales_payments');
-		$this->db->join('sales AS sales', 'sales.sale_id = sales_payments.sale_id');
-		$this->db->join('sales_items AS sales_items', 'sales_items.sale_id = sales_payments.sale_id', 'left');
 
+		$cash_payment = $this->lang->line('sales_cash');
+
+		$separator[] = array(
+			'trans_group' => '<HR>',
+			'trans_type' => '',
+			'trans_count' => '',
+			'trans_amount' => '',
+			'trans_payments' => '',
+			'trans_refunded' => '',
+			'trans_due' => ''
+		);
+
+		$where = '';
+
+		if(empty($this->config->item('date_or_time_format')))
+		{
+			$where .= 'DATE(sale_time) BETWEEN ' . $this->db->escape($inputs['start_date']) . ' AND ' . $this->db->escape($inputs['end_date']);
+		}
+		else
+		{
+			$where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
+		}
+
+		$this->Sale->create_summary_payments_temp_tables($where);
+
+		$select = '\'' . $this->lang->line('reports_trans_sales') . '\' AS trans_group, ';
+		$select .= '(CASE sale_type WHEN ' . SALE_TYPE_POS . ' THEN \'' . $this->lang->line('reports_code_pos')
+			. '\' WHEN ' . SALE_TYPE_INVOICE . ' THEN \'' . $this->lang->line('sales_invoice')
+			. '\' WHEN ' . SALE_TYPE_RETURN . ' THEN \'' . $this->lang->line('sales_return')
+			. '\' END) AS trans_type, ';
+		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
+		$select .= 'SUM(sumpay_items.trans_amount) AS trans_amount, ';
+		$select .= 'IFNULL(SUM(sumpay_payments.total_payments),0) AS trans_payments, ';
+		$select .= 'SUM(CASE WHEN (IFNULL(sumpay_payments.total_payments,0) - sumpay_items.trans_amount) > 0 THEN IFNULL(sumpay_payments.total_payments,0) - sumpay_items.trans_amount ELSE 0 END) AS trans_refunded, ';
+		$select .= 'SUM(CASE WHEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) > 0 THEN sumpay_items.trans_amount - IFNULL(sumpay_payments.total_payments,0) ELSE 0 END) as trans_due ';
+
+		$this->db->select($select);
+		$this->db->from('ospos_sales AS sales');
+		$this->db->join('sumpay_items_temp AS sumpay_items', 'sales.sale_id = sumpay_items.sale_id', 'left outer');
+		$this->db->join('sumpay_payments_temp AS sumpay_payments', 'sales.sale_id = sumpay_payments.sale_id', 'left outer');
+		$this->db->where('sales.sale_status = ' . COMPLETED);
 		$this->_where($inputs);
 
-		$this->db->group_by("payment_type");
+		$this->db->group_by("trans_type");
+
+		$sales = $this->db->get()->result_array();
+
+		// At this point in time refunds are assumed to be cash refunds.
+		$total_cash_refund = 0;
+		foreach($sales as $key => $sale_summary)
+		{
+			if($sale_summary['trans_refunded'] <> 0)
+			{
+				$total_cash_refund += $sale_summary['trans_refunded'];
+			}
+		}
+
+		$select = '\'' . $this->lang->line('reports_trans_payments') . '\' AS trans_group, ';
+		$select .= 'sales_payments.payment_type as trans_type, ';
+		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
+		$select .= 'SUM(payment_amount) * -1 AS trans_amount,';
+		$select .= 'SUM(payment_amount) AS trans_payments,';
+		$select .= '0 AS trans_refunded, ';
+		$select .= '0 AS trans_due ';
+
+		$this->db->select($select);
+		$this->db->from('sales AS sales');
+		$this->db->join('sales_payments AS sales_payments', 'sales.sale_id = sales_payments.sale_id', 'left outer');
+		$this->db->where('sales.sale_status = ' . COMPLETED);
+		$this->_where($inputs);
+
+		$this->db->group_by("sales_payments.payment_type");
 
 		$payments = $this->db->get()->result_array();
+
+		// At this point in time refunds are assumed to be cash refunds.
+		foreach($payments as $key => $payment_summary)
+		{
+			if($payment_summary['trans_type'] == $cash_payment)
+			{
+				$payments[$key]['trans_refunded'] = $total_cash_refund;
+				$payments[$key]['trans_payments'] -= $total_cash_refund;
+			}
+		}
 
 		// consider Gift Card as only one type of payment and do not show "Gift Card: 1, Gift Card: 2, etc." in the total
 		$gift_card_count = 0;
 		$gift_card_amount = 0;
 		foreach($payments as $key => $payment)
 		{
-			if(strstr($payment['payment_type'], $this->lang->line('sales_giftcard')) !== FALSE)
+			if(strstr($payment['trans_type'], $this->lang->line('sales_giftcard')) !== FALSE)
 			{
-				$gift_card_count  += $payment['count'];
-				$gift_card_amount += $payment['payment_amount'];
+				$gift_card_count  += $payment['trans_count'];
+				$gift_card_amount += $payment['trans_amount'];
 
-				// remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
+				// Remove the "Gift Card: 1", "Gift Card: 2", etc. payment string
 				unset($payments[$key]);
 			}
 		}
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('payment_type' => $this->lang->line('sales_giftcard'), 'count' => $gift_card_count, 'payment_amount' => $gift_card_amount);
+			$payments[] = array('trans_type' => $this->lang->line('sales_giftcard'), 'trans_count' => $gift_card_count, 'trans_amount' => $gift_card_amount);
 		}
 
-		return $payments;
+		return array_merge($sales, $separator, $payments);
 	}
 }
 ?>
