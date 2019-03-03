@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "ที่อยู่";
 $lang["common_address_2"] = "ที่อยู่ (เพิ่มเติม)";
 $lang["common_city"] = "อำเภอ";
@@ -7,7 +6,7 @@ $lang["common_close"] = "Close";
 $lang["common_comments"] = "หมายเหตุ";
 $lang["common_common"] = "ธรรมดา";
 $lang["common_confirm_search"] = "คุณเลือกมากกว่าหนึ่งแถว, สิ่งที่คุณเลือกจะถูกยกเลิกหลังการค้นหา. แน่ใจหรือไม่ที่จะค้นหา?";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "โปรดแก้ไขข้อผิดพลาดที่ระบุก่อนบันทึก";
 $lang["common_country"] = "ประเทศ";
 $lang["common_date"] = "Date";
 $lang["common_delete"] = "ลบ";
@@ -40,10 +39,10 @@ $lang["common_last_page"] = "Last";
 $lang["common_learn_about_project"] = "เพื่อศึกษาข้อมูลล่าสุดของโครงการ";
 $lang["common_list_of"] = "รายการ";
 $lang["common_logout"] = "ออกจากระบบ";
-$lang["common_migration_needed"] = "";
-$lang["common_new"] = "New";
+$lang["common_migration_needed"] = "การย้ายฐานข้อมูลไปยัง %1 จะเริ่มขึ้นหลังจากเข้าสู่ระบบ";
+$lang["common_new"] = "ใหม่";
 $lang["common_no_persons_to_display"] = "ไม่พบข้อมูลตัวบุคคล";
-$lang["common_none_selected_text"] = "Nothing selected";
+$lang["common_none_selected_text"] = "ไม่ได้เลือก";
 $lang["common_or"] = "หรือ";
 $lang["common_phone_number"] = "โทรศัพท์";
 $lang["common_phone_number_required"] = "ต้องกรอกเบอร์โทร";
@@ -63,8 +62,8 @@ $lang["common_submit"] = "ส่งข้อมูล";
 $lang["common_total_spent"] = "ยอดชำระ";
 $lang["common_unknown"] = "ไม่ทราบ";
 $lang["common_view_recent_sales"] = "การขายล่าสุด";
-$lang["common_website"] = "website";
+$lang["common_website"] = "เว็บไซต์";
 $lang["common_welcome"] = "ยินดีต้อนรับ";
 $lang["common_welcome_message"] = "OSPOS. กรุณาเลือกโมดูลด้านล่าง เพื่อเริ่ม";
-$lang["common_you_are_using_ospos"] = "คุณกำลังใช้ Open Source Point Of Sale รุ่น";
+$lang["common_you_are_using_ospos"] = "คุณกำลังใช้ โอเพ่นซอส พีโอเอส รุ่น";
 $lang["common_zip"] = "รหัสไปรษณีย์";
