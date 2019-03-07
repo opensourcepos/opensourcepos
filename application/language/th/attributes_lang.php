@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "ค่าแอตทริบิวต์ไม่สามารถมี ':' หรือ '|'";
 $lang["attributes_confirm_delete"] = "คุณแน่ใจหรือไม่ว่าต้องการลบแอตทริบิวต์ที่เลือก ?";
 $lang["attributes_definition_cannot_be_deleted"] = "ไม่สามารถลบแอตทริบิวต์ที่เลือก";
@@ -22,7 +21,8 @@ $lang["attributes_show_in_items"] = "แสดงในรายการ";
 $lang["attributes_show_in_items_visibility"] = "รายการ";
 $lang["attributes_show_in_receipt"] = "แสดงในใบเสร็จ";
 $lang["attributes_show_in_receivings"] = "แสดงใน receivings";
-$lang["attributes_show_in_receivings_visibility"] = "Receivings";
+$lang["attributes_show_in_receivings_visibility"] = "ได้รับ(Receivings)";
 $lang["attributes_show_in_sales"] = "แสดงในการขาย";
 $lang["attributes_show_in_sales_visibility"] = "การขาย";
 $lang["attributes_update"] = "ปรับปรุงแอตทริบิวต์";
+$lang["attributes_definition_error_adding_updating"] = "Attribute %1 ไม่สามารถเพิ่มหรือแก้ไขได้.โปรดตรวจสอบจาก error log.";
