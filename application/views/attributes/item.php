@@ -21,6 +21,7 @@ foreach($definition_values as $definition_id => $definition_value)
 
             echo form_hidden("attribute_ids[$definition_id]", $definition_value['attribute_id']);
             $attribute_value = $definition_value['attribute_value'];
+            
             if ($definition_value['definition_type'] == DATETIME)
             {
 	            $value = (empty($attribute_value) || empty($attribute_value->attribute_datetime)) ? DEFAULT_DATETIME : strtotime($attribute_value->attribute_datetime);
@@ -40,6 +41,11 @@ foreach($definition_values as $definition_id => $definition_value)
             {
                 $value = (empty($attribute_value) || empty($attribute_value->attribute_value)) ? $definition_value['selected_value'] : $attribute_value->attribute_value;
                 echo form_input("attribute_links[$definition_id]", $value, "class='form-control valid_chars' data-definition-id='$definition_id'");
+            }
+            else if ($definition_value['definition_type'] == DECIMAL)
+            {
+				$value = (empty($attribute_value) || empty($attribute_value->attribute_decimal)) ? $definition_value['selected_value'] : $attribute_value->attribute_decimal;
+				echo form_input("attribute_links[$definition_id]", $value, "class='form-control valid_chars' data-definition-id='$definition_id'");
             }
             ?>
             <span class="input-group-addon input-sm btn btn-default remove_attribute_btn"><span class="glyphicon glyphicon-trash"></span></span>

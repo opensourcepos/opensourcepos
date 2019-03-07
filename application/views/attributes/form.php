@@ -40,6 +40,15 @@
 	</div>
 
 	<div class="form-group form-group-sm hidden">
+		<?php echo form_label($this->lang->line('attributes_definition_unit'), 'definition_units', array('class' => 'control-label col-xs-3')); ?>
+		<div class='col-xs-8'>
+			<div class="input-group">
+				<?php echo form_input(array('name'=>'definition_unit', 'value'=>$definition_info->definition_unit,'class'=>'form-control input-sm', 'id' => 'definition_unit'));?>
+			</div>
+		</div>
+	</div>
+
+	<div class="form-group form-group-sm hidden">
 		<?php echo form_label($this->lang->line('attributes_definition_values'), 'definition_value', array('class' => 'control-label col-xs-3')); ?>
 		<div class='col-xs-8'>
 			<div class="input-group">
@@ -73,7 +82,7 @@ $(document).ready(function()
 	{
 		var definition_type = $("#definition_type option:selected").text();
 
-		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new))
+		if(definition_type == "DATETIME" || (definition_type == "GROUP" && !is_new) || definition_type == "DECIMAL")
 		{	 
 			$('#definition_type').prop("disabled",true);	
 		} 
@@ -81,6 +90,7 @@ $(document).ready(function()
 		{
 			$("#definition_type option:contains('GROUP')").hide();
 			$("#definition_type option:contains('DATETIME')").hide();
+			$("#definition_type option:contains('DECIMAL')").hide();
 		}
 		else
 		{
@@ -92,9 +102,11 @@ $(document).ready(function()
 	var show_hide_fields = function(event)
 	{
 	    var is_dropdown = $('#definition_type').val() !== '1';
+	    var is_decimal = $('#definition_type').val() !== '2';
 	    var is_no_group = $('#definition_type').val() !== '0';
 
 		$('#definition_value, #definition_list_group').parents('.form-group').toggleClass('hidden', is_dropdown);
+		$('#definition_unit').parents('.form-group').toggleClass('hidden', is_decimal);
 		$('#definition_flags').parents('.form-group').toggleClass('hidden', !is_no_group);
 	};
 
