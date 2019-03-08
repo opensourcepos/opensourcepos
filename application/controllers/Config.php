@@ -311,7 +311,7 @@ class Config extends Secure_Controller
 		$number_locale = $this->input->post('number_locale');
 		$fmt = new \NumberFormatter($number_locale, \NumberFormatter::CURRENCY);
 		$currency_symbol = empty($this->input->post('currency_symbol')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_SYMBOL) : $this->input->post('currency_symbol');
-		$currency_code = empty($this->input->post('currency_code')) ? $fmt->getSymbol(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
+		$currency_code = empty($this->input->post('currency_code')) ? $fmt->getTextAttribute(\NumberFormatter::CURRENCY_CODE) : $this->input->post('currency_code');
 		
 		if($this->input->post('thousands_separator') == 'false')
 		{
