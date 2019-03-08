@@ -318,7 +318,7 @@ class Config extends Secure_Controller
 			$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 		}
 		
-		$fmt->setSymbol(\NumberFormatter::CURRENCY_CODE, $currency_code);
+		$fmt->setTextAttribute(\NumberFormatter::CURRENCY_CODE, $currency_code);
 		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $currency_symbol);
 		
 		$number_local_example = $fmt->format(1234567890.12300);
