@@ -44,6 +44,7 @@ $lang["config_company_select_image"] = "Select Image";
 $lang["config_company_website_url"] = "Company website is not a valid URL (http://...).";
 $lang["config_country_codes"] = "Country Codes";
 $lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";
+$lang["config_currency_code"] = "Currency Code";
 $lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_currency_symbol"] = "Currency Symbol";
 $lang["config_customer_reward"] = "Reward";
