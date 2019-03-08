@@ -119,7 +119,7 @@ class Attributes extends Secure_Controller
 
 	public function get_row($row_id)
 	{
-		$definition_info = $this->Attribute->get_info($row_id);
+		$attribute_definition_info = $this->Attribute->get_info($row_id);
 		$attribute_definition_info->definition_flags = $this->_get_attributes($attribute_definition_info->definition_flags);
 		$data_row = $this->xss_clean(get_attribute_definition_data_row($attribute_definition_info));
 
