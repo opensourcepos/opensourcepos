@@ -18,7 +18,6 @@ class Summary_payments extends Summary_report
 
 	public function getData(array $inputs)
 	{
-
 		$cash_payment = $this->lang->line('sales_cash');
 
 		$separator[] = array(
@@ -42,7 +41,7 @@ class Summary_payments extends Summary_report
 			$where .= 'sale_time BETWEEN ' . $this->db->escape(rawurldecode($inputs['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($inputs['end_date']));
 		}
 
-		$this->Sale->create_summary_payments_temp_tables($where);
+		$this->create_summary_payments_temp_tables($where);
 
 		$select = '\'' . $this->lang->line('reports_trans_sales') . '\' AS trans_group, ';
 		$select .= '(CASE sale_type WHEN ' . SALE_TYPE_POS . ' THEN \'' . $this->lang->line('reports_code_pos')
@@ -125,6 +124,55 @@ class Summary_payments extends Summary_report
 		}
 
 		return array_merge($sales, $separator, $payments);
+	}
+
+	protected function create_summary_payments_temp_tables($where)
+	{
+		$decimals = totals_decimals();
+
+		$tax = 'IFNULL(MAX(sumpay_taxes.total_taxes), 0)';
+
+		$trans_amount = 'ROUND(SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
+			. ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) '
+			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') + ' . $tax . ' AS trans_amount';
+
+
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_taxes_temp') .
+			' (INDEX(sale_id))
+			(
+				SELECT sales.sale_id, SUM(sales_taxes.sale_tax_amount) AS total_taxes
+				FROM ' . $this->db->dbprefix('sales') . ' AS sales
+				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_taxes') . ' AS sales_taxes
+					ON sales.sale_id = sales_taxes.sale_id
+				WHERE ' . $where . ' AND sales_taxes.tax_type = \'1\'
+				GROUP BY sale_id
+			)'
+		);
+
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_items_temp') .
+			' (INDEX(sale_id))
+			(
+				SELECT sales.sale_id, '. $trans_amount
+			. ' FROM ' . $this->db->dbprefix('sales') . ' AS sales '
+			. 'LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items '
+			. 'ON sales.sale_id = sales_items.sale_id '
+			. 'LEFT OUTER JOIN ' . $this->db->dbprefix('sumpay_taxes_temp') . ' AS sumpay_taxes '
+			. 'ON sales.sale_id = sumpay_taxes.sale_id '
+			. 'WHERE ' . $where . ' GROUP BY sale_id
+			)'
+		);
+
+		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_payments_temp') .
+			' (INDEX(sale_id))
+			(
+				SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments, SUM(sales_payments.payment_amount) AS total_payments
+				FROM ' . $this->db->dbprefix('sales') . ' AS sales
+				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments') . ' AS sales_payments
+					ON sales.sale_id = sales_payments.sale_id
+				WHERE ' . $where . '
+				GROUP BY sale_id
+			)'
+		);
 	}
 }
 ?>

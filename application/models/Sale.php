@@ -1420,56 +1420,5 @@ class Sale extends CI_Model
 
 		return COMPLETED;
 	}
-
-	public function create_summary_payments_temp_tables($where)
-	{
-		$decimals = totals_decimals();
-
-
-		$tax = 'IFNULL(MAX(sumpay_taxes.total_taxes), 0)';
-
-		$trans_amount = 'ROUND(SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
-			. ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) '
-			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') + ' . $tax . ' AS trans_amount';
-
-
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_taxes_temp') .
-			' (INDEX(sale_id))
-			(
-				SELECT sales.sale_id, SUM(sales_taxes.sale_tax_amount) AS total_taxes
-				FROM ' . $this->db->dbprefix('sales') . ' AS sales
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_taxes') . ' AS sales_taxes
-					ON sales.sale_id = sales_taxes.sale_id
-				WHERE ' . $where . ' AND sales_taxes.tax_type = \'1\'
-				GROUP BY sale_id
-			)'
-		);
-
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_items_temp') .
-			' (INDEX(sale_id))
-			(
-				SELECT sales.sale_id, '. $trans_amount
-			. ' FROM ' . $this->db->dbprefix('sales') . ' AS sales '
-			. 'LEFT OUTER JOIN ' . $this->db->dbprefix('sales_items') . ' AS sales_items '
-			. 'ON sales.sale_id = sales_items.sale_id '
-			. 'LEFT OUTER JOIN ' . $this->db->dbprefix('sumpay_taxes_temp') . ' AS sumpay_taxes '
-			. 'ON sales.sale_id = sumpay_taxes.sale_id '
-			. 'WHERE ' . $where . ' GROUP BY sale_id
-			)'
-		);
-
-		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_payments_temp') .
-			' (INDEX(sale_id))
-			(
-				SELECT sales.sale_id, COUNT(sales.sale_id) AS number_payments, SUM(sales_payments.payment_amount) AS total_payments
-				FROM ' . $this->db->dbprefix('sales') . ' AS sales
-				LEFT OUTER JOIN ' . $this->db->dbprefix('sales_payments') . ' AS sales_payments
-					ON sales.sale_id = sales_payments.sale_id
-				WHERE ' . $where . '
-				GROUP BY sale_id
-			)'
-		);
-	}
-
 }
 ?>
