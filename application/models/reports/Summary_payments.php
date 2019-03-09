@@ -78,7 +78,7 @@ class Summary_payments extends Summary_report
 		$select = '\'' . $this->lang->line('reports_trans_payments') . '\' AS trans_group, ';
 		$select .= 'sales_payments.payment_type as trans_type, ';
 		$select .= 'COUNT(sales.sale_id) AS trans_count, ';
-		$select .= 'SUM(payment_amount) * -1 AS trans_amount,';
+		$select .= 'SUM(payment_amount) AS trans_amount,';
 		$select .= 'SUM(payment_amount) AS trans_payments,';
 		$select .= '0 AS trans_refunded, ';
 		$select .= '0 AS trans_due ';
@@ -99,7 +99,7 @@ class Summary_payments extends Summary_report
 			if($payment_summary['trans_type'] == $cash_payment)
 			{
 				$payments[$key]['trans_refunded'] = $total_cash_refund;
-				$payments[$key]['trans_payments'] -= $total_cash_refund;
+				$payments[$key]['trans_amount'] -= $total_cash_refund;
 			}
 		}
 
@@ -120,7 +120,8 @@ class Summary_payments extends Summary_report
 
 		if($gift_card_count > 0)
 		{
-			$payments[] = array('trans_type' => $this->lang->line('sales_giftcard'), 'trans_count' => $gift_card_count, 'trans_amount' => $gift_card_amount);
+			$payments[] = array('trans_group' => $this->lang->line('reports_trans_payments'), 'trans_type' => $this->lang->line('sales_giftcard'), 'trans_count' => $gift_card_count,
+				'trans_amount' => $gift_card_amount, 'trans_payments' => $gift_card_amount, 'trans_refunded' => 0, 'trans_due' => 0);
 		}
 
 		return array_merge($sales, $separator, $payments);
