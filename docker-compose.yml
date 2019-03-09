@@ -4,6 +4,9 @@ volumes:
     uploads:
         driver: local
 
+networks:
+    ospos_net:
+
 services:
     sqlscript:
         build:
@@ -14,10 +17,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
-        links:
-            - mysql
         ports:
             - "80:80"
+        networks:
+            - ospos_net
         volumes:
             - uploads:/app/public/uploads
         environment:
@@ -30,23 +33,25 @@ services:
 
     mysql:
         image: mariadb:10.3.9
+        ports:
+            - "3306:3306"
+        networks:
+            - ospos_net
+        volumes_from:
+            - sqlscript
         environment:
             - MYSQL_ROOT_PASSWORD=pointofsale
             - MYSQL_DATABASE=ospos
             - MYSQL_USER=admin
             - MYSQL_PASSWORD=pointofsale
-        ports:
-            - "3306:3306"
-        volumes_from:
-            - sqlscript
 
 #    phpmyadmin:
 #        image: phpmyadmin/phpmyadmin
 #        restart: always
 #        ports:
 #           - "8000:80"
-#        links:
-#            - mysql:mysql
+#        networks:
+#            - ospos_net
 #        environment:
 #            - MYSQL_USERNAME=admin
 #            - MYSQL_ROOT_PASSWORD=pointofsale
