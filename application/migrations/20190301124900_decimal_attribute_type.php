@@ -9,7 +9,7 @@ class Migration_decimal_attribute_type extends CI_Migration
 
 	public function up()
 	{
-		execute_script(APPPATH . 'migrations/sqlscripts/3.4.0_decimal_attribute_type.sql');
+		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_decimal_attribute_type.sql');
 	}
 
 	public function down()
