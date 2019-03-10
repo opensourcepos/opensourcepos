@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["common_address_1"] = "כתובת 1";
 $lang["common_address_2"] = "כתובת 2";
 $lang["common_city"] = "עיר";
@@ -47,7 +48,7 @@ $lang["common_or"] = "או";
 $lang["common_phone_number"] = "מספר טלפון";
 $lang["common_phone_number_required"] = "";
 $lang["common_please_visit_my"] = "בקר בכתובת";
-$lang["common_powered_by"] = "מונע ע\"י";
+$lang["common_powered_by"] = "מונע ע\\"י";
 $lang["common_price"] = "מחיר";
 $lang["common_print"] = "הדפס";
 $lang["common_remove"] = "הסר";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["item_kits_add_item"] = "הוסף פריט";
 $lang["item_kits_all"] = "הכול";
 $lang["item_kits_cannot_be_deleted"] = "מחיקת ערכת הפריטים נכשלה.";

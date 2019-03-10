@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "הכול";
 $lang["reports_authority"] = "הרשאות";
 $lang["reports_canceled"] = "מבוטל";
@@ -125,6 +126,14 @@ $lang["reports_total_inventory_value"] = "סהכ ערך מלאי";
 $lang["reports_total_low_sell_quantity"] = "סהכ מינימום כמות למכירה";
 $lang["reports_total_quantity"] = "סהכ כמות";
 $lang["reports_total_retail"] = "סך הכל חשבונית. ערך קמעונאי";
+$lang["reports_trans_amount"] = "";
+$lang["reports_trans_due"] = "";
+$lang["reports_trans_group"] = "";
+$lang["reports_trans_nopay_sales"] = "";
+$lang["reports_trans_payments"] = "";
+$lang["reports_trans_refunded"] = "";
+$lang["reports_trans_sales"] = "";
+$lang["reports_trans_type"] = "";
 $lang["reports_type"] = "סוג";
 $lang["reports_unit_price"] = "מחיר קמעונאי";
 $lang["reports_used"] = "נקודות שהשתמשו";

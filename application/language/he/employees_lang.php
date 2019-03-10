@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["employees_basic_information"] = "מידע";
 $lang["employees_cannot_be_deleted"] = "לא ניתן למחוק עובדים נבחרים, לאחד או יותר יש מכירות בתהליך או שאתה מנסה למחוק את החשבון שלך.";
 $lang["employees_change_password"] = "שנה סיסמה";

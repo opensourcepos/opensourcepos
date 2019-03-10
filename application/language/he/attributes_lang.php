@@ -1,7 +1,9 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "ערך השדה אינו יכול להכיל ':' או '|'";
 $lang["attributes_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את המאפיינים שנבחרו?";
 $lang["attributes_definition_cannot_be_deleted"] = "לא ניתן למחוק מאפיינים נבחר(ים)";
+$lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "מאפיין גלוי";
 $lang["attributes_definition_group"] = "קבוצה";
 $lang["attributes_definition_id"] = "מספר זיהוי";
@@ -13,6 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "נמחק בהצלחה";
 $lang["attributes_definition_successful_updating"] = "עדכנת בהצלחה את המאפיין";
 $lang["attributes_definition_type"] = "סוג מאפיין";
 $lang["attributes_definition_type_required"] = "שדה המאפיין הינו שדה חובה";
+$lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "ערכי המאפיין";
 $lang["attributes_new"] = "מאפיין חדש";
 $lang["attributes_no_attributes_to_display"] = "אין פריטים להצגה";

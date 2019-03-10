@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "Btw nummer";
 $lang["suppliers_agency_name"] = "Agencynaam";
 $lang["suppliers_cannot_be_deleted"] = "De geselecteeerde leveranciers konden niet worden verwijderd. Eén of meerdere leveranciers hebben ordergegevens in de database zitten.";

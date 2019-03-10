@@ -3,6 +3,7 @@
 $lang["attributes_attribute_value_invalid_chars"] = "الميزات لا يمكن أن تحتوي على ':' أو'|'";
 $lang["attributes_confirm_delete"] = "هل أنت متأكد من أنك تريد حذف الميزات المحددة ؟";
 $lang["attributes_definition_cannot_be_deleted"] = "لا يمكن حذف السمات المحددة";
+$lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "رؤية الميزات";
 $lang["attributes_definition_group"] = "المجموعة";
 $lang["attributes_definition_id"] = "كود";
@@ -14,6 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "لقد تم حذف ميزة
 $lang["attributes_definition_successful_updating"] = "تم تعديل الميزة بنجاح";
 $lang["attributes_definition_type"] = "نوع الميزة";
 $lang["attributes_definition_type_required"] = "نوع الميزة هي خانة إجبارية";
+$lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "قيمة الميزة";
 $lang["attributes_new"] = "اضافة ميزة جديده";
 $lang["attributes_no_attributes_to_display"] = "لا يوجد اصناف للعرض";

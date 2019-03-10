@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["datepicker_all_time"] = "כל הזמן";
 $lang["datepicker_apply"] = "אשר";
 $lang["datepicker_cancel"] = "בטל";

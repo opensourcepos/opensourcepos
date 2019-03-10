@@ -1,8 +1,9 @@
 <?php 
 
-$lang["attributes_attribute_value_invalid_chars"] = "Valoare atribut nu poate contine \\":\\" sau \\"|\\"";
+$lang["attributes_attribute_value_invalid_chars"] = "Valoare atribut nu poate contine \\\":\\\" sau \\\"|\\\"";
 $lang["attributes_confirm_delete"] = "Sigur doriti stergerea atributului/atributelor selectat(e)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Nu se poate sterge atributul/atributele selectat(e)";
+$lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "Vizibilitate atribut";
 $lang["attributes_definition_group"] = "Grup";
 $lang["attributes_definition_id"] = "Id";
@@ -14,6 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "Ati sters cu succes";
 $lang["attributes_definition_successful_updating"] = "Ati actualizat atributul cu succes";
 $lang["attributes_definition_type"] = "Tip Atribut";
 $lang["attributes_definition_type_required"] = "Tip Atribut este camp obligatoriu";
+$lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "Valori Atribut";
 $lang["attributes_new"] = "Atribut nou";
 $lang["attributes_no_attributes_to_display"] = "Nu sunt articole de afisat";

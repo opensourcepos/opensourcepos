@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "כתובת חברה";
 $lang["config_address_required"] = "כתובת החברה הינה שדה חובה.";
 $lang["config_allow_duplicate_barcodes"] = "אפשר ברקודים כפולים";
@@ -188,6 +189,7 @@ $lang["config_number_locale"] = "הגדרות שפה";
 $lang["config_number_locale_invalid"] = "האזור שהוזן אינו חוקי. בדוק את הקישור שבסרגל הכלים כדי לאתר אזור חוקי.";
 $lang["config_number_locale_required"] = "מספר אזור הינו שדה חובה.";
 $lang["config_number_locale_tooltip"] = "מצא אזור תואם באמצעות קישור זה.";
+$lang["config_ospos_info"] = "";
 $lang["config_payment_options_order"] = "סידור אפשרויות תשלום";
 $lang["config_phone"] = "טלפון חברה";
 $lang["config_phone_required"] = "טלפון חברה הינו שדה חובה.";
@@ -241,6 +243,7 @@ $lang["config_sales_invoice_format"] = "תבנית חשבונית מכירות";
 $lang["config_sales_quote_format"] = "תבנית חשבונית הצעת מחיר";
 $lang["config_saved_successfully"] = "ההגדרות נשמרו בהצלחה.";
 $lang["config_saved_unsuccessfully"] = "שמירת ההגדרות נכשלה.";
+$lang["config_server_notice"] = "";
 $lang["config_show_office_group"] = "הצג את סמל המשרד";
 $lang["config_statistics"] = "שלח סטטיסטיקה";
 $lang["config_statistics_tooltip"] = "שלח סטטיסטיקות למפתחים למטרות פיתוח ושיפור התוכנה.";
@@ -252,6 +255,7 @@ $lang["config_suggestions_first_column"] = "עמודה 1";
 $lang["config_suggestions_layout"] = "פריסת הצעות חיפוש";
 $lang["config_suggestions_second_column"] = "עמודה 2";
 $lang["config_suggestions_third_column"] = "עמודה 3";
+$lang["config_system_info"] = "";
 $lang["config_table"] = "טבלה";
 $lang["config_table_configuration"] = "הגדרות טבלה";
 $lang["config_takings_printer"] = "מדפסת קבלה";

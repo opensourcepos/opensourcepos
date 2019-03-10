@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["cashups_amount"] = "סכום";
 $lang["cashups_amount_number"] = "הסכום חייב להיות מספר";
 $lang["cashups_amount_required"] = "הסכום הוא שדה חובה.";

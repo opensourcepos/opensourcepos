@@ -1,7 +1,9 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "";
 $lang["attributes_confirm_delete"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "Tidak bisa menghapus atribut terpilih";
+$lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "Visibilitas Atribut";
 $lang["attributes_definition_group"] = "Grup";
 $lang["attributes_definition_id"] = "Id";
@@ -13,6 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "Anda berhasil menghapus";
 $lang["attributes_definition_successful_updating"] = "Anda berhasil mengubah atribut";
 $lang["attributes_definition_type"] = "Tipe Atribut";
 $lang["attributes_definition_type_required"] = "";
+$lang["attributes_definition_unit"] = "";
 $lang["attributes_definition_values"] = "";
 $lang["attributes_new"] = "";
 $lang["attributes_no_attributes_to_display"] = "";

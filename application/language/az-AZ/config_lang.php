@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Şirkət Adresi";
 $lang["config_address_required"] = "Şirkətin adı olan boşluq  sahəsi doldurulmalıdı.";
 $lang["config_allow_duplicate_barcodes"] = "Dublikat Barkodlarına icazə verin";
@@ -188,6 +189,7 @@ $lang["config_number_locale"] = "Yerləşdirmə";
 $lang["config_number_locale_invalid"] = "Kompaniyanın tel.";
 $lang["config_number_locale_required"] = "Şirkət telefonu olan sahə boş qalma bilməz.";
 $lang["config_number_locale_tooltip"] = "Bu link vasitəsilə uyğun bir yer tapın.";
+$lang["config_ospos_info"] = "";
 $lang["config_payment_options_order"] = "Sifariş üçün Ödəmə Şərtləri";
 $lang["config_phone"] = "Şirkətin Telefon Nömrəsi";
 $lang["config_phone_required"] = "Şirkət Telefonu tələb olunan bir sahədir.";
@@ -241,6 +243,7 @@ $lang["config_sales_invoice_format"] = "Satış Fatura Formatı";
 $lang["config_sales_quote_format"] = "Satış Sitat Formati";
 $lang["config_saved_successfully"] = "Konfiqurasiya uğurla saxlanıldı.";
 $lang["config_saved_unsuccessfully"] = "Konfiqurasiyanı saxlamq mümkün olmadı.";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";
 $lang["config_show_office_group"] = "Ofis İşarəsini Göstər";
 $lang["config_statistics"] = "Statistikalari Göndər";
 $lang["config_statistics_tooltip"] = "İnkişaf və xüsusiyyət təkmilləşdirilməsi məqsədi ilə statistika göndərin.";
@@ -252,6 +255,7 @@ $lang["config_suggestions_first_column"] = "Sütun 1";
 $lang["config_suggestions_layout"] = "Təklif Çərçivələrini Axtar";
 $lang["config_suggestions_second_column"] = "Sütun 2";
 $lang["config_suggestions_third_column"] = "Sütun 3";
+$lang["config_system_info"] = "System Info";
 $lang["config_table"] = "Masa";
 $lang["config_table_configuration"] = "Cədvəl Konfiqurasiyası";
 $lang["config_takings_printer"] = "Printer Çeki";
@@ -273,5 +277,3 @@ $lang["config_use_destination_based_tax"] = "Təyinatından vergi istifadə edin
 $lang["config_website"] = "Vebsayt";
 $lang["config_work_order_enable"] = "İş Sifariş Dəstəyi";
 $lang["config_work_order_format"] = "İş Sifarş Farmatı";
-$lang["config_system_info"] = "System Info";
-$lang["config_server_notice"] = "Please use the below info for issue reporting.";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "הוספה או החסרה של מלאי.";
 $lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "אפשר תיאור חלופי";

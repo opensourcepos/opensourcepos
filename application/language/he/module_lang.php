@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["module_attributes"] = "תכונות";
 $lang["module_attributes_desc"] = "הוסף, עדכן, מחק וחפש תכונות.";
 $lang["module_both"] = "שניהם";

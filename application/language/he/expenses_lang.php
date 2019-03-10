@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["expenses_add_item"] = "הוסף הוצאה";
 $lang["expenses_amount"] = "סכום";
 $lang["expenses_amount_number"] = "הסכום חייב להיות מספר";

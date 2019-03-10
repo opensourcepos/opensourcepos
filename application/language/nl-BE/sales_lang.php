@@ -3,7 +3,7 @@
 $lang["customers_available_points"] = "Beschikbare Punten";
 $lang["rewards_package"] = "Spaarpunten";
 $lang["rewards_remaining_balance"] = "Saldo Spaarpunten is ";
-$lang["sales_account_number"] = "Rekening #";
+$lang["sales_account_number"] = "Btw-nummer";
 $lang["sales_add_payment"] = "Betaal";
 $lang["sales_amount_due"] = "Te betalen";
 $lang["sales_amount_tendered"] = "Ontvangen bedrag";

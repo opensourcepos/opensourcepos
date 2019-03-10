@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["category_name_required"] = "שם קטגורית הוצאה נדרש";
 $lang["expenses_categories_add_item"] = "הוסף קטגוריה";
 $lang["expenses_categories_cannot_be_deleted"] = "לא ניתן למחוק קטגוריית הוצאה(ות)";

@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["tables_all"] = "הכול";
 $lang["tables_columns"] = "עמודות";
 $lang["tables_hide_show_pagination"] = "הסתר / הצג מספור דפים";

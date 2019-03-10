@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["giftcards_add_minus"] = "מלאי כדי להוסיף או לחסר.";
 $lang["giftcards_allow_alt_description"] = "אפשר תיאור חלופי";
 $lang["giftcards_bulk_edit"] = "עריכה גורפת";

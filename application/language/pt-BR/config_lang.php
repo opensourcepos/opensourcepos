@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "Endereço da empresa";
 $lang["config_address_required"] = "Endereço da empresa é um campo obrigatório.";
 $lang["config_allow_duplicate_barcodes"] = "Permitir códigos de barras duplicados";
@@ -188,6 +189,7 @@ $lang["config_number_locale"] = "Localização";
 $lang["config_number_locale_invalid"] = "A localidade digitada é inválida. Verifique o link na dica para encontrar um valor aceitável.";
 $lang["config_number_locale_required"] = "Número Local é um campo obrigatório.";
 $lang["config_number_locale_tooltip"] = "Encontrar um local adequado através deste link.";
+$lang["config_ospos_info"] = "";
 $lang["config_payment_options_order"] = "Opções da ordem de pagamento";
 $lang["config_phone"] = "Telefone";
 $lang["config_phone_required"] = "Telefone da Empresa é requerido.";
@@ -241,6 +243,7 @@ $lang["config_sales_invoice_format"] = "Formato da Fatura de Vendas";
 $lang["config_sales_quote_format"] = "Formato de cotação de vendas";
 $lang["config_saved_successfully"] = "Configuração salva com sucesso.";
 $lang["config_saved_unsuccessfully"] = "Configuração não salva.";
+$lang["config_server_notice"] = "Please use the below info for issue reporting.";
 $lang["config_show_office_group"] = "Mostrar ícone do escritório";
 $lang["config_statistics"] = "Enviar estatísticas";
 $lang["config_statistics_tooltip"] = "Envie estatísticas para desenvolvimento e aprimoramento de recursos.";
@@ -252,6 +255,7 @@ $lang["config_suggestions_first_column"] = "Coluna 1";
 $lang["config_suggestions_layout"] = "Layout de sugestões de pesquisa";
 $lang["config_suggestions_second_column"] = "Coluna 2";
 $lang["config_suggestions_third_column"] = "Coluna 3";
+$lang["config_system_info"] = "System Info";
 $lang["config_table"] = "Mesa";
 $lang["config_table_configuration"] = "Configuração da mesa";
 $lang["config_takings_printer"] = "Imprimir Vendas";
@@ -273,5 +277,3 @@ $lang["config_use_destination_based_tax"] = "Use o Imposto Baseado em Destino";
 $lang["config_website"] = "OSPOS";
 $lang["config_work_order_enable"] = "Suporte para Ordem de Serviço";
 $lang["config_work_order_format"] = "Formato Ordem de Serviço";
-$lang["config_system_info"] = "System Info";
-$lang["config_server_notice"] = "Please use the below info for issue reporting.";

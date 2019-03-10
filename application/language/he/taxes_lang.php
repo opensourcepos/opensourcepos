@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "הוסף חריגה";
 $lang["taxes_cascade"] = "מדורג";
 $lang["taxes_cascade_sequence"] = "רצף דירוג";

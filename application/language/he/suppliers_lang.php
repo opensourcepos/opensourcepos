@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "מספר חשבון";
 $lang["suppliers_agency_name"] = "שם הסוכנות";
 $lang["suppliers_cannot_be_deleted"] = "לא ניתן למחוק את הספקים שנבחרו. לאחד או יותר יש מכירות.";
