@@ -197,7 +197,7 @@ if(isset($success))
 
 							<td>
 								<div class="input-group">
-									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>to_decimals($item['discount'], 0), 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
+									<?php echo form_input(array('name'=>'discount', 'class'=>'form-control input-sm', 'value'=>$item['discount'], 'tabindex'=>++$tabindex, 'onClick'=>'this.select();')); ?>
 									<span class="input-group-btn">
 										<?php echo form_checkbox(array('id'=>'discount_toggle', 'name'=>'discount_toggle', 'value'=>1, 'data-toggle'=>"toggle",'data-size'=>'small', 'data-onstyle'=>'success', 'data-on'=>'<b>'.$this->config->item('currency_symbol').'</b>', 'data-off'=>'<b>%</b>', 'data-line'=>$line, 'checked'=>$item['discount_type'])); ?>
 									</span>
@@ -909,7 +909,7 @@ $(document).ready(function()
 		var input = $("<input>").attr("type", "hidden").attr("name", "discount_type").val(($(this).prop('checked'))?1:0);
 		$('#cart_'+ $(this).attr('data-line')).append($(input));
 		$('#cart_'+ $(this).attr('data-line')).submit();
-    });
+	});
 });
 
 function check_payment_type()
