@@ -180,7 +180,7 @@ $(document).ready(function()
 		?>
 			<tr>
 				<td colspan="<?php echo $invoice_columns-3; ?>" class="blank"> </td>
-				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?></textarea></td>
+				<td colspan="2" class="total-line"><textarea rows="5" cols="6"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['name']; ?></textarea></td>
 				<td class="total-value"><textarea rows="5" cols="6" id="taxes"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></textarea></td>
 			</tr>
 		<?php
@@ -236,6 +236,7 @@ $(document).ready(function()
 	</table>
 
 	<div id="terms">
+		<?php if($apply_exchange_rate) echo $this->lang->line('sales_exchange_rate') . ': ' . (float)$exchange_rate; ?>
 		<div id="sale_return_policy">
 			<h5>
 				<textarea rows="5" cols="6"><?php echo nl2br($this->config->item('payment_message')); ?></textarea>

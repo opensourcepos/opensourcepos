@@ -358,7 +358,7 @@ function to_quantity_decimals($number)
 	return to_decimals($number, 'quantity_decimals');
 }
 
-function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
+function to_decimals($number, $decimal_type, $type=\NumberFormatter::DECIMAL)
 {
 	// ignore empty strings and return
 	// NOTE: do not change it to empty otherwise tables will show a 0 with no decimal nor currency symbol
@@ -368,15 +368,35 @@ function to_decimals($number, $decimals, $type=\NumberFormatter::DECIMAL)
 	}
 	
 	$config = get_instance()->config;
-	$fmt = new \NumberFormatter($config->item('number_locale'), $type);
-	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $config->item($decimals));
-	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $config->item($decimals));
+
+	$decimals = $config->item($decimal_type);
+
+	$CI =& get_instance();
+
+	$exchange_rate_set = $CI->session->flashdata('exchange_rate_set');
+
+	$apply_exchange_rate = $exchange_rate_set == NULL ? FALSE : $exchange_rate_set['apply_exchange_rate'];
+
+	if($apply_exchange_rate)
+	{
+		$exchange_rate = $exchange_rate_set['exchange_rate'];
+		$number_locale_alt = $exchange_rate_set['number_locale_alt'];
+		$number = round(bcmul($number, $exchange_rate, $decimals+1), $decimals);
+		$fmt = new \NumberFormatter($number_locale_alt, $type);
+		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $exchange_rate_set['currency_symbol_alt']);
+	}
+	else
+	{
+		$fmt = new \NumberFormatter($config->item('number_locale'), $type);
+		$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
+	}
+	$fmt->setAttribute(\NumberFormatter::MIN_FRACTION_DIGITS, $decimals);
+	$fmt->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, $decimals);
 	if(empty($config->item('thousands_separator')))
 	{
 		$fmt->setAttribute(\NumberFormatter::GROUPING_SEPARATOR_SYMBOL, '');
 	}
-	$fmt->setSymbol(\NumberFormatter::CURRENCY_SYMBOL, $config->item('currency_symbol'));
-	
+
 	return $fmt->format($number);
 }
 

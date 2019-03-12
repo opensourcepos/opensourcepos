@@ -67,7 +67,7 @@
 		}
 		echo form_hidden('number_of_payments', $i);			
 		?>
-		
+
 		<div class="form-group form-group-sm">
 			<?php echo form_label($this->lang->line('sales_customer'), 'customer', array('class'=>'control-label col-xs-3')); ?>
 			<div class='col-xs-8'>
@@ -89,6 +89,23 @@
 				<?php echo form_textarea(array('name'=>'comment', 'value'=>$sale_info['comment'], 'id'=>'comment', 'class'=>'form-control input-sm'));?>
 			</div>
 		</div>
+
+		<?php
+		if($alt_currency_enabled)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_exchange_rate'), 'exchange_rate', array('class'=>'control-label col-xs-3')); ?>
+				<div class="col-xs-6">
+					<div class="input-group input-group-sm">
+						<span class="input-group-addon input-sm">×</span>
+						<?php echo form_input(array('name'=>'exchange_rate', 'id'=>'exchange_rate', 'class'=>'form-control input-sm', 'value'=>$exchange_rate));?>
+					</div>
+				</div>
+			</div>
+		<?php
+		}
+		?>
 	</fieldset>
 <?php echo form_close(); ?>
 

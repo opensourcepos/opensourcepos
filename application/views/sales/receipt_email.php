@@ -135,7 +135,7 @@
 			{
 			?>
 				<tr>
-					<td colspan="3" style="text-align:right;"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['tax_group']; ?>:</td>
+					<td colspan="3" style="text-align:right;"><?php echo (float)$tax['tax_rate'] . '% ' . $tax['name']; ?>:</td>
 					<td style="text-align:right;"><?php echo to_currency_tax($tax['sale_tax_amount']); ?></td>
 				</tr>
 			<?php
@@ -199,7 +199,7 @@
 			<td colspan="4">&nbsp;</td>
 		</tr>
 	</table>
-
+	<?php if($apply_exchange_rate) echo $this->lang->line('sales_exchange_rate') . ': ' . (float)$exchange_rate; ?>
 	<div id="sale_return_policy" style="text-align:center">
 		<?php echo nl2br($this->config->item('return_policy')); ?>
 	</div>
