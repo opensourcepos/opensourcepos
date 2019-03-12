@@ -249,6 +249,8 @@ $(document).ready(function()
 			data,
 			function(response) {
 				$('#number_locale_example').text(response.number_locale_example);
+				$('#currency_symbol').val(response.currency_symbol);
+				$('#currency_code').text(response.currency_code);
 			},
 			'json'
 		);
@@ -272,6 +274,7 @@ $(document).ready(function()
 						var response = JSON.parse(data);
 						$('#number_locale_example').text(response.number_locale_example);
 						$('#currency_symbol').val(response.currency_symbol);
+						$('#currency_code').text(response.currency_code);
 						$('#thousands_separator').prop('checked', response.thousands_separator);
 						return response.success;
 					}
