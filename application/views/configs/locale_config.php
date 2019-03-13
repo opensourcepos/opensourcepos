@@ -240,7 +240,7 @@ $(document).ready(function()
 {
 	$('span').tooltip();
 
-	$('#currency_symbol, #thousands_separator, #currency_code').change(function() {
+	$('#number_locale').change(function() {
 		var field = $(this).attr('id');
 		var value = $(this).is(':checkbox') ? $(this).is(':checked') : $(this).val();
 		var data = { number_locale: $('#number_locale').val() };
@@ -250,7 +250,7 @@ $(document).ready(function()
 			function(response) {
 				$('#number_locale_example').text(response.number_locale_example);
 				$('#currency_symbol').val(response.currency_symbol);
-				$('#currency_code').text(response.currency_code);
+				$('#currency_code').val(response.currency_code);
 			},
 			'json'
 		);
@@ -268,13 +268,14 @@ $(document).ready(function()
 					type: 'POST',
 					data: {
 						'number_locale': $('#number_locale').val(),
-						'thousands_separator': $('#thousands_separator').is(':checked')
+						'thousands_separator': $('#thousands_separator').is(':checked'),
+						'currency_code': $('#currency_code').val()
 					},
 					dataFilter: function(data) {
 						var response = JSON.parse(data);
 						$('#number_locale_example').text(response.number_locale_example);
 						$('#currency_symbol').val(response.currency_symbol);
-						$('#currency_code').text(response.currency_code);
+						$('#currency_code').val(response.currency_code);
 						$('#thousands_separator').prop('checked', response.thousands_separator);
 						return response.success;
 					}
