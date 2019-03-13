@@ -9,7 +9,7 @@ class Migration_add_iso_4217 extends CI_Migration
 
 	public function up()
 	{
-		execute_script(APPPATH . 'migrations/sqlscripts/3.4.0_add_iso_4217.sql');
+		execute_script(APPPATH . 'migrations/sqlscripts/3.3.0_add_iso_4217.sql');
 	}
 
 	public function down()
