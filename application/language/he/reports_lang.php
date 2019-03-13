@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "הכול";
 $lang["reports_authority"] = "הרשאות";
 $lang["reports_canceled"] = "מבוטל";
@@ -81,7 +80,7 @@ $lang["reports_quotes"] = "הצעות מחיר";
 $lang["reports_received_by"] = "התקבל על ידי";
 $lang["reports_receiving_id"] = "מזהה תקבול";
 $lang["reports_receiving_type"] = "סוג תקבול";
-$lang["reports_receivings"] = "תקבולים \ החזרות";
+$lang["reports_receivings"] = "תקבולים  החזרות";
 $lang["reports_reorder_level"] = "כמות מינימום להזמנה";
 $lang["reports_report"] = "דוח";
 $lang["reports_report_input"] = "קלט דווח";
@@ -126,14 +125,14 @@ $lang["reports_total_inventory_value"] = "סהכ ערך מלאי";
 $lang["reports_total_low_sell_quantity"] = "סהכ מינימום כמות למכירה";
 $lang["reports_total_quantity"] = "סהכ כמות";
 $lang["reports_total_retail"] = "סך הכל חשבונית. ערך קמעונאי";
-$lang["reports_trans_amount"] = "";
-$lang["reports_trans_due"] = "";
-$lang["reports_trans_group"] = "";
-$lang["reports_trans_nopay_sales"] = "";
-$lang["reports_trans_payments"] = "";
-$lang["reports_trans_refunded"] = "";
-$lang["reports_trans_sales"] = "";
-$lang["reports_trans_type"] = "";
+$lang["reports_trans_amount"] = "סכום העסקה";
+$lang["reports_trans_due"] = "צפוי";
+$lang["reports_trans_group"] = "קבוצת עסקאות";
+$lang["reports_trans_nopay_sales"] = "מכירות ללא תשלום";
+$lang["reports_trans_payments"] = "תשלומים";
+$lang["reports_trans_refunded"] = "החזר כספי";
+$lang["reports_trans_sales"] = "מכירות";
+$lang["reports_trans_type"] = "סוג עסקה";
 $lang["reports_type"] = "סוג";
 $lang["reports_unit_price"] = "מחיר קמעונאי";
 $lang["reports_used"] = "נקודות שהשתמשו";
