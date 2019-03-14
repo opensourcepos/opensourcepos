@@ -313,7 +313,6 @@ class Attribute extends CI_Model
 			{
 				$success = TRUE;
 			}
-
 		}
 		
 		//From DROPDOWN to TEXT
