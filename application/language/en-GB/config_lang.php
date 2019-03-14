@@ -139,6 +139,7 @@ $lang["config_include_hsn"] = "Include Support for HSN Codes";
 $lang["config_info"] = "Information";
 $lang["config_info_configuration"] = "Shop Information";
 $lang["config_integrations"] = "Integrations";
+$lang["config_integrations_configuration"] = "Third Party Integrations";
 $lang["config_invoice"] = "Invoice";
 $lang["config_invoice_configuration"] = "Invoice Print Settings";
 $lang["config_invoice_default_comments"] = "Default Invoice Comments";
