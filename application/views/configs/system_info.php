@@ -1,12 +1,14 @@
-	<div id="config_wrapper">
+<div id="config_wrapper">
 	<?php echo $this->lang->line('config_server_notice'); ?>
 	<table class="table text-left" >
 		<tbody>
 		<tr>
 		  <th><?php echo $this->lang->line('config_ospos_info'); ?></th>
-			<td><?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br>
-				<?php echo current_language_code();	?>
-			</td>
+			<td><?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br></td>
+		</tr>
+		<tr>
+			<th>Language Code</th>
+			<td><?php echo current_language_code();	?></td>
 		</tr>
 		<tr>
 		  <th>Extensions & Modules</th>
@@ -33,26 +35,20 @@
 					elseif (strpos($user_agent, 'Safari')) return 'Safari';
 					elseif (strpos($user_agent, 'Firefox')) return 'Firefox';
 					elseif (strpos($user_agent, 'MSIE') || strpos($user_agent, 'Trident/7')) return 'Internet Explorer';
-
 					return 'Other';
 				}
 				echo get_browser_name($_SERVER['HTTP_USER_AGENT']);
 			?><br>
 
-				Server Software: 
-				<?php echo $_SERVER['SERVER_SOFTWARE']; ?><br>
-				PHP Version: 
-				<?php echo PHP_VERSION; ?> <br>
-				Server Port: 
-				<?php echo $_SERVER['SERVER_PORT']; ?><br>
-				DB Version: 
-				<?php print mysqli_get_client_info(); ?><br>
-				OS: 
-				<?php echo php_uname();	?></td>
+				Server Software: <?php echo $_SERVER['SERVER_SOFTWARE']; ?><br>
+				PHP Version: <?php echo PHP_VERSION; ?> <br>
+				Server Port: <?php echo $_SERVER['SERVER_PORT']; ?><br>
+				DB Version: <?php print mysqli_get_client_info(); ?><br>
+				OS: <?php echo php_uname();	?></td>
 		</tr>
 		<tr>
-		  <th>File's Permissions</th>
-			<td>Application/logs: 
+		  <th>File Permissions</th>
+			<td>[application/logs:]
 				<?php $logs = '../application/logs/'; 
 					$uploads = '../public/uploads/'; 
 					$images = '../public/uploads/item_pics/'; 
@@ -60,48 +56,49 @@
 					$importcustomers = '../import_customers.csv';
 					
 					if (is_writable($logs)) {
-						echo 'Writable &#x2713';
+						echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
 					} else {
-						echo 'NOT Writable &#x2717 ';
+						echo ' -  ' . substr(sprintf("%o",fileperms($logs)),-4) . ' |  ' . '<font color="red">  Not Writable &#x2717 </font>';						
 					} 
+					clearstatcache();
 				?><br>
-				Public/uploads: 
+				[public/uploads:]
 				<?php 
 					if (is_writable($uploads)) {
-						echo 'Writable &#x2713';
+						echo ' -  ' . substr(sprintf("%o",fileperms($uploads)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
 					} else {
-						echo 'NOT Writable &#x2717 ';
+						echo ' -  ' . substr(sprintf("%o",fileperms($uploads)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 					} 
+					clearstatcache();
 				?><br>
-				public/uploads/item_pics: 	
+				[public/uploads/item_pics:] 	
 				<?php 
 					if (is_writable($images)) {
-						echo 'Writable &#x2713';
+						echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |  ' . '<font color="green"> Writable &#x2713 </font>';
 					} else {
-						echo 'NOT Writable &#x2717 ';
+						echo ' -  ' . substr(sprintf("%o",fileperms($images)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 					} 
+					clearstatcache();
 				?><br>
-				import_items.csv: 
+				[import_items.csv:]
 				<?php 
 					if (is_writable($import)) {
-						echo 'Writable &#x2713';
+						echo ' -  ' . substr(sprintf("%o",fileperms($import)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
 					} else {
-						echo 'NOT Writable/Read Only &#x2717';
-					} 
+						echo ' -  ' . substr(sprintf("%o",fileperms($import)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
+					}
+					clearstatcache();					
 				?><br>
-				import_customers.csv: 
+				[import_customers.csv:] 
 				<?php 
 					if (is_writable($importcustomers)) {
-						echo 'Writable &#x2713 <br>';
+						echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="green">  Writable &#x2713 </font>';
 					} else {
-						echo 'NOT Writable/Read Only &#x2717 <br>';
+						echo ' -  ' . substr(sprintf("%o",fileperms($importcustomers)),-4) . ' |  ' . '<font color="red"> Not Writable &#x2717 </font>';
 					} 
-				chmod("../import_items.csv",0664);
-				chmod("../import_customers.csv",0664); 
-				echo "<br>";
-				echo "CSV permissions were set to 0664"; 
+					clearstatcache();
 				?><br>
 				<a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>
-			</td>
+			</td></tr>
 	</table>
 	</div>
