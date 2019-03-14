@@ -309,6 +309,10 @@ class Attribute extends CI_Model
 					$this->db->trans_complete();
 				}
 			}
+			else if($to_type === DROPDOWN)
+			{
+				$success = TRUE;
+			}
 		}
 		
 		//From DROPDOWN to TEXT
