@@ -1,11 +1,12 @@
 <div id="config_wrapper">
 	<?php echo $this->lang->line('config_server_notice'); ?>
-	<table class="table text-left" >
+	<div id="copycontent">
+	<table class="table text-left" id="content">
 		<tbody>
 		<tr>
 		  <th><?php echo $this->lang->line('config_ospos_info'); ?></th>
 			<td><?php echo $this->config->item('application_version'); ?> - <?php echo substr($this->config->item('commit_sha1'), 0, 6); ?><br></td>
-		</tr>
+		</tr>	
 		<tr>
 			<th>Language Code</th>
 			<td><?php echo current_language_code();	?></td>
@@ -98,7 +99,20 @@
 					} 
 					clearstatcache();
 				?><br>
-				<a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>
+				
 			</td></tr>
-	</table>
+	</table><a  onclick="SelectContent('copycontent');">Copy Info</a> | <a href="https://github.com/opensourcepos/opensourcepos/issues/new" target="_blank"> Report An issue </a>
 	</div>
+			<script type="text/javascript">
+			function SelectContent (el) {    
+			  var aux = document.createElement("div");
+			  aux.setAttribute("contentEditable", true);
+			  aux.innerHTML = document.getElementById("content").innerHTML;
+			  aux.setAttribute("onfocus", "document.execCommand('selectAll',false,null)"); 
+			  document.body.appendChild(aux);
+			  aux.focus();
+			  document.execCommand("copy");
+			  document.body.removeChild(aux);
+			}
+			</script>
+</div>
