@@ -2,6 +2,7 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "Attribute value cannot contain ':' or '|'";
 $lang["attributes_confirm_delete"] = "Are you sure you want to delete the selected attribute(s)?";
+$lang["attributes_confirm_restore"] = "Are you sure you want to restore the selected attribute(s)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Could not delete selected attribute(s)";
 $lang["attributes_definition_error_adding_updating"] = "Attribute %1 could not be added or updated. Please check the error log.";
 $lang["attributes_definition_flags"] = "Attribute Visibility";
