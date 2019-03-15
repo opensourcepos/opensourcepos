@@ -474,11 +474,21 @@ if(isset($success))
 						</table>
 					<?php echo form_close(); ?>
 						<?php
+						$payment_type = $this->input->post('payment_type');							
 						// Only show this part if the payment cover the total and in sale or return mode
-						if($pos_mode == '1')
+
+						if($pos_mode == '1' && $payment_type != $this->lang->line('sales_due') && !isset($customer))
 						{
 						?>
 						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button' tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
+						<?php
+						}
+						?>
+						<?php							
+						if($pos_mode == '1' && $payment_type = $this->lang->line('sales_due') && isset($customer))
+						{
+						?>
+						<div class='btn btn-sm btn-success pull-right' id='finish_sale_button'  tabindex="<?php echo ++$tabindex; ?>"><span class="glyphicon glyphicon-ok">&nbsp</span><?php echo $this->lang->line('sales_complete_sale'); ?></div>
 						<?php
 						}
 						?>
