@@ -38,7 +38,7 @@
 					elseif (strpos($user_agent, 'MSIE') || strpos($user_agent, 'Trident/7')) return 'Internet Explorer';
 					return 'Other';
 				}
-				echo '.' . get_browser_name($_SERVER['HTTP_USER_AGENT']);
+				echo get_browser_name($_SERVER['HTTP_USER_AGENT']);
 			?><br>
 
 				.Server Software: <?php echo $_SERVER['SERVER_SOFTWARE']; ?><br>
