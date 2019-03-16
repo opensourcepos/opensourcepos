@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "رقم الحساب";
 $lang["customers_account_number_duplicate"] = "رقم الحساب هذا موجود فى قاعدة البيانات من قبل.";
 $lang["customers_available_points"] = "النقاط المتاحة";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "لقد أضفت عميل بنجاح";
 $lang["customers_successful_deleted"] = "لقد قمت بالحذف بنجاح";
 $lang["customers_successful_updating"] = "لقد قمت بتحديث بيانات العميل بنجاح";
 $lang["customers_tax_code"] = "كود الضريبة";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "الرقم الضريبي";
 $lang["customers_taxable"] = "خاضع للضريبة";
 $lang["customers_total"] = "المجموع";
 $lang["customers_update"] = "تحديث بيانات عميل";
