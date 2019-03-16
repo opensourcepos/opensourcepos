@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "العنوان 1";
 $lang["common_address_2"] = "العنوان 2";
 $lang["common_city"] = "المدينة";
@@ -7,7 +6,7 @@ $lang["common_close"] = "إغلاق";
 $lang["common_comments"] = "تعليقات";
 $lang["common_common"] = "عام";
 $lang["common_confirm_search"] = "لقد قمت اختيار أكتر من سجل، سوف تفقد هذه الاختيارات عند إرسال البحث، موافق؟";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "يرجى تصحيح الأخطاء المحددة قبل الحفظ";
 $lang["common_country"] = "البلد";
 $lang["common_date"] = "التاريخ";
 $lang["common_delete"] = "حذف";
@@ -40,7 +39,7 @@ $lang["common_last_page"] = "الأخيرة";
 $lang["common_learn_about_project"] = "للتعرف على أخر المعلومات حول المشروع.";
 $lang["common_list_of"] = "قائمة بـ";
 $lang["common_logout"] = "خروج";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "سيبدأ ترحيل قاعدة البيانات إلى ٪1 بعد تسجيل الدخول.";
 $lang["common_new"] = "جديد";
 $lang["common_no_persons_to_display"] = "لا يوجد اناس لعرضهم.";
 $lang["common_none_selected_text"] = "[إختيار]";
