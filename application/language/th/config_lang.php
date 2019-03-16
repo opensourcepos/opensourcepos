@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
-$lang["config_allow_duplicate_barcodes"] = "";
+$lang["config_allow_duplicate_barcodes"] = "อนุญาตบาร์โค้ดที่ซ้ำกัน";
 $lang["config_apostrophe"] = "อัญประกาศเดี่ยว '";
 $lang["config_backup_button"] = "สำรองข้อมูล";
 $lang["config_backup_database"] = "สำรองฐานข้อมูล";
@@ -12,7 +11,7 @@ $lang["config_barcode_configuration"] = "ตั้งค่าระบบบา
 $lang["config_barcode_content"] = "รหัสที่พิมพ์";
 $lang["config_barcode_first_row"] = "แถว 1";
 $lang["config_barcode_font"] = "แบบอักษร";
-$lang["config_barcode_formats"] = "";
+$lang["config_barcode_formats"] = "รูปแบบอินพุต";
 $lang["config_barcode_generate_if_empty"] = "Generate if empty";
 $lang["config_barcode_height"] = "สูง (px)";
 $lang["config_barcode_id"] = "รหัสสินค้า/ชื่อสินค้า";
@@ -26,11 +25,11 @@ $lang["config_barcode_page_width"] = "ความกว้างในหน้
 $lang["config_barcode_price"] = "ราคา";
 $lang["config_barcode_second_row"] = "แถว 2";
 $lang["config_barcode_third_row"] = "แถว 3";
-$lang["config_barcode_tooltip"] = "";
+$lang["config_barcode_tooltip"] = "คำเตือน: คุณสมบัตินี้สามารถทำให้เกิดรายการที่ซ้ำกันที่จะนำเข้าหรือสร้าง ห้ามใช้หากคุณไม่ต้องการบาร์โค้ดที่ซ้ำกัน";
 $lang["config_barcode_type"] = "ประเภทบาร์โค้ด";
 $lang["config_barcode_width"] = "กว้าง (px)";
-$lang["config_bottom"] = "Bottom";
-$lang["config_cash_decimals"] = "";
+$lang["config_bottom"] = "ด้านล่าง";
+$lang["config_cash_decimals"] = "ทศนิยมแบบเงินสด";
 $lang["config_cash_decimals_tooltip"] = "";
 $lang["config_cash_rounding"] = "";
 $lang["config_center"] = "Center";

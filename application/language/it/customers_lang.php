@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "Codice Fiscale";
 $lang["customers_account_number_duplicate"] = "Il numero dell'account è già presente nel database.";
 $lang["customers_available_points"] = "Punti Disponibili";
@@ -15,9 +14,9 @@ $lang["customers_consent_required"] = "Consenso è un campo obbligatorio.";
 $lang["customers_customer"] = "Clienti";
 $lang["customers_date"] = "Data";
 $lang["customers_discount"] = "Sconto";
-$lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
+$lang["customers_discount_fixed"] = "Sconto fisso";
+$lang["customers_discount_percent"] = "Sconto percentuale";
+$lang["customers_discount_type"] = "Tipo di sconto";
 $lang["customers_email_duplicate"] = "L'indirizzo mail è già presente nel database.";
 $lang["customers_employee"] = "Impiegato";
 $lang["customers_error_adding_updating"] = "Aggiunta o modifica clienti Fallita.";
