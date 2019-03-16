@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["suppliers_account_number"] = "رقم الحساب";
 $lang["suppliers_agency_name"] = "اسم الوكالة";
 $lang["suppliers_cannot_be_deleted"] = "لايمكن حذف المورد/الموردين لوجود مبيعات مرتبطة بهم.";
@@ -19,5 +18,5 @@ $lang["suppliers_successful_deleted"] = "لقد تم حذف المورد بنج�
 $lang["suppliers_successful_updating"] = "لقد تم تحديث بيانات المورد بنجاح";
 $lang["suppliers_supplier"] = "مورد";
 $lang["suppliers_supplier_id"] = "كود المورد";
-$lang["suppliers_tax_id"] = "";
+$lang["suppliers_tax_id"] = "الرقم الضريبي";
 $lang["suppliers_update"] = "تحديث بيانات المورد";
