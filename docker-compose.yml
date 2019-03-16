@@ -17,6 +17,10 @@ services:
         build:
             context: .
             dockerfile: Dockerfile
+        container_name: php
+        restart: always
+        depends_on:
+           - mysql
         ports:
             - "80:80"
         networks:
@@ -33,6 +37,8 @@ services:
 
     mysql:
         image: mariadb:10.3.9
+        container_name: mysql
+        restart: always
         ports:
             - "3306:3306"
         networks:
@@ -47,7 +53,10 @@ services:
 
 #    phpmyadmin:
 #        image: phpmyadmin/phpmyadmin
+#        container_name: phpmyadmin
 #        restart: always
+#        depends_on:
+#           - mysql
 #        ports:
 #           - "8000:80"
 #        networks:
