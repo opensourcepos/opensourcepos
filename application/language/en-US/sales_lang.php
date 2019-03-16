@@ -174,4 +174,3 @@ $lang["sales_work_order_number"] = "Work Order Number";
 $lang["sales_work_order_number_duplicate"] = "Work Order Number must be unique.";
 $lang["sales_work_order_sent"] = "Work Order sent to";
 $lang["sales_work_order_unsent"] = "Work Order failed to be sent to";
-$lang["sales_customer_optional"] = "(Required for Due Payments)";

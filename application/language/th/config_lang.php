@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "ที่อยู่";
 $lang["config_address_required"] = "ที่อยู่ต้องกรอก";
 $lang["config_allow_duplicate_barcodes"] = "อนุญาตบาร์โค้ดที่ซ้ำกัน";
@@ -43,6 +44,7 @@ $lang["config_company_select_image"] = "Select Image";
 $lang["config_company_website_url"] = "เว็บไซต์ร้านค้าไม่ถูกต้อง";
 $lang["config_country_codes"] = "Country Codes";
 $lang["config_country_codes_tooltip"] = "Comma separated list of country codes for nominatim address lookup.";
+$lang["config_currency_code"] = "";
 $lang["config_currency_decimals"] = "Currency Decimals";
 $lang["config_currency_symbol"] = "สัญลักษณ์ค่าเงิน";
 $lang["config_customer_reward"] = "";
@@ -137,6 +139,7 @@ $lang["config_include_hsn"] = "";
 $lang["config_info"] = "ข้อมูลร้านค้า";
 $lang["config_info_configuration"] = "ข้อมูลร้านค้า";
 $lang["config_integrations"] = "";
+$lang["config_integrations_configuration"] = "";
 $lang["config_invoice"] = "Invoice";
 $lang["config_invoice_configuration"] = "Invoice Print Settings";
 $lang["config_invoice_default_comments"] = "Default Invoice Comments";

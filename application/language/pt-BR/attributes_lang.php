@@ -2,6 +2,7 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "Valor do atributo não pode conter ':' ou '|'";
 $lang["attributes_confirm_delete"] = "Tem certeza de que deseja excluir os atributos selecionados?";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "Não foi possível excluir atributo selecionado (s)";
 $lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "Visibilidade de atributo";

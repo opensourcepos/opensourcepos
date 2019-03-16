@@ -4,6 +4,7 @@ define('COMPLETED', 0);
 define('SUSPENDED', 1);
 define('CANCELED', 2);
 
+
 define('SALE_TYPE_POS', 0);
 define('SALE_TYPE_INVOICE', 1);
 define('SALE_TYPE_WORK_ORDER', 2);

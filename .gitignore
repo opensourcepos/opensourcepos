@@ -9,11 +9,13 @@ application/uploads/*
 public/license/.licenses
 public/license/bower.LICENSES
 public/dist
+generate_langauges.php
 dist/
 docs/
 public/bower_components
 *.patch
 patches/
+translations/
 .idea/
 git-svn-diff.py
 *.bash
