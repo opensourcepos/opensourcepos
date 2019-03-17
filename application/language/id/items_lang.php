@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Penyesuaian Inventori TAMBAH / KURANG (-)";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Deskripsi Alternatif dimungkinkan";
 $lang["items_amount_entry"] = "Jumlah entri";
 $lang["items_bulk_edit"] = "Ubah Massal";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Dapatkan Info Item Barang";
 $lang["items_sales_tax_1"] = "Pajak Penjualan1";
 $lang["items_sales_tax_2"] = "Pajak Penjualan2";
 $lang["items_search_attributes"] = "Cari secara manual";
-$lang["items_search_custom_items"] = "Pencarian Item kustom";
 $lang["items_select_image"] = "Pilih Gambar";
 $lang["items_serialized_items"] = "Serial Item";
 $lang["items_standard"] = "Standar";

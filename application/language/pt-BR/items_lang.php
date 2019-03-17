@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Inventário para adicionar/subtrair.";
-$lang["items_allow_alt_desciption"] = "Descrição longa";
 $lang["items_allow_alt_description"] = "Permitir atualizar descrição";
 $lang["items_amount_entry"] = "Entrada de montante";
 $lang["items_bulk_edit"] = "Editar Múltiplos Itens";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Recuperar Informação do Item";
 $lang["items_sales_tax_1"] = "Imposto de venda";
 $lang["items_sales_tax_2"] = "Imposto de venda 2";
 $lang["items_search_attributes"] = "pesquisar atributos";
-$lang["items_search_custom_items"] = "Pesquisar campos personalizados";
 $lang["items_select_image"] = "Selecionar imagem";
 $lang["items_serialized_items"] = "Serializar Itens";
 $lang["items_standard"] = "Padrão";

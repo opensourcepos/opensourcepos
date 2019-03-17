@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Bestandsänderung.";
-$lang["items_allow_alt_desciption"] = "Erlaube Alt. Bez.";
 $lang["items_allow_alt_description"] = "Alternative Beschreibung zulassen";
 $lang["items_amount_entry"] = "Anzahl Eingang";
 $lang["items_bulk_edit"] = "Sammeländerung";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Artikelinformation";
 $lang["items_sales_tax_1"] = "Umsatzsteuer";
 $lang["items_sales_tax_2"] = "Umsatzsteuer 2";
 $lang["items_search_attributes"] = "Suche Attribute";
-$lang["items_search_custom_items"] = "Suche Benutzerdefinierte Artikel";
 $lang["items_select_image"] = "Bild auswählen";
 $lang["items_serialized_items"] = "Serialisierte Artikel";
 $lang["items_standard"] = "Standard";

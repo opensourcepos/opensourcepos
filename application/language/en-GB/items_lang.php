@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Inventory to add or subtract";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Allow Alternate Description";
 $lang["items_amount_entry"] = "Amount Entry";
 $lang["items_bulk_edit"] = "Bulk Edit";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Retrieve Item Info";
 $lang["items_sales_tax_1"] = "Sales Tax";
 $lang["items_sales_tax_2"] = "Sales Tax 2";
 $lang["items_search_attributes"] = "Search Attributes";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "Serialised Items";
 $lang["items_standard"] = "Standard";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Změna množství.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Povolit alternativní popis";
 $lang["items_amount_entry"] = "Množství";
 $lang["items_bulk_edit"] = "Hromadná editace";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Získat informace o položce";
 $lang["items_sales_tax_1"] = "DPH";
 $lang["items_sales_tax_2"] = "DPH 2";
 $lang["items_search_attributes"] = "";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Vybrat obrázek";
 $lang["items_serialized_items"] = "Položky se sériovým číslem";
 $lang["items_standard"] = "Běžná";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "";
 $lang["items_sales_tax_1"] = "";
 $lang["items_sales_tax_2"] = "";
 $lang["items_search_attributes"] = "";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "";
 $lang["items_serialized_items"] = "";
 $lang["items_standard"] = "";

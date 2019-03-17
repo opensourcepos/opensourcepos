@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Hàng tồn kho để thêm hay bớt.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Cho phép Mô tả thay thế";
 $lang["items_amount_entry"] = "Đầu mục tổng số";
 $lang["items_bulk_edit"] = "Sửa hàng loạt";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Thông tin Nhập hàng";
 $lang["items_sales_tax_1"] = "Thuế bán hàng";
 $lang["items_sales_tax_2"] = "Thuế bán hàng 2";
 $lang["items_search_attributes"] = "Tìm kiếm các thuộc tính";
-$lang["items_search_custom_items"] = "Tìm kiếm hàng hóa tự chọn";
 $lang["items_select_image"] = "Chọn ảnh";
 $lang["items_serialized_items"] = "Các hàng hóa có sêri";
 $lang["items_standard"] = "Tiêu chuẩn";

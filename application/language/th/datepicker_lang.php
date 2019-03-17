@@ -14,7 +14,6 @@ $lang["datepicker_same_month_last_year"] = "เดือนเดียวกั
 $lang["datepicker_same_month_to_same_day_last_year"] = "เดือนเดียวกันกับวันเดียวกันของปีที่แล้ว";
 $lang["datepicker_this_financial_year"] = "ปีบัญชีปัจจุบัน";
 $lang["datepicker_this_month"] = "เดือนนี้";
-$lang["datepicker_this_month_last_year"] = "";
 $lang["datepicker_this_year"] = "ปีนี้";
 $lang["datepicker_to"] = "ถึง";
 $lang["datepicker_today"] = "วันนี้";
