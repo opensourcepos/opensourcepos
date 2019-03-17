@@ -27,3 +27,4 @@ $lang["attributes_show_in_receivings_visibility"] = "קבלת סחורה";
 $lang["attributes_show_in_sales"] = "הצג במכירות";
 $lang["attributes_show_in_sales_visibility"] = "מכירות";
 $lang["attributes_update"] = "עדכן מאפיין";
+$lang["attributes_confirm_restore"] = "האם אתה בטוח שברצונך לשחזר את המאפיינים שנבחרו?";
