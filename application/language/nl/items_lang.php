@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Corrigatie hoeveelheid";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Aanpasbare omschrijving";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "Bewerk Selectie";
@@ -83,8 +82,7 @@ $lang["items_reorder_level_required"] = "Reorder level moet ingevuld worden";
 $lang["items_retrive_item_info"] = "Haal productinformatie op";
 $lang["items_sales_tax_1"] = "VAT";
 $lang["items_sales_tax_2"] = "VAT 2";
-$lang["items_search_attributes"] = "";
-$lang["items_search_custom_items"] = "Doorzoek Tags";
+$lang["items_search_attributes"] = "Doorzoek Tags";
 $lang["items_select_image"] = "Selecteer Afbeelding";
 $lang["items_serialized_items"] = "Artikelen met serienummer";
 $lang["items_standard"] = "";

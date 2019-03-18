@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "İnventar + Topla və ya - Çıx.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Alternativ təsvirə icazə verin";
 $lang["items_amount_entry"] = "Məbləğ Əlavəsi";
 $lang["items_bulk_edit"] = "Kütləvi Redaktə";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Mal Haqqında Məlumat";
 $lang["items_sales_tax_1"] = "Satış Vergisi";
 $lang["items_sales_tax_2"] = "Satış Vergisi 2";
 $lang["items_search_attributes"] = "Atributları Axtar";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Şəkil Seç";
 $lang["items_serialized_items"] = "Seriyalı Mallar";
 $lang["items_standard"] = "Standart";

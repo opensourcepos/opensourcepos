@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Добавить/убрать товар.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Разрешить альтернативные описания";
 $lang["items_amount_entry"] = "Ввод количества";
 $lang["items_bulk_edit"] = "Массовое редактирование";
@@ -85,7 +84,6 @@ $lang["items_sales_tax_1"] = "Налог на покупку";
 $lang["items_sales_tax_2"] = "Налог на покупку 2";
 $lang["items_search_attributes"] = "Искать в дополнительных товарях";
 $lang["items_search_custom_items"] = "Искать в дополнительных товарях";
-$lang["items_select_image"] = "";
 $lang["items_serialized_items"] = "Сериализованные товары";
 $lang["items_standard"] = "типичный";
 $lang["items_stock"] = "инвентарь";

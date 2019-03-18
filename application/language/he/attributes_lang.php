@@ -1,6 +1,8 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "ערך השדה אינו יכול להכיל ':' או '|'";
 $lang["attributes_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את המאפיינים שנבחרו?";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "לא ניתן למחוק מאפיינים נבחר(ים)";
 $lang["attributes_definition_error_adding_updating"] = "לא ניתן להוסיף או לעדכן את הערך %1. בדוק את יומן השגיאות.";
 $lang["attributes_definition_flags"] = "מאפיין גלוי";

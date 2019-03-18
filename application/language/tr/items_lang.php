@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Eklenen/Çıkarılan Adet";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Dip Nota izin ver";
 $lang["items_amount_entry"] = "Miktar Girişi";
 $lang["items_bulk_edit"] = "Toplu Düzenleme";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Ürün Bilgisi Getir";
 $lang["items_sales_tax_1"] = "Satış Vergisi";
 $lang["items_sales_tax_2"] = "Satış Vergisi 2";
 $lang["items_search_attributes"] = "Özellikleri Ara";
-$lang["items_search_custom_items"] = "Özel Alanları Ara";
 $lang["items_select_image"] = "Resim Seç";
 $lang["items_serialized_items"] = "Seri Numaralı Ürünler";
 $lang["items_standard"] = "Standart";

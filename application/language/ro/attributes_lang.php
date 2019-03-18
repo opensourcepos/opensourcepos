@@ -1,7 +1,8 @@
 <?php 
 
-$lang["attributes_attribute_value_invalid_chars"] = "Valoare atribut nu poate contine \\\":\\\" sau \\\"|\\\"";
+$lang["attributes_attribute_value_invalid_chars"] = "Valoare atribut nu poate contine \\\\":\\\\" sau \\\\"|\\\\"";
 $lang["attributes_confirm_delete"] = "Sigur doriti stergerea atributului/atributelor selectat(e)?";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "Nu se poate sterge atributul/atributele selectat(e)";
 $lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "Vizibilitate atribut";

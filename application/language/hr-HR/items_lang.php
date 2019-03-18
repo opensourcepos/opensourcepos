@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Dodavanje/skidanje s inventure";
-$lang["items_allow_alt_desciption"] = "Dozvoli Alt opis";
 $lang["items_allow_alt_description"] = "Dozvoli Alt opis";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "Zajedno uređenje";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Info o zaprimljenom artiklu";
 $lang["items_sales_tax_1"] = "Prodajni porez 1";
 $lang["items_sales_tax_2"] = "Prodajni porez 2";
 $lang["items_search_attributes"] = "Polje za pretragu";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Odaberi sliku";
 $lang["items_serialized_items"] = "Artikl ima ser. broj";
 $lang["items_standard"] = "";

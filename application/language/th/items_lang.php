@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "เพิ่ม/ลบ จำนวนสินค้าคงคลัง";
-$lang["items_allow_alt_desciption"] = "อนุญาตให้เพิ่มรายละเอียด";
 $lang["items_allow_alt_description"] = "แสดงข้อมูลเพิ่มเติม";
 $lang["items_amount_entry"] = "จำนวนเงิน";
 $lang["items_bulk_edit"] = "แก้ไขความจุ";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "รับข้อมูลสินค้�
 $lang["items_sales_tax_1"] = "ถาษีขาย";
 $lang["items_sales_tax_2"] = "ภาษีขาย 2";
 $lang["items_search_attributes"] = "ค้นหาในฟิลด์เสริม";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "รหัสสินค้า";
 $lang["items_standard"] = "มาตรฐาน";

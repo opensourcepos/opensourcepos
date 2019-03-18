@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["reports_all"] = "הכול";
 $lang["reports_authority"] = "הרשאות";
 $lang["reports_canceled"] = "מבוטל";

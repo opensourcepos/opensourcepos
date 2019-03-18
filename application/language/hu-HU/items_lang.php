@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Mennyiség hozzáadása/elvétele";
-$lang["items_allow_alt_desciption"] = "Alternativ leirás eng.";
 $lang["items_allow_alt_description"] = "Alternativ leirás eng.";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "Tömeges módosítás";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Retrive Item Info";
 $lang["items_sales_tax_1"] = "Értékesítési adó 1";
 $lang["items_sales_tax_2"] = "Értékesítési adó 2";
 $lang["items_search_attributes"] = "Egyedi mezők";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Kép kiválasztása";
 $lang["items_serialized_items"] = "Szerializált termékek";
 $lang["items_standard"] = "";

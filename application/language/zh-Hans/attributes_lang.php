@@ -2,6 +2,7 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "属性特征不能包含':' or '|'";
 $lang["attributes_confirm_delete"] = "确定要删除所选属性吗";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "不能删除该特征属性";
 $lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "属性可见性";

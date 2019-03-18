@@ -1,6 +1,7 @@
 <?php
 $lang["attributes_attribute_value_invalid_chars"] = "الميزات لا يمكن أن تحتوي على ':' أو'|'";
 $lang["attributes_confirm_delete"] = "هل أنت متأكد من أنك تريد حذف الميزات المحددة ؟";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "لا يمكن حذف السمات المحددة";
 $lang["attributes_definition_error_adding_updating"] = "لا يمكن إضافة السمة ٪1 أو تحديثها. يرجى التحقق من سجل الخطأ.";
 $lang["attributes_definition_flags"] = "رؤية الميزات";

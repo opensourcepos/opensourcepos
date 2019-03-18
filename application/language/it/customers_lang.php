@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "Codice Fiscale";
 $lang["customers_account_number_duplicate"] = "Il numero dell'account è già presente nel database.";
 $lang["customers_available_points"] = "Punti Disponibili";

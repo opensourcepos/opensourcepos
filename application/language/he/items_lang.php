@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "הוספה או החסרה של מלאי.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "אפשר תיאור חלופי";
 $lang["items_amount_entry"] = "ערך כניסה";
 $lang["items_bulk_edit"] = "עריכה גורפת";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "אחזר פרטי פריט";
 $lang["items_sales_tax_1"] = "מס מכירה";
 $lang["items_sales_tax_2"] = "מס מכירה 2";
 $lang["items_search_attributes"] = "חיפוש במאפיינים";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "בחר תמונה";
 $lang["items_serialized_items"] = "סדר פריטים";
 $lang["items_standard"] = "רגיל";

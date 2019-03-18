@@ -2,6 +2,7 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "";
 $lang["attributes_confirm_delete"] = "";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "";
 $lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "";

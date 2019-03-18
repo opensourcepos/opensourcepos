@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["config_address"] = "כתובת חברה";
 $lang["config_address_required"] = "כתובת החברה הינה שדה חובה.";
 $lang["config_allow_duplicate_barcodes"] = "אפשר ברקודים כפולים";
@@ -43,6 +44,7 @@ $lang["config_company_select_image"] = "בחר תמונה";
 $lang["config_company_website_url"] = "אתר החברה אינו כתובת אתר חוקית (http://...).";
 $lang["config_country_codes"] = "קודי מדינה";
 $lang["config_country_codes_tooltip"] = "רשימה מופרדת בפסיקים של קודי מדינות עבור בדיקת כתובת של nominatim.";
+$lang["config_currency_code"] = "";
 $lang["config_currency_decimals"] = "מטבע עשרוני";
 $lang["config_currency_symbol"] = "סמל מטבע";
 $lang["config_customer_reward"] = "תגמול";
@@ -137,6 +139,7 @@ $lang["config_include_hsn"] = "כלול תמיכה בקודי HSN";
 $lang["config_info"] = "מידע";
 $lang["config_info_configuration"] = "אחסון מידע";
 $lang["config_integrations"] = "אינטגרציה";
+$lang["config_integrations_configuration"] = "";
 $lang["config_invoice"] = "חשבונית";
 $lang["config_invoice_configuration"] = "הגדרות הדפסה של חשבוניות";
 $lang["config_invoice_default_comments"] = "הערות ברירת מחדל של חשבוניות";

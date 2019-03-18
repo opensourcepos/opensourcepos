@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "增/減庫存";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "允許ALT描述";
 $lang["items_amount_entry"] = "";
 $lang["items_bulk_edit"] = "批次編輯";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "檢索產品訊息";
 $lang["items_sales_tax_1"] = "營業稅";
 $lang["items_sales_tax_2"] = "營業稅 2";
 $lang["items_search_attributes"] = "Search Custom Fields";
-$lang["items_search_custom_items"] = "";
 $lang["items_select_image"] = "Select Image";
 $lang["items_serialized_items"] = "序列化產品";
 $lang["items_standard"] = "";

@@ -2,6 +2,7 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "Atribut dəyəri bu ':' və ya '|' olmaz";
 $lang["attributes_confirm_delete"] = "Seçilmiş Atributları silmək istədiyinizdən əminsinizmi?";
+$lang["attributes_confirm_restore"] = "";
 $lang["attributes_definition_cannot_be_deleted"] = "Seçilmiş xüsusiyyətləri silmək olmadı";
 $lang["attributes_definition_error_adding_updating"] = "";
 $lang["attributes_definition_flags"] = "Atribut görünüşü";

@@ -1,7 +1,6 @@
 <?php 
 
 $lang["items_add_minus"] = "Inventario da aggiungere o sottrarre.";
-$lang["items_allow_alt_desciption"] = "";
 $lang["items_allow_alt_description"] = "Permetti Descrizione alternativa";
 $lang["items_amount_entry"] = "Importo Inserito";
 $lang["items_bulk_edit"] = "Modifica collettiva";
@@ -84,7 +83,6 @@ $lang["items_retrive_item_info"] = "Ottieni Info Articolo";
 $lang["items_sales_tax_1"] = "Imposte di vendita";
 $lang["items_sales_tax_2"] = "Imposta di Vendita 2";
 $lang["items_search_attributes"] = "Attributi di ricerca";
-$lang["items_search_custom_items"] = "Ricerca Articoli personalizzati";
 $lang["items_select_image"] = "Seleziona Immagine";
 $lang["items_serialized_items"] = "Articoli Serializzati";
 $lang["items_standard"] = "Standard";
