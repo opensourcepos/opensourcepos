@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["common_address_1"] = "Alamat 1";
 $lang["common_address_2"] = "Alamat 2";
 $lang["common_city"] = "Kota";
@@ -7,7 +6,7 @@ $lang["common_close"] = "Tutup";
 $lang["common_comments"] = "Catatan";
 $lang["common_common"] = "Biasa";
 $lang["common_confirm_search"] = "Anda telah memilih satu atau lebih baris, ini tidak akan lagi dipilih setelah pencarian Anda. Apakah Anda yakin ingin mengirimkan pencarian ini?";
-$lang["common_correct_errors"] = "";
+$lang["common_correct_errors"] = "Cek kesalahan sebelum menyimpan";
 $lang["common_country"] = "Negara";
 $lang["common_date"] = "Tanggal";
 $lang["common_delete"] = "Hapus";
@@ -40,10 +39,10 @@ $lang["common_last_page"] = "Akhir";
 $lang["common_learn_about_project"] = "Untuk belajar informasi terbaru tentang proyek ini.";
 $lang["common_list_of"] = "Daftar";
 $lang["common_logout"] = "Keluar";
-$lang["common_migration_needed"] = "";
+$lang["common_migration_needed"] = "Migrasi data pada %1 akan dimulai setelah masuk.";
 $lang["common_new"] = "Baru";
 $lang["common_no_persons_to_display"] = "Tidak ada orang untuk ditampilkan.";
-$lang["common_none_selected_text"] = "Tidak ada yang dipilih.";
+$lang["common_none_selected_text"] = "[Pilih]";
 $lang["common_or"] = "ATAU";
 $lang["common_phone_number"] = "Telepon";
 $lang["common_phone_number_required"] = "Nomer Telepon Wajib Diisi";
