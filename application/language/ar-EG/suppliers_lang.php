@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["suppliers_account_number"] = "رقم الحساب";
 $lang["suppliers_agency_name"] = "اسم الوكالة";
 $lang["suppliers_cannot_be_deleted"] = "لايمكن حذف المورد/الموردين لوجود مبيعات مرتبطة بهم.";

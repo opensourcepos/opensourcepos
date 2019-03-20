@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["items_add_minus"] = "الكمية المطلوب خصمها أو اضافتها.";
 $lang["items_allow_alt_description"] = "السماح بوصف بديل";
 $lang["items_amount_entry"] = "إدخال القيمة";

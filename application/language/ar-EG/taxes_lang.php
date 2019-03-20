@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["taxes_add_exception"] = "أضافة أستثناء";
 $lang["taxes_cascade"] = "تتالي";
 $lang["taxes_cascade_sequence"] = "تسلسل متتالي";

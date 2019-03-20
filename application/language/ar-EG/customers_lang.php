@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["customers_account_number"] = "رقم الحساب";
 $lang["customers_account_number_duplicate"] = "رقم الحساب هذا موجود فى قاعدة البيانات من قبل.";
 $lang["customers_available_points"] = "النقاط المتاحة";
