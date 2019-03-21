@@ -43,7 +43,7 @@ $lang["config_company_select_image"] = "اختار صورة";
 $lang["config_company_website_url"] = "الموقع الإلكترونى للشركة غير صحيح.";
 $lang["config_country_codes"] = "أكواد الدولة";
 $lang["config_country_codes_tooltip"] = "قائمة مفصولة بفاصلة لاسماء الدول للبحث.";
-$lang["config_currency_code"] = "";
+$lang["config_currency_code"] = "رمز العملة";
 $lang["config_currency_decimals"] = "العلامة العشرية للعملة";
 $lang["config_currency_symbol"] = "رمز العملة";
 $lang["config_customer_reward"] = "المكافآت";
@@ -138,7 +138,7 @@ $lang["config_include_hsn"] = "تشمل الدعم لرمز نظام منسق";
 $lang["config_info"] = "معلومات";
 $lang["config_info_configuration"] = "معلومات الشركة";
 $lang["config_integrations"] = "التكامل";
-$lang["config_integrations_configuration"] = "";
+$lang["config_integrations_configuration"] = "تكامل";
 $lang["config_invoice"] = "الفاتورة";
 $lang["config_invoice_configuration"] = "إعدادات طباعة الفاتورة";
 $lang["config_invoice_default_comments"] = "التعليق الافتراضي على الفاتورة";
@@ -278,5 +278,3 @@ $lang["config_use_destination_based_tax"] = "استخدام الضريبة ال�
 $lang["config_website"] = "موقع الشركة";
 $lang["config_work_order_enable"] = "تفعيل طلبات العمل";
 $lang["config_work_order_format"] = "شكل طلبات العمل";
-$lang["config_currency_code"] = "رمز العملة";
-$lang["config_integrations_configuration"] = "تكامل";
