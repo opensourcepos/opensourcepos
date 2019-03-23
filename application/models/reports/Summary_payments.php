@@ -131,11 +131,9 @@ class Summary_payments extends Summary_report
 	{
 		$decimals = totals_decimals();
 
-		$tax = 'IFNULL(MAX(sumpay_taxes.total_taxes), 0)';
-
 		$trans_amount = 'ROUND(SUM(CASE WHEN sales_items.discount_type = ' . PERCENT
 			. ' THEN sales_items.item_unit_price * sales_items.quantity_purchased * (1 - sales_items.discount / 100) '
-			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') + ' . $tax . ' AS trans_amount';
+			. 'ELSE sales_items.item_unit_price * sales_items.quantity_purchased - sales_items.discount END), ' . $decimals . ') AS trans_amount';
 
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_taxes_temp') .
@@ -162,6 +160,10 @@ class Summary_payments extends Summary_report
 			. 'WHERE ' . $where . ' GROUP BY sale_id
 			)'
 		);
+
+		$this->db->query('UPDATE ' . $this->db->dbprefix('sumpay_items_temp') . ' AS sumpay_items '
+			. 'SET trans_amount = trans_amount + (SELECT total_taxes FROM ' . $this->db->dbprefix('sumpay_taxes_temp')
+			. ' AS sumpay_taxes WHERE sumpay_items.sale_id = sumpay_taxes.sale_id)');
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_payments_temp') .
 			' (INDEX(sale_id))
