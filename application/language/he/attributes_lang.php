@@ -2,7 +2,7 @@
 
 $lang["attributes_attribute_value_invalid_chars"] = "ערך השדה אינו יכול להכיל ':' או '|'";
 $lang["attributes_confirm_delete"] = "האם אתה בטוח שברצונך למחוק את המאפיינים שנבחרו?";
-$lang["attributes_confirm_restore"] = "";
+$lang["attributes_confirm_restore"] = "האם אתה בטוח שברצונך לשחזר את המאפיינים שנבחרו?";
 $lang["attributes_definition_cannot_be_deleted"] = "לא ניתן למחוק מאפיינים נבחר(ים)";
 $lang["attributes_definition_error_adding_updating"] = "לא ניתן להוסיף או לעדכן את הערך %1. בדוק את יומן השגיאות.";
 $lang["attributes_definition_flags"] = "מאפיין גלוי";
@@ -29,4 +29,3 @@ $lang["attributes_show_in_receivings_visibility"] = "קבלת סחורה";
 $lang["attributes_show_in_sales"] = "הצג במכירות";
 $lang["attributes_show_in_sales_visibility"] = "מכירות";
 $lang["attributes_update"] = "עדכן מאפיין";
-$lang["attributes_confirm_restore"] = "האם אתה בטוח שברצונך לשחזר את המאפיינים שנבחרו?";

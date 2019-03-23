@@ -1,4 +1,5 @@
-<?php
+<?php 
+
 $lang["attributes_attribute_value_invalid_chars"] = "الميزات لا يمكن أن تحتوي على ':' أو'|'";
 $lang["attributes_confirm_delete"] = "هل أنت متأكد من أنك تريد حذف الميزات المحددة ؟";
 $lang["attributes_confirm_restore"] = "هل أنت متأكد من أنك تريد استعادة السمة (السمات) المحددة؟";
