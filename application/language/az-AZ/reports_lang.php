@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "hamısı";
 $lang["reports_authority"] = "Səlahiyyət";
 $lang["reports_canceled"] = "Ləğv Edilmiş";
@@ -126,14 +125,14 @@ $lang["reports_total_inventory_value"] = "Ümumi İnvanter Qiyməti";
 $lang["reports_total_low_sell_quantity"] = "Ümumi aşağı satışların sayı";
 $lang["reports_total_quantity"] = "Ümumi Miqdarı";
 $lang["reports_total_retail"] = "Toplam inv. Pərakəndə dəyəri";
-$lang["reports_trans_amount"] = "";
-$lang["reports_trans_due"] = "";
-$lang["reports_trans_group"] = "";
-$lang["reports_trans_nopay_sales"] = "";
-$lang["reports_trans_payments"] = "";
-$lang["reports_trans_refunded"] = "";
-$lang["reports_trans_sales"] = "";
-$lang["reports_trans_type"] = "";
+$lang["reports_trans_amount"] = "Əməliyyat məbləği";
+$lang["reports_trans_due"] = "Buna görə";
+$lang["reports_trans_group"] = "Əməliyyat Qrupu";
+$lang["reports_trans_nopay_sales"] = "Ödənişsiz satış";
+$lang["reports_trans_payments"] = "Ödəmələr";
+$lang["reports_trans_refunded"] = "Geri qaytarıldı";
+$lang["reports_trans_sales"] = "Satışlar";
+$lang["reports_trans_type"] = "Əməliyyat növü";
 $lang["reports_type"] = "Növ";
 $lang["reports_unit_price"] = "Pərakəndə Qiyməti";
 $lang["reports_used"] = "İstifadə edilən ballar";
