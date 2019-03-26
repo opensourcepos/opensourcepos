@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "บัญชี #";
 $lang["customers_account_number_duplicate"] = "This account number is already present in the database";
 $lang["customers_available_points"] = "คะแนนที่มี";
@@ -14,7 +13,7 @@ $lang["customers_consent"] = "ความยินยอมในการล�
 $lang["customers_consent_required"] = "ความยินยอมในการลงทะเบียนต้องระบุข้อมูล";
 $lang["customers_customer"] = "ลูกค้า";
 $lang["customers_date"] = "วันที่";
-$lang["customers_discount"] = "Discount";
+$lang["customers_discount"] = "ส่วนลด";
 $lang["customers_discount_fixed"] = "ส่วนลดคงที่";
 $lang["customers_discount_percent"] = "ส่วนลดแบบร้อยละ";
 $lang["customers_discount_type"] = "ประเภทส่วนลด";
@@ -23,7 +22,7 @@ $lang["customers_employee"] = "พนักงาน";
 $lang["customers_error_adding_updating"] = "แก้ไขข้อมูลลูกค้าผิดพลาด";
 $lang["customers_excel_import_failed"] = "นำเข้าข้อมูล Excel ล้มเหลว";
 $lang["customers_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["customers_excel_import_partially_failed"] = "Most Customers imported. But some were not, here is the list";
+$lang["customers_excel_import_partially_failed"] = "นำเข้าลูกค้าประสบความสำเร็จแต่มีข้อผิดพลาดบางอย่าง :";
 $lang["customers_excel_import_success"] = "Import of Customers successful";
 $lang["customers_import_items_excel"] = "Import customers from Excel sheet";
 $lang["customers_mailchimp_activity_click"] = "คลิ๊กอีเมล";
