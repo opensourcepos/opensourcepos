@@ -26,6 +26,10 @@ class Items extends Secure_Controller
 			'is_serialized' => $this->lang->line('items_serialized_items'),
 			'no_description' => $this->lang->line('items_no_description_items'),
 			'search_custom' => $this->lang->line('items_search_attributes'),
+//NEED XLATION                  'has_transactions' => $this->lang->line('items_search_custom_items'),  // dmt
+//NEED XLATION                  'no_transactions' => $this->lang->line('items_search_custom_items'),   // dmt
+			'has_transactions' => "Has Transactions during Range",                          //dmt
+			'no_transactions' => "No Transactions during Range",                            //dmt
 			'is_deleted' => $this->lang->line('items_is_deleted'),
 			'temporary' => $this->lang->line('items_temp'));
 
@@ -55,6 +59,8 @@ class Items extends Secure_Controller
 						'is_serialized' => FALSE,
 						'no_description' => FALSE,
 						'search_custom' => FALSE,
+						'has_transactions' => FALSE,	//dmt
+						'no_transactions' => FALSE,	//dmt
 						'is_deleted' => FALSE,
 						'temporary' => FALSE,
 						'definition_ids' => array_keys($definition_names));
@@ -63,9 +69,15 @@ class Items extends Secure_Controller
 		$filledup = array_fill_keys($this->input->get('filters'), TRUE);
 		$filters = array_merge($filters, $filledup);
 
+// CI attempts to prefix the SQL directive when prefix is enabled  //dmt
+//  This ONLY necessary if dbprefix is being used and can be removed if it isn't
+$dmthold_prefix = $this->db->dbprefix;  //dmt
+$this->db->set_dbprefix(''); //dmt
 		$items = $this->Item->search($search, $filters, $limit, $offset, $sort, $order);
 
 		$total_rows = $this->Item->get_found_rows($search, $filters);
+$this->db->set_dbprefix($dmthold_prefix); //dmt
+
 
 		$data_rows = array();
 		foreach($items->result() as $item)
