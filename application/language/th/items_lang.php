@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["items_add_minus"] = "เพิ่ม/ลบ จำนวนสินค้าคงคลัง";
 $lang["items_allow_alt_description"] = "แสดงข้อมูลเพิ่มเติม";
 $lang["items_amount_entry"] = "จำนวนเงิน";
@@ -13,7 +12,7 @@ $lang["items_change_all_to_allow_alt_desc"] = "อนุญาตให้รา
 $lang["items_change_all_to_not_allow_allow_desc"] = "ไม่อนุญาตให้จัดเรียงลำดับ";
 $lang["items_change_all_to_serialized"] = "เปลี่ยนแปลงรหัสสินค้าทั้งหมด";
 $lang["items_change_all_to_unserialized"] = "ลบรหัสสินค้าทั้งหมด";
-$lang["items_change_image"] = "Change Image";
+$lang["items_change_image"] = "เปลี่ยนรูปภาพ";
 $lang["items_confirm_bulk_edit"] = "แน่ใจหรือไม่ที่จะแก้ใขสินค้าทั้งหมดที่คุณเลือก?";
 $lang["items_confirm_bulk_edit_wipe_taxes"] = "All item tax information will be replaced!";
 $lang["items_confirm_delete"] = "โปรดยืนยันการลบสินค้าที่ถูกเลือก?";
@@ -34,7 +33,7 @@ $lang["items_error_adding_updating"] = "เพิ่ม/ปรับแต่ง
 $lang["items_error_updating_multiple"] = "ปรับแต่งสินค้าล้มเหลว";
 $lang["items_excel_import_failed"] = "นำเข้าข้อมูล Excel ล้มเหลว";
 $lang["items_excel_import_nodata_wrongformat"] = "Your uploaded file has no data or wrong format";
-$lang["items_excel_import_partially_failed"] = "Most Items imported. But some were not, here is the list";
+$lang["items_excel_import_partially_failed"] = "การนำเข้ารายการสำเร็จแต่มีความผิดปกติบางอย่าง :";
 $lang["items_excel_import_success"] = "Import of Items successful";
 $lang["items_generate_barcodes"] = "พิมพ์บาร์โค๊ด";
 $lang["items_hsn_code"] = "ระบบการตั้งชื่อที่กลมกลืนกัน";
@@ -75,7 +74,7 @@ $lang["items_quantity"] = "จำนวน";
 $lang["items_quantity_number"] = "จำนวนต้องเป็นตัวเลข";
 $lang["items_quantity_required"] = "จำนวนต้องกรอก";
 $lang["items_receiving_quantity"] = "ยอดรับมา";
-$lang["items_remove_image"] = "Remove Image";
+$lang["items_remove_image"] = "นำภาพออก";
 $lang["items_reorder_level"] = "ระดับการสั่งใหม่";
 $lang["items_reorder_level_number"] = "ระดับการสั่งใหม่ต้องเป็นตัวเลข";
 $lang["items_reorder_level_required"] = "ระดับการสั่งไหม่ต้องกรอก";
@@ -83,7 +82,7 @@ $lang["items_retrive_item_info"] = "รับข้อมูลสินค้�
 $lang["items_sales_tax_1"] = "ถาษีขาย";
 $lang["items_sales_tax_2"] = "ภาษีขาย 2";
 $lang["items_search_attributes"] = "ค้นหาในฟิลด์เสริม";
-$lang["items_select_image"] = "Select Image";
+$lang["items_select_image"] = "เลือกรูปภาพ";
 $lang["items_serialized_items"] = "รหัสสินค้า";
 $lang["items_standard"] = "มาตรฐาน";
 $lang["items_stock"] = "คลังสินค้า";
