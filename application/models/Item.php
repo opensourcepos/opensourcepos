@@ -100,7 +100,10 @@ class Item extends CI_Model
 	*/
 	public function get_found_rows($search, $filters)
 	{
-		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
+		$this->db->select('FOUND_ROWS() as count');	//dmt
+		return $this->db->get()->row()->count;		//dmt
+
+//dmt		return $this->search($search, $filters, 0, 0, 'items.name', 'asc', TRUE);
 	}
 
 	/*
@@ -115,6 +118,7 @@ class Item extends CI_Model
 		}
 		else
 		{
+/*  REPLACED
 			$this->db->select('items.item_id AS item_id');
 			$this->db->select('MAX(items.name) AS name');
 			$this->db->select('MAX(items.category) AS category');
@@ -137,7 +141,38 @@ class Item extends CI_Model
 			$this->db->select('MAX(suppliers.agency_name) AS agency_name');
 			$this->db->select('MAX(suppliers.account_number) AS account_number');
 			$this->db->select('MAX(suppliers.deleted) AS deleted');
+*/  
+// Return named fields variant 1
+/*   REPLACED
+			$this->db->select('SQL_CALC_FOUND_ROWS items.item_id AS item_id',FALSE);
+			$this->db->select('items.name AS name');
+			$this->db->select('items.category AS category');
+			$this->db->select('items.supplier_id AS supplier_id');
+			$this->db->select('items.item_number AS item_number');
+			$this->db->select('items.description AS description');
+			$this->db->select('items.cost_price AS cost_price');
+			$this->db->select('items.unit_price AS unit_price');
+			$this->db->select('items.reorder_level AS reorder_level');
+			$this->db->select('items.receiving_quantity AS receiving_quantity');
+			$this->db->select('items.pic_filename AS pic_filename');
+			$this->db->select('items.allow_alt_description AS allow_alt_description');
+			$this->db->select('items.is_serialized AS is_serialized');
+			$this->db->select('items.pack_name AS pack_name');
+			$this->db->select('items.tax_category_id AS tax_category_id');
+			$this->db->select('items.deleted AS deleted');
 
+			$this->db->select('suppliers.person_id AS person_id');
+			$this->db->select('suppliers.company_name AS company_name');
+			$this->db->select('suppliers.agency_name AS agency_name');
+			$this->db->select('suppliers.account_number AS account_number');
+			$this->db->select('suppliers.deleted AS deleted');
+*/
+
+// Return named fields variant 2
+			$this->db->select('SQL_CALC_FOUND_ROWS items.* ',FALSE);
+			$this->db->select('suppliers.* ');
+
+/*   SKIPPED FOR NOW.  This sub appears to return no data that is used by the caller, only whether it exists. 
 			$this->db->select('MAX(inventory.trans_id) AS trans_id');
 			$this->db->select('MAX(inventory.trans_items) AS trans_items');
 			$this->db->select('MAX(inventory.trans_user) AS trans_user');
@@ -145,33 +180,52 @@ class Item extends CI_Model
 			$this->db->select('MAX(inventory.trans_comment) AS trans_comment');
 			$this->db->select('MAX(inventory.trans_location) AS trans_location');
 			$this->db->select('MAX(inventory.trans_inventory) AS trans_inventory');
+*/
 
+/*   REPLACED
 			if($filters['stock_location_id'] > -1)
 			{
 				$this->db->select('MAX(item_quantities.item_id) AS qty_item_id');
 				$this->db->select('MAX(item_quantities.location_id) AS location_id');
 				$this->db->select('MAX(item_quantities.quantity) AS quantity');
 			}
+*/
+			if($filters['stock_location_id'] > -1)
+			{
+				$this->db->select('item_quantities.item_id AS qty_item_id');
+				$this->db->select('item_quantities.location_id AS location_id');
+				$this->db->select('item_quantities.quantity AS quantity');
+			}
+
+
 		}
 
-		$this->db->from('items AS items');
-		$this->db->join('suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
-		$this->db->join('inventory AS inventory', 'inventory.trans_items = items.item_id');
+$dmtlocalprefix = 'ospos_';   // not required after actual dbprefix removed.  But needed to replace for now.
+		$this->db->from($dmtlocalprefix . 'items AS items');
+		$this->db->join($dmtlocalprefix . 'suppliers AS suppliers', 'suppliers.person_id = items.supplier_id', 'left');
+//dmt		$this->db->join($dmtlocalprefix . 'inventory AS inventory use index (trxbydate)', 'inventory.trans_items = items.item_id');
 
 		if($filters['stock_location_id'] > -1)
 		{
-			$this->db->join('item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id');
-			$this->db->where('location_id', $filters['stock_location_id']);
+			$this->db->join($dmtlocalprefix . 'item_quantities AS item_quantities', 'item_quantities.item_id = items.item_id AND location_id = ' . $filters['stock_location_id'] );
+//			$this->db->where('location_id', $filters['stock_location_id']);
 		}
 
-		if(empty($this->config->item('date_or_time_format')))
+//		if(empty($this->config->item('date_or_time_format')))
+		if($filters['has_transactions'] != FALSE)
 		{
-			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+//			$this->db->where('DATE_FORMAT(trans_date, "%Y-%m-%d") BETWEEN ' . $this->db->escape($filters['start_date']) . ' AND ' . $this->db->escape($filters['end_date']));
+			$this->db->where('items.item_id in (select distinct(trans_items) from ospos_inventory use index (trxbydate) where trans_date BETWEEN ' . $this->db->escape($filters["start_date"]) . ' AND ' . $this->db->escape($filters["end_date"] . ' 23:59:59') . '  AND trans_location = ' . $filters["stock_location_id"] . ')' );  //dmt
+		} elseif ($filters['no_transactions'] != FALSE)
+		{
+			$this->db->where('items.item_id NOT in (select distinct(trans_items) from ospos_inventory use index (trxbydate) where trans_date BETWEEN ' . $this->db->escape($filters["start_date"]) . ' AND ' . $this->db->escape($filters["end_date"] . ' 23:59:59') . ' AND trans_location = ' . $filters['stock_location_id'] . ')' );  //dmt
 		}
+/*
 		else
 		{
 			$this->db->where('trans_date BETWEEN ' . $this->db->escape(rawurldecode($filters['start_date'])) . ' AND ' . $this->db->escape(rawurldecode($filters['end_date'])));
 		}
+*/
 
 		$attributes_enabled = count($filters['definition_ids']) > 0;
 
@@ -193,8 +247,8 @@ class Item extends CI_Model
 		if ($attributes_enabled)
 		{
 			$this->db->select('GROUP_CONCAT(DISTINCT CONCAT_WS(\':\', definition_id, attribute_value) ORDER BY definition_id SEPARATOR \'|\') AS attribute_values');
-			$this->db->join('attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
-			$this->db->join('attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
+			$this->db->join($dmtlocalprefix . 'attribute_links', 'attribute_links.item_id = items.item_id AND attribute_links.receiving_id IS NULL AND attribute_links.sale_id IS NULL AND definition_id IN (' . implode(',', $filters['definition_ids']) . ')', 'left');
+			$this->db->join($dmtlocalprefix . 'attribute_values', 'attribute_values.attribute_id = attribute_links.attribute_id', 'left');
 		}
 
 		$this->db->where('items.deleted', $filters['is_deleted']);
@@ -232,7 +286,9 @@ class Item extends CI_Model
 		}
 
 		// avoid duplicated entries with same name because of inventory reporting multiple changes on the same item in the same date range
-		$this->db->group_by('items.item_id');
+//dmt   eliminated the multiple returns from inventory so no longer require the group_by UNLESS MAX is used creating an aggregate  (adds 1/4 second)
+//dmt   I don't know if attributes can return single or multiple which may need that back.
+//dmt		$this->db->group_by('items.item_id');
 
 		// order by name of item by default
 		$this->db->order_by($sort, $order);
