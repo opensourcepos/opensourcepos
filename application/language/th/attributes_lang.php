@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "ค่าแอตทริบิวต์ไม่สามารถมี ':' หรือ '|' ได้";
 $lang["attributes_confirm_delete"] = "คุณแน่ใจหรือไม่ว่าต้องการลบแอตทริบิวต์ที่เลือก ?";
-$lang["attributes_confirm_restore"] = "";
+$lang["attributes_confirm_restore"] = "คุณแน่ใจหรือไม่ว่าต้องการคืนค่าแอตทริบิวต์ที่เลือก ?";
 $lang["attributes_definition_cannot_be_deleted"] = "ไม่สามารถลบแอตทริบิวต์ที่เลือก";
 $lang["attributes_definition_error_adding_updating"] = "Attribute %1 ไม่สามารถเพิ่มหรือแก้ไขได้.โปรดตรวจสอบจาก error log.";
 $lang["attributes_definition_flags"] = "แอตทริบิวต์การมองเห็น";
