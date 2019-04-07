@@ -1,10 +1,9 @@
-<?php 
-
+<?php
 $lang["attributes_attribute_value_invalid_chars"] = "Valor do atributo não pode conter ':' ou '|'";
 $lang["attributes_confirm_delete"] = "Tem certeza de que deseja excluir os atributos selecionados?";
-$lang["attributes_confirm_restore"] = "";
+$lang["attributes_confirm_restore"] = "Tem certeza de que deseja restaurar o(s) atributo(s) selecionado(s)?";
 $lang["attributes_definition_cannot_be_deleted"] = "Não foi possível excluir atributo selecionado (s)";
-$lang["attributes_definition_error_adding_updating"] = "";
+$lang["attributes_definition_error_adding_updating"] = "Atributo %1 não pode ser adicionado ou atualizado. Por favor verifique o log de erros.";
 $lang["attributes_definition_flags"] = "Visibilidade de atributo";
 $lang["attributes_definition_group"] = "Grupo";
 $lang["attributes_definition_id"] = "Id";
@@ -16,7 +15,7 @@ $lang["attributes_definition_successful_deleted"] = "Você excluiu com êxito";
 $lang["attributes_definition_successful_updating"] = "Você atualizou com êxito o atributo";
 $lang["attributes_definition_type"] = "Tipo de atributo";
 $lang["attributes_definition_type_required"] = "Tipo de atributo é um campo obrigatório";
-$lang["attributes_definition_unit"] = "";
+$lang["attributes_definition_unit"] = "Unidade de medida";
 $lang["attributes_definition_values"] = "Valores de atributo";
 $lang["attributes_new"] = "Novo Atributo";
 $lang["attributes_no_attributes_to_display"] = "Não há itens para exibir";
