@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Pontos Disponíveis";
 $lang["rewards_package"] = "Recompensa";
 $lang["rewards_remaining_balance"] = "O valor restante dos pontos de recompensa é ";
@@ -30,7 +29,7 @@ $lang["sales_customer_discount"] = "Desconto";
 $lang["sales_customer_email"] = "e-mail";
 $lang["sales_customer_location"] = "Localização";
 $lang["sales_customer_mailchimp_status"] = "Status Mailchimp";
-$lang["sales_customer_optional"] = "(Opcional)";
+$lang["sales_customer_optional"] = "(Requerido para pagamentos vencidos)";
 $lang["sales_customer_required"] = "(Requerido)";
 $lang["sales_customer_total"] = "Total";
 $lang["sales_date"] = "Data Venda";
