@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["reports_all"] = "Todos";
 $lang["reports_authority"] = "Autoridade";
 $lang["reports_canceled"] = "Cancelado";
@@ -126,14 +125,14 @@ $lang["reports_total_inventory_value"] = "Valor Total Inventário";
 $lang["reports_total_low_sell_quantity"] = "Quantidade Total de Venda Baixa";
 $lang["reports_total_quantity"] = "Quantidade total";
 $lang["reports_total_retail"] = "Total Inv. Valor de varejo";
-$lang["reports_trans_amount"] = "";
-$lang["reports_trans_due"] = "";
-$lang["reports_trans_group"] = "";
-$lang["reports_trans_nopay_sales"] = "";
-$lang["reports_trans_payments"] = "";
-$lang["reports_trans_refunded"] = "";
-$lang["reports_trans_sales"] = "";
-$lang["reports_trans_type"] = "";
+$lang["reports_trans_amount"] = "Montante de transação";
+$lang["reports_trans_due"] = "Vencimento";
+$lang["reports_trans_group"] = "Grupo de transações";
+$lang["reports_trans_nopay_sales"] = "Vendas sem pagamento";
+$lang["reports_trans_payments"] = "Pagamentos";
+$lang["reports_trans_refunded"] = "Devolvido";
+$lang["reports_trans_sales"] = "Vendas";
+$lang["reports_trans_type"] = "Tipo de transação";
 $lang["reports_type"] = "Tipo";
 $lang["reports_unit_price"] = "Preço Varejo";
 $lang["reports_used"] = "Pontos usados";
