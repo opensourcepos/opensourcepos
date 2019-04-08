@@ -1,11 +1,10 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Añadir excepción";
 $lang["taxes_cascade"] = "Cascada";
 $lang["taxes_cascade_sequence"] = "Secuencia en cascada";
 $lang["taxes_city"] = "Ciudad";
 $lang["taxes_code"] = "Código";
-$lang["taxes_confirm_delete"] = "¿Estás seguro de borrar los impositivos seleccionados? Esta acción no se puede deshacer.";
+$lang["taxes_confirm_delete"] = "¿Estás seguro de borrar los codigos de impuestos seleccionados?, Esta acción no se puede deshacer.";
 $lang["taxes_confirm_restore"] = "Esta seguro de querer restaurar la(s) Imp(s) seleccionada(s)?";
 $lang["taxes_default_tax_category"] = "Categoría por defecto";
 $lang["taxes_default_tax_rate"] = "Tasa impositiva por defecto";
@@ -56,9 +55,9 @@ $lang["taxes_tax_excluded"] = "Exento de impuestos";
 $lang["taxes_tax_group"] = "Grupo de impuestos";
 $lang["taxes_tax_group_sequence"] = "Secuencia de grupo de impuestos";
 $lang["taxes_tax_included"] = "Impuestos incluidos";
-$lang["taxes_tax_jurisdiction"] = "";
+$lang["taxes_tax_jurisdiction"] = "Jurisdicción Tributaria";
 $lang["taxes_tax_jurisdiction_duplicate"] = "";
-$lang["taxes_tax_jurisdiction_invalid_chars"] = "";
+$lang["taxes_tax_jurisdiction_invalid_chars"] = "Caracteres inválidos en nombre de jurisdicción";
 $lang["taxes_tax_jurisdiction_required"] = "";
 $lang["taxes_tax_jurisdictions"] = "";
 $lang["taxes_tax_jurisdictions_configuration"] = "";
