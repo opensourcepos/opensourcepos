@@ -730,7 +730,6 @@ class Sale extends CI_Model
 	{
 		foreach($sales_taxes as $line=>$sales_tax)
 		{
-			$sales_tax['tax_group'] = (float)$sales_tax['tax_rate'] . '% ' . $sales_tax['tax_group'];
 			$sales_tax['sale_id'] = $sale_id;
 			$this->db->insert('sales_taxes', $sales_tax);
 		}
@@ -803,7 +802,7 @@ class Sale extends CI_Model
 	{
 		foreach($sale_ids as $sale_id)
 		{
-            $this->update_sale_status($sale_id, SUSPENDED);
+			$this->update_sale_status($sale_id, SUSPENDED);
 		}
 
 		return TRUE;
@@ -1254,7 +1253,7 @@ class Sale extends CI_Model
 
 	/**
 	 * Gets the quote_number for the selected sale
- 	 */
+	 */
 	public function get_quote_number($sale_id)
 	{
 		$this->db->from('sales');
