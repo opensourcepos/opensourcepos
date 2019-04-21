@@ -518,7 +518,7 @@ class Sales extends Secure_Controller
 		$employee_info = $this->Employee->get_info($employee_id);
 		$data['employee'] = $employee_info->first_name . ' ' . mb_substr($employee_info->last_name, 0, 1);
 
-		$data['company_info'] = implode("\n", array(
+		$data['company_info'] = implode("<br/>", array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));
@@ -896,7 +896,7 @@ class Sales extends Secure_Controller
 				$data['customer_total'] = empty($cust_stats) ? 0 : $cust_stats->total;
 			}
 
-			$data['customer_info'] = implode("\n", array(
+			$data['customer_info'] = implode("<br/>", array(
 				$data['customer'],
 				$data['customer_address'],
 				$data['customer_location']
@@ -971,7 +971,7 @@ class Sales extends Secure_Controller
 		$data['quote_number'] = $sale_info['quote_number'];
 		$data['sale_status'] = $sale_info['sale_status'];
 
-		$data['company_info'] = implode("\n", array(
+		$data['company_info'] = implode("<br/>", array(
 			$this->config->item('address'),
 			$this->config->item('phone')
 		));

@@ -15,7 +15,7 @@ function pdf_create($html, $filename = '')
     }
 
     $dompdf = new Dompdf\Dompdf();
-    $dompdf->loadHtml($html);
+    $dompdf->loadHtml(str_replace(array("\n", "\r"), '', $html));
     $dompdf->render();
 
     if(!$magic_quotes_enabled)

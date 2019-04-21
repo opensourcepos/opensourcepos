@@ -27,14 +27,15 @@ pre { font-family: Helvetica; font-size: 13px; }
 .edit #logohelp { display: block; }
 .edit #save-logo, .edit #cancel-logo { display: inline; }
 .edit #image, #save-logo, #cancel-logo, .edit #change-logo, .edit #delete-logo { display: none; }
-#customer-title { text-align: right; }
+#customer-title { text-align: right; height: 100px; width: 50%;}
+#customer { float:right; width:300px; text-align: left; }
 #terms div { width: 100%; text-align: center; margin-bottom: 10px;}
 
 /* second row */
 #company-title { width: 50%; padding-left: 20px; }
 #meta td { text-align: right;  }
 #meta td.meta-head { text-align: left; background: #eee; }
-
+#meta-content { width: 300px; }
 #items { width: 100%;  border: 1px solid black; }
 #items th { background: #eee; }
 #items tr.item-row td { border: 0; vertical-align: top; }

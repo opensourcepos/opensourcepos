@@ -28,16 +28,18 @@
 				?>
 			</td>
 			<td id="customer-title">
-				<pre><?php if(isset($customer)) { echo $customer_info; } ?></pre>
+				<div id="customer"><?php if(isset($customer)) { echo $customer_info; } ?></div>
 			</td>
 		</tr>
 		<tr>
 			<td id="company-title">
-				<pre><?php echo $this->config->item('company'); ?></pre>
-				<pre><?php echo $company_info; ?></pre>
+				<div id="company">
+				<?php echo $this->config->item('company'); ?><br/>
+				<?php echo $company_info; ?>
+				</div>
 			</td>
 			<td id="meta">
-				<table align="right">
+				<table id="meta-content"  align="right">
 				<tr>
 					<td class="meta-head"><?php echo $this->lang->line('sales_invoice_number');?> </td>
 					<td><div><?php echo $invoice_number; ?></div></td>
