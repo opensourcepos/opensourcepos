@@ -793,7 +793,7 @@ class Sales extends Secure_Controller
 		{
 			$to = $sale_data['customer_email'];
 			$number = $sale_data[$type."_number"];
-			$subject = $this->lang->line("sales" . $type) . ' ' . $number;
+			$subject = $this->lang->line("sales_" . $type) . ' ' . $number;
 
 			$text = $this->config->item('invoice_email_message');
 			$tokens = array(new Token_invoice_sequence($sale_data['invoice_number']),
