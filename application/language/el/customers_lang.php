@@ -1,8 +1,7 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "";
 $lang["customers_account_number_duplicate"] = "";
-$lang["customers_available_points"] = "";
+$lang["customers_available_points"] = "Διαθέσιμοι Πόντοι";
 $lang["customers_average"] = "";
 $lang["customers_avg_discount"] = "";
 $lang["customers_basic_information"] = "";
