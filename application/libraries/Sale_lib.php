@@ -485,15 +485,18 @@ class Sale_lib
 		$totals['prediscount_subtotal'] = $prediscount_subtotal;
 		$totals['total_discount'] = $total_discount;
 		$totals['subtotal'] = $subtotal;
+		$sales_tax = 0;
 
 		foreach($taxes as $tax_excluded)
 		{
 			if($tax_excluded['tax_type'] == Tax_lib::TAX_TYPE_EXCLUDED)
 			{
 				$total = bcadd($total, $tax_excluded['sale_tax_amount']);
+				$sales_tax = bcadd($sales_tax, $tax_excluded['sale_tax_amount']);
 			}
 		}
 		$totals['total'] = $total;
+		$totals['tax_total'] = $sales_tax;
 
 		if($cash_rounding)
 		{

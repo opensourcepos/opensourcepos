@@ -162,8 +162,8 @@ class Summary_payments extends Summary_report
 		);
 
 		$this->db->query('UPDATE ' . $this->db->dbprefix('sumpay_items_temp') . ' AS sumpay_items '
-			. 'SET trans_amount = trans_amount + (SELECT total_taxes FROM ' . $this->db->dbprefix('sumpay_taxes_temp')
-			. ' AS sumpay_taxes WHERE sumpay_items.sale_id = sumpay_taxes.sale_id)');
+			. 'SET trans_amount = trans_amount + IFNULL((SELECT total_taxes FROM ' . $this->db->dbprefix('sumpay_taxes_temp')
+			. ' AS sumpay_taxes WHERE sumpay_items.sale_id = sumpay_taxes.sale_id),0)');
 
 		$this->db->query('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $this->db->dbprefix('sumpay_payments_temp') .
 			' (INDEX(sale_id))
