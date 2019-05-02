@@ -15,7 +15,7 @@
 				<?php echo form_input(array('name'=>'date','value'=>to_datetime(strtotime($sale_info['sale_time'])), 'class'=>'datetime form-control input-sm'));?>
 			</div>
 		</div>
-		
+
 		<?php
 		if($this->config->item('invoice_enable') == TRUE)
 		{
@@ -35,6 +35,31 @@
 		}
 		?>
 
+		<?php
+		if($balance_due)
+		{
+		?>
+			<div class="form-group form-group-sm">
+				<?php echo form_label($this->lang->line('sales_payment'), 'payment_new', array('class'=>'control-label col-xs-3')); ?>
+				<div class='col-xs-4'>
+					<?php echo form_dropdown('payment_type_new', $new_payment_options, $payment_type_new, array('id'=>'payment_types_new', 'class'=>'form-control')); ?>
+				</div>
+				<div class='col-xs-4'>
+					<div class="input-group input-group-sm">
+						<?php if(!currency_side()): ?>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<?php endif; ?>
+						<?php echo form_input(array('name'=>'payment_amount_new', 'value'=>$payment_amount_new, 'id'=>'payment_amount_new', 'class'=>'form-control input-sm'));?>
+						<?php if (currency_side()): ?>
+							<span class="input-group-addon input-sm"><b><?php echo $this->config->item('currency_symbol'); ?></b></span>
+						<?php endif; ?>
+					</div>
+				</div>
+			</div>
+		<?php
+		}
+		?>
+
 		<?php 
 		$i = 0;
 		foreach($payments as $row)
@@ -44,6 +69,7 @@
 				<?php echo form_label($this->lang->line('sales_payment'), 'payment_'.$i, array('class'=>'control-label col-xs-3')); ?>
 				<div class='col-xs-4'>
 						<?php // no editing of Gift Card payments as it's a complex change ?>
+						<?php echo form_hidden('payment_id_'.$i, $row->payment_id); ?>
 						<?php if( !empty(strstr($row->payment_type, $this->lang->line('sales_giftcard'))) ): ?>
 							<?php echo form_input(array('name'=>'payment_type_'.$i, 'value'=>$row->payment_type, 'id'=>'payment_type_'.$i, 'class'=>'form-control input-sm', 'readonly'=>'true'));?>
 						<?php else: ?>
