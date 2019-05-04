@@ -1,13 +1,12 @@
-<?php 
-
+<?php
 $lang["customers_available_points"] = "Puntos disponibles";
 $lang["rewards_package"] = "Premios";
 $lang["rewards_remaining_balance"] = "El remanente de puntos es ";
-$lang["sales_account_number"] = "";
+$lang["sales_account_number"] = "Cuenta #";
 $lang["sales_add_payment"] = "Agregar Pago";
 $lang["sales_amount_due"] = "Monto Adeudado";
 $lang["sales_amount_tendered"] = "Cantidad Recibida";
-$lang["sales_authorized_signature"] = "";
+$lang["sales_authorized_signature"] = "Firma Autorizada";
 $lang["sales_cancel_sale"] = "Cancelar Venta";
 $lang["sales_cash"] = "Efectivo";
 $lang["sales_cash_deposit"] = "Deposito Efectivo";
@@ -76,7 +75,7 @@ $lang["sales_invoice_no_email"] = "Este cliente no tiene un email válido.";
 $lang["sales_invoice_number"] = "Factura #";
 $lang["sales_invoice_number_duplicate"] = "Por favor ingrese un número de factura único.";
 $lang["sales_invoice_sent"] = "Factura enviada a";
-$lang["sales_invoice_total"] = "";
+$lang["sales_invoice_total"] = "Total Facturado";
 $lang["sales_invoice_type_custom_invoice"] = "";
 $lang["sales_invoice_type_custom_tax_invoice"] = "";
 $lang["sales_invoice_type_invoice"] = "";
