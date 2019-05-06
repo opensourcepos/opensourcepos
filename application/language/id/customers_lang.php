@@ -1,5 +1,4 @@
-<?php 
-
+<?php
 $lang["customers_account_number"] = "No Pelanggan";
 $lang["customers_account_number_duplicate"] = "Nomor akun ini telah tersimpan di basis data.";
 $lang["customers_available_points"] = "Poin yg tersedia";
@@ -15,9 +14,9 @@ $lang["customers_consent_required"] = "Persetujuan pendaftaran adalah bidang yan
 $lang["customers_customer"] = "Pelanggan";
 $lang["customers_date"] = "Tanggal";
 $lang["customers_discount"] = "Diskon";
-$lang["customers_discount_fixed"] = "";
-$lang["customers_discount_percent"] = "";
-$lang["customers_discount_type"] = "";
+$lang["customers_discount_fixed"] = "Diskon Tetap";
+$lang["customers_discount_percent"] = "Prosentase Diskon";
+$lang["customers_discount_type"] = "Jenis Diskon";
 $lang["customers_email_duplicate"] = "Alamat email telah digunakan.";
 $lang["customers_employee"] = "Karyawan";
 $lang["customers_error_adding_updating"] = "Kesalahan ketika menambah atau memperbaharui pelanggan.";
@@ -47,7 +46,7 @@ $lang["customers_successful_adding"] = "Anda telah berhasil menambah pelanggan";
 $lang["customers_successful_deleted"] = "Anda telah berhasil menghapus pelanggan";
 $lang["customers_successful_updating"] = "Anda telah berhasil memperbarui pelanggan";
 $lang["customers_tax_code"] = "Kode pajak";
-$lang["customers_tax_id"] = "";
+$lang["customers_tax_id"] = "ID Pajak";
 $lang["customers_taxable"] = "Dikenakan pajak";
 $lang["customers_total"] = "Total";
 $lang["customers_update"] = "Ubah Pelanggan";
