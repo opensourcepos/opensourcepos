@@ -42,10 +42,10 @@
 			?><br>
 
 				.Server Software: <?php echo $_SERVER['SERVER_SOFTWARE']; ?><br>
-				.PHP Version: <?php echo PHP_VERSION; ?> <br>
+				.PHP Version: <?php echo PHP_VERSION; ?><br>
+				.DB Version: <?php echo mysqli_get_server_info($this->db->conn_id); ?><br>
 				.Server Port: <?php echo $_SERVER['SERVER_PORT']; ?><br>
-				.DB Version: <?php print mysqli_get_client_info(); ?><br>
-				.OS: <?php echo php_uname();	?><br><br></td>
+				.OS: <?php echo php_uname();?><br><br></td>
 		</tr>
 		<tr>
 		  <th>File Permissions:<br></th>
