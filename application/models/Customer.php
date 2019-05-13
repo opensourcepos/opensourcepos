@@ -118,10 +118,10 @@ class Customer extends Person
 		$quantity_decimals = quantity_decimals();
 
 		$this->db->select('
-						SUM(sales_payments.payment_amount) AS total,
-						MIN(sales_payments.payment_amount) AS min,
-						MAX(sales_payments.payment_amount) AS max,
-						AVG(sales_payments.payment_amount) AS average,
+						SUM(sales_payments.payment_amount - sales_payments.cash_refund) AS total,
+						MIN(sales_payments.payment_amount - sales_payments.cash_refund) AS min,
+						MAX(sales_payments.payment_amount - sales_payments.cash_refund) AS max,
+						AVG(sales_payments.payment_amount - sales_payments.cash_refund) AS average,
 						' . "
 						ROUND(AVG(sales_items_temp.avg_discount), $totals_decimals) AS avg_discount,
 						ROUND(SUM(sales_items_temp.quantity), $quantity_decimals) AS quantity
