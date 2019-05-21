@@ -1,19 +1,18 @@
-<?php 
-
+<?php
 $lang["taxes_add_exception"] = "Ajouter une exception";
 $lang["taxes_cascade"] = "";
 $lang["taxes_cascade_sequence"] = "";
-$lang["taxes_city"] = "";
-$lang["taxes_code"] = "";
+$lang["taxes_city"] = "Cité";
+$lang["taxes_code"] = "Code";
 $lang["taxes_confirm_delete"] = "Êtes-vous sûr de vouloir supprimer ce code fiscal? Cette action ne peut pas être annulée.";
 $lang["taxes_confirm_restore"] = "Êtes-vous sûr de vouloir restaurer le (s) code (s) fiscal (s) sélectionné (s) ?";
 $lang["taxes_default_tax_category"] = "Catégorie de taxe par défaut";
-$lang["taxes_default_tax_rate"] = "";
+$lang["taxes_default_tax_rate"] = "Taux de taxe par défaut";
 $lang["taxes_error_adding_updating"] = "L'ajout ou la mise à jour du code fiscal a échoué.";
 $lang["taxes_group_seq"] = "";
 $lang["taxes_jurisdiction_name"] = "";
-$lang["taxes_name"] = "";
-$lang["taxes_new"] = "Nouveau code fiscal";
+$lang["taxes_name"] = "Nom";
+$lang["taxes_new"] = "Nouvelle taxe";
 $lang["taxes_no_taxes_to_display"] = "Aucun code d'impôts disponible à afficher.";
 $lang["taxes_reporting_authority"] = "";
 $lang["taxes_round_half_down"] = "Demi-bas";
@@ -24,9 +23,9 @@ $lang["taxes_rounding_code"] = "Code d'arrondissement";
 $lang["taxes_sales_tax"] = "Taxe de vente";
 $lang["taxes_sales_tax_by_invoice"] = "Taxe de vente par facture";
 $lang["taxes_sequence"] = "";
-$lang["taxes_state"] = "";
-$lang["taxes_successful_deleted"] = "Vous avez supprimé avec succès";
-$lang["taxes_tax_categories"] = "";
+$lang["taxes_state"] = "État/Région";
+$lang["taxes_successful_deleted"] = "Supprimé avec succès";
+$lang["taxes_tax_categories"] = "Catégorie de taxe";
 $lang["taxes_tax_categories_configuration"] = "";
 $lang["taxes_tax_categories_saved_successfully"] = "";
 $lang["taxes_tax_categories_saved_unsuccessfully"] = "";
