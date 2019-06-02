@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM alpine
 MAINTAINER jekkos
 
 ADD database.sql /docker-entrypoint-initdb.d/database.sql
